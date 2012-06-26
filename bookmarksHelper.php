@@ -13,6 +13,7 @@ function curl_exec_follow(/*resource*/ $ch, /*int*/ &$maxredirect = null) {
 			$newurl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 
 			$rch = curl_copy_handle($ch);
+			curl_setopt($ch, CURLOPT_USERAGENT, "Owncloud Bookmark Crawl");
 			curl_setopt($rch, CURLOPT_HEADER, true);
 			curl_setopt($rch, CURLOPT_NOBODY, true);
 			curl_setopt($rch, CURLOPT_FORBID_REUSE, false);
@@ -64,9 +65,8 @@ function getURLMetadata($url) {
 	$page = curl_exec_follow($ch);
 	curl_close($ch);
 
-	@preg_match( "/<title>(.*)<\/title>/si", $page, $match );
+	@preg_match( "/<title>(.*)<\/title>/sUi", $page, $match );
 	$metadata['title'] = htmlspecialchars_decode(@$match[1]); 
-
 	return $metadata;
 }
 
