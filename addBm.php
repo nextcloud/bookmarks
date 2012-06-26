@@ -27,7 +27,40 @@
 OCP\User::checkLoggedIn();
 OCP\App::checkAppEnabled('bookmarks');
 
+if(!isset($_GET['url']) || trim($_GET['url']) == '') {
+	header("HTTP/1.0 404 Not Found");
+	$tmpl = new OCP\Template( '', '404', 'guest' );
+	$tmpl->printPage();
+	exit;
+}
+	
 require_once('bookmarksHelper.php');
-addBookmark($_GET['url'], '', 'Read-Later');
 
-include 'templates/addBm.php';
+if(isset($_POST['url'])) {
+	addBookmark($_POST['url'], '', 'Read-Later');
+}
+
+OCP\Util::addscript('bookmarks','tag-it');
+OCP\Util::addscript('bookmarks','addBm');
+OCP\Util::addStyle('bookmarks', 'bookmarks');
+OCP\Util::addStyle('bookmarks', 'jquery.tagit');
+
+$bm = array('title'=>'hello world',
+	'url'=> $_GET['url'],
+	'tags'=> array('@admin','music','test'),
+	'desc'=>'A fancy description',
+	'is_public'=>1,
+);
+
+//Find All Tags
+$qtags = OC_Bookmarks_Bookmarks::findTags();
+$tags = array();
+foreach($qtags as $tag) {
+	$tags[] = $tag['tag'];
+}
+
+$tmpl = new OCP\Template( 'bookmarks', 'addBm', 'empty' );
+$tmpl->assign('bookmark', $bm);
+$tmpl->assign('tags', json_encode($tags), false);
+
+$tmpl->printPage();

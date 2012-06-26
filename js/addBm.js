@@ -1,5 +1,14 @@
 $(document).ready(function() {
 	$('#bookmark_add_submit').click(addBookmark);
+	$('#url-ro img').click(editUrl);
+	$('#url').keypress(changeUrl);
+	$('#addBm').submit(bookletSubmit);
+	$('#tags').tagit({
+		allowSpaces: true,
+		availableTags: sampleTags,
+		itemName: 'item',
+		fieldName: 'tags',
+	});
 });
 
 function addBookmark(event) {
@@ -11,6 +20,23 @@ function addBookmark(event) {
 		data: 'url=' + encodeURI(url) + '&tags=' + encodeURI(tags),
 		success: function(data){ 
 			window.close();
+		}
+	});
+}
+function editUrl(event) {
+	$('#url').slideToggle();
+}
+function changeUrl(event) {
+	$('#url-ro code').text($('#url').val());
+}
+function bookletSubmit(event) {
+	event.preventDefault();
+	$.ajax({
+		type: 'POST',
+		url: $('#addBm').attr('action'),
+		data: $('#addBm').serialize(),
+		success: function(data){ 
+			self.close();
 		}
 	});
 }

@@ -26,6 +26,14 @@
 class OC_Bookmarks_Bookmarks{
 
 	/**
+	* @brief Finds all tags for bookmarks
+	*/
+	public static function findTags($offset = 0, $limit = 10){
+		$query = OCP\DB::prepare('SELECT distinct tag from  *PREFIX*bookmarks_tags LIMIT '.$offset.',  '.$limit);
+		$tags = $query->execute()->fetchAll();
+		return $tags;
+	}
+	/**
 	 * @brief Finds all bookmarks, matching the filter
 	 * @param offset result offset
 	 * @param sqlSortColumn sort result with this column

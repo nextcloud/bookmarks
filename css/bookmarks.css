@@ -85,3 +85,67 @@
 	display: none;
 	margin-left: 5px;
 }
+
+#addBm {
+	background: none repeat scroll 0 0 #F8F8F8;
+  border-radius: 0.5em 0.5em 0.5em 0.5em;
+  color: #555555;
+  margin: 1em;
+  padding: 0.5em 1em;
+	text-shadow: 0 1px 0 #FFFFFF;
+	width: 500px;
+	
+}
+.bm_desc {
+	width:90%;
+}
+#addBm h1 {
+	font-weight: bold;
+	border-bottom: 1px solid #BABABA;
+
+}
+
+#addBm #url {
+	display:none;
+}
+
+#addBm fieldset > ul > li {
+	margin-top: 1em;
+}
+#addBm label {
+	display:block;
+	width:100%;
+}
+#addBm #is_public_label {
+	display: inline;
+	
+}
+#addBm fieldset input[type="text"], #addBm textarea {
+	width:100%;
+}
+#addBm textarea{
+	min-width:250px;
+/* 	min-height: 70px; */
+}
+#addBm #close_btn
+{
+/* 	background-color: #EEEEEE; */
+	height: 18px;
+	margin: -20px 0 0;
+	padding: 1px;
+	float:right;
+	width: 19px;
+}
+#addBm .submit {
+	float: right;
+}
+
+#addBm ul.tagit { background:white; }
+
+#addBm input.ui-autocomplete-input{
+	box-shadow:none;
+}
+
+.ui-autocomplete {
+/* 	background: none repeat scroll 0 0 #DEE7F8; */
+}
