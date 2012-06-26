@@ -5,9 +5,7 @@ $(document).ready(function() {
 	$('#addBm').submit(bookletSubmit);
 	$('#tags').tagit({
 		allowSpaces: true,
-		availableTags: sampleTags,
-		itemName: 'item',
-		fieldName: 'tags',
+		availableTags: sampleTags
 	});
 });
 
@@ -36,7 +34,9 @@ function bookletSubmit(event) {
 		url: $('#addBm').attr('action'),
 		data: $('#addBm').serialize(),
 		success: function(data){ 
-			self.close();
+			if(data.status == 'success'){
+				self.close();
+			}
 		}
 	});
 }

@@ -27,28 +27,33 @@
 OCP\User::checkLoggedIn();
 OCP\App::checkAppEnabled('bookmarks');
 
+
+require_once('bookmarksHelper.php');
+
+
+
 if(!isset($_GET['url']) || trim($_GET['url']) == '') {
 	header("HTTP/1.0 404 Not Found");
 	$tmpl = new OCP\Template( '', '404', 'guest' );
 	$tmpl->printPage();
 	exit;
+}elseif(isset($_POST['url'])) {
+	$bm = addBookmark($_POST['url'], $_POST['title'], implode(' ',$_POST['item']['tags']),$_POST['desc'], $_POST['is_public']);
+	OCP\JSON::success(array('id'=>$bm));
+	exit();
 }
 	
-require_once('bookmarksHelper.php');
-
-if(isset($_POST['url'])) {
-	addBookmark($_POST['url'], '', 'Read-Later');
-}
-
 OCP\Util::addscript('bookmarks','tag-it');
 OCP\Util::addscript('bookmarks','addBm');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
 OCP\Util::addStyle('bookmarks', 'jquery.tagit');
 
-$bm = array('title'=>'hello world',
+$datas = getURLMetadata($_GET['url']);
+
+$bm = array('title'=> $datas['title'] ? $datas['title'] : '' ,
 	'url'=> $_GET['url'],
-	'tags'=> array('@admin','music','test'),
-	'desc'=>'A fancy description',
+	'tags'=> array(),
+	'desc'=>'',
 	'is_public'=>1,
 );
 
