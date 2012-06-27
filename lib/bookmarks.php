@@ -38,15 +38,22 @@ class OC_Bookmarks_Bookmarks{
 	 * @param offset result offset
 	 * @param sqlSortColumn sort result with this column
 	 * @param filter can be: empty -> no filter, a string -> filter this, a string array -> filter for all strings
-	 * @param filterTagOnly if true, filter affacts only tags, else filter affects url, title and tags
+	 * @param filterTagOnly if true, filter affects only tags, else filter affects url, title and tags
 	 * @return void
 	 */
 	public static function findBookmarks($offset, $sqlSortColumn, $filter, $filterTagOnly){
-		//OCP\Util::writeLog('bookmarks', 'findBookmarks ' .$offset. ' '.$sqlSortColumn.' '. $filter.' '. $filterTagOnly ,OCP\Util::DEBUG);
 		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
-	
+		$limit = 10;
 		$params=array(OCP\USER::getUser());
-	
+		$sql = "SELECT *, (select GROUP_CONCAT(tag) from oc_bookmarks_tags where bookmark_id = id) as tags
+				FROM *PREFIX*bookmarks
+				WHERE user_id = ?
+				ORDER BY *PREFIX*bookmarks.".$sqlSortColumn." DESC
+				LIMIT $limit
+				OFFSET  $offset";
+
+		$query = OCP\DB::prepare($sql);
+	/*
 		if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
 			$_gc_separator = ', \' \'';
 		} else {
@@ -116,8 +123,13 @@ class OC_Bookmarks_Bookmarks{
 				ORDER BY `*PREFIX*bookmarks`.`'.$sqlSortColumn.'` DESC',
 				10, $offset);
 		}
-
-		$bookmarks = $query->execute($params)->fetchAll();
++*/
+		$results = $query->execute($params)->fetchAll();
+		$bookmarks = array();
+		foreach($results as $result){
+			$result['tags'] = explode(',', $result['tags']);
+			$bookmarks[] = $result;
+		}
 		return $bookmarks;
 	}
 
