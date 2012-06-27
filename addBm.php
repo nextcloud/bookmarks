@@ -39,7 +39,8 @@ if(!isset($_GET['url']) || trim($_GET['url']) == '') {
 	exit;
 }elseif(isset($_POST['url'])) {
 	$tags = isset($_POST['item']['tags']) ? $_POST['item']['tags'] : array();
-	$bm = addBookmark($_POST['url'], $_POST['title'], implode(' ',$tags),$_POST['desc'], $_POST['is_public']);
+	$pub = isset($_POST['is_public']) ? true : false;
+	$bm = addBookmark($_POST['url'], $_POST['title'], implode(' ',$tags),$_POST['desc'], $pub);
 	OCP\JSON::success(array('id'=>$bm));
 	exit();
 }
@@ -61,7 +62,7 @@ $bm = array('title'=> $title,
 	'url'=> $_GET['url'],
 	'tags'=> array(),
 	'desc'=>'',
-	'is_public'=>1,
+	'is_public'=>0,
 );
 
 //Find All Tags

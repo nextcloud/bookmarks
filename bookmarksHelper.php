@@ -54,7 +54,7 @@ function getURLMetadata($url) {
 	//if not (allowed) protocol is given, assume http
 	if(preg_match($protocols, $url) == 0) {
 		$url = 'http://' . $url;
-	} 
+	}
 	$metadata['url'] = $url;
 	if (!function_exists('curl_init')){
 		return $metadata;
@@ -66,11 +66,11 @@ function getURLMetadata($url) {
 	curl_close($ch);
 
 	@preg_match( "/<title>(.*)<\/title>/sUi", $page, $match );
-	$metadata['title'] = htmlspecialchars_decode(@$match[1]); 
+	$metadata['title'] = htmlspecialchars_decode(@$match[1]);
 	return $metadata;
 }
 
-function addBookmark($url, $title, $tags='') {
+function addBookmark($url, $title, $tags='', $description='', $is_public=false) {
 	$CONFIG_DBTYPE = OCP\Config::getSystemValue( "dbtype", "sqlite" );
 	if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
 		$_ut = "strftime('%s','now')";
@@ -79,41 +79,33 @@ function addBookmark($url, $title, $tags='') {
 	} else {
 		$_ut = "UNIX_TIMESTAMP()";
 	}
-	
+
+	$is_public = $is_public ? 1 : 0;
 	//FIXME: Detect when user adds a known URL
 	$query = OCP\DB::prepare("
 		INSERT INTO `*PREFIX*bookmarks`
-		(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`)
-		VALUES (?, ?, ?, 0, $_ut, $_ut)
+		(url, title, user_id, public, added, lastmodified, description)
+		VALUES (?, ?, ?, ?, $_ut, $_ut, ?)
 		");
-	
-	if(empty($title)) {
-		$metadata = getURLMetadata($url);
-		if(isset($metadata['title'])) // Check for problems fetching the title
-			$title = $metadata['title'];
-	}
-	
-	if(empty($title)) {
-		$l = OC_L10N::get('bookmarks');
-		$title = $l->t('unnamed');
-	}
-	
+
 	$params=array(
-	htmlspecialchars_decode($url),
-	htmlspecialchars_decode($title),
-	OCP\USER::getUser()
+		htmlspecialchars_decode($url),
+		htmlspecialchars_decode($title),
+		OCP\USER::getUser(),
+		$is_public,
+		$description,
 	);
 	$query->execute($params);
-	
+
 	$b_id = OCP\DB::insertid('*PREFIX*bookmarks');
-	
+
 	if($b_id !== false) {
 		$query = OCP\DB::prepare("
 			INSERT INTO `*PREFIX*bookmarks_tags`
 			(`bookmark_id`, `tag`)
 			VALUES (?, ?)
 			");
-	
+
 		$tags = explode(' ', urldecode($tags));
 		foreach ($tags as $tag) {
 			if(empty($tag)) {
@@ -123,7 +115,7 @@ function addBookmark($url, $title, $tags='') {
 			$params = array($b_id, trim($tag));
 			$query->execute($params);
 		}
-	
+
 		return $b_id;
 	}
 }
