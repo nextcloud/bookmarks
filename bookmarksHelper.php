@@ -106,7 +106,7 @@ function addBookmark($url, $title, $tags='', $description='', $is_public=false) 
 			VALUES (?, ?)
 			");
 
-		$tags = explode(' ', urldecode($tags));
+		$tags = explode(',', urldecode($tags));
 		foreach ($tags as $tag) {
 			if(empty($tag)) {
 				//avoid saving blankspaces

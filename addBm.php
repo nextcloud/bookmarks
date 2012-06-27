@@ -40,7 +40,7 @@ if(!isset($_GET['url']) || trim($_GET['url']) == '') {
 }elseif(isset($_POST['url'])) {
 	$tags = isset($_POST['item']['tags']) ? $_POST['item']['tags'] : array();
 	$pub = isset($_POST['is_public']) ? true : false;
-	$bm = addBookmark($_POST['url'], $_POST['title'], implode(' ',$tags),$_POST['desc'], $pub);
+	$bm = addBookmark($_POST['url'], $_POST['title'], implode(',',$tags),$_POST['desc'], $pub);
 	OCP\JSON::success(array('id'=>$bm));
 	exit();
 }
