@@ -32,6 +32,8 @@ OCP\App::setActiveNavigationEntry( 'bookmarks_index' );
 OCP\Util::addscript('bookmarks','bookmarks');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
 
-$tmpl = new OCP\Template( 'bookmarks', 'list', 'user' );
+$qtags = OC_Bookmarks_Bookmarks::findTags();
 
+$tmpl = new OCP\Template( 'bookmarks', 'list', 'user' );
+$tmpl->assign('tags', $qtags);
 $tmpl->printPage();

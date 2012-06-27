@@ -29,7 +29,7 @@ class OC_Bookmarks_Bookmarks{
 	* @brief Finds all tags for bookmarks
 	*/
 	public static function findTags($offset = 0, $limit = 10){
-		$query = OCP\DB::prepare('SELECT distinct tag from  *PREFIX*bookmarks_tags LIMIT '.$offset.',  '.$limit);
+		$query = OCP\DB::prepare('SELECT tag, count(*) as nbr from  *PREFIX*bookmarks_tags group by tag LIMIT '.$offset.',  '.$limit);
 		$tags = $query->execute()->fetchAll();
 		return $tags;
 	}

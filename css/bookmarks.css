@@ -4,6 +4,19 @@
 #firstrun .button { font-size: 0.7em; }
 #firstrun #selections { font-size:0.8em;  font-weight: normal; width: 100%; margin: 2em auto auto auto; clear: both; }
 
+#leftcontent {
+/*     margin: 0; */
+    padding-top: 1em;
+/*     top: 3.5em !important; */
+}
+
+#rightcontent {
+    padding-top: 5px;
+    top: 3.5em !important;
+}*/
+#controls {
+	padding-left:20em;
+}
 .bookmarks_headline {
 	font-size: large;
 	font-weight: bold;
@@ -148,4 +161,19 @@
 
 .ui-autocomplete {
 /* 	background: none repeat scroll 0 0 #DEE7F8; */
+}
+
+
+#tag_filter {
+	padding-left: 1em;
+}
+#leftcontent .tag_list > li span{
+		background: none repeat scroll 0 0 #DEE7F8;
+    border: 1px solid #CAD8F3;
+    border-radius: 6px 6px 6px 6px;
+    color: #555555;
+    font-weight: normal;
+		
+		padding: 0.2em 18px 0.2em 0.5em;
+    position: relative;
 }

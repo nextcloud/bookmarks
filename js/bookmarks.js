@@ -9,7 +9,7 @@ $(document).ready(function() {
 		fillWindow($('.bookmarks_list'));
 	});
 	$(window).resize();
-	$('.bookmarks_list').scroll(updateOnBottom).empty().width($('#content').width());
+	$('.bookmarks_list').scroll(updateOnBottom).empty().width($('#rightcontent').width());
 	getBookmarks();
 });
 
@@ -20,7 +20,7 @@ function getBookmarks() {
 	}
 
 	$.ajax({
-		  type: 'POST',
+		type: 'POST',
 		url: OC.filePath('bookmarks', 'ajax', 'updateList.php'),
 		data: 'tag=' + encodeURIComponent($('#bookmarkFilterTag').val()) + '&page=' + bookmarks_page + '&sort=' + bookmarks_sorting,
 		success: function(bookmarks){

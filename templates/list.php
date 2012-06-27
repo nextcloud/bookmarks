@@ -9,18 +9,25 @@
 ?>
 <input type="hidden" id="bookmarkFilterTag" value="<?php if(isset($_GET['tag'])) echo OCP\Util::sanitizeHTML($_GET['tag']); ?>" />
 <div id="controls">
-	<input type="hidden" id="bookmark_add_id" value="0" />
-	<input type="text" id="bookmark_add_url" placeholder="<?php echo $l->t('Address'); ?>" class="bookmarks_input" />
-	<input type="text" id="bookmark_add_title" placeholder="<?php echo $l->t('Title'); ?>" class="bookmarks_input" />
-	<input type="text" id="bookmark_add_tags" placeholder="<?php echo $l->t('Tags'); ?>" class="bookmarks_input" />
-	<input type="submit" value="<?php echo $l->t('Save bookmark'); ?>" id="bookmark_add_submit" />
+	<input type="submit" value="<?php echo $l->t('New bookmark'); ?>" id="bookmark_add_submit" />
 </div>
-<div class="bookmarks_list">
+<div id="leftcontent">
+	<p id="tag_filter">
+		<input type="text" placeholder="Filter By tag" />
+	</p>
+
+	<ul class="tag_list">
+		<?php foreach($_['tags'] as $tag):?>
+			<li><span><?php echo $tag['tag'];?></span><a class="close"></a></li>
+		<?php endforeach;?>
+	</ul>
 </div>
-<div id="firstrun" style="display: none;">
-	<?php
-		echo $l->t('You have no bookmarks');
-		require_once(OC_App::getAppPath('bookmarks') .'/templates/bookmarklet.php');
-		createBookmarklet(); 
-	?>
+<div id="rightcontent" class="rightcontent">
+	<div class="bookmarks_list"></div>
+	<div id="firstrun" style="display: none;">
+		<?php
+			echo $l->t('You have no bookmarks');
+			require_once(OC_App::getAppPath('bookmarks') .'/templates/bookmarklet.php');
+			createBookmarklet(); 
+		?>
 </div>
