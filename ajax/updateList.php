@@ -25,21 +25,28 @@
 // Check if we are a user
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('bookmarks');
+require_once(OC_App::getAppPath('bookmarks').'/bookmarksHelper.php');
 
+$req_type= isset($_GET['type']) ? $_GET['type'] : 'bookmark';
 
-//Filter for tag?
-$filterTag = isset($_POST['tag']) ? htmlspecialchars_decode($_POST['tag']) : '';
-$filterTag = explode(',',$filterTag);
-if($filterTag[0] =='') unset($filterTag[0]);
-$offset = isset($_POST['page']) ? intval($_POST['page']) * 10 : 0;
+if($req_type == 'rel_tags') {
+	$tags = analyzeTagRequest(isset($_POST['tag']) ? $_POST['tag'] : '');
+	$qtags = OC_Bookmarks_Bookmarks::findTags($tags);
+	OCP\JSON::success(array('data' => $qtags));
 
-$sort = isset($_POST['sort']) ? ($_POST['sort']) : 'bookmarks_sorting_recent';
-if($sort == 'bookmarks_sorting_clicks') {
-	$sqlSortColumn = 'clickcount';
-} else {
-	$sqlSortColumn = 'id';
 }
+else { // type == bookmark
+	$filterTag = analyzeTagRequest(isset($_POST['tag']) ? $_POST['tag'] : '');
 
-$bookmarks = OC_Bookmarks_Bookmarks::findBookmarks($offset, $sqlSortColumn, $filterTag, true);
+	$offset = isset($_POST['page']) ? intval($_POST['page']) * 10 : 0;
 
-OCP\JSON::success(array('data' => $bookmarks));
+	$sort = isset($_POST['sort']) ? ($_POST['sort']) : 'bookmarks_sorting_recent';
+	if($sort == 'bookmarks_sorting_clicks') {
+		$sqlSortColumn = 'clickcount';
+	} else {
+		$sqlSortColumn = 'id';
+	}
+	$bookmarks = OC_Bookmarks_Bookmarks::findBookmarks($offset, $sqlSortColumn, $filterTag, true);
+	OCP\JSON::success(array('data' => $bookmarks));
+
+}

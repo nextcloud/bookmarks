@@ -13,24 +13,11 @@
 </div>
 <div id="leftcontent">
 	<p id="tag_filter">
-		<input type="text" placeholder="Filter By tag" value="<?php echo $_['req_tag']; ?>"/>
+		<input type="text" placeholder="Filter By tag" value="<?php echo $_['req_tag']; ?>"/> <a href="javascript:bookmarks_page = 0;	$('.bookmarks_list').empty();getBookmarks()">go</a>
 	</p>
 
 	<label><?php echo $l->t('Related Tags'); ?></label>
 	<ul class="tag_list">
-		<?php foreach($_['tags'] as $tag):?>
-			<li><a href="<?php echo OCP\Util::linkToAbsolute( 'bookmarks', 'index.php').'&tag='.$_['req_tag'].','.$tag['tag'];?>" class="tag"><?php echo $tag['tag'];?></a>
-				<p class="tags_actions">
-					<span class="bookmark_edit">
-						<img class="svg" src="<?php echo OCP\image_path('core','actions/rename.svg') ?>" title="Edit">
-					</span>
-					<span class="bookmark_delete">
-						<img class="svg" src="<?php echo OCP\image_path('core','actions/delete.svg') ?>" title="Delete">
-					</span>
-				</p>
-				<em><?php echo $tag['nbr'];?></em>
-			</li>
-		<?php endforeach;?>
 	</ul>
 	<label><?php echo $l->t('Shared with'); ?></label>
 	<hr />

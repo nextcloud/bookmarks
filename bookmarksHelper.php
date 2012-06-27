@@ -70,6 +70,16 @@ function getURLMetadata($url) {
 	return $metadata;
 }
 
+function analyzeTagRequest($line) {
+	$tags = explode(',',$line);
+	$filterTag = array();
+	foreach($tags as $tag){
+		if(trim($tag) != '')
+			$filterTag[] = trim($tag);
+	}
+	return $filterTag;
+}
+
 function addBookmark($url, $title, $tags='', $description='', $is_public=false) {
 	$CONFIG_DBTYPE = OCP\Config::getSystemValue( "dbtype", "sqlite" );
 	if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){

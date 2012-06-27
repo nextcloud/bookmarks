@@ -12,17 +12,43 @@ $(document).ready(function() {
 	$('.bookmarks_list').scroll(updateOnBottom).empty().width($('#rightcontent').width());
 	getBookmarks();
 });
-
+function updateTagsList(tag) {
+	$('.tag_list').append('<li><a href="" class="tag">'+tag['tag']+'</a>'+
+		'<p class="tags_actions">'+
+			'<span class="bookmark_edit">'+
+				'<img class="svg" src="'+OC.imagePath('core', 'actions/rename')+'" title="Edit">'+
+			'</span>'+
+			'<span class="bookmark_delete">'+
+				'<img class="svg" src="'+OC.imagePath('core', 'actions/delete')+'" title="Delete">'+
+			'</span>'+
+		'</p>'+
+		'<em>'+tag['nbr']+'</em>'+
+	'</li>');
+}
 function getBookmarks() {
 	if(bookmarks_loading) {
 		//have patience :)
 		return;
 	}
-
+	$('#bookmarkFilterTag').val($('#tag_filter input').val());
+	
+	//Update Rel Tags
 	$.ajax({
 		type: 'POST',
-		url: OC.filePath('bookmarks', 'ajax', 'updateList.php'),
-		data: 'tag=' + encodeURIComponent($('#bookmarkFilterTag').val()) + '&page=' + bookmarks_page + '&sort=' + bookmarks_sorting,
+		url: OC.filePath('bookmarks', 'ajax', 'updateList.php') + '&type=rel_tags',
+		data: {tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
+		success: function(tags){
+			$('.tag_list').empty();
+			for(var i in tags.data) {
+				updateTagsList(tags.data[i]);
+			}
+		}
+	});
+	
+	$.ajax({
+		type: 'POST',
+		url: OC.filePath('bookmarks', 'ajax', 'updateList.php') + '&type=bookmark',
+		data: {tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
 		success: function(bookmarks){
 			if (bookmarks.data.length) {
 				bookmarks_page += 1;

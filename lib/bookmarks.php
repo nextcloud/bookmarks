@@ -62,7 +62,7 @@ class OC_Bookmarks_Bookmarks{
 	 * @return void
 	 */
 	public static function findBookmarks($offset, $sqlSortColumn, $filter, $filterTagOnly){
-		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
+		//$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 		$limit = 10;
 		$params=array(OCP\USER::getUser());
 		//@TODO replace GROUP_CONCAT for postgresql
