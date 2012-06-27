@@ -38,7 +38,8 @@ if(!isset($_GET['url']) || trim($_GET['url']) == '') {
 	$tmpl->printPage();
 	exit;
 }elseif(isset($_POST['url'])) {
-	$bm = addBookmark($_POST['url'], $_POST['title'], implode(' ',$_POST['item']['tags']),$_POST['desc'], $_POST['is_public']);
+	$tags = isset($_POST['item']['tags']) ? $_POST['item']['tags'] : array();
+	$bm = addBookmark($_POST['url'], $_POST['title'], implode(' ',$tags),$_POST['desc'], $_POST['is_public']);
 	OCP\JSON::success(array('id'=>$bm));
 	exit();
 }
@@ -48,9 +49,15 @@ OCP\Util::addscript('bookmarks','addBm');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
 OCP\Util::addStyle('bookmarks', 'jquery.tagit');
 
-$datas = getURLMetadata($_GET['url']);
+if(!isset($_GET['title']) || trim($_GET['title']) == '') {
+	$datas = getURLMetadata($_GET['url']);
+	$title = isset($datas['title']) ? $datas['title'] : '';
+}
+else{
+	$title = $_GET['title'];
+}
 
-$bm = array('title'=> $datas['title'] ? $datas['title'] : '' ,
+$bm = array('title'=> $title,
 	'url'=> $_GET['url'],
 	'tags'=> array(),
 	'desc'=>'',
