@@ -13,15 +13,25 @@
 </div>
 <div id="leftcontent">
 	<p id="tag_filter">
-		<input type="text" placeholder="Filter By tag" />
+		<input type="text" placeholder="Filter By tag" value="<?php if(isset($_GET['tag'])) echo OCP\Util::sanitizeHTML($_GET['tag']); ?>"/>
 	</p>
 
 	<ul class="tag_list">
 		<?php foreach($_['tags'] as $tag):?>
-			<li><span><?php echo $tag['tag'];?></span><a class="close"></a></li>
+			<li><span><?php echo $tag['tag'];?></span> <em><?php echo $tag['nbr'];?></em></li>
 		<?php endforeach;?>
 	</ul>
+
+	<hr />
+
+	<ul class="share_list">
+		<?php foreach(array('public','user1','user2') as $tag):?>
+			<li><span><?php echo $tag;?></span></li>
+		<?php endforeach;?>
+	<ul>
 </div>
+
+
 <div id="rightcontent" class="rightcontent">
 	<div class="bookmarks_list"></div>
 	<div id="firstrun" style="display: none;">

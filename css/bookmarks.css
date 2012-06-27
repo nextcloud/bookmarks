@@ -167,13 +167,32 @@
 #tag_filter {
 	padding-left: 1em;
 }
-#leftcontent .tag_list > li span{
+#leftcontent hr {
+	background-color:#DDDDDD;
+	border:0;
+	color:#DDDDDD;
+	height:1px;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+#leftcontent li, .leftcontent li {
+	padding: 0.2em;
+	padding-left:1em;
+}
+#leftcontent .tag_list > li span , #leftcontent .share_list > li span{
 		background: none repeat scroll 0 0 #DEE7F8;
     border: 1px solid #CAD8F3;
     border-radius: 6px 6px 6px 6px;
     color: #555555;
     font-weight: normal;
 		
-		padding: 0.2em 18px 0.2em 0.5em;
+/* 		padding: 0.2em 18px 0.2em 0.5em; */
+		float:left;
+		padding: 0.3em;
     position: relative;
+}
+
+.tag_list em , .share_list em{
+	float:right;
+	display:block;
 }
