@@ -7,18 +7,19 @@
  * See the COPYING-README file.
  */
 ?>
-<input type="hidden" id="bookmarkFilterTag" value="<?php if(isset($_GET['tag'])) echo OCP\Util::sanitizeHTML($_GET['tag']); ?>" />
+<input type="hidden" id="bookmarkFilterTag" value="<?php echo $_['req_tag']; ?>" />
 <div id="controls">
 	<input type="submit" value="<?php echo $l->t('New bookmark'); ?>" id="bookmark_add_submit" />
 </div>
 <div id="leftcontent">
 	<p id="tag_filter">
-		<input type="text" placeholder="Filter By tag" value="<?php if(isset($_GET['tag'])) echo OCP\Util::sanitizeHTML($_GET['tag']); ?>"/>
+		<input type="text" placeholder="Filter By tag" value="<?php echo $_['req_tag']; ?>"/>
 	</p>
 
+	<label><?php echo $l->t('Related Tags'); ?></label>
 	<ul class="tag_list">
 		<?php foreach($_['tags'] as $tag):?>
-			<li><span class="tag"><?php echo $tag['tag'];?></span>
+			<li><a href="<?php echo OCP\Util::linkToAbsolute( 'bookmarks', 'index.php').'&tag='.$_['req_tag'].','.$tag['tag'];?>" class="tag"><?php echo $tag['tag'];?></a>
 				<p class="tags_actions">
 					<span class="bookmark_edit">
 						<img class="svg" src="<?php echo OCP\image_path('core','actions/rename.svg') ?>" title="Edit">
@@ -31,9 +32,8 @@
 			</li>
 		<?php endforeach;?>
 	</ul>
-
+	<label><?php echo $l->t('Shared with'); ?></label>
 	<hr />
-
 	<ul class="share_list">
 		<?php foreach($_['shared'] as $users):?>
 			<li><span class="tag"><?php echo $users['name'];?></span>

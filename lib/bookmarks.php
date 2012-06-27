@@ -37,9 +37,20 @@ class OC_Bookmarks_Bookmarks{
 	/**
 	* @brief Finds all tags for bookmarks
 	*/
-	public static function findTags($offset = 0, $limit = 10){
-		$query = OCP\DB::prepare('SELECT tag, count(*) as nbr from  *PREFIX*bookmarks_tags group by tag LIMIT '.$offset.',  '.$limit);
-		$tags = $query->execute()->fetchAll();
+	public static function findTags($filterTags = array(), $offset = 0, $limit = 10){
+		//$query = OCP\DB::prepare('SELECT tag, count(*) as nbr from  *PREFIX*bookmarks_tags group by tag LIMIT '.$offset.',  '.$limit);
+
+		$params = array_merge($filterTags,$filterTags);
+		$not_in = '';
+
+		if(!empty($filterTags) ) {
+			$not_in = ' where tag not in ('. implode(',',array_fill(0, count($filterTags) ,'?') ) .')'.
+			str_repeat(" AND	exists (select 1 from  *PREFIX*bookmarks_tags t2 where t2.bookmark_id = t.bookmark_id and tag = ?) ", count($filterTags));
+		}
+		$sql = 'SELECT tag, count(*) as nbr from *PREFIX*bookmarks_tags t '.$not_in.
+			'group by tag Order by nbr DESC LIMIT '.$offset.',  '.$limit;
+		$query = OCP\DB::prepare($sql);
+		$tags = $query->execute($params)->fetchAll();
 		return $tags;
 	}
 	/**
@@ -54,85 +65,22 @@ class OC_Bookmarks_Bookmarks{
 		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 		$limit = 10;
 		$params=array(OCP\USER::getUser());
-		$sql = "SELECT *, (select GROUP_CONCAT(tag) from oc_bookmarks_tags where bookmark_id = id) as tags
-				FROM *PREFIX*bookmarks
-				WHERE user_id = ?
-				ORDER BY *PREFIX*bookmarks.".$sqlSortColumn." DESC
+		//@TODO replace GROUP_CONCAT for postgresql
+		$sql = "SELECT *, (select GROUP_CONCAT(tag) from oc_bookmarks_tags where bookmark_id = b.id) as tags
+				FROM *PREFIX*bookmarks b
+				WHERE user_id = ? ";
+
+		if($filterTagOnly) {
+			if(is_string($filter)) $filter = array($filter);
+
+			$sql .= str_repeat(" AND	exists (select id from  *PREFIX*bookmarks_tags t2 where t2.bookmark_id = b.id and tag = ?) ", count($filter));
+			$params = array_merge($params, $filter);
+		}
+		$sql .= " ORDER BY ".$sqlSortColumn." DESC
 				LIMIT $limit
 				OFFSET  $offset";
 
 		$query = OCP\DB::prepare($sql);
-	/*
-		if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
-			$_gc_separator = ', \' \'';
-		} else {
-			$_gc_separator = 'SEPARATOR \' \'';
-		}
-
-		if($filter){
-			if($CONFIG_DBTYPE == 'pgsql' )
-				$tagString = 'array_to_string(array_agg(tag), \' \')';
-			else
-				$tagString = 'tags';
-
-			$sqlFilterTag = 'HAVING ';
-			if(is_array($filter)){
-				$first = true;
-				$filterstring = '';
-				foreach ($filter as $singleFilter){
-					$filterstring = $filterstring . ($first?'':' AND ') . $tagString.' LIKE ? ';
-					$params[] = '%'.$singleFilter.'%';
-					$first=false;
-				}
-				$sqlFilterTag = $sqlFilterTag . $filterstring;
-			} else{
-				$sqlFilterTag = $sqlFilterTag .$tagString.' LIKE ? ';
-				$params[] = '%'.$filter.'%';
-			}
-		} else {
-			$sqlFilterTag = '';
-		}
-
-		if($CONFIG_DBTYPE == 'pgsql' ){
-			$query = OCP\DB::prepare('
-				SELECT `id`, `url`, `title`, '.($filterTagOnly?'':'`url` || `title` ||').' array_to_string(array_agg(`tag`), \' \') as `tags`
-				FROM `*PREFIX*bookmarks`
-				LEFT JOIN `*PREFIX*bookmarks_tags` ON `*PREFIX*bookmarks`.`id` = `*PREFIX*bookmarks_tags`.`bookmark_id` 
-				WHERE 
-					`*PREFIX*bookmarks`.`user_id` = ?
-				GROUP BY `id`, `url`, `title`
-				'.$sqlFilterTag.'
-				ORDER BY `*PREFIX*bookmarks`.`'.$sqlSortColumn.'` DESC',
-				10,$offset);
-		} else {
-			if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' )
-				$concatFunction = '(url || title || ';
-			else
-				$concatFunction = 'Concat(Concat( url, title), ';
-		
-			$query = OCP\DB::prepare('
-				SELECT `id`, `url`, `title`, '
-				.($filterTagOnly?'':$concatFunction).
-				'CASE WHEN `*PREFIX*bookmarks`.`id` = `*PREFIX*bookmarks_tags`.`bookmark_id`
-						THEN GROUP_CONCAT( `tag` ' .$_gc_separator. ' )
-						ELSE \' \'
-					END '
-				.($filterTagOnly?'':')').'
-					AS `tags`
-				FROM `*PREFIX*bookmarks`
-				LEFT JOIN `*PREFIX*bookmarks_tags` ON 1=1
-				WHERE (`*PREFIX*bookmarks`.`id` = `*PREFIX*bookmarks_tags`.`bookmark_id` 
-						OR `*PREFIX*bookmarks`.`id` NOT IN (
-							SELECT `*PREFIX*bookmarks_tags`.`bookmark_id` FROM `*PREFIX*bookmarks_tags`
-						)
-					)
-					AND `*PREFIX*bookmarks`.`user_id` = ?
-				GROUP BY `url`
-				'.$sqlFilterTag.'
-				ORDER BY `*PREFIX*bookmarks`.`'.$sqlSortColumn.'` DESC',
-				10, $offset);
-		}
-+*/
 		$results = $query->execute($params)->fetchAll();
 		$bookmarks = array();
 		foreach($results as $result){

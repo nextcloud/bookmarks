@@ -28,8 +28,9 @@ OCP\JSON::checkAppEnabled('bookmarks');
 
 
 //Filter for tag?
-$filterTag = isset($_POST['tag']) ? htmlspecialchars_decode($_POST['tag']) : false;
-
+$filterTag = isset($_POST['tag']) ? htmlspecialchars_decode($_POST['tag']) : '';
+$filterTag = explode(',',$filterTag);
+if($filterTag[0] =='') unset($filterTag[0]);
 $offset = isset($_POST['page']) ? intval($_POST['page']) * 10 : 0;
 
 $sort = isset($_POST['sort']) ? ($_POST['sort']) : 'bookmarks_sorting_recent';
@@ -38,7 +39,6 @@ if($sort == 'bookmarks_sorting_clicks') {
 } else {
 	$sqlSortColumn = 'id';
 }
-
 
 $bookmarks = OC_Bookmarks_Bookmarks::findBookmarks($offset, $sqlSortColumn, $filterTag, true);
 
