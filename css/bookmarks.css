@@ -179,7 +179,7 @@
 	padding: 0.2em;
 	padding-left:1em;
 }
-#leftcontent .tag_list > li span , #leftcontent .share_list > li span{
+#leftcontent .tag_list > li .tag , #leftcontent .share_list > li .tag{
 		background: none repeat scroll 0 0 #DEE7F8;
     border: 1px solid #CAD8F3;
     border-radius: 6px 6px 6px 6px;
@@ -196,3 +196,12 @@
 	float:right;
 	display:block;
 }
+.tags_actions {
+	display:none; 
+	margin-left: 0.5em;
+	float:right;
+}
+li:hover .tags_actions {
+	display:block;
+}
+li:hover em { display : none; }

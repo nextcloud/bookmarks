@@ -33,7 +33,9 @@ OCP\Util::addscript('bookmarks','bookmarks');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
 
 $qtags = OC_Bookmarks_Bookmarks::findTags();
+$shared = OC_Bookmarks_Bookmarks::findSharing();
 
 $tmpl = new OCP\Template( 'bookmarks', 'list', 'user' );
 $tmpl->assign('tags', $qtags);
+$tmpl->assign('shared', $shared);
 $tmpl->printPage();

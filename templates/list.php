@@ -18,15 +18,35 @@
 
 	<ul class="tag_list">
 		<?php foreach($_['tags'] as $tag):?>
-			<li><span><?php echo $tag['tag'];?></span> <em><?php echo $tag['nbr'];?></em></li>
+			<li><span class="tag"><?php echo $tag['tag'];?></span>
+				<p class="tags_actions">
+					<span class="bookmark_edit">
+						<img class="svg" src="<?php echo OCP\image_path('core','actions/rename.svg') ?>" title="Edit">
+					</span>
+					<span class="bookmark_delete">
+						<img class="svg" src="<?php echo OCP\image_path('core','actions/delete.svg') ?>" title="Delete">
+					</span>
+				</p>
+				<em><?php echo $tag['nbr'];?></em>
+			</li>
 		<?php endforeach;?>
 	</ul>
 
 	<hr />
 
 	<ul class="share_list">
-		<?php foreach(array('public','user1','user2') as $tag):?>
-			<li><span><?php echo $tag;?></span></li>
+		<?php foreach($_['shared'] as $users):?>
+			<li><span class="tag"><?php echo $users['name'];?></span>
+				<p class="tags_actions">
+					<span class="bookmark_edit">
+						<img class="svg" src="<?php echo OCP\image_path('core','actions/rename.svg') ?>" title="Edit">
+					</span>
+					<span class="bookmark_delete">
+						<img class="svg" src="<?php echo OCP\image_path('core','actions/delete.svg') ?>" title="Delete">
+					</span>
+				</p>
+				<em><?php echo $users['nbr'];?></em>
+			</li>
 		<?php endforeach;?>
 	<ul>
 </div>
