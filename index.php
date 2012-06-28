@@ -31,13 +31,19 @@ OCP\App::setActiveNavigationEntry( 'bookmarks_index' );
 
 OCP\Util::addscript('bookmarks','bookmarks');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
-$tags = explode(',',  isset($_GET['tag']) ? $_GET['tag'] : '');
-if($tags[0] =='') unset($tags[0]);
-$qtags = OC_Bookmarks_Bookmarks::findTags($tags);
+
+OCP\Util::addscript('bookmarks','tag-it');
+OCP\Util::addStyle('bookmarks', 'jquery.tagit');
+$qtags = OC_Bookmarks_Bookmarks::findTags();
 $shared = OC_Bookmarks_Bookmarks::findSharing();
+
+$tags = array();
+foreach($qtags as $tag) {
+	$tags[] = $tag['tag'];
+}
 
 $tmpl = new OCP\Template( 'bookmarks', 'list', 'user' );
 $tmpl->assign('req_tag',isset($_GET['tag']) ? $_GET['tag'] : '');
-$tmpl->assign('tags', $qtags);
+$tmpl->assign('tags', json_encode($tags), false);
 $tmpl->assign('shared', $shared);
 $tmpl->printPage();

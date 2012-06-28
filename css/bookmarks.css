@@ -155,7 +155,7 @@
 
 #addBm ul.tagit { background:white; }
 
-#addBm input.ui-autocomplete-input{
+#addBm input.ui-autocomplete-input,  #tag_filter input.ui-autocomplete-input{
 	box-shadow:none;
 }
 
@@ -167,18 +167,18 @@
 #tag_filter {
 	padding-left: 1em;
 }
-#leftcontent hr {
-	background-color:#DDDDDD;
-	border:0;
-	color:#DDDDDD;
-	height:1px;
-	margin-top: 1em;
-	margin-bottom: 1em;
-}
-#leftcontent li, .leftcontent li {
+
+#leftcontent > ul > li, .leftcontent li {
 	padding: 0.2em;
 	padding-left:1em;
 }
+#leftcontent > label {
+	margin-top: 1em;
+	margin-bottom: 0.7em;
+	display: block;
+	padding-left: 1em;
+}
+
 #leftcontent .tag_list > li .tag , #leftcontent .share_list > li .tag{
 		background: none repeat scroll 0 0 #DEE7F8;
     border: 1px solid #CAD8F3;
@@ -205,3 +205,27 @@ li:hover .tags_actions {
 	display:block;
 }
 li:hover em { display : none; }
+#tag_filter li, #tag_filter li:hover{
+	    background: none repeat scroll 0 0 #F8F8F8;
+
+}
+#tag_filter ul.tagit li.tagit-choice {
+    background: none repeat scroll 0 0 #DEE7F8;
+		padding: 0.2em 18px 0.2em 0.5em;
+/* 		padding:0; */
+}
+
+#tag_filter a {
+    display: inline;
+    float: none;
+    margin: 0;
+    padding: 0;
+}
+#tag_filter ul.tagit li.tagit-choice .close{
+		margin-top: -8px;
+		cursor: pointer;
+    margin-top: -8px;
+    position: absolute;
+    right: 0.1em;
+    top: 50%;
+}

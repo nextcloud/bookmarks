@@ -13,14 +13,14 @@
 </div>
 <div id="leftcontent">
 	<p id="tag_filter">
-		<input type="text" placeholder="Filter By tag" value="<?php echo $_['req_tag']; ?>"/> <a href="javascript:bookmarks_page = 0;	$('.bookmarks_list').empty();getBookmarks()">go</a>
+		<input type="text" placeholder="Filter By tag" value="<?php echo $_['req_tag']; ?>"/>
 	</p>
 
 	<label><?php echo $l->t('Related Tags'); ?></label>
 	<ul class="tag_list">
 	</ul>
 	<label><?php echo $l->t('Shared with'); ?></label>
-	<hr />
+
 	<ul class="share_list">
 		<?php foreach($_['shared'] as $users):?>
 			<li><span class="tag"><?php echo $users['name'];?></span>
@@ -48,3 +48,6 @@
 			createBookmarklet(); 
 		?>
 </div>
+<script>
+	var fullTags = <?php echo $_['tags'];?>;
+</script>

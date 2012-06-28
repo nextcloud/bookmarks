@@ -10,8 +10,22 @@ $(document).ready(function() {
 	});
 	$(window).resize();
 	$('.bookmarks_list').scroll(updateOnBottom).empty().width($('#rightcontent').width());
+	$('#tag_filter input').tagit({
+		allowSpaces: true,
+		availableTags: fullTags,
+		onTagRemoved: filterTagsChanged
+	}).tagit('option', 'onTagAdded', filterTagsChanged);
+
+
 	getBookmarks();
 });
+
+function addFilterTag(event)
+{
+		event.preventDefault();
+		$('#tag_filter input').tagit('createTag', $(this).text());
+}
+
 function updateTagsList(tag) {
 	$('.tag_list').append('<li><a href="" class="tag">'+tag['tag']+'</a>'+
 		'<p class="tags_actions">'+
@@ -25,13 +39,19 @@ function updateTagsList(tag) {
 		'<em>'+tag['nbr']+'</em>'+
 	'</li>');
 }
+
+function filterTagsChanged()
+{
+	$('#bookmarkFilterTag').val($('#tag_filter input:hidden').val());
+	bookmarks_page = 0;
+	$('.bookmarks_list').empty();
+	getBookmarks();
+}
 function getBookmarks() {
 	if(bookmarks_loading) {
 		//have patience :)
 		return;
-	}
-	$('#bookmarkFilterTag').val($('#tag_filter input').val());
-	
+	}	
 	//Update Rel Tags
 	$.ajax({
 		type: 'POST',
@@ -42,6 +62,7 @@ function getBookmarks() {
 			for(var i in tags.data) {
 				updateTagsList(tags.data[i]);
 			}
+			$('.tag_list a.tag').click(addFilterTag);
 		}
 	});
 	
@@ -201,7 +222,7 @@ function updateOnBottom() {
 	// use a bit of margin to begin loading before we are really at the
 	// bottom
 	if (top < height * 1.2) {
-		getBookmarks();
+	//	getBookmarks();
 	}
 }
 

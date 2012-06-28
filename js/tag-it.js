@@ -725,8 +725,6 @@
 
             tag = $(tag);
 
-            this._trigger('onTagRemoved', null, tag);
-
             if (this.options.singleField) {
                 var tags = this.assignedTags();
                 var removedTagLabel = this.tagLabel(tag);
@@ -743,6 +741,8 @@
             } else {
                 tag.remove();
             }
+            this._trigger('onTagRemoved', null, tag);
+
         },
 
         removeAll: function() {
