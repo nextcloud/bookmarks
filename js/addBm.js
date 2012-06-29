@@ -64,7 +64,7 @@
 			if(base.$el.find('.url-ro code').text() != '')
 				base.$el.find('.url_input').hide();
 			else
-				base.$el.find('.url_input').shwo()
+				base.$el.find('.url_input').show()
     };
 		
     base.init();
