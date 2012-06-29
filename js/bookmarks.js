@@ -146,20 +146,12 @@ function editBookmark(event) {
 	createEditDialog(bookmark);
 }
 
-function replaceQueryString(url,param,value) {
-    var re = new RegExp("([?|&])" + param + "=.*?(&|$)","i");
-    if (url.match(re))
-        return url.replace(re,'$1' + param + "=" + value + '$2');
-    else
-        return url + '&' + param + "=" + value;
-}
-
 function updateBookmarksList(bookmark) {
 	var tags = bookmark.tags;
 	var taglist = '';
 	for ( var i=0, len=tags.length; i<len; ++i ){
 		if(tags[i] != '')
-			taglist = taglist + '<a class="bookmark_tag" href="'+replaceQueryString( String(window.location), 'tag', encodeURIComponent(tags[i])) + '">' + encodeEntities(tags[i]) + '</a> ';
+			taglist = taglist + '<a class="bookmark_tag" href="#">' + encodeEntities(tags[i]) + '</a> ';
 	}
 	if(!hasProtocol(bookmark.url)) {
 		bookmark.url = 'http://' + bookmark.url;
@@ -185,6 +177,8 @@ function updateBookmarksList(bookmark) {
 	if(taglist != '') {
 		$('div[data-id="'+ bookmark.id +'"]').append('<p class="bookmark_tags">' + taglist + '</p>');
 	}
+	$('div[data-id="'+ bookmark.id +'"] a.bookmark_tag').bind('click', addFilterTag);
+
 }
 
 function updateOnBottom() {
