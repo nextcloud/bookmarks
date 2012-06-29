@@ -16,7 +16,6 @@ $(document).ready(function() {
 		onTagRemoved: filterTagsChanged
 	}).tagit('option', 'onTagAdded', filterTagsChanged);
 
-
 	getBookmarks();
 });
 
@@ -28,15 +27,16 @@ function addFilterTag(event) {
 function updateTagsList(tag) {
 	$('.tag_list').append('<li><a href="" class="tag">'+tag['tag']+'</a>'+
 		'<p class="tags_actions">'+
-			'<span class="bookmark_edit">'+
+			'<span class="tag_edit">'+
 				'<img class="svg" src="'+OC.imagePath('core', 'actions/rename')+'" title="Edit">'+
 			'</span>'+
-			'<span class="bookmark_delete">'+
+			'<span class="tag_delete">'+
 				'<img class="svg" src="'+OC.imagePath('core', 'actions/delete')+'" title="Delete">'+
 			'</span>'+
 		'</p>'+
 		'<em>'+tag['nbr']+'</em>'+
 	'</li>');
+
 }
 
 function filterTagsChanged()
@@ -61,7 +61,11 @@ function getBookmarks() {
 			for(var i in tags.data) {
 				updateTagsList(tags.data[i]);
 			}
+			$('.tag_list .tag_edit').click(renameTag);
+			$('.tag_list .tag_delete').click(deleteTag);
 			$('.tag_list a.tag').click(addFilterTag);
+
+
 		}
 	});
 	
@@ -211,4 +215,52 @@ function encodeEntities(s){
 function hasProtocol(url) {
     var regexp = /(ftp|http|https|sftp)/;
     return regexp.test(url);
+}
+
+function renameTag(event) {
+ tag_el = $(this).closest('li');
+ tag_el.append('<input name="tag_new_name" type="text">');
+
+ tag_name = tag_el.find('.tag').hide().text();
+ tag_el.find('input').val(tag_name).bind('blur',submitTagName);
+
+}
+
+function submitTagName(event) {
+	tag_el = $(this).closest('li')
+	new_tag_name = tag_el.find('input').val();
+	old_tag_name = tag_el.find('.tag').show().text();
+	tag_el.find('input').remove();
+
+	//submit
+	$.ajax({
+		type: 'POST',
+		url: OC.filePath('bookmarks', 'ajax', 'renameTag.php'),
+		data: { old_name: old_tag_name, new_name:  new_tag_name},
+		success: function(bookmarks){
+			if (bookmarks.status =='success') {
+				filterTagsChanged();
+			}
+		}
+	});
+}
+
+function deleteTag(event){
+	tag_el = $(this).closest('li');
+	var old_tag_name = tag_el.find('.tag').show().text();
+	OC.dialogs.confirm(t('bookmarks', 'Are you sure you want to remove this tag fro every entry?'),
+	 t('bookmarks', 'Warning'), function(answer) {
+		if(answer) {
+			$.ajax({
+				type: 'POST',
+				url: OC.filePath('bookmarks', 'ajax', 'delTag.php'),
+				data: { old_name: old_tag_name},
+				success: function(bookmarks){
+					if (bookmarks.status =='success') {
+						filterTagsChanged();
+					}
+				}
+			});
+		}
+	});
 }

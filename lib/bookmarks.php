@@ -121,4 +121,46 @@ class OC_Bookmarks_Bookmarks{
 		$result = $query->execute();
 		return true;
 	}
+
+	public static function renameTag($old, $new)
+	{
+		$user_id = OCP\USER::getUser();
+
+		// Update the record
+		$query = OCP\DB::prepare("
+		UPDATE *PREFIX*bookmarks_tags SET
+			tag = ?
+		WHERE tag = ?
+		AND exists( select id from *PREFIX*bookmarks where user_id = ? and bookmark_id = id)
+		");
+
+		$params=array(
+			$new,
+			$old,
+			$user_id,
+		);
+
+		$result = $query->execute($params);
+		return true;
+	}
+
+	public static function deleteTag($old)
+	{
+		$user_id = OCP\USER::getUser();
+
+		// Update the record
+		$query = OCP\DB::prepare("
+		DELETE FROM *PREFIX*bookmarks_tags
+		WHERE tag = ?
+		AND exists( select id from *PREFIX*bookmarks where user_id = ? and bookmark_id = id)
+		");
+
+		$params=array(
+			$old,
+			$user_id,
+		);
+
+		$result = $query->execute($params);
+		return true;
+	}
 }

@@ -164,11 +164,6 @@
 /* 	background: none repeat scroll 0 0 #DEE7F8; */
 }
 
-
-#tag_filter {
-	padding-left: 1em;
-}
-
 #leftcontent > ul > li, .leftcontent li {
 	padding: 0.2em;
 	padding-left:1em;
@@ -193,6 +188,10 @@
     position: relative;
 }
 
+ul.tagit li.tagit-new {
+	padding-left: 0em;
+}
+
 .tag_list em , .share_list em{
 	float:right;
 	display:block;
@@ -209,6 +208,12 @@ li:hover em { display : none; }
 #tag_filter li, #tag_filter li:hover{
 	    background: none repeat scroll 0 0 #F8F8F8;
 
+}
+#tag_filter .tagit {
+	margin: 0.3em;
+}
+#tag_filter ul.tagit > li.tagit-new {
+	padding:0;
 }
 #tag_filter ul.tagit li.tagit-choice {
     background: none repeat scroll 0 0 #DEE7F8;
