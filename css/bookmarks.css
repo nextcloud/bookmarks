@@ -99,7 +99,7 @@
 	margin-left: 5px;
 }
 
-#addBm {
+.addBm {
 	background: none repeat scroll 0 0 #F8F8F8;
   border-radius: 0.5em 0.5em 0.5em 0.5em;
   color: #555555;
@@ -112,35 +112,35 @@
 .bm_desc {
 	width:90%;
 }
-#addBm h1 {
+.addBm h1 {
 	font-weight: bold;
 	border-bottom: 1px solid #BABABA;
 
 }
 
-#addBm #url {
+.addBm .url {
 	display:none;
 }
 
-#addBm fieldset > ul > li {
+.addBm fieldset > ul > li {
 	margin-top: 1em;
 }
-#addBm label {
+.addBm label {
 	display:block;
 	width:100%;
 }
-#addBm #is_public_label {
+.addBm .is_public_label {
 	display: inline;
 	
 }
-#addBm fieldset input[type="text"], #addBm textarea {
+.addBm fieldset input[type="text"], .addBm textarea {
 	width:100%;
 }
-#addBm textarea{
+.addBm textarea{
 	min-width:250px;
 /* 	min-height: 70px; */
 }
-#addBm #close_btn
+.addBm .close_btn
 {
 /* 	background-color: #EEEEEE; */
 	height: 18px;
@@ -149,14 +149,15 @@
 	float:right;
 	width: 19px;
 }
-#addBm .submit {
+.addBm .submit {
 	float: right;
 }
 
-#addBm ul.tagit { background:white; }
+.addBm ul.tagit { background:white; }
 
-#addBm input.ui-autocomplete-input,  #tag_filter input.ui-autocomplete-input{
+.addBm input.ui-autocomplete-input,  #tag_filter input.ui-autocomplete-input{
 	box-shadow:none;
+
 }
 
 .ui-autocomplete {

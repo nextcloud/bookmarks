@@ -31,13 +31,12 @@ OCP\App::checkAppEnabled('bookmarks');
 require_once('bookmarksHelper.php');
 
 
+$url ='';
+if(isset($_GET['url']) ){
+ $url = $_GET['url'];
+}
 
-if(!isset($_GET['url']) || trim($_GET['url']) == '') {
-	header("HTTP/1.0 404 Not Found");
-	$tmpl = new OCP\Template( '', '404', 'guest' );
-	$tmpl->printPage();
-	exit;
-}elseif(isset($_POST['url'])) {
+if(isset($_POST['url'])) {
 	$tags = isset($_POST['item']['tags']) ? $_POST['item']['tags'] : array();
 	$pub = isset($_POST['is_public']) ? true : false;
 	$bm = addBookmark($_POST['url'], $_POST['title'], implode(',',$tags),$_POST['desc'], $pub);
@@ -51,7 +50,7 @@ OCP\Util::addStyle('bookmarks', 'bookmarks');
 OCP\Util::addStyle('bookmarks', 'jquery.tagit');
 
 if(!isset($_GET['title']) || trim($_GET['title']) == '') {
-	$datas = getURLMetadata($_GET['url']);
+	$datas = getURLMetadata($url);
 	$title = isset($datas['title']) ? $datas['title'] : '';
 }
 else{
@@ -59,7 +58,7 @@ else{
 }
 
 $bm = array('title'=> $title,
-	'url'=> $_GET['url'],
+	'url'=> $url,
 	'tags'=> array(),
 	'desc'=>'',
 	'is_public'=>0,

@@ -43,6 +43,7 @@ function updateTagsList(tag) {
 function filterTagsChanged()
 {
 	$('#bookmarkFilterTag').val($('#tag_filter input:hidden').val());
+	console.log($('#bookmarkFilterTag').val());
 	bookmarks_page = 0;
 	$('.bookmarks_list').empty();
 	getBookmarks();
@@ -103,7 +104,25 @@ function getBookmarks() {
 // addOrEditBookmark() to make .js file more compact.
 
 function addOrEditBookmark(event) {
-	var id = $('#bookmark_add_id').val();
+	dialog_html = $('#edit_dialog').html();
+	var dialog = $(dialog_html).dialog({
+		width : 620,
+		height: 450,
+		title: t('bookmark', 'Edit bookmark'),
+		modal: true,
+		close : function(event, ui) {
+			$(this).dialog('destroy').remove();
+		}
+	});
+
+	$('.ui-dialog').bookmark_dialog({
+		'on_success': function(){
+			dialog.dialog('destroy').remove();
+			filterTagsChanged();
+		}
+	});
+
+	/*var id = $('#bookmark_add_id').val();
 	var url = encodeEntities($('#bookmark_add_url').val());
 	var title = encodeEntities($('#bookmark_add_title').val());
 	var tags = encodeEntities($('#bookmark_add_tags').val());
@@ -143,7 +162,7 @@ function addOrEditBookmark(event) {
 			}
 		});
 	}
-
+*/
 }
 
 function delBookmark(event) {

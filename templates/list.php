@@ -44,6 +44,7 @@
 	<div id="firstrun" style="display: none;">
 		<?php
 			echo $l->t('You have no bookmarks');
+			$embedded = true;
 			require_once(OC_App::getAppPath('bookmarks') .'/templates/bookmarklet.php');
 			createBookmarklet(); 
 		?>
@@ -51,3 +52,6 @@
 <script>
 	var fullTags = <?php echo $_['tags'];?>;
 </script>
+<div id="edit_dialog" style="display:none;">
+<?php include 'addBm.php';?>
+</div>

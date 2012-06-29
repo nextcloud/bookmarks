@@ -31,6 +31,8 @@ OCP\App::setActiveNavigationEntry( 'bookmarks_index' );
 
 OCP\Util::addscript('bookmarks','bookmarks');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
+OCP\Util::addscript('bookmarks','addBm');
+
 
 OCP\Util::addscript('bookmarks','tag-it');
 OCP\Util::addStyle('bookmarks', 'jquery.tagit');
@@ -42,7 +44,17 @@ foreach($qtags as $tag) {
 	$tags[] = $tag['tag'];
 }
 
+$bm = array('title'=> '',
+	'url'=> '',
+	'tags'=> array(),
+	'desc'=>'',
+	'is_public'=>0,
+);
+
 $tmpl = new OCP\Template( 'bookmarks', 'list', 'user' );
+
+$tmpl->assign('bookmark', $bm);
+
 $tmpl->assign('req_tag',isset($_GET['tag']) ? $_GET['tag'] : '');
 $tmpl->assign('tags', json_encode($tags), false);
 $tmpl->assign('shared', $shared);
