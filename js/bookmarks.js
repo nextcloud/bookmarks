@@ -4,7 +4,7 @@ var bookmarks_loading = false;
 var bookmarks_sorting = 'bookmarks_sorting_recent';
 
 $(document).ready(function() {
-	$('#bookmark_add_submit').click(addOrEditBookmark);
+	$('#bookmark_add_submit').click(addBookmark);
 	$(window).resize(function () {
 		fillWindow($('.bookmarks_list'));
 	});
@@ -20,10 +20,9 @@ $(document).ready(function() {
 	getBookmarks();
 });
 
-function addFilterTag(event)
-{
-		event.preventDefault();
-		$('#tag_filter input').tagit('createTag', $(this).text());
+function addFilterTag(event) {
+	event.preventDefault();
+	$('#tag_filter input').tagit('createTag', $(this).text());
 }
 
 function updateTagsList(tag) {
@@ -43,7 +42,6 @@ function updateTagsList(tag) {
 function filterTagsChanged()
 {
 	$('#bookmarkFilterTag').val($('#tag_filter input:hidden').val());
-	console.log($('#bookmarkFilterTag').val());
 	bookmarks_page = 0;
 	$('.bookmarks_list').empty();
 	getBookmarks();
@@ -77,7 +75,7 @@ function getBookmarks() {
 			}
 			$('.bookmark_link').unbind('click', recordClick);
 			$('.bookmark_delete').unbind('click', delBookmark);
-			$('.bookmark_edit').unbind('click', showBookmark);
+			$('.bookmark_edit').unbind('click', editBookmark);
 
 			for(var i in bookmarks.data) {
 				updateBookmarksList(bookmarks.data[i]);
@@ -89,7 +87,7 @@ function getBookmarks() {
 
 			$('.bookmark_link').click(recordClick);
 			$('.bookmark_delete').click(delBookmark);
-			$('.bookmark_edit').click(showBookmark);
+			$('.bookmark_edit').click(editBookmark);
 
 			bookmarks_loading = false;
 			if (bookmarks.data.length) {
@@ -99,11 +97,8 @@ function getBookmarks() {
 	});
 }
 
-// function addBookmark() {
-// Instead of creating editBookmark() function, Converted the one above to
-// addOrEditBookmark() to make .js file more compact.
 
-function addOrEditBookmark(event) {
+function createEditDialog(record){
 	dialog_html = $('#edit_dialog').html();
 	var dialog = $(dialog_html).dialog({
 		width : 620,
@@ -116,53 +111,16 @@ function addOrEditBookmark(event) {
 	});
 
 	$('.ui-dialog').bookmark_dialog({
-		'on_success': function(){
+		on_success: function(){
 			dialog.dialog('destroy').remove();
 			filterTagsChanged();
-		}
+		},
+		record: record
 	});
+}
 
-	/*var id = $('#bookmark_add_id').val();
-	var url = encodeEntities($('#bookmark_add_url').val());
-	var title = encodeEntities($('#bookmark_add_title').val());
-	var tags = encodeEntities($('#bookmark_add_tags').val());
-	$("#firstrun").hide();
-	if($.trim(url) == '') {
-		OC.dialogs.alert('A valid bookmark url must be provided', 'Error creating bookmark');
-		return false;
-	}
-	if($.trim(title) == '') {
-		OC.dialogs.alert('A valid bookmark title must be provided', 'Error creating bookmark');
-		return false;
-	}
-	if (id == 0) {
-		$.ajax({
-			type: 'POST',
-			url: OC.filePath('bookmarks', 'ajax', 'addBookmark.php'),
-			data: 'url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + '&tags=' + encodeURIComponent(tags),
-			success: function(response){
-				$('.bookmarks_input').val('');
-				$('.bookmarks_list').empty();
-				bookmarks_page = 0;
-				getBookmarks();
-			}
-		});
-	}
-	else {
-		$.ajax({
-			type: 'POST',
-			url: OC.filePath('bookmarks', 'ajax', 'editBookmark.php'),
-			data: 'id=' + id + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + '&tags=' + encodeURIComponent(tags),
-			success: function(){
-				$('.bookmarks_input').val('');
-				$('#bookmark_add_id').val('0');
-				$('.bookmarks_list').empty();
-				bookmarks_page = 0;
-				getBookmarks();
-			}
-		});
-	}
-*/
+function addBookmark(event) {
+	createEditDialog();
 }
 
 function delBookmark(event) {
@@ -182,16 +140,10 @@ function delBookmark(event) {
 	});
 }
 
-function showBookmark(event) {
+function editBookmark(event) {
 	var record = $(this).parent().parent();
-	$('#bookmark_add_id').val(record.attr('data-id'));
-	$('#bookmark_add_url').val(record.children('.bookmark_url:first').text());
-	$('#bookmark_add_title').val(record.children('.bookmark_title:first').text());
-	$('#bookmark_add_tags').val(record.children('.bookmark_tags:first').text());
-
-	if ($('.bookmarks_add').css('display') == 'none') {
-		$('.bookmarks_add').slideToggle();
-	}
+	bookmark =  record.data('record');
+	createEditDialog(bookmark);
 }
 
 function replaceQueryString(url,param,value) {
@@ -229,6 +181,7 @@ function updateBookmarksList(bookmark) {
 			'<p class="bookmark_url"><a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.url) + '</a></p>' +
 		'</div>'
 	);
+	$('div[data-id="'+ bookmark.id +'"]').data('record', bookmark);
 	if(taglist != '') {
 		$('div[data-id="'+ bookmark.id +'"]').append('<p class="bookmark_tags">' + taglist + '</p>');
 	}

@@ -45,6 +45,26 @@
 				allowSpaces: true,
 				availableTags: fullTags
 			});
+
+			if(base.options['record']) { //Fill the form if it's an edit
+				record = base.options['record'];
+				base.$el.find('.record_id').val(record.id);
+				base.$el.find('.title').val(record.title);
+				base.$el.find('.url-ro code').text(record.url);
+				base.$el.find('.url_input').val(record.url);
+				base.$el.find('.desc').val(record.description);
+				base.$el.find('.is_public').val(record.public);
+				tagit_elem = base.$el.find('.tags');
+				for(var i=0;i<record.tags.length;i++) {
+					tagit_elem.tagit('createTag', record.tags[i]);
+					console.log(record.tags[i]);
+				}
+			}
+
+			if(base.$el.find('.url-ro code').text() != '')
+				base.$el.find('.url_input').hide();
+			else
+				base.$el.find('.url_input').shwo()
     };
 		
     base.init();
@@ -54,7 +74,8 @@
 
     
   $.bookmark_dialog.defaultOptions = {
-		on_success: function(){}
+		on_success: function(){},
+		bookmark_record: undefined
   };
   
   $.fn.bookmark_dialog = function(options){

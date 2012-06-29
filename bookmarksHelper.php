@@ -80,7 +80,7 @@ function analyzeTagRequest($line) {
 	return $filterTag;
 }
 
-function addBookmark($url, $title, $tags='', $description='', $is_public=false) {
+function getNowValue() {
 	$CONFIG_DBTYPE = OCP\Config::getSystemValue( "dbtype", "sqlite" );
 	if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
 		$_ut = "strftime('%s','now')";
@@ -89,9 +89,71 @@ function addBookmark($url, $title, $tags='', $description='', $is_public=false) 
 	} else {
 		$_ut = "UNIX_TIMESTAMP()";
 	}
+	return $_ut;
+}
+
+function editBookmark($id, $url, $title, $tags = array(), $description='', $is_public=false) {
 
 	$is_public = $is_public ? 1 : 0;
-	//FIXME: Detect when user adds a known URL
+	$user_id = OCP\USER::getUser();
+
+	// Update the record
+	$query = OCP\DB::prepare("
+	UPDATE *PREFIX*bookmarks SET
+		url = ?, title = ?, public = ?, description = ?,
+		lastmodified = ".getNowValue() ."
+	WHERE id = ?
+	AND user_id = ?
+	");
+
+	$params=array(
+		htmlspecialchars_decode($url),
+		htmlspecialchars_decode($title),
+		$is_public,
+		htmlspecialchars_decode($description),
+		$id,
+		$user_id,
+	);
+
+	$result = $query->execute($params);
+
+	// Abort the operation if bookmark couldn't be set
+	// (probably because the user is not allowed to edit this bookmark)
+	if ($result->numRows() == 0) exit();
+
+
+	// Remove old tags
+	$sql = "DELETE from *PREFIX*bookmarks_tags  WHERE bookmark_id = ?";
+	$query = OCP\DB::prepare($sql);
+	$query->execute(array($id));
+
+	// Add New Tags
+	addTags($id, $tags);
+}
+
+function addTags($bookmark_id, $tags) {
+	$query = OCP\DB::prepare("
+		INSERT INTO *PREFIX*bookmarks_tags
+		(bookmark_id, tag)
+		VALUES (?, ?)
+	");
+
+	foreach ($tags as $tag) {
+		if(empty($tag)) {
+			//avoid saving blankspaces
+			continue;
+		}
+		$params = array($bookmark_id, trim($tag));
+		$query->execute($params);
+	}
+}
+
+function addBookmark($url, $title, $tags=array(), $description='', $is_public=false) {
+ 
+	$is_public = $is_public ? 1 : 0;
+	//FIXME: Detect and do smth when user adds a known URL
+	$_ut = getNowValue();
+
 	$query = OCP\DB::prepare("
 		INSERT INTO `*PREFIX*bookmarks`
 		(url, title, user_id, public, added, lastmodified, description)
@@ -110,22 +172,7 @@ function addBookmark($url, $title, $tags='', $description='', $is_public=false) 
 	$b_id = OCP\DB::insertid('*PREFIX*bookmarks');
 
 	if($b_id !== false) {
-		$query = OCP\DB::prepare("
-			INSERT INTO `*PREFIX*bookmarks_tags`
-			(`bookmark_id`, `tag`)
-			VALUES (?, ?)
-			");
-
-		$tags = explode(',', urldecode($tags));
-		foreach ($tags as $tag) {
-			if(empty($tag)) {
-				//avoid saving blankspaces
-				continue;
-			}
-			$params = array($b_id, trim($tag));
-			$query->execute($params);
-		}
-
+		addTags($b_id, $tags);
 		return $b_id;
 	}
 }

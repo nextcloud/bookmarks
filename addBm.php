@@ -31,24 +31,28 @@ OCP\App::checkAppEnabled('bookmarks');
 require_once('bookmarksHelper.php');
 
 
+// If we go the dialog form submit
+if(isset($_POST['url'])) {
+	$tags = isset($_POST['item']['tags']) ? $_POST['item']['tags'] : array();
+	$pub = isset($_POST['is_public']) ? true : false;
+
+	if(isset($_POST['record_id']) && is_numeric($_POST['record_id']) ) { //EDIT
+		$bm = $_POST['record_id'];
+		editBookmark($bm, $_POST['url'], $_POST['title'], $tags, $_POST['desc'], $pub);
+	}
+	else {
+		$bm = addBookmark($_POST['url'], $_POST['title'], $tags, $_POST['desc'], $pub);
+	}
+	OCP\JSON::success(array('id'=>$bm));
+	exit();
+}
+
+
+// Prep screen if we come from the bookmarklet
 $url ='';
 if(isset($_GET['url']) ){
  $url = $_GET['url'];
 }
-
-if(isset($_POST['url'])) {
-	$tags = isset($_POST['item']['tags']) ? $_POST['item']['tags'] : array();
-	$pub = isset($_POST['is_public']) ? true : false;
-	$bm = addBookmark($_POST['url'], $_POST['title'], implode(',',$tags),$_POST['desc'], $pub);
-	OCP\JSON::success(array('id'=>$bm));
-	exit();
-}
-	
-OCP\Util::addscript('bookmarks','tag-it');
-OCP\Util::addscript('bookmarks','addBm');
-OCP\Util::addStyle('bookmarks', 'bookmarks');
-OCP\Util::addStyle('bookmarks', 'jquery.tagit');
-
 if(!isset($_GET['title']) || trim($_GET['title']) == '') {
 	$datas = getURLMetadata($url);
 	$title = isset($datas['title']) ? $datas['title'] : '';
@@ -56,6 +60,14 @@ if(!isset($_GET['title']) || trim($_GET['title']) == '') {
 else{
 	$title = $_GET['title'];
 }
+
+
+OCP\Util::addscript('bookmarks','tag-it');
+OCP\Util::addscript('bookmarks','addBm');
+OCP\Util::addStyle('bookmarks', 'bookmarks');
+OCP\Util::addStyle('bookmarks', 'jquery.tagit');
+
+
 
 $bm = array('title'=> $title,
 	'url'=> $url,
