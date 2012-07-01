@@ -38,10 +38,10 @@ if(isset($_POST['url'])) {
 
 	if(isset($_POST['record_id']) && is_numeric($_POST['record_id']) ) { //EDIT
 		$bm = $_POST['record_id'];
-		editBookmark($bm, $_POST['url'], $_POST['title'], $tags, $_POST['desc'], $pub);
+		OC_Bookmarks_Bookmarks::editBookmark($bm, $_POST['url'], $_POST['title'], $tags, $_POST['desc'], $pub);
 	}
 	else {
-		$bm = addBookmark($_POST['url'], $_POST['title'], $tags, $_POST['desc'], $pub);
+		$bm = OC_Bookmarks_Bookmarks::addBookmark($_POST['url'], $_POST['title'], $tags, $_POST['desc'], $pub);
 	}
 	OCP\JSON::success(array('id'=>$bm));
 	exit();

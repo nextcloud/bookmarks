@@ -66,7 +66,7 @@ class OC_Bookmarks_Bookmarks{
 		$limit = 10;
 		$params=array(OCP\USER::getUser());
 		//@TODO replace GROUP_CONCAT for postgresql
-		$sql = "SELECT *, (select GROUP_CONCAT(tag) from oc_bookmarks_tags where bookmark_id = b.id) as tags
+		$sql = "SELECT *, (select GROUP_CONCAT(tag) from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
 				FROM *PREFIX*bookmarks b
 				WHERE user_id = ? ";
 
@@ -162,5 +162,131 @@ class OC_Bookmarks_Bookmarks{
 
 		$result = $query->execute($params);
 		return true;
+	}
+
+	/**
+	* get a string corresponding to the current time depending
+	* of the OC database system
+	* @return string
+	*/
+	protected static function getNowValue() {
+		$CONFIG_DBTYPE = OCP\Config::getSystemValue( "dbtype", "sqlite" );
+		if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
+			$_ut = "strftime('%s','now')";
+		} elseif($CONFIG_DBTYPE == 'pgsql') {
+			$_ut = 'date_part(\'epoch\',now())::integer';
+		} else {
+			$_ut = "UNIX_TIMESTAMP()";
+		}
+		return $_ut;
+	}
+
+	/**
+	 * Edit a bookmark
+	 * @param int $id The id of the bookmark to edit
+	 * @param string $url
+	 * @param string $title Name of the bookmark
+	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
+	 * @param string $description A longer description about the bookmark
+	 * @param boolean $is_public True if the bookmark is publishable to not registered users
+	 * @return null
+	 */
+	public static function editBookmark($id, $url, $title, $tags = array(), $description='', $is_public=false) {
+
+		$is_public = $is_public ? 1 : 0;
+		$user_id = OCP\USER::getUser();
+
+		// Update the record
+		$query = OCP\DB::prepare("
+		UPDATE *PREFIX*bookmarks SET
+			url = ?, title = ?, public = ?, description = ?,
+			lastmodified = ".self::getNowValue() ."
+		WHERE id = ?
+		AND user_id = ?
+		");
+
+		$params=array(
+			htmlspecialchars_decode($url),
+			htmlspecialchars_decode($title),
+			$is_public,
+			htmlspecialchars_decode($description),
+			$id,
+			$user_id,
+		);
+
+		$result = $query->execute($params);
+
+		// Abort the operation if bookmark couldn't be set
+		// (probably because the user is not allowed to edit this bookmark)
+		if ($result->numRows() == 0) exit();
+
+
+		// Remove old tags
+		$sql = "DELETE from *PREFIX*bookmarks_tags  WHERE bookmark_id = ?";
+		$query = OCP\DB::prepare($sql);
+		$query->execute(array($id));
+
+		// Add New Tags
+		self::addTags($id, $tags);
+	}
+
+	/**
+ * Add a bookmark
+	 * @param string $url
+	 * @param string $title Name of the bookmark
+	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
+	 * @param string $description A longer description about the bookmark
+	 * @param boolean $is_public True if the bookmark is publishable to not registered users
+	 * @return int The id of the bookmark created
+	 */
+	public static function addBookmark($url, $title, $tags=array(), $description='', $is_public=false) {
+
+		$is_public = $is_public ? 1 : 0;
+		//FIXME: Detect and do smth when user adds a known URL
+		$_ut = self::getNowValue();
+
+		$query = OCP\DB::prepare("
+			INSERT INTO *PREFIX*bookmarks
+			(url, title, user_id, public, added, lastmodified, description)
+			VALUES (?, ?, ?, ?, $_ut, $_ut, ?)
+			");
+
+		$params=array(
+			htmlspecialchars_decode($url),
+			htmlspecialchars_decode($title),
+			OCP\USER::getUser(),
+			$is_public,
+			$description,
+		);
+		$query->execute($params);
+
+		$b_id = OCP\DB::insertid('*PREFIX*bookmarks');
+
+		if($b_id !== false) {
+			self::addTags($b_id, $tags);
+			return $b_id;
+		}
+	}
+
+	/**
+	 * Add a set of tags for a bookmark
+	 * @param int $bookmark_id The bookmark reference
+	 * @param array $tags Set of tags to add to the bookmark
+	 * @return null
+	 **/
+	private static function addTags($bookmark_id, $tags) {
+		$query = OCP\DB::prepare("
+			INSERT INTO *PREFIX*bookmarks_tags
+			(bookmark_id, tag)
+			VALUES (?, ?)");
+
+		foreach ($tags as $tag) {
+			if(empty($tag)) {
+				//avoid saving blankspaces
+				continue;
+			}
+			$params = array($bookmark_id, trim($tag));
+			$query->execute($params);
+		}
 	}
 }
