@@ -30,24 +30,6 @@ OCP\App::checkAppEnabled('bookmarks');
 
 require_once('bookmarksHelper.php');
 
-
-// If we go the dialog form submit
-if(isset($_POST['url'])) {
-	$tags = isset($_POST['item']['tags']) ? $_POST['item']['tags'] : array();
-	$pub = isset($_POST['is_public']) ? true : false;
-
-	if(isset($_POST['record_id']) && is_numeric($_POST['record_id']) ) { //EDIT
-		$bm = $_POST['record_id'];
-		OC_Bookmarks_Bookmarks::editBookmark($bm, $_POST['url'], $_POST['title'], $tags, $_POST['desc'], $pub);
-	}
-	else {
-		$bm = OC_Bookmarks_Bookmarks::addBookmark($_POST['url'], $_POST['title'], $tags, $_POST['desc'], $pub);
-	}
-	OCP\JSON::success(array('id'=>$bm));
-	exit();
-}
-
-
 // Prep screen if we come from the bookmarklet
 $url ='';
 if(isset($_GET['url']) ){

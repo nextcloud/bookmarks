@@ -1,4 +1,4 @@
-<form class="addBm" method="post" action="<?php echo OCP\Util::linkToAbsolute('bookmarks', 'addBm.php');?>">
+<form class="addBm" method="post" action="<?php echo OCP\Util::linkTo('bookmarks', 'ajax/editBookmark.php');?>">
 		<?php if(!isset($embedded) || !$embedded):?>
 			<script>
 				var fullTags = <?php echo $_['tags'];?>;
