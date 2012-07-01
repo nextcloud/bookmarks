@@ -192,7 +192,7 @@ function updateOnBottom() {
 	// use a bit of margin to begin loading before we are really at the
 	// bottom
 	if (top < height * 1.2) {
-	//	getBookmarks();
+		getBookmarks();
 	}
 }
 

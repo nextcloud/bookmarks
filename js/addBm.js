@@ -9,7 +9,7 @@
     base.el = el;
     
     // Add a reverse reference to the DOM object
-    base.$el.data("bookmark_dialog", base);
+    base.$el.data('bookmark_dialog', base);
     
     base.form_submit = function search_form_submit(event)
     {
