@@ -235,3 +235,35 @@ li:hover em { display : none; }
     right: 0.1em;
     top: 50%;
 }
+
+#view_type {
+    position: absolute;
+    right: 13.5em;
+    top: 0;
+}
+
+/***** Lis View *****/
+
+.bm_view_img .bookmark_single{
+	width: 240px;
+	float: left;
+	height: 240px;
+	margin: 1em;
+
+/* 	background: none repeat scroll 0 0 #EEEEEE; */
+  border-radius: 8px 8px 8px 8px;
+  box-shadow: 0 0 5px rgba(34, 25, 25, 0.5);
+}
+
+.bm_view_img .bookmark_single .shot{
+	text-align:center;
+}
+.bm_view_img .bookmark_single .shot img{
+	border: 1px solid black;
+	width: 228px;
+	height: 160px
+}
+
+.bm_view_img .bookmark_single:hover .bookmark_url{
+	display:block;
+}

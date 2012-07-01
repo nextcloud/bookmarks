@@ -10,6 +10,11 @@
 <input type="hidden" id="bookmarkFilterTag" value="<?php echo $_['req_tag']; ?>" />
 <div id="controls">
 	<input type="submit" value="<?php echo $l->t('New bookmark'); ?>" id="bookmark_add_submit" />
+
+	<div id="view_type">
+		<input type="button" class="list" value="<?php echo $l->t('List')?>" />
+		<input type="button" class="image" style="display:none" value="<?php echo $l->t('Image')?>" />
+	</div>
 </div>
 <div id="leftcontent">
 	<p id="tag_filter">

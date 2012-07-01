@@ -3,7 +3,11 @@ var bookmarks_loading = false;
 
 var bookmarks_sorting = 'bookmarks_sorting_recent';
 
+var bookmark_view = 'image';
+
 $(document).ready(function() {
+	$('.bookmarks_list').addClass('bm_view_img');
+	$('#view_type input').click(switchView);
 	$('#bookmark_add_submit').click(addBookmark);
 	$(window).resize(function () {
 		fillWindow($('.bookmarks_list'));
@@ -19,6 +23,21 @@ $(document).ready(function() {
 	getBookmarks();
 });
 
+function switchView(){
+	$(this).hide();
+	if($(this).hasClass('image')) { //Then List
+		$('.bookmarks_list').addClass('bm_view_list');
+		$('.bookmarks_list').removeClass('bm_view_img');
+		$('#view_type input.list').show();
+		bookmark_view = 'list';
+	} else { // Then Image
+		$('.bookmarks_list').addClass('bm_view_img');
+		$('.bookmarks_list').removeClass('bm_view_list');
+		$('#view_type input.image').show();
+		bookmark_view = 'image';
+	}
+	filterTagsChanged(); //Refresh the view
+}
 function addFilterTag(event) {
 	event.preventDefault();
 	$('#tag_filter input').tagit('createTag', $(this).text());
@@ -161,27 +180,54 @@ function updateBookmarksList(bookmark) {
 		bookmark.url = 'http://' + bookmark.url;
 	}
 	if(bookmark.title == '') bookmark.title = bookmark.url;
-	$('.bookmarks_list').append(
-		'<div class="bookmark_single" data-id="' + bookmark.id +'" >' +
-			'<p class="bookmark_actions">' +
-				'<span class="bookmark_edit">' +
-					'<img class="svg" src="'+OC.imagePath('core', 'actions/rename')+'" title="Edit">' +
-				'</span>' +
-				'<span class="bookmark_delete">' +
-					'<img class="svg" src="'+OC.imagePath('core', 'actions/delete')+'" title="Delete">' +
-				'</span>&nbsp;' +
-			'</p>' +
-			'<p class="bookmark_title">'+
-				'<a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.title) + '</a>' +
-			'</p>' +
-			'<p class="bookmark_url"><a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.url) + '</a></p>' +
-		'</div>'
-	);
-	$('div[data-id="'+ bookmark.id +'"]').data('record', bookmark);
-	if(taglist != '') {
-		$('div[data-id="'+ bookmark.id +'"]').append('<p class="bookmark_tags">' + taglist + '</p>');
+
+	if(bookmark_view == 'image') { //View in images
+		$('.bookmarks_list').append(
+			'<div class="bookmark_single" data-id="' + bookmark.id +'" >' +
+				'<p class="shot"><img src="'+ "http://screenshots.bookmarkly.com/thumb?url="+encodeEntities(bookmark.url) +'"></p>'+
+				'<p class="bookmark_actions">' +
+					'<span class="bookmark_edit">' +
+						'<img class="svg" src="'+OC.imagePath('core', 'actions/rename')+'" title="Edit">' +
+					'</span>' +
+					'<span class="bookmark_delete">' +
+						'<img class="svg" src="'+OC.imagePath('core', 'actions/delete')+'" title="Delete">' +
+					'</span>&nbsp;' +
+				'</p>' +
+				'<p class="bookmark_title">'+
+					'<a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.title) + '</a>' +
+				'</p>' +
+				'<p class="bookmark_url"><a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.url) + '</a></p>' +
+			'</div>'
+		);
+		$('div[data-id="'+ bookmark.id +'"]').data('record', bookmark);
+		if(taglist != '') {
+			$('div[data-id="'+ bookmark.id +'"]').append('<p class="bookmark_tags">' + taglist + '</p>');
+		}
+		$('div[data-id="'+ bookmark.id +'"] a.bookmark_tag').bind('click', addFilterTag);
 	}
-	$('div[data-id="'+ bookmark.id +'"] a.bookmark_tag').bind('click', addFilterTag);
+	else {
+		$('.bookmarks_list').append(
+			'<div class="bookmark_single" data-id="' + bookmark.id +'" >' +
+				'<p class="bookmark_actions">' +
+					'<span class="bookmark_edit">' +
+						'<img class="svg" src="'+OC.imagePath('core', 'actions/rename')+'" title="Edit">' +
+					'</span>' +
+					'<span class="bookmark_delete">' +
+						'<img class="svg" src="'+OC.imagePath('core', 'actions/delete')+'" title="Delete">' +
+					'</span>&nbsp;' +
+				'</p>' +
+				'<p class="bookmark_title">'+
+					'<a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.title) + '</a>' +
+				'</p>' +
+				'<p class="bookmark_url"><a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.url) + '</a></p>' +
+			'</div>'
+		);
+		$('div[data-id="'+ bookmark.id +'"]').data('record', bookmark);
+		if(taglist != '') {
+			$('div[data-id="'+ bookmark.id +'"]').append('<p class="bookmark_tags">' + taglist + '</p>');
+		}
+		$('div[data-id="'+ bookmark.id +'"] a.bookmark_tag').bind('click', addFilterTag);
+	}
 
 }
 
