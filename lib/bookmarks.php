@@ -57,12 +57,14 @@ class OC_Bookmarks_Bookmarks{
 	 * @brief Finds all bookmarks, matching the filter
 	 * @param offset result offset
 	 * @param sqlSortColumn sort result with this column
-	 * @param filter can be: empty -> no filter, a string -> filter this, a string array -> filter for all strings
+	 * @param filters can be: empty -> no filter, a string -> filter this, a string array -> filter for all strings
 	 * @param filterTagOnly if true, filter affects only tags, else filter affects url, title and tags
 	 * @return void
 	 */
-	public static function findBookmarks($offset, $sqlSortColumn, $filter, $filterTagOnly){
+	public static function findBookmarks($offset, $sqlSortColumn, $filters, $filterTagOnly){
 		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
+		if(is_string($filters)) $filters = array($filters);
+
 		$limit = 10;
 		$params=array(OCP\USER::getUser());
 
@@ -77,10 +79,13 @@ class OC_Bookmarks_Bookmarks{
 				WHERE user_id = ? ";
 
 		if($filterTagOnly) {
-			if(is_string($filter)) $filter = array($filter);
-
-			$sql .= str_repeat(" AND	exists (select id from  *PREFIX*bookmarks_tags t2 where t2.bookmark_id = b.id and tag = ?) ", count($filter));
-			$params = array_merge($params, $filter);
+			$sql .= str_repeat(" AND	exists (select id from  *PREFIX*bookmarks_tags t2 where t2.bookmark_id = b.id and tag = ?) ", count($filters));
+			$params = array_merge($params, $filters);
+		} else {
+			foreach($filters as $filter) {
+				$sql .= ' AND lower(url || title || description || tags ) like ? ';
+				$params[] = '%' . strtolower($filter) . '%';
+			}
 		}
 		$sql .= " ORDER BY ".$sqlSortColumn." DESC
 				LIMIT $limit
@@ -294,5 +299,14 @@ class OC_Bookmarks_Bookmarks{
 			$params = array($bookmark_id, trim($tag));
 			$query->execute($params);
 		}
+	}
+
+	/**
+	 * Simple function to search for bookmark. call findBookmarks
+	 * @param array $search_words Set of words to look for in bookmars fields
+	 * @return array An Array of bookmarks
+	 **/
+	public static function searchBookmarks($search_words) {
+		return self::findBookmarks(0, 'id', $search_words, false);
 	}
 }
