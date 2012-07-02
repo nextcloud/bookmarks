@@ -72,23 +72,26 @@ function getBookmarks() {
 		return;
 	}
 	bookmarks_loading = true;
-	//Update Rel Tags
-	$.ajax({
-		type: 'GET',
-		url: OC.filePath('bookmarks', 'ajax', 'updateList.php') + '&type=rel_tags',
-		data: {tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
-		success: function(tags){
-			$('.tag_list').empty();
-			for(var i in tags.data) {
-				updateTagsList(tags.data[i]);
+	//Update Rel Tags if first page
+	if(bookmarks_page == 0) {
+
+		$.ajax({
+			type: 'GET',
+			url: OC.filePath('bookmarks', 'ajax', 'updateList.php') + '&type=rel_tags',
+			data: {tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
+			success: function(tags){
+				$('.tag_list').empty();
+				for(var i in tags.data) {
+					updateTagsList(tags.data[i]);
+				}
+				$('.tag_list .tag_edit').click(renameTag);
+				$('.tag_list .tag_delete').click(deleteTag);
+				$('.tag_list a.tag').click(addFilterTag);
+
+
 			}
-			$('.tag_list .tag_edit').click(renameTag);
-			$('.tag_list .tag_delete').click(deleteTag);
-			$('.tag_list a.tag').click(addFilterTag);
-
-
-		}
-	});
+		});
+	}
 	$.ajax({
 		type: 'GET',
 		url: OC.filePath('bookmarks', 'ajax', 'updateList.php') + '&type=bookmark',
