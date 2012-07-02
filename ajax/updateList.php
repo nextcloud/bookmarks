@@ -30,17 +30,17 @@ require_once(OC_App::getAppPath('bookmarks').'/bookmarksHelper.php');
 $req_type= isset($_GET['type']) ? $_GET['type'] : 'bookmark';
 
 if($req_type == 'rel_tags') {
-	$tags = analyzeTagRequest(isset($_POST['tag']) ? $_POST['tag'] : '');
+	$tags = analyzeTagRequest(isset($_GET['tag']) ? $_GET['tag'] : '');
 	$qtags = OC_Bookmarks_Bookmarks::findTags($tags);
 	OCP\JSON::success(array('data' => $qtags));
 
 }
 else { // type == bookmark
-	$filterTag = analyzeTagRequest(isset($_POST['tag']) ? $_POST['tag'] : '');
+	$filterTag = analyzeTagRequest(isset($_GET['tag']) ? $_GET['tag'] : '');
 
-	$offset = isset($_POST['page']) ? intval($_POST['page']) * 10 : 0;
+	$offset = isset($_GET['page']) ? intval($_GET['page']) * 10 : 0;
 
-	$sort = isset($_POST['sort']) ? ($_POST['sort']) : 'bookmarks_sorting_recent';
+	$sort = isset($_GET['sort']) ? ($_GET['sort']) : 'bookmarks_sorting_recent';
 	if($sort == 'bookmarks_sorting_clicks') {
 		$sqlSortColumn = 'clickcount';
 	} else {

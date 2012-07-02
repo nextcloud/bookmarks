@@ -62,18 +62,19 @@ function updateTagsList(tag) {
 function filterTagsChanged()
 {
 	$('#bookmarkFilterTag').val($('#tag_filter input:hidden').val());
-	bookmarks_page = 0;
 	$('.bookmarks_list').empty();
+	bookmarks_page = 0;
 	getBookmarks();
 }
 function getBookmarks() {
 	if(bookmarks_loading) {
 		//have patience :)
 		return;
-	}	
+	}
+	bookmarks_loading = true;
 	//Update Rel Tags
 	$.ajax({
-		type: 'POST',
+		type: 'GET',
 		url: OC.filePath('bookmarks', 'ajax', 'updateList.php') + '&type=rel_tags',
 		data: {tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
 		success: function(tags){
@@ -88,9 +89,8 @@ function getBookmarks() {
 
 		}
 	});
-	
 	$.ajax({
-		type: 'POST',
+		type: 'GET',
 		url: OC.filePath('bookmarks', 'ajax', 'updateList.php') + '&type=bookmark',
 		data: {tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
 		success: function(bookmarks){
@@ -197,6 +197,7 @@ function updateBookmarksList(bookmark) {
 				'<p class="bookmark_title">'+
 					'<a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.title) + '</a>' +
 				'</p>' +
+				'<p class="bookmark_desc">'+ encodeEntities(bookmark.description) + '</p>' +
 				'<p class="bookmark_url"><a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.url) + '</a></p>' +
 			'</div>'
 		);
@@ -221,6 +222,7 @@ function updateBookmarksList(bookmark) {
 					'<a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.title) + '</a>' +
 				'</p>' +
 				'<p class="bookmark_url"><a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.url) + '</a></p>' +
+				'<p class="bookmark_desc">'+ encodeEntities(bookmark.description) + '</p>' +
 			'</div>'
 		);
 		$('div[data-id="'+ bookmark.id +'"]').data('record', bookmark);

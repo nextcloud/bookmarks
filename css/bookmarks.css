@@ -80,9 +80,6 @@
 	margin-right: 0.8em;
 }
 
-.bookmark_url { display: none; color: #999; }
-.bookmark_single:hover .bookmark_url { display: inline; }
-
 .bm_view_list .bookmark_tags {
 	position: absolute;
 	top: 0.5em;
@@ -269,13 +266,19 @@ li:hover em { display : none; }
 	width: 228px;
 	height: 160px
 }
-
+.bookmark_desc{
+    min-height: 1em;
+}
+/*
 .bm_view_img .bookmark_single:hover .bookmark_url{
-	display:block;
+	display:block; 
 }
 .bm_view_img .bookmark_single .bookmark_url{
-	display:block;
+ 	display:block; 
 }
+
+.bookmark_single:hover .bookmark_url { display: inline; }*/
+.bookmark_url { display: none; }
 
 .bm_view_img .bookmark_actions {
     bottom: 0.7em;
