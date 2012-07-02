@@ -62,11 +62,17 @@ class OC_Bookmarks_Bookmarks{
 	 * @return void
 	 */
 	public static function findBookmarks($offset, $sqlSortColumn, $filter, $filterTagOnly){
-		//$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
+		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 		$limit = 10;
 		$params=array(OCP\USER::getUser());
-		//@TODO replace GROUP_CONCAT for postgresql
-		$sql = "SELECT *, (select GROUP_CONCAT(tag) from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
+
+		if($CONFIG_DBTYPE == 'pgsql') {
+			$group_fct = 'array_agg(tag)';
+		}
+		else {
+			$group_fct = 'GROUP_CONCAT(tag)';
+		}
+		$sql = "SELECT *, (select $group_fct from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
 				FROM *PREFIX*bookmarks b
 				WHERE user_id = ? ";
 
