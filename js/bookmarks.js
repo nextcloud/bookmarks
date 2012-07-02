@@ -6,7 +6,7 @@ var bookmarks_sorting = 'bookmarks_sorting_recent';
 var bookmark_view = 'image';
 
 $(document).ready(function() {
-	$('.bookmarks_list').addClass('bm_view_img');
+	switchView();
 	$('#view_type input').click(switchView);
 	$('#bookmark_add_submit').click(addBookmark);
 	$(window).resize(function () {
@@ -24,17 +24,18 @@ $(document).ready(function() {
 });
 
 function switchView(){
-	$(this).hide();
-	if($(this).hasClass('image')) { //Then List
-		$('.bookmarks_list').addClass('bm_view_list');
-		$('.bookmarks_list').removeClass('bm_view_img');
-		$('#view_type input.list').show();
-		bookmark_view = 'list';
-	} else { // Then Image
+	if(bookmark_view == 'list') { //Then switch to img
 		$('.bookmarks_list').addClass('bm_view_img');
 		$('.bookmarks_list').removeClass('bm_view_list');
-		$('#view_type input.image').show();
+		$('#view_type input.image').hide();
+		$('#view_type input.list').show();
 		bookmark_view = 'image';
+	} else { // Then Image
+		$('.bookmarks_list').addClass('bm_view_list');
+		$('.bookmarks_list').removeClass('bm_view_img');
+		$('#view_type input.list').hide();
+		$('#view_type input.image').show();
+		bookmark_view = 'list';
 	}
 	filterTagsChanged(); //Refresh the view
 }
