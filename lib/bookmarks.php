@@ -309,4 +309,28 @@ class OC_Bookmarks_Bookmarks{
 	public static function searchBookmarks($search_words) {
 		return self::findBookmarks(0, 'id', $search_words, false);
 	}
+
+	public static function importFile($file){
+		libxml_use_internal_errors(true);
+		$dom = new domDocument();
+
+		$dom->loadHTMLFile($file);
+		$links = $dom->getElementsByTagName('a');
+		$things = array();
+
+		OCP\DB::beginTransaction();
+		foreach($links as $link) {
+			$title = $link->nodeValue;
+			$ref = $link->getAttribute("href");
+			$tag_str = '';
+			if($link->hasAttribute("tags"))
+				$tag_str = $link->getAttribute("tags");
+			$tags = explode(',' , $tag_str);
+
+			self::addBookmark($ref, $title, $tags);
+			//$things[] = array('title' => $title, 'ref'=>$ref, 'tags' => $tags);
+		}
+		OCP\DB::commit();
+		return array();
+	}
 }
