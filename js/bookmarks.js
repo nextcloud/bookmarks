@@ -6,9 +6,8 @@ var bookmarks_sorting = 'bookmarks_sorting_recent';
 var bookmark_view = 'image';
 
 $(document).ready(function() {
-	switchView();
-	$('.centercontent').click(toggleSideBar);
-	$('#view_type input').click(switchView);
+	$('.centercontent').click(clickSideBar);
+	$('#view_type input').click(clickSwitchView);
 	$('#bookmark_add_submit').click(addBookmark);
 	$(window).resize(function () {
 		fillWindow($('.bookmarks_list'));
@@ -20,9 +19,19 @@ $(document).ready(function() {
 		availableTags: fullTags,
 		onTagRemoved: filterTagsChanged
 	}).tagit('option', 'onTagAdded', filterTagsChanged);
-
 	getBookmarks();
+	
+	if(init_sidebar == 'true')
+		toggleSideBar();
+	bookmark_view = init_view;
+	switchView();
 });
+
+function clickSideBar() {
+	$.post(OC.filePath('bookmarks', 'ajax', 'changescreen.php'), {sidebar: $('#leftcontent').is(':visible')});
+	toggleSideBar();
+}
+
 function toggleSideBar(){
 	if($('#leftcontent:visible')) {
 		$('#rightcontent').css('left','32.5em');
@@ -38,8 +47,13 @@ function toggleSideBar(){
 		}
 		$(window).trigger('resize');
 	});
-
 }
+
+function clickSwitchView(){
+	$.post(OC.filePath('bookmarks', 'ajax', 'changescreen.php'), {view:bookmark_view});
+	switchView();
+}
+
 function switchView(){
 	if(bookmark_view == 'list') { //Then switch to img
 		$('.bookmarks_list').addClass('bm_view_img');

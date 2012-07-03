@@ -60,6 +60,8 @@
 </div>
 <script>
 	var fullTags = <?php echo $_['tags'];?>;
+	var init_view = '<?php echo OCP\Config::getUserValue(OCP\USER::getUser(), 'bookmarks', 'currentview', 'list');?>';
+	var init_sidebar = '<?php echo OCP\Config::getUserValue(OCP\USER::getUser(), 'bookmarks', 'sidebar', 'true');?>';
 </script>
 <div id="edit_dialog" style="display:none;">
 <?php include 'addBm.php';?>
