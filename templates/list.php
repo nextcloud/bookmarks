@@ -41,10 +41,14 @@
 			</li>
 		<?php endforeach;?>
 	<ul>
+
 </div>
 
-
 <div id="rightcontent" class="rightcontent">
+	<div class="centercontent">
+		<img class="left_img svg" src="<?php echo OCP\image_path('bookmarks','triangle-w.svg'); ?>">
+		<img class="right_img svg" src="<?php echo OCP\image_path('bookmarks','triangle-e.svg'); ?>"></div>
+
 	<div class="bookmarks_list"></div>
 	<div id="firstrun" style="display: none;">
 		<?php

@@ -13,7 +13,21 @@
 #rightcontent {
     padding-top: 5px;
     top: 3.5em !important;
-}*/
+}
+.centercontent {
+	position:absolute;
+	left:0;
+	height:100%;
+	width: 15px;
+	background-color: #D5D5D5;
+}
+.centercontent .left_img , .centercontent .right_img {
+	margin-top: 20em;
+}
+.centercontent .right_img {
+	display:none;
+}
+
 #controls {
 	padding-left:20em;
 }
@@ -33,6 +47,8 @@
 	overflow: auto;
 	position: fixed;
 	top: 6.5em;
+	margin-left: 15px;
+
 }
 
 .bookmarks_addBml {
@@ -240,9 +256,9 @@ li:hover em { display : none; }
 }
 
 #view_type {
-    position: absolute;
-    right: 13.5em;
-    top: 0;
+	position: absolute;
+	right: 33.5em;
+	top: 0;
 }
 
 /***** Lis View *****/

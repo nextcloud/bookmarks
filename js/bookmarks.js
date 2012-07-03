@@ -7,6 +7,7 @@ var bookmark_view = 'image';
 
 $(document).ready(function() {
 	switchView();
+	$('.centercontent').click(toggleSideBar);
 	$('#view_type input').click(switchView);
 	$('#bookmark_add_submit').click(addBookmark);
 	$(window).resize(function () {
@@ -22,7 +23,23 @@ $(document).ready(function() {
 
 	getBookmarks();
 });
+function toggleSideBar(){
+	if($('#leftcontent:visible')) {
+		$('#rightcontent').css('left','32.5em');
+		$('.right_img').hide();
+		$('.left_img').show();
+		
+	}
+	$('#leftcontent').animate({width: 'toggle' },'normal', function() {
+		if(! $('#leftcontent').is(':visible')) {
+			$('#rightcontent').css('left','auto');
+			$('.left_img').hide();
+			$('.right_img').show();
+		}
+		$(window).trigger('resize');
+	});
 
+}
 function switchView(){
 	if(bookmark_view == 'list') { //Then switch to img
 		$('.bookmarks_list').addClass('bm_view_img');
