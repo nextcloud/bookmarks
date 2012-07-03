@@ -282,8 +282,13 @@ li:hover em { display : none; }
 	width: 228px;
 	height: 160px
 }
+
 .bookmark_desc{
-    min-height: 1em;
+	height: 2em;
+	white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+  display:block;
 }
 /*
 .bm_view_img .bookmark_single:hover .bookmark_url{
@@ -292,8 +297,10 @@ li:hover em { display : none; }
 .bm_view_img .bookmark_single .bookmark_url{
  	display:block; 
 }
+*/
+.bookmark_single:hover .bookmark_url { display: inline;  }
+.bookmark_single:hover .bookmark_url a[href]{ color:gray; }
 
-.bookmark_single:hover .bookmark_url { display: inline; }*/
 .bookmark_url { display: none; }
 
 .bm_view_img .bookmark_actions {
