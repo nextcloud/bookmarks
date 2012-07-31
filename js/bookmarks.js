@@ -27,6 +27,19 @@ $(document).ready(function() {
 	switchView();
 });
 
+
+var formatString = (function() {
+	var replacer = function(context) {
+		return function(s, name) {
+			return context[name];
+		};
+	};
+
+	return function(input, context) {
+		return input.replace(/\{(\w+)\}/g, replacer(context));
+	};
+})();
+
 function clickSideBar() {
 	$.post(OC.filePath('bookmarks', 'ajax', 'changescreen.php'), {sidebar: $('#leftcontent').is(':visible')});
 	toggleSideBar();
@@ -217,9 +230,10 @@ function updateBookmarksList(bookmark) {
 	if(bookmark.title == '') bookmark.title = bookmark.url;
 
 	if(bookmark_view == 'image') { //View in images
+		service_url = formatString(shot_provider, {url: encodeEntities(bookmark.url), title: bookmark.title, width: 200});
 		$('.bookmarks_list').append(
 			'<div class="bookmark_single" data-id="' + bookmark.id +'" >' +
-				'<p class="shot"><img src="'+ "http://screenshots.bookmarkly.com/thumb?url="+encodeEntities(bookmark.url) +'"></p>'+
+				'<p class="shot"><img src="'+ service_url +'"></p>'+
 				'<p class="bookmark_actions">' +
 					'<span class="bookmark_edit">' +
 						'<img class="svg" src="'+OC.imagePath('core', 'actions/rename')+'" title="Edit">' +
@@ -347,3 +361,4 @@ function deleteTag(event){
 		}
 	});
 }
+
