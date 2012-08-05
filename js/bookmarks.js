@@ -229,6 +229,8 @@ function updateBookmarksList(bookmark) {
 	}
 	if(bookmark.title == '') bookmark.title = bookmark.url;
 
+	bookmark.added_date = new Date();
+	bookmark.added_date.setTime(parseInt(bookmark.added)*1000);
 	if(bookmark_view == 'image') { //View in images
 		service_url = formatString(shot_provider, {url: encodeEntities(bookmark.url), title: bookmark.title, width: 200});
 		$('.bookmarks_list').append(
@@ -255,7 +257,7 @@ function updateBookmarksList(bookmark) {
 		}
 		$('div[data-id="'+ bookmark.id +'"] a.bookmark_tag').bind('click', addFilterTag);
 	}
-	else {
+	else { // View in text
 		$('.bookmarks_list').append(
 			'<div class="bookmark_single" data-id="' + bookmark.id +'" >' +
 				'<p class="bookmark_actions">' +
@@ -270,6 +272,7 @@ function updateBookmarksList(bookmark) {
 					'<a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.title) + '</a>' +
 				'</p>' +
 				'<p class="bookmark_url"><a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.url) + '</a></p>' +
+				'<p class="bookmark_date">' + formatDate(bookmark.added_date) + '</p>' +
 				'<p class="bookmark_desc">'+ encodeEntities(bookmark.description) + '</p>' +
 			'</div>'
 		);

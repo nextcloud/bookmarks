@@ -256,6 +256,7 @@ li:hover em { display : none; }
 }
 
 #view_type {
+	display:none; /* @TODO: Remove when image view is ready*/
 	position: absolute;
 	right: 33.5em;
 	top: 0;
@@ -284,11 +285,20 @@ li:hover em { display : none; }
 }
 
 .bookmark_desc{
-	height: 2em;
+	height: 1.5em;
+	padding-left:1em;
 	white-space:nowrap;
   text-overflow:ellipsis;
   overflow:hidden;
   display:block;
+}
+.bookmark_date {
+	font-size:small;
+	position: absolute;
+  right: 6em;
+	color:gray;
+/* 	margin-top:2.5em; */
+	margin-right: 0.2em;
 }
 /*
 .bm_view_img .bookmark_single:hover .bookmark_url{
