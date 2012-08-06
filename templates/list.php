@@ -60,7 +60,7 @@
 </div>
 <script>
 	var fullTags = <?php echo $_['tags'];?>;
-	var init_view = '<?php echo OCP\Config::getUserValue(OCP\USER::getUser(), 'bookmarks', 'currentview', 'list');?>';
+	var init_view = '<?php echo OCP\Config::getUserValue(OCP\USER::getUser(), 'bookmarks', 'currentview', 'text');?>';
 	var init_sidebar = '<?php echo OCP\Config::getUserValue(OCP\USER::getUser(), 'bookmarks', 'sidebar', 'true');?>';
 	var shot_provider = '<?php echo OCP\Config::getUserValue(OCP\USER::getUser(), 'bookmarks', 'shot_provider', 'http://screenshots.bookmarkly.com/thumb?url={url}');?>';
 	//http://api.thumbalizr.com/?width={width}&url={url}
