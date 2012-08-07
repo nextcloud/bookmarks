@@ -21,6 +21,8 @@
 				success: function(data){ 
 					if(data.status == 'success'){
 						base.options['on_success'](data);
+					} else { // On failure
+						
 					}
 				}
 			});

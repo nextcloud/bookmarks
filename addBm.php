@@ -66,7 +66,7 @@ foreach($qtags as $tag) {
 }
 
 $tmpl = new OCP\Template( 'bookmarks', 'addBm', 'empty' );
+$tmpl->assign('requesttoken', OC_Util::callRegister());
 $tmpl->assign('bookmark', $bm);
 $tmpl->assign('tags', json_encode($tags), false);
-
 $tmpl->printPage();
