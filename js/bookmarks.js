@@ -325,11 +325,12 @@ function hasProtocol(url) {
 }
 
 function renameTag(event) {
- tag_el = $(this).closest('li');
- tag_el.append('<input name="tag_new_name" type="text">');
-
- tag_name = tag_el.find('.tag').hide().text();
- tag_el.find('input').val(tag_name).bind('blur',submitTagName);
+	if($('input[name="tag_new_name"]').length) return; // Do nothing if a tag is currenlty edited
+	tag_el = $(this).closest('li');
+	tag_el.append('<input name="tag_new_name" type="text">');
+	tag_el.find('.tag_edit').hide();
+	tag_name = tag_el.find('.tag').hide().text();
+	tag_el.find('input').val(tag_name).bind('blur',submitTagName);
 
 }
 
@@ -337,6 +338,7 @@ function submitTagName(event) {
 	tag_el = $(this).closest('li')
 	new_tag_name = tag_el.find('input').val();
 	old_tag_name = tag_el.find('.tag').show().text();
+	tag_el.find('.tag_edit').show();
 	tag_el.find('input').remove();
 
 	//submit
