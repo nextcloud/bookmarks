@@ -46,27 +46,22 @@ function clickSideBar() {
 }
 
 function toggleSideBar(){
-	var left_visible = $('#leftcontent').is(':visible');;
-	if(!left_visible) {
-		//$('#rightcontent').css('left','32.5em');
-		$('#rightcontent').animate({'left':'32.5em'},{duration: 500});
+	var left_pan_visible = $('.right_img').is(':visible');
+	anim_duration = 1000;
+	if( left_pan_visible) { // then show the left panel
+		$('#rightcontent').animate({'left':'32.5em'},{duration: anim_duration, queue: false });
+		$('.bookmarks_list').animate({'width': '-=15em'},{duration: anim_duration, queue: false });
+		$('#leftcontent').animate({'margin-left':'0', 'opacity': 1},{duration: anim_duration, queue: false, complete: function() { $(window).trigger('resize'); }});
 		$('.right_img').hide();
 		$('.left_img').show();
 		
+	} else { // hide the left panel
+		$('#rightcontent').animate({'left':'15.5em'},{duration: anim_duration, queue: false });
+		$('.bookmarks_list').animate({'width': '+=15em'},{duration: anim_duration, queue: false });
+		$('#leftcontent').animate({'margin-left':'-17em', 'opacity': 0.5 },{duration: anim_duration, queue: false, complete: function() { $(window).trigger('resize'); } });
+		$('.left_img').hide();
+		$('.right_img').show();
 	}
-	$('#leftcontent').animate({
-			width: ['toggle','swing'],
-			opacity: ['toggle', 'swing']
-		},'2000', function() {
-			if(! $('#leftcontent').is(':visible')) {
-				$('.left_img').hide();
-				$('.right_img').show();
-			}
-			$(window).trigger('resize');
-		});
-		if(left_visible) {
-			$('#rightcontent').animate({'left':'12.5em'},{duration: 1000, complete: function() { $(window).trigger('resize'); } });
-		}
 }
 
 function clickSwitchView(){

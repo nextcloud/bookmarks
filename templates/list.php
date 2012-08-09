@@ -17,6 +17,13 @@
 	</div>
 </div>
 <div id="leftcontent">
+	<div class="centercontent">
+		<!--<img class="left_img svg" src="<?php echo OCP\image_path('bookmarks','triangle-w.svg'); ?>">
+		<img class="right_img svg" src="<?php echo OCP\image_path('bookmarks','triangle-e.svg'); ?>">-->
+		<span class="left_img"> <?php echo $l->t('Hide')?> &lt;&lt;</span>
+		<span class="right_img"> <?php echo $l->t('Show')?> &gt;&gt;</span>
+	</div>
+
 	<p id="tag_filter">
 		<input type="text" placeholder="Filter By tag" value="<?php echo $_['req_tag']; ?>"/>
 	</p>
@@ -45,10 +52,6 @@
 </div>
 
 <div id="rightcontent" class="rightcontent">
-	<div class="centercontent">
-		<img class="left_img svg" src="<?php echo OCP\image_path('bookmarks','triangle-w.svg'); ?>">
-		<img class="right_img svg" src="<?php echo OCP\image_path('bookmarks','triangle-e.svg'); ?>"></div>
-
 	<div class="bookmarks_list"></div>
 	<div id="firstrun" style="display: none;">
 		<?php
