@@ -21,7 +21,7 @@ $(document).ready(function() {
 	}).tagit('option', 'onTagAdded', filterTagsChanged);
 	getBookmarks();
 	
-	if(init_sidebar == 'true')
+	if(init_sidebar != 'true')
 		toggleSideBar();
 	bookmark_view = init_view;
 	switchView();
@@ -41,7 +41,7 @@ var formatString = (function() {
 })();
 
 function clickSideBar() {
-	$.post(OC.filePath('bookmarks', 'ajax', 'changescreen.php'), {sidebar: $('#leftcontent').is(':visible')});
+	$.post(OC.filePath('bookmarks', 'ajax', 'changescreen.php'), {sidebar: $('.right_img').is(':visible')});
 	toggleSideBar();
 }
 
@@ -322,32 +322,39 @@ function hasProtocol(url) {
 function renameTag(event) {
 	if($('input[name="tag_new_name"]').length) return; // Do nothing if a tag is currenlty edited
 	tag_el = $(this).closest('li');
-	tag_el.append('<input name="tag_new_name" type="text">');
+	tag_el.append('<form><input name="tag_new_name" type="text"></form>');
+	var form = tag_el.find('form');
 	tag_el.find('.tags_actions').hide();
 	tag_name = tag_el.find('.tag').hide().text();
-	tag_el.find('input').val(tag_name).focus().bind('blur',submitTagName);
-
+	tag_el.find('input').val(tag_name).focus().bind('blur',function() {
+		form.trigger('submit');
+	});
+	form.bind('submit',submitTagName);
 }
 
 function submitTagName(event) {
+	event.preventDefault();
 	tag_el = $(this).closest('li')
 	new_tag_name = tag_el.find('input').val();
 	old_tag_name = tag_el.find('.tag').show().text();
 	tag_el.find('.tag_edit').show();
 	tag_el.find('.tags_actions').show();
-	tag_el.find('input').remove();
+	tag_el.find('input').unbind('blur');
+	tag_el.find('form').unbind('submit').remove();
 
-	//submit
-	$.ajax({
-		type: 'POST',
-		url: OC.filePath('bookmarks', 'ajax', 'renameTag.php'),
-		data: { old_name: old_tag_name, new_name:  new_tag_name},
-		success: function(bookmarks){
-			if (bookmarks.status =='success') {
-				filterTagsChanged();
+	if(new_tag_name != old_tag_name && new_tag_name != '') {
+		//submit
+		$.ajax({
+			type: 'POST',
+			url: OC.filePath('bookmarks', 'ajax', 'renameTag.php'),
+			data: { old_name: old_tag_name, new_name:  new_tag_name},
+			success: function(bookmarks){
+				if (bookmarks.status =='success') {
+					filterTagsChanged();
+				}
 			}
-		}
-	});
+		});
+	}
 }
 
 function deleteTag(event){
