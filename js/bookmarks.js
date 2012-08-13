@@ -360,7 +360,7 @@ function submitTagName(event) {
 function deleteTag(event){
 	tag_el = $(this).closest('li');
 	var old_tag_name = tag_el.find('.tag').show().text();
-	OC.dialogs.confirm(t('bookmarks', 'Are you sure you want to remove this tag fro every entry?'),
+	OC.dialogs.confirm(t('bookmarks', 'Are you sure you want to remove this tag from every entry?'),
 	 t('bookmarks', 'Warning'), function(answer) {
 		if(answer) {
 			$.ajax({
