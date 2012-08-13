@@ -43,7 +43,7 @@
 			</li>
 
 			<li>
-				<input type="submit" class="submit" value="<?php echo $l->t("Submit");?>" />
+				<input type="submit" class="submit" value="<?php echo $l->t("Save");?>" />
 				<input type="checkbox" <?php if($_['bookmark']['is_public']){echo 'checked="checked"';} ?> id="is_public" name="is_public">
 				<label for="is_public" class="is_public_label"><?php echo $l->t("Make this link public");?></label>
 				<input type="hidden" class="record_id" value="" name="record_id" />
