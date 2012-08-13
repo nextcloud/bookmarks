@@ -175,7 +175,7 @@ function createEditDialog(record){
 	dialog_html = $('#edit_dialog').html();
 	var dialog = $(dialog_html).dialog({
 		width : 620,
-		height: 400,
+		height: 350,
 		title: t('bookmark', 'Edit bookmark'),
 		modal: true,
 		close : function(event, ui) {

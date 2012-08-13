@@ -25,15 +25,6 @@
  */
 class OC_Bookmarks_Bookmarks{
 
-
-	/**
-	* @brief Find People with whome we shared bookmarks and how much
-	*/
-	public static function findSharing($offset = 0, $limit = 10){
-		$query = OCP\DB::prepare('SELECT \'@public\' as name, count(*) as nbr from  *PREFIX*bookmarks where public=1 group by public LIMIT '.$offset.',  '.$limit);
-		$tags = $query->execute()->fetchAll();
-		return $tags;
-	}
 	/**
 	* @brief Finds all tags for bookmarks
 	*/

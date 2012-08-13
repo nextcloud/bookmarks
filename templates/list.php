@@ -31,23 +31,6 @@
 	<label><?php echo $l->t('Related Tags'); ?></label>
 	<ul class="tag_list">
 	</ul>
-	<label><?php echo $l->t('Shared with'); ?></label>
-
-	<ul class="share_list">
-		<?php foreach($_['shared'] as $users):?>
-			<li><span class="tag"><?php echo $users['name'];?></span>
-				<p class="tags_actions">
-					<span class="bookmark_edit">
-						<img class="svg" src="<?php echo OCP\image_path('core','actions/rename.svg') ?>" title="Edit">
-					</span>
-					<span class="bookmark_delete">
-						<img class="svg" src="<?php echo OCP\image_path('core','actions/delete.svg') ?>" title="Delete">
-					</span>
-				</p>
-				<em><?php echo $users['nbr'];?></em>
-			</li>
-		<?php endforeach;?>
-	<ul>
 
 </div>
 

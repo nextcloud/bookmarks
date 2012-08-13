@@ -37,7 +37,6 @@ OCP\Util::addscript('bookmarks','addBm');
 OCP\Util::addscript('bookmarks','tag-it');
 OCP\Util::addStyle('bookmarks', 'jquery.tagit');
 $qtags = OC_Bookmarks_Bookmarks::findTags();
-$shared = OC_Bookmarks_Bookmarks::findSharing();
 
 $tags = array();
 foreach($qtags as $tag) {
@@ -57,5 +56,4 @@ $tmpl->assign('bookmark', $bm);
 
 $tmpl->assign('req_tag',isset($_GET['tag']) ? $_GET['tag'] : '');
 $tmpl->assign('tags', json_encode($tags), false);
-$tmpl->assign('shared', $shared);
 $tmpl->printPage();

@@ -44,7 +44,6 @@
 				base.$el.find('.title').val(record.title);
 				base.$el.find('.url_input').val(record.url);
 				base.$el.find('.desc').val(record.description);
-				base.$el.find('.is_public').val(record.public);
 				tagit_elem = base.$el.find('.tags');
 				for(var i=0;i<record.tags.length;i++) {
 					tagit_elem.tagit('createTag', record.tags[i]);
