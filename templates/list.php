@@ -9,7 +9,8 @@
 ?>
 <input type="hidden" id="bookmarkFilterTag" value="<?php echo $_['req_tag']; ?>" />
 <div id="controls">
-	<input type="submit" value="<?php echo $l->t('New bookmark'); ?>" id="bookmark_add_submit" />
+	<input type="text" id="add_url" value="" placeholder="<?php echo $l->t('Address'); ?>"/>
+	<input type="submit" value="<?php echo $l->t('Add bookmark'); ?>" id="bookmark_add_submit" />
 
 	<div id="view_type">
 		<input type="button" class="list" value="<?php echo $l->t('List')?>" />

@@ -28,6 +28,9 @@
 			});
       return false;
     }
+		base.setTitle = function (str) {
+			base.$el.find('.title').val(str);
+		}
 		
     base.init = function(){
       base.options = $.extend({},$.bookmark_dialog.defaultOptions, options);
@@ -45,8 +48,10 @@
 				base.$el.find('.url_input').val(record.url);
 				base.$el.find('.desc').val(record.description);
 				tagit_elem = base.$el.find('.tags');
-				for(var i=0;i<record.tags.length;i++) {
-					tagit_elem.tagit('createTag', record.tags[i]);
+				if(record.tags) {
+					for(var i=0;i<record.tags.length;i++) {
+						tagit_elem.tagit('createTag', record.tags[i]);
+					}
 				}
 			}
 

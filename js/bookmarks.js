@@ -1,6 +1,6 @@
 var bookmarks_page = 0;
 var bookmarks_loading = false;
-
+var dialog;
 var bookmarks_sorting = 'bookmarks_sorting_recent';
 
 var bookmark_view = 'image';
@@ -173,7 +173,7 @@ function getBookmarks() {
 
 function createEditDialog(record){
 	dialog_html = $('#edit_dialog').html();
-	var dialog = $(dialog_html).dialog({
+	var oc_dialog= $(dialog_html).dialog({
 		width : 620,
 		height: 350,
 		title: t('bookmark', 'Edit bookmark'),
@@ -193,7 +193,20 @@ function createEditDialog(record){
 }
 
 function addBookmark(event) {
-	createEditDialog();
+	url = $('#add_url').val();
+	createEditDialog({ url: url});
+	$('#add_url').val('');
+
+	$.ajax({
+		type: 'GET',
+		url: OC.filePath('bookmarks', 'ajax', 'getInfos.php'),
+		data: { type: 'url_info', url: url},
+		success: function(data){
+			if (data.status == 'success') {
+				$('.ui-dialog').data('bookmark_dialog').setTitle(data.title);
+			}
+		}
+	});
 }
 
 function delBookmark(event) {
