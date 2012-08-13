@@ -30,20 +30,24 @@ class OC_Bookmarks_Bookmarks{
 	*/
 	public static function findTags($filterTags = array(), $offset = 0, $limit = 10){
 		//$query = OCP\DB::prepare('SELECT tag, count(*) as nbr from  *PREFIX*bookmarks_tags group by tag LIMIT '.$offset.',  '.$limit);
-
 		$params = array_merge($filterTags,$filterTags);
+		array_unshift($params, OCP\USER::getUser());
 		$not_in = '';
 
 		if(!empty($filterTags) ) {
-			$not_in = ' where tag not in ('. implode(',',array_fill(0, count($filterTags) ,'?') ) .')'.
+			$not_in = ' AND tag not in ('. implode(',',array_fill(0, count($filterTags) ,'?') ) .')'.
 			str_repeat(" AND	exists (select 1 from  *PREFIX*bookmarks_tags t2 where t2.bookmark_id = t.bookmark_id and tag = ?) ", count($filterTags));
 		}
-		$sql = 'SELECT tag, count(*) as nbr from *PREFIX*bookmarks_tags t '.$not_in.
-			'group by tag Order by nbr DESC LIMIT '.$offset.',  '.$limit;
+		$sql = 'SELECT tag, count(*) as nbr from *PREFIX*bookmarks_tags t '.
+			' WHERE EXISTS( SELECT 1 from *PREFIX*bookmarks bm where  t.bookmark_id  = bm.id and user_id = ?) '.
+			$not_in.
+			' group by tag Order by nbr DESC LIMIT '.$offset.',  '.$limit;
+			
 		$query = OCP\DB::prepare($sql);
 		$tags = $query->execute($params)->fetchAll();
 		return $tags;
 	}
+	
 	/**
 	 * @brief Finds all bookmarks, matching the filter
 	 * @param offset result offset
