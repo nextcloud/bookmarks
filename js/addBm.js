@@ -29,19 +29,9 @@
       return false;
     }
 		
-    base.edit_url = function (event) {
-			base.$el.find('.url_input').slideToggle();
-		}
-		
-    base.change_url = function (event) {
-			base.$el.find('.url-ro code').text(base.$el.find('.url_input').val());
-		}
-		
     base.init = function(){
       base.options = $.extend({},$.bookmark_dialog.defaultOptions, options);
       base.$el.find('form').bind('submit.addBmform',base.form_submit);
-			base.$el.find('.url-ro img').bind('click',base.edit_url);
-			base.$el.find('.url_input').bind('keypress',base.change_url);
 			// Init Tagging thing
 			base.$el.find('.tags').tagit({
 				allowSpaces: true,
@@ -52,23 +42,19 @@
 				record = base.options['record'];
 				base.$el.find('.record_id').val(record.id);
 				base.$el.find('.title').val(record.title);
-				base.$el.find('.url-ro code').text(record.url);
 				base.$el.find('.url_input').val(record.url);
 				base.$el.find('.desc').val(record.description);
 				base.$el.find('.is_public').val(record.public);
 				tagit_elem = base.$el.find('.tags');
 				for(var i=0;i<record.tags.length;i++) {
 					tagit_elem.tagit('createTag', record.tags[i]);
-					console.log(record.tags[i]);
 				}
 			}
 
-			if(base.$el.find('.url-ro code').text() != '')
-				base.$el.find('.url_input').hide();
-			else
-				base.$el.find('.url_input').show()
+			base.$el.find('.tagit-new input').attr('placeholder',t('bookmark', 'Tags'));
+
     };
-		
+
     base.init();
   };
   

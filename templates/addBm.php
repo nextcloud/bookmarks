@@ -14,22 +14,14 @@
 		<fieldset class="bm_desc">
 		<ul>
 			<li>
-				<label for="title"><strong><?php echo $l->t('Title');?></strong></label>
 				<input type="text" name="title" class="title" value="<?php echo $_['bookmark']['title']; ?>" placeholder="<?php echo $l->t('The title of the page');?>" />
 			</li>
 
 			<li>
-				<label for="url"><strong><?php echo $l->t('Address');?></strong></label>
-				<div class="url-ro">
-					<code><?php echo $_['bookmark']['url']; ?></code>
-					<img class="svg action"	src="<?php echo image_path('core','actions/rename.svg')?>"
-          alt="<?php echo $l->t('Edit');?>" title="<?php echo $l->t('Edit');?>" />
-				</div>
 				<input type="text" name="url" class="url_input" value="<?php echo $_['bookmark']['url']; ?>" placeholder="<?php echo $l->t('The address of the page');?>" />
 			</li>
 
 			<li>
-				<label for="tags"><strong><?php echo $l->t('Tags');?></strong></label>
 					<ul class="tags" >
 						<?php foreach($_['bookmark']['tags'] as $tag):?>
 							<li><?php echo $tag;?></li>
@@ -38,7 +30,6 @@
 			</li>
 
 			<li>
-				<label for="desc"><strong><?php echo $l->t('Description');?></strong></label>
 				<textarea name="desc" class="desc" value="<?php echo $_['bookmark']['desc']; ?>" placeholder="<?php echo $l->t('Description of the page');?>"></textarea>
 			</li>
 
