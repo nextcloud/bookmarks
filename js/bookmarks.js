@@ -172,8 +172,7 @@ function getBookmarks() {
 
 
 function createEditDialog(record){
-	dialog_html = $('#edit_dialog').html();
-	var oc_dialog= $(dialog_html).dialog({
+	var oc_dialog= $('#edit_dialog form').clone().dialog({
 		width : 620,
 		height: 350,
 		title: t('bookmark', 'Edit bookmark'),
@@ -185,7 +184,7 @@ function createEditDialog(record){
 
 	$('.ui-dialog').bookmark_dialog({
 		on_success: function(){
-			dialog.dialog('destroy').remove();
+			oc_dialog.dialog('destroy').remove();
 			filterTagsChanged();
 		},
 		record: record
