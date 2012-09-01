@@ -35,6 +35,7 @@ OCP\Util::addscript('bookmarks','addBm');
 
 
 OCP\Util::addscript('bookmarks','tag-it');
+OCP\Util::addscript('bookmarks','js_tpl');
 OCP\Util::addStyle('bookmarks', 'jquery.tagit');
 $qtags = OC_Bookmarks_Bookmarks::findTags();
 

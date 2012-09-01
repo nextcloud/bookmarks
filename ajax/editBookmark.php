@@ -38,7 +38,6 @@ if(isset($_POST['url'])) {
 	}
 	else {
 		$bm = OC_Bookmarks_Bookmarks::addBookmark($_POST['url'], $_POST['title'], $tags, $_POST['desc'], $pub);
-		continue;
 	}
 	OCP\JSON::success(array('id'=>$bm));
 	exit();

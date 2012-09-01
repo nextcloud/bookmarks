@@ -38,7 +38,8 @@
 			// Init Tagging thing
 			base.$el.find('.tags').tagit({
 				allowSpaces: true,
-				availableTags: fullTags
+				availableTags: fullTags,
+				placeholderText: t('bookmark', 'Tags')
 			});
 
 			if(base.options['record']) { //Fill the form if it's an edit
@@ -54,9 +55,6 @@
 					}
 				}
 			}
-
-			base.$el.find('.tagit-new input').attr('placeholder',t('bookmark', 'Tags'));
-
     };
 
     base.init();

@@ -228,9 +228,46 @@ function delBookmark(event) {
 function editBookmark(event) {
 	var record = $(this).parent().parent();
 	bookmark =  record.data('record');
-	createEditDialog(bookmark);
+	console.log(bookmark);
+	//createEditDialog(bookmark);
+	html = tmpl("item_form_tmpl", bookmark);
+	
+	record.after(html);
+	record.hide();
+	rec_form = record.next().find('form');
+	console.log(rec_form);
+	rec_form.find('.bookmark_form_tags ul').tagit({
+				allowSpaces: true,
+				availableTags: fullTags,
+				placeholderText: t('bookmark', 'Tags')
+			});
+	rec_form.bind('submit',submitBookmark);
+	rec_form.find('.reset').bind('click',cancelBookmark);
 }
 
+function cancelBookmark(event) {
+	event.preventDefault();
+	rec_form = $(this).closest('form').parent();
+	rec_form.prev().show();
+	rec_form.remove();
+}
+function submitBookmark(event) {
+	event.preventDefault();
+	form_values = $(this).serialize();
+	$.ajax({
+		type: 'POST',
+		url: $(this).attr('action'),
+		data: form_values,
+		success: function(data){
+			if(data.status == 'success'){
+				//@TODO : do better reaction than reloading the page
+				filterTagsChanged();
+			} else { // On failure
+				//@TODO : show error message?
+			}
+		}
+	});
+}
 function updateBookmarksList(bookmark) {
 	var tags = bookmark.tags;
 	var taglist = '';
