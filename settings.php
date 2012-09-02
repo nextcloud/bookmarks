@@ -20,16 +20,12 @@ if (isset($_POST['bm_import'])) {
 			'hint' => '');
 	}
 
+	$tmpl = new OCP\Template('bookmarks', 'settings');
 	// Any problems?
 	if(count($error)){
-		$tmpl = new OCP\Template('bookmarks', 'settings');
 		$tmpl->assign('error',$error);
-			//return $tmpl->fetchPage();
-	} else {
-		// Went swimmingly!
-		$tmpl = new OCP\Template('bookmarks', 'settings');
-			//return $tmpl->fetchPage();
 	}
+	return $tmpl->fetchPage();
 } else {
 	$tmpl = new OCP\Template( 'bookmarks', 'settings');
 	return $tmpl->fetchPage();
