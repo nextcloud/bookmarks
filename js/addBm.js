@@ -18,7 +18,7 @@
 				type: 'POST',
 				url: $(this).attr('action'),
 				data: $(this).serialize(),
-				success: function(data){ 
+				success: function(data){
 					if(data.status == 'success'){
 						base.options['on_success'](data);
 					} else { // On failure

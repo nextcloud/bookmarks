@@ -227,9 +227,11 @@ function delBookmark(event) {
 }
 
 function editBookmark(event) {
+	if($('.bookmark_single_form').length){
+		$('.bookmark_single_form .reset').click();
+	}
 	var record = $(this).parent().parent();
 	bookmark =  record.data('record');
-	//createEditDialog(bookmark);
 	html = tmpl("item_form_tmpl", bookmark);
 	
 	record.after(html);
