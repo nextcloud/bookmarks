@@ -360,6 +360,7 @@
             } else {
                 tag.remove();
             }
+            this._trigger('onTagFinishRemoved', null, tag);
         },
 
         removeAll: function() {
