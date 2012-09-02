@@ -30,7 +30,7 @@
 			</li>
 
 			<li>
-				<textarea name="desc" class="desc" value="<?php echo $_['bookmark']['desc']; ?>" placeholder="<?php echo $l->t('Description of the page');?>"></textarea>
+				<textarea name="description" class="desc" value="<?php echo $_['bookmark']['desc']; ?>" placeholder="<?php echo $l->t('Description of the page');?>"></textarea>
 			</li>
 
 			<li>

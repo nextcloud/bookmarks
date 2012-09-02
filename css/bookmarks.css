@@ -316,6 +316,12 @@ li:hover em { display : none; }
 	width: 80%;
 }
 
+.bookmark_single_form {
+	padding-top: 1em;
+	border-bottom: 1px solid #DDD;
+	padding-left: 2em;
+}
+
 .bookmark_single_form .tagit{
    width: 80%;
 	box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;

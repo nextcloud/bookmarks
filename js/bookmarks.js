@@ -193,16 +193,17 @@ function createEditDialog(record){
 
 function addBookmark(event) {
 	url = $('#add_url').val();
-	createEditDialog({ url: url});
 	$('#add_url').val('');
-
+	bookmark = { url: url, description:'', title:''};
 	$.ajax({
-		type: 'GET',
-		url: OC.filePath('bookmarks', 'ajax', 'getInfos.php'),
-		data: { type: 'url_info', url: url},
+		type: 'POST',
+		url: OC.filePath('bookmarks', 'ajax', 'editBookmark.php'),
+		data: bookmark,
 		success: function(data){
 			if (data.status == 'success') {
-				$('.ui-dialog').data('bookmark_dialog').setTitle(data.title);
+				bookmark.id = data.id;
+				bookmark.added_date = new Date();
+				updateBookmarksList(bookmark, 'prepend');
 			}
 		}
 	});
@@ -213,7 +214,7 @@ function delBookmark(event) {
 	$.ajax({
 		type: 'POST',
 		url: OC.filePath('bookmarks', 'ajax', 'delBookmark.php'),
-		data: 'id=' + record.data('id'),
+		data: { id: record.data('id') },
 		success: function(data){
 			if (data.status == 'success') {
 				record.remove();
@@ -228,14 +229,12 @@ function delBookmark(event) {
 function editBookmark(event) {
 	var record = $(this).parent().parent();
 	bookmark =  record.data('record');
-	console.log(bookmark);
 	//createEditDialog(bookmark);
 	html = tmpl("item_form_tmpl", bookmark);
 	
 	record.after(html);
 	record.hide();
 	rec_form = record.next().find('form');
-	console.log(rec_form);
 	rec_form.find('.bookmark_form_tags ul').tagit({
 				allowSpaces: true,
 				availableTags: fullTags,
@@ -251,6 +250,7 @@ function cancelBookmark(event) {
 	rec_form.prev().show();
 	rec_form.remove();
 }
+
 function submitBookmark(event) {
 	event.preventDefault();
 	form_values = $(this).serialize();
@@ -268,8 +268,10 @@ function submitBookmark(event) {
 		}
 	});
 }
-function updateBookmarksList(bookmark) {
-	var tags = bookmark.tags;
+
+function updateBookmarksList(bookmark, position='append') {
+	bookmark = $.extend({title:'', description:'', added_date: new Date('now'), tags:[] }, bookmark);
+	tags = bookmark.tags;
 	var taglist = '';
 	for ( var i=0, len=tags.length; i<len; ++i ){
 		if(tags[i] != '')
@@ -278,10 +280,11 @@ function updateBookmarksList(bookmark) {
 	if(!hasProtocol(bookmark.url)) {
 		bookmark.url = 'http://' + bookmark.url;
 	}
-	if(bookmark.title == '') bookmark.title = bookmark.url;
-
-	bookmark.added_date = new Date();
-	bookmark.added_date.setTime(parseInt(bookmark.added)*1000);
+	
+	if(bookmark.added) {
+		bookmark.added_date.setTime(parseInt(bookmark.added)*1000);
+	}
+	
 	if(bookmark_view == 'image') { //View in images
 		service_url = formatString(shot_provider, {url: encodeEntities(bookmark.url), title: bookmark.title, width: 200});
 		$('.bookmarks_list').append(
@@ -308,30 +311,22 @@ function updateBookmarksList(bookmark) {
 		}
 		$('div[data-id="'+ bookmark.id +'"] a.bookmark_tag').bind('click', addFilterTag);
 	}
-	else { // View in text
-		$('.bookmarks_list').append(
-			'<div class="bookmark_single" data-id="' + bookmark.id +'" >' +
-				'<p class="bookmark_actions">' +
-					'<span class="bookmark_edit">' +
-						'<img class="svg" src="'+OC.imagePath('core', 'actions/rename')+'" title="Edit">' +
-					'</span>' +
-					'<span class="bookmark_delete">' +
-						'<img class="svg" src="'+OC.imagePath('core', 'actions/delete')+'" title="Delete">' +
-					'</span>&nbsp;' +
-				'</p>' +
-				'<p class="bookmark_title">'+
-					'<a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.title) + '</a>' +
-				'</p>' +
-				'<p class="bookmark_url"><a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.url) + '</a></p>' +
-				'<p class="bookmark_date">' + formatDate(bookmark.added_date) + '</p>' +
-				'<p class="bookmark_desc">'+ encodeEntities(bookmark.description) + '</p>' +
-			'</div>'
-		);
-		$('div[data-id="'+ bookmark.id +'"]').data('record', bookmark);
-		if(taglist != '') {
-			$('div[data-id="'+ bookmark.id +'"]').append('<p class="bookmark_tags">' + taglist + '</p>');
+	else {
+		html = tmpl("item_tmpl", bookmark);
+		if(position == "prepend") {
+			$('.bookmarks_list').prepend(html);
+		} else {
+			$('.bookmarks_list').append(html);
 		}
-		$('div[data-id="'+ bookmark.id +'"] a.bookmark_tag').bind('click', addFilterTag);
+		line = $('div[data-id="'+ bookmark.id +'"]');
+		line.data('record', bookmark);
+		if(taglist != '') {
+			line.append('<p class="bookmark_tags">' + taglist + '</p>');
+		}
+		line.find('a.bookmark_tag').bind('click', addFilterTag);
+		line.find('.bookmark_link').click(recordClick);
+		line.find('.bookmark_delete').click(delBookmark);
+		line.find('.bookmark_edit').click(editBookmark);
 	}
 
 }

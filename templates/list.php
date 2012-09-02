@@ -69,7 +69,7 @@
 					</span>&nbsp;
 				</p>
 				<p class="bookmark_title">
-					<a href="<%= encodeEntities(url) %>" target="_blank" class="bookmark_link"><%= encodeEntities(title) %></a>
+					<a href="<%= encodeEntities(url) %>" target="_blank" class="bookmark_link"><%= encodeEntities(title == '' ? url : title ) %></a>
 				</p>
 				<p class="bookmark_url"><a href="<%= encodeEntities(url) %>" target="_blank" class="bookmark_link"><%= encodeEntities(url) %></a></p>
 				<p class="bookmark_date"><%= formatDate(added_date) %></p>
@@ -90,7 +90,7 @@
 						<li><%=tags[i]%></li>
 					<% } %>
 				</ul></div>
-				<p class="bookmark_form_desc"><textarea name="desc" placeholder="<?php echo $l->t('Description of the page');?>"><%= description%></textarea> </p>
+				<p class="bookmark_form_desc"><textarea name="description" placeholder="<?php echo $l->t('Description of the page');?>"><%= description%></textarea> </p>
 				<p class="bookmark_form_submit"><button class="reset" ><?php echo $l->t('Cancel');?></button><input type="submit" value="<?php echo $l->t('Save');?>"></p>
 			</form>
 		</div>
