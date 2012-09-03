@@ -131,13 +131,16 @@ class OC_Bookmarks_Bookmarks{
 	public static function renameTag($old, $new)
 	{
 		$user_id = OCP\USER::getUser();
+		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 
-		// Update the record
+
+		if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
+			// Update tags to the new label unless it already exists a tag like this
 		$query = OCP\DB::prepare("
-		UPDATE *PREFIX*bookmarks_tags SET
-			tag = ?
+		UPDATE OR REPLACE *PREFIX*bookmarks_tags
+		SET tag = ?
 		WHERE tag = ?
-		AND exists( select id from *PREFIX*bookmarks where user_id = ? and bookmark_id = id)
+		AND exists( select b.id from *PREFIX*bookmarks b where b.user_id = ? and bookmark_id = b.id)
 		");
 
 		$params=array(
@@ -147,6 +150,41 @@ class OC_Bookmarks_Bookmarks{
 		);
 
 		$result = $query->execute($params);
+		} else {
+
+			// Remove potentialy duplicated tags
+			$query = OCP\DB::prepare("
+			DELETE FROM *PREFIX*bookmarks_tags as tgs where tgs.tag = ?
+			AND exists( select id from *PREFIX*bookmarks where user_id = ? and tgs.bookmark_id = id)
+			AND exists( select t.tag from *PREFIX*bookmarks_tags t where t.tag=? and tgs.bookmark_id = tbookmark_id");
+
+			$params=array(
+				$new,
+				$user_id,
+			);
+
+			$result = $query->execute($params);
+
+
+			// Update tags to the new label unless it already exists a tag like this
+			$query = OCP\DB::prepare("
+			UPDATE *PREFIX*bookmarks_tags
+			SET tag = ?
+			WHERE tag = ?
+			AND exists( select b.id from *PREFIX*bookmarks b where b.user_id = ? and bookmark_id = b.id)
+			");
+
+			$params=array(
+				$new,
+				$old,
+				$user_id,
+				$old,
+			);
+
+			$result = $query->execute($params);
+		}
+
+
 		return true;
 	}
 
