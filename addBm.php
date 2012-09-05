@@ -27,7 +27,7 @@
 OCP\User::checkLoggedIn();
 OCP\App::checkAppEnabled('bookmarks');
 
-require_once('bookmarksHelper.php');
+require_once 'bookmarksHelper.php';
 addBookmark($_GET['url'], '', 'Read-Later');
 
 include 'templates/addBm.php';

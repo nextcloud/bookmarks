@@ -32,6 +32,6 @@ OCP\JSON::callCheck();
 
 OCP\JSON::checkAppEnabled('bookmarks');
 
-require_once(OC_App::getAppPath('bookmarks').'/bookmarksHelper.php');
+require_once OC_App::getAppPath('bookmarks').'/bookmarksHelper.php';
 $id = addBookmark($_POST['url'], $_POST['title'], $_POST['tags']);
 OCP\JSON::success(array('data' => $id));

@@ -10,7 +10,7 @@
 		<fieldset class="personalblock">
 			<span class="bold"><?php echo $l->t('Bookmarklet <br />');?></span>
 			<?php
-			    require_once('bookmarklet.php');
+			    require_once 'bookmarklet.php';
 			    createBookmarklet(); 
 			?>
 		</fieldset>
