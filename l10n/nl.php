@@ -6,6 +6,7 @@
 "Address" => "Adres",
 "Title" => "Titel",
 "Tags" => "Tags",
-"Save bookmark" => "Bewaar bookmark",
-"You have no bookmarks" => "U heeft geen bookmarks"
+"Save bookmark" => "Bewaar bladwijzer",
+"You have no bookmarks" => "U heeft geen bladwijzers",
+"Bookmarklet <br />" => "Bookmarklet <br />"
 );
