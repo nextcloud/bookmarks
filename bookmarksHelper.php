@@ -56,7 +56,7 @@ function getURLMetadata($url) {
 	} 
 	$metadata['url'] = $url;
 
-	if (!function_exists('curl_init')){
+	if (!function_exists('curl_init')) {
 		return $metadata;
 	}
 	$ch = curl_init();
@@ -73,7 +73,7 @@ function getURLMetadata($url) {
 
 function addBookmark($url, $title, $tags='') {
 	$CONFIG_DBTYPE = OCP\Config::getSystemValue( "dbtype", "sqlite" );
-	if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
+	if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ) {
 		$_ut = "strftime('%s','now')";
 	} elseif($CONFIG_DBTYPE == 'pgsql') {
 		$_ut = 'date_part(\'epoch\',now())::integer';

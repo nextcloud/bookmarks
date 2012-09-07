@@ -28,7 +28,7 @@ OCP\JSON::callCheck();
 OCP\JSON::checkAppEnabled('bookmarks');
 
 $CONFIG_DBTYPE = OCP\Config::getSystemValue( "dbtype", "sqlite" );
-if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
+if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ) {
 	$_ut = "strftime('%s','now')";
 } elseif($CONFIG_DBTYPE == 'pgsql') {
 	$_ut = 'date_part(\'epoch\',now())::integer';
