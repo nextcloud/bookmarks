@@ -21,11 +21,12 @@
  */
 
 class OC_Search_Provider_Bookmarks extends OC_Search_Provider{
-	function search($query){
+	function search($query) {
+		$l=OC_L10N::get('bookmarks');
 		$results=array();
 
 		$search_words=array();
-		if(substr_count($query, ' ') > 0){
+		if(substr_count($query, ' ') > 0) {
 			$search_words = explode(' ', $query);
 		}else{
 			$search_words = $query;
@@ -33,8 +34,8 @@ class OC_Search_Provider_Bookmarks extends OC_Search_Provider{
 		
 		$bookmarks = OC_Bookmarks_Bookmarks::searchBookmarks($search_words);
 		$l = new OC_l10n('bookmarks'); //resulttype can't be localized, javascript relies on that type
-		foreach($bookmarks as $bookmark){
-			$results[]=new OC_Search_Result($bookmark['title'],'', $bookmark['url'],$l->t('Bookm.'));
+		foreach($bookmarks as $bookmark) {
+			$results[]=new OC_Search_Result($bookmark['title'],'', $bookmark['url'], $l->t('Bookm.'));
 		}
 		
 		return $results;

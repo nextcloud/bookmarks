@@ -56,7 +56,8 @@ function getURLMetadata($url) {
 		$url = 'http://' . $url;
 	}
 	$metadata['url'] = $url;
-	if (!function_exists('curl_init')){
+
+	if (!function_exists('curl_init')) {
 		return $metadata;
 	}
 	$ch = curl_init();

@@ -34,14 +34,13 @@
 	</ul>
 
 </div>
-
 <div id="rightcontent" class="rightcontent">
 	<div class="bookmarks_list"></div>
 	<div id="firstrun" style="display: none;">
 		<?php
 			echo $l->t('You have no bookmarks');
 			$embedded = true;
-			require_once(OC_App::getAppPath('bookmarks') .'/templates/bookmarklet.php');
+			require_once OC_App::getAppPath('bookmarks') .'/templates/bookmarklet.php' ;
 			createBookmarklet(); 
 		?>
 </div>

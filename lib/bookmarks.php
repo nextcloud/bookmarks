@@ -56,7 +56,7 @@ class OC_Bookmarks_Bookmarks{
 	 * @param filterTagOnly if true, filter affects only tags, else filter affects url, title and tags
 	 * @return void
 	 */
-	public static function findBookmarks($offset, $sqlSortColumn, $filters, $filterTagOnly){
+	public static function findBookmarks($offset, $sqlSortColumn, $filters, $filterTagOnly) {
 		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 		if(is_string($filters)) $filters = array($filters);
 

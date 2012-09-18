@@ -27,8 +27,7 @@
 OCP\User::checkLoggedIn();
 OCP\App::checkAppEnabled('bookmarks');
 
-
-require_once('bookmarksHelper.php');
+require_once 'bookmarksHelper.php';
 
 // Prep screen if we come from the bookmarklet
 $url ='';

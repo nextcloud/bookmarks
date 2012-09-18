@@ -7,5 +7,6 @@
 "Title" => "Titolo",
 "Tags" => "Etikedoj",
 "Save bookmark" => "Konservi legosignon",
-"You have no bookmarks" => "Vi havas neniun legosignon"
+"You have no bookmarks" => "Vi havas neniun legosignon",
+"Bookmarklet <br />" => "Kodosigno <br />"
 );
