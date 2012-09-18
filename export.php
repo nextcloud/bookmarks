@@ -29,4 +29,10 @@ foreach($bookmarks as $bm) {
 		$file .= '<DD>'.htmlspecialchars($bm['description'], ENT_QUOTES, 'UTF-8');
 }
 
+header("Cache-Control: private");
+header("Content-Type: application/stream");
+header("Content-Length: ".$fileSize);
+header("Content-Disposition: attachment; filename=oc-bookmarks.html");
+
 echo $file;
+exit;
