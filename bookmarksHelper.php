@@ -36,7 +36,7 @@ function curl_exec_follow(/*resource*/ $ch, /*int*/ &$maxredirect = null) {
 			curl_close($rch);
 			if (!$mr) {
 				if ($maxredirect === null) {
-					trigger_error('Too many redirects. When following redirects, libcurl hit the maximum amount.', E_USER_WARNING);
+					OCP\Util::writeLog('bookmark', 'Too many redirects. When following redirects, libcurl hit the maximum amount on bookmark', OCP\Util::ERROR);
 				} else {
 					$maxredirect = 0;
 				}

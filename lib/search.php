@@ -31,12 +31,10 @@ class OC_Search_Provider_Bookmarks extends OC_Search_Provider{
 			$search_words = $query;
 		}
 		
-//		OCP\Util::writeLog('bookmarks', 'search ' .$query ,OCP\Util::DEBUG);
 		$bookmarks = OC_Bookmarks_Bookmarks::searchBookmarks($search_words);
-//		OCP\Util::writeLog('bookmarks', 'found ' .count($bookmarks) ,OCP\Util::DEBUG);
-		//$l = new OC_l10n('bookmarks'); //resulttype can't be localized, javascript relies on that type
+		$l = new OC_l10n('bookmarks'); //resulttype can't be localized, javascript relies on that type
 		foreach($bookmarks as $bookmark){
-			$results[]=new OC_Search_Result($bookmark['title'],'', $bookmark['url'],'Bookm.');
+			$results[]=new OC_Search_Result($bookmark['title'],'', $bookmark['url'],$l->t('Bookm.'));
 		}
 		
 		return $results;

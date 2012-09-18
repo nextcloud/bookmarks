@@ -62,10 +62,10 @@
 		<div class="bookmark_single" data-id="<%= id %>">
 				<p class="bookmark_actions">
 					<span class="bookmark_edit">
-						<img class="svg" src="<?php echo OCP\image_path("", "actions/rename.svg");?>" title="Edit">
+						<img class="svg" src="<?php echo OCP\image_path("", "actions/rename.svg");?>" title="<?php echo $l->t('Edit');?>">
 					</span>
 					<span class="bookmark_delete">
-						<img class="svg" src="<?php echo OCP\image_path("", "actions/delete.svg");?>" title="Delete">
+						<img class="svg" src="<?php echo OCP\image_path("", "actions/delete.svg");?>" title="<?php echo $l->t('Delete');?>">
 					</span>&nbsp;
 				</p>
 				<p class="bookmark_title">
