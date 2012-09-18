@@ -35,7 +35,7 @@ class OC_Search_Provider_Bookmarks extends OC_Search_Provider{
 		$bookmarks = OC_Bookmarks_Bookmarks::searchBookmarks($search_words);
 		$l = new OC_l10n('bookmarks'); //resulttype can't be localized, javascript relies on that type
 		foreach($bookmarks as $bookmark) {
-			$results[]=new OC_Search_Result($bookmark['title'],'', $bookmark['url'], $l->t('Bookm.'));
+			$results[]=new OC_Search_Result($bookmark['title'],'', $bookmark['url'], (string) $l->t('Bookm.'));
 		}
 		
 		return $results;
