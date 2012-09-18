@@ -54,13 +54,13 @@ class OC_Bookmarks_Bookmarks{
 	 * @param sqlSortColumn sort result with this column
 	 * @param filters can be: empty -> no filter, a string -> filter this, a string array -> filter for all strings
 	 * @param filterTagOnly if true, filter affects only tags, else filter affects url, title and tags
+	 * @param limit number of item to return (default 10) if -1 or false then all item are returned
 	 * @return void
 	 */
-	public static function findBookmarks($offset, $sqlSortColumn, $filters, $filterTagOnly) {
+	public static function findBookmarks($offset, $sqlSortColumn, $filters, $filterTagOnly, $limit = 10) {
 		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 		if(is_string($filters)) $filters = array($filters);
 
-		$limit = 10;
 		$params=array(OCP\USER::getUser());
 
 		if($CONFIG_DBTYPE == 'pgsql') {
@@ -82,9 +82,11 @@ class OC_Bookmarks_Bookmarks{
 				$params[] = '%' . strtolower($filter) . '%';
 			}
 		}
-		$sql .= " ORDER BY ".$sqlSortColumn." DESC
-				LIMIT $limit
-				OFFSET  $offset";
+		$sql .= " ORDER BY ".$sqlSortColumn." DESC ";
+		if($limit != -1 && $limit !== false) {
+			$sql .= " LIMIT $limit ";
+			$sql .= " OFFSET  $offset";
+		}
 
 		$query = OCP\DB::prepare($sql);
 		$results = $query->execute($params)->fetchAll();
