@@ -22,8 +22,8 @@ if (isset($_POST['bm_import'])) {
 
 	$tmpl = new OCP\Template('bookmarks', 'settings');
 	// Any problems?
-	if(count($error)){
-		$tmpl->assign('error',$error);
+	if(count($error)) {
+		$tmpl->assign('error', $error);
 	}
 	return $tmpl->fetchPage();
 } else {

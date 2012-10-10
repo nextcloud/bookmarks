@@ -25,7 +25,7 @@
 // Check if we are a user
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('bookmarks');
-require_once(OC_App::getAppPath('bookmarks').'/bookmarksHelper.php');
+require_once OC_App::getAppPath('bookmarks').'/bookmarksHelper.php';
 
 $req_type= isset($_GET['type']) ? $_GET['type'] : 'bookmark';
 

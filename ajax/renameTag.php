@@ -30,8 +30,7 @@ $RUNTIME_NOSETUPFS=true;
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('bookmarks');
 
-if(isset($_POST['old_name']) && isset($_POST['new_name']) && $_POST['new_name'] != '')
-{
+if(isset($_POST['old_name']) && isset($_POST['new_name']) && $_POST['new_name'] != '') {
 	OC_Bookmarks_Bookmarks::renameTag($_POST['old_name'], $_POST['new_name']);
 	OCP\JSON::success();
 	exit();

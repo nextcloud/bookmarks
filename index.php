@@ -29,13 +29,13 @@ OCP\App::checkAppEnabled('bookmarks');
 
 OCP\App::setActiveNavigationEntry( 'bookmarks_index' );
 
-OCP\Util::addscript('bookmarks','bookmarks');
+OCP\Util::addscript('bookmarks', 'bookmarks');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
-OCP\Util::addscript('bookmarks','addBm');
+OCP\Util::addscript('bookmarks', 'addBm');
 
 
-OCP\Util::addscript('bookmarks','tag-it');
-OCP\Util::addscript('bookmarks','js_tpl');
+OCP\Util::addscript('bookmarks', 'tag-it');
+OCP\Util::addscript('bookmarks', 'js_tpl');
 OCP\Util::addStyle('bookmarks', 'jquery.tagit');
 $qtags = OC_Bookmarks_Bookmarks::findTags();
 
@@ -55,6 +55,6 @@ $tmpl = new OCP\Template( 'bookmarks', 'list', 'user' );
 
 $tmpl->assign('bookmark', $bm);
 
-$tmpl->assign('req_tag',isset($_GET['tag']) ? $_GET['tag'] : '');
+$tmpl->assign('req_tag', isset($_GET['tag']) ? $_GET['tag'] : '');
 $tmpl->assign('tags', json_encode($tags), false);
 $tmpl->printPage();

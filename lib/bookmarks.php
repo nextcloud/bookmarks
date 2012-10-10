@@ -29,14 +29,16 @@ class OC_Bookmarks_Bookmarks{
 	* @brief Finds all tags for bookmarks
 	*/
 	public static function findTags($filterTags = array(), $offset = 0, $limit = 10){
-		//$query = OCP\DB::prepare('SELECT tag, count(*) as nbr from  *PREFIX*bookmarks_tags group by tag LIMIT '.$offset.',  '.$limit);
-		$params = array_merge($filterTags,$filterTags);
+		$params = array_merge($filterTags, $filterTags);
 		array_unshift($params, OCP\USER::getUser());
 		$not_in = '';
 
 		if(!empty($filterTags) ) {
-			$not_in = ' AND tag not in ('. implode(',',array_fill(0, count($filterTags) ,'?') ) .')'.
-			str_repeat(" AND	exists (select 1 from  *PREFIX*bookmarks_tags t2 where t2.bookmark_id = t.bookmark_id and tag = ?) ", count($filterTags));
+			$exist_clause = " AND	exists (select 1 from  *PREFIX*bookmarks_tags
+				t2 where t2.bookmark_id = t.bookmark_id and tag = ?) ";
+
+			$not_in = ' AND tag not in ('. implode(',', array_fill(0, count($filterTags), '?') ) .')'.
+			str_repeat($exist_clause, count($filterTags));
 		}
 		$sql = 'SELECT tag, count(*) as nbr from *PREFIX*bookmarks_tags t '.
 			' WHERE EXISTS( SELECT 1 from *PREFIX*bookmarks bm where  t.bookmark_id  = bm.id and user_id = ?) '.
@@ -74,7 +76,9 @@ class OC_Bookmarks_Bookmarks{
 				WHERE user_id = ? ";
 
 		if($filterTagOnly) {
-			$sql .= str_repeat(" AND	exists (select id from  *PREFIX*bookmarks_tags t2 where t2.bookmark_id = b.id and tag = ?) ", count($filters));
+			$exist_clause = " AND	exists (select id from  *PREFIX*bookmarks_tags
+				t2 where t2.bookmark_id = b.id and tag = ?) ";
+			$sql .= str_repeat($exist_clause, count($filters));
 			$params = array_merge($params, $filters);
 		} else {
 			foreach($filters as $filter) {
@@ -136,22 +140,22 @@ class OC_Bookmarks_Bookmarks{
 		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 
 
-		if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
+		if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ) {
 			// Update tags to the new label unless it already exists a tag like this
-		$query = OCP\DB::prepare("
-		UPDATE OR REPLACE *PREFIX*bookmarks_tags
-		SET tag = ?
-		WHERE tag = ?
-		AND exists( select b.id from *PREFIX*bookmarks b where b.user_id = ? and bookmark_id = b.id)
-		");
+			$query = OCP\DB::prepare("
+				UPDATE OR REPLACE *PREFIX*bookmarks_tags
+				SET tag = ?
+				WHERE tag = ?
+				AND exists( select b.id from *PREFIX*bookmarks b where b.user_id = ? and bookmark_id = b.id)
+			");
 
-		$params=array(
-			$new,
-			$old,
-			$user_id,
-		);
+			$params=array(
+				$new,
+				$old,
+				$user_id,
+			);
 
-		$result = $query->execute($params);
+			$result = $query->execute($params);
 		} else {
 
 			// Remove potentialy duplicated tags
@@ -207,7 +211,7 @@ class OC_Bookmarks_Bookmarks{
 		);
 
 		$result = $query->execute($params);
-		return true;
+		return $result;
 	}
 
 	/**
@@ -217,7 +221,7 @@ class OC_Bookmarks_Bookmarks{
 	*/
 	protected static function getNowValue() {
 		$CONFIG_DBTYPE = OCP\Config::getSystemValue( "dbtype", "sqlite" );
-		if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ){
+		if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ) {
 			$_ut = "strftime('%s','now')";
 		} elseif($CONFIG_DBTYPE == 'pgsql') {
 			$_ut = 'date_part(\'epoch\',now())::integer';
@@ -277,7 +281,7 @@ class OC_Bookmarks_Bookmarks{
 	}
 
 	/**
- * Add a bookmark
+	* Add a bookmark
 	 * @param string $url
 	 * @param string $title Name of the bookmark
 	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
@@ -351,7 +355,6 @@ class OC_Bookmarks_Bookmarks{
 
 		$dom->loadHTMLFile($file);
 		$links = $dom->getElementsByTagName('a');
-		$things = array();
 
 		OCP\DB::beginTransaction();
 		foreach($links as $link) {
@@ -360,10 +363,9 @@ class OC_Bookmarks_Bookmarks{
 			$tag_str = '';
 			if($link->hasAttribute("tags"))
 				$tag_str = $link->getAttribute("tags");
-			$tags = explode(',' , $tag_str);
+			$tags = explode(',', $tag_str);
 
 			self::addBookmark($ref, $title, $tags);
-			//$things[] = array('title' => $title, 'ref'=>$ref, 'tags' => $tags);
 		}
 		OCP\DB::commit();
 		return array();

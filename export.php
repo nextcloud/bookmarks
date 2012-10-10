@@ -22,9 +22,10 @@ Do Not Edit! -->
 <DL><p>
 EOT;
 
-$bookmarks = OC_Bookmarks_Bookmarks::findBookmarks(0, 'id', array(), true,-1);
+$bookmarks = OC_Bookmarks_Bookmarks::findBookmarks(0, 'id', array(), true, -1);
 foreach($bookmarks as $bm) {
-	$file .= '<DT><A HREF="'.$bm['url'].'" TAGS="'.implode(',',$bm['tags']).'">'.htmlspecialchars($bm['title'], ENT_QUOTES, 'UTF-8').'</A>';
+	$file .= '<DT><A HREF="'.$bm['url'].'" TAGS="'.implode(',', $bm['tags']).'">';
+	$file .= htmlspecialchars($bm['title'], ENT_QUOTES, 'UTF-8').'</A>';
 	if($bm['description'])
 		$file .= '<DD>'.htmlspecialchars($bm['description'], ENT_QUOTES, 'UTF-8');
 }

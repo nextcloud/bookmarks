@@ -24,13 +24,15 @@
 		<?php endif; ?>
 
 		<legend><strong><?php echo $l->t('Import bookmarks');?></strong></legend>
-		<p><input type="file" id="bm_import" name="bm_import" style="width:280px;"><label for="bm_import"> <?php echo $l->t('Bookmark html file');?></label>
+		<p><input type="file" id="bm_import" name="bm_import" style="width:280px;">
+			<label for="bm_import"> <?php echo $l->t('Bookmark html file');?></label>
 		</p>
 		<input type="submit" name="bm_import" value="<?php echo $l->t('Import'); ?>" />
 
 
 		<legend><strong><?php echo $l->t('Export bookmarks');?></strong></legend>
-		<p><a href="<?php echo OCP\Util::linkTo('bookmarks', 'export.php') ;?>" class="button"><?php echo $l->t('Export'); ?></a></p>
+		<p><a href="<?php echo OCP\Util::linkTo('bookmarks', 'export.php') ;?>"
+			class="button"><?php echo $l->t('Export'); ?></a></p>
 		
 	</fieldset>
 </form>

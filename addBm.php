@@ -43,8 +43,8 @@ else{
 }
 
 
-OCP\Util::addscript('bookmarks','tag-it');
-OCP\Util::addscript('bookmarks','addBm');
+OCP\Util::addscript('bookmarks', 'tag-it');
+OCP\Util::addscript('bookmarks', 'addBm');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
 OCP\Util::addStyle('bookmarks', 'jquery.tagit');
 

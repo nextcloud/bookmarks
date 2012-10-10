@@ -26,8 +26,7 @@ OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 OCP\JSON::checkAppEnabled('bookmarks');
 
-if(isset($_POST['old_name']))
-{
+if(isset($_POST['old_name'])) {
 	OC_Bookmarks_Bookmarks::deleteTag($_POST['old_name']);
 	OCP\JSON::success();
 	exit();

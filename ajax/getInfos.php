@@ -24,12 +24,12 @@
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('bookmarks');
 
-require_once(OC_App::getAppPath('bookmarks').'/bookmarksHelper.php');
+require_once OC_App::getAppPath('bookmarks').'/bookmarksHelper.php';
 
 $req_type=isset($_GET['type']) ? $_GET['type'] : '';
 
 if($req_type == 'url_info' && $_GET['url']) {
-  $datas = getURLMetadata($_GET['url']);
+	$datas = getURLMetadata($_GET['url']);
 	$title = isset($datas['title']) ? $datas['title'] : '';
 	OCP\JSON::success(array('title' => $title));
 	exit();

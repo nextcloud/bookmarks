@@ -36,7 +36,10 @@ function curl_exec_follow(/*resource*/ $ch, /*int*/ &$maxredirect = null) {
 			curl_close($rch);
 			if (!$mr) {
 				if ($maxredirect === null) {
-					OCP\Util::writeLog('bookmark', 'Too many redirects. When following redirects, libcurl hit the maximum amount on bookmark', OCP\Util::ERROR);
+					OCP\Util::writeLog(
+						'bookmark',
+						'Too many redirects. When following redirects, libcurl hit the maximum amount on bookmark',
+						OCP\Util::ERROR);
 				} else {
 					$maxredirect = 0;
 				}
@@ -72,7 +75,7 @@ function getURLMetadata($url) {
 }
 
 function analyzeTagRequest($line) {
-	$tags = explode(',',$line);
+	$tags = explode(',', $line);
 	$filterTag = array();
 	foreach($tags as $tag){
 		if(trim($tag) != '')
