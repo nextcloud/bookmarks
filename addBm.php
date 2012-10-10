@@ -31,8 +31,8 @@ require_once 'bookmarksHelper.php';
 
 // Prep screen if we come from the bookmarklet
 $url ='';
-if(isset($_GET['url']) ){
- $url = $_GET['url'];
+if(isset($_GET['url'])) {
+	$url = $_GET['url'];
 }
 if(!isset($_GET['title']) || trim($_GET['title']) == '') {
 	$datas = getURLMetadata($url);
