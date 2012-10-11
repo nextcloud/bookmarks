@@ -271,7 +271,8 @@ function submitBookmark(event) {
 	});
 }
 
-function updateBookmarksList(bookmark, position='append') {
+function updateBookmarksList(bookmark, position) {
+	position = typeof position !== 'undefined' ? position : 'append';
 	bookmark = $.extend({title:'', description:'', added_date: new Date('now'), tags:[] }, bookmark);
 	tags = bookmark.tags;
 	var taglist = '';
