@@ -80,6 +80,9 @@ class OC_Bookmarks_Bookmarks{
 			$sql .= str_repeat($exist_clause, count($filters));
 			$params = array_merge($params, $filters);
 		} else {
+			if($CONFIG_DBTYPE == 'mysql') { //Dirty hack to allow usage of alias in where
+				$sql .= ' having true ';
+			}
 			foreach($filters as $filter) {
 				$sql .= ' AND lower(url || title || description || tags ) like ? ';
 				$params[] = '%' . strtolower($filter) . '%';
