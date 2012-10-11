@@ -32,7 +32,6 @@ class OC_Bookmarks_Bookmarks{
 		$params = array_merge($filterTags, $filterTags);
 		array_unshift($params, OCP\USER::getUser());
 		$not_in = '';
-
 		if(!empty($filterTags) ) {
 			$exist_clause = " AND	exists (select 1 from  *PREFIX*bookmarks_tags
 				t2 where t2.bookmark_id = t.bookmark_id and tag = ?) ";
@@ -43,8 +42,8 @@ class OC_Bookmarks_Bookmarks{
 		$sql = 'SELECT tag, count(*) as nbr from *PREFIX*bookmarks_tags t '.
 			' WHERE EXISTS( SELECT 1 from *PREFIX*bookmarks bm where  t.bookmark_id  = bm.id and user_id = ?) '.
 			$not_in.
-			' group by tag Order by nbr DESC LIMIT '.$offset.',  '.$limit;
-			
+			' group by tag Order by nbr DESC LIMIT '.$limit.' OFFSET  '.$offset;
+
 		$query = OCP\DB::prepare($sql);
 		$tags = $query->execute($params)->fetchAll();
 		return $tags;
