@@ -1,9 +1,7 @@
 <?php $TRANSLATIONS = array(
 "Bookmarks" => "Закладки",
+"Tags" => "Теги",
 "Read later" => "Прочитати пізніше",
 "Address" => "Адреса",
-"Title" => "Назва",
-"Tags" => "Теги",
-"Save bookmark" => "Зберегти закладку",
 "You have no bookmarks" => "У вас нема закладок"
 );
