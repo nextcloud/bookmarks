@@ -27,6 +27,9 @@ class OC_Bookmarks_Bookmarks{
 
 	/**
 	* @brief Finds all tags for bookmarks
+	* @param filterTags array of tag to look for if empty then every tag
+	* @param offset result offset
+	* @param limit number of item to return
 	*/
 	public static function findTags($filterTags = array(), $offset = 0, $limit = 10){
 		$params = array_merge($filterTags, $filterTags);
