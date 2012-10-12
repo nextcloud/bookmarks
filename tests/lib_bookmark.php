@@ -10,7 +10,7 @@ class Test_LibBookmarks_Bookmarks extends UnitTestCase {
 	}
 
 	function testFindTags() {
-		$uid=uniqid();
+// 		$uid=uniqid();
 		$this->assertEqual(OC_Bookmarks_Bookmarks::findTags(), array());
 
 		OC_Bookmarks_Bookmarks::addBookmark(
