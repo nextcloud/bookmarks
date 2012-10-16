@@ -26,6 +26,7 @@
 "Cancel" => "Annuler",
 "Bookmarklet <br />" => "Gestionnaire de favoris <br />",
 "Import bookmarks" => "Importer des favoris",
+"Bookmark html file" => "Mettre en favoris un fichier HTML",
 "Import" => "Importer",
 "Export bookmarks" => "Exporter les favoris",
 "Export" => "Exporter"
