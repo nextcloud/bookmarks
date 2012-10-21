@@ -91,18 +91,8 @@ function addFilterTag(event) {
 }
 
 function updateTagsList(tag) {
-	$('.tag_list').append('<li><a href="" class="tag">'+tag['tag']+'</a>'+
-		'<p class="tags_actions">'+
-			'<span class="tag_edit">'+
-				'<img class="svg" src="'+OC.imagePath('core', 'actions/rename')+'" title="Edit">'+
-			'</span>'+
-			'<span class="tag_delete">'+
-				'<img class="svg" src="'+OC.imagePath('core', 'actions/delete')+'" title="Delete">'+
-			'</span>'+
-		'</p>'+
-		'<em>'+tag['nbr']+'</em>'+
-	'</li>');
-
+	html = tmpl("tag_tmpl", tag);
+	$('.tag_list').append(html);
 }
 
 function filterTagsChanged()
@@ -290,24 +280,9 @@ function updateBookmarksList(bookmark, position) {
 	
 	if(bookmark_view == 'image') { //View in images
 		service_url = formatString(shot_provider, {url: encodeEntities(bookmark.url), title: bookmark.title, width: 200});
-		$('.bookmarks_list').append(
-			'<div class="bookmark_single" data-id="' + bookmark.id +'" >' +
-				'<p class="shot"><img src="'+ service_url +'"></p>'+
-				'<p class="bookmark_actions">' +
-					'<span class="bookmark_edit">' +
-						'<img class="svg" src="'+OC.imagePath('core', 'actions/rename')+'" title="Edit">' +
-					'</span>' +
-					'<span class="bookmark_delete">' +
-						'<img class="svg" src="'+OC.imagePath('core', 'actions/delete')+'" title="Delete">' +
-					'</span>&nbsp;' +
-				'</p>' +
-				'<p class="bookmark_title">'+
-					'<a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.title) + '</a>' +
-				'</p>' +
-				'<p class="bookmark_desc">'+ encodeEntities(bookmark.description) + '</p>' +
-				'<p class="bookmark_url"><a href="' + encodeEntities(bookmark.url) + '" target="_blank" class="bookmark_link">' + encodeEntities(bookmark.url) + '</a></p>' +
-			'</div>'
-		);
+		bookmark['service_url'] = service_url;
+		html = tmpl("img_item_tmpl", bookmark);
+		$('.bookmarks_list').append(html);
 		$('div[data-id="'+ bookmark.id +'"]').data('record', bookmark);
 		if(taglist != '') {
 			$('div[data-id="'+ bookmark.id +'"]').append('<p class="bookmark_tags">' + taglist + '</p>');
