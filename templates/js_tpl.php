@@ -84,6 +84,7 @@
 			<a href="<%= encodeEntities(url)%>" target="_blank" class="bookmark_link"><%= encodeEntities(title)%></a>
 		</p>
 		<p class="bookmark_desc"><%= encodeEntities(description)%></p>
-		<p class="bookmark_url"><a href="<%= encodeEntities(url)%>" target="_blank" class="bookmark_link"><%= encodeEntities(url)%></a></p>
+		<p class="bookmark_url"><a href="<%= encodeEntities(url)%>" target="_blank"
+			class="bookmark_link"><%= encodeEntities(url)%></a></p>
 	</div>
 </script>
