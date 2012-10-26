@@ -1,5 +1,6 @@
 <?php
 
+OC_App::loadApp('bookmarks');
 class Test_LibBookmarks_Bookmarks extends UnitTestCase {
 
 	function testAddBM() {
