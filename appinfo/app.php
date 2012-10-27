@@ -13,7 +13,7 @@ OC::$CLASSPATH['OC_Search_Provider_Bookmarks'] = 'apps/bookmarks/lib/search.php'
 $l = new OC_l10n('bookmarks');
 OCP\App::addNavigationEntry( array( 'id' => 'bookmarks_index',
 	'order' => 70, 'href' => OCP\Util::linkTo( 'bookmarks', 'index.php' ),
-	'icon' => OCP\Util::imagePath( 'bookmarks', 'bookmarks.png' ),
+	'icon' => OCP\Util::imagePath( 'bookmarks', 'bookmarks.svg' ),
 	'name' => $l->t('Bookmarks')
 ));
 
