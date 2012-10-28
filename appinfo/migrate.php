@@ -21,8 +21,7 @@ class OC_Migration_Provider_Bookmarks extends OC_Migration_Provider{
 		$ids2 = $this->content->copyRows( $options );
 		
 		// If both returned some ids then they worked
-		if( is_array( $ids ) && is_array( $ids2 ) )
-		{
+		if( is_array( $ids ) && is_array( $ids2 ) ) {
 			return true;	
 		} else {
 			return false;
@@ -39,9 +38,14 @@ class OC_Migration_Provider_Bookmarks extends OC_Migration_Provider{
 				$results = $query->execute( array( $this->olduid ) );
 				$idmap = array();
 				while( $row = $results->fetchRow() ) {
-					// Import each bookmark, saving its id into the map	
-					$query = OCP\DB::prepare( "INSERT INTO `*PREFIX*bookmarks`(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`) VALUES (?, ?, ?, ?, ?, ?)" );
-					$query->execute( array( $row['url'], $row['title'], $this->uid, $row['public'], $row['added'], $row['lastmodified'] ) );
+					// Import each bookmark, saving its id into the map
+					$sql = "INSERT INTO `*PREFIX*bookmarks`
+						(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`) VALUES (?, ?, ?, ?, ?, ?)" ;
+					$query = OCP\DB::prepare($sql);
+					$query->execute(array(
+						$row['url'], $row['title'], $this->uid, $row['public'],
+						$row['added'], $row['lastmodified']
+					) );
 					// Map the id
 					$idmap[$row['id']] = OCP\DB::insertid();
 				}
@@ -51,12 +55,13 @@ class OC_Migration_Provider_Bookmarks extends OC_Migration_Provider{
 					$results = $query->execute( array( $oldid ) );
 					while( $row = $results->fetchRow() ) {
 						// Import the tags for this bookmark, using the new bookmark id
-						$query = OCP\DB::prepare( "INSERT INTO `*PREFIX*bookmarks_tags`(`bookmark_id`, `tag`) VALUES (?, ?)" );
+						$sql = "INSERT INTO `*PREFIX*bookmarks_tags`(`bookmark_id`, `tag`) VALUES (?, ?)";
+						$query = OCP\DB::prepare($sql);
 						$query->execute( array( $newid, $row['tag'] ) );	
 					}		
 				}
 				// All done!
-			break;
+				break;
 		}
 		
 		return true;

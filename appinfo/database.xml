@@ -37,6 +37,13 @@
 				<length>64</length>
 			</field>
 			<field>
+				<name>description</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>4096</length>
+			</field>
+			<field>
 				<name>public</name>
 				<type>integer</type>
 				<default>0</default>

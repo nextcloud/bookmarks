@@ -24,23 +24,18 @@ class OC_Search_Provider_Bookmarks extends OC_Search_Provider{
 	function search($query) {
 		$l=OC_L10N::get('bookmarks');
 		$results=array();
-		
-		$offset = 0;
-		$sqlSortColumn = 'id';
-		
-		$searchquery=array();
+
+		$search_words=array();
 		if(substr_count($query, ' ') > 0) {
-			$searchquery = explode(' ', $query);
+			$search_words = explode(' ', $query);
 		}else{
-			$searchquery = $query;
+			$search_words = $query;
 		}
 		
-//		OCP\Util::writeLog('bookmarks', 'search ' .$query ,OCP\Util::DEBUG);
-		$bookmarks = OC_Bookmarks_Bookmarks::findBookmarks($offset, $sqlSortColumn, $searchquery, false);
-//		OCP\Util::writeLog('bookmarks', 'found ' .count($bookmarks) ,OCP\Util::DEBUG);
-		//$l = new OC_l10n('bookmarks'); //resulttype can't be localized, javascript relies on that type
+		$bookmarks = OC_Bookmarks_Bookmarks::searchBookmarks($search_words);
+		$l = new OC_l10n('bookmarks'); //resulttype can't be localized, javascript relies on that type
 		foreach($bookmarks as $bookmark) {
-			$results[]=new OC_Search_Result($bookmark['title'],'', $bookmark['url'],(string) $l->t('Bookm.'));
+			$results[]=new OC_Search_Result($bookmark['title'], '', $bookmark['url'], (string) $l->t('Bookm.'));
 		}
 		
 		return $results;

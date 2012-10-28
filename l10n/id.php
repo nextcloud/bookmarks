@@ -1,0 +1,19 @@
+<?php $TRANSLATIONS = array(
+"Tags" => "label",
+"Warning" => "peringatan",
+"Close" => "tutup",
+"The title of the page" => "judul laman",
+"Save" => "simpan",
+"Read later" => "baca nanti",
+"Address" => "alamat",
+"List" => "daftar",
+"Image" => "gambar",
+"Hide" => "sembunyikan",
+"Show" => "tampilkan",
+"Related Tags" => "label terkait",
+"Edit" => "ubah",
+"Delete" => "hapus",
+"Cancel" => "batal",
+"Import" => "mengimpor",
+"Export" => "mengekspor"
+);

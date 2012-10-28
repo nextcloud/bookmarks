@@ -28,6 +28,44 @@ OCP\User::checkLoggedIn();
 OCP\App::checkAppEnabled('bookmarks');
 
 require_once 'bookmarksHelper.php';
-addBookmark($_GET['url'], '', 'Read-Later');
 
-include 'templates/addBm.php';
+// Prep screen if we come from the bookmarklet
+$url ='';
+if(isset($_GET['url'])) {
+	$url = $_GET['url'];
+}
+if(!isset($_GET['title']) || trim($_GET['title']) == '') {
+	$datas = getURLMetadata($url);
+	$title = isset($datas['title']) ? $datas['title'] : '';
+}
+else{
+	$title = $_GET['title'];
+}
+
+
+OCP\Util::addscript('bookmarks/3rdparty', 'tag-it');
+OCP\Util::addscript('bookmarks', 'addBm');
+OCP\Util::addStyle('bookmarks', 'bookmarks');
+OCP\Util::addStyle('bookmarks/3rdparty', 'jquery.tagit');
+
+
+
+$bm = array('title'=> $title,
+	'url'=> $url,
+	'tags'=> array(),
+	'desc'=>'',
+	'is_public'=>0,
+);
+
+//Find All Tags
+$qtags = OC_Bookmarks_Bookmarks::findTags();
+$tags = array();
+foreach($qtags as $tag) {
+	$tags[] = $tag['tag'];
+}
+
+$tmpl = new OCP\Template( 'bookmarks', 'addBm', 'base' );
+$tmpl->assign('requesttoken', OC_Util::callRegister());
+$tmpl->assign('bookmark', $bm);
+$tmpl->assign('tags', json_encode($tags), false);
+$tmpl->printPage();

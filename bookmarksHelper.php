@@ -13,6 +13,7 @@ function curl_exec_follow(/*resource*/ $ch, /*int*/ &$maxredirect = null) {
 			$newurl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 
 			$rch = curl_copy_handle($ch);
+			curl_setopt($ch, CURLOPT_USERAGENT, "Owncloud Bookmark Crawl");
 			curl_setopt($rch, CURLOPT_HEADER, true);
 			curl_setopt($rch, CURLOPT_NOBODY, true);
 			curl_setopt($rch, CURLOPT_FORBID_REUSE, false);
@@ -35,7 +36,10 @@ function curl_exec_follow(/*resource*/ $ch, /*int*/ &$maxredirect = null) {
 			curl_close($rch);
 			if (!$mr) {
 				if ($maxredirect === null) {
-					trigger_error('Too many redirects. When following redirects, libcurl hit the maximum amount.', E_USER_WARNING);
+					OCP\Util::writeLog(
+						'bookmark',
+						'Too many redirects. When following redirects, libcurl hit the maximum amount on bookmark',
+						OCP\Util::ERROR);
 				} else {
 					$maxredirect = 0;
 				}
@@ -53,7 +57,7 @@ function getURLMetadata($url) {
 	//if not (allowed) protocol is given, assume http
 	if(preg_match($protocols, $url) == 0) {
 		$url = 'http://' . $url;
-	} 
+	}
 	$metadata['url'] = $url;
 
 	if (!function_exists('curl_init')) {
@@ -65,66 +69,17 @@ function getURLMetadata($url) {
 	$page = curl_exec_follow($ch);
 	curl_close($ch);
 
-	@preg_match( "/<title>(.*)<\/title>/si", $page, $match );
-	$metadata['title'] = htmlspecialchars_decode(@$match[1]); 
-
+	@preg_match( "/<title>(.*)<\/title>/sUi", $page, $match );
+	$metadata['title'] = htmlspecialchars_decode(@$match[1]);
 	return $metadata;
 }
 
-function addBookmark($url, $title, $tags='') {
-	$CONFIG_DBTYPE = OCP\Config::getSystemValue( "dbtype", "sqlite" );
-	if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ) {
-		$_ut = "strftime('%s','now')";
-	} elseif($CONFIG_DBTYPE == 'pgsql') {
-		$_ut = 'date_part(\'epoch\',now())::integer';
-	} else {
-		$_ut = "UNIX_TIMESTAMP()";
+function analyzeTagRequest($line) {
+	$tags = explode(',', $line);
+	$filterTag = array();
+	foreach($tags as $tag){
+		if(trim($tag) != '')
+			$filterTag[] = trim($tag);
 	}
-	
-	//FIXME: Detect when user adds a known URL
-	$query = OCP\DB::prepare("
-		INSERT INTO `*PREFIX*bookmarks`
-		(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`)
-		VALUES (?, ?, ?, 0, $_ut, $_ut)
-		");
-	
-	if(empty($title)) {
-		$metadata = getURLMetadata($url);
-		if(isset($metadata['title'])) // Check for problems fetching the title
-			$title = $metadata['title'];
-	}
-	
-	if(empty($title)) {
-		$l = OC_L10N::get('bookmarks');
-		$title = $l->t('unnamed');
-	}
-	
-	$params=array(
-	htmlspecialchars_decode($url),
-	htmlspecialchars_decode($title),
-	OCP\USER::getUser()
-	);
-	$query->execute($params);
-	
-	$b_id = OCP\DB::insertid('*PREFIX*bookmarks');
-	
-	if($b_id !== false) {
-		$query = OCP\DB::prepare("
-			INSERT INTO `*PREFIX*bookmarks_tags`
-			(`bookmark_id`, `tag`)
-			VALUES (?, ?)
-			");
-	
-		$tags = explode(' ', urldecode($tags));
-		foreach ($tags as $tag) {
-			if(empty($tag)) {
-				//avoid saving blankspaces
-				continue;
-			}
-			$params = array($b_id, trim($tag));
-			$query->execute($params);
-		}
-	
-		return $b_id;
-	}
+	return $filterTag;
 }

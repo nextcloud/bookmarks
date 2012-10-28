@@ -1,16 +1,77 @@
-$(document).ready(function() {
-	$('#bookmark_add_submit').click(addBookmark);
-});
-
-function addBookmark(event) {
-	var url = $('#bookmark_add_url').val();
-	var tags = $('#bookmark_add_tags').val();
-	$.ajax({
-		type: 'POST',
-		url: 'ajax/addBookmark.php',
-		data: 'url=' + encodeURI(url) + '&tags=' + encodeURI(tags),
-		success: function(data){ 
-			window.close();
+(function($){
+  $.bookmark_dialog = function(el, options){
+    // To avoid scope issues, use 'base' instead of 'this'
+    // to reference this class from internal events and functions.
+    var base = this;
+    
+    // Access to jQuery and DOM versions of element
+    base.$el = $(el);
+    base.el = el;
+    
+    // Add a reverse reference to the DOM object
+    base.$el.data('bookmark_dialog', base);
+    
+    base.form_submit = function search_form_submit(event)
+    {
+      event.preventDefault();
+			$.ajax({
+				type: 'POST',
+				url: $(this).attr('action'),
+				data: $(this).serialize(),
+				success: function(data){
+					if(data.status == 'success'){
+						base.options['on_success'](data);
+					} else { // On failure
+						
+					}
+				}
+			});
+      return false;
+    }
+		base.setTitle = function (str) {
+			base.$el.find('.title').val(str);
 		}
-	});
-}
+		
+    base.init = function(){
+      base.options = $.extend({},$.bookmark_dialog.defaultOptions, options);
+      base.$el.find('form').bind('submit.addBmform',base.form_submit);
+			// Init Tagging thing
+			base.$el.find('.tags').tagit({
+				allowSpaces: true,
+				availableTags: fullTags,
+				placeholderText: t('bookmark', 'Tags')
+			});
+
+			if(base.options['record']) { //Fill the form if it's an edit
+				record = base.options['record'];
+				base.$el.find('.record_id').val(record.id);
+				base.$el.find('.title').val(record.title);
+				base.$el.find('.url_input').val(record.url);
+				base.$el.find('.desc').val(record.description);
+				tagit_elem = base.$el.find('.tags');
+				if(record.tags) {
+					for(var i=0;i<record.tags.length;i++) {
+						tagit_elem.tagit('createTag', record.tags[i]);
+					}
+				}
+			}
+    };
+
+    base.init();
+  };
+  
+
+
+    
+  $.bookmark_dialog.defaultOptions = {
+		on_success: function(){},
+		bookmark_record: undefined
+  };
+  
+  $.fn.bookmark_dialog = function(options){
+    return this.each(function(){
+      (new $.bookmark_dialog(this, options));
+    });
+  };
+
+})(jQuery);
