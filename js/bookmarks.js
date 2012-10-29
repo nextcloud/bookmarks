@@ -113,8 +113,8 @@ function getBookmarks() {
 
 		$.ajax({
 			type: 'GET',
-			url: OC.filePath('bookmarks', 'ajax', 'updateList.php') + '&type=rel_tags',
-			data: {tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
+			url: OC.filePath('bookmarks', 'ajax', 'updateList.php'),
+			data: { type:'rel_tags', tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
 			success: function(tags){
 				$('.tag_list').empty();
 				for(var i in tags.data) {
@@ -130,8 +130,8 @@ function getBookmarks() {
 	}
 	$.ajax({
 		type: 'GET',
-		url: OC.filePath('bookmarks', 'ajax', 'updateList.php') + '&type=bookmark',
-		data: {tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
+		url: OC.filePath('bookmarks', 'ajax', 'updateList.php'),
+		data: { type:'bookmark', tag: $('#bookmarkFilterTag').val(), page:bookmarks_page, sort:bookmarks_sorting },
 		success: function(bookmarks){
 			if (bookmarks.data.length) {
 				bookmarks_page += 1;
