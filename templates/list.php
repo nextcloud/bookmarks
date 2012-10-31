@@ -31,6 +31,17 @@
 	<ul class="tag_list">
 	</ul>
 
+
+<div id="bookmark_settings">
+		<ul class="controls">
+			<li style="float: right">
+				<button id="settingsbtn" title="<?php echo $l->t('Settings'); ?>">
+					<img class="svg" src="<?php echo OCP\Util::imagePath('core','actions/settings.png'); ?>"
+					alt="<?php echo $l->t('Settings'); ?>"   /></button>
+			</li>
+		</ul>
+	</div>
+
 </div>
 <div id="rightcontent" class="rightcontent">
 	<div class="bookmarks_list"></div>
@@ -41,6 +52,7 @@
 			require_once OC_App::getAppPath('bookmarks') .'/templates/bookmarklet.php' ;
 			createBookmarklet(); 
 		?>
+	<div id="appsettings" class="popup bottomleft hidden"></div>
 </div>
 <script>
 	var fullTags = <?php echo $_['tags'];?>;

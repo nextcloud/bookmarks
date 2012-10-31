@@ -9,6 +9,14 @@ $(document).ready(function() {
 	$('.centercontent').click(clickSideBar);
 	$('#view_type input').click(clickSwitchView);
 	$('#bookmark_add_submit').click(addBookmark);
+  $('#settingsbtn').on('click keydown', function() {
+		try {
+			OC.appSettings({appid:'bookmarks', loadJS:true, cache:false});
+		} catch(e) {
+			alert(e);
+		}
+	});
+
 	$(window).resize(function () {
 		fillWindow($('.bookmarks_list'));
 	});
