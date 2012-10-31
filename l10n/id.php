@@ -5,15 +5,15 @@
 "The title of the page" => "judul laman",
 "Save" => "simpan",
 "Read later" => "baca nanti",
+"Edit" => "ubah",
+"Delete" => "hapus",
+"Cancel" => "batal",
 "Address" => "alamat",
 "List" => "daftar",
 "Image" => "gambar",
 "Hide" => "sembunyikan",
 "Show" => "tampilkan",
 "Related Tags" => "label terkait",
-"Edit" => "ubah",
-"Delete" => "hapus",
-"Cancel" => "batal",
 "Import" => "mengimpor",
 "Export" => "mengekspor"
 );

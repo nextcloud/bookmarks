@@ -26,7 +26,6 @@
 "You have no bookmarks" => "පිටු සළකුනු නොමැත",
 "Bookmarklet <br />" => "පිටුසන<br />",
 "Import bookmarks" => "පිටුසනයන් ආයාත කරන්න",
-"Bookmark html file" => "html ගොනුව පිටුසන් කරන්න",
 "Import" => "ආයාත කරන්න",
 "Export bookmarks" => "පිටුසනයන් නිර්යාත කරන්න",
 "Export" => "නිර්යාත කරන්න"

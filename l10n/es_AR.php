@@ -26,7 +26,6 @@
 "You have no bookmarks" => "No tenés marcadores",
 "Bookmarklet <br />" => "Bookmarklet <br />",
 "Import bookmarks" => "Importar marcadores",
-"Bookmark html file" => "Agregar a marcadores archivo html",
 "Import" => "Importar",
 "Export bookmarks" => "Exportar marcadores",
 "Export" => "Exportar"
