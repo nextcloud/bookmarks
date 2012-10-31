@@ -15,7 +15,8 @@
 	?>
 </fieldset>
 
-<form id="import_bookmark" action="<?php echo OCP\Util::linkTo( "bookmarks", "ajax/import.php" );?>" method="post" enctype="multipart/form-data">
+<form id="import_bookmark" action="<?php echo OCP\Util::linkTo( "bookmarks", "ajax/import.php" );?>"
+ method="post" enctype="multipart/form-data">
 	<fieldset class="personalblock">
 		<?php if(isset($_['error'])): ?>
 			<h3><?php echo $_['error']['error']; ?></h3>

@@ -36,7 +36,7 @@
 		<ul class="controls">
 			<li style="float: right">
 				<button id="settingsbtn" title="<?php echo $l->t('Settings'); ?>">
-					<img class="svg" src="<?php echo OCP\Util::imagePath('core','actions/settings.png'); ?>"
+					<img class="svg" src="<?php echo OCP\Util::imagePath('core', 'actions/settings.png'); ?>"
 					alt="<?php echo $l->t('Settings'); ?>"   /></button>
 			</li>
 		</ul>
