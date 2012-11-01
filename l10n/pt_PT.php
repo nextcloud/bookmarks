@@ -23,6 +23,7 @@
 "Hide" => "Esconder",
 "Show" => "Mostrar",
 "Related Tags" => "Etiquetas relacionadas",
+"Settings" => "Configurações",
 "You have no bookmarks" => "Não tem marcadores",
 "Bookmarklet <br />" => "Marcador",
 "Import bookmarks" => "Importar marcadores",

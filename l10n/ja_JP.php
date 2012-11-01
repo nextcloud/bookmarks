@@ -23,6 +23,7 @@
 "Hide" => "非表示",
 "Show" => "表示",
 "Related Tags" => "関連タグ",
+"Settings" => "設定",
 "You have no bookmarks" => "ブックマークがありません",
 "Bookmarklet <br />" => "ブックマークレット <br />",
 "Import bookmarks" => "ブックマークをインポート",

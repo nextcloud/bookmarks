@@ -23,6 +23,7 @@
 "Hide" => "Ausblenden",
 "Show" => "Anzeigen",
 "Related Tags" => "Verwandte Schlagworte",
+"Settings" => "Einstellungen",
 "You have no bookmarks" => "Du hast keine Lesezeichen",
 "Bookmarklet <br />" => "Bookmarklet <br />",
 "Import bookmarks" => "Lesezeichen importieren",

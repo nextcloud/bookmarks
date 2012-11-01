@@ -23,6 +23,7 @@
 "Hide" => "Schowaj",
 "Show" => "Pokaż",
 "Related Tags" => "Powiązane Tagi",
+"Settings" => "Ustawienia",
 "You have no bookmarks" => "Nie masz żadnych zakładek",
 "Bookmarklet <br />" => "Skryptozakładka <br />",
 "Import bookmarks" => "Importuj zakładki",

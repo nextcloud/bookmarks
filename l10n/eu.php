@@ -23,6 +23,7 @@
 "Hide" => "Ezkutatu",
 "Show" => "Bistaratu",
 "Related Tags" => "Erlazionatutako etiketak",
+"Settings" => "Ezarpenak",
 "You have no bookmarks" => "Ez duzu laster-markarik",
 "Bookmarklet <br />" => "Bookmarklet <br />",
 "Import bookmarks" => "Inportatu laster-markak",

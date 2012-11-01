@@ -23,6 +23,7 @@
 "Hide" => "Skrij",
 "Show" => "Pokaži",
 "Related Tags" => "Sorodne oznake",
+"Settings" => "Nastavitve",
 "You have no bookmarks" => "Nimate zaznamkov",
 "Bookmarklet <br />" => "Vstavek za zaznamke <br />",
 "Import bookmarks" => "Uvozi zaznamke",

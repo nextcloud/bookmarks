@@ -23,6 +23,7 @@
 "Hide" => "Malmontri",
 "Show" => "Montri",
 "Related Tags" => "Rilataj etikedoj",
+"Settings" => "Agordo",
 "You have no bookmarks" => "Vi havas neniun legosignon",
 "Bookmarklet <br />" => "Kodosigno <br />",
 "Import bookmarks" => "Enporti legosignojn",

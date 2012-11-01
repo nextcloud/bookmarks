@@ -23,6 +23,7 @@
 "Hide" => "დამალვა",
 "Show" => "გამოჩენა",
 "Related Tags" => "Related Tags",
+"Settings" => "პარამეტრები",
 "You have no bookmarks" => "თქვენ არ გაქვთ ბუქმარკები",
 "Bookmarklet <br />" => "Bookmarklet <br />",
 "Import bookmarks" => "ბუქმარქების იმპორტი",

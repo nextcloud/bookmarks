@@ -23,6 +23,7 @@
 "Hide" => "Masquer",
 "Show" => "Afficher",
 "Related Tags" => "Étiquettes similaires",
+"Settings" => "Paramètres",
 "You have no bookmarks" => "Vous n'avez aucun favori",
 "Bookmarklet <br />" => "Gestionnaire de favoris <br />",
 "Import bookmarks" => "Importer des favoris",
