@@ -334,3 +334,40 @@ li:hover em { display : none; }
     right: 1em;
 		top: auto;
 }
+
+#bookmark_settings {
+    -moz-box-sizing: border-box;
+    background: none repeat scroll 0 0 #EEEEEE;
+    border-right: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+    bottom: 0;
+    height: 2.8em;
+    margin: 0;
+    overflow: visible;
+    padding: 0;
+    position: fixed;
+    width: 20em;
+    z-index: 2;
+}
+#leftcontent #bookmark_settings li{
+	padding: 0;
+	background-color:transparent;
+}
+#leftcontent #bookmark_settings li:hover{
+	background-color:transparent;
+}
+
+#bookmark_settings .controls {
+    height: 100%;
+    width: 100%;
+}
+
+#bookmark_settings .controls > li:last-child button {
+    margin-right: 0.3em;
+}
+#bookmark_settings button {
+    height: 2.4em;
+    margin: 0.15em 0 0 0.15em;
+    padding: 0.2em 0.1em 0;
+    width: 2.4em;
+}
