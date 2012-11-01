@@ -1,6 +1,6 @@
 <form class="addBm" method="post" action="<?php echo OCP\Util::linkTo('bookmarks', 'ajax/editBookmark.php');?>">
 		<?php if(!isset($embedded) || !$embedded):?>
-			<script>
+			<script type="text/javascript">
 				var fullTags = <?php echo $_['tags'];?>;
 				$(document).ready(function() {
 					$('body').bookmark_dialog({

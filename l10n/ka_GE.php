@@ -26,7 +26,6 @@
 "You have no bookmarks" => "თქვენ არ გაქვთ ბუქმარკები",
 "Bookmarklet <br />" => "Bookmarklet <br />",
 "Import bookmarks" => "ბუქმარქების იმპორტი",
-"Bookmark html file" => "ბუქმარქ html ფაილი",
 "Import" => "იმპორტი",
 "Export bookmarks" => "ბუქმარქების ექსპორტი",
 "Export" => "ექსპორტი"

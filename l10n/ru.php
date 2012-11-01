@@ -26,7 +26,6 @@
 "You have no bookmarks" => "У вас нет закладок",
 "Bookmarklet <br />" => "Быстрые закладки<br />",
 "Import bookmarks" => "Импортировать закладки",
-"Bookmark html file" => "Добавить html-файл в закладки",
 "Import" => "Импорт",
 "Export bookmarks" => "Экспортировать закладки",
 "Export" => "Экспорт"

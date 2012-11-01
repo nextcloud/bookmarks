@@ -17,7 +17,6 @@ OCP\App::addNavigationEntry( array( 'id' => 'bookmarks_index',
 	'name' => $l->t('Bookmarks')
 ));
 
-OCP\App::registerPersonal('bookmarks', 'settings');
 OCP\Util::addscript('bookmarks', 'bookmarksearch');
 
 OC_Search::registerProvider('OC_Search_Provider_Bookmarks');
