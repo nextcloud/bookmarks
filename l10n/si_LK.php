@@ -1,9 +1,12 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "ආයාත කරන ගොනුව රුචි නොවේ",
 "Bookmarks" => "පිටු සළකුනු",
 "Tags" => "ටැග",
 "Edit bookmark" => "පිටු සළකුනු සකසන්න",
 "Are you sure you want to remove this tag from every entry?" => "මෙම ටැගය සියළු ඇතුලත් කිරීමකින් ඉවත් කරන බව ඔබට සහතිකද",
 "Warning" => "අනතුරු ඇඟවිම",
+"Import completed successfully." => "ආයාත කිරීම සාර්ථකයි",
+"Uploading..." => "උඩුගත කෙරේ...",
 "Bookm." => "පිටුසන",
 "Add a bookmark" => "පිටු සළකුනක් එක් කරන්න",
 "Close" => "වසන්න",
@@ -27,6 +30,7 @@
 "You have no bookmarks" => "පිටු සළකුනු නොමැත",
 "Bookmarklet <br />" => "පිටුසන<br />",
 "Import bookmarks" => "පිටුසනයන් ආයාත කරන්න",
+"html bookmarks file" => "html පිටුසන සහිත ගොනුවක්",
 "Import" => "ආයාත කරන්න",
 "Export bookmarks" => "පිටුසනයන් නිර්යාත කරන්න",
 "Export" => "නිර්යාත කරන්න"

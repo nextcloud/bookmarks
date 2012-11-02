@@ -1,9 +1,12 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Importació d'un tipus de fitxer no implementat",
 "Bookmarks" => "Adreces d'interès",
 "Tags" => "Etiquetes",
 "Edit bookmark" => "Edita l'adreça d'interès",
 "Are you sure you want to remove this tag from every entry?" => "Segur que voleu eliminar aquesta etiqueta de cada entrada?",
 "Warning" => "Avís",
+"Import completed successfully." => "La importació ha acabat amb èxit",
+"Uploading..." => "Pujant...",
 "Bookm." => "Marcador",
 "Add a bookmark" => "Afegeix una adreça d'interès",
 "Close" => "Tanca",
@@ -27,6 +30,7 @@
 "You have no bookmarks" => "No teniu adreces d'interès",
 "Bookmarklet <br />" => "Bookmarklet <br />",
 "Import bookmarks" => "Importa les adreces d'interès",
+"html bookmarks file" => "fitxer d'adreces d'interès html",
 "Import" => "Importa",
 "Export bookmarks" => "Exporta adreces d'interès",
 "Export" => "Exporta"

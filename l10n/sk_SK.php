@@ -1,9 +1,12 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Nepodporovaný typ súboru pre import",
 "Bookmarks" => "Záložky",
 "Tags" => "Značky",
 "Edit bookmark" => "Upraviť záložku",
 "Are you sure you want to remove this tag from every entry?" => "Naozaj ste si istý, že chcete odstrániť túto značku z každého záznamu?",
 "Warning" => "Varovanie",
+"Import completed successfully." => "Import prebehol úspešne.",
+"Uploading..." => "Odosielanie...",
 "Bookm." => "Zál.",
 "Add a bookmark" => "Pridať záložku",
 "Close" => "Zavrieť",
@@ -27,6 +30,7 @@
 "You have no bookmarks" => "Nemáte záložky",
 "Bookmarklet <br />" => "Záložky <br />",
 "Import bookmarks" => "Importovať záložky",
+"html bookmarks file" => "html súbor záložiek",
 "Import" => "Import",
 "Export bookmarks" => "Export záložiek",
 "Export" => "Export"
