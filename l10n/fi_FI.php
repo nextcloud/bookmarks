@@ -23,6 +23,7 @@
 "Hide" => "Piilota",
 "Show" => "Näytä",
 "Related Tags" => "Vastaavanlaiset tunnisteet",
+"Settings" => "Asetukset",
 "You have no bookmarks" => "Sinulla ei ole kirjanmerkkejä",
 "Bookmarklet <br />" => "Kirjanmerkitsin <br />",
 "Import bookmarks" => "Tuo kirjanmerkkejä",

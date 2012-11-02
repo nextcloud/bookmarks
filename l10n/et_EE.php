@@ -23,6 +23,7 @@
 "Hide" => "Peida",
 "Show" => "Näita",
 "Related Tags" => "Seotud sildid",
+"Settings" => "Seaded",
 "You have no bookmarks" => "Sul pole järjehoidjaid",
 "Bookmarklet <br />" => "Järjehoidja vidin <br />",
 "Import bookmarks" => "Impordi järjehoidjaid",

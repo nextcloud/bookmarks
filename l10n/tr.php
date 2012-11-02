@@ -1,5 +1,7 @@
 <?php $TRANSLATIONS = array(
+"Bookmarks" => "Yer İmleri",
 "Tags" => "Etiketler",
+"Warning" => "Uyarı",
 "Close" => "Kapat",
 "Save" => "Kaydet",
 "Read later" => "Sonra oku",
@@ -9,5 +11,8 @@
 "Address" => "Adres",
 "List" => "Liste",
 "Hide" => "Gizle",
-"Show" => "Göster"
+"Show" => "Göster",
+"Settings" => "Ayarlar",
+"Import" => "İçe aktar",
+"Export" => "Dışa aktar"
 );

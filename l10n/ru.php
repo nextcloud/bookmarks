@@ -23,6 +23,7 @@
 "Hide" => "Спрятать",
 "Show" => "Показать",
 "Related Tags" => "Связанные теги",
+"Settings" => "Конфигурация",
 "You have no bookmarks" => "У вас нет закладок",
 "Bookmarklet <br />" => "Быстрые закладки<br />",
 "Import bookmarks" => "Импортировать закладки",

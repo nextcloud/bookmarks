@@ -23,6 +23,7 @@
 "Hide" => "Skjul",
 "Show" => "Vis",
 "Related Tags" => "Relaterte tagger",
+"Settings" => "Innstillinger",
 "You have no bookmarks" => "Du har ingen bokmerker",
 "Bookmarklet <br />" => "Bokmerke <br />",
 "Import bookmarks" => "Importer bokmerker",

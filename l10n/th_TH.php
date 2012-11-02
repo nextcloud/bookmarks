@@ -23,6 +23,7 @@
 "Hide" => "ซ๋อน",
 "Show" => "แสดง",
 "Related Tags" => "ป้ายกำกับอื่นๆที่เกี่ยวข้อง",
+"Settings" => "ตั้งค่า",
 "You have no bookmarks" => "คุณยังไม่มีรายการโปรด",
 "Bookmarklet <br />" => "Bookmarklet <br />",
 "Import bookmarks" => "นำเข้ารายการโปรด",

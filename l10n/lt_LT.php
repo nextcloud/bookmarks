@@ -1,3 +1,14 @@
 <?php $TRANSLATIONS = array(
-"unnamed" => "be pavadinimo"
+"Bookmarks" => "Žymekliai",
+"Warning" => "Įspėjimas",
+"Close" => "Užverti",
+"Save" => "Išsaugoti",
+"Edit" => "Redaguoti",
+"Delete" => "Ištrinti",
+"Cancel" => "Atšaukti",
+"Address" => "Adresas",
+"List" => "Sąrašas",
+"Settings" => "Nustatymai",
+"Import" => "Importuoti",
+"Export" => "Eksportuoti"
 );

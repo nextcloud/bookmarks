@@ -23,6 +23,7 @@
 "Hide" => "Amaga",
 "Show" => "Mostra",
 "Related Tags" => "Etiquetes relacionades",
+"Settings" => "Configuració",
 "You have no bookmarks" => "No teniu adreces d'interès",
 "Bookmarklet <br />" => "Bookmarklet <br />",
 "Import bookmarks" => "Importa les adreces d'interès",

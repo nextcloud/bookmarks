@@ -23,6 +23,7 @@
 "Hide" => "Gem",
 "Show" => "Vis",
 "Related Tags" => "Relaterede Tags",
+"Settings" => "Indstillinger",
 "You have no bookmarks" => "Du har ingen bogmærker",
 "Bookmarklet <br />" => "Bookmarklet <br />",
 "Import bookmarks" => "Importer bogmærker",

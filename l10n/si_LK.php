@@ -23,6 +23,7 @@
 "Hide" => "සඟවන්න",
 "Show" => "පෙන්වන්න",
 "Related Tags" => "අදාළ ටැගයන්",
+"Settings" => "සිටුවම්",
 "You have no bookmarks" => "පිටු සළකුනු නොමැත",
 "Bookmarklet <br />" => "පිටුසන<br />",
 "Import bookmarks" => "පිටුසනයන් ආයාත කරන්න",
