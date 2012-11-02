@@ -23,6 +23,7 @@
 "Hide" => "Skyť",
 "Show" => "Zobraziť",
 "Related Tags" => "Podobné značky",
+"Settings" => "Nastavenia",
 "You have no bookmarks" => "Nemáte záložky",
 "Bookmarklet <br />" => "Záložky <br />",
 "Import bookmarks" => "Importovať záložky",

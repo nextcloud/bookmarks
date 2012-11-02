@@ -23,6 +23,7 @@
 "Hide" => "Göm",
 "Show" => "Visa",
 "Related Tags" => "Relaterade taggar",
+"Settings" => "Inställningar",
 "You have no bookmarks" => "Du har inga bokmärken",
 "Bookmarklet <br />" => "Skriptbokmärke <br />",
 "Import bookmarks" => "Importera bokmärken",

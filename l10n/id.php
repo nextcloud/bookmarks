@@ -14,6 +14,7 @@
 "Hide" => "sembunyikan",
 "Show" => "tampilkan",
 "Related Tags" => "label terkait",
+"Settings" => "pengaturan",
 "Import" => "mengimpor",
 "Export" => "mengekspor"
 );

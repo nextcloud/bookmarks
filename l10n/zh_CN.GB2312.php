@@ -23,6 +23,7 @@
 "Hide" => "隐藏",
 "Show" => "显示",
 "Related Tags" => "相关标签",
+"Settings" => "设置",
 "You have no bookmarks" => "您没有书签",
 "Bookmarklet <br />" => "小书签 <br />",
 "Import bookmarks" => "导入书签",
