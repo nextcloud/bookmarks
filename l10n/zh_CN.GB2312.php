@@ -11,8 +11,6 @@
 "The address of the page" => "页面地址",
 "Description of the page" => "页面描述",
 "Save" => "保存",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "拖动此物到您的浏览器书签栏，在您想要快速订阅某网页时点击：",
-"Read later" => "稍后阅读",
 "Edit" => "编辑",
 "Delete" => "删除",
 "Cancel" => "取消",
@@ -25,9 +23,8 @@
 "Related Tags" => "相关标签",
 "Settings" => "设置",
 "You have no bookmarks" => "您没有书签",
-"Bookmarklet <br />" => "小书签 <br />",
-"Import bookmarks" => "导入书签",
-"Import" => "导入",
-"Export bookmarks" => "导出书签",
-"Export" => "导出"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "拖动此物到您的浏览器书签栏，在您想要快速订阅某网页时点击：",
+"Read later" => "稍后阅读",
+"Export" => "导出",
+"Import" => "导入"
 );

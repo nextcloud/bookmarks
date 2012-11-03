@@ -5,8 +5,6 @@
 "Bookm." => "Bookm.",
 "Close" => "Închide",
 "Save" => "Salvează",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Trage acest semn în semnele de carte din navigatorul tău web când dorești să salvezi rapid un semn către o pagină web:",
-"Read later" => "Citește mai târziu",
 "Edit" => "Editează",
 "Delete" => "Șterge",
 "Cancel" => "Anulare",
@@ -14,7 +12,8 @@
 "List" => "Listă",
 "Settings" => "Setări",
 "You have no bookmarks" => "Nu ai nici un semn de carte",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import" => "Importă",
-"Export" => "Exportă"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Trage acest semn în semnele de carte din navigatorul tău web când dorești să salvezi rapid un semn către o pagină web:",
+"Read later" => "Citește mai târziu",
+"Export" => "Exportă",
+"Import" => "Importă"
 );

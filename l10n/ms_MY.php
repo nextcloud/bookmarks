@@ -9,6 +9,6 @@
 "Address" => "Alamat",
 "List" => "Senarai",
 "Settings" => "Tetapan",
-"Import" => "Import",
-"Export" => "Export"
+"Export" => "Export",
+"Import" => "Import"
 );

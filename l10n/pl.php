@@ -11,8 +11,6 @@
 "The address of the page" => "Adres strony",
 "Description of the page" => "Opis strony",
 "Save" => "Zapisz",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Przeciągnij to do ulubionych przeglądarki i kliknij go, gdy użytkownik chce szybko dodać zakładkę strony sieci Web:",
-"Read later" => "Czytaj później",
 "Edit" => "Edytuj",
 "Delete" => "Usuń",
 "Cancel" => "Anuluj",
@@ -25,9 +23,8 @@
 "Related Tags" => "Powiązane Tagi",
 "Settings" => "Ustawienia",
 "You have no bookmarks" => "Nie masz żadnych zakładek",
-"Bookmarklet <br />" => "Skryptozakładka <br />",
-"Import bookmarks" => "Importuj zakładki",
-"Import" => "Import",
-"Export bookmarks" => "Eksportuj zakładki",
-"Export" => "Export"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Przeciągnij to do ulubionych przeglądarki i kliknij go, gdy użytkownik chce szybko dodać zakładkę strony sieci Web:",
+"Read later" => "Czytaj później",
+"Export" => "Export",
+"Import" => "Import"
 );

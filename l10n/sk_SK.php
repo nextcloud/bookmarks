@@ -14,8 +14,6 @@
 "The address of the page" => "Adresa stránky",
 "Description of the page" => "Popis stránky",
 "Save" => "Uložiť",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Presuňte toto do vášho prehliadača a kliknite ak chcete aktuálnu stránku uložiť do záložiek.",
-"Read later" => "Prečítať neskôr",
 "Edit" => "Upraviť",
 "Delete" => "Zmazať",
 "Cancel" => "Zrušiť",
@@ -28,10 +26,8 @@
 "Related Tags" => "Podobné značky",
 "Settings" => "Nastavenia",
 "You have no bookmarks" => "Nemáte záložky",
-"Bookmarklet <br />" => "Záložky <br />",
-"Import bookmarks" => "Importovať záložky",
-"html bookmarks file" => "html súbor záložiek",
-"Import" => "Import",
-"Export bookmarks" => "Export záložiek",
-"Export" => "Export"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Presuňte toto do vášho prehliadača a kliknite ak chcete aktuálnu stránku uložiť do záložiek.",
+"Read later" => "Prečítať neskôr",
+"Export" => "Export",
+"Import" => "Import"
 );

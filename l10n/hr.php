@@ -8,6 +8,6 @@
 "Address" => "Adresa",
 "List" => "Lista",
 "Settings" => "Postavke",
-"Import" => "Uvezi",
-"Export" => "Izvoz"
+"Export" => "Izvoz",
+"Import" => "Uvezi"
 );

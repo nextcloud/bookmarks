@@ -11,8 +11,6 @@
 "The address of the page" => "Διεύθυνση της σελίδας",
 "Description of the page" => "Περιγραφή της σελίδας",
 "Save" => "Αποθήκευση",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Σύρετε αυτό στους σελιδοδείκτες του περιηγητή σας και κάντε κλικ επάνω του, όταν θέλετε να προσθέσετε σύντομα μια ιστοσελίδα ως σελιδοδείκτη:",
-"Read later" => "Ανάγνωση αργότερα",
 "Edit" => "Επεξεργασία",
 "Delete" => "Διαγραφή",
 "Cancel" => "Ακύρωση",
@@ -25,9 +23,8 @@
 "Related Tags" => "Σχετικές ετικέτες",
 "Settings" => "Ρυθμίσεις",
 "You have no bookmarks" => "Δεν έχετε σελιδοδείκτες",
-"Bookmarklet <br />" => "Εφαρμογίδιο Σελιδοδεικτών <br />",
-"Import bookmarks" => "Εισαγωγή σελιδοδεικτών",
-"Import" => "Εισαγωγή",
-"Export bookmarks" => "Εξαγωγή σελιδοδεικτών",
-"Export" => "Εξαγωγή"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Σύρετε αυτό στους σελιδοδείκτες του περιηγητή σας και κάντε κλικ επάνω του, όταν θέλετε να προσθέσετε σύντομα μια ιστοσελίδα ως σελιδοδείκτη:",
+"Read later" => "Ανάγνωση αργότερα",
+"Export" => "Εξαγωγή",
+"Import" => "Εισαγωγή"
 );

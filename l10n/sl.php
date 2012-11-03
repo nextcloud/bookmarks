@@ -11,8 +11,6 @@
 "The address of the page" => "Naslov strani",
 "Description of the page" => "Opis strani",
 "Save" => "Shrani",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Povlecite gumb med svoje zaznamke in kliknite nanj, ko želite obiskano spletno stran hitro dodati med svoje zaznamke:",
-"Read later" => "Preberi kasneje",
 "Edit" => "Uredi",
 "Delete" => "Izbriši",
 "Cancel" => "Prekliči",
@@ -25,9 +23,8 @@
 "Related Tags" => "Sorodne oznake",
 "Settings" => "Nastavitve",
 "You have no bookmarks" => "Nimate zaznamkov",
-"Bookmarklet <br />" => "Vstavek za zaznamke <br />",
-"Import bookmarks" => "Uvozi zaznamke",
-"Import" => "Uvozi",
-"Export bookmarks" => "Izvozi zaznamke",
-"Export" => "Izvozi"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Povlecite gumb med svoje zaznamke in kliknite nanj, ko želite obiskano spletno stran hitro dodati med svoje zaznamke:",
+"Read later" => "Preberi kasneje",
+"Export" => "Izvozi",
+"Import" => "Uvozi"
 );

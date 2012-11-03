@@ -14,8 +14,6 @@
 "The address of the page" => "L'adreça de la pàgina",
 "Description of the page" => "Descripció de la pàgina",
 "Save" => "Desa",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arrossegueu-ho al navegador i feu-hi un clic quan volgueu marcar ràpidament una adreça d'interès:",
-"Read later" => "Llegeix més tard",
 "Edit" => "Edita",
 "Delete" => "Esborra",
 "Cancel" => "Cancel·la",
@@ -28,10 +26,8 @@
 "Related Tags" => "Etiquetes relacionades",
 "Settings" => "Configuració",
 "You have no bookmarks" => "No teniu adreces d'interès",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "Importa les adreces d'interès",
-"html bookmarks file" => "fitxer d'adreces d'interès html",
-"Import" => "Importa",
-"Export bookmarks" => "Exporta adreces d'interès",
-"Export" => "Exporta"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arrossegueu-ho al navegador i feu-hi un clic quan volgueu marcar ràpidament una adreça d'interès:",
+"Read later" => "Llegeix més tard",
+"Export" => "Exporta",
+"Import" => "Importa"
 );

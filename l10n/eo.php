@@ -11,8 +11,6 @@
 "The address of the page" => "Adreso de la paĝo",
 "Description of the page" => "Priskribo de la paĝo",
 "Save" => "Konservi",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Ŝovu tion ĉi al la legosignoj de via TTT-legilo kaj klaku ĝin, se vi volas rapide legosignigi TTT-paĝon:",
-"Read later" => "Legi poste",
 "Edit" => "Redakti",
 "Delete" => "Forigi",
 "Cancel" => "Nuligi",
@@ -25,9 +23,8 @@
 "Related Tags" => "Rilataj etikedoj",
 "Settings" => "Agordo",
 "You have no bookmarks" => "Vi havas neniun legosignon",
-"Bookmarklet <br />" => "Kodosigno <br />",
-"Import bookmarks" => "Enporti legosignojn",
-"Import" => "Enporti",
-"Export bookmarks" => "Elporti legosignojn",
-"Export" => "Elporti"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Ŝovu tion ĉi al la legosignoj de via TTT-legilo kaj klaku ĝin, se vi volas rapide legosignigi TTT-paĝon:",
+"Read later" => "Legi poste",
+"Export" => "Elporti",
+"Import" => "Enporti"
 );

@@ -8,6 +8,6 @@
 "Address" => "주소",
 "List" => "목록",
 "Settings" => "설정",
-"Import" => "가져오기",
-"Export" => "내보내기"
+"Export" => "내보내기",
+"Import" => "가져오기"
 );

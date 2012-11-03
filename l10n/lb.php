@@ -8,6 +8,6 @@
 "Address" => "Adress",
 "List" => "Lescht",
 "Settings" => "Astellungen",
-"Import" => "Import",
-"Export" => "Export"
+"Export" => "Export",
+"Import" => "Import"
 );

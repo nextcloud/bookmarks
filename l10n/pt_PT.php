@@ -11,8 +11,6 @@
 "The address of the page" => "O endereço da página",
 "Description of the page" => "Descrição da página",
 "Save" => "Guardar",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arraste isto para o seu navegador, e click nele quando quiser guardar a página rapidamente com um marcador.",
-"Read later" => "Ler mais tarde",
 "Edit" => "Editar",
 "Delete" => "Apagar",
 "Cancel" => "Cancelar",
@@ -25,9 +23,8 @@
 "Related Tags" => "Etiquetas relacionadas",
 "Settings" => "Configurações",
 "You have no bookmarks" => "Não tem marcadores",
-"Bookmarklet <br />" => "Marcador",
-"Import bookmarks" => "Importar marcadores",
-"Import" => "Importar",
-"Export bookmarks" => "Exportar marcadores",
-"Export" => "Exportar"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arraste isto para o seu navegador, e click nele quando quiser guardar a página rapidamente com um marcador.",
+"Read later" => "Ler mais tarde",
+"Export" => "Exportar",
+"Import" => "Importar"
 );

@@ -7,6 +7,6 @@
 "Address" => "Adresse",
 "List" => "Lista",
 "Settings" => "Configurationes",
-"Import" => "Importar",
-"Export" => "Exportar"
+"Export" => "Exportar",
+"Import" => "Importar"
 );
