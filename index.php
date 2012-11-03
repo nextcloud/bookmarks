@@ -29,6 +29,7 @@ OCP\App::checkAppEnabled('bookmarks');
 
 OCP\App::setActiveNavigationEntry( 'bookmarks_index' );
 
+OCP\Util::addscript('bookmarks', 'settings');
 OCP\Util::addscript('bookmarks', 'bookmarks');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
 OCP\Util::addscript('bookmarks', 'addBm');

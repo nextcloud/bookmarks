@@ -33,14 +33,17 @@
 
 
 <div id="bookmark_settings">
-		<ul class="controls">
-			<li style="float: right">
-				<button id="settingsbtn" title="<?php echo $l->t('Settings'); ?>">
-					<img class="svg" src="<?php echo OCP\Util::imagePath('core', 'actions/settings.png'); ?>"
-					alt="<?php echo $l->t('Settings'); ?>"   /></button>
-			</li>
-		</ul>
+	<ul class="controls">
+		<li style="float: right">
+			<button id="settingsbtn" title="<?php echo $l->t('Settings'); ?>">
+				<img class="svg" src="<?php echo OCP\Util::imagePath('core', 'actions/settings.png'); ?>"
+				alt="<?php echo $l->t('Settings'); ?>"   /></button>
+		</li>
+	</ul>
+	<div id="bm_setting_panel">
+		<?php require 'settings.php';?>
 	</div>
+</div>
 
 </div>
 <div id="rightcontent" class="rightcontent">
@@ -48,9 +51,9 @@
 	<div id="firstrun" style="display: none;">
 		<?php
 			echo $l->t('You have no bookmarks');
-			$embedded = true;
+			$embedded = true;/*
 			require_once OC_App::getAppPath('bookmarks') .'/templates/bookmarklet.php' ;
-			createBookmarklet(); 
+			createBookmarklet(); */
 		?>
 	<div id="appsettings" class="popup bottomleft hidden"></div>
 </div>

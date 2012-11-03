@@ -9,13 +9,13 @@ $(document).ready(function() {
 	$('.centercontent').click(clickSideBar);
 	$('#view_type input').click(clickSwitchView);
 	$('#bookmark_add_submit').click(addBookmark);
+
+// 	$('#bm_import_submit').click(attachSettingEvent);
+	$('#bm_import').change(attachSettingEvent);
   $('#settingsbtn').on('click keydown', function() {
-		try {
-			OC.appSettings({appid:'bookmarks', loadJS:true, cache:false});
-		} catch(e) {
-			alert(e);
-		}
+		$('#bookmark_settings').toggleClass('open');
 	});
+	$('#bm_export').click(exportBm);
 
 	$(window).resize(function () {
 		fillWindow($('.bookmarks_list'));

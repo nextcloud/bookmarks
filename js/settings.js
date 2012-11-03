@@ -1,12 +1,12 @@
-$(document).ready(function() {
-	$('#bm_import_submit').click(attachSettingEvent);
-});
-
-
 function attachSettingEvent(event) {
 	event.preventDefault();
 	fileUpload($(this).closest('form'), $('#upload'));
 }
+
+function exportBm(e) {
+	window.location = $(this).attr('href');
+}
+
 function fileUpload(form, result_div) {
 		
 	var uploadEventHandler = function () {
