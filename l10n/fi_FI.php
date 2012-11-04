@@ -1,9 +1,12 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Tuonti ei tue kyseistä tiedostotyyppiä",
 "Bookmarks" => "Kirjanmerkit",
 "Tags" => "Tunnisteet",
 "Edit bookmark" => "Muokkaa kirjanmerkkejä",
 "Are you sure you want to remove this tag from every entry?" => "Haluatko varmasti poistaa tämän tunnisteen jokaiselta kohteelta?",
 "Warning" => "Varoitus",
+"Import completed successfully." => "Tuonti valmistui onnistuneesti.",
+"Uploading..." => "Lähetetään...",
 "Bookm." => "Kirjanm.",
 "Add a bookmark" => "Lisää kirjanmerkki",
 "Close" => "Sulje",
@@ -25,6 +28,7 @@
 "You have no bookmarks" => "Sinulla ei ole kirjanmerkkejä",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Vedä tämä selaimesi kirjanmerkkipalkkiin ja napsauta sitä, kun haluat lisätä kirjanmerkin nopeasti:",
 "Read later" => "Lue myöhemmin",
+"Export & Import" => "Vienti ja tuonti",
 "Export" => "Vie",
 "Import" => "Tuo"
 );
