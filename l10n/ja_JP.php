@@ -11,8 +11,6 @@
 "The address of the page" => "ページのアドレス",
 "Description of the page" => "ページの説明",
 "Save" => "保存",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Webページをすぐにブックマークしたい場合は、これをブラウザのブックマークにドラッグし、クリックしてください:",
-"Read later" => "後で確認",
 "Edit" => "編集",
 "Delete" => "削除",
 "Cancel" => "キャンセル",
@@ -25,9 +23,8 @@
 "Related Tags" => "関連タグ",
 "Settings" => "設定",
 "You have no bookmarks" => "ブックマークがありません",
-"Bookmarklet <br />" => "ブックマークレット <br />",
-"Import bookmarks" => "ブックマークをインポート",
-"Import" => "インポート",
-"Export bookmarks" => "ブックマークをエクスポート",
-"Export" => "エクスポート"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Webページをすぐにブックマークしたい場合は、これをブラウザのブックマークにドラッグし、クリックしてください:",
+"Read later" => "後で確認",
+"Export" => "エクスポート",
+"Import" => "インポート"
 );

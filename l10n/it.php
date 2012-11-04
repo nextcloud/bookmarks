@@ -14,8 +14,6 @@
 "The address of the page" => "L'indirizzo della pagina",
 "Description of the page" => "Descrizione della pagina",
 "Save" => "Salva",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Quando vuoi creare rapidamente un segnalibro, trascinalo sui segnalibri del browser e fai clic su di esso:",
-"Read later" => "Leggi dopo",
 "Edit" => "Modifica",
 "Delete" => "Elimina",
 "Cancel" => "Annulla",
@@ -28,10 +26,8 @@
 "Related Tags" => "Tag correlati",
 "Settings" => "Impostazioni",
 "You have no bookmarks" => "Non hai segnalibri",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "Importa segnalibri",
-"html bookmarks file" => "File di segnalibri html",
-"Import" => "Importa",
-"Export bookmarks" => "Esporta segnalibri",
-"Export" => "Esporta"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Quando vuoi creare rapidamente un segnalibro, trascinalo sui segnalibri del browser e fai clic su di esso:",
+"Read later" => "Leggi dopo",
+"Export" => "Esporta",
+"Import" => "Importa"
 );

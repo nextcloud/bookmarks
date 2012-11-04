@@ -1,9 +1,12 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Importació d'un tipus de fitxer no implementat",
 "Bookmarks" => "Adreces d'interès",
 "Tags" => "Etiquetes",
 "Edit bookmark" => "Edita l'adreça d'interès",
 "Are you sure you want to remove this tag from every entry?" => "Segur que voleu eliminar aquesta etiqueta de cada entrada?",
 "Warning" => "Avís",
+"Import completed successfully." => "La importació ha acabat amb èxit",
+"Uploading..." => "Pujant...",
 "Bookm." => "Marcador",
 "Add a bookmark" => "Afegeix una adreça d'interès",
 "Close" => "Tanca",
@@ -11,8 +14,6 @@
 "The address of the page" => "L'adreça de la pàgina",
 "Description of the page" => "Descripció de la pàgina",
 "Save" => "Desa",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arrossegueu-ho al navegador i feu-hi un clic quan volgueu marcar ràpidament una adreça d'interès:",
-"Read later" => "Llegeix més tard",
 "Edit" => "Edita",
 "Delete" => "Esborra",
 "Cancel" => "Cancel·la",
@@ -25,9 +26,8 @@
 "Related Tags" => "Etiquetes relacionades",
 "Settings" => "Configuració",
 "You have no bookmarks" => "No teniu adreces d'interès",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "Importa les adreces d'interès",
-"Import" => "Importa",
-"Export bookmarks" => "Exporta adreces d'interès",
-"Export" => "Exporta"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arrossegueu-ho al navegador i feu-hi un clic quan volgueu marcar ràpidament una adreça d'interès:",
+"Read later" => "Llegeix més tard",
+"Export" => "Exporta",
+"Import" => "Importa"
 );

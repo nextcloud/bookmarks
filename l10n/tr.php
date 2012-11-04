@@ -4,7 +4,6 @@
 "Warning" => "Uyarı",
 "Close" => "Kapat",
 "Save" => "Kaydet",
-"Read later" => "Sonra oku",
 "Edit" => "Düzenle",
 "Delete" => "Sil",
 "Cancel" => "İptal",
@@ -13,6 +12,7 @@
 "Hide" => "Gizle",
 "Show" => "Göster",
 "Settings" => "Ayarlar",
-"Import" => "İçe aktar",
-"Export" => "Dışa aktar"
+"Read later" => "Sonra oku",
+"Export" => "Dışa aktar",
+"Import" => "İçe aktar"
 );

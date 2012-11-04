@@ -14,8 +14,6 @@
 "The address of the page" => "Die Adresse der Seite",
 "Description of the page" => "Die Beschreibung der Seite",
 "Save" => "Speichern",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Ziehen Sie dies zu Ihren Browser-Lesezeichen und klicken Sie darauf, wenn Sie eine Website schnell den Lesezeichen hinzufügen wollen.",
-"Read later" => "Später lesen",
 "Edit" => "Bearbeiten",
 "Delete" => "Löschen",
 "Cancel" => "Abbrechen",
@@ -28,10 +26,8 @@
 "Related Tags" => "Verwandte Schlagworte",
 "Settings" => "Einstellungen",
 "You have no bookmarks" => "Sie haben keine Lesezeichen",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "Lesezeichen importieren",
-"html bookmarks file" => "HTML-Lesezeichen-Datei",
-"Import" => "Importieren",
-"Export bookmarks" => "Lesezeichen exportieren",
-"Export" => "Exportieren"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Ziehen Sie dies zu Ihren Browser-Lesezeichen und klicken Sie darauf, wenn Sie eine Website schnell den Lesezeichen hinzufügen wollen.",
+"Read later" => "Später lesen",
+"Export" => "Exportieren",
+"Import" => "Importieren"
 );

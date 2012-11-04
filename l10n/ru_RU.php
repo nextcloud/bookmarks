@@ -14,8 +14,6 @@
 "The address of the page" => "Адрес страницы",
 "Description of the page" => "Описание страницы",
 "Save" => "Сохранить",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Перетащите это в закладки Вашего браузера и кликните на него, когда захотите быстро добавить страницу в закладки:",
-"Read later" => "Прочитать позже",
 "Edit" => "Редактировать",
 "Delete" => "Удалить",
 "Cancel" => "Отмена",
@@ -28,10 +26,8 @@
 "Related Tags" => "Связанные теги",
 "Settings" => "Настройки",
 "You have no bookmarks" => "У Вас нет закладок",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "Импорт закладок",
-"html bookmarks file" => "файл html-закладок",
-"Import" => "Импортировать",
-"Export bookmarks" => "Экспорт закладок",
-"Export" => "Экспортировать"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Перетащите это в закладки Вашего браузера и кликните на него, когда захотите быстро добавить страницу в закладки:",
+"Read later" => "Прочитать позже",
+"Export" => "Экспортировать",
+"Import" => "Импортировать"
 );

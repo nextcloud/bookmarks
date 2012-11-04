@@ -1,10 +1,12 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Tipo de archivo no compatible para importar",
 "Bookmarks" => "Marcadores",
 "Tags" => "Etiquetas",
 "Edit bookmark" => "Editar marcador",
 "Are you sure you want to remove this tag from every entry?" => "Esta seguro que desea remover este tag de todas las entradas?",
 "Warning" => "Preacucion",
 "Import completed successfully." => "Importación completada con éxito",
+"Uploading..." => "Subiendo...",
 "Bookm." => "Marc.",
 "Add a bookmark" => "Agregar a marcadores",
 "Close" => "cerrrar",
@@ -12,8 +14,6 @@
 "The address of the page" => "Direccion de la pagina",
 "Description of the page" => "Descripcion de la pagina",
 "Save" => "Guardar",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arrastra desde aquí a los marcadores de tu navegador, y haz clic cuando quieras marcar una página web rápidamente:",
-"Read later" => "Leer después",
 "Edit" => "Editar",
 "Delete" => "Eliminar",
 "Cancel" => "Cancelar",
@@ -26,9 +26,8 @@
 "Related Tags" => "Tags relacionados",
 "Settings" => "Ajustes",
 "You have no bookmarks" => "No tienes marcadores",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "Importar marcadores",
-"Import" => "Importart",
-"Export bookmarks" => "Exportar marcadores",
-"Export" => "Exportar"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arrastra desde aquí a los marcadores de tu navegador, y haz clic cuando quieras marcar una página web rápidamente:",
+"Read later" => "Leer después",
+"Export" => "Exportar",
+"Import" => "Importart"
 );

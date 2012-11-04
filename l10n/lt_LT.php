@@ -9,6 +9,6 @@
 "Address" => "Adresas",
 "List" => "Sąrašas",
 "Settings" => "Nustatymai",
-"Import" => "Importuoti",
-"Export" => "Eksportuoti"
+"Export" => "Eksportuoti",
+"Import" => "Importuoti"
 );

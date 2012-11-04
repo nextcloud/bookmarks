@@ -11,8 +11,6 @@
 "The address of the page" => "გვერდის მისამართი",
 "Description of the page" => "გვერდის დახასიათება",
 "Save" => "შენახვა",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "გადაათრიეთ ეს თქვენს ბუქმარკებში თუ გინდათ რომ საითი სწრაფად დაბუქმარკდეს",
-"Read later" => "წაიკითხე მოგვიანებით",
 "Edit" => "რედაქტირება",
 "Delete" => "წაშლა",
 "Cancel" => "უარყოფა",
@@ -25,9 +23,8 @@
 "Related Tags" => "Related Tags",
 "Settings" => "პარამეტრები",
 "You have no bookmarks" => "თქვენ არ გაქვთ ბუქმარკები",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "ბუქმარქების იმპორტი",
-"Import" => "იმპორტი",
-"Export bookmarks" => "ბუქმარქების ექსპორტი",
-"Export" => "ექსპორტი"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "გადაათრიეთ ეს თქვენს ბუქმარკებში თუ გინდათ რომ საითი სწრაფად დაბუქმარკდეს",
+"Read later" => "წაიკითხე მოგვიანებით",
+"Export" => "ექსპორტი",
+"Import" => "იმპორტი"
 );

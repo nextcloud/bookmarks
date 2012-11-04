@@ -11,8 +11,6 @@
 "The address of the page" => "Lehe aadress",
 "Description of the page" => "Lehe kirjeldus",
 "Save" => "Salvesta",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Lohista see oma veebilehitseja järjehoidjatesse ja kliki sellele, kui sa soovid veebilehte kiirelt lisada:",
-"Read later" => "Loe hiljem",
 "Edit" => "Muuda",
 "Delete" => "Kustuta",
 "Cancel" => "Loobu",
@@ -25,9 +23,8 @@
 "Related Tags" => "Seotud sildid",
 "Settings" => "Seaded",
 "You have no bookmarks" => "Sul pole järjehoidjaid",
-"Bookmarklet <br />" => "Järjehoidja vidin <br />",
-"Import bookmarks" => "Impordi järjehoidjaid",
-"Import" => "Impordi",
-"Export bookmarks" => "Ekspordi järjehoidjaid",
-"Export" => "Ekspordi"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Lohista see oma veebilehitseja järjehoidjatesse ja kliki sellele, kui sa soovid veebilehte kiirelt lisada:",
+"Read later" => "Loe hiljem",
+"Export" => "Ekspordi",
+"Import" => "Impordi"
 );

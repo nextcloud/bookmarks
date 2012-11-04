@@ -1,9 +1,12 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Type de fichier non supporté pour l'importation",
 "Bookmarks" => "Favoris",
 "Tags" => "Étiquettes",
 "Edit bookmark" => "Modifier le favori",
 "Are you sure you want to remove this tag from every entry?" => "Êtes-vous certain de vouloir retirer cette étiquette de chaque entrée ?",
 "Warning" => "Attention",
+"Import completed successfully." => "L'importation s'est achevée avec succès",
+"Uploading..." => "Téléversement en cours…",
 "Bookm." => "Fav.",
 "Add a bookmark" => "Ajouter un favori",
 "Close" => "Fermer",
@@ -11,8 +14,6 @@
 "The address of the page" => "L'adresse de la page",
 "Description of the page" => "Description de la page",
 "Save" => "Sauvegarder",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Glissez ceci dans les favoris de votre navigateur, et cliquer dessus lorsque vous souhaitez ajouter la page en cours à vos marques-pages :",
-"Read later" => "Lire plus tard",
 "Edit" => "Modifier",
 "Delete" => "Supprimer",
 "Cancel" => "Annuler",
@@ -25,9 +26,8 @@
 "Related Tags" => "Étiquettes similaires",
 "Settings" => "Paramètres",
 "You have no bookmarks" => "Vous n'avez aucun favori",
-"Bookmarklet <br />" => "Gestionnaire de favoris <br />",
-"Import bookmarks" => "Importer des favoris",
-"Import" => "Importer",
-"Export bookmarks" => "Exporter les favoris",
-"Export" => "Exporter"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Glissez ceci dans les favoris de votre navigateur, et cliquer dessus lorsque vous souhaitez ajouter la page en cours à vos marques-pages :",
+"Read later" => "Lire plus tard",
+"Export" => "Exporter",
+"Import" => "Importer"
 );

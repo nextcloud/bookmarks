@@ -11,8 +11,6 @@
 "The address of the page" => "Het pagina adres",
 "Description of the page" => "Pagina beschrijving",
 "Save" => "Bewaar",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Sleep dit naar uw browser bladwijzer menu en klik erop, wanneer u een webpagina snel wilt voorzien van een bladwijzer:",
-"Read later" => "Lees later",
 "Edit" => "Bewerk",
 "Delete" => "Verwijder",
 "Cancel" => "Annuleer",
@@ -25,9 +23,8 @@
 "Related Tags" => "Aanverwante tags",
 "Settings" => "Instellingen",
 "You have no bookmarks" => "U heeft geen bladwijzers",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "Importeer bladwijzers",
-"Import" => "Importeer",
-"Export bookmarks" => "Exporteer bladwijzers",
-"Export" => "Exporteer"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Sleep dit naar uw browser bladwijzer menu en klik erop, wanneer u een webpagina snel wilt voorzien van een bladwijzer:",
+"Read later" => "Lees later",
+"Export" => "Exporteer",
+"Import" => "Importeer"
 );

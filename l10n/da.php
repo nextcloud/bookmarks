@@ -11,8 +11,6 @@
 "The address of the page" => "Sidens adresse",
 "Description of the page" => "Sidens beskrivelse",
 "Save" => "Gem",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Træk denne til dine browserbogmærker pg klik på den, når du ønsker at lynoprette et bogmærke til hjemmesiden:",
-"Read later" => "Læs senere",
 "Edit" => "Rediger",
 "Delete" => "Slet",
 "Cancel" => "Annuller",
@@ -25,9 +23,8 @@
 "Related Tags" => "Relaterede Tags",
 "Settings" => "Indstillinger",
 "You have no bookmarks" => "Du har ingen bogmærker",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "Importer bogmærker",
-"Import" => "Importer",
-"Export bookmarks" => "Exporter bogmærker",
-"Export" => "Exporter"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Træk denne til dine browserbogmærker pg klik på den, når du ønsker at lynoprette et bogmærke til hjemmesiden:",
+"Read later" => "Læs senere",
+"Export" => "Exporter",
+"Import" => "Importer"
 );

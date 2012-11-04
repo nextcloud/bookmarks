@@ -11,8 +11,6 @@
 "The address of the page" => "Orriaren helbidea",
 "Description of the page" => "Orriaren deskribapena",
 "Save" => "Gorde",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Web orri bat laster-marketara azkar gehitzeko, arrastratu hau zure arakatzailearen laster-marketara eta klikatu bertan:",
-"Read later" => "Irakurri geroago",
 "Edit" => "Editatu",
 "Delete" => "Ezabatu",
 "Cancel" => "Ezeztatu",
@@ -25,9 +23,8 @@
 "Related Tags" => "Erlazionatutako etiketak",
 "Settings" => "Ezarpenak",
 "You have no bookmarks" => "Ez duzu laster-markarik",
-"Bookmarklet <br />" => "Bookmarklet <br />",
-"Import bookmarks" => "Inportatu laster-markak",
-"Import" => "Inportatu",
-"Export bookmarks" => "Exportatu laster-markak",
-"Export" => "Exportatu"
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Web orri bat laster-marketara azkar gehitzeko, arrastratu hau zure arakatzailearen laster-marketara eta klikatu bertan:",
+"Read later" => "Irakurri geroago",
+"Export" => "Exportatu",
+"Import" => "Inportatu"
 );

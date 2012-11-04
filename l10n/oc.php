@@ -6,6 +6,6 @@
 "Cancel" => "Annula",
 "List" => "Tièra",
 "Settings" => "Configuracion",
-"Import" => "Importa",
-"Export" => "Exporta"
+"Export" => "Exporta",
+"Import" => "Importa"
 );
