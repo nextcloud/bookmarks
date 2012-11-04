@@ -358,15 +358,15 @@ li:hover em { display : none; }
 }
 
 #bookmark_settings.open {
-	height: 300px;
+	height: auto;
 }
 #bm_setting_panel {
-	background-color: white;
+	background-color: #eee;
 	padding: 1em;
 	height: 100%;
-	display:none;
+/* 	display:none; */
 }
-.open #bm_setting_panel { display:block; }
+/* .open #bm_setting_panel { display:block; } */
 
 #bm_setting_panel legend{
 	margin-top: 0.5em;

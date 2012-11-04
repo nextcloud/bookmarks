@@ -13,7 +13,10 @@ $(document).ready(function() {
 // 	$('#bm_import_submit').click(attachSettingEvent);
 	$('#bm_import').change(attachSettingEvent);
   $('#settingsbtn').on('click keydown', function() {
-		$('#bookmark_settings').toggleClass('open');
+		if( $('#bookmark_settings').hasClass('open'))
+			$('#bookmark_settings').switchClass( "open", "" );
+		else
+			$('#bookmark_settings').switchClass( "", "open");
 	});
 	$('#bm_export').click(exportBm);
 
