@@ -9,9 +9,9 @@
 ?>
 <input type="hidden" id="bookmarkFilterTag" value="<?php echo $_['req_tag']; ?>" />
 <div id="controls">
-	<input type="text" id="add_url" value="" placeholder="<?php echo $l->t('Address'); ?>"/>
+	<form id="add_form"><input type="text" id="add_url" value="" placeholder="<?php echo $l->t('Address'); ?>"/>
 	<input type="submit" value="<?php echo $l->t('Add bookmark'); ?>" id="bookmark_add_submit" />
-
+	</form>
 	<div id="view_type">
 		<input type="button" class="list" value="<?php echo $l->t('List')?>" />
 		<input type="button" class="image" style="display:none" value="<?php echo $l->t('Image')?>" />

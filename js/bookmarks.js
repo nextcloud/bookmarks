@@ -8,7 +8,7 @@ var bookmark_view = 'image';
 $(document).ready(function() {
 	$('.centercontent').click(clickSideBar);
 	$('#view_type input').click(clickSwitchView);
-	$('#bookmark_add_submit').click(addBookmark);
+	$('#add_form').submit(addBookmark);
 
 // 	$('#bm_import_submit').click(attachSettingEvent);
 	$('#bm_import').change(attachSettingEvent);
@@ -193,6 +193,7 @@ function createEditDialog(record){
 }
 
 function addBookmark(event) {
+	event.preventDefault();
 	url = $('#add_url').val();
 	$('#add_url').val('');
 	bookmark = { url: url, description:'', title:''};
