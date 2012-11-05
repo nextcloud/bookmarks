@@ -19,15 +19,13 @@
 "Cancel" => "Zrušit",
 "Address" => "Adresa",
 "Add bookmark" => "Přidat záložku",
-"List" => "Seznam",
-"Image" => "Obrázek",
-"Hide" => "Skrýt",
-"Show" => "Zobrazit",
 "Related Tags" => "Podobné značky",
 "Settings" => "Nastavení",
 "You have no bookmarks" => "Nemáte žádné záložky",
+"Bookmarklet" => "Rutina pro záložky",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Přetáhněte do Vašeho prohlížeče a klikněte, pokud si přejete rychle uložit stránku do záložek:",
 "Read later" => "Přečíst později",
+"Export & Import" => "Import a export",
 "Export" => "Exportovat",
 "Import" => "Importovat"
 );

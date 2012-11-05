@@ -5,6 +5,5 @@
 "Delete" => "Obriši",
 "Cancel" => "Otkaži",
 "Address" => "Adresa",
-"List" => "Spisak",
 "Settings" => "Podešavanja"
 );

@@ -6,7 +6,6 @@
 "Delete" => "Obriši",
 "Cancel" => "Odustani",
 "Address" => "Adresa",
-"List" => "Lista",
 "Settings" => "Postavke",
 "Export" => "Izvoz",
 "Import" => "Uvezi"

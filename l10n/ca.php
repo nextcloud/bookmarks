@@ -19,15 +19,13 @@
 "Cancel" => "Cancel·la",
 "Address" => "Adreça",
 "Add bookmark" => "Afegeix una adreça d'interès",
-"List" => "Llista",
-"Image" => "Imatge",
-"Hide" => "Amaga",
-"Show" => "Mostra",
 "Related Tags" => "Etiquetes relacionades",
 "Settings" => "Configuració",
 "You have no bookmarks" => "No teniu adreces d'interès",
+"Bookmarklet" => "Bookmarklet",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arrossegueu-ho al navegador i feu-hi un clic quan volgueu marcar ràpidament una adreça d'interès:",
 "Read later" => "Llegeix més tard",
+"Export & Import" => "Exporta i importa",
 "Export" => "Exporta",
 "Import" => "Importa"
 );

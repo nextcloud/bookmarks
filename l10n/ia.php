@@ -5,7 +5,6 @@
 "Delete" => "Deler",
 "Cancel" => "Cancellar",
 "Address" => "Adresse",
-"List" => "Lista",
 "Settings" => "Configurationes",
 "Export" => "Exportar",
 "Import" => "Importar"
