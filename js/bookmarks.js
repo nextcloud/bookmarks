@@ -154,11 +154,7 @@ function getBookmarks() {
 			for(var i in bookmarks.data) {
 				updateBookmarksList(bookmarks.data[i]);
 			}
-			if($('.bookmarks_list').is(':empty')) {
-				$("#firstrun").show();
-			} else {
-				$("#firstrun").hide();
-			}
+			checkEmpty();
 
 			$('.bookmark_link').click(recordClick);
 			$('.bookmark_delete').click(delBookmark);
@@ -208,6 +204,7 @@ function addBookmark(event) {
 				bookmark.title = data.title
 				bookmark.added_date = new Date();
 				updateBookmarksList(bookmark, 'prepend');
+				checkEmpty();
 			}
 		}
 	});
@@ -222,14 +219,19 @@ function delBookmark(event) {
 		success: function(data){
 			if (data.status == 'success') {
 				record.remove();
-				if($('.bookmarks_list').is(':empty')) {
-					$("#firstrun").show();
-				}
+				checkEmpty();
 			}
 		}
 	});
 }
 
+function checkEmpty() {
+	if($('.bookmarks_list').is(':empty')) {
+		$("#firstrun").show();
+	} else {
+		$("#firstrun").hide();
+	}
+}
 function editBookmark(event) {
 	if($('.bookmark_single_form').length){
 		$('.bookmark_single_form .reset').click();
