@@ -18,20 +18,6 @@ input.disabled, input.disabled:hover {
     padding-top: 5px;
     top: 3.5em !important;
 }
-.centercontent {
-  margin-bottom: 1em;
-	text-align: right;
-}
-.centercontent span {
-	border: 1px solid lightgray;
-	border-right:0;
-  border-radius: 0.5em 0em 0em 0.5em;
-  padding: 3px;
-}
-
-.centercontent .right_img {
-	display:none;
-}
 
 .bookmarks_headline {
 	font-size: large;
@@ -244,33 +230,6 @@ li:hover em { display : none; }
     position: absolute;
     right: 0.1em;
     top: 50%;
-}
-
-#view_type {
-	display:none; /* @TODO: Remove when image view is ready*/
-	position: absolute;
-	right: 33.5em;
-	top: 0;
-}
-
-/***** Lis View *****/
-
-.bm_view_img .bookmark_single{
-	width: 240px;
-	float: left;
-	height: 240px;
-	margin: 1em;
-  border-radius: 8px 8px 8px 8px;
-  box-shadow: 0 0 5px rgba(34, 25, 25, 0.5);
-}
-
-.bm_view_img .bookmark_single .shot{
-	text-align:center;
-}
-.bm_view_img .bookmark_single .shot img{
-	border: 1px solid black;
-	width: 228px;
-	height: 160px
 }
 
 .bookmark_desc{

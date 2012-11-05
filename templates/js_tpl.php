@@ -67,24 +67,3 @@
 		<em><%= nbr %></em>
 	</li>
 </script>
-<script type="text/html" id="img_item_tmpl">
-	<div class="bookmark_single" data-id="<%= id %>" >
-		<p class="shot"><img src="<%= service_url %>"></p>
-		<p class="bookmark_actions">
-			<span class="bookmark_edit">
-				<img class="svg" src="<?php echo OCP\image_path("", "actions/rename.svg");?>"
-							title="<?php echo $l->t('Edit');?>">
-			</span>
-			<span class="bookmark_delete">
-				<img class="svg" src="<?php echo OCP\image_path("", "actions/delete.svg");?>"
-					title="<?php echo $l->t('Delete');?>">
-			</span>&nbsp;
-		</p>
-		<p class="bookmark_title">
-			<a href="<%= encodeEntities(url)%>" target="_blank" class="bookmark_link"><%= encodeEntities(title)%></a>
-		</p>
-		<p class="bookmark_desc"><%= encodeEntities(description)%></p>
-		<p class="bookmark_url"><a href="<%= encodeEntities(url)%>" target="_blank"
-			class="bookmark_link"><%= encodeEntities(url)%></a></p>
-	</div>
-</script>

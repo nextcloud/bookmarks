@@ -13,16 +13,8 @@
 		<input type="text" id="add_url" value="" placeholder="<?php echo $l->t('Address'); ?>"/>
 		<input type="submit" value="<?php echo $l->t('Add bookmark'); ?>" id="bookmark_add_submit" />
 	</form>
-	<div id="view_type">
-		<input type="button" class="list" value="<?php echo $l->t('List')?>" />
-		<input type="button" class="image" style="display:none" value="<?php echo $l->t('Image')?>" />
-	</div>
 </div>
 <div id="leftcontent">
-	<div class="centercontent">
-		<span class="left_img"> <?php echo $l->t('Hide')?> &lt;&lt;</span>
-		<span class="right_img"> <?php echo $l->t('Show')?> &gt;&gt;</span>
-	</div>
 
 	<p id="tag_filter">
 		<input type="text" placeholder="Filter By tag" value="<?php echo $_['req_tag']; ?>"/>
@@ -60,11 +52,6 @@
 </div>
 <script>
 	var fullTags = <?php echo $_['tags'];?>;
-	var init_view = '<?php echo OCP\Config::getUserValue(OCP\USER::getUser(), 'bookmarks', 'currentview', 'text');?>';
-	var init_sidebar = '<?php echo OCP\Config::getUserValue(OCP\USER::getUser(), 'bookmarks', 'sidebar', 'true');?>';
-	var shot_provider = '<?php echo OCP\Config::getUserValue(OCP\USER::getUser(),
-		'bookmarks', 'shot_provider', 'http://screenshots.bookmarkly.com/thumb?url={url}');?>';
-	//http://api.thumbalizr.com/?width={width}&url={url}
 </script>
 
 <script type="text/html" id="edit_dialog_tmpl">

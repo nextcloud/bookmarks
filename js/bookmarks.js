@@ -7,8 +7,6 @@ var bookmark_view = 'image';
 
 $(document).ready(function() {
 	watchUrlField();
-	$('.centercontent').click(clickSideBar);
-	$('#view_type input').click(clickSwitchView);
 	
 	$('#bm_import').change(attachSettingEvent);
 	$('#add_url').on('keydown keyup change click', watchUrlField);
@@ -31,11 +29,6 @@ $(document).ready(function() {
 		onTagFinishRemoved: filterTagsChanged
 	}).tagit('option', 'onTagAdded', filterTagsChanged);
 	getBookmarks();
-	
-	if(init_sidebar != 'true')
-		toggleSideBar();
-	bookmark_view = init_view;
-	switchView();
 });
 
 
@@ -51,51 +44,6 @@ var formatString = (function() {
 	};
 })();
 
-function clickSideBar() {
-	$.post(OC.filePath('bookmarks', 'ajax', 'changescreen.php'), {sidebar: $('.right_img').is(':visible')});
-	toggleSideBar();
-}
-
-function toggleSideBar(){
-	var left_pan_visible = $('.right_img').is(':visible');
-	anim_duration = 1000;
-	if( left_pan_visible) { // then show the left panel
-		$('#rightcontent').animate({'left':'32.5em'},{duration: anim_duration, queue: false });
-		$('.bookmarks_list').animate({'width': '-=15em'},{duration: anim_duration, queue: false });
-		$('#leftcontent').animate({'margin-left':'0', 'opacity': 1},{duration: anim_duration, queue: false, complete: function() { $(window).trigger('resize'); }});
-		$('.right_img').hide();
-		$('.left_img').show();
-		
-	} else { // hide the left panel
-		$('#rightcontent').animate({'left':'15.5em'},{duration: anim_duration, queue: false });
-		$('.bookmarks_list').animate({'width': '+=15em'},{duration: anim_duration, queue: false });
-		$('#leftcontent').animate({'margin-left':'-17em', 'opacity': 0.5 },{duration: anim_duration, queue: false, complete: function() { $(window).trigger('resize'); } });
-		$('.left_img').hide();
-		$('.right_img').show();
-	}
-}
-
-function clickSwitchView(){
-	$.post(OC.filePath('bookmarks', 'ajax', 'changescreen.php'), {view:bookmark_view});
-	switchView();
-}
-
-function switchView(){
-	if(bookmark_view == 'list') { //Then switch to img
-		$('.bookmarks_list').addClass('bm_view_img');
-		$('.bookmarks_list').removeClass('bm_view_list');
-		$('#view_type input.image').hide();
-		$('#view_type input.list').show();
-		bookmark_view = 'image';
-	} else { // Then Image
-		$('.bookmarks_list').addClass('bm_view_list');
-		$('.bookmarks_list').removeClass('bm_view_img');
-		$('#view_type input.list').hide();
-		$('#view_type input.image').show();
-		bookmark_view = 'list';
-	}
-	filterTagsChanged(); //Refresh the view
-}
 function addFilterTag(event) {
 	event.preventDefault();
 	$('#tag_filter input').tagit('createTag', $(this).text());
@@ -229,6 +177,7 @@ function addBookmark(event) {
 				bookmark.added_date = new Date();
 				updateBookmarksList(bookmark, 'prepend');
 				checkEmpty();
+				watchUrlField();
 			}
 		}
 	});
@@ -318,35 +267,22 @@ function updateBookmarksList(bookmark, position) {
 		bookmark.added_date.setTime(parseInt(bookmark.added)*1000);
 	}
 	
-	if(bookmark_view == 'image') { //View in images
-		service_url = formatString(shot_provider, {url: encodeEntities(bookmark.url), title: bookmark.title, width: 200});
-		bookmark['service_url'] = service_url;
-		html = tmpl("img_item_tmpl", bookmark);
+	html = tmpl("item_tmpl", bookmark);
+	if(position == "prepend") {
+		$('.bookmarks_list').prepend(html);
+	} else {
 		$('.bookmarks_list').append(html);
-		$('div[data-id="'+ bookmark.id +'"]').data('record', bookmark);
-		if(taglist != '') {
-			$('div[data-id="'+ bookmark.id +'"]').append('<p class="bookmark_tags">' + taglist + '</p>');
-		}
-		$('div[data-id="'+ bookmark.id +'"] a.bookmark_tag').bind('click', addFilterTag);
 	}
-	else {
-		html = tmpl("item_tmpl", bookmark);
-		if(position == "prepend") {
-			$('.bookmarks_list').prepend(html);
-		} else {
-			$('.bookmarks_list').append(html);
-		}
-		line = $('div[data-id="'+ bookmark.id +'"]');
-		line.data('record', bookmark);
-		if(taglist != '') {
-			line.append('<p class="bookmark_tags">' + taglist + '</p>');
-		}
-		line.find('a.bookmark_tag').bind('click', addFilterTag);
-		line.find('.bookmark_link').click(recordClick);
-		line.find('.bookmark_delete').click(delBookmark);
-		line.find('.bookmark_edit').click(editBookmark);
+	line = $('div[data-id="'+ bookmark.id +'"]');
+	line.data('record', bookmark);
+	if(taglist != '') {
+		line.append('<p class="bookmark_tags">' + taglist + '</p>');
 	}
-
+	line.find('a.bookmark_tag').bind('click', addFilterTag);
+	line.find('.bookmark_link').click(recordClick);
+	line.find('.bookmark_delete').click(delBookmark);
+	line.find('.bookmark_edit').click(editBookmark);
+	
 }
 
 function updateOnBottom() {
