@@ -25,7 +25,7 @@
 	</ul>
 
 
-<div id="bookmark_settings">
+<div id="bookmark_settings" class="">
 	<ul class="controls">
 		<li style="float: right">
 			<button id="settingsbtn" title="<?php echo $l->t('Settings'); ?>">

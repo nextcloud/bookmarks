@@ -3,19 +3,11 @@ var bookmarks_loading = false;
 var dialog;
 var bookmarks_sorting = 'bookmarks_sorting_recent';
 
-var bookmark_view = 'image';
-
 $(document).ready(function() {
 	watchUrlField();
-	
 	$('#bm_import').change(attachSettingEvent);
 	$('#add_url').on('keydown keyup change click', watchUrlField);
-  $('#settingsbtn').on('click keydown', function() {
-		if( $('#bookmark_settings').hasClass('open'))
-			$('#bookmark_settings').switchClass( "open", "" );
-		else
-			$('#bookmark_settings').switchClass( "", "open");
-	});
+  $('#settingsbtn').on('click keydown', toggleSettings);
 	$('#bm_export').click(exportBm);
 
 	$(window).resize(function () {
@@ -44,6 +36,21 @@ var formatString = (function() {
 	};
 })();
 
+function watchClickInSetting(e){
+	if($('#bookmark_settings').find($(e.target)).length == 0){
+		toggleSettings();
+	}
+}
+function toggleSettings() {
+	if( $('#bookmark_settings').hasClass('open')) { //Close
+		$('#bookmark_settings').switchClass( "open", "" );
+		$('body').unbind('click');
+	}
+	else {		
+		$('#bookmark_settings').switchClass( "", "open");
+		$('body').bind('click',watchClickInSetting);
+	}
+}
 function addFilterTag(event) {
 	event.preventDefault();
 	$('#tag_filter input').tagit('createTag', $(this).text());

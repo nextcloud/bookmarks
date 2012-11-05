@@ -30,7 +30,7 @@
 
 			<legend><strong><?php echo $l->t('Export & Import');?></strong></legend>
 			<input type="button" id="bm_export" href="<?php echo OCP\Util::linkTo('bookmarks', 'export.php') ;?>" value="<?php echo $l->t('Export'); ?>" />
-			<input type="file" id="bm_import" name="bm_import">
+			<input type="file" id="bm_import" name="bm_import" size="5">
 			<button type="button" name="bm_import_btn" id="bm_import_submit"><?php echo $l->t('Import'); ?></button>
 			<div id="upload"></div>
 
