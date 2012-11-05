@@ -153,10 +153,11 @@ function getBookmarks() {
 
 			for(var i in bookmarks.data) {
 				updateBookmarksList(bookmarks.data[i]);
-				$("#firstrun").hide();
 			}
 			if($('.bookmarks_list').is(':empty')) {
 				$("#firstrun").show();
+			} else {
+				$("#firstrun").hide();
 			}
 
 			$('.bookmark_link').click(recordClick);
@@ -196,7 +197,7 @@ function addBookmark(event) {
 	event.preventDefault();
 	url = $('#add_url').val();
 	$('#add_url').val('');
-	bookmark = { url: url, description:'', title:''};
+	bookmark = { url: url, description:'', title:'', from_own: '1'};
 	$.ajax({
 		type: 'POST',
 		url: OC.filePath('bookmarks', 'ajax', 'editBookmark.php'),
@@ -204,6 +205,7 @@ function addBookmark(event) {
 		success: function(data){
 			if (data.status == 'success') {
 				bookmark.id = data.id;
+				bookmark.title = data.title
 				bookmark.added_date = new Date();
 				updateBookmarksList(bookmark, 'prepend');
 			}
