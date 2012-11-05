@@ -4,6 +4,12 @@
 #firstrun .button { font-size: 0.7em; }
 #firstrun #selections { font-size:0.8em;  font-weight: normal; width: 100%; margin: 2em auto auto auto; clear: both; }
 
+
+input.disabled, input.disabled:hover {
+  cursor: not-allowed;
+	background-color: #ddd;
+	color: gray;
+}
 #leftcontent {
     padding-top: 1em;
 }

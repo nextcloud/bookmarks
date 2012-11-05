@@ -6,12 +6,12 @@ var bookmarks_sorting = 'bookmarks_sorting_recent';
 var bookmark_view = 'image';
 
 $(document).ready(function() {
+	watchUrlField();
 	$('.centercontent').click(clickSideBar);
 	$('#view_type input').click(clickSwitchView);
-	$('#add_form').submit(addBookmark);
-
-// 	$('#bm_import_submit').click(attachSettingEvent);
+	
 	$('#bm_import').change(attachSettingEvent);
+	$('#add_url').on('keydown keyup change click', watchUrlField);
   $('#settingsbtn').on('click keydown', function() {
 		if( $('#bookmark_settings').hasClass('open'))
 			$('#bookmark_settings').switchClass( "open", "" );
@@ -189,9 +189,33 @@ function createEditDialog(record){
 	});
 }
 
+function watchUrlField(){
+	var form = $('#add_form');
+	var el = $('#add_url');
+	var button = $('#bookmark_add_submit');
+	form.unbind('submit');
+	if(! acceptUrl(el.val()) ) {
+		form.bind('submit',function(e){e.preventDefault()});
+		button.addClass('disabled');
+	}
+	else{
+		button.removeClass('disabled');
+		form.bind('submit',addBookmark);
+	}
+}
+
+function acceptUrl(url) {
+	return url.replace(/^\s+/g,'').replace(/\s+$/g,'') != '';
+}
+
 function addBookmark(event) {
 	event.preventDefault();
 	url = $('#add_url').val();
+	//If trim is empty
+	if(! acceptUrl(url) ) {
+		return;
+	}
+	
 	$('#add_url').val('');
 	bookmark = { url: url, description:'', title:'', from_own: '1'};
 	$.ajax({
