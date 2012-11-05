@@ -17,7 +17,7 @@
 				</p>
 				<p class="bookmark_url">
 					<a href="<%= encodeEntities(url) %>" target="_blank" class="bookmark_link">
-						<%= encodeEntities(url) %>
+						<%= encodeEntities(title == '' ? '' : url) %>
 					</a>
 				</p>
 				<p class="bookmark_date"><%= formatDate(added_date) %></p>
