@@ -20,8 +20,8 @@
 						<%= encodeEntities(title == '' ? '' : url) %>
 					</a>
 				</p>
-				<p class="bookmark_date"><%= formatDate(added_date) %></p>
 				<p class="bookmark_desc"><%= encodeEntities(description)%> </p>
+				<p class="bookmark_date"><%= formatDate(added_date) %></p>
 			</div>
 </script>
 

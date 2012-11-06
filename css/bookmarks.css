@@ -57,7 +57,7 @@ input.disabled, input.disabled:hover {
 .bookmark_actions {
 	position: absolute;
 	right: 1em;
-	top: 0.7em;
+	bottom:0.3em;
 	display: none;
 }
 .bookmark_actions span { margin: 0 0.4em; }
@@ -66,6 +66,7 @@ input.disabled, input.disabled:hover {
 
 .bookmark_single {
 	position: relative;
+	min-height: 3em;
 	padding: 0.5em 1em;
 	border-bottom: 1px solid #DDD;
 	-webkit-transition:background-color 500ms; -moz-transition:background-color 500ms; -o-transition:background-color 500ms; transition:background-color 500ms;
@@ -233,7 +234,7 @@ li:hover em { display : none; }
 }
 
 .bookmark_desc{
-	height: 1.5em;
+/* 	height: 1.5em; */
 	padding-left:1em;
 	white-space:nowrap;
   text-overflow:ellipsis;
@@ -249,14 +250,6 @@ li:hover em { display : none; }
 	margin-right: 0.2em;
 }
 
-/*
-.bm_view_img .bookmark_single:hover .bookmark_url{
-	display:block; 
-}
-.bm_view_img .bookmark_single .bookmark_url{
- 	display:block; 
-}
-*/
 .bookmark_single:hover .bookmark_url { display: inline;  }
 .bookmark_single:hover .bookmark_url a[href]{ color:gray; }
 
