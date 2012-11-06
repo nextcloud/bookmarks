@@ -7,17 +7,16 @@
  * See the COPYING-README file.
  */
 ?>
-<input type="hidden" id="bookmarkFilterTag" value="<?php echo $_['req_tag']; ?>" />
-<div id="controls">
-	<form id="add_form">
-		<input type="text" id="add_url" value="" placeholder="<?php echo $l->t('Address'); ?>"/>
-		<input type="submit" value="<?php echo $l->t('Add bookmark'); ?>" id="bookmark_add_submit" />
-	</form>
-</div>
+
 <div id="leftcontent">
 
+	<form id="add_form">
+		<input type="text" id="add_url" value="" placeholder="<?php echo $l->t('Address'); ?>"/>
+		<input type="submit" value="<?php echo $l->t('Add'); ?>" id="bookmark_add_submit" />
+	</form>
+
 	<p id="tag_filter">
-		<input type="text" placeholder="Filter By tag" value="<?php echo $_['req_tag']; ?>"/>
+		<input type="text" value="<?php echo $_['req_tag']; ?>"/>
 	</p>
 
 	<label><?php echo $l->t('Related Tags'); ?></label>

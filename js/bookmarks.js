@@ -15,7 +15,8 @@ $(document).ready(function() {
 	$('#tag_filter input').tagit({
 		allowSpaces: true,
 		availableTags: fullTags,
-		onTagFinishRemoved: filterTagsChanged
+		onTagFinishRemoved: filterTagsChanged,
+		placeholderText: t('bookmark', 'Filter by tag')
 	}).tagit('option', 'onTagAdded', filterTagsChanged);
 	getBookmarks();
 });
