@@ -9,13 +9,13 @@
 				<p class="bookmark_title">
 					<a href="<%= encodeEntities(url) %>" target="_blank" class="bookmark_link">
 						<%= encodeEntities(title == '' ? url : title ) %>
-					</a>                                                                    
+					</a>
 				</p>
 				<p class="bookmark_url">
 					<a href="<%= encodeEntities(url) %>" target="_blank" class="bookmark_link">
 						<%= encodeEntities(title == '' ? '' : url) %>
 					</a>
-                                        <span class="bookmark_edit">
+					<span class="bookmark_edit">
 						<img class="svg" src="<?php echo OCP\image_path("", "actions/rename.svg");?>"
 							title="<?php echo $l->t('Edit');?>">
 					</span>
