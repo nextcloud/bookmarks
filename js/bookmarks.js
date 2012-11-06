@@ -304,7 +304,7 @@ function recordClick(event) {
 	$.ajax({
 		type: 'POST',
 		url: OC.filePath('bookmarks', 'ajax', 'recordClick.php'),
-		data: 'url=' + encodeURIComponent($(this).attr('href')),
+		data: 'url=' + encodeURIComponent($(this).attr('href'))
 	});
 }
 
