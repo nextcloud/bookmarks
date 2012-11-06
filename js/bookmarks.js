@@ -10,11 +10,8 @@ $(document).ready(function() {
   $('#settingsbtn').on('click keydown', toggleSettings);
 	$('#bm_export').click(exportBm);
 
-	$(window).resize(function () {
-		fillWindow($('.bookmarks_list'));
-	});
 	$(window).resize();
-	$('.bookmarks_list').scroll(updateOnBottom).empty().width($('#rightcontent').width());
+	$('.bookmarks_list').scroll(updateOnBottom).empty();
 	$('#tag_filter input').tagit({
 		allowSpaces: true,
 		availableTags: fullTags,
