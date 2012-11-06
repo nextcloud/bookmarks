@@ -9,8 +9,11 @@ $(document).ready(function() {
 	$('#add_url').on('keydown keyup change click', watchUrlField);
   $('#settingsbtn').on('click keydown', toggleSettings);
 	$('#bm_export').click(exportBm);
-
-	$(window).resize();
+	$('#firstrun_setting').click(function(){
+		if(! $('#bookmark_settings').hasClass('open')){
+			$('#settingsbtn').click();
+		}
+	});
 	$('.bookmarks_list').scroll(updateOnBottom).empty();
 	$('#tag_filter input').tagit({
 		allowSpaces: true,

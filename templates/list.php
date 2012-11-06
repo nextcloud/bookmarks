@@ -6,6 +6,14 @@
  * later.
  * See the COPYING-README file.
  */
+function bookmarklet(){
+	$l = new OC_l10n('bookmarks');
+	$blet = "javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=document.title,d=a.open('";
+	$blet .= OCP\Util::linkToAbsolute('bookmarks', 'addBm.php');
+	$blet .= "?output=popup&url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=400px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();";
+	$help_msg  = $l->t('Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:');
+	return '<small>'.$help_msg.'</small><br /><a class="button bookmarklet" href="' . $blet . '">' . $l->t('Read later') . '</a>';
+}
 ?>
 
 <div id="leftcontent">
@@ -39,15 +47,15 @@
 
 </div>
 <div id="rightcontent" class="rightcontent">
-	<div class="bookmarks_list"></div>
 	<div id="firstrun" style="display: none;">
 		<?php
 			echo $l->t('You have no bookmarks');
-			$embedded = true;/*
-			require_once OC_App::getAppPath('bookmarks') .'/templates/bookmarklet.php' ;
-			createBookmarklet(); */
-		?>
-	<div id="appsettings" class="popup bottomleft hidden"></div>
+			$embedded = true;
+			
+			echo bookmarklet();?><br/><br />
+
+			<small><a href="#" id="firstrun_setting"><?php echo $l->t('You can also try to import a bookmark file');?></a></small>
+	<div class="bookmarks_list"></div>
 </div>
 <script>
 	var fullTags = <?php echo $_['tags'];?>;
