@@ -1,8 +1,8 @@
 <?php $TRANSLATIONS = array(
 "Close" => "إغلق",
 "Save" => "حفظ",
-"Edit" => "تعديل",
 "Delete" => "حذف",
+"Edit" => "تعديل",
 "Cancel" => "الغاء",
 "Address" => "عنوان",
 "Settings" => "تعديلات",

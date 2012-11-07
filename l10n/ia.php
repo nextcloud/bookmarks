@@ -1,8 +1,8 @@
 <?php $TRANSLATIONS = array(
 "Close" => "Clauder",
 "Save" => "Salveguardar",
-"Edit" => "Modificar",
 "Delete" => "Deler",
+"Edit" => "Modificar",
 "Cancel" => "Cancellar",
 "Address" => "Adresse",
 "Settings" => "Configurationes",
