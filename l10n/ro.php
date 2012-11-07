@@ -9,7 +9,6 @@
 "Delete" => "Șterge",
 "Cancel" => "Anulare",
 "Address" => "Adresă",
-"List" => "Listă",
 "Settings" => "Setări",
 "You have no bookmarks" => "Nu ai nici un semn de carte",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Trage acest semn în semnele de carte din navigatorul tău web când dorești să salvezi rapid un semn către o pagină web:",

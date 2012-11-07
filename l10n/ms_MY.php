@@ -7,7 +7,6 @@
 "Delete" => "Padam",
 "Cancel" => "Batal",
 "Address" => "Alamat",
-"List" => "Senarai",
 "Settings" => "Tetapan",
 "Export" => "Export",
 "Import" => "Import"

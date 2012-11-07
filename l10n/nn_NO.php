@@ -5,7 +5,6 @@
 "Delete" => "Slett",
 "Cancel" => "Kanseller",
 "Address" => "Adresse",
-"List" => "Liste",
 "Settings" => "Innstillingar",
 "Export" => "Eksporter",
 "Import" => "Importer"

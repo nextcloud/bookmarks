@@ -19,15 +19,13 @@
 "Cancel" => "Abbrechen",
 "Address" => "Adresse",
 "Add bookmark" => "Lesezeichen hinzufügen",
-"List" => "Liste",
-"Image" => "Bild",
-"Hide" => "Ausblenden",
-"Show" => "Anzeigen",
 "Related Tags" => "Verwandte Schlagworte",
 "Settings" => "Einstellungen",
 "You have no bookmarks" => "Sie haben keine Lesezeichen",
+"Bookmarklet" => "Bookmarklet",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Ziehen Sie dies zu Ihren Browser-Lesezeichen und klicken Sie darauf, wenn Sie eine Website schnell den Lesezeichen hinzufügen wollen.",
 "Read later" => "Später lesen",
+"Export & Import" => "Export & Import",
 "Export" => "Exportieren",
 "Import" => "Importieren"
 );

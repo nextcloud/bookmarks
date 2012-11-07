@@ -9,15 +9,7 @@
 
 <fieldset class="personalblock">
 	<legend><strong><?php echo $l->t('Bookmarklet');?></strong></legend>
-	<small>
-		<?php echo $l->t('Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:');?>
-	</small><br />
-	<a class="button bookmarklet"
-		href="javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=document.title,d=a.open('<?php 
-		echo OCP\Util::linkToAbsolute('bookmarks', 'addBm.php');
-		?>'?output=popup&url=\'+c(b.location)+\'&title=\'+e,\'bkmk_popup\',\'left=\'+((a.screenX||a.screenLeft)+10)+\',top=\'+((a.screenY||a.screenTop)+10)+\',height=400px,width=550px,resizable=1,alwaysRaised=1\');a.setTimeout(function(){d.focus()},300);})();">
-		<?php echo $l->t('Read later');?>
-	</a>
+	<?php echo bookmarklet();?><br />
 </fieldset>
 
 <form id="import_bookmark" action="<?php echo OCP\Util::linkTo( "bookmarks", "ajax/import.php" );?>"
@@ -30,7 +22,7 @@
 
 			<legend><strong><?php echo $l->t('Export & Import');?></strong></legend>
 			<input type="button" id="bm_export" href="<?php echo OCP\Util::linkTo('bookmarks', 'export.php') ;?>" value="<?php echo $l->t('Export'); ?>" />
-			<input type="file" id="bm_import" name="bm_import">
+			<input type="file" id="bm_import" name="bm_import" size="5">
 			<button type="button" name="bm_import_btn" id="bm_import_submit"><?php echo $l->t('Import'); ?></button>
 			<div id="upload"></div>
 

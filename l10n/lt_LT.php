@@ -7,7 +7,6 @@
 "Delete" => "Ištrinti",
 "Cancel" => "Atšaukti",
 "Address" => "Adresas",
-"List" => "Sąrašas",
 "Settings" => "Nustatymai",
 "Export" => "Eksportuoti",
 "Import" => "Importuoti"

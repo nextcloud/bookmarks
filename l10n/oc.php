@@ -4,7 +4,6 @@
 "Edit" => "Editar",
 "Delete" => "Escafa",
 "Cancel" => "Annula",
-"List" => "Tièra",
 "Settings" => "Configuracion",
 "Export" => "Exporta",
 "Import" => "Importa"

@@ -8,7 +8,6 @@
 "Delete" => "حذف",
 "Cancel" => "منصرف شدن",
 "Address" => "آدرس",
-"List" => "فهرست",
 "Settings" => "تنظیمات",
 "You have no bookmarks" => "شما هیچ نشانکی ندارید",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "هنگامی که می‌خواهید کی صفحه‌ی اینترنتی را بسرعت نشان کنید، این را به نشانه‌های مرورگر خود بکشید و روی آن کلیک کنید.",

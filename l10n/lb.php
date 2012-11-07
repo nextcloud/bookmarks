@@ -6,7 +6,6 @@
 "Delete" => "Läschen",
 "Cancel" => "Ofbriechen",
 "Address" => "Adress",
-"List" => "Lescht",
 "Settings" => "Astellungen",
 "Export" => "Export",
 "Import" => "Import"
