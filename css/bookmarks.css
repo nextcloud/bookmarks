@@ -6,7 +6,7 @@
 #firstrun_setting { font-size: 100%; text-decoration: underline}
 
 input.disabled, input.disabled:hover {
-  cursor: not-allowed;
+  	cursor: not-allowed;
 	background-color: #ddd;
 	color: gray;
 }
@@ -15,8 +15,8 @@ input.disabled, input.disabled:hover {
 }
 
 #rightcontent {
-    padding-top: 5px;
-    top: 1em !important;
+    	padding-top: 5px;
+    	top: 1em !important;
 }
 
 .bookmarks_headline {
@@ -118,10 +118,10 @@ input.disabled, input.disabled:hover {
 
 .addBm {
 	background: none repeat scroll 0 0 #F8F8F8;
-  border-radius: 0.5em 0.5em 0.5em 0.5em;
-  color: #555555;
-  margin: 1em;
-  padding: 0.5em 1em;
+	border-radius: 0.5em 0.5em 0.5em 0.5em;
+	color: #555555;
+	margin: 1em;
+	padding: 0.5em 1em;
 	text-shadow: 0 1px 0 #FFFFFF;
 	width: 500px;
 	
@@ -132,7 +132,6 @@ input.disabled, input.disabled:hover {
 .addBm h1 {
 	font-weight: bold;
 	border-bottom: 1px solid #BABABA;
-
 }
 
 
@@ -184,14 +183,14 @@ input.disabled, input.disabled:hover {
 }
 
 #leftcontent .tag_list > li .tag , #leftcontent .share_list > li .tag{
-		background: none repeat scroll 0 0 #DEE7F8;
-    border: 1px solid #CAD8F3;
-    border-radius: 6px 6px 6px 6px;
-    color: #555555;
-    font-weight: normal;
-		float:left;
-		padding: 0.3em;
-    position: relative;
+	background: none repeat scroll 0 0 #DEE7F8;
+	border: 1px solid #CAD8F3;
+	border-radius: 6px 6px 6px 6px;
+	color: #555555;
+	font-weight: normal;
+	float:left;
+	padding: 0.3em;
+    	position: relative;
 }
 
 ul.tagit li.tagit-new {
@@ -212,7 +211,7 @@ li:hover .tags_actions {
 }
 li:hover em { display : none; }
 #tag_filter li, #tag_filter li:hover{
-	    background: none repeat scroll 0 0 #F8F8F8;
+	background: none repeat scroll 0 0 #F8F8F8;
 
 }
 #tag_filter .tagit {
@@ -222,37 +221,37 @@ li:hover em { display : none; }
 	padding:0;
 }
 #tag_filter ul.tagit li.tagit-choice {
-    background: none repeat scroll 0 0 #DEE7F8;
-		padding: 0.2em 18px 0.2em 0.5em;
+	background: none repeat scroll 0 0 #DEE7F8;
+	padding: 0.2em 18px 0.2em 0.5em;
 }
 
 #tag_filter a {
-    display: inline;
-    float: none;
-    margin: 0;
-    padding: 0;
+	display: inline;
+	float: none;
+ 	margin: 0;
+	padding: 0;
 }
 #tag_filter ul.tagit li.tagit-choice .close{
-		margin-top: -8px;
-		cursor: pointer;
-    margin-top: -8px;
-    position: absolute;
-    right: 0.1em;
-    top: 50%;
+	margin-top: -8px;
+	cursor: pointer;
+    	margin-top: -8px;
+    	position: absolute;
+	right: 0.1em;
+	top: 50%;
 }
 
 .bookmark_desc{
 	height: 1.5em;
 	padding-left:1em;
 	white-space:nowrap;
-  text-overflow:ellipsis;
-  overflow:hidden;
-  display:block;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	display:block;
 }
 .bookmark_date, .bookmark_submit {
 	font-size:small;
 	position: absolute;
-  right: 6em;
+	right: 6em;
 	color:gray;
 /* 	margin-top:2.5em; */
 	margin-right: 0.2em;
@@ -281,31 +280,31 @@ li:hover em { display : none; }
 }
 
 .bookmark_single_form .tagit{
-   width: 80%;
+	width: 80%;
 	box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;
 	margin: 3px;
 }
 .bm_view_img .bookmark_actions {
-    bottom: 0.7em;
-    display: block;
-    position: absolute;
-    right: 1em;
-		top: auto;
+	bottom: 0.7em;
+	display: block;
+	position: absolute;
+	right: 1em;
+	top: auto;
 }
 
 #bookmark_settings {
-    -moz-box-sizing: border-box;
-    background: none repeat scroll 0 0 #EEEEEE;
-    border-right: 1px solid #CCCCCC;
-    border-top: 1px solid #CCCCCC;
-    bottom: 0;
-    height: 2.8em;
-    margin: 0;
-    overflow: visible;
-    padding: 0;
-    position: fixed;
-    width: 20em;
-    z-index: 2;
+	-moz-box-sizing: border-box;
+	background: none repeat scroll 0 0 #EEEEEE;
+	border-right: 1px solid #CCCCCC;
+	border-top: 1px solid #CCCCCC;
+ 	bottom: 0;
+	height: 2.8em;
+	margin: 0;
+	overflow: visible;
+	padding: 0;
+	position: fixed;
+	width: 20em;
+	z-index: 2;
 }
 
 #leftcontent #bookmark_settings li{
@@ -317,18 +316,18 @@ li:hover em { display : none; }
 }
 
 #bookmark_settings .controls {
-    height: 2.8em;
-    width: 100%;
+	height: 2.8em;
+	width: 100%;
 }
 
 #bookmark_settings .controls > li:last-child button {
-    margin-right: 0.3em;
+	margin-right: 0.3em;
 }
 #bookmark_settings .controls button {
-    height: 2.4em;
-    margin: 0.15em 0 0 0.15em;
-    padding: 0.2em 0.1em 0;
-    width: 2.4em;
+	height: 2.4em;
+	margin: 0.15em 0 0 0.15em;
+	padding: 0.2em 0.1em 0;
+	width: 2.4em;
 }
 
 #bookmark_settings.open {
