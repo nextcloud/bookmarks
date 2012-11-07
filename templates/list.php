@@ -55,6 +55,7 @@ function bookmarklet(){
 			echo bookmarklet();?><br/><br />
 
 			<small><a href="#" id="firstrun_setting"><?php echo $l->t('You can also try to import a bookmark file');?></a></small>
+	</div>
 	<div class="bookmarks_list"></div>
 </div>
 <script>
