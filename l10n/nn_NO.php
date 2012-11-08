@@ -5,6 +5,7 @@
 "Edit" => "Endra",
 "Cancel" => "Kanseller",
 "Address" => "Adresse",
+"Add" => "Legg til",
 "Settings" => "Innstillingar",
 "Export" => "Eksporter",
 "Import" => "Importer"

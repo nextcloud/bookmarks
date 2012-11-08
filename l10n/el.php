@@ -4,6 +4,7 @@
 "Edit bookmark" => "Επεξεργασία σελιδοδείκτη",
 "Are you sure you want to remove this tag from every entry?" => "Είστε σίγουρος για την αφαίρεση αυτής της ετικέτας από κάθε καταχώρηση;",
 "Warning" => "Προειδοποίηση",
+"Import completed successfully." => "Η εισαγωγή ολοκληρώθηκε επιτυχώς.",
 "Bookm." => "Σελιδοδεικτ.",
 "Add a bookmark" => "Προσθήκη σελιδοδείκτη",
 "Close" => "Κλείσιμο",
@@ -17,9 +18,11 @@
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Σύρετε αυτό στους σελιδοδείκτες του περιηγητή σας και κάντε κλικ επάνω του, όταν θέλετε να προσθέσετε σύντομα μια ιστοσελίδα ως σελιδοδείκτη:",
 "Read later" => "Ανάγνωση αργότερα",
 "Address" => "Διεύθυνση",
+"Add" => "Προσθήκη",
 "Related Tags" => "Σχετικές ετικέτες",
 "Settings" => "Ρυθμίσεις",
 "You have no bookmarks" => "Δεν έχετε σελιδοδείκτες",
+"Export & Import" => "Εξαγωγή & Εισαγωγή",
 "Export" => "Εξαγωγή",
 "Import" => "Εισαγωγή"
 );

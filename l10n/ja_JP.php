@@ -17,6 +17,7 @@
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Webページをすぐにブックマークしたい場合は、これをブラウザのブックマークにドラッグし、クリックしてください:",
 "Read later" => "後で確認",
 "Address" => "アドレス",
+"Add" => "追加",
 "Related Tags" => "関連タグ",
 "Settings" => "設定",
 "You have no bookmarks" => "ブックマークがありません",

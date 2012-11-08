@@ -20,6 +20,7 @@
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "මෙම වෙබ් පිටුව ඉක්මනින් පිටු සළකුනක් ලෙස සටහන් කිරීමට, එය බ්‍රවුසරයේ පිටු සළකුනු මතට ඇද ක්ලික් කරන්න:",
 "Read later" => "පසුව කියවීමට",
 "Address" => "ලිපිනය",
+"Add" => "එකතු කරන්න",
 "Related Tags" => "අදාළ ටැගයන්",
 "Settings" => "සිටුවම්",
 "You have no bookmarks" => "පිටු සළකුනු නොමැත",

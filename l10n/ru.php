@@ -17,6 +17,7 @@
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Перетащите эту кнопку в закладки вашего браузера и нажимайте на неё для быстрого добавления страницы в закладки:",
 "Read later" => "Прочитать позже",
 "Address" => "Адрес",
+"Add" => "Добавить",
 "Related Tags" => "Связанные теги",
 "Settings" => "Конфигурация",
 "You have no bookmarks" => "У вас нет закладок",

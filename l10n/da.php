@@ -17,6 +17,7 @@
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Træk denne til dine browserbogmærker pg klik på den, når du ønsker at lynoprette et bogmærke til hjemmesiden:",
 "Read later" => "Læs senere",
 "Address" => "Adresser",
+"Add" => "Tilføj",
 "Related Tags" => "Relaterede Tags",
 "Settings" => "Indstillinger",
 "You have no bookmarks" => "Du har ingen bogmærker",

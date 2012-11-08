@@ -4,6 +4,7 @@
 "Delete" => "Escafa",
 "Edit" => "Editar",
 "Cancel" => "Annula",
+"Add" => "Ajusta",
 "Settings" => "Configuracion",
 "Export" => "Exporta",
 "Import" => "Importa"

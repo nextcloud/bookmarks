@@ -20,6 +20,7 @@
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arrastra desde aquí a los marcadores de tu navegador, y haz clic cuando quieras marcar una página web rápidamente:",
 "Read later" => "Leer después",
 "Address" => "Dirección",
+"Add" => "Adicionar",
 "Related Tags" => "Tags relacionados",
 "Settings" => "Ajustes",
 "You have no bookmarks" => "No tienes marcadores",
