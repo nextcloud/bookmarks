@@ -1,8 +1,8 @@
 <?php $TRANSLATIONS = array(
 "Close" => "Затвори",
 "Save" => "Сними",
-"Edit" => "Уреди",
 "Delete" => "Обриши",
+"Edit" => "Уреди",
 "Cancel" => "Откажи",
 "Address" => "Адреса",
 "Settings" => "Подешавања"
