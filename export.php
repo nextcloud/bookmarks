@@ -41,11 +41,11 @@ foreach($bookmarks as $bm) {
 	if($bm['description'])
 		$file .= '<DD>'.htmlspecialchars($bm['description'], ENT_QUOTES, 'UTF-8');
 }
-
+$export_name = "owncloud-bookmarks-".date('Y-m-d').'.html';
 header("Cache-Control: private");
 header("Content-Type: application/stream");
 header("Content-Length: ".$fileSize);
-header("Content-Disposition: attachment; filename=oc-bookmarks.html");
+header("Content-Disposition: attachment; filename=".$export_name);
 
 echo $file;
 exit;
