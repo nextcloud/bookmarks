@@ -26,6 +26,7 @@ function bookmarklet(){
 	<p id="tag_filter">
 		<input type="text" value="<?php echo $_['req_tag']; ?>"/>
 	</p>
+	<input type="hidden" id="bookmarkFilterTag" value="<?php echo $_['req_tag']; ?>" />
 
 	<label><?php echo $l->t('Related Tags'); ?></label>
 	<ul class="tag_list">
