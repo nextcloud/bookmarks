@@ -58,7 +58,7 @@ $bm = array('title'=> $title,
 );
 
 //Find All Tags
-$qtags = OC_Bookmarks_Bookmarks::findTags();
+$qtags = OC_Bookmarks_Bookmarks::findTags(array(), 0, 400);
 $tags = array();
 foreach($qtags as $tag) {
 	$tags[] = $tag['tag'];
