@@ -2,6 +2,7 @@
 "Unsupported file type for import" => "ආයාත කරන ගොනුව රුචි නොවේ",
 "Bookmarks" => "පිටු සළකුනු",
 "Tags" => "ටැග",
+"Filter by tag" => "ටැගය ආධාරයෙන් පෙරන්න",
 "Edit bookmark" => "පිටු සළකුනු සකසන්න",
 "Are you sure you want to remove this tag from every entry?" => "මෙම ටැගය සියළු ඇතුලත් කිරීමකින් ඉවත් කරන බව ඔබට සහතිකද",
 "Warning" => "අනතුරු ඇඟවිම",
@@ -24,6 +25,7 @@
 "Related Tags" => "අදාළ ටැගයන්",
 "Settings" => "සිටුවම්",
 "You have no bookmarks" => "පිටු සළකුනු නොමැත",
+"You can also try to import a bookmark file" => "පිටුසන අඩංගු ගොනුවක් ආයාත කිරීමට උත්සහ කළ හැක",
 "Export & Import" => "ආයාත හා නිර්යාත",
 "Export" => "නිර්යාත කරන්න",
 "Import" => "ආයාත කරන්න"

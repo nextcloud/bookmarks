@@ -1,9 +1,13 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Не подходящий тип файла для импорта",
 "Bookmarks" => "Закладки",
 "Tags" => "Метки",
+"Filter by tag" => "Фильтр по тегу",
 "Edit bookmark" => "Редактировать закладку",
 "Are you sure you want to remove this tag from every entry?" => "Вы уверены, что хотите удалить этот тег из каждой записи?",
 "Warning" => "Предупреждение",
+"Import completed successfully." => "Импортирование завершилось успешно.",
+"Uploading..." => "Загрузка...",
 "Bookm." => "Закл.",
 "Add a bookmark" => "Добавить закладку",
 "Close" => "Закрыть",
@@ -21,6 +25,9 @@
 "Related Tags" => "Связанные теги",
 "Settings" => "Конфигурация",
 "You have no bookmarks" => "У вас нет закладок",
+"You can also try to import a bookmark file" => "Вы также можете попробовать импортировать файл закладки",
+"Bookmarklet" => "Bookmarklet",
+"Export & Import" => "Экспорт & Импорт",
 "Export" => "Экспорт",
 "Import" => "Импорт"
 );
