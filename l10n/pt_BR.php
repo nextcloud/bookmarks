@@ -2,6 +2,7 @@
 "Unsupported file type for import" => "Arquivo para importação não suportado",
 "Bookmarks" => "Marcadores",
 "Tags" => "Tags",
+"Filter by tag" => "Filtrar por tag",
 "Edit bookmark" => "Editar bookmark",
 "Are you sure you want to remove this tag from every entry?" => "Tem certeza que deseja remover esta tag de todas as entradas?",
 "Warning" => "Aviso",
@@ -24,6 +25,9 @@
 "Related Tags" => "Tags relacionadas",
 "Settings" => "Ajustes",
 "You have no bookmarks" => "Você não tem marcadores",
+"You can also try to import a bookmark file" => "Você também pode tentar importar um arquivo de bookmarks.",
+"Bookmarklet" => "Bookmarklet",
+"Export & Import" => "Exportar e Importar",
 "Export" => "Exportar",
 "Import" => "Importar"
 );
