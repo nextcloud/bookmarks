@@ -2,6 +2,7 @@
 "Unsupported file type for import" => "Filtypen stöds ej för import",
 "Bookmarks" => "Bokmärken",
 "Tags" => "Taggar",
+"Filter by tag" => "Filtrera på etikett",
 "Edit bookmark" => "Redigera bokmärke",
 "Are you sure you want to remove this tag from every entry?" => "Är du säker på att du vill ta bort denna tagg från varje post?",
 "Warning" => "Varning",
@@ -24,6 +25,9 @@
 "Related Tags" => "Relaterade taggar",
 "Settings" => "Inställningar",
 "You have no bookmarks" => "Du har inga bokmärken",
+"You can also try to import a bookmark file" => "Du kan också försöka att importera en bokmärkesfil",
+"Bookmarklet" => "Bokmärke",
+"Export & Import" => "Export & Import",
 "Export" => "Exportera",
 "Import" => "Importera"
 );
