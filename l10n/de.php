@@ -2,7 +2,7 @@
 "Unsupported file type for import" => "Dateityp wird für den Import nicht unterstützt",
 "Bookmarks" => "Lesezeichen",
 "Tags" => "Tags",
-"Filter by tag" => "Nach Schlagworten filtern",
+"Filter by tag" => "Filtern nach Schlagwort",
 "Edit bookmark" => "Lesezeichen bearbeiten",
 "Are you sure you want to remove this tag from every entry?" => "Soll dieses Schlagwort wirklich von allen Einträgen entfernt werden?",
 "Warning" => "Warnung",

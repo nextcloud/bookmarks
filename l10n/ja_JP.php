@@ -1,9 +1,13 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "インポートでは未サポートのファイルタイプ",
 "Bookmarks" => "ブックマーク",
 "Tags" => "タグ",
+"Filter by tag" => "タグによるフィルタ",
 "Edit bookmark" => "ブックマークを編集",
 "Are you sure you want to remove this tag from every entry?" => "すべてのエントリからこのタグを削除してもよろしいですか？",
 "Warning" => "警告",
+"Import completed successfully." => "インポートは正常に完了しました。",
+"Uploading..." => "アップロード中...",
 "Bookm." => "ブックマーク",
 "Add a bookmark" => "ブックマークを追加",
 "Close" => "閉じる",
@@ -21,6 +25,9 @@
 "Related Tags" => "関連タグ",
 "Settings" => "設定",
 "You have no bookmarks" => "ブックマークがありません",
+"You can also try to import a bookmark file" => "ブックマークファイルのインポートも可能です",
+"Bookmarklet" => "ブックマークレット",
+"Export & Import" => "エクスポート＆インポート",
 "Export" => "エクスポート",
 "Import" => "インポート"
 );
