@@ -17,6 +17,12 @@
                                     	<span class="bookmark_desc"><%= encodeEntities(description)%> </span>
                                         <span class="bookmark_date"><%= formatDate(added_date) %></span>
 				</p>
+                                <div class="bookmark_edit_btn">
+                                        <span class="bookmark_edit">
+						<img class="svg" src="<?php echo OCP\image_path("", "actions/rename.svg");?>"
+							title="<?php echo $l->t('Edit');?>">
+					</span>
+                                </div>
 			</div>
 </script>
 
