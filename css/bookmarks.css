@@ -92,14 +92,14 @@ input.disabled, input.disabled:hover, input.disabled:focus {
         float: left;
         position: absolute;
         top: 0.6em;
-        left: 10em;
+        left: 20%;
 }
 
 .bookmark_title {
         font-weight: bold;
         display: inline-block;
         margin-right: 0.8em;
-        width: 8em;
+        width: 20%;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
@@ -113,7 +113,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 }
 
 .bookmark_tags {
-        margin-left:11em;
+        left:25%;
         position: absolute;
 }
 .bookmark_tag {
@@ -265,8 +265,8 @@ li:hover em { display : none; }
 	display:block;
         float:left;
         position: absolute;
-        left: 11em;
-        max-width:30em;
+        left: 25%;
+        width:40%;
         top: 0.7em;
         font-weight:500;
 }
