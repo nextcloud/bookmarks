@@ -1,9 +1,13 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Vrsta datoteke ni podprta za uvoz",
 "Bookmarks" => "Zaznamki",
 "Tags" => "Oznake",
+"Filter by tag" => "Razvrsti po značkah",
 "Edit bookmark" => "Uredi zaznamke",
 "Are you sure you want to remove this tag from every entry?" => "Ali res želite odstraniti te oznake iz vsakega vnosa?",
 "Warning" => "Opozorilo",
+"Import completed successfully." => "Uvoz je uspešno zaključen.",
+"Uploading..." => "Nalagam ...",
 "Bookm." => "Zaznam.",
 "Add a bookmark" => "Dodaj zaznamek",
 "Close" => "Zapri",
@@ -21,6 +25,9 @@
 "Related Tags" => "Sorodne oznake",
 "Settings" => "Nastavitve",
 "You have no bookmarks" => "Nimate zaznamkov",
+"You can also try to import a bookmark file" => "Prav tako lahko poskusite uvoziti datoteko z zaznamki",
+"Bookmarklet" => "Vstavek za zaznamke",
+"Export & Import" => "Izvoz & uvoz",
 "Export" => "Izvozi",
 "Import" => "Uvozi"
 );

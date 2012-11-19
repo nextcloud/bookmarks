@@ -4,6 +4,7 @@
 "Edit bookmark" => "Muuda järjehoidjat",
 "Are you sure you want to remove this tag from every entry?" => "Oled sa kindel, et sa soovid kõigilt sissekannetelt seda silti eemaldada?",
 "Warning" => "Hoiatus",
+"Uploading..." => "Üleslaadimine...",
 "Bookm." => "Järjeh.",
 "Add a bookmark" => "Lisa järjehoidja",
 "Close" => "Sulge",
