@@ -1,9 +1,13 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "ประเภทของไฟล์ที่ต้องการนำเข้าไม่ได้รับการรองรับให้ใช้งาน",
 "Bookmarks" => "รายการโปรด",
 "Tags" => "ป้ายกำกับ",
+"Filter by tag" => "แสดงข้อมูลตามป้ายกำกับ",
 "Edit bookmark" => "แก้ไขรายการโปรด",
 "Are you sure you want to remove this tag from every entry?" => "คุณแน่ใจแล้วหรือว่าต้องการลบป้ายกำกับนี้ออกจากทุกๆรายการ",
 "Warning" => "คำเตือน",
+"Import completed successfully." => "นำเข้าข้อมูลเสร็จเรียบร้อยแล้ว",
+"Uploading..." => "กำลังอัพโหลด...",
 "Bookm." => "รายการโปรด",
 "Add a bookmark" => "เพิ่มรายการโปรด",
 "Close" => "ปิด",
@@ -21,6 +25,9 @@
 "Related Tags" => "ป้ายกำกับอื่นๆที่เกี่ยวข้อง",
 "Settings" => "ตั้งค่า",
 "You have no bookmarks" => "คุณยังไม่มีรายการโปรด",
+"You can also try to import a bookmark file" => "คุณสามารถที่จะลองนำเข้าไฟล์รายการโปรดได้ด้วยเช่นกัน",
+"Bookmarklet" => "Bookmarklet",
+"Export & Import" => "ส่งออก & นำเข้า",
 "Export" => "ส่งออก",
 "Import" => "นำเข้า"
 );
