@@ -74,7 +74,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 
 .bookmark_single {
 	position: relative;
-	padding: 0.5em 1em;
+	padding: 0.2em 1em;
         min-height: 3em;
 	border-bottom: 1px solid #DDD;
 	-webkit-transition:background-color 500ms; -moz-transition:background-color 500ms; -o-transition:background-color 500ms; transition:background-color 500ms;
@@ -89,10 +89,9 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 }
 
 .bookmark_edit_btn {
-        float: left;
         position: absolute;
         top: 0.6em;
-        left: 20%;
+        left: 21%;
 }
 
 .bookmark_title {
