@@ -45,7 +45,7 @@ function watchClickInSetting(e){
 function toggleSettings() {
 	if( $('#bookmark_settings').hasClass('open')) { //Close
 		$('#bookmark_settings').switchClass( "open", "" );
-		$('body').unbind('click');
+		$('body').unbind('click', watchClickInSetting);
 	}
 	else {		
 		$('#bookmark_settings').switchClass( "", "open");

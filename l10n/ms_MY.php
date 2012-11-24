@@ -7,6 +7,7 @@
 "Edit" => "Sunting",
 "Cancel" => "Batal",
 "Address" => "Alamat",
+"Add" => "Tambah",
 "Settings" => "Tetapan",
 "Export" => "Export",
 "Import" => "Import"

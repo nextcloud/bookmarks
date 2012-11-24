@@ -7,8 +7,8 @@
 * See the COPYING-README file.
 */
 
-OC::$CLASSPATH['OC_Bookmarks_Bookmarks'] = 'apps/bookmarks/lib/bookmarks.php';
-OC::$CLASSPATH['OC_Search_Provider_Bookmarks'] = 'apps/bookmarks/lib/search.php';
+OC::$CLASSPATH['OC_Bookmarks_Bookmarks'] = 'bookmarks/lib/bookmarks.php';
+OC::$CLASSPATH['OC_Search_Provider_Bookmarks'] = 'bookmarks/lib/search.php';
 
 $l = new OC_l10n('bookmarks');
 OCP\App::addNavigationEntry( array( 'id' => 'bookmarks_index',

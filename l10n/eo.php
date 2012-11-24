@@ -1,9 +1,13 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Dosiertipo nekongrua kun enporto",
 "Bookmarks" => "Legosignoj",
 "Tags" => "Etikedoj",
+"Filter by tag" => "Filtri laŭ etikedo",
 "Edit bookmark" => "Redakti legosignon",
 "Are you sure you want to remove this tag from every entry?" => "Ĉu vi vere volas forigi ĉi tiun etikedon el ĉiu ero?",
 "Warning" => "Averto",
+"Import completed successfully." => "Enporto plenumiĝis sukcese.",
+"Uploading..." => "Alŝutante...",
 "Bookm." => "Legos.",
 "Add a bookmark" => "Aldoni legosignon",
 "Close" => "Fermi",
@@ -17,9 +21,13 @@
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Ŝovu tion ĉi al la legosignoj de via TTT-legilo kaj klaku ĝin, se vi volas rapide legosignigi TTT-paĝon:",
 "Read later" => "Legi poste",
 "Address" => "Adreso",
+"Add" => "Aldoni",
 "Related Tags" => "Rilataj etikedoj",
 "Settings" => "Agordo",
 "You have no bookmarks" => "Vi havas neniun legosignon",
+"You can also try to import a bookmark file" => "Vi povas ankaŭ provi enporti legosignan dosieron",
+"Bookmarklet" => "Kodosigno",
+"Export & Import" => "Malenporti kaj enporti",
 "Export" => "Elporti",
 "Import" => "Enporti"
 );

@@ -7,6 +7,7 @@
 "Edit" => "Redaguoti",
 "Cancel" => "Atšaukti",
 "Address" => "Adresas",
+"Add" => "Pridėti",
 "Settings" => "Nustatymai",
 "Export" => "Eksportuoti",
 "Import" => "Importuoti"

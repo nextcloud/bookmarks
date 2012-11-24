@@ -9,6 +9,7 @@
 "Cancel" => "batal",
 "Read later" => "baca nanti",
 "Address" => "alamat",
+"Add" => "tambah",
 "Related Tags" => "label terkait",
 "Settings" => "pengaturan",
 "Export" => "mengekspor",

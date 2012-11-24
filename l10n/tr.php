@@ -9,6 +9,7 @@
 "Cancel" => "İptal",
 "Read later" => "Sonra oku",
 "Address" => "Adres",
+"Add" => "Ekle",
 "Settings" => "Ayarlar",
 "Export" => "Dışa aktar",
 "Import" => "İçe aktar"

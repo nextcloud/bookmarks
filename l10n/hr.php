@@ -6,6 +6,7 @@
 "Edit" => "Uredi",
 "Cancel" => "Odustani",
 "Address" => "Adresa",
+"Add" => "Dodaj",
 "Settings" => "Postavke",
 "Export" => "Izvoz",
 "Import" => "Uvezi"
