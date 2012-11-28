@@ -1,7 +1,14 @@
 <?php $TRANSLATIONS = array(
 "Bookmarks" => "書籤",
 "Tags" => "標籤",
+"Filter by tag" => "依標籤篩選",
+"Edit bookmark" => "編輯書籤",
+"Warning" => "警告",
+"Uploading..." => "上傳中...",
+"Add a bookmark" => "新增書籤",
 "Close" => "關閉",
+"The title of the page" => "頁面標題",
+"Description of the page" => "頁面說明",
 "Save" => "儲存",
 "Delete" => "刪除",
 "Edit" => "編輯",
@@ -10,8 +17,11 @@
 "Read later" => "稍後閱讀",
 "Address" => "網址",
 "Add" => "新增",
+"Related Tags" => "相關標籤",
 "Settings" => "設定",
 "You have no bookmarks" => "你沒有書籤",
+"You can also try to import a bookmark file" => "您也可以匯入書籤檔",
+"Export & Import" => "匯出與匯入",
 "Export" => "匯出",
 "Import" => "匯入"
 );
