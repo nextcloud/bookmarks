@@ -2,6 +2,7 @@
 "Unsupported file type for import" => "Nepodporovaný typ súboru pre import",
 "Bookmarks" => "Záložky",
 "Tags" => "Značky",
+"Filter by tag" => "Filtrovať podľa značky",
 "Edit bookmark" => "Upraviť záložku",
 "Are you sure you want to remove this tag from every entry?" => "Naozaj ste si istý, že chcete odstrániť túto značku z každého záznamu?",
 "Warning" => "Varovanie",
@@ -24,6 +25,9 @@
 "Related Tags" => "Podobné značky",
 "Settings" => "Nastavenia",
 "You have no bookmarks" => "Nemáte záložky",
+"You can also try to import a bookmark file" => "Môžte tiež skúsiť import súboru zo záložkami.",
+"Bookmarklet" => "Bookmarklet",
+"Export & Import" => "Export & Import",
 "Export" => "Export",
 "Import" => "Import"
 );
