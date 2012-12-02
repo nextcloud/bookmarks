@@ -1,9 +1,13 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Fitxategi mota hau ez da onartzen inportatzeko.",
 "Bookmarks" => "Laster-markak",
 "Tags" => "Etiketak",
+"Filter by tag" => "Iragazi etiketaren arabera",
 "Edit bookmark" => "Editatu laster-marka",
 "Are you sure you want to remove this tag from every entry?" => "Ziur zaude etiketa hau sarrera guztietatik ezabatu nahi duzula?",
 "Warning" => "Abisua",
+"Import completed successfully." => "Inportazioa ongi egin da.",
+"Uploading..." => "Igotzen...",
 "Bookm." => "Lasterm.",
 "Add a bookmark" => "Gehitu laster-marka",
 "Close" => "Itxi",
@@ -21,6 +25,8 @@
 "Related Tags" => "Erlazionatutako etiketak",
 "Settings" => "Ezarpenak",
 "You have no bookmarks" => "Ez duzu laster-markarik",
+"You can also try to import a bookmark file" => "Laster-marka fitxategi bat inportatzen saia zaitezke",
+"Export & Import" => "Exportatu eta inportatu",
 "Export" => "Exportatu",
 "Import" => "Inportatu"
 );
