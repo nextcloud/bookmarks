@@ -26,6 +26,7 @@
 "Settings" => "Ezarpenak",
 "You have no bookmarks" => "Ez duzu laster-markarik",
 "You can also try to import a bookmark file" => "Laster-marka fitxategi bat inportatzen saia zaitezke",
+"Bookmarklet" => "Bookmarklet",
 "Export & Import" => "Exportatu eta inportatu",
 "Export" => "Exportatu",
 "Import" => "Inportatu"
