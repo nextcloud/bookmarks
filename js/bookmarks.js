@@ -3,36 +3,25 @@ var bookmarks_loading = false;
 var dialog;
 var bookmarks_sorting = 'bookmarks_sorting_recent';
 
-var bookmark_view = 'image';
-
 $(document).ready(function() {
-	$('.centercontent').click(clickSideBar);
-	$('#view_type input').click(clickSwitchView);
-	$('#bookmark_add_submit').click(addBookmark);
-  $('#settingsbtn').on('click keydown', function() {
-		try {
-			OC.appSettings({appid:'bookmarks', loadJS:true, cache:false});
-		} catch(e) {
-			alert(e);
+	watchUrlField();
+	$('#bm_import').change(attachSettingEvent);
+	$('#add_url').on('keydown keyup change click', watchUrlField);
+  $('#settingsbtn').on('click keydown', toggleSettings);
+	$('#bm_export').click(exportBm);
+	$('#firstrun_setting').click(function(){
+		if(! $('#bookmark_settings').hasClass('open')){
+			$('#settingsbtn').click();
 		}
 	});
-
-	$(window).resize(function () {
-		fillWindow($('.bookmarks_list'));
-	});
-	$(window).resize();
-	$('.bookmarks_list').scroll(updateOnBottom).empty().width($('#rightcontent').width());
+	$('.bookmarks_list').scroll(updateOnBottom).empty();
 	$('#tag_filter input').tagit({
 		allowSpaces: true,
 		availableTags: fullTags,
-		onTagFinishRemoved: filterTagsChanged
+		onTagFinishRemoved: filterTagsChanged,
+		placeholderText: t('bookmark', 'Filter by tag')
 	}).tagit('option', 'onTagAdded', filterTagsChanged);
 	getBookmarks();
-	
-	if(init_sidebar != 'true')
-		toggleSideBar();
-	bookmark_view = init_view;
-	switchView();
 });
 
 
@@ -48,50 +37,20 @@ var formatString = (function() {
 	};
 })();
 
-function clickSideBar() {
-	$.post(OC.filePath('bookmarks', 'ajax', 'changescreen.php'), {sidebar: $('.right_img').is(':visible')});
-	toggleSideBar();
-}
-
-function toggleSideBar(){
-	var left_pan_visible = $('.right_img').is(':visible');
-	anim_duration = 1000;
-	if( left_pan_visible) { // then show the left panel
-		$('#rightcontent').animate({'left':'32.5em'},{duration: anim_duration, queue: false });
-		$('.bookmarks_list').animate({'width': '-=15em'},{duration: anim_duration, queue: false });
-		$('#leftcontent').animate({'margin-left':'0', 'opacity': 1},{duration: anim_duration, queue: false, complete: function() { $(window).trigger('resize'); }});
-		$('.right_img').hide();
-		$('.left_img').show();
-		
-	} else { // hide the left panel
-		$('#rightcontent').animate({'left':'15.5em'},{duration: anim_duration, queue: false });
-		$('.bookmarks_list').animate({'width': '+=15em'},{duration: anim_duration, queue: false });
-		$('#leftcontent').animate({'margin-left':'-17em', 'opacity': 0.5 },{duration: anim_duration, queue: false, complete: function() { $(window).trigger('resize'); } });
-		$('.left_img').hide();
-		$('.right_img').show();
+function watchClickInSetting(e){
+	if($('#bookmark_settings').find($(e.target)).length == 0){
+		toggleSettings();
 	}
 }
-
-function clickSwitchView(){
-	$.post(OC.filePath('bookmarks', 'ajax', 'changescreen.php'), {view:bookmark_view});
-	switchView();
-}
-
-function switchView(){
-	if(bookmark_view == 'list') { //Then switch to img
-		$('.bookmarks_list').addClass('bm_view_img');
-		$('.bookmarks_list').removeClass('bm_view_list');
-		$('#view_type input.image').hide();
-		$('#view_type input.list').show();
-		bookmark_view = 'image';
-	} else { // Then Image
-		$('.bookmarks_list').addClass('bm_view_list');
-		$('.bookmarks_list').removeClass('bm_view_img');
-		$('#view_type input.list').hide();
-		$('#view_type input.image').show();
-		bookmark_view = 'list';
+function toggleSettings() {
+	if( $('#bookmark_settings').hasClass('open')) { //Close
+		$('#bookmark_settings').switchClass( "open", "" );
+		$('body').unbind('click', watchClickInSetting);
 	}
-	filterTagsChanged(); //Refresh the view
+	else {		
+		$('#bookmark_settings').switchClass( "", "open");
+		$('body').bind('click',watchClickInSetting);
+	}
 }
 function addFilterTag(event) {
 	event.preventDefault();
@@ -150,11 +109,8 @@ function getBookmarks() {
 
 			for(var i in bookmarks.data) {
 				updateBookmarksList(bookmarks.data[i]);
-				$("#firstrun").hide();
 			}
-			if($('.bookmarks_list').is(':empty')) {
-				$("#firstrun").show();
-			}
+			checkEmpty();
 
 			$('.bookmark_link').click(recordClick);
 			$('.bookmark_delete').click(delBookmark);
@@ -189,10 +145,35 @@ function createEditDialog(record){
 	});
 }
 
+function watchUrlField(){
+	var form = $('#add_form');
+	var el = $('#add_url');
+	var button = $('#bookmark_add_submit');
+	form.unbind('submit');
+	if(! acceptUrl(el.val()) ) {
+		form.bind('submit',function(e){e.preventDefault()});
+		button.addClass('disabled');
+	}
+	else{
+		button.removeClass('disabled');
+		form.bind('submit',addBookmark);
+	}
+}
+
+function acceptUrl(url) {
+	return url.replace(/^\s+/g,'').replace(/\s+$/g,'') != '';
+}
+
 function addBookmark(event) {
+	event.preventDefault();
 	url = $('#add_url').val();
+	//If trim is empty
+	if(! acceptUrl(url) ) {
+		return;
+	}
+	
 	$('#add_url').val('');
-	bookmark = { url: url, description:'', title:''};
+	bookmark = { url: url, description:'', title:'', from_own: '1'};
 	$.ajax({
 		type: 'POST',
 		url: OC.filePath('bookmarks', 'ajax', 'editBookmark.php'),
@@ -200,8 +181,11 @@ function addBookmark(event) {
 		success: function(data){
 			if (data.status == 'success') {
 				bookmark.id = data.id;
+				bookmark.title = data.title
 				bookmark.added_date = new Date();
 				updateBookmarksList(bookmark, 'prepend');
+				checkEmpty();
+				watchUrlField();
 			}
 		}
 	});
@@ -216,14 +200,19 @@ function delBookmark(event) {
 		success: function(data){
 			if (data.status == 'success') {
 				record.remove();
-				if($('.bookmarks_list').is(':empty')) {
-					$("#firstrun").show();
-				}
+				checkEmpty();
 			}
 		}
 	});
 }
 
+function checkEmpty() {
+	if($('.bookmarks_list').is(':empty')) {
+		$("#firstrun").show();
+	} else {
+		$("#firstrun").hide();
+	}
+}
 function editBookmark(event) {
 	if($('.bookmark_single_form').length){
 		$('.bookmark_single_form .reset').click();
@@ -286,35 +275,22 @@ function updateBookmarksList(bookmark, position) {
 		bookmark.added_date.setTime(parseInt(bookmark.added)*1000);
 	}
 	
-	if(bookmark_view == 'image') { //View in images
-		service_url = formatString(shot_provider, {url: encodeEntities(bookmark.url), title: bookmark.title, width: 200});
-		bookmark['service_url'] = service_url;
-		html = tmpl("img_item_tmpl", bookmark);
+	html = tmpl("item_tmpl", bookmark);
+	if(position == "prepend") {
+		$('.bookmarks_list').prepend(html);
+	} else {
 		$('.bookmarks_list').append(html);
-		$('div[data-id="'+ bookmark.id +'"]').data('record', bookmark);
-		if(taglist != '') {
-			$('div[data-id="'+ bookmark.id +'"]').append('<p class="bookmark_tags">' + taglist + '</p>');
-		}
-		$('div[data-id="'+ bookmark.id +'"] a.bookmark_tag').bind('click', addFilterTag);
 	}
-	else {
-		html = tmpl("item_tmpl", bookmark);
-		if(position == "prepend") {
-			$('.bookmarks_list').prepend(html);
-		} else {
-			$('.bookmarks_list').append(html);
-		}
-		line = $('div[data-id="'+ bookmark.id +'"]');
-		line.data('record', bookmark);
-		if(taglist != '') {
-			line.append('<p class="bookmark_tags">' + taglist + '</p>');
-		}
-		line.find('a.bookmark_tag').bind('click', addFilterTag);
-		line.find('.bookmark_link').click(recordClick);
-		line.find('.bookmark_delete').click(delBookmark);
-		line.find('.bookmark_edit').click(editBookmark);
+	line = $('div[data-id="'+ bookmark.id +'"]');
+	line.data('record', bookmark);
+	if(taglist != '') {
+		line.append('<p class="bookmark_tags">' + taglist + '</p>');
 	}
-
+	line.find('a.bookmark_tag').bind('click', addFilterTag);
+	line.find('.bookmark_link').click(recordClick);
+	line.find('.bookmark_delete').click(delBookmark);
+	line.find('.bookmark_edit').click(editBookmark);
+	
 }
 
 function updateOnBottom() {
@@ -332,7 +308,7 @@ function recordClick(event) {
 	$.ajax({
 		type: 'POST',
 		url: OC.filePath('bookmarks', 'ajax', 'recordClick.php'),
-		data: 'url=' + encodeURIComponent($(this).attr('href')),
+		data: 'url=' + encodeURIComponent($(this).attr('href'))
 	});
 }
 

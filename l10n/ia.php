@@ -1,12 +1,12 @@
 <?php $TRANSLATIONS = array(
 "Close" => "Clauder",
 "Save" => "Salveguardar",
-"Edit" => "Modificar",
 "Delete" => "Deler",
+"Edit" => "Modificar",
 "Cancel" => "Cancellar",
 "Address" => "Adresse",
-"List" => "Lista",
+"Add" => "Adder",
 "Settings" => "Configurationes",
-"Import" => "Importar",
-"Export" => "Exportar"
+"Export" => "Exportar",
+"Import" => "Importar"
 );

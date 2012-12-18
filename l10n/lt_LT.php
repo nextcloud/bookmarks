@@ -3,12 +3,12 @@
 "Warning" => "Įspėjimas",
 "Close" => "Užverti",
 "Save" => "Išsaugoti",
-"Edit" => "Redaguoti",
 "Delete" => "Ištrinti",
+"Edit" => "Redaguoti",
 "Cancel" => "Atšaukti",
 "Address" => "Adresas",
-"List" => "Sąrašas",
+"Add" => "Pridėti",
 "Settings" => "Nustatymai",
-"Import" => "Importuoti",
-"Export" => "Eksportuoti"
+"Export" => "Eksportuoti",
+"Import" => "Importuoti"
 );

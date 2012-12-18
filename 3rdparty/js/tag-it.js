@@ -34,7 +34,7 @@
             tagSource         : null,
             removeConfirmation: false,
             caseSensitive     : true,
-
+            placeholderText   : null,
             // When enabled, quotes are not neccesary
             // for inputting multi-word tags.
             allowSpaces: false,
@@ -97,7 +97,9 @@
             if (this.options.tabIndex) {
                 this._tagInput.attr('tabindex', this.options.tabIndex);
             }
-
+            if (this.options.placeholderText) {
+                this._tagInput.attr('placeholder', this.options.placeholderText);
+            }
             this.options.tagSource = this.options.tagSource || function(search, showChoices) {
                 var filter = search.term.toLowerCase();
                 var choices = $.grep(that.options.availableTags, function(element) {

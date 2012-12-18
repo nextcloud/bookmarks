@@ -1,11 +1,11 @@
 <?php $TRANSLATIONS = array(
 "Bookmarks" => "Marcapaginas",
 "Save" => "Enregistra",
-"Edit" => "Editar",
 "Delete" => "Escafa",
+"Edit" => "Editar",
 "Cancel" => "Annula",
-"List" => "Tièra",
+"Add" => "Ajusta",
 "Settings" => "Configuracion",
-"Import" => "Importa",
-"Export" => "Exporta"
+"Export" => "Exporta",
+"Import" => "Importa"
 );

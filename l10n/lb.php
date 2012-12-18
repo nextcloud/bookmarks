@@ -2,12 +2,12 @@
 "Warning" => "Warnung",
 "Close" => "Zoumaachen",
 "Save" => "Späicheren",
-"Edit" => "Editéieren",
 "Delete" => "Läschen",
+"Edit" => "Editéieren",
 "Cancel" => "Ofbriechen",
 "Address" => "Adress",
-"List" => "Lescht",
+"Add" => "Dobäisetzen",
 "Settings" => "Astellungen",
-"Import" => "Import",
-"Export" => "Export"
+"Export" => "Export",
+"Import" => "Import"
 );

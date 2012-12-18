@@ -3,12 +3,12 @@
 "Warning" => "Amaran",
 "Close" => "Tutup",
 "Save" => "Simpan",
-"Edit" => "Sunting",
 "Delete" => "Padam",
+"Edit" => "Sunting",
 "Cancel" => "Batal",
 "Address" => "Alamat",
-"List" => "Senarai",
+"Add" => "Tambah",
 "Settings" => "Tetapan",
-"Import" => "Import",
-"Export" => "Export"
+"Export" => "Export",
+"Import" => "Import"
 );
