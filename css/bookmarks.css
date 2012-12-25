@@ -112,8 +112,8 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 }
 
 .bookmark_tags {
-        left:25%;
-        position: absolute;
+	left:25%;
+	position: relative;
 }
 .bookmark_tag {
 	display: inline-block;

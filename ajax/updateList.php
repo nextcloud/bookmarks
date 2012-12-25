@@ -25,18 +25,17 @@
 // Check if we are a user
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('bookmarks');
-require_once OC_App::getAppPath('bookmarks').'/bookmarksHelper.php';
 
 $req_type= isset($_GET['type']) ? $_GET['type'] : 'bookmark';
 
 if($req_type == 'rel_tags') {
-	$tags = analyzeTagRequest(isset($_GET['tag']) ? $_GET['tag'] : '');
+	$tags = OC_Bookmarks_Bookmarks::analyzeTagRequest(isset($_GET['tag']) ? $_GET['tag'] : '');
 	$qtags = OC_Bookmarks_Bookmarks::findTags($tags);
 	OCP\JSON::success(array('data' => $qtags));
 
 }
 else { // type == bookmark
-	$filterTag = analyzeTagRequest(isset($_GET['tag']) ? $_GET['tag'] : '');
+	$filterTag = OC_Bookmarks_Bookmarks::analyzeTagRequest(isset($_GET['tag']) ? $_GET['tag'] : '');
 
 	$offset = isset($_GET['page']) ? intval($_GET['page']) * 10 : 0;
 
