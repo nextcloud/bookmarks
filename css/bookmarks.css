@@ -292,7 +292,32 @@ li:hover em { display : none; }
 
 .bookmark_url { display: none; }
 .bookmark_form_title input, .bookmark_form_url input, .bookmark_form_desc textarea  {
-	width: 80%;
+	width: 35%;
+}
+
+.bookmark_form_title {
+	float:left;
+	width:70%;
+}
+
+.bookmark_form_url {
+	foat:left;
+	width:70%;
+	position:absolute;
+	left:30%;
+}
+.bookmark_form_tags {
+	float: left;
+	width: 40%;
+	position: absolute;
+	left: 58%;
+}
+
+.bookmark_form_submit {
+	position: absolute;
+	float: left;
+	left: 40%;
+	top: 33%;
 }
 
 .bookmark_single_form {
