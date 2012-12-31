@@ -6,7 +6,7 @@
 "Edit bookmark" => "Editar o marcador",
 "Are you sure you want to remove this tag from every entry?" => "Confirma que quere eliminar esta etiqueta de todas as entradas?",
 "Warning" => "Aviso",
-"Import completed successfully." => "Completouse correctamente a importación.",
+"Import completed successfully." => "A importación completouse correctamente.",
 "Uploading..." => "Enviando...",
 "Bookm." => "Marc.",
 "Add a bookmark" => "Engadir un marcador",
