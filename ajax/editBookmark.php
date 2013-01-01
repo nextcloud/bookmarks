@@ -26,7 +26,6 @@ OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 
 OCP\JSON::checkAppEnabled('bookmarks');
-require_once OC_App::getAppPath('bookmarks').'/bookmarksHelper.php';
 
 // If we go the dialog form submit
 if(isset($_POST['url'])) {
@@ -41,7 +40,7 @@ if(isset($_POST['url'])) {
 	}
 	else {
 		if(isset($_POST['from_own'])) {
-			$datas = getURLMetadata($_POST['url']);
+			$datas = OC_Bookmarks_Bookmarks::getURLMetadata($_POST['url']);
 			if(isset($datas['title'])) $title = $datas['title'];
 		}
 		$bm = OC_Bookmarks_Bookmarks::addBookmark($_POST['url'], $title, $tags, $_POST['description'], $pub);

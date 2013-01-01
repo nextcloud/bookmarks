@@ -1,9 +1,13 @@
 <?php $TRANSLATIONS = array(
+"Unsupported file type for import" => "Ikke understøttet filtype til import",
 "Bookmarks" => "Bogmærker",
 "Tags" => "Mærker",
+"Filter by tag" => "Filtrer efter tag",
 "Edit bookmark" => "Rediger bogmærker",
 "Are you sure you want to remove this tag from every entry?" => "Er du sikker på at du vil fjerne dette flag fra alle poster?",
 "Warning" => "Advarsel",
+"Import completed successfully." => "Importer fuldført.",
+"Uploading..." => "Uploader...",
 "Bookm." => "Bogm.",
 "Add a bookmark" => "Tilføj bogmærke",
 "Close" => "Luk",
@@ -21,6 +25,9 @@
 "Related Tags" => "Relaterede Tags",
 "Settings" => "Indstillinger",
 "You have no bookmarks" => "Du har ingen bogmærker",
+"You can also try to import a bookmark file" => "Du kan også prøve at importere en bogmærke-fil",
+"Bookmarklet" => "Bookmarklet",
+"Export & Import" => "Eksport & import",
 "Export" => "Exporter",
 "Import" => "Importer"
 );
