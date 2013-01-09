@@ -98,6 +98,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
         font-weight: bold;
         display: inline-block;
         margin-right: 0.8em;
+		margin-top:0.7em;
         width: 20%;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -293,6 +294,14 @@ li:hover em { display : none; }
 .bookmark_url { display: none; }
 .bookmark_form_title input, .bookmark_form_url input, .bookmark_form_desc textarea  {
 	width: 80%;
+}
+
+.bookmark_single .bookmark_edit_btn {
+	display:none;
+}
+
+.bookmark_single:hover .bookmark_edit_btn {
+	display:block;
 }
 
 .bookmark_single_form {
