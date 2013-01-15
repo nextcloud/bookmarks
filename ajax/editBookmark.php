@@ -29,14 +29,13 @@ OCP\JSON::checkAppEnabled('bookmarks');
 
 // If we go the dialog form submit
 if(isset($_POST['url'])) {
-	$title = '';
+	$title = isset($_POST['title']) ? $_POST['title'] : '';
 	$tags = isset($_POST['item']['tags']) ? $_POST['item']['tags'] : array();
 	$pub = isset($_POST['is_public']) ? true : false;
 
 	if(isset($_POST['record_id']) && is_numeric($_POST['record_id']) ) { //EDIT
 		$bm = $_POST['record_id'];
 		OC_Bookmarks_Bookmarks::editBookmark($bm, $_POST['url'], $_POST['title'], $tags, $_POST['description'], $pub);
-		$title = $_POST['title'];
 	}
 	else {
 		if(isset($_POST['from_own'])) {

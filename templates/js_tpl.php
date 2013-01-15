@@ -7,10 +7,10 @@
 					</span>&nbsp;
 				</p>
 				<p class="bookmark_title">
-					<a href="<%= encodeEntities(url) %>" target="_blank" class="bookmark_link">
-						<%= encodeEntities(title == '' ? url : title ) %>
+					<a href="<%= encodeURI(url) %>" target="_blank" class="bookmark_link">
+						<%= escapeHTML(title == '' ? encodeURI(url) : title ) %>
 					</a>
-                                    	<span class="bookmark_desc"><%= encodeEntities(description)%> </span>
+                                    	<span class="bookmark_desc"><%= escapeHTML(description)%> </span>
                                         <span class="bookmark_date"><%= formatDate(added_date) %></span>
 				</p>
                                 <div class="bookmark_edit_btn">
@@ -28,11 +28,11 @@
 					<input type="hidden" name="record_id" value="<%= id %>" />
 				<p class="bookmark_form_title">
 					<input type="text" name="title" placeholder="<?php echo $l->t('The title of the page');?>"
-						value="<%= title %>"/>
+						value="<%= escapeHTML(title) %>"/>
 				</p>
 				<p class="bookmark_form_url">
 					<input type="text" name="url" placeholder="<?php echo $l->t('The address of the page');?>"
-						value="<%= encodeEntities(url)%>"/>
+						value="<%= encodeURI(url)%>"/>
 				</p>
 				<div class="bookmark_form_tags"><ul>
 					<% for ( var i = 0; i < tags.length; i++ ) { %>
@@ -41,7 +41,7 @@
 				</ul></div>
 				<p class="bookmark_form_desc">
 					<textarea name="description" placeholder="<?php echo $l->t('Description of the page');?>"
-						><%= description%></textarea>
+						><%= escapeHTML(description) %></textarea>
 				</p>
 				<p class="bookmark_form_submit"><button class="reset" ><?php echo $l->t('Cancel');?></button>
 					<input type="submit" value="<?php echo $l->t('Save');?>">
