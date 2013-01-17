@@ -51,7 +51,23 @@ class OC_Bookmarks_Bookmarks{
 		$tags = $query->execute($params)->fetchAll();
 		return $tags;
 	}
-	
+
+	public static function findOneBookmark($id) {
+		if($CONFIG_DBTYPE == 'pgsql') {
+			$group_fct = 'array_agg(tag)';
+		}
+		else {
+			$group_fct = 'GROUP_CONCAT(tag)';
+		}
+		$sql = "SELECT *, (select $group_fct from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
+				FROM *PREFIX*bookmarks b
+				WHERE user_id = ? and id = ?";
+		$query = OCP\DB::prepare($sql);
+		$result = $query->execute(array(OCP\USER::getUser(), $id))->fetchRow();
+		$result['tags'] = explode(',', $result['tags']);
+		return $result;
+	}
+
 	/**
 	 * @brief Finds all bookmarks, matching the filter
 	 * @param offset result offset
@@ -295,10 +311,22 @@ class OC_Bookmarks_Bookmarks{
 	 * @return int The id of the bookmark created
 	 */
 	public static function addBookmark($url, $title, $tags=array(), $description='', $is_public=false) {
-
 		$is_public = $is_public ? 1 : 0;
-		//FIXME: Detect and do smth when user adds a known URL
+		$enc_url = htmlspecialchars_decode($url);
 		$_ut = self::getNowValue();
+
+		// Change lastmodified date if the record if already exists
+		$sql = "SELECT id from  *PREFIX*bookmarks WHERE url = ? and user_id = ?";
+		$query = OCP\DB::prepare($sql, 1);
+		$result = $query->execute(array($enc_url, OCP\USER::getUser()));
+		if(count($result) != 0) {
+			$row = $result->fetchRow();
+			$sql = "UPDATE *PREFIX*bookmarks SET lastmodified = $_ut WHERE url = ? and user_id = ?";
+			$query = OCP\DB::prepare($sql);
+			$query->execute(array($enc_url, OCP\USER::getUser()));
+			return $row['id'];
+		}
+
 
 		$query = OCP\DB::prepare("
 			INSERT INTO *PREFIX*bookmarks
@@ -307,7 +335,7 @@ class OC_Bookmarks_Bookmarks{
 			");
 
 		$params=array(
-			htmlspecialchars_decode($url),
+			$enc_url,
 			htmlspecialchars_decode($title),
 			OCP\USER::getUser(),
 			$is_public,

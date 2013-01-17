@@ -173,16 +173,17 @@ function addBookmark(event) {
 	}
 	
 	$('#add_url').val('');
-	bookmark = { url: url, description:'', title:'', from_own: '1'};
+	bookmark = { url: url, description:'', title:'', from_own: '1', added_date: new Date()};
 	$.ajax({
 		type: 'POST',
 		url: OC.filePath('bookmarks', 'ajax', 'editBookmark.php'),
 		data: bookmark,
 		success: function(data){
 			if (data.status == 'success') {
-				bookmark.id = data.id;
-				bookmark.title = data.title
-				bookmark.added_date = new Date();
+				// First remove old BM if exists
+				$('.bookmark_single').filterAttr('data-id', data.item.id).remove();
+				
+				bookmark = $.extend({}, bookmark, data.item);
 				updateBookmarksList(bookmark, 'prepend');
 				checkEmpty();
 				watchUrlField();
