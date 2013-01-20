@@ -29,23 +29,22 @@ OCP\JSON::checkAppEnabled('bookmarks');
 
 // If we go the dialog form submit
 if(isset($_POST['url'])) {
-	$title = '';
+	$title = isset($_POST['title']) ? $_POST['title'] : '';
 	$tags = isset($_POST['item']['tags']) ? $_POST['item']['tags'] : array();
 	$pub = isset($_POST['is_public']) ? true : false;
 
 	if(isset($_POST['record_id']) && is_numeric($_POST['record_id']) ) { //EDIT
-		$bm = $_POST['record_id'];
-		OC_Bookmarks_Bookmarks::editBookmark($bm, $_POST['url'], $_POST['title'], $tags, $_POST['description'], $pub);
-		$title = $_POST['title'];
+		$id = OC_Bookmarks_Bookmarks::editBookmark($_POST['record_id'], $_POST['url'], $_POST['title'], $tags, $_POST['description'], $pub);
 	}
 	else {
 		if(isset($_POST['from_own'])) {
 			$datas = OC_Bookmarks_Bookmarks::getURLMetadata($_POST['url']);
 			if(isset($datas['title'])) $title = $datas['title'];
 		}
-		$bm = OC_Bookmarks_Bookmarks::addBookmark($_POST['url'], $title, $tags, $_POST['description'], $pub);
+		$id = OC_Bookmarks_Bookmarks::addBookmark($_POST['url'], $title, $tags, $_POST['description'], $pub);
 	}
-	OCP\JSON::success(array('id'=>$bm,'title'=>$title));
+	$bm = OC_Bookmarks_Bookmarks::findOneBookmark($id);
+	OCP\JSON::success(array('item'=>$bm));
 	exit();
 }
 OC_JSON::error();

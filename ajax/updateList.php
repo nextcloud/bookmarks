@@ -43,7 +43,7 @@ else { // type == bookmark
 	if($sort == 'bookmarks_sorting_clicks') {
 		$sqlSortColumn = 'clickcount';
 	} else {
-		$sqlSortColumn = 'id';
+		$sqlSortColumn = 'lastmodified';
 	}
 	$bookmarks = OC_Bookmarks_Bookmarks::findBookmarks($offset, $sqlSortColumn, $filterTag, true);
 	OCP\JSON::success(array('data' => $bookmarks));
