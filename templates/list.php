@@ -59,9 +59,8 @@ function bookmarklet(){
 	</div>
 	<div class="bookmarks_list"></div>
 </div>
-<script>
-	var fullTags = <?php echo $_['tags'];?>;
-</script>
+<script type="text/javascript" src="<?php echo OC_Helper::linkTo('bookmarks/js', 'full_tags.php');?>"></script>
+
 
 <script type="text/html" id="edit_dialog_tmpl">
 <?php require 'addBm.php';?>
