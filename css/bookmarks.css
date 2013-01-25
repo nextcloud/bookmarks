@@ -11,8 +11,9 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	color: gray;
 }
 #rightcontent {
-    	padding-top: 5px;
-    	top: 1em !important;
+	padding-top: 5px;
+	top: 1em !important;
+
 }
 
 .bookmarks_headline {
@@ -32,8 +33,11 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	padding-top: 3em;
-	width: 100%;
+/* 	width: 100%; */
 	height: 100%;
+	position: fixed;
+	left: 32.5em;
+	right:0;
 }
 
 #add_form {
