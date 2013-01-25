@@ -10,10 +10,6 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	background-color: #ddd;
 	color: gray;
 }
-#leftcontent {
-	top: 4em !important;
-}
-
 #rightcontent {
     	padding-top: 5px;
     	top: 1em !important;
