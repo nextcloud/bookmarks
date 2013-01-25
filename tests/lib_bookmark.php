@@ -1,7 +1,7 @@
 <?php
 
 OC_App::loadApp('bookmarks');
-class Test_LibBookmarks_Bookmarks extends UnitTestCase {
+class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 
 	function testAddBM() {
 		$this->assertCount(0, OC_Bookmarks_Bookmarks::findBookmarks(0, 'id', array(), true, -1));
@@ -12,11 +12,11 @@ class Test_LibBookmarks_Bookmarks extends UnitTestCase {
 
 	function testFindTags() {
 // 		$uid=uniqid();
-		$this->assertEqual(OC_Bookmarks_Bookmarks::findTags(), array());
+		$this->assertEquals(OC_Bookmarks_Bookmarks::findTags(), array());
 
 		OC_Bookmarks_Bookmarks::addBookmark(
 			'http://owncloud.org', 'Owncloud project', array('oc', 'cloud'), 'An Awesome project');
-		$this->assertEqual(array(0=>array('tag' => 'cloud', 'nbr'=>1), 1=>array('tag' => 'oc', 'nbr'=>1)),
+		$this->assertEquals(array(0=>array('tag' => 'cloud', 'nbr'=>1), 1=>array('tag' => 'oc', 'nbr'=>1)),
 			OC_Bookmarks_Bookmarks::findTags());
 	}
 
