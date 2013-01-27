@@ -316,14 +316,27 @@ class OC_Bookmarks_Bookmarks{
 		$_ut = self::getNowValue();
 
 		// Change lastmodified date if the record if already exists
-		$sql = "SELECT id from  *PREFIX*bookmarks WHERE url = ? and user_id = ?";
+		$sql = "SELECT * from  *PREFIX*bookmarks WHERE url = ? and user_id = ?";
 		$query = OCP\DB::prepare($sql, 1);
 		$result = $query->execute(array($enc_url, OCP\USER::getUser()));
 		if(count($result) != 0) {
 			$row = $result->fetchRow();
-			$sql = "UPDATE *PREFIX*bookmarks SET lastmodified = $_ut WHERE url = ? and user_id = ?";
+			$params = array();
+			$title_str = '';
+			if(trim($title) != '') { // Do we replace the old title
+				$title_str = ' , title = ?';
+				$params[] = $title;
+			}
+			$desc_str = '';
+			if(trim($title) != '') { // Do we replace the old description
+				$desc_str = ' , description = ?';
+				$params[] = $description;
+			}
+			$sql = "UPDATE *PREFIX*bookmarks SET lastmodified = $_ut $title_str $desc_str WHERE url = ? and user_id = ?";
+			$params[] = $enc_url;
+			$params[] = OCP\USER::getUser();
 			$query = OCP\DB::prepare($sql);
-			$query->execute(array($enc_url, OCP\USER::getUser()));
+			$query->execute($params);
 			return $row['id'];
 		}
 
