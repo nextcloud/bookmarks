@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"Bookmarks" => "Bookmarks",
 "Warning" => "Warnung",
 "Close" => "Zoumaachen",
 "Save" => "Späicheren",

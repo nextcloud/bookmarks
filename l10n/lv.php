@@ -1,5 +1,9 @@
 <?php $TRANSLATIONS = array(
 "Save" => "Saglabāt",
 "Delete" => "Izdzēst",
-"Settings" => "Iestatījumi"
+"Edit" => "Rediģēt",
+"Cancel" => "Atcelt",
+"Settings" => "Iestatījumi",
+"Export" => "Eksportēt",
+"Import" => "Importēt"
 );
