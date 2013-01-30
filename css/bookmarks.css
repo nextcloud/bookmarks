@@ -292,6 +292,30 @@ li:hover em { display : none; }
 .bookmark_single:hover .bookmark_url a[href]{ color:gray; }
 
 .bookmark_url { display: none; }
+.bookmark_form_title { 
+	float: left;
+	width:25%;
+}
+
+.bookmark_form_url {
+	float:left;
+	width:25%;
+}
+
+.bookmark_form_tags {
+	width:30%;
+	float:left;
+}
+
+
+.bookmark_form_desc {
+	width:50%;
+}
+
+.bookmark_form_desc textarea {
+	margin-top:-3.4em;
+}
+
 .bookmark_form_title input, .bookmark_form_url input, .bookmark_form_desc textarea  {
 	width: 80%;
 }
@@ -319,6 +343,7 @@ li:hover em { display : none; }
 	width: 80%;
 	box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;
 	margin: 3px;
+	height:6.4em;
 }
 .bm_view_img .bookmark_actions {
 	bottom: 0.7em;
