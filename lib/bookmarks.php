@@ -315,13 +315,11 @@ class OC_Bookmarks_Bookmarks{
 		$is_public = $is_public ? 1 : 0;
 		$enc_url = htmlspecialchars_decode($url);
 		$_ut = self::getNowValue();
-
 		// Change lastmodified date if the record if already exists
 		$sql = "SELECT * from  *PREFIX*bookmarks WHERE url = ? and user_id = ?";
 		$query = OCP\DB::prepare($sql, 1);
 		$result = $query->execute(array($enc_url, OCP\USER::getUser()));
-		if(count($result) != 0) {
-			$row = $result->fetchRow();
+		if ($row = $result->fetchRow()){
 			$params = array();
 			$title_str = '';
 			if(trim($title) != '') { // Do we replace the old title
@@ -340,8 +338,6 @@ class OC_Bookmarks_Bookmarks{
 			$query->execute($params);
 			return $row['id'];
 		}
-
-
 		$query = OCP\DB::prepare("
 			INSERT INTO *PREFIX*bookmarks
 			(url, title, user_id, public, added, lastmodified, description)
