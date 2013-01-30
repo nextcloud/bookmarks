@@ -53,6 +53,7 @@ class OC_Bookmarks_Bookmarks{
 	}
 
 	public static function findOneBookmark($id) {
+		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 		if($CONFIG_DBTYPE == 'pgsql') {
 			$group_fct = 'array_agg(tag)';
 		}
