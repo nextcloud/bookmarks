@@ -1,13 +1,7 @@
 <form class="addBm" method="post" action="<?php echo OCP\Util::linkTo('bookmarks', 'ajax/editBookmark.php');?>">
 		<?php if(!isset($embedded) || !$embedded):?>
-			<script type="text/javascript">
-				var fullTags = <?php echo $_['tags'];?>;
-				$(document).ready(function() {
-					$('body').bookmark_dialog({
-						'on_success': function(){	self.close(); }
-					});
-				});
-			</script>
+			<script type="text/javascript" src="<?php echo OC_Helper::linkTo('bookmarks/js', 'full_tags.php');?>"></script>
+
 			<h1><?php echo $l->t('Add a bookmark');?></h1>
 			<div class="close_btn">
 				<a href="javascript:self.close()" class="ui-icon ui-icon-closethick">
