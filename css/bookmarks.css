@@ -37,7 +37,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 /* 	width: 100%; */
 	height: 100%;
 	position: fixed;
-	left: 32.5em;
+	left: 25em;
 	right:0;
 }
 
