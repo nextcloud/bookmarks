@@ -1,8 +1,25 @@
 #content { overflow: auto; height: 100%; }
-#firstrun, #firstrun_setting{ width: 80%; margin: 5em auto auto auto; text-align: center; font-weight:bold; font-size:1.5em;  color:#777; position: relative;}
+
 #firstrun small { display: block; font-weight: normal; font-size: 0.5em;  }
 #firstrun .button { font-size: 0.7em; }
-#firstrun #selections { font-size:0.8em;  font-weight: normal; width: 100%; margin: 2em auto auto auto; clear: both; }
+
+#distance {
+	width:1px;
+	height:50%;
+	background-color:#fc6;
+	margin-bottom:-13.75em; /* half of container's height */
+	float:left;
+}
+
+#firstrun_message {
+	margin:0 auto;
+	position:relative; /* puts container in front of distance */
+	text-align:left;
+	height:27.5em;
+	width:45em;
+	clear:left;
+}
+
 #firstrun_setting { font-size: 100%; text-decoration: underline}
 
 input.disabled, input.disabled:hover, input.disabled:focus {
@@ -29,7 +46,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	padding: 0.5ex;
 }
 
-.bookmarks_list {
+.bookmarks_list, #firstrun {
 	overflow: auto;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;

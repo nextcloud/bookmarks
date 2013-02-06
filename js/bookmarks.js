@@ -208,10 +208,12 @@ function delBookmark(event) {
 }
 
 function checkEmpty() {
-	if($('.bookmarks_list').is(':empty')) {
+	if($('.bookmarks_list').children().length == 0) {
 		$("#firstrun").show();
+		$('.bookmarks_list').hide();
 	} else {
 		$("#firstrun").hide();
+		$('.bookmarks_list').show();
 	}
 }
 function editBookmark(event) {
