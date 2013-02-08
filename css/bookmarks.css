@@ -107,10 +107,10 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 }
 
 .bookmark_title {
-        font-weight: bold;
-        display: inline-block;
-        margin-right: 0.8em;
-		margin-top:0.7em;
+	font-weight: bold;
+	display: inline-block;
+	margin-right: 0.8em;
+	margin-top:0.7em;
 }
 
 .bookmark_title a {
