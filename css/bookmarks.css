@@ -106,12 +106,6 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	display: block;
 }
 
-.bookmark_edit_btn {
-        position: absolute;
-        top: 0.6em;
-        left: 21%;
-}
-
 .bookmark_title {
         font-weight: bold;
         display: inline-block;
@@ -121,6 +115,16 @@ input.disabled, input.disabled:hover, input.disabled:focus {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+}
+
+.bookmark_edit_btn {
+        /*position: absolute;
+        top: 0.6em;
+        left: 21%;*/
+}
+
+.bookmark_title:hover .bookmark_edit_btn {
+	display:inline;
 }
 
 .bm_view_list .bookmark_tags {

@@ -10,15 +10,12 @@
 					<a href="<%= encodeURI(url) %>" target="_blank" class="bookmark_link">
 						<%= escapeHTML(title == '' ? encodeURI(url) : title ) %>
 					</a>
-                                    	<span class="bookmark_desc"><%= escapeHTML(description)%> </span>
-                                        <span class="bookmark_date"><%= formatDate(added_date) %></span>
-				</p>
-                                <div class="bookmark_edit_btn">
-                                        <span class="bookmark_edit">
-						<img class="svg" src="<?php echo OCP\image_path("", "actions/rename.svg");?>"
-							title="<?php echo $l->t('Edit');?>">
+					<span class="bookmark_edit bookmark_edit_btn">
+						<img class="svg" src="<?php echo OCP\image_path("", "actions/rename.svg");?>" title="<?php echo $l->t('Edit');?>">
 					</span>
-                                </div>
+				</p>
+				<span class="bookmark_desc"><%= escapeHTML(description)%> </span>
+                <span class="bookmark_date"><%= formatDate(added_date) %></span>
 			</div>
 </script>
 
