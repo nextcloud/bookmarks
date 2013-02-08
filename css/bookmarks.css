@@ -99,7 +99,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 }
 
 .bookmark_single:hover {
-	background-color:#f8f8f8
+	background-color:#f8f8f8;
 }
 
 .bookmark_single:hover .bookmark_actions {
@@ -111,20 +111,18 @@ input.disabled, input.disabled:hover, input.disabled:focus {
         display: inline-block;
         margin-right: 0.8em;
 		margin-top:0.7em;
-        width: 20%;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
 }
 
-.bookmark_edit_btn {
-        /*position: absolute;
-        top: 0.6em;
-        left: 21%;*/
+.bookmark_title a {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: inline-block;
+	max-width: 15em;
 }
 
-.bookmark_title:hover .bookmark_edit_btn {
-	display:inline;
+.bookmark_single:hover .bookmark_title .bookmark_edit_btn {
+	display:inline-block;
 }
 
 .bm_view_list .bookmark_tags {
