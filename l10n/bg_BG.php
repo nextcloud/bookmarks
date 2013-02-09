@@ -1,8 +1,10 @@
 <?php $TRANSLATIONS = array(
 "Bookmarks" => "Предпочитани",
+"Close" => "Затвори",
 "Save" => "Запис",
 "Delete" => "Изтриване",
 "Edit" => "Промяна",
 "Add" => "Добавяне",
-"Settings" => "Настройки"
+"Settings" => "Настройки",
+"Export" => "Експорт"
 );
