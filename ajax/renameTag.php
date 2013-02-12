@@ -28,6 +28,7 @@ $RUNTIME_NOSETUPFS=true;
 
 // Check if we are a user
 OCP\JSON::checkLoggedIn();
+OCP\JSON::callCheck();
 OCP\JSON::checkAppEnabled('bookmarks');
 
 if(isset($_POST['old_name']) && isset($_POST['new_name']) && $_POST['new_name'] != '') {
