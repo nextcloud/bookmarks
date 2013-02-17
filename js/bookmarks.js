@@ -210,9 +210,11 @@ function delBookmark(event) {
 function checkEmpty() {
 	if($('.bookmarks_list').children().length == 0) {
 		$("#firstrun").show();
+		$("#bm_export").addClass('disabled');
 		$('.bookmarks_list').hide();
 	} else {
 		$("#firstrun").hide();
+		$("#bm_export").removeClass('disabled');
 		$('.bookmarks_list').show();
 	}
 }
