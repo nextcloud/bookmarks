@@ -75,3 +75,11 @@
   };
 
 })(jQuery);
+
+$(document).ready(function() {
+	$('body').bookmark_dialog({
+		'on_success': function(){
+			self.close(); 
+		}
+	});
+});

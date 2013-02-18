@@ -14,6 +14,10 @@ function fileUpload(form, result_div) {
 		try{
 			data = $.parseJSON(iframe.contents().text());
 		}catch (e){}
+		if(!data) {
+			result_div.text(t('bookmark', 'Import error'));
+			return;
+		}
 		if(data.status == 'error') {
 			list = $("<ul></ul>").addClass('setting_error_list');
 			console.log(data);

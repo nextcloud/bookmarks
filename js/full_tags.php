@@ -20,11 +20,4 @@ foreach($qtags as $tag) {
 }
 
 ?>
-var fullTags = <?php echo json_encode($tags);?>;
-$(document).ready(function() {
-	$('body').bookmark_dialog({
-	'on_success': function(){
-		self.close(); 
-	}
-	});
-});
+fullTags = <?php echo json_encode($tags);?>;

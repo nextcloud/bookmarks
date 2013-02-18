@@ -2,7 +2,7 @@ var bookmarks_page = 0;
 var bookmarks_loading = false;
 var dialog;
 var bookmarks_sorting = 'bookmarks_sorting_recent';
-
+var fullTags = [];
 $(document).ready(function() {
 	watchUrlField();
 	$('#bm_import').change(attachSettingEvent);
