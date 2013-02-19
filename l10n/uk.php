@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Немає файла для імпорту",
 "Unsupported file type for import" => "Імпорт файлу даного типу не підтримується",
 "Bookmarks" => "Закладки",
 "Tags" => "Теги",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Редагувати закладку",
 "Are you sure you want to remove this tag from every entry?" => "Ви впевнені, що бажаєте видалити цей тег з кожного запису ?",
 "Warning" => "Попередження",
+"Import error" => "Помилка імпорту",
 "Import completed successfully." => "Імпорт завершено успішно.",
 "Uploading..." => "Вивантаження...",
 "Bookm." => "Заклд.",

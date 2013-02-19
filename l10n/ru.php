@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Ни один файл не предоставлен для импорта",
 "Unsupported file type for import" => "Не подходящий тип файла для импорта",
 "Bookmarks" => "Закладки",
 "Tags" => "Метки",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Редактировать закладку",
 "Are you sure you want to remove this tag from every entry?" => "Вы уверены, что хотите удалить этот тег из каждой записи?",
 "Warning" => "Предупреждение",
+"Import error" => "Ошибка импорта",
 "Import completed successfully." => "Импортирование завершилось успешно.",
 "Uploading..." => "Загрузка...",
 "Bookm." => "Закл.",

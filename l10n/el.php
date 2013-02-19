@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Δεν δόθηκε αρχείο για εισαγωγή",
 "Unsupported file type for import" => "Δεν υποστηρίζεται o τύπος αρχείου για εισαγωγή",
 "Bookmarks" => "Σελιδοδείκτες",
 "Tags" => "Ετικέτες",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Επεξεργασία σελιδοδείκτη",
 "Are you sure you want to remove this tag from every entry?" => "Είστε σίγουρος για την αφαίρεση αυτής της ετικέτας από κάθε καταχώρηση;",
 "Warning" => "Προειδοποίηση",
+"Import error" => "Σφάλμα εισαγωγής",
 "Import completed successfully." => "Η εισαγωγή ολοκληρώθηκε επιτυχώς.",
 "Uploading..." => "Μεταφόρτωση...",
 "Bookm." => "Σελιδοδεικτ.",

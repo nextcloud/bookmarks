@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Neviena datne nav dota importēšanai",
 "Unsupported file type for import" => "Importēšanai neatbalstītie datņu tipi",
 "Bookmarks" => "Grāmatzīmes",
 "Tags" => "Birkas",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Rediģēt grāmatzīmi",
 "Are you sure you want to remove this tag from every entry?" => "Vai tiešām vēlaties izņemt šo birku no katra ieraksta?",
 "Warning" => "Brīdinājums",
+"Import error" => "Importēšanas kļūda",
 "Import completed successfully." => "Importēšana ir veiksmīgi pabeigta.",
 "Uploading..." => "Augšupielādē...",
 "Bookm." => "Grāmatz.",

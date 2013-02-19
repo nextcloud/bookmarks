@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Geen bestand voor import opgegeven",
 "Unsupported file type for import" => "Niet ondersteund bestandstype voor import",
 "Bookmarks" => "Bladwijzers",
 "Tags" => "Tags",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Bewerk bladwijzer",
 "Are you sure you want to remove this tag from every entry?" => "Bent u zeker dat u deze tag van elk item wilt verwijderen.",
 "Warning" => "Waarschuwing",
+"Import error" => "Import fout",
 "Import completed successfully." => "Het importeren is helemaal geslaagd",
 "Uploading..." => "Uploading...",
 "Bookm." => "Bladw.",
