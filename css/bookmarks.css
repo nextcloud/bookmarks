@@ -86,7 +86,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 .bookmark_actions {
 	position: absolute;
 	right: 1em;
-	bottom:1.3em;
+	bottom:0.8em;
 	display: none;
 }
 .bookmark_actions span { margin: 0 0.4em; }
