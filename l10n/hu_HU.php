@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Nincs megadva az importálandó fájl",
 "Unsupported file type for import" => "Az importálandó fájltípus nem támogatott",
 "Bookmarks" => "Könyvjelzők",
 "Tags" => "Címkék",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Könyvjelző szerkesztése",
 "Are you sure you want to remove this tag from every entry?" => "Biztos benne, hogy ezt a címkét el szeretné távolítani az összes bejegyzésből?",
 "Warning" => "Figyelmeztetés",
+"Import error" => "Hiba történt az importáláskor",
 "Import completed successfully." => "Az importálás sikeresen befejeződött.",
 "Uploading..." => "Feltöltés...",
 "Bookm." => "Könyvj.",

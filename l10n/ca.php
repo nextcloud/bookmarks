@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "No heu proporcionat cap fitxer a importar",
 "Unsupported file type for import" => "Importació d'un tipus de fitxer no implementat",
 "Bookmarks" => "Adreces d'interès",
 "Tags" => "Etiquetes",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Edita l'adreça d'interès",
 "Are you sure you want to remove this tag from every entry?" => "Segur que voleu eliminar aquesta etiqueta de cada entrada?",
 "Warning" => "Avís",
+"Import error" => "Error en importar",
 "Import completed successfully." => "La importació ha acabat amb èxit",
 "Uploading..." => "Pujant...",
 "Bookm." => "Marcador",

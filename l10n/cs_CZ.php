@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Nezadán žádný soubor k importu",
 "Unsupported file type for import" => "Nepodporovaný typ souboru pro import",
 "Bookmarks" => "Záložky",
 "Tags" => "Značky",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Upravit záložku",
 "Are you sure you want to remove this tag from every entry?" => "Opravdu jste si jisti, že si přejete odstranit tuto značku z každého záznamu?",
 "Warning" => "Varování",
+"Import error" => "Chyba při importu",
 "Import completed successfully." => "Import dokončen úspěšně.",
 "Uploading..." => "Odesílám...",
 "Bookm." => "Zál.",

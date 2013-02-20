@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Ez da inportatzeko fitxategirik zehaztu",
 "Unsupported file type for import" => "Fitxategi mota hau ez da onartzen inportatzeko.",
 "Bookmarks" => "Laster-markak",
 "Tags" => "Etiketak",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Editatu laster-marka",
 "Are you sure you want to remove this tag from every entry?" => "Ziur zaude etiketa hau sarrera guztietatik ezabatu nahi duzula?",
 "Warning" => "Abisua",
+"Import error" => "Inportazio errorea",
 "Import completed successfully." => "Inportazioa ongi egin da.",
 "Uploading..." => "Igotzen...",
 "Bookm." => "Lasterm.",
