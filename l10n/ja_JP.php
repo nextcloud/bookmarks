@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "インポートするファイルが指定されていません",
 "Unsupported file type for import" => "インポートでは未サポートのファイルタイプ",
 "Bookmarks" => "ブックマーク",
 "Tags" => "タグ",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "ブックマークを編集",
 "Are you sure you want to remove this tag from every entry?" => "すべてのエントリからこのタグを削除してもよろしいですか？",
 "Warning" => "警告",
+"Import error" => "インポートエラー",
 "Import completed successfully." => "インポートは正常に完了しました。",
 "Uploading..." => "アップロード中...",
 "Bookm." => "ブックマーク",
