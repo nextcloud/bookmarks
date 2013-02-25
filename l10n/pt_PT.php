@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Não foi selecionado nenhum ficheiro para importar",
 "Unsupported file type for import" => "Tipo de ficheiro não suportado para importação",
 "Bookmarks" => "Marcadores",
 "Tags" => "Etiquetas",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Editar marcador",
 "Are you sure you want to remove this tag from every entry?" => "Tem a certeza de que quer remover esta etiqueta de cada registo?",
 "Warning" => "Aviso",
+"Import error" => "Erro na importação",
 "Import completed successfully." => "Importação bem sucedida.",
 "Uploading..." => "A enviar...",
 "Bookm." => "Marc.",
