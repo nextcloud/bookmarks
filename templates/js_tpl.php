@@ -2,8 +2,8 @@
 		<div class="bookmark_single" data-id="<%= id %>">
 				<p class="bookmark_actions">
 					<span class="bookmark_delete">
-						<img class="svg" src="<?php echo OCP\image_path("", "actions/delete.svg");?>"
-							title="<?php echo $l->t('Delete');?>">
+						<img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/delete.svg"));?>"
+							title="<?php p($l->t('Delete'));?>">
 					</span>&nbsp;
 				</p>
 				<p class="bookmark_title">
@@ -11,7 +11,7 @@
 						<%= escapeHTML(title == '' ? encodeURI(url) : title ) %>
 					</a>
 					<span class="bookmark_edit bookmark_edit_btn">
-						<img class="svg" src="<?php echo OCP\image_path("", "actions/rename.svg");?>" title="<?php echo $l->t('Edit');?>">
+						<img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/rename.svg"));?>" title="<?php p($l->t('Edit'));?>">
 					</span>
 				</p>
 				<span class="bookmark_desc"><%= escapeHTML(description)%> </span>
@@ -21,14 +21,14 @@
 
 <script type="text/html" id="item_form_tmpl">
 		<div class="bookmark_single_form" data-id="<%= id %>">
-			<form method="post" action="<?php echo OCP\Util::linkTo('bookmarks', 'ajax/editBookmark.php');?>" >
+			<form method="post" action="<?php p(OCP\Util::linkTo('bookmarks', 'ajax/editBookmark.php'));?>" >
 					<input type="hidden" name="record_id" value="<%= id %>" />
 				<p class="bookmark_form_title">
-					<input type="text" name="title" placeholder="<?php echo $l->t('The title of the page');?>"
+					<input type="text" name="title" placeholder="<?php p($l->t('The title of the page'));?>"
 						value="<%= escapeHTML(title) %>"/>
 				</p>
 				<p class="bookmark_form_url">
-					<input type="text" name="url" placeholder="<?php echo $l->t('The address of the page');?>"
+					<input type="text" name="url" placeholder="<?php p($l->t('The address of the page'));?>"
 						value="<%= encodeURI(url)%>"/>
 				</p>
 				<div class="bookmark_form_tags"><ul>
@@ -37,11 +37,11 @@
 					<% } %>
 				</ul></div>
 				<p class="bookmark_form_desc">
-					<textarea name="description" placeholder="<?php echo $l->t('Description of the page');?>"
+					<textarea name="description" placeholder="<?php p($l->t('Description of the page'));?>"
 						><%= escapeHTML(description) %></textarea>
 				</p>
-				<p class="bookmark_form_submit"><button class="reset" ><?php echo $l->t('Cancel');?></button>
-					<input type="submit" value="<?php echo $l->t('Save');?>">
+				<p class="bookmark_form_submit"><button class="reset" ><?php p($l->t('Cancel'));?></button>
+					<input type="submit" value="<?php p($l->t('Save'));?>">
 				</p>
 			</form>
 		</div>
@@ -50,12 +50,12 @@
 	<li><a href="" class="tag"><%= tag %></a>
 		<p class="tags_actions">
 			<span class="tag_edit">
-				<img class="svg" src="<?php echo OCP\image_path("", "actions/rename.svg");?>"
-					title="<?php echo $l->t('Edit');?>">
+				<img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/rename.svg"));?>"
+					title="<?php p($l->t('Edit'));?>">
 			</span>
 			<span class="tag_delete">
-				<img class="svg" src="<?php echo OCP\image_path("", "actions/delete.svg");?>"
-					title="<?php echo $l->t('Delete');?>">
+				<img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/delete.svg"));?>"
+					title="<?php p($l->t('Delete'));?>">
 			</span>
 		</p>
 		<em><%= nbr %></em>
