@@ -8,22 +8,22 @@
 ?>
 
 <fieldset class="personalblock">
-	<legend><strong><?php echo $l->t('Bookmarklet');?></strong></legend>
-	<?php echo bookmarklet();?><br />
+	<legend><strong><?php p($l->t('Bookmarklet'));?></strong></legend>
+	<?php print_unescaped(bookmarklet());?><br />
 </fieldset>
 
-<form id="import_bookmark" action="<?php echo OCP\Util::linkTo( "bookmarks", "ajax/import.php" );?>"
+<form id="import_bookmark" action="<?php print_unescaped(OCP\Util::linkTo( "bookmarks", "ajax/import.php" ));?>"
  method="post" enctype="multipart/form-data">
 	<fieldset class="personalblock">
 		<?php if(isset($_['error'])): ?>
-			<h3><?php echo $_['error']['error']; ?></h3>
-			<p><?php echo $_['error']['hint']; ?></p>
+			<h3><?php p($_['error']['error']); ?></h3>
+			<p><?php p($_['error']['hint']); ?></p>
 		<?php endif; ?>
 
-			<legend><strong><?php echo $l->t('Export & Import');?></strong></legend>
-			<input type="button" id="bm_export" href="<?php echo OCP\Util::linkTo('bookmarks', 'export.php') ;?>" value="<?php echo $l->t('Export'); ?>" />
+			<legend><strong><?php p($l->t('Export & Import'));?></strong></legend>
+			<input type="button" id="bm_export" href="<?php print_unescaped(OCP\Util::linkTo('bookmarks', 'export.php')) ;?>" value="<?php p($l->t('Export')); ?>" />
 			<input type="file" id="bm_import" name="bm_import" size="5">
-			<button type="button" name="bm_import_btn" id="bm_import_submit"><?php echo $l->t('Import'); ?></button>
+			<button type="button" name="bm_import_btn" id="bm_import_submit"><?php p($l->t('Import')); ?></button>
 			<div id="upload"></div>
 
 
