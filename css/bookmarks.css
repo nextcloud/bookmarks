@@ -1,12 +1,11 @@
 #content { overflow: auto; height: 100%; }
 
-#firstrun small { display: block; font-weight: normal; font-size: 0.5em;  }
-#firstrun .button { font-size: 0.7em; }
+#firstrun .bkm_hint { display: block; font-weight: normal; /*font-size: 0.5em; */ }
+#firstrun .title { font-weight:bold; }
 
 #distance {
 	width:1px;
 	height:50%;
-	background-color:#fc6;
 	margin-bottom:-13.75em; /* half of container's height */
 	float:left;
 }
@@ -65,6 +64,10 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 
 #add_form {
 	padding-bottom: 2em;
+}
+
+#add_form input {
+	margin: 0.3em;
 }
 #add_url {
 	width: 12em;
