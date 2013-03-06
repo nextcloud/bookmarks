@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Ingen fil opgivet til import",
 "Unsupported file type for import" => "Ikke understøttet filtype til import",
 "Bookmarks" => "Bogmærker",
 "Tags" => "Mærker",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Rediger bogmærker",
 "Are you sure you want to remove this tag from every entry?" => "Er du sikker på at du vil fjerne dette flag fra alle poster?",
 "Warning" => "Advarsel",
+"Import error" => "Fejl ved import",
 "Import completed successfully." => "Importer fuldført.",
 "Uploading..." => "Uploader...",
 "Bookm." => "Bogm.",
