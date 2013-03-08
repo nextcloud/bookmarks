@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Ni navedene datoteke za uvoz",
 "Unsupported file type for import" => "Vrsta datoteke ni podprta za uvoz",
 "Bookmarks" => "Zaznamki",
 "Tags" => "Oznake",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Uredi zaznamke",
 "Are you sure you want to remove this tag from every entry?" => "Ali res želite odstraniti te oznake iz vsakega vnosa?",
 "Warning" => "Opozorilo",
+"Import error" => "Napaka med uvozom",
 "Import completed successfully." => "Uvoz je uspešno zaključen.",
 "Uploading..." => "Nalagam ...",
 "Bookm." => "Zaznam.",
