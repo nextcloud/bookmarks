@@ -47,7 +47,7 @@
 		</div>
 </script>
 <script type="text/html" id="tag_tmpl">
-	<li><a href="" class="tag"><%= tag %></a>
+	<li><a href="" class="tag"><%= escapeHTML(tag) %></a>
 		<p class="tags_actions">
 			<span class="tag_edit">
 				<img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/rename.svg"));?>"
