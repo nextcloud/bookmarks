@@ -43,7 +43,7 @@ foreach($bookmarks as $bm) {
 }
 $user_name = trim(OCP\User::getDisplayName()) != '' ?
 					OCP\User::getDisplayName() : OCP\User::getUser();
-$export_name = 'owncloud-bookmarks-'.$user_name.'-'.date('Y-m-d').'.html';
+$export_name = '"ownCloud Bookmarks ('.$user_name.') ('.date('Y-m-d').').html"';
 header("Cache-Control: private");
 header("Content-Type: application/stream");
 header("Content-Length: ".$fileSize);
