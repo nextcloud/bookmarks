@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"Bookmarks" => "الإشارات المرجعية",
 "Close" => "إغلق",
 "Save" => "حفظ",
 "Delete" => "حذف",
