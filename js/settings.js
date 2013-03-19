@@ -27,6 +27,7 @@ function fileUpload(form, result_div) {
 			result_div.html(list);
 		} else {
 			result_div.text(t('bookmark', 'Import completed successfully.'));
+			getBookmarks();
 		}
 	};
 		
