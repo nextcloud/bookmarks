@@ -85,14 +85,15 @@ class OC_Bookmarks_Bookmarks{
 		$params=array(OCP\USER::getUser());
 
 		if($CONFIG_DBTYPE == 'pgsql') {
-			$group_fct = 'array_agg(tag)';
+			$sql = "select * from (SELECT *, (select array_to_string(array_agg(tag),'') from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
+				FROM *PREFIX*bookmarks b
+				WHERE user_id = ? ) as x WHERE true ";
 		}
 		else {
-			$group_fct = 'GROUP_CONCAT(tag)';
-		}
-		$sql = "SELECT *, (select $group_fct from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
+			$sql = "SELECT *, (select GROUP_CONCAT(tag) from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
 				FROM *PREFIX*bookmarks b
 				WHERE user_id = ? ";
+		}
 
 		if($filterTagOnly) {
 			$exist_clause = " AND	exists (select id from  *PREFIX*bookmarks_tags
