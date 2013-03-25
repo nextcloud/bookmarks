@@ -408,7 +408,11 @@ class OC_Bookmarks_Bookmarks{
 				$tag_str = $link->getAttribute("tags");
 			$tags = explode(',', $tag_str);
 
-			self::addBookmark($ref, $title, $tags);
+			$desc_str = '';
+			if($link->hasAttribute("description"))
+				$desc_str = $link->getAttribute("description");
+
+			self::addBookmark($ref, $title, $tags,$desc_str );
 		}
 		OCP\DB::commit();
 		return array();
