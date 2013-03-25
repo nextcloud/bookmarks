@@ -349,15 +349,15 @@ li:hover em { display : none; }
 }
 
 .bookmark_single .bookmark_edit_btn {
-	display:none;
+	visibility:hidden;
 }
 
 .bookmark_single:hover .bookmark_edit_btn {
-	display:block;
+	visibility: visible;
 }
 
 .bookmark_single:focus .bookmark_edit_btn {
-	display:block;
+	visibility: visible;
 	opacity:1;
 }
 
