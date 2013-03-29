@@ -40,13 +40,14 @@ foreach($bookmarks as $bm) {
 	$file .= htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'</A>';
 	if($bm['description'])
 		$file .= '<DD>'.htmlspecialchars($bm['description'], ENT_QUOTES, 'UTF-8');
+	$file .= "\n";
 }
 $user_name = trim(OCP\User::getDisplayName()) != '' ?
 					OCP\User::getDisplayName() : OCP\User::getUser();
 $export_name = '"ownCloud Bookmarks ('.$user_name.') ('.date('Y-m-d').').html"';
 header("Cache-Control: private");
 header("Content-Type: application/stream");
-header("Content-Length: ".$fileSize);
+header("Content-Length: ".strlen($file));
 header("Content-Disposition: attachment; filename=".$export_name);
 
 echo $file;
