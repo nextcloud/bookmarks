@@ -34,7 +34,7 @@ class OC_Migration_Provider_Bookmarks extends OC_Migration_Provider{
 		switch( $this->appinfo->version ) {
 			default:
 				// All versions of the app have had the same db structure, so all can use the same import function
-				$query = $this->content->prepare( "SELECT * FROM `bookmarks` WHERE `user_id` LIKE ?" );
+				$query = $this->content->prepare( "SELECT * FROM bookmarks WHERE user_id = ?" );
 				$results = $query->execute( array( $this->olduid ) );
 				$idmap = array();
 				while( $row = $results->fetchRow() ) {
@@ -51,7 +51,7 @@ class OC_Migration_Provider_Bookmarks extends OC_Migration_Provider{
 				}
 				// Now tags
 				foreach($idmap as $oldid => $newid) {
-					$query = $this->content->prepare( "SELECT * FROM `bookmarks_tags` WHERE `bookmark_id` LIKE ?" );
+					$query = $this->content->prepare( "SELECT * FROM bookmarks_tags WHERE bookmark_id = ?" );
 					$results = $query->execute( array( $oldid ) );
 					while( $row = $results->fetchRow() ) {
 						// Import the tags for this bookmark, using the new bookmark id
