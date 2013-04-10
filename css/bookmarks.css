@@ -350,6 +350,7 @@ li:hover em { display : none; }
 
 .bookmark_single .bookmark_edit_btn {
 	visibility:hidden;
+	width: 16px;
 }
 
 .bookmark_single:hover .bookmark_edit_btn {
