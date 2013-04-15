@@ -297,6 +297,7 @@ li:hover em { display : none; }
 	width:40%;
 	top: 0.7em;
 	font-weight:500;
+	z-index: -10;
 }
 .bookmark_date, .bookmark_submit {
 	font-size:small;
