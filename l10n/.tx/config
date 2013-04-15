@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.net
 
-[owncloud.mail]
+[owncloud.bookmarks]
 file_filter = <lang>/bookmarks.po
 source_file = templates/bookmarks.pot
 source_lang = en
