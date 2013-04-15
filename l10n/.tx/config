@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.net
+
+[owncloud.mail]
+file_filter = <lang>/bookmarks.po
+source_file = templates/bookmarks.pot
+source_lang = en
+type = PO
+
