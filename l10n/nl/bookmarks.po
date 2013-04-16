@@ -1,0 +1,155 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# André Koot <meneer@tken.net>, 2013.
+#   <didi.debian@cknow.org>, 2012.
+# Richard Bos <radoeka@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
+"POT-Creation-Date: 2013-04-16 02:17+0200\n"
+"PO-Revision-Date: 2013-04-16 00:17+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: Dutch (http://www.transifex.com/projects/p/owncloud/language/nl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ajax/import.php:9
+msgid "No file provided for import"
+msgstr "Geen bestand voor import opgegeven"
+
+#: ajax/import.php:21
+msgid "Unsupported file type for import"
+msgstr "Niet ondersteund bestandstype voor import"
+
+#: appinfo/app.php:17
+msgid "Bookmarks"
+msgstr "Bladwijzers"
+
+#: js/addBm.js:42 js/bookmarks.js:235
+msgid "Tags"
+msgstr "Tags"
+
+#: js/bookmarks.js:22
+msgid "Filter by tag"
+msgstr "Filter op tag"
+
+#: js/bookmarks.js:132
+msgid "Edit bookmark"
+msgstr "Bewerk bladwijzer"
+
+#: js/bookmarks.js:366
+msgid "Are you sure you want to remove this tag from every entry?"
+msgstr "Bent u zeker dat u deze tag van elk item wilt verwijderen."
+
+#: js/bookmarks.js:367
+msgid "Warning"
+msgstr "Waarschuwing"
+
+#: js/settings.js:18
+msgid "Import error"
+msgstr "Import fout"
+
+#: js/settings.js:29
+msgid "Import completed successfully."
+msgstr "Het importeren is helemaal geslaagd"
+
+#: js/settings.js:61
+msgid "Uploading..."
+msgstr "Uploading..."
+
+#: lib/search.php:38
+msgid "Bookm."
+msgstr "Bladw."
+
+#: templates/addBm.php:5
+msgid "Add a bookmark"
+msgstr "Voeg een bladwijzer toe"
+
+#: templates/addBm.php:8
+msgid "Close"
+msgstr "Sluit"
+
+#: templates/addBm.php:16 templates/js_tpl.php:27
+msgid "The title of the page"
+msgstr "De pagina titel"
+
+#: templates/addBm.php:21 templates/js_tpl.php:31
+msgid "The address of the page"
+msgstr "Het pagina adres"
+
+#: templates/addBm.php:34 templates/js_tpl.php:40
+msgid "Description of the page"
+msgstr "Pagina beschrijving"
+
+#: templates/addBm.php:38 templates/js_tpl.php:44
+msgid "Save"
+msgstr "Bewaar"
+
+#: templates/js_tpl.php:6 templates/js_tpl.php:58
+msgid "Delete"
+msgstr "Verwijder"
+
+#: templates/js_tpl.php:14 templates/js_tpl.php:54
+msgid "Edit"
+msgstr "Bewerk"
+
+#: templates/js_tpl.php:43
+msgid "Cancel"
+msgstr "Annuleer"
+
+#: templates/list.php:14
+msgid ""
+"Drag this to your browser bookmarks and click it, when you want to bookmark "
+"a webpage quickly:"
+msgstr "Sleep dit naar uw browser bladwijzer menu en klik erop, wanneer u een webpagina snel wilt voorzien van een bladwijzer:"
+
+#: templates/list.php:15
+msgid "Read later"
+msgstr "Lees later"
+
+#: templates/list.php:22
+msgid "Address"
+msgstr "Adres"
+
+#: templates/list.php:23
+msgid "Add"
+msgstr "Toevoegen"
+
+#: templates/list.php:31
+msgid "Related Tags"
+msgstr "Aanverwante tags"
+
+#: templates/list.php:38 templates/list.php:40
+msgid "Settings"
+msgstr "Instellingen"
+
+#: templates/list.php:54
+msgid "You have no bookmarks"
+msgstr "U heeft geen bladwijzers"
+
+#: templates/list.php:59
+msgid "You can also try to import a bookmark file"
+msgstr "U kan ook een bladwijzer bestand proberen te importen"
+
+#: templates/settings.php:11
+msgid "Bookmarklet"
+msgstr "Bookmarklet"
+
+#: templates/settings.php:23
+msgid "Export & Import"
+msgstr "Export & Import"
+
+#: templates/settings.php:24
+msgid "Export"
+msgstr "Exporteer"
+
+#: templates/settings.php:26
+msgid "Import"
+msgstr "Importeer"

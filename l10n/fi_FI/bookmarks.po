@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+#   <ari.takalo@iki.fi>, 2012.
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2012-2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
+"POT-Creation-Date: 2013-04-16 02:17+0200\n"
+"PO-Revision-Date: 2013-04-16 00:17+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/owncloud/language/fi_FI/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fi_FI\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ajax/import.php:9
+msgid "No file provided for import"
+msgstr "Yhtäkään tiedostoa ei määritetty tuotavaksi"
+
+#: ajax/import.php:21
+msgid "Unsupported file type for import"
+msgstr "Tuonti ei tue kyseistä tiedostotyyppiä"
+
+#: appinfo/app.php:17
+msgid "Bookmarks"
+msgstr "Kirjanmerkit"
+
+#: js/addBm.js:42 js/bookmarks.js:235
+msgid "Tags"
+msgstr "Tunnisteet"
+
+#: js/bookmarks.js:22
+msgid "Filter by tag"
+msgstr "Suodata tunnisteen perusteella"
+
+#: js/bookmarks.js:132
+msgid "Edit bookmark"
+msgstr "Muokkaa kirjanmerkkiä"
+
+#: js/bookmarks.js:366
+msgid "Are you sure you want to remove this tag from every entry?"
+msgstr "Haluatko varmasti poistaa tämän tunnisteen jokaiselta kohteelta?"
+
+#: js/bookmarks.js:367
+msgid "Warning"
+msgstr "Varoitus"
+
+#: js/settings.js:18
+msgid "Import error"
+msgstr "Tuontivirhe"
+
+#: js/settings.js:29
+msgid "Import completed successfully."
+msgstr "Tuonti valmistui onnistuneesti."
+
+#: js/settings.js:61
+msgid "Uploading..."
+msgstr "Lähetetään..."
+
+#: lib/search.php:38
+msgid "Bookm."
+msgstr "Kirjanm."
+
+#: templates/addBm.php:5
+msgid "Add a bookmark"
+msgstr "Lisää kirjanmerkki"
+
+#: templates/addBm.php:8
+msgid "Close"
+msgstr "Sulje"
+
+#: templates/addBm.php:16 templates/js_tpl.php:27
+msgid "The title of the page"
+msgstr "Sivun otsikko"
+
+#: templates/addBm.php:21 templates/js_tpl.php:31
+msgid "The address of the page"
+msgstr "Sivun osoite"
+
+#: templates/addBm.php:34 templates/js_tpl.php:40
+msgid "Description of the page"
+msgstr "Sivun kuvaus"
+
+#: templates/addBm.php:38 templates/js_tpl.php:44
+msgid "Save"
+msgstr "Tallenna"
+
+#: templates/js_tpl.php:6 templates/js_tpl.php:58
+msgid "Delete"
+msgstr "Poista"
+
+#: templates/js_tpl.php:14 templates/js_tpl.php:54
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: templates/js_tpl.php:43
+msgid "Cancel"
+msgstr "Peru"
+
+#: templates/list.php:14
+msgid ""
+"Drag this to your browser bookmarks and click it, when you want to bookmark "
+"a webpage quickly:"
+msgstr "Vedä tämä selaimesi kirjanmerkkipalkkiin ja napsauta sitä, kun haluat lisätä kirjanmerkin nopeasti:"
+
+#: templates/list.php:15
+msgid "Read later"
+msgstr "Lue myöhemmin"
+
+#: templates/list.php:22
+msgid "Address"
+msgstr "Osoite"
+
+#: templates/list.php:23
+msgid "Add"
+msgstr "Lisää"
+
+#: templates/list.php:31
+msgid "Related Tags"
+msgstr "Vastaavanlaiset tunnisteet"
+
+#: templates/list.php:38 templates/list.php:40
+msgid "Settings"
+msgstr "Asetukset"
+
+#: templates/list.php:54
+msgid "You have no bookmarks"
+msgstr "Sinulla ei ole kirjanmerkkejä"
+
+#: templates/list.php:59
+msgid "You can also try to import a bookmark file"
+msgstr "Voit myös yrittää tuoda kirjanmerkkitiedoston"
+
+#: templates/settings.php:11
+msgid "Bookmarklet"
+msgstr "Kirjanmerkitsin"
+
+#: templates/settings.php:23
+msgid "Export & Import"
+msgstr "Vienti ja tuonti"
+
+#: templates/settings.php:24
+msgid "Export"
+msgstr "Vie"
+
+#: templates/settings.php:26
+msgid "Import"
+msgstr "Tuo"

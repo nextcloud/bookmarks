@@ -1,0 +1,157 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+#  <dudanogueira@gmail.com>, 2013.
+#   <dudanogueira@gmail.com>, 2012.
+#   <henrique@meira.net>, 2012.
+#   <philippi.sedir@gmail.com>, 2012.
+#   <thoriumbr@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
+"POT-Creation-Date: 2013-04-16 02:17+0200\n"
+"PO-Revision-Date: 2013-04-16 00:17+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/owncloud/language/pt_BR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: ajax/import.php:9
+msgid "No file provided for import"
+msgstr "Arquivo para importação não fornecido"
+
+#: ajax/import.php:21
+msgid "Unsupported file type for import"
+msgstr "Arquivo para importação não suportado"
+
+#: appinfo/app.php:17
+msgid "Bookmarks"
+msgstr "Marcadores"
+
+#: js/addBm.js:42 js/bookmarks.js:235
+msgid "Tags"
+msgstr "Tags"
+
+#: js/bookmarks.js:22
+msgid "Filter by tag"
+msgstr "Filtrar por tag"
+
+#: js/bookmarks.js:132
+msgid "Edit bookmark"
+msgstr "Editar marcador"
+
+#: js/bookmarks.js:366
+msgid "Are you sure you want to remove this tag from every entry?"
+msgstr "Tem certeza que deseja remover esta tag de todas as entradas?"
+
+#: js/bookmarks.js:367
+msgid "Warning"
+msgstr "Aviso"
+
+#: js/settings.js:18
+msgid "Import error"
+msgstr "Error ao Importar"
+
+#: js/settings.js:29
+msgid "Import completed successfully."
+msgstr "Importação completada com sucesso"
+
+#: js/settings.js:61
+msgid "Uploading..."
+msgstr "Enviando..."
+
+#: lib/search.php:38
+msgid "Bookm."
+msgstr "Marc."
+
+#: templates/addBm.php:5
+msgid "Add a bookmark"
+msgstr "Adicionar um marcador"
+
+#: templates/addBm.php:8
+msgid "Close"
+msgstr "Fechar"
+
+#: templates/addBm.php:16 templates/js_tpl.php:27
+msgid "The title of the page"
+msgstr "O título da página"
+
+#: templates/addBm.php:21 templates/js_tpl.php:31
+msgid "The address of the page"
+msgstr "O endereço da página"
+
+#: templates/addBm.php:34 templates/js_tpl.php:40
+msgid "Description of the page"
+msgstr "Descrição da página"
+
+#: templates/addBm.php:38 templates/js_tpl.php:44
+msgid "Save"
+msgstr "Salvar"
+
+#: templates/js_tpl.php:6 templates/js_tpl.php:58
+msgid "Delete"
+msgstr "Excluir"
+
+#: templates/js_tpl.php:14 templates/js_tpl.php:54
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/js_tpl.php:43
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: templates/list.php:14
+msgid ""
+"Drag this to your browser bookmarks and click it, when you want to bookmark "
+"a webpage quickly:"
+msgstr "Arraste isso para os favoritos do seu navegador web e clique nele quando você quiser marcar/favoritar uma página rapidamente:"
+
+#: templates/list.php:15
+msgid "Read later"
+msgstr "Ler depois"
+
+#: templates/list.php:22
+msgid "Address"
+msgstr "Endereço"
+
+#: templates/list.php:23
+msgid "Add"
+msgstr "Adicionar"
+
+#: templates/list.php:31
+msgid "Related Tags"
+msgstr "Tags Relacionadas"
+
+#: templates/list.php:38 templates/list.php:40
+msgid "Settings"
+msgstr "Ajustes"
+
+#: templates/list.php:54
+msgid "You have no bookmarks"
+msgstr "Você não tem marcadores"
+
+#: templates/list.php:59
+msgid "You can also try to import a bookmark file"
+msgstr "Você também pode tentar importar um arquivo de marcadores."
+
+#: templates/settings.php:11
+msgid "Bookmarklet"
+msgstr "Bookmarklet"
+
+#: templates/settings.php:23
+msgid "Export & Import"
+msgstr "Exportar e Importar"
+
+#: templates/settings.php:24
+msgid "Export"
+msgstr "Exportar"
+
+#: templates/settings.php:26
+msgid "Import"
+msgstr "Importar"

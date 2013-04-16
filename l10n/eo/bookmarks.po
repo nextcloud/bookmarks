@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Mariano  <mstreet@kde.org.ar>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
+"POT-Creation-Date: 2013-04-16 02:17+0200\n"
+"PO-Revision-Date: 2013-04-16 00:17+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: Esperanto (http://www.transifex.com/projects/p/owncloud/language/eo/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: eo\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ajax/import.php:9
+msgid "No file provided for import"
+msgstr ""
+
+#: ajax/import.php:21
+msgid "Unsupported file type for import"
+msgstr "Dosiertipo nekongrua kun enporto"
+
+#: appinfo/app.php:17
+msgid "Bookmarks"
+msgstr "Legosignoj"
+
+#: js/addBm.js:42 js/bookmarks.js:235
+msgid "Tags"
+msgstr "Etikedoj"
+
+#: js/bookmarks.js:22
+msgid "Filter by tag"
+msgstr "Filtri laŭ etikedo"
+
+#: js/bookmarks.js:132
+msgid "Edit bookmark"
+msgstr "Redakti legosignon"
+
+#: js/bookmarks.js:366
+msgid "Are you sure you want to remove this tag from every entry?"
+msgstr "Ĉu vi vere volas forigi ĉi tiun etikedon el ĉiu ero?"
+
+#: js/bookmarks.js:367
+msgid "Warning"
+msgstr "Averto"
+
+#: js/settings.js:18
+msgid "Import error"
+msgstr ""
+
+#: js/settings.js:29
+msgid "Import completed successfully."
+msgstr "Enporto plenumiĝis sukcese."
+
+#: js/settings.js:61
+msgid "Uploading..."
+msgstr "Alŝutante..."
+
+#: lib/search.php:38
+msgid "Bookm."
+msgstr "Legos."
+
+#: templates/addBm.php:5
+msgid "Add a bookmark"
+msgstr "Aldoni legosignon"
+
+#: templates/addBm.php:8
+msgid "Close"
+msgstr "Fermi"
+
+#: templates/addBm.php:16 templates/js_tpl.php:27
+msgid "The title of the page"
+msgstr "Titolo de la paĝo"
+
+#: templates/addBm.php:21 templates/js_tpl.php:31
+msgid "The address of the page"
+msgstr "Adreso de la paĝo"
+
+#: templates/addBm.php:34 templates/js_tpl.php:40
+msgid "Description of the page"
+msgstr "Priskribo de la paĝo"
+
+#: templates/addBm.php:38 templates/js_tpl.php:44
+msgid "Save"
+msgstr "Konservi"
+
+#: templates/js_tpl.php:6 templates/js_tpl.php:58
+msgid "Delete"
+msgstr "Forigi"
+
+#: templates/js_tpl.php:14 templates/js_tpl.php:54
+msgid "Edit"
+msgstr "Redakti"
+
+#: templates/js_tpl.php:43
+msgid "Cancel"
+msgstr "Nuligi"
+
+#: templates/list.php:14
+msgid ""
+"Drag this to your browser bookmarks and click it, when you want to bookmark "
+"a webpage quickly:"
+msgstr "Ŝovu tion ĉi al la legosignoj de via TTT-legilo kaj klaku ĝin, se vi volas rapide legosignigi TTT-paĝon:"
+
+#: templates/list.php:15
+msgid "Read later"
+msgstr "Legi poste"
+
+#: templates/list.php:22
+msgid "Address"
+msgstr "Adreso"
+
+#: templates/list.php:23
+msgid "Add"
+msgstr "Aldoni"
+
+#: templates/list.php:31
+msgid "Related Tags"
+msgstr "Rilataj etikedoj"
+
+#: templates/list.php:38 templates/list.php:40
+msgid "Settings"
+msgstr "Agordo"
+
+#: templates/list.php:54
+msgid "You have no bookmarks"
+msgstr "Vi havas neniun legosignon"
+
+#: templates/list.php:59
+msgid "You can also try to import a bookmark file"
+msgstr "Vi povas ankaŭ provi enporti legosignan dosieron"
+
+#: templates/settings.php:11
+msgid "Bookmarklet"
+msgstr "Kodosigno"
+
+#: templates/settings.php:23
+msgid "Export & Import"
+msgstr "Malenporti kaj enporti"
+
+#: templates/settings.php:24
+msgid "Export"
+msgstr "Elporti"
+
+#: templates/settings.php:26
+msgid "Import"
+msgstr "Enporti"

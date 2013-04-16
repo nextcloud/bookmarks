@@ -1,9 +1,14 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Imporditav fail puudub",
+"Unsupported file type for import" => "Failitüübi toetuseta import",
 "Bookmarks" => "Järjehoidjad",
 "Tags" => "Sildid",
+"Filter by tag" => "Filtreeri siltide alusel",
 "Edit bookmark" => "Muuda järjehoidjat",
 "Are you sure you want to remove this tag from every entry?" => "Oled sa kindel, et sa soovid kõigilt sissekannetelt seda silti eemaldada?",
 "Warning" => "Hoiatus",
+"Import error" => "Viga importimisel",
+"Import completed successfully." => "Import lõpetatud edukalt.",
 "Uploading..." => "Üleslaadimine...",
 "Bookm." => "Järjeh.",
 "Add a bookmark" => "Lisa järjehoidja",
@@ -22,6 +27,9 @@
 "Related Tags" => "Seotud sildid",
 "Settings" => "Seaded",
 "You have no bookmarks" => "Sul pole järjehoidjaid",
+"You can also try to import a bookmark file" => "Proovi importida järjehoidjate faili",
+"Bookmarklet" => "Järjehoidjake",
+"Export & Import" => "Eksport ja import",
 "Export" => "Ekspordi",
 "Import" => "Impordi"
 );

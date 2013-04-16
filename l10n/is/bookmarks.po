@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+#   <sveinng@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
+"POT-Creation-Date: 2013-04-16 02:17+0200\n"
+"PO-Revision-Date: 2013-04-16 00:17+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: Icelandic (http://www.transifex.com/projects/p/owncloud/language/is/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: is\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ajax/import.php:9
+msgid "No file provided for import"
+msgstr ""
+
+#: ajax/import.php:21
+msgid "Unsupported file type for import"
+msgstr "Ekki er hægt að flytja inn þessa tegund af bókamerki"
+
+#: appinfo/app.php:17
+msgid "Bookmarks"
+msgstr "Bókamerki"
+
+#: js/addBm.js:42 js/bookmarks.js:235
+msgid "Tags"
+msgstr "Tagg"
+
+#: js/bookmarks.js:22
+msgid "Filter by tag"
+msgstr "Sía eftir töggum"
+
+#: js/bookmarks.js:132
+msgid "Edit bookmark"
+msgstr "Breyta bókamerki"
+
+#: js/bookmarks.js:366
+msgid "Are you sure you want to remove this tag from every entry?"
+msgstr "Ertu viss um að þú viljir fjarlægja þetta tagg úr öllum færslum?"
+
+#: js/bookmarks.js:367
+msgid "Warning"
+msgstr "Aðvörun"
+
+#: js/settings.js:18
+msgid "Import error"
+msgstr ""
+
+#: js/settings.js:29
+msgid "Import completed successfully."
+msgstr "Tókst að flytja inn"
+
+#: js/settings.js:61
+msgid "Uploading..."
+msgstr "Sendi inn ..."
+
+#: lib/search.php:38
+msgid "Bookm."
+msgstr "Bókam."
+
+#: templates/addBm.php:5
+msgid "Add a bookmark"
+msgstr "Bæta við bókamerki"
+
+#: templates/addBm.php:8
+msgid "Close"
+msgstr "Loka"
+
+#: templates/addBm.php:16 templates/js_tpl.php:27
+msgid "The title of the page"
+msgstr "Titill á síðunni"
+
+#: templates/addBm.php:21 templates/js_tpl.php:31
+msgid "The address of the page"
+msgstr "Slóð á síðuna"
+
+#: templates/addBm.php:34 templates/js_tpl.php:40
+msgid "Description of the page"
+msgstr "Lýsing á síðunni"
+
+#: templates/addBm.php:38 templates/js_tpl.php:44
+msgid "Save"
+msgstr "Vista"
+
+#: templates/js_tpl.php:6 templates/js_tpl.php:58
+msgid "Delete"
+msgstr "Eyða"
+
+#: templates/js_tpl.php:14 templates/js_tpl.php:54
+msgid "Edit"
+msgstr "Breyta"
+
+#: templates/js_tpl.php:43
+msgid "Cancel"
+msgstr "Hætta við"
+
+#: templates/list.php:14
+msgid ""
+"Drag this to your browser bookmarks and click it, when you want to bookmark "
+"a webpage quickly:"
+msgstr "Dragðu þetta yfir í bókamerki í vafranum þínu og smelltu, ef þú vilt bæta við bókamerki fyrir þessa vefsíðu á fljótlegan hátt."
+
+#: templates/list.php:15
+msgid "Read later"
+msgstr "Lesa seinna"
+
+#: templates/list.php:22
+msgid "Address"
+msgstr "Slóð"
+
+#: templates/list.php:23
+msgid "Add"
+msgstr "Bæta við"
+
+#: templates/list.php:31
+msgid "Related Tags"
+msgstr "Skyld tögg"
+
+#: templates/list.php:38 templates/list.php:40
+msgid "Settings"
+msgstr "Stillingar"
+
+#: templates/list.php:54
+msgid "You have no bookmarks"
+msgstr "Þú hefur engin bókamerki"
+
+#: templates/list.php:59
+msgid "You can also try to import a bookmark file"
+msgstr "Þú getur inni prófa að flytja inn bókamerkja skrá"
+
+#: templates/settings.php:11
+msgid "Bookmarklet"
+msgstr "Bookmarklet"
+
+#: templates/settings.php:23
+msgid "Export & Import"
+msgstr "Inn- og útflutningur"
+
+#: templates/settings.php:24
+msgid "Export"
+msgstr "Flytja út"
+
+#: templates/settings.php:26
+msgid "Import"
+msgstr "Flytja inn"

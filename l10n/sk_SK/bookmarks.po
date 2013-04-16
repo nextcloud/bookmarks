@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Marián Hvolka <marian.hvolka@stuba.sk>, 2013.
+#   <martin.babik@gmail.com>, 2012.
+# Roman Priesol <roman@priesol.net>, 2012.
+#   <zatroch.martin@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
+"POT-Creation-Date: 2013-04-16 02:17+0200\n"
+"PO-Revision-Date: 2013-04-16 00:17+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/owncloud/language/sk_SK/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sk_SK\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: ajax/import.php:9
+msgid "No file provided for import"
+msgstr "Žiadny súbor na import"
+
+#: ajax/import.php:21
+msgid "Unsupported file type for import"
+msgstr "Nepodporovaný typ súboru pre import"
+
+#: appinfo/app.php:17
+msgid "Bookmarks"
+msgstr "Záložky"
+
+#: js/addBm.js:42 js/bookmarks.js:235
+msgid "Tags"
+msgstr "Značky"
+
+#: js/bookmarks.js:22
+msgid "Filter by tag"
+msgstr "Filtrovať podľa značky"
+
+#: js/bookmarks.js:132
+msgid "Edit bookmark"
+msgstr "Upraviť záložku"
+
+#: js/bookmarks.js:366
+msgid "Are you sure you want to remove this tag from every entry?"
+msgstr "Naozaj ste si istý, že chcete odstrániť túto značku z každého záznamu?"
+
+#: js/bookmarks.js:367
+msgid "Warning"
+msgstr "Varovanie"
+
+#: js/settings.js:18
+msgid "Import error"
+msgstr "Chyba importu"
+
+#: js/settings.js:29
+msgid "Import completed successfully."
+msgstr "Import prebehol úspešne."
+
+#: js/settings.js:61
+msgid "Uploading..."
+msgstr "Odosielanie..."
+
+#: lib/search.php:38
+msgid "Bookm."
+msgstr "Zál."
+
+#: templates/addBm.php:5
+msgid "Add a bookmark"
+msgstr "Pridať záložku"
+
+#: templates/addBm.php:8
+msgid "Close"
+msgstr "Zavrieť"
+
+#: templates/addBm.php:16 templates/js_tpl.php:27
+msgid "The title of the page"
+msgstr "Názov stránky"
+
+#: templates/addBm.php:21 templates/js_tpl.php:31
+msgid "The address of the page"
+msgstr "Adresa stránky"
+
+#: templates/addBm.php:34 templates/js_tpl.php:40
+msgid "Description of the page"
+msgstr "Popis stránky"
+
+#: templates/addBm.php:38 templates/js_tpl.php:44
+msgid "Save"
+msgstr "Uložiť"
+
+#: templates/js_tpl.php:6 templates/js_tpl.php:58
+msgid "Delete"
+msgstr "Zmazať"
+
+#: templates/js_tpl.php:14 templates/js_tpl.php:54
+msgid "Edit"
+msgstr "Upraviť"
+
+#: templates/js_tpl.php:43
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: templates/list.php:14
+msgid ""
+"Drag this to your browser bookmarks and click it, when you want to bookmark "
+"a webpage quickly:"
+msgstr "Presuňte toto do Vášho prehliadača a kliknite ak chcete aktuálnu stránku uložiť do záložiek."
+
+#: templates/list.php:15
+msgid "Read later"
+msgstr "Prečítať neskôr"
+
+#: templates/list.php:22
+msgid "Address"
+msgstr "Adresa"
+
+#: templates/list.php:23
+msgid "Add"
+msgstr "Pridať"
+
+#: templates/list.php:31
+msgid "Related Tags"
+msgstr "Podobné značky"
+
+#: templates/list.php:38 templates/list.php:40
+msgid "Settings"
+msgstr "Nastavenia"
+
+#: templates/list.php:54
+msgid "You have no bookmarks"
+msgstr "Nemáte záložky"
+
+#: templates/list.php:59
+msgid "You can also try to import a bookmark file"
+msgstr "Môžte tiež skúsiť import súboru zo záložkami."
+
+#: templates/settings.php:11
+msgid "Bookmarklet"
+msgstr "Bookmarklet"
+
+#: templates/settings.php:23
+msgid "Export & Import"
+msgstr "Export & Import"
+
+#: templates/settings.php:24
+msgid "Export"
+msgstr "Export"
+
+#: templates/settings.php:26
+msgid "Import"
+msgstr "Import"

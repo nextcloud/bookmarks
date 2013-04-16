@@ -1,9 +1,15 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "არ არის ფაილი იმპორტისთვის",
+"Unsupported file type for import" => "დაუშვებელი ფაილის ტიპი იმპორტისთვის",
 "Bookmarks" => "ბუქმარკები",
 "Tags" => "ტაგები",
+"Filter by tag" => "ტეგების მიხედვით ფილტრაცია",
 "Edit bookmark" => "ბუქმარკების რედაქტირება",
 "Are you sure you want to remove this tag from every entry?" => "დარწმუნებული ხართ რომ აღნიშნული ტაგის წაშლა გინდათ ყველა ჩანაწერიდა?",
 "Warning" => "გაფრთხილება",
+"Import error" => "შეცდომა იმპორტის დროს",
+"Import completed successfully." => "იმპორტირება დასრულებულია.",
+"Uploading..." => "მიმდინარეობს ატვირთვა...",
 "Bookm." => "Bookm.",
 "Add a bookmark" => "ბუქმარქში დამატება",
 "Close" => "დახურვა",
@@ -21,6 +27,9 @@
 "Related Tags" => "Related Tags",
 "Settings" => "პარამეტრები",
 "You have no bookmarks" => "თქვენ არ გაქვთ ბუქმარკები",
+"You can also try to import a bookmark file" => "თქვენ შეგიძლიათ აგრეთვე დააიმპორტოთ ბუქმარქ ფაილი",
+"Bookmarklet" => "ბუქმარქლეტი",
+"Export & Import" => "ექსპორტ & იმპორტი",
 "Export" => "ექსპორტი",
 "Import" => "იმპორტი"
 );

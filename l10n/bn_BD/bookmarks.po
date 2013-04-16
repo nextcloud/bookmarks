@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Shubhra Paul <paul_shubhra@yahoo.com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
+"POT-Creation-Date: 2013-04-16 02:17+0200\n"
+"PO-Revision-Date: 2013-04-16 00:17+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: Bengali (Bangladesh) (http://www.transifex.com/projects/p/owncloud/language/bn_BD/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: bn_BD\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ajax/import.php:9
+msgid "No file provided for import"
+msgstr ""
+
+#: ajax/import.php:21
+msgid "Unsupported file type for import"
+msgstr "আমদানি করার জন্য ফাইলের ফর্ম্যাটটি সঠিক নয়"
+
+#: appinfo/app.php:17
+msgid "Bookmarks"
+msgstr "ঠিকাসমূহ"
+
+#: js/addBm.js:42 js/bookmarks.js:235
+msgid "Tags"
+msgstr "ট্যাগ"
+
+#: js/bookmarks.js:22
+msgid "Filter by tag"
+msgstr "ট্যাগ অনুসারে ছাঁক"
+
+#: js/bookmarks.js:132
+msgid "Edit bookmark"
+msgstr "ঠিকা সম্পাদনা"
+
+#: js/bookmarks.js:366
+msgid "Are you sure you want to remove this tag from every entry?"
+msgstr "প্রত্যেক ভুক্তি থেকে এই ট্যাগটি অপসারণ করতে আপনি কি বদ্ধপরিকর?"
+
+#: js/bookmarks.js:367
+msgid "Warning"
+msgstr "সতর্কবাণী"
+
+#: js/settings.js:18
+msgid "Import error"
+msgstr ""
+
+#: js/settings.js:29
+msgid "Import completed successfully."
+msgstr "আমদানি সুসম্পন্ন হয়েছে।"
+
+#: js/settings.js:61
+msgid "Uploading..."
+msgstr "আপলোড করা হচ্ছে.........."
+
+#: lib/search.php:38
+msgid "Bookm."
+msgstr "ঠিকা"
+
+#: templates/addBm.php:5
+msgid "Add a bookmark"
+msgstr "ঠিকা যোগ করুন"
+
+#: templates/addBm.php:8
+msgid "Close"
+msgstr "বন্ধ"
+
+#: templates/addBm.php:16 templates/js_tpl.php:27
+msgid "The title of the page"
+msgstr "পৃষ্ঠার শিরোনাম"
+
+#: templates/addBm.php:21 templates/js_tpl.php:31
+msgid "The address of the page"
+msgstr "পৃষ্ঠার ঠিকানা"
+
+#: templates/addBm.php:34 templates/js_tpl.php:40
+msgid "Description of the page"
+msgstr "পৃষ্ঠার বিবরণ"
+
+#: templates/addBm.php:38 templates/js_tpl.php:44
+msgid "Save"
+msgstr "সংরক্ষণ কর"
+
+#: templates/js_tpl.php:6 templates/js_tpl.php:58
+msgid "Delete"
+msgstr "মুছে ফেল"
+
+#: templates/js_tpl.php:14 templates/js_tpl.php:54
+msgid "Edit"
+msgstr "সম্পাদনা"
+
+#: templates/js_tpl.php:43
+msgid "Cancel"
+msgstr "বাতিল"
+
+#: templates/list.php:14
+msgid ""
+"Drag this to your browser bookmarks and click it, when you want to bookmark "
+"a webpage quickly:"
+msgstr "দ্রুত কোন ওয়েবপেজ ঠিকাতে সংরক্ষণ করতে চাইলে এটিকে টেনে ব্রাউজারের ঠিকাতে নিয়ে যান এবং তাতে ক্লিক করুনঃ"
+
+#: templates/list.php:15
+msgid "Read later"
+msgstr "পরে পড়ার জন্য সংরক্ষন কর"
+
+#: templates/list.php:22
+msgid "Address"
+msgstr "ঠিকানা"
+
+#: templates/list.php:23
+msgid "Add"
+msgstr "যোগ কর"
+
+#: templates/list.php:31
+msgid "Related Tags"
+msgstr "সম্পর্কযুক্ত ট্যাগ"
+
+#: templates/list.php:38 templates/list.php:40
+msgid "Settings"
+msgstr "নিয়ামকসমূহ"
+
+#: templates/list.php:54
+msgid "You have no bookmarks"
+msgstr "আপনার কোন ঠিক নেই"
+
+#: templates/list.php:59
+msgid "You can also try to import a bookmark file"
+msgstr "আপনি একটি ঠিকা ফাইল আমদানি করার চেষ্টা করে দেখতে পারেন"
+
+#: templates/settings.php:11
+msgid "Bookmarklet"
+msgstr "অনুঠিকা"
+
+#: templates/settings.php:23
+msgid "Export & Import"
+msgstr "আমদানি এবং রপ্তানি"
+
+#: templates/settings.php:24
+msgid "Export"
+msgstr "রপ্তানি"
+
+#: templates/settings.php:26
+msgid "Import"
+msgstr "আমদানি"

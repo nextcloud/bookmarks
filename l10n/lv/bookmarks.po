@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
+"POT-Creation-Date: 2013-04-16 02:17+0200\n"
+"PO-Revision-Date: 2013-04-16 00:17+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: Latvian (http://www.transifex.com/projects/p/owncloud/language/lv/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: lv\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+
+#: ajax/import.php:9
+msgid "No file provided for import"
+msgstr "Neviena datne nav dota importēšanai"
+
+#: ajax/import.php:21
+msgid "Unsupported file type for import"
+msgstr "Importēšanai neatbalstītie datņu tipi"
+
+#: appinfo/app.php:17
+msgid "Bookmarks"
+msgstr "Grāmatzīmes"
+
+#: js/addBm.js:42 js/bookmarks.js:235
+msgid "Tags"
+msgstr "Birkas"
+
+#: js/bookmarks.js:22
+msgid "Filter by tag"
+msgstr "Atlasīt pēc birkas"
+
+#: js/bookmarks.js:132
+msgid "Edit bookmark"
+msgstr "Rediģēt grāmatzīmi"
+
+#: js/bookmarks.js:366
+msgid "Are you sure you want to remove this tag from every entry?"
+msgstr "Vai tiešām vēlaties izņemt šo birku no katra ieraksta?"
+
+#: js/bookmarks.js:367
+msgid "Warning"
+msgstr "Brīdinājums"
+
+#: js/settings.js:18
+msgid "Import error"
+msgstr "Importēšanas kļūda"
+
+#: js/settings.js:29
+msgid "Import completed successfully."
+msgstr "Importēšana ir veiksmīgi pabeigta."
+
+#: js/settings.js:61
+msgid "Uploading..."
+msgstr "Augšupielādē..."
+
+#: lib/search.php:38
+msgid "Bookm."
+msgstr "Grāmatz."
+
+#: templates/addBm.php:5
+msgid "Add a bookmark"
+msgstr "Pievienot grāmatzīmi"
+
+#: templates/addBm.php:8
+msgid "Close"
+msgstr "Aizvērt"
+
+#: templates/addBm.php:16 templates/js_tpl.php:27
+msgid "The title of the page"
+msgstr "Lapas virsraksts"
+
+#: templates/addBm.php:21 templates/js_tpl.php:31
+msgid "The address of the page"
+msgstr "Lapas adrese"
+
+#: templates/addBm.php:34 templates/js_tpl.php:40
+msgid "Description of the page"
+msgstr "Lapas apraksts"
+
+#: templates/addBm.php:38 templates/js_tpl.php:44
+msgid "Save"
+msgstr "Saglabāt"
+
+#: templates/js_tpl.php:6 templates/js_tpl.php:58
+msgid "Delete"
+msgstr "Izdzēst"
+
+#: templates/js_tpl.php:14 templates/js_tpl.php:54
+msgid "Edit"
+msgstr "Rediģēt"
+
+#: templates/js_tpl.php:43
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: templates/list.php:14
+msgid ""
+"Drag this to your browser bookmarks and click it, when you want to bookmark "
+"a webpage quickly:"
+msgstr "Ievelc šo savās pārlūka grāmatzīmēs un spied uz tā, kad vēlies ātri pievienot tīmekļa lapu grāmatzīmēm:"
+
+#: templates/list.php:15
+msgid "Read later"
+msgstr "Lasīt vēlāk"
+
+#: templates/list.php:22
+msgid "Address"
+msgstr "Adrese"
+
+#: templates/list.php:23
+msgid "Add"
+msgstr "Pievienot"
+
+#: templates/list.php:31
+msgid "Related Tags"
+msgstr "Saistītās birkas"
+
+#: templates/list.php:38 templates/list.php:40
+msgid "Settings"
+msgstr "Iestatījumi"
+
+#: templates/list.php:54
+msgid "You have no bookmarks"
+msgstr "Jums nav grāmatzīmju"
+
+#: templates/list.php:59
+msgid "You can also try to import a bookmark file"
+msgstr "Jūs varat arī mēģināt importēt grāmatzīmes datni"
+
+#: templates/settings.php:11
+msgid "Bookmarklet"
+msgstr "Sīkgrāmatzīme"
+
+#: templates/settings.php:23
+msgid "Export & Import"
+msgstr "Eksportēt un importēt"
+
+#: templates/settings.php:24
+msgid "Export"
+msgstr "Eksportēt"
+
+#: templates/settings.php:26
+msgid "Import"
+msgstr "Importēt"

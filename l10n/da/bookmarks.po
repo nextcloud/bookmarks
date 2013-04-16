@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+#   <cronner@gmail.com>, 2012.
+# Morten Juhl-Johansen Zölde-Fejér <morten@writtenandread.net>, 2012-2013.
+# Ole Holm Frandsen <froksen@gmail.com>, 2012.
+#   <osos@openeyes.dk>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: ownCloud\n"
+"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
+"POT-Creation-Date: 2013-04-16 02:17+0200\n"
+"PO-Revision-Date: 2013-04-16 00:17+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: Danish (http://www.transifex.com/projects/p/owncloud/language/da/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: da\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ajax/import.php:9
+msgid "No file provided for import"
+msgstr "Ingen fil opgivet til import"
+
+#: ajax/import.php:21
+msgid "Unsupported file type for import"
+msgstr "Ikke understøttet filtype til import"
+
+#: appinfo/app.php:17
+msgid "Bookmarks"
+msgstr "Bogmærker"
+
+#: js/addBm.js:42 js/bookmarks.js:235
+msgid "Tags"
+msgstr "Mærker"
+
+#: js/bookmarks.js:22
+msgid "Filter by tag"
+msgstr "Filtrer efter tag"
+
+#: js/bookmarks.js:132
+msgid "Edit bookmark"
+msgstr "Rediger bogmærker"
+
+#: js/bookmarks.js:366
+msgid "Are you sure you want to remove this tag from every entry?"
+msgstr "Er du sikker på at du vil fjerne dette flag fra alle poster?"
+
+#: js/bookmarks.js:367
+msgid "Warning"
+msgstr "Advarsel"
+
+#: js/settings.js:18
+msgid "Import error"
+msgstr "Fejl ved import"
+
+#: js/settings.js:29
+msgid "Import completed successfully."
+msgstr "Importer fuldført."
+
+#: js/settings.js:61
+msgid "Uploading..."
+msgstr "Uploader..."
+
+#: lib/search.php:38
+msgid "Bookm."
+msgstr "Bogm."
+
+#: templates/addBm.php:5
+msgid "Add a bookmark"
+msgstr "Tilføj bogmærke"
+
+#: templates/addBm.php:8
+msgid "Close"
+msgstr "Luk"
+
+#: templates/addBm.php:16 templates/js_tpl.php:27
+msgid "The title of the page"
+msgstr "Sidens titel"
+
+#: templates/addBm.php:21 templates/js_tpl.php:31
+msgid "The address of the page"
+msgstr "Sidens adresse"
+
+#: templates/addBm.php:34 templates/js_tpl.php:40
+msgid "Description of the page"
+msgstr "Sidens beskrivelse"
+
+#: templates/addBm.php:38 templates/js_tpl.php:44
+msgid "Save"
+msgstr "Gem"
+
+#: templates/js_tpl.php:6 templates/js_tpl.php:58
+msgid "Delete"
+msgstr "Slet"
+
+#: templates/js_tpl.php:14 templates/js_tpl.php:54
+msgid "Edit"
+msgstr "Rediger"
+
+#: templates/js_tpl.php:43
+msgid "Cancel"
+msgstr "Annuller"
+
+#: templates/list.php:14
+msgid ""
+"Drag this to your browser bookmarks and click it, when you want to bookmark "
+"a webpage quickly:"
+msgstr "Træk denne til dine browserbogmærker pg klik på den, når du ønsker at lynoprette et bogmærke til hjemmesiden:"
+
+#: templates/list.php:15
+msgid "Read later"
+msgstr "Læs senere"
+
+#: templates/list.php:22
+msgid "Address"
+msgstr "Adresser"
+
+#: templates/list.php:23
+msgid "Add"
+msgstr "Tilføj"
+
+#: templates/list.php:31
+msgid "Related Tags"
+msgstr "Relaterede Tags"
+
+#: templates/list.php:38 templates/list.php:40
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: templates/list.php:54
+msgid "You have no bookmarks"
+msgstr "Du har ingen bogmærker"
+
+#: templates/list.php:59
+msgid "You can also try to import a bookmark file"
+msgstr "Du kan også prøve at importere en bogmærke-fil"
+
+#: templates/settings.php:11
+msgid "Bookmarklet"
+msgstr "Bookmarklet"
+
+#: templates/settings.php:23
+msgid "Export & Import"
+msgstr "Eksport & import"
+
+#: templates/settings.php:24
+msgid "Export"
+msgstr "Exporter"
+
+#: templates/settings.php:26
+msgid "Import"
+msgstr "Importer"

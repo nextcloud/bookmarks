@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "没有文件被选择导入",
 "Unsupported file type for import" => "不支持导入的文件类型",
 "Bookmarks" => "书签",
 "Tags" => "标签",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "编辑书签",
 "Are you sure you want to remove this tag from every entry?" => "您确定要从所有条目中移除此标签吗？",
 "Warning" => "警告",
+"Import error" => "导入出错",
 "Import completed successfully." => "导入完全成功。",
 "Uploading..." => "上传中...",
 "Bookm." => "订阅它们。",
