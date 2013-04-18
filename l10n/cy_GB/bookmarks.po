@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-17 02:29+0200\n"
-"PO-Revision-Date: 2013-04-17 00:29+0000\n"
+"POT-Creation-Date: 2013-04-18 02:12+0200\n"
+"PO-Revision-Date: 2013-04-17 17:20+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Welsh (United Kingdom) (http://www.transifex.com/projects/p/owncloud/language/cy_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -87,15 +87,15 @@ msgstr ""
 
 #: templates/addBm.php:38 templates/js_tpl.php:44
 msgid "Save"
-msgstr ""
+msgstr "Cadw"
 
 #: templates/js_tpl.php:6 templates/js_tpl.php:58
 msgid "Delete"
-msgstr ""
+msgstr "Dileu"
 
 #: templates/js_tpl.php:14 templates/js_tpl.php:54
 msgid "Edit"
-msgstr ""
+msgstr "Golygu"
 
 #: templates/js_tpl.php:43
 msgid "Cancel"
@@ -145,8 +145,8 @@ msgstr ""
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr ""
+msgstr "Allforio"
 
 #: templates/settings.php:26
 msgid "Import"
-msgstr ""
+msgstr "Mewnforio"
