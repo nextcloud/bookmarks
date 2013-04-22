@@ -33,7 +33,7 @@
 				</p>
 				<div class="bookmark_form_tags"><ul>
 					<& for ( var i = 0; i < tags.length; i++ ) { &>
-						<li><&=tags[i]&></li>
+						<li><&= escapeHTML(tags[i]) &></li>
 					<& } &>
 				</ul></div>
 				<p class="bookmark_form_desc">
