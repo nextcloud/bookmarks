@@ -3,19 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <aleja4984@hotmail.com>, 2012.
-# Art O. Pal <artopal@fastmail.fm>, 2012.
-#   <devianpctek@gmail.com>, 2012.
-#   <juanma@kde.org.ar>, 2012.
-# Ricardo A. Hermosilla Carrillo <ra.hermosillac@gmail.com>, 2013.
-# Rubén Trujillo <rubentrf@gmail.com>, 2012.
-#   <sergio@entrecables.com>, 2012.
+# aleza84 <aleja4984@hotmail.com>, 2012
+# Art O. Pal <artopal@fastmail.fm>, 2012
+# Luis Medina <devianpctek@gmail.com>, 2012
+# juanman <juanma@kde.org.ar>, 2012
+# Ricardo Hermosilla <ra.hermosillac@gmail.com>, 2013
+# Rubén Trujillo <rubentrf@gmail.com>, 2012
+# scambra <sergio@entrecables.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-17 02:29+0200\n"
-"PO-Revision-Date: 2013-04-17 00:29+0000\n"
+"POT-Creation-Date: 2013-04-23 02:20+0200\n"
+"PO-Revision-Date: 2013-04-22 18:40+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/owncloud/language/es/)\n"
 "MIME-Version: 1.0\n"
