@@ -36,16 +36,16 @@ class OC_Bookmarks_Bookmarks{
 		array_unshift($params, OCP\USER::getUser());
 		$not_in = '';
 		if(!empty($filterTags) ) {
-			$exist_clause = " AND	exists (select 1 from  *PREFIX*bookmarks_tags
-				t2 where t2.bookmark_id = t.bookmark_id and tag = ?) ";
+			$exist_clause = " AND	exists (select 1 from `*PREFIX*bookmarks_tags`
+				`t2` where `t2`.`bookmark_id` = `t`.`bookmark_id` and `tag` = ?) ";
 
-			$not_in = ' AND tag not in ('. implode(',', array_fill(0, count($filterTags), '?') ) .')'.
+			$not_in = ' AND `tag` not in ('. implode(',', array_fill(0, count($filterTags), '?') ) .')'.
 			str_repeat($exist_clause, count($filterTags));
 		}
 		$sql = 'SELECT tag, count(*) as nbr from *PREFIX*bookmarks_tags t '.
 			' WHERE EXISTS( SELECT 1 from *PREFIX*bookmarks bm where  t.bookmark_id  = bm.id and user_id = ?) '.
 			$not_in.
-			' group by tag Order by nbr DESC ';
+			' GROUP BY `tag` ORDER BY `nbr` DESC ';
 
 		$query = OCP\DB::prepare($sql, $limit, $offset);
 		$tags = $query->execute($params)->fetchAll();
@@ -55,14 +55,14 @@ class OC_Bookmarks_Bookmarks{
 	public static function findOneBookmark($id) {
 		$CONFIG_DBTYPE = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 		if($CONFIG_DBTYPE == 'pgsql') {
-			$group_fct = 'array_agg(tag)';
+			$group_fct = 'array_agg(`tag`)';
 		}
 		else {
-			$group_fct = 'GROUP_CONCAT(tag)';
+			$group_fct = 'GROUP_CONCAT(`tag`)';
 		}
-		$sql = "SELECT *, (select $group_fct from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
-				FROM *PREFIX*bookmarks b
-				WHERE user_id = ? and id = ?";
+		$sql = "SELECT *, (select $group_fct from `*PREFIX*bookmarks_tags` where `bookmark_id` = `b`.`id`) as `tags`
+				FROM `*PREFIX*bookmarks` `b`
+				WHERE `user_id` = ? AND `id` = ?";
 		$query = OCP\DB::prepare($sql);
 		$result = $query->execute(array(OCP\USER::getUser(), $id))->fetchRow();
 		$result['tags'] = explode(',', $result['tags']);
@@ -85,27 +85,27 @@ class OC_Bookmarks_Bookmarks{
 		$params=array(OCP\USER::getUser());
 
 		if($CONFIG_DBTYPE == 'pgsql') {
-			$sql = "select * from (SELECT *, (select array_to_string(array_agg(tag),'') from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
-				FROM *PREFIX*bookmarks b
-				WHERE user_id = ? ) as x WHERE true ";
+			$sql = "SELECT * FROM (SELECT *, (select array_to_string(array_agg(`tag`),'') from `*PREFIX*bookmarks_tags` where `bookmark_id` = `b`.`id`) as `tags`
+				FROM `*PREFIX*bookmarks` `b`
+				WHERE `user_id` = ? ) as `x` WHERE true ";
 		}
 		else {
-			$sql = "SELECT *, (select GROUP_CONCAT(tag) from *PREFIX*bookmarks_tags where bookmark_id = b.id) as tags
-				FROM *PREFIX*bookmarks b
-				WHERE user_id = ? ";
+			$sql = "SELECT *, (SELECT GROUP_CONCAT(`tag`) from `*PREFIX*bookmarks_tags` WHERE `bookmark_id` = `b`.`id`) as `tags`
+				FROM `*PREFIX*bookmarks` `b`
+				WHERE `user_id` = ? ";
 		}
 
 		if($filterTagOnly) {
-			$exist_clause = " AND	exists (select id from  *PREFIX*bookmarks_tags
-				t2 where t2.bookmark_id = b.id and tag = ?) ";
+			$exist_clause = " AND	exists (SELECT `id` FROM  `*PREFIX*bookmarks_tags`
+				`t2` WHERE `t2`.`bookmark_id` = `b`.`id` AND `tag` = ?) ";
 			$sql .= str_repeat($exist_clause, count($filters));
 			$params = array_merge($params, $filters);
 		} else {
 			if($CONFIG_DBTYPE == 'mysql') { //Dirty hack to allow usage of alias in where
-				$sql .= ' having true ';
+				$sql .= ' HAVING true ';
 			}
 			foreach($filters as $filter) {
-				$sql .= ' AND lower(url || title || description || tags ) like ? ';
+				$sql .= ' AND lower(`url` || `title` || `description` || `tags` ) LIKE ? ';
 				$params[] = '%' . strtolower($filter) . '%';
 			}
 		}
@@ -166,10 +166,10 @@ class OC_Bookmarks_Bookmarks{
 		if( $CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3' ) {
 			// Update tags to the new label unless it already exists a tag like this
 			$query = OCP\DB::prepare("
-				UPDATE OR REPLACE *PREFIX*bookmarks_tags
-				SET tag = ?
-				WHERE tag = ?
-				AND exists( select b.id from *PREFIX*bookmarks b where b.user_id = ? and bookmark_id = b.id)
+				UPDATE OR REPLACE `*PREFIX*bookmarks_tags`
+				SET `tag` = ?
+				WHERE `tag` = ?
+				AND exists( select `b`.`id` from `*PREFIX*bookmarks` `b` WHERE `b`.`user_id` = ? AND `bookmark_id` = `b`.`id`)
 			");
 
 			$params=array(
@@ -183,9 +183,9 @@ class OC_Bookmarks_Bookmarks{
 
 			// Remove potentialy duplicated tags
 			$query = OCP\DB::prepare("
-			DELETE FROM *PREFIX*bookmarks_tags as tgs where tgs.tag = ?
-			AND exists( select id from *PREFIX*bookmarks where user_id = ? and tgs.bookmark_id = id)
-			AND exists( select t.tag from *PREFIX*bookmarks_tags t where t.tag=? and tgs.bookmark_id = tbookmark_id");
+			DELETE FROM `*PREFIX*bookmarks_tags` as `tgs` WHERE `tgs`.`tag` = ?
+			AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ? AND `tgs`.`bookmark_id` = `id`)
+			AND exists( SELECT `t`.`tag` FROM `*PREFIX*bookmarks_tags` `t` where `t`.`tag` = ? AND `tgs`.`bookmark_id` = `t`.`bookmark_id`");
 
 			$params=array(
 				$new,
@@ -197,10 +197,10 @@ class OC_Bookmarks_Bookmarks{
 
 			// Update tags to the new label unless it already exists a tag like this
 			$query = OCP\DB::prepare("
-			UPDATE *PREFIX*bookmarks_tags
-			SET tag = ?
-			WHERE tag = ?
-			AND exists( select b.id from *PREFIX*bookmarks b where b.user_id = ? and bookmark_id = b.id)
+			UPDATE `*PREFIX*bookmarks_tags`
+			SET `tag` = ?
+			WHERE `tag` = ?
+			AND exists( SELECT `b`.`id` FROM `*PREFIX*bookmarks` `b` WHERE `b`.`user_id` = ? AND `bookmark_id` = `b`.`id`)
 			");
 
 			$params=array(
@@ -223,9 +223,9 @@ class OC_Bookmarks_Bookmarks{
 
 		// Update the record
 		$query = OCP\DB::prepare("
-		DELETE FROM *PREFIX*bookmarks_tags
-		WHERE tag = ?
-		AND exists( select id from *PREFIX*bookmarks where user_id = ? and bookmark_id = id)
+		DELETE FROM `*PREFIX*bookmarks_tags`
+		WHERE `tag` = ?
+		AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ? AND `bookmark_id` = `id`)
 		");
 
 		$params=array(
@@ -271,11 +271,11 @@ class OC_Bookmarks_Bookmarks{
 
 		// Update the record
 		$query = OCP\DB::prepare("
-		UPDATE *PREFIX*bookmarks SET
-			url = ?, title = ?, public = ?, description = ?,
-			lastmodified = ".self::getNowValue() ."
-		WHERE id = ?
-		AND user_id = ?
+		UPDATE `*PREFIX*bookmarks` SET
+			`url` = ?, `title` = ?, `public` = ?, `description` = ?,
+			`lastmodified` = ".self::getNowValue() ."
+		WHERE `id` = ?
+		AND `user_id` = ?
 		");
 
 		$params=array(
@@ -295,7 +295,7 @@ class OC_Bookmarks_Bookmarks{
 
 
 		// Remove old tags
-		$sql = "DELETE from *PREFIX*bookmarks_tags  WHERE bookmark_id = ?";
+		$sql = "DELETE FROM `*PREFIX*bookmarks_tags`  WHERE `bookmark_id` = ?";
 		$query = OCP\DB::prepare($sql);
 		$query->execute(array($id));
 
@@ -317,7 +317,7 @@ class OC_Bookmarks_Bookmarks{
 		$enc_url = htmlspecialchars_decode($url);
 		$_ut = self::getNowValue();
 		// Change lastmodified date if the record if already exists
-		$sql = "SELECT * from  *PREFIX*bookmarks WHERE url = ? and user_id = ?";
+		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
 		$query = OCP\DB::prepare($sql, 1);
 		$result = $query->execute(array($enc_url, OCP\USER::getUser()));
 		if ($row = $result->fetchRow()){
@@ -332,7 +332,7 @@ class OC_Bookmarks_Bookmarks{
 				$desc_str = ' , description = ?';
 				$params[] = $description;
 			}
-			$sql = "UPDATE *PREFIX*bookmarks SET lastmodified = $_ut $title_str $desc_str WHERE url = ? and user_id = ?";
+			$sql = "UPDATE `*PREFIX*bookmarks` SET `lastmodified` = $_ut $title_str $desc_str WHERE `url` = ? and `user_id` = ?";
 			$params[] = $enc_url;
 			$params[] = OCP\USER::getUser();
 			$query = OCP\DB::prepare($sql);
@@ -340,8 +340,8 @@ class OC_Bookmarks_Bookmarks{
 			return $row['id'];
 		}
 		$query = OCP\DB::prepare("
-			INSERT INTO *PREFIX*bookmarks
-			(url, title, user_id, public, added, lastmodified, description)
+			INSERT INTO `*PREFIX*bookmarks`
+			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
 			VALUES (?, ?, ?, ?, $_ut, $_ut, ?)
 			");
 
@@ -370,8 +370,8 @@ class OC_Bookmarks_Bookmarks{
 	 **/
 	private static function addTags($bookmark_id, $tags) {
 		$query = OCP\DB::prepare("
-			INSERT INTO *PREFIX*bookmarks_tags
-			(bookmark_id, tag)
+			INSERT INTO `*PREFIX*bookmarks_tags`
+			(`bookmark_id`, `tag`)
 			VALUES (?, ?)");
 
 		foreach ($tags as $tag) {
