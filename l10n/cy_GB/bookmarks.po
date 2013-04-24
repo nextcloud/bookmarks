@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# ubuntucymraeg <owen.llywelyn@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-23 02:20+0200\n"
-"PO-Revision-Date: 2013-04-22 21:50+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-04-24 02:23+0200\n"
+"PO-Revision-Date: 2013-04-23 19:40+0000\n"
+"Last-Translator: ubuntucymraeg <owen.llywelyn@gmail.com>\n"
 "Language-Team: Welsh (United Kingdom) (http://www.transifex.com/projects/p/owncloud/language/cy_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,31 +20,31 @@ msgstr ""
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr ""
+msgstr "Dim ffeil i'w fewnforio"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
-msgstr ""
+msgstr "Dim cefnogaeth i fewnforio'r math hwn o ffeil"
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
-msgstr "Llyfrnodau"
+msgstr "Nodau tudalen"
 
 #: js/addBm.js:42 js/bookmarks.js:235
 msgid "Tags"
-msgstr ""
+msgstr "Tagiau"
 
 #: js/bookmarks.js:22
 msgid "Filter by tag"
-msgstr ""
+msgstr "Hidlo yn ôl tag"
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr ""
+msgstr "Golygu nod tudalen"
 
 #: js/bookmarks.js:366
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr ""
+msgstr "Ydych chi'n siwr eich bod am waredu'r tag hwn o bob cofnod?"
 
 #: js/bookmarks.js:367
 msgid "Warning"
@@ -51,39 +52,39 @@ msgstr "Rhybudd"
 
 #: js/settings.js:18
 msgid "Import error"
-msgstr ""
+msgstr "Gwall mewnforio"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr ""
+msgstr "Mewnforiwyd yn llwyddiannus."
 
 #: js/settings.js:61
 msgid "Uploading..."
-msgstr ""
+msgstr "Yn llwytho i fyny..."
 
 #: lib/search.php:38
 msgid "Bookm."
-msgstr ""
+msgstr "Nodtud."
 
 #: templates/addBm.php:5
 msgid "Add a bookmark"
-msgstr ""
+msgstr "Ychwanegu nod tudalen"
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr ""
+msgstr "Cau"
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
-msgstr ""
+msgstr "Teitl y dudalen"
 
 #: templates/addBm.php:21 templates/js_tpl.php:31
 msgid "The address of the page"
-msgstr ""
+msgstr "Cyfeiriad y dudalen"
 
 #: templates/addBm.php:34 templates/js_tpl.php:40
 msgid "Description of the page"
-msgstr ""
+msgstr "Disgrifiad o'r dudalen"
 
 #: templates/addBm.php:38 templates/js_tpl.php:44
 msgid "Save"
@@ -105,15 +106,15 @@ msgstr "Diddymu"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr ""
+msgstr "Llusgwch hwn i nodau tudalen eich porwr a'i glicio pan fyddwch eisiau gosod nod tudalen gwe'n gyflym."
 
 #: templates/list.php:15
 msgid "Read later"
-msgstr ""
+msgstr "Darllen wedyn"
 
 #: templates/list.php:22
 msgid "Address"
-msgstr ""
+msgstr "Cyfeiriad"
 
 #: templates/list.php:23
 msgid "Add"
@@ -121,7 +122,7 @@ msgstr "Ychwanegu"
 
 #: templates/list.php:31
 msgid "Related Tags"
-msgstr ""
+msgstr "Tagiau perthynol"
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
@@ -129,19 +130,19 @@ msgstr "Gosodiadau"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr ""
+msgstr "Nid oes nodau tudalen gennych"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr ""
+msgstr "Gallwch hefyd geisio mewnforio ffeil nod tudalen"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr ""
+msgstr "Nod tudalen gweithredol"
 
 #: templates/settings.php:23
 msgid "Export & Import"
-msgstr ""
+msgstr "Allforio & Mewnforio"
 
 #: templates/settings.php:24
 msgid "Export"

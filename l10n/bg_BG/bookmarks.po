@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Yasen Pramatarov <yasen@lindeas.com>, 2012.
+# Stefan Ilivanov <ilivanov@gmail.com>, 2013
+# Yasen Pramatarov <yasen@lindeas.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-17 02:29+0200\n"
-"PO-Revision-Date: 2013-04-17 00:29+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-04-24 02:23+0200\n"
+"PO-Revision-Date: 2013-04-23 09:50+0000\n"
+"Last-Translator: Stefan Ilivanov <ilivanov@gmail.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/owncloud/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +25,7 @@ msgstr ""
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
-msgstr ""
+msgstr "Неподдържан файл за импорт"
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
@@ -32,23 +33,23 @@ msgstr "Предпочитани"
 
 #: js/addBm.js:42 js/bookmarks.js:235
 msgid "Tags"
-msgstr ""
+msgstr "Етикети"
 
 #: js/bookmarks.js:22
 msgid "Filter by tag"
-msgstr ""
+msgstr "Филтриране по етикет"
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr ""
+msgstr "Промяна на предпочитание"
 
 #: js/bookmarks.js:366
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr ""
+msgstr "Сигурни ли сте, че желаете да премахнете този етикет от всеки запис?"
 
 #: js/bookmarks.js:367
 msgid "Warning"
-msgstr ""
+msgstr "Внимание"
 
 #: js/settings.js:18
 msgid "Import error"
@@ -56,19 +57,19 @@ msgstr ""
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr ""
+msgstr "Импортирането завърши успешно."
 
 #: js/settings.js:61
 msgid "Uploading..."
-msgstr ""
+msgstr "Качване..."
 
 #: lib/search.php:38
 msgid "Bookm."
-msgstr ""
+msgstr "Предп."
 
 #: templates/addBm.php:5
 msgid "Add a bookmark"
-msgstr ""
+msgstr "Добави в предпочитани"
 
 #: templates/addBm.php:8
 msgid "Close"
@@ -76,15 +77,15 @@ msgstr "Затвори"
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
-msgstr ""
+msgstr "Заглавие на страницата"
 
 #: templates/addBm.php:21 templates/js_tpl.php:31
 msgid "The address of the page"
-msgstr ""
+msgstr "Адрес на страницата"
 
 #: templates/addBm.php:34 templates/js_tpl.php:40
 msgid "Description of the page"
-msgstr ""
+msgstr "Описание на страницата"
 
 #: templates/addBm.php:38 templates/js_tpl.php:44
 msgid "Save"
@@ -110,7 +111,7 @@ msgstr ""
 
 #: templates/list.php:15
 msgid "Read later"
-msgstr ""
+msgstr "За четене по-късно"
 
 #: templates/list.php:22
 msgid "Address"
@@ -122,7 +123,7 @@ msgstr "Добавяне"
 
 #: templates/list.php:31
 msgid "Related Tags"
-msgstr ""
+msgstr "Етикети"
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
@@ -130,7 +131,7 @@ msgstr "Настройки"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr ""
+msgstr "Нямате предпочитания"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
@@ -142,7 +143,7 @@ msgstr ""
 
 #: templates/settings.php:23
 msgid "Export & Import"
-msgstr ""
+msgstr "Експорт и Импорт"
 
 #: templates/settings.php:24
 msgid "Export"
