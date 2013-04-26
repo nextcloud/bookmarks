@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "Nici un dosar prevăzut pentru import",
 "Unsupported file type for import" => "Tipul de fișier nu este suportat pentru importări",
 "Bookmarks" => "Semne de carte",
 "Tags" => "Cuvinte cheie",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "Editează semnele de carte",
 "Are you sure you want to remove this tag from every entry?" => "Ești sigur că vrei să ștergi acest marcaj din fiecare înscriere",
 "Warning" => "Atenție",
+"Import error" => "Eroare de import",
 "Import completed successfully." => "Importarea a fost completată cu succes",
 "Uploading..." => "Încărcăm...",
 "Bookm." => "Bookm.",

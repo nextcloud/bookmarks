@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Dumitru Ursu <>, 2013.
-#   <g.ciprian@osn.ro>, 2012.
+# Dimon Pockemon <>, 2013
+# g.ciprian <g.ciprian@osn.ro>, 2012
+# ripkid666 <ripkid666@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-17 02:29+0200\n"
-"PO-Revision-Date: 2013-04-17 00:29+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-04-26 02:14+0200\n"
+"PO-Revision-Date: 2013-04-25 13:40+0000\n"
+"Last-Translator: ripkid666 <ripkid666@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/owncloud/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr ""
+msgstr "Nici un dosar prevăzut pentru import"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
@@ -53,7 +54,7 @@ msgstr "Atenție"
 
 #: js/settings.js:18
 msgid "Import error"
-msgstr ""
+msgstr "Eroare de import"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
