@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <dagor.vint@hotmail.com>, 2012.
-# Pisike Sipelgas <pisike.sipelgas@gmail.com>, 2013.
-# Rivo Zängov <eraser@eraser.ee>, 2012.
+# dagor <dagor.vint@hotmail.com>, 2012
+# pisike.sipelgas <pisike.sipelgas@gmail.com>, 2013
+# Rivo Zängov <eraser@eraser.ee>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-17 02:29+0200\n"
-"PO-Revision-Date: 2013-04-17 00:29+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-04-27 02:24+0200\n"
+"PO-Revision-Date: 2013-04-26 16:22+0000\n"
+"Last-Translator: Rivo Zängov <eraser@eraser.ee>\n"
 "Language-Team: Estonian (Estonia) (http://www.transifex.com/projects/p/owncloud/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +26,7 @@ msgstr "Imporditav fail puudub"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
-msgstr "Failitüübi toetuseta import"
+msgstr "Toetuseta failitüübi import"
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
@@ -38,7 +38,7 @@ msgstr "Sildid"
 
 #: js/bookmarks.js:22
 msgid "Filter by tag"
-msgstr "Filtreeri siltide alusel"
+msgstr "Filtreeri siltide järgi"
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
@@ -58,7 +58,7 @@ msgstr "Viga importimisel"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr "Import lõpetatud edukalt."
+msgstr "Import on edukalt lõpetatud."
 
 #: js/settings.js:61
 msgid "Uploading..."
@@ -136,11 +136,11 @@ msgstr "Sul pole järjehoidjaid"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr "Proovi importida järjehoidjate faili"
+msgstr "Sa võid ka proovida järjehoidjate faili importimist"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr "Järjehoidjake"
+msgstr "Järjehoidja vidin"
 
 #: templates/settings.php:23
 msgid "Export & Import"

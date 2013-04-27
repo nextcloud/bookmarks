@@ -3,21 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <a.tangemann@web.de>, 2012.
-#   <blobbyjj@ymail.com>, 2012.
-# I Robot <thomas.mueller@tmit.eu>, 2012.
-#   <niko@nik-o-mat.de>, 2012.
-# Phi Lieb <>, 2012.
-#  <robert.neumann01@gmail.com>, 2013.
-#   <thomas.mueller@tmit.eu>, 2012.
-#   <transifex.3.mensaje@spamgourmet.com>, 2012.
-# Tristan <blobbyjj@ymail.com>, 2013.
+# a.tangemann <a.tangemann@web.de>, 2012
+# Mirodin <blobbyjj@ymail.com>, 2012
+# I Robot <owncloud-bot@tmit.eu>, 2012
+# JamFX <niko@nik-o-mat.de>, 2012
+# Phi Lieb <>, 2012
+# robN <robert.neumann01@gmail.com>, 2013
+# I Robot <owncloud-bot@tmit.eu>, 2012
+# traductor <transifex-2.7.mensaje@spamgourmet.com>, 2012
+# Mirodin <blobbyjj@ymail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-17 02:29+0200\n"
-"PO-Revision-Date: 2013-04-17 00:29+0000\n"
+"POT-Creation-Date: 2013-04-27 02:24+0200\n"
+"PO-Revision-Date: 2013-04-26 16:22+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: German (Germany) <translations@owncloud.org>\n"
 "MIME-Version: 1.0\n"
