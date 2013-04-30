@@ -27,6 +27,12 @@ OCP\JSON::callCheck();
 
 OCP\JSON::checkAppEnabled('bookmarks');
 
+// Check if it is a valid URL
+if (filter_var($_POST['url'], FILTER_VALIDATE_URL) === FALSE) {
+	OC_JSON::error();
+	exit();
+}
+
 // If we go the dialog form submit
 if(isset($_POST['url'])) {
 	$title = isset($_POST['title']) ? $_POST['title'] : '';
