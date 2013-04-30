@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-27 02:24+0200\n"
-"PO-Revision-Date: 2013-04-26 16:22+0000\n"
+"POT-Creation-Date: 2013-04-30 02:16+0200\n"
+"PO-Revision-Date: 2013-04-29 22:00+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Albanian (http://www.transifex.com/projects/p/owncloud/language/sq/)\n"
 "MIME-Version: 1.0\n"
@@ -95,7 +95,7 @@ msgstr "Elimino"
 
 #: templates/js_tpl.php:14 templates/js_tpl.php:54
 msgid "Edit"
-msgstr ""
+msgstr "Ndrysho"
 
 #: templates/js_tpl.php:43
 msgid "Cancel"
