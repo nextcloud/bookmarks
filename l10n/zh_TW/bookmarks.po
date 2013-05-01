@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-27 02:24+0200\n"
-"PO-Revision-Date: 2013-04-26 16:22+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-05-01 02:11+0200\n"
+"PO-Revision-Date: 2013-04-30 03:00+0000\n"
+"Last-Translator: pellaeon <nfsmwlin@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/owncloud/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr "沒有提供導入的檔案"
+msgstr "沒有提供匯入用的檔案"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
@@ -55,7 +55,7 @@ msgstr "警告"
 
 #: js/settings.js:18
 msgid "Import error"
-msgstr "導入錯誤"
+msgstr "匯入錯誤"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
@@ -109,7 +109,7 @@ msgstr "取消"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "將此拖曳至您的瀏覽器書籤並點擊, 當你想要將網頁快速地加入書籤:"
+msgstr "把這個拖曳至瀏覽器的書籤列，下次您想要將某個頁面加至書籤時，點一下書籤列上面的這個項目即可。"
 
 #: templates/list.php:15
 msgid "Read later"
@@ -133,7 +133,7 @@ msgstr "設定"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr "你沒有書籤"
+msgstr "您還沒有任何書籤"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
