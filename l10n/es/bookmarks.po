@@ -6,6 +6,7 @@
 # aleza84 <aleja4984@hotmail.com>, 2012
 # Art O. Pal <artopal@fastmail.fm>, 2012
 # Luis Medina <devianpctek@gmail.com>, 2012
+# ggam <ggam@brainleakage.com>, 2013
 # juanman <juanma@kde.org.ar>, 2012
 # Ricardo Hermosilla <ra.hermosillac@gmail.com>, 2013
 # Rubén Trujillo <rubentrf@gmail.com>, 2012
@@ -14,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-05-03 02:11+0200\n"
-"PO-Revision-Date: 2013-05-02 23:10+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-05-12 02:12+0200\n"
+"PO-Revision-Date: 2013-05-04 16:30+0000\n"
+"Last-Translator: ggam <ggam@brainleakage.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/owncloud/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +31,7 @@ msgstr "No se especificó un archivo para importar"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
-msgstr "Tipo de archivo no compatible para importar"
+msgstr "Tipo de archivo no soportado para importar"
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
@@ -42,7 +43,7 @@ msgstr "Etiquetas"
 
 #: js/bookmarks.js:22
 msgid "Filter by tag"
-msgstr "Filtro por etiquetas"
+msgstr "Filtrar por etiquetas"
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
@@ -50,11 +51,11 @@ msgstr "Editar marcador"
 
 #: js/bookmarks.js:366
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr "Esta seguro que desea remover este tag de todas las entradas?"
+msgstr "¿Está seguro de que desea eliminar esta etiqueta de todas las entradas?"
 
 #: js/bookmarks.js:367
 msgid "Warning"
-msgstr "Preacucion"
+msgstr "Precaución"
 
 #: js/settings.js:18
 msgid "Import error"
@@ -78,19 +79,19 @@ msgstr "Agregar a marcadores"
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr "cerrrar"
+msgstr "Cerrrar"
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
-msgstr "Titulo de la pagina"
+msgstr "Título de la pagina"
 
 #: templates/addBm.php:21 templates/js_tpl.php:31
 msgid "The address of the page"
-msgstr "Direccion de la pagina"
+msgstr "Dirección de la página"
 
 #: templates/addBm.php:34 templates/js_tpl.php:40
 msgid "Description of the page"
-msgstr "Descripcion de la pagina"
+msgstr "Descripción de la página"
 
 #: templates/addBm.php:38 templates/js_tpl.php:44
 msgid "Save"
@@ -112,7 +113,7 @@ msgstr "Cancelar"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "Arrastra desde aquí a los marcadores de tu navegador, y haz clic cuando quieras marcar una página web rápidamente:"
+msgstr "Arrastre desde aquí a los marcadores de su navegador, y haga clic cuando quiera marcar una página web rápidamente:"
 
 #: templates/list.php:15
 msgid "Read later"
@@ -124,11 +125,11 @@ msgstr "Dirección"
 
 #: templates/list.php:23
 msgid "Add"
-msgstr "Adicionar"
+msgstr "Añadi"
 
 #: templates/list.php:31
 msgid "Related Tags"
-msgstr "Tags relacionados"
+msgstr "Etiquetas relacionadas"
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
@@ -136,7 +137,7 @@ msgstr "Ajustes"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr "No tienes marcadores"
+msgstr "No tiene marcadores"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
@@ -156,4 +157,4 @@ msgstr "Exportar"
 
 #: templates/settings.php:26
 msgid "Import"
-msgstr "Importart"
+msgstr "Importar"

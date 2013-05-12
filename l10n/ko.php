@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "가져올 파일을 지정하지 않았음",
 "Unsupported file type for import" => "가져올 수 없는 파일 형식임",
 "Bookmarks" => "책갈피",
 "Tags" => "태그",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "책갈피 편집",
 "Are you sure you want to remove this tag from every entry?" => "모든 항목에서 이 태그를 삭제하시겠습니까?",
 "Warning" => "경고",
+"Import error" => "가져오기 오류",
 "Import completed successfully." => "성공적으로 가져왔습니다.",
 "Uploading..." => "업로드 중...",
 "Bookm." => "책갈피",
