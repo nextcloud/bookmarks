@@ -1,5 +1,5 @@
 <?php $TRANSLATIONS = array(
-"No file provided for import" => "Inga fil gitt for importering",
+"No file provided for import" => "Inga fil gjeve for importering",
 "Unsupported file type for import" => "Ustøtta filtype for importering",
 "Bookmarks" => "Bokmerkje",
 "Tags" => "Emneord",
