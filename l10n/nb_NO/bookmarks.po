@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Arvid Nornes <arvid.nornes@gmail.com>, 2012
+# Hans Nesse <>, 2013
 # hdalgrav <hdalgrav@gmail.com>, 2012
 # troll <oyvind.hojem@gmail.com>, 2013
 # runesudden <runesudden@gmail.com>, 2012
@@ -11,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-05-03 02:11+0200\n"
-"PO-Revision-Date: 2013-05-02 23:10+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-05-20 02:36+0200\n"
+"PO-Revision-Date: 2013-05-19 12:00+0000\n"
+"Last-Translator: Hans Nesse <>\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/owncloud/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,7 +48,7 @@ msgstr "Endre bokmerke"
 
 #: js/bookmarks.js:366
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr ""
+msgstr "Er du sikker på at du vil slette denne taggen fra alle oppføringene?"
 
 #: js/bookmarks.js:367
 msgid "Warning"
@@ -141,7 +142,7 @@ msgstr "Du kan også prøve å importere en bokmerke-fil"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr ""
+msgstr "Bokmerket"
 
 #: templates/settings.php:23
 msgid "Export & Import"

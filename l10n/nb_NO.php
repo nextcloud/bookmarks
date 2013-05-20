@@ -5,6 +5,7 @@
 "Tags" => "Tagger",
 "Filter by tag" => "Filtrer ut fra tag",
 "Edit bookmark" => "Endre bokmerke",
+"Are you sure you want to remove this tag from every entry?" => "Er du sikker på at du vil slette denne taggen fra alle oppføringene?",
 "Warning" => "Advarsel",
 "Import error" => "Importerings-feil",
 "Import completed successfully." => "Importering fullførte vellykket.",
@@ -27,6 +28,7 @@
 "Settings" => "Innstillinger",
 "You have no bookmarks" => "Du har ingen bokmerker",
 "You can also try to import a bookmark file" => "Du kan også prøve å importere en bokmerke-fil",
+"Bookmarklet" => "Bokmerket",
 "Export & Import" => "Eksport og import",
 "Export" => "Eksporter",
 "Import" => "Importer"
