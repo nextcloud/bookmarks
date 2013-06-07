@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Димитър Кръстев <dimitar.t.krastev@gmail.com>, 2013
 # Stefan Ilivanov <ilivanov@gmail.com>, 2013
 # Yasen Pramatarov <yasen@lindeas.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-03 02:35+0200\n"
-"PO-Revision-Date: 2013-06-03 00:31+0000\n"
-"Last-Translator: Stefan Ilivanov <ilivanov@gmail.com>\n"
+"POT-Creation-Date: 2013-06-07 02:18+0200\n"
+"PO-Revision-Date: 2013-06-06 01:25+0000\n"
+"Last-Translator: Димитър Кръстев <dimitar.t.krastev@gmail.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/owncloud/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr ""
+msgstr "Не беше предоставен файл за зареждане"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
@@ -29,7 +30,7 @@ msgstr "Неподдържан файл за импорт"
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
-msgstr "Предпочитани"
+msgstr "Отметки"
 
 #: js/addBm.js:42 js/bookmarks.js:235
 msgid "Tags"
@@ -53,7 +54,7 @@ msgstr "Внимание"
 
 #: js/settings.js:18
 msgid "Import error"
-msgstr ""
+msgstr "Грешка при зареждане"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
@@ -107,7 +108,7 @@ msgstr "Отказ"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr ""
+msgstr "Довлачете това в лентата с отметки на браузъра си и го натискайте, когато искате да отметнете бързо някоя страница:"
 
 #: templates/list.php:15
 msgid "Read later"
@@ -135,11 +136,11 @@ msgstr "Нямате предпочитания"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr ""
+msgstr "Може също да опитате да заредите файл с отметки"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr ""
+msgstr "Отметка"
 
 #: templates/settings.php:23
 msgid "Export & Import"

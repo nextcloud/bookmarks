@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file provided for import" => "לא סופק קובץ לייבוא",
 "Unsupported file type for import" => "סוג הקובץ אינו ניתן לייבוא",
 "Bookmarks" => "סימניות",
 "Tags" => "תגיות",
@@ -6,6 +7,7 @@
 "Edit bookmark" => "ערוך סימניה",
 "Are you sure you want to remove this tag from every entry?" => "האם אתה בטוח שברצונך להסיר את התגית מכל הרשומות?",
 "Warning" => "אזהרה",
+"Import error" => "שגיאת יבוא",
 "Import completed successfully." => "ייבוא הושלם בהצלחה.",
 "Uploading..." => "העלאה...",
 "Bookm." => "סימניה.",
@@ -26,6 +28,7 @@
 "Settings" => "הגדרות",
 "You have no bookmarks" => "אין ברשותך סימניות",
 "You can also try to import a bookmark file" => "יש ביכולתך לייבא גם קובץ סימניות",
+"Bookmarklet" => "יישומון סימנייה",
 "Export & Import" => "ייבוא וייצוא",
 "Export" => "יצוא",
 "Import" => "יבא"

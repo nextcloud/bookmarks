@@ -6,6 +6,7 @@
 "Edit bookmark" => "Breyta bókamerki",
 "Are you sure you want to remove this tag from every entry?" => "Ertu viss um að þú viljir fjarlægja þetta tagg úr öllum færslum?",
 "Warning" => "Aðvörun",
+"Import error" => "Innflutnings villa",
 "Import completed successfully." => "Tókst að flytja inn",
 "Uploading..." => "Sendi inn ...",
 "Bookm." => "Bókam.",

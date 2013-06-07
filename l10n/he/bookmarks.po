@@ -5,13 +5,14 @@
 # Translators:
 # Gilad Naaman <gilad.doom@gmail.com>, 2012
 # Tomer Cohen <tomerc+transifex.net@gmail.com>, 2012
+# Yaron Shahrabani <sh.yaron@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-03 02:35+0200\n"
-"PO-Revision-Date: 2013-06-03 00:31+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-06-07 02:18+0200\n"
+"PO-Revision-Date: 2013-06-06 09:14+0000\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/projects/p/owncloud/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr ""
+msgstr "לא סופק קובץ לייבוא"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
@@ -53,7 +54,7 @@ msgstr "אזהרה"
 
 #: js/settings.js:18
 msgid "Import error"
-msgstr ""
+msgstr "שגיאת יבוא"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
@@ -139,7 +140,7 @@ msgstr "יש ביכולתך לייבא גם קובץ סימניות"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr ""
+msgstr "יישומון סימנייה"
 
 #: templates/settings.php:23
 msgid "Export & Import"
