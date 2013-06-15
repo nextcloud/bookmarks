@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-13 02:20+0200\n"
-"PO-Revision-Date: 2013-06-12 21:41+0000\n"
+"POT-Creation-Date: 2013-06-15 02:12+0200\n"
+"PO-Revision-Date: 2013-06-14 23:17+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Bosnian (http://www.transifex.com/projects/p/owncloud/language/bs/)\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr ""
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr ""
+msgstr "Zatvori"
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
@@ -87,7 +87,7 @@ msgstr ""
 
 #: templates/addBm.php:38 templates/js_tpl.php:44
 msgid "Save"
-msgstr ""
+msgstr "Spasi"
 
 #: templates/js_tpl.php:6 templates/js_tpl.php:58
 msgid "Delete"
@@ -113,11 +113,11 @@ msgstr ""
 
 #: templates/list.php:22
 msgid "Address"
-msgstr ""
+msgstr "Adresa"
 
 #: templates/list.php:23
 msgid "Add"
-msgstr ""
+msgstr "Dodaj"
 
 #: templates/list.php:31
 msgid "Related Tags"
