@@ -279,7 +279,10 @@ function updateBookmarksList(bookmark, position) {
 	if(bookmark.added) {
 		bookmark.added_date.setTime(parseInt(bookmark.added)*1000);
 	}
-	
+
+	if(! bookmark.title)
+		bookmark.title ='';
+
 	html = tmpl("item_tmpl", bookmark);
 	if(position == "prepend") {
 		$('.bookmarks_list').prepend(html);

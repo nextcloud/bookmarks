@@ -435,7 +435,7 @@ class OC_Bookmarks_Bookmarks{
 		if($page) {
 			if(preg_match( "/<title>(.*)<\/title>/sUi", $page, $match ) !== false)
 				if(isset($match[1])) {
-					$metadata['title'] =  html_entity_decode($match[1], ENT_NOQUOTES , 'UTF-8');
+					$metadata['title'] =  html_entity_decode($match[1],  ENT_QUOTES , 'UTF-8');
 					//Not the best solution but....
 					$metadata['title'] = str_replace('&trade;', chr(153), $metadata['title']);
 					$metadata['title'] = str_replace('&dash;', '‐', $metadata['title']);
