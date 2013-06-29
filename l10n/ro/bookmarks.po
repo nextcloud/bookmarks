@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-28 02:11+0200\n"
-"PO-Revision-Date: 2013-06-28 00:02+0000\n"
+"POT-Creation-Date: 2013-06-29 02:11+0200\n"
+"PO-Revision-Date: 2013-06-28 23:22+0000\n"
 "Last-Translator: ripkid666 <ripkid666@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/owncloud/language/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -44,11 +44,11 @@ msgstr "Filtrare după marcaj"
 msgid "Edit bookmark"
 msgstr "Editează semnele de carte"
 
-#: js/bookmarks.js:366
+#: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
 msgstr "Ești sigur că vrei să ștergi acest marcaj din fiecare înscriere"
 
-#: js/bookmarks.js:367
+#: js/bookmarks.js:370
 msgid "Warning"
 msgstr "Atenție"
 

@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-28 02:11+0200\n"
-"PO-Revision-Date: 2013-06-28 00:01+0000\n"
+"POT-Creation-Date: 2013-06-29 02:11+0200\n"
+"PO-Revision-Date: 2013-06-28 23:22+0000\n"
 "Last-Translator: pellaeon <nfsmwlin@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/owncloud/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -45,11 +45,11 @@ msgstr "依標籤篩選"
 msgid "Edit bookmark"
 msgstr "編輯書籤"
 
-#: js/bookmarks.js:366
+#: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
 msgstr "您確定要從每個項目中移除這個標籤嗎？"
 
-#: js/bookmarks.js:367
+#: js/bookmarks.js:370
 msgid "Warning"
 msgstr "警告"
 

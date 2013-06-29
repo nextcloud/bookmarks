@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-28 02:11+0200\n"
-"PO-Revision-Date: 2013-06-28 00:02+0000\n"
+"POT-Creation-Date: 2013-06-29 02:11+0200\n"
+"PO-Revision-Date: 2013-06-28 23:22+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Georgian (Georgia) (http://www.transifex.com/projects/p/owncloud/language/ka_GE/)\n"
 "MIME-Version: 1.0\n"
@@ -43,11 +43,11 @@ msgstr "ტეგების მიხედვით ფილტრაცი�
 msgid "Edit bookmark"
 msgstr "ბუქმარკების რედაქტირება"
 
-#: js/bookmarks.js:366
+#: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
 msgstr "დარწმუნებული ხართ რომ აღნიშნული ტაგის წაშლა გინდათ ყველა ჩანაწერიდა?"
 
-#: js/bookmarks.js:367
+#: js/bookmarks.js:370
 msgid "Warning"
 msgstr "გაფრთხილება"
 

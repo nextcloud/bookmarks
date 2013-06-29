@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-28 02:11+0200\n"
-"PO-Revision-Date: 2013-06-28 00:01+0000\n"
+"POT-Creation-Date: 2013-06-29 02:11+0200\n"
+"PO-Revision-Date: 2013-06-29 00:11+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: German (Germany) <translations@owncloud.org>\n"
 "MIME-Version: 1.0\n"
@@ -50,11 +50,11 @@ msgstr "Filtern nach Schlagwort"
 msgid "Edit bookmark"
 msgstr "Lesezeichen bearbeiten"
 
-#: js/bookmarks.js:366
+#: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
 msgstr "Soll dieses Schlagwort wirklich von allen Einträgen entfernt werden?"
 
-#: js/bookmarks.js:367
+#: js/bookmarks.js:370
 msgid "Warning"
 msgstr "Warnung"
 
