@@ -295,8 +295,14 @@ class OC_Bookmarks_Bookmarks{
 
 		// Abort the operation if bookmark couldn't be set
 		// (probably because the user is not allowed to edit this bookmark)
-		if ($result->numRows() == 0) exit();
-
+		if ($query instanceof PDOStatementWrapper) {
+			if (1 !== $result) {
+				exit();
+			}
+		}
+		elseif ($result->numRows() == 0) {
+			exit();
+		}
 
 		// Remove old tags
 		$sql = "DELETE FROM `*PREFIX*bookmarks_tags`  WHERE `bookmark_id` = ?";
