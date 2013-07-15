@@ -8,6 +8,7 @@
 # Luis Medina <devianpctek@gmail.com>, 2012
 # ggam <ggam@brainleakage.com>, 2013
 # juanman <juanma@kde.org.ar>, 2012
+# ranmaruhibikiya <ranmaru.hibikiya@gmail.com>, 2013
 # Ricardo Hermosilla <ra.hermosillac@gmail.com>, 2013
 # Rubén Trujillo <rubentrf@gmail.com>, 2012
 # scambra <sergio@programatica.es>, 2013
@@ -16,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-07-15 02:37+0200\n"
-"PO-Revision-Date: 2013-07-15 00:21+0000\n"
-"Last-Translator: scambra <sergio@programatica.es>\n"
+"POT-Creation-Date: 2013-07-15 17:09-0400\n"
+"PO-Revision-Date: 2013-07-15 21:07+0000\n"
+"Last-Translator: ranmaruhibikiya <ranmaru.hibikiya@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/owncloud/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +65,7 @@ msgstr "Error de importación"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr "Importación completada con éxito"
+msgstr "Importación completada con éxito."
 
 #: js/settings.js:61
 msgid "Uploading..."
@@ -80,11 +81,11 @@ msgstr "Agregar a marcadores"
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr "Cerrrar"
+msgstr "Cerrar"
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
-msgstr "Título de la pagina"
+msgstr "Título de la página"
 
 #: templates/addBm.php:21 templates/js_tpl.php:31
 msgid "The address of the page"
