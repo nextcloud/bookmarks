@@ -100,7 +100,7 @@ class OC_Bookmarks_Bookmarks{
 
 		if($filterTagOnly) {
 			$exist_clause = " AND	exists (SELECT `id` FROM  `*PREFIX*bookmarks_tags`
-				`t2` WHERE `t2`.`bookmark_id` = `b`.`id` AND `tag` = ?) ";
+				`t2`, `*PREFIX*bookmarks` `b`  WHERE `t2`.`bookmark_id` = `b`.`id` AND `tag` = ?) ";
 			$sql .= str_repeat($exist_clause, count($filters));
 			$params = array_merge($params, $filters);
 		} else {
