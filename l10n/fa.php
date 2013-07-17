@@ -4,6 +4,7 @@
 "Tags" => "برچسب‌ها",
 "Filter by tag" => "فیلتر بر اساس برچسب",
 "Edit bookmark" => "ویرایش نشانک ها",
+"Are you sure you want to remove this tag from every entry?" => "آیا مطمئن هستید که میخواهید این برچسب را از هر مطلب حذف کنید؟",
 "Warning" => "اخطار",
 "Import error" => "وارد کردن خطا",
 "Uploading..." => "درحال بارگذاری...",
