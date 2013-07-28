@@ -295,7 +295,7 @@ class OC_Bookmarks_Bookmarks{
 
 		// Abort the operation if bookmark couldn't be set
 		// (probably because the user is not allowed to edit this bookmark)
-		if ($result->numRows() == 0) exit();
+		if ($result == 0) exit();
 
 
 		// Remove old tags
