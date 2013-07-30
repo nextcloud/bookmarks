@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# corneliu.e <corneliueva@yahoo.com>, 2013
 # Dimon Pockemon <>, 2013
 # g.ciprian <g.ciprian@osn.ro>, 2012
 # ripkid666 <ripkid666@gmail.com>, 2013
@@ -10,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-07-23 02:10-0400\n"
-"PO-Revision-Date: 2013-07-23 05:02+0000\n"
-"Last-Translator: ripkid666 <ripkid666@gmail.com>\n"
+"POT-Creation-Date: 2013-07-30 02:11-0400\n"
+"PO-Revision-Date: 2013-07-29 12:00+0000\n"
+"Last-Translator: corneliu.e <corneliueva@yahoo.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/owncloud/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +23,7 @@ msgstr ""
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr "Nici un dosar prevăzut pentru import"
+msgstr "Niciun fișier furnizat pentru import"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
@@ -42,11 +43,11 @@ msgstr "Filtrare după marcaj"
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr "Editează semnele de carte"
+msgstr "Editează semn de carte"
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr "Ești sigur că vrei să ștergi acest marcaj din fiecare înscriere"
+msgstr "Ești sigur că vrei să ștergi acest marcaj din fiecare înscriere?"
 
 #: js/bookmarks.js:370
 msgid "Warning"
@@ -62,7 +63,7 @@ msgstr "Importarea a fost completată cu succes"
 
 #: js/settings.js:61
 msgid "Uploading..."
-msgstr "Încărcăm..."
+msgstr "Încărcare..."
 
 #: lib/search.php:38
 msgid "Bookm."
@@ -70,7 +71,7 @@ msgstr "Bookm."
 
 #: templates/addBm.php:5
 msgid "Add a bookmark"
-msgstr "Adaugă semn de carte"
+msgstr "Adaugă un semn de carte"
 
 #: templates/addBm.php:8
 msgid "Close"
@@ -132,19 +133,19 @@ msgstr "Setări"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr "Nu ai nici un semn de carte"
+msgstr "Nu ai niciun semn de carte"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr "Dvs. de asemenea puteți să încercați importarea unui fișier cu semne de carte"
+msgstr "De asemenea puteți să încercați importarea unui fișier cu semne de carte"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr "marcator"
+msgstr "Marcator"
 
 #: templates/settings.php:23
 msgid "Export & Import"
-msgstr "Exportează & Importează"
+msgstr "Exportă & Importă"
 
 #: templates/settings.php:24
 msgid "Export"
