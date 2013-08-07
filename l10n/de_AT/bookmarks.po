@@ -3,154 +3,150 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Hydriz <admin@alphacorp.tk>, 2013
-# dw4dev <dw4dev@gmail.com>, 2012
-# pellaeon <nfsmwlin@gmail.com>, 2013
-# ywang <ywang1007@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
 "POT-Creation-Date: 2013-08-07 09:59-0400\n"
-"PO-Revision-Date: 2013-08-07 09:30+0000\n"
-"Last-Translator: pellaeon <nfsmwlin@gmail.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/owncloud/language/zh_TW/)\n"
+"PO-Revision-Date: 2013-08-07 09:02+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Language-Team: German (Austria) (http://www.transifex.com/projects/p/owncloud/language/de_AT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_TW\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: de_AT\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr "沒有提供匯入用的檔案"
+msgstr ""
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
-msgstr "不支援這種檔案類型的匯入"
+msgstr ""
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
-msgstr "書籤"
+msgstr ""
 
 #: js/addBm.js:42 js/bookmarks.js:235
 msgid "Tags"
-msgstr "標籤"
+msgstr ""
 
 #: js/bookmarks.js:22
 msgid "Filter by tag"
-msgstr "依標籤篩選"
+msgstr ""
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr "編輯書籤"
+msgstr ""
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr "您確定要從每個項目中移除這個標籤嗎？"
+msgstr ""
 
 #: js/bookmarks.js:370
 msgid "Warning"
-msgstr "警告"
+msgstr ""
 
 #: js/settings.js:18
 msgid "Import error"
-msgstr "匯入錯誤"
+msgstr ""
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr "匯入成功完成。"
+msgstr ""
 
 #: js/settings.js:61
 msgid "Uploading..."
-msgstr "上傳中..."
+msgstr ""
 
 #: lib/search.php:38
 msgid "Bookm."
-msgstr "書籤"
+msgstr ""
 
 #: templates/addBm.php:5
 msgid "Add a bookmark"
-msgstr "新增書籤"
+msgstr ""
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr "關閉"
+msgstr ""
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
-msgstr "頁面標題"
+msgstr ""
 
 #: templates/addBm.php:21 templates/js_tpl.php:31
 msgid "The address of the page"
-msgstr "頁面的位址"
+msgstr ""
 
 #: templates/addBm.php:34 templates/js_tpl.php:40
 msgid "Description of the page"
-msgstr "頁面說明"
+msgstr ""
 
 #: templates/addBm.php:38 templates/js_tpl.php:44
 msgid "Save"
-msgstr "儲存"
+msgstr ""
 
 #: templates/js_tpl.php:6 templates/js_tpl.php:58
 msgid "Delete"
-msgstr "刪除"
+msgstr ""
 
 #: templates/js_tpl.php:14 templates/js_tpl.php:54
 msgid "Edit"
-msgstr "編輯"
+msgstr ""
 
 #: templates/js_tpl.php:43
 msgid "Cancel"
-msgstr "取消"
+msgstr ""
 
 #: templates/list.php:14
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "把這個拖曳至瀏覽器的書籤列，下次您想要將某個頁面加至書籤時，點一下書籤列上面的這個項目即可。"
+msgstr ""
 
 #: templates/list.php:15
 msgid "Read later"
-msgstr "稍後閱讀"
+msgstr ""
 
 #: templates/list.php:22
 msgid "Address"
-msgstr "網址"
+msgstr ""
 
 #: templates/list.php:23
 msgid "Add"
-msgstr "新增"
+msgstr ""
 
 #: templates/list.php:31
 msgid "Related Tags"
-msgstr "相關標籤"
+msgstr ""
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
-msgstr "設定"
+msgstr ""
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr "您還沒有任何書籤"
+msgstr ""
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr "您也可以匯入書籤檔"
+msgstr ""
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr "Bookmarklet"
+msgstr ""
 
 #: templates/settings.php:23
 msgid "Export & Import"
-msgstr "匯出與匯入"
+msgstr ""
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr "匯出"
+msgstr ""
 
 #: templates/settings.php:26
 msgid "Import"
-msgstr "匯入"
+msgstr ""
