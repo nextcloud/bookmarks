@@ -28,6 +28,7 @@
 "Settings" => "تەڭشەكلەر",
 "You have no bookmarks" => "ھېچقانداق خەتكۈچىڭىز يوق",
 "You can also try to import a bookmark file" => "خەتكۈچ ھۆججەتتىن ئەكىرىشنى سىنىيالايسىز",
+"Bookmarklet" => "خەتكۈچ",
 "Export & Import" => "ئەكىر ياكى چىقار",
 "Export" => "چىقار",
 "Import" => "ئەكىر"

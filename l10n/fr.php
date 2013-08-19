@@ -8,7 +8,7 @@
 "Are you sure you want to remove this tag from every entry?" => "Êtes-vous certain de vouloir retirer cette étiquette de chaque entrée ?",
 "Warning" => "Attention",
 "Import error" => "Erreur d'importation",
-"Import completed successfully." => "L'importation s'est achevée avec succès",
+"Import completed successfully." => "L'importation s'est achevée avec succès.",
 "Uploading..." => "Téléversement en cours…",
 "Bookm." => "Fav.",
 "Add a bookmark" => "Ajouter un favori",
