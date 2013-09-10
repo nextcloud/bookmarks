@@ -5,5 +5,7 @@
 "Cancel" => "Anulo",
 "Address" => "Adresa",
 "Add" => "Shto",
-"Settings" => "Parametrat"
+"Settings" => "Parametrat",
+"Export" => "Eksporto",
+"Import" => "Importo"
 );
