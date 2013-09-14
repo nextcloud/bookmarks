@@ -1,6 +1,7 @@
 <?php $TRANSLATIONS = array(
 "Bookmarks" => "Žymekliai",
 "Warning" => "Įspėjimas",
+"Uploading..." => "Įkeliama...",
 "Close" => "Užverti",
 "Save" => "Išsaugoti",
 "Delete" => "Ištrinti",
