@@ -5,5 +5,6 @@
 "Edit" => "Uredi",
 "Cancel" => "Otkaži",
 "Address" => "Adresa",
+"Add" => "Dodaj",
 "Settings" => "Podešavanja"
 );
