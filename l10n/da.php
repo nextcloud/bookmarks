@@ -20,7 +20,7 @@
 "Delete" => "Slet",
 "Edit" => "Rediger",
 "Cancel" => "Annuller",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Træk denne til dine browserbogmærker pg klik på den, når du ønsker at lynoprette et bogmærke til hjemmesiden:",
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Træk denne til dine browserbogmærker og klik på den, når du ønsker at lynoprette et bogmærke til hjemmesiden:",
 "Read later" => "Læs senere",
 "Address" => "Adresser",
 "Add" => "Tilføj",
