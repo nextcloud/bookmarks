@@ -3,152 +3,150 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# elmakong <mr.pige_ina@yahoo.co.id>, 2012
-# rodin <romihardiyanto@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
 "POT-Creation-Date: 2013-10-08 05:13-0400\n"
-"PO-Revision-Date: 2013-10-05 15:30+0000\n"
+"PO-Revision-Date: 2013-10-07 15:03+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
-"Language-Team: Indonesian (http://www.transifex.com/projects/p/owncloud/language/id/)\n"
+"Language-Team: Adyghe (http://www.transifex.com/projects/p/owncloud/language/ady/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: id\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: ady\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr "Tidak ada berkas untuk diimpor"
+msgstr ""
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
-msgstr "Tipe berkas tidak didukung untuk diimpor"
+msgstr ""
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
-msgstr "Markah"
+msgstr ""
 
 #: js/addBm.js:42 js/bookmarks.js:235
 msgid "Tags"
-msgstr "Tag"
+msgstr ""
 
 #: js/bookmarks.js:22
 msgid "Filter by tag"
-msgstr "Filter berdasar tag"
+msgstr ""
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr "Edit markah"
+msgstr ""
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr "Yakin ingin menghapus tag ini dari semua entri?"
+msgstr ""
 
 #: js/bookmarks.js:370
 msgid "Warning"
-msgstr "Peringatan"
+msgstr ""
 
 #: js/settings.js:18
 msgid "Import error"
-msgstr "Galat ketika mengimpor"
+msgstr ""
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr "Proses impor selesai dengan sukses."
+msgstr ""
 
 #: js/settings.js:61
 msgid "Uploading..."
-msgstr "Mengunggah..."
+msgstr ""
 
 #: lib/search.php:38
 msgid "Bookm."
-msgstr "Markah"
+msgstr ""
 
 #: templates/addBm.php:5
 msgid "Add a bookmark"
-msgstr "Tambah markah"
+msgstr ""
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr "Tutup"
+msgstr ""
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
-msgstr "Judul halaman"
+msgstr ""
 
 #: templates/addBm.php:21 templates/js_tpl.php:31
 msgid "The address of the page"
-msgstr "Alamat halaman"
+msgstr ""
 
 #: templates/addBm.php:34 templates/js_tpl.php:40
 msgid "Description of the page"
-msgstr "Deskripsi halaman"
+msgstr ""
 
 #: templates/addBm.php:38 templates/js_tpl.php:44
 msgid "Save"
-msgstr "Simpan"
+msgstr ""
 
 #: templates/js_tpl.php:6 templates/js_tpl.php:58
 msgid "Delete"
-msgstr "Hapus"
+msgstr ""
 
 #: templates/js_tpl.php:14 templates/js_tpl.php:54
 msgid "Edit"
-msgstr "Edit"
+msgstr ""
 
 #: templates/js_tpl.php:43
 msgid "Cancel"
-msgstr "Batal"
+msgstr ""
 
 #: templates/list.php:14
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "Seret ke bilah alat markah peramban Anda untuk diklik, jika Anda ingin membuat markah halaman web dengan cepat:"
+msgstr ""
 
 #: templates/list.php:15
 msgid "Read later"
-msgstr "Baca nanti"
+msgstr ""
 
 #: templates/list.php:22
 msgid "Address"
-msgstr "Alamat"
+msgstr ""
 
 #: templates/list.php:23
 msgid "Add"
-msgstr "Tambah"
+msgstr ""
 
 #: templates/list.php:31
 msgid "Related Tags"
-msgstr "Tag terkait"
+msgstr ""
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
-msgstr "Setelan"
+msgstr ""
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr "Anda tidak punya markah"
+msgstr ""
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr "Anda juga dapat mengimpor berkas markah"
+msgstr ""
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr "Bookmarklet"
+msgstr ""
 
 #: templates/settings.php:23
 msgid "Export & Import"
-msgstr "Ekspor & Impor"
+msgstr ""
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr "Ekspor"
+msgstr ""
 
 #: templates/settings.php:26
 msgid "Import"
-msgstr "Impor"
+msgstr ""
