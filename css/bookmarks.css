@@ -58,7 +58,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 /* 	width: 100%; */
 	height: 100%;
 	position: fixed;
-	left: 25em;
+	left: 336px;
 	right:0;
 }
 
@@ -345,8 +345,11 @@ li:hover em { display : none; }
 	margin-top:-3.4em;
 }
 
-.bookmark_form_title input, .bookmark_form_url input, .bookmark_form_desc textarea  {
-	width: 80%;
+.bookmark_form_title input, .bookmark_form_url input  {
+	width: 89%;
+}
+.bookmark_form_desc textarea {
+	width: 94.5%;
 }
 
 .bookmark_single .bookmark_edit_btn {
@@ -364,9 +367,8 @@ li:hover em { display : none; }
 }
 
 .bookmark_single_form {
-	padding-top: 1em;
+	padding: 20px 8px;
 	border-bottom: 1px solid #DDD;
-	padding-left: 2em;
 }
 
 .bookmark_single_form .tagit{
@@ -375,6 +377,13 @@ li:hover em { display : none; }
 	margin: 3px;
 	height:6.4em;
 }
+.bookmark_form_submit {
+	margin-left: 4px;
+}
+.bookmark_form_submit .reset {
+	float: right;
+}
+
 .bm_view_img .bookmark_actions {
 	bottom: 0.7em;
 	display: block;

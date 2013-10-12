@@ -40,8 +40,9 @@
 					<textarea name="description" placeholder="<?php p($l->t('Description of the page'));?>"
 						><&= escapeHTML(description) &></textarea>
 				</p>
-				<p class="bookmark_form_submit"><button class="reset" ><?php p($l->t('Cancel'));?></button>
-					<input type="submit" value="<?php p($l->t('Save'));?>">
+				<p class="bookmark_form_submit">
+					<button class="reset" ><?php p($l->t('Cancel'));?></button>
+					<input type="submit" class="primary" value="<?php p($l->t('Save'));?>">
 				</p>
 			</form>
 		</div>

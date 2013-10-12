@@ -36,7 +36,7 @@ function bookmarklet(){
 <div id="bookmark_settings" class="">
 	<ul class="controls">
 			<li id="settingsbtn" title="<?php p($l->t('Settings')); ?>">
-				<img class="svg" src="<?php print_unescaped(OCP\Util::imagePath('core', 'actions/settings.png')); ?>"
+				<img class="svg" src="<?php print_unescaped(OCP\Util::imagePath('core', 'actions/settings.svg')); ?>"
 				alt="<?php p($l->t('Settings')); ?>" />
 			</li>
 	</ul>
