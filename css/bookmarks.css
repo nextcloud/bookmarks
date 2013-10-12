@@ -377,6 +377,13 @@ li:hover em { display : none; }
 	margin: 3px;
 	height:6.4em;
 }
+.bookmark_form_submit {
+	margin-left: 4px;
+}
+.bookmark_form_submit .reset {
+	float: right;
+}
+
 .bm_view_img .bookmark_actions {
 	bottom: 0.7em;
 	display: block;
