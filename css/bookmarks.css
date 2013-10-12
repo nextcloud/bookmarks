@@ -364,9 +364,8 @@ li:hover em { display : none; }
 }
 
 .bookmark_single_form {
-	padding-top: 1em;
+	padding: 20px 8px;
 	border-bottom: 1px solid #DDD;
-	padding-left: 2em;
 }
 
 .bookmark_single_form .tagit{
