@@ -116,7 +116,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 
 .bookmark_title {
 	font-weight: bold;
-	display: inline-block;
+	display: block;
 	margin-right: 0.8em;
 	margin-top:0.7em;
 }
@@ -126,7 +126,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	display: inline-block;
-	max-width: 15em;
+	max-width: 50%; 
 }
 
 .bookmark_single:hover .bookmark_title .bookmark_edit_btn {
