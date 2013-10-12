@@ -108,11 +108,14 @@ class OC_Bookmarks_Bookmarks{
 				$sql .= ' HAVING true ';
 			}
 			foreach($filters as $filter) {
-				$sql .= ' AND lower(`url` || `title` || `description` || `tags` ) LIKE ? ';
+				if($CONFIG_DBTYPE == 'mysql')
+					$sql .= ' AND lower( concat(url,title,description,tags )) like ? ';
+				else
+					$sql .= ' AND lower(url || title || description || tags ) like ? ';
 				$params[] = '%' . strtolower($filter) . '%';
 			}
 		}
-		
+
 		$sql .= " ORDER BY ".$sqlSortColumn." DESC ";
 		if($limit == -1 || $limit === false) {
 			$limit = null;
