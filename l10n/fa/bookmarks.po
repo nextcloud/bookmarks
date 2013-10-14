@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-10-08 05:13-0400\n"
-"PO-Revision-Date: 2013-10-05 15:30+0000\n"
+"POT-Creation-Date: 2013-10-13 21:27-0400\n"
+"PO-Revision-Date: 2013-10-14 00:41+0000\n"
 "Last-Translator: miki_mika1362 <miki_mika1362@yahoo.com>\n"
 "Language-Team: Persian (http://www.transifex.com/projects/p/owncloud/language/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -87,19 +87,19 @@ msgstr "آدرس صحفه"
 msgid "Description of the page"
 msgstr "توضیحات صفحه"
 
-#: templates/addBm.php:38 templates/js_tpl.php:44
+#: templates/addBm.php:38 templates/js_tpl.php:45
 msgid "Save"
 msgstr "ذخیره"
 
-#: templates/js_tpl.php:6 templates/js_tpl.php:58
+#: templates/js_tpl.php:6 templates/js_tpl.php:59
 msgid "Delete"
 msgstr "حذف"
 
-#: templates/js_tpl.php:14 templates/js_tpl.php:54
+#: templates/js_tpl.php:14 templates/js_tpl.php:55
 msgid "Edit"
 msgstr "ویرایش"
 
-#: templates/js_tpl.php:43
+#: templates/js_tpl.php:44
 msgid "Cancel"
 msgstr "منصرف شدن"
 
