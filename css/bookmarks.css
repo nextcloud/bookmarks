@@ -127,7 +127,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	display: inline-block;
-	max-width: 24%;
+	max-width: 66%;
 }
 
 .bookmark_single:hover .bookmark_title .bookmark_edit_btn {
