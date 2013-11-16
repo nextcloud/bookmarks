@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-11 05:55-0500\n"
-"PO-Revision-Date: 2013-11-09 07:00+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-11-15 23:03-0500\n"
+"PO-Revision-Date: 2013-11-13 17:00+0000\n"
+"Last-Translator: mhh <marian.hvolka@stuba.sk>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/owncloud/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +51,7 @@ msgstr "Naozaj ste si istý, že chcete odstrániť túto značku z každého z�
 
 #: js/bookmarks.js:370
 msgid "Warning"
-msgstr "Varovanie"
+msgstr "Upozornenie"
 
 #: js/settings.js:18
 msgid "Import error"
@@ -109,7 +109,7 @@ msgstr "Zrušiť"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "Presuňte toto do Vášho prehliadača a kliknite ak chcete aktuálnu stránku uložiť do záložiek."
+msgstr "Presuňte toto do vášho prehliadača a kliknite ak chcete aktuálnu stránku uložiť do záložiek."
 
 #: templates/list.php:15
 msgid "Read later"
@@ -133,7 +133,7 @@ msgstr "Nastavenia"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr "Nemáte záložky"
+msgstr "Nemáte žiadne záložky"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
