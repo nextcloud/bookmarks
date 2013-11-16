@@ -377,7 +377,7 @@ class OC_Bookmarks_Bookmarks{
 	 **/
 	private static function addTags($bookmark_id, $tags) {
 		$query = OCP\DB::prepare("
-			INSERT INTO `*PREFIX*bookmarks_tags`
+			INSERT IGNORE INTO `*PREFIX*bookmarks_tags`
 			(`bookmark_id`, `tag`)
 			VALUES (?, ?)");
 
