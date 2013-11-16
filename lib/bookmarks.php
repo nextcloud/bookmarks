@@ -317,12 +317,14 @@ class OC_Bookmarks_Bookmarks{
 	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
 	 * @param string $description A longer description about the bookmark
 	 * @param boolean $is_public True if the bookmark is publishable to not registered users
+	 * @param into $add_date Time when bookmark was added; 0 for current time
 	 * @return int The id of the bookmark created
 	 */
-	public static function addBookmark($url, $title, $tags=array(), $description='', $is_public=false) {
+	public static function addBookmark($url, $title, $tags=array(), $description='', $is_public=false, $add_date=0) {
 		$is_public = $is_public ? 1 : 0;
 		$enc_url = htmlspecialchars_decode($url);
 		$_ut = self::getNowValue();
+		if ($add_date == 0) $add_date = $_ut;
 		// Change lastmodified date if the record if already exists
 		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
 		$query = OCP\DB::prepare($sql, 1);
@@ -349,7 +351,7 @@ class OC_Bookmarks_Bookmarks{
 		$query = OCP\DB::prepare("
 			INSERT INTO `*PREFIX*bookmarks`
 			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
-			VALUES (?, ?, ?, ?, $_ut, $_ut, ?)
+			VALUES (?, ?, ?, ?, $add_date, $_ut, ?)
 			");
 
 		$params=array(
@@ -419,8 +421,11 @@ class OC_Bookmarks_Bookmarks{
 			$desc_str = '';
 			if($link->hasAttribute("description"))
 				$desc_str = $link->getAttribute("description");
+			$add_date = 0;
+			if($link->hasAttribute("add_date"))
+                                $add_date = $link->getAttribute("add_date");
 
-			self::addBookmark($ref, $title, $tags,$desc_str );
+			self::addBookmark($ref, $title, $tags, $desc_str, false, $add_date);
 		}
 		OCP\DB::commit();
 		return array();
