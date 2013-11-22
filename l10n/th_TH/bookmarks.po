@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-11 05:55-0500\n"
-"PO-Revision-Date: 2013-11-09 07:01+0000\n"
+"POT-Creation-Date: 2013-11-21 21:15-0500\n"
+"PO-Revision-Date: 2013-11-22 02:15+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Thai (Thailand) (http://www.transifex.com/projects/p/owncloud/language/th_TH/)\n"
 "MIME-Version: 1.0\n"
@@ -109,8 +109,8 @@ msgid ""
 msgstr "ลากสิ่งนี้ไปไว้ที่รายการโปรดในโปรแกรมบราวเซอร์ของคุณ แล้วคลิกที่นั่น, เมื่อคุณต้องการเก็บหน้าเว็บเพจเข้าไปไว้ในรายการโปรดอย่างรวดเร็ว"
 
 #: templates/list.php:15
-msgid "Read later"
-msgstr "อ่านภายหลัง"
+msgid "Add to ownCloud"
+msgstr ""
 
 #: templates/list.php:22
 msgid "Address"

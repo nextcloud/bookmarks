@@ -21,7 +21,6 @@
 "Edit" => "Bearbeiten",
 "Cancel" => "Abbrechen",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Ziehen Sie dies zu Ihren Browser-Lesezeichen und klicken Sie darauf, wenn Sie eine Website schnell den Lesezeichen hinzufügen wollen.",
-"Read later" => "Später lesen",
 "Address" => "Adresse",
 "Add" => "Hinzufügen",
 "Related Tags" => "Verwandte Schlagworte",

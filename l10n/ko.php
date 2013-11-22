@@ -21,7 +21,6 @@
 "Edit" => "편집",
 "Cancel" => "취소",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "웹 브라우저 책갈피 항목에 다음 링크를 끌어다 놓으면 나중에 볼 웹 페이지를 빠르게 구독할 때 사용할 수 있습니다:",
-"Read later" => "나중에 읽기",
 "Address" => "주소",
 "Add" => "추가",
 "Related Tags" => "관련된 태그",

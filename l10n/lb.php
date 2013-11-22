@@ -21,7 +21,6 @@
 "Edit" => "Editéieren",
 "Cancel" => "Ofbriechen",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Zitt eren Favorit an op den Browser vir een Short-Link ze kreien:",
-"Read later" => "Mei speit liesen",
 "Address" => "Adress",
 "Add" => "Dobäisetzen",
 "Related Tags" => "Bekannten Tags",

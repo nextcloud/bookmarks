@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-11 05:55-0500\n"
-"PO-Revision-Date: 2013-11-09 07:01+0000\n"
+"POT-Creation-Date: 2013-11-21 21:15-0500\n"
+"PO-Revision-Date: 2013-11-22 02:15+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Tamil (Sri-Lanka) (http://www.transifex.com/projects/p/owncloud/language/ta_LK/)\n"
 "MIME-Version: 1.0\n"
@@ -109,8 +109,8 @@ msgid ""
 msgstr "உங்களுக்கு ஒரு வலைய பக்கத்தை விரைவாக பக்க அடையாளப்படுத்துவதற்கு அதை உங்களுடைய உலாவியின் பக்க அடையாளங்களில் இழுத்து விட்டு சொடக்குக"
 
 #: templates/list.php:15
-msgid "Read later"
-msgstr "பிறகு வாசிக்க"
+msgid "Add to ownCloud"
+msgstr ""
 
 #: templates/list.php:22
 msgid "Address"

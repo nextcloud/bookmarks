@@ -21,7 +21,6 @@
 "Edit" => "Edit",
 "Cancel" => "Batal",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Seret ke bilah alat markah peramban Anda untuk diklik, jika Anda ingin membuat markah halaman web dengan cepat:",
-"Read later" => "Baca nanti",
 "Address" => "Alamat",
 "Add" => "Tambah",
 "Related Tags" => "Tag terkait",

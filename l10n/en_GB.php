@@ -21,7 +21,6 @@
 "Edit" => "Edit",
 "Cancel" => "Cancel",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:",
-"Read later" => "Read later",
 "Address" => "Address",
 "Add" => "Add",
 "Related Tags" => "Related Tags",

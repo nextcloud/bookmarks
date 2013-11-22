@@ -21,7 +21,6 @@
 "Edit" => "Промяна",
 "Cancel" => "Отказ",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Довлачете това в лентата с отметки на браузъра си и го натискайте, когато искате да отметнете бързо някоя страница:",
-"Read later" => "За четене по-късно",
 "Address" => "Адрес",
 "Add" => "Добавяне",
 "Related Tags" => "Етикети",

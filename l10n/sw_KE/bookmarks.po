@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-05-25 02:12+0200\n"
-"PO-Revision-Date: 2013-05-24 13:24+0000\n"
+"Report-Msgid-Bugs-To: translations@owncloud.org\n"
+"POT-Creation-Date: 2013-11-21 21:15-0500\n"
+"PO-Revision-Date: 2013-11-22 02:15+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Swahili (Kenya) (http://www.transifex.com/projects/p/owncloud/language/sw_KE/)\n"
 "MIME-Version: 1.0\n"
@@ -41,11 +41,11 @@ msgstr ""
 msgid "Edit bookmark"
 msgstr ""
 
-#: js/bookmarks.js:366
+#: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
 msgstr ""
 
-#: js/bookmarks.js:367
+#: js/bookmarks.js:370
 msgid "Warning"
 msgstr ""
 
@@ -85,19 +85,19 @@ msgstr ""
 msgid "Description of the page"
 msgstr ""
 
-#: templates/addBm.php:38 templates/js_tpl.php:44
+#: templates/addBm.php:38 templates/js_tpl.php:45
 msgid "Save"
 msgstr ""
 
-#: templates/js_tpl.php:6 templates/js_tpl.php:58
+#: templates/js_tpl.php:6 templates/js_tpl.php:59
 msgid "Delete"
 msgstr ""
 
-#: templates/js_tpl.php:14 templates/js_tpl.php:54
+#: templates/js_tpl.php:14 templates/js_tpl.php:55
 msgid "Edit"
 msgstr ""
 
-#: templates/js_tpl.php:43
+#: templates/js_tpl.php:44
 msgid "Cancel"
 msgstr ""
 
@@ -108,7 +108,7 @@ msgid ""
 msgstr ""
 
 #: templates/list.php:15
-msgid "Read later"
+msgid "Add to ownCloud"
 msgstr ""
 
 #: templates/list.php:22

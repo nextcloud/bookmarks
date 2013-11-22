@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-11 05:55-0500\n"
-"PO-Revision-Date: 2013-11-09 07:01+0000\n"
+"POT-Creation-Date: 2013-11-21 21:15-0500\n"
+"PO-Revision-Date: 2013-11-22 02:15+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/owncloud/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -112,8 +112,8 @@ msgid ""
 msgstr "Σύρετε αυτό στους σελιδοδείκτες του περιηγητή σας και κάντε κλικ επάνω του, όταν θέλετε να προσθέσετε σύντομα μια ιστοσελίδα ως σελιδοδείκτη:"
 
 #: templates/list.php:15
-msgid "Read later"
-msgstr "Ανάγνωση αργότερα"
+msgid "Add to ownCloud"
+msgstr ""
 
 #: templates/list.php:22
 msgid "Address"

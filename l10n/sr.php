@@ -19,7 +19,6 @@
 "Edit" => "Уреди",
 "Cancel" => "Откажи",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Превуците ово у прегледач и кликните ако на брзину желите да обележите веб страницу:",
-"Read later" => "Прочитаћу касније",
 "Address" => "Адреса",
 "Add" => "Додај",
 "Related Tags" => "Сродне ознаке",

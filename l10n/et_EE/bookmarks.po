@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-11 05:55-0500\n"
-"PO-Revision-Date: 2013-11-09 07:01+0000\n"
-"Last-Translator: Rivo Zängov <eraser@eraser.ee>\n"
+"POT-Creation-Date: 2013-11-21 21:15-0500\n"
+"PO-Revision-Date: 2013-11-22 02:15+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Estonian (Estonia) (http://www.transifex.com/projects/p/owncloud/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -111,8 +111,8 @@ msgid ""
 msgstr "Lohista see oma veebilehitseja järjehoidjatesse ja kliki sellele, kui sa soovid veebilehte kiirelt lisada:"
 
 #: templates/list.php:15
-msgid "Read later"
-msgstr "Loe hiljem"
+msgid "Add to ownCloud"
+msgstr ""
 
 #: templates/list.php:22
 msgid "Address"

@@ -20,7 +20,6 @@
 "Edit" => "Breyta",
 "Cancel" => "Hætta við",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Dragðu þetta yfir í bókamerki í vafranum þínu og smelltu, ef þú vilt bæta við bókamerki fyrir þessa vefsíðu á fljótlegan hátt.",
-"Read later" => "Lesa seinna",
 "Address" => "Slóð",
 "Add" => "Bæta við",
 "Related Tags" => "Skyld tögg",

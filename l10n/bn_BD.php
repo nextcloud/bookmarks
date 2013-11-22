@@ -19,7 +19,6 @@
 "Edit" => "সম্পাদনা",
 "Cancel" => "বাতিল",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "দ্রুত কোন ওয়েবপেজ ঠিকাতে সংরক্ষণ করতে চাইলে এটিকে টেনে ব্রাউজারের ঠিকাতে নিয়ে যান এবং তাতে ক্লিক করুনঃ",
-"Read later" => "পরে পড়ার জন্য সংরক্ষন কর",
 "Address" => "ঠিকানা",
 "Add" => "যোগ কর",
 "Related Tags" => "সম্পর্কযুক্ত ট্যাগ",

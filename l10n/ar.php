@@ -21,7 +21,6 @@
 "Edit" => "تعديل",
 "Cancel" => "الغاء",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "اسحب هذه الى قائمة المرجعيه في متصفحك, و اضغط عليه عندما تريد اضافة صفحه :",
-"Read later" => "اقرأ لاحقأ",
 "Address" => "عنوان",
 "Add" => "أدخل",
 "Related Tags" => "فئات متشابهه",

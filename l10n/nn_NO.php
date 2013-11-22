@@ -21,7 +21,6 @@
 "Edit" => "Endra",
 "Cancel" => "Avbryt",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Dra denne knappen til bokmerkjelinja i nettlesaren din og klikk han når du vil laga eit bokmerkje raskt:",
-"Read later" => "Les seinare",
 "Address" => "Adresse",
 "Add" => "Legg til",
 "Related Tags" => "Liknande emneord",

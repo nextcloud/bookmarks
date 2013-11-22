@@ -21,7 +21,6 @@
 "Edit" => "Szerkesztés",
 "Cancel" => "Mégsem",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Húzza át ezt a gombot a böngészőprogram \"Könyvjelzők\" sávjába! Ha ezután rákattint, akkor az aktuális weboldal címét ide fogja menteni.",
-"Read later" => "Később olvasom",
 "Address" => "Cím",
 "Add" => "Hozzáad",
 "Related Tags" => "Kapcsolódó címkék",

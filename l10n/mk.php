@@ -16,7 +16,6 @@
 "Edit" => "Уреди",
 "Cancel" => "Откажи",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Повлечете го ова во папката со обележувачи во Вашиот прелистувач и кликнете го кога сакате брзо да направите обележувач:",
-"Read later" => "Читај подоцна",
 "Address" => "Адреса",
 "Add" => "Додади",
 "Settings" => "Параметри",

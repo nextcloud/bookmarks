@@ -14,7 +14,6 @@
 "Delete" => "Ištrinti",
 "Edit" => "Redaguoti",
 "Cancel" => "Atšaukti",
-"Read later" => "Perskaityti vėliau",
 "Address" => "Adresas",
 "Add" => "Pridėti",
 "Settings" => "Nustatymai",

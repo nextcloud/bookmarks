@@ -21,7 +21,6 @@
 "Edit" => "تەھرىر",
 "Cancel" => "ۋاز كەچ",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "سىز تور بەتنى تېز سۈرئەتتە خەتكۈچكە قوشماقچى بولغاندا، بۇنى توركۆرگۈڭىزنىڭ خەتكۈچىگە سۆرەپ، ئۇنى چېكىڭ، ",
-"Read later" => "سەل تۇرۇپ ئوقۇ",
 "Address" => "ئادرېس",
 "Add" => "قوش",
 "Related Tags" => "مۇناسىۋەتلىك بەلگىلەر",

@@ -21,7 +21,6 @@
 "Edit" => "Düzenle",
 "Cancel" => "İptal",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Bir web sayfasını hızlıca yer imlerine eklemek istediğinizde onu tarayıcınızın yer imlerine sürükleyin ve tıklayın.",
-"Read later" => "Sonra oku",
 "Address" => "Adres",
 "Add" => "Ekle",
 "Related Tags" => "İlgili etiketler",

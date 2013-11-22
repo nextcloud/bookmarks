@@ -21,7 +21,6 @@
 "Edit" => "Edytuj",
 "Cancel" => "Anuluj",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Przeciągnij to do ulubionych przeglądarki i kliknij go, gdy użytkownik chce szybko dodać zakładkę strony sieci Web:",
-"Read later" => "Czytaj później",
 "Address" => "Adres",
 "Add" => "Dodaj",
 "Related Tags" => "Powiązane Tagi",

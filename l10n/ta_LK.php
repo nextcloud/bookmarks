@@ -19,7 +19,6 @@
 "Edit" => "தொகுக்க",
 "Cancel" => "இரத்து செய்க",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "உங்களுக்கு ஒரு வலைய பக்கத்தை விரைவாக பக்க அடையாளப்படுத்துவதற்கு அதை உங்களுடைய உலாவியின் பக்க அடையாளங்களில் இழுத்து விட்டு சொடக்குக",
-"Read later" => "பிறகு வாசிக்க",
 "Address" => "முகவரி",
 "Add" => "சேர்க்க",
 "Related Tags" => "தொடர்புபட்ட சீட்டுகள்",

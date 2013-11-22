@@ -21,7 +21,6 @@
 "Edit" => "რედაქტირება",
 "Cancel" => "უარყოფა",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "გადაათრიეთ ეს თქვენს ბუქმარკებში თუ გინდათ რომ საითი სწრაფად დაბუქმარკდეს",
-"Read later" => "წაიკითხე მოგვიანებით",
 "Address" => "მისამართი",
 "Add" => "დამატება",
 "Related Tags" => "Related Tags",
