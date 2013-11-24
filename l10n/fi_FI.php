@@ -21,6 +21,7 @@
 "Edit" => "Muokkaa",
 "Cancel" => "Peru",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Vedä tämä selaimesi kirjanmerkkipalkkiin ja napsauta sitä, kun haluat lisätä kirjanmerkin nopeasti:",
+"Add to ownCloud" => "Lisää ownCloudiin",
 "Address" => "Osoite",
 "Add" => "Lisää",
 "Related Tags" => "Vastaavanlaiset tunnisteet",

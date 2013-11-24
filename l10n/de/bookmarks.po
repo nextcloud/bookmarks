@@ -6,6 +6,7 @@
 # Mirodin <blobbyjj@ymail.com>, 2012
 # I Robot <owncloud-bot@tmit.eu>, 2012
 # I Robot <owncloud-bot@tmit.eu>, 2012
+# Mario Siegmann <mario_siegmann@web.de>, 2013
 # JamFX <niko@nik-o-mat.de>, 2012
 # Phi Lieb <>, 2012
 # robN <robert.neumann01@gmail.com>, 2013
@@ -16,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-21 21:15-0500\n"
-"PO-Revision-Date: 2013-11-22 02:15+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-11-24 01:08-0500\n"
+"PO-Revision-Date: 2013-11-23 16:10+0000\n"
+"Last-Translator: Mario Siegmann <mario_siegmann@web.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/owncloud/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -118,7 +119,7 @@ msgstr "Ziehe dies zu Deinen Browser-Lesezeichen und klicke darauf, wenn Du eine
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
-msgstr ""
+msgstr "Zu ownCloud hinzufügen"
 
 #: templates/list.php:22
 msgid "Address"

@@ -21,6 +21,7 @@
 "Edit" => "Düzenle",
 "Cancel" => "İptal",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Bir web sayfasını hızlıca yer imlerine eklemek istediğinizde onu tarayıcınızın yer imlerine sürükleyin ve tıklayın.",
+"Add to ownCloud" => "ownCloud'a Ekle",
 "Address" => "Adres",
 "Add" => "Ekle",
 "Related Tags" => "İlgili etiketler",

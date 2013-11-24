@@ -21,6 +21,7 @@
 "Edit" => "Uredi",
 "Cancel" => "Prekliči",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Povlecite gumb med zaznamke in kliknite nanj, kadar želite obiskano spletno stran hitro dodati med svoje zaznamke:",
+"Add to ownCloud" => "Dodaj v oblak ownCloud",
 "Address" => "Naslov",
 "Add" => "Dodaj",
 "Related Tags" => "Sorodne oznake",

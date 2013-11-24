@@ -21,6 +21,7 @@
 "Edit" => "Επεξεργασία",
 "Cancel" => "Ακύρωση",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Σύρετε αυτό στους σελιδοδείκτες του περιηγητή σας και κάντε κλικ επάνω του, όταν θέλετε να προσθέσετε σύντομα μια ιστοσελίδα ως σελιδοδείκτη:",
+"Add to ownCloud" => "Προσθήκη στο ownCloud",
 "Address" => "Διεύθυνση",
 "Add" => "Προσθήκη",
 "Related Tags" => "Σχετικές ετικέτες",
