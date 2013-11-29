@@ -21,6 +21,7 @@
 "Edit" => "Редагувати",
 "Cancel" => "Відмінити",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Перетягніть це в закладки вашого броузера і клікніть для того, щоб швидко закласти web-сторінку:",
+"Add to ownCloud" => "Додати до ownCloud",
 "Address" => "Адреса",
 "Add" => "Додати",
 "Related Tags" => "Пов'язані теги",

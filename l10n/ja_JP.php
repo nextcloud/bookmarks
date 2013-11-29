@@ -21,6 +21,7 @@
 "Edit" => "編集",
 "Cancel" => "キャンセル",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Webページをすぐにブックマークしたい場合は、これをブラウザのブックマークにドラッグし、クリックしてください:",
+"Add to ownCloud" => "ownCloud に追加",
 "Address" => "アドレス",
 "Add" => "追加",
 "Related Tags" => "関連タグ",
