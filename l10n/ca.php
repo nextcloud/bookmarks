@@ -21,6 +21,7 @@
 "Edit" => "Edita",
 "Cancel" => "Cancel·la",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arrossegueu-ho al navegador i feu-hi un clic quan volgueu marcar ràpidament una adreça d'interès:",
+"Add to ownCloud" => "Afegeix a ownCloud",
 "Address" => "Adreça",
 "Add" => "Afegeix",
 "Related Tags" => "Etiquetes relacionades",

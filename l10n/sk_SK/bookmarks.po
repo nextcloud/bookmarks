@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-21 21:15-0500\n"
-"PO-Revision-Date: 2013-11-22 02:15+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-12-02 18:22-0500\n"
+"PO-Revision-Date: 2013-12-02 20:41+0000\n"
+"Last-Translator: mhh <marian.hvolka@stuba.sk>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/owncloud/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -113,7 +113,7 @@ msgstr "Presuňte toto do vášho prehliadača a kliknite ak chcete aktuálnu st
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
-msgstr ""
+msgstr "Pridať do ownCloudu"
 
 #: templates/list.php:22
 msgid "Address"

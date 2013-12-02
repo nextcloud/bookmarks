@@ -21,6 +21,7 @@
 "Edit" => "Bewerk",
 "Cancel" => "Annuleer",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Sleep dit naar uw browser bladwijzer menu en klik erop, wanneer u een webpagina snel wilt voorzien van een bladwijzer:",
+"Add to ownCloud" => "Toevoegen aan ownCloud",
 "Address" => "Adres",
 "Add" => "Toevoegen",
 "Related Tags" => "Aanverwante tags",

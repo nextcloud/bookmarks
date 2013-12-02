@@ -21,6 +21,7 @@
 "Edit" => "Редактировать",
 "Cancel" => "Отменить",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Перетащите эту кнопку в закладки вашего браузера и нажимайте на неё для быстрого добавления страницы в закладки:",
+"Add to ownCloud" => "Добавить в ownCloud",
 "Address" => "Адрес",
 "Add" => "Добавить",
 "Related Tags" => "Связанные теги",
