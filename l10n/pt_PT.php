@@ -21,6 +21,7 @@
 "Edit" => "Editar",
 "Cancel" => "Cancelar",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Arraste isto para o seu navegador, e clique nele quando quiser guardar a página rapidamente com um marcador.",
+"Add to ownCloud" => "Adicionar ao ownCloud",
 "Address" => "Endereço",
 "Add" => "Adicionar",
 "Related Tags" => "Etiquetas relacionadas",
