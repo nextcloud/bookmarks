@@ -21,6 +21,7 @@
 "Edit" => "Editatu",
 "Cancel" => "Ezeztatu",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Web orri bat laster-marketara azkar gehitzeko, arrastratu hau zure arakatzailearen laster-marketara eta klikatu bertan:",
+"Add to ownCloud" => "Gehitu ownCloud-era",
 "Address" => "Helbidea",
 "Add" => "Gehitu",
 "Related Tags" => "Erlazionatutako etiketak",

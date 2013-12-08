@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-12-02 18:22-0500\n"
-"PO-Revision-Date: 2013-12-02 20:41+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-12-07 23:20-0500\n"
+"PO-Revision-Date: 2013-12-07 11:30+0000\n"
+"Last-Translator: asieriko <asieriko@gmail.com>\n"
 "Language-Team: Basque (http://www.transifex.com/projects/p/owncloud/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -112,7 +112,7 @@ msgstr "Web orri bat laster-marketara azkar gehitzeko, arrastratu hau zure araka
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
-msgstr ""
+msgstr "Gehitu ownCloud-era"
 
 #: templates/list.php:22
 msgid "Address"
