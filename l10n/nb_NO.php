@@ -21,6 +21,7 @@
 "Edit" => "Endre",
 "Cancel" => "Avbryt",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Dra denne til din nettlesers bokmerker, og klikk den når du ønsker å hurtig legge til en nettside som bokmerke:",
+"Add to ownCloud" => "Legg til i ownCloud",
 "Address" => "Adresse",
 "Add" => "Legg til",
 "Related Tags" => "Relaterte tagger",

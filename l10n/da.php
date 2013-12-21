@@ -21,6 +21,7 @@
 "Edit" => "Rediger",
 "Cancel" => "Annuller",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Træk denne til dine browserbogmærker og klik på den, når du ønsker at lynoprette et bogmærke til hjemmesiden:",
+"Add to ownCloud" => "Tilføj til ownCloud",
 "Address" => "Adresser",
 "Add" => "Tilføj",
 "Related Tags" => "Relaterede Tags",
