@@ -21,6 +21,7 @@
 "Edit" => "تعديل",
 "Cancel" => "الغاء",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "اسحب هذه الى قائمة المرجعيه في متصفحك, و اضغط عليه عندما تريد اضافة صفحه :",
+"Add to ownCloud" => "أضف إلى سحابتك الخاصه \"أوون كلاود\"",
 "Address" => "عنوان",
 "Add" => "أدخل",
 "Related Tags" => "فئات متشابهه",
