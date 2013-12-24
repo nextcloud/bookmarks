@@ -21,6 +21,7 @@
 "Edit" => "편집",
 "Cancel" => "취소",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "웹 브라우저 책갈피 항목에 다음 링크를 끌어다 놓으면 나중에 볼 웹 페이지를 빠르게 구독할 때 사용할 수 있습니다:",
+"Add to ownCloud" => "ownCloud에 추가",
 "Address" => "주소",
 "Add" => "추가",
 "Related Tags" => "관련된 태그",
@@ -28,7 +29,7 @@
 "You have no bookmarks" => "책갈피가 없습니다",
 "You can also try to import a bookmark file" => "책갈피 파일을 가져올 수 있습니다",
 "Bookmarklet" => "북마크릿",
-"Export & Import" => "내보내기 & 가져오기",
+"Export & Import" => "내보내기 및 가져오기",
 "Export" => "내보내기",
 "Import" => "가져오기"
 );
