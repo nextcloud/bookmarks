@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-12-29 02:10-0500\n"
-"PO-Revision-Date: 2013-12-28 22:20+0000\n"
+"POT-Creation-Date: 2013-12-31 02:10-0500\n"
+"PO-Revision-Date: 2013-12-30 15:20+0000\n"
 "Last-Translator: vkehayas <vkehayas@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/owncloud/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,7 @@ msgstr "Επεξεργασία σελιδοδείκτη"
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr "Είστε σίγουρος για την αφαίρεση αυτής της ετικέτας από κάθε καταχώρηση;"
+msgstr "Είστε σίγουροι για την αφαίρεση αυτής της ετικέτας από κάθε καταχώρηση;"
 
 #: js/bookmarks.js:370
 msgid "Warning"
@@ -110,7 +110,7 @@ msgstr "Ακύρωση"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "Σύρετε αυτό στους σελιδοδείκτες του περιηγητή σας και κάντε κλικ επάνω του, όταν θέλετε να προσθέσετε σύντομα μια ιστοσελίδα ως σελιδοδείκτη:"
+msgstr "Σύρετε αυτό στους σελιδοδείκτες του περιηγητή σας και κάντε κλικ επάνω του, όταν θέλετε να προσθέσετε γρήγορα μια ιστοσελίδα ως σελιδοδείκτη:"
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
@@ -138,7 +138,7 @@ msgstr "Δεν έχετε σελιδοδείκτες"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr "Μπορείτε να δοκιμάσετε να εισάγεται ένα αρχείο σελιδοδεικτών"
+msgstr "Μπορείτε να δοκιμάσετε να εισάγετε ένα αρχείο σελιδοδεικτών"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
