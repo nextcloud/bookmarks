@@ -35,7 +35,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 #rightcontent {
 	padding-top: 5px;
 	top: 1em !important;
-
+	overflow: visible;
 }
 
 .bookmarks_headline {
