@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"Close" => "Mbyll",
 "Save" => "Ruaj",
 "Delete" => "Elimino",
 "Edit" => "Ndrysho",
