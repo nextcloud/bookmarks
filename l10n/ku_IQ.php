@@ -6,6 +6,7 @@
 "Close" => "داخستن",
 "Save" => "پاشکه‌وتکردن",
 "Edit" => "دەسکاریکردن",
+"Cancel" => "لابردن",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "رابکێشه‌ ئه‌مه بۆ دڵخوازه‌کان له‌ وێبگه‌ڕه‌که‌ت وه‌ کرته‌ بکه‌ لێی، کاتێك ده‌ته‌وێت ماڵپه‌ڕێك دڵخواز بکه‌ی به‌خێرای:",
 "Address" => "ناونیشان",
 "Add" => "زیادکردن",
