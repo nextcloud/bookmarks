@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
 "POT-Creation-Date: 2014-02-02 02:12-0500\n"
-"PO-Revision-Date: 2014-01-30 09:00+0000\n"
+"PO-Revision-Date: 2014-01-31 07:18+0000\n"
 "Last-Translator: I Robot\n"
-"Language-Team: Occitan (post 1500) (http://www.transifex.com/projects/p/owncloud/language/oc/)\n"
+"Language-Team: Malayalam (http://www.transifex.com/projects/p/owncloud/language/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: oc\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: ml\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ajax/import.php:9
 msgid "No file provided for import"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
-msgstr "Marcapaginas"
+msgstr ""
 
 #: js/addBm.js:42 js/bookmarks.js:235
 msgid "Tags"
@@ -87,19 +87,19 @@ msgstr ""
 
 #: templates/addBm.php:38 templates/js_tpl.php:45
 msgid "Save"
-msgstr "Enregistra"
+msgstr ""
 
 #: templates/js_tpl.php:6 templates/js_tpl.php:59
 msgid "Delete"
-msgstr "Escafa"
+msgstr ""
 
 #: templates/js_tpl.php:14 templates/js_tpl.php:55
 msgid "Edit"
-msgstr "Editar"
+msgstr ""
 
 #: templates/js_tpl.php:44
 msgid "Cancel"
-msgstr "Annula"
+msgstr ""
 
 #: templates/list.php:14
 msgid ""
@@ -117,7 +117,7 @@ msgstr ""
 
 #: templates/list.php:23
 msgid "Add"
-msgstr "Ajusta"
+msgstr ""
 
 #: templates/list.php:31
 msgid "Related Tags"
@@ -125,7 +125,7 @@ msgstr ""
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
-msgstr "Configuracion"
+msgstr ""
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
@@ -145,8 +145,8 @@ msgstr ""
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr "Exporta"
+msgstr ""
 
 #: templates/settings.php:26
 msgid "Import"
-msgstr "Importa"
+msgstr ""
