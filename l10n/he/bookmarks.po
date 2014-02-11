@@ -4,15 +4,16 @@
 # 
 # Translators:
 # Gilad Naaman <gilad.doom@gmail.com>, 2012
+# pinzerbib <pinzerbib@gmail.com>, 2014
 # Tomer Cohen <tomerc+transifex.net@gmail.com>, 2012
 # Yaron Shahrabani <sh.yaron@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-12-20 02:11-0500\n"
-"PO-Revision-Date: 2013-12-20 06:21+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2014-02-11 02:11-0500\n"
+"PO-Revision-Date: 2014-02-10 17:20+0000\n"
+"Last-Translator: pinzerbib <pinzerbib@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/projects/p/owncloud/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -112,7 +113,7 @@ msgstr "ניתן לגרור את הקישור הזה אל סרגל הסימני�
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
-msgstr ""
+msgstr "הוסף לownCloud"
 
 #: templates/list.php:22
 msgid "Address"
