@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Pongsametrey SOK <metreysk@gmail.com>, 2014
+# សុវិចិត្រ Sovichet ទេព Tep <sovichet.tep@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-21 21:15-0500\n"
-"PO-Revision-Date: 2013-11-22 02:15+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2014-02-24 02:11-0500\n"
+"PO-Revision-Date: 2014-02-24 06:41+0000\n"
+"Last-Translator: Pongsametrey SOK <metreysk@gmail.com>\n"
 "Language-Team: Khmer (http://www.transifex.com/projects/p/owncloud/language/km/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,75 +21,75 @@ msgstr ""
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr ""
+msgstr "គ្មានឯកសារ​ផ្តល់​អោយ​ ដើម្បី​នាំចូលទេ"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
-msgstr ""
+msgstr "ប្រភេទឯកសារមិនគាំទ្រ​ដើម្បីនាំយកចូល"
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
-msgstr ""
+msgstr "ចំណាំ"
 
 #: js/addBm.js:42 js/bookmarks.js:235
 msgid "Tags"
-msgstr ""
+msgstr "ស្លាក"
 
 #: js/bookmarks.js:22
 msgid "Filter by tag"
-msgstr ""
+msgstr "ច្រោះដោយស្លាក"
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr ""
+msgstr "កែ​ចំណាំ"
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr ""
+msgstr "តើអ្នក​ចង់​លុបស្លាកនេះពី​គ្រប់កន្លែង​​ទាំងអស់មែន?"
 
 #: js/bookmarks.js:370
 msgid "Warning"
-msgstr ""
+msgstr "បម្រាម"
 
 #: js/settings.js:18
 msgid "Import error"
-msgstr ""
+msgstr "ការនាំយកចូលមានបញ្ហា"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr ""
+msgstr "ការនាំយកចូល គឺសម្រេចជោគជ័យ"
 
 #: js/settings.js:61
 msgid "Uploading..."
-msgstr ""
+msgstr "កំពុងដាក់បញ្ចូល..."
 
 #: lib/search.php:38
 msgid "Bookm."
-msgstr ""
+msgstr "ចំណាំ"
 
 #: templates/addBm.php:5
 msgid "Add a bookmark"
-msgstr ""
+msgstr "ដាក់​ចូលទៅបញ្ជីចំណាំ"
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr ""
+msgstr "បិទ"
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
-msgstr ""
+msgstr "ចំណងជើង​នៃទំព័រ"
 
 #: templates/addBm.php:21 templates/js_tpl.php:31
 msgid "The address of the page"
-msgstr ""
+msgstr "អាស័យដ្ឋាន​នៃទំព័រ"
 
 #: templates/addBm.php:34 templates/js_tpl.php:40
 msgid "Description of the page"
-msgstr ""
+msgstr "ការពណ៌នានៃទំព័រ"
 
 #: templates/addBm.php:38 templates/js_tpl.php:45
 msgid "Save"
-msgstr ""
+msgstr "រក្សាទុក"
 
 #: templates/js_tpl.php:6 templates/js_tpl.php:59
 msgid "Delete"
@@ -95,58 +97,58 @@ msgstr "លុប"
 
 #: templates/js_tpl.php:14 templates/js_tpl.php:55
 msgid "Edit"
-msgstr ""
+msgstr "កែ"
 
 #: templates/js_tpl.php:44
 msgid "Cancel"
-msgstr ""
+msgstr "លើកលែង"
 
 #: templates/list.php:14
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr ""
+msgstr "បើ​អ្នក​ចង់​ចំណាំ​គេហទំព័រ​ណាមួយយ៉ាង​ឆាប់​រហ័ស សូម​ទាញ​របស់​នេះ​ទៅ​ដាក់​នៅ​កន្លែង​ចំណាំ​របស់​កម្មវិធី​អ៊ីនធឺណិត ហើយ​ចុច​វា៖"
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
-msgstr ""
+msgstr "ដាក់ចូល ownCloud"
 
 #: templates/list.php:22
 msgid "Address"
-msgstr ""
+msgstr "អាសយដ្ឋាន"
 
 #: templates/list.php:23
 msgid "Add"
-msgstr ""
+msgstr "បញ្ចូល"
 
 #: templates/list.php:31
 msgid "Related Tags"
-msgstr ""
+msgstr "ស្លាកដែលទាកទង"
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
-msgstr ""
+msgstr "ការកំណត់"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr ""
+msgstr "អ្នក​មិន​មាន​ចំណាំ​ទេ"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr ""
+msgstr "អ្នកអាចព្យាយាម​ដាក់ទៅកាន់បញ្ជីចំណាំបាន"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr ""
+msgstr "បញ្ជីចំណាំ"
 
 #: templates/settings.php:23
 msgid "Export & Import"
-msgstr ""
+msgstr "នាំចេញ & នាំចូល"
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr ""
+msgstr "នាំយកចេញ"
 
 #: templates/settings.php:26
 msgid "Import"
-msgstr ""
+msgstr "នាំយកចូល"
