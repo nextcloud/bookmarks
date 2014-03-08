@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"Warning" => "హెచ్చరిక",
 "Close" => "మూసివేయి",
 "Save" => "భద్రపరచు",
 "Delete" => "తొలగించు",
