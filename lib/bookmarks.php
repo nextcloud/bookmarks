@@ -109,9 +109,9 @@ class OC_Bookmarks_Bookmarks{
 			}
 			foreach($filters as $filter) {
 				if($CONFIG_DBTYPE == 'mysql')
-					$sql .= ' AND lower( concat(url,title,description,tags )) like ? ';
+					$sql .= ' AND lower( concat(url,ISNULL(title),ISNULL(description),ISNULL(tags) )) like ? ';
 				else
-					$sql .= ' AND lower(url || title || description || tags ) like ? ';
+					$sql .= " AND lower(url || ifnull(title,'') || ifnull(description,'') || ifnull(tags,'') ) like ? ";
 				$params[] = '%' . strtolower($filter) . '%';
 			}
 		}
