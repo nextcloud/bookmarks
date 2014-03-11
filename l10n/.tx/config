@@ -1,5 +1,5 @@
 [main]
-host = https://www.transifex.net
+host = https://www.transifex.com
 
 [owncloud.bookmarks]
 file_filter = <lang>/bookmarks.po
