@@ -4,21 +4,21 @@
 # 
 # Translators:
 # Mirodin <blobbyjj@ymail.com>, 2012
-# I Robot <owncloud-bot@tmit.eu>, 2012
-# I Robot <owncloud-bot@tmit.eu>, 2012
+# I Robot, 2012
+# I Robot, 2012
 # Mario Siegmann <mario_siegmann@web.de>, 2013
 # JamFX <niko@nik-o-mat.de>, 2012
 # Phi Lieb <>, 2012
 # robN <robert.neumann01@gmail.com>, 2013
-# I Robot <owncloud-bot@tmit.eu>, 2012
+# I Robot, 2012
 # traductor <transifex-3.7.mensaje@spamgourmet.com>, 2012
 # Mirodin <blobbyjj@ymail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-12-20 02:11-0500\n"
-"PO-Revision-Date: 2013-12-20 06:21+0000\n"
+"POT-Creation-Date: 2014-03-11 06:33-0400\n"
+"PO-Revision-Date: 2014-03-11 06:11+0000\n"
 "Last-Translator: Mirodin <blobbyjj@ymail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/owncloud/language/de/)\n"
 "MIME-Version: 1.0\n"
