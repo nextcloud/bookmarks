@@ -3,20 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Anushke Guneratne <anushke@gmail.com>, 2012
-# Chamara Disanayake <chamara@nic.lk>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
 "POT-Creation-Date: 2014-03-26 02:11-0400\n"
-"PO-Revision-Date: 2014-03-26 06:00+0000\n"
+"PO-Revision-Date: 2014-03-25 09:38+0000\n"
 "Last-Translator: I Robot\n"
-"Language-Team: Sinhala (Sri Lanka) (http://www.transifex.com/projects/p/owncloud/language/si_LK/)\n"
+"Language-Team: Amharic (Ethiopia) (http://www.transifex.com/projects/p/owncloud/language/am_ET/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: si_LK\n"
+"Language: am_ET\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ajax/import.php:9
@@ -25,31 +23,31 @@ msgstr ""
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
-msgstr "ආයාත කරන ගොනුව රුචි නොවේ"
+msgstr ""
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
-msgstr "පිටු සළකුනු"
+msgstr ""
 
 #: js/addBm.js:42 js/bookmarks.js:235
 msgid "Tags"
-msgstr "ටැග"
+msgstr ""
 
 #: js/bookmarks.js:22
 msgid "Filter by tag"
-msgstr "ටැගය ආධාරයෙන් පෙරන්න"
+msgstr ""
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr "පිටු සළකුනු සකසන්න"
+msgstr ""
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr "මෙම ටැගය සියළු ඇතුලත් කිරීමකින් ඉවත් කරන බව ඔබට සහතිකද"
+msgstr ""
 
 #: js/bookmarks.js:370
 msgid "Warning"
-msgstr "අනතුරු ඇඟවිම"
+msgstr ""
 
 #: js/settings.js:18
 msgid "Import error"
@@ -57,57 +55,57 @@ msgstr ""
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr "ආයාත කිරීම සාර්ථකයි"
+msgstr ""
 
 #: js/settings.js:61
 msgid "Uploading..."
-msgstr "උඩුගත කෙරේ..."
+msgstr ""
 
 #: lib/search.php:38
 msgid "Bookm."
-msgstr "පිටුසන"
+msgstr ""
 
 #: templates/addBm.php:5
 msgid "Add a bookmark"
-msgstr "පිටු සළකුනක් එක් කරන්න"
+msgstr ""
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr "වසන්න"
+msgstr ""
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
-msgstr "පිටුවේ මාතෘකාව"
+msgstr ""
 
 #: templates/addBm.php:21 templates/js_tpl.php:31
 msgid "The address of the page"
-msgstr "පිටුවේ ලිපිනය"
+msgstr ""
 
 #: templates/addBm.php:34 templates/js_tpl.php:40
 msgid "Description of the page"
-msgstr "පිටුවේ විස්තර"
+msgstr ""
 
 #: templates/addBm.php:38 templates/js_tpl.php:45
 msgid "Save"
-msgstr "සුරකින්න"
+msgstr ""
 
 #: templates/js_tpl.php:6 templates/js_tpl.php:59
 msgid "Delete"
-msgstr "මකන්න"
+msgstr ""
 
 #: templates/js_tpl.php:14 templates/js_tpl.php:55
 msgid "Edit"
-msgstr "සකසන්න"
+msgstr ""
 
 #: templates/js_tpl.php:44
 msgid "Cancel"
-msgstr "එපා"
+msgstr ""
 
 #: templates/list.php:14
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "මෙම වෙබ් පිටුව ඉක්මනින් පිටු සළකුනක් ලෙස සටහන් කිරීමට, එය බ්‍රවුසරයේ පිටු සළකුනු මතට ඇද ක්ලික් කරන්න:"
+msgstr ""
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
@@ -115,27 +113,27 @@ msgstr ""
 
 #: templates/list.php:22
 msgid "Address"
-msgstr "ලිපිනය"
+msgstr ""
 
 #: templates/list.php:23
 msgid "Add"
-msgstr "එකතු කරන්න"
+msgstr ""
 
 #: templates/list.php:31
 msgid "Related Tags"
-msgstr "අදාළ ටැගයන්"
+msgstr ""
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
-msgstr "සිටුවම්"
+msgstr ""
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr "පිටු සළකුනු නොමැත"
+msgstr ""
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr "පිටුසන අඩංගු ගොනුවක් ආයාත කිරීමට උත්සහ කළ හැක"
+msgstr ""
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
@@ -143,12 +141,12 @@ msgstr ""
 
 #: templates/settings.php:23
 msgid "Export & Import"
-msgstr "ආයාත හා නිර්යාත"
+msgstr ""
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr "නිර්යාත කරන්න"
+msgstr ""
 
 #: templates/settings.php:26
 msgid "Import"
-msgstr "ආයාත කරන්න"
+msgstr ""
