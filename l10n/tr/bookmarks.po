@@ -6,13 +6,13 @@
 # otefenli <otefenli@gmail.com>, 2013
 # Murat Bişkin <murat@muratbiskin.com.tr>, 2012
 # Necdet Yücel <necdetyucel@gmail.com>, 2012
-# volkangezer <volkangezer@gmail.com>, 2013
+# volkangezer <volkangezer@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-26 02:11-0400\n"
-"PO-Revision-Date: 2014-03-26 06:00+0000\n"
+"POT-Creation-Date: 2014-04-09 02:11-0400\n"
+"PO-Revision-Date: 2014-04-09 01:10+0000\n"
 "Last-Translator: volkangezer <volkangezer@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/owncloud/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -141,7 +141,7 @@ msgstr "Bir yer imi dosyasını içe aktarmayı deneyebilirsiniz"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr "Yer imleri"
+msgstr "Yer İmi Ekleyici"
 
 #: templates/settings.php:23
 msgid "Export & Import"

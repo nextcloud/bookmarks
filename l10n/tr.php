@@ -28,7 +28,7 @@
 "Settings" => "Ayarlar",
 "You have no bookmarks" => "Hiç yer iminiz yok",
 "You can also try to import a bookmark file" => "Bir yer imi dosyasını içe aktarmayı deneyebilirsiniz",
-"Bookmarklet" => "Yer imleri",
+"Bookmarklet" => "Yer İmi Ekleyici",
 "Export & Import" => "Dışa Aktar & İçe Aktar",
 "Export" => "Dışa aktar",
 "Import" => "İçe aktar"

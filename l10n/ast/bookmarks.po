@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-04-08 02:11-0400\n"
-"PO-Revision-Date: 2014-04-07 19:30+0000\n"
+"POT-Creation-Date: 2014-04-09 02:11-0400\n"
+"PO-Revision-Date: 2014-04-08 20:00+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Asturian (http://www.transifex.com/projects/p/owncloud/language/ast/)\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr ""
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr ""
+msgstr "Zarrar"
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
@@ -87,7 +87,7 @@ msgstr ""
 
 #: templates/addBm.php:38 templates/js_tpl.php:45
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: templates/js_tpl.php:6 templates/js_tpl.php:59
 msgid "Delete"
@@ -99,7 +99,7 @@ msgstr "Editar"
 
 #: templates/js_tpl.php:44
 msgid "Cancel"
-msgstr ""
+msgstr "Encaboxar"
 
 #: templates/list.php:14
 msgid ""
@@ -113,11 +113,11 @@ msgstr ""
 
 #: templates/list.php:22
 msgid "Address"
-msgstr ""
+msgstr "Direición"
 
 #: templates/list.php:23
 msgid "Add"
-msgstr ""
+msgstr "Amestar"
 
 #: templates/list.php:31
 msgid "Related Tags"
@@ -125,7 +125,7 @@ msgstr ""
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
-msgstr ""
+msgstr "Axustes"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
@@ -145,7 +145,7 @@ msgstr ""
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr ""
+msgstr "Esportar"
 
 #: templates/settings.php:26
 msgid "Import"
