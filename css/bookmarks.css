@@ -143,11 +143,12 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 .bookmark_tags {
 	left:25%;
 	position: relative;
+	width: 75%;
 }
 .bookmark_tag {
 	display: inline-block;
 	color: white;
-	margin: 0 0.2em;
+	margin: 0.2em 0.2em;
 	padding: 0 0.4em;
 	background-color: #1D2D44;
 	border-radius: 0.4em;
