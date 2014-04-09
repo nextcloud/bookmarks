@@ -4,7 +4,7 @@
 
 			<h1><?php p($l->t('Add a bookmark'));?></h1>
 			<div class="close_btn">
-				<a href="javascript:self.close()" class="ui-icon ui-icon-closethick">
+				<a href="javascript:self.close();" class="ui-icon ui-icon-closethick">
 					<?php p($l->t('Close'));?>
 				</a>
 			</div>

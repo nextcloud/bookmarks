@@ -9,9 +9,10 @@
 function bookmarklet(){
 	$l = new OC_l10n('bookmarks');
 	$blet = "javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('";
-	$blet .= OCP\Util::linkToAbsolute('bookmarks', 'addBm.php');
+// 	$blet .= OCP\Util::linkToAbsolute('bookmarks', 'addBm.php');
+	$blet .= OC_Helper::makeURLAbsolute(OCP\Util::linkToAbsolute('bookmarks', 'addBm.php'));
 	$blet .= "?output=popup&url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=400px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();";
-	$help_msg  = $l->t('Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:');
+	$help_msg  = $l->t('Drag this to your browser bookmarks and when you want to bookmark a webpage quickly click on it:');
 	return '<div class="bkm_hint">'.$help_msg.'</div><br /><a class="button bookmarklet" href="' . $blet . '">' . $l->t('Add to ownCloud') . '</a>';
 }
 ?>
