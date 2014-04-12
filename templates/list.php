@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Copyright (c) 2011 Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * Copyright (c) 2011 Arthur Schiwon <blizzz@arthur-schiwon.de>
@@ -17,44 +17,45 @@ function bookmarklet(){
 }
 ?>
 
-<div id="leftcontent">
+<div id="app-navigation">
+      <ul id="navigation-list">
+	  <li>
+	    <form id="add_form">
+		  <input type="text" id="add_url" value="" placeholder="<?php p($l->t('Address')); ?>"/>
+		  <input type="submit" value="<?php p($l->t('Add')); ?>" id="bookmark_add_submit" />
+	    </form>
+	    <p class="tag_filter">
+		  <input type="text" value="<?php p($_['req_tag']); ?>"/>
+		  <input type="hidden" id="bookmarkFilterTag" value="<?php p($_['req_tag']); ?>" />
 
-	<form id="add_form">
-		<input type="text" id="add_url" value="" placeholder="<?php p($l->t('Address')); ?>"/>
-		<input type="submit" value="<?php p($l->t('Add')); ?>" id="bookmark_add_submit" />
-	</form>
-
-	<p id="tag_filter">
-		<input type="text" value="<?php p($_['req_tag']); ?>"/>
-	</p>
-	<input type="hidden" id="bookmarkFilterTag" value="<?php p($_['req_tag']); ?>" />
-
-	<label><?php p($l->t('Related Tags')); ?></label>
-	<ul class="tag_list">
-	</ul>
+	    </p>
+	    <label><?php p($l->t('Related Tags')); ?></label>
+	  </li>
+	  <li class="tag_list">
+	  </li>
+      </ul>
 
 
-<div id="bookmark_settings" class="">
-	<ul class="controls">
-			<li id="settingsbtn" title="<?php p($l->t('Settings')); ?>">
-				<img class="svg" src="<?php print_unescaped(OCP\Util::imagePath('core', 'actions/settings.svg')); ?>"
-				alt="<?php p($l->t('Settings')); ?>" />
-			</li>
-	</ul>
-	<div id="bm_setting_panel">
+<div id="app-settings">
+	<div id="app-settings-header">
+		<button class="settings-button generalsettings" tabindex="0"></button>
+	</div>
+	<div id="app-settings-content">
+
 		<?php require 'settings.php';?>
 	</div>
 </div>
 
 </div>
-<div id="rightcontent" class="rightcontent">
+
+<div id="app-content">
 	<div id="firstrun" style="display: none;">
 		<div id="distance"></div>
 		<div id="firstrun_message">
 			<p class="title"><?php
 			p($l->t('You have no bookmarks'));
 			$embedded = true;
-			
+
 			print_unescaped(bookmarklet());?></p><br/><br />
 
 			<div class="bkm_hint"><a href="#" id="firstrun_setting"><?php p($l->t('You can also try to import a bookmark file'));?></a></div>
