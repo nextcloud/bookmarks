@@ -4,14 +4,15 @@
 # 
 # Translators:
 # hanfeng <appweb.cn@gmail.com>, 2012
+# mozillazg <opensource.mozillazg@gmail.com>, 2014
 # Xuetian Weng <wengxt@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-04-16 02:11-0400\n"
-"PO-Revision-Date: 2014-04-16 05:00+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-04-20 02:11-0400\n"
+"PO-Revision-Date: 2014-04-20 00:32+0000\n"
+"Last-Translator: mozillazg <opensource.mozillazg@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/owncloud/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -111,7 +112,7 @@ msgstr "拖曳此处到您的浏览器书签处，点击可以将网页快速添
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
-msgstr ""
+msgstr "添加到 ownCloud"
 
 #: templates/list.php:22
 msgid "Address"
@@ -119,7 +120,7 @@ msgstr "地址"
 
 #: templates/list.php:23
 msgid "Add"
-msgstr "增加"
+msgstr "添加"
 
 #: templates/list.php:31
 msgid "Related Tags"
