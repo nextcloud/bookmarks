@@ -1,5 +1,6 @@
 <?php $TRANSLATIONS = array(
 "Cancel" => "Cancelar",
 "Settings" => "Configuración",
-"Export" => "Exportar"
+"Export" => "Exportar",
+"Import" => "Importar"
 );
