@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-04-25 02:10-0400\n"
-"PO-Revision-Date: 2014-04-24 12:52+0000\n"
+"POT-Creation-Date: 2014-05-27 02:10-0400\n"
+"PO-Revision-Date: 2014-05-26 09:11+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Afrikaans (South Africa) (http://www.transifex.com/projects/p/owncloud/language/af_ZA/)\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgstr ""
 
 #: js/bookmarks.js:370
 msgid "Warning"
-msgstr ""
+msgstr "Waarskuwing"
 
 #: js/settings.js:18
 msgid "Import error"
