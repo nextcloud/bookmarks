@@ -241,6 +241,11 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	padding: 0.2em;
 	padding-left:1em;
 }
+
+#app-navigation li > a {
+	line-height: 12px;
+}
+
 #app-navigation > label {
 	margin-top: 1em;
 	margin-bottom: 0.7em;
@@ -257,6 +262,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	float:left;
 	padding: 0.3em;
 	position: relative;
+	width:50%;
 }
 
 ul.tagit li.tagit-new {
@@ -268,9 +274,9 @@ ul.tagit li.tagit-new {
 	display:block;
 }
 .tags_actions {
-	display:none; 
+/* 	display:none;  */
 	margin-left: 0.5em;
-	float:right;
+/* 	float:right; */
 }
 li:hover .tags_actions {
 	display:block;
