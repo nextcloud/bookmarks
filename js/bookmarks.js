@@ -47,14 +47,14 @@ function toggleSettings() {
 		$('#bookmark_settings').switchClass( "open", "" );
 		$('body').unbind('click', watchClickInSetting);
 	}
-	else {		
+	else {
 		$('#bookmark_settings').switchClass( "", "open");
 		$('body').bind('click',watchClickInSetting);
 	}
 }
 function addFilterTag(event) {
 	event.preventDefault();
-	$('#tag_filter input').tagit('createTag', $(this).text());
+	$('.tag_filter input').tagit('createTag', $(this).text());
 }
 
 function updateTagsList(tag) {

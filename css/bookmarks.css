@@ -325,7 +325,7 @@ li:hover em { display : none; }
 	width:40%;
 	top: 0.7em;
 	font-weight:500;
-	z-index: -10;
+/* 	z-index: -10; */
 }
 .bookmark_date, .bookmark_submit {
 	font-size:small;
@@ -367,6 +367,7 @@ li:hover em { display : none; }
 
 .bookmark_form_desc {
 	width:50%;
+	padding-top:100px;
 }
 
 .bookmark_form_desc textarea {
@@ -400,10 +401,10 @@ li:hover em { display : none; }
 }
 
 .bookmark_single_form .tagit{
-	width: 80%;
+/* 	width: 80%; */
 	box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;
-	margin: 3px;
-	height:6.4em;
+/* 	margin: 3px; */
+/* 	height:6.4em; */
 }
 .bookmark_form_submit {
 	margin-left: 4px;
