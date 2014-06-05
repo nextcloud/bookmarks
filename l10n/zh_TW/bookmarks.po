@@ -3,17 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Hydriz <admin@alphacorp.tk>, 2013
-# dw4dev <dw4dev@gmail.com>, 2012
-# pellaeon <nfsmwlin@gmail.com>, 2013
+# Hydriz Scholz <admin@alphacorp.tk>, 2013
+# Davidson Wang <dw4dev@gmail.com>, 2012
+# Pellaeon Lin <nfsmwlin@gmail.com>, 2013
 # tifa_choi <tifa_choi@tungtex.com>, 2014
 # ywang <ywang1007@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-04-16 02:11-0400\n"
-"PO-Revision-Date: 2014-04-16 05:00+0000\n"
+"POT-Creation-Date: 2014-06-05 02:50-0400\n"
+"PO-Revision-Date: 2014-06-05 06:11+0000\n"
 "Last-Translator: tifa_choi <tifa_choi@tungtex.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/owncloud/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"

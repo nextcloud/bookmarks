@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# variaatiox <ari.takalo@iki.fi>, 2012
+# Ari Takalo <ari.takalo@iki.fi>, 2012
 # Jiri Grönroos <jiri.gronroos@iki.fi>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-04-16 02:11-0400\n"
-"PO-Revision-Date: 2014-04-16 05:00+0000\n"
+"POT-Creation-Date: 2014-06-05 02:50-0400\n"
+"PO-Revision-Date: 2014-06-05 06:11+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/owncloud/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"

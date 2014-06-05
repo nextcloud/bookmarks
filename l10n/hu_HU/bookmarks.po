@@ -5,14 +5,14 @@
 # Translators:
 # Adam Toth <adazlord@gmail.com>, 2012
 # ebela <bela@dandre.hu>, 2013
-# gyeben <gyonkibendeguz@gmail.com>, 2013
+# Gyönki Bendegúz <gyonkibendeguz@gmail.com>, 2013
 # Laszlo Tornoci <torlasz@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-04-16 02:11-0400\n"
-"PO-Revision-Date: 2014-04-16 05:00+0000\n"
+"POT-Creation-Date: 2014-06-05 02:50-0400\n"
+"PO-Revision-Date: 2014-06-05 06:11+0000\n"
 "Last-Translator: ebela <bela@dandre.hu>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/owncloud/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"

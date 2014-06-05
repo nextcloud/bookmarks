@@ -4,17 +4,17 @@
 # 
 # Translators:
 # carlosamp <carlos.am.pereira@hotmail.com>, 2013
-# Mouxy <daniel@mouxy.net>, 2012
-# Mouxy <daniel@mouxy.net>, 2013
-# Duarte Velez Grilo <duartegrilo@gmail.com>, 2012
-# PapiMigas Migas <papimigas@gmail.com>, 2013
+# Daniel Pinto <daniel@mouxy.net>, 2012
+# Daniel Pinto <daniel@mouxy.net>, 2013
+# zedascouves <duartegrilo@gmail.com>, 2012
+# PapiMigas <papimigas@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-04-16 02:11-0400\n"
-"PO-Revision-Date: 2014-04-16 05:00+0000\n"
-"Last-Translator: PapiMigas Migas <papimigas@gmail.com>\n"
+"POT-Creation-Date: 2014-06-05 02:50-0400\n"
+"PO-Revision-Date: 2014-06-05 06:11+0000\n"
+"Last-Translator: PapiMigas <papimigas@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/owncloud/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
