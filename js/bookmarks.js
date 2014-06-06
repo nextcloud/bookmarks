@@ -19,7 +19,7 @@ $(document).ready(function() {
 		allowSpaces: true,
 		availableTags: fullTags,
 		onTagFinishRemoved: filterTagsChanged,
-		placeholderText: t('bookmark', 'Filter by tag')
+		placeholderText: t('bookmarks', 'Filter by tag')
 	}).tagit('option', 'onTagAdded', filterTagsChanged);
 	getBookmarks();
 });
@@ -129,7 +129,7 @@ function createEditDialog(record){
 	var oc_dialog= $('#edit_dialog form').clone().dialog({
 		width : 620,
 		height: 350,
-		title: t('bookmark', 'Edit bookmark'),
+		title: t('bookmarks', 'Edit bookmark'),
 		modal: true,
 		close : function(event, ui) {
 			$(this).dialog('destroy').remove();
@@ -232,7 +232,7 @@ function editBookmark(event) {
 	rec_form.find('.bookmark_form_tags ul').tagit({
 				allowSpaces: true,
 				availableTags: fullTags,
-				placeholderText: t('bookmark', 'Tags')
+				placeholderText: t('bookmarks', 'Tags')
 			});
 	rec_form.bind('submit',submitBookmark);
 	rec_form.find('.reset').bind('click',cancelBookmark);

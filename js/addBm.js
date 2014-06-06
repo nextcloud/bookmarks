@@ -39,7 +39,7 @@
 			base.$el.find('.tags').tagit({
 				allowSpaces: true,
 				availableTags: fullTags,
-				placeholderText: t('bookmark', 'Tags')
+				placeholderText: t('bookmarks', 'Tags')
 			});
 
 			if(base.options['record']) { //Fill the form if it's an edit
