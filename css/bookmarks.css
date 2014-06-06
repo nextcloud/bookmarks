@@ -211,34 +211,6 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 
 }
 
-#app-navigation > ul > li, .#app-navigation li {
-	padding: 0.2em;
-	padding-left:1em;
-}
-
-#app-navigation li > a {
-	line-height: 12px;
-}
-
-#app-navigation > label {
-	margin-top: 1em;
-	margin-bottom: 0.7em;
-	display: block;
-	padding-left: 1em;
-}
-
-#app-navigation .tag_list > li .tag , #app-navigation .share_list > li .tag{
-	background: none repeat scroll 0 0 #DEE7F8;
-	border: 1px solid #CAD8F3;
-	border-radius: 6px 6px 6px 6px;
-	color: #555555;
-	font-weight: normal;
-	float:left;
-	padding: 0.3em;
-	position: relative;
-	width:50%;
-}
-
 ul.tagit li.tagit-new {
 	padding-left: 0em;
 }
@@ -395,47 +367,6 @@ li:hover em { display : none; }
 	top: auto;
 }
 
-#bookmark_settings {
-	-moz-box-sizing: border-box;
-	background: none repeat scroll 0 0 #EEEEEE;
-	border-right: 1px solid #CCCCCC;
-	border-top: 1px solid #CCCCCC;
- 	bottom: 0;
-	height: 2.8em;
-	margin: 0;
-	overflow: visible;
-	padding: 0;
-	position: fixed;
-	width: 20em;
-	z-index: 2;
-}
-
-#app-navigation #bookmark_settings li{
-	padding: 0;
-	background-color:transparent;
-}
-#app-navigation #bookmark_settings li:hover{
-	background-color:transparent;
-}
-
-#bookmark_settings .controls {
-	height: 2.8em;
-	width: 100%;
-}
-
-#bookmark_settings .controls > li:last-child button {
-	margin-right: 0.3em;
-}
-#bookmark_settings .controls button {
-	height: 2.4em;
-	margin: 0.15em 0 0 0.15em;
-	padding: 0.2em 0.1em 0;
-	width: 2.4em;
-}
-
-#bookmark_settings.open {
-	height: auto;
-}
 #bm_setting_panel {
 	background-color: #eee;
 	padding: 1em;
