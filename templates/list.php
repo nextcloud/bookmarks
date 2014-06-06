@@ -49,16 +49,17 @@ function bookmarklet(){
 </div>
 
 <div id="app-content">
-	<div id="firstrun" style="display: none;">
-		<div id="distance"></div>
-		<div id="firstrun_message">
-			<p class="title"><?php
+	<div id="emptycontent" style="display: none;">
+		<p class="title"><?php
 			p($l->t('You have no bookmarks'));
 			$embedded = true;
+			print_unescaped(bookmarklet());?></p>
+		<br/><br />
 
-			print_unescaped(bookmarklet());?></p><br/><br />
-
-			<div class="bkm_hint"><a href="#" id="firstrun_setting"><?php p($l->t('You can also try to import a bookmark file'));?></a></div>
+		<div class="bkm_hint">
+			<a href="#" id="firstrun_setting">
+				<?php p($l->t('You can also import a bookmark file'));?>
+			</a>
 		</div>
 	</div>
 	<div class="bookmarks_list"></div>

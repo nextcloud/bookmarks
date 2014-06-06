@@ -1,26 +1,3 @@
-#content { overflow: auto; height: 100%; }
-
-#firstrun .bkm_hint { display: block; font-weight: normal; /*font-size: 0.5em; */ }
-#firstrun .title { font-weight:bold; }
-
-#distance {
-	width:1px;
-	height:50%;
-	margin-bottom:-13.75em; /* half of container's height */
-	float:left;
-}
-
-#firstrun_message {
-	margin:0 auto;
-	position:relative; /* puts container in front of distance */
-	text-align:left;
-	height:27.5em;
-	width:45em;
-	clear:left;
-}
-
-#firstrun_setting { font-size: 100%; text-decoration: underline}
-
 input.disabled, input.disabled:hover, input.disabled:focus {
 	cursor: not-allowed;
 	background-color: #ddd;
@@ -382,6 +359,7 @@ li:hover em { display : none; }
 #bm_import {
 	opacity: 0;
 	position: absolute;
+	width: 50px;
 }
 #import_bookmark .personalblock {
 	margin-top: 1em;
