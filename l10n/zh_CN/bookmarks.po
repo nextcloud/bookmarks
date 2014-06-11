@@ -5,14 +5,15 @@
 # Translators:
 # hanfeng <appweb.cn@gmail.com>, 2012
 # mozillazg <opensource.mozillazg@gmail.com>, 2014
+# phy <transifex@phy25.com>, 2014
 # csslayer <wengxt@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-06-05 02:50-0400\n"
-"PO-Revision-Date: 2014-06-05 06:11+0000\n"
-"Last-Translator: mozillazg <opensource.mozillazg@gmail.com>\n"
+"POT-Creation-Date: 2014-06-11 02:10-0400\n"
+"PO-Revision-Date: 2014-06-11 04:00+0000\n"
+"Last-Translator: phy <transifex@phy25.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/owncloud/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,11 +109,11 @@ msgstr "取消"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "拖曳此处到您的浏览器书签处，点击可以将网页快速添加到书签中。"
+msgstr "拖曳此处到您的浏览器书签处，点击可以将网页快速增加到书签中。"
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
-msgstr "添加到 ownCloud"
+msgstr "增加到 ownCloud"
 
 #: templates/list.php:22
 msgid "Address"
@@ -120,7 +121,7 @@ msgstr "地址"
 
 #: templates/list.php:23
 msgid "Add"
-msgstr "添加"
+msgstr "增加"
 
 #: templates/list.php:31
 msgid "Related Tags"
