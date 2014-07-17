@@ -5,15 +5,16 @@
 # Translators:
 # Dimitar Krastev <dimitar.t.krastev@gmail.com>, 2013
 # George Kamenov, 2014
+# Ivo, 2014
 # Stefan Ilivanov <ilivanov@gmail.com>, 2013
 # Yasen Pramatarov <yasen@lindeas.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-09 02:10-0400\n"
-"PO-Revision-Date: 2014-07-08 06:11+0000\n"
-"Last-Translator: George Kamenov\n"
+"POT-Creation-Date: 2014-07-17 02:10-0400\n"
+"PO-Revision-Date: 2014-07-16 22:40+0000\n"
+"Last-Translator: Ivo\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/owncloud/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +28,7 @@ msgstr "Не беше предоставен файл за зареждане"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
-msgstr "Неподдържан файл за импорт"
+msgstr "Неподдържан файл за внасяне."
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
@@ -43,23 +44,23 @@ msgstr "Филтриране по етикет"
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr "Промяна на предпочитание"
+msgstr "Промяна на отметктите"
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr "Сигурни ли сте, че желаете да премахнете този етикет от всеки запис?"
+msgstr "Сигурен ли си че желаеш да премахнеш този етикет от всеки запис?"
 
 #: js/bookmarks.js:370
 msgid "Warning"
-msgstr "Внимание"
+msgstr "Предупреждение"
 
 #: js/settings.js:18
 msgid "Import error"
-msgstr "Грешка при зареждане"
+msgstr "Грешка при внасянето"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr "Импортирането завърши успешно."
+msgstr "Внасянето завърши успешно."
 
 #: js/settings.js:61
 msgid "Uploading..."
@@ -67,11 +68,11 @@ msgstr "Качване..."
 
 #: lib/search.php:38
 msgid "Bookm."
-msgstr "Предп."
+msgstr "Отмет."
 
 #: templates/addBm.php:5
 msgid "Add a bookmark"
-msgstr "Добави в предпочитани"
+msgstr "Добави отметка"
 
 #: templates/addBm.php:8
 msgid "Close"
@@ -109,7 +110,7 @@ msgstr "Отказ"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "Довлачете това в лентата с отметки на браузъра си и го натискайте, когато искате да отметнете бързо някоя страница:"
+msgstr "Довлачи това в лентата с отметки на браузъра си и го натискай, когато искаш да отметнеш бързо някоя страница:"
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
@@ -133,11 +134,11 @@ msgstr "Настройки"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr "Нямате предпочитания"
+msgstr "Нямаш отметки"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr "Може също да опитате да заредите файл с отметки"
+msgstr "Може също да опиташ да заредиш файл с отметки"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
@@ -145,7 +146,7 @@ msgstr "Отметка"
 
 #: templates/settings.php:23
 msgid "Export & Import"
-msgstr "Експорт и Импорт"
+msgstr "Експорт и Внасяне"
 
 #: templates/settings.php:24
 msgid "Export"
