@@ -88,9 +88,9 @@ class OC_Bookmarks_Bookmarks{
 		$params=array(OCP\USER::getUser());
 
 		if($CONFIG_DBTYPE == 'pgsql') {
-			$sql = "SELECT * FROM (SELECT *, (select array_to_string(array_agg(`tag`),',') from `*PREFIX*bookmarks_tags` where `bookmark_id` = `b`.`id`) as `tags`
-				FROM `*PREFIX*bookmarks` `b`
-				WHERE `user_id` = ? ) as `x` WHERE true ";
+			$sql = "SELECT * FROM (SELECT *, (select array_to_string(array_agg(`tag`),',') from `*PREFIX*bookmarks_tags` where `bookmark_id` = `b2`.`id`) as `tags`
+				FROM `*PREFIX*bookmarks` `b2`
+				WHERE `user_id` = ? ) as `b` WHERE true ";
 		}
 		else {
 			$sql = "SELECT *, (SELECT GROUP_CONCAT(`tag`) from `*PREFIX*bookmarks_tags` WHERE `bookmark_id` = `b`.`id`) as `tags`
