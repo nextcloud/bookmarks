@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-01 02:11-0400\n"
+"POT-Creation-Date: 2014-07-27 02:10-0400\n"
 "PO-Revision-Date: 2012-07-27 22:17+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Tamil (India) (http://www.transifex.com/projects/p/owncloud/language/ta_IN/)\n"
@@ -125,7 +125,7 @@ msgstr ""
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
-msgstr ""
+msgstr "அமைப்புகள்"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
@@ -145,7 +145,7 @@ msgstr ""
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr ""
+msgstr "ஏற்றுமதி"
 
 #: templates/settings.php:26
 msgid "Import"
