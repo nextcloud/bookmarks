@@ -3,7 +3,7 @@
 "Unsupported file type for import" => "Tipu de ficheru non sofitáu pa importar",
 "Bookmarks" => "Marcadores",
 "Tags" => "Etiquetes",
-"Filter by tag" => "Filtrar por etiquetes",
+"Filter by tag" => "Filtriar por etiquetes",
 "Edit bookmark" => "Editar marcador",
 "Are you sure you want to remove this tag from every entry?" => "¿De xuru que quies desaniciar esta etiqueta de toles entraes?",
 "Warning" => "Avisu",
