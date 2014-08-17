@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Guðmundur Sigursteinn Jónsson <gjonsson@netheimur.is>, 2014
 # Magnus Magnusson <maggiymir@gmail.com>, 2013
 # Sveinn G. Gunnarsson <sveinng@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-08-16 02:10-0400\n"
-"PO-Revision-Date: 2014-08-16 05:22+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-08-17 02:10-0400\n"
+"PO-Revision-Date: 2014-08-17 05:22+0000\n"
+"Last-Translator: Guðmundur Sigursteinn Jónsson <gjonsson@netheimur.is>\n"
 "Language-Team: Icelandic (http://www.transifex.com/projects/p/owncloud/language/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 
 #: ajax/import.php:9
 msgid "No file provided for import"
-msgstr ""
+msgstr "Engin skrá valin fyrir innflutning"
 
 #: ajax/import.php:21
 msgid "Unsupported file type for import"
@@ -111,7 +112,7 @@ msgstr "Dragðu þetta yfir í bókamerki í vafranum þínu og smelltu, ef þú
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
-msgstr ""
+msgstr "Bæta við í ownCloud"
 
 #: templates/list.php:22
 msgid "Address"
@@ -135,7 +136,7 @@ msgstr "Þú hefur engin bókamerki"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr "Þú getur inni prófa að flytja inn bókamerkja skrá"
+msgstr "Þú getur einnig prófað að flytja inn bókamerkja skrá"
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
