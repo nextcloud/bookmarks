@@ -58,7 +58,7 @@
 				<img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/delete.svg"));?>"
 					title="<?php p($l->t('Delete'));?>">
 			</span>
+			<em><&= nbr &></em>
 		</p>
-		<em><&= nbr &></em>
 	</li>
 </script>

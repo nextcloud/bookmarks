@@ -7,11 +7,11 @@ $(document).ready(function() {
 	watchUrlField();
 	$('#bm_import').change(attachSettingEvent);
 	$('#add_url').on('keydown keyup change click', watchUrlField);
-  $('#settingsbtn').on('click keydown', toggleSettings);
+	$('#app-settings').on('click keydown', toggleSettings);
 	$('#bm_export').click(exportBm);
-	$('#firstrun_setting').click(function(){
-		if(! $('#bookmark_settings').hasClass('open')){
-			$('#settingsbtn').click();
+	$('#emptycontent-setting').click(function(){
+		if(! $('#app-settings').hasClass('open')){
+			$('#app-settings').click();
 		}
 	});
 	$('.bookmarks_list').scroll(updateOnBottom).empty();
@@ -38,23 +38,23 @@ var formatString = (function() {
 })();
 
 function watchClickInSetting(e){
-	if($('#bookmark_settings').find($(e.target)).length == 0){
+	if($('#app-settings').find($(e.target)).length == 0){
 		toggleSettings();
 	}
 }
 function toggleSettings() {
-	if( $('#bookmark_settings').hasClass('open')) { //Close
-		$('#bookmark_settings').switchClass( "open", "" );
+	if( $('#app-settings').hasClass('open')) { //Close
+		$('#app-settings').switchClass( "open", "" );
 		$('body').unbind('click', watchClickInSetting);
 	}
-	else {		
-		$('#bookmark_settings').switchClass( "", "open");
+	else {
+		$('#app-settings').switchClass( "", "open");
 		$('body').bind('click',watchClickInSetting);
 	}
 }
 function addFilterTag(event) {
 	event.preventDefault();
-	$('#tag_filter input').tagit('createTag', $(this).text());
+	$('.tag_filter input').tagit('createTag', $(this).text());
 }
 
 function updateTagsList(tag) {
@@ -209,11 +209,11 @@ function delBookmark(event) {
 
 function checkEmpty() {
 	if($('.bookmarks_list').children().length == 0) {
-		$("#firstrun").show();
+		$("#emptycontent").show();
 		$("#bm_export").addClass('disabled');
 		$('.bookmarks_list').hide();
 	} else {
-		$("#firstrun").hide();
+		$("#emptycontent").hide();
 		$("#bm_export").removeClass('disabled');
 		$('.bookmarks_list').show();
 	}
