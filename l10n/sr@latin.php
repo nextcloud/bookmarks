@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"Warning" => "Upozorenje",
 "Close" => "Zatvori",
 "Save" => "Snimi",
 "Delete" => "Obriši",
