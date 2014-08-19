@@ -28,8 +28,8 @@ class OC_Bookmarks_Bookmarks{
 	/**
 	* @brief Finds all tags for bookmarks
 	* @param filterTags array of tag to look for if empty then every tag
-	* @param offset result offset
-	* @param limit number of item to return
+	* @param offset integer offset
+	* @param limit integer of item to return
 	*/
 	public static function findTags($filterTags = array(), $offset = 0, $limit = 10){
 		$params = array_merge($filterTags, $filterTags);
@@ -71,11 +71,11 @@ class OC_Bookmarks_Bookmarks{
 
 	/**
 	 * @brief Finds all bookmarks, matching the filter
-	 * @param offset result offset
-	 * @param sqlSortColumn sort result with this column
+	 * @param offset integer offset
+	 * @param sqlSortColumn string result with this column
 	 * @param filters can be: empty -> no filter, a string -> filter this, a string array -> filter for all strings
-	 * @param filterTagOnly if true, filter affects only tags, else filter affects url, title and tags
-	 * @param limit number of item to return (default 10) if -1 or false then all item are returned
+	 * @param filterTagOnly boolean true, filter affects only tags, else filter affects url, title and tags
+	 * @param limit integer of item to return (default 10) if -1 or false then all item are returned
 	 * @return void
 	 */
 	public static function findBookmarks($offset, $sqlSortColumn, $filters, $filterTagOnly, $limit = 10) {
