@@ -371,22 +371,22 @@ class OC_Bookmarks_Bookmarks{
 
 	/**
 	 * Add a set of tags for a bookmark
-	 * @param int $bookmark_id The bookmark reference
+	 *
+	 * @param int $bookmarkId The bookmark reference
 	 * @param array $tags Set of tags to add to the bookmark
 	 * @return null
 	 **/
-	private static function addTags($bookmark_id, $tags) {
-		$query = OCP\DB::prepare("
-			INSERT INTO `*PREFIX*bookmarks_tags`
-			(`bookmark_id`, `tag`)
-			VALUES (?, ?)");
+	private static function addTags($bookmarkId, $tags) {
+		$query = OCP\DB::prepare("INSERT INTO `*PREFIX*bookmarks_tags` (`bookmark_id`, `tag`)
+			select ?, ? where not exists(select * from oc_bookmarks_tags where bookmark_id = ? and tag = ?)");
 
 		foreach ($tags as $tag) {
+			$tag = trim($tag);
 			if(empty($tag)) {
-				//avoid saving blankspaces
+				//avoid saving white spaces
 				continue;
 			}
-			$params = array($bookmark_id, trim($tag));
+			$params = array($bookmarkId, $tag, $bookmarkId, $tag);
 			$query->execute($params);
 		}
 	}
