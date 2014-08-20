@@ -73,15 +73,6 @@
 				<unsigned>true</unsigned>
 				<length>4</length>
 			</field>
-			
-			<index>
-				<name>id</name>
-				<unique>true</unique>
-				<field>
-					<name>id</name>
-					<sorting>descending</sorting>
-				</field>
-			</index>
 		</declaration>
 	</table>
 	
