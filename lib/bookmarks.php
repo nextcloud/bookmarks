@@ -377,9 +377,15 @@ class OC_Bookmarks_Bookmarks{
 	 * @return null
 	 **/
 	private static function addTags($bookmarkId, $tags) {
-		$query = OCP\DB::prepare("INSERT INTO `*PREFIX*bookmarks_tags` (`bookmark_id`, `tag`)
-			select ?, ? where not exists(select * from oc_bookmarks_tags where bookmark_id = ? and tag = ?)");
+		$sql = 'INSERT INTO `*PREFIX*bookmarks_tags` (`bookmark_id`, `tag`) select ?, ? ';
+		$dbtype = OCP\Config::getSystemValue( 'dbtype', 'sqlite' );
 
+		if ($dbtype === 'mysql') {
+			$sql .= 'from dual ';
+		}
+		$sql .= 'where not exists(select * from oc_bookmarks_tags where bookmark_id = ? and tag = ?)';
+
+		$query = OCP\DB::prepare($sql);
 		foreach ($tags as $tag) {
 			$tag = trim($tag);
 			if(empty($tag)) {
