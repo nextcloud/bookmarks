@@ -5,13 +5,13 @@
 # Translators:
 # Cyryl Sochacki <cyrylsochacki@gmail.com>, 2012
 # Cyryl Sochacki <cyrylsochacki@gmail.com>, 2012-2013
-# Maciej Przybecki <maciej.przybecki@gmail.com>, 2013
+# Maciej Przybecki <maciej.przybecki@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-08-25 02:10-0400\n"
-"PO-Revision-Date: 2014-08-25 05:22+0000\n"
+"POT-Creation-Date: 2014-08-26 02:10-0400\n"
+"PO-Revision-Date: 2014-08-26 05:22+0000\n"
 "Last-Translator: Maciej Przybecki <maciej.przybecki@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/owncloud/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,7 @@ msgstr "Edytuj zakładkę"
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr "Czy na pewno chcesz usunąć ten tag na każdym wejściu?"
+msgstr "Czy na pewno chcesz usunąć ten tag z każdego wpisu?"
 
 #: js/bookmarks.js:370
 msgid "Warning"
@@ -108,7 +108,7 @@ msgstr "Anuluj"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr "Przeciągnij to do ulubionych przeglądarki i kliknij go, gdy użytkownik chce szybko dodać zakładkę strony sieci Web:"
+msgstr "Przeciągnij to do zakładek w przeglądarce i kliknij, jeśli chcesz szybko dodać stronę do zakładek:"
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
