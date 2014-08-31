@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-08-30 02:11-0400\n"
-"PO-Revision-Date: 2014-08-30 05:23+0000\n"
+"POT-Creation-Date: 2014-08-31 02:10-0400\n"
+"PO-Revision-Date: 2014-08-30 07:10+0000\n"
 "Last-Translator: unixidzero <unixidzero@gmail.com>\n"
 "Language-Team: Azerbaijani (http://www.transifex.com/projects/p/owncloud/language/az/)\n"
 "MIME-Version: 1.0\n"
@@ -40,15 +40,15 @@ msgstr "Əsas-a görə süzgəc"
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr ""
+msgstr "Qeydıyyatda dəyişiklik et"
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
-msgstr ""
+msgstr "İstənilən qeydiyyatdan bu başlığın silinməsinə əminsinizmi?"
 
 #: js/bookmarks.js:370
 msgid "Warning"
-msgstr ""
+msgstr "Xəbərdarlıq"
 
 #: js/settings.js:18
 msgid "Import error"
@@ -80,7 +80,7 @@ msgstr "Səhifənin başlığı"
 
 #: templates/addBm.php:21 templates/js_tpl.php:31
 msgid "The address of the page"
-msgstr ""
+msgstr "Səhifənin ünvanı"
 
 #: templates/addBm.php:34 templates/js_tpl.php:40
 msgid "Description of the page"
@@ -106,11 +106,11 @@ msgstr "Dayandır"
 msgid ""
 "Drag this to your browser bookmarks and click it, when you want to bookmark "
 "a webpage quickly:"
-msgstr ""
+msgstr "Web səhifəni tez qeydə almaq istəyirsinizsə, onu öz browser-nizin qeydiyyat ünvanına dartın və üstünə sıxın."
 
 #: templates/list.php:15
 msgid "Add to ownCloud"
-msgstr ""
+msgstr "ownCloud-a əlavə et"
 
 #: templates/list.php:22
 msgid "Address"
@@ -122,7 +122,7 @@ msgstr "Əlavə etmək"
 
 #: templates/list.php:31
 msgid "Related Tags"
-msgstr ""
+msgstr "Oxşar başlıqlar"
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
@@ -130,19 +130,19 @@ msgstr "Quraşdırmalar"
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
-msgstr ""
+msgstr "Sizin səhifə qeydiyyatınız yoxdur"
 
 #: templates/list.php:59
 msgid "You can also try to import a bookmark file"
-msgstr ""
+msgstr "Siz həmçinin səhifə qeydiyyatı faylına əlavə etməyə cəhd edə bilərsiniz."
 
 #: templates/settings.php:11
 msgid "Bookmarklet"
-msgstr ""
+msgstr "Bookmarklet"
 
 #: templates/settings.php:23
 msgid "Export & Import"
-msgstr ""
+msgstr "Çıxarış & Əlavə "
 
 #: templates/settings.php:24
 msgid "Export"
