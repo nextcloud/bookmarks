@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
 "POT-Creation-Date: 2014-09-01 02:10-0400\n"
-"PO-Revision-Date: 2014-09-01 05:22+0000\n"
-"Last-Translator: I Robot\n"
-"Language-Team: Croatian (http://www.transifex.com/projects/p/owncloud/language/hr/)\n"
+"PO-Revision-Date: 2012-07-27 22:17+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Gujarati (http://www.transifex.com/projects/p/owncloud/language/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hr\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Language: gu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ajax/import.php:9
 msgid "No file provided for import"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: appinfo/app.php:17
 msgid "Bookmarks"
-msgstr "Zabilješke"
+msgstr ""
 
 #: js/addBm.js:42 js/bookmarks.js:235
 msgid "Tags"
@@ -71,7 +71,7 @@ msgstr ""
 
 #: templates/addBm.php:8
 msgid "Close"
-msgstr "Zatvori"
+msgstr ""
 
 #: templates/addBm.php:16 templates/js_tpl.php:27
 msgid "The title of the page"
@@ -87,19 +87,19 @@ msgstr ""
 
 #: templates/addBm.php:38 templates/js_tpl.php:45
 msgid "Save"
-msgstr "Snimi"
+msgstr ""
 
 #: templates/js_tpl.php:6 templates/js_tpl.php:59
 msgid "Delete"
-msgstr "Obriši"
+msgstr ""
 
 #: templates/js_tpl.php:14 templates/js_tpl.php:55
 msgid "Edit"
-msgstr "Uredi"
+msgstr ""
 
 #: templates/js_tpl.php:44
 msgid "Cancel"
-msgstr "Odustani"
+msgstr ""
 
 #: templates/list.php:14
 msgid ""
@@ -113,11 +113,11 @@ msgstr ""
 
 #: templates/list.php:22
 msgid "Address"
-msgstr "Adresa"
+msgstr ""
 
 #: templates/list.php:23
 msgid "Add"
-msgstr "Dodaj"
+msgstr ""
 
 #: templates/list.php:31
 msgid "Related Tags"
@@ -125,7 +125,7 @@ msgstr ""
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
-msgstr "Postavke"
+msgstr ""
 
 #: templates/list.php:54
 msgid "You have no bookmarks"
@@ -145,8 +145,8 @@ msgstr ""
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr "Izvoz"
+msgstr ""
 
 #: templates/settings.php:26
 msgid "Import"
-msgstr "Uvezi"
+msgstr ""
