@@ -1,0 +1,46 @@
+language: php
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+
+env:
+  global:
+    - CORE_BRANCH=master
+  matrix:
+    - DB=sqlite
+
+branches:
+  only:
+    - master
+    - stable7
+
+before_install:
+#  - composer install
+  - wget https://raw.githubusercontent.com/owncloud/administration/master/travis-ci/before_install.sh
+  - bash ./before_install.sh bookmarks $CORE_BRANCH $DB
+  - cd ../core
+  - php occ app:enable bookmarks
+
+script:
+  # Test lint
+  - cd apps/bookmarks
+  - sh -c "if [ '$DB' = 'sqlite' ]; then ant test; fi"
+
+  # Run phpunit tests
+  - cd tests
+  - phpunit --configuration phpunit.xml
+
+  # Create coverage report
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover clover.xml
+
+matrix:
+  include:
+    - php: 5.4
+      env: DB=mysql
+    - php: 5.4
+      env: DB=pgsql
+  allow_failures:
+    - php: hhvm
+  fast_finish: true
