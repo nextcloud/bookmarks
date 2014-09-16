@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Anders J. Sørensen, 2013
+# Aputsiaĸ Niels Janussen <aj@isit.gl>, 2014
 # Thomas <cronner@gmail.com>, 2012
 # Leif Lodahl <leiflodahl@gmail.com>, 2013
 # Morten Juhl-Johansen Zölde-Fejér <morten@writtenandread.net>, 2012-2013
@@ -13,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-09-02 02:10-0400\n"
-"PO-Revision-Date: 2014-09-02 05:22+0000\n"
-"Last-Translator: Leif Lodahl <leiflodahl@gmail.com>\n"
+"POT-Creation-Date: 2014-09-16 02:10-0400\n"
+"PO-Revision-Date: 2014-09-15 16:01+0000\n"
+"Last-Translator: Aputsiaĸ Niels Janussen <aj@isit.gl>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/owncloud/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,11 +42,11 @@ msgstr "Mærker"
 
 #: js/bookmarks.js:22
 msgid "Filter by tag"
-msgstr "Filtrer efter tag"
+msgstr "Filtrér efter mærke"
 
 #: js/bookmarks.js:132
 msgid "Edit bookmark"
-msgstr "Rediger bogmærker"
+msgstr "Redigér bogmærker"
 
 #: js/bookmarks.js:369
 msgid "Are you sure you want to remove this tag from every entry?"
@@ -61,7 +62,7 @@ msgstr "Fejl ved import"
 
 #: js/settings.js:29
 msgid "Import completed successfully."
-msgstr "Importer fuldført."
+msgstr "Importen blev fuldført."
 
 #: js/settings.js:61
 msgid "Uploading..."
@@ -105,7 +106,7 @@ msgstr "Rediger"
 
 #: templates/js_tpl.php:44
 msgid "Cancel"
-msgstr "Annuller"
+msgstr "Annullér"
 
 #: templates/list.php:14
 msgid ""
@@ -127,7 +128,7 @@ msgstr "Tilføj"
 
 #: templates/list.php:31
 msgid "Related Tags"
-msgstr "Relaterede Tags"
+msgstr "Relaterede mærker"
 
 #: templates/list.php:38 templates/list.php:40
 msgid "Settings"
@@ -151,8 +152,8 @@ msgstr "Eksport & import"
 
 #: templates/settings.php:24
 msgid "Export"
-msgstr "Exporter"
+msgstr "Eksportér"
 
 #: templates/settings.php:26
 msgid "Import"
-msgstr "Importer"
+msgstr "Importér"
