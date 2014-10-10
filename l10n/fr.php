@@ -20,7 +20,7 @@
 "Delete" => "Supprimer",
 "Edit" => "Modifier",
 "Cancel" => "Annuler",
-"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Glissez ceci dans les favoris de votre navigateur et cliquer dessus lorsque vous souhaitez ajouter la page courante à vos marques-pages :",
+"Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Glissez ceci dans les marque-pages de votre navigateur et cliquez dessus pour ajouter la page courante à vos favoris :",
 "Add to ownCloud" => "Ajouter à ownCloud",
 "Address" => "Adresse",
 "Add" => "Ajouter",
