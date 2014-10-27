@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Engin skrá valin fyrir innflutning",
 "Unsupported file type for import" => "Ekki er hægt að flytja inn þessa tegund af bókamerki",
 "Bookmarks" => "Bókamerki",
@@ -33,3 +34,4 @@
 "Export" => "Flytja út",
 "Import" => "Flytja inn"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

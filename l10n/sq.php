@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Close" => "Mbyll",
 "Save" => "Ruaj",
 "Delete" => "Elimino",
@@ -10,3 +11,4 @@
 "Export" => "Eksporto",
 "Import" => "Importo"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

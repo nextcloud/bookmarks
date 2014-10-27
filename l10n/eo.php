@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Neniu dosiero aldonita por enporti",
 "Unsupported file type for import" => "Dosiertipo nekongrua kun enporto",
 "Bookmarks" => "Legosignoj",
@@ -33,3 +34,4 @@
 "Export" => "Elporti",
 "Import" => "Enporti"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

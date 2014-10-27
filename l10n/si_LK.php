@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unsupported file type for import" => "ආයාත කරන ගොනුව රුචි නොවේ",
 "Bookmarks" => "පිටු සළකුනු",
 "Tags" => "ටැග",
@@ -29,3 +30,4 @@
 "Export" => "නිර්යාත කරන්න",
 "Import" => "ආයාත කරන්න"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

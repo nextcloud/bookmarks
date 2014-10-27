@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Yhtäkään tiedostoa ei määritetty tuotavaksi",
 "Unsupported file type for import" => "Tuonti ei tue kyseistä tiedostotyyppiä",
 "Bookmarks" => "Kirjanmerkit",
@@ -33,3 +34,4 @@
 "Export" => "Vie",
 "Import" => "Tuo"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "ئەكىرىشكە ھېچقانداق ھۆججەت تەمىنلەنمىگەن",
 "Unsupported file type for import" => "ئەكىرىشنى قوللىمايدىغان ھۆججەت تىپى",
 "Bookmarks" => "خەتكۈچلەر",
@@ -32,3 +33,4 @@
 "Export" => "چىقار",
 "Import" => "ئەكىر"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

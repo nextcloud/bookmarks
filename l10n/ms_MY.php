@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Bookmarks" => "Tanda",
 "Warning" => "Amaran",
 "Close" => "Tutup",
@@ -12,3 +13,4 @@
 "Export" => "Export",
 "Import" => "Import"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

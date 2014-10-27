@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Niciun fișier furnizat pentru import",
 "Unsupported file type for import" => "Tipul de fișier nu este suportat pentru importări",
 "Bookmarks" => "Semne de carte",
@@ -33,3 +34,4 @@
 "Export" => "Exportă",
 "Import" => "Importă"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));";

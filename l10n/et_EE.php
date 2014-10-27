@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Imporditav fail puudub",
 "Unsupported file type for import" => "Toetuseta failitüübi import",
 "Bookmarks" => "Järjehoidjad",
@@ -33,3 +34,4 @@
 "Export" => "Ekspordi",
 "Import" => "Impordi"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

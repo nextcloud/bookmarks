@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Inga fil gjeve for importering",
 "Unsupported file type for import" => "Ustøtta filtype for importering",
 "Bookmarks" => "Bokmerkje",
@@ -33,3 +34,4 @@
 "Export" => "Eksporter",
 "Import" => "Importer"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

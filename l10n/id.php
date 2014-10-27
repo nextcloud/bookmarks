@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Tidak ada berkas untuk diimpor",
 "Unsupported file type for import" => "Tipe berkas tidak didukung untuk diimpor",
 "Bookmarks" => "Markah",
@@ -32,3 +33,4 @@
 "Export" => "Ekspor",
 "Import" => "Impor"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

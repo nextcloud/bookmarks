@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "가져올 파일을 지정하지 않았음",
 "Unsupported file type for import" => "가져올 수 없는 파일 형식임",
 "Bookmarks" => "책갈피",
@@ -33,3 +34,4 @@
 "Export" => "내보내기",
 "Import" => "가져오기"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

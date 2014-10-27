@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "沒有提供匯入用的檔案",
 "Unsupported file type for import" => "不支援這種檔案類型的匯入",
 "Bookmarks" => "書籤",
@@ -33,3 +34,4 @@
 "Export" => "匯出",
 "Import" => "匯入"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Nepateiktas failas importavimui",
 "Unsupported file type for import" => "Netinkamas failo tipas importavimui",
 "Bookmarks" => "Žymekliai",
@@ -30,3 +31,4 @@
 "Export" => "Eksportuoti",
 "Import" => "Importuoti"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);";

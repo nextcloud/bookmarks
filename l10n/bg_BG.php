@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Не беше предоставен файл за зареждане",
 "Unsupported file type for import" => "Неподдържан файл за внасяне.",
 "Bookmarks" => "Отметки",
@@ -33,3 +34,4 @@
 "Export" => "Експорт",
 "Import" => "Внасяне"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

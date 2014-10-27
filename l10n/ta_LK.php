@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unsupported file type for import" => "இறக்குமதிக்கு ஆதரவளிக்காத கோப்பு வகை",
 "Bookmarks" => "பக்க அடையாளங்கள்",
 "Tags" => "சீட்டுகள்",
@@ -30,3 +31,4 @@
 "Export" => "ஏற்றுமதி",
 "Import" => "இறக்குமதி"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

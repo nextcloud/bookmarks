@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Dim ffeil i'w fewnforio",
 "Unsupported file type for import" => "Dim cefnogaeth i fewnforio'r math hwn o ffeil",
 "Bookmarks" => "Nodau tudalen",
@@ -32,3 +33,4 @@
 "Export" => "Allforio",
 "Import" => "Mewnforio"
 );
+$PLURAL_FORMS = "nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;";

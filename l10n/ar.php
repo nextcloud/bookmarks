@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "لم يتم اضافة ملف للتدخيل",
 "Unsupported file type for import" => "نوعية الملف غير صالحه للاستيراد",
 "Bookmarks" => "اشارات المرجعية",
@@ -33,3 +34,4 @@
 "Export" => "تصدير المعلومات",
 "Import" => "استيراد"
 );
+$PLURAL_FORMS = "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;";

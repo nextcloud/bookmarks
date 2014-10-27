@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Aucun fichier fourni pour l'importation",
 "Unsupported file type for import" => "Type de fichier non supporté pour l'importation",
 "Bookmarks" => "Favoris",
@@ -33,3 +34,4 @@
 "Export" => "Exporter",
 "Import" => "Importer"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

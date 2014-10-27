@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "未提供导入文件",
 "Unsupported file type for import" => "不支持导入的文件类型",
 "Bookmarks" => "书签",
@@ -33,3 +34,4 @@
 "Export" => "导出",
 "Import" => "导入"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "هیچ فایلی وارد نشده است.",
 "Unsupported file type for import" => "نوع فایل برای وارد کردن معتبر نیست",
 "Bookmarks" => "نشانک‌ها",
@@ -33,3 +34,4 @@
 "Export" => "خروجی گرفتن",
 "Import" => "وارد کردن"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

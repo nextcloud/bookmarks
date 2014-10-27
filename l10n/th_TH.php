@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "ไม่พบไฟล์สำหรับการนำเข้าข้อมูล",
 "Unsupported file type for import" => "ประเภทของไฟล์ที่ต้องการนำเข้าไม่ได้รับการรองรับให้ใช้งาน",
 "Bookmarks" => "รายการโปรด",
@@ -33,3 +34,4 @@
 "Export" => "ส่งออก",
 "Import" => "นำเข้า"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

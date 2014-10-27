@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "İçe aktarılacak dosya yok",
 "Unsupported file type for import" => "İçe aktarmak için desteklenmeyen dosya türü",
 "Bookmarks" => "Yer İmleri",
@@ -33,3 +34,4 @@
 "Export" => "Dışa aktar",
 "Import" => "İçe aktar"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

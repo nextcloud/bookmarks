@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Nincs megadva az importálandó fájl",
 "Unsupported file type for import" => "Az importálandó fájltípus nem támogatott",
 "Bookmarks" => "Könyvjelzők",
@@ -33,3 +34,4 @@
 "Export" => "Exportálás",
 "Import" => "Importálás"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

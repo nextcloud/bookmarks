@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Warning" => "హెచ్చరిక",
 "Close" => "మూసివేయి",
 "Save" => "భద్రపరచు",
@@ -10,3 +11,4 @@
 "Export" => "ఎగుమతించు",
 "Import" => "దిగుమతించు"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

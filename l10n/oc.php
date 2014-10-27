@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Bookmarks" => "Marcapaginas",
 "Save" => "Enregistra",
 "Delete" => "Escafa",
@@ -9,3 +10,4 @@
 "Export" => "Exporta",
 "Import" => "Importa"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

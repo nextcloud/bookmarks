@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "Neviena datne nav dota importēšanai",
 "Unsupported file type for import" => "Importēšanai neatbalstītie datņu tipi",
 "Bookmarks" => "Grāmatzīmes",
@@ -33,3 +34,4 @@
 "Export" => "Eksportēt",
 "Import" => "Importēt"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);";

@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "არ არის ფაილი იმპორტისთვის",
 "Unsupported file type for import" => "დაუშვებელი ფაილის ტიპი იმპორტისთვის",
 "Bookmarks" => "ბუქმარკები",
@@ -32,3 +33,4 @@
 "Export" => "ექსპორტი",
 "Import" => "იმპორტი"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

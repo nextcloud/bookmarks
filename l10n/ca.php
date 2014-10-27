@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No file provided for import" => "No heu proporcionat cap fitxer a importar",
 "Unsupported file type for import" => "Importació d'un tipus de fitxer no implementat",
 "Bookmarks" => "Adreces d'interès",
@@ -33,3 +34,4 @@
 "Export" => "Exporta",
 "Import" => "Importa"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";
