@@ -1,47 +1,3 @@
-/* LEGACY STUFF - remove on switch to app-navigation and app-content */
-#leftcontent, .leftcontent {
-	position:relative; overflow:auto; width:256px; height:100%;
-	background:#f8f8f8; border-right:1px solid #ddd;
-	-moz-box-sizing:border-box; box-sizing:border-box;
-}
-#leftcontent li, .leftcontent li { background:#f8f8f8; padding:.5em .8em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; -webkit-transition:background-color 200ms; -moz-transition:background-color 200ms; -o-transition:background-color 200ms; transition:background-color 200ms; }
-#leftcontent li:hover, #leftcontent li:active, #leftcontent li.active, .leftcontent li:hover, .leftcontent li:active, .leftcontent li.active { background:#eee; }
-#leftcontent li.active, .leftcontent li.active { font-weight:bold; }
-#leftcontent li:hover, .leftcontent li:hover { color:#333; background:#ddd; }
-#leftcontent a { height:100%; display:block; margin:0; padding:0 1em 0 0; float:left; }
-#rightcontent, .rightcontent { position:fixed; top:89px; left: 336px; overflow:auto }
-
-#controls + .leftcontent{
-	top: 44px;
-}
-
-
-
-
-
-#content { overflow: auto; height: 100%; }
-
-#firstrun .bkm_hint { display: block; font-weight: normal; /*font-size: 0.5em; */ }
-#firstrun .title { font-weight:bold; }
-
-#distance {
-	width:1px;
-	height:50%;
-	margin-bottom:-13.75em; /* half of container's height */
-	float:left;
-}
-
-#firstrun_message {
-	margin:0 auto;
-	position:relative; /* puts container in front of distance */
-	text-align:left;
-	height:27.5em;
-	width:45em;
-	clear:left;
-}
-
-#firstrun_setting { font-size: 100%; text-decoration: underline}
-
 input.disabled, input.disabled:hover, input.disabled:focus {
 	cursor: not-allowed;
 	background-color: #ddd;
@@ -51,13 +7,8 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	border-bottom: 1px solid #ddd; border-top: 1px solid #fff; }
 #settingsbtn:hover { background:#dbdbdb !important; color:#999; 
 	border-bottom: 1px solid #CCCCCC; border-top: 1px solid #D4D4D4; }
-#settingsbtn img { width: 18px; height: 18px; margin: 10px;	}
+#settingsbtn img { width: 18px; height: 18px; margin: 10px; }
 
-#rightcontent {
-	padding-top: 5px;
-	top: 1em !important;
-	overflow: visible;
-}
 
 .bookmarks_headline {
 	font-size: large;
@@ -78,7 +29,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	padding-top: 3em;
 /* 	width: 100%; */
 	height: 100%;
-	position: fixed;
+/* 	position: fixed; */
 	left: 336px;
 	right:0;
 }
@@ -164,11 +115,12 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 .bookmark_tags {
 	left:25%;
 	position: relative;
+	width: 75%;
 }
 .bookmark_tag {
 	display: inline-block;
 	color: white;
-	margin: 0 0.2em;
+	margin: 0.2em 0.2em;
 	padding: 0 0.4em;
 	background-color: #1D2D44;
 	border-radius: 0.4em;
@@ -236,28 +188,6 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 
 }
 
-#leftcontent > ul > li, .leftcontent li {
-	padding: 0.2em;
-	padding-left:1em;
-}
-#leftcontent > label {
-	margin-top: 1em;
-	margin-bottom: 0.7em;
-	display: block;
-	padding-left: 1em;
-}
-
-#leftcontent .tag_list > li .tag , #leftcontent .share_list > li .tag{
-	background: none repeat scroll 0 0 #DEE7F8;
-	border: 1px solid #CAD8F3;
-	border-radius: 6px 6px 6px 6px;
-	color: #555555;
-	font-weight: normal;
-	float:left;
-	padding: 0.3em;
-	position: relative;
-}
-
 ul.tagit li.tagit-new {
 	padding-left: 0em;
 }
@@ -267,9 +197,9 @@ ul.tagit li.tagit-new {
 	display:block;
 }
 .tags_actions {
-	display:none; 
+/* 	display:none;  */
 	margin-left: 0.5em;
-	float:right;
+/* 	float:right; */
 }
 li:hover .tags_actions {
 	display:block;
@@ -318,7 +248,7 @@ li:hover em { display : none; }
 	width:40%;
 	top: 0.7em;
 	font-weight:500;
-	z-index: -10;
+/* 	z-index: -10; */
 }
 .bookmark_date, .bookmark_submit {
 	font-size:small;
@@ -360,6 +290,7 @@ li:hover em { display : none; }
 
 .bookmark_form_desc {
 	width:50%;
+	padding-top:100px;
 }
 
 .bookmark_form_desc textarea {
@@ -393,10 +324,10 @@ li:hover em { display : none; }
 }
 
 .bookmark_single_form .tagit{
-	width: 80%;
+/* 	width: 80%; */
 	box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;
-	margin: 3px;
-	height:6.4em;
+/* 	margin: 3px; */
+/* 	height:6.4em; */
 }
 .bookmark_form_submit {
 	margin-left: 4px;
@@ -413,47 +344,6 @@ li:hover em { display : none; }
 	top: auto;
 }
 
-#bookmark_settings {
-	-moz-box-sizing: border-box;
-	background: none repeat scroll 0 0 #EEEEEE;
-	border-right: 1px solid #CCCCCC;
-	border-top: 1px solid #CCCCCC;
- 	bottom: 0;
-	height: 2.8em;
-	margin: 0;
-	overflow: visible;
-	padding: 0;
-	position: fixed;
-	width: 20em;
-	z-index: 2;
-}
-
-#leftcontent #bookmark_settings li{
-	padding: 0;
-	background-color:transparent;
-}
-#leftcontent #bookmark_settings li:hover{
-	background-color:transparent;
-}
-
-#bookmark_settings .controls {
-	height: 2.8em;
-	width: 100%;
-}
-
-#bookmark_settings .controls > li:last-child button {
-	margin-right: 0.3em;
-}
-#bookmark_settings .controls button {
-	height: 2.4em;
-	margin: 0.15em 0 0 0.15em;
-	padding: 0.2em 0.1em 0;
-	width: 2.4em;
-}
-
-#bookmark_settings.open {
-	height: auto;
-}
 #bm_setting_panel {
 	background-color: #eee;
 	padding: 1em;
@@ -469,11 +359,12 @@ li:hover em { display : none; }
 #bm_import {
 	opacity: 0;
 	position: absolute;
+	width: 50px;
 }
 #import_bookmark .personalblock {
 	margin-top: 1em;
 }
-#leftcontent a.bookmarklet {
+#app-navigation a.bookmarklet {
 	margin-top: 5px;
 	padding: 0 5px 2px;
 }
