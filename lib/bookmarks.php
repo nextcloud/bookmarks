@@ -408,6 +408,7 @@ class OC_Bookmarks_Bookmarks{
 
 	public static function importFile($file){
 		libxml_use_internal_errors(true);
+		$loadEntities = libxml_disable_entity_loader(true);
 		$dom = new domDocument();
 
 		$dom->loadHTMLFile($file);
@@ -429,6 +430,7 @@ class OC_Bookmarks_Bookmarks{
 			self::addBookmark($ref, $title, $tags,$desc_str );
 		}
 		OCP\DB::commit();
+		libxml_disable_entity_loader($loadEntities);
 		return array();
 	}
 
