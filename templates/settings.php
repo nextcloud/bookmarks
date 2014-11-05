@@ -5,6 +5,7 @@
  * later.
  * See the COPYING-README file.
  */
+/** @var array $_ */
 ?>
 
 <fieldset class="personalblock">
@@ -14,6 +15,7 @@
 
 <form id="import_bookmark" action="<?php print_unescaped(OCP\Util::linkTo( "bookmarks", "ajax/import.php" ));?>"
  method="post" enctype="multipart/form-data">
+	<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>"/>
 	<fieldset class="personalblock">
 		<?php if(isset($_['error'])): ?>
 			<h3><?php p($_['error']['error']); ?></h3>

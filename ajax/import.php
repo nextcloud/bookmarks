@@ -1,7 +1,9 @@
 <?php
 
-OCP\App::checkAppEnabled('bookmarks');
-
+// Check if we are a user
+OCP\JSON::checkLoggedIn();
+OCP\JSON::callCheck();
+OCP\JSON::checkAppEnabled('bookmarks');
 
 $l = new OC_l10n('bookmarks');
 if(empty($_FILES)) {
