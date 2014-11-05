@@ -42,6 +42,14 @@ function watchClickInSetting(e){
 		toggleSettings();
 	}
 }
+
+function checkURL(url) {
+	if(url.substring(0, 3) === "htt") {
+		return url;
+	}
+	return "http://"+url;
+}
+
 function toggleSettings() {
 	if( $('#bookmark_settings').hasClass('open')) { //Close
 		$('#bookmark_settings').switchClass( "open", "" );
