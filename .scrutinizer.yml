@@ -1,6 +1,7 @@
 filter:
     excluded_paths:
         - '3rdparty/*'
+        - 'js/3rdparty/*'
 
 imports:
     - javascript
