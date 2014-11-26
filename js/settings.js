@@ -3,38 +3,39 @@ function attachSettingEvent(event) {
 	fileUpload($(this).closest('form'), $('#upload'));
 }
 
-function exportBm(e) {
+function exportBm() {
 	window.location = $(this).attr('href');
 }
 
-function fileUpload(form, result_div) {
-		
+function fileUpload(form, resultDiv) {
+
 	var uploadEventHandler = function () {
 		var data = {};
-		try{
+		try {
 			data = $.parseJSON(iframe.contents().text());
-		}catch (e){}
-		if(!data) {
-			result_div.text(t('bookmark', 'Import error'));
+		} catch (e) {
+		}
+		if (!data) {
+			resultDiv.text(t('bookmark', 'Import error'));
 			return;
 		}
-		if(data.status == 'error') {
-			list = $("<ul></ul>").addClass('setting_error_list');
+		if (data.status == 'error') {
+			var list = $("<ul></ul>").addClass('setting_error_list');
 			console.log(data);
-			$.each(data.data,function(index, item){
-				list.append($( "<li></li>" ).text(item));
+			$.each(data.data, function (index, item) {
+				list.append($("<li></li>").text(item));
 			});
-			result_div.html(list);
+			resultDiv.html(list);
 		} else {
-			result_div.text(t('bookmark', 'Import completed successfully.'));
+			resultDiv.text(t('bookmark', 'Import completed successfully.'));
 			getBookmarks();
 		}
 	};
-		
+
 	// Create the iframe...
 	var iframe;
-	if($('#upload_iframe').length === 1)
-		iframe = $('#upload_iframe')
+	if ($('#upload_iframe').length === 1)
+		iframe = $('#upload_iframe');
 	else {
 		iframe = $('<iframe></iframe>').attr({
 			id: 'upload_iframe',
@@ -43,7 +44,7 @@ function fileUpload(form, result_div) {
 			height: '0',
 			border: '0',
 			style: 'display:none'
-		}).bind('load',uploadEventHandler);
+		}).bind('load', uploadEventHandler);
 		form.append(iframe);
 	}
 
@@ -58,5 +59,5 @@ function fileUpload(form, result_div) {
 	// Submit the form...
 	form.submit();
 
-	result_div.text(t('bookmark', 'Uploading...'));
+	resultDiv.text(t('bookmark', 'Uploading...'));
 }

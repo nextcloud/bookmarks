@@ -1,341 +1,322 @@
-/* LEGACY STUFF - remove on switch to app-navigation and app-content */
-#leftcontent, .leftcontent {
-	position:relative; overflow:auto; width:256px; height:100%;
-	background:#f8f8f8; border-right:1px solid #ddd;
-	-moz-box-sizing:border-box; box-sizing:border-box;
-}
-#leftcontent li, .leftcontent li { background:#f8f8f8; padding:.5em .8em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; -webkit-transition:background-color 200ms; -moz-transition:background-color 200ms; -o-transition:background-color 200ms; transition:background-color 200ms; }
-#leftcontent li:hover, #leftcontent li:active, #leftcontent li.active, .leftcontent li:hover, .leftcontent li:active, .leftcontent li.active { background:#eee; }
-#leftcontent li.active, .leftcontent li.active { font-weight:bold; }
-#leftcontent li:hover, .leftcontent li:hover { color:#333; background:#ddd; }
-#leftcontent a { height:100%; display:block; margin:0; padding:0 1em 0 0; float:left; }
-#rightcontent, .rightcontent { position:fixed; top:89px; left: 336px; overflow:auto }
-
-#controls + .leftcontent{
-	top: 44px;
-}
-
-
-
-
-
-#content { overflow: auto; height: 100%; }
-
-#firstrun .bkm_hint { display: block; font-weight: normal; /*font-size: 0.5em; */ }
-#firstrun .title { font-weight:bold; }
-
-#distance {
-	width:1px;
-	height:50%;
-	margin-bottom:-13.75em; /* half of container's height */
-	float:left;
-}
-
-#firstrun_message {
-	margin:0 auto;
-	position:relative; /* puts container in front of distance */
-	text-align:left;
-	height:27.5em;
-	width:45em;
-	clear:left;
-}
-
-#firstrun_setting { font-size: 100%; text-decoration: underline}
-
 input.disabled, input.disabled:hover, input.disabled:focus {
-	cursor: not-allowed;
-	background-color: #ddd;
-	color: gray;
+    cursor: not-allowed;
+    background-color: #ddd;
+    color: gray;
 }
 #settingsbtn { background: transparent; color:#666; 
-	border-bottom: 1px solid #ddd; border-top: 1px solid #fff; }
+               border-bottom: 1px solid #ddd; border-top: 1px solid #fff; }
 #settingsbtn:hover { background:#dbdbdb !important; color:#999; 
-	border-bottom: 1px solid #CCCCCC; border-top: 1px solid #D4D4D4; }
-#settingsbtn img { width: 18px; height: 18px; margin: 10px;	}
+                     border-bottom: 1px solid #CCCCCC; border-top: 1px solid #D4D4D4; }
+#settingsbtn img { width: 18px; height: 18px; margin: 10px; }
 
-#rightcontent {
-	padding-top: 5px;
-	top: 1em !important;
-	overflow: visible;
-}
 
 .bookmarks_headline {
-	font-size: large;
-	font-weight: bold;
-	margin-left: 2em;
-	padding: 2.5ex 0.5ex;
+    font-size: large;
+    font-weight: bold;
+    margin-left: 2em;
+    padding: 2.5ex 0.5ex;
 }
 
 .bookmarks_menu {
-	margin-left: 1.5em;
-	padding: 0.5ex;
+    margin-left: 1.5em;
+    padding: 0.5ex;
 }
 
 .bookmarks_list, #firstrun {
-	overflow: auto;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	padding-top: 3em;
-/* 	width: 100%; */
-	height: 100%;
-	position: fixed;
-	left: 336px;
-	right:0;
+    overflow: auto;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 2em;
+    /* 	width: 100%; */
+    height: 100%;
+    /* 	position: fixed; */
+    left: 336px;
+    right:0;
 }
 
 #add_form {
-	padding-bottom: 2em;
+    padding-bottom: 2em;
+}
+
+#add_form_loading {
+    visibility: hidden;
+    float: right;
+    margin: 8px;
 }
 
 #add_form input {
-	margin: 0.3em;
+    margin: 0.3em;
 }
 #add_url {
-	width: 12em;
+    width: 91.5%;
 }
 .bookmarks_addBml {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 .bookmarks_label {
-	width: 7em;
-	display: inline-block;
-	text-align: right;
+    width: 7em;
+    display: inline-block;
+    text-align: right;
 }
 
 .bookmarks_input {
-	width: 8em;
+    width: 8em;
 }
 
 .bookmark_actions {
-	position: absolute;
-	right: 1em;
-	bottom:0.8em;
-	display: none;
+    position: absolute;
+    right: 1em;
+    top: 12px;
+    display: none;
 }
 .bookmark_actions span { margin: 0 0.4em; }
-.bookmark_actions img { opacity: 0.3; }
+.bookmark_actions img { opacity: 0.3;}
 .bookmark_actions img:hover { opacity: 1; cursor: pointer; }
 .bookmark_edit img {opacity:0.3;}
 .bookmark_edit img:hover {cursor: pointer; opacity: 1;}
 
 .bookmark_single {
-	position: relative;
-	padding: 0.2em 1em;
-        min-height: 3em;
-	border-bottom: 1px solid #DDD;
-	-webkit-transition:background-color 500ms; -moz-transition:background-color 500ms; -o-transition:background-color 500ms; transition:background-color 500ms;
+    position: relative;
+    padding: 0.2em 1em;
+    min-height: 3em;
+    border-bottom: 1px solid #DDD;
+    -webkit-transition:background-color 500ms; -moz-transition:background-color 500ms; -o-transition:background-color 500ms; transition:background-color 500ms;
 }
 
 .bookmark_single:hover {
-	background-color:#f8f8f8;
+    background-color:#f8f8f8;
 }
 
 .bookmark_single:hover .bookmark_actions {
-	display: block;
+    display: block;
 }
 
 .bookmark_title {
-	font-weight: bold;
-	display: block;
-	margin-right: 0.8em;
-	margin-top:0.7em;
+    font-weight: bold;
+    display: block;
+    margin-right: 0.8em;
+    margin-top:0.7em;
 }
 
 .bookmark_title a {
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	display: inline-block;
-	max-width: 24%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    max-width: 22%;
 }
 
 .bookmark_single:hover .bookmark_title .bookmark_edit_btn {
-	display:inline-block;
+    display:inline-block;
 }
 
 .bm_view_list .bookmark_tags {
-	position: absolute;
-	top: 0.5em;
-	right: 6em;
-	text-align: right;
+    position: absolute;
+    top: 0.5em;
+    right: 6em;
+    text-align: right;
 }
 
 .bookmark_tags {
-	left:25%;
-	position: relative;
+    left:25%;
+    position: relative;
+    width: 75%;
 }
 .bookmark_tag {
-	display: inline-block;
-	color: white;
-	margin: 0 0.2em;
-	padding: 0 0.4em;
-	background-color: #1D2D44;
-	border-radius: 0.4em;
-	opacity: 0.2;
+    display: inline-block;
+    color: white;
+    margin: 0.2em 0.2em;
+    padding: 0 0.4em;
+    background-color: #1D2D44;
+    border-radius: 0.4em;
+    opacity: 0.2;
 }
 .bookmark_tag:hover { opacity: 0.5; }
 
 .loading_meta {
-	display: none;
-	margin-left: 5px;
+    display: none;
+    margin-left: 5px;
 }
 
 .addBm {
-	background: none repeat scroll 0 0 #F8F8F8;
-	border-radius: 0.5em 0.5em 0.5em 0.5em;
-	color: #555555;
-	margin: 1em;
-	padding: 0.5em 1em;
-	text-shadow: 0 1px 0 #FFFFFF;
-	width: 500px;
-	
+    background: none repeat scroll 0 0 #F8F8F8;
+    border-radius: 0.5em 0.5em 0.5em 0.5em;
+    color: #555555;
+    margin: 1em;
+    padding: 0.5em 1em;
+    text-shadow: 0 1px 0 #FFFFFF;
+    width: 500px;
+
 }
 .bm_desc {
-	width:90%;
+    width:90%;
 }
 .addBm h1 {
-	font-weight: bold;
-	border-bottom: 1px solid #BABABA;
+    font-weight: bold;
+    border-bottom: 1px solid #BABABA;
 }
 
 
 .addBm fieldset > ul > li {
-	margin-top: 1em;
+    margin-top: 1em;
 }
 .addBm label {
-	display:block;
-	width:100%;
+    display:block;
+    width:100%;
 }
 .addBm .is_public_label {
-	display: inline;
-	
+    display: inline;
+
 }
 .addBm fieldset input[type="text"], .addBm textarea {
-	width:100%;
+    width:100%;
 }
 .addBm textarea{
-	min-width:250px;
+    min-width:250px;
 }
 .addBm .close_btn
 {
-	height: 18px;
-	margin: -20px 0 0;
-	padding: 1px;
-	float:right;
-	width: 19px;
+    height: 18px;
+    margin: -20px 0 0;
+    padding: 1px;
+    float:right;
+    width: 19px;
 }
 .addBm .submit {
-	float: right;
+    float: right;
 }
 
 .addBm ul.tagit { background:white; }
 
 .addBm input.ui-autocomplete-input,  #tag_filter input.ui-autocomplete-input, .bookmark_form_tags input.ui-autocomplete-input{
-	box-shadow:none;
+    box-shadow:none;
 
-}
-
-#leftcontent > ul > li, .leftcontent li {
-	padding: 0.2em;
-	padding-left:1em;
-}
-#leftcontent > label {
-	margin-top: 1em;
-	margin-bottom: 0.7em;
-	display: block;
-	padding-left: 1em;
-}
-
-#leftcontent .tag_list > li .tag , #leftcontent .share_list > li .tag{
-	background: none repeat scroll 0 0 #DEE7F8;
-	border: 1px solid #CAD8F3;
-	border-radius: 6px 6px 6px 6px;
-	color: #555555;
-	font-weight: normal;
-	float:left;
-	padding: 0.3em;
-	position: relative;
 }
 
 ul.tagit li.tagit-new {
-	padding-left: 0em;
+    padding-left: 0em;
+}
+
+#tag_select_label{
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    cursor: default;
+}
+
+li.tag_list {
+    padding-left: 3px;
+    padding-right: 3px;
+    overflow: hidden;
+}
+
+li.tag_list a {
+    display: inline !important;
+    padding: 5px 11px 5px 11px !important;
+    border: 1px solid transparent;
+}
+
+li.tag_list li:hover > a {
+    background: none repeat scroll 0 0 #dee7f8 !important;
+    border: 1px solid #cad8f3;
+    border-radius: 6px;
 }
 
 .tag_list em , .share_list em{
-	float:right;
-	display:block;
+    float:right;
+    display:block;
 }
-.tags_actions {
-	display:none; 
-	margin-left: 0.5em;
-	float:right;
-}
-li:hover .tags_actions {
-	display:block;
-}
-li:hover em { display : none; }
-#tag_filter li, #tag_filter li:hover{
-	background: none repeat scroll 0 0 #F8F8F8;
 
+.tags_actions {
+    margin-left: 0.5em;
+    display: inline;
+    line-height: 44px;
+}
+
+.tags_actions > span {
+    display:none;
+    float:right;
+}
+li:hover > .tags_actions > span {
+    display:inline;
+}
+li:hover > .tags_actions > em { display : none; }
+
+#tag_filter li, #tag_filter li:hover {
+    background: none repeat scroll 0 0 #F8F8F8;
 }
 #tag_filter .tagit {
-	margin: 0.3em;
+    margin: 0.3em;
 }
 #tag_filter ul.tagit > li.tagit-new {
-	padding:0;
+    padding:0;
 }
 #tag_filter ul.tagit li.tagit-choice {
-	background: none repeat scroll 0 0 #DEE7F8;
-	padding: 0.2em 18px 0.2em 0.5em;
+    background: none repeat scroll 0 0 #DEE7F8;
+    padding: 0.2em 18px 0.2em 0.5em;
+    width: auto;
 }
 
 #tag_filter a {
-	display: inline;
-	float: none;
- 	margin: 0;
-	padding: 0;
+    display: inline;
+    float: none;
+    margin: 0;
+    padding: 0;
 }
+
+#tag_filter ul li:hover > a {
+    background-color: transparent;
+} 
+
 #tag_filter ul.tagit li.tagit-choice .close{
-	margin-top: -8px;
-	cursor: pointer;
     margin-top: -8px;
-    position: absolute;
-	right: 0.1em;
-	top: 50%;
+    cursor: pointer;
+    margin-top: -8px;
+    right: -5px;
+    top: 50%;
+    padding-left: 0px !important;
+}
+
+#tag_filter ul.tagit li.tagit-choice .close span{
+    text-align: right;
+}
+
+ul.tagit li.tagit-choice .close .text-icon {
+    display: block !important;
 }
 
 .bookmark_desc{
-	height: 1.5em;
-	padding-left:1em;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	overflow:hidden;
-	display:block;
-	float:left;
-	position: absolute;
-	left: 25%;
-	width:40%;
-	top: 0.7em;
-	font-weight:500;
-	z-index: -10;
+    height: 1.5em;
+    padding-left:1em;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    display:block;
+    float:left;
+    position: absolute;
+    left: 25%;
+    width:40%;
+    top: 0.7em;
+    font-weight:500;
+    /* 	z-index: -10; */
 }
 .bookmark_date, .bookmark_submit {
-	font-size:small;
-	position: absolute;
-	right: 6em;
-	color:gray;
-/* 	margin-top:2.5em; */
-	margin-right: 0.2em;
-	top:0.8em;
+    font-size:small;
+    position: absolute;
+    right: 6em;
+    color:gray;
+    /* 	margin-top:2.5em; */
+    margin-right: 0.2em;
+    top:0.8em;
 }
 
 /*
 .bm_view_img .bookmark_single:hover .bookmark_url{
-	display:block; 
+        display:block; 
 }
 .bm_view_img .bookmark_single .bookmark_url{
- 	display:block; 
+        display:block; 
 }
 */
 .bookmark_single:hover .bookmark_url { display: inline;  }
@@ -343,137 +324,112 @@ li:hover em { display : none; }
 
 .bookmark_url { display: none; }
 .bookmark_form_title { 
-	float: left;
-	width:25%;
+    float: left;
+    width:25%;
 }
 
 .bookmark_form_url {
-	float:left;
-	width:25%;
+    float:left;
+    width:25%;
 }
 
 .bookmark_form_tags {
-	width:30%;
-	float:left;
+    width:30%;
+    float:left;
 }
 
 
 .bookmark_form_desc {
-	width:50%;
+    width:50%;
+    padding-top:100px;
 }
 
 .bookmark_form_desc textarea {
-	margin-top:-3.4em;
+    margin-top:-3.4em;
 }
 
 .bookmark_form_title input, .bookmark_form_url input  {
-	width: 89%;
+    width: 89%;
 }
 .bookmark_form_desc textarea {
-	width: 94.5%;
+    width: 94.5%;
 }
 
 .bookmark_single .bookmark_edit_btn {
-	visibility:hidden;
-	width: 16px;
+    visibility:hidden;
+    width: 16px;
 }
 
 .bookmark_single:hover .bookmark_edit_btn {
-	visibility: visible;
+    visibility: visible;
 }
 
 .bookmark_single:focus .bookmark_edit_btn {
-	visibility: visible;
-	opacity:1;
+    visibility: visible;
+    opacity:1;
 }
 
 .bookmark_single_form {
-	padding: 20px 8px;
-	border-bottom: 1px solid #DDD;
+    padding: 20px 8px;
+    border-bottom: 1px solid #DDD;
 }
 
 .bookmark_single_form .tagit{
-	width: 80%;
-	box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;
-	margin: 3px;
-	height:6.4em;
+    /* 	width: 80%; */
+    box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;
+    /* 	margin: 3px; */
+    /* 	height:6.4em; */
 }
 .bookmark_form_submit {
-	margin-left: 4px;
+    margin-left: 4px;
 }
 .bookmark_form_submit .reset {
-	float: right;
+    float: right;
 }
 
 .bm_view_img .bookmark_actions {
-	bottom: 0.7em;
-	display: block;
-	position: absolute;
-	right: 1em;
-	top: auto;
+    bottom: 0.7em;
+    display: block;
+    position: absolute;
+    right: 1em;
+    top: auto;
 }
 
-#bookmark_settings {
-	-moz-box-sizing: border-box;
-	background: none repeat scroll 0 0 #EEEEEE;
-	border-right: 1px solid #CCCCCC;
-	border-top: 1px solid #CCCCCC;
- 	bottom: 0;
-	height: 2.8em;
-	margin: 0;
-	overflow: visible;
-	padding: 0;
-	position: fixed;
-	width: 20em;
-	z-index: 2;
-}
-
-#leftcontent #bookmark_settings li{
-	padding: 0;
-	background-color:transparent;
-}
-#leftcontent #bookmark_settings li:hover{
-	background-color:transparent;
-}
-
-#bookmark_settings .controls {
-	height: 2.8em;
-	width: 100%;
-}
-
-#bookmark_settings .controls > li:last-child button {
-	margin-right: 0.3em;
-}
-#bookmark_settings .controls button {
-	height: 2.4em;
-	margin: 0.15em 0 0 0.15em;
-	padding: 0.2em 0.1em 0;
-	width: 2.4em;
-}
-
-#bookmark_settings.open {
-	height: auto;
-}
 #bm_setting_panel {
-	background-color: #eee;
-	padding: 1em;
-	height: 100%;
-/* 	display:none; */
+    background-color: #eee;
+    padding: 1em;
+    height: 100%;
+    /* 	display:none; */
 }
 /* .open #bm_setting_panel { display:block; } */
 
 #bm_setting_panel legend{
-	margin-top: 0.5em;
+    margin-top: 0.5em;
+}
+
+#bookmarklet_hint {
+    margin-bottom: 6px;
 }
 
 #bm_import {
-	opacity: 0;
-	position: absolute;
+    opacity: 0;
+    position: absolute;
+    width: 90px;
 }
+
+#bm_import:hover ~ button#bm_import_submit {
+    background-color: rgba(250, 250, 250, 0.9);
+    color: #333;
+}
+
+#import_bookmark {
+    margin-top: 10px;
+}
+
 #import_bookmark .personalblock {
-	margin-top: 1em;
+    margin-top: 1em;
 }
-#leftcontent a.bookmarklet {
-	margin-top: 5px;
-	padding: 0 5px 2px;
+#app-navigation a.bookmarklet {
+    margin-top: 5px;
+    padding: 0 5px 2px;
 }
