@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "Σελιδοδεικτ.",
 "No file provided for import" => "Δεν δόθηκε αρχείο για εισαγωγή",
 "Unsupported file type for import" => "Δεν υποστηρίζεται o τύπος αρχείου για εισαγωγή",
+"Error" => "Σφάλμα",
 "Filter by tag" => "Φιλτράρισμα βάσει ετικέτας",
 "Warning" => "Προειδοποίηση",
 "Tags" => "Ετικέτες",

@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "Bókam.",
 "No file provided for import" => "Engin skrá valin fyrir innflutning",
 "Unsupported file type for import" => "Ekki er hægt að flytja inn þessa tegund af bókamerki",
+"Error" => "Villa",
 "Filter by tag" => "Sía eftir töggum",
 "Warning" => "Aðvörun",
 "Tags" => "Tagg",

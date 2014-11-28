@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "Zál.",
 "No file provided for import" => "Žiadny súbor na import",
 "Unsupported file type for import" => "Nepodporovaný typ súboru pre import",
+"Error" => "Chyba",
 "Filter by tag" => "Filtrovať podľa značky",
 "Warning" => "Upozornenie",
 "Tags" => "Značky",

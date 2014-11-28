@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Zakładka",
     "No file provided for import" : "Nie wybrano plików do importu",
     "Unsupported file type for import" : "Nieobsługiwany typ pliku do importu",
+    "Error" : "Błąd",
     "Filter by tag" : "Filtruj po tagach",
     "Warning" : "Ostrzeżenie",
     "Tags" : "Tagi",

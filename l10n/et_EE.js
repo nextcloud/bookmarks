@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Järjeh.",
     "No file provided for import" : "Imporditav fail puudub",
     "Unsupported file type for import" : "Toetuseta failitüübi import",
+    "Error" : "Viga",
     "Filter by tag" : "Filtreeri siltide järgi",
     "Warning" : "Hoiatus",
     "Tags" : "Sildid",

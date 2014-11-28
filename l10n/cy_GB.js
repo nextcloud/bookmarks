@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Nodtud.",
     "No file provided for import" : "Dim ffeil i'w fewnforio",
     "Unsupported file type for import" : "Dim cefnogaeth i fewnforio'r math hwn o ffeil",
+    "Error" : "Gwall",
     "Filter by tag" : "Hidlo yn ôl tag",
     "Warning" : "Rhybudd",
     "Tags" : "Tagiau",

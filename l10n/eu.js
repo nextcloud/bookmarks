@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Lasterm.",
     "No file provided for import" : "Ez da inportatzeko fitxategirik zehaztu",
     "Unsupported file type for import" : "Fitxategi mota hau ez da onartzen inportatzeko.",
+    "Error" : "Errorea",
     "Filter by tag" : "Iragazi etiketaren arabera",
     "Warning" : "Abisua",
     "Tags" : "Etiketak",

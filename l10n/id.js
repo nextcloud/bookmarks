@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Markah",
     "No file provided for import" : "Tidak ada berkas untuk diimpor",
     "Unsupported file type for import" : "Tipe berkas tidak didukung untuk diimpor",
+    "Error" : "Kesalahan",
     "Filter by tag" : "Filter berdasar tag",
     "Warning" : "Peringatan",
     "Tags" : "Tag",

@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "Bookm.",
 "No file provided for import" => "არ არის ფაილი იმპორტისთვის",
 "Unsupported file type for import" => "დაუშვებელი ფაილის ტიპი იმპორტისთვის",
+"Error" => "შეცდომა",
 "Filter by tag" => "ტეგების მიხედვით ფილტრაცია",
 "Warning" => "გაფრთხილება",
 "Tags" => "ტაგები",

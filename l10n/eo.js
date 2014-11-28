@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Legos.",
     "No file provided for import" : "Neniu dosiero aldonita por enporti",
     "Unsupported file type for import" : "Dosiertipo nekongrua kun enporto",
+    "Error" : "Eraro",
     "Filter by tag" : "Filtri laŭ etikedo",
     "Warning" : "Averto",
     "Tags" : "Etikedoj",

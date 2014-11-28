@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Könyvj.",
     "No file provided for import" : "Nincs megadva az importálandó fájl",
     "Unsupported file type for import" : "Az importálandó fájltípus nem támogatott",
+    "Error" : "Hiba",
     "Filter by tag" : "Szűrés címkék szerint",
     "Warning" : "Figyelmeztetés",
     "Tags" : "Címkék",

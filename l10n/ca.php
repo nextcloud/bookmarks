@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "Marcador",
 "No file provided for import" => "No heu proporcionat cap fitxer a importar",
 "Unsupported file type for import" => "Importació d'un tipus de fitxer no implementat",
+"Error" => "Error",
 "Filter by tag" => "Filtrat per etiqueta",
 "Warning" => "Avís",
 "Tags" => "Etiquetes",

@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "Отмет.",
 "No file provided for import" => "Не беше предоставен файл за зареждане",
 "Unsupported file type for import" => "Неподдържан файл за внасяне.",
+"Error" => "Грешка",
 "Filter by tag" => "Филтриране по етикет",
 "Warning" => "Предупреждение",
 "Tags" => "Етикети",

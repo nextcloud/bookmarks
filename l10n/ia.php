@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "Marcat.",
 "No file provided for import" => "Il non ha alcun file de importar",
 "Unsupported file type for import" => "Typo de file non supportate per importation",
+"Error" => "Error",
 "Filter by tag" => "Filtra per etiquetta",
 "Warning" => "Aviso",
 "Tags" => "Etiquettas",

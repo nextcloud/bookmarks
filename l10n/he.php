@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "סימניה.",
 "No file provided for import" => "לא סופק קובץ לייבוא",
 "Unsupported file type for import" => "סוג הקובץ אינו ניתן לייבוא",
+"Error" => "שגיאה",
 "Filter by tag" => "סנן לפי תגית",
 "Warning" => "אזהרה",
 "Tags" => "תגיות",

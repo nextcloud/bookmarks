@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Bookm.",
     "No file provided for import" : "Keen Type un fichier fir ze importeieren",
     "Unsupported file type for import" : "Onenerstetzen Format fir den Import",
+    "Error" : "Feeler",
     "Filter by tag" : "Filtreieren vun Tags",
     "Warning" : "Warnung",
     "Tags" : "Tags",

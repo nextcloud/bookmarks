@@ -4,6 +4,7 @@ OC.L10N.register(
     "Bookmarks" : "Обележивачи",
     "Bookm." : "Обележ.",
     "Unsupported file type for import" : "Неподржана врста датотеке за увоз",
+    "Error" : "Грешка",
     "Filter by tag" : "Филтрирај по ознаци",
     "Warning" : "Упозорење",
     "Tags" : "Ознаке",

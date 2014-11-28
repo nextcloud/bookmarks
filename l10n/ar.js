@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "مرجعيه.",
     "No file provided for import" : "لم يتم اضافة ملف للتدخيل",
     "Unsupported file type for import" : "نوعية الملف غير صالحه للاستيراد",
+    "Error" : "خطأ",
     "Filter by tag" : "تصفيه حسب الفئه",
     "Warning" : "تحذير",
     "Tags" : "فئاة",

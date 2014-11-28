@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Bokm.",
     "No file provided for import" : "Inga fil gjeve for importering",
     "Unsupported file type for import" : "Ustøtta filtype for importering",
+    "Error" : "Feil",
     "Filter by tag" : "Filtrer etter emneord",
     "Warning" : "Åtvaring",
     "Tags" : "Emneord",

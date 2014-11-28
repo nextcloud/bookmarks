@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "ブックマーク",
     "No file provided for import" : "インポートするファイルが指定されていません",
     "Unsupported file type for import" : "インポートでは未サポートのファイルタイプ",
+    "Error" : "エラー",
     "Filter by tag" : "タグによるフィルタ",
     "Warning" : "警告",
     "Tags" : "タグ",

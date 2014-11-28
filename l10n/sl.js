@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Zaznam.",
     "No file provided for import" : "Ni navedene datoteke za uvoz",
     "Unsupported file type for import" : "Vrsta datoteke ni podprta za uvoz",
+    "Error" : "Napaka",
     "Filter by tag" : "Razvrsti po oznakah",
     "Warning" : "Opozorilo",
     "Tags" : "Oznake",

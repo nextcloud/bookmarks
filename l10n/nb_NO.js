@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Bokmrk.",
     "No file provided for import" : "Ingen fil valgt for importering",
     "Unsupported file type for import" : "Ikke støttet filtype for importering",
+    "Error" : "Feil",
     "Filter by tag" : "Filtrer ut fra tag",
     "Warning" : "Advarsel",
     "Tags" : "Tagger",

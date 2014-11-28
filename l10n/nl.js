@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Bladw.",
     "No file provided for import" : "Geen bestand voor import opgegeven",
     "Unsupported file type for import" : "Niet ondersteund bestandstype voor import",
+    "Error" : "Fout",
     "Filter by tag" : "Filter op tag",
     "Warning" : "Waarschuwing",
     "Tags" : "Tags",

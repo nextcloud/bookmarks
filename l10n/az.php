@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "Qeyd.",
 "No file provided for import" => "Götürmək üçün heç bir fayl təqdim edilməyib",
 "Unsupported file type for import" => "Fayl tipi götürülmə üçün dəstəklənmir",
+"Error" => "Səhv",
 "Filter by tag" => "Əsas-a görə süzgəc",
 "Warning" => "Xəbərdarlıq",
 "Tags" => "Işarələr",

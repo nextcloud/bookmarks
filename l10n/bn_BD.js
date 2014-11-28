@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "ঠিকা",
     "No file provided for import" : "কোনো ফাইল আমদানীর জন্য নেই",
     "Unsupported file type for import" : "আমদানি করার জন্য ফাইলের ফর্ম্যাটটি সঠিক নয়",
+    "Error" : "সমস্যা",
     "Filter by tag" : "ট্যাগ অনুসারে ছাঁক",
     "Warning" : "সতর্কবাণী",
     "Tags" : "ট্যাগ",

@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Bookm.",
     "No file provided for import" : "Niciun fișier furnizat pentru import",
     "Unsupported file type for import" : "Tipul de fișier nu este suportat pentru importări",
+    "Error" : "Eroare",
     "Filter by tag" : "Filtrare după marcaj",
     "Warning" : "Atenție",
     "Tags" : "Cuvinte cheie",

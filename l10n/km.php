@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "ចំណាំ",
 "No file provided for import" => "គ្មានឯកសារ​ផ្តល់​អោយ​ ដើម្បី​នាំចូលទេ",
 "Unsupported file type for import" => "ប្រភេទឯកសារមិនគាំទ្រ​ដើម្បីនាំយកចូល",
+"Error" => "កំហុស",
 "Filter by tag" => "ច្រោះដោយស្លាក",
 "Warning" => "បម្រាម",
 "Tags" => "ស្លាក",

@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "Bookm",
 "No file provided for import" => "هیچ فایلی وارد نشده است.",
 "Unsupported file type for import" => "نوع فایل برای وارد کردن معتبر نیست",
+"Error" => "خطا",
 "Filter by tag" => "فیلتر بر اساس برچسب",
 "Warning" => "اخطار",
 "Tags" => "برچسب‌ها",

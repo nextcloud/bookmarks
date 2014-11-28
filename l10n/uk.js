@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Заклд.",
     "No file provided for import" : "Немає файла для імпорту",
     "Unsupported file type for import" : "Імпорт файлу даного типу не підтримується",
+    "Error" : "Помилка",
     "Filter by tag" : "Фільтр по тегах",
     "Warning" : "Попередження",
     "Tags" : "Теги",

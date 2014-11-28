@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Yer imi",
     "No file provided for import" : "İçe aktarılacak dosya yok",
     "Unsupported file type for import" : "İçe aktarmak için desteklenmeyen dosya türü",
+    "Error" : "Hata",
     "Filter by tag" : "Etikete göre süz",
     "Warning" : "Uyarı",
     "Tags" : "Etiketler",

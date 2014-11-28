@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Marc.",
     "No file provided for import" : "Non foi fornecido un ficheiro para importar",
     "Unsupported file type for import" : "Tipo de ficheiro non admitido para a importación",
+    "Error" : "Erro",
     "Filter by tag" : "Filtrar segundo a etiqueta",
     "Warning" : "Aviso",
     "Tags" : "Etiquetas",

@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "รายการโปรด",
     "No file provided for import" : "ไม่พบไฟล์สำหรับการนำเข้าข้อมูล",
     "Unsupported file type for import" : "ประเภทของไฟล์ที่ต้องการนำเข้าไม่ได้รับการรองรับให้ใช้งาน",
+    "Error" : "ข้อผิดพลาด",
     "Filter by tag" : "แสดงข้อมูลตามป้ายกำกับ",
     "Warning" : "คำเตือน",
     "Tags" : "ป้ายกำกับ",

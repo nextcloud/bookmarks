@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Bookm." => "書籤",
 "No file provided for import" => "沒有提供匯入用的檔案",
 "Unsupported file type for import" => "不支援這種檔案類型的匯入",
+"Error" => "錯誤",
 "Filter by tag" => "依標籤篩選",
 "Warning" => "警告",
 "Tags" => "標籤",

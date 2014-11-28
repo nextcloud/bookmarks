@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "خەتكۈچ.",
     "No file provided for import" : "ئەكىرىشكە ھېچقانداق ھۆججەت تەمىنلەنمىگەن",
     "Unsupported file type for import" : "ئەكىرىشنى قوللىمايدىغان ھۆججەت تىپى",
+    "Error" : "خاتالىق",
     "Filter by tag" : "بەلگە بويىچە سۈز",
     "Warning" : "ئاگاھلاندۇرۇش",
     "Tags" : "بەلگەلەر",
