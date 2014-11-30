@@ -31,6 +31,7 @@ OC.L10N.register(
     "Address" : "Адрес",
     "Add" : "Добавить",
     "You have no bookmarks" : "У вас нет закладок",
+    "You can also import a bookmark file" : "Вы также можете импортировать файл закладок",
     "Bookmarklet" : "Bookmarklet",
     "Export & Import" : "Экспорт & Импорт",
     "Export" : "Экспорт",
