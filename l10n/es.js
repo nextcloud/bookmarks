@@ -30,6 +30,7 @@ OC.L10N.register(
     "Add to ownCloud" : "Agregar a ownCloud",
     "Address" : "Dirección",
     "Add" : "Añadir",
+    "Filterable Tags" : "Etiquetas filtrables",
     "You have no bookmarks" : "No tiene marcadores",
     "You can also import a bookmark file" : "También puede importar un archivo con marcadores",
     "Bookmarklet" : "Marcador de JavaScript",
