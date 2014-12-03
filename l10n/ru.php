@@ -29,6 +29,7 @@ $TRANSLATIONS = array(
 "Add to ownCloud" => "Добавить в ownCloud",
 "Address" => "Адрес",
 "Add" => "Добавить",
+"Filterable Tags" => "Фильтруемые теги",
 "You have no bookmarks" => "У вас нет закладок",
 "You can also import a bookmark file" => "Вы также можете импортировать файл закладок",
 "Bookmarklet" => "Bookmarklet",
