@@ -1,7 +1,7 @@
 <?php
 $TRANSLATIONS = array(
 "No file provided for import" => "Aucun fichier fourni pour l'importation",
-"Unsupported file type for import" => "Type de fichier non supporté pour l'importation",
+"Unsupported file type for import" => "Type de fichier non pris en charge à l'importation",
 "Bookmarks" => "Favoris",
 "Tags" => "Étiquettes",
 "Filter by tag" => "Filtrer par étiquette",
