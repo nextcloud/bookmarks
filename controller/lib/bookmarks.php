@@ -39,7 +39,7 @@ class Bookmarks {
 	 * @param limit integer of item to return
 	 * @return Found Tags
 	 */
-	public static function findTags($userId, IDb $db, $filterTags = array(), $offset = 0, $limit = 10) {
+	public static function findTags($userId, IDb $db, $filterTags = array(), $offset = 0, $limit = -1) {
 		$params = array_merge($filterTags, $filterTags);
 		array_unshift($params, $userId);
 		$not_in = '';
