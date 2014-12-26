@@ -160,7 +160,9 @@ class Bookmarks {
 			$sql .= ' AND public = 1 ';
 		}
 
-		Bookmarks::findBookmarksBuildFilter($sql, $params, $filters, $filterTagOnly, $tagFilterConjunction, $CONFIG_DBTYPE);
+		if (count($filters) > 0) {
+			Bookmarks::findBookmarksBuildFilter($sql, $params, $filters, $filterTagOnly, $tagFilterConjunction, $CONFIG_DBTYPE);
+		}
 
 		if (!in_array($sqlSortColumn, $tableAttributes)) {
 			$sqlSortColumn = 'lastmodified';
