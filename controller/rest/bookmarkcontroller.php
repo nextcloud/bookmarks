@@ -68,19 +68,35 @@ class BookmarkController extends ApiController {
 	 */
 	public function newBookmark($url = "", $item = array(), $from_own = 0, $title = "", $is_public = false, $description = "") {
 
-		// Check if it is a valid URL
+		if ($from_own == 0) {
+			// allow only http(s) and (s)ftp
+			$protocols = '/^[hs]{0,1}[tf]{0,1}tp[s]{0,1}\:\/\//i';
+			// if not (allowed) protocol is given, assume http and https (and fetch both)
+			if (! preg_match($protocols, $url)) {
+				// append https to url and fetch it
+				$url_https = 'https://' . $url;
+				$datas_https = Bookmarks::getURLMetadata($url_https);
+				// append http to url and fetch it
+				$url_http = 'http://' . $url;
+				$datas_http = Bookmarks::getURLMetadata($url_http);
+			}
+			// adopt https if it works (switch to http if it doesn't)
+			if (isset($datas_https['title'])) { // test if https works
+				$title = $datas_https['title'];
+				$url = $url_https;
+			} elseif (isset($datas_http['title'])) { // otherwise test http for results
+				$title = $datas_http['title'];
+				$url = $url_http;
+			}
+		}
+
+		// Check if it is a valid URL (after adding http(s) prefix)
 		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
 
 		$tags = isset($item['tags']) ? $item['tags'] : array();
 
-		if ($from_own == 0) {
-			$datas = Bookmarks::getURLMetadata($url);
-			if (isset($datas['title'])) {
-				$title = $datas['title'];
-			}
-		}
 		$id = Bookmarks::addBookmark($this->userId, $this->db, $url, $title, $tags, $description, $is_public);
 		$bm = Bookmarks::findUniqueBookmark($id, $this->userId, $this->db);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
