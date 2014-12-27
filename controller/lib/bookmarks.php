@@ -544,25 +544,41 @@ class Bookmarks {
 	 * @return array Metadata for url;
 	 * */
 	public static function getURLMetadata($url) {
-		//allow only http(s) and (s)ftp
-		$protocols = '/^[hs]{0,1}[tf]{0,1}tp[s]{0,1}\:\/\//i';
-		//if not (allowed) protocol is given, assume http
-		if (preg_match($protocols, $url) == 0) {
-			$url = 'http://' . $url;
-		}
+		
 		$metadata = array();
 		$metadata['url'] = $url;
-		$page = \OC_Util::getUrlContent($url);
-		if ($page) {
-			if (preg_match("/<title>(.*)<\/title>/sUi", $page, $match) !== false)
-				if (isset($match[1])) {
-					$metadata['title'] = html_entity_decode($match[1], ENT_QUOTES, 'UTF-8');
-					//Not the best solution but....
-					$metadata['title'] = str_replace('&trade;', chr(153), $metadata['title']);
-					$metadata['title'] = str_replace('&dash;', '‐', $metadata['title']);
-					$metadata['title'] = str_replace('&ndash;', '–', $metadata['title']);
-				}
+		$page = "";
+		
+		try {
+			$page = \OC::$server->getHTTPHelper()->getUrlContent($url);
+		} catch (\Exception $e) {
+			throw $e;
 		}
+		
+		//Check for encoding of site.
+		//If not UTF-8 convert it.
+		$encoding = array();
+		preg_match('/charset="?(.*?)["|;]/i', $page, $encoding);
+		
+		if (isset($encoding[1])) {
+			$decodeFrom = strtoupper($encoding[1]);
+		} else {
+			$decodeFrom = 'UTF-8';
+		}
+
+		if ($page) {
+
+			if ($decodeFrom != 'UTF-8') {
+				$page = iconv($decodeFrom, "UTF-8", $page);
+			}
+
+			preg_match("/<title>(.*)<\/title>/si", $page, $match);
+			
+			if (isset($match[1])) {
+				$metadata['title'] = html_entity_decode($match[1]);
+			}
+		}
+		
 		return $metadata;
 	}
 

@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<!--[if IE 6 ]><html class="xp ie ielt9 ielt8 ielt7 ie6" lang="de-DE"><![endif]-->
+<!--[if IE 7 ]><html class="xp ie ielt9 ielt8 ie7" lang="de-DE"><![endif]-->
+<!--[if IE 8 ]><html class="xp ie ielt9 ie8" lang="de-DE"><![endif]-->
+<!--[if IE 9 ]><html class="xp ie ie9" lang="de-DE"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="de-DE"><!--<![endif]-->
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>Golem.de: IT-News f&uuml;r Profis</title>
+
+<meta name="readability-verification" content="kuSg66BZyJM3ZVvuHKMwXgR8BTN2FDzx43CjZUp8" />
+<meta property="fb:page_id" content="10150133802480637" />
+<meta property="fb:admins" content="100003628763607" />
+<meta name="description" content="Golem.de - St&auml;ndig aktuelle IT-News f&uuml;r Profis und Videos aus Politik, Wirtschaft und Wissenschaft &uuml;ber Hardware, Software, Telekommunikation, Games">
+<meta name="keywords" content="News, Web, Internet, headlines, newsletter, technology, Computer, web, information, pc, windows, microsoft, netscape, browser, daily, headline, business, top, newslink, newslinks, stories, software, press release, Pressemitteilungen, Schlagzeilen, Nachrichten, deutsch, neu, aktuell, online, www, today, todays, up-to-date news, fast news, intranet news, world, international, german, financial, ipo, business">
+<link rel="publisher" href="https://plus.google.com/108635198256823282564/" />
+
+<meta name="twitter:site" content="@golemredaktion" />
+
+<meta name="application-name" content="Golem.de">
+<meta name="msapplication-config" content="/staticrl/xml/ieconfig.xml">
+<meta name="msapplication-task" content="name=Homepage;action-uri=http://www.golem.de;icon-uri=http://www.golem.de/favicon.ico">
+<meta name="msapplication-task" content="name=Ticker;action-uri=http://www.golem.de/ticker/;icon-uri=http://www.golem.de/favicon.ico">
+<meta name="msapplication-task" content="name=Facebook;action-uri=http://www.facebook.com/golem;icon-uri=http://www.golem.de/_img/facebook_16.ico">
+<meta name="msapplication-task" content="name=Twitter;action-uri=http://twitter.com/GolemRedaktion;icon-uri=http://www.golem.de/_img/twitter_16.ico">
+<meta name="msapplication-task" content="name=Google+;action-uri=https://plus.google.com/108635198256823282564/?prsrc=3;icon-uri=http://www.golem.de/_img/gplus2_16.ico">
+<link rel="alternate" type="application/rss+xml" title="Golem.de RSS Feed" href="http://rss.golem.de/rss.php?feed=RSS1.0">
+<link rel="alternate" type="application/atom+xml" title="Golem.de ATOM Feed" href="http://rss.golem.de/rss.php?feed=ATOM1.0">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="54x54" href="/apple-touch-icon-54x54.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+
+<link href="/staticrl/styles/font-face-1.0.1.css" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" href="/staticrl/styles/golem_main_63-min.css" type="text/css">
+<link rel="stylesheet" href="/staticrl/styles/gg2_1-0-0-min.css" type="text/css">
+
+<style type="text/css">
+#hn1-home { color:#fff !important }
+#hn2-top { color:#888 !important }
+</style>
+
+<script type="text/javascript">
+<!--
+if(!Golem) {
+    var Golem = {};
+}
+if(!Golem.Ad) {
+    Golem.Ad = {};
+}
+Golem.pcvclass = 'desktop';
+
+var ord = Math.random()*10000000000000000,
+    gafc_rubrik = '', gafc_zone = '1437835425',
+    IQD_varPack={iqdSubSite:'golem',iqdSiteInfo:[[980,0,-10],[0,0,980],[0,0,980],['center','fullBodyBg'],['y','y','y']],iqdCountSkyReq:parseInt(0),iqdEnableSky:'neutral'};
+// IQD testvariable
+var iqd_TestKW = 'iqlive',
+    iqd_Loc = (top==self) ? window.location : parent.location,
+    iqd_Domain = iqd_Loc.href.toLowerCase();
+if (iqd_Domain.match(/iqadtest=/)) {
+    var iqd_ParamValue = iqd_Domain.substring(iqd_Domain.indexOf('iqadtest=') + 9);
+    iqd_TestKW = iqd_ParamValue.replace(/[^\w,_-]+/g, '');
+}
+document.getElementsByTagName('html')[0].className+=' js';
+if ((navigator.userAgent.search(/Windows NT 5\.[012]/i) > 0)) {
+    document.getElementsByTagName('html')[0].className+=' xp';
+}
+var _gcpx = _gcpx || [];
+//-->
+</script>
+
+<!--[if lt IE 9]>
+  <script src="/staticrl/scripts/external/modernizr.custom-2.6.2.min.js"></script>
+<![endif]-->
+
+<script type="text/javascript">if(!document.Golem){Golem={}}if(!document._golem_html5ads_enable){_golem_html5ads_enable=false}Golem.detectHTML5AdsEnable=function(){if(navigator.userAgent.search(/Windows NT 5\.[012]/i) > 0){return};if(!navigator||!navigator.userAgent||""==navigator.userAgent){return}var c,b,a,d=[{r:/Chrome\/(\d+)/gi,v:25},{r:/\/(\d+)[0-9\.]*\s+Safari/gi,v:6},{r:/Firefox\/(\d+)/gi,v:17}, {r:/.*Trident\/(\d+)\..*/gi,v:7}];if(0==d.length){return}for(c=0;c<d.length;c++){b=d[c];a=b.r.exec(navigator.userAgent);if((null!=a)&&(null!=a[1])&&(b.v<=a[1])){_golem_html5ads_enable=true}}};Golem.detectHTML5AdsEnable();
+Golem.pcvclass = 'desktop';
+</script>
+</head>
+<body class="index golem-flip-std-body">
+<!-- google_ad_section_start(weight=ignore) -->
+<!-- IVW VERSION="1.4" -->
+<script type="text/javascript">
+<!--
+  var IVW = "";
+//-->
+</script>
+<!-- /IVW -->
+<!-- BT -->
+<script type="text/javascript">
+    var n_pbt = "";
+</script>
+<script type="text/javascript" src="http://gwp.nuggad.net/rc?nuggn=223088769&amp;nuggsid=2088753725&amp;nuggtg=GHOME">
+</script>
+<!-- /BT -->
+<!-- AV -->
+<script type="text/javascript" src="http://c.t4ft.de/c/ftg_iq.min.js"></script>
+<!-- /AV -->
+<!-- YieldProbe -->
+<script type="text/javascript" src="http://ad.yieldlab.net/yp/26033,26034,26035,26036?ts=1419098479"></script>
+<!-- BEGIN Krux Control Tag for "IQ" -->
+<!-- Source: /snippet/controltag?confid=Ip52Cnbc&site=IQ&edit=1 -->
+<script class="kxct" data-id="Ip52Cnbc" data-timing="async" data-version="1.9" type="text/javascript">
+window.Krux||((Krux=function(){Krux.q.push(arguments);}).q=[]);
+  (function(){
+    var k=document.createElement('script');k.type='text/javascript';k.async=true;
+    var m,src=(m=location.href.match(/\bkxsrc=([^&]+)/))&&decodeURIComponent(m[1]);
+    k.src = /^https?:\/\/([^\/]+\.)?krxd\.net(:\d{1,5})?\//i.test(src) ? src : src === "disable" ? "" :
+    (location.protocol==="https:"?"https:":"http:")+"//cdn.krxd.net/controltag?confid=Ip52Cnbc";
+    var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(k,s);
+  })();
+</script>
+<!-- END Krux Controltag -->
+<!-- BEGIN Krux IQ-->
+<script class="kxint" type="text/javascript">
+window.Krux||((Krux=function(){Krux.q.push(arguments);}).q=[]);
+  (function(){
+    // Namespace centro
+    var Krux = this.Krux.adaudience = this.Krux.adaudience || {};
+    function retrieve(n){
+      var m, k='kxadaudience_'+n;
+      if (window.localStorage) {
+          return window.localStorage[k] || "";
+      } else if (navigator.cookieEnabled) {
+          m = document.cookie.match(k+'=([^;]*)');
+          return (m && unescape(m[1])) || "";
+      } else {
+          return '';
+      }
+    }
+    Krux.user = retrieve('user');
+    Krux.segments = retrieve('segs') ? retrieve('segs').split(',') : [];
+    // DFP Premium
+    var dfpp = [];
+    for (var i = 0; i < Krux.segments.length; i++ ) {
+      dfpp.push(Krux.segments[i]);
+    }
+    Krux.dfppKeyValues = dfpp.length ? dfpp.join(',') + ';' : '';
+    Krux.dfppKeyValues = 'ksg=' + Krux.dfppKeyValues;
+  })();
+</script>
+<!-- END Krux IQ -->
+<!-- BEGIN YLP -->
+<script type="text/javascript">
+// Publisher code
+// iterate through all recommendations
+var YLP = typeof yl === 'object' ? yl.YpResult || "" : "";
+var ylpid = [26033, 26034, 26035, 26036];
+var ylpid2 = [55, 4960, 7450, 1142];
+//iq audience package
+try { var ylpsky = YLP.get(ylpid[0]).id; } catch(e) { ylpsky = 0; };
+try { var ylpmedrec = YLP.get(ylpid[1]).id; } catch(e) { ylpmedrec = 0; };
+try { var ylpsuba = YLP.get(ylpid[2]).id; } catch(e) { ylpsuba = 0; };
+try { var ylpdynamic = YLP.get(ylpid[3]).id; } catch(e) { ylpdynamic = 0; };
+try { var ylpwf = YLP.get(ylpid[3]).format; } catch(e) { ylpwf = 0; };
+var ylpwfid = 'y' + ylpwf;
+var iqd_wlCus = ['ysky', 'ymdr', 'ysba', 'ydyc', ylpwfid];
+var iqd_wlCusRec = [ylpsky, ylpmedrec, ylpsuba, ylpdynamic, ylpwf];
+var iqd_wlCusRecStr = [];
+for (var i = 0; i < iqd_wlCus.length; i++) {
+    iqd_wlCusRecStr[i] = (iqd_wlCusRec[i] > 0) ? iqd_wlCus[i] + '=1' : iqd_wlCus[i] + '=0';
+}
+document.write('<scr'+'ipt>n_pbt += iqd_wlCusRecStr.join("\;");</scr'+'ipt>');
+if (window.Krux.adaudience.dfppKeyValues) {
+    document.write('<scr'+'ipt>n_pbt += ";" + window.Krux.adaudience.dfppKeyValues;</scr'+'ipt>');
+}
+</script>
+<script type="text/javascript">n_pbt = n_pbt.substr(0,1150);</script>
+<!-- END YLP -->
+<div id="bannerTopWrapper">
+<div class="iqdSiteAlign">
+<div id="superbanner">
+<!-- begin ad tag (tile=1) -->
+<div id="iqadtile1">
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script type="text/javascript" src="http://ad.de.doubleclick.net/adj/golem/homepage;kw=golem,iqdrelgol,' + iqd_TestKW + ',homepage,tsilkcalb,' + (_golem_html5ads_enable?',golhtml5':'') + ';doc=index;sz=728x90,800x250;tile=1;dcopt=ist;' + n_pbt + ';ord=' + ord + '?"></scr' + 'ipt>');
+//]]>
+</script>
+<noscript><a href="http://ad.de.doubleclick.net/jump/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=728x90,800x250;tile=1;ord=1419098479?" target="_blank" ><img src="http://ad.de.doubleclick.net/ad/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=728x90,800x250;tile=1;ord=1419098479?" style="border:0;" alt="" /></a></noscript>
+</div>
+<!-- end ad tag (tile=1) -->
+
+<div id="skyscraper">
+<!-- begin ad tag (tile=2) -->
+<div id="iqadtile2">
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script type="text/javascript" src="http://ad.de.doubleclick.net/adj/golem/homepage;kw=golem,iqdrelgol,' + iqd_TestKW + ',homepage,tsilkcalb,;doc=index;sz=120x600,160x600,200x600;tile=2;' + n_pbt + ';ord=' + ord + '?"></scr' + 'ipt>');
+//]]>
+</script>
+<noscript><a href="http://ad.de.doubleclick.net/jump/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=120x600,160x600,200x600;tile=2;ord=1419098479?" target="_blank" ><img src="http://ad.de.doubleclick.net/ad/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=120x600,160x600,200x600;tile=2;ord=1419098479?" style="border:0;" alt="" /></a></noscript>
+</div>
+<!-- end ad tag (tile=2) -->
+</div><!-- skyscraper --> 
+</div><!-- superbanner -->
+
+</div>
+</div>
+<div class="golem-flip-std">
+
+<div id="grandwrapper" class="golem-zo-grandwrapper">
+<header id="header">
+    <div class="dh1">
+        <a href="http://www.golem.de/"><img alt="Golem.de - IT-News f&uuml;r Profis" src="/staticrl/images/logo-g.png" /></a>
+    </div>
+    <nav id="header-nav-1">
+        <div class="implied">Navigation</div>
+        <ul>
+            <li><a id="hn1-home" href="http://www.golem.de/">Home</a></li>
+            <li><a id="hn1-ticker" href="http://www.golem.de/ticker/">Ticker</a></li>
+            <li><a id="hn1-video" href="http://video.golem.de/">Video</a></li>            
+        </ul>
+    </nav><!-- #header-nav-1 -->
+    <nav id="header-nav-2">
+        <div id="hn2-top" class="dh2">Top-Themen:</div>
+<ul>
+<li><a id="hn2s-android" href="http://www.golem.de/specials/android/">Android</a></li><li><a id="hn2s-apple" href="http://www.golem.de/specials/apple/">Apple</a></li><li><a id="hn2s-google" href="http://www.golem.de/specials/google/">Google</a></li><li><a id="hn2s-windows10" href="http://www.golem.de/specials/windows10/">Windows 10</a></li><li><a id="hn2s-linux" href="http://www.golem.de/specials/linux/">Linux</a></li><li><a id="hn2s-golemretro" href="http://www.golem.de/specials/golemretro/">Golem retro_</a></li><li class="contains-drop"><a href="http://www.golem.de/specials/">mehr</a><ul><li><a href="http://www.golem.de/specials/wearable/">Wearable</a></li><li><a href="http://www.golem.de/specials/test/">Test</a></li><li><a href="http://www.golem.de/specials/netzpolitik/">Netzpolitik</a></li><li><a href="http://www.golem.de/specials/sony/">Sony</a></li><li><a href="http://www.golem.de/specials/iphone6/">iPhone 6</a></li><li><a href="http://www.golem.de/specials/security/">Security</a></li><li><a href="http://www.golem.de/specials/nsa/">NSA</a></li><li><a href="http://www.golem.de/specials/playstation4/">Playstation 4</a></li><li><a href="http://www.golem.de/specials/oneplus/">Oneplus</a></li><li><a href="http://www.golem.de/specials/foto/">Foto</a></li><li><a href="http://www.golem.de/specials/windows/">Windows</a></li><li><a href="http://www.golem.de/specials/galaxy-s5/">Galaxy S5</a></li><li><a href="http://www.golem.de/specials/sony-xperia-z3/">Sony Xperia Z3</a></li><li><a href="http://www.golem.de/specials/windows-8-1/">Windows 8.1</a></li><li><a href="http://www.golem.de/specials/adobe/">Adobe</a></li><li><a href="http://www.golem.de/specials/facebook/">Facebook</a></li><li><a href="http://www.golem.de/specials/amazon/">Amazon</a></li><li><a href="http://www.golem.de/specials/oculus-rift/">Oculus Rift</a></li><li><a href="http://www.golem.de/specials/bitcoin/">Bitcoin</a></li><li><a href="http://www.golem.de/specials/xbox-one/">Xbox One</a></li><li><a href="http://www.golem.de/specials/open-source/">Open Source</a></li></ul></li>
+</ul>    </nav><!-- #header-nav-2 -->
+
+<form method="get" action="http://suche.golem.de/search.php" name="su">
+    <input type="hidden" name="l" value="10">
+    <fieldset>
+        <label class="implied" for="search-text">Suchbegriffe:</label>
+        <span class="inputText">
+            <input id="search-text" placeholder="" type="text" name="q" value="" tabindex="1" />
+        </span>
+        <span class="inputSubmit">
+            <input id="search-submit" type="submit" value="Suchen" tabindex="2" />
+        </span>
+    </fieldset>
+</form>
+</header><!-- #header -->
+    <div id="screen">
+<!-- google_ad_section_end -->
+<!-- google_ad_section_start -->
+
+<!-- begin ad tag (tile=3) -->
+<div id="iqadtile3">
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script type="text/javascript" src="http://ad.de.doubleclick.net/adj/golem/homepage;kw=golem,iqdrelgol,' + iqd_TestKW + ',homepage,tsilkcalb,' + (_golem_html5ads_enable?',golhtml5':'') + ';doc=index;sz=930x200,940x250;tile=3;' + n_pbt + ';ord=' + ord + '?"></scr' + 'ipt>');
+//]]>
+</script>
+<noscript><a href="http://ad.de.doubleclick.net/jump/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=930x200,940x250;tile=3;ord=1419098479?" target="_blank" ><img src="http://ad.de.doubleclick.net/ad/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=930x200,940x250;tile=3;ord=1419098479?" style="border:0;" alt="" /></a></noscript>
+</div>
+<!-- end ad tag (tile=3) -->
+<hr class="implied" />
+<section id="index-promo">
+<header class="cluster-header"><a id="bigal_111297" href="/news/directory-authorities-tor-projekt-befuerchtet-baldigen-angriff-auf-seine-systeme-1412-111297.html" title="Directory Authorities: Tor-Projekt bef&uuml;rchtet baldigen Angriff auf seine Systeme"><div><hgroup><h2 class="head1">Directory Authorities</h2> <h1 class="head4">Tor-Projekt bef&uuml;rchtet baldigen Angriff auf seine Systeme</h1></hgroup></div></a></header>
+    <p>
+		Noch im Dezember 2014 k&ouml;nnte das <a href="http://www.golem.de/specials/tor-netzwerk/" target="_blank">Tor-Netzwerk</a> vielleicht nicht mehr nutzbar sein. Die Macher des Projekts haben einen anonymen Tipp erhalten, der auf einen Angriff auf zentrale Komponenten des Netzes hindeutet.
+                            <span class="icon-comments" id="bigalc_111297">18&nbsp;Kommentare</span>
+                    </p>
+        <img id="bigali_111297" alt="Directory Authorities: Tor-Projekt bef&uuml;rchtet baldigen Angriff auf seine Systeme" src="/1406/107468-81490-i_rc.jpg" />
+    
+    <ol>
+    </ol>
+</section><!-- #index-promo -->
+<hr class="implied" /><!-- begin ad tag (tile=6) -->
+<div id="iqadtile6">
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script type="text/javascript" src="http://ad.de.doubleclick.net/adj/golem/homepage;kw=golem,iqdrelgol,' + iqd_TestKW + ',homepage,tsilkcalb,;doc=index;sz=930x200;tile=6;' + n_pbt + ';ord=' + ord + '?"></scr' + 'ipt>');
+//]]>
+</script>
+<noscript><a href="http://ad.de.doubleclick.net/jump/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=930x200;tile=6;ord=1419098479?" target="_blank" ><img src="http://ad.de.doubleclick.net/ad/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=930x200;tile=6;ord=1419098479?" style="border:0;" alt="" /></a></noscript>
+</div>
+<!-- end ad tag (tile=6) -->
+<hr class="implied" />
+        <div class="g g4 g-ie6">
+
+<section id="index-vica2">
+<div class="giv" style="clear:both;">
+<div class="givc">
+<table class="givh"><tr><td class="givh_head"><div class="dh1 head1"><a href="http://video.golem.de/" style="color: #000000;">Aktuelle Videos</a></div></td><td class="givh_icon"><img src="http://video.golem.de/staticrl/images/icon-left-1.png" alt="Zur&uuml;ck" title="Zur&uuml;ck" id="givh_prev" style="display:none;"></td><td class="givh_index"><div class="dh1 head1" id="givh_index">&nbsp;</div></td><td class="givh_icon"><img src="http://video.golem.de/staticrl/images/icon-right-1.png" alt="Vor" title="Vor" id="givh_next" style="display:none;"></td></tr></table>
+<script type="text/javascript">
+
+<!--
+function givacpx(link,p){
+  $('body').append("<img src='http://ads.golem.de/nl.php?id=zp_givc_p"+p+"&cb="+Math.random()*1000000+"'>");
+  var self = this;
+  setTimeout(function(){self.location.href=link.href;},200);
+  return false;
+}
+//-->
+
+</script>
+  <div class="givwrapper">
+    <ul>
+<li><figure class="cluster-video"><img id="givi_14537" src="http://video.golem.de/teaser/1/1/14537/thumb-medium-194/medium-480-04_pacmanrom-snap.jpg" alt="ROM-Ecke Teil 2 - Pac Man ROM"><figcaption><a id="giva_14537" href="http://video.golem.de/handy/14537/rom-ecke-teil-2-pac-man-rom.html" onclick="return givacpx(this,1);"><span>ROM-Ecke Teil 2 - Pac Man ROM</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14526" src="http://video.golem.de/teaser/1/1/14526/thumb-medium-194/medium-480-rrr-retro-snap.jpg" alt="Rock n&#039; Roll Racing (1993) - Golem retro_"><figcaption><a id="giva_14526" href="http://video.golem.de/games/14526/rock-n-roll-racing-(1993)-golem-retro.html" onclick="return givacpx(this,1);"><span>Rock n&#039; Roll Racing (1993) - Golem retro_</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14524" src="http://video.golem.de/teaser/1/1/14524/thumb-medium-194/medium-480-04_nexus6vsmotox-snap.jpg" alt="Nexus 6 und Moto X - Vergleichstest"><figcaption><a id="giva_14524" href="http://video.golem.de/handy/14524/nexus-6-und-moto-x-vergleichstest.html" onclick="return givacpx(this,1);"><span>Nexus 6 und Moto X - Vergleichstest</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14547" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14547/thumb-medium-194/155716_fahrradhelm_und_fahrzeug_miteinander_vernetzt_volvo_und_poc_pr_sentieren.jpg" alt="Volvo - Cloudbasiertes Radfahrerschutzsystem"><figcaption><a id="giva_14547" href="http://video.golem.de/mobil/14547/volvo-cloudbasiertes-radfahrerschutzsystem.html" onclick="return givacpx(this,2);"><span>Volvo - Cloudbasiertes Radfahrerschutzsystem</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14536" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14536/thumb-medium-194/medium-480-04_cicuitscribe-snap.jpg" alt="Circuitscribe ausprobiert"><figcaption><a id="giva_14536" href="http://video.golem.de/games/14536/circuitscribe-ausprobiert.html" onclick="return givacpx(this,2);"><span>Circuitscribe ausprobiert</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14545" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14545/thumb-medium-194/1418916692_outcast-1.1-trailer-(launch).jpg" alt="Outcast 1.1 - Trailer (Launch)"><figcaption><a id="giva_14545" href="http://video.golem.de/games/14545/outcast-1.1-trailer-(launch).html" onclick="return givacpx(this,2);"><span>Outcast 1.1 - Trailer (Launch)</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14520" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14520/thumb-medium-194/medium-480-04_o2carconnect-snap.jpg" alt="O2 Car Connection ausprobiert"><figcaption><a id="giva_14520" href="http://video.golem.de/handy/14520/o2-car-connection-ausprobiert.html" onclick="return givacpx(this,3);"><span>O2 Car Connection ausprobiert</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14514" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14514/thumb-medium-194/medium-480-gvg_wallpaper1600x900.jpg" alt="Golem.de spielt Hearthstone Goblins gegen Gnome"><figcaption><a id="giva_14514" href="http://video.golem.de/games/14514/golem.de-spielt-hearthstone-goblins-gegen-gnome.html" onclick="return givacpx(this,3);"><span>Golem.de spielt Hearthstone Goblins gegen Gnome</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14512" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14512/thumb-medium-194/medium-480-snap.jpg" alt="Lara Croft und der Tempel des Osiris - Fazit"><figcaption><a id="giva_14512" href="http://video.golem.de/games/14512/lara-croft-und-der-tempel-des-osiris-fazit.html" onclick="return givacpx(this,3);"><span>Lara Croft und der Tempel des Osiris - Fazit</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14544" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14544/thumb-medium-194/amazon-prime-now.jpg" alt="Amazon Prime Now"><figcaption><a id="giva_14544" href="http://video.golem.de/mobil/14544/amazon-prime-now.html" onclick="return givacpx(this,4);"><span>Amazon Prime Now</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14542" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14542/thumb-medium-194/1418899956_digitale-schutzkleidung-betabrand.jpg" alt="Digitale Schutzkleidung - Betabrand"><figcaption><a id="giva_14542" href="http://video.golem.de/security/14542/digitale-schutzkleidung-betabrand.html" onclick="return givacpx(this,4);"><span>Digitale Schutzkleidung - Betabrand</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14541" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14541/thumb-medium-194/1418830284_android-wear-benachrichtigungen-auf-pebble.jpg" alt="Pebble Android-Wear-Benachrichtigungen"><figcaption><a id="giva_14541" href="http://video.golem.de/mobil/14541/android-wear-benachrichtigungen-auf-pebble.html" onclick="return givacpx(this,4);"><span>Pebble Android-Wear-Benachrichtigungen</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14481" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14481/thumb-medium-194/medium-480-underworld-golemretro-snap.jpg" alt="Ultima Underworld (1992) - Golem retro_"><figcaption><a id="giva_14481" href="http://video.golem.de/games/14481/ultima-underworld-(1992)-golem-retro.html" onclick="return givacpx(this,5);"><span>Ultima Underworld (1992) - Golem retro_</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14489" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14489/thumb-medium-194/medium-480-hpelitebookfolio1020-pic.jpg" alt="HP Elitebook Folio 1020 - angeschaut"><figcaption><a id="giva_14489" href="http://video.golem.de/mobil/14489/hp-elitebook-folio-1020-angeschaut.html" onclick="return givacpx(this,5);"><span>HP Elitebook Folio 1020 - angeschaut</span></a></figcaption></figure><!-- .cluster-video --></li>
+<li><figure class="cluster-video"><img id="givi_14485" src="/staticrl/images/icon-video-1.png" class="golem-data-afterload" data-src="http://video.golem.de/teaser/1/1/14485/thumb-medium-194/medium-480-ohnetitel.jpg" alt="The Crew - Fazit"><figcaption><a id="giva_14485" href="http://video.golem.de/games/14485/the-crew-fazit.html" onclick="return givacpx(this,5);"><span>The Crew - Fazit</span></a></figcaption></figure><!-- .cluster-video --></li>
+    </ul>
+  </div>
+</div>
+</div>
+</section><!-- #index-vica2 -->
+<hr class="implied" />
+<section>
+    <h1 class="implied">Artikel</h1>
+    <ol class="list-articles">
+            <li>
+    <img id="hpali_111286" alt="Core M-5Y10 im Test: Kleiner Core M fast wie ein Gro&szlig;er" src="/1411/110262-89318-i_rc.jpg" class="golem-data-afterload" data-src-high="" data-src="/1411/110262-89318-i_rc.jpg" /><header class="cluster-header"><a id="hpal_111286" href="/news/core-m-5y10-im-test-kleiner-core-m-fast-wie-ein-grosser-1412-111286.html" title="Core M-5Y10 im Test: Kleiner Core M fast wie ein Gro&szlig;er"><div><hgroup><h3 class="head1">Core M-5Y10 im Test</h3> <h2 class="head2">Kleiner Core M fast wie ein Gro&szlig;er</h2></hgroup></div></a></header>
+            <p>
+				Kurz langsamer und danach fast genauso flott: Intels <a href="http://www.golem.de/specials/corem/" target="_blank">Core M</a>-5Y10 leistet trotz Passivk&uuml;hlung und offiziell weniger Takt &auml;hnlich viel wie der Core M-5Y70. Manchmal d&uuml;rfte weniger sogar mehr sein.
+																									<em>Von&nbsp;Marc&nbsp;Sauter</em><br>
+													
+                                    <span class="icon-comments" id="hpalc_111286">9&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li>
+    <img id="hpali_111299" alt="ODST: Gratis-Kampagne f&uuml;r Halo Collection wegen Bugs" src="/1411/110501-90008-i_rc.jpg" class="golem-data-afterload" data-src-high="" data-src="/1411/110501-90008-i_rc.jpg" /><header class="cluster-header"><a id="hpal_111299" href="/news/odst-gratis-kampagne-fuer-halo-collection-wegen-bugs-1412-111299.html" title="ODST: Gratis-Kampagne f&uuml;r Halo Collection wegen Bugs"><div><hgroup><h3 class="head1">ODST</h3> <h2 class="head2">Gratis-Kampagne f&uuml;r Halo Collection wegen Bugs</h2></hgroup></div></a></header>
+            <p>
+				Die Kampagne namens ODST aus <a href="http://www.golem.de/specials/halo/" target="_blank">Halo</a> 3 gibt es demn&auml;chst in &uuml;berarbeiteter Fassung f&uuml;r alle, die die Master Chief Collection bereits gekauft haben. Die Chefin des Studios 343 Industries plant auch weitere Gratis-Angebote, weil die Sammlung etliche Startprobleme hatte.
+								
+                                    <span class="icon-comments" id="hpalc_111299">5&nbsp;Kommentare</span>
+                                                    <a class="icon-video" href="http://video.golem.de/games/14342/halo-master-chief-collection-fazit.html">Video</a>
+                            </p>
+
+        </li>
+    </ol>
+<div class="iqadlinetop">
+<!-- begin ad tag (tile=4) -->
+<div id="iqadtile4">
+<div class="iqadlinebottom">
+<div class="iqadcenter">
+<div class="text1 iqadmarker" id="label4iqadtile4">Anzeige</div>
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script type="text/javascript" src="http://ad.de.doubleclick.net/adj/golem/homepage;kw=golem,iqdrelgol,' + iqd_TestKW + ',homepage,tsilkcalb,;doc=index;sz=300x250;tile=4;' + n_pbt + ';ord=' + ord + '?"></scr' + 'ipt>');
+//]]>
+</script>
+<noscript><a href="http://ad.de.doubleclick.net/jump/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=300x250;tile=4;ord=1419098479?" target="_blank" ><img src="http://ad.de.doubleclick.net/ad/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=300x250;tile=4;ord=1419098479?" style="border:0;" alt="" /></a></noscript>
+</div>
+</div>
+</div>
+<!-- end ad tag (tile=4) -->
+
+</div>
+<ol class="list-articles">
+            <li>
+    <img id="hpali_111296" alt="Zeitserver: Sicherheitsl&uuml;cken in NTP" src="/1412/111296-92186-i_rc.jpg" class="golem-data-afterload" data-src-high="/1412/111296-hires140.jpg" data-src="/1412/111296-92186-i_rc.jpg" /><header class="cluster-header"><a id="hpal_111296" href="/news/zeitserver-sicherheitsluecken-in-ntp-1412-111296.html" title="Zeitserver: Sicherheitsl&uuml;cken in NTP"><div><hgroup><h3 class="head1">Zeitserver</h3> <h2 class="head2">Sicherheitsl&uuml;cken in NTP</h2></hgroup></div></a></header>
+            <p>
+				In der Referenzimplementierung des Network Time Protocol (NTP) wurden mehrere Buffer Overflows gefunden, die die Ausf&uuml;hrung von Code auf NTP-Servern erlauben.
+								
+                                    <span class="icon-comments" id="hpalc_111296">16&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="internet">
+    <img id="hpali_111298" alt="Medienbericht: Axel Springer will T-Online.de &uuml;bernehmen" src="/1405/106478-78762-i_rc.jpg" class="golem-data-afterload" data-src-high="" data-src="/1405/106478-78762-i_rc.jpg" /><header class="cluster-header"><a id="hpal_111298" href="/news/medienbericht-axel-springer-will-t-online-de-uebernehmen-1412-111298.html" title="Medienbericht: Axel Springer will T-Online.de &uuml;bernehmen"><div><hgroup><h3 class="head1">Medienbericht</h3> <h2 class="head2">Axel Springer will T-Online.de &uuml;bernehmen</h2></hgroup></div></a></header>
+            <p>
+				Der Wirtschaftswoche zufolge will sich die Deutsche <a href="http://www.golem.de/specials/telekom/" target="_blank">Telekom</a> von Teilen ihres Onlinegesch&auml;fts trennen. Dabei soll die Axel-Springer-Gruppe vor allem das Portal T-Online.de &uuml;bernehmen, was aber die Kartellw&auml;chter noch besch&auml;ftigen k&ouml;nnte.
+								
+                                    <span class="icon-comments" id="hpalc_111298">38&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="wissenschaft">
+    <img id="hpali_111294" alt="Rohrpostzug: Hyperloop entsteht nach Feierabend" src="/1311/102503-67572-i_rc.jpg" class="golem-data-afterload" data-src-high="" data-src="/1311/102503-67572-i_rc.jpg" /><header class="cluster-header"><a id="hpal_111294" href="/news/rohrpostzug-hyperloop-entsteht-nach-feierabend-1412-111294.html" title="Rohrpostzug: Hyperloop entsteht nach Feierabend"><div><hgroup><h3 class="head1">Rohrpostzug</h3> <h2 class="head2">Hyperloop entsteht nach Feierabend</h2></hgroup></div></a></header>
+            <p>
+				Mit &Uuml;berschallgeschwindigkeit durch eine R&ouml;hre reisen - so stellt sich <a href="http://www.golem.de/specials/elon-musk/" target="_blank">Elon Musk</a> das Transportsystem der Zukunft vor. Ein Unternehmen mit rund 100 Mitarbeitern arbeitet flei&szlig;ig daran. Nebenbei.
+								
+                                    <span class="icon-comments" id="hpalc_111294">48&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+    </ol>
+<div class="iqadlinetop">
+<div class="iqadlinebottom">
+<div id="rl_afcbecoh1"></div>
+</div>
+</div>
+<ol class="list-articles">            <li data-keywords="internet,server">
+    <img id="hpali_111280" alt="Guardians of Peace: Sony-Hack wird zum Politikum" src="" class="golem-data-afterload" data-src-high="" data-src="/1412/111196-91889-i_rc.jpg" /><noscript><img id="hpali_111280" alt="Guardians of Peace: Sony-Hack wird zum Politikum" src="/1412/111196-91889-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111280" href="/news/guardians-of-peace-sony-hack-wird-zum-politikum-1412-111280.html" title="Guardians of Peace: Sony-Hack wird zum Politikum"><div><hgroup><h3 class="head1">Guardians of Peace</h3> <h2 class="head2">Sony-Hack wird zum Politikum</h2></hgroup></div></a></header>
+            <p>
+				Das FBI hat offiziell Nordkorea beschuldigt, Urheber des Hackerangriffs auf Sony Pictures zu sein. Laut der US-Bundespolizei weist die untersuchte <a href="http://www.golem.de/specials/malware/" target="_blank">Malware</a> Parallelen zu vorherigen Angriffen auf, die ebenfalls dem Land zugeordnet sein sollen.
+								
+                                    <span class="icon-comments" id="hpalc_111280">65&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li>
+    <img id="hpali_111235" alt="Lehrreiche Geschenke: Stille Nacht, Bastelnacht" src="" class="golem-data-afterload" data-src-high="/1412/111235-hires140.jpg" data-src="/1412/111235-92113-i_rc.jpg" /><noscript><img id="hpali_111235" alt="Lehrreiche Geschenke: Stille Nacht, Bastelnacht" src="/1412/111235-92113-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111235" href="/news/lehrreiche-geschenke-stille-nacht-bastelnacht-1412-111235.html" title="Lehrreiche Geschenke: Stille Nacht, Bastelnacht"><div><hgroup><h3 class="head1">Lehrreiche Geschenke</h3> <h2 class="head2">Stille Nacht, Bastelnacht</h2></hgroup></div></a></header>
+            <p>
+				Schluss mit geistlosen Geschenken: Warum nicht mal einen Bastelrechner unter den Weihnachtsbaum legen? Oder ein Roboter-Bastelset? Golem.de hat einige Vorschl&auml;ge f&uuml;r Pr&auml;sente, die Technik-Laien beim Einstieg in die IT helfen, und bei denen auch Profis noch etwas lernen.
+								
+                                    <span class="icon-comments" id="hpalc_111235">46&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="internet">
+    <img id="hpali_111295" alt="Urheberrecht: Flickr Wall Art nutzt keine CC-Bilder mehr" src="" class="golem-data-afterload" data-src-high="/1412/111295-hires140.jpg" data-src="/1412/111295-92180-i_rc.jpg" /><noscript><img id="hpali_111295" alt="Urheberrecht: Flickr Wall Art nutzt keine CC-Bilder mehr" src="/1412/111295-92180-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111295" href="/news/urheberrecht-flickr-wall-art-nutzt-keine-cc-bilder-mehr-1412-111295.html" title="Urheberrecht: Flickr Wall Art nutzt keine CC-Bilder mehr"><div><hgroup><h3 class="head1">Urheberrecht</h3> <h2 class="head2">Flickr Wall Art nutzt keine CC-Bilder mehr</h2></hgroup></div></a></header>
+            <p>
+				<a href="http://www.golem.de/specials/flickr/" target="_blank">Flickr</a> hat auf die Kritik an seinem Dienst Wall Art reagiert und erlaubt nun nicht mehr das Drucken fremder Bilder mit <a href="http://www.golem.de/specials/creativecommons/" target="_blank">Creative-Commons-Lizenz</a> auf Leinwand und Papier, obwohl dies legal gewesen ist.
+								
+                                    <span class="icon-comments" id="hpalc_111295">7&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="mobil,smartphone">
+    <img id="hpali_111276" alt="i8-Smartphone: Linshof erliegt dem (T)Rubel" src="" class="golem-data-afterload" data-src-high="" data-src="/1411/110831-90926-i_rc.jpg" /><noscript><img id="hpali_111276" alt="i8-Smartphone: Linshof erliegt dem (T)Rubel" src="/1411/110831-90926-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111276" href="/news/i8-smartphone-linshof-erliegt-dem-t-rubel-1412-111276.html" title="i8-Smartphone: Linshof erliegt dem (T)Rubel"><div><hgroup><h3 class="head1">i8-Smartphone</h3> <h2 class="head2">Linshof erliegt dem (T)Rubel</h2></hgroup></div></a></header>
+            <p>
+				Aus und vorbei: Linshof ist geschlossen worden, da die angeblichen Investoren ihre Gelder zur&uuml;ckgezogen haben. Hintergrund soll eine politische Verstrickung sein, die Linshof kurz &ouml;ffentlich machte.
+								
+                                    <span class="icon-comments" id="hpalc_111276">46&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+    </ol>
+<div class="iqadlinetop">
+<div class="iqadlinebottom">
+<div id="rl_afcbecoh2"></div>
+</div>
+</div>
+<ol class="list-articles">            <li>
+    <img id="hpali_111224" alt="Circuitscribe ausprobiert: Stromkreise malen f&uuml;r Teenies" src="" class="golem-data-afterload" data-src-high="/1412/111224-hires140.jpg" data-src="/1412/111224-92104-i_rc.jpg" /><noscript><img id="hpali_111224" alt="Circuitscribe ausprobiert: Stromkreise malen f&uuml;r Teenies" src="/1412/111224-92104-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111224" href="/news/circuitscribe-ausprobiert-stromkreise-malen-fuer-teenies-1412-111224.html" title="Circuitscribe ausprobiert: Stromkreise malen f&uuml;r Teenies"><div><hgroup><h3 class="head1">Circuitscribe ausprobiert</h3> <h2 class="head2">Stromkreise malen f&uuml;r Teenies</h2></hgroup></div></a></header>
+            <p>
+				Mit den Circuitscribe-Sets von Electroninks k&ouml;nnen sich Jugendliche an der Elektrotechnik versuchen. Golem.de hat die Altersempfehlung ignoriert und selbst gemalt.
+								
+                                    <span class="icon-comments" id="hpalc_111224">41&nbsp;Kommentare</span>
+                                                    <a class="icon-video" href="http://video.golem.de/games/14536/circuitscribe-ausprobiert.html">Video</a>
+                            </p>
+
+        </li>
+            <li data-keywords="desktopapplikationen">
+    <img id="hpali_111255" alt="Elite Dangerous: Einmal durch die Milchstra&szlig;e und zur&uuml;ck" src="" class="golem-data-afterload" data-src-high="/1412/111255-hires140.jpg" data-src="/1412/111255-92076-i_rc.jpg" /><noscript><img id="hpali_111255" alt="Elite Dangerous: Einmal durch die Milchstra&szlig;e und zur&uuml;ck" src="/1412/111255-92076-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111255" href="/news/elite-dangerous-einmal-durch-die-milchstrasse-und-zurueck-1412-111255.html" title="Elite Dangerous: Einmal durch die Milchstra&szlig;e und zur&uuml;ck"><div><hgroup><h3 class="head1">Elite Dangerous</h3> <h2 class="head2">Einmal durch die Milchstra&szlig;e und zur&uuml;ck</h2></hgroup></div></a></header>
+            <p>
+				Die Weltraumsimulation lebt: <a href="http://www.golem.de/specials/elite-dangerous/" target="_blank">Elite Dangerous</a> bietet eine riesige Spielwelt, sieht umwerfend aus und k&ouml;nnte mit seiner Vielfalt sogar <a href="http://www.golem.de/specials/eve-online/" target="_blank">Eve Online</a> den Rang ablaufen.
+																									<em>Von&nbsp;Achim&nbsp;Fehrenbach</em><br>
+													
+                                    <span class="icon-comments" id="hpalc_111255">116&nbsp;Kommentare</span>
+                                                    <a class="icon-video" href="http://video.golem.de/games/14522/elite-dangerous-trailer-(launch).html">Video</a>
+                            </p>
+
+        </li>
+            <li data-keywords="internet,server">
+    <img id="hpali_111293" alt="IT-Bereich: China will ausl&auml;ndische Technik durch eigene ersetzen" src="" class="golem-data-afterload" data-src-high="/1412/111293-hires140.jpg" data-src="/1412/111293-92174-i_rc.jpg" /><noscript><img id="hpali_111293" alt="IT-Bereich: China will ausl&auml;ndische Technik durch eigene ersetzen" src="/1412/111293-92174-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111293" href="/news/it-bereich-china-will-auslaendische-technik-durch-eigene-ersetzen-1412-111293.html" title="IT-Bereich: China will ausl&auml;ndische Technik durch eigene ersetzen"><div><hgroup><h3 class="head1">IT-Bereich</h3> <h2 class="head2">China will ausl&auml;ndische Technik durch eigene ersetzen</h2></hgroup></div></a></header>
+            <p>
+				Weg mit <a href="http://www.golem.de/specials/microsoft/" target="_blank">Microsoft</a>, <a href="http://www.golem.de/specials/cisco/" target="_blank">Cisco</a> und Co., her mit den eigenen Produkten: China plant, ausl&auml;ndische IT-Technik in Beh&ouml;rden und staatlichen Unternehmen durch Produkte chinesischer Hersteller zu ersetzen. Damit versch&auml;rft das Land den bereits schwelenden Streit mit ausl&auml;ndischen Anbietern.
+								
+                                    <span class="icon-comments" id="hpalc_111293">61&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="mobil">
+    <img id="hpali_110966" alt="Kaufberatung: Worauf es bei einem Notebook ankommt" src="" class="golem-data-afterload" data-src-high="" data-src="/1411/110585-90360-i_rc.jpg" /><noscript><img id="hpali_110966" alt="Kaufberatung: Worauf es bei einem Notebook ankommt" src="/1411/110585-90360-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_110966" href="/news/kaufberatung-worauf-es-bei-einem-notebook-ankommt-1412-110966.html" title="Kaufberatung: Worauf es bei einem Notebook ankommt"><div><hgroup><h3 class="head1">Kaufberatung</h3> <h2 class="head2">Worauf es bei einem Notebook ankommt</h2></hgroup></div></a></header>
+            <p>
+				Convertible oder Desktop Replacement, Business- oder Consumer-Ger&auml;t, AMD oder Intel, spiegelnd mit Touch oder matt: Es ist schwer, den &Uuml;berblick auf dem <a href="http://www.golem.de/specials/notebook/" target="_blank">Notebook</a>-Markt zu behalten. Ein Wegweiser.
+																									<em>Von&nbsp;Marc&nbsp;Sauter</em><br>
+													
+                                    <span class="icon-comments" id="hpalc_110966">268&nbsp;Kommentare</span>
+                                                    <a class="icon-video" href="http://video.golem.de/mobil/14414/lenovo-yoga-tablet-3-pro-test.html">Video</a>
+                            </p>
+
+        </li>
+    </ol>
+<div class="iqadlinetop">
+<div class="iqadlinebottom">
+<div id="rl_afcbecoh3"></div>
+</div>
+</div>
+<ol class="list-articles">            <li data-keywords="desktopapplikationen,telekommunikation">
+    <img id="hpali_111275" alt="Mobiltelefonie: UMTS-Verschl&uuml;sselung ausgehebelt" src="" class="golem-data-afterload" data-src-high="/1412/111275-hires140.jpg" data-src="/1412/111275-92141-i_rc.jpg" /><noscript><img id="hpali_111275" alt="Mobiltelefonie: UMTS-Verschl&uuml;sselung ausgehebelt" src="/1412/111275-92141-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111275" href="/news/mobiltelefonie-umts-verschluesselung-ausgehebelt-1412-111275.html" title="Mobiltelefonie: UMTS-Verschl&uuml;sselung ausgehebelt"><div><hgroup><h3 class="head1">Mobiltelefonie</h3> <h2 class="head2">UMTS-Verschl&uuml;sselung ausgehebelt</h2></hgroup></div></a></header>
+            <p>
+				Berliner Sicherheitsforscher haben die Verschl&uuml;sselung in UMTS-Netzen ausgehebelt. M&ouml;glicherweise hat die NSA auf diesem Weg einst das Zweithandy der Kanzlerin &uuml;berwacht.
+								
+                                    <span class="icon-comments" id="hpalc_111275">6&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="desktopapplikationen">
+    <img id="hpali_111288" alt="Chaton: Samsung schaltet seinen Messenger ab" src="" class="golem-data-afterload" data-src-high="/1412/111288-hires140.jpg" data-src="/1412/111288-92167-i_rc.jpg" /><noscript><img id="hpali_111288" alt="Chaton: Samsung schaltet seinen Messenger ab" src="/1412/111288-92167-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111288" href="/news/chaton-samsung-schaltet-seinen-messenger-ab-1412-111288.html" title="Chaton: Samsung schaltet seinen Messenger ab"><div><hgroup><h3 class="head1">Chaton</h3> <h2 class="head2">Samsung schaltet seinen Messenger ab</h2></hgroup></div></a></header>
+            <p>
+				Es hat sich ausgechattet: <a href="http://www.golem.de/specials/samsung/" target="_blank">Samsung</a> schaltet Anfang 2015 seinen Messenger <a href="http://www.golem.de/specials/chaton/" target="_blank">Chaton</a> ab. Das Chat-Programm war seit 2011 Bestandteil von Samsungs Galaxy-Smartphones und wurde auch f&uuml;r andere mobile Betriebssysteme portiert.
+								
+                                    <span class="icon-comments" id="hpalc_111288">110&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="pchardware,server">
+    <img id="hpali_111215" alt="Stacked Memory: Lecker, Stapelchips!" src="" class="golem-data-afterload" data-src-high="/1412/111215-hires140.jpg" data-src="/1412/111215-91964-i_rc.jpg" /><noscript><img id="hpali_111215" alt="Stacked Memory: Lecker, Stapelchips!" src="/1412/111215-91964-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111215" href="/news/stacked-memory-lecker-stapelchips-1412-111215.html" title="Stacked Memory: Lecker, Stapelchips!"><div><hgroup><h3 class="head1">Stacked Memory</h3> <h2 class="head2">Lecker, Stapelchips!</h2></hgroup></div></a></header>
+            <p>
+				Gr&ouml;&szlig;ere <a href="http://www.golem.de/specials/solidstatedrive/" target="_blank">SSDs</a>, schnellere <a href="http://www.golem.de/specials/grafikhardware/" target="_blank">Grafikkarten</a> und l&auml;ngere Akkulaufzeiten bei <a href="http://www.golem.de/specials/smartphone/" target="_blank">Smartphones</a>: Speicherzellen oder DRAM-Chips, die wie die Etagen eines Hochhauses gestapelt werden, bieten viele Vorteile.
+																									<em>Von&nbsp;Marc&nbsp;Sauter</em><br>
+													
+                                    <span class="icon-comments" id="hpalc_111215">26&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="digitalkamera,linux,opensource">
+    <img id="hpali_111285" alt="Samsung NX300: Unabh&auml;ngige Firmware verschl&uuml;sselt Fotos" src="" class="golem-data-afterload" data-src-high="/1412/111285-hires140.jpg" data-src="/1412/111285-92160-i_rc.jpg" /><noscript><img id="hpali_111285" alt="Samsung NX300: Unabh&auml;ngige Firmware verschl&uuml;sselt Fotos" src="/1412/111285-92160-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111285" href="/news/samsung-nx300-unabhaengige-firmware-verschluesselt-fotos-1412-111285.html" title="Samsung NX300: Unabh&auml;ngige Firmware verschl&uuml;sselt Fotos"><div><hgroup><h3 class="head1">Samsung NX300</h3> <h2 class="head2">Unabh&auml;ngige Firmware verschl&uuml;sselt Fotos</h2></hgroup></div></a></header>
+            <p>
+				Was passiert mit Fotos, wenn eine Kamera gestohlen wird? Nichts - wenn es eine <a href="http://www.golem.de/specials/systemkamera/" target="_blank">Systemkamera</a> von Samsung ist, auf der eine modifizierte Firmware installiert ist. Die gibt die Bilder nur f&uuml;r Befugte frei.
+								
+                                    <span class="icon-comments" id="hpalc_111285">10&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="pchardware,desktopapplikationen">
+    <img id="hpali_111282" alt="Misfortune Cookie: Sicherheitsl&uuml;cke in Routern angeblich weit verbreitet" src="" class="golem-data-afterload" data-src-high="/1412/111282-hires140.jpg" data-src="/1412/111282-92154-i_rc.jpg" /><noscript><img id="hpali_111282" alt="Misfortune Cookie: Sicherheitsl&uuml;cke in Routern angeblich weit verbreitet" src="/1412/111282-92154-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111282" href="/news/misfortune-cookie-sicherheitsluecke-in-routern-angeblich-weit-verbreitet-1412-111282.html" title="Misfortune Cookie: Sicherheitsl&uuml;cke in Routern angeblich weit verbreitet"><div><hgroup><h3 class="head1">Misfortune Cookie <span class="icon-update">&nbsp;</span></h3> <h2 class="head2">Sicherheitsl&uuml;cke in Routern angeblich weit verbreitet</h2></hgroup></div></a></header>
+            <p>
+				Laut einer Meldung von Check Point sind viele Router von einer Sicherheitsl&uuml;cke betroffen, die eigentlich schon 2005 behoben wurde. Doch die Firma geizt auch auf Anfrage von Golem.de mit Details, die Darstellung liest sich eher wie eine Werbekampagne f&uuml;r die Personal Firewall ZoneAlarm.
+								
+                                    <span class="icon-comments" id="hpalc_111282">19&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="opensource,pchardware,desktopapplikationen">
+    <img id="hpali_111256" alt="USBdriveby: Hackerwerkzeuge f&uuml;r die Halskette" src="" class="golem-data-afterload" data-src-high="/1412/111256-hires140.jpg" data-src="/1412/111256-92079-i_rc.jpg" /><noscript><img id="hpali_111256" alt="USBdriveby: Hackerwerkzeuge f&uuml;r die Halskette" src="/1412/111256-92079-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111256" href="/news/usbdriveby-hacker-werkzeuge-fuer-die-halskette-1412-111256.html" title="USBdriveby: Hackerwerkzeuge f&uuml;r die Halskette"><div><hgroup><h3 class="head1">USBdriveby</h3> <h2 class="head2">Hackerwerkzeuge f&uuml;r die Halskette</h2></hgroup></div></a></header>
+            <p>
+				Schick, aber perfide: Wer schnell einmal einen Rechner hacken will, der kann sich das passende Werkzeug um den Hals h&auml;ngen, wie das Projekt USBdriveby vorschl&auml;gt. Es offenbart auch Schwachstellen in Mac OS X, die damit ausgenutzt werden k&ouml;nnen.
+								
+                                    <span class="icon-comments" id="hpalc_111256">29&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li data-keywords="apple">
+    <img id="hpali_111283" alt="Arbeiter in China: BBC findet schlechte Arbeitsbedingungen bei Apple-Zulieferer" src="" class="golem-data-afterload" data-src-high="/1412/111283-hires140.jpg" data-src="/1412/111283-92157-i_rc.jpg" /><noscript><img id="hpali_111283" alt="Arbeiter in China: BBC findet schlechte Arbeitsbedingungen bei Apple-Zulieferer" src="/1412/111283-92157-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111283" href="/news/arbeiter-in-china-bbc-findet-schlechte-arbeitsbedingungen-bei-apple-zulieferer-1412-111283.html" title="Arbeiter in China: BBC findet schlechte Arbeitsbedingungen bei Apple-Zulieferer"><div><hgroup><h3 class="head1">Arbeiter in China</h3> <h2 class="head2">BBC findet schlechte Arbeitsbedingungen bei Apple-Zulieferer</h2></hgroup></div></a></header>
+            <p>
+				&Uuml;berm&uuml;dete Arbeiter, 16-Stunden-Schichten, 18 Tage Arbeit ohne freien Tag - Undercover-Journalisten der BBC haben beim Apple-Zulieferer <a href="http://www.golem.de/specials/pegatron-technology/" target="_blank">Pegatron</a> zahlreiche Verst&ouml;&szlig;e gegen Apples Arbeitsvorschriften entdeckt. Auch bei den konfliktfrei gef&ouml;rderten Metallen scheint es noch Probleme zu geben.
+								
+                                    <span class="icon-comments" id="hpalc_111283">33&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+            <li>
+    <img id="hpali_111281" alt="Deutscher Entwicklerpreis 2014 Summit: Das dreifache Balancing f&uuml;r den E-Sport" src="" class="golem-data-afterload" data-src-high="/1412/111281-hires140.jpg" data-src="/1412/111281-92151-i_rc.jpg" /><noscript><img id="hpali_111281" alt="Deutscher Entwicklerpreis 2014 Summit: Das dreifache Balancing f&uuml;r den E-Sport" src="/1412/111281-92151-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111281" href="/news/deutscher-entwicklerpreis-2014-summit-das-dreifache-balancing-fuer-den-e-sport-1412-111281.html" title="Deutscher Entwicklerpreis 2014 Summit: Das dreifache Balancing f&uuml;r den E-Sport"><div><hgroup><h3 class="head1">Deutscher Entwicklerpreis 2014 Summit</h3> <h2 class="head2">Das dreifache Balancing f&uuml;r den E-Sport</h2></hgroup></div></a></header>
+            <p>
+				<a href="http://www.golem.de/specials/e-sport/" target="_blank">E-Sport</a> boomt und bietet Entwicklern und Publishern viele M&ouml;glichkeiten etwa f&uuml;r die Vermarktung von Games. Allerdings ist es inzwischen extrem aufwendig, den Anspr&uuml;chen der anspruchsvollen Community zu gen&uuml;gen, so ESL-Veranstalter Turtle Entertainment.
+								
+                                    <span class="icon-comments" id="hpalc_111281">32&nbsp;Kommentare</span>
+                                                    <a class="icon-video" href="http://video.golem.de/games/13419/esl-one-in-frankfurt-2014-bericht.html">Video</a>
+                            </p>
+
+        </li>
+            <li data-keywords="cloudcomputing,wissenschaft">
+    <img id="hpali_111279" alt="Sicherheitssystem: Volvo will Fahrradfahrer mit der Cloud sch&uuml;tzen" src="" class="golem-data-afterload" data-src-high="/1412/111279-hires140.jpg" data-src="/1412/111279-92148-i_rc.jpg" /><noscript><img id="hpali_111279" alt="Sicherheitssystem: Volvo will Fahrradfahrer mit der Cloud sch&uuml;tzen" src="/1412/111279-92148-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111279" href="/news/sicherheitssystem-volvo-will-fahrradfahrer-mit-der-cloud-schuetzen-1412-111279.html" title="Sicherheitssystem: Volvo will Fahrradfahrer mit der Cloud sch&uuml;tzen"><div><hgroup><h3 class="head1">Sicherheitssystem</h3> <h2 class="head2">Volvo will Fahrradfahrer mit der Cloud sch&uuml;tzen</h2></hgroup></div></a></header>
+            <p>
+				Die H&auml;lfte aller t&ouml;dlichen Fahrradunf&auml;lle geschieht durch Zusammenst&ouml;&szlig;e mit <a href="http://www.golem.de/specials/auto/" target="_blank">Autos</a>. Damit beide Verkehrsteilnehmer k&uuml;nftig weniger Unf&auml;lle haben, will Volvo sie vernetzen. Dazu wird der Helm aufger&uuml;stet.
+								
+                                    <span class="icon-comments" id="hpalc_111279">106&nbsp;Kommentare</span>
+                                                    <a class="icon-video" href="http://video.golem.de/mobil/14547/volvo-cloudbasiertes-radfahrerschutzsystem.html">Video</a>
+                            </p>
+
+        </li>
+            <li data-keywords="opensource,desktopapplikationen">
+    <img id="hpali_111278" alt="Security: Schwere Sicherheitsl&uuml;cke im Git-Client" src="" class="golem-data-afterload" data-src-high="/1412/111278-hires140.jpg" data-src="/1412/111278-92144-i_rc.jpg" /><noscript><img id="hpali_111278" alt="Security: Schwere Sicherheitsl&uuml;cke im Git-Client" src="/1412/111278-92144-i_rc.jpg" /></noscript><header class="cluster-header"><a id="hpal_111278" href="/news/security-schwere-sicherheitsluecke-im-git-client-1412-111278.html" title="Security: Schwere Sicherheitsl&uuml;cke im Git-Client"><div><hgroup><h3 class="head1">Security</h3> <h2 class="head2">Schwere Sicherheitsl&uuml;cke im Git-Client</h2></hgroup></div></a></header>
+            <p>
+				Eine schwere Sicherheitsl&uuml;cke im Git-Client f&uuml;r Windows und Mac OS X macht Rechner von au&szlig;en angreifbar. Es gibt bereits Aktualisierungen, die schnellstm&ouml;glich eingespielt werden sollten.
+								
+                                    <span class="icon-comments" id="hpalc_111278">24&nbsp;Kommentare</span>
+                                            </p>
+
+        </li>
+   </ol><!-- .list-articles -->
+</section>
+<hr class="implied" />        </div><!-- .g.g4.g-ie6 -->
+
+<!-- google_ad_section_end -->
+<!-- google_ad_section_start(weight=ignore) -->
+
+        <div class="g g2">
+<!-- begin ad tag (tile=8) -->
+<div id="iqadtile8">
+<div class="text1 iqadmarker" id="label4iqadtile8">Anzeige</div>
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script type="text/javascript" src="http://ad.de.doubleclick.net/adj/golem/homepage;kw=golem,iqdrelgol,' + iqd_TestKW + ',homepage,tsilkcalb,;doc=index;sz=300x250,300x600;tile=8;' + n_pbt + ';ord=' + ord + '?"></scr' + 'ipt>');
+//]]>
+</script>
+<noscript><a href="http://ad.de.doubleclick.net/jump/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=300x250,300x600;tile=8;ord=1419098479?" target="_blank" ><img src="http://ad.de.doubleclick.net/ad/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,;doc=index;sz=300x250,300x600;tile=8;ord=1419098479?" style="border:0;" alt="" /></a></noscript>
+</div>
+<!-- end ad tag (tile=8) -->
+<section id="t8follower" class="supplementary" style="display:none"></section>
+<hr class="implied">
+
+<section class="supplementary" id="job-market">
+    <div class="dh1 head3"><a href="http://jobs.golem.de/">Stellenmarkt</a></div>
+    <ol>
+        <li class="text1"><a href="http://jobs.jobware.net/view/aWQ9MTAyNTIwNnxjaV90eXBlPTB8cGY9MXxvcmlnPUlULU5FV1MtVE9QSk9CU3x1aD0wfHVsPTN8ZDpzcGVjaWFscz1jZmclMkZmb2xsb3clMkNub3Jlc2l6ZSUyRmZvbGxvd3xkOmNmZz1pdC1uZXdzfA%3D%3D/index.html" rel="nofollow" target="_blank">Softwareentwickler (m/w) C# / .Net </a><br>
+            S&Uuml;TRON electronic GmbH, Filderstadt bei Stuttgart
+        </li>
+        <li class="text1"><a href="http://jobs.jobware.net/view/aWQ9MTAyNTM3MnxjaV90eXBlPTB8cGY9MXxvcmlnPUlULU5FV1MtVE9QSk9CU3x1aD0wfHVsPTN8ZDpzcGVjaWFscz1jZmclMkZmb2xsb3clMkNub3Jlc2l6ZSUyRmZvbGxvd3xkOmNmZz1pdC1uZXdzfA%3D%3D/index.html" rel="nofollow" target="_blank">SW-Entwickler (m/w) </a><br>
+            Robert Bosch Car Multimedia GmbH, Hildesheim
+        </li>
+        <li class="text1"><a href="http://jobs.jobware.net/view/aWQ9MTAyNTE3OHxjaV90eXBlPTB8cGY9MXxvcmlnPUlULU5FV1MtVE9QSk9CU3x1aD0wfHVsPTN8ZDpzcGVjaWFscz1jZmclMkZmb2xsb3clMkNub3Jlc2l6ZSUyRmZvbGxvd3xkOmNmZz1pdC1uZXdzfA%3D%3D/index.html" rel="nofollow" target="_blank">Testingenieur/in Software und Systeme </a><br>
+            MOBIL ELEKTRONIK GMBH, Langenbrettach
+        </li>
+        <li class="text1"><a href="http://jobs.jobware.net/view/aWQ9MTAyNTIyMHxjaV90eXBlPTB8cGY9MXxvcmlnPUlULU5FV1MtVE9QSk9CU3x1aD0wfHVsPTN8ZDpzcGVjaWFscz1jZmclMkZmb2xsb3clMkNub3Jlc2l6ZSUyRmZvbGxvd3xkOmNmZz1pdC1uZXdzfA%3D%3D/index.html" rel="nofollow" target="_blank">Projekt Office Mitarbeiter (m/w) </a><br>
+            ADAC e.V., M&uuml;nchen
+        </li>
+    </ol>
+    <p class="meta text1">&nbsp;</p>
+    <p class="more text1"><a href="http://jobs.golem.de/" rel="nofollow" target="_blank">Detailsuche</a></p>
+</section><!-- .supplementary -->
+<hr class="implied" />
+
+<section class="supplementary" id="pricehits">
+<div class="dh1 head3">Top-Angebote</div>
+<ol>
+<li class="text1"><span>TIPP: </span><a href="http://hits.golem.de/1277.html" rel="nofollow" target="_blank">Amazon Last-Minute-Angebote Tag 9: Games, Blu-ray, Technik u. v. m.</a><br><span></span></li>
+<li class="text1"><span>NEU: </span><a href="http://hits.golem.de/1193.html" rel="nofollow" target="_blank">Caseking Early Christmas</a><br><span>(u. a. VTX3D Radeon R9 290 X-Edition V2 4GB DDR5 229,90&euro;)</span></li>
+<li class="text1"><span>TOP-PREIS: </span><a href="http://hits.golem.de/1003.html" rel="nofollow" target="_blank">Crysis 3 Download</a><br><span>2,99&euro;</span></li>
+</ol>
+<p class="meta text1">&nbsp;</p>
+<p class="more text1"><a href="http://www.golem.de/phitshp.php" rel="nofollow" target="_blank">Weitere Angebote</a></p>
+</section><!-- .supplementary -->
+<hr class="implied" />
+<section class="supplementary" id="followrss">
+    <div class="dh1 head3">Folgen Sie uns</div>
+<table>
+<tr>
+    <td><a href="http://www.facebook.com/golem" target="_blank" title="Auf Facebook folgen">&nbsp;</a></td>
+    <td><a href="http://twitter.com/GolemRedaktion" target="_blank" title="Auf Twitter folgen">&nbsp;</a></td>
+    <td><a href="https://plus.google.com/108635198256823282564/?prsrc=3" target="_blank" title="Auf Google+ folgen">&nbsp;</a></td>
+    <td style="padding:0"><a href="http://www.golem.de/sonstiges/rss.html" title="RSS Feed abonnieren">&nbsp;</a></td>
+</tr>
+</table>
+    </section><!-- .supplementary #followrss -->
+<hr class="implied" />
+<div id="recently">
+    <section class="active" id="recent-articles">
+        <div class="dh1">Meistgelesen</div>
+        <ol>
+		    <li>
+                                <a id="mral_111286" href="http://www.golem.de/news/core-m-5y10-im-test-kleiner-core-m-fast-wie-ein-grosser-1412-111286.html">
+                                <div class="dh2 head1">Core M-5Y10 im Test</div>
+                <p class="text1">Kleiner Core M fast wie ein Gro&szlig;er</p>
+                </a>
+            </li>
+		    <li>
+                                <a id="mral_111297" href="http://www.golem.de/news/directory-authorities-tor-projekt-befuerchtet-baldigen-angriff-auf-seine-systeme-1412-111297.html">
+                                <div class="dh2 head1">Directory Authorities</div>
+                <p class="text1">Tor-Projekt bef&uuml;rchtet baldigen Angriff auf seine Systeme</p>
+                </a>
+            </li>
+		    <li>
+                                <a id="mral_111294" href="http://www.golem.de/news/rohrpostzug-hyperloop-entsteht-nach-feierabend-1412-111294.html">
+                                <div class="dh2 head1">Rohrpostzug</div>
+                <p class="text1">Hyperloop entsteht nach Feierabend</p>
+                </a>
+            </li>
+		    <li>
+                                <a id="mral_111235" href="http://www.golem.de/news/lehrreiche-geschenke-stille-nacht-bastelnacht-1412-111235.html">
+                                <div class="dh2 head1">Lehrreiche Geschenke</div>
+                <p class="text1">Stille Nacht, Bastelnacht</p>
+                </a>
+            </li>
+		    <li>
+                                <a id="mral_111296" href="http://www.golem.de/news/zeitserver-sicherheitsluecken-in-ntp-1412-111296.html">
+                                <div class="dh2 head1">Zeitserver</div>
+                <p class="text1">Sicherheitsl&uuml;cken in NTP</p>
+                </a>
+            </li>
+        </ol>
+        <!--<p class="more text1"><a href="">Mehr</a></p>-->
+    </section><!-- #recent-articles -->
+    <hr class="implied" />
+            <section id="recent-comments">
+    <div class="dh1">Meistkommentiert</div>
+    <ol id="htlforum">
+<li><div class="dh2 head1"><a href="http://www.golem.de/news/urteil-finger-weg-vom-handy-beim-autofahren-1412-111246.html" target="_blank">Urteil: Finger weg vom Handy beim Autofahren</a></div><p class="text1">Kommentare:&nbsp;227 | <a href="http://forum.golem.de/kommentare/wirtschaft/urteil-finger-weg-vom-handy-beim-autofahren/ipad-oder-laptop/88747,3994529,3994529,read.html#msg-3994529" rel="nofollow" id="htlmsg3996432" title="Re: Was ist ein &quot;Mobil- oder Autotelefon&quot;?">letzter Beitrag</a>&nbsp;19.12. 18:06</p></li>
+<li><div class="dh2 head1"><a href="http://www.golem.de/news/microsoft-webbrowserauswahl-in-windows-ist-abgeschafft-1412-111268.html" target="_blank">Microsoft: Webbrowserauswahl in Windows ist abgeschafft</a></div><p class="text1">Kommentare:&nbsp;146 | <a href="http://forum.golem.de/kommentare/wirtschaft/microsoft-webbrowserauswahl-in-windows-ist-abgeschafft/eu-kommission-browserauswahl-kuenftig-bei-android/88768,3995352,3995352,read.html#msg-3995352" rel="nofollow" id="htlmsg3996819" title="Re: EU-Kommission: &quot;Browserauswahl k&uuml;nftig bei Android&quot;">letzter Beitrag</a>&nbsp;14:43 Uhr</p></li>
+<li><div class="dh2 head1"><a href="http://www.golem.de/news/guardians-of-peace-nordkorea-soll-den-sony-hack-befohlen-haben-1412-111250.html" target="_blank">Guardians of Peace: Nordkorea soll den Sony-Hack befohlen haben</a></div><p class="text1">Kommentare:&nbsp;135 | <a href="http://forum.golem.de/kommentare/security/guardians-of-peace-nordkorea-soll-den-sony-hack-befohlen-haben/gute-pr/88748,3994740,3994740,read.html#msg-3994740" rel="nofollow" id="htlmsg3996799" title="Re: Gute PR">letzter Beitrag</a>&nbsp;14:18 Uhr</p></li>
+<li><div class="dh2 head1"><a href="http://www.golem.de/news/streaming-netflix-schliesst-offline-videos-kategorisch-aus-1412-111266.html" target="_blank">Streaming: Netflix schlie&szlig;t Offline-Videos kategorisch aus</a></div><p class="text1">Kommentare:&nbsp;116 | <a href="http://forum.golem.de/kommentare/applikationen/streaming-netflix-schliesst-offline-videos-kategorisch-aus/richtige-einstellung/88767,3995262,3995262,read.html#msg-3995262" rel="nofollow" id="htlmsg3996492" title="Re: richtige Einstellung">letzter Beitrag</a>&nbsp;19.12. 19:11</p></li>
+<li><div class="dh2 head1"><a href="http://www.golem.de/news/elite-dangerous-einmal-durch-die-milchstrasse-und-zurueck-1412-111255.html" target="_blank">Elite Dangerous: Einmal durch die Milchstra&szlig;e und zur&uuml;ck</a></div><p class="text1">Kommentare:&nbsp;116 | <a href="http://forum.golem.de/kommentare/applikationen/elite-dangerous-einmal-durch-die-milchstrasse-und-zurueck/golem-das-allways-on-problem-vergessen/88752,3995042,3995042,read.html#msg-3995042" rel="nofollow" id="htlmsg3996866" title="Re: Golem: Das &quot;Allways On&quot; Problem vergessen?">letzter Beitrag</a>&nbsp;17:16 Uhr</p></li>
+    </ol>
+    <p class="more text1"><a href="http://forum.golem.de/new/">Mehr</a></p>
+</section><!-- #recent-comments -->
+<hr class="implied" />
+            
+    
+</div><!-- #recently --><section id="video-clip" class="supplementary"><div class="dh1 head3"><a href="http://video.golem.de/">Videos</a></div><div class="v3d">
+
+
+
+
+<a href="http://video.golem.de/games/14452/tales-from-the-borderlands-test-fazit.html" title="Tales from the Borderlands - Fazit">
+<img src="http://video.golem.de/teaser/1/1/14452/thumb-medium-300/medium-480-snap.jpg" alt="Tales from the Borderlands - Fazit"
+>
+<img src="/staticrl/images/icon-video-1.png" alt="" class="v3icon">
+<span class="text1">Tales from the Borderlands - Fazit</span>
+</a>
+</div><p class="meta text1"><a href="http://video.golem.de/" rel="nofollow">Weitere Videos</a></p></section><section class="supplementary" id="newsletter">
+    <div class="dh1 head3"><a href="http://nl.golem.de">Newsletter-Abo</a></div>
+    <form action="http://nl.golem.de/newsletter.php" name="nl" method="post">
+        <input type="hidden" name="source" value="1">
+        <input type="hidden" name="default" value="2">
+        <input type="hidden" name="action" value="create">
+        <fieldset>
+            <label class="implied" for="supplementary-newsletter-email">E-Mail-Adresse:</label>
+            <span class="inputText">
+                <input id="supplementary-newsletter-email" placeholder="ihre@email.com" type="email" name="email" value="" />
+            </span>
+            <span class="inputSubmit">
+                <input id="supplementary-newsletter-submit" type="submit" value="Anmelden" />
+            </span>
+        </fieldset>
+    </form>
+</section><!-- .supplementary#newsletter -->
+<hr class="implied" />
+<section class="supplementary" id="contact">
+    <div class="dh1 head3">Haben wir etwas &uuml;bersehen?</div>
+    <p class="text1">E-Mail an <a href="mailto:news@golem.de" rel="nofollow">news@golem.de</a></p>
+</section><!-- .supplementary#contact -->
+<hr class="implied" />
+<!-- begin ad tag (tile=9) -->
+<section id="iqadtile9" class="supplementary">
+<div class="text1 iqadmarker">Anzeige</div>
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script type="text/javascript" src="http://ad.de.doubleclick.net/adj/golem/homepage;kw=golem,iqdrelgol,' + iqd_TestKW + ',homepage,tsilkcalb,internet,wissenschaft,server,mobil,smartphone,desktopapplikationen,telekommunikation,pchardware,digitalkamera,linux,opensource,apple,cloudcomputing,;doc=index;sz=405x150;tile=9;' + n_pbt + ';ord=' + ord + '?"></scr' + 'ipt>');
+//]]>
+</script>
+<noscript><a href="http://ad.de.doubleclick.net/jump/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,internet,wissenschaft,server,mobil,smartphone,desktopapplikationen,telekommunikation,pchardware,digitalkamera,linux,opensource,apple,cloudcomputing,;doc=index;sz=405x150;tile=9;ord=1419098479?" target="_blank" ><img src="http://ad.de.doubleclick.net/ad/golem/homepage;kw=golem,iqdrelgol,homepage,tsilkcalb,internet,wissenschaft,server,mobil,smartphone,desktopapplikationen,telekommunikation,pchardware,digitalkamera,linux,opensource,apple,cloudcomputing,;doc=index;sz=405x150;tile=9;ord=1419098479?" style="border:0;" alt="" /></a></noscript>
+</section>
+<!-- end ad tag (tile=9) -->
+        </div><!-- .g.g2 -->
+
+        <div class="g g6 g-ie6 promos">
+
+
+
+<section class="g g-ie6 g2 promo" style="clear:both; margin-left:0;">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/ssl/">Secure Socket Layer</a></div>
+<img id="proali_111188" alt="Netzverschl&uuml;sselung: Mythen &uuml;ber HTTPS" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111188-91873-i_rc.jpg" /><header class="cluster-header"><a id="proal_111188" href="http://www.golem.de/news/netzverschluesselung-mythen-ueber-https-1412-111188.html"><div class="dh3 head1">Netzverschl&uuml;sselung</div> <div class="dh2 head2">Mythen &uuml;ber HTTPS</div></a></header>
+    <p>Google will <a href="http://www.golem.de/specials/http/" target="_blank">HTTP</a> zum unsicheren Protokoll degradieren, der Trend geht zum verschl&uuml;sselten Netz. Daran gibt es auch Kritik, doch die beruht oft auf Missverst&auml;ndnissen.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111188_111157" href="http://www.golem.de/news/websicherheit-chrome-will-vor-http-verbindungen-warnen-1412-111157.html"><strong>Websicherheit</strong> Chrome will vor HTTP-Verbindungen warnen</a></li>
+        <li class="text1"><a id="proalr_111188_111046" href="http://www.golem.de/news/sslv3-kaspersky-software-hebelt-schutz-vor-poodle-luecke-aus-1412-111046.html"><strong>SSLv3</strong> Kaspersky-Software hebelt Schutz vor Poodle-L&uuml;cke aus</a></li>
+        <li class="text1"><a id="proalr_111188_111037" href="http://www.golem.de/news/tls-verschluesselung-poodle-kann-auch-tls-betreffen-1412-111037.html"><strong>TLS-Verschl&uuml;sselung</strong> Poodle kann auch TLS betreffen</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/romecke/">Rom-Ecke</a></div>
+<img id="proali_111210" alt="ROM-Ecke: Pac Man ROM - Android gibt alles" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111210-91946-i_rc.jpg" /><header class="cluster-header"><a id="proal_111210" href="http://www.golem.de/news/rom-ecke-pac-man-rom-android-gibt-alles-1412-111210.html"><div class="dh3 head1">ROM-Ecke</div> <div class="dh2 head2">Pac Man ROM - Android gibt alles</div></a></header>
+    <p>Wer die Vorz&uuml;ge von <a href="http://www.golem.de/specials/cyanogenmod/" target="_blank">Cyanogenmod</a>, <a href="http://www.golem.de/specials/paranoidandroid/" target="_blank">Paranoid Android</a> und AOKP sch&auml;tzt, findet sie mit weiteren Optionen in Pac Man ROM: Halo, Gestensteuerung, Appbar, Benachrichtigungen im Standby-Modus, Heads-up-Benachrichtigungen und vieles mehr machen das ROM zu einer der umfangreichsten und besten auf dem Markt.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111210_110787" href="http://www.golem.de/news/die-rom-ecke-slimkat-viele-einstellungen-und-viel-schwarz-1411-110787.html"><strong>ROM-Ecke</strong> Slimkat - viele Einstellungen und viel Schwarz</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/golem.de/">Golem.de</a></div>
+<img id="proali_111121" alt="Jahresr&uuml;ckblick: Was 2014 bei Golem.de los war" src="" class="golem-data-afterload" data-src="http://www.golem.de/1401/sp_103678-11134-i_rc.jpg" /><header class="cluster-header"><a id="proal_111121" href="http://www.golem.de/news/jahresrueckblick-was-2014-bei-golem-de-los-war-1412-111121.html"><div class="dh3 head1">Jahresr&uuml;ckblick</div> <div class="dh2 head2">Was 2014 bei Golem.de los war</div></a></header>
+    <p>Abomodell, Heft, Selbstdefinition - und viele sch&ouml;ne Texte: Nicht nur in der Technik hat sich 2014 viel getan, sondern auch bei Golem.de.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111121_109599" href="http://www.golem.de/news/in-eigener-sache-golem-de-sucht-junior-concepter-in-fuer-onlinewerbung-1410-109599.html"><strong>In eigener Sache</strong> Golem.de sucht (Junior) Concepter/-in f&uuml;r Onlinewerbung</a></li>
+        <li class="text1"><a id="proalr_111121_109517" href="http://www.golem.de/news/in-eigener-sache-golem-de-offline-und-unplugged-1410-109517.html"><strong>In eigener Sache</strong> Golem.de offline und unplugged</a></li>
+        <li class="text1"><a id="proalr_111121_109500" href="http://www.golem.de/news/in-eigener-sache-golem-de-sucht-videoredakteur-in-1409-109500.html"><strong>In eigener Sache</strong> Golem.de sucht Videoredakteur/-in</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="clear:both; margin-left:0;">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/smarthome/">Smarthome</a></div>
+<img id="proali_111173" alt="Security: Smarthomes, offen wie Scheunentore" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111173-91831-i_rc.jpg" /><header class="cluster-header"><a id="proal_111173" href="http://www.golem.de/news/security-smarthomes-offen-wie-scheunentore-1412-111173.html"><div class="dh3 head1">Security</div> <div class="dh2 head2">Smarthomes, offen wie Scheunentore</div></a></header>
+    <p>Vernetzte Wohnungen und H&auml;user versprechen zwar mehr Komfort, sie bieten dann allerdings auch eine riesige Angriffsfl&auml;che.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111173_110883" href="http://www.golem.de/news/software-plattform-bosch-und-cisco-gruenden-joint-venture-fuer-smart-home-1412-110883.html"><strong>Software-Plattform</strong> Bosch und Cisco gr&uuml;nden Joint Venture f&uuml;r Smart Home</a></li>
+        <li class="text1"><a id="proalr_111173_110844" href="http://www.golem.de/news/pantelligent-die-funkende-bratpfanne-1411-110844.html"><strong>Pantelligent</strong> Die funkende Bratpfanne</a></li>
+        <li class="text1"><a id="proalr_111173_110663" href="http://www.golem.de/news/smarthome-das-intelligente-haus-wird-nie-fertig-1411-110663.html"><strong>Smarthome</strong> Das intelligente Haus wird nie fertig</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/nexus6/">Nexus 6</a></div>
+<img id="proali_111097" alt="Nexus 6 gegen Moto X: Das Nexus ist tot" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111097-91704-i_rc.jpg" /><header class="cluster-header"><a id="proal_111097" href="http://www.golem.de/news/nexus-6-gegen-moto-x-das-nexus-ist-tot-1412-111097.html"><div class="dh3 head1">Nexus 6 gegen Moto X</div> <div class="dh2 head2">Das Nexus ist tot</div></a></header>
+    <p>Mit dem neuen, teuren Nexus 6 hat sich Google von seiner bisherigen Preispolitik verabschiedet - und damit offenbar die Nexus-Reihe, wie wir sie kannten, begraben. Ein Alternativger&auml;t ist das <a href="http://www.golem.de/specials/motox/" target="_blank">Moto X</a> von Motorola, das einige Extrafunktionen und Designoptionen bietet.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111097_110759" href="http://www.golem.de/news/teardown-nexus-6-kommt-mit-wenig-kleber-aus-1411-110759.html"><strong>Teardown</strong> Nexus 6 kommt mit wenig Kleber aus</a></li>
+        <li class="text1"><a id="proalr_111097_110658" href="http://www.golem.de/news/google-nexus-6-kommt-doch-erst-viel-spaeter-1411-110658.html"><strong>Google</strong> Nexus 6 kommt doch erst viel sp&auml;ter</a></li>
+        <li class="text1"><a id="proalr_111097_110625" href="http://www.golem.de/news/google-nexus-6-erscheint-naechste-woche-1411-110625.html"><strong>Google</strong> Nexus 6 erscheint n&auml;chste Woche - doch nicht</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/limux-projekt/">Limux-Projekt</a></div>
+<img id="proali_111129" alt="E-Mail-Ausfall in M&uuml;nchen: Und wieder wars nicht Limux" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111129-91729-i_rc.jpg" /><header class="cluster-header"><a id="proal_111129" href="http://www.golem.de/news/e-mail-ausfall-in-muenchen-und-wieder-wars-nicht-limux-1412-111129.html"><div class="dh3 head1">E-Mail-Ausfall in M&uuml;nchen</div> <div class="dh2 head2">Und wieder wars nicht Limux</div></a></header>
+    <p>Bei der Fehlersuche nach dem E-Mail-Ausfall in M&uuml;nchen offenbaren sich katastrophale Zust&auml;nde bei der IT-Verwaltung sowie ein sehr seltsam anmutender Spamfilter. Daf&uuml;r passt der &ouml;ffentliche Umgang mit dem Problem durch OB Reiter in die Kritik an seinem Verh&auml;ltnis zum Limux-Projekt.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111129_111083" href="http://www.golem.de/news/oeffentliche-verwaltung-massiver-mailausfall-bei-der-stadt-muenchen-1412-111083.html"><strong>&Ouml;ffentliche Verwaltung</strong> Massiver E-Mail-Ausfall bei der Stadt M&uuml;nchen</a></li>
+        <li class="text1"><a id="proalr_111129_110908" href="http://www.golem.de/news/limux-kopf-einziehen-und-ueber-verschwoerung-tuscheln-1412-110908.html"><strong>Limux</strong> Kopf einziehen und &uuml;ber Verschw&ouml;rung tuscheln</a></li>
+        <li class="text1"><a id="proalr_111129_109836" href="http://www.golem.de/news/limux-windows-rueckkehr-wuerde-muenchen-millionen-kosten-1410-109836.html"><strong>Limux</strong> Windows-R&uuml;ckkehr w&uuml;rde M&uuml;nchen Millionen kosten</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="clear:both; margin-left:0;">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/powerline/">Powerline</a></div>
+<img id="proali_111016" alt="1.200-MBit-Powerline im Test: &quot;Schatz, mach das Licht aus, das Netz ist so langsam!&quot;" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111016-91444-i_rc.jpg" /><header class="cluster-header"><a id="proal_111016" href="http://www.golem.de/news/1-200-mbit-powerline-im-test-schatz-mach-das-licht-aus-das-netz-ist-so-langsam-1412-111016.html"><div class="dh3 head1">1.200-MBit-Powerline im Test</div> <div class="dh2 head2">&quot;Schatz, mach das Licht aus, das Netz ist so langsam!&quot;</div></a></header>
+    <p>Sowohl per Steckdose als auch per <a href="http://www.golem.de/specials/wlan/" target="_blank">WLAN</a> soll Devolos neues Powerline-Kit 1.200 Megabit pro Sekunde erreichen. Im besten Fall bleibt davon ein Viertel &uuml;brig, wenn man alles richtig macht. Dennoch &uuml;berzeugt das System - wenn nicht gerade Energiesparlampen st&ouml;ren.</p>
+    <ol>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/games/">Games</a></div>
+<img id="proali_111145" alt="Games-Verfilmungen: Videospiele erobern Hollywood" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111145-91764-i_rc.jpg" /><header class="cluster-header"><a id="proal_111145" href="http://www.golem.de/news/games-verfilmungen-videospiele-erobern-hollywood-1412-111145.html"><div class="dh3 head1">Games-Verfilmungen</div> <div class="dh2 head2">Videospiele erobern Hollywood</div></a></header>
+    <p><a href="http://www.golem.de/specials/wow/" target="_blank">Warcraft</a>, Assassin's Creed, <a href="http://www.golem.de/specials/angry-birds/" target="_blank">Angry Birds</a>: Immer mehr popul&auml;re Computerspiele werden verfilmt. Denn Spiele unterhalten nicht nur auf dem heimischen Bildschirm.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111145_111261" href="http://www.golem.de/news/entwicklerpreis-summit-2014-wiederspielbarkeit-reloaded-1412-111261.html"><strong>Entwicklerpreis Summit 2014</strong> Wiederspielbarkeit Reloaded</a></li>
+        <li class="text1"><a id="proalr_111145_111015" href="http://www.golem.de/news/adr1ft-mit-oculus-rift-und-ue4-ins-all-1412-111015.html"><strong>Adr1ft</strong> Mit Oculus Rift und UE4 ins All</a></li>
+        <li class="text1"><a id="proalr_111145_111002" href="http://www.golem.de/news/the-game-awards-2014-dragon-age-ist-bestes-spiel-miyamoto-zeigt-neues-zelda-1412-111002.html"><strong>The Game Awards 2014</strong> Dragon Age ist bestes Spiel, Miyamoto zeigt neues Zelda</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/auto/">Automobil</a></div>
+<img id="proali_111090" alt="O2 Car Connection im Test: Der Spion unterm Lenkrad" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111090-91631-i_rc.jpg" /><header class="cluster-header"><a id="proal_111090" href="http://www.golem.de/news/o2-car-connection-im-test-der-spion-unterm-lenkrad-1412-111090.html"><div class="dh3 head1">O2 Car Connection im Test</div> <div class="dh2 head2">Der Spion unterm Lenkrad</div></a></header>
+    <p>Das O2-Car-Connection-Kit soll alte Autos smart machen. Wie unser Test zeigt, macht es das Fahrzeug aber nicht viel schlauer - und auch den Fahrer kaum kl&uuml;ger.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111090_111246" href="http://www.golem.de/news/urteil-finger-weg-vom-handy-beim-autofahren-1412-111246.html"><strong>Urteil</strong> Finger weg vom Handy beim Autofahren</a></li>
+        <li class="text1"><a id="proalr_111090_111216" href="http://www.golem.de/news/urban-windshield-jaguar-bringt-videospiel-feeling-ins-auto-1412-111216.html"><strong>Urban Windshield</strong> Jaguar bringt Videospiel-Feeling ins Auto</a></li>
+        <li class="text1"><a id="proalr_111090_110877" href="http://www.golem.de/news/tweak-carplay-ohne-passendes-auto-verwenden-1412-110877.html"><strong>Tweak</strong> Carplay ohne passendes Auto verwenden</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="clear:both; margin-left:0;">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/parrot/">Parrot</a></div>
+<img id="proali_110814" alt="Parrot Bebop ausprobiert: Handliche Kameradrohne mit gro&szlig;em Controller" src="" class="golem-data-afterload" data-src="http://www.golem.de/1411/sp_110814-90873-i_rc.jpg" /><header class="cluster-header"><a id="proal_110814" href="http://www.golem.de/news/parrot-bebop-ausprobiert-handliche-kameradrohne-mit-grossem-controller-1411-110814.html"><div class="dh3 head1">Parrot Bebop ausprobiert</div> <div class="dh2 head2">Handliche Kameradrohne mit gro&szlig;em Controller</div></a></header>
+    <p>Fliegender Fisch: Parrot hat seine Kameradrohne mit Fischaugenobjektiv und den dazugeh&ouml;rigen Skycontroller gezeigt. Golem.de hat die Drohne ausprobiert.</p>
+    <ol>
+        <li class="text1"><a id="proalr_110814_111171" href="http://www.golem.de/news/parrot-smartphone-teleprompter-fuer-das-kameraobjektiv-1412-111171.html"><strong>Parrot</strong> Smartphone-Teleprompter f&uuml;r das Kameraobjektiv</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/smartphone/">Smartphone</a></div>
+<img id="proali_110857" alt="Linshof: Die gut versteckte Firma hinter dem Wunder-Smartphone" src="" class="golem-data-afterload" data-src="http://www.golem.de/1411/sp_110857-91010-i_rc.jpg" /><header class="cluster-header"><a id="proal_110857" href="http://www.golem.de/news/linshof-die-gut-versteckte-firma-hinter-dem-wunder-smartphone-1411-110857.html"><div class="dh3 head1">Linshof</div> <div class="dh2 head2">Die gut versteckte Firma hinter dem Wunder-Smartphone</div></a></header>
+    <p>Nach den ersten 24 Stunden Kontakt mit der Firma Linshof scheint sie ein Paradebeispiel daf&uuml;r zu sein, wie man ein <a href="http://www.golem.de/specials/startup/" target="_blank">Startup</a> nicht macht: Das Unternehmen versteckt sich, kommuniziert nur per E-Mail und droht einem Blogger mit rechtlichen Schritten.</p>
+    <ol>
+        <li class="text1"><a id="proalr_110857_111202" href="http://www.golem.de/news/smartphone-markt-samsung-schwaechelt-weiter-xiaomi-draengt-in-die-top-5-1412-111202.html"><strong>Smartphone-Markt</strong> Samsung schw&auml;chelt weiter, Xiaomi dr&auml;ngt in die Top 5</a></li>
+        <li class="text1"><a id="proalr_110857_110985" href="http://www.golem.de/news/xodiom-spitzensmartphone-scheint-ein-schwindel-zu-sein-1412-110985.html"><strong>Xodiom</strong> Spitzensmartphone scheint ein Schwindel zu sein</a></li>
+        <li class="text1"><a id="proalr_110857_110896" href="http://www.golem.de/news/puzzle-phone-weiteres-modulares-smartphone-soll-2015-erscheinen-1412-110896.html"><strong>Puzzle Phone</strong> Neues modulares Smartphone soll 2015 erscheinen</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/yotaphone/">Yotaphone</a></div>
+<img id="proali_110924" alt="Yotaphone 2 im Test: Das Smartphone neu gedacht - und endlich auch durchdacht" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_110924-91304-i_rc.jpg" /><header class="cluster-header"><a id="proal_110924" href="http://www.golem.de/news/yotaphone-2-im-test-das-smartphone-neu-gedacht-und-endlich-auch-durchdacht-1412-110924.html"><div class="dh3 head1">Yotaphone 2 im Test</div> <div class="dh2 head2">Das Smartphone neu gedacht - und endlich auch durchdacht</div></a></header>
+    <p>Ein ganz neues Smartphone-Konzept: Das ist Yota im zweiten Anlauf gelungen. Das Yotaphone 2 kann komplett &uuml;ber seinen E-Paper-<a href="http://www.golem.de/specials/touchscreen/" target="_blank">Touchscreen</a> bedient werden. Das ergibt ein komplett neues Smartphone-Gef&uuml;hl, wie sich im Test zeigte.</p>
+    <ol>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="clear:both; margin-left:0;">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/grafikhardware/">Grafikhardware</a></div>
+<img id="proali_111035" alt="Grafiktreiber im Test: AMD wagt mit Catalyst Omega Neuanfang samt Downsampling" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111035-91494-i_rc.jpg" /><header class="cluster-header"><a id="proal_111035" href="http://www.golem.de/news/grafiktreiber-im-test-amd-wagt-mit-catalyst-omega-neuanfang-samt-downsampling-1412-111035.html"><div class="dh3 head1">Grafiktreiber im Test</div> <div class="dh2 head2">AMD wagt mit Catalyst Omega Neuanfang samt Downsampling</div></a></header>
+    <p>Downsampling so einfach wie noch nie, ruckelfreie Blu-rays, mehr Leistung und jede Menge Bugfixes: <a href="http://www.golem.de/specials/amd/" target="_blank">AMD</a> legt mit Catalyst Omega ein neues Konzept f&uuml;r seine <a href="http://www.golem.de/specials/grafiktreiber/" target="_blank">Grafiktreiber</a> unter Windows und Linux vor, das &uuml;berzeugt. Ein Kritikpunkt vieler Spieler ist aber noch nicht ber&uuml;cksichtigt.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111035_111174" href="http://www.golem.de/news/partikelsimulation-nvidias-flex-ruehrt-das-muesli-an-1412-111174.html"><strong>Partikelsimulation</strong> Nvidias Flex r&uuml;hrt das M&uuml;sli an</a></li>
+        <li class="text1"><a id="proalr_111035_110958" href="http://www.golem.de/news/geforce-gtx-980-matrix-asus-overclocker-grafikkarte-schmilzt-eis-1412-110958.html"><strong>Geforce GTX 980 Matrix</strong> Asus' Overclocker-Grafikkarte schmilzt Eis</a></li>
+        <li class="text1"><a id="proalr_111035_110946" href="http://www.golem.de/news/dual-gpu-grafikkarte-amds-radeon-r9-295-x2-nur-kurzfristig-billiger-1412-110946.html"><strong>Dual-GPU-Grafikkarte</strong> AMDs Radeon R9 295 X2 nur kurzfristig billiger</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/zotac/">Zotac</a></div>
+<img id="proali_110395" alt="Zbox Pico im Test: Der Taschenrechner, der fast alles kann" src="" class="golem-data-afterload" data-src="http://www.golem.de/1411/sp_110395-89957-i_rc.jpg" /><header class="cluster-header"><a id="proal_110395" href="http://www.golem.de/news/zbox-pico-im-test-der-taschenrechner-der-fast-alles-kann-1411-110395.html"><div class="dh3 head1">Zbox Pico im Test</div> <div class="dh2 head2">Der Taschenrechner, der fast alles kann</div></a></header>
+    <p>Ein <a href="http://www.golem.de/specials/mini-pc/" target="_blank">Mini-PC</a> f&uuml;r die Hosentasche oder das Wohnzimmer: Zotacs Zbox Pico ist ein Windows-Rechner im Smartphone-Format. Er streamt Filme oder Spiele, hat schnellen Flash-Speicher und arbeitet lautlos.</p>
+    <ol>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+
+
+
+<section class="g g-ie6 g2 promo" style="">
+    <div class="dh1 head3"><a href="http://www.golem.de/specials/golemretro/">Golem retro_</a></div>
+<img id="proali_111082" alt="Rock n' Roll Racing (1993): Nachbrenner vom Schneesturm" src="" class="golem-data-afterload" data-src="http://www.golem.de/1412/sp_111082-91775-i_rc.jpg" /><header class="cluster-header"><a id="proal_111082" href="http://www.golem.de/news/rock-n-roll-racing-1993-nachbrenner-vom-schneesturm-1412-111082.html"><div class="dh3 head1">Rock n' Roll Racing (1993)</div> <div class="dh2 head2">Nachbrenner vom Schneesturm</div></a></header>
+    <p><a href="http://www.golem.de/specials/golemretro/" style="color:#0099FF; font-weight:bold;">Golem retro_</a> In Episode 4 treten wir aufs digitale Retro-Gaspedal und baggern in der Spielehistorie von Blizzard, den Machern von World of Warcraft, <a href="http://www.golem.de/specials/hearthstone-heroes-of-warcraft/" target="_blank">Hearthstone</a> und <a href="http://www.golem.de/specials/diablo/" target="_blank">Diablo</a>. Gefunden haben wir Rock N' Roll Racing - das Actionrennspiel mit dem Wahnsinnssoundtrack.</p>
+    <ol>
+        <li class="text1"><a id="proalr_111082_110909" href="http://www.golem.de/news/ultima-underworld-1992-der-revolutionaere-dungeon-simulator-1412-110909.html"><strong>Ultima Underworld (1992)</strong> Der revolution&auml;re Dungeon Simulator</a></li>
+        <li class="text1"><a id="proalr_111082_110854" href="http://www.golem.de/news/sid-meier-s-colonization-dos-auf-augenhoehe-mit-george-washington-1411-110854.html"><strong>Sid Meier's Colonization (1994)</strong> Auf Augenh&ouml;he mit George Washington</a></li>
+        <li class="text1"><a id="proalr_111082_110726" href="http://www.golem.de/news/spieleklassiker-retrogolem-spielt-star-wars-x-wing-dos-1411-110726.html"><strong>Star Wars X-Wing (1993)</strong> Flugsimulation mit R2D2 im Nacken</a></li>
+    </ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied" />
+        </div><!-- .g.g6 promos -->
+
+        <div class="g g6 g-ie6 activity">
+<!-- FORUM -->
+<section class="g g4" id="large-forum">
+    <div class="dh1"><a href="http://forum.golem.de/new/">Forumsbeitr&auml;ge &raquo;</a></div>
+    <ol id="ltlforum">
+<li><div class="dh2 text1"><a href="http://forum.golem.de/kommentare/politik-recht/directory-authorities-tor-projekt-befuerchtet-baldigen-angriff-auf-seine-systeme/88797,list.html"><strong>Directory Authorities</strong> Tor-Projekt bef&uuml;rchtet baldigen Angriff auf seine Systeme</a></div><p><a href="http://forum.golem.de/kommentare/politik-recht/directory-authorities-tor-projekt-befuerchtet-baldigen-angriff-auf-seine-systeme/bloede-frage.../88797,3996752,3996752,read.html#msg-3996752" id="ltlmsg3996884">Re: Bl&ouml;de Frage...</a></p><p class="meta">jaykay2342&nbsp;|&nbsp;18:44</p></li>
+<li><div class="dh2 text1"><a href="http://forum.golem.de/kommentare/politik-recht/it-bereich-china-will-auslaendische-technik-durch-eigene-ersetzen/88790,list.html"><strong>IT-Bereich</strong> China will ausl&auml;ndische Technik durch eigene ersetzen</a></div><p><a href="http://forum.golem.de/kommentare/politik-recht/it-bereich-china-will-auslaendische-technik-durch-eigene-ersetzen/vorbildlich/88790,3996407,3996407,read.html#msg-3996407" id="ltlmsg3996883">Re: Vorbildlich</a></p><p class="meta">SJ&nbsp;|&nbsp;18:38</p></li>
+<li><div class="dh2 text1"><a href="http://forum.golem.de/kommentare/security/zeitserver-sicherheitsluecken-in-ntp/88796,list.html"><strong>Zeitserver</strong> Sicherheitsl&uuml;cken in NTP</a></div><p><a href="http://forum.golem.de/kommentare/security/zeitserver-sicherheitsluecken-in-ntp/mitm-angriff-auf-ntp-connection/88796,3996835,3996835,read.html#msg-3996835" id="ltlmsg3996882">Re: MITM-Angriff auf NTP-Connection</a></p><p class="meta">bitshift&nbsp;|&nbsp;18:36</p></li>
+<li><div class="dh2 text1"><a href="http://forum.golem.de/kommentare/wirtschaft/medienbericht-axel-springer-will-t-online.de-uebernehmen/88798,list.html"><strong>Medienbericht</strong> Axel Springer will T-Online.de &uuml;bernehmen</a></div><p><a href="http://forum.golem.de/kommentare/wirtschaft/medienbericht-axel-springer-will-t-online.de-uebernehmen/wer-bitte-liest-bei-t-online/88798,3996773,3996773,read.html#msg-3996773" id="ltlmsg3996880">Re: Wer bitte liest bei t-online ?</a></p><p class="meta">DonOmerta&nbsp;|&nbsp;18:18</p></li>
+<li><div class="dh2 text1"><a href="http://forum.golem.de/kommentare/mobile-computing/kaufberatung-worauf-es-bei-einem-notebook-ankommt/88708,list.html"><strong>Kaufberatung</strong> Worauf es bei einem Notebook ankommt</a></div><p><a href="http://forum.golem.de/kommentare/mobile-computing/kaufberatung-worauf-es-bei-einem-notebook-ankommt/eigentlich-ist-das-relativ-einfach.../88708,3995724,3995724,read.html#msg-3995724" id="ltlmsg3996878">Re: Eigentlich ist das relativ einfach...</a></p><p class="meta">M.&nbsp;|&nbsp;18:15</p></li>
+    </ol>
+</section><!-- .g.g4#large-forum -->
+<hr class="implied" />
+<!-- / FORUM --><section class="g g2" id="small-ticker">
+    <div class="dh1"><a href="http://www.golem.de/ticker/">Ticker &raquo;</a></div>
+    <ol class="list-tickers">
+	        <li>
+            <div class="dh2 text1"><a id="tial_111299" href="http://www.golem.de/news/odst-gratis-kampagne-fuer-halo-collection-wegen-bugs-1412-111299.html" title="ODST: Gratis-Kampagne f&uuml;r Halo Collection wegen Bugs"><strong>ODST</strong> Gratis-Kampagne f&uuml;r Halo Collection wegen Bugs</a></div>
+            <p class="meta">16:02</p>
+        </li>
+	        <li>
+            <div class="dh2 text1"><a id="tial_111298" href="http://www.golem.de/news/medienbericht-axel-springer-will-t-online-de-uebernehmen-1412-111298.html" title="Medienbericht: Axel Springer will T-Online.de &uuml;bernehmen"><strong>Medienbericht</strong> Axel Springer will T-Online.de &uuml;bernehmen</a></div>
+            <p class="meta">13:11</p>
+        </li>
+	        <li>
+            <div class="dh2 text1"><a id="tial_111297" href="http://www.golem.de/news/directory-authorities-tor-projekt-befuerchtet-baldigen-angriff-auf-seine-systeme-1412-111297.html" title="Directory Authorities: Tor-Projekt bef&uuml;rchtet baldigen Angriff auf seine Systeme"><strong>Directory Authorities</strong> Tor-Projekt bef&uuml;rchtet baldigen Angriff auf seine Systeme</a></div>
+            <p class="meta">11:50</p>
+        </li>
+	        <li>
+            <div class="dh2 text1"><a id="tial_111296" href="http://www.golem.de/news/zeitserver-sicherheitsluecken-in-ntp-1412-111296.html" title="Zeitserver: Sicherheitsl&uuml;cken in NTP"><strong>Zeitserver</strong> Sicherheitsl&uuml;cken in NTP</a></div>
+            <p class="meta">11:06</p>
+        </li>
+	        <li>
+            <div class="dh2 text1"><a id="tial_111286" href="http://www.golem.de/news/core-m-5y10-im-test-kleiner-core-m-fast-wie-ein-grosser-1412-111286.html" title="Core M-5Y10 im Test: Kleiner Core M fast wie ein Gro&szlig;er"><strong>Core M-5Y10 im Test</strong> Kleiner Core M fast wie ein Gro&szlig;er</a></div>
+            <p class="meta">09:01</p>
+        </li>
+	        <li>
+            <div class="dh2 text1"><a id="tial_111280" href="http://www.golem.de/news/guardians-of-peace-sony-hack-wird-zum-politikum-1412-111280.html" title="Guardians of Peace: Sony-Hack wird zum Politikum"><strong>Guardians of Peace</strong> Sony-Hack wird zum Politikum</a></div>
+            <p class="meta">20:17</p>
+        </li>
+	        <li>
+            <div class="dh2 text1"><a id="tial_111295" href="http://www.golem.de/news/urheberrecht-flickr-wall-art-nutzt-keine-cc-bilder-mehr-1412-111295.html" title="Urheberrecht: Flickr Wall Art nutzt keine CC-Bilder mehr"><strong>Urheberrecht</strong> Flickr Wall Art nutzt keine CC-Bilder mehr</a></div>
+            <p class="meta">18:56</p>
+        </li>
+	        <li>
+            <div class="dh2 text1"><a id="tial_111294" href="http://www.golem.de/news/rohrpostzug-hyperloop-entsteht-nach-feierabend-1412-111294.html" title="Rohrpostzug: Hyperloop entsteht nach Feierabend"><strong>Rohrpostzug</strong> Hyperloop entsteht nach Feierabend</a></div>
+            <p class="meta">18:12</p>
+        </li>
+	    </ol><!-- .list-tickers -->
+</section><!-- .g.g2#small-ticker -->
+<hr class="implied" />
+<div class="specialletters">
+<ol class="text1">
+<li style="width:66px;"><a href="/specials/">Themen</a></li>
+<li><a href="/specials/a/">A</a></li>
+<li><a href="/specials/b/">B</a></li>
+<li><a href="/specials/c/">C</a></li>
+<li><a href="/specials/d/">D</a></li>
+<li><a href="/specials/e/">E</a></li>
+<li><a href="/specials/f/">F</a></li>
+<li><a href="/specials/g/">G</a></li>
+<li><a href="/specials/h/">H</a></li>
+<li><a href="/specials/i/">I</a></li>
+<li><a href="/specials/j/">J</a></li>
+<li><a href="/specials/k/">K</a></li>
+<li><a href="/specials/l/">L</a></li>
+<li><a href="/specials/m/">M</a></li>
+<li><a href="/specials/n/">N</a></li>
+<li><a href="/specials/o/">O</a></li>
+<li><a href="/specials/p/">P</a></li>
+<li><a href="/specials/q/">Q</a></li>
+<li><a href="/specials/r/">R</a></li>
+<li><a href="/specials/s/">S</a></li>
+<li><a href="/specials/t/">T</a></li>
+<li><a href="/specials/u/">U</a></li>
+<li><a href="/specials/v/">V</a></li>
+<li><a href="/specials/w/">W</a></li>
+<li><a href="/specials/x/">X</a></li>
+<li><a href="/specials/y/">Y</a></li>
+<li><a href="/specials/z/">Z</a></li>
+<li style="width:16px;"><a href="/specials/0/">#</a></li>
+</ol>
+&nbsp;
+<hr class="implied" />
+</div><!-- .g.g6.activity -->
+        </div><!-- .g.g6.activity -->
+
+    </div><!-- #screen -->
+
+<footer id="footer">
+    <ul>
+        <li><a href="http://www.golem.de/">Home</a></li>
+        <li><a href="http://www.golem.de/ticker/">Ticker</a></li>
+        <li><a href="http://www.golem.de/sonstiges/rss.html">RSS</a></li>
+        <li><a href="http://api.golem.de/">API</a></li>
+        <li><a href="http://forum.golem.de/">Forum</a></li>
+        <li><a href="http://www.golem.de/sonstiges/zusatzdienste.html">Zusatzdienste</a></li>
+        <li><a href="http://jobs.golem.de/">Jobs</a></li>
+        <li><a href="http://www.golem.de/sonstiges/impressum.html">Impressum</a></li>
+        <li><a href="http://www.golem.de/sonstiges/leitbild.html">Leitbild</a></li>
+        <li><a href="http://www.golem.de/sonstiges/Datenschutz.html">Datenschutz</a></li>
+        <li><a href="http://www.golem.de/sonstiges/werbung.html">Werbung</a></li>
+        <li><a href="http://www.golem.de/sonstiges/ansicht/">Ansicht</a></li>
+        <li><a id="gftroba" href="http://www.iqm.de/Nutzungsbasierte-Onlinewerbung" rel="nofollow">Nutzungsbasierte Onlinewerbung</a></li>
+        <li><span id="gftrhook"></span></li>
+    </ul>
+    <p>&copy; 1997&mdash;2014 <a href="http://www.golem.de/">Golem.de</a>. Alle Rechte vorbehalten.</p>
+</footer><!-- #footer -->
+
+
+<script type="text/javascript" src="/staticrl/scripts/golem_home_62-min.js"></script>
+
+<script type="text/javascript">
+<!--
+$(document).ready(function() {
+  $(document)
+    .trigger('HP_IMAGELINKS').trigger('HP_AFTERLOAD')
+    .trigger('HP_FORUMLINKS').trigger('HP_SPECIALLINKS')
+    .trigger('HP_VIDEOCAR').trigger('DO_VIEWHINT')
+    .trigger('DO_RECENTLY').trigger('SUPPORT_IE');
+});
+-->
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	if(Golem.pcvclass) {
+		var s = $('<script>').attr('type',"text/javascript").attr('src',"http://www.golem.de/account_js.php?view="+Golem.pcvclass);
+		$('body').append(s);
+	}
+});
+</script>
+
+<!--[if IE 6]>
+<script src="/staticrl/scripts/external/belated-png-0.0.8-min.js"></script>
+<script>
+    DD_belatedPNG.fix('#header img, .list-articles li img, .forum .threads .dh2, .ticker .is-image, .ticker .is-video, .cluster-video a, .cluster-video figcaption span');
+</script>
+<![endif]-->
+</div><!-- #grandwrapper -->
+<!-- google_ad_section_end -->
+<div id="iqdCheckPointHeight">
+<script type="text/javascript">
+var IQDComplete = { init: function () { return true; } };
+</script>
+</div>
+<div id="ivwcontainer">
+<!-- SZM VERSION="2.0" -->
+<script type="text/javascript" src="https://script.ioam.de/iam.js"></script>
+<script type="text/javascript">
+<!--
+var iam_data = {
+"st":"golem",
+"cp":"GHOME",
+"sv":"ke"
+};
+iom.c(iam_data, 1);
+//-->
+</script>
+<!--/SZM -->
+
+<script type="text/javascript" src="http://www.golem.de/_js/rl_hp_afc123.js"></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script type="text/javascript" src="http://ad.de.doubleclick.net/adj/golem/rosgolem;kw=golem;sz=111x11;tile=11;' + n_pbt + ';ord=' + ord + '?"></scr' + 'ipt>');
+document.write('<script type="text/javascript" src="http://ads.golem.de/sdcv.js"></scr' + 'ipt>');
+//]]>
+</script>
+<script type="text/javascript">
+<!--
+var _gaq = _gaq || [];
+_gaq.push(['_gat._anonymizeIp'],
+['_setAccount','UA-518800-2'],['_setDomainName','golem.de'],['_setCustomVar',1,'IQCV',((typeof iqdGolemCheckVar==="string")&&(iqdGolemCheckVar==="true"))?'1':(((typeof subDomainCheckVar!=="undefined")&&(subDomainCheckVar===true))?'3':'0'),2],['_setCustomVar',1,'HTML5',_golem_html5ads_enable?'1':'0',2],['_trackPageview'],['_trackPageLoadTime']);
+(function(d,t) {
+    var ga = d.createElement(t); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == d.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = d.getElementsByTagName(t)[0]; s.parentNode.insertBefore(ga, s);
+})(document,'script');
+var _gcpx = _gcpx || [];
+$(document).ready(function() {
+$('body').append("<img src='http://cpx.golem.de/cpx.php?class=0&amp;ts="+(Math.round(new Date().getTime()/1000))+"&amp;ref="+escape(document.referrer)+"'>");
+$('body').append('<embed id="gflbd3" src="/staticrl/swf/flbd3.swf" width="1px" height="1px" type="application/x-shockwave-flash"></embed>');
+_gcpx.push(['pi','d','homepage']);
+_gcpx.push(['var','iqcv',(((typeof iqdGolemCheckVar==="string")&&(iqdGolemCheckVar==="true"))?'1':(((typeof subDomainCheckVar!=="undefined")&&(subDomainCheckVar===true))?'3':'0'))]);
+_gcpx.push(['var','spkw',['all','internet','wissenschaft','server','mobil','smartphone','desktopapplikationen','telekommunikation','pchardware','digitalkamera','linux','opensource','apple','cloudcomputing']]);
+(function(b){var a=0;if(navigator.plugins&&navigator.plugins["Shockwave Flash"]){a=1}else{if(navigator.mimeTypes){var d=navigator.mimeTypes["application/x-shockwave-flash"];if(d&&d.enabledPlugin){a=1}}}if(navigator.userAgent.indexOf("MSIE")>-1){try{new ActiveXObject("ShockwaveFlash.ShockwaveFlash");a=3}catch(c){a*=2}}else{if($("embed").length+$("object").length>0){a=2;$("object, embed").each(function(){if($(this).css("display")!=="none"&&typeof document.embeds[this.id]!=="undefined"&&"PercentLoaded" in document.embeds[this.id]){a=3}})}else{if($("div[bginactive]").length>0){a=2}}}if(typeof b==="function"){b(a)}else{return a}})
+(function(r){_gcpx.push(['var','flbd',r]);});
+(function(d,n){
+  var g=d.createElement(n),s=d.getElementsByTagName(n)[0];
+  g.async=true; g.src='/staticrl/scripts/golem_cpxl_59-min.js';
+  s.parentNode.insertBefore(g,s);
+})(document,'script');
+});
+//-->
+</script>
+<noscript>
+<img src="http://cpx.golem.de/cpx.php?class=0&amp;ts=1419098479" alt="" width="1" height="1" />
+<img src="http://cpxl.golem.de/gif?u=http%3A%2F%2Fwww.golem.de%2F&amp;d=1419098479&amp;f=pi&amp;v=d&amp;t=homepage" alt="" width="1" height="1" />
+</noscript>
+</div>
+</div>
+
+</body>
+</html>
