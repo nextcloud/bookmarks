@@ -68,20 +68,25 @@ class BookmarkController extends ApiController {
 	 */
 	public function newBookmark($url = "", $item = array(), $from_own = 0, $title = "", $is_public = false, $description = "") {
 
-		// Check if it is a valid URL
-		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
-			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
+		$finalDestination = null;
+		$sanitizedUrl = Bookmarks::sanitizeURL($url, $finalDestination);
+		if ($sanitizedUrl == null) {
+			return new JSONResponse(array('status' => 'error'), Http::STATUS_NOT_ACCEPTABLE);
+		}
+		
+		if (Bookmarks::bookmarkExists($sanitizedUrl, $this->userId, $this->db) !== false){
+			return new JSONResponse(array('status' => 'error'), Http::STATUS_ALREADY_REPORTED);
 		}
 
 		$tags = isset($item['tags']) ? $item['tags'] : array();
 
 		if ($from_own == 0) {
-			$datas = Bookmarks::getURLMetadata($url);
-			if (isset($datas['title'])) {
-				$title = $datas['title'];
+			$metaData = Bookmarks::getURLMetadata($sanitizedUrl, $finalDestination);
+			if (isset($metaData['title'])) {
+				$title = $metaData['title'];
 			}
 		}
-		$id = Bookmarks::addBookmark($this->userId, $this->db, $url, $title, $tags, $description, $is_public);
+		$id = Bookmarks::addBookmark($this->userId, $this->db, $sanitizedUrl, $title, $tags, $description, $is_public);
 		$bm = Bookmarks::findUniqueBookmark($id, $this->userId, $this->db);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
 	}
@@ -93,12 +98,14 @@ class BookmarkController extends ApiController {
 	 * @param bool $is_public Description
 	 * @return \OCP\AppFramework\Http\TemplateResponse
 	 */
-	//TODO id vs record_id?
 	public function legacyEditBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
-		if ($id == null) {
+		if ($id == null && $record_id == null) {
 			return $this->newBookmark($url, $item, false, $title, $is_public, $description);
 		} else {
-			return $this->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description);
+			if ($id == null){
+				$id = $record_id;
+			}
+			return $this->editBookmark($id, $url, $item, $title, $is_public, $description);
 		}
 	}
 
@@ -109,24 +116,23 @@ class BookmarkController extends ApiController {
 	 * @param bool $is_public Description
 	 * @return \OCP\AppFramework\Http\TemplateResponse
 	 */
-	public function editBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
+	public function editBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $description = "") {
 
-		// Check if it is a valid URL
-		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
-			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
+		$sanitizedUrl = Bookmarks::sanitizeURL($url);
+		
+		if ($sanitizedUrl == null) {
+			return new JSONResponse(array('status' => 'error'), Http::STATUS_NOT_ACCEPTABLE);
 		}
 
-		if ($record_id == null) {
+		if (!is_numeric($id)) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
 		$tags = isset($item['tags']) ? $item['tags'] : array();
+		
+		$newBookmarkId = Bookmarks::editBookmark($this->userId, $this->db, $id, $sanitizedUrl, $title, $tags, $description, $is_public = false);
 
-		if (is_numeric($record_id)) {
-			$id = Bookmarks::editBookmark($this->userId, $this->db, $record_id, $url, $title, $tags, $description, $is_public = false);
-		}
-
-		$bm = Bookmarks::findUniqueBookmark($id, $this->userId, $this->db);
+		$bm = Bookmarks::findUniqueBookmark($newBookmarkId, $this->userId, $this->db);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
 	}
 
@@ -134,7 +140,6 @@ class BookmarkController extends ApiController {
 	  @NoAdminRequired
 	 * 
 	 * @param int $id
-	 * @param bool $is_public Description
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 */
 	public function legacyDeleteBookmark($id = -1) {
@@ -145,7 +150,6 @@ class BookmarkController extends ApiController {
 	  @NoAdminRequired
 	 * 
 	 * @param int $id
-	 * @param bool $is_public Description
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 */
 	public function deleteBookmark($id = -1) {

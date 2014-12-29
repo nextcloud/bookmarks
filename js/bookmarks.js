@@ -206,14 +206,34 @@ function addBookmark(event) {
 		type: 'POST',
 		url: 'bookmark',
 		data: bookmark,
-		complete: function () {
+		complete: function (xhr) {
 			decreaseAjaxCallCount();
+
+			if (xhr.status !== 200) {
+
+				switch (xhr.status) {
+					case 406:
+						// STATUS_NOT_ACCEPTABLE
+						OC.Notification.show(t('bookmarks', 'URL format not accepted'));
+						break;
+					case 208:
+						// STATUS_ALREADY_REPORTED
+						OC.Notification.show(t('bookmarks', 'URL already exists'));
+						break;
+					default:
+				}
+
+				//hide notification after 10 sec
+				setTimeout(function () {
+					OC.Notification.hide();
+				}, 3000);
+			}
 		},
 		success: function (data) {
+
 			if (data.status === 'success') {
 				// First remove old BM if exists
 				$('.bookmark_single').filterAttr('data-id', data.item.id).remove();
-
 				var bookmark = $.extend({}, bookmark, data.item);
 				updateBookmarksList(bookmark, 'prepend');
 				checkEmpty();
