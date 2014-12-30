@@ -83,16 +83,29 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 	right:0;
 }
 
-#add_form {
-	padding-bottom: 2em;
+#add_form_loading {
+	visibility: hidden;
+	position: absolute;
+	top: 11px;
+	right: 17%;
 }
 
-#add_form input {
+#add_form_input {
 	margin: 0.3em;
 }
+
 #add_url {
-	width: 12em;
+    box-sizing: border-box
+	width: 91.5%;
+    padding-right: 15%;
 }
+#bookmark_add_submit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 31px;
+}
+
 .bookmarks_addBml {
 	text-decoration: underline;
 }
