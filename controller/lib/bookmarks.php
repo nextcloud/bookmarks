@@ -523,9 +523,17 @@ class Bookmarks {
 		foreach ($links as $link) {
 			$title = $link->nodeValue;
 			$ref = $link->getAttribute("href");
+
 			$tag_str = '';
 			if ($link->hasAttribute("tags"))
 				$tag_str = $link->getAttribute("tags");
+			if ($tag_str == '') {
+				$parent = $link->parentNode;
+				while ($parent && $parent->tagName != "dl") {
+					$parent = $parent->parentNode;
+				}
+				$tag_str = trim($parent->previousSibling->nodeValue);
+			}
 			$tags = explode(',', $tag_str);
 
 			$desc_str = '';
@@ -535,6 +543,36 @@ class Bookmarks {
 			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str);
 		}
 
+		return array();
+	}
+
+	/**
+	 * @brief Import Bookmarks from Delicious xml formatted file
+	 * @param $user User imported Bookmarks should belong to
+	 * @param IDb $db Database Interface
+	 * @param $file Content to import
+	 * @return null
+	 * */
+	public static function importDeliciousFile($user, IDb $db, $file) {
+		libxml_use_internal_errors(true);
+		$dom = new \domDocument();
+
+		$dom->load($file);
+		$links = $dom->getElementsByTagName('post');
+
+		// Reintroduce transaction here!?
+		foreach ($links as $link) {
+			$title = $link->getAttribute("description");
+			$ref = $link->getAttribute("href");
+			$tag_str = $link->getAttribute("tag");
+			$tags = explode(' ', $tag_str);
+			if ($link->getAttribute("private") == "yes") {
+				$tags[] = "private";
+			}
+			$desc_str = $link->getAttribute("extended");
+			$shared = ($link->getAttribute("shared") == "yes");
+			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str, $shared);
+		}
 		return array();
 	}
 

@@ -209,6 +209,11 @@ class BookmarkController extends ApiController {
 				if (empty($error)) {
 					return new JSONResponse(array('status' => 'success'));
 				}
+			} elseif ($full_input['type'] == 'text/xml') {
+				$error = Bookmarks::importDeliciousFile($this->userId, $this->db, $file);
+				if (empty($error)) {
+					return new JSONResponse(array('status' => 'success'));
+				}
 			} else {
 				$error[] = $l->t('Unsupported file type for import');
 			}
