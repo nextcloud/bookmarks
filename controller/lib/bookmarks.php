@@ -430,7 +430,7 @@ class Bookmarks {
 		$public = $is_public ? 1 : 0;
 		$enc_url = htmlspecialchars_decode($url);
 		// Change lastmodified date if the record if already exists
-		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
+		$sql = "SELECT * FROM `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
 		$query = $db->prepareQuery($sql, 1);
 		$result = $query->execute(array($enc_url, $userid));
 		if ($row = $result->fetchRow()) {
@@ -451,6 +451,12 @@ class Bookmarks {
 			$params[] = $userid;
 			$query = $db->prepareQuery($sql);
 			$query->execute($params);
+			if (!empty($tags)) {
+                                $sql = "DELETE FROM `*PREFIX*bookmarks_tags` WHERE `bookmark_id` = ?";
+                                $query = $db->prepareQuery($sql);
+                                $query->execute(array($row['id']));
+                                self::addTags($db, $row['id'], $tags);
+                        }
 			return $row['id'];
 		} else {
 			$query = $db->prepareQuery("
@@ -485,13 +491,13 @@ class Bookmarks {
 	 * @return null
 	 * */
 	private static function addTags(IDb $db, $bookmarkID, $tags) {
-		$sql = 'INSERT INTO `*PREFIX*bookmarks_tags` (`bookmark_id`, `tag`) select ?, ? ';
+		$sql = 'INSERT INTO `*PREFIX*bookmarks_tags` (`bookmark_id`, `tag`) SELECT ?, ? ';
 		$dbtype = \OCP\Config::getSystemValue('dbtype', 'sqlite');
 
 		if ($dbtype === 'mysql') {
-			$sql .= 'from dual ';
+			$sql .= 'FROM DUAL ';
 		}
-		$sql .= 'where not exists(select * from oc_bookmarks_tags where bookmark_id = ? and tag = ?)';
+		$sql .= 'WHERE NOT EXISTS(SELECT * FROM `*PREFIX*bookmarks_tags` WHERE `bookmark_id` = ? AND `tag` = ?)';
 
 		$query = $db->prepareQuery($sql);
 		foreach ($tags as $tag) {
@@ -534,7 +540,7 @@ class Bookmarks {
 				}
 				$tag_str = trim($parent->previousSibling->nodeValue);
 			}
-			$tags = explode(',', $tag_str);
+			$tags = array_filter(explode(',', $tag_str));
 
 			$desc_str = '';
 			if ($link->hasAttribute("description"))
@@ -548,6 +554,7 @@ class Bookmarks {
 
 	/**
 	 * @brief Import Bookmarks from Delicious xml formatted file
+	 * to retrieve such a file use "curl https://{USERNAME}:{PASSWORD}@api.del.icio.us/v1/posts/all"
 	 * @param $user User imported Bookmarks should belong to
 	 * @param IDb $db Database Interface
 	 * @param $file Content to import
@@ -564,8 +571,8 @@ class Bookmarks {
 		foreach ($links as $link) {
 			$title = $link->getAttribute("description");
 			$ref = $link->getAttribute("href");
-			$tag_str = $link->getAttribute("tag");
-			$tags = explode(' ', $tag_str);
+			$tag_str = str_replace(',', ' ', $link->getAttribute("tag"));
+			$tags = array_filter(explode(' ', $tag_str));
 			if ($link->getAttribute("private") == "yes") {
 				$tags[] = "private";
 			}
@@ -621,7 +628,7 @@ class Bookmarks {
 	}
 
 	/**
-	 * @brief Seperate Url String at comma charachter
+	 * @brief Separate Url String at comma character
 	 * @param $line String of Tags
 	 * @return array Array of Tags
 	 * */
