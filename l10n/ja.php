@@ -29,6 +29,7 @@ $TRANSLATIONS = array(
 "Add to ownCloud" => "ownCloud に追加",
 "Address" => "アドレス",
 "Add" => "追加",
+"Filterable Tags" => "絞り込み可能なタグ",
 "You have no bookmarks" => "ブックマークがありません",
 "You can also import a bookmark file" => "ブックマークファイルをインポートすることもできます。",
 "Bookmarklet" => "ブックマークレット",
