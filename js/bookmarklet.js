@@ -25,8 +25,10 @@ function updateLoadingAnimation() {
 $(function () {
 	$(".submit").click(function () {
 		increaseAjaxCallCount();
-		var dataString = 'url=' + $("input#url").val() + '&description=' +
-				$("textarea#description").val() + '&title=' + $("input#title").val();
+		var dataString = 'url=' + $("input#url").val() +
+				'&tag=' + $("input#tags").val() +
+				'&description=' + $("textarea#description").val() +
+				'&title=' + $("input#title").val();
 		$.ajax({
 			type: "POST",
 			url: "bookmark",

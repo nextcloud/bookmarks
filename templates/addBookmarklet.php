@@ -34,11 +34,8 @@ $bookmarkExists = $_['bookmarkExists'];
                 </li>
 
                 <li>
-                    <ul class="tags" >
-						<?php foreach ($_['bookmark']['tags'] as $tag): ?>
-							<li><?php p($tag); ?></li>
-						<?php endforeach; ?>
-                    </ul>
+                    <input id="tags" type="text" name="tags" class="tags" value="<?php p(implode(',', $_['tags'])); ?>"
+                           placeholder="<?php p($l->t('Tags for the page')); ?>" />
                 </li>
 
                 <li>

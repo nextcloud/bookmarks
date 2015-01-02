@@ -66,14 +66,14 @@ class BookmarkController extends ApiController {
 	/**
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $item = array(), $from_own = 0, $title = "", $is_public = false, $description = "") {
+	public function newBookmark($url = "", $tag = '', $from_own = 0, $title = "", $is_public = false, $description = "") {
 
 		// Check if it is a valid URL
 		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
 
-		$tags = isset($item['tags']) ? $item['tags'] : array();
+		$tags = Bookmarks::analyzeTagRequest($tag);
 
 		if ($from_own == 0) {
 			$datas = Bookmarks::getURLMetadata($url);
@@ -96,7 +96,7 @@ class BookmarkController extends ApiController {
 	//TODO id vs record_id?
 	public function legacyEditBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
 		if ($id == null) {
-			return $this->newBookmark($url, $item, false, $title, $is_public, $description);
+			return $this->newBookmark($url, implode(',', $item['tags']), false, $title, $is_public, $description);
 		} else {
 			return $this->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description);
 		}
