@@ -39,11 +39,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
 #add_form input {
     margin: 0.3em;
 }
-#add_url {
-    box-sizing: border-box;
-    width: 91.5%;
-    padding-right: 15%;
-}
+
 #bookmark_add_submit {
     position: absolute;
     top: 0;
