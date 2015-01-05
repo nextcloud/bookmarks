@@ -426,11 +426,12 @@ class Bookmarks {
 	 */
 	public static function addBookmark($userid, IDb $db, $url, $title, $tags = array(), $description = '', $is_public = false) {
 		$public = $is_public ? 1 : 0;
-		$enc_url = htmlspecialchars_decode($url);
+		$url_without_prefix = substr($url, strpos($url, "://") + 3); // Removes everything from the url before the "://" pattern (included)
+		$enc_url = htmlspecialchars_decode($url_without_prefix);
 		// Change lastmodified date if the record if already exists
-		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
+		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` like ? AND `user_id` = ?";
 		$query = $db->prepareQuery($sql, 1);
-		$result = $query->execute(array($enc_url, $userid));
+		$result = $query->execute(array('%'.$enc_url, $userid)); // Find url in the db independantly from its protocol
 		if ($row = $result->fetchRow()) {
 			$params = array();
 			$title_str = '';
