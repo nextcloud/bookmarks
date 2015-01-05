@@ -74,7 +74,7 @@ class BookmarkController extends ApiController {
 			if (preg_match($protocols, $url)) {
 				$datas = Bookmarks::getURLMetadata($url);
 			// if not (allowed) protocol is given, assume http and https (and fetch both)
-			} elseif (! preg_match($protocols, $url)) { 
+			} else { 
 				// append https to url and fetch it
 				$url_https = 'https://' . $url;
 				$datas_https = Bookmarks::getURLMetadata($url_https);
