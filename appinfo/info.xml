@@ -6,7 +6,7 @@
 	<licence>AGPL</licence>
 	<author>Arthur Schiwon, Marvin Thomas Rabe, Stefan Klemm</author>
 	<standalone/>
-	<requiremin>4.93</requiremin>
+	<requiremin>8</requiremin>
 	<shipped>true</shipped>
 	<ocsid>166042</ocsid>
 	<version>0.4</version>

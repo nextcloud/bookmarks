@@ -31,4 +31,4 @@ namespace OCA\Bookmarks\AppInfo;
 	'name' => \OC_L10N::get('bookmarks')->t('Bookmarks')
 ));
 
-\OC_Search::registerProvider('OCA\Bookmarks\Controller\Lib\Search');
+\OC::$server->getSearch()->registerProvider('OCA\Bookmarks\Controller\Lib\Search', array('apps' => array('bookmarks')));
