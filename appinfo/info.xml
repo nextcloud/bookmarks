@@ -7,7 +7,6 @@
 	<author>Arthur Schiwon, Marvin Thomas Rabe, Stefan Klemm</author>
 	<standalone/>
 	<requiremin>8</requiremin>
-	<shipped>true</shipped>
 	<ocsid>166042</ocsid>
 	<version>0.4</version>
 </info>
