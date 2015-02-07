@@ -29,6 +29,7 @@ $TRANSLATIONS = array(
 "Add to ownCloud" => "Adicionar à ownCloud",
 "Address" => "Endereço",
 "Add" => "Adicionar",
+"Filterable Tags" => "Tags Filtráveis",
 "You have no bookmarks" => "Não tem marcadores",
 "You can also import a bookmark file" => "Também pode importar um ficheiro de marcadores",
 "Bookmarklet" => "Marcador de JavaScript",

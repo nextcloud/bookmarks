@@ -8,7 +8,7 @@ $TRANSLATIONS = array(
 "Bookmark added successfully" => "ブックマークの追加に成功しました",
 "Some Error happened." => "エラーが発生しました。",
 "Error" => "エラー",
-"Filter by tag" => "タグによるフィルタ",
+"Filter by tag" => "タグによるフィルター",
 "Are you sure you want to remove this bookmark?" => "このブックマークを削除してもよろしいですか？",
 "Warning" => "警告",
 "Tags" => "タグ",
@@ -33,7 +33,7 @@ $TRANSLATIONS = array(
 "You have no bookmarks" => "ブックマークがありません",
 "You can also import a bookmark file" => "ブックマークファイルをインポートすることもできます。",
 "Bookmarklet" => "ブックマークレット",
-"Export & Import" => "エクスポート＆インポート",
+"Export & Import" => "エクスポートとインポート",
 "Export" => "エクスポート",
 "Import" => "インポート"
 );
