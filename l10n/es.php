@@ -33,7 +33,7 @@ $TRANSLATIONS = array(
 "You have no bookmarks" => "No tiene marcadores",
 "You can also import a bookmark file" => "También puede importar un archivo con marcadores",
 "Bookmarklet" => "Marcador de JavaScript",
-"Export & Import" => "Exportar e Importar",
+"Export & Import" => "Exportar e importar",
 "Export" => "Exportar",
 "Import" => "Importar"
 );
