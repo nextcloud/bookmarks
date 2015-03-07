@@ -35,9 +35,9 @@ $bookmarkExists = $_['bookmarkExists'];
 
                 <li>
                     <ul class="tags" >
-						<?php foreach ($_['bookmark']['tags'] as $tag): ?>
-							<li><?php p($tag); ?></li>
-						<?php endforeach; ?>
+                        <ul class="tags" >
+                            <li></li>
+                        </ul>
                     </ul>
                 </li>
 
