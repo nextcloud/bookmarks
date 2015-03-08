@@ -34,10 +34,10 @@ $bookmarkExists = $_['bookmarkExists'];
                 </li>
 
                 <li>
-                    <ul class="tags" >
-                        <ul class="tags" >
-                            <li></li>
-                        </ul>
+                    <ul id="tags" class="tags" >
+                        <?php foreach ($_['tags'] as $tag): ?>
+                            <li><?php p($tag); ?></li>
+                        <?php endforeach; ?>
                     </ul>
                 </li>
 
