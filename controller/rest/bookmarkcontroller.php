@@ -70,7 +70,7 @@ class BookmarkController extends ApiController {
 
 		if ($from_own == 0) {
 			// allow only http(s) and (s)ftp
-			$protocols = '/^[hs]{0,1}[tf]{0,1}tp[s]{0,1}\:\/\//i';
+			$protocols = '/^(https?|s?ftp)\:\/\//i';
 			if (preg_match($protocols, $url)) {
 				$datas = Bookmarks::getURLMetadata($url);
 			// if not (allowed) protocol is given, assume http and https (and fetch both)
