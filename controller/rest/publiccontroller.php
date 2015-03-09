@@ -27,6 +27,8 @@ class PublicController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @PublicPage
+	 * @param string $user Id of owner of requested bookmarks
+	 * @param string $password Password of the bookmark owner to request private bookmarks
 	 */
 	public function returnAsJson($user, $password = null, $tags = array(), $conjunction = "or", $select = null, $sortby = "") {
 
@@ -71,6 +73,9 @@ class PublicController extends ApiController {
 		return new JSONResponse($output);
 	}
 
+	/* @brief Create a Json error message
+	 * @param string $message Individual message to be returned inside the JsonResponse
+	 */
 	public function newJsonErrorMessage($message) {
 		$output = array();
 		$output["status"] = 'error';

@@ -85,7 +85,7 @@ class Bookmarks {
 
 	/**
 	 * @brief Check if an URL is bookmarked
-	 * @param $url Url of a possible bookmark
+	 * @param string $url Url of a possible bookmark
 	 * @param $userId UserId
 	 * @param IDb $db Database Interface
 	 * @return boolean if the url is already bookmarked
@@ -187,6 +187,15 @@ class Bookmarks {
 		return $bookmarks;
 	}
 
+	/**
+	 * @brief Outlined private code to build filter sql for findBookmarks function
+	 * @param string $sql Sql to be built
+	 * @param array $params Sql parameters
+	 * @param array $filters Values used for filter
+	 * @param boolean $filterTagOnly Filter by tags or by all data
+	 * @param string $tagFilterConjunction And or Or conjunctjon of filters
+	 * @param string $CONFIG_DBTYPE Type of database
+	 */
 	private static function findBookmarksBuildFilter(&$sql, &$params, $filters, $filterTagOnly, $tagFilterConjunction, $CONFIG_DBTYPE) {
 		$tagOrSearch = false;
 		$connectWord = 'AND';
@@ -231,7 +240,7 @@ class Bookmarks {
 	 * @brief Delete bookmark with specific id
 	 * @param $userId UserId
 	 * @param IDb $db Database Interface
-	 * @param $id Bookmark ID to delete
+	 * @param integer $id Bookmark ID to delete
 	 * @return boolean Success of operation
 	 */
 	public static function deleteUrl($userId, IDb $db, $id) {
@@ -371,7 +380,7 @@ class Bookmarks {
 	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
 	 * @param string $description A longer description about the bookmark
 	 * @param boolean $is_public True if the bookmark is publishable to not registered users
-	 * @return null
+	 * @return null|integer
 	 */
 	public static function editBookmark($userid, IDb $db, $id, $url, $title, $tags = array(), $description = '', $is_public = false) {
 
@@ -423,7 +432,7 @@ class Bookmarks {
 	 * @param string $title Name of the bookmark
 	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
 	 * @param string $description A longer description about the bookmark
-	 * @param boolean $public True if the bookmark is publishable to not registered users
+	 * @param boolean $is_public True if the bookmark is publishable to not registered users
 	 * @return int The id of the bookmark created
 	 */
 	public static function addBookmark($userid, IDb $db, $url, $title, $tags = array(), $description = '', $is_public = false) {
@@ -539,27 +548,126 @@ class Bookmarks {
 	}
 
 	/**
+	 * @brief Check if url is valid or try to create a valid url.
+	 * @param string $url Url to check for validity or to fix
+	 * @return string|null A valid Url or null
+	 * */
+	public static function sanitizeURL($url, &$finalDestination = null) {
+
+		if ($url == null || $url == "") {
+			return null;
+		}
+
+		$hasProtocol = preg_match('/^.+:/i', $url);
+		$isHttp = preg_match('/^http:/i', $url);
+
+		if ($hasProtocol && !$isHttp) {
+			return (self::isUrlValid($url) ? $url : null);
+		}
+
+		if (!$hasProtocol) {
+			$url = 'http://' . $url;
+		}
+
+		if (!self::isUrlValid($url)) {
+			return null;
+		}
+
+		$finalDestination = \OC::$server->getHTTPHelper()->getFinalLocationOfURL($url);
+		
+		$urlHost = parse_url($url, PHP_URL_HOST);
+		$finalDestinationHost = parse_url($finalDestination, PHP_URL_HOST);
+
+		$hostsAreEqual = ($urlHost == $finalDestinationHost) && ($urlHost != null) && ($urlHost != "");
+
+		if (!strncmp($finalDestination, 'https', strlen('https')) && $hostsAreEqual) {
+			$offset = 4;
+			$strippedUrl = substr($url, $offset);
+			$url = 'https' . $strippedUrl;
+		}
+
+		return (self::isUrlValid($url) ? $url : null);
+	}
+
+	/**
+	 * @brief Url is valid if it contains scheme and host or path
+	 * @param string $url Url to check
+	 * @return boolean Result of check if url is valid
+	 */
+	public static function isUrlValid($url) {
+		$result = parse_url($url);
+
+		$scheme = "";
+		$host = "";
+		$path = "";
+
+		if (isset($result['scheme'])) {
+			$scheme = $result['scheme'];
+		}
+
+		if (isset($result['host'])) {
+			$host = $result['host'];
+		}
+
+		if (isset($result['path'])) {
+			$path = $result['path'];
+		}
+
+		if ($scheme == "" || ($host == "" && $path = "")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
 	 * @brief Load Url and receive Metadata (Title)
-	 * @param $url Url to load and analyze
+	 * @param string $url Url to load and analyze
 	 * @return array Metadata for url;
 	 * */
-	public static function getURLMetadata($url) {
-		
+	public static function getURLMetadata($url, $finalDestination = null) {
+
 		$metadata = array();
 		$metadata['url'] = $url;
-		$page = "";
-		
-		try {
-			$page = \OC::$server->getHTTPHelper()->getUrlContent($url);
-		} catch (\Exception $e) {
-			throw $e;
+
+		// Don't try to fetch metadata if url doesn't start with http(s)
+		if (strncmp($url, 'http', strlen('http'))) {
+			$metadata['title'] = $url;
+			return $metadata;
 		}
-		
+
+		// Get the final destination of a possibly redirected url and fetch headers there.
+		if ($finalDestination == null) {
+			$finalDestination = \OC::$server->getHTTPHelper()->getFinalLocationOfURL($url);
+		}
+		$headers = \OC::$server->getHTTPHelper()->getHeaders($finalDestination);
+
+		//Only try to fetch content and parse title if content is supposed to be html
+		if (isset($headers['Content-Type']) && strpos($headers['Content-Type'], 'text/html') !== false) {
+			$title = Bookmarks::fetchHtmlTitle($finalDestination);
+			if ($title != null) {
+				$metadata['title'] = $title;
+				return $metadata;
+			}
+		}
+
+		$metadata['title'] = $url;
+		return $metadata;
+	}
+
+	/**
+	 * @brief Parses the html title out of a resource behind an url
+	 * @param $url Url of resource to parse
+	 * @return string|null Parsed title or null
+	 * */
+	private static function fetchHtmlTitle($url) {
+		$page = \OC::$server->getHTTPHelper()->getUrlContent($url);
+
 		//Check for encoding of site.
 		//If not UTF-8 convert it.
 		$encoding = array();
 		preg_match('/charset="?(.*?)["|;]/i', $page, $encoding);
-		
+
 		if (isset($encoding[1])) {
 			$decodeFrom = strtoupper($encoding[1]);
 		} else {
@@ -573,18 +681,20 @@ class Bookmarks {
 			}
 
 			preg_match("/<title>(.*)<\/title>/si", $page, $match);
-			
+
 			if (isset($match[1])) {
-				$metadata['title'] = html_entity_decode($match[1]);
+				return html_entity_decode($match[1]);
+			} else {
+				return null;
 			}
+		} else {
+			return null;
 		}
-		
-		return $metadata;
 	}
 
 	/**
 	 * @brief Seperate Url String at comma charachter
-	 * @param $line String of Tags
+	 * @param string $line String of Tags
 	 * @return array Array of Tags
 	 * */
 	public static function analyzeTagRequest($line) {

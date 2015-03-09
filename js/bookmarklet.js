@@ -27,9 +27,18 @@ $(function () {
 		increaseAjaxCallCount();
 		var dataString = 'url=' + $("input#url").val() + '&description=' +
 				$("textarea#description").val() + '&title=' + $("input#title").val();
+		
+		var url = 'bookmark';
+		var mode = 'POST';
+		// If bookmark exists adapt request
+		if ($("input.record_id").val() !== ""){
+			mode = 'PUT';
+			url += '/'+ $("input.record_id").val();
+		}
+		
 		$.ajax({
-			type: "POST",
-			url: "bookmark",
+			type: mode,
+			url: url,
 			data: dataString,
 			complete: function () {
 				decreaseAjaxCallCount();

@@ -30,7 +30,7 @@ $bookmarkExists = $_['bookmarkExists'];
 
                 <li>
                     <input id="url" type="text" name="url" class="url_input" value="<?php p($_['url']); ?>"
-                           placeholder="<?php p($l->t('The address of the page')); ?>" />
+                           placeholder="<?php p($l->t('The address of the page')); ?>" <?php $bookmarkExists == false ? p("") : p('disabled') ?>/>
                 </li>
 
                 <li>
@@ -48,7 +48,7 @@ $bookmarkExists = $_['bookmarkExists'];
 
                 <li>
                     <input type="submit" class="submit" value="<?php p($l->t("Save")); ?>" />
-                    <input type="hidden" class="record_id" value="" name="record_id" />
+                    <input type="hidden" class="record_id" value="<?php $bookmarkExists == false ? p("") : p($bookmarkExists) ?>" name="record_id" />
                     <input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">
                 </li>
 
