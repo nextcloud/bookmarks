@@ -25,7 +25,7 @@ OC.L10N.register(
     "Save" : "Сачувај",
     "Delete" : "Обриши",
     "Edit" : "Уреди",
-    "Cancel" : "Откажи",
+    "Cancel" : "Одустани",
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Превуците ово у обележиваче прегледача и кликните ако на брзину желите да обележите веб страницу:",
     "Add to ownCloud" : "Додај у Оунклауд",
     "Address" : "Адреса",
