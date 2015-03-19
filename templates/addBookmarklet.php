@@ -1,6 +1,8 @@
 <?php
+OCP\Util::addscript('bookmarks', '3rdparty/tag-it');
 OCP\Util::addscript('bookmarks', 'bookmarklet');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
+OCP\Util::addStyle('bookmarks', '3rdparty/jquery.tagit');
 
 $bookmarkExists = $_['bookmarkExists'];
 ?>
