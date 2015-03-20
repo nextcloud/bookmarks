@@ -37,7 +37,7 @@ class WebViewController extends Controller {
 	 */
 	public function index() {
 		$bookmarkleturl = $this->urlgenerator->getAbsoluteURL('index.php/apps/bookmarks/bookmarklet');
-		$params = array('user' => $this->userId, 'bookmarkleturl' => $bookmarkleturl);
+		$params = array('user' => $this->userId, 'bookmarkleturl' => $bookmarkleturl, 'req_tag'=>'');
 		return new TemplateResponse('bookmarks', 'main', $params);
 	}
 
