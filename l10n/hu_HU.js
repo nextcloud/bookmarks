@@ -30,6 +30,7 @@ OC.L10N.register(
     "Add to ownCloud" : "Hozzáadni az ownCloud-hoz",
     "Address" : "Cím",
     "Add" : "Hozzáad",
+    "Filterable Tags" : "Szűrhető címkék",
     "You have no bookmarks" : "Nincsenek könyvjelzői",
     "You can also import a bookmark file" : "Akár importálhatsz is egy könyvjelző fájlt",
     "Bookmarklet" : "Könyvjelző",
