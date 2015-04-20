@@ -494,7 +494,7 @@ class Bookmarks {
 		if ($dbtype === 'mysql') {
 			$sql .= 'from dual ';
 		}
-		$sql .= 'where not exists(select * from oc_bookmarks_tags where bookmark_id = ? and tag = ?)';
+		$sql .= 'where not exists(select * from `*PREFIX*bookmarks_tags` where `bookmark_id` = ? and `tag` = ?)';
 
 		$query = $db->prepareQuery($sql);
 		foreach ($tags as $tag) {
