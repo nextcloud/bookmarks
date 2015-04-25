@@ -2,7 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Обележивачи",
-    "Bookm." : "Обележ.",
+    "Bookm." : "Обел.",
     "No file provided for import" : "Нема фајла за увоз",
     "Unsupported file type for import" : "Неподржан тип фајла за увоз",
     "Bookmark added. You can close the window now." : "Обележивач је додат. Сада можете да затворите прозор.",
@@ -27,7 +27,7 @@ OC.L10N.register(
     "Edit" : "Уреди",
     "Cancel" : "Одустани",
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Превуците ово у обележиваче прегледача и кликните ако на брзину желите да обележите веб страницу:",
-    "Add to ownCloud" : "Додај у Оунклауд",
+    "Add to ownCloud" : "Додај у оунКлауд",
     "Address" : "Адреса",
     "Add" : "Додај",
     "Filterable Tags" : "Филтрирајуће ознаке",
