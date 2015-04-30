@@ -19,6 +19,7 @@ use \OCP\AppFramework\Http;
 use \OCP\IDb;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 use \OCA\Bookmarks\Controller\Lib\ExportResponse;
+use \OCA\Bookmarks\Controller\Lib\Helper;
 
 class BookmarkController extends ApiController {
 
@@ -260,7 +261,7 @@ EOT;
 			$title = $bm['title'];
 			if (trim($title) === '') {
 				$url_parts = parse_url($bm['url']);
-				$title = isset($url_parts['host']) ? OCA\Bookmarks\Controller\Lib\Helper::getDomainWithoutExt($url_parts['host']) : $bm['url'];
+				$title = isset($url_parts['host']) ? Helper::getDomainWithoutExt($url_parts['host']) : $bm['url'];
 			}
 			$file .= '<DT><A HREF="' . \OC_Util::sanitizeHTML($bm['url']) . '" TAGS="' . implode(',', \OC_Util::sanitizeHTML($bm['tags'])) . '">';
 			$file .= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '</A>';
