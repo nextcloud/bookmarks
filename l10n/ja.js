@@ -26,7 +26,7 @@ OC.L10N.register(
     "Delete" : "削除",
     "Edit" : "編集",
     "Cancel" : "キャンセル",
-    "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Webページをすぐにブックマークしたい場合は、これをブラウザのブックマークにドラッグし、クリックしてください:",
+    "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Webページをすぐにブックマークしたい場合は、これをブラウザーのブックマークにドラッグし、クリックしてください:",
     "Add to ownCloud" : "ownCloud に追加",
     "Address" : "アドレス",
     "Add" : "追加",
