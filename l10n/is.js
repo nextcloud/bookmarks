@@ -31,4 +31,4 @@ OC.L10N.register(
     "Export" : "Flytja út",
     "Import" : "Flytja inn"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=2; plural=(n % 10 == 1 || n % 100 != 11);");
