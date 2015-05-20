@@ -3,6 +3,7 @@ OCP\Util::addscript('bookmarks', 'bookmarklet');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
 
 $bookmarkExists = $_['bookmarkExists'];
+$bookmarkTitleTooLong = $_['bookmarkExists'];
 ?>
 <div id="bookmarklet_form">
     <form class="addBm" action="">
@@ -20,6 +21,15 @@ $bookmarkExists = $_['bookmarkExists'];
 				<?php p($l->t('This URL is already bookmarked! Overwrite?')); ?>
 			</strong>
 		</div>
+                <div style="color: red; clear: both; visibility: <?php
+                if ($bookmarkTitleTooLong == false) {
+                        print_unescaped('hidden');
+                }
+                ?>">   
+                        <strong>
+                                <?php p($l->t('Title must not exeed 140 characters!?')); ?>
+                        </strong>
+                </div>
 
         <fieldset class="bm_desc">
             <ul>
