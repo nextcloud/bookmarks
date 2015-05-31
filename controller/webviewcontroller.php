@@ -52,7 +52,9 @@ class WebViewController extends Controller {
 			$bookmark = Bookmarks::findUniqueBookmark($bookmarkExists, $this->userId, $this->db);
 			$description = $bookmark['description'];
 		}
-		$params = array('url' => $url, 'title' => $title, 'description' => $description, 'bookmarkExists' => $bookmarkExists);
+                //test if title is more than 140 characters
+                $bookmarkTitleTooLong = strlen($title) > 140;
+		$params = array('url' => $url, 'title' => $title, 'description' => $description, 'bookmarkExists' => $bookmarkExists, 'bookmarkTitleTooLong' => $bookmarkTitleTooLong,);
 		return new TemplateResponse('bookmarks', 'addBookmarklet', $params);  // templates/main.php
 	}
 
