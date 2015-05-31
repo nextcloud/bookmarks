@@ -53,10 +53,7 @@ class WebViewController extends Controller {
 			$description = $bookmark['description'];
 		}
                 //test if title is more than 140 characters
-                $bookmarkTitleTooLong = false;
-                if (strlen($title) > 140 ){
-                        $bookmarkTitleTooLong = true;
-                }
+                $bookmarkTitleTooLong = strlen($title) > 140;
 		$params = array('url' => $url, 'title' => $title, 'description' => $description, 'bookmarkExists' => $bookmarkExists, 'bookmarkTitleTooLong' => $bookmarkTitleTooLong,);
 		return new TemplateResponse('bookmarks', 'addBookmarklet', $params);  // templates/main.php
 	}
