@@ -94,9 +94,9 @@ class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 
 		$config = $this->getMockBuilder('\OCP\IConfig')
 						->disableOriginalConstructor()->getMock();
-		$certificateManager = $this->getMock('\OCP\ICertificateManager');
+		$clientService = $this->getMock('OCP\Http\Client\IClientService');
 		$httpHelperMock = $this->getMockBuilder('\OC\HTTPHelper')
-				->setConstructorArgs(array($config, $certificateManager))
+				->setConstructorArgs(array($config, $clientService))
 				->getMock();
 		$returnAmazonDe = file_get_contents(__DIR__ . '/res/amazonHtml.file');
 		$returnGolemDe = file_get_contents(__DIR__ . '/res/golemHtml.file');
