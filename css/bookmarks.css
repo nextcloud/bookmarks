@@ -29,22 +29,24 @@ input.disabled, input.disabled:hover, input.disabled:focus {
     height: 100%;
 }
 
-#add_form {
-    padding-bottom: 2em;
-}
-
 #add_form_loading {
     visibility: hidden;
-    float: right;
-    margin: 8px;
+    position: absolute;
+    top: 11px;
+    right: 17%;
 }
 
 #add_form input {
     margin: 0.3em;
 }
-#add_url {
-    width: 91.5%;
+
+#bookmark_add_submit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 31px;
 }
+
 .bookmarks_addBml {
     text-decoration: underline;
 }

@@ -66,8 +66,11 @@ function decreaseAjaxCallCount() {
 function updateLoadingAnimation() {
 	if (ajaxCallCount === 0) {
 		$("#add_form_loading").css("visibility", "hidden");
+		$("#bookmark_add_submit").css("color", "");
 	} else {
 		$("#add_form_loading").css("visibility", "visible");
+		$("#bookmark_add_submit").css("color", "transparent");
+		
 	}
 }
 
