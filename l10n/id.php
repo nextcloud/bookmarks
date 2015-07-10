@@ -29,6 +29,7 @@ $TRANSLATIONS = array(
 "Add to ownCloud" => "Tambah ke ownCloud",
 "Address" => "Alamat",
 "Add" => "Tambah",
+"Filterable Tags" => "Tag dapat Disaring",
 "You have no bookmarks" => "Anda tidak punya markah",
 "You can also import a bookmark file" => "Anda juga dapat mengimpor berkas markah",
 "Bookmarklet" => "Bookmarklet",
