@@ -16,7 +16,7 @@ OC.L10N.register(
     "Are you sure you want to remove this tag from every entry?" : "Soll dieses Schlagwort wirklich von allen Einträgen entfernt werden?",
     "Import error" : "Import Fehler",
     "Import completed successfully." : "Der Import wurde erfolgreich abgeschlossen.",
-    "Uploading..." : "Lade hoch ...",
+    "Uploading..." : "Hochladen…",
     "Add a bookmark" : "Ein Lesezeichen hinzufügen",
     "This URL is already bookmarked! Overwrite?" : "Diese URL hat schon ein Lesezeichen! Soll es ersetzt werden?",
     "The title of the page" : "Der Titel der Seite",

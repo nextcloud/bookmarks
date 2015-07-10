@@ -37,11 +37,11 @@ function bookmarklet($bookmarkleturl) {
                 <div id="add_form_loading"><img src="<?php print_unescaped(OCP\image_path("bookmarks", "loading.gif")); ?>"> </div>
             </form>
             <p id="tag_filter" class="open">
-                <input type="text" value="<?php p($_['req_tag']); ?>"/>
+                <input type="text" value="<?php if(isset($_['req_tag'])) p($_['req_tag']); else ""; ?>"/>
 
 
             </p>
-            <input type="hidden" id="bookmarkFilterTag" value="<?php p($_['req_tag']); ?>" />
+            <input type="hidden" id="bookmarkFilterTag" value="<?php if(isset($_['req_tag'])) p($_['req_tag']); else ""; ?>" />
             <label id="tag_select_label"><?php p($l->t('Filterable Tags')); ?></label>
         </li>
         <li class="tag_list">

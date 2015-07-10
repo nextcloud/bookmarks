@@ -428,11 +428,13 @@ class Bookmarks {
 	 */
 	public static function addBookmark($userid, IDb $db, $url, $title, $tags = array(), $description = '', $is_public = false) {
 		$public = $is_public ? 1 : 0;
+		$url_without_prefix = substr($url, strpos($url, "://") + 3); // Removes everything from the url before the "://" pattern (included)
+		$enc_url_noprefix = htmlspecialchars_decode($url_without_prefix);
 		$enc_url = htmlspecialchars_decode($url);
 		// Change lastmodified date if the record if already exists
-		$sql = "SELECT * FROM `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
+		$sql = "SELECT * FROM `*PREFIX*bookmarks` WHERE `url` LIKE ? AND `user_id` = ?";
 		$query = $db->prepareQuery($sql, 1);
-		$result = $query->execute(array($enc_url, $userid));
+		$result = $query->execute(array('%'.$enc_url_noprefix, $userid)); // Find url in the db independantly from its protocol
 		if ($row = $result->fetchRow()) {
 			$params = array();
 			$title_str = '';
@@ -446,8 +448,9 @@ class Bookmarks {
 				$params[] = $description;
 			}
 			$sql = "UPDATE `*PREFIX*bookmarks` SET `lastmodified` = "
-					. "UNIX_TIMESTAMP() $title_str $desc_str WHERE `url` = ? and `user_id` = ?";
+					. "UNIX_TIMESTAMP() $title_str $desc_str , `url` = ? WHERE `url` like ? and `user_id` = ?";
 			$params[] = $enc_url;
+			$params[] = '%'.$enc_url_noprefix;
 			$params[] = $userid;
 			$query = $db->prepareQuery($sql);
 			$query->execute($params);
