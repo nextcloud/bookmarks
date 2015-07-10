@@ -33,8 +33,7 @@ function bookmarklet($bookmarkleturl) {
         <li>
             <form id="add_form">
                 <input type="text" id="add_url" value="" placeholder="<?php p($l->t('Address')); ?>"/>
-                <input type="submit" value="<?php p($l->t('Add')); ?>" id="bookmark_add_submit" />
-                <div id="add_form_loading"><img src="<?php print_unescaped(OCP\image_path("bookmarks", "loading.gif")); ?>"> </div>
+                <button id="bookmark_add_submit" title="Add" class="icon-add"></button>
             </form>
             <p id="tag_filter" class="open">
                 <input type="text" value="<?php if(isset($_['req_tag'])) p($_['req_tag']); else ""; ?>"/>
