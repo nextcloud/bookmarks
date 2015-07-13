@@ -23,7 +23,6 @@ OC.L10N.register(
     "Cancel" : "უარყოფა",
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "გადაათრიეთ ეს თქვენს ბუქმარკებში თუ გინდათ რომ საითი სწრაფად დაბუქმარკდეს",
     "Address" : "მისამართი",
-    "Add" : "დამატება",
     "You have no bookmarks" : "თქვენ არ გაქვთ ბუქმარკები",
     "Bookmarklet" : "ბუქმარქლეტი",
     "Export & Import" : "ექსპორტ & იმპორტი",

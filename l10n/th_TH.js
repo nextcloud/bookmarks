@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "ลากสิ่งนี้ไปไว้ที่รายการโปรดในโปรแกรมบราวเซอร์ของคุณ แล้วคลิกที่นั่น, เมื่อคุณต้องการเก็บหน้าเว็บเพจเข้าไปไว้ในรายการโปรดอย่างรวดเร็ว",
     "Add to ownCloud" : "เพิ่มใน ownCloud",
     "Address" : "ที่อยู่",
-    "Add" : "เพิ่ม",
     "Filterable Tags" : "กรองแท็ก",
     "You have no bookmarks" : "คุณยังไม่มีรายการโปรด",
     "You can also import a bookmark file" : "นอกจากนี้คุณยังสามารถนำเข้าไฟล์รายการโปรด",

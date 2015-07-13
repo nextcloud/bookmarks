@@ -28,7 +28,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Sleep dit naar uw browser bladwijzer menu en klik erop, wanneer u een webpagina snel wilt voorzien van een bladwijzer:",
 "Add to ownCloud" => "Toevoegen aan ownCloud",
 "Address" => "Adres",
-"Add" => "Toevoegen",
 "Filterable Tags" => "Te filteren tages",
 "You have no bookmarks" => "U heeft geen bladwijzers",
 "You can also import a bookmark file" => "U kunt ook een bladwijzerbestand importeren",

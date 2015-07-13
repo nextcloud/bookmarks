@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Lohista see oma veebilehitseja järjehoidjatesse ja kliki sellele, kui sa soovid veebilehte kiirelt lisada:",
     "Add to ownCloud" : "Lisa ownCloudi",
     "Address" : "Aadress",
-    "Add" : "Lisa",
     "Filterable Tags" : "Filtreeritavad sildid",
     "You have no bookmarks" : "Sul pole järjehoidjaid",
     "You can also import a bookmark file" : "Järjehoidjafaili on võimalik importida",

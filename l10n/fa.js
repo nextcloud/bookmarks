@@ -24,7 +24,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "هنگامی که می‌خواهید کی صفحه‌ی اینترنتی را بسرعت نشان کنید، این را به نشانه‌های مرورگر خود بکشید و روی آن کلیک کنید.",
     "Add to ownCloud" : "افزودن به ownCloud",
     "Address" : "آدرس",
-    "Add" : "افزودن",
     "You have no bookmarks" : "شما هیچ نشانکی ندارید",
     "Bookmarklet" : "بوکمارک لت",
     "Export & Import" : "وارد کردن و خروجی گرفتن",

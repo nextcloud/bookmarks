@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Povlecite gumb med zaznamke in kliknite nanj, kadar želite obiskano spletno stran hitro dodati med svoje zaznamke:",
     "Add to ownCloud" : "Dodaj v oblak ownCloud",
     "Address" : "Naslov",
-    "Add" : "Dodaj",
     "Filterable Tags" : "Oznake, ki jih je mogoče filtrirati",
     "You have no bookmarks" : "Ni shranjenih zaznamkov",
     "You can also import a bookmark file" : "Uvoziti je mogoče tudi datoteko zaznamkov",

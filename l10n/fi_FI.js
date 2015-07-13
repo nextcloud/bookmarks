@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Vedä tämä selaimesi kirjanmerkkipalkkiin ja napsauta sitä, kun haluat lisätä kirjanmerkin nopeasti:",
     "Add to ownCloud" : "Lisää ownCloudiin",
     "Address" : "Osoite",
-    "Add" : "Lisää",
     "Filterable Tags" : "Suodatettavat tunnisteet",
     "You have no bookmarks" : "Sinulla ei ole kirjanmerkkejä",
     "You can also import a bookmark file" : "Voit myös tuoda kirjanmerkkitiedoston",

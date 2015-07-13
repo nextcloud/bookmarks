@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Quando vuoi creare rapidamente un segnalibro, trascinalo sui segnalibri del browser e fai clic su di esso:",
     "Add to ownCloud" : "Aggiungi a ownCloud",
     "Address" : "Indirizzo",
-    "Add" : "Aggiungi",
     "Filterable Tags" : "Etichette filtrabili",
     "You have no bookmarks" : "Non hai segnalibri",
     "You can also import a bookmark file" : "Puoi importare anche un file di segnalibri",

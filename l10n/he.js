@@ -24,7 +24,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "ניתן לגרור את הקישור הזה אל סרגל הסימניות בדפדפן שלך וללחוץ עליו כאשר מעוניינים ליצור סימניה לאתר במהירות.",
     "Add to ownCloud" : "הוסף לownCloud",
     "Address" : "כתובת",
-    "Add" : "הוספה",
     "You have no bookmarks" : "אין ברשותך סימניות",
     "Bookmarklet" : "יישומון סימנייה",
     "Export & Import" : "ייבוא וייצוא",

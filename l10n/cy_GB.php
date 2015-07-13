@@ -22,7 +22,6 @@ $TRANSLATIONS = array(
 "Cancel" => "Diddymu",
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Llusgwch hwn i nodau tudalen eich porwr a'i glicio pan fyddwch eisiau gosod nod tudalen gwe'n gyflym.",
 "Address" => "Cyfeiriad",
-"Add" => "Ychwanegu",
 "You have no bookmarks" => "Nid oes nodau tudalen gennych",
 "Bookmarklet" => "Nod tudalen gweithredol",
 "Export & Import" => "Allforio & Mewnforio",

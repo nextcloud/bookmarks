@@ -23,7 +23,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Trahe isto in tu marcatores de libro de navigator e pulsa, quando tu vole memorar un pagina web rapidemente:",
 "Add to ownCloud" => "Adde a ownCloud",
 "Address" => "Adresse",
-"Add" => "Adder",
 "You have no bookmarks" => "Tu non ha marcatores de libro",
 "Bookmarklet" => "Bookmarklet",
 "Export & Import" => "Exportation & Importation",

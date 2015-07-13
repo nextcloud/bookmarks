@@ -28,7 +28,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Довлачи това в лентата с отметки на браузъра си и го натискай, когато искаш да отметнеш бързо някоя страница:",
 "Add to ownCloud" => "Добави в ownCloud",
 "Address" => "Адрес",
-"Add" => "Добавяне",
 "Filterable Tags" => "Етикети подлежащи на Филтриране",
 "You have no bookmarks" => "Нямаш отметки",
 "You can also import a bookmark file" => "Можеш също да заредиш файл с отметки",

@@ -24,7 +24,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Dragðu þetta yfir í bókamerki í vafranum þínu og smelltu, ef þú vilt bæta við bókamerki fyrir þessa vefsíðu á fljótlegan hátt.",
     "Add to ownCloud" : "Bæta við í ownCloud",
     "Address" : "Slóð",
-    "Add" : "Bæta við",
     "You have no bookmarks" : "Þú hefur engin bókamerki",
     "Bookmarklet" : "Bookmarklet",
     "Export & Import" : "Inn- og útflutningur",

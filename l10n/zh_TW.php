@@ -28,7 +28,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "把這個拖曳至瀏覽器的書籤列，下次您想要將某個頁面加至書籤時，點一下書籤列上面的這個項目即可。",
 "Add to ownCloud" => "新增至ownCloud",
 "Address" => "網址",
-"Add" => "新增",
 "Filterable Tags" => "可篩選的標記",
 "You have no bookmarks" => "您還沒有任何書籤",
 "You can also import a bookmark file" => "你也可以匯入書籤檔案",

@@ -28,7 +28,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Ievelc šo savās pārlūka grāmatzīmēs un spied uz tā, kad vēlies ātri pievienot tīmekļa lapu grāmatzīmēm:",
 "Add to ownCloud" => "Pievienot ownCloud",
 "Address" => "Adrese",
-"Add" => "Pievienot",
 "Filterable Tags" => "Atlasāmas birkas",
 "You have no bookmarks" => "Jums nav grāmatzīmju",
 "You can also import a bookmark file" => "Jūs varat arī importēt grāmatzīmes datni",

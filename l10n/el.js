@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Σύρετε αυτό στους σελιδοδείκτες του περιηγητή σας και κάντε κλικ επάνω του, όταν θέλετε να προσθέσετε γρήγορα μια ιστοσελίδα ως σελιδοδείκτη:",
     "Add to ownCloud" : "Προσθήκη στο ownCloud",
     "Address" : "Διεύθυνση",
-    "Add" : "Προσθήκη",
     "Filterable Tags" : "Φιλτραρισμένες ετικέτες.",
     "You have no bookmarks" : "Δεν έχετε σελιδοδείκτες",
     "You can also import a bookmark file" : "Μπορείτε επίσης να εισάγετε αρχείο σελιδοδεικτών",

@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Arrossegueu-ho al navegador i feu-hi un clic quan volgueu marcar ràpidament una adreça d'interès:",
     "Add to ownCloud" : "Afegeix a ownCloud",
     "Address" : "Adreça",
-    "Add" : "Afegeix",
     "Filterable Tags" : "Etiquetes filtrables",
     "You have no bookmarks" : "No teniu adreces d'interès",
     "You can also import a bookmark file" : "També pots importar un arxiu de marcador",

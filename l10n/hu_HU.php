@@ -28,7 +28,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Húzza át ezt a gombot a böngészőprogram \"Könyvjelzők\" sávjába! Ha ezután rákattint, akkor az aktuális weboldal címét ide fogja menteni.",
 "Add to ownCloud" => "Hozzáadni az ownCloud-hoz",
 "Address" => "Cím",
-"Add" => "Hozzáad",
 "Filterable Tags" => "Szűrhető címkék",
 "You have no bookmarks" => "Nincsenek könyvjelzői",
 "You can also import a bookmark file" => "Akár importálhatsz is egy könyvjelző fájlt",

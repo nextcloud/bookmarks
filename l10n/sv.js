@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Dra till din webbläsares bokmärken och klicka på det när du vill bokmärka en webbsida snabbt:",
     "Add to ownCloud" : "Lägg till på ownCloud",
     "Address" : "Adress",
-    "Add" : "Lägg till",
     "Filterable Tags" : "Filtrerbara Taggar",
     "You have no bookmarks" : "Du har inga bokmärken",
     "You can also import a bookmark file" : "Du kan också importera en bokmärkesfil",

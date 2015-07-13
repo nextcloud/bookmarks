@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:",
     "Add to ownCloud" : "Add to ownCloud",
     "Address" : "Address",
-    "Add" : "Add",
     "Filterable Tags" : "Filterable Tags",
     "You have no bookmarks" : "You have no bookmarks",
     "You can also import a bookmark file" : "You can also import a bookmark file",

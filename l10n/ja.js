@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Webページをすぐにブックマークしたい場合は、これをブラウザーのブックマークにドラッグし、クリックしてください:",
     "Add to ownCloud" : "ownCloud に追加",
     "Address" : "アドレス",
-    "Add" : "追加",
     "Filterable Tags" : "絞り込み可能なタグ",
     "You have no bookmarks" : "ブックマークがありません",
     "You can also import a bookmark file" : "ブックマークファイルをインポートすることもできます。",

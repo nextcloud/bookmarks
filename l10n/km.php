@@ -23,7 +23,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "បើ​អ្នក​ចង់​ចំណាំ​គេហទំព័រ​ណាមួយយ៉ាង​ឆាប់​រហ័ស សូម​ទាញ​របស់​នេះ​ទៅ​ដាក់​នៅ​កន្លែង​ចំណាំ​របស់​កម្មវិធី​អ៊ីនធឺណិត ហើយ​ចុច​វា៖",
 "Add to ownCloud" => "ដាក់ចូល ownCloud",
 "Address" => "អាសយដ្ឋាន",
-"Add" => "បញ្ចូល",
 "You have no bookmarks" => "អ្នក​មិន​មាន​ចំណាំ​ទេ",
 "Bookmarklet" => "បញ្ជីចំណាំ",
 "Export & Import" => "នាំចេញ & នាំចូល",

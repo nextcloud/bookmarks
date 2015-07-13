@@ -28,7 +28,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Перетягніть це в закладки вашого броузера і клікніть для того, щоб швидко закласти web-сторінку:",
 "Add to ownCloud" => "Додати до ownCloud",
 "Address" => "Адреса",
-"Add" => "Додати",
 "Filterable Tags" => "Фільтровані мітки",
 "You have no bookmarks" => "У вас немає закладок",
 "You can also import a bookmark file" => "Ви можете також спробувати імпортувати файл закладок",

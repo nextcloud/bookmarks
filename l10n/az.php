@@ -28,7 +28,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "Web səhifəni tez qeydə almaq istəyirsinizsə, onu öz browser-nizin qeydiyyat ünvanına dartın və üstünə sıxın.",
 "Add to ownCloud" => "ownCloud-a əlavə et",
 "Address" => "Ünvan",
-"Add" => "Əlavə etmək",
 "Filterable Tags" => "Fitlrlənəbilən işarətlər",
 "You have no bookmarks" => "Sizin səhifə qeydiyyatınız yoxdur",
 "You can also import a bookmark file" => "Siz həmçinin işartlənmə faylını import edə bilərsiniz",

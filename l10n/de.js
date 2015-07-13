@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Ziehe dies zu Deinen Browser-Lesezeichen und klicke darauf, wenn Du eine Website schnell den Lesezeichen hinzufügen willst.",
     "Add to ownCloud" : "Zu ownCloud hinzufügen",
     "Address" : "Adresse",
-    "Add" : "Hinzufügen",
     "Filterable Tags" : "Filterbare Tags",
     "You have no bookmarks" : "Du hast keine Lesezeichen",
     "You can also import a bookmark file" : "Du kannst auch eine Lesezeichen-Datei importieren",

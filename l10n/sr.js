@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Превуците ово у обележиваче прегледача и кликните ако на брзину желите да обележите веб страницу:",
     "Add to ownCloud" : "Додај у оунКлауд",
     "Address" : "Адреса",
-    "Add" : "Додај",
     "Filterable Tags" : "Филтрирајуће ознаке",
     "You have no bookmarks" : "Немате обележивача",
     "You can also import a bookmark file" : "Можете и да увезете фајл обележивача",

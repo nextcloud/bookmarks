@@ -24,7 +24,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "দ্রুত কোন ওয়েবপেজ ঠিকাতে সংরক্ষণ করতে চাইলে এটিকে টেনে ব্রাউজারের ঠিকাতে নিয়ে যান এবং তাতে ক্লিক করুনঃ",
     "Add to ownCloud" : "ownCloud এ যুক্ত কর",
     "Address" : "ঠিকানা",
-    "Add" : "যোগ কর",
     "You have no bookmarks" : "আপনার কোন ঠিক নেই",
     "Bookmarklet" : "অনুঠিকা",
     "Export & Import" : "আমদানি এবং রপ্তানি",

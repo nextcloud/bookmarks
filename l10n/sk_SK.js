@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Presuňte toto do vášho prehliadača a kliknite ak chcete aktuálnu stránku uložiť do záložiek.",
     "Add to ownCloud" : "Pridať do ownCloudu",
     "Address" : "Adresa",
-    "Add" : "Pridať",
     "Filterable Tags" : "Filtrovateľné značky",
     "You have no bookmarks" : "Nemáte žiadne záložky",
     "You can also import a bookmark file" : "Môžete tiež importovať súbor so záložkami",

@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Glissez ceci dans les marque-pages de votre navigateur et cliquez dessus pour ajouter la page courante à vos favoris :",
     "Add to ownCloud" : "Ajouter à ownCloud",
     "Address" : "Adresse",
-    "Add" : "Ajouter",
     "Filterable Tags" : "Étiquettes filtrables",
     "You have no bookmarks" : "Vous n'avez aucun favori",
     "You can also import a bookmark file" : "Vous pouvez également importer un fichier de favoris",

@@ -24,7 +24,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Arrastra dende equí a los marcadores del to restolador web, y fai clic cuando quieras marcar una páxina web rápidamente:",
     "Add to ownCloud" : "Amestar a ownCloud",
     "Address" : "Direición",
-    "Add" : "Amestar",
     "You have no bookmarks" : "Nun tienes marcadores",
     "Bookmarklet" : "Marcador de JavaScript",
     "Export & Import" : "Importar y Esportar",

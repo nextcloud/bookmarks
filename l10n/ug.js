@@ -23,7 +23,6 @@ OC.L10N.register(
     "Cancel" : "ۋاز كەچ",
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "سىز تور بەتنى تېز سۈرئەتتە خەتكۈچكە قوشماقچى بولغاندا، بۇنى توركۆرگۈڭىزنىڭ خەتكۈچىگە سۆرەپ، ئۇنى چېكىڭ، ",
     "Address" : "ئادرېس",
-    "Add" : "قوش",
     "You have no bookmarks" : "ھېچقانداق خەتكۈچىڭىز يوق",
     "Bookmarklet" : "خەتكۈچ",
     "Export & Import" : "ئەكىر ياكى چىقار",

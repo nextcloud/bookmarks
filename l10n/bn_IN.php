@@ -23,7 +23,6 @@ $TRANSLATIONS = array(
 "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" => "আপনার ব্রাউজারের বুকমার্কে এটি ড্র্যাগ করে নিয়ে যান এবং এটা ক্লিক করুন, যখন আপনি দ্রুত একটি ওয়েব পেজ বুকমার্ক করতে চান:",
 "Add to ownCloud" => "OwnCloud এ যোগ করুন",
 "Address" => "ঠিকানা",
-"Add" => "যোগ করা",
 "You have no bookmarks" => "আপনার কোন বুকমার্ক নেই",
 "Bookmarklet" => "বুকমার্কলেট",
 "Export & Import" => "এক্সপোর্ট ও ইম্পোর্ট",

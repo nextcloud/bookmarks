@@ -29,7 +29,6 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Bunu tarayıcınızın yer imlerine sürükleyin ve bir web sayfasını hızlıca yer imlerine eklemek istediğinizde tıklayın:",
     "Add to ownCloud" : "ownCloud'a Ekle",
     "Address" : "Adres",
-    "Add" : "Ekle",
     "Filterable Tags" : "Süzülebilir Etiketler",
     "You have no bookmarks" : "Hiç yer iminiz yok",
     "You can also import a bookmark file" : "Ayrıca bir yer imi dosyasını içe aktarabilirsiniz",
