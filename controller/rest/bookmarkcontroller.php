@@ -84,13 +84,13 @@ class BookmarkController extends ApiController {
 			}
 			
 			if (isset($datas['title'])) { // prefer original url if working
-				$title = $datas['title'];
+				//use title from input field, more accurate	$title = $datas['title'];
 				//url remains unchanged
 			} elseif (isset($datas_https['title'])) { // test if https works
-				$title = $datas_https['title'];
+				//use title from input field, more accurate $title = $datas_https['title'];
 				$url = $url_https;
 			} elseif (isset($datas_http['title'])) { // otherwise test http for results
-				$title = $datas_http['title'];
+				//use title from input field, more accurate $title = $datas_http['title'];
 				$url = $url_http;
 			}
 		}
