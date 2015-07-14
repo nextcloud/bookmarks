@@ -49,7 +49,7 @@ class WebViewController extends Controller {
 		$bookmarkExists = Bookmarks::bookmarkExists($url, $this->userId, $this->db);
 		$description = "";
         $tags = [];
-		if ($bookmarkExists != false){
+		if ($bookmarkExists !== false){
 			$bookmark = Bookmarks::findUniqueBookmark($bookmarkExists, $this->userId, $this->db);
 			$description = $bookmark['description'];
             $tags = $bookmark['tags'];

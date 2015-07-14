@@ -14,7 +14,7 @@ $bookmarkExists = $_['bookmarkExists'];
 		<span style="display: inline; float: right"><div id="add_form_loading" style="margin: 3px;"><img src="<?php print_unescaped(OCP\image_path("bookmarks", "loading.gif")); ?>"> </div></span>
 
 		<div style="color: red; clear: both; visibility: <?php
-		if ($bookmarkExists == false) {
+		if ($bookmarkExists === false) {
 			print_unescaped('hidden');
 		}
 		?>">
@@ -26,6 +26,9 @@ $bookmarkExists = $_['bookmarkExists'];
         <fieldset class="bm_desc">
             <ul>
                 <li>
+					<?php if($bookmarkExists !== false) { ?>
+						<input id="bookmarkID" type="hidden" class="hidden" value="<?php p($bookmarkExists); ?>" />
+					<?php } ?>
                     <input id="title" type="text" name="title" class="title" value="<?php p($_['title']); ?>"
                            placeholder="<?php p($l->t('The title of the page')); ?>" />
                 </li>
