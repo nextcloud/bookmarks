@@ -1,6 +1,8 @@
 <?php
+OCP\Util::addscript('bookmarks', '3rdparty/tag-it');
 OCP\Util::addscript('bookmarks', 'bookmarklet');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
+OCP\Util::addStyle('bookmarks', '3rdparty/jquery.tagit');
 
 $bookmarkExists = $_['bookmarkExists'];
 ?>
@@ -34,10 +36,10 @@ $bookmarkExists = $_['bookmarkExists'];
                 </li>
 
                 <li>
-                    <ul class="tags" >
-						<?php foreach ($_['bookmark']['tags'] as $tag): ?>
-							<li><?php p($tag); ?></li>
-						<?php endforeach; ?>
+                    <ul id="tags" class="tags" >
+                        <?php foreach ($_['tags'] as $tag): ?>
+                            <li><?php p($tag); ?></li>
+                        <?php endforeach; ?>
                     </ul>
                 </li>
 

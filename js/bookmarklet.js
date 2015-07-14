@@ -25,8 +25,12 @@ function updateLoadingAnimation() {
 $(function () {
 	$(".submit").click(function () {
 		increaseAjaxCallCount();
-		var dataString = 'url=' + $("input#url").val() + '&description=' +
-				$("textarea#description").val() + '&title=' + $("input#title").val();
+        var tags = '';
+        $('.tagit-choice .tagit-label').each(function() {
+            tags += '&item[tags][]='+$(this).text();
+        });
+        var dataString = 'url=' + $("input#url").val() + '&description=' +
+            $("textarea#description").val() + '&title=' + $("input#title").val() + tags;
 		$.ajax({
 			type: "POST",
 			url: "bookmark",
@@ -48,6 +52,13 @@ $(function () {
 		});
 		return false;
 	});
+    $.get('tag', function(data) {
+        $('.tags').tagit({
+            allowSpaces: true,
+            availableTags : data,
+            placeholderText: t('bookmark', 'Tags')
+        });
+    });
 });
 
 function closeWindow() {
