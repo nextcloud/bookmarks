@@ -12,6 +12,7 @@
 
 namespace OCA\Bookmarks\Controller;
 
+use OCP\AppFramework\Http\ContentSecurityPolicy;
 use \OCP\IRequest;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Controller;
@@ -38,7 +39,13 @@ class WebViewController extends Controller {
 	public function index() {
 		$bookmarkleturl = $this->urlgenerator->getAbsoluteURL('index.php/apps/bookmarks/bookmarklet');
 		$params = array('user' => $this->userId, 'bookmarkleturl' => $bookmarkleturl);
-		return new TemplateResponse('bookmarks', 'main', $params);
+
+		$policy = new ContentSecurityPolicy();
+		$policy->addAllowedFrameDomain("'self'");
+
+		$response = new TemplateResponse('bookmarks', 'main', $params);
+		$response->setContentSecurityPolicy($policy);
+		return $response;
 	}
 
 	/**
