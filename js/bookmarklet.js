@@ -50,10 +50,7 @@ $(document).ready(function () {
 			},
 			success: function (data) {
 				if (data.status === 'success') {
-					$('#bookmarklet_form').html("");
-					OC.dialogs.alert(
-							t("bookmarks", "Bookmark added. You can close the window now."),
-							t("bookmarks", "Bookmark added successfully"), closeWindow, true);
+					window.close();
 				} else {
 					OC.dialogs.alert(t("bookmarks", "Some Error happened."),
 							t("bookmarks", "Error"), null, true);
@@ -71,7 +68,3 @@ $(document).ready(function () {
 		});
 	});
 });
-
-function closeWindow() {
-	window.close();
-}
