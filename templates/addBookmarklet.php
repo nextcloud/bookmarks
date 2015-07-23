@@ -1,6 +1,8 @@
 <?php
+OCP\Util::addscript('bookmarks', '3rdparty/tag-it');
 OCP\Util::addscript('bookmarks', 'bookmarklet');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
+OCP\Util::addStyle('bookmarks', '3rdparty/jquery.tagit');
 
 $bookmarkExists = $_['bookmarkExists'];
 ?>
@@ -12,7 +14,7 @@ $bookmarkExists = $_['bookmarkExists'];
 		<span style="display: inline; float: right"><div id="add_form_loading" style="margin: 3px;"><img src="<?php print_unescaped(OCP\image_path("bookmarks", "loading.gif")); ?>"> </div></span>
 
 		<div style="color: red; clear: both; visibility: <?php
-		if ($bookmarkExists == false) {
+		if ($bookmarkExists === false) {
 			print_unescaped('hidden');
 		}
 		?>">
@@ -24,6 +26,9 @@ $bookmarkExists = $_['bookmarkExists'];
         <fieldset class="bm_desc">
             <ul>
                 <li>
+					<?php if($bookmarkExists !== false) { ?>
+						<input id="bookmarkID" type="hidden" class="hidden" value="<?php p($bookmarkExists); ?>" />
+					<?php } ?>
                     <input id="title" type="text" name="title" class="title" value="<?php p($_['title']); ?>"
                            placeholder="<?php p($l->t('The title of the page')); ?>" />
                 </li>
@@ -34,8 +39,11 @@ $bookmarkExists = $_['bookmarkExists'];
                 </li>
 
                 <li>
-                    <input id="tags" type="text" name="tags" class="tags" value="<?php p(implode(',', $_['tags'])); ?>"
-                           placeholder="<?php p($l->t('Tags for the page')); ?>" />
+                    <ul id="tags" class="tags" >
+                        <?php foreach ($_['tags'] as $tag): ?>
+                            <li><?php p($tag); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
                 </li>
 
                 <li>

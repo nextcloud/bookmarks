@@ -65,9 +65,11 @@ function decreaseAjaxCallCount() {
 
 function updateLoadingAnimation() {
 	if (ajaxCallCount === 0) {
-		$("#add_form_loading").css("visibility", "hidden");
+		$('#bookmark_add_submit').removeClass('icon-loading-small');
+		$('#bookmark_add_submit').addClass('icon-add');
 	} else {
-		$("#add_form_loading").css("visibility", "visible");
+		$('#bookmark_add_submit').removeClass('icon-add');
+		$('#bookmark_add_submit').addClass('icon-loading-small');
 	}
 }
 
@@ -417,4 +419,3 @@ function deleteTag() {
 		}
 	});
 }
-

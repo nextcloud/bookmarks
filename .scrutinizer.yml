@@ -8,5 +8,6 @@ imports:
     - php
 
 tools:
-    external_code_coverage: true
+    external_code_coverage: 
+        timeout: 7200    # Timeout in seconds. 120 minutes
 
