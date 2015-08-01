@@ -426,7 +426,7 @@ class Bookmarks {
 	 * @param boolean $public True if the bookmark is publishable to not registered users
 	 * @return int The id of the bookmark created
 	 */
-	public static function addBookmark($userid, IDb $db, $url, $title, $tags = array(), $description = '', $is_public = false) {
+	public static function addBookmark($userid, IDb $db, $url, $title, $tags = array(), $description = '', $is_public = false, $added = 0) {
 		$public = $is_public ? 1 : 0;
 		$url_without_prefix = substr($url, strpos($url, "://") + 3); // Removes everything from the url before the "://" pattern (included)
 		$enc_url_noprefix = htmlspecialchars_decode($url_without_prefix);
@@ -456,10 +456,13 @@ class Bookmarks {
 			$query->execute($params);
 			return $row['id'];
 		} else {
+			if ($added <= 0) {
+				$added = "UNIX_TIMESTAMP()";
+			}
 			$query = $db->prepareQuery("
 			INSERT INTO `*PREFIX*bookmarks`
 			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
-			VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?)
+			VALUES (?, ?, ?, ?, $added, $added, ?)
 			");
 
 			$params = array(
@@ -551,7 +554,12 @@ class Bookmarks {
 				$private = TRUE;
 			}
 
-			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str, $private);
+			$added = 0;
+			if ($link->hasAttribute("add_date")) {
+				$added = $link->getAttribute("add_date");
+			}
+
+			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str, $private, $added);
 		}
 
 		return array();
