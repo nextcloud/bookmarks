@@ -546,7 +546,12 @@ class Bookmarks {
 				}
 			}
 
-			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str);
+			$private = FALSE;
+			if ($link->hasAttribute("private") && $link->getAttribute("private") === "1") {
+				$private = TRUE;
+			}
+
+			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str, $private);
 		}
 
 		return array();
