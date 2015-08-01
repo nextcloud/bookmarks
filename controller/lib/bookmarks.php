@@ -532,8 +532,19 @@ class Bookmarks {
 			$tags = explode(',', $tag_str);
 
 			$desc_str = '';
-			if ($link->hasAttribute("description"))
+			if ($link->hasAttribute("description")) {
 				$desc_str = $link->getAttribute("description");
+			} else {
+				/* Get description from a following <DD> when link in a
+				 * <DT> (e.g., Delicious export) */
+				$parent = $link->parentNode;
+				if ($parent && $parent->tagName == "dt") {
+					$dd = $parent->nextSibling;
+					if ($dd->tagName == "dd") {
+						$desc_str = trim($dd->nodeValue);
+					}
+				}
+			}
 
 			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str);
 		}
