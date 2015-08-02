@@ -27,5 +27,5 @@
     "Export & Import" : "Inn- og útflutningur",
     "Export" : "Flytja út",
     "Import" : "Flytja inn"
-},"pluralForm" :"nplurals=2; plural=(n % 10 == 1 || n % 100 != 11);"
+},"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

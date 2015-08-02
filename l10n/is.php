@@ -29,4 +29,4 @@ $TRANSLATIONS = array(
 "Export" => "Flytja út",
 "Import" => "Flytja inn"
 );
-$PLURAL_FORMS = "nplurals=2; plural=(n % 10 == 1 || n % 100 != 11);";
+$PLURAL_FORMS = "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);";
