@@ -8,8 +8,6 @@ $bookmarkExists = $_['bookmarkExists'];
 ?>
 <div id="bookmarklet_form">
     <form class="addBm" action="">
-		<script type="text/javascript" src="tag"></script>
-
 		<h1 style="display: block; float: left"><?php p($l->t('Add a bookmark')); ?></h1>
 		<span style="display: inline; float: right"><div id="add_form_loading" style="margin: 3px;"><img src="<?php print_unescaped(OCP\image_path("bookmarks", "loading.gif")); ?>"> </div></span>
 
