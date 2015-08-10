@@ -42,6 +42,7 @@ class WebViewController extends Controller {
 
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedFrameDomain("'self'");
+		$policy->allowInlineScript(true);
 
 		$response = new TemplateResponse('bookmarks', 'main', $params);
 		$response->setContentSecurityPolicy($policy);
