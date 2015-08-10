@@ -1,4 +1,12 @@
 <?php
+
+use OCP\AppFramework\Http\ContentSecurityPolicy;
+
+$policy = new ContentSecurityPolicy();
+$policy->allowInlineScript(true);
+
+/* setContentSecurityPolicy($policy); */
+
 OCP\Util::addscript('bookmarks', '3rdparty/tag-it');
 OCP\Util::addscript('bookmarks', 'bookmarklet');
 OCP\Util::addStyle('bookmarks', 'bookmarks');
@@ -6,6 +14,15 @@ OCP\Util::addStyle('bookmarks', '3rdparty/jquery.tagit');
 
 $bookmarkExists = $_['bookmarkExists'];
 ?>
+
+<script>
+    function socialMarkUpdate(isMarked) {
+        var evt = document.createEvent("CustomEvent");
+        evt.initCustomEvent("socialMarkUpdate", true, true, JSON.stringify({marked: isMarked}));
+        document.documentElement.dispatchEvent(evt);
+    }
+</script>
+
 <div id="bookmarklet_form">
     <form class="addBm" action="">
 		<h1 style="display: block; float: left"><?php p($l->t('Add a bookmark')); ?></h1>
@@ -50,7 +67,7 @@ $bookmarkExists = $_['bookmarkExists'];
                 </li>
 
                 <li>
-                    <input type="submit" class="submit" value="<?php p($l->t("Save")); ?>" />
+                    <input type="submit" onclick="socialMarkUpdate(true)" class="submit" value="<?php p($l->t("Save")); ?>" />
                     <input type="hidden" class="record_id" value="" name="record_id" />
                     <input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">
                 </li>
