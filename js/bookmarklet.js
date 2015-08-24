@@ -50,7 +50,10 @@ $(document).ready(function () {
 			},
 			success: function (data) {
 				if (data.status === 'success') {
-					window.close();
+					OC.dialogs.message("Bookmark added.", "Success", undefined, [], undefined, true)
+					_.delay(function() {
+						window.close();
+					}, 1e3);
 				} else {
 					OC.dialogs.alert(t("bookmarks", "Some Error happened."),
 							t("bookmarks", "Error"), null, true);
