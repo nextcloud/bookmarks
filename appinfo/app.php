@@ -15,20 +15,15 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
-\OCP\App::addNavigationEntry(array(
-	// the string under which your app will be referenced in owncloud
-	'id' => 'bookmarks',
-	// sorting weight for the navigation. The higher the number, the higher
-	// will it be listed in the navigation
-	'order' => 10,
-	// the route that will be shown on startup
-	'href' => \OCP\Util::linkToRoute('bookmarks.web_view.index'),
-	// the icon that will be shown in the navigation
-	// this file needs to exist in img/
-	'icon' => \OCP\Util::imagePath('bookmarks', 'bookmarks.svg'),
-	// the title of your application. This will be used in the
-	// navigation or on the settings page of your app
-	'name' => \OC_L10N::get('bookmarks')->t('Bookmarks')
-));
+$navigationEntry = function () {
+	return [
+		'id' => 'bookmarks',
+		'order' => 10,
+		'name' => \OC::$server->getL10N('bookmarks')->t('Bookmarks'),
+		'href' => \OC::$server->getURLGenerator()->linkToRoute('bookmarks.web_view.index'),
+		'icon' => \OC::$server->getURLGenerator()->imagePath('bookmarks', 'bookmarks.svg'),
+	];
+};
+\OC::$server->getNavigationManager()->add($navigationEntry);
 
 \OC::$server->getSearch()->registerProvider('OCA\Bookmarks\Controller\Lib\Search', array('apps' => array('bookmarks')));
