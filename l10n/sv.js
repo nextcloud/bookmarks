@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Bokm.",
     "No file provided for import" : "Ingen fil försedd för import",
     "Unsupported file type for import" : "Filtypen stöds ej för import",
-    "Bookmark added. You can close the window now." : "Bokmärke har lagts till. Du kan stänga detta fönstret nu.",
-    "Bookmark added successfully" : "Bokmärke lades till framgångsrikt",
     "Some Error happened." : "Något fel inträffade",
     "Error" : "Fel",
     "Tags" : "Taggar",

@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Bookm.",
     "No file provided for import" : "Niciun fișier furnizat pentru import",
     "Unsupported file type for import" : "Tipul de fișier nu este suportat pentru importări",
-    "Bookmark added. You can close the window now." : "Semnul de carte a fost adăugat. Poţi să închizi fereastra.",
-    "Bookmark added successfully" : "Semnul de carte a fost adăugat cu succes",
     "Some Error happened." : "A avut loc o eroare.",
     "Error" : "Eroare",
     "Tags" : "Cuvinte cheie",

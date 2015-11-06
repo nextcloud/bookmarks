@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Markah",
     "No file provided for import" : "Tidak ada berkas untuk diimpor",
     "Unsupported file type for import" : "Tipe berkas tidak didukung untuk diimpor",
-    "Bookmark added. You can close the window now." : "Markah telah ditembahkan. Anda dapat menutup jendela sekarang.",
-    "Bookmark added successfully" : "Markah berhasil ditambahkan",
     "Some Error happened." : "Terjadi beberapa kesalahan.",
     "Error" : "Kesalahan",
     "Tags" : "Tag",

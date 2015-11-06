@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Bogm.",
     "No file provided for import" : "Ingen fil opgivet til import",
     "Unsupported file type for import" : "Filtypen understøttes ikke for import",
-    "Bookmark added. You can close the window now." : "Bogmærket blev tilføjet. Du kan nu lukke vinduet.",
-    "Bookmark added successfully" : "Bogmærket blev tilføjet.",
     "Some Error happened." : "Der opstod en fejl.",
     "Error" : "Fejl",
     "Tags" : "Mærker",

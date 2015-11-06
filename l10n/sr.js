@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Обел.",
     "No file provided for import" : "Нема фајла за увоз",
     "Unsupported file type for import" : "Неподржан тип фајла за увоз",
-    "Bookmark added. You can close the window now." : "Обележивач је додат. Сада можете да затворите прозор.",
-    "Bookmark added successfully" : "Обележивач је успешно додат",
     "Some Error happened." : "Десила се нека грешка.",
     "Error" : "Грешка",
     "Tags" : "Ознаке",

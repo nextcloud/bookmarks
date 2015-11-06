@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Bookm",
     "No file provided for import" : "هیچ فایلی وارد نشده است.",
     "Unsupported file type for import" : "نوع فایل برای وارد کردن معتبر نیست",
-    "Bookmark added. You can close the window now." : "نشانک اضافه شد . حال می توانید پنجره را ببندید.",
-    "Bookmark added successfully" : "نشانک با موفقیت اضافه شد.",
     "Some Error happened." : "یک خطا پیش آمد.",
     "Error" : "خطا",
     "Tags" : "برچسب‌ها",

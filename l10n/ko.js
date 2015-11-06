@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "책갈피",
     "No file provided for import" : "가져올 파일을 지정하지 않았음",
     "Unsupported file type for import" : "가져올 수 없는 파일 형식임",
-    "Bookmark added. You can close the window now." : "책갈피가 추가되었습니다. 주 창을 닫아도 됩니다.",
-    "Bookmark added successfully" : "책갈피가 성공적으로 추가됨",
     "Some Error happened." : "오류가 발생했습니다.",
     "Error" : "오류",
     "Tags" : "태그",

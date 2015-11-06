@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Закл.",
     "No file provided for import" : "Файл для импорта не предоставлен",
     "Unsupported file type for import" : "Не подходящий тип файла для импорта",
-    "Bookmark added. You can close the window now." : "Закладка добавлена. Теперь вы можете закрыть окно.",
-    "Bookmark added successfully" : "Закладка успешно добавлена",
     "Some Error happened." : "Произошла ошибка.",
     "Error" : "Ошибка",
     "Tags" : "Метки",

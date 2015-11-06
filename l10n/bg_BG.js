@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Отмет.",
     "No file provided for import" : "Не беше предоставен файл за зареждане",
     "Unsupported file type for import" : "Неподдържан файл за внасяне.",
-    "Bookmark added. You can close the window now." : "Отметката добавена. Прозореца може да бъде затворен.",
-    "Bookmark added successfully" : "Отметката добавена успешно",
     "Some Error happened." : "Случисе някаква Грешка.",
     "Error" : "Грешка",
     "Tags" : "Етикети",

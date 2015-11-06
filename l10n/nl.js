@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Bladw.",
     "No file provided for import" : "Geen bestand voor import opgegeven",
     "Unsupported file type for import" : "Niet ondersteund bestandstype voor import",
-    "Bookmark added. You can close the window now." : "Bladwijzer toegevoegd. U kunt het venster nu sluiten.",
-    "Bookmark added successfully" : "Bladwijzer succesvol toegevoegd",
     "Some Error happened." : "Er trad een fout op.",
     "Error" : "Fout",
     "Tags" : "Tags",

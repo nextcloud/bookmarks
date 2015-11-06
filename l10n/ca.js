@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Marcador",
     "No file provided for import" : "No heu proporcionat cap fitxer a importar",
     "Unsupported file type for import" : "Importació d'un tipus de fitxer no implementat",
-    "Bookmark added. You can close the window now." : "Marcador afegit. Ara ja pots tancar la finestra.",
-    "Bookmark added successfully" : "Marcador afegit amb èxit",
     "Some Error happened." : "Hi ha hagut algun error.",
     "Error" : "Error",
     "Tags" : "Etiquetes",

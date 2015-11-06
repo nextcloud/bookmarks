@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Bókam.",
     "No file provided for import" : "Engin skrá valin fyrir innflutning",
     "Unsupported file type for import" : "Ekki er hægt að flytja inn þessa tegund af bókamerki",
-    "Bookmark added. You can close the window now." : "Bókamerki bætt við. Þú getur lokað glugganum núna.",
-    "Bookmark added successfully" : "Bókamerki bætt við, aðgerð tókst",
     "Some Error happened." : "Einhver villa varð.",
     "Error" : "Villa",
     "Tags" : "Tagg",

@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Grāmatz.",
     "No file provided for import" : "Neviena datne nav dota importēšanai",
     "Unsupported file type for import" : "Importēšanai neatbalstītie datņu tipi",
-    "Bookmark added. You can close the window now." : "Grāmatzīme pievienota. Varat aizvērt šo logu.",
-    "Bookmark added successfully" : "Grāmatzīme veiksmīgi pievienota",
     "Some Error happened." : "Notikusi kāda kļūda",
     "Error" : "Kļūda",
     "Tags" : "Birkas",

@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Kirjanm.",
     "No file provided for import" : "Yhtäkään tiedostoa ei määritetty tuotavaksi",
     "Unsupported file type for import" : "Tuonti ei tue kyseistä tiedostotyyppiä",
-    "Bookmark added. You can close the window now." : "Kirjanmerkki lisätty. Voit sulkea ikkunan nyt.",
-    "Bookmark added successfully" : "Kirjanmerkki lisätty onnistuneesti",
     "Some Error happened." : "Virhetilanne.",
     "Error" : "Virhe",
     "Tags" : "Tunnisteet",

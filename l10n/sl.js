@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Zaznam.",
     "No file provided for import" : "Ni navedene datoteke za uvoz",
     "Unsupported file type for import" : "Vrsta datoteke ni podprta za uvoz",
-    "Bookmark added. You can close the window now." : "Zaznamek je dodan. Okno lahko zaprete.",
-    "Bookmark added successfully" : "Zaznamek je uspešno dodan",
     "Some Error happened." : "Prišlo je do napake.",
     "Error" : "Napaka",
     "Tags" : "Oznake",

@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Marc.",
     "No file provided for import" : "No se especificó un archivo para importar",
     "Unsupported file type for import" : "Tipo de archivo no soportado para importar",
-    "Bookmark added. You can close the window now." : "Marcador agregado. Ya puede cerrar la ventana.",
-    "Bookmark added successfully" : "Marcador agregado.",
     "Some Error happened." : "Hubo un error.",
     "Error" : "Error",
     "Tags" : "Etiquetas",

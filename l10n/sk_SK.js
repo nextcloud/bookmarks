@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Zál.",
     "No file provided for import" : "Žiadny súbor na import",
     "Unsupported file type for import" : "Nepodporovaný typ súboru pre import",
-    "Bookmark added. You can close the window now." : "Záložka pridaná. Teraz môžete zatvoriť okno.",
-    "Bookmark added successfully" : "Záložka bola úspešne pridaná",
     "Some Error happened." : "Stala sa nejaká chyba",
     "Error" : "Chyba",
     "Tags" : "Značky",

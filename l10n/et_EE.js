@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Järjeh.",
     "No file provided for import" : "Imporditav fail puudub",
     "Unsupported file type for import" : "Toetuseta failitüübi import",
-    "Bookmark added. You can close the window now." : "Järjehoidja lisatud. Nüüd võib akna sulgeda.",
-    "Bookmark added successfully" : "Järjehoidja edukalt lisatud",
     "Some Error happened." : "Ilmnes mingi tõrge.",
     "Error" : "Tõrge",
     "Tags" : "Sildid",

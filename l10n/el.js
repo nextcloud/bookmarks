@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Σελιδοδεικτ.",
     "No file provided for import" : "Δεν δόθηκε αρχείο για εισαγωγή",
     "Unsupported file type for import" : "Δεν υποστηρίζεται o τύπος αρχείου για εισαγωγή",
-    "Bookmark added. You can close the window now." : "Ο σελιδοδείκτης προστέθηκε. Μπορείτε να κλείσετε το παράθυρο.",
-    "Bookmark added successfully" : "Επιτυχημένη προσθήκη σελιδοδείκτη",
     "Some Error happened." : "Συνέβη κάποιο σφάλμα.",
     "Error" : "Σφάλμα",
     "Tags" : "Ετικέτες",

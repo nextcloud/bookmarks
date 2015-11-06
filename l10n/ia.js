@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Marcat.",
     "No file provided for import" : "Il non ha alcun file de importar",
     "Unsupported file type for import" : "Typo de file non supportate per importation",
-    "Bookmark added. You can close the window now." : "Marcator addite. Tu pote ora clauder le fenestra.",
-    "Bookmark added successfully" : "Marcator addite con successo",
     "Some Error happened." : "Un error ha occurrite.",
     "Error" : "Error",
     "Tags" : "Etiquettas",

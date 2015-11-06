@@ -5,8 +5,6 @@ OC.L10N.register(
     "Bookm." : "Faqer.",
     "No file provided for import" : "S’u dha kartelë për importim",
     "Unsupported file type for import" : "Lloj i pambuluar kartele për importim",
-    "Bookmark added. You can close the window now." : "Faerojtësi u shtua. Tani mund ta mbyllni dritaren.",
-    "Bookmark added successfully" : "Faqerojtësi u shtua me sukses.",
     "Some Error happened." : "Ndodhi i njëjti Gabim.",
     "Error" : "Gabim",
     "Tags" : "Etiketa",
