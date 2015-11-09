@@ -6,7 +6,6 @@
 	<licence>AGPL</licence>
 	<author>Arthur Schiwon, Marvin Thomas Rabe, Stefan Klemm</author>
 	<standalone/>
-	<requiremin>8</requiremin>
 	<dependencies>
 		<owncloud min-version="8.1" max-version="8.2" />
 	</dependencies>
