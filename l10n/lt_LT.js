@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bookm." : "Žym.",
     "No file provided for import" : "Nepateiktas failas importavimui",
     "Unsupported file type for import" : "Netinkamas failo tipas importavimui",
+    "Some Error happened." : "Įvyko keletas klaidų.",
     "Error" : "Klaida",
     "Tags" : "Žymės",
     "Filter by tag" : "Filtruoti pagal žymę",
