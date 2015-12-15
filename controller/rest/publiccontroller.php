@@ -207,6 +207,43 @@ class PublicController extends ApiController {
         }
     }
 
+    /**
+     * @CORS
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
+    public function returnClickBookmarkAsJson($user, $password, $url) {
+        if ($user == null || $this->userManager->userExists($user) == false) {
+            return $this->newJsonErrorMessage("User could not be identified");
+        }
+
+        if (!$this->userManager->checkPassword($user, $password)) {
+
+            $msg = 'REST API accessed with wrong password';
+            \OCP\Util::writeLog('bookmarks', $msg, \OCP\Util::WARN);
+
+            return $this->newJsonErrorMessage("Wrong password for user " . $user);
+        }
+
+        // Check if it is a valid URL
+        if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+            return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
+        }
+
+        $query = $this->db->prepareQuery('
+            UPDATE `*PREFIX*bookmarks`
+            SET `clickcount` = `clickcount` + 1
+            WHERE `user_id` = ?
+                AND `url` LIKE ?
+            ');
+
+        $params = array($user, htmlspecialchars_decode($url));
+        $query->execute($params);
+
+        return new JSONResponse(array('status' => 'success'), Http::STATUS_OK);
+    }
+
 	public function newJsonErrorMessage($message) {
 		$output = array();
 		$output["status"] = 'error';
