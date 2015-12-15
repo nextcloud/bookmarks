@@ -29,7 +29,23 @@ class PublicController extends ApiController {
      * @PublicPage
      */
     public function verifyCredentialsAsJson($user, $password) {
+        if ($user == null || $this->userManager->userExists($user) == false) {
+            return $this->newJsonErrorMessage("User could not be identified");
+        }
 
+        if (!$this->userManager->checkPassword($user, $password)) {
+
+            $msg = 'REST API accessed with wrong password';
+            \OCP\Util::writeLog('bookmarks', $msg, \OCP\Util::WARN);
+
+            return $this->newJsonErrorMessage("Wrong password for user " . $user);
+        }
+
+        $output = array();
+        $output["status"] = "success";
+        $output["message"] = "user credentials are accepted";
+
+        return new JSONResponse($output);
     }
         /**
 	 * @CORS
