@@ -22,7 +22,16 @@ class PublicController extends ApiController {
 		$this->userManager = $userManager;
 	}
 
-	/**
+    /**
+     * @CORS
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
+    public function verifyCredentialsAsJson($user, $password) {
+
+    }
+        /**
 	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
