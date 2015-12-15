@@ -241,7 +241,9 @@ class PublicController extends ApiController {
         $params = array($user, htmlspecialchars_decode($url));
         $query->execute($params);
 
-        return new JSONResponse(array('status' => 'success'), Http::STATUS_OK);
+        $output = array();
+        $output["status"] = "success";
+        return new JSONResponse($output);
     }
 
 	public function newJsonErrorMessage($message) {
