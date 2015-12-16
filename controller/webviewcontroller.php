@@ -48,11 +48,19 @@ class WebViewController extends Controller {
 	public function bookmarklet($url = "", $title = "") {
 		$bookmarkExists = Bookmarks::bookmarkExists($url, $this->userId, $this->db);
 		$description = "";
-		if ($bookmarkExists != false){
+        $tags = [];
+		if ($bookmarkExists !== false){
 			$bookmark = Bookmarks::findUniqueBookmark($bookmarkExists, $this->userId, $this->db);
 			$description = $bookmark['description'];
+            $tags = $bookmark['tags'];
 		}
-		$params = array('url' => $url, 'title' => $title, 'description' => $description, 'bookmarkExists' => $bookmarkExists);
+		$params = array(
+            'url'           => $url,
+            'title'         => $title,
+            'description'   => $description,
+            'bookmarkExists'=> $bookmarkExists,
+            'tags'          => $tags
+        );
 		return new TemplateResponse('bookmarks', 'addBookmarklet', $params);  // templates/main.php
 	}
 
