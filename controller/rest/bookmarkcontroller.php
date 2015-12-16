@@ -42,7 +42,7 @@ class BookmarkController extends ApiController {
 	/**
 	 * @NoAdminRequired
 	 */
-	public function getBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent") {
+	public function getBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent", $search = '') {
 
 		if ($type == 'rel_tags') {
 			$tags = Bookmarks::analyzeTagRequest($tag);
@@ -58,7 +58,14 @@ class BookmarkController extends ApiController {
 			} else {
 				$sqlSortColumn = 'lastmodified';
 			}
-			$bookmarks = Bookmarks::findBookmarks($this->userId, $this->db, $offset, $sqlSortColumn, $filterTag, true);
+
+            if($search == '') {
+                $bookmarks = Bookmarks::findBookmarks(
+                        $this->userId, $this->db, $offset, $sqlSortColumn, $filterTag);
+            } else {
+                $bookmarks = Bookmarks::findBookmarks(
+                        $this->userId, $this->db, $offset, $sqlSortColumn, $search, false);
+            }
 			return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
 		}
 	}
