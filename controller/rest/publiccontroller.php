@@ -29,7 +29,7 @@ class PublicController extends ApiController {
 	 */
 	public function returnAsJson($user, $tags = array(), $conjunction = "or", $select = null, $sortby = "") {
 
-		if ($tags[0] == "") {
+		if ($tags != null && $tags[0] == "") {
 			$tags = array();
 		}
 
