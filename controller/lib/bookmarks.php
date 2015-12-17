@@ -462,7 +462,7 @@ class Bookmarks {
 			$query = $db->prepareQuery("
 			INSERT INTO `*PREFIX*bookmarks`
 			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
-			VALUES (?, ?, ?, ?, $added, $added, ?)
+			VALUES (?, ?, ?, ?, ?, ?, ?)
 			");
 
 			$params = array(
@@ -470,6 +470,8 @@ class Bookmarks {
 				htmlspecialchars_decode($title),
 				$userid,
 				$public,
+				$added,
+				$added,
 				$description,
 			);
 			$query->execute($params);
