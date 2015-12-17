@@ -22,14 +22,14 @@ class Test_PublicController_Bookmarks extends PHPUnit_Framework_TestCase {
 	}
 
 	function testPublicQueryNoUser() {
-		$output = $this->publicController->returnAsJson(null, "apassword", null);
+		$output = $this->publicController->returnAsJson(null, null);
 		$data = $output->getData();
 		$status = $data['status'];
 		$this->assertEquals($status, 'error');
 	}
 
 	function testPublicQueryWrongUser() {
-		$output = $this->publicController->returnAsJson("cqc43dr4rx3x4xatr4", "apassword", null);
+		$output = $this->publicController->returnAsJson("cqc43dr4rx3x4xatr4", null);
 		$data = $output->getData();
 		$status = $data['status'];
 		$this->assertEquals($status, 'error');
