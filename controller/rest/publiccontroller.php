@@ -23,59 +23,14 @@ class PublicController extends ApiController {
 	}
 
     /**
-     * @CORS
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @PublicPage
-     */
-    public function verifyCredentialsAsJson($user, $password) {
-        if ($user == null || $this->userManager->userExists($user) == false) {
-            return $this->newJsonErrorMessage("User could not be identified");
-        }
-
-        if (!$this->userManager->checkPassword($user, $password)) {
-
-            $msg = 'REST API accessed with wrong password';
-            \OCP\Util::writeLog('bookmarks', $msg, \OCP\Util::WARN);
-
-            return $this->newJsonErrorMessage("Wrong password for user " . $user);
-        }
-
-        $output = array();
-        $output["status"] = "success";
-        $output["message"] = "user credentials are accepted";
-
-        return new JSONResponse($output);
-    }
-        /**
 	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @PublicPage
 	 */
-	public function returnAsJson($user, $password = null, $tags = array(), $conjunction = "or", $select = null, $sortby = "") {
-
-		if ($user == null || $this->userManager->userExists($user) == false) {
-			return $this->newJsonErrorMessage("User could not be identified");
-		}
+	public function returnAsJson($user, $tags = array(), $conjunction = "or", $select = null, $sortby = "") {
 
 		if ($tags[0] == "") {
 			$tags = array();
-		}
-
-		$public = true;
-
-		if ($password != null) {
-			$public = false;
-		}
-
-
-		if (!$public && !$this->userManager->checkPassword($user, $password)) {
-
-			$msg = 'REST API accessed with wrong password';
-			\OCP\Util::writeLog('bookmarks', $msg, \OCP\Util::WARN);
-
-			return $this->newJsonErrorMessage("Wrong password for user " . $user);
 		}
 
 		$attributesToSelect = array('url', 'title');
@@ -85,7 +40,7 @@ class PublicController extends ApiController {
 			$attributesToSelect = array_unique($attributesToSelect);
 		}
 
-		$output = Bookmarks::findBookmarks($user, $this->db, 0, $sortby, $tags, true, -1, $public, $attributesToSelect, $conjunction);
+		$output = Bookmarks::findBookmarks($user, $this->db, 0, $sortby, $tags, true, -1, false, $attributesToSelect, $conjunction);
 
 		if (count($output) == 0) {
 			$output["status"] = 'error';
@@ -101,24 +56,11 @@ class PublicController extends ApiController {
      * @CORS
      * @NoAdminRequired
      * @NoCSRFRequired
-     * @PublicPage
      */
-    public function returnAddAsJson($user, $password, $url = "", $tags = array(), $title = "", $description = "") {
-
-        if ($user == null || $this->userManager->userExists($user) == false) {
-            return $this->newJsonErrorMessage("User could not be identified");
-        }
+    public function returnAddAsJson($user, $url = "", $tags = array(), $title = "", $description = "") {
 
         if ($tags[0] == "") {
             $tags = array();
-        }
-
-        if (!$this->userManager->checkPassword($user, $password)) {
-
-            $msg = 'REST API accessed with wrong password';
-            \OCP\Util::writeLog('bookmarks', $msg, \OCP\Util::WARN);
-
-            return $this->newJsonErrorMessage("Wrong password for user " . $user);
         }
 
         $output = Bookmarks::addBookmark($user, $this->db, $url, $title, $tags, $description, false);
@@ -138,26 +80,12 @@ class PublicController extends ApiController {
      * @CORS
      * @NoAdminRequired
      * @NoCSRFRequired
-     * @PublicPage
      */
-    public function returnUpdateAsJson($user, $password, $id, $url = "", $tags = array(), $title = "", $description = "") {
-
-        if ($user == null || $this->userManager->userExists($user) == false) {
-            return $this->newJsonErrorMessage("User could not be identified");
-        }
+    public function returnUpdateAsJson($user, $id, $url = "", $tags = array(), $title = "", $description = "") {
 
         if ($tags[0] == "") {
             $tags = array();
         }
-
-        if (!$this->userManager->checkPassword($user, $password)) {
-
-            $msg = 'REST API accessed with wrong password';
-            \OCP\Util::writeLog('bookmarks', $msg, \OCP\Util::WARN);
-
-            return $this->newJsonErrorMessage("Wrong password for user " . $user);
-        }
-
 
         $output = Bookmarks::editBookmark($user, $this->db, $id, $url, $title, $tags, $description, false);
 
@@ -176,22 +104,8 @@ class PublicController extends ApiController {
      * @CORS
      * @NoAdminRequired
      * @NoCSRFRequired
-     * @PublicPage
      */
-    public function returnDeleteAsJson($user, $password, $id) {
-        if ($user == null || $this->userManager->userExists($user) == false) {
-            return $this->newJsonErrorMessage("User could not be identified");
-        }
-
-        if (!$this->userManager->checkPassword($user, $password)) {
-
-            $msg = 'REST API accessed with wrong password';
-            \OCP\Util::writeLog('bookmarks', $msg, \OCP\Util::WARN);
-
-            return $this->newJsonErrorMessage("Wrong password for user " . $user);
-        }
-
-
+    public function returnDeleteAsJson($user, $id) {
         $output = Bookmarks::deleteUrl($user, $this->db, $id);
 
         if (!$output) {
@@ -211,20 +125,8 @@ class PublicController extends ApiController {
      * @CORS
      * @NoAdminRequired
      * @NoCSRFRequired
-     * @PublicPage
      */
-    public function returnClickBookmarkAsJson($user, $password, $url) {
-        if ($user == null || $this->userManager->userExists($user) == false) {
-            return $this->newJsonErrorMessage("User could not be identified");
-        }
-
-        if (!$this->userManager->checkPassword($user, $password)) {
-
-            $msg = 'REST API accessed with wrong password';
-            \OCP\Util::writeLog('bookmarks', $msg, \OCP\Util::WARN);
-
-            return $this->newJsonErrorMessage("Wrong password for user " . $user);
-        }
+    public function returnClickBookmarkAsJson($user, $url) {
 
         // Check if it is a valid URL
         if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
