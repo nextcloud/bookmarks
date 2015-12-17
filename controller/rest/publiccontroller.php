@@ -81,8 +81,10 @@ class PublicController extends ApiController
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function returnPrivateAsJson($user, $tags = array(), $conjunction = "or", $select = null, $sortby = "")
+    public function returnPrivateAsJson($tags = array(), $conjunction = "or", $select = null, $sortby = "")
     {
+
+	    $user = \OCP\User::getUser();
 
         if ($tags != null && $tags[0] == "") {
             $tags = array();
@@ -112,8 +114,9 @@ class PublicController extends ApiController
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function returnAddAsJson($user, $url = "", $tags = array(), $title = "", $description = "")
+    public function returnAddAsJson($url = "", $tags = array(), $title = "", $description = "")
     {
+	    $user = \OCP\User::getUser();
 
         if ($tags[0] == "") {
             $tags = array();
@@ -137,8 +140,9 @@ class PublicController extends ApiController
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function returnUpdateAsJson($user, $id, $url = "", $tags = array(), $title = "", $description = "")
+    public function returnUpdateAsJson($id, $url = "", $tags = array(), $title = "", $description = "")
     {
+	    $user = \OCP\User::getUser();
 
         if ($tags[0] == "") {
             $tags = array();
@@ -162,8 +166,10 @@ class PublicController extends ApiController
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function returnDeleteAsJson($user, $id)
+    public function returnDeleteAsJson($id)
     {
+	    $user = \OCP\User::getUser();
+
         $output = Bookmarks::deleteUrl($user, $this->db, $id);
 
         if (!$output) {
@@ -184,8 +190,9 @@ class PublicController extends ApiController
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function returnClickBookmarkAsJson($user, $url)
+    public function returnClickBookmarkAsJson($url)
     {
+	    $user = \OCP\User::getUser();
 
         // Check if it is a valid URL
         if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
