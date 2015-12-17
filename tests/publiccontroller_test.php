@@ -37,8 +37,8 @@ class Test_PublicController_Bookmarks extends PHPUnit_Framework_TestCase {
 
 	function testPublicQuery() {
 
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		Bookmarks::addBookmark($this->userid, $this->db, "http://www.golem.de", "Golem", array("four"), "NoTag", false);
+		Bookmarks::addBookmark($this->userid, $this->db, "http://www.9gag.com", "9gag", array("two", "three"), "Tag", false);
 
 		$output = $this->publicController->returnAsJson($this->userid);
 		$data = $output->getData();
