@@ -457,23 +457,36 @@ class Bookmarks {
 			return $row['id'];
 		} else {
 			if ($added <= 0) {
-				$added = "UNIX_TIMESTAMP()";
-			}
-			$query = $db->prepareQuery("
-			INSERT INTO `*PREFIX*bookmarks`
-			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
-			VALUES (?, ?, ?, ?, ?, ?, ?)
-			");
+				$query = $db->prepareQuery("
+				INSERT INTO `*PREFIX*bookmarks`
+				(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
+				VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?)
+				");
 
-			$params = array(
-				$enc_url,
-				htmlspecialchars_decode($title),
-				$userid,
-				$public,
-				$added,
-				$added,
-				$description,
-			);
+				$params = array(
+					$enc_url,
+					htmlspecialchars_decode($title),
+					$userid,
+					$public,
+					$description,
+				);
+			} else {
+				$query = $db->prepareQuery("
+				INSERT INTO `*PREFIX*bookmarks`
+				(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
+				VALUES (?, ?, ?, ?, ?, ?, ?)
+				");
+
+				$params = array(
+					$enc_url,
+					htmlspecialchars_decode($title),
+					$userid,
+					$public,
+					$added,
+					$added,
+					$description,
+				);
+			}
 			$query->execute($params);
 
 			$b_id = $db->getInsertId('*PREFIX*bookmarks');
