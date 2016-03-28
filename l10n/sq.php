@@ -29,7 +29,8 @@ $TRANSLATIONS = array(
 "Filterable Tags" => "Etiketa të Filtrueshme",
 "You have no bookmarks" => "S’keni faqerojtës",
 "You can also import a bookmark file" => "Mundeni edhe të importoni një kartelë faqerojtësish",
-"Export & Import" => "Imporoni & Eksportoni",
+"Bookmarklet" => "Përmbajtës faqerojtësish",
+"Export & Import" => "Importoni & Eksportoni",
 "Export" => "Eksporto",
 "Import" => "Importo"
 );
