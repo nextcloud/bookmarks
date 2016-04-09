@@ -39,6 +39,11 @@ $application->registerRoutes($this, array('routes' => array(
 		array('name' => 'tags#delete_tag', 'url' => '/tag', 'verb' => 'DELETE'),
 		//Public Rest Api
 		array('name' => 'public#return_as_json', 'url' => '/public/rest/v1/bookmark', 'verb' => 'GET'),
+		array('name' => 'public#return_private_as_json', 'url' => '/public/rest/v1/bookmark', 'verb' => 'POST'),
+		array('name' => 'public#return_add_as_json', 'url' => '/public/rest/v1/bookmark/add', 'verb' => 'POST'),
+		array('name' => 'public#return_update_as_json', 'url' => '/public/rest/v1/bookmark/update', 'verb' => 'POST'),
+		array('name' => 'public#return_delete_as_json', 'url' => '/public/rest/v1/bookmark/delete', 'verb' => 'POST'),
+		array('name' => 'public#return_click_bookmark_as_json', 'url' => '/public/rest/v1/bookmark/click', 'verb' => 'POST'),
 		//Legacy Routes
 		array('name' => 'bookmark#legacy_get_bookmarks', 'url' => '/ajax/updateList.php', 'verb' => 'POST'),
 		array('name' => 'bookmark#legacy_edit_bookmark', 'url' => '/ajax/editBookmark.php', 'verb' => 'POST'),
