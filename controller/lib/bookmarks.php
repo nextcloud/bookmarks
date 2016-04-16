@@ -303,11 +303,12 @@ class Bookmarks {
 			AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ?
 			AND `tgs`.`bookmark_id` = `id`)
 			AND exists( SELECT `t`.`tag` FROM `*PREFIX*bookmarks_tags` `t` where `t`.`tag` = ?
-			AND `tgs`.`bookmark_id` = `t`.`bookmark_id`");
+			AND `tgs`.`bookmark_id` = `t`.`bookmark_id`)");
 
 			$params = array(
 				$new,
 				$user_id,
+				$new
 			);
 
 			$query->execute($params);
@@ -325,8 +326,7 @@ class Bookmarks {
 			$params = array(
 				$new,
 				$old,
-				$user_id,
-				$old,
+				$user_id
 			);
 
 			$query->execute($params);
