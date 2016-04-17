@@ -12,6 +12,7 @@
 
 namespace OCA\Bookmarks\Controller\Rest;
 
+use OCA\Bookmarks\Controller\Lib\Helper;
 use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
@@ -96,7 +97,15 @@ class BookmarkController extends ApiController {
 		}
 
 		// Check if it is a valid URL (after adding http(s) prefix)
-		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+		$testUrl = $url;
+		if(strlen($url) !== mb_strlen($url)) {
+			$urlData = parse_url($url);
+			if($urlData === false) {
+				return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
+			}
+			$testUrl = Helper::fakeEncodeUrl($urlData);
+		}
+		if (filter_var($testUrl, FILTER_VALIDATE_URL) === FALSE) {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
 
