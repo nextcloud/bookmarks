@@ -96,7 +96,8 @@ class BookmarkController extends ApiController {
 		}
 
 		// Check if it is a valid URL (after adding http(s) prefix)
-		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+		$urlData = parse_url($url);
+		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
 
@@ -133,7 +134,8 @@ class BookmarkController extends ApiController {
 	public function editBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
 
 		// Check if it is a valid URL
-		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+		$urlData = parse_url($url);
+		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
@@ -190,7 +192,8 @@ class BookmarkController extends ApiController {
 	public function clickBookmark($url = "") {
 
 		// Check if it is a valid URL
-		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+		$urlData = parse_url($url);
+		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
