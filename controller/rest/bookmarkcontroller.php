@@ -72,25 +72,25 @@ class BookmarkController extends ApiController {
 			// allow only http(s) and (s)ftp
 			$protocols = '/^(https?|s?ftp)\:\/\//i';
 			if (preg_match($protocols, $url)) {
-				$datas = Bookmarks::getURLMetadata($url);
+				$data = Bookmarks::getURLMetadata($url);
 			// if not (allowed) protocol is given, assume http and https (and fetch both)
 			} else { 
 				// append https to url and fetch it
 				$url_https = 'https://' . $url;
-				$datas_https = Bookmarks::getURLMetadata($url_https);
+				$data_https = Bookmarks::getURLMetadata($url_https);
 				// append http to url and fetch it
 				$url_http = 'http://' . $url;
-				$datas_http = Bookmarks::getURLMetadata($url_http);
+				$data_http = Bookmarks::getURLMetadata($url_http);
 			}
-			
-			if (isset($datas['title'])) { // prefer original url if working
-				$title = $datas['title'];
+
+			if ($title === '' && isset($data['title'])) { // prefer original url if working
+				$title = $data['title'];
 				//url remains unchanged
-			} elseif (isset($datas_https['title'])) { // test if https works
-				$title = $datas_https['title'];
+			} elseif (isset($data_https['title'])) { // test if https works
+				$title = $title === '' ? $data_https['title'] : $title;
 				$url = $url_https;
-			} elseif (isset($datas_http['title'])) { // otherwise test http for results
-				$title = $datas_http['title'];
+			} elseif (isset($data_http['title'])) { // otherwise test http for results
+				$title = $title === '' ? $data_http['title'] : $title;
 				$url = $url_http;
 			}
 		}
