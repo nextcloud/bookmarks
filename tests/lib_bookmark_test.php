@@ -17,8 +17,10 @@ class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 	function testAddBookmark() {
 		$this->cleanDB();
 		$this->assertCount(0, Bookmarks::findBookmarks($this->userid, $this->db, 0, 'id', array(), true, -1));
-		Bookmarks::addBookmark($this->userid, $this->db, 'http://owncloud.org', 'Owncloud project', array('oc', 'cloud'), 'An Awesome project');
+		Bookmarks::addBookmark($this->userid, $this->db, 'http://owncloud.org', 'owncloud project', array('oc', 'cloud'), 'An Awesome project');
 		$this->assertCount(1, Bookmarks::findBookmarks($this->userid, $this->db, 0, 'id', array(), true, -1));
+		Bookmarks::addBookmark($this->userid, $this->db, 'http://de.wikipedia.org/Ü', 'Das Ü', array('encyclopedia', 'lang'), 'A terrific letter');
+		$this->assertCount(2, Bookmarks::findBookmarks($this->userid, $this->db, 0, 'id', array(), true, -1));
 	}
 
 	function testFindBookmarks() {
