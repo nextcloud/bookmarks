@@ -1,18 +1,28 @@
 language: php
 php:
-  - 5.4
   - 5.5
   - 5.6
-  - hhvm
   - 7
 
 env:
   global:
-    - CORE_BRANCH=master
     - APP_NAME=bookmarks
 
   matrix:
-    - DB=sqlite
+    # owncloud setups: only sqlite, only >=stable9.1
+    - DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=master
+    - DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
+
+    # nextcloud setups, full tests for master+latest stable branch, older only sqlite
+    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    - DB=mysql  SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    - DB=pgsql  SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+
+    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+    - DB=mysql  SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+    - DB=pgsql  SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+
+    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable9
 
 branches:
   only:
@@ -21,9 +31,9 @@ branches:
 
 before_install:
 #  - composer install
-  - wget https://raw.githubusercontent.com/owncloud/administration/master/travis-ci/before_install.sh
-  - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
-  - cd ../core
+  - wget https://raw.githubusercontent.com/$SERVER/before_install.sh
+  - bash ./before_install.sh $APP_NAME $SERVER_BRANCH $DB
+  - cd ../core || cd ../server
   - php occ app:enable $APP_NAME
 
 script:
@@ -40,11 +50,4 @@ script:
   - sh -c "if [ '$TRAVIS_PHP_VERSION' != 'hhvm' ]; then php ocular.phar code-coverage:upload --format=php-clover clover.xml; fi"
 
 matrix:
-  include:
-    - php: 5.4
-      env: DB=mysql
-    - php: 5.4
-      env: DB=pgsql
-  allow_failures:
-    - php: hhvm
   fast_finish: true

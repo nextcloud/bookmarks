@@ -6,7 +6,7 @@
 	<licence>AGPL</licence>
 	<author>Arthur Schiwon, Marvin Thomas Rabe, Stefan Klemm</author>
 	<standalone/>
-	<version>0.8.1</version>
+	<version>0.9.0</version>
 	<documentation>
             <user>https://doc.owncloud.org/server/9.0/user_manual/bookmarks.html</user>
         </documentation>
@@ -15,7 +15,7 @@
 	<bugs>https://github.com/owncloud/bookmarks/issues</bugs>
 	<repository type="git">https://github.com/owncloud/bookmarks.git</repository>
 	<dependencies>
-		<owncloud min-version="8.1" max-version="9.2" />
+		<owncloud min-version="9.0" max-version="9.2" />
 	</dependencies>
 	<ocsid>168710</ocsid>
 </info>
