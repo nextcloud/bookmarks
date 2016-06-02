@@ -7,6 +7,13 @@
 	<author>Arthur Schiwon, Marvin Thomas Rabe, Stefan Klemm</author>
 	<standalone/>
 	<version>0.8</version>
+	<documentation>
+            <user>https://doc.owncloud.org/server/9.0/user_manual/bookmarks.html</user>
+        </documentation>
+	<category>productivity</category>
+	<website>https://github.com/owncloud/bookmarks</website>
+	<bugs>https://github.com/owncloud/bookmarks/issues</bugs>
+	<repository type="git">https://github.com/owncloud/bookmarks.git</repository>
 	<dependencies>
 		<owncloud min-version="8.1" max-version="9.1" />
 	</dependencies>
