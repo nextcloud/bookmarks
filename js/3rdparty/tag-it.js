@@ -323,7 +323,7 @@
 			this._tagInput.val('');
 
 			// insert tag
-			this._tagInput.parent().before(tag);
+			this._tagInput.parent().after(tag);
 		},
 		removeTag: function (tag, animate) {
 			if (typeof animate === 'undefined') {
