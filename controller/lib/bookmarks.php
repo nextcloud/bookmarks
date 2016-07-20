@@ -426,7 +426,7 @@ class Bookmarks {
 	 * @param boolean $public True if the bookmark is publishable to not registered users
 	 * @return int The id of the bookmark created
 	 */
-	public static function addBookmark($userid, IDb $db, $url, $title, $tags = array(), $description = '', $is_public = false) {
+	public static function addBookmark($userid, IDb $db, $url, $title, $tags = array(), $description = '', $is_public = false, $added = 0) {
 		$public = $is_public ? 1 : 0;
 		$url_without_prefix = substr($url, strpos($url, "://") + 3); // Removes everything from the url before the "://" pattern (included)
 		$enc_url_noprefix = htmlspecialchars_decode($url_without_prefix);
@@ -456,19 +456,37 @@ class Bookmarks {
 			$query->execute($params);
 			return $row['id'];
 		} else {
-			$query = $db->prepareQuery("
-			INSERT INTO `*PREFIX*bookmarks`
-			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
-			VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?)
-			");
+			if ($added <= 0) {
+				$query = $db->prepareQuery("
+				INSERT INTO `*PREFIX*bookmarks`
+				(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
+				VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?)
+				");
 
-			$params = array(
-				$enc_url,
-				htmlspecialchars_decode($title),
-				$userid,
-				$public,
-				$description,
-			);
+				$params = array(
+					$enc_url,
+					htmlspecialchars_decode($title),
+					$userid,
+					$public,
+					$description,
+				);
+			} else {
+				$query = $db->prepareQuery("
+				INSERT INTO `*PREFIX*bookmarks`
+				(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
+				VALUES (?, ?, ?, ?, ?, ?, ?)
+				");
+
+				$params = array(
+					$enc_url,
+					htmlspecialchars_decode($title),
+					$userid,
+					$public,
+					$added,
+					$added,
+					$description,
+				);
+			}
 			$query->execute($params);
 
 			$b_id = $db->getInsertId('*PREFIX*bookmarks');
@@ -532,10 +550,31 @@ class Bookmarks {
 			$tags = explode(',', $tag_str);
 
 			$desc_str = '';
-			if ($link->hasAttribute("description"))
+			if ($link->hasAttribute("description")) {
 				$desc_str = $link->getAttribute("description");
+			} else {
+				/* Get description from a following <DD> when link in a
+				 * <DT> (e.g., Delicious export) */
+				$parent = $link->parentNode;
+				if ($parent && $parent->tagName == "dt") {
+					$dd = $parent->nextSibling;
+					if ($dd->tagName == "dd") {
+						$desc_str = trim($dd->nodeValue);
+					}
+				}
+			}
 
-			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str);
+			$private = FALSE;
+			if ($link->hasAttribute("private") && $link->getAttribute("private") === "1") {
+				$private = TRUE;
+			}
+
+			$added = 0;
+			if ($link->hasAttribute("add_date")) {
+				$added = $link->getAttribute("add_date");
+			}
+
+			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str, $private, $added);
 		}
 
 		return array();
