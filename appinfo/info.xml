@@ -15,7 +15,7 @@
 	<bugs>https://github.com/owncloud/bookmarks/issues</bugs>
 	<repository type="git">https://github.com/owncloud/bookmarks.git</repository>
 	<dependencies>
-		<owncloud min-version="8.1" max-version="9.1" />
+		<owncloud min-version="8.1" max-version="9.2" />
 	</dependencies>
 	<ocsid>168710</ocsid>
 </info>
