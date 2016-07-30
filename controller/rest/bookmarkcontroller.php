@@ -67,7 +67,7 @@ class BookmarkController extends ApiController {
 	/**
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $item = array(), $from_own = 0, $title = "", $is_public = false, $description = "") {
+	public function newBookmark($url = "", $tag = '', $from_own = 0, $title = "", $is_public = false, $description = "") {
 
 		if ($from_own == 0) {
 			// allow only http(s) and (s)ftp
@@ -102,7 +102,7 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
 
-		$tags = isset($item['tags']) ? $item['tags'] : array();
+		$tags = Bookmarks::analyzeTagRequest($tag);
 
 		$id = Bookmarks::addBookmark($this->userId, $this->db, $url, $title, $tags, $description, $is_public);
 		$bm = Bookmarks::findUniqueBookmark($id, $this->userId, $this->db);
@@ -119,7 +119,7 @@ class BookmarkController extends ApiController {
 	//TODO id vs record_id?
 	public function legacyEditBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
 		if ($id == null) {
-			return $this->newBookmark($url, $item, false, $title, $is_public, $description);
+			return $this->newBookmark($url, implode(',', $item['tags']), false, $title, $is_public, $description);
 		} else {
 			return $this->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description);
 		}
@@ -231,6 +231,11 @@ class BookmarkController extends ApiController {
 			$file = $full_input['tmp_name'];
 			if ($full_input['type'] == 'text/html') {
 				$error = Bookmarks::importFile($this->userId, $this->db, $file);
+				if (empty($error)) {
+					return new JSONResponse(array('status' => 'success'));
+				}
+			} elseif ($full_input['type'] == 'text/xml') {
+				$error = Bookmarks::importDeliciousFile($this->userId, $this->db, $file);
 				if (empty($error)) {
 					return new JSONResponse(array('status' => 'success'));
 				}
