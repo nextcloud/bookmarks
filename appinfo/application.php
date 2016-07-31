@@ -36,51 +36,44 @@ class Application extends App {
 		$container->registerService('WebViewController', function($c) {
 			/** @var IContainer $c */
 			return new WebViewController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('UserId'),
-					$c->query('ServerContainer')->getURLGenerator(),
-					$c->query('ServerContainer')->getDb()
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$c->query('ServerContainer')->getURLGenerator(),
+				$c->query('ServerContainer')->getDb()
 			);
 		});
 
 		$container->registerService('BookmarkController', function($c) {
 			/** @var IContainer $c */
 			return new BookmarkController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('UserId'),
-					$c->query('ServerContainer')->getDb()
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$c->query('ServerContainer')->getDb()
 			);
 		});
 
 		$container->registerService('TagsController', function($c) {
 			/** @var IContainer $c */
 			return new TagsController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('UserId'),
-					$c->query('ServerContainer')->getDb()
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$c->query('ServerContainer')->getDb()
 			);
 		});
 
 		$container->registerService('PublicController', function($c) {
 			/** @var IContainer $c */
 			return new PublicController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('ServerContainer')->getDb(),
-					$c->query('ServerContainer')->getUserManager()
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getDb(),
+				$c->query('ServerContainer')->getUserManager()
 			);
 		});
 
-
-		/**
-		 * Core
-		 */
-		$container->registerService('UserId', function() {
-			return \OCP\User::getUser();
-		});
 	}
 
 }
