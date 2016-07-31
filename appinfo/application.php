@@ -16,6 +16,7 @@
 namespace OCA\Bookmarks\AppInfo;
 
 use \OCP\AppFramework\App;
+use \OCP\IContainer;
 use \OCA\Bookmarks\Controller\WebViewController;
 use OCA\Bookmarks\Controller\Rest\TagsController;
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
@@ -30,10 +31,10 @@ class Application extends App {
 
 		/**
 		 * Controllers
-		 * @param OC\AppFramework\Utility\SimpleContainer $c The Container instance
-		 *													 that handles the request
+		 * @param IContainer $c The Container instance that handles the request
 		 */
 		$container->registerService('WebViewController', function($c) {
+			/** @var IContainer $c */
 			return new WebViewController(
 					$c->query('AppName'),
 					$c->query('Request'),
@@ -44,6 +45,7 @@ class Application extends App {
 		});
 
 		$container->registerService('BookmarkController', function($c) {
+			/** @var IContainer $c */
 			return new BookmarkController(
 					$c->query('AppName'),
 					$c->query('Request'),
@@ -53,6 +55,7 @@ class Application extends App {
 		});
 
 		$container->registerService('TagsController', function($c) {
+			/** @var IContainer $c */
 			return new TagsController(
 					$c->query('AppName'),
 					$c->query('Request'),
@@ -62,6 +65,7 @@ class Application extends App {
 		});
 
 		$container->registerService('PublicController', function($c) {
+			/** @var IContainer $c */
 			return new PublicController(
 					$c->query('AppName'),
 					$c->query('Request'),
