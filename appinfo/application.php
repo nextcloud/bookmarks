@@ -45,12 +45,20 @@ class Application extends App {
 		});
 
 		$container->registerService('BookmarkController', function($c) {
+			if(method_exists($c->query('ServerContainer'), 'getL10NFactory')) {
+				$l = $c->query('ServerContainer')->getL10NFactory()->get('bookmarks');
+			} else {
+				// OC 8.1 compatibility
+				$l = new \OC_L10N('bookmarks');
+			}
+
 			/** @var IContainer $c */
 			return new BookmarkController(
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
-				$c->query('ServerContainer')->getDb()
+				$c->query('ServerContainer')->getDb(),
+				$l
 			);
 		});
 
