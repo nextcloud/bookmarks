@@ -16,6 +16,7 @@
 namespace OCA\Bookmarks\AppInfo;
 
 use \OCP\AppFramework\App;
+use \OCP\IContainer;
 use \OCA\Bookmarks\Controller\WebViewController;
 use OCA\Bookmarks\Controller\Rest\TagsController;
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
@@ -30,53 +31,57 @@ class Application extends App {
 
 		/**
 		 * Controllers
-		 * @param OC\AppFramework\Utility\SimpleContainer $c The Container instance
-		 *													 that handles the request
+		 * @param IContainer $c The Container instance that handles the request
 		 */
 		$container->registerService('WebViewController', function($c) {
+			/** @var IContainer $c */
 			return new WebViewController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('UserId'),
-					$c->query('ServerContainer')->getURLGenerator(),
-					$c->query('ServerContainer')->getDb()
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$c->query('ServerContainer')->getURLGenerator(),
+				$c->query('ServerContainer')->getDb()
 			);
 		});
 
 		$container->registerService('BookmarkController', function($c) {
+			if(method_exists($c->query('ServerContainer'), 'getL10NFactory')) {
+				$l = $c->query('ServerContainer')->getL10NFactory()->get('bookmarks');
+			} else {
+				// OC 8.1 compatibility
+				$l = new \OC_L10N('bookmarks');
+			}
+
+			/** @var IContainer $c */
 			return new BookmarkController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('UserId'),
-					$c->query('ServerContainer')->getDb()
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$c->query('ServerContainer')->getDb(),
+				$l
 			);
 		});
 
 		$container->registerService('TagsController', function($c) {
+			/** @var IContainer $c */
 			return new TagsController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('UserId'),
-					$c->query('ServerContainer')->getDb()
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$c->query('ServerContainer')->getDb()
 			);
 		});
 
 		$container->registerService('PublicController', function($c) {
+			/** @var IContainer $c */
 			return new PublicController(
-					$c->query('AppName'),
-					$c->query('Request'),
-					$c->query('ServerContainer')->getDb(),
-					$c->query('ServerContainer')->getUserManager()
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getDb(),
+				$c->query('ServerContainer')->getUserManager()
 			);
 		});
 
-
-		/**
-		 * Core
-		 */
-		$container->registerService('UserId', function() {
-			return \OCP\User::getUser();
-		});
 	}
 
 }

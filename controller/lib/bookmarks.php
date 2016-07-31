@@ -32,7 +32,7 @@ class Bookmarks {
 
 	/**
 	 * @brief Finds all tags for bookmarks
-	 * @param $userId UserId
+	 * @param string $userId UserId
 	 * @param IDb $db Database Interface
 	 * @param filterTags array of tag to look for if empty then every tag
 	 * @param offset integer offset
@@ -62,10 +62,10 @@ class Bookmarks {
 
 	/**
 	 * @brief Finds Bookmark with certain ID
-	 * @param $id BookmarkId
-	 * @param $userId UserId
+	 * @param int $id BookmarkId
+	 * @param string $userId UserId
 	 * @param IDb $db Database Interface
-	 * @return Specific Bookmark
+	 * @return array Specific Bookmark
 	 */
 	public static function findUniqueBookmark($id, $userId, IDb $db) {
 		$CONFIG_DBTYPE = \OCP\Config::getSystemValue('dbtype', 'sqlite');
@@ -104,7 +104,7 @@ class Bookmarks {
 
 	/**
 	 * @brief Finds all bookmarks, matching the filter
-	 * @param $userid UserId
+	 * @param string $userid UserId
 	 * @param IDb $db Database Interface
 	 * @param int $offset offset
 	 * @param string $sqlSortColumn result with this column
@@ -229,9 +229,9 @@ class Bookmarks {
 
 	/**
 	 * @brief Delete bookmark with specific id
-	 * @param $userId UserId
+	 * @param string $userId UserId
 	 * @param IDb $db Database Interface
-	 * @param $id Bookmark ID to delete
+	 * @param int $id Bookmark ID to delete
 	 * @return boolean Success of operation
 	 */
 	public static function deleteUrl($userId, IDb $db, $id) {
@@ -363,7 +363,7 @@ class Bookmarks {
 
 	/**
 	 * Edit a bookmark
-	 * @param $userid UserId
+	 * @param string $userid UserId
 	 * @param IDb $db Database Interface
 	 * @param int $id The id of the bookmark to edit
 	 * @param string $url The url to set
@@ -417,7 +417,7 @@ class Bookmarks {
 
 	/**
 	 * Add a bookmark
-	 * @param $userid UserId
+	 * @param string $userid UserId
 	 * @param IDb $db Database Interface
 	 * @param string $url
 	 * @param string $title Name of the bookmark
@@ -513,9 +513,9 @@ class Bookmarks {
 
 	/**
 	 * @brief Import Bookmarks from html formatted file
-	 * @param $user User imported Bookmarks should belong to
+	 * @param string $user User imported Bookmarks should belong to
 	 * @param IDb $db Database Interface
-	 * @param $file Content to import
+	 * @param string $file Content to import
 	 * @return null
 	 * */
 	public static function importFile($user, IDb $db, $file) {
@@ -554,9 +554,10 @@ class Bookmarks {
 
 	/**
 	 * @brief Load Url and receive Metadata (Title)
-	 * @param $url Url to load and analyze
+	 * @param string $url Url to load and analyze
 	 * @return array Metadata for url;
-	 * */
+	 * @throws \Exception
+	 */
 	public static function getURLMetadata($url) {
 		
 		$metadata = array();
