@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Bladwijzers",
+    "Failed to import one bookmark, because: " : "Kon bladwijzer niet importeren omdat:",
     "Bookm." : "Bladw.",
     "No file provided for import" : "Geen bestand voor import opgegeven",
     "Unsupported file type for import" : "Niet ondersteund bestandstype voor import",

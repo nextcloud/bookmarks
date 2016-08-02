@@ -1,6 +1,7 @@
 <?php
 $TRANSLATIONS = array(
 "Bookmarks" => "Yer İmleri",
+"Failed to import one bookmark, because: " => "Bir yer imi bu nedenle içe aktarılamadı:",
 "Bookm." => "Yer imi",
 "No file provided for import" => "İçe aktarılacak dosya yok",
 "Unsupported file type for import" => "İçe aktarmak için desteklenmeyen dosya türü",

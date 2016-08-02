@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "סימניות",
+    "Failed to import one bookmark, because: " : "נכשל ביבוא סימנייה אחת, מהסיבה:",
     "Bookm." : "סימניה.",
     "No file provided for import" : "לא סופק קובץ לייבוא",
     "Unsupported file type for import" : "סוג הקובץ אינו ניתן לייבוא",

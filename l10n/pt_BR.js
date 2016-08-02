@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Marcadores",
+    "Failed to import one bookmark, because: " : "Falha ao exportar um marcador, porque:",
     "Bookm." : "Marc.",
     "No file provided for import" : "Arquivo para importação não fornecido",
     "Unsupported file type for import" : "Arquivo para importação não suportado",

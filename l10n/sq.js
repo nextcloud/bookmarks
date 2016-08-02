@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Faqerojtës",
+    "Failed to import one bookmark, because: " : "S’arriti të importojë një faqerojtës, ngaqë:",
     "Bookm." : "Faqer.",
     "No file provided for import" : "S’u dha kartelë për importim",
     "Unsupported file type for import" : "Lloj i pambuluar kartele për importim",

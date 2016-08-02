@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Kirjanmerkit",
+    "Failed to import one bookmark, because: " : "Yhden kirjanmerkin tuominen epäonnistui, syy:",
     "Bookm." : "Kirjanm.",
     "No file provided for import" : "Yhtäkään tiedostoa ei määritetty tuotavaksi",
     "Unsupported file type for import" : "Tuonti ei tue kyseistä tiedostotyyppiä",

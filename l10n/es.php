@@ -1,6 +1,7 @@
 <?php
 $TRANSLATIONS = array(
 "Bookmarks" => "Marcadores",
+"Failed to import one bookmark, because: " => "Falló al importar un marcador, debido a:",
 "Bookm." => "Marc.",
 "No file provided for import" => "No se especificó un archivo para importar",
 "Unsupported file type for import" => "Tipo de archivo no soportado para importar",
