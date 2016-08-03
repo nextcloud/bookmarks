@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Закладки",
+    "Failed to import one bookmark, because: " : "Не удалось импортировать одну закладку, потому, что:",
     "Bookm." : "Закл.",
     "No file provided for import" : "Файл для импорта не предоставлен",
     "Unsupported file type for import" : "Не подходящий тип файла для импорта",

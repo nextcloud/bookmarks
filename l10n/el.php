@@ -1,6 +1,7 @@
 <?php
 $TRANSLATIONS = array(
 "Bookmarks" => "Σελιδοδείκτες",
+"Failed to import one bookmark, because: " => "Απέτυχε η εισαγωγή ενός σελιδοδείκτη, διότι:",
 "Bookm." => "Σελιδοδεικτ.",
 "No file provided for import" => "Δεν δόθηκε αρχείο για εισαγωγή",
 "Unsupported file type for import" => "Δεν υποστηρίζεται o τύπος αρχείου για εισαγωγή",
