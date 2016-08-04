@@ -1,6 +1,7 @@
 <?php
 $TRANSLATIONS = array(
 "Bookmarks" => "Záložky",
+"Failed to import one bookmark, because: " => "Selhal import jedné záložky z důvodu:",
 "Bookm." => "Zál.",
 "No file provided for import" => "Nebyl vybrán soubor k importu",
 "Unsupported file type for import" => "Nepodporovaný typ souboru pro import",
