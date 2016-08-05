@@ -434,6 +434,10 @@ class Bookmarks {
 		}
 		$enc_url_noprefix = htmlspecialchars_decode($url_without_prefix);
 		$enc_url = htmlspecialchars_decode($url);
+
+		$title = mb_substr($title, 0, 4096);
+		$description = mb_substr($description, 0, 4096);
+
 		// Change lastmodified date if the record if already exists
 		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` like ? AND `user_id` = ?";
 		$query = $db->prepareQuery($sql, 1);
