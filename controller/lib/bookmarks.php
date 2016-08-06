@@ -85,8 +85,8 @@ class Bookmarks {
 
 	/**
 	 * @brief Check if an URL is bookmarked
-	 * @param $url Url of a possible bookmark
-	 * @param $userId UserId
+	 * @param string $url Url of a possible bookmark
+	 * @param string $userId UserId
 	 * @param IDb $db Database Interface
 	 * @return boolean if the url is already bookmarked
 	 */
@@ -267,7 +267,7 @@ class Bookmarks {
 
 	/**
 	 * @brief Rename a tag
-	 * @param $userId UserId
+	 * @param string $userId UserId
 	 * @param IDb $db Database Interface
 	 * @param string $old Old Tag Name
 	 * @param string $new New Tag Name
@@ -338,7 +338,7 @@ class Bookmarks {
 
 	/**
 	 * @brief Delete a tag
-	 * @param $userid UserId
+	 * @param string $userid UserId
 	 * @param IDb $db Database Interface
 	 * @param string $old Tag Name to delete
 	 * @return boolean Success of operation

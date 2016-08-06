@@ -18,14 +18,29 @@ use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Controller;
 use \OCP\IDb;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCP\IURLGenerator;
 
 class WebViewController extends Controller {
 
+	/** @var  string */
 	private $userId;
+
+	/** @var IURLGenerator  */
 	private $urlgenerator;
+
+	/** @var IDb  */
 	private $db;
 
-	public function __construct($appName, IRequest $request, $userId, $urlgenerator, IDb $db) {
+	/**
+	 * WebViewController constructor.
+	 *
+	 * @param string $appName
+	 * @param IRequest $request
+	 * @param $userId
+	 * @param IURLGenerator $urlgenerator
+	 * @param IDb $db
+	 */
+	public function __construct($appName, IRequest $request, $userId, IURLGenerator $urlgenerator, IDb $db) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->urlgenerator = $urlgenerator;
@@ -49,6 +64,10 @@ class WebViewController extends Controller {
 	}
 
 	/**
+	 * @param string $url
+	 * @param string $title
+	 * @return TemplateResponse
+	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */

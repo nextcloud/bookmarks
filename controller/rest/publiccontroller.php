@@ -8,6 +8,7 @@ use \OCP\IDb;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OC\User\Manager;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCP\Util;
 
 class PublicController extends ApiController {
 
@@ -23,6 +24,14 @@ class PublicController extends ApiController {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $password
+	 * @param array $tags
+	 * @param string $conjunction
+	 * @param array $select
+	 * @param string $sortby
+	 * @return JSONResponse
+	 *
 	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -48,7 +57,7 @@ class PublicController extends ApiController {
 		if (!$public && !$this->userManager->checkPassword($user, $password)) {
 
 			$msg = 'REST API accessed with wrong password';
-			\OCP\Util::writeLog('bookmarks', $msg, \OCP\Util::WARN);
+			Util::writeLog('bookmarks', $msg, Util::WARN);
 
 			return $this->newJsonErrorMessage("Wrong password for user " . $user);
 		}
@@ -71,6 +80,10 @@ class PublicController extends ApiController {
 		return new JSONResponse($output);
 	}
 
+	/**
+	 * @param string $message
+	 * @return JSONResponse
+	 */
 	public function newJsonErrorMessage($message) {
 		$output = array();
 		$output["status"] = 'error';

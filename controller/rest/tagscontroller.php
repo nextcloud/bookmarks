@@ -21,6 +21,9 @@ class TagsController extends ApiController {
 	}
 
 	/**
+	 * @param string $old_name
+	 * @return JSONResponse
+	 *
 	 * @NoAdminRequired
 	 */
 	public function deleteTag($old_name = "") {
@@ -34,6 +37,10 @@ class TagsController extends ApiController {
 	}
 
 	/**
+	 * @param string $old_name
+	 * @param string $new_name
+	 * @return JSONResponse
+	 *
 	 * @NoAdminRequired
 	 */
 	public function renameTag($old_name = "", $new_name = "") {
