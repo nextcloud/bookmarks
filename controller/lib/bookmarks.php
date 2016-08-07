@@ -428,9 +428,16 @@ class Bookmarks {
 	 */
 	public static function addBookmark($userid, IDb $db, $url, $title, $tags = array(), $description = '', $is_public = false) {
 		$public = $is_public ? 1 : 0;
-		$url_without_prefix = substr($url, strpos($url, "://") + 3); // Removes everything from the url before the "://" pattern (included)
+		$url_without_prefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
+		if($url_without_prefix === '') {
+			throw new \InvalidArgumentException('Bookmark URL is missing');
+		}
 		$enc_url_noprefix = htmlspecialchars_decode($url_without_prefix);
 		$enc_url = htmlspecialchars_decode($url);
+
+		$title = mb_substr($title, 0, 4096);
+		$description = mb_substr($description, 0, 4096);
+
 		// Change lastmodified date if the record if already exists
 		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` like ? AND `user_id` = ?";
 		$query = $db->prepareQuery($sql, 1);
@@ -522,8 +529,12 @@ class Bookmarks {
 		$dom->loadHTMLFile($file);
 		$links = $dom->getElementsByTagName('a');
 
+		$l = \OC::$server->getL10NFactory()->get('bookmarks');
+		$errors = [];
+
 		// Reintroduce transaction here!?
 		foreach ($links as $link) {
+			/* @var \DOMElement $link */
 			$title = $link->nodeValue;
 			$ref = $link->getAttribute("href");
 			$tag_str = '';
@@ -534,11 +545,15 @@ class Bookmarks {
 			$desc_str = '';
 			if ($link->hasAttribute("description"))
 				$desc_str = $link->getAttribute("description");
-
-			self::addBookmark($user, $db, $ref, $title, $tags, $desc_str);
+			try {
+				self::addBookmark($user, $db, $ref, $title, $tags, $desc_str);
+			} catch (\InvalidArgumentException $e) {
+				\OC::$server->getLogger()->logException($e, ['app' => 'bookmarks']);
+				$errors[] =  $l->t('Failed to import one bookmark, because: ') . $e->getMessage();
+			}
 		}
 
-		return array();
+		return $errors;
 	}
 
 	/**
