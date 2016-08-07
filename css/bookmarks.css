@@ -251,6 +251,7 @@ li:hover > .tags_actions > em { display : none; }
     background: none repeat scroll 0 0 #F8F8F8;
 }
 #tag_filter .tagit {
+    display: inline-block;
     margin: 0.3em;
 }
 #tag_filter ul.tagit > li.tagit-new {
