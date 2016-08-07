@@ -6,7 +6,7 @@
 	<licence>AGPL</licence>
 	<author>Arthur Schiwon, Marvin Thomas Rabe, Stefan Klemm</author>
 	<standalone/>
-	<version>0.8</version>
+	<version>0.8.1</version>
 	<documentation>
             <user>https://doc.owncloud.org/server/9.0/user_manual/bookmarks.html</user>
         </documentation>
