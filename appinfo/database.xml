@@ -27,7 +27,7 @@
 				<type>text</type>
 				<default></default>
 				<notnull>true</notnull>
-				<length>140</length>
+				<length>4096</length>
 			</field>
 			<field>
 				<name>user_id</name>
