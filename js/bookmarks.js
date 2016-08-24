@@ -221,6 +221,9 @@ function addBookmark(event) {
 				checkEmpty();
 				watchUrlField();
 			}
+		},
+		error: function () {
+			OC.Notification.showTemporary(t('bookmarks', 'Could not add bookmark.'));
 		}
 	});
 }
