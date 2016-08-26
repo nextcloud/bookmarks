@@ -26,6 +26,7 @@
 
 namespace OCA\Bookmarks\Controller\Lib;
 
+use GuzzleHttp\Exception\ClientException;
 use \OCP\IDb;
 
 class Bookmarks {
@@ -560,7 +561,7 @@ class Bookmarks {
 	 * @brief Load Url and receive Metadata (Title)
 	 * @param string $url Url to load and analyze
 	 * @return array Metadata for url;
-	 * @throws \Exception
+	 * @throws \Exception|ClientException
 	 */
 	public static function getURLMetadata($url) {
 		
@@ -572,6 +573,12 @@ class Bookmarks {
 			$request = \OC::$server->getHTTPClientService()->newClient()->get($url);
 			$page = $request->getBody();
 			$contentType = $request->getHeader('Content-Type');
+		} catch (ClientException $e) {
+			$errorCode = $e->getCode();
+			if(!($errorCode >= 401 && $errorCode <= 403)) {
+				// whitelist Unauthorized, Forbidden and Paid pages
+				throw $e;
+			}
 		} catch (\Exception $e) {
 			throw $e;
 		}
