@@ -43,8 +43,12 @@ class PublicController extends ApiController {
 			return $this->newJsonErrorMessage("User could not be identified");
 		}
 
-		if ($tags[0] == "") {
-			$tags = array();
+		if (!is_array($tags)) {
+			if(is_string($tags) && $tags !== '') {
+				$tags = [ $tags ];
+			} else {
+				$tags = array();
+			}
 		}
 
 		$public = true;
