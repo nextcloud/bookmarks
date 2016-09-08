@@ -21,6 +21,7 @@ use \OCA\Bookmarks\Controller\WebViewController;
 use OCA\Bookmarks\Controller\Rest\TagsController;
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
 use OCA\Bookmarks\Controller\Rest\PublicController;
+use OCP\IUser;
 
 class Application extends App {
 
@@ -34,11 +35,15 @@ class Application extends App {
 		 * @param IContainer $c The Container instance that handles the request
 		 */
 		$container->registerService('WebViewController', function($c) {
+			/** @var IUser|null $user */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
+
 			/** @var IContainer $c */
 			return new WebViewController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$uid,
 				$c->query('ServerContainer')->getURLGenerator(),
 				$c->query('ServerContainer')->getDb()
 			);
