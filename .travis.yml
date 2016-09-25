@@ -7,22 +7,48 @@ php:
 env:
   global:
     - APP_NAME=bookmarks
-
   matrix:
-    # owncloud setups: only sqlite, only >=stable9.1
+    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+    - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable9
     - DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=master
     - DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
 
-    # nextcloud setups, full tests for master+latest stable branch, older only sqlite
-    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-    - DB=mysql  SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-    - DB=pgsql  SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-
-    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-    - DB=mysql  SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-    - DB=pgsql  SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-
-    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable9
+matrix:
+  exclude:
+  - php: 5.5
+    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+  - php: 5.5
+    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+  - php: 5.5
+    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+  - php: 5.5
+    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+  - php: 5.5
+    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+  - php: 5.5
+    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+  - php: 5.5
+    env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=master
+  - php: 5.5
+    env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
+  - php: 5.6
+    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+  - php: 5.6
+    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+  - php: 5.6
+    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+  - php: 5.6
+    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
+  - php: 5.6
+    env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=master
+  - php: 5.6
+    env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
+  fast_finish: true
 
 branches:
   only:
@@ -32,7 +58,7 @@ branches:
 before_install:
 #  - composer install
   - wget https://raw.githubusercontent.com/$SERVER/before_install.sh
-  - bash ./before_install.sh $APP_NAME $SERVER_BRANCH $DB
+  - bash ./before_install.sh "$APP_NAME" "$SERVER_BRANCH" "$DB"
   - cd ../core || cd ../server
   - php occ app:enable $APP_NAME
 
@@ -48,6 +74,3 @@ script:
   # Create coverage report
   - sh -c "if [ '$TRAVIS_PHP_VERSION' != 'hhvm' ]; then wget https://scrutinizer-ci.com/ocular.phar; fi"
   - sh -c "if [ '$TRAVIS_PHP_VERSION' != 'hhvm' ]; then php ocular.phar code-coverage:upload --format=php-clover clover.xml; fi"
-
-matrix:
-  fast_finish: true
