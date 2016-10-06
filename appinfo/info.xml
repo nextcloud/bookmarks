@@ -7,7 +7,7 @@
 	<author>Arthur Schiwon, Marvin Thomas Rabe, Stefan Klemm</author>
 	<standalone/>
 	<dependencies>
-		<owncloud min-version="8.1" max-version="9.0" />
+		<owncloud min-version="8.1" />
 	</dependencies>
 	<ocsid>166042</ocsid>
 </info>
