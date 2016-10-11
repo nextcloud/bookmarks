@@ -263,6 +263,8 @@ class Bookmarks {
 			");
 
 		$query->execute(array($id));
+		\OC_Hook::emit('\OCA\Bookmarks', 'post_delete', array('id' => $id));
+		
 		return true;
 	}
 
@@ -462,6 +464,9 @@ class Bookmarks {
 			$params[] = $userid;
 			$query = $db->prepareQuery($sql);
 			$query->execute($params);
+			
+			\OC_Hook::emit('\OCA\Bookmarks', 'post_edit', array('id' => $row['id']));
+				
 			return $row['id'];
 		} else {
 			$query = $db->prepareQuery("
@@ -482,7 +487,8 @@ class Bookmarks {
 			$b_id = $db->getInsertId('*PREFIX*bookmarks');
 
 			if ($b_id !== false) {
-				self::addTags($db, $b_id, $tags);
+				\OC_Hook::emit('\OCA\Bookmarks', 'post_add', array('id' => $b_id));
+			    self::addTags($db, $b_id, $tags);
 				return $b_id;
 			}
 		}
