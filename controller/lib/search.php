@@ -23,7 +23,7 @@
 
 namespace OCA\Bookmarks\Controller\Lib;
 
-use \OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCA\Bookmarks\AppInfo\Application;
 
 class Search extends \OCP\Search\Provider{
 
@@ -36,10 +36,12 @@ class Search extends \OCP\Search\Provider{
 			$search_words = $query;
 		}
 
-		$db = \OC::$server->getDb();
 		$user = \OCP\User::getUser();
 
-		$bookmarks = Bookmarks::findBookmarks($user, $db, 0, 'id', $search_words, false);
+		$app = new Application();
+		$libBookmarks = $app->getContainer()->query(Bookmarks::class);
+
+		$bookmarks = $libBookmarks->findBookmarks($user, 0, 'id', $search_words, false);
 		$l = new \OC_l10n('bookmarks'); //resulttype can't be localized, javascript relies on that type
 		foreach ($bookmarks as $bookmark) {
 			$results[] = new \OC_Search_Result($bookmark['title'], $bookmark['title'], $bookmark['url'], (string) $l->t('Bookm.'));

@@ -4,7 +4,6 @@ namespace OCA\Bookmarks\Controller\Rest;
 
 use \OCP\AppFramework\ApiController;
 use \OCP\IRequest;
-use \OCP\IDb;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OC\User\Manager;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
@@ -12,14 +11,15 @@ use OCP\Util;
 
 class PublicController extends ApiController {
 
-	private $db;
 	private $userManager;
 
-	public function __construct($appName, IRequest $request, IDb $db, Manager $userManager) {
-		parent::__construct(
-				$appName, $request);
+	/** @var Bookmarks */
+	protected $bookmarks;
 
-		$this->db = $db;
+	public function __construct($appName, IRequest $request, Bookmarks $bookmarks, Manager $userManager) {
+		parent::__construct($appName, $request);
+
+		$this->bookmarks = $bookmarks;
 		$this->userManager = $userManager;
 	}
 
@@ -73,7 +73,7 @@ class PublicController extends ApiController {
 			$attributesToSelect = array_unique($attributesToSelect);
 		}
 
-		$output = Bookmarks::findBookmarks($user, $this->db, 0, $sortby, $tags, true, -1, $public, $attributesToSelect, $conjunction);
+		$output = $this->bookmarks->findBookmarks($user, 0, $sortby, $tags, true, -1, $public, $attributesToSelect, $conjunction);
 
 		if (count($output) == 0) {
 			$output["status"] = 'error';
