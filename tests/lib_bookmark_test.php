@@ -7,50 +7,58 @@ use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 
 	private $userid;
-	private $db;
+
+	/** @var Bookmarks */
+	protected $libBookmarks;
 
 	protected function setUp() {
 		$this->userid = \OCP\User::getUser();
-		$this->db = \OC::$server->getDb();
+
+		$db = \OC::$server->getDb();
+		$config = \OC::$server->getConfig();
+		$l = \OC::$server->getL10N('bookmarks');
+		$clientService = \OC::$server->getHTTPClientService();
+		$logger = \OC::$server->getLogger();
+		$this->libBookmarks = new OCA\Bookmarks\Controller\Lib\Bookmarks($db, $config, $l, $clientService, $logger);
 	}
 
 	function testAddBookmark() {
 		$this->cleanDB();
-		$this->assertCount(0, Bookmarks::findBookmarks($this->userid, $this->db, 0, 'id', array(), true, -1));
-		Bookmarks::addBookmark($this->userid, $this->db, 'http://owncloud.org', 'owncloud project', array('oc', 'cloud'), 'An Awesome project');
-		$this->assertCount(1, Bookmarks::findBookmarks($this->userid, $this->db, 0, 'id', array(), true, -1));
-		Bookmarks::addBookmark($this->userid, $this->db, 'http://de.wikipedia.org/Ü', 'Das Ü', array('encyclopedia', 'lang'), 'A terrific letter');
-		$this->assertCount(2, Bookmarks::findBookmarks($this->userid, $this->db, 0, 'id', array(), true, -1));
+		$this->assertCount(0, $this->libBookmarks->findBookmarks($this->userid, 0, 'id', [], true, -1));
+		$this->libBookmarks->addBookmark($this->userid, 'http://nextcloud.com', 'Nextcloud project', ['nc', 'cloud'], 'An awesome project');
+		$this->assertCount(1, $this->libBookmarks->findBookmarks($this->userid, 0, 'id', [], true, -1));
+		$this->libBookmarks->addBookmark($this->userid, 'http://de.wikipedia.org/Ü', 'Das Ü', ['encyclopedia', 'lang'], 'A terrific letter');
+		$this->assertCount(2, $this->libBookmarks->findBookmarks($this->userid, 0, 'id', [], true, -1));
 	}
 
 	function testFindBookmarks() {
 		$this->cleanDB();
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.golem.de", "Golem", array("one"), "PublicNoTag", true);
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
-		$outputPrivate = Bookmarks::findBookmarks($this->userid, $this->db, 0, "", array(), true, -1, false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("one"), "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$outputPrivate = $this->libBookmarks->findBookmarks($this->userid, 0, "", [], true, -1, false);
 		$this->assertCount(4, $outputPrivate);
-		$outputPrivateFiltered = Bookmarks::findBookmarks($this->userid, $this->db, 0, "", array("one"), true, -1, false);
+		$outputPrivateFiltered = $this->libBookmarks->findBookmarks($this->userid, 0, "", ["one"], true, -1, false);
 		$this->assertCount(3, $outputPrivateFiltered);
-		$outputPublic = Bookmarks::findBookmarks($this->userid, $this->db, 0, "", array(), true, -1, true);
+		$outputPublic = $this->libBookmarks->findBookmarks($this->userid, 0, "", [], true, -1, true);
 		$this->assertCount(2, $outputPublic);
-		$outputPublicFiltered = Bookmarks::findBookmarks($this->userid, $this->db, 0, "", array("two"), true, -1, true);
+		$outputPublicFiltered = $this->libBookmarks->findBookmarks($this->userid, 0, "", ["two"], true, -1, true);
 		$this->assertCount(1, $outputPublicFiltered);
 	}
 
 	function testFindBookmarksSelectAndOrFilteredTags() {
 		$this->cleanDB();
 		$secondUser = $this->userid . "andHisClone435";
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
-		Bookmarks::addBookmark($secondUser, $this->db, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
-		Bookmarks::addBookmark($secondUser, $this->db, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		Bookmarks::addBookmark($secondUser, $this->db, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		Bookmarks::addBookmark($secondUser, $this->db, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
-		$resultSetOne = Bookmarks::findBookmarks($this->userid, $this->db, 0, 'lastmodified', array('one', 'three'), true, -1, false, array('url', 'title'), 'or');
+		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$resultSetOne = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', array('one', 'three'), true, -1, false, array('url', 'title'), 'or');
 		$this->assertEquals(3, count($resultSetOne));
 		$resultOne = $resultSetOne[0];
 		$this->assertFalse(isset($resultOne['lastmodified']));
@@ -59,24 +67,24 @@ class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 
 	function testFindTags() {
 		$this->cleanDB();
-		$this->assertEquals(Bookmarks::findTags($this->userid, $this->db), array());
-		Bookmarks::addBookmark($this->userid, $this->db, 'http://owncloud.org', 'Owncloud project', array('oc', 'cloud'), 'An Awesome project');
-		$this->assertEquals(array(0 => array('tag' => 'cloud', 'nbr' => 1), 1 => array('tag' => 'oc', 'nbr' => 1)), Bookmarks::findTags($this->userid, $this->db));
+		$this->assertEquals($this->libBookmarks->findTags($this->userid), array());
+		$this->libBookmarks->addBookmark($this->userid, 'http://nextcloud.com', 'Nextcloud project', array('oc', 'cloud'), 'An awesome project');
+		$this->assertEquals(array(0 => array('tag' => 'cloud', 'nbr' => 1), 1 => array('tag' => 'oc', 'nbr' => 1)), $this->libBookmarks->findTags($this->userid));
 	}
 
 	function testFindUniqueBookmark() {
 		$this->cleanDB();
-		$id = Bookmarks::addBookmark($this->userid, $this->db, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		$bookmark = Bookmarks::findUniqueBookmark($id, $this->userid, $this->db);
+		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals($id, $bookmark['id']);
 		$this->assertEquals("Heise", $bookmark['title']);
 	}
 
 	function testEditBookmark() {
 		$this->cleanDB();
-		$id = Bookmarks::addBookmark($this->userid, $this->db, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		Bookmarks::editBookmark($this->userid, $this->db, $id, "http://www.google.de", "NewTitle", array("three"));
-		$bookmark = Bookmarks::findUniqueBookmark($id, $this->userid, $this->db);
+		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->libBookmarks->editBookmark($this->userid, $id, "http://www.google.de", "NewTitle", array("three"));
+		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("NewTitle", $bookmark['title']);
 		$this->assertEquals("http://www.google.de", $bookmark['url']);
 		$this->assertEquals(1, count($bookmark['tags']));
@@ -84,19 +92,16 @@ class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 
 	function testDeleteBookmark() {
 		$this->cleanDB();
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
-		$id = Bookmarks::addBookmark($this->userid, $this->db, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		$this->assertNotEquals(false, Bookmarks::bookmarkExists("http://www.google.de", $this->userid, $this->db));
-		$this->assertNotEquals(false, Bookmarks::bookmarkExists("http://www.heise.de", $this->userid, $this->db));
-		Bookmarks::deleteUrl($this->userid, $this->db, $id);
-		$this->assertFalse(Bookmarks::bookmarkExists("http://www.heise.de", $this->userid, $this->db));
+		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
+		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.google.de", $this->userid));
+		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.heise.de", $this->userid));
+		$this->libBookmarks->deleteUrl($this->userid, $id);
+		$this->assertFalse($this->libBookmarks->bookmarkExists("http://www.heise.de", $this->userid));
 	}
 
 	function testGetURLMetadata() {
-
-		$config = $this->getMockBuilder('\OCP\IConfig')
-						->disableOriginalConstructor()->getMock();
-		$amazonResponse = $this->getMock('OCP\Http\Client\IResponse');
+		$amazonResponse = $this->createMock(\OCP\Http\Client\IResponse::class);
 		$amazonResponse->expects($this->once())
 			->method('getBody')
 			->will($this->returnValue(file_get_contents(__DIR__ . '/res/amazonHtml.file')));
@@ -105,7 +110,7 @@ class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 			->with('Content-Type')
 			->will($this->returnValue(''));
 
-		$golemResponse = $this->getMock('OCP\Http\Client\IResponse');
+		$golemResponse = $this->createMock(\OCP\Http\Client\IResponse::class);
 		$golemResponse->expects($this->once())
 			->method('getBody')
 			->will($this->returnValue(file_get_contents(__DIR__ . '/res/golemHtml.file')));
@@ -114,7 +119,7 @@ class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 			->with('Content-Type')
 			->will($this->returnValue('text/html; charset=UTF-8'));
 
-		$clientMock = $this->getMock('OCP\Http\Client\IClient');
+		$clientMock = $this->createMock(\OCP\Http\Client\IClient::class);
 		$clientMock->expects($this->exactly(2))
 			->method('get')
 			->will($this->returnCallback(function ($page) use($amazonResponse, $golemResponse) {
@@ -125,18 +130,26 @@ class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 				}
 			}));
 
-		$clientServiceMock = $this->getMock('OCP\Http\Client\IClientService');
+		$clientServiceMock = $this->createMock(\OCP\Http\Client\IClientService::class);
 		$clientServiceMock->expects($this->any())
 			->method('newClient')
 			->will($this->returnValue($clientMock));
 
 		$this->registerHttpService($clientServiceMock);
 
-		$metadataAmazon = Bookmarks::getURLMetadata('amazonHtml');
+		// ugly, but works
+		$db = \OC::$server->getDb();
+		$config = \OC::$server->getConfig();
+		$l = \OC::$server->getL10N('bookmarks');
+		$clientService = \OC::$server->getHTTPClientService();
+		$logger = \OC::$server->getLogger();
+		$this->libBookmarks = new OCA\Bookmarks\Controller\Lib\Bookmarks($db, $config, $l, $clientService, $logger);
+
+		$metadataAmazon = $this->libBookmarks->getURLMetadata('amazonHtml');
 		$this->assertTrue($metadataAmazon['url'] == 'amazonHtml');
 		$this->assertTrue(strpos($metadataAmazon['title'], 'ü') !== false);
 
-		$metadataGolem = Bookmarks::getURLMetadata('golemHtml');
+		$metadataGolem = $this->libBookmarks->getURLMetadata('golemHtml');
 		$this->assertTrue($metadataGolem['url'] == 'golemHtml');
 		$this->assertTrue(strpos($metadataGolem['title'], 'f&uuml;r') == false);
 	}

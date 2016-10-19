@@ -2,15 +2,18 @@
 
 OC_App::loadApp('bookmarks');
 
-use \OCA\Bookmarks\Controller\Rest\PublicController;
+use OCA\Bookmarks\Controller\Rest\PublicController;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
 
 class Test_PublicController_Bookmarks extends PHPUnit_Framework_TestCase {
 
+	/** @var  Bookmarks */
+	protected $libBookmarks;
 	private $userid;
 	private $request;
 	private $db;
 	private $userManager;
+	/** @var  PublicController */
 	private $publicController;
 
 	protected function setUp() {
@@ -18,7 +21,14 @@ class Test_PublicController_Bookmarks extends PHPUnit_Framework_TestCase {
 		$this->request = \OC::$server->getRequest();
 		$this->db = \OC::$server->getDb();
 		$this->userManager = \OC::$server->getUserManager();
-		$this->publicController = new PublicController("bookmarks", $this->request, $this->db, $this->userManager);
+
+		$config = \OC::$server->getConfig();
+		$l = \OC::$server->getL10N('bookmarks');
+		$clientService = \OC::$server->getHTTPClientService();
+		$logger = \OC::$server->getLogger();
+		$this->libBookmarks = new OCA\Bookmarks\Controller\Lib\Bookmarks($this->db, $config, $l, $clientService, $logger);
+
+		$this->publicController = new PublicController("bookmarks", $this->request, $this->libBookmarks, $this->userManager);
 	}
 
 	function testPublicQueryNoUser() {
@@ -37,8 +47,8 @@ class Test_PublicController_Bookmarks extends PHPUnit_Framework_TestCase {
 
 	function testPublicQuery() {
 
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		Bookmarks::addBookmark($this->userid, $this->db, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 
 		$output = $this->publicController->returnAsJson($this->userid);
 		$data = $output->getData();
