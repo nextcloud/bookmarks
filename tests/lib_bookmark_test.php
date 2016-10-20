@@ -4,7 +4,12 @@ OC_App::loadApp('bookmarks');
 
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 
-class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
+/**
+ * Class Test_LibBookmarks_Bookmarks
+ *
+ * @group DB
+ */
+class Test_LibBookmarks_Bookmarks extends \Test\TestCase {
 
 	private $userid;
 
@@ -12,6 +17,8 @@ class Test_LibBookmarks_Bookmarks extends PHPUnit_Framework_TestCase {
 	protected $libBookmarks;
 
 	protected function setUp() {
+		parent::setUp();
+
 		$this->userid = \OCP\User::getUser();
 
 		$db = \OC::$server->getDb();
