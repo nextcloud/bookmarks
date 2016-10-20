@@ -1,16 +1,18 @@
 <?php
 
-OC_App::loadApp('bookmarks');
+namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\Rest\PublicController;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
+
+\OC_App::loadApp('bookmarks');
 
 /**
  * Class Test_PublicController_Bookmarks
  *
  * @group DB
  */
-class Test_PublicController_Bookmarks extends \Test\TestCase {
+class Test_PublicController_Bookmarks extends TestCase {
 
 	/** @var  Bookmarks */
 	protected $libBookmarks;
@@ -33,7 +35,7 @@ class Test_PublicController_Bookmarks extends \Test\TestCase {
 		$l = \OC::$server->getL10N('bookmarks');
 		$clientService = \OC::$server->getHTTPClientService();
 		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new OCA\Bookmarks\Controller\Lib\Bookmarks($this->db, $config, $l, $clientService, $logger);
+		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $clientService, $logger);
 
 		$this->publicController = new PublicController("bookmarks", $this->request, $this->libBookmarks, $this->userManager);
 	}
@@ -65,9 +67,9 @@ class Test_PublicController_Bookmarks extends \Test\TestCase {
 	}
 
 	function cleanDB() {
-		$query1 = OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
+		$query1 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
 		$query1->execute();
-		$query2 = OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
+		$query2 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
 		$query2->execute();
 	}
 

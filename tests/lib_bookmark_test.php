@@ -1,15 +1,21 @@
 <?php
 
-OC_App::loadApp('bookmarks');
+namespace OCA\Bookmarks\Tests;
 
-use \OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCP\Http\Client\IClient;
+use OCP\Http\Client\IClientService;
+use OCP\Http\Client\IResponse;
+use OCP\User;
+
+\OC_App::loadApp('bookmarks');
 
 /**
  * Class Test_LibBookmarks_Bookmarks
  *
  * @group DB
  */
-class Test_LibBookmarks_Bookmarks extends \Test\TestCase {
+class Test_LibBookmarks_Bookmarks extends TestCase {
 
 	private $userid;
 
@@ -19,14 +25,14 @@ class Test_LibBookmarks_Bookmarks extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->userid = \OCP\User::getUser();
+		$this->userid = User::getUser();
 
 		$db = \OC::$server->getDb();
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('bookmarks');
 		$clientService = \OC::$server->getHTTPClientService();
 		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new OCA\Bookmarks\Controller\Lib\Bookmarks($db, $config, $l, $clientService, $logger);
+		$this->libBookmarks = new Bookmarks($db, $config, $l, $clientService, $logger);
 	}
 
 	function testAddBookmark() {
@@ -108,7 +114,7 @@ class Test_LibBookmarks_Bookmarks extends \Test\TestCase {
 	}
 
 	function testGetURLMetadata() {
-		$amazonResponse = $this->createMock(\OCP\Http\Client\IResponse::class);
+		$amazonResponse = $this->fetchMock(IResponse::class);
 		$amazonResponse->expects($this->once())
 			->method('getBody')
 			->will($this->returnValue(file_get_contents(__DIR__ . '/res/amazonHtml.file')));
@@ -117,7 +123,7 @@ class Test_LibBookmarks_Bookmarks extends \Test\TestCase {
 			->with('Content-Type')
 			->will($this->returnValue(''));
 
-		$golemResponse = $this->createMock(\OCP\Http\Client\IResponse::class);
+		$golemResponse = $this->fetchMock(IResponse::class);
 		$golemResponse->expects($this->once())
 			->method('getBody')
 			->will($this->returnValue(file_get_contents(__DIR__ . '/res/golemHtml.file')));
@@ -126,7 +132,7 @@ class Test_LibBookmarks_Bookmarks extends \Test\TestCase {
 			->with('Content-Type')
 			->will($this->returnValue('text/html; charset=UTF-8'));
 
-		$clientMock = $this->createMock(\OCP\Http\Client\IClient::class);
+		$clientMock = $this->fetchMock(IClient::class);
 		$clientMock->expects($this->exactly(2))
 			->method('get')
 			->will($this->returnCallback(function ($page) use($amazonResponse, $golemResponse) {
@@ -135,9 +141,10 @@ class Test_LibBookmarks_Bookmarks extends \Test\TestCase {
 				} else if($page === 'golemHtml') {
 					return $golemResponse;
 				}
+				return null;
 			}));
 
-		$clientServiceMock = $this->createMock(\OCP\Http\Client\IClientService::class);
+		$clientServiceMock = $this->fetchMock(IClientService::class);
 		$clientServiceMock->expects($this->any())
 			->method('newClient')
 			->will($this->returnValue($clientMock));
@@ -150,7 +157,7 @@ class Test_LibBookmarks_Bookmarks extends \Test\TestCase {
 		$l = \OC::$server->getL10N('bookmarks');
 		$clientService = \OC::$server->getHTTPClientService();
 		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new OCA\Bookmarks\Controller\Lib\Bookmarks($db, $config, $l, $clientService, $logger);
+		$this->libBookmarks = new Bookmarks($db, $config, $l, $clientService, $logger);
 
 		$metadataAmazon = $this->libBookmarks->getURLMetadata('amazonHtml');
 		$this->assertTrue($metadataAmazon['url'] == 'amazonHtml');
@@ -166,16 +173,16 @@ class Test_LibBookmarks_Bookmarks extends \Test\TestCase {
 	}
 
 	function cleanDB() {
-		$query1 = OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
+		$query1 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
 		$query1->execute();
-		$query2 = OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
+		$query2 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
 		$query2->execute();
 	}
 
 	/**
 	 * Register an http service mock for testing purposes.
 	 *
-	 * @param \OCP\Http\Client\IClientService $service
+	 * @param IClientService $service
 	 */
 	private function registerHttpService($service) {
 		\OC::$server->registerService('HttpClientService', function () use ($service) {
