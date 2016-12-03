@@ -23,7 +23,7 @@ function bookmarklet($bookmarkleturl) {
 	$blet .= $bookmarkleturl;
 	$blet .= "?output=popup&url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=400px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();";
 	$help_msg = $l->t('Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:');
-	$output = '<div id="bookmarklet_hint" class="bkm_hint">' . $help_msg . '</div><a class="button bookmarklet" href="' . $blet . '">' . $l->t('Add to ownCloud') . '</a>';
+	$output = '<div id="bookmarklet_hint" class="bkm_hint">' . $help_msg . '</div><a class="button bookmarklet" href="' . $blet . '">' . $l->t('Add to Nextcloud') . '</a>';
 	return $output;
 }
 ?>
