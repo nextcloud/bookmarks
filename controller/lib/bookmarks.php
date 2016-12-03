@@ -121,7 +121,7 @@ class Bookmarks {
 	 * @brief Check if an URL is bookmarked
 	 * @param string $url Url of a possible bookmark
 	 * @param string $userId UserId
-	 * @return boolean if the url is already bookmarked
+	 * @return bool|int the bookmark ID if existing, false otherwise
 	 */
 	public function bookmarkExists($url, $userId) {
 		$encodedUrl = htmlspecialchars_decode($url);

@@ -130,7 +130,7 @@ class BookmarkController extends ApiController {
 
 		// Check if it is a valid URL (after adding http(s) prefix)
 		$urlData = parse_url($url);
-		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
+		if(!$this->isProperURL($urlData)) {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
 
@@ -178,7 +178,7 @@ class BookmarkController extends ApiController {
 
 		// Check if it is a valid URL
 		$urlData = parse_url($url);
-		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
+		if(!$this->isProperURL($urlData)) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
@@ -231,10 +231,8 @@ class BookmarkController extends ApiController {
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 */
 	public function clickBookmark($url = "") {
-
-		// Check if it is a valid URL
 		$urlData = parse_url($url);
-		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
+		if(!$this->isProperURL($urlData)) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
@@ -311,6 +309,19 @@ EOT;
 		}
 
 		return new ExportResponse($file);
+	}
+
+	/**
+	 * Checks whether parse_url was able to return proper URL data
+	 *
+	 * @param bool|array $urlData result of parse_url
+	 * @return bool
+	 */
+	protected function isProperURL($urlData) {
+		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
+			return false;
+		}
+		return true;
 	}
 
 }
