@@ -8,7 +8,7 @@ if (!class_exists('PHPUnit_Framework_TestCase')) {
 	require_once('PHPUnit/Autoload.php');
 }
 
-\OC::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
 \OC_App::loadApp('bookmarks');
+require_once(__DIR__ . '/TestCase.php'); // stable9 compatibility
 
 OC_Hook::clear();
