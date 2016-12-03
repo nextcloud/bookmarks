@@ -29,12 +29,16 @@ class BookmarkController extends ApiController {
 	private $db;
 	private $l10n;
 
-	public function __construct($appName, IRequest $request, $userId, IDb $db, IL10N $l10n) {
+	/** @var Bookmarks */
+	private $bookmarks;
+
+	public function __construct($appName, IRequest $request, $userId, IDb $db, IL10N $l10n, Bookmarks $bookmarks) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->db = $db;
 		$this->request = $request;
 		$this->l10n = $l10n;
+		$this->bookmarks = $bookmarks;
 	}
 
 	/**
@@ -62,11 +66,11 @@ class BookmarkController extends ApiController {
 	public function getBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent") {
 
 		if ($type == 'rel_tags') {
-			$tags = Bookmarks::analyzeTagRequest($tag);
-			$qtags = Bookmarks::findTags($this->userId, $this->db, $tags);
+			$tags = $this->bookmarks->analyzeTagRequest($tag);
+			$qtags = $this->bookmarks->findTags($this->userId, $tags);
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
 		} else { // type == bookmark
-			$filterTag = Bookmarks::analyzeTagRequest($tag);
+			$filterTag = $this->bookmarks->analyzeTagRequest($tag);
 
 			$offset = $page * 10;
 
@@ -75,7 +79,7 @@ class BookmarkController extends ApiController {
 			} else {
 				$sqlSortColumn = 'lastmodified';
 			}
-			$bookmarks = Bookmarks::findBookmarks($this->userId, $this->db, $offset, $sqlSortColumn, $filterTag, true);
+			$bookmarks = $this->bookmarks->findBookmarks($this->userId, $offset, $sqlSortColumn, $filterTag, true);
 			return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
 		}
 	}
@@ -98,15 +102,15 @@ class BookmarkController extends ApiController {
 			$protocols = '/^(https?|s?ftp)\:\/\//i';
 			try {
 				if (preg_match($protocols, $url)) {
-					$data = Bookmarks::getURLMetadata($url);
+					$data = $this->bookmarks->getURLMetadata($url);
 					// if not (allowed) protocol is given, assume http and https (and fetch both)
 				} else {
 					// append https to url and fetch it
 					$url_https = 'https://' . $url;
-					$data_https = Bookmarks::getURLMetadata($url_https);
+					$data_https = $this->bookmarks->getURLMetadata($url_https);
 					// append http to url and fetch it
 					$url_http = 'http://' . $url;
-					$data_http = Bookmarks::getURLMetadata($url_http);
+					$data_http = $this->bookmarks->getURLMetadata($url_http);
 				}
 			} catch (\Exception $e) {
 				return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
@@ -126,14 +130,14 @@ class BookmarkController extends ApiController {
 
 		// Check if it is a valid URL (after adding http(s) prefix)
 		$urlData = parse_url($url);
-		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
+		if(!$this->isProperURL($urlData)) {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
 
 		$tags = isset($item['tags']) ? $item['tags'] : array();
 
-		$id = Bookmarks::addBookmark($this->userId, $this->db, $url, $title, $tags, $description, $is_public);
-		$bm = Bookmarks::findUniqueBookmark($id, $this->userId, $this->db);
+		$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public);
+		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
 	}
 
@@ -174,7 +178,7 @@ class BookmarkController extends ApiController {
 
 		// Check if it is a valid URL
 		$urlData = parse_url($url);
-		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
+		if(!$this->isProperURL($urlData)) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
@@ -185,10 +189,10 @@ class BookmarkController extends ApiController {
 		$tags = isset($item['tags']) ? $item['tags'] : array();
 
 		if (is_numeric($record_id)) {
-			$id = Bookmarks::editBookmark($this->userId, $this->db, $record_id, $url, $title, $tags, $description, $is_public = false);
+			$id = $this->bookmarks->editBookmark($this->userId, $record_id, $url, $title, $tags, $description, $is_public = false);
 		}
 
-		$bm = Bookmarks::findUniqueBookmark($id, $this->userId, $this->db);
+		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
 	}
 
@@ -213,7 +217,7 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
-		if (!Bookmarks::deleteUrl($this->userId, $this->db, $id)) {
+		if (!$this->bookmarks->deleteUrl($this->userId, $id)) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		} else {
 			return new JSONResponse(array('status' => 'success'), Http::STATUS_OK);
@@ -227,10 +231,8 @@ class BookmarkController extends ApiController {
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 */
 	public function clickBookmark($url = "") {
-
-		// Check if it is a valid URL
 		$urlData = parse_url($url);
-		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
+		if(!$this->isProperURL($urlData)) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
@@ -263,7 +265,7 @@ class BookmarkController extends ApiController {
 			$error = array();
 			$file = $full_input['tmp_name'];
 			if ($full_input['type'] == 'text/html') {
-				$error = Bookmarks::importFile($this->userId, $this->db, $file);
+				$error = $this->bookmarks->importFile($this->userId, $file);
 				if (empty($error)) {
 					return new JSONResponse(array('status' => 'success'));
 				}
@@ -292,7 +294,7 @@ Do Not Edit! -->
 <H1>Bookmarks</H1>
 <DL><p>
 EOT;
-		$bookmarks = Bookmarks::findBookmarks($this->userId, $this->db, 0, 'id', array(), true, -1);
+		$bookmarks = $this->bookmarks->findBookmarks($this->userId, 0, 'id', [], true, -1);
 		foreach ($bookmarks as $bm) {
 			$title = $bm['title'];
 			if (trim($title) === '') {
@@ -307,6 +309,19 @@ EOT;
 		}
 
 		return new ExportResponse($file);
+	}
+
+	/**
+	 * Checks whether parse_url was able to return proper URL data
+	 *
+	 * @param bool|array $urlData result of parse_url
+	 * @return bool
+	 */
+	protected function isProperURL($urlData) {
+		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
+			return false;
+		}
+		return true;
 	}
 
 }

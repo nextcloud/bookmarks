@@ -7,17 +7,18 @@ use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OCP\AppFramework\ApiController;
 use \OCP\IRequest;
-use \OCP\IDb;
 
 class TagsController extends ApiController {
 
 	private $userId;
-	private $db;
 
-	public function __construct($appName, IRequest $request, $userId, IDb $db) {
+	/** @var Bookmarks */
+	private $bookmarks;
+
+	public function __construct($appName, IRequest $request, $userId, Bookmarks $bookmarks) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
-		$this->db = $db;
+		$this->bookmarks = $bookmarks;
 	}
 
 	/**
@@ -32,7 +33,7 @@ class TagsController extends ApiController {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
-		Bookmarks::deleteTag($this->userId, $this->db, $old_name);
+		$this->bookmarks->deleteTag($this->userId, $old_name);
 		return new JSONResponse(array('status' => 'success'));
 	}
 
@@ -49,7 +50,7 @@ class TagsController extends ApiController {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
-		Bookmarks::renameTag($this->userId, $this->db, $old_name, $new_name);
+		$this->bookmarks->renameTag($this->userId, $old_name, $new_name);
 		return new JSONResponse(array('status' => 'success'));
 	}
 
@@ -61,7 +62,7 @@ class TagsController extends ApiController {
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 		
-		$qtags = Bookmarks::findTags($this->userId, $this->db, array(), 0, 400);
+		$qtags = $this->bookmarks->findTags($this->userId, array(), 0, 400);
 		$tags = array();
 		foreach ($qtags as $tag) {
 			$tags[] = $tag['tag'];

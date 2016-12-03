@@ -15,6 +15,7 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
+use OCA\Bookmarks\Controller\Lib\Bookmarks;
 use \OCP\AppFramework\App;
 use \OCP\IContainer;
 use \OCA\Bookmarks\Controller\WebViewController;
@@ -45,25 +46,19 @@ class Application extends App {
 				$c->query('Request'),
 				$uid,
 				$c->query('ServerContainer')->getURLGenerator(),
-				$c->query('ServerContainer')->getDb()
+				$c->query('ServerContainer')->query(Bookmarks::class)
 			);
 		});
 
 		$container->registerService('BookmarkController', function($c) {
-			if(method_exists($c->query('ServerContainer'), 'getL10NFactory')) {
-				$l = $c->query('ServerContainer')->getL10NFactory()->get('bookmarks');
-			} else {
-				// OC 8.1 compatibility
-				$l = new \OC_L10N('bookmarks');
-			}
-
 			/** @var IContainer $c */
 			return new BookmarkController(
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
 				$c->query('ServerContainer')->getDb(),
-				$l
+				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
+				$c->query('ServerContainer')->query(Bookmarks::class)
 			);
 		});
 
@@ -73,7 +68,7 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
-				$c->query('ServerContainer')->getDb()
+				$c->query('ServerContainer')->query(Bookmarks::class)
 			);
 		});
 
@@ -82,7 +77,7 @@ class Application extends App {
 			return new PublicController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('ServerContainer')->getDb(),
+				$c->query('ServerContainer')->query(Bookmarks::class),
 				$c->query('ServerContainer')->getUserManager()
 			);
 		});

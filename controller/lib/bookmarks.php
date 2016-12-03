@@ -27,36 +27,69 @@
 namespace OCA\Bookmarks\Controller\Lib;
 
 use GuzzleHttp\Exception\ClientException;
-use \OCP\IDb;
+use OCP\Http\Client\IClientService;
+use OCP\IConfig;
+use OCP\IDb;
+use OCP\IL10N;
+use OCP\ILogger;
 
 class Bookmarks {
+
+	/** @var IDb */
+	private $db;
+
+	/** @var IConfig */
+	private $config;
+
+	/** @var IL10N */
+	private $l;
+
+	/** @var IClientService */
+	private $httpClientService;
+
+	/** @var ILogger */
+	private $logger;
+
+	public function __construct(
+		IDb $db,
+		IConfig $config,
+		IL10N $l,
+		IClientService $httpClientService,
+		ILogger $logger
+	) {
+		$this->db = $db;
+		$this->config = $config;
+		$this->l = $l;
+		$this->httpClientService = $httpClientService;
+		$this->logger = $logger;
+	}
 
 	/**
 	 * @brief Finds all tags for bookmarks
 	 * @param string $userId UserId
-	 * @param IDb $db Database Interface
-	 * @param filterTags array of tag to look for if empty then every tag
-	 * @param offset integer offset
-	 * @param limit integer of item to return
-	 * @return Found Tags
+	 * @param array $filterTags of tag to look for if empty then every tag
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array Found Tags
 	 */
-	public static function findTags($userId, IDb $db, $filterTags = array(), $offset = 0, $limit = -1) {
+	public function findTags($userId, $filterTags = [], $offset = 0, $limit = -1) {
 		$params = array_merge($filterTags, $filterTags);
 		array_unshift($params, $userId);
-		$not_in = '';
+		$notIn = '';
 		if (!empty($filterTags)) {
-			$exist_clause = " AND	exists (select 1 from `*PREFIX*bookmarks_tags`
+			$existClause = " AND	exists (select 1 from `*PREFIX*bookmarks_tags`
 				`t2` where `t2`.`bookmark_id` = `t`.`bookmark_id` and `tag` = ?) ";
 
-			$not_in = ' AND `tag` not in (' . implode(',', array_fill(0, count($filterTags), '?')) . ')' .
-					str_repeat($exist_clause, count($filterTags));
+			$notIn = ' AND `tag` not in (' . implode(',', array_fill(0, count($filterTags), '?')) . ')' .
+					str_repeat($existClause, count($filterTags));
 		}
-		$sql = 'SELECT tag, count(*) as nbr from *PREFIX*bookmarks_tags t ' .
-				' WHERE EXISTS( SELECT 1 from *PREFIX*bookmarks bm where  t.bookmark_id  = bm.id and user_id = ?) ' .
-				$not_in .
+		$sql = 'SELECT tag, count(*) AS nbr FROM *PREFIX*bookmarks_tags t ' .
+				' WHERE EXISTS( SELECT 1 FROM *PREFIX*bookmarks bm ' .
+				'	WHERE  t.bookmark_id  = bm.id AND user_id = ?) ' .
+				$notIn .
 				' GROUP BY `tag` ORDER BY `nbr` DESC ';
 
-		$query = $db->prepareQuery($sql, $limit, $offset);
+		$query = $this->db->prepareQuery($sql, $limit, $offset);
 		$tags = $query->execute($params)->fetchAll();
 		return $tags;
 	}
@@ -65,20 +98,20 @@ class Bookmarks {
 	 * @brief Finds Bookmark with certain ID
 	 * @param int $id BookmarkId
 	 * @param string $userId UserId
-	 * @param IDb $db Database Interface
 	 * @return array Specific Bookmark
 	 */
-	public static function findUniqueBookmark($id, $userId, IDb $db) {
-		$CONFIG_DBTYPE = \OCP\Config::getSystemValue('dbtype', 'sqlite');
-		if ($CONFIG_DBTYPE == 'pgsql') {
-			$group_fct = 'array_agg(`tag`)';
+	public function findUniqueBookmark($id, $userId) {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		if ($dbType == 'pgsql') {
+			$groupFunction = 'array_agg(`tag`)';
 		} else {
-			$group_fct = 'GROUP_CONCAT(`tag`)';
+			$groupFunction = 'GROUP_CONCAT(`tag`)';
 		}
-		$sql = "SELECT *, (select $group_fct from `*PREFIX*bookmarks_tags` where `bookmark_id` = `b`.`id`) as `tags`
+		$sql = "SELECT *, (SELECT $groupFunction FROM `*PREFIX*bookmarks_tags`
+			       WHERE `bookmark_id` = `b`.`id`) AS `tags`
 				FROM `*PREFIX*bookmarks` `b`
 				WHERE `user_id` = ? AND `id` = ?";
-		$query = $db->prepareQuery($sql);
+		$query = $this->db->prepareQuery($sql);
 		$result = $query->execute(array($userId, $id))->fetchRow();
 		$result['tags'] = explode(',', $result['tags']);
 		return $result;
@@ -88,14 +121,13 @@ class Bookmarks {
 	 * @brief Check if an URL is bookmarked
 	 * @param string $url Url of a possible bookmark
 	 * @param string $userId UserId
-	 * @param IDb $db Database Interface
-	 * @return boolean if the url is already bookmarked
+	 * @return bool|int the bookmark ID if existing, false otherwise
 	 */
-	public static function bookmarkExists($url, $userId, IDb $db) {
-		$enc_url = htmlspecialchars_decode($url);
-		$sql = "SELECT id from `*PREFIX*bookmarks` where `url` = ? and `user_id` = ?";
-		$query = $db->prepareQuery($sql);
-		$result = $query->execute(array($enc_url, $userId))->fetchRow();
+	public function bookmarkExists($url, $userId) {
+		$encodedUrl = htmlspecialchars_decode($url);
+		$sql = "SELECT id FROM `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
+		$query = $this->db->prepareQuery($sql);
+		$result = $query->execute(array($encodedUrl, $userId))->fetchRow();
 		if ($result) {
 			return $result['id'];
 		} else {
@@ -106,7 +138,6 @@ class Bookmarks {
 	/**
 	 * @brief Finds all bookmarks, matching the filter
 	 * @param string $userid UserId
-	 * @param IDb $db Database Interface
 	 * @param int $offset offset
 	 * @param string $sqlSortColumn result with this column
 	 * @param string|array $filters filters can be: empty -> no filter, a string -> filter this, a string array -> filter for all strings
@@ -115,12 +146,20 @@ class Bookmarks {
 	 * @param bool $public check if only public bookmarks should be returned
 	 * @param array $requestedAttributes select all the attributes that should be returned. default is * + tags
 	 * @param string $tagFilterConjunction select wether the filterTagOnly should filter with an AND or an OR  conjunction
-	 * @return Collection of specified bookmarks
+	 * @return array Collection of specified bookmarks
 	 */
-	public static function findBookmarks(
-	$userid, IDb $db, $offset, $sqlSortColumn, $filters, $filterTagOnly, $limit = 10, $public = false, $requestedAttributes = null, $tagFilterConjunction = "and") {
-
-		$CONFIG_DBTYPE = \OCP\Config::getSystemValue('dbtype', 'sqlite');
+	public function findBookmarks(
+		$userid,
+		$offset,
+		$sqlSortColumn,
+		$filters,
+		$filterTagOnly,
+		$limit = 10,
+		$public = false,
+		$requestedAttributes = null,
+		$tagFilterConjunction = "and"
+	) {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		if (is_string($filters)) {
 			$filters = array($filters);
 		}
@@ -143,14 +182,14 @@ class Bookmarks {
 			$toSelect = implode(",", array_intersect($tableAttributes, $requestedAttributes));
 		}
 
-		if ($CONFIG_DBTYPE == 'pgsql') {
+		if ($dbType == 'pgsql') {
 			$sql = "SELECT " . $toSelect . " FROM (SELECT *, (select array_to_string(array_agg(`tag`),',')
-				from `*PREFIX*bookmarks_tags` where `bookmark_id` = `b2`.`id`) as `tags`
+					FROM `*PREFIX*bookmarks_tags` WHERE `bookmark_id` = `b2`.`id`) AS `tags`
 				FROM `*PREFIX*bookmarks` `b2`
 				WHERE `user_id` = ? ) as `b` WHERE true ";
 		} else {
-			$sql = "SELECT " . $toSelect . ", (SELECT GROUP_CONCAT(`tag`) from `*PREFIX*bookmarks_tags`
-				WHERE `bookmark_id` = `b`.`id`) as `tags`
+			$sql = "SELECT " . $toSelect . ", (SELECT GROUP_CONCAT(`tag`) FROM `*PREFIX*bookmarks_tags`
+				WHERE `bookmark_id` = `b`.`id`) AS `tags`
 				FROM `*PREFIX*bookmarks` `b`
 				WHERE `user_id` = ? ";
 		}
@@ -162,7 +201,7 @@ class Bookmarks {
 		}
 
 		if (count($filters) > 0) {
-			Bookmarks::findBookmarksBuildFilter($sql, $params, $filters, $filterTagOnly, $tagFilterConjunction, $CONFIG_DBTYPE);
+			$this->findBookmarksBuildFilter($sql, $params, $filters, $filterTagOnly, $tagFilterConjunction, $dbType);
 		}
 
 		if (!in_array($sqlSortColumn, $tableAttributes)) {
@@ -174,7 +213,7 @@ class Bookmarks {
 			$offset = null;
 		}
 
-		$query = $db->prepareQuery($sql, $limit, $offset);
+		$query = $this->db->prepareQuery($sql, $limit, $offset);
 		$results = $query->execute($params)->fetchAll();
 		$bookmarks = array();
 		foreach ($results as $result) {
@@ -188,7 +227,7 @@ class Bookmarks {
 		return $bookmarks;
 	}
 
-	private static function findBookmarksBuildFilter(&$sql, &$params, $filters, $filterTagOnly, $tagFilterConjunction, $CONFIG_DBTYPE) {
+	private function findBookmarksBuildFilter(&$sql, &$params, $filters, $filterTagOnly, $tagFilterConjunction, $dbType) {
 		$tagOrSearch = false;
 		$connectWord = 'AND';
 
@@ -203,9 +242,9 @@ class Bookmarks {
 			} else {
 				$sql .= 'AND';
 			}
-			$exist_clause = " exists (SELECT `id` FROM  `*PREFIX*bookmarks_tags`
+			$existClause = " exists (SELECT `id` FROM  `*PREFIX*bookmarks_tags`
 				`t2` WHERE `t2`.`bookmark_id` = `b`.`id` AND `tag` = ?) ";
-			$sql .= str_repeat($exist_clause . $connectWord, count($filters));
+			$sql .= str_repeat($existClause . $connectWord, count($filters));
 			if ($tagOrSearch) {
 				$sql = rtrim($sql, 'OR');
 				$sql .= ')';
@@ -214,14 +253,14 @@ class Bookmarks {
 			}
 			$params = array_merge($params, $filters);
 		} else {
-			if ($CONFIG_DBTYPE == 'mysql') { //Dirty hack to allow usage of alias in where
+			if ($dbType == 'mysql') { //Dirty hack to allow usage of alias in where
 				$sql .= ' HAVING true ';
 			}
 			foreach ($filters as $filter) {
-				if ($CONFIG_DBTYPE == 'mysql') {
+				if ($dbType == 'mysql') {
 					$sql .= ' AND lower( concat(url,title,description,IFNULL(tags,\'\') )) like ? ';
 				} else {
-					$sql .= ' AND lower(url || title || description || ifnull(tags,\'\') ) like ? ';
+					$sql .= ' AND lower(url || title || description || IFNULL(tags,\'\') ) like ? ';
 				}
 				$params[] = '%' . strtolower($filter) . '%';
 			}
@@ -231,14 +270,13 @@ class Bookmarks {
 	/**
 	 * @brief Delete bookmark with specific id
 	 * @param string $userId UserId
-	 * @param IDb $db Database Interface
 	 * @param int $id Bookmark ID to delete
 	 * @return boolean Success of operation
 	 */
-	public static function deleteUrl($userId, IDb $db, $id) {
+	public function deleteUrl($userId, $id) {
 		$user = $userId;
 
-		$query = $db->prepareQuery("
+		$query = $this->db->prepareQuery("
 				SELECT `id` FROM `*PREFIX*bookmarks`
 				WHERE `id` = ?
 				AND `user_id` = ?
@@ -250,14 +288,14 @@ class Bookmarks {
 			return false;
 		}
 
-		$query = $db->prepareQuery("
+		$query = $this->db->prepareQuery("
 			DELETE FROM `*PREFIX*bookmarks`
 			WHERE `id` = ?
 			");
 
 		$query->execute(array($id));
 
-		$query = $db->prepareQuery("
+		$query = $this->db->prepareQuery("
 			DELETE FROM `*PREFIX*bookmarks_tags`
 			WHERE `bookmark_id` = ?
 			");
@@ -269,19 +307,17 @@ class Bookmarks {
 	/**
 	 * @brief Rename a tag
 	 * @param string $userId UserId
-	 * @param IDb $db Database Interface
 	 * @param string $old Old Tag Name
 	 * @param string $new New Tag Name
 	 * @return boolean Success of operation
 	 */
-	public static function renameTag($userId, IDb $db, $old, $new) {
-		$user_id = $userId;
-		$CONFIG_DBTYPE = \OCP\Config::getSystemValue('dbtype', 'sqlite');
+	public function renameTag($userId, $old, $new) {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 
 
-		if ($CONFIG_DBTYPE == 'sqlite' or $CONFIG_DBTYPE == 'sqlite3') {
+		if ($dbType == 'sqlite' or $dbType == 'sqlite3') {
 			// Update tags to the new label unless it already exists a tag like this
-			$query = $db->prepareQuery("
+			$query = $this->db->prepareQuery("
 				UPDATE OR REPLACE `*PREFIX*bookmarks_tags`
 				SET `tag` = ?
 				WHERE `tag` = ?
@@ -289,34 +325,24 @@ class Bookmarks {
 				WHERE `b`.`user_id` = ? AND `bookmark_id` = `b`.`id`)
 			");
 
-			$params = array(
-				$new,
-				$old,
-				$user_id,
-			);
+			$params = [$new, $old, $userId];
 
 			$query->execute($params);
 		} else {
 
-			// Remove potentialy duplicated tags
-			$query = $db->prepareQuery("
+			// Remove potentially duplicated tags
+			$query = $this->db->prepareQuery("
 			DELETE FROM `*PREFIX*bookmarks_tags` as `tgs` WHERE `tgs`.`tag` = ?
 			AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ?
 			AND `tgs`.`bookmark_id` = `id`)
 			AND exists( SELECT `t`.`tag` FROM `*PREFIX*bookmarks_tags` `t` where `t`.`tag` = ?
 			AND `tgs`.`bookmark_id` = `t`.`bookmark_id`)");
 
-			$params = array(
-				$new,
-				$user_id,
-				$new
-			);
-
+			$params = [$new, $userId, $new];
 			$query->execute($params);
 
-
 			// Update tags to the new label unless it already exists a tag like this
-			$query = $db->prepareQuery("
+			$query = $this->db->prepareQuery("
 			UPDATE `*PREFIX*bookmarks_tags`
 			SET `tag` = ?
 			WHERE `tag` = ?
@@ -324,15 +350,9 @@ class Bookmarks {
 			WHERE `b`.`user_id` = ? AND `bookmark_id` = `b`.`id`)
 			");
 
-			$params = array(
-				$new,
-				$old,
-				$user_id
-			);
-
+			$params = [$new, $old, $userId];
 			$query->execute($params);
 		}
-
 
 		return true;
 	}
@@ -340,47 +360,41 @@ class Bookmarks {
 	/**
 	 * @brief Delete a tag
 	 * @param string $userid UserId
-	 * @param IDb $db Database Interface
 	 * @param string $old Tag Name to delete
 	 * @return boolean Success of operation
 	 */
-	public static function deleteTag($userid, IDb $db, $old) {
+	public function deleteTag($userid, $old) {
 
 		// Update the record
-		$query = $db->prepareQuery("
+		$query = $this->db->prepareQuery("
 		DELETE FROM `*PREFIX*bookmarks_tags`
 		WHERE `tag` = ?
 		AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ? AND `bookmark_id` = `id`)
 		");
 
-		$params = array(
-			$old,
-			$userid,
-		);
-
+		$params = [$old, $userid];
 		$result = $query->execute($params);
 		return $result;
 	}
 
 	/**
 	 * Edit a bookmark
+	 *
 	 * @param string $userid UserId
-	 * @param IDb $db Database Interface
 	 * @param int $id The id of the bookmark to edit
 	 * @param string $url The url to set
 	 * @param string $title Name of the bookmark
 	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
 	 * @param string $description A longer description about the bookmark
-	 * @param boolean $is_public True if the bookmark is publishable to not registered users
+	 * @param boolean $isPublic True if the bookmark is publishable to not registered users
 	 * @return null
 	 */
-	public static function editBookmark($userid, IDb $db, $id, $url, $title, $tags = array(), $description = '', $is_public = false) {
+	public function editBookmark($userid, $id, $url, $title, $tags = [], $description = '', $isPublic = false) {
 
-		$is_public = $is_public ? 1 : 0;
-		$user_id = $userid;
+		$isPublic = $isPublic ? 1 : 0;
 
 		// Update the record
-		$query = $db->prepareQuery("
+		$query = $this->db->prepareQuery("
 		UPDATE `*PREFIX*bookmarks` SET
 			`url` = ?, `title` = ?, `public` = ?, `description` = ?,
 			`lastmodified` = UNIX_TIMESTAMP()
@@ -391,87 +405,87 @@ class Bookmarks {
 		$params = array(
 			htmlspecialchars_decode($url),
 			htmlspecialchars_decode($title),
-			$is_public,
+			$isPublic,
 			htmlspecialchars_decode($description),
 			$id,
-			$user_id,
+			$userid,
 		);
 
 		$result = $query->execute($params);
 
 		// Abort the operation if bookmark couldn't be set
 		// (probably because the user is not allowed to edit this bookmark)
-		if ($result == 0)
+		if ($result == 0) {
 			exit();
-
+		}
 
 		// Remove old tags
 		$sql = "DELETE FROM `*PREFIX*bookmarks_tags`  WHERE `bookmark_id` = ?";
-		$query = $db->prepareQuery($sql);
+		$query = $this->db->prepareQuery($sql);
 		$query->execute(array($id));
 
 		// Add New Tags
-		self::addTags($db, $id, $tags);
+		$this->addTags($id, $tags);
 
 		return $id;
 	}
 
 	/**
 	 * Add a bookmark
+	 *
 	 * @param string $userid UserId
-	 * @param IDb $db Database Interface
 	 * @param string $url
 	 * @param string $title Name of the bookmark
 	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
 	 * @param string $description A longer description about the bookmark
-	 * @param boolean $public True if the bookmark is publishable to not registered users
+	 * @param boolean $isPublic True if the bookmark is publishable to not registered users
 	 * @return int The id of the bookmark created
 	 */
-	public static function addBookmark($userid, IDb $db, $url, $title, $tags = array(), $description = '', $is_public = false) {
-		$public = $is_public ? 1 : 0;
-		$url_without_prefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
-		if($url_without_prefix === '') {
+	public function addBookmark($userid, $url, $title, $tags = array(), $description = '', $isPublic = false) {
+		$public = $isPublic ? 1 : 0;
+		$urlWithoutPrefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
+		if($urlWithoutPrefix === '') {
 			throw new \InvalidArgumentException('Bookmark URL is missing');
 		}
-		$enc_url_noprefix = htmlspecialchars_decode($url_without_prefix);
-		$enc_url = htmlspecialchars_decode($url);
+		$decodedUrlNoPrefix = htmlspecialchars_decode($urlWithoutPrefix);
+		$decodedUrl = htmlspecialchars_decode($url);
 
 		$title = mb_substr($title, 0, 4096);
 		$description = mb_substr($description, 0, 4096);
 
 		// Change lastmodified date if the record if already exists
 		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` like ? AND `user_id` = ?";
-		$query = $db->prepareQuery($sql, 1);
-		$result = $query->execute(array('%'.$enc_url_noprefix, $userid)); // Find url in the db independantly from its protocol
+		$query = $this->db->prepareQuery($sql, 1);
+		$result = $query->execute(array('%'.$decodedUrlNoPrefix, $userid)); // Find url in the db independantly from its protocol
 		if ($row = $result->fetchRow()) {
 			$params = array();
-			$title_str = '';
+			$titleStr = '';
 			if (trim($title) != '') { // Do we replace the old title
-				$title_str = ' , title = ?';
+				$titleStr = ' , title = ?';
 				$params[] = $title;
 			}
-			$desc_str = '';
+			$descriptionStr = '';
 			if (trim($description) != '') { // Do we replace the old description
-				$desc_str = ' , description = ?';
+				$descriptionStr = ' , description = ?';
 				$params[] = $description;
 			}
 			$sql = "UPDATE `*PREFIX*bookmarks` SET `lastmodified` = "
-					. "UNIX_TIMESTAMP() $title_str $desc_str , `url` = ? WHERE `url` like ? and `user_id` = ?";
-			$params[] = $enc_url;
-			$params[] = '%'.$enc_url_noprefix;
+					. "UNIX_TIMESTAMP() $titleStr $descriptionStr , `url` = ? WHERE `url` like ? and `user_id` = ?";
+			$params[] = $decodedUrl;
+			$params[] = '%'.$decodedUrlNoPrefix;
 			$params[] = $userid;
-			$query = $db->prepareQuery($sql);
+			$query = $this->db->prepareQuery($sql);
 			$query->execute($params);
 			return $row['id'];
 		} else {
-			$query = $db->prepareQuery("
+			$query = $this->db->prepareQuery("
 			INSERT INTO `*PREFIX*bookmarks`
 			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
 			VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?)
 			");
 
 			$params = array(
-				$enc_url,
+				$decodedUrl,
 				htmlspecialchars_decode($title),
 				$userid,
 				$public,
@@ -479,32 +493,31 @@ class Bookmarks {
 			);
 			$query->execute($params);
 
-			$b_id = $db->getInsertId('*PREFIX*bookmarks');
+			$insertId = $this->db->getInsertId('*PREFIX*bookmarks');
 
-			if ($b_id !== false) {
-				self::addTags($db, $b_id, $tags);
-				return $b_id;
+			if ($insertId !== false) {
+				$this->addTags($insertId, $tags);
+				return $insertId;
 			}
 		}
+		return -1;
 	}
 
 	/**
 	 * @brief Add a set of tags for a bookmark
-	 * @param IDb $db Database Interface
 	 * @param int $bookmarkID The bookmark reference
 	 * @param array $tags Set of tags to add to the bookmark
-	 * @return null
 	 * */
-	private static function addTags(IDb $db, $bookmarkID, $tags) {
+	private function addTags($bookmarkID, $tags) {
 		$sql = 'INSERT INTO `*PREFIX*bookmarks_tags` (`bookmark_id`, `tag`) select ?, ? ';
-		$dbtype = \OCP\Config::getSystemValue('dbtype', 'sqlite');
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 
-		if ($dbtype === 'mysql') {
+		if ($dbType === 'mysql') {
 			$sql .= 'from dual ';
 		}
 		$sql .= 'where not exists(select * from `*PREFIX*bookmarks_tags` where `bookmark_id` = ? and `tag` = ?)';
 
-		$query = $db->prepareQuery($sql);
+		$query = $this->db->prepareQuery($sql);
 		foreach ($tags as $tag) {
 			$tag = trim($tag);
 			if (empty($tag)) {
@@ -519,18 +532,16 @@ class Bookmarks {
 	/**
 	 * @brief Import Bookmarks from html formatted file
 	 * @param string $user User imported Bookmarks should belong to
-	 * @param IDb $db Database Interface
 	 * @param string $file Content to import
 	 * @return null
 	 * */
-	public static function importFile($user, IDb $db, $file) {
+	public function importFile($user, $file) {
 		libxml_use_internal_errors(true);
 		$dom = new \domDocument();
 
 		$dom->loadHTMLFile($file);
 		$links = $dom->getElementsByTagName('a');
 
-		$l = \OC::$server->getL10NFactory()->get('bookmarks');
 		$errors = [];
 
 		// Reintroduce transaction here!?
@@ -538,19 +549,19 @@ class Bookmarks {
 			/* @var \DOMElement $link */
 			$title = $link->nodeValue;
 			$ref = $link->getAttribute("href");
-			$tag_str = '';
+			$tagStr = '';
 			if ($link->hasAttribute("tags"))
-				$tag_str = $link->getAttribute("tags");
-			$tags = explode(',', $tag_str);
+				$tagStr = $link->getAttribute("tags");
+			$tags = explode(',', $tagStr);
 
-			$desc_str = '';
+			$descriptionStr = '';
 			if ($link->hasAttribute("description"))
-				$desc_str = $link->getAttribute("description");
+				$descriptionStr = $link->getAttribute("description");
 			try {
-				self::addBookmark($user, $db, $ref, $title, $tags, $desc_str);
+				$this->addBookmark($user, $ref, $title, $tags, $descriptionStr);
 			} catch (\InvalidArgumentException $e) {
-				\OC::$server->getLogger()->logException($e, ['app' => 'bookmarks']);
-				$errors[] =  $l->t('Failed to import one bookmark, because: ') . $e->getMessage();
+				$this->logger->logException($e, ['app' => 'bookmarks']);
+				$errors[] =  $this->l->t('Failed to import one bookmark, because: ') . $e->getMessage();
 			}
 		}
 
@@ -563,14 +574,14 @@ class Bookmarks {
 	 * @return array Metadata for url;
 	 * @throws \Exception|ClientException
 	 */
-	public static function getURLMetadata($url) {
+	public function getURLMetadata($url) {
 		
 		$metadata = array();
 		$metadata['url'] = $url;
-		$page = "";
+		$page = $contentType = '';
 		
 		try {
-			$request = \OC::$server->getHTTPClientService()->newClient()->get($url);
+			$request = $this->httpClientService->newClient()->get($url);
 			$page = $request->getBody();
 			$contentType = $request->getHeader('Content-Type');
 		} catch (ClientException $e) {
@@ -614,11 +625,11 @@ class Bookmarks {
 	}
 
 	/**
-	 * @brief Seperate Url String at comma charachter
+	 * @brief Separate Url String at comma character
 	 * @param $line String of Tags
 	 * @return array Array of Tags
 	 * */
-	public static function analyzeTagRequest($line) {
+	public function analyzeTagRequest($line) {
 		$tags = explode(',', $line);
 		$filterTag = array();
 		foreach ($tags as $tag) {
