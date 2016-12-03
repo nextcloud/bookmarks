@@ -10,6 +10,6 @@ if (!class_exists('PHPUnit_Framework_TestCase')) {
 
 \OC_App::loadApp('bookmarks');
 require_once(__DIR__ . '/TestCase.php'); // stable9 compatibility
-OC::$loader->addValidRoot(OC::$SERVERROOT . '/tests'); // Hope it helps run OC >= 9.1 tests…
+require_once(\OC::$SERVERROOT . '/tests/lib/Util/User/Dummy.php'); // OC >= 9.1 Tests?
 
 OC_Hook::clear();
