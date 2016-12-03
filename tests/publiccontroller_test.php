@@ -5,8 +5,6 @@ namespace OCA\Bookmarks\Tests;
 use OCA\Bookmarks\Controller\Rest\PublicController;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
 
-\OC_App::loadApp('bookmarks');
-
 /**
  * Class Test_PublicController_Bookmarks
  *

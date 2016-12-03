@@ -8,8 +8,6 @@ use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IResponse;
 use OCP\User;
 
-\OC_App::loadApp('bookmarks');
-
 /**
  * Class Test_LibBookmarks_Bookmarks
  *
