@@ -10,6 +10,11 @@ if (!class_exists('PHPUnit_Framework_TestCase')) {
 
 \OC_App::loadApp('bookmarks');
 require_once(__DIR__ . '/TestCase.php'); // stable9 compatibility
-require_once(\OC::$SERVERROOT . '/tests/lib/Util/User/Dummy.php'); // OC >= 9.1 Tests?
+
+// OC >= 9.1 Tests?
+$dummyClass = \OC::$SERVERROOT . '/tests/lib/Util/User/Dummy.php';
+if(file_exists($dummyClass)) {
+	require_once($dummyClass);
+}
 
 OC_Hook::clear();
