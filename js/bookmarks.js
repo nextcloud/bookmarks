@@ -24,6 +24,13 @@ $(document).ready(function () {
 		onTagFinishRemoved: filterTagsChanged,
 		placeholderText: t('bookmarks', 'Filter by tag')
 	}).tagit('option', 'onTagAdded', filterTagsChanged);
+    $('#bookmark_search').keypress(function(e) {
+        if(e.which == 13) {
+            $('.bookmarks_list').empty();
+            bookmarksPage = 0;
+            getBookmarks();
+        }
+    });
 	getBookmarks();
 });
 
@@ -143,7 +150,7 @@ function getBookmarks() {
 	$.ajax({
 		type: 'GET',
 		url: 'bookmark',
-		data: {type: 'bookmark', tag: $('#bookmarkFilterTag').val(), page: bookmarksPage, sort: bookmarksSorting},
+		data: {type: 'bookmark', tag: $('#bookmarkFilterTag').val(), page: bookmarksPage, sort: bookmarksSorting, search: $('#bookmark_search').val()},
 		complete: function () {
 			decreaseAjaxCallCount();
 		},
@@ -343,12 +350,14 @@ function updateBookmarksList(bookmark, position) {
 function updateOnBottom() {
 	//check wether user is on bottom of the page
 	var top = $('.bookmarks_list>:last-child').position().top;
-	var height = $('.bookmarks_list').height();
-	// use a bit of margin to begin loading before we are really at the
-	// bottom
-	if (top < height * 1.2) {
-		getBookmarks();
-	}
+    //if(top) {
+        var height = $('.bookmarks_list').height();
+        // use a bit of margin to begin loading before we are really at the
+        // bottom
+        if (top < height * 1.2) {
+            getBookmarks();
+        }
+    //}
 }
 
 function recordClick() {

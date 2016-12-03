@@ -37,10 +37,14 @@ function bookmarklet($bookmarkleturl) {
             </form>
             <p id="tag_filter" class="open">
                 <input type="text" value="<?php if(isset($_['req_tag'])) p($_['req_tag']); else ""; ?>"/>
-
-
             </p>
             <input type="hidden" id="bookmarkFilterTag" value="<?php if(isset($_['req_tag'])) p($_['req_tag']); else ""; ?>" />
+
+            <p id="search">
+                <label id="search_label"><?php p($l->t('Search')); ?></label>
+                <input type="text" id="bookmark_search" value="" placeholder="Press enter to submit" />
+            </p>
+
             <label id="tag_select_label"><?php p($l->t('Filterable Tags')); ?></label>
         </li>
         <li class="tag_list">
