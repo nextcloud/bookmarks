@@ -42,7 +42,7 @@ class Search extends \OCP\Search\Provider{
 		$libBookmarks = $app->getContainer()->query(Bookmarks::class);
 
 		$bookmarks = $libBookmarks->findBookmarks($user, 0, 'id', $search_words, false);
-		$l = new \OC_l10n('bookmarks'); //resulttype can't be localized, javascript relies on that type
+		$l = \OC::$server->getL10N('bookmarks'); //resulttype can't be localized, javascript relies on that type
 		foreach ($bookmarks as $bookmark) {
 			$results[] = new \OC_Search_Result($bookmark['title'], $bookmark['title'], $bookmark['url'], (string) $l->t('Bookm.'));
 		}
