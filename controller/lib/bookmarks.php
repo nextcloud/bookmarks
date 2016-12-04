@@ -26,6 +26,7 @@
 
 namespace OCA\Bookmarks\Controller\Lib;
 
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
@@ -571,25 +572,42 @@ class Bookmarks {
 	/**
 	 * @brief Load Url and receive Metadata (Title)
 	 * @param string $url Url to load and analyze
+	 * @param bool $tryHarder modifies cURL options for another atttempt if the
+	 *                        first request did not succeed (e.g. cURL error 18)
 	 * @return array Metadata for url;
 	 * @throws \Exception|ClientException
 	 */
-	public function getURLMetadata($url) {
-		
-		$metadata = array();
-		$metadata['url'] = $url;
+	public function getURLMetadata($url, $tryHarder = false) {
+		$metadata = ['url' => $url];
 		$page = $contentType = '';
 		
 		try {
-			$request = $this->httpClientService->newClient()->get($url);
+			$client = $this->httpClientService->newClient();
+			$options = [];
+			if($tryHarder) {
+				$curlOptions = [ 'curl' =>
+					[ CURLOPT_HTTPHEADER => ['Expect:'] ]
+				];
+				if(version_compare(ClientInterface::VERSION, '6') === -1) {
+					$options = ['config' => $curlOptions];
+				} else {
+					$options = $curlOptions;
+				}
+			}
+			$request = $client->get($url, $options);
 			$page = $request->getBody();
 			$contentType = $request->getHeader('Content-Type');
 		} catch (ClientException $e) {
 			$errorCode = $e->getCode();
-			if(!($errorCode >= 401 && $errorCode <= 403)) {
+			if (!($errorCode >= 401 && $errorCode <= 403)) {
 				// whitelist Unauthorized, Forbidden and Paid pages
 				throw $e;
 			}
+		} catch (\GuzzleHttp\Exception\RequestException $e) {
+			if($tryHarder) {
+				throw $e;
+			}
+			return $this->getURLMetadata($url, true);
 		} catch (\Exception $e) {
 			throw $e;
 		}

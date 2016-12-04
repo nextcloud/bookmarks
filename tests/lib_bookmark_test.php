@@ -2,6 +2,8 @@
 
 namespace OCA\Bookmarks\Tests;
 
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
@@ -164,6 +166,48 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$metadataGolem = $this->libBookmarks->getURLMetadata('golemHtml');
 		$this->assertTrue($metadataGolem['url'] == 'golemHtml');
 		$this->assertTrue(strpos($metadataGolem['title'], 'f&uuml;r') == false);
+	}
+
+	/**
+	 * @expectedException \GuzzleHttp\Exception\RequestException
+	 */
+	public function testGetURLMetaDataTryHarder() {
+		$url = 'https://yolo.swag/check';
+
+		$curlOptions = [ 'curl' =>
+			[ CURLOPT_HTTPHEADER => ['Expect:'] ]
+		];
+		if(version_compare(ClientInterface::VERSION, '6') === -1) {
+			$options = ['config' => $curlOptions];
+		} else {
+			$options = $curlOptions;
+		}
+
+		$exceptionMock = $this->getMockBuilder(RequestException::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$clientMock = $this->fetchMock(IClient::class);
+		$clientMock->expects($this->exactly(2))
+			->method('get')
+			->withConsecutive(
+				[$url, []],
+				[$url, $options]
+			)
+			->willThrowException($exceptionMock);
+
+		$clientServiceMock = $this->fetchMock(IClientService::class);
+		$clientServiceMock->expects($this->any())
+			->method('newClient')
+			->will($this->returnValue($clientMock));
+
+		// ugly, but works
+		$db = \OC::$server->getDb();
+		$config = \OC::$server->getConfig();
+		$l = \OC::$server->getL10N('bookmarks');
+		$logger = \OC::$server->getLogger();
+		$this->libBookmarks = new Bookmarks($db, $config, $l, $clientServiceMock, $logger);
+
+		$this->libBookmarks->getURLMetadata($url);
 	}
 
 	protected function tearDown() {
