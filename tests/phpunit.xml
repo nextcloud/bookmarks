@@ -6,7 +6,7 @@
 		 timeoutForMediumTests="900"
 		 timeoutForLargeTests="900"
 >
-	<testsuite name='ownCloud - Bookmarks App Tests'>
+	<testsuite name='Bookmarks App Tests'>
 		<directory suffix='test.php'>.</directory>
 	</testsuite>
 	<!-- filters for code coverage -->

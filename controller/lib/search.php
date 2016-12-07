@@ -1,8 +1,6 @@
 <?php
 
 /**
- * ownCloud - bookmarks plugin
- *
  * @author David Iwanowitsch
  * @copyright 2012 David Iwanowitsch <david at unclouded dot de>
  *
