@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
-<info>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
 	<id>bookmarks</id>
 	<name>Bookmarks</name>
-	<description>Bookmark manager for Nextcloud and ownCloud</description>
+	<summary>A Bookmark manager for Nextcloud and ownCloud</summary>
+	<description><![CDATA[Bookmark manager for Nextcloud and ownCloud]]></description>
 	<licence>AGPL</licence>
 	<author>Arthur Schiwon, Marvin Thomas Rabe, Stefan Klemm</author>
 	<version>0.9.0</version>

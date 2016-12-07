@@ -1,10 +1,8 @@
 <?php
 
 /**
- * ownCloud - bookmarks plugin
- *
  * @author Arthur Schiwon
- * @copyright 2011 Arthur Schiwon blizzz@arthur-schiwon.de
+ * @copyright 2016 Arthur Schiwon blizzz@arthur-schiwon.de
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
