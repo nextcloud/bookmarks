@@ -7,10 +7,11 @@ php:
 env:
   global:
     - APP_NAME=bookmarks
+    - PHP_COVERAGE=FALSE
   matrix:
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
@@ -25,7 +26,7 @@ matrix:
   - php: 5.5
     env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
   - php: 5.5
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
   - php: 5.5
     env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
   - php: 5.5
@@ -37,7 +38,7 @@ matrix:
   - php: 5.5
     env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
   - php: 5.6
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
   - php: 5.6
     env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
   - php: 5.6
@@ -72,5 +73,5 @@ script:
   - phpunit --configuration phpunit.xml
 
   # Create coverage report
-  - sh -c "if [ '$TRAVIS_PHP_VERSION' != 'hhvm' ]; then wget https://scrutinizer-ci.com/ocular.phar; fi"
-  - sh -c "if [ '$TRAVIS_PHP_VERSION' != 'hhvm' ]; then php ocular.phar code-coverage:upload --format=php-clover clover.xml; fi"
+  - sh -c "if [ '$PHP_COVERAGE' != 'FALSE' ]; then wget https://scrutinizer-ci.com/ocular.phar; fi"
+  - sh -c "if [ '$PHP_COVERAGE' != 'FALSE' ]; then php ocular.phar code-coverage:upload --format=php-clover clover.xml; fi"
