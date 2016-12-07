@@ -85,7 +85,6 @@ class BookmarkController extends ApiController {
 	/**
 	 * @param string $url
 	 * @param array $item
-	 * @param int $from_own
 	 * @param string $title
 	 * @param bool $is_public
 	 * @param string $description
@@ -93,36 +92,32 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $item = array(), $from_own = 0, $title = "", $is_public = false, $description = "") {
-		$url_http = $url_https = '';
-		if ($from_own == 0) {
+	public function newBookmark($url = "", $item = array(), $title = "", $is_public = false, $description = "") {
+		$title = trim($title);
+		if ($title === '') {
+			$title = $url;
 			// allow only http(s) and (s)ftp
 			$protocols = '/^(https?|s?ftp)\:\/\//i';
 			try {
 				if (preg_match($protocols, $url)) {
 					$data = $this->bookmarks->getURLMetadata($url);
-					// if not (allowed) protocol is given, assume http and https (and fetch both)
+					$title = isset($data['title']) ? $data['title'] : $title;
 				} else {
-					// append https to url and fetch it
-					$url_https = 'https://' . $url;
-					$data_https = $this->bookmarks->getURLMetadata($url_https);
-					// append http to url and fetch it
-					$url_http = 'http://' . $url;
-					$data_http = $this->bookmarks->getURLMetadata($url_http);
+					// if no allowed protocol is given, evaluate https and https
+					foreach(['https://', 'http://'] as $protocol) {
+						$testUrl = $protocol . $url;
+						$data = $this->bookmarks->getURLMetadata($testUrl);
+						if(isset($data['title'])) {
+							$title = $data['title'];
+							$url   = $testUrl;
+							break;
+						}
+					}
 				}
 			} catch (\Exception $e) {
-				return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
-			}
-
-			if ($title === '' && isset($data['title'])) { // prefer original url if working
-				$title = $data['title'];
-				//url remains unchanged
-			} elseif (isset($data_https['title'])) { // test if https works
-				$title = $title === '' ? $data_https['title'] : $title;
-				$url = $url_https;
-			} elseif (isset($data_http['title'])) { // otherwise test http for results
-				$title = $title === '' ? $data_http['title'] : $title;
-				$url = $url_http;
+				// only because the server cannot reach a certain URL it does not
+				// mean the user's browser cannot.
+				\OC::$server->getLogger()->logException($e, ['app' => 'bookmarks']);
 			}
 		}
 
@@ -154,7 +149,7 @@ class BookmarkController extends ApiController {
 	//TODO id vs record_id?
 	public function legacyEditBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
 		if ($id == null) {
-			return $this->newBookmark($url, $item, false, $title, $is_public, $description);
+			return $this->newBookmark($url, $item, $title, $is_public, $description);
 		} else {
 			return $this->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description);
 		}
