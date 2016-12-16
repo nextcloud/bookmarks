@@ -19,12 +19,12 @@ class PublicController extends ApiController {
 	/** @var Bookmarks */
 	protected $bookmarks;
 
-	public function __construct($appName, IRequest $request, Bookmarks $bookmarks, Manager $userManager) {
+	public function __construct($appName, IRequest $request, $userId, Bookmarks $bookmarks, Manager $userManager) {
 		parent::__construct($appName, $request);
 
 		$this->bookmarks = $bookmarks;
 		$this->userManager = $userManager;
-		$this->userId = \OCP\User::getUser();
+		$this->userId = $userId;
 	}
 	
 	/**
