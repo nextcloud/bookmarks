@@ -26,7 +26,7 @@ class Test_PublicController_Bookmarks extends TestCase {
 
 		$this->userid = "testuser";
 		$this->request = \OC::$server->getRequest();
-		$this->db = \OC::$server->getDb();
+		$this->db = \OC::$server->getDatabaseConnection();
 		$this->userManager = \OC::$server->getUserManager();
 
 		$config = \OC::$server->getConfig();
