@@ -10,12 +10,12 @@
 
 namespace OCA\Bookmarks\Controller\Rest;
 
+use OCP\IDBConnection;
 use OCP\IL10N;
 use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
-use \OCP\IDb;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 use \OCA\Bookmarks\Controller\Lib\ExportResponse;
 use \OCA\Bookmarks\Controller\Lib\Helper;
@@ -30,7 +30,7 @@ class BookmarkController extends ApiController {
 	/** @var Bookmarks */
 	private $bookmarks;
 
-	public function __construct($appName, IRequest $request, $userId, IDb $db, IL10N $l10n, Bookmarks $bookmarks) {
+	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->db = $db;

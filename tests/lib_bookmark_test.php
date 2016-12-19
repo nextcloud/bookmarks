@@ -27,7 +27,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 
 		$this->userid = User::getUser();
 
-		$db = \OC::$server->getDb();
+		$db = \OC::$server->getDatabaseConnection();
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('bookmarks');
 		$clientService = \OC::$server->getHTTPClientService();
@@ -152,7 +152,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->registerHttpService($clientServiceMock);
 
 		// ugly, but works
-		$db = \OC::$server->getDb();
+		$db = \OC::$server->getDatabaseConnection();
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('bookmarks');
 		$clientService = \OC::$server->getHTTPClientService();
@@ -201,7 +201,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 			->will($this->returnValue($clientMock));
 
 		// ugly, but works
-		$db = \OC::$server->getDb();
+		$db = \OC::$server->getDatabaseConnection();
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('bookmarks');
 		$logger = \OC::$server->getLogger();
