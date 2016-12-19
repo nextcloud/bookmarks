@@ -28,13 +28,13 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
-use OCP\IDb;
+use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;
 
 class Bookmarks {
 
-	/** @var IDb */
+	/** @var IDBConnection */
 	private $db;
 
 	/** @var IConfig */
@@ -50,7 +50,7 @@ class Bookmarks {
 	private $logger;
 
 	public function __construct(
-		IDb $db,
+		IDBConnection $db,
 		IConfig $config,
 		IL10N $l,
 		IClientService $httpClientService,
@@ -88,8 +88,9 @@ class Bookmarks {
 				$notIn .
 				' GROUP BY `tag` ORDER BY `nbr` DESC ';
 
-		$query = $this->db->prepareQuery($sql, $limit, $offset);
-		$tags = $query->execute($params)->fetchAll();
+		$query = $this->db->prepare($sql, $limit, $offset);
+		$query->execute($params);
+		$tags = $query->fetchAll();
 		return $tags;
 	}
 
@@ -110,8 +111,9 @@ class Bookmarks {
 			       WHERE `bookmark_id` = `b`.`id`) AS `tags`
 				FROM `*PREFIX*bookmarks` `b`
 				WHERE `user_id` = ? AND `id` = ?";
-		$query = $this->db->prepareQuery($sql);
-		$result = $query->execute(array($userId, $id))->fetchRow();
+		$query = $this->db->prepare($sql);
+		$query->execute(array($userId, $id));
+		$result = $query->fetch();
 		$result['tags'] = explode(',', $result['tags']);
 		return $result;
 	}
@@ -125,8 +127,9 @@ class Bookmarks {
 	public function bookmarkExists($url, $userId) {
 		$encodedUrl = htmlspecialchars_decode($url);
 		$sql = "SELECT id FROM `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
-		$query = $this->db->prepareQuery($sql);
-		$result = $query->execute(array($encodedUrl, $userId))->fetchRow();
+		$query = $this->db->prepare($sql);
+		$query->execute(array($encodedUrl, $userId));
+		$result = $query->fetch();
 		if ($result) {
 			return $result['id'];
 		} else {
@@ -212,8 +215,9 @@ class Bookmarks {
 			$offset = null;
 		}
 
-		$query = $this->db->prepareQuery($sql, $limit, $offset);
-		$results = $query->execute($params)->fetchAll();
+		$query = $this->db->prepare($sql, $limit, $offset);
+		$query->execute($params);
+		$results = $query->fetchAll();
 		$bookmarks = array();
 		foreach ($results as $result) {
 			if ($returnTags) {
@@ -275,26 +279,26 @@ class Bookmarks {
 	public function deleteUrl($userId, $id) {
 		$user = $userId;
 
-		$query = $this->db->prepareQuery("
+		$query = $this->db->prepare("
 				SELECT `id` FROM `*PREFIX*bookmarks`
 				WHERE `id` = ?
 				AND `user_id` = ?
 				");
 
-		$result = $query->execute(array($id, $user));
-		$id = $result->fetchOne();
+		$query->execute(array($id, $user));
+		$id = $query->fetchColumn();
 		if ($id === false) {
 			return false;
 		}
 
-		$query = $this->db->prepareQuery("
+		$query = $this->db->prepare("
 			DELETE FROM `*PREFIX*bookmarks`
 			WHERE `id` = ?
 			");
 
 		$query->execute(array($id));
 
-		$query = $this->db->prepareQuery("
+		$query = $this->db->prepare("
 			DELETE FROM `*PREFIX*bookmarks_tags`
 			WHERE `bookmark_id` = ?
 			");
@@ -316,7 +320,7 @@ class Bookmarks {
 
 		if ($dbType == 'sqlite' or $dbType == 'sqlite3') {
 			// Update tags to the new label unless it already exists a tag like this
-			$query = $this->db->prepareQuery("
+			$query = $this->db->prepare("
 				UPDATE OR REPLACE `*PREFIX*bookmarks_tags`
 				SET `tag` = ?
 				WHERE `tag` = ?
@@ -330,7 +334,7 @@ class Bookmarks {
 		} else {
 
 			// Remove potentially duplicated tags
-			$query = $this->db->prepareQuery("
+			$query = $this->db->prepare("
 			DELETE FROM `*PREFIX*bookmarks_tags` as `tgs` WHERE `tgs`.`tag` = ?
 			AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ?
 			AND `tgs`.`bookmark_id` = `id`)
@@ -341,7 +345,7 @@ class Bookmarks {
 			$query->execute($params);
 
 			// Update tags to the new label unless it already exists a tag like this
-			$query = $this->db->prepareQuery("
+			$query = $this->db->prepare("
 			UPDATE `*PREFIX*bookmarks_tags`
 			SET `tag` = ?
 			WHERE `tag` = ?
@@ -365,7 +369,7 @@ class Bookmarks {
 	public function deleteTag($userid, $old) {
 
 		// Update the record
-		$query = $this->db->prepareQuery("
+		$query = $this->db->prepare("
 		DELETE FROM `*PREFIX*bookmarks_tags`
 		WHERE `tag` = ?
 		AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ? AND `bookmark_id` = `id`)
@@ -393,7 +397,7 @@ class Bookmarks {
 		$isPublic = $isPublic ? 1 : 0;
 
 		// Update the record
-		$query = $this->db->prepareQuery("
+		$query = $this->db->prepare("
 		UPDATE `*PREFIX*bookmarks` SET
 			`url` = ?, `title` = ?, `public` = ?, `description` = ?,
 			`lastmodified` = UNIX_TIMESTAMP()
@@ -420,7 +424,7 @@ class Bookmarks {
 
 		// Remove old tags
 		$sql = "DELETE FROM `*PREFIX*bookmarks_tags`  WHERE `bookmark_id` = ?";
-		$query = $this->db->prepareQuery($sql);
+		$query = $this->db->prepare($sql);
 		$query->execute(array($id));
 
 		// Add New Tags
@@ -454,9 +458,9 @@ class Bookmarks {
 
 		// Change lastmodified date if the record if already exists
 		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` like ? AND `user_id` = ?";
-		$query = $this->db->prepareQuery($sql, 1);
-		$result = $query->execute(array('%'.$decodedUrlNoPrefix, $userid)); // Find url in the db independantly from its protocol
-		if ($row = $result->fetchRow()) {
+		$query = $this->db->prepare($sql, 1);
+		$query->execute(array('%'.$decodedUrlNoPrefix, $userid)); // Find url in the db independantly from its protocol
+		if ($row = $query->fetch()) {
 			$params = array();
 			$titleStr = '';
 			if (trim($title) != '') { // Do we replace the old title
@@ -473,11 +477,11 @@ class Bookmarks {
 			$params[] = $decodedUrl;
 			$params[] = '%'.$decodedUrlNoPrefix;
 			$params[] = $userid;
-			$query = $this->db->prepareQuery($sql);
+			$query = $this->db->prepare($sql);
 			$query->execute($params);
 			return $row['id'];
 		} else {
-			$query = $this->db->prepareQuery("
+			$query = $this->db->prepare("
 			INSERT INTO `*PREFIX*bookmarks`
 			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
 			VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?)
@@ -492,7 +496,7 @@ class Bookmarks {
 			);
 			$query->execute($params);
 
-			$insertId = $this->db->getInsertId('*PREFIX*bookmarks');
+			$insertId = $this->db->lastInsertId('*PREFIX*bookmarks');
 
 			if ($insertId !== false) {
 				$this->addTags($insertId, $tags);
@@ -516,7 +520,7 @@ class Bookmarks {
 		}
 		$sql .= 'where not exists(select * from `*PREFIX*bookmarks_tags` where `bookmark_id` = ? and `tag` = ?)';
 
-		$query = $this->db->prepareQuery($sql);
+		$query = $this->db->prepare($sql);
 		foreach ($tags as $tag) {
 			$tag = trim($tag);
 			if (empty($tag)) {
