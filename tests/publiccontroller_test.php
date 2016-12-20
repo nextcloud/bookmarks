@@ -12,13 +12,13 @@ use OCA\Bookmarks\Controller\Lib\Bookmarks;
  */
 class Test_PublicController_Bookmarks extends TestCase {
 
-	/** @var  Bookmarks */
+	/** @var	Bookmarks */
 	protected $libBookmarks;
 	private $userid;
 	private $request;
 	private $db;
 	private $userManager;
-	/** @var  PublicController */
+	/** @var	PublicController */
 	private $publicController;
 
 	protected function setUp() {
@@ -28,6 +28,9 @@ class Test_PublicController_Bookmarks extends TestCase {
 		$this->request = \OC::$server->getRequest();
 		$this->db = \OC::$server->getDatabaseConnection();
 		$this->userManager = \OC::$server->getUserManager();
+		if (!$this->userManager->userExists($this->userid)) {
+			$this->userManager->createUser($this->userid, 'password');	
+		}
 
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('bookmarks');
@@ -65,7 +68,7 @@ class Test_PublicController_Bookmarks extends TestCase {
 	function testPublicCreate() {
 		$this->publicController->newBookmark("http://www.heise.de", array("tags"=> array("four")), "Heise", true, "PublicNoTag");
 		
-    // the bookmark should exist
+		// the bookmark should exist
 		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.heise.de", $this->userid));
 
     // public should see this bookmark
@@ -74,14 +77,14 @@ class Test_PublicController_Bookmarks extends TestCase {
 		$this->assertEquals(3, count($data));
 	}
 	
-  function testPrivateCreate() {
+	function testPrivateCreate() {
 		$this->publicController->newBookmark("http://www.private-heise.de", array("tags"=> array("four")), "Heise", false, "PublicNoTag");
 		
-    // the bookmark should exist
+		// the bookmark should exist
 		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.private-heise.de", $this->userid));
 
-    // public should not see this bookmark
-    $output = $this->publicController->returnAsJson($this->userid);
+		// public should not see this bookmark
+		$output = $this->publicController->returnAsJson($this->userid);
 		$data = $output->getData();
 		$this->assertEquals(3, count($data));
 	}
