@@ -75,6 +75,7 @@ class Application extends App {
 			return new PublicController(
 				$c->query('AppName'),
 				$c->query('Request'),
+				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
 				$c->query('ServerContainer')->query(Bookmarks::class),
 				$c->query('ServerContainer')->getUserManager()
 			);
