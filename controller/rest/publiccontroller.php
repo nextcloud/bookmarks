@@ -20,7 +20,8 @@ class PublicController extends ApiController {
 	protected $bookmarks;
 
 	public function __construct($appName, IRequest $request, $userId, Bookmarks $bookmarks, Manager $userManager) {
-		parent::__construct($appName, $request);
+		//see https://docs.nextcloud.com/server/11/developer_manual/app/api.html [Modifying the CORS header]
+		parent::__construct($appName, $request, 'PUT, POST, GET, DELETE, OPTIONS');
 
 		$this->bookmarks = $bookmarks;
 		$this->userManager = $userManager;
