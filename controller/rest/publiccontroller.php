@@ -41,7 +41,7 @@ class PublicController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function newBookmark($url = "", $item = array(), $title = "", $is_public = false, $description = "") {
+	public function newBookmark($url = "", $tags = array(), $title = "", $is_public = false, $description = "") {
 		$title = trim($title);
 		if ($title === '') {
 			$title = $url;
@@ -74,7 +74,7 @@ class PublicController extends ApiController {
 		if(!$this->isProperURL($urlData)) {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
-		$tags = isset($item['tags']) ? $item['tags'] : array();
+		
 		$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public);
 		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
@@ -94,7 +94,7 @@ class PublicController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function editBookmark($record_id = null, $url = "", $item = array(), $title = "", $is_public = false, $description = "") {
+	public function editBookmark($record_id = null, $url = "", $tags = array(), $title = "", $is_public = false, $description = "") {
 		// Check if it is a valid URL
 		$urlData = parse_url($url);
 		if(!$this->isProperURL($urlData)) {
@@ -103,7 +103,7 @@ class PublicController extends ApiController {
 		if ($record_id == null) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
-		$tags = isset($item['tags']) ? $item['tags'] : array();
+		
 		if (is_numeric($record_id)) {
 			$id = $this->bookmarks->editBookmark($this->userId, $record_id, $url, $title, $tags, $description, $is_public = false);
 		}
