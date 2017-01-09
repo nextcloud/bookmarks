@@ -36,6 +36,10 @@ $application->registerRoutes($this, array('routes' => array(
 		array('name' => 'tags#rename_tag', 'url' => '/tag', 'verb' => 'POST'),
 		array('name' => 'tags#delete_tag', 'url' => '/tag', 'verb' => 'DELETE'),
 		//Public Rest Api
+		//
+		// This is to enable the built in preflighted CORS method (see https://docs.nextcloud.com/server/11/developer_manual/app/tutorial.html)
+		array('name' => 'public#preflighted_cors', 'url' => '/public/rest/v1/{path}', 'verb' => 'OPTIONS', 'requirements' => array('path' => '.+')),
+		//
 		array('name' => 'public#return_as_json', 'url' => '/public/rest/v1/bookmark', 'verb' => 'GET'),
 		array('name' => 'public#new_bookmark', 'url' => '/public/rest/v1/bookmark', 'verb' => 'POST'),
 		array('name' => 'public#edit_bookmark', 'url' => '/public/rest/v1/bookmark/{id}', 'verb' => 'PUT'),
