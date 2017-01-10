@@ -3,7 +3,7 @@ Bookmarks app
 
 Maintainers:
 ------------
-- [Brice Maron] aka eMerzh (https://github.com/eMerzh)
+- [Blizzz] (https://github.com/Blizzz)
 
 Developer setup info:
 ---------------------
