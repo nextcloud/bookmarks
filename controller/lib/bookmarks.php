@@ -123,7 +123,7 @@ class Bookmarks {
 		  ':user_id' => $userId,
 		  ':bm_id' => $id
 		));
-		$result['tags'] = $qb->execute()->fetchAll(); // XXX: People expect to get a simple array: ['foo', 'bar'], but now they get [[tag: 'foo'], [tag: 'bar']]
+		$result['tags'] = $qb->execute()->fetchColumn();
 		return $result;
 	}
 
@@ -296,31 +296,42 @@ class Bookmarks {
 	public function deleteUrl($userId, $id) {
 		$user = $userId;
 
-		$query = $this->db->prepare("
-				SELECT `id` FROM `*PREFIX*bookmarks`
-				WHERE `id` = ?
-				AND `user_id` = ?
-				");
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->select('id')
+		->from('bookmarks')
+		->where('user_id = :user_id')
+		->andWhere('id = :bm_id');
+		$qb->setParameters(array(
+		  ':user_id' => $userId,
+		  ':bm_id' => $id
+		));
 
-		$query->execute(array($id, $user));
-		$id = $query->fetchColumn();
+		$id = $qb->execute()->fetchColumn();
 		if ($id === false) {
 			return false;
 		}
 
-		$query = $this->db->prepare("
-			DELETE FROM `*PREFIX*bookmarks`
-			WHERE `id` = ?
-			");
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->delete('bookmarks')
+		->where('id = :bm_id');
+		$qb->setParameters(array(
+		  ':bm_id' => $id
+		));
+		$qb->execute();
 
-		$query->execute(array($id));
-
-		$query = $this->db->prepare("
-			DELETE FROM `*PREFIX*bookmarks_tags`
-			WHERE `bookmark_id` = ?
-			");
-
-		$query->execute(array($id));
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->delete('bookmarks_tags')
+		->where('bookmark_id = :bm_id');
+		$qb->setParameters(array(
+		  ':bm_id' => $id
+		  ));
+		  $qb->execute();
 		return true;
 	}
 
@@ -332,47 +343,36 @@ class Bookmarks {
 	 * @return boolean Success of operation
 	 */
 	public function renameTag($userId, $old, $new) {
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		// Remove potentially duplicated tags
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->delete('bookmarks_tags', 'tgs')
+		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
+		->innerJoin('t', 'bookmarks_tags', 'tgs.bookmark_id = t.bookmark_id')
+		->where('tgs.tag = :newtag')
+		->andWhere('bm.user_id = :user_id')
+		->andWhere('t.tag = :oldtag');
+		$qb->setParameters(array(
+		  ':newtag' => $new,
+		  ':oldtag' => $old,
+		  ':user_id' => $userId
+		));
+		$qb->execute();
 
-
-		if ($dbType == 'sqlite' or $dbType == 'sqlite3') {
-			// Update tags to the new label unless it already exists a tag like this
-			$query = $this->db->prepare("
-				UPDATE OR REPLACE `*PREFIX*bookmarks_tags`
-				SET `tag` = ?
-				WHERE `tag` = ?
-				AND exists( select `b`.`id` from `*PREFIX*bookmarks` `b`
-				WHERE `b`.`user_id` = ? AND `bookmark_id` = `b`.`id`)
-			");
-
-			$params = [$new, $old, $userId];
-
-			$query->execute($params);
-		} else {
-
-			// Remove potentially duplicated tags
-			$query = $this->db->prepare("
-			DELETE FROM `*PREFIX*bookmarks_tags` as `tgs` WHERE `tgs`.`tag` = ?
-			AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ?
-			AND `tgs`.`bookmark_id` = `id`)
-			AND exists( SELECT `t`.`tag` FROM `*PREFIX*bookmarks_tags` `t` where `t`.`tag` = ?
-			AND `tgs`.`bookmark_id` = `t`.`bookmark_id`)");
-
-			$params = [$new, $userId, $new];
-			$query->execute($params);
-
-			// Update tags to the new label unless it already exists a tag like this
-			$query = $this->db->prepare("
-			UPDATE `*PREFIX*bookmarks_tags`
-			SET `tag` = ?
-			WHERE `tag` = ?
-			AND exists( SELECT `b`.`id` FROM `*PREFIX*bookmarks` `b`
-			WHERE `b`.`user_id` = ? AND `bookmark_id` = `b`.`id`)
-			");
-
-			$params = [$new, $old, $userId];
-			$query->execute($params);
-		}
+		// Update tags to the new label
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->update('bookmarks_tags', 'tgs')
+		->set('tgs.tag', $new)
+		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
+		->where('tgs.tag = :oldtag')
+		->andWhere('bm.user_id = :user_id')
+		$qb->setParameters(array(
+		  ':oldtag' => $old,
+		  ':user_id' => $userId
+		));
 
 		return true;
 	}
@@ -384,17 +384,19 @@ class Bookmarks {
 	 * @return boolean Success of operation
 	 */
 	public function deleteTag($userid, $old) {
-
-		// Update the record
-		$query = $this->db->prepare("
-		DELETE FROM `*PREFIX*bookmarks_tags`
-		WHERE `tag` = ?
-		AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ? AND `bookmark_id` = `id`)
-		");
-
-		$params = [$old, $userid];
-		$result = $query->execute($params);
-		return $result;
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->delete('bookmarks_tags', 'tgs')
+		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
+		->where('tgs.tag = :tag')
+		->andWhere('bm.user_id = :user_id')
+		->andWhere('t.tag = :oldtag');
+		$qb->setParameters(array(
+		  ':tag' => $old,
+		  ':user_id' => $userId
+		));
+		return $qb->execute();
 	}
 
 	/**
