@@ -72,25 +72,23 @@ class Bookmarks {
 	 * @return array Found Tags
 	 */
 	public function findTags($userId, $filterTags = [], $offset = 0, $limit = -1) {
-		$params = array_merge($filterTags, $filterTags);
-		array_unshift($params, $userId);
-		$notIn = '';
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->select('tag', $qb->createFunction('COUNT(*)'))
+		->selectAlias('count(*)', 'nbr')
+		->from('bookmarks_tags', 't')
+		->innerJoin('t','bookmarks','b','b.id = t.bookmark_id AND b.user_id = :user_id');
 		if (!empty($filterTags)) {
-			$existClause = " AND	exists (select 1 from `*PREFIX*bookmarks_tags`
-				`t2` where `t2`.`bookmark_id` = `t`.`bookmark_id` and `tag` = ?) ";
-
-			$notIn = ' AND `tag` not in (' . implode(',', array_fill(0, count($filterTags), '?')) . ')' .
-					str_repeat($existClause, count($filterTags));
-		}
-		$sql = 'SELECT tag, count(*) AS nbr FROM *PREFIX*bookmarks_tags t ' .
-				' WHERE EXISTS( SELECT 1 FROM *PREFIX*bookmarks bm ' .
-				'	WHERE  t.bookmark_id  = bm.id AND user_id = ?) ' .
-				$notIn .
-				' GROUP BY `tag` ORDER BY `nbr` DESC ';
-
-		$query = $this->db->prepare($sql, $limit, $offset);
-		$query->execute($params);
-		$tags = $query->fetchAll();
+    		$qb->where($qb->expr()->notIn('tag', $filterTags));
+    	}
+		$qb
+		->groupBy('tag')
+		->orderBy('nbr', 'DESC')
+		->setFirstResult($offset)
+		->setMaxResults($limit);
+		$qb->setParameter(':user_id', $userId);
+    	$tags = $qb->execute()->fetchAll();
 		return $tags;
 	}
 
@@ -101,20 +99,31 @@ class Bookmarks {
 	 * @return array Specific Bookmark
 	 */
 	public function findUniqueBookmark($id, $userId) {
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-		if ($dbType == 'pgsql') {
-			$groupFunction = 'array_agg(`tag`)';
-		} else {
-			$groupFunction = 'GROUP_CONCAT(`tag`)';
-		}
-		$sql = "SELECT *, (SELECT $groupFunction FROM `*PREFIX*bookmarks_tags`
-			       WHERE `bookmark_id` = `b`.`id`) AS `tags`
-				FROM `*PREFIX*bookmarks` `b`
-				WHERE `user_id` = ? AND `id` = ?";
-		$query = $this->db->prepare($sql);
-		$query->execute(array($userId, $id));
-		$result = $query->fetch();
-		$result['tags'] = explode(',', $result['tags']);
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->select('*')
+		->from('bookmarks')
+		->where('user_id = :user_id')
+		->andWhere('id = :bm_id');
+		$qb->setParameters(array(
+		  ':user_id' => $userId,
+		  ':bm_id' => $id
+		));
+		$result = $qb->execute()->fetch();
+		
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->select('tag')
+		->from('bookmarks_tags')
+		->where('user_id = :user_id')
+		->andWhere('bookmark_id = :bm_id');
+		$qb->setParameters(array(
+		  ':user_id' => $userId,
+		  ':bm_id' => $id
+		));
+		$result['tags'] = $qb->execute()->fetchAll(); // XXX: People expect to get a simple array: ['foo', 'bar'], but now they get [[tag: 'foo'], [tag: 'bar']]
 		return $result;
 	}
 
@@ -126,10 +135,18 @@ class Bookmarks {
 	 */
 	public function bookmarkExists($url, $userId) {
 		$encodedUrl = htmlspecialchars_decode($url);
-		$sql = "SELECT id FROM `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
-		$query = $this->db->prepare($sql);
-		$query->execute(array($encodedUrl, $userId));
-		$result = $query->fetch();
+		$qb = $this->db->getQueryBuilder()
+		$qb
+		->automaticTablePrefix(true)
+		->select('id')
+		->from('bookmarks')
+		->where('user_id = :user_id')
+		->andWhere('url = :url');
+		$qb->setParameters(array(
+		  ':user_id' => $userId,
+		  ':url' => $encodedUrl
+		));
+		$result = $qb->execute()->fetch()
 		if ($result) {
 			return $result['id'];
 		} else {
