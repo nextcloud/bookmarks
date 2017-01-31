@@ -73,9 +73,9 @@ class Bookmarks {
 	 */
 	public function findTags($userId, $filterTags = [], $offset = 0, $limit = -1) {
 		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(true);
 		$qb
-		->automaticTablePrefix(true)
-		->select('tag', $qb->createFunction('COUNT(*)'))
+    ->select('tag', $qb->createFunction('COUNT(*)'))
 		->selectAlias('count(*)', 'nbr')
 		->from('bookmarks_tags', 't')
 		->innerJoin('t','bookmarks','b','b.id = t.bookmark_id AND b.user_id = :user_id');
@@ -100,8 +100,8 @@ class Bookmarks {
 	 */
 	public function findUniqueBookmark($id, $userId) {
 		$qb = $this->db->getQueryBuilder();
-		$qb
-		->automaticTablePrefix(true)
+		$qb->automaticTablePrefix(true);
+    $qb
 		->select('*')
 		->from('bookmarks')
 		->where('user_id = :user_id')
@@ -113,8 +113,8 @@ class Bookmarks {
 		$result = $qb->execute()->fetch();
 		
 		$qb = $this->db->getQueryBuilder();
-		$qb
-		->automaticTablePrefix(true)
+		$qb->automaticTablePrefix(true);
+    $qb
 		->select('tag')
 		->from('bookmarks_tags')
 		->where('user_id = :user_id')
@@ -136,9 +136,9 @@ class Bookmarks {
 	public function bookmarkExists($url, $userId) {
 		$encodedUrl = htmlspecialchars_decode($url);
 		$qb = $this->db->getQueryBuilder();
-		$qb
-		->automaticTablePrefix(true)
-		->select('id')
+		$qb->automaticTablePrefix(true);
+    $qb
+    ->select('id')
 		->from('bookmarks')
 		->where('user_id = :user_id')
 		->andWhere('url = :url');
@@ -297,8 +297,8 @@ class Bookmarks {
 		$user = $userId;
 
 		$qb = $this->db->getQueryBuilder();
-		$qb
-		->automaticTablePrefix(true)
+		$qb->automaticTablePrefix(true);
+    $qb
 		->select('id')
 		->from('bookmarks')
 		->where('user_id = :user_id')
@@ -314,8 +314,8 @@ class Bookmarks {
 		}
 
 		$qb = $this->db->getQueryBuilder();
-		$qb
-		->automaticTablePrefix(true)
+		$qb->automaticTablePrefix(true);
+    $qb
 		->delete('bookmarks')
 		->where('id = :bm_id');
 		$qb->setParameters(array(
@@ -324,8 +324,8 @@ class Bookmarks {
 		$qb->execute();
 
 		$qb = $this->db->getQueryBuilder();
-		$qb
-		->automaticTablePrefix(true)
+		$qb->automaticTablePrefix(true);
+    $qb
 		->delete('bookmarks_tags')
 		->where('bookmark_id = :bm_id');
 		$qb->setParameters(array(
@@ -345,9 +345,9 @@ class Bookmarks {
 	public function renameTag($userId, $old, $new) {
 		// Remove potentially duplicated tags
 		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(true);
 		$qb
-		->automaticTablePrefix(true)
-		->delete('bookmarks_tags', 'tgs')
+    ->delete('bookmarks_tags', 'tgs')
 		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
 		->innerJoin('t', 'bookmarks_tags', 'tgs.bookmark_id = t.bookmark_id')
 		->where('tgs.tag = :newtag')
@@ -362,8 +362,8 @@ class Bookmarks {
 
 		// Update tags to the new label
 		$qb = $this->db->getQueryBuilder();
-		$qb
-		->automaticTablePrefix(true)
+		$qb->automaticTablePrefix(true);
+    $qb
 		->update('bookmarks_tags', 'tgs')
 		->set('tgs.tag', $new)
 		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
@@ -386,8 +386,8 @@ class Bookmarks {
 	 */
 	public function deleteTag($userid, $old) {
 		$qb = $this->db->getQueryBuilder();
-		$qb
-		->automaticTablePrefix(true)
+		$qb->automaticTablePrefix(true);
+    $qb
 		->delete('bookmarks_tags', 'tgs')
 		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
 		->where('tgs.tag = :tag')
