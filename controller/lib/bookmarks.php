@@ -117,8 +117,7 @@ class Bookmarks {
     $qb
 		->select('tag')
 		->from('bookmarks_tags')
-		->where('user_id = :user_id')
-		->andWhere('bookmark_id = :bm_id');
+		->where('bookmark_id = :bm_id');
 		$qb->setParameters(array(
 		  ':user_id' => $userId,
 		  ':bm_id' => $id
