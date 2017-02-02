@@ -529,7 +529,7 @@ class Bookmarks {
 			->values(array(
 				'url' => ':url',
 				'title' => ':title',
-            	'user_id' => ':userid',
+            	'user_id' => ':user_id',
 				'public' => ':public',
 				'added' => 'UNIX_TIMESTAMP()',
 				'lastmodified' => 'UNIX_TIMESTAMP()',
@@ -540,7 +540,6 @@ class Bookmarks {
 				':user_id' => $userid,
 				':url' => $decodedUrl,
 				':title' => htmlspecialchars_decode($title), // XXX: Should the title update above also decode it first?
-            	':user_id' => $userid,
 				':public' => $public,
 				':description' => $description
 			));	
