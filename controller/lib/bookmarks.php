@@ -324,7 +324,7 @@ class Bookmarks {
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
-    $qb
+		$qb
 		->delete('bookmarks_tags')
 		->where('bookmark_id = :bm_id');
 		$qb->setParameters(array(
@@ -494,7 +494,7 @@ class Bookmarks {
 		->andWhere('user_id = :user_id');
 		$qb->setParameters(array(
 		  ':url' => $decodedUrlNoPrefix,
-		  ':user_id' => $userId
+		  ':user_id' => $userid
 		));
 		$row = $qb->execute()->fetch();
 		
@@ -518,7 +518,7 @@ class Bookmarks {
 			->andWhere('user_id = :user_id');
 			$qb->setParameters(array(
 			  ':url' => $decodedUrlNoPrefix,
-			  ':user_id' => $userId
+			  ':user_id' => $userid
 			));
 			$qb->execute();
 			return $row['id'];
@@ -540,7 +540,7 @@ class Bookmarks {
 			->andWhere('user_id = :user_id');
 			$qb->setParameters(array(
 			  ':url' => $decodedUrlNoPrefix,
-			  ':user_id' => $userId
+			  ':user_id' => $userid
 			));	
 
 			$qb->execute();
