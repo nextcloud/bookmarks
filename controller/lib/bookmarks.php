@@ -75,7 +75,7 @@ class Bookmarks {
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
 		$qb
-    ->select('tag', $qb->createFunction('COUNT(*)'))
+		->select('tag', $qb->createFunction('COUNT(*)'))
 		->selectAlias('count(*)', 'nbr')
 		->from('bookmarks_tags', 't')
 		->innerJoin('t','bookmarks','b','b.id = t.bookmark_id AND b.user_id = :user_id');
@@ -101,7 +101,7 @@ class Bookmarks {
 	public function findUniqueBookmark($id, $userId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
-    $qb
+		$qb
 		->select('*')
 		->from('bookmarks')
 		->where('user_id = :user_id')
@@ -532,7 +532,7 @@ class Bookmarks {
 				'title' => htmlspecialchars_decode($title), // XXX: Should the title update above also decode it first?
             	'user_id' => $userid,
 				'public' => $public,
-				'added' => 'UNIX_TIMESTAMP()'
+				'added' => 'UNIX_TIMESTAMP()',
 				'lastmodified' => 'UNIX_TIMESTAMP()',
 				'description' => $description
 			))
