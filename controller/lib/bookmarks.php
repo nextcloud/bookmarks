@@ -423,14 +423,15 @@ class Bookmarks {
 		->update('bookmarks', 'bm')
 		->set('bm.url', htmlspecialchars_decode($url))
 		->set('bm.title', htmlspecialchars_decode($title))
-		->set('bm.public', $isPublic)
+		->set('bm.public', ':public')
 		->set('bm.description', htmlspecialchars_decode($description))
 		->set('bm.lastmodified', 'UNIX_TIMESTAMP()')
 		->where('bm.id = :bm_id')
 		->andWhere('bm.user_id = :user_id');
 		$qb->setParameters(array(
-		  ':user_id' => $userId,
-		  ':bm_id' => $id
+			':public' => $isPublic,
+			':user_id' => $userId,
+			':bm_id' => $id
 		));
 
 		$result = $qb->execute();
