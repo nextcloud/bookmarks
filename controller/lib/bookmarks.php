@@ -527,18 +527,22 @@ class Bookmarks {
 			$qb
 			->insert('bookmarks')
 			->values(array(
-				'url' => $decodedUrl,
-				'title' => htmlspecialchars_decode($title), // XXX: Should the title update above also decode it first?
-            	'user_id' => $userid,
-				'public' => $public,
+				'url' => ':url',
+				'title' => ':title',
+            	'user_id' => ':userid',
+				'public' => ':public',
 				'added' => 'UNIX_TIMESTAMP()',
 				'lastmodified' => 'UNIX_TIMESTAMP()',
-				'description' => $description
+				'description' => ':public'
 			))
-			->where($qb->expr()->like('url', '%'.$decodedUrlNoPrefix)) // Find url in the db independantly from its protocol
-			->andWhere('user_id = :user_id');
+			->where('user_id = :user_id');
 			$qb->setParameters(array(
-			  ':user_id' => $userid
+				':user_id' => $userid,
+				':url' => $decodedUrl,
+				':title' => htmlspecialchars_decode($title), // XXX: Should the title update above also decode it first?
+            	':user_id' => $userid,
+				':public' => $public,
+				':description' => $description
 			));	
 
 			$qb->execute();
@@ -587,8 +591,12 @@ class Bookmarks {
 			$qb
 			->insert('bookmarks_tags')
 			->values(array(
-				'tag' => $tag,
-				'bookmark_id' => $bookmarkID
+				'tag' => ':tag',
+				'bookmark_id' => ':bookmark_id'
+			));
+			$qb->setParameters(array(	
+				':tag' => $tag,
+				':bookmark_id' => $bookmarkID
 			));
 			$qb->execute();
 		}
