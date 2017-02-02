@@ -514,10 +514,9 @@ class Bookmarks {
 			}
 
 			$qb
-			->where($qb->expr()->like('url', '%:url')) // Find url in the db independantly from its protocol
+			->where($qb->expr()->like('url', '%'.$decodedUrlNoPrefix)) // Find url in the db independantly from its protocol
 			->andWhere('user_id = :user_id');
 			$qb->setParameters(array(
-			  ':url' => $decodedUrlNoPrefix,
 			  ':user_id' => $userid
 			));
 			$qb->execute();
@@ -536,10 +535,9 @@ class Bookmarks {
 				'lastmodified' => 'UNIX_TIMESTAMP()',
 				'description' => $description
 			))
-			->where($qb->expr()->like('url', '%:url')) // Find url in the db independantly from its protocol
+			->where($qb->expr()->like('url', '%'.$decodedUrlNoPrefix)) // Find url in the db independantly from its protocol
 			->andWhere('user_id = :user_id');
 			$qb->setParameters(array(
-			  ':url' => $decodedUrlNoPrefix,
 			  ':user_id' => $userid
 			));	
 
