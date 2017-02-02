@@ -430,7 +430,7 @@ class Bookmarks {
 		->andWhere('bm.user_id = :user_id');
 		$qb->setParameters(array(
 			':public' => $isPublic,
-			':user_id' => $userId,
+			':user_id' => $userid,
 			':bm_id' => $id
 		));
 
