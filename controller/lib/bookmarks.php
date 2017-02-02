@@ -76,7 +76,7 @@ class Bookmarks {
 		$qb->automaticTablePrefix(true);
 		$qb
 		->select('tag', $qb->createFunction('COUNT(*)'))
-		->selectAlias('count(*)', 'nbr')
+		->selectAlias('COUNT(*)', 'nbr')
 		->from('bookmarks_tags', 't')
 		->innerJoin('t','bookmarks','b','b.id = t.bookmark_id AND b.user_id = :user_id');
 		if (!empty($filterTags)) {
@@ -416,8 +416,6 @@ class Bookmarks {
 		$isPublic = $isPublic ? 1 : 0;
 
 		// Update the record
-
-		$result = $query->execute($params);
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
