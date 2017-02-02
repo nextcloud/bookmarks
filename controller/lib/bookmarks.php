@@ -80,8 +80,8 @@ class Bookmarks {
 		->from('bookmarks_tags', 't')
 		->innerJoin('t','bookmarks','b','b.id = t.bookmark_id AND b.user_id = :user_id');
 		if (!empty($filterTags)) {
-    		$qb->where($qb->expr()->notIn('tag', $filterTags));
-    	}
+			$qb->where($qb->expr()->notIn('tag', $filterTags));
+		}
 		$qb
 		->groupBy('tag')
 		->orderBy('nbr', 'DESC')
@@ -429,7 +429,7 @@ class Bookmarks {
 		->set('bm.description', htmlspecialchars_decode($description))
 		->set('bm.lastmodified', 'UNIX_TIMESTAMP()')
 		->where('bm.id = :bm_id')
-		->andWhere('bm.user_id = :user_id')
+		->andWhere('bm.user_id = :user_id');
 		$qb->setParameters(array(
 		  ':user_id' => $userId,
 		  ':bm_id' => $id
@@ -448,7 +448,7 @@ class Bookmarks {
 		$qb->automaticTablePrefix(true);
 		$qb
 		->delete('bookmarks_tags', 'tgs')
-		->where('tgs.bookmark_id = :bm_id')
+		->where('tgs.bookmark_id = :bm_id');
 		$qb->setParameters(array(
 		  ':bm_id' => $id
 		));
@@ -491,7 +491,7 @@ class Bookmarks {
 		->select('*')
 		->from('bookmarks')
 		->where($qb->expr()->like('url', '%:url')) // Find url in the db independantly from its protocol
-		->andWhere('user_id = :user_id')
+		->andWhere('user_id = :user_id');
 		$qb->setParameters(array(
 		  ':url' => $decodedUrlNoPrefix,
 		  ':user_id' => $userId
@@ -515,7 +515,7 @@ class Bookmarks {
 
 			$qb
 			->where($qb->expr()->like('url', '%:url')) // Find url in the db independantly from its protocol
-			->andWhere('user_id = :user_id')
+			->andWhere('user_id = :user_id');
 			$qb->setParameters(array(
 			  ':url' => $decodedUrlNoPrefix,
 			  ':user_id' => $userId
