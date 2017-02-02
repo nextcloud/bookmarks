@@ -297,7 +297,7 @@ class Bookmarks {
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
-    $qb
+		$qb
 		->select('id')
 		->from('bookmarks')
 		->where('user_id = :user_id')
@@ -314,7 +314,7 @@ class Bookmarks {
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
-    $qb
+		$qb
 		->delete('bookmarks')
 		->where('id = :bm_id');
 		$qb->setParameters(array(
@@ -346,7 +346,7 @@ class Bookmarks {
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
 		$qb
-    ->delete('bookmarks_tags', 'tgs')
+		->delete('bookmarks_tags', 'tgs')
 		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
 		->innerJoin('t', 'bookmarks_tags', 'tgs.bookmark_id = t.bookmark_id')
 		->where('tgs.tag = :newtag')
@@ -362,7 +362,7 @@ class Bookmarks {
 		// Update tags to the new label
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
-    $qb
+		$qb
 		->update('bookmarks_tags', 'tgs')
 		->set('tgs.tag', $new)
 		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
@@ -386,7 +386,7 @@ class Bookmarks {
 	public function deleteTag($userid, $old) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
-    $qb
+		$qb
 		->delete('bookmarks_tags', 'tgs')
 		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
 		->where('tgs.tag = :tag')
@@ -416,25 +416,26 @@ class Bookmarks {
 		$isPublic = $isPublic ? 1 : 0;
 
 		// Update the record
-		$query = $this->db->prepare("
-		UPDATE `*PREFIX*bookmarks` SET
-			`url` = ?, `title` = ?, `public` = ?, `description` = ?,
-			`lastmodified` = UNIX_TIMESTAMP()
-		WHERE `id` = ?
-		AND `user_id` = ?
-		");
-
-		$params = array(
-			htmlspecialchars_decode($url),
-			htmlspecialchars_decode($title),
-			$isPublic,
-			htmlspecialchars_decode($description),
-			$id,
-			$userid,
-		);
 
 		$result = $query->execute($params);
 
+		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(true);
+		$qb
+		->update('bookmarks', 'bm')
+		->set('bm.url', htmlspecialchars_decode($url))
+		->set('bm.title', htmlspecialchars_decode($title))
+		->set('bm.public', $isPublic)
+		->set('bm.description', htmlspecialchars_decode($description))
+		->set('bm.lastmodified', 'UNIX_TIMESTAMP()')
+		->where('bm.id = :bm_id')
+		->andWhere('bm.user_id = :user_id')
+		$qb->setParameters(array(
+		  ':user_id' => $userId,
+		  ':bm_id' => $id
+		));
+
+		$result = $qb->execute();
 		// Abort the operation if bookmark couldn't be set
 		// (probably because the user is not allowed to edit this bookmark)
 		if ($result == 0) {
@@ -442,9 +443,16 @@ class Bookmarks {
 		}
 
 		// Remove old tags
-		$sql = "DELETE FROM `*PREFIX*bookmarks_tags`  WHERE `bookmark_id` = ?";
-		$query = $this->db->prepare($sql);
-		$query->execute(array($id));
+
+		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(true);
+		$qb
+		->delete('bookmarks_tags', 'tgs')
+		->where('tgs.bookmark_id = :bm_id')
+		$qb->setParameters(array(
+		  ':bm_id' => $id
+		));
+		$qb->execute();
 
 		// Add New Tags
 		$this->addTags($id, $tags);
@@ -476,46 +484,68 @@ class Bookmarks {
 		$description = mb_substr($description, 0, 4096);
 
 		// Change lastmodified date if the record if already exists
-		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` like ? AND `user_id` = ?";
-		$query = $this->db->prepare($sql, 1);
-		$query->execute(array('%'.$decodedUrlNoPrefix, $userid)); // Find url in the db independantly from its protocol
-		if ($row = $query->fetch()) {
-			$params = array();
-			$titleStr = '';
+		
+		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(true);
+		$qb
+		->select('*')
+		->from('bookmarks')
+		->where($qb->expr()->like('url', '%:url')) // Find url in the db independantly from its protocol
+		->andWhere('user_id = :user_id')
+		$qb->setParameters(array(
+		  ':url' => $decodedUrlNoPrefix,
+		  ':user_id' => $userId
+		));
+		$row = $qb->execute()->fetch();
+		
+		if ($row) {
+			$qb = $this->db->getQueryBuilder();
+			$qb->automaticTablePrefix(true);
+			$qb
+			->update('bookmarks')
+			->set('lastmodified', 'UNIX_TIMESTAMP()')
+			->set('url', $decodedUrl);
 			if (trim($title) != '') { // Do we replace the old title
-				$titleStr = ' , title = ?';
-				$params[] = $title;
+				$qb->set('title', $title);
 			}
-			$descriptionStr = '';
+
 			if (trim($description) != '') { // Do we replace the old description
-				$descriptionStr = ' , description = ?';
-				$params[] = $description;
+				$qb->set('decription', $description);
 			}
-			$sql = "UPDATE `*PREFIX*bookmarks` SET `lastmodified` = "
-					. "UNIX_TIMESTAMP() $titleStr $descriptionStr , `url` = ? WHERE `url` like ? and `user_id` = ?";
-			$params[] = $decodedUrl;
-			$params[] = '%'.$decodedUrlNoPrefix;
-			$params[] = $userid;
-			$query = $this->db->prepare($sql);
-			$query->execute($params);
+
+			$qb
+			->where($qb->expr()->like('url', '%:url')) // Find url in the db independantly from its protocol
+			->andWhere('user_id = :user_id')
+			$qb->setParameters(array(
+			  ':url' => $decodedUrlNoPrefix,
+			  ':user_id' => $userId
+			));
+			$qb->execute();
 			return $row['id'];
 		} else {
-			$query = $this->db->prepare("
-			INSERT INTO `*PREFIX*bookmarks`
-			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
-			VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?)
-			");
+			$qb = $this->db->getQueryBuilder();
+			$qb->automaticTablePrefix(true);
+			$qb
+			->insert('bookmarks')
+			->values(array(
+				'url' => $decodedUrl,
+				'title' => htmlspecialchars_decode($title), // XXX: Should the title update above also decode it first?
+            	'user_id' => $userid,
+				'public' => $public,
+				'added' => 'UNIX_TIMESTAMP()'
+				'lastmodified' => 'UNIX_TIMESTAMP()',
+				'description' => $description
+			))
+			->where($qb->expr()->like('url', '%:url')) // Find url in the db independantly from its protocol
+			->andWhere('user_id = :user_id');
+			$qb->setParameters(array(
+			  ':url' => $decodedUrlNoPrefix,
+			  ':user_id' => $userId
+			));	
 
-			$params = array(
-				$decodedUrl,
-				htmlspecialchars_decode($title),
-				$userid,
-				$public,
-				$description,
-			);
-			$query->execute($params);
+			$qb->execute();
 
-			$insertId = $this->db->lastInsertId('*PREFIX*bookmarks');
+			$insertId = $qb->getLastInsertId();
 
 			if ($insertId !== false) {
 				$this->addTags($insertId, $tags);
@@ -531,23 +561,38 @@ class Bookmarks {
 	 * @param array $tags Set of tags to add to the bookmark
 	 * */
 	private function addTags($bookmarkID, $tags) {
-		$sql = 'INSERT INTO `*PREFIX*bookmarks_tags` (`bookmark_id`, `tag`) select ?, ? ';
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-
-		if ($dbType === 'mysql') {
-			$sql .= 'from dual ';
-		}
-		$sql .= 'where not exists(select * from `*PREFIX*bookmarks_tags` where `bookmark_id` = ? and `tag` = ?)';
-
-		$query = $this->db->prepare($sql);
 		foreach ($tags as $tag) {
 			$tag = trim($tag);
 			if (empty($tag)) {
 				//avoid saving white spaces
 				continue;
 			}
-			$params = array($bookmarkID, $tag, $bookmarkID, $tag);
-			$query->execute($params);
+
+			// check if tag for this bookmark exists
+
+			$qb = $this->db->getQueryBuilder();
+			$qb->automaticTablePrefix(true);
+			$qb
+			->select('*')
+			->from('bookmarks_tags')
+			->where('bookmark_id = :bm_id')
+			->andWhere('tag = :tag');
+			$qb->setParameters(array(
+			  ':tag' => $tag,
+			  ':bm_id' => $bookmarkID
+			));	
+
+			if ($qb->execute()->fetch()) continue;
+
+			$qb = $this->db->getQueryBuilder();
+			$qb->automaticTablePrefix(true);
+			$qb
+			->insert('bookmarks_tags')
+			->values(array(
+				'tag' => $tag,
+				'bookmark_id' => $bookmarkID
+			));
+			$qb->execute();
 		}
 	}
 
