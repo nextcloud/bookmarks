@@ -429,8 +429,8 @@ class Bookmarks {
 		->where('bm.id = :bm_id')
 		->andWhere('bm.user_id = :user_id');
 		$qb->setParameters(array(
-			':url' => htmlspecialchars_decode($url)),
-			':title' => htmlspecialchars_decode($title)),
+			':url' => htmlspecialchars_decode($url),
+			':title' => htmlspecialchars_decode($title),
 			':public' => $isPublic,
 			':description' => htmlspecialchars_decode($description),
 			':user_id' => $userid,
