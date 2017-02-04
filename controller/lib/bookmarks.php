@@ -213,7 +213,7 @@ class Bookmarks {
 		->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
 		->where('user_id = :user_id');
 		$qb->setParameters(array(
-		  ':user_id' => $userId,
+		  ':user_id' => $userid,
 		));
 
 		if ($public) {
