@@ -202,7 +202,7 @@ class Bookmarks {
 			$qb->select('*');
 		}
 
-		if (dbType == 'pgsql') {
+		if ($dbType == 'pgsql') {
 			$qb->selectAlias($qb->createFunction('array_to_string(array_agg(t.tag))'), 'tags');
         }else{
 			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(t.tag)'), 'tags');
