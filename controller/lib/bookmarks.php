@@ -76,7 +76,7 @@ class Bookmarks {
 		$qb->automaticTablePrefix(true);
 		$qb
 		->select('t.tag')
-		->selectAlias('COUNT(tag)', 'nbr')
+		->selectAlias('COUNT(t.bookmark_id)', 'nbr')
 		->from('bookmarks_tags', 't')
 		->innerJoin('t','bookmarks','b','b.id = t.bookmark_id AND b.user_id = :user_id');
 		if (!empty($filterTags)) {
