@@ -211,7 +211,8 @@ class Bookmarks {
 		$qb
 		->from('bookmarks', 'b')
 		->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
-		->where('user_id = :user_id');
+		->where('user_id = :user_id')
+		->groupBy('b.id');
 		$qb->setParameters(array(
 		  ':user_id' => $userid,
 		));
@@ -248,7 +249,7 @@ class Bookmarks {
 		return $bookmarks;
 	}
 
-	private function findBookmarksBuildFilter(&$qb, &$params, $filters, $filterTagOnly, $tagFilterConjunction, $dbType) {
+	private function findBookmarksBuildFilter(&$qb, $filters, $filterTagOnly, $tagFilterConjunction, $dbType) {
 		$connectWord = 'AND';
 		if ($tagFilterConjunction == 'or') {
 			$connectWord = 'OR';
