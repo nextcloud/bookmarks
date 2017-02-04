@@ -136,8 +136,8 @@ class Bookmarks {
 		$encodedUrl = htmlspecialchars_decode($url);
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
-    $qb
-    ->select('id')
+		$qb
+		->select('id')
 		->from('bookmarks')
 		->where('user_id = :user_id')
 		->andWhere('url = :url');
@@ -182,58 +182,60 @@ class Bookmarks {
 			$filters = array($filters);
 		}
 
-		$toSelect = '*';
 		$tableAttributes = array('id', 'url', 'title', 'user_id', 'description',
 			'public', 'added', 'lastmodified', 'clickcount',);
 
 		$returnTags = true;
-
+		
+		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(true);
+		
 		if ($requestedAttributes != null) {
-
 			$key = array_search('tags', $requestedAttributes);
 			if ($key == false) {
 				$returnTags = false;
 			} else {
 				unset($requestedAttributes[$key]);
 			}
-
-			$toSelect = implode(",", array_intersect($tableAttributes, $requestedAttributes));
+			$qb->select(array_intersect($tableAttributes, $requestedAttributes));
+		}else{
+			$qb->select('*');
 		}
 
-		if ($dbType == 'pgsql') {
-			$sql = "SELECT " . $toSelect . " FROM (SELECT *, (select array_to_string(array_agg(`tag`),',')
-					FROM `*PREFIX*bookmarks_tags` WHERE `bookmark_id` = `b2`.`id`) AS `tags`
-				FROM `*PREFIX*bookmarks` `b2`
-				WHERE `user_id` = ? ) as `b` WHERE true ";
-		} else {
-			$sql = "SELECT " . $toSelect . ", (SELECT GROUP_CONCAT(`tag`) FROM `*PREFIX*bookmarks_tags`
-				WHERE `bookmark_id` = `b`.`id`) AS `tags`
-				FROM `*PREFIX*bookmarks` `b`
-				WHERE `user_id` = ? ";
+		if (dbType == 'pgsql') {
+			$qb->selectAlias($qb->createFunction('array_to_string(array_agg(t.tag))'), 'tags');
+        }else{
+			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(t.tag)'), 'tags');
 		}
 
-		$params = array($userid);
+		$qb
+		->from('bookmarks', 'b')
+		->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
+		->where('user_id = :user_id');
+		$qb->setParameters(array(
+		  ':user_id' => $userId,
+		));
 
 		if ($public) {
-			$sql .= ' AND public = 1 ';
+			$qb->andWhere('public = 1');
 		}
-
+		
 		if (count($filters) > 0) {
-			$this->findBookmarksBuildFilter($sql, $params, $filters, $filterTagOnly, $tagFilterConjunction, $dbType);
+			$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $tagFilterConjunction, $dbType);
 		}
 
 		if (!in_array($sqlSortColumn, $tableAttributes)) {
 			$sqlSortColumn = 'lastmodified';
 		}
-		$sql .= " ORDER BY " . $sqlSortColumn . " DESC ";
-		if ($limit == -1 || $limit === false) {
-			$limit = null;
-			$offset = null;
+		$qb->orderBy($sqlSortColumn, 'DESC');
+		if ($limit != -1 || $limit !== false) {
+			$qb->setMaxResults($limit);
+			if ($offset != null) {
+				$qb->setFirstResult($offset);
+			}
 		}
 
-		$query = $this->db->prepare($sql, $limit, $offset);
-		$query->execute($params);
-		$results = $query->fetchAll();
+		$results = $qb->execute()->fetchAll();
 		$bookmarks = array();
 		foreach ($results as $result) {
 			if ($returnTags) {
@@ -246,44 +248,28 @@ class Bookmarks {
 		return $bookmarks;
 	}
 
-	private function findBookmarksBuildFilter(&$sql, &$params, $filters, $filterTagOnly, $tagFilterConjunction, $dbType) {
-		$tagOrSearch = false;
+	private function findBookmarksBuildFilter(&$qb, &$params, $filters, $filterTagOnly, $tagFilterConjunction, $dbType) {
 		$connectWord = 'AND';
-
 		if ($tagFilterConjunction == 'or') {
-			$tagOrSearch = true;
 			$connectWord = 'OR';
 		}
 
-		if ($filterTagOnly) {
-			if ($tagOrSearch) {
-				$sql .= 'AND (';
-			} else {
-				$sql .= 'AND';
-			}
-			$existClause = " exists (SELECT `id` FROM  `*PREFIX*bookmarks_tags`
-				`t2` WHERE `t2`.`bookmark_id` = `b`.`id` AND `tag` = ?) ";
-			$sql .= str_repeat($existClause . $connectWord, count($filters));
-			if ($tagOrSearch) {
-				$sql = rtrim($sql, 'OR');
-				$sql .= ')';
-			} else {
-				$sql = rtrim($sql, 'AND');
-			}
-			$params = array_merge($params, $filters);
-		} else {
-			if ($dbType == 'mysql') { //Dirty hack to allow usage of alias in where
-				$sql .= ' HAVING true ';
-			}
-			foreach ($filters as $filter) {
-				if ($dbType == 'mysql') {
-					$sql .= ' AND lower( concat(url,title,description,IFNULL(tags,\'\') )) like ? ';
-				} else {
-					$sql .= ' AND lower(url || title || description || IFNULL(tags,\'\') ) like ? ';
+		$filterExpressions = array();
+		$otherColumns = array('b.url', 'b.title', 'b.description');
+		foreach ($filters as $filter) {
+			$filterExpressions[] = 't.tag = ' . $qb->createNamedParamter($filter);
+			if ($filterTagOnly) {
+				foreach ($otherColumns as $col) {
+					$filterExpressions[] = 'lower(' . $col . ') like ' . $qb->createNamedParamter('%' . strtolower($filter) . '%');
 				}
-				$params[] = '%' . strtolower($filter) . '%';
 			}
 		}
+		if ($connectWord == 'AND') {
+			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $filterExpressions);
+		}else {
+			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
+		}
+		$qb->andWhere($filterExpression);
 	}
 
 	/**
