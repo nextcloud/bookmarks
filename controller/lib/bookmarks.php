@@ -515,10 +515,11 @@ class Bookmarks {
 			}
 
 			$qb
-			->where($qb->expr()->like('url', '%'.$decodedUrlNoPrefix)) // Find url in the db independantly from its protocol
+			->where($qb->expr()->like('url', ':url')) // Find url in the db independantly from its protocol
 			->andWhere('user_id = :user_id');
 			$qb->setParameters(array(
-			  ':user_id' => $userid
+			  ':user_id' => $userid,
+			  ':url' => '%'.$decodedUrlNoPrefix
 			));
 			$qb->execute();
 			return $row['id'];
