@@ -445,10 +445,7 @@ class Bookmarks {
 		$qb->setParameters([
 			'bid' => $id
 		]);
-		$s = $qb->getSQL();
 		$qb->execute();
-
-
 
 		// Add New Tags
 		$this->addTags($id, $tags);
@@ -519,7 +516,6 @@ class Bookmarks {
 					'title' => $title,
 					'description' => $description,
 				]);
-				$s = $qb->getSQL();
 				$qb->execute();
 			return $row['id'];
 		} else {
