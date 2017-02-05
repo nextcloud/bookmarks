@@ -85,8 +85,10 @@ class Bookmarks {
 		$qb
 		->groupBy('t.tag')
 		->orderBy('nbr', 'DESC')
-		->setFirstResult($offset)
-		->setMaxResults($limit);
+		->setFirstResult($offset);
+		if ($limit != -1) {
+			$qb->setMaxResults($limit);
+		}
 		$qb->setParameter(':user_id', $userId);
 		$tags = $qb->execute()->fetchAll();
 		return $tags;
