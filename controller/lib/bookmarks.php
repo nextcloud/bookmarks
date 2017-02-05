@@ -229,7 +229,7 @@ class Bookmarks {
 			$sqlSortColumn = 'lastmodified';
 		}
 		$qb->orderBy($sqlSortColumn, 'DESC');
-		if ($limit != -1 || $limit !== false) {
+		if ($limit != -1 && $limit !== false) {
 			$qb->setMaxResults($limit);
 			if ($offset != null) {
 				$qb->setFirstResult($offset);
