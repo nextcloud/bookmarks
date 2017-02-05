@@ -26,6 +26,7 @@ namespace OCA\Bookmarks\Controller\Lib;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -211,10 +212,10 @@ class Bookmarks {
 		}
 
 		$qb
-		->from('bookmarks', 'b')
-		->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
-		->where('user_id = :user_id')
-		->groupBy('b.id');
+			->from('bookmarks', 'b')
+			->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
+			->where('user_id = :user_id')
+			->groupBy('b.id');
 		$qb->setParameters(array(
 		  ':user_id' => $userid,
 		));
@@ -251,17 +252,23 @@ class Bookmarks {
 		return $bookmarks;
 	}
 
-	private function findBookmarksBuildFilter(&$qb, $filters, $filterTagOnly, $tagFilterConjunction, $dbType) {
+	/**
+	 * @param IQueryBuilder $qb
+	 * @param array $filters
+	 * @param bool $filterTagOnly
+	 * @param string $tagFilterConjunction
+	 */
+	private function findBookmarksBuildFilter(&$qb, $filters, $filterTagOnly, $tagFilterConjunction) {
 		$connectWord = 'AND';
 		if ($tagFilterConjunction == 'or') {
 			$connectWord = 'OR';
 		}
 
-		$filterExpressions = array();
-		$otherColumns = array('b.url', 'b.title', 'b.description');
+		$filterExpressions = [];
+		$otherColumns = ['b.url', 'b.title', 'b.description'];
 		foreach ($filters as $filter) {
 			$filterExpressions[] = 't.tag = ' . $qb->createNamedParameter($filter);
-			if ($filterTagOnly) {
+			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
 					$filterExpressions[] = 'lower(' . $col . ') like ' . $qb->createNamedParameter('%' . strtolower($filter) . '%');
 				}
@@ -409,17 +416,17 @@ class Bookmarks {
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
 		$qb
-		->update('bookmarks', 'bm')
-		->set('bm.url', $qb->createNamedParameter(htmlspecialchars_decode($url)))
-		->set('bm.title', $qb->createNamedParameter(htmlspecialchars_decode($title)))
-		->set('bm.public', $qb->createNamedParameter($isPublic))
-		->set('bm.description', $qb->createNamedParameter(htmlspecialchars_decode($description)))
-		->set('bm.lastmodified', 'UNIX_TIMESTAMP()')
-		->where('bm.id = :bm_id')
-		->andWhere('bm.user_id = :user_id');
+			->update('bookmarks', 'bm')
+			->set('bm.url', $qb->createNamedParameter(htmlspecialchars_decode($url)))
+			->set('bm.title', $qb->createNamedParameter(htmlspecialchars_decode($title)))
+			->set('bm.public', $qb->createNamedParameter($isPublic))
+			->set('bm.description', $qb->createNamedParameter(htmlspecialchars_decode($description)))
+			->set('bm.lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
+			->where('bm.id = :bm_id')
+			->andWhere('bm.user_id = :user_id');
 		$qb
-		->setParameter(':user_id', $userid)
-		->setParameter(':bm_id', $id);
+			->setParameter(':user_id', $userid)
+			->setParameter(':bm_id', $id);
 
 		$result = $qb->execute();
 		// Abort the operation if bookmark couldn't be set
@@ -433,12 +440,15 @@ class Bookmarks {
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
 		$qb
-		->delete('bookmarks_tags', 'tgs')
-		->where('tgs.bookmark_id = :bm_id');
-		$qb->setParameters(array(
-		  ':bm_id' => $id
-		));
+			->delete('bookmarks_tags')
+			->where($qb->expr()->eq('bookmark_id', $qb->createParameter('bid')));
+		$qb->setParameters([
+			'bid' => $id
+		]);
+		$s = $qb->getSQL();
 		$qb->execute();
+
+
 
 		// Add New Tags
 		$this->addTags($id, $tags);
@@ -474,37 +484,43 @@ class Bookmarks {
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
 		$qb
-		->select('*')
-		->from('bookmarks')
-		->where($qb->expr()->like('url', $qb->createNamedParameter('%'.$decodedUrlNoPrefix))) // Find url in the db independantly from its protocol
-		->andWhere('user_id = :user_id');
-		$qb->setParameters(array(
-		  ':user_id' => $userid
-		));
-		$row = $qb->execute()->fetch();
+			->select('*')
+			->from('bookmarks')
+			->where($qb->expr()->like('url', $qb->createParameter('url'))) // Find url in the db independantly from its protocol
+			->andWhere($qb->expr()->eq('user_id', $qb->createParameter('userID')));
+		$qb->setParameters([
+			'userID' => $userid,
+			'url' => '%'.$decodedUrlNoPrefix
+		]);
+			$row = $qb->execute()->fetch();
 		
 		if ($row) {
 			$qb = $this->db->getQueryBuilder();
 			$qb->automaticTablePrefix(true);
 			$qb
-			->update('bookmarks')
-			->set('lastmodified', 'UNIX_TIMESTAMP()')
-			->set('url', $decodedUrl);
+				->update('bookmarks')
+				->set('lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
+				->set('url', $qb->createParameter('url'));
 			if (trim($title) != '') { // Do we replace the old title
-				$qb->set('title', $title);
+				$qb->set('title', $qb->createParameter('title'));
 			}
 
 			if (trim($description) != '') { // Do we replace the old description
-				$qb->set('decription', $description);
+				$qb->set('description', $qb->createParameter('description'));
 			}
 
 			$qb
-			->where($qb->expr()->like('url', $qb->createNamedParameter('%'.$decodedUrlNoPrefix))) // Find url in the db independantly from its protocol
-			->andWhere('user_id = :user_id');
-			$qb->setParameters(array(
-			  ':user_id' => $userid,
-			));
-			$qb->execute();
+				->where($qb->expr()->like('url', $qb->createParameter('compareUrl'))) // Find url in the db independantly from its protocol
+				->andWhere($qb->expr()->eq('user_id', $qb->createParameter('userID')));
+				$qb->setParameters([
+					'userID' => $userid,
+					'url' => $decodedUrl,
+					'compareUrl' => '%'.$decodedUrlNoPrefix,
+					'title' => $title,
+					'description' => $description,
+				]);
+				$s = $qb->getSQL();
+				$qb->execute();
 			return $row['id'];
 		} else {
 			$qb = $this->db->getQueryBuilder();
