@@ -408,18 +408,14 @@ class Bookmarks {
 		$qb->automaticTablePrefix(true);
 		$qb
 		->update('bookmarks', 'bm')
-		->set('bm.url', ':url')
-		->set('bm.title', ':title')
-		->set('bm.public', ':public')
-		->set('bm.description', ':description')
+		->set('bm.url', $qb->createNamedParameter(htmlspecialchars_decode($url)))
+		->set('bm.title', $qb->createNamedParameter(htmlspecialchars_decode($title)))
+		->set('bm.public', $qb->createNamedParameter($isPublic))
+		->set('bm.description', $qb->createNamedParameter(htmlspecialchars_decode($description)))
 		->set('bm.lastmodified', 'UNIX_TIMESTAMP()')
 		->where('bm.id = :bm_id')
 		->andWhere('bm.user_id = :user_id');
 		$qb->setParameters(array(
-			':url' => htmlspecialchars_decode($url),
-			':title' => htmlspecialchars_decode($title),
-			':public' => $isPublic,
-			':description' => htmlspecialchars_decode($description),
 			':user_id' => $userid,
 			':bm_id' => $id
 		));
