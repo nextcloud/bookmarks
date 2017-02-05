@@ -353,7 +353,7 @@ class Bookmarks {
 		$qb->automaticTablePrefix(true);
 		$qb
 		->update('bookmarks_tags', 'tgs')
-		->set('tgs.tag', $new)
+		->set('tgs.tag', $qb->createNamedParameter($new))
 		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
 		->where('tgs.tag = :oldtag')
 		->andWhere('bm.user_id = :user_id');
@@ -476,10 +476,9 @@ class Bookmarks {
 		$qb
 		->select('*')
 		->from('bookmarks')
-		->where($qb->expr()->like('url', ':url')) // Find url in the db independantly from its protocol
+		->where($qb->expr()->like('url', $qb->createNamedParameter('%'.$decodedUrlNoPrefix))) // Find url in the db independantly from its protocol
 		->andWhere('user_id = :user_id');
 		$qb->setParameters(array(
-		  ':url' => '%'.$decodedUrlNoPrefix,
 		  ':user_id' => $userid
 		));
 		$row = $qb->execute()->fetch();
@@ -500,11 +499,10 @@ class Bookmarks {
 			}
 
 			$qb
-			->where($qb->expr()->like('url', ':url')) // Find url in the db independantly from its protocol
+			->where($qb->expr()->like('url', $qb->createNamedParameter('%'.$decodedUrlNoPrefix))) // Find url in the db independantly from its protocol
 			->andWhere('user_id = :user_id');
 			$qb->setParameters(array(
 			  ':user_id' => $userid,
-			  ':url' => '%'.$decodedUrlNoPrefix
 			));
 			$qb->execute();
 			return $row['id'];
