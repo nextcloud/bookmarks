@@ -474,10 +474,10 @@ class Bookmarks {
 		$qb
 		->select('*')
 		->from('bookmarks')
-		->where($qb->expr()->like('url', '%:url')) // Find url in the db independantly from its protocol
+		->where($qb->expr()->like('url', ':url')) // Find url in the db independantly from its protocol
 		->andWhere('user_id = :user_id');
 		$qb->setParameters(array(
-		  ':url' => $decodedUrlNoPrefix,
+		  ':url' => '%'.$decodedUrlNoPrefix,
 		  ':user_id' => $userid
 		));
 		$row = $qb->execute()->fetch();
