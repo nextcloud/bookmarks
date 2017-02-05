@@ -258,10 +258,10 @@ class Bookmarks {
 		$filterExpressions = array();
 		$otherColumns = array('b.url', 'b.title', 'b.description');
 		foreach ($filters as $filter) {
-			$filterExpressions[] = 't.tag = ' . $qb->createNamedParamter($filter);
+			$filterExpressions[] = 't.tag = ' . $qb->createNamedParameter($filter);
 			if ($filterTagOnly) {
 				foreach ($otherColumns as $col) {
-					$filterExpressions[] = 'lower(' . $col . ') like ' . $qb->createNamedParamter('%' . strtolower($filter) . '%');
+					$filterExpressions[] = 'lower(' . $col . ') like ' . $qb->createNamedParameter('%' . strtolower($filter) . '%');
 				}
 			}
 		}
