@@ -415,10 +415,9 @@ class Bookmarks {
 		->set('bm.lastmodified', 'UNIX_TIMESTAMP()')
 		->where('bm.id = :bm_id')
 		->andWhere('bm.user_id = :user_id');
-		$qb->setParameters(array(
-			':user_id' => $userid,
-			':bm_id' => $id
-		));
+		$qb
+		->setParameter(':user_id', $userid)
+		->setParameter(':bm_id', $id);
 
 		$result = $qb->execute();
 		// Abort the operation if bookmark couldn't be set
