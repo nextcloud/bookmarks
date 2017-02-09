@@ -79,7 +79,9 @@ class Bookmarks {
 		->select('t.tag')
 		->selectAlias($qb->createFunction('COUNT(bookmark_id)'), 'nbr')
 		->from('bookmarks_tags', 't')
-		->innerJoin('t','bookmarks','b','b.id = t.bookmark_id AND b.user_id = :user_id');
+		->innerJoin('t','bookmarks','b',$qb->expr()->andX(
+			$qb->expr()->eq('b.id', 't.bookmark_id'),
+			$qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId));
 		if (!empty($filterTags)) {
 			$qb->where($qb->expr()->notIn('t.tag', $filterTags));
 		}
@@ -90,7 +92,6 @@ class Bookmarks {
 		if ($limit != -1) {
 			$qb->setMaxResults($limit);
 		}
-		$qb->setParameter(':user_id', $userId);
 		$tags = $qb->execute()->fetchAll();
 		return $tags;
 	}
@@ -107,24 +108,16 @@ class Bookmarks {
 		$qb
 		->select('*')
 		->from('bookmarks')
-		->where('user_id = :user_id')
-		->andWhere('id = :bm_id');
-		$qb->setParameters(array(
-		  ':user_id' => $userId,
-		  ':bm_id' => $id
-		));
+		->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId))
+		->andWhere($qb->expr()->eq('id', $qb->createNamedParameter($id));
 		$result = $qb->execute()->fetch();
 		
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
-    $qb
+		$qb
 		->select('tag')
 		->from('bookmarks_tags')
-		->where('bookmark_id = :bm_id');
-		$qb->setParameters(array(
-		  ':user_id' => $userId,
-		  ':bm_id' => $id
-		));
+		->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id));
 		$result['tags'] = $qb->execute()->fetchColumn();
 		return $result;
 	}
@@ -142,12 +135,8 @@ class Bookmarks {
 		$qb
 		->select('id')
 		->from('bookmarks')
-		->where('user_id = :user_id')
-		->andWhere('url = :url');
-		$qb->setParameters(array(
-		  ':user_id' => $userId,
-		  ':url' => $encodedUrl
-		));
+		->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId))
+		->andWhere($qb->expr()->eq('url', $qb->createNamedParameter($encodedUrl));
 		$result = $qb->execute()->fetch();
 		if ($result) {
 			return $result['id'];
@@ -212,13 +201,10 @@ class Bookmarks {
 		}
 
 		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
-			->where('user_id = :user_id')
-			->groupBy('b.id');
-		$qb->setParameters(array(
-		  ':user_id' => $userid,
-		));
+		->from('bookmarks', 'b')
+		->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
+		->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid))
+		->groupBy('b.id');
 
 		if ($public) {
 			$qb->andWhere('public = 1');
@@ -267,10 +253,10 @@ class Bookmarks {
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
 		foreach ($filters as $filter) {
-			$filterExpressions[] = 't.tag = ' . $qb->createNamedParameter($filter);
+			$filterExpressions[] = $qb->expr()->eq('t.tag', $qb->createNamedParameter($filter));
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
-					$filterExpressions[] = 'lower(' . $col . ') like ' . $qb->createNamedParameter('%' . strtolower($filter) . '%');
+					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $col . ')', $qb->createNamedParameter('%' . strtolower($filter) . '%'));
 				}
 			}
 		}
@@ -296,12 +282,8 @@ class Bookmarks {
 		$qb
 		->select('id')
 		->from('bookmarks')
-		->where('user_id = :user_id')
-		->andWhere('id = :bm_id');
-		$qb->setParameters(array(
-		  ':user_id' => $userId,
-		  ':bm_id' => $id
-		));
+		->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId))
+		->andWhere($qb->expr()->eq('id', $qb->createNamedParameter($id))
 
 		$id = $qb->execute()->fetchColumn();
 		if ($id === false) {
@@ -312,20 +294,14 @@ class Bookmarks {
 		$qb->automaticTablePrefix(true);
 		$qb
 		->delete('bookmarks')
-		->where('id = :bm_id');
-		$qb->setParameters(array(
-		  ':bm_id' => $id
-		));
+		->where($qb->expr()->eq('id', $qb->createNamedParameter($id))
 		$qb->execute();
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
 		$qb
 		->delete('bookmarks_tags')
-		->where('bookmark_id = :bm_id');
-		$qb->setParameters(array(
-		  ':bm_id' => $id
-		  ));
+		->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id))
 		$qb->execute();
 		return true;
 	}
@@ -345,29 +321,20 @@ class Bookmarks {
 		->delete('bookmarks_tags', 'tgs')
 		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
 		->innerJoin('t', 'bookmarks_tags', 'tgs.bookmark_id = t.bookmark_id')
-		->where('tgs.tag = :newtag')
-		->andWhere('bm.user_id = :user_id')
-		->andWhere('t.tag = :oldtag');
-		$qb->setParameters(array(
-		  ':newtag' => $new,
-		  ':oldtag' => $old,
-		  ':user_id' => $userId
-		));
+		->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($new))
+		->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId))
+		->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old))
 		$qb->execute();
 
 		// Update tags to the new label
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
 		$qb
-		->update('bookmarks_tags', 'tgs')
-		->set('tgs.tag', $qb->createNamedParameter($new))
-		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
-		->where('tgs.tag = :oldtag')
-		->andWhere('bm.user_id = :user_id');
-		$qb->setParameters(array(
-		  ':oldtag' => $old,
-		  ':user_id' => $userId
-		));
+			->update('bookmarks_tags', 'tgs')
+			->set('tgs.tag', $qb->createNamedParameter($new))
+			->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
+			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old))
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId))
 		$qb->execute();
 
 		return true;
@@ -383,15 +350,10 @@ class Bookmarks {
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
 		$qb
-		->delete('bookmarks_tags', 'tgs')
-		->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
-		->where('tgs.tag = :tag')
-		->andWhere('bm.user_id = :user_id')
-		->andWhere('t.tag = :oldtag');
-		$qb->setParameters(array(
-		  ':tag' => $old,
-		  ':user_id' => $userId
-		));
+			->delete('bookmarks_tags', 'tgs')
+			->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
+			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old))
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId));
 		return $qb->execute();
 	}
 
@@ -422,11 +384,8 @@ class Bookmarks {
 			->set('bm.public', $qb->createNamedParameter($isPublic))
 			->set('bm.description', $qb->createNamedParameter(htmlspecialchars_decode($description)))
 			->set('bm.lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
-			->where('bm.id = :bm_id')
-			->andWhere('bm.user_id = :user_id');
-		$qb
-			->setParameter(':user_id', $userid)
-			->setParameter(':bm_id', $id);
+			->where($qb->expr()->eq('bm.id', $qb->createNamedParameter($id))
+			->where($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userid));
 
 		$result = $qb->execute();
 		// Abort the operation if bookmark couldn't be set
