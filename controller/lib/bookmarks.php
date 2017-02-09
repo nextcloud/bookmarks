@@ -529,8 +529,8 @@ class Bookmarks {
 			$qb
 			->select('*')
 			->from('bookmarks_tags')
-				->where($qb->expr()->eq('bookmark_id', $qb->createParameter($bookmarkID)))
-				->andWhere($qb->expr()->eq('tag', $qb->createParameter($tag)));
+				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkID)))
+				->andWhere($qb->expr()->eq('tag', $qb->createNamedParameter($tag)));
 
 			if ($qb->execute()->fetch()) continue;
 
