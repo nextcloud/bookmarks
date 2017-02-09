@@ -5,12 +5,12 @@
 	<name>Bookmarks</name>
 	<summary>A Bookmark manager for Nextcloud and ownCloud</summary>
 	<description><![CDATA[Bookmark manager for Nextcloud and ownCloud]]></description>
-	<licence>AGPL</licence>
+	<version>0.9.1</version>
+	<licence>agpl</licence>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author>Marvin Thomas Rabe</author>
 	<author>Stefan Klemm</author>
-	<version>0.9.1</version>
-	<category>productivity</category>
+	<category>organization</category>
 	<website>https://github.com/nextcloud/bookmarks</website>
 	<bugs>https://github.com/nextcloud/bookmarks/issues</bugs>
 	<repository type="git">https://github.com/nextcloud/bookmarks.git</repository>
