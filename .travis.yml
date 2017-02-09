@@ -91,6 +91,11 @@ script:
   # Test lint
   - cd apps/$APP_NAME
   - find . -name \*.php -exec php -l "{}" \;
+  
+  # Check info.xml schema validity
+  - wget https://apps.nextcloud.com/schema/apps/info.xsd
+  - xmllint appinfo/info.xml --schema info.xsd --noout
+  - rm info.xsd
 
   # Run phpunit tests
   - cd tests
