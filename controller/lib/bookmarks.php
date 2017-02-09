@@ -201,12 +201,15 @@ class Bookmarks {
         }else{
 			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(t.tag)'), 'tags');
 		}
+		if (!in_array($sqlSortColumn, $tableAttributes)) {
+			$sqlSortColumn = 'lastmodified';
+		}
 
 		$qb
 			->from('bookmarks', 'b')
 			->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)))
-			->groupBy($selectedAttributes);
+			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
 
 		if ($public) {
 			$qb->andWhere('public = 1');
@@ -216,9 +219,6 @@ class Bookmarks {
 			$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $tagFilterConjunction, $dbType);
 		}
 
-		if (!in_array($sqlSortColumn, $tableAttributes)) {
-			$sqlSortColumn = 'lastmodified';
-		}
 		$qb->orderBy($sqlSortColumn, 'DESC');
 		if ($limit != -1 && $limit !== false) {
 			$qb->setMaxResults($limit);
