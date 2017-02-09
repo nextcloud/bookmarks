@@ -189,10 +189,12 @@ class Bookmarks {
 			} else {
 				unset($requestedAttributes[$key]);
 			}
-			$qb->select(array_intersect($tableAttributes, $requestedAttributes));
+			$selectedAttributes = array_intersect($tableAttributes, $requestedAttributes);
+			$qb->select($selectedAttributes);
 		}else{
-			$qb->select('*');
+			$selectedAttributes = $tableAttributes;
 		}
+		$qb->select($selectedAttributes);
 
 		if ($dbType == 'pgsql') {
 			$qb->selectAlias($qb->createFunction("array_to_string(array_agg(t.tag), ',')"), 'tags');
@@ -203,7 +205,8 @@ class Bookmarks {
 		$qb
 			->from('bookmarks', 'b')
 			->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
-			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)));
+			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)))
+			->groupBy($selectedAttributes);
 
 		if ($public) {
 			$qb->andWhere('public = 1');
