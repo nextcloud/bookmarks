@@ -203,8 +203,7 @@ class Bookmarks {
 		$qb
 			->from('bookmarks', 'b')
 			->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
-			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)))
-			->groupBy('b.id');
+			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)));
 
 		if ($public) {
 			$qb->andWhere('public = 1');
