@@ -378,14 +378,14 @@ class Bookmarks {
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(true);
 		$qb
-			->update('bookmarks', 'bm')
-			->set('bm.url', $qb->createNamedParameter(htmlspecialchars_decode($url)))
-			->set('bm.title', $qb->createNamedParameter(htmlspecialchars_decode($title)))
-			->set('bm.public', $qb->createNamedParameter($isPublic))
-			->set('bm.description', $qb->createNamedParameter(htmlspecialchars_decode($description)))
-			->set('bm.lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
-			->where($qb->expr()->eq('bm.id', $qb->createNamedParameter($id)))
-			->where($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userid)));
+			->update('bookmarks')
+			->set('url', $qb->createNamedParameter(htmlspecialchars_decode($url)))
+			->set('title', $qb->createNamedParameter(htmlspecialchars_decode($title)))
+			->set('public', $qb->createNamedParameter($isPublic))
+			->set('description', $qb->createNamedParameter(htmlspecialchars_decode($description)))
+			->set('lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
+			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)));
 
 		$result = $qb->execute();
 		// Abort the operation if bookmark couldn't be set
