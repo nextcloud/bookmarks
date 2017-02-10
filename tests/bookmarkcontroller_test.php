@@ -20,6 +20,7 @@ class Test_BookmarkController extends TestCase {
 	private $userManager;
 	/** @var	PublicController */
 	private $controller;
+	private $publicController;
 
 	protected function setUp() {
 		parent::setUp();
@@ -43,6 +44,7 @@ class Test_BookmarkController extends TestCase {
 		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $clientService, $logger);
 
 		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager);
+		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUser, $this->db, $l, $this->libBookmarks, $this->userManager);
 	}
 
 	function setupBookmarks() {
@@ -62,7 +64,7 @@ class Test_BookmarkController extends TestCase {
 		$this->cleanDB();
 		$this->setupBookmarks();
 
-		$output = $this->controller->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->otherUser);
+		$output = $this->publicController->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->userid);
 		$data = $output->getData();
 		$this->assertEquals(1, count($data));
 	}
@@ -80,7 +82,7 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals(2, count($data));
 
 		// public should see this bookmark
-		$output = $this->controller->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->otherUser);
+		$output = $this->publicController->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->userid);
 		$data = $output->getData();
 		$this->assertEquals(2, count($data));
 	}
@@ -99,7 +101,7 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals(2, count($data));
 
 		// public should not see this bookmark
-		$output = $this->controller->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->otherUser);
+		$output = $this->publicController->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->userid);
 		$data = $output->getData();
 		$this->assertEquals(3, count($data));
 	}
