@@ -84,6 +84,45 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($this->userid, 'http://nextcloud.com', 'Nextcloud project', array('oc', 'cloud'), 'An awesome project');
 		$this->assertEquals(array(0 => array('tag' => 'cloud', 'nbr' => 1), 1 => array('tag' => 'oc', 'nbr' => 1)), $this->libBookmarks->findTags($this->userid));
 	}
+  
+	function testRenameTag() {
+		$this->cleanDB();
+		$secondUser = $this->userid . "andHisClone435";
+		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->assertEquals($this->libBookmarks->findTags($this->userid), [
+			array('tag' => 'one', 'nbr' => 2),
+			array('tag' => 'two', 'br' => 2),
+			array('tag' => 'four', 'nbr' => 1),
+			array('tag' => 'three', 'nbr' => 1)
+		]);
+		$this->assertEquals($this->libBookmarks->findTags($secondUser), [
+			array('tag' => 'one', 'nbr' => 2),
+			array('tag' => 'two', 'br' => 2),
+			array('tag' => 'four', 'nbr' => 1),
+			array('tag' => 'three', 'nbr' => 1)
+		]);
+
+		$this->libBookmarks->renameTag($this->userid, 'four', 'one');
+		
+		$this->assertEquals($this->libBookmarks->findTags($this->userid), [
+			array('tag' => 'one', 'nbr' => 3),
+			array('tag' => 'two', 'br' => 2),
+			array('tag' => 'three', 'nbr' => 1)
+		]);
+		$this->assertEquals($this->libBookmarks->findTags($secondUser), [
+			array('tag' => 'one', 'nbr' => 2),
+			array('tag' => 'two', 'br' => 2),
+			array('tag' => 'four', 'nbr' => 1),
+			array('tag' => 'three', 'nbr' => 1)
+		]);
+	}
 
 	function testFindUniqueBookmark() {
 		$this->cleanDB();
