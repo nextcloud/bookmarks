@@ -25,7 +25,9 @@ class TagsController extends ApiController {
 	 * @param string $old_name
 	 * @return JSONResponse
 	 *
+	 * @CORS
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 */
 	public function deleteTag($old_name = "") {
 
@@ -42,7 +44,9 @@ class TagsController extends ApiController {
 	 * @param string $new_name
 	 * @return JSONResponse
 	 *
+	 * @CORS
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 */
 	public function renameTag($old_name = "", $new_name = "") {
 
@@ -55,7 +59,9 @@ class TagsController extends ApiController {
 	}
 
 	/**
+	 * @CORS
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 */
 	public function fullTags() {
 		

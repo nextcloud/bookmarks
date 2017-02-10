@@ -16,6 +16,7 @@ use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
+use \OC\User\Manager;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 use \OCA\Bookmarks\Controller\Lib\ExportResponse;
 use \OCA\Bookmarks\Controller\Lib\Helper;
@@ -26,17 +27,19 @@ class BookmarkController extends ApiController {
 	private $userId;
 	private $db;
 	private $l10n;
+	private $userManager;
 
 	/** @var Bookmarks */
 	private $bookmarks;
 
-	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks) {
+	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks, Manager $userManager) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->db = $db;
 		$this->request = $request;
 		$this->l10n = $l10n;
 		$this->bookmarks = $bookmarks;
+		$this->userManager = $userManager;
 	}
 
 	/**
@@ -59,13 +62,23 @@ class BookmarkController extends ApiController {
 	 * @param string $sort
 	 * @return JSONResponse
 	 *
+	 * @CORS
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 */
-	public function getBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent") {
-
-		if ($type == 'rel_tags') {
+	public function getBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent", $user = null) {
+		if ($user == null) {
+			$user = $this->userId;
+			$publicOnly = false;
+		}else {
+			$publicOnly = true;
+			if ($this->userManager->userExists($user) == false) {
+				return $this->newJsonErrorMessage("User could not be identified");
+			}
+		}
+		if ($type == 'rel_tags' && !$publicOnly) { // XXX: libbookmarks#findTags needs a publicOnly option
 			$tags = $this->bookmarks->analyzeTagRequest($tag);
-			$qtags = $this->bookmarks->findTags($this->userId, $tags);
+			$qtags = $this->bookmarks->findTags($user, $tags);
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
 		} else { // type == bookmark
 			$filterTag = $this->bookmarks->analyzeTagRequest($tag);
@@ -77,7 +90,7 @@ class BookmarkController extends ApiController {
 			} else {
 				$sqlSortColumn = 'lastmodified';
 			}
-			$bookmarks = $this->bookmarks->findBookmarks($this->userId, $offset, $sqlSortColumn, $filterTag, true);
+			$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag, true, 10, $publicOnly);
 			return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
 		}
 	}
@@ -90,7 +103,9 @@ class BookmarkController extends ApiController {
 	 * @param string $description
 	 * @return JSONResponse
 	 *
+	 * @CORS
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 */
 	public function newBookmark($url = "", $item = array(), $title = "", $is_public = false, $description = "") {
 		$title = trim($title);
@@ -165,7 +180,9 @@ class BookmarkController extends ApiController {
 	 * @param string $description
 	 * @return JSONResponse
 	 *
+	 * @CORS
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 */
 	public function editBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
 
@@ -203,7 +220,9 @@ class BookmarkController extends ApiController {
 	 * @param int $id
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 *
+	 * @CORS
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 */
 	public function deleteBookmark($id = -1) {
 		if ($id == -1) {

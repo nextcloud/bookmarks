@@ -56,7 +56,8 @@ class Application extends App {
 				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
 				$c->query('ServerContainer')->getDatabaseConnection(),
 				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
-				$c->query('ServerContainer')->query(Bookmarks::class)
+				$c->query('ServerContainer')->query(Bookmarks::class),
+				$c->query('ServerContainer')->getUserManager()
 			);
 		});
 
@@ -69,18 +70,6 @@ class Application extends App {
 				$c->query('ServerContainer')->query(Bookmarks::class)
 			);
 		});
-
-		$container->registerService('PublicController', function($c) {
-			/** @var IContainer $c */
-			return new PublicController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
-				$c->query('ServerContainer')->query(Bookmarks::class),
-				$c->query('ServerContainer')->getUserManager()
-			);
-		});
-
 	}
 
 }

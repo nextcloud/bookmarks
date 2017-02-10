@@ -2,15 +2,15 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use OCA\Bookmarks\Controller\Rest\PublicController;
+use OCA\Bookmarks\Controller\Rest\BookmarkController;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
 
 /**
- * Class Test_PublicController_Bookmarks
+ * Class Test_BookmarkController
  *
  * @group DB
  */
-class Test_PublicController_Bookmarks extends TestCase {
+class Test_BookmarkController extends TestCase {
 
 	/** @var	Bookmarks */
 	protected $libBookmarks;
@@ -19,7 +19,7 @@ class Test_PublicController_Bookmarks extends TestCase {
 	private $db;
 	private $userManager;
 	/** @var	PublicController */
-	private $publicController;
+	private $controller;
 
 	protected function setUp() {
 		parent::setUp();
@@ -38,72 +38,86 @@ class Test_PublicController_Bookmarks extends TestCase {
 		$logger = \OC::$server->getLogger();
 		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $clientService, $logger);
 
-		$this->publicController = new PublicController("bookmarks", $this->request, $this->userid, $this->libBookmarks, $this->userManager);
+		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager);
 	}
 
-	function testPublicQueryNoUser() {
-		$output = $this->publicController->returnAsJson(null, "apassword", null);
-		$data = $output->getData();
-		$status = $data['status'];
-		$this->assertEquals($status, 'error');
-	}
-
-	function testPublicQueryWrongUser() {
-		$output = $this->publicController->returnAsJson("cqc43dr4rx3x4xatr4", "apassword", null);
-		$data = $output->getData();
-		$status = $data['status'];
-		$this->assertEquals($status, 'error');
-	}
-
-	function testPublicQuery() {
-
-		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
+	function setupBookmarks() {
+		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+	}
 
-		$output = $this->publicController->returnAsJson($this->userid);
+	function testPrivateQuery() {
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$output = $this->controller->getBookmarks();
 		$data = $output->getData();
 		$this->assertEquals(2, count($data));
 	}
 	
+	function testPublicQuery() {
+		$this->cleanDB();
+		$this->setupBookmarks();
+
+		$output = $this->controller->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->otherUser);
+		$data = $output->getData();
+		$this->assertEquals(1, count($data));
+	}
+	
 	function testPublicCreate() {
-		$this->publicController->newBookmark("http://www.heise.de", array("tags"=> array("four")), "Heise", true, "PublicNoTag");
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$this->controller->newBookmark("http://www.heise.de", array("tags"=> array("four")), "Heise", true, "PublicNoTag");
 		
 		// the bookmark should exist
 		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.heise.de", $this->userid));
-
-    // public should see this bookmark
-    $output = $this->publicController->returnAsJson($this->userid);
+		// user should see this bookmark
+		$output = $this->controller->getBookmarks();
 		$data = $output->getData();
-		$this->assertEquals(3, count($data));
+		$this->assertEquals(2, count($data));
+
+		// public should see this bookmark
+		$output = $this->controller->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->otherUser);
+		$data = $output->getData();
+		$this->assertEquals(2, count($data));
 	}
 	
 	function testPrivateCreate() {
-		$this->publicController->newBookmark("http://www.private-heise.de", array("tags"=> array("four")), "Heise", false, "PublicNoTag");
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$this->controller->newBookmark("http://www.heise.de", array("tags"=> array("four")), "Heise", false, "PublicNoTag");
 		
 		// the bookmark should exist
 		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.private-heise.de", $this->userid));
+		
+		// user should see this bookmark
+		$output = $this->controller->getBookmarks();
+		$data = $output->getData();
+		$this->assertEquals(2, count($data));
 
 		// public should not see this bookmark
-		$output = $this->publicController->returnAsJson($this->userid);
+		$output = $this->controller->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->otherUser);
 		$data = $output->getData();
 		$this->assertEquals(3, count($data));
 	}
 	
 	function testPrivateEditBookmark() {
+		$this->cleanDB();
+		$this->setupBookmarks();
 		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Golem", array("four"), "PublicNoTag", true);
 
-		$this->publicController->editBookmark($id, 'https://www.heise.de');
+		$this->controller->editBookmark($id, 'https://www.heise.de');
 		
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("https://www.heise.de", $bookmark['url']);
 	}
 	
 	function testPrivateDeleteBookmark() {
-		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.google.com", "Heise", array("one", "two"), "PrivatTag", false);
-		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.google.com", $this->userid));
-		$this->publicController->deleteBookmark($id);
-		$this->assertFalse($this->libBookmarks->bookmarkExists("http://www.google.com", $this->userid));
 		$this->cleanDB();
+		$this->setupBookmarks();
+		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.google.com", "Heise", array("one", "two"), "PrivatTag", false);
+		
+		$this->controller->deleteBookmark($id);
+		$this->assertFalse($this->libBookmarks->bookmarkExists("http://www.google.com", $this->userid));
 	}
 
 	function cleanDB() {
