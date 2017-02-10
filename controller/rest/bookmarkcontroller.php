@@ -92,9 +92,7 @@ class BookmarkController extends ApiController {
 			$qtags = $this->bookmarks->findTags($user, $tags);
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
 		} else { // type == bookmark
-			if ($tag) {
-				$filterTag = $this->bookmarks->analyzeTagRequest($tag);
-			}
+			$filterTag = $this->bookmarks->analyzeTagRequest($tag);
 			if (!is_array($tags)) {		
 				if(is_string($tags) && $tags !== '') {		
 					$tags = [ $tags ];		
