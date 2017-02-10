@@ -77,7 +77,7 @@ class Bookmarks {
 		$qb->automaticTablePrefix(true);
 		$qb
 			->select('t.tag')
-			->selectAlias($qb->createFunction('COUNT(bookmark_id)'), 'nbr')
+			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'nbr')
 			->from('bookmarks_tags', 't')
 			->innerJoin('t','bookmarks','b',$qb->expr()->andX(
 				$qb->expr()->eq('b.id', 't.bookmark_id'),
@@ -197,9 +197,9 @@ class Bookmarks {
 		$qb->select($selectedAttributes);
 
 		if ($dbType == 'pgsql') {
-			$qb->selectAlias($qb->createFunction("array_to_string(array_agg(t.tag), ',')"), 'tags');
+			$qb->selectAlias($qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"), 'tags');
         }else{
-			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(t.tag)'), 'tags');
+			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')'), 'tags');
 		}
 		if (!in_array($sqlSortColumn, $tableAttributes)) {
 			$sqlSortColumn = 'lastmodified';
@@ -207,12 +207,12 @@ class Bookmarks {
 
 		$qb
 			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tags', 't', 't.bookmark_id = b.id')
+			->innerJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)))
 			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
 
 		if ($public) {
-			$qb->andWhere('public = 1');
+			$qb->andWhere($qb->expr()->eq('public', $qb->createNamedParameter(1)));
 		}
 		
 		if (count($filters) > 0) {
@@ -258,7 +258,8 @@ class Bookmarks {
 			$filterExpressions[] = $qb->expr()->eq('t.tag', $qb->createNamedParameter($filter));
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
-					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $col . ')', $qb->createNamedParameter('%' . strtolower($filter) . '%')));
+					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $qb->getColumnName($col) . ')',
+						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%')));
 				}
 			}
 		}
@@ -321,8 +322,8 @@ class Bookmarks {
 		$qb->automaticTablePrefix(true);
 		$qb
 			->delete('bookmarks_tags', 'tgs')
-			->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
-			->innerJoin('t', 'bookmarks_tags', 'tgs.bookmark_id = t.bookmark_id')
+			->innerJoin('bm', 'bookmarks', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
+			->innerJoin('t', 'bookmarks_tags', $qb->expr()->eq('tgs.bookmark_id', 't.bookmark_id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($new)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
@@ -334,7 +335,7 @@ class Bookmarks {
 		$qb
 			->update('bookmarks_tags', 'tgs')
 			->set('tgs.tag', $qb->createNamedParameter($new))
-			->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
+			->innerJoin('bm', 'bookmarks', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
 		$qb->execute();
@@ -353,7 +354,7 @@ class Bookmarks {
 		$qb->automaticTablePrefix(true);
 		$qb
 			->delete('bookmarks_tags', 'tgs')
-			->innerJoin('bm', 'bookmarks', 'tgs.bookmark_id = bm.id')
+			->innerJoin('bm', 'bookmarks', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
 		return $qb->execute();
@@ -445,7 +446,7 @@ class Bookmarks {
 			->andWhere($qb->expr()->eq('user_id', $qb->createParameter('userID')));
 		$qb->setParameters([
 			'userID' => $userid,
-			'url' => '%'.$decodedUrlNoPrefix
+			'url' => '%' . $this->db->escapeLikeParameter($decodedUrlNoPrefix)
 		]);
 		$row = $qb->execute()->fetch();
 		
@@ -470,7 +471,7 @@ class Bookmarks {
 				$qb->setParameters([
 					'userID' => $userid,
 					'url' => $decodedUrl,
-					'compareUrl' => '%'.$decodedUrlNoPrefix,
+					'compareUrl' => '%' . $this->db->escapeLikeParameter($decodedUrlNoPrefix),
 					'title' => $title,
 					'description' => $description,
 				]);
