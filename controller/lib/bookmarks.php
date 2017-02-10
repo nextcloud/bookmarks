@@ -74,7 +74,6 @@ class Bookmarks {
 	 */
 	public function findTags($userId, $filterTags = [], $offset = 0, $limit = -1) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->select('t.tag')
 			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'nbr')
@@ -104,7 +103,6 @@ class Bookmarks {
 	 */
 	public function findUniqueBookmark($id, $userId) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->select('*')
 			->from('bookmarks')
@@ -113,7 +111,6 @@ class Bookmarks {
 		$result = $qb->execute()->fetch();
 		
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->select('tag')
 			->from('bookmarks_tags')
@@ -131,7 +128,6 @@ class Bookmarks {
 	public function bookmarkExists($url, $userId) {
 		$encodedUrl = htmlspecialchars_decode($url);
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->select('id')
 			->from('bookmarks')
@@ -180,7 +176,6 @@ class Bookmarks {
 		$returnTags = true;
 		
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		
 		if ($requestedAttributes != null) {
 			$key = array_search('tags', $requestedAttributes);
@@ -281,7 +276,6 @@ class Bookmarks {
 		$user = $userId;
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->select('id')
 			->from('bookmarks')
@@ -294,14 +288,12 @@ class Bookmarks {
 		}
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->delete('bookmarks')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 		$qb->execute();
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->delete('bookmarks_tags')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
@@ -319,7 +311,6 @@ class Bookmarks {
 	public function renameTag($userId, $old, $new) {
 		// Remove potentially duplicated tags
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->delete('bookmarks_tags', 'tgs')
 			->innerJoin('bm', 'bookmarks', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
@@ -331,7 +322,6 @@ class Bookmarks {
 
 		// Update tags to the new label
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->update('bookmarks_tags', 'tgs')
 			->set('tgs.tag', $qb->createNamedParameter($new))
@@ -351,7 +341,6 @@ class Bookmarks {
 	 */
 	public function deleteTag($userid, $old) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->delete('bookmarks_tags', 'tgs')
 			->innerJoin('bm', 'bookmarks', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
@@ -379,7 +368,6 @@ class Bookmarks {
 		// Update the record
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->update('bookmarks')
 			->set('url', $qb->createNamedParameter(htmlspecialchars_decode($url)))
@@ -400,7 +388,6 @@ class Bookmarks {
 		// Remove old tags
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->delete('bookmarks_tags')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
@@ -438,7 +425,6 @@ class Bookmarks {
 		// Change lastmodified date if the record if already exists
 		
 		$qb = $this->db->getQueryBuilder();
-		$qb->automaticTablePrefix(true);
 		$qb
 			->select('*')
 			->from('bookmarks')
@@ -452,7 +438,6 @@ class Bookmarks {
 		
 		if ($row) {
 			$qb = $this->db->getQueryBuilder();
-			$qb->automaticTablePrefix(true);
 			$qb
 				->update('bookmarks')
 				->set('lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
@@ -479,7 +464,6 @@ class Bookmarks {
 			return $row['id'];
 		} else {
 			$qb = $this->db->getQueryBuilder();
-			$qb->automaticTablePrefix(true);
 			$qb
 				->insert('bookmarks')
 				->values(array(
@@ -528,7 +512,6 @@ class Bookmarks {
 			// check if tag for this bookmark exists
 
 			$qb = $this->db->getQueryBuilder();
-			$qb->automaticTablePrefix(true);
 			$qb
 			->select('*')
 			->from('bookmarks_tags')
@@ -538,7 +521,6 @@ class Bookmarks {
 			if ($qb->execute()->fetch()) continue;
 
 			$qb = $this->db->getQueryBuilder();
-			$qb->automaticTablePrefix(true);
 			$qb
 				->insert('bookmarks_tags')
 				->values(array(
