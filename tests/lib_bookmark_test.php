@@ -98,13 +98,13 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$this->assertEquals($this->libBookmarks->findTags($this->userid), [
 			array('tag' => 'one', 'nbr' => 2),
-			array('tag' => 'two', 'br' => 2),
+			array('tag' => 'two', 'nbr' => 2),
 			array('tag' => 'four', 'nbr' => 1),
 			array('tag' => 'three', 'nbr' => 1)
 		]);
 		$this->assertEquals($this->libBookmarks->findTags($secondUser), [
 			array('tag' => 'one', 'nbr' => 2),
-			array('tag' => 'two', 'br' => 2),
+			array('tag' => 'two', 'nbr' => 2),
 			array('tag' => 'four', 'nbr' => 1),
 			array('tag' => 'three', 'nbr' => 1)
 		]);
@@ -113,12 +113,12 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		
 		$this->assertEquals($this->libBookmarks->findTags($this->userid), [
 			array('tag' => 'one', 'nbr' => 3),
-			array('tag' => 'two', 'br' => 2),
+			array('tag' => 'two', 'nbr' => 2),
 			array('tag' => 'three', 'nbr' => 1)
 		]);
 		$this->assertEquals($this->libBookmarks->findTags($secondUser), [
 			array('tag' => 'one', 'nbr' => 2),
-			array('tag' => 'two', 'br' => 2),
+			array('tag' => 'two', 'nbr' => 2),
 			array('tag' => 'four', 'nbr' => 1),
 			array('tag' => 'three', 'nbr' => 1)
 		]);
