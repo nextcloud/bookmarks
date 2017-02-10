@@ -57,7 +57,7 @@ class Test_BookmarkController extends TestCase {
 		$this->setupBookmarks();
 		$output = $this->controller->getBookmarks();
 		$data = $output->getData();
-		$this->assertEquals(2, count($data));
+		$this->assertEquals(2, count($data['data']));
 	}
 	
 	function testPublicQuery() {
@@ -67,7 +67,7 @@ class Test_BookmarkController extends TestCase {
 		$output = $this->publicController->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->userid);
 		$data = $output->getData();
 		var_dump($data);
-		$this->assertEquals(1, count($data));
+		$this->assertEquals(1, count($data['data']));
 	}
 	
 	function testPublicCreate() {
@@ -80,12 +80,12 @@ class Test_BookmarkController extends TestCase {
 		// user should see this bookmark
 		$output = $this->controller->getBookmarks();
 		$data = $output->getData();
-		$this->assertEquals(2, count($data));
+		$this->assertEquals(2, count($data['data']));
 
 		// public should see this bookmark
 		$output = $this->publicController->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->userid);
 		$data = $output->getData();
-		$this->assertEquals(2, count($data));
+		$this->assertEquals(2, count($data['data']));
 	}
 	
 	function testPrivateCreate() {
@@ -99,12 +99,12 @@ class Test_BookmarkController extends TestCase {
 		// user should see this bookmark
 		$output = $this->controller->getBookmarks();
 		$data = $output->getData();
-		$this->assertEquals(2, count($data));
+		$this->assertEquals(2, count($data['data']));
 
 		// public should not see this bookmark
 		$output = $this->publicController->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->userid);
 		$data = $output->getData();
-		$this->assertEquals(3, count($data));
+		$this->assertEquals(3, count($data['data']));
 	}
 	
 	function testPrivateEditBookmark() {
