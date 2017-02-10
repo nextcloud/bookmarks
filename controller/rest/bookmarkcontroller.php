@@ -133,10 +133,6 @@ class BookmarkController extends ApiController {
 				$attributesToSelect = array_unique($attributesToSelect);		
 			}
 
-			if ($fullsearch != true && $fullsearch != false) {
-				$fullsearch = false;
-			}
-
 			$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag,
 				$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
 			return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
