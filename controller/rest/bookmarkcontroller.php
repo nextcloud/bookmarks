@@ -66,7 +66,18 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function getBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent", $user = null) {
+	public function getBookmarks(
+		$type = "bookmark",
+		$tag = '', // legacy
+		$page = 0,
+		$sort = "bookmarks_sorting_recent", // legacy
+		$user = null,
+		$tags = array(),
+		$conjunction = "or",
+		$select = null,
+		$sortby = "",
+		$search = array()
+	) {
 		if ($user == null) {
 			$user = $this->userId;
 			$publicOnly = false;
@@ -81,16 +92,53 @@ class BookmarkController extends ApiController {
 			$qtags = $this->bookmarks->findTags($user, $tags);
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
 		} else { // type == bookmark
-			$filterTag = $this->bookmarks->analyzeTagRequest($tag);
+			if ($tag) {
+				$filterTag = $this->bookmarks->analyzeTagRequest($tag);
+			}
+			if (!is_array($tags)) {		
+				if(is_string($tags) && $tags !== '') {		
+					$tags = [ $tags ];		
+				} else {		
+					$tags = array();		
+				}		
+			}
+			$tagsOnly = true;
+			if (count($search) > 0) {
+				$tags = array_merge($tags, $search);
+				$tagsOnly = false;
+			}
+			if (count($tags) > 0) {
+				$filterTag = $tags;
+			}
 
+			$limit = 10;
 			$offset = $page * 10;
+			if ($page == -1) {
+				$limit = -1;
+				$offset = 0;
+			}
 
 			if ($sort == 'bookmarks_sorting_clicks') {
 				$sqlSortColumn = 'clickcount';
 			} else {
 				$sqlSortColumn = 'lastmodified';
 			}
-			$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag, true, 10, $publicOnly);
+			if ($sortby) {
+				$sqlSortColumn = $sortby;
+			}
+			
+			$attributesToSelect = array('url', 'title');		
+			if ($select != null) {		
+				$attributesToSelect = array_merge($attributesToSelect, $select);		
+				$attributesToSelect = array_unique($attributesToSelect);		
+			}
+
+			if ($fullsearch != true && $fullsearch != false) {
+				$fullsearch = false;
+			}
+
+			$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag,
+				$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
 			return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
 		}
 	}
