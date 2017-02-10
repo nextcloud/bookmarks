@@ -66,6 +66,7 @@ class Test_BookmarkController extends TestCase {
 
 		$output = $this->publicController->getBookmarks('bookmark', '', 0, 'bookmarks_sorting_recent', $this->userid);
 		$data = $output->getData();
+		var_dump($data);
 		$this->assertEquals(1, count($data));
 	}
 	
