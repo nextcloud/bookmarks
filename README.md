@@ -134,3 +134,57 @@ DELETE /apps/bookmarks/bookmark/7
 ```json
 { "status": "success" }
 ```
+
+### List all tags
+```
+GET /apps/bookmarks/tag
+```
+
+Parameters: *None*
+
+Example:
+```
+GET /apps/bookmarks/tag
+```
+
+```
+["politics", "satire", "tech", "music", "art", "blogs", "personal"]
+```
+
+
+### Delete a tag
+```
+DELETE /apps/bookmarks/tag
+```
+
+Parameters:
+* `old_name`: the name of the tag to delete
+
+Example:
+
+```
+DELETE /apps/bookmarks/tag?old_name=mytag
+```
+
+```
+{ "status": "success" }
+```
+
+### Rename a tag
+```
+POST /apps/bookmarks/tag
+```
+
+Parameters:
+* `old_name`: The name of the tag to rename
+* `new_name`: The new name of the tag
+
+Example:
+```
+POST /apps/bookmarks/tag?old_name=politics&new_name=satire
+```
+
+```
+{ "status": "success"}
+```
+
