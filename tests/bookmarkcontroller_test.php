@@ -25,11 +25,15 @@ class Test_BookmarkController extends TestCase {
 		parent::setUp();
 
 		$this->userid = "testuser";
+		$this->otherUser = "otheruser";
 		$this->request = \OC::$server->getRequest();
 		$this->db = \OC::$server->getDatabaseConnection();
 		$this->userManager = \OC::$server->getUserManager();
 		if (!$this->userManager->userExists($this->userid)) {
 			$this->userManager->createUser($this->userid, 'password');	
+		}
+		if (!$this->userManager->userExists($this->otherUser)) {
+			$this->userManager->createUser($this->otherUser, 'password');	
 		}
 
 		$config = \OC::$server->getConfig();
