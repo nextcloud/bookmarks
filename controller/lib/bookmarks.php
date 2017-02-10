@@ -211,7 +211,7 @@ class Bookmarks {
 		}
 		
 		if (count($filters) > 0) {
-			$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $tagFilterConjunction, $dbType);
+			$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $tagFilterConjunction);
 		}
 
 		$qb->orderBy($sqlSortColumn, 'DESC');
@@ -273,8 +273,6 @@ class Bookmarks {
 	 * @return boolean Success of operation
 	 */
 	public function deleteUrl($userId, $id) {
-		$user = $userId;
-
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('id')
@@ -345,7 +343,7 @@ class Bookmarks {
 			->delete('bookmarks_tags', 'tgs')
 			->innerJoin('bm', 'bookmarks', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
-			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userid)));
 		return $qb->execute();
 	}
 
