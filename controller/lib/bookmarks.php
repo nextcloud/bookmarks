@@ -246,7 +246,9 @@ class Bookmarks {
 		if ($tagFilterConjunction == 'or') {
 			$connectWord = 'OR';
 		}
-
+		if (count($filters) == 0) {
+			return;
+		}
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
 		foreach ($filters as $filter) {
