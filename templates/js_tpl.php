@@ -7,7 +7,7 @@
             </span>&nbsp;
         </p>
         <p class="bookmark_title">
-            <a href="<&= checkURL(encodeURI(url)) &>" target="_blank" class="bookmark_link" rel="noreferrer">
+            <a href="<&= checkURL(encodeURI(url)) &>" target="_blank" class="bookmark_link" rel="nofollow noopener noreferrer">
                 <&= escapeHTML(title == '' ? encodeURI(url) : title ) &>
             </a>
             <span class="bookmark_edit bookmark_edit_btn">
