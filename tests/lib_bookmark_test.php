@@ -108,7 +108,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $secondUserTags));
 		$this->assertTrue(in_array(['tag' => 'four', 'nbr' => 1], $secondUserTags));
 		$this->assertTrue(in_array(['tag' => 'three', 'nbr' => 1], $secondUserTags));
-		$this->assertEquals(count($firstUserTags), 4);
+		$this->assertEquals(count($secondUserTags), 4);
 
 		$this->libBookmarks->renameTag($this->userid, 'four', 'one');
 		
@@ -122,7 +122,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $secondUserTags));
 		$this->assertTrue(in_array(['tag' => 'four', 'nbr' => 1], $secondUserTags));
 		$this->assertTrue(in_array(['tag' => 'three', 'nbr' => 1], $secondUserTags));
-		$this->assertEquals(count($firstUserTags), 4);
+		$this->assertEquals(count($secondUserTags), 4);
 	}
 
 	function testFindUniqueBookmark() {
