@@ -255,8 +255,8 @@ class Bookmarks {
 			$filterExpressions[] = $qb->expr()->eq('t.tag', $qb->createNamedParameter($filter));
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
-					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $qb->getColumnName($col) . ')',
-						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%')));
+					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $qb->getColumnName($col) . ')'),
+						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%'));
 				}
 			}
 		}
