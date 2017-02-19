@@ -78,7 +78,7 @@ class BookmarkController extends ApiController {
 		$sortby = "",
 		$search = array()
 	) {
-		if ($user == null) {
+		if ($user === null) {
 			$user = $this->userId;
 			$publicOnly = false;
 		}else {
@@ -87,7 +87,7 @@ class BookmarkController extends ApiController {
 				return $this->newJsonErrorMessage("User could not be identified");
 			}
 		}
-		if ($type == 'rel_tags' && !$publicOnly) { // XXX: libbookmarks#findTags needs a publicOnly option
+		if ($type === 'rel_tags' && !$publicOnly) { // XXX: libbookmarks#findTags needs a publicOnly option
 			$tags = $this->bookmarks->analyzeTagRequest($tag);
 			$qtags = $this->bookmarks->findTags($user, $tags);
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
@@ -116,7 +116,7 @@ class BookmarkController extends ApiController {
 				$offset = 0;
 			}
 
-			if ($sort == 'bookmarks_sorting_clicks') {
+			if ($sort === 'bookmarks_sorting_clicks') {
 				$sqlSortColumn = 'clickcount';
 			} else {
 				$sqlSortColumn = 'lastmodified';
@@ -126,7 +126,7 @@ class BookmarkController extends ApiController {
 			}
 			
 			$attributesToSelect = array('url', 'title');		
-			if ($select != null) {		
+			if ($select !== null) {		
 				$attributesToSelect = array_merge($attributesToSelect, $select);		
 				$attributesToSelect = array_unique($attributesToSelect);		
 			}
