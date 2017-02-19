@@ -98,30 +98,30 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		
 		$firstUserTags = $this->libBookmarks->findTags($this->userid);
-		$this->assert(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
-		$this->assert(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
-		$this->assert(in_array(['tag' => 'four', 'nbr' => 1], $firstUserTags));
-		$this->assert(in_array(['tag' => 'three', 'nbr' => 1], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'four', 'nbr' => 1], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'three', 'nbr' => 1], $firstUserTags));
 		$this->assertEquals(count($firstUserTags), 4);
 		$secondUserTags = $this->libBookmarks->findTags($secondUser);
-		$this->assert(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
-		$this->assert(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
-		$this->assert(in_array(['tag' => 'four', 'nbr' => 1], $firstUserTags));
-		$this->assert(in_array(['tag' => 'three', 'nbr' => 1], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'four', 'nbr' => 1], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'three', 'nbr' => 1], $firstUserTags));
 		$this->assertEquals(count($firstUserTags), 4);
 
 		$this->libBookmarks->renameTag($this->userid, 'four', 'one');
 		
 		$firstUserTags = $this->libBookmarks->findTags($this->userid);
-		$this->assert(in_array(['tag' => 'one', 'nbr' => 3], $firstUserTags));
-		$this->assert(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
-		$this->assert(in_array(['tag' => 'three', 'nbr' => 1], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 3], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'three', 'nbr' => 1], $firstUserTags));
 		$this->assertEquals(count($firstUserTags), 3);
 		$secondUserTags = $this->libBookmarks->findTags($secondUser);
-		$this->assert(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
-		$this->assert(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
-		$this->assert(in_array(['tag' => 'four', 'nbr' => 1], $firstUserTags));
-		$this->assert(in_array(['tag' => 'three', 'nbr' => 1], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'four', 'nbr' => 1], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'three', 'nbr' => 1], $firstUserTags));
 		$this->assertEquals(count($firstUserTags), 4);
 	}
 
