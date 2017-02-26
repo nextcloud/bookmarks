@@ -52,7 +52,6 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$outputPrivate = $this->libBookmarks->findBookmarks($this->userid, 0, "", [], true, -1, false);
 		$this->assertCount(4, $outputPrivate);
-		$this->assertEquals($outputPrivate[0]['tags'], ['one']);
 		$outputPrivateFiltered = $this->libBookmarks->findBookmarks($this->userid, 0, "", ["one"], true, -1, false);
 		$this->assertCount(3, $outputPrivateFiltered);
 		$outputPublic = $this->libBookmarks->findBookmarks($this->userid, 0, "", [], true, -1, true);
