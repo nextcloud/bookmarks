@@ -147,9 +147,9 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		
 		// Make sure nothing else changed
 		$control_bookmark = $this->libBookmarks->findUniqueBookmark($control_bm_id, $this->userid);
-		$this->assertEquals("Golem", $bookmark['title']);
-		$this->assertEquals("http://www.golem.de", $bookmark['url']);
-		$this->assertEquals($bookmark['tags'], 'four');
+		$this->assertEquals("Golem", $control_bookmark['title']);
+		$this->assertEquals("http://www.golem.de", $control_bookmark['url']);
+		$this->assertEquals($control_bookmark['tags'], 'four');
 	}
 
 	function testDeleteBookmark() {
