@@ -136,6 +136,8 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 
 	function testEditBookmark() {
 		$this->cleanDB();
+		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->editBookmark($this->userid, $id, "http://www.google.de", "NewTitle", array("three"));
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
