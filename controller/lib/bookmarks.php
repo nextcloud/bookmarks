@@ -376,7 +376,7 @@ class Bookmarks {
 			->set('description', $qb->createNamedParameter(htmlspecialchars_decode($description)))
 			->set('lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
-			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)));
+			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)));
 
 		$result = $qb->execute();
 		// Abort the operation if bookmark couldn't be set
