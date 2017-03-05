@@ -265,7 +265,7 @@ class Bookmarks {
 		}else {
 			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
 		}
-		$qb->andWhere($filterExpression);
+		$qb->andHaving($filterExpression);
 	}
 
 	/**
