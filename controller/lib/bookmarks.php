@@ -322,7 +322,7 @@ class Bookmarks {
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
 		$duplicates = $qb->execute()->fetchColumn();
-		if ($duplicates) {
+		if ($duplicates !== false) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->delete('bookmarks_tags', 't')
@@ -334,13 +334,21 @@ class Bookmarks {
 		// Update tags to the new label
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->update('bookmarks_tags', 'tgs')
-			->set('tgs.tag', $qb->createNamedParameter($new))
+			->select('tgs.bookmark_id')
+			->from('bookmarks_tags', 'tgs')
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
-		$qb->execute();
-
+		$bookmarks = $qb->execute()->fetchColumn();
+		if ($bookmarks !== false) {
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->update('bookmarks_tags', 'tgs')
+				->set('tgs.tag', $qb->createNamedParameter($new))
+				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
+				->andWhere($qb->expr()->in('tgs.bookmark_id', $qb->createNamedParameter($bookmarks)));
+			$qb->execute();
+		}
 		return true;
 	}
 
@@ -353,11 +361,21 @@ class Bookmarks {
 	public function deleteTag($userid, $old) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->delete('bookmarks_tags', 'tgs')
-			->innerJoin('bm', 'bookmarks', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
+			->select('tgs.bookmark_id')
+			->from('bookmarks_tags', 'tgs')
+			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
-			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userid)));
-		return $qb->execute();
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
+		$bookmarks = $qb->execute()->fetchColumn();
+		if ($bookmarks !== false) {
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->delete('bookmarks_tags', 'tgs')
+				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
+				->andWhere($qb->expr()->in('bm.user_id', $qb->createNamedParameter($bookmarks)));
+			return $qb->execute();
+		}
+		return true;
 	}
 
 	/**
