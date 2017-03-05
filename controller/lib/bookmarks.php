@@ -343,10 +343,10 @@ class Bookmarks {
 		if ($bookmarks !== false) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
-				->update('bookmarks_tags', 'tgs')
+				->update('bookmarks_tags')
 				->set('tag', $qb->createNamedParameter($new))
-				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
-				->andWhere($qb->expr()->in('tgs.bookmark_id', $qb->createNamedParameter($bookmarks)));
+				->where($qb->expr()->eq('tag', $qb->createNamedParameter($old)))
+				->andWhere($qb->expr()->in('bookmark_id', $qb->createNamedParameter($bookmarks)));
 			$qb->execute();
 		}
 		return true;
