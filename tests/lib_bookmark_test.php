@@ -46,12 +46,13 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 
 	function testFindBookmarks() {
 		$this->cleanDB();
-		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.duckduckgo.com", "DuckDuckGo", [], "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateTwoTags", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("one"), "PublicNoTag", true);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$outputPrivate = $this->libBookmarks->findBookmarks($this->userid, 0, "", [], true, -1, false);
-		$this->assertCount(4, $outputPrivate);
+		$this->assertCount(5, $outputPrivate);
 		$outputPrivateFiltered = $this->libBookmarks->findBookmarks($this->userid, 0, "", ["one"], true, -1, false);
 		$this->assertCount(3, $outputPrivateFiltered);
 		$outputPublic = $this->libBookmarks->findBookmarks($this->userid, 0, "", [], true, -1, true);

@@ -202,7 +202,7 @@ class Bookmarks {
 
 		$qb
 			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
+			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)))
 			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
 
