@@ -309,8 +309,6 @@ class Bookmarks {
 	 * @return boolean Success of operation
 	 */
 	public function renameTag($userId, $old, $new) {
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-		
 		// Remove about-to-be duplicated tags
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -365,7 +363,7 @@ class Bookmarks {
 			->from('bookmarks_tags', 'tgs')
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
-			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userid)));
 		$bookmarks = $qb->execute()->fetchColumn();
 		if ($bookmarks !== false) {
 			$qb = $this->db->getQueryBuilder();
