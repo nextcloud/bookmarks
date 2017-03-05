@@ -312,31 +312,21 @@ class Bookmarks {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		
 		// Remove about-to-be duplicated tags
-		if ($dbType == 'sqlite' or $dbType == 'sqlite3') {
-			$qb = $this->db->getQueryBuilder();
-			$qb
-				->select('tgs.bookmark_id')
-				->from('bookmarks_tags', 'tgs')
-				->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
-				->innerJoin('tgs', 'bookmarks_tags', 't', $qb->expr()->eq('tgs.bookmark_id', 't.bookmark_id'))
-				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($new)))
-				->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
-				->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
-			$duplicates = $qb->execute()->fetchColumn();
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('tgs.bookmark_id')
+			->from('bookmarks_tags', 'tgs')
+			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
+			->innerJoin('tgs', 'bookmarks_tags', 't', $qb->expr()->eq('tgs.bookmark_id', 't.bookmark_id'))
+			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($new)))
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
+			->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
+		$duplicates = $qb->execute()->fetchColumn();
+		if ($duplicates) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->delete('bookmarks_tags', 't')
 				->where($qb->expr()->in('t.bookmark_id', $qb->createNamedParameter($duplicates)))
-				->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
-			$qb->execute();
-		} else {
-			$qb = $this->db->getQueryBuilder();
-			$qb
-				->delete('bookmarks_tags', 'tgs')
-				->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
-				->innerJoin('tgs', 'bookmarks_tags', 't', $qb->expr()->eq('tgs.bookmark_id', 't.bookmark_id'))
-				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($new)))
-				->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
 				->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
 			$qb->execute();
 		}
