@@ -312,7 +312,7 @@ class Bookmarks {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		
 		// Remove about-to-be duplicated tags
-		if ($dbType == 'sqlite') {
+		if ($dbType == 'sqlite' or $dbType == 'sqlite3') {
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->select('tgs.bookmark_id')
