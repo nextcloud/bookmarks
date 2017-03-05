@@ -202,7 +202,8 @@ class Bookmarks {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
+			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id')) // For result
+			->leftJoin('b', 'bookmarks_tags', 'tgs', $qb->expr()->eq('tgs.bookmark_id', 'b.id')) // For filtering
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)))
 			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
 
@@ -252,7 +253,7 @@ class Bookmarks {
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
 		foreach ($filters as $filter) {
-			$filterExpressions[] = $qb->expr()->eq('t.tag', $qb->createNamedParameter($filter));
+			$filterExpressions[] = $qb->expr()->eq('tgs.tag', $qb->createNamedParameter($filter));
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
 					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $qb->getColumnName($col) . ')'),
@@ -265,7 +266,7 @@ class Bookmarks {
 		}else {
 			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
 		}
-		$qb->andHaving($filterExpression);
+		$qb->andWhere($filterExpression);
 	}
 
 	/**
