@@ -344,7 +344,7 @@ class Bookmarks {
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->update('bookmarks_tags', 'tgs')
-				->set('tgs.tag', $qb->createNamedParameter($new))
+				->set('tag', $qb->createNamedParameter($new))
 				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 				->andWhere($qb->expr()->in('tgs.bookmark_id', $qb->createNamedParameter($bookmarks)));
 			$qb->execute();
