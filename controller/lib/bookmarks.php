@@ -202,8 +202,7 @@ class Bookmarks {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id')) // For result
-			->leftJoin('b', 'bookmarks_tags', 'tgs', $qb->expr()->eq('tgs.bookmark_id', 'b.id')) // For filtering
+			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)))
 			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
 
@@ -252,14 +251,17 @@ class Bookmarks {
 		}
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
+    $i = 0;
 		foreach ($filters as $filter) {
-			$filterExpressions[] = $qb->expr()->eq('tgs.tag', $qb->createNamedParameter($filter));
+      $qb->leftJoin('b', 'bookmarks_tags', 't' . $i, $qb->expr()->eq('t' . $i . '.bookmark_id', 'b.id'));
+			$filterExpressions[] = $qb->expr()->eq('t'.$i.'.tag', $qb->createNamedParameter($filter));
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
 					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $qb->getColumnName($col) . ')'),
 						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%'));
 				}
 			}
+      $i++;
 		}
 		if ($connectWord == 'AND') {
 			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $filterExpressions);
