@@ -1,6 +1,8 @@
 Bookmarks app
 ============
 
+![](https://github.com/nextcloud/bookmarks/raw/master/screenshots/Bookmarks.png)
+
 Maintainers:
 ------------
 - [Blizzz] (https://github.com/Blizzz)
