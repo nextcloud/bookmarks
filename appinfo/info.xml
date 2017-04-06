@@ -16,7 +16,7 @@
 	<repository type="git">https://github.com/nextcloud/bookmarks.git</repository>
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
 	<dependencies>
-		<owncloud min-version="9.0" max-version="9.2" />
+		<owncloud min-version="9.0" max-version="10" />
 		<nextcloud min-version="9" max-version="12" />
 	</dependencies>
 	<ocsid>168710</ocsid>
