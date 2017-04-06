@@ -8,7 +8,7 @@ Maintainers:
 Developer setup info:
 ---------------------
 ### Installation:
-Just clone this repo into one of your apps directory.
+Install it from the app store in Nextcloud itself or just clone this repo into your apps directory on your server.
 
 
 Status :
