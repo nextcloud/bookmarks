@@ -83,7 +83,7 @@ branches:
 before_install:
 #  - composer install
   - wget https://raw.githubusercontent.com/$SERVER/before_install.sh
-  - bash ./before_install.sh "$APP_NAME" "$SERVER_BRANCH" "$DB"
+  - . ./before_install.sh "$APP_NAME" "$SERVER_BRANCH" "$DB"
   - cd ../core || cd ../server
   - php occ app:enable $APP_NAME
 
