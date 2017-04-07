@@ -50,6 +50,8 @@ matrix:
     env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
   - php: 7.1
     env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
+  allow_failures:
+    - env: SERVER=owncloud/administration/master/travis-ci
   fast_finish: true
 
 branches:
@@ -58,7 +60,6 @@ branches:
     - /^stable\d+(\.\d+)?$/
 
 before_install:
-#  - composer install
   - wget https://raw.githubusercontent.com/$SERVER/before_install.sh
   - . ./before_install.sh "$APP_NAME" "$SERVER_BRANCH" "$DB"
   - cd ../core || cd ../server
