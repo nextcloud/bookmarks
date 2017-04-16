@@ -51,7 +51,8 @@ matrix:
   - php: 7.1
     env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
   allow_failures:
-    - env: SERVER=owncloud/administration/master/travis-ci
+    - php: 7
+      env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
   fast_finish: true
 
 branches:
