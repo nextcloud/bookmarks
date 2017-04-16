@@ -1,6 +1,5 @@
 language: php
 php:
-  - 5.5
   - 5.6
   - 7
   - 7.1
@@ -25,28 +24,6 @@ env:
 
 matrix:
   exclude:
-  - php: 5.5
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-  - php: 5.5
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 5.5
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
-  - php: 5.5
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
-  - php: 5.5
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 5.5
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
-  - php: 5.5
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-  - php: 5.5
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 5.5
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
-  - php: 5.5
-    env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=master
-  - php: 5.5
-    env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
   - php: 5.6
     env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
   - php: 5.6
@@ -73,6 +50,9 @@ matrix:
     env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
   - php: 7.1
     env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
+  allow_failures:
+    - php: 7
+      env: DB=sqlite SERVER=owncloud/administration/master/travis-ci SERVER_BRANCH=stable9.1
   fast_finish: true
 
 branches:
@@ -81,9 +61,8 @@ branches:
     - /^stable\d+(\.\d+)?$/
 
 before_install:
-#  - composer install
   - wget https://raw.githubusercontent.com/$SERVER/before_install.sh
-  - bash ./before_install.sh "$APP_NAME" "$SERVER_BRANCH" "$DB"
+  - . ./before_install.sh "$APP_NAME" "$SERVER_BRANCH" "$DB"
   - cd ../core || cd ../server
   - php occ app:enable $APP_NAME
 
