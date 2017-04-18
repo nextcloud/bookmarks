@@ -29,7 +29,7 @@ You can use the Issue Template application to prefill most of the required infor
 
 **Nextcloud version:** (see Nextcloud admin page)
 
-**Contacts version:** (see Nextcloud apps page)
+**Bookmarks version:** (see Nextcloud apps page)
 
 **Updated from an older Nextcloud or fresh install:**
 
@@ -86,8 +86,6 @@ Eventually replace sensitive data as the name/IP-address of your LDAP server or 
 **Browser:**
 
 **Operating system:**
-
-**CardDAV-clients:**
 
 ### Logs
 #### Web server error log
