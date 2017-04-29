@@ -21,24 +21,29 @@ namespace OCA\Bookmarks\AppInfo;
 $application = new Application();
 
 $application->registerRoutes($this, array('routes' => array(
-		//Web Template Route
-		array('name' => 'web_view#index', 'url' => '/', 'verb' => 'GET'),
-		array('name' => 'web_view#bookmarklet', 'url' => '/bookmarklet', 'verb' => 'GET'),
-		//Session Based and CSRF secured Routes
-		array('name' => 'bookmark#get_bookmarks', 'url' => '/bookmark', 'verb' => 'GET'),
-		array('name' => 'bookmark#new_bookmark', 'url' => '/bookmark', 'verb' => 'POST'),
-		array('name' => 'bookmark#edit_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'PUT'),
-		array('name' => 'bookmark#delete_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'DELETE'),
-		array('name' => 'bookmark#click_bookmark', 'url' => '/bookmark/click', 'verb' => 'POST'),
-		array('name' => 'bookmark#export_bookmark', 'url' => '/bookmark/export', 'verb' => 'GET'),
-		array('name' => 'bookmark#import_bookmark', 'url' => '/bookmark/import', 'verb' => 'POST'),
-		array('name' => 'tags#full_tags', 'url' => '/tag', 'verb' => 'GET'),
-		array('name' => 'tags#rename_tag', 'url' => '/tag', 'verb' => 'POST'),
-		array('name' => 'tags#delete_tag', 'url' => '/tag', 'verb' => 'DELETE'),
-		//Legacy Routes
-		array('name' => 'public#return_as_json', 'url' => '/public/rest/v1/bookmark', 'verb' => 'GET'),
-		
-		array('name' => 'bookmark#legacy_get_bookmarks', 'url' => '/ajax/updateList.php', 'verb' => 'POST'),
-		array('name' => 'bookmark#legacy_edit_bookmark', 'url' => '/ajax/editBookmark.php', 'verb' => 'POST'),
-		array('name' => 'bookmark#legacy_delete_bookmark', 'url' => '/ajax/delBookmark.php', 'verb' => 'POST'),
+	//Web Template Route
+	array('name' => 'web_view#index', 'url' => '/', 'verb' => 'GET'),
+	array('name' => 'web_view#bookmarklet', 'url' => '/bookmarklet', 'verb' => 'GET'),
+	//REST API
+	array('name' => 'bookmark#preflighted_cors', 'url' => '/bookmark/{path}',
+		'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']),
+	array('name' => 'bookmark#preflighted_cors', 'url' => '/bookmark',
+		'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']),
+	array('name' => 'bookmark#get_bookmarks', 'url' => '/bookmark', 'verb' => 'GET'),
+	array('name' => 'bookmark#new_bookmark', 'url' => '/bookmark', 'verb' => 'POST'),
+	array('name' => 'bookmark#edit_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'PUT'),
+	array('name' => 'bookmark#delete_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'DELETE'),
+	array('name' => 'bookmark#click_bookmark', 'url' => '/bookmark/click', 'verb' => 'POST'),
+	array('name' => 'bookmark#export_bookmark', 'url' => '/bookmark/export', 'verb' => 'GET'),
+	array('name' => 'bookmark#import_bookmark', 'url' => '/bookmark/import', 'verb' => 'POST'),
+	array('name' => 'tags#preflighted_cors', 'url' => '/tag', 'verb' => 'OPTIONS'),
+	array('name' => 'tags#full_tags', 'url' => '/tag', 'verb' => 'GET'),
+	array('name' => 'tags#rename_tag', 'url' => '/tag', 'verb' => 'POST'),
+	array('name' => 'tags#delete_tag', 'url' => '/tag', 'verb' => 'DELETE'),
+	//Legacy Routes
+	array('name' => 'public#return_as_json', 'url' => '/public/rest/v1/bookmark', 'verb' => 'GET'),
+	
+	array('name' => 'bookmark#legacy_get_bookmarks', 'url' => '/ajax/updateList.php', 'verb' => 'POST'),
+	array('name' => 'bookmark#legacy_edit_bookmark', 'url' => '/ajax/editBookmark.php', 'verb' => 'POST'),
+	array('name' => 'bookmark#legacy_delete_bookmark', 'url' => '/ajax/delBookmark.php', 'verb' => 'POST'),
 )));
