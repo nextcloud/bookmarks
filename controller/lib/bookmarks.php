@@ -26,6 +26,7 @@ namespace OCA\Bookmarks\Controller\Lib;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -72,25 +73,25 @@ class Bookmarks {
 	 * @return array Found Tags
 	 */
 	public function findTags($userId, $filterTags = [], $offset = 0, $limit = -1) {
-		$params = array_merge($filterTags, $filterTags);
-		array_unshift($params, $userId);
-		$notIn = '';
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('t.tag')
+			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'nbr')
+			->from('bookmarks_tags', 't')
+			->innerJoin('t','bookmarks','b',$qb->expr()->andX(
+				$qb->expr()->eq('b.id', 't.bookmark_id'),
+				$qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId))));
 		if (!empty($filterTags)) {
-			$existClause = " AND	exists (select 1 from `*PREFIX*bookmarks_tags`
-				`t2` where `t2`.`bookmark_id` = `t`.`bookmark_id` and `tag` = ?) ";
-
-			$notIn = ' AND `tag` not in (' . implode(',', array_fill(0, count($filterTags), '?')) . ')' .
-					str_repeat($existClause, count($filterTags));
+			$qb->where($qb->expr()->notIn('t.tag', $filterTags));
 		}
-		$sql = 'SELECT tag, count(*) AS nbr FROM *PREFIX*bookmarks_tags t ' .
-				' WHERE EXISTS( SELECT 1 FROM *PREFIX*bookmarks bm ' .
-				'	WHERE  t.bookmark_id  = bm.id AND user_id = ?) ' .
-				$notIn .
-				' GROUP BY `tag` ORDER BY `nbr` DESC ';
-
-		$query = $this->db->prepare($sql, $limit, $offset);
-		$query->execute($params);
-		$tags = $query->fetchAll();
+		$qb
+			->groupBy('t.tag')
+			->orderBy('nbr', 'DESC')
+			->setFirstResult($offset);
+		if ($limit != -1) {
+			$qb->setMaxResults($limit);
+		}
+		$tags = $qb->execute()->fetchAll();
 		return $tags;
 	}
 
@@ -101,20 +102,20 @@ class Bookmarks {
 	 * @return array Specific Bookmark
 	 */
 	public function findUniqueBookmark($id, $userId) {
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-		if ($dbType == 'pgsql') {
-			$groupFunction = 'array_agg(`tag`)';
-		} else {
-			$groupFunction = 'GROUP_CONCAT(`tag`)';
-		}
-		$sql = "SELECT *, (SELECT $groupFunction FROM `*PREFIX*bookmarks_tags`
-			       WHERE `bookmark_id` = `b`.`id`) AS `tags`
-				FROM `*PREFIX*bookmarks` `b`
-				WHERE `user_id` = ? AND `id` = ?";
-		$query = $this->db->prepare($sql);
-		$query->execute(array($userId, $id));
-		$result = $query->fetch();
-		$result['tags'] = explode(',', $result['tags']);
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('*')
+			->from('bookmarks')
+			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
+			->andWhere($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+		$result = $qb->execute()->fetch();
+		
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('tag')
+			->from('bookmarks_tags')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
+		$result['tags'] = $qb->execute()->fetchColumn();
 		return $result;
 	}
 
@@ -126,10 +127,13 @@ class Bookmarks {
 	 */
 	public function bookmarkExists($url, $userId) {
 		$encodedUrl = htmlspecialchars_decode($url);
-		$sql = "SELECT id FROM `*PREFIX*bookmarks` WHERE `url` = ? AND `user_id` = ?";
-		$query = $this->db->prepare($sql);
-		$query->execute(array($encodedUrl, $userId));
-		$result = $query->fetch();
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('id')
+			->from('bookmarks')
+			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
+			->andWhere($qb->expr()->eq('url', $qb->createNamedParameter($encodedUrl)));
+		$result = $qb->execute()->fetch();
 		if ($result) {
 			return $result['id'];
 		} else {
@@ -166,58 +170,59 @@ class Bookmarks {
 			$filters = array($filters);
 		}
 
-		$toSelect = '*';
 		$tableAttributes = array('id', 'url', 'title', 'user_id', 'description',
 			'public', 'added', 'lastmodified', 'clickcount',);
 
 		$returnTags = true;
-
+		
+		$qb = $this->db->getQueryBuilder();
+		
 		if ($requestedAttributes != null) {
-
 			$key = array_search('tags', $requestedAttributes);
 			if ($key == false) {
 				$returnTags = false;
 			} else {
 				unset($requestedAttributes[$key]);
 			}
-
-			$toSelect = implode(",", array_intersect($tableAttributes, $requestedAttributes));
+			$selectedAttributes = array_intersect($tableAttributes, $requestedAttributes);
+			$qb->select($selectedAttributes);
+		}else{
+			$selectedAttributes = $tableAttributes;
 		}
+		$qb->select($selectedAttributes);
 
 		if ($dbType == 'pgsql') {
-			$sql = "SELECT " . $toSelect . " FROM (SELECT *, (select array_to_string(array_agg(`tag`),',')
-					FROM `*PREFIX*bookmarks_tags` WHERE `bookmark_id` = `b2`.`id`) AS `tags`
-				FROM `*PREFIX*bookmarks` `b2`
-				WHERE `user_id` = ? ) as `b` WHERE true ";
-		} else {
-			$sql = "SELECT " . $toSelect . ", (SELECT GROUP_CONCAT(`tag`) FROM `*PREFIX*bookmarks_tags`
-				WHERE `bookmark_id` = `b`.`id`) AS `tags`
-				FROM `*PREFIX*bookmarks` `b`
-				WHERE `user_id` = ? ";
+			$qb->selectAlias($qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"), 'tags');
+        }else{
+			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')'), 'tags');
 		}
-
-		$params = array($userid);
-
-		if ($public) {
-			$sql .= ' AND public = 1 ';
-		}
-
-		if (count($filters) > 0) {
-			$this->findBookmarksBuildFilter($sql, $params, $filters, $filterTagOnly, $tagFilterConjunction, $dbType);
-		}
-
 		if (!in_array($sqlSortColumn, $tableAttributes)) {
 			$sqlSortColumn = 'lastmodified';
 		}
-		$sql .= " ORDER BY " . $sqlSortColumn . " DESC ";
-		if ($limit == -1 || $limit === false) {
-			$limit = null;
-			$offset = null;
+
+		$qb
+			->from('bookmarks', 'b')
+			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
+			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)))
+			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
+
+		if ($public) {
+			$qb->andWhere($qb->expr()->eq('public', $qb->createNamedParameter(1)));
+		}
+		
+		if (count($filters) > 0) {
+			$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $tagFilterConjunction);
 		}
 
-		$query = $this->db->prepare($sql, $limit, $offset);
-		$query->execute($params);
-		$results = $query->fetchAll();
+		$qb->orderBy($sqlSortColumn, 'DESC');
+		if ($limit != -1 && $limit !== false) {
+			$qb->setMaxResults($limit);
+			if ($offset != null) {
+				$qb->setFirstResult($offset);
+			}
+		}
+
+		$results = $qb->execute()->fetchAll();
 		$bookmarks = array();
 		foreach ($results as $result) {
 			if ($returnTags) {
@@ -230,44 +235,40 @@ class Bookmarks {
 		return $bookmarks;
 	}
 
-	private function findBookmarksBuildFilter(&$sql, &$params, $filters, $filterTagOnly, $tagFilterConjunction, $dbType) {
-		$tagOrSearch = false;
+	/**
+	 * @param IQueryBuilder $qb
+	 * @param array $filters
+	 * @param bool $filterTagOnly
+	 * @param string $tagFilterConjunction
+	 */
+	private function findBookmarksBuildFilter(&$qb, $filters, $filterTagOnly, $tagFilterConjunction) {
 		$connectWord = 'AND';
-
 		if ($tagFilterConjunction == 'or') {
-			$tagOrSearch = true;
 			$connectWord = 'OR';
 		}
-
-		if ($filterTagOnly) {
-			if ($tagOrSearch) {
-				$sql .= 'AND (';
-			} else {
-				$sql .= 'AND';
-			}
-			$existClause = " exists (SELECT `id` FROM  `*PREFIX*bookmarks_tags`
-				`t2` WHERE `t2`.`bookmark_id` = `b`.`id` AND `tag` = ?) ";
-			$sql .= str_repeat($existClause . $connectWord, count($filters));
-			if ($tagOrSearch) {
-				$sql = rtrim($sql, 'OR');
-				$sql .= ')';
-			} else {
-				$sql = rtrim($sql, 'AND');
-			}
-			$params = array_merge($params, $filters);
-		} else {
-			if ($dbType == 'mysql') { //Dirty hack to allow usage of alias in where
-				$sql .= ' HAVING true ';
-			}
-			foreach ($filters as $filter) {
-				if ($dbType == 'mysql') {
-					$sql .= ' AND lower( concat(url,title,description,IFNULL(tags,\'\') )) like ? ';
-				} else {
-					$sql .= ' AND lower(url || title || description || IFNULL(tags,\'\') ) like ? ';
-				}
-				$params[] = '%' . strtolower($filter) . '%';
-			}
+		if (count($filters) == 0) {
+			return;
 		}
+		$filterExpressions = [];
+		$otherColumns = ['b.url', 'b.title', 'b.description'];
+    $i = 0;
+		foreach ($filters as $filter) {
+      $qb->leftJoin('b', 'bookmarks_tags', 't' . $i, $qb->expr()->eq('t' . $i . '.bookmark_id', 'b.id'));
+			$filterExpressions[] = $qb->expr()->eq('t'.$i.'.tag', $qb->createNamedParameter($filter));
+			if (!$filterTagOnly) {
+				foreach ($otherColumns as $col) {
+					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $qb->getColumnName($col) . ')'),
+						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%'));
+				}
+			}
+      $i++;
+		}
+		if ($connectWord == 'AND') {
+			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $filterExpressions);
+		}else {
+			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
+		}
+		$qb->andWhere($filterExpression);
 	}
 
 	/**
@@ -277,33 +278,29 @@ class Bookmarks {
 	 * @return boolean Success of operation
 	 */
 	public function deleteUrl($userId, $id) {
-		$user = $userId;
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('id')
+			->from('bookmarks')
+			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
+			->andWhere($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 
-		$query = $this->db->prepare("
-				SELECT `id` FROM `*PREFIX*bookmarks`
-				WHERE `id` = ?
-				AND `user_id` = ?
-				");
-
-		$query->execute(array($id, $user));
-		$id = $query->fetchColumn();
+		$id = $qb->execute()->fetchColumn();
 		if ($id === false) {
 			return false;
 		}
 
-		$query = $this->db->prepare("
-			DELETE FROM `*PREFIX*bookmarks`
-			WHERE `id` = ?
-			");
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->delete('bookmarks')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+		$qb->execute();
 
-		$query->execute(array($id));
-
-		$query = $this->db->prepare("
-			DELETE FROM `*PREFIX*bookmarks_tags`
-			WHERE `bookmark_id` = ?
-			");
-
-		$query->execute(array($id));
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->delete('bookmarks_tags')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
+		$qb->execute();
 		return true;
 	}
 
@@ -315,48 +312,44 @@ class Bookmarks {
 	 * @return boolean Success of operation
 	 */
 	public function renameTag($userId, $old, $new) {
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-
-
-		if ($dbType == 'sqlite' or $dbType == 'sqlite3') {
-			// Update tags to the new label unless it already exists a tag like this
-			$query = $this->db->prepare("
-				UPDATE OR REPLACE `*PREFIX*bookmarks_tags`
-				SET `tag` = ?
-				WHERE `tag` = ?
-				AND exists( select `b`.`id` from `*PREFIX*bookmarks` `b`
-				WHERE `b`.`user_id` = ? AND `bookmark_id` = `b`.`id`)
-			");
-
-			$params = [$new, $old, $userId];
-
-			$query->execute($params);
-		} else {
-
-			// Remove potentially duplicated tags
-			$query = $this->db->prepare("
-			DELETE FROM `*PREFIX*bookmarks_tags` as `tgs` WHERE `tgs`.`tag` = ?
-			AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ?
-			AND `tgs`.`bookmark_id` = `id`)
-			AND exists( SELECT `t`.`tag` FROM `*PREFIX*bookmarks_tags` `t` where `t`.`tag` = ?
-			AND `tgs`.`bookmark_id` = `t`.`bookmark_id`)");
-
-			$params = [$new, $userId, $new];
-			$query->execute($params);
-
-			// Update tags to the new label unless it already exists a tag like this
-			$query = $this->db->prepare("
-			UPDATE `*PREFIX*bookmarks_tags`
-			SET `tag` = ?
-			WHERE `tag` = ?
-			AND exists( SELECT `b`.`id` FROM `*PREFIX*bookmarks` `b`
-			WHERE `b`.`user_id` = ? AND `bookmark_id` = `b`.`id`)
-			");
-
-			$params = [$new, $old, $userId];
-			$query->execute($params);
+		// Remove about-to-be duplicated tags
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('tgs.bookmark_id')
+			->from('bookmarks_tags', 'tgs')
+			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
+			->innerJoin('tgs', 'bookmarks_tags', 't', $qb->expr()->eq('tgs.bookmark_id', 't.bookmark_id'))
+			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($new)))
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
+			->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
+		$duplicates = $qb->execute()->fetchColumn();
+		if ($duplicates !== false) {
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->delete('bookmarks_tags', 't')
+				->where($qb->expr()->in('t.bookmark_id', $qb->createNamedParameter($duplicates)))
+				->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
+			$qb->execute();
 		}
 
+		// Update tags to the new label
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('tgs.bookmark_id')
+			->from('bookmarks_tags', 'tgs')
+			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
+			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
+		$bookmarks = $qb->execute()->fetchColumn();
+		if ($bookmarks !== false) {
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->update('bookmarks_tags')
+				->set('tag', $qb->createNamedParameter($new))
+				->where($qb->expr()->eq('tag', $qb->createNamedParameter($old)))
+				->andWhere($qb->expr()->in('bookmark_id', $qb->createNamedParameter($bookmarks)));
+			$qb->execute();
+		}
 		return true;
 	}
 
@@ -367,17 +360,23 @@ class Bookmarks {
 	 * @return boolean Success of operation
 	 */
 	public function deleteTag($userid, $old) {
-
-		// Update the record
-		$query = $this->db->prepare("
-		DELETE FROM `*PREFIX*bookmarks_tags`
-		WHERE `tag` = ?
-		AND exists( SELECT `id` FROM `*PREFIX*bookmarks` WHERE `user_id` = ? AND `bookmark_id` = `id`)
-		");
-
-		$params = [$old, $userid];
-		$result = $query->execute($params);
-		return $result;
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('tgs.bookmark_id')
+			->from('bookmarks_tags', 'tgs')
+			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
+			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userid)));
+		$bookmarks = $qb->execute()->fetchColumn();
+		if ($bookmarks !== false) {
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->delete('bookmarks_tags', 'tgs')
+				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
+				->andWhere($qb->expr()->in('bm.user_id', $qb->createNamedParameter($bookmarks)));
+			return $qb->execute();
+		}
+		return true;
 	}
 
 	/**
@@ -397,25 +396,19 @@ class Bookmarks {
 		$isPublic = $isPublic ? 1 : 0;
 
 		// Update the record
-		$query = $this->db->prepare("
-		UPDATE `*PREFIX*bookmarks` SET
-			`url` = ?, `title` = ?, `public` = ?, `description` = ?,
-			`lastmodified` = UNIX_TIMESTAMP()
-		WHERE `id` = ?
-		AND `user_id` = ?
-		");
 
-		$params = array(
-			htmlspecialchars_decode($url),
-			htmlspecialchars_decode($title),
-			$isPublic,
-			htmlspecialchars_decode($description),
-			$id,
-			$userid,
-		);
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->update('bookmarks')
+			->set('url', $qb->createNamedParameter(htmlspecialchars_decode($url)))
+			->set('title', $qb->createNamedParameter(htmlspecialchars_decode($title)))
+			->set('public', $qb->createNamedParameter($isPublic))
+			->set('description', $qb->createNamedParameter(htmlspecialchars_decode($description)))
+			->set('lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
+			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)));
 
-		$result = $query->execute($params);
-
+		$result = $qb->execute();
 		// Abort the operation if bookmark couldn't be set
 		// (probably because the user is not allowed to edit this bookmark)
 		if ($result == 0) {
@@ -423,9 +416,12 @@ class Bookmarks {
 		}
 
 		// Remove old tags
-		$sql = "DELETE FROM `*PREFIX*bookmarks_tags`  WHERE `bookmark_id` = ?";
-		$query = $this->db->prepare($sql);
-		$query->execute(array($id));
+
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->delete('bookmarks_tags')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
+		$qb->execute();
 
 		// Add New Tags
 		$this->addTags($id, $tags);
@@ -457,46 +453,70 @@ class Bookmarks {
 		$description = mb_substr($description, 0, 4096);
 
 		// Change lastmodified date if the record if already exists
-		$sql = "SELECT * from  `*PREFIX*bookmarks` WHERE `url` like ? AND `user_id` = ?";
-		$query = $this->db->prepare($sql, 1);
-		$query->execute(array('%'.$decodedUrlNoPrefix, $userid)); // Find url in the db independantly from its protocol
-		if ($row = $query->fetch()) {
-			$params = array();
-			$titleStr = '';
+		
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('*')
+			->from('bookmarks')
+			->where($qb->expr()->like('url', $qb->createParameter('url'))) // Find url in the db independantly from its protocol
+			->andWhere($qb->expr()->eq('user_id', $qb->createParameter('userID')));
+		$qb->setParameters([
+			'userID' => $userid,
+			'url' => '%' . $this->db->escapeLikeParameter($decodedUrlNoPrefix)
+		]);
+		$row = $qb->execute()->fetch();
+		
+		if ($row) {
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->update('bookmarks')
+				->set('lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
+				->set('url', $qb->createParameter('url'));
 			if (trim($title) != '') { // Do we replace the old title
-				$titleStr = ' , title = ?';
-				$params[] = $title;
+				$qb->set('title', $qb->createParameter('title'));
 			}
-			$descriptionStr = '';
+
 			if (trim($description) != '') { // Do we replace the old description
-				$descriptionStr = ' , description = ?';
-				$params[] = $description;
+				$qb->set('description', $qb->createParameter('description'));
 			}
-			$sql = "UPDATE `*PREFIX*bookmarks` SET `lastmodified` = "
-					. "UNIX_TIMESTAMP() $titleStr $descriptionStr , `url` = ? WHERE `url` like ? and `user_id` = ?";
-			$params[] = $decodedUrl;
-			$params[] = '%'.$decodedUrlNoPrefix;
-			$params[] = $userid;
-			$query = $this->db->prepare($sql);
-			$query->execute($params);
+
+			$qb
+				->where($qb->expr()->like('url', $qb->createParameter('compareUrl'))) // Find url in the db independantly from its protocol
+				->andWhere($qb->expr()->eq('user_id', $qb->createParameter('userID')));
+				$qb->setParameters([
+					'userID' => $userid,
+					'url' => $decodedUrl,
+					'compareUrl' => '%' . $this->db->escapeLikeParameter($decodedUrlNoPrefix),
+					'title' => $title,
+					'description' => $description,
+				]);
+				$qb->execute();
 			return $row['id'];
 		} else {
-			$query = $this->db->prepare("
-			INSERT INTO `*PREFIX*bookmarks`
-			(`url`, `title`, `user_id`, `public`, `added`, `lastmodified`, `description`)
-			VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?)
-			");
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->insert('bookmarks')
+				->values(array(
+					'url' => $qb->createParameter('url'),
+					'title' => $qb->createParameter('title'),
+					'user_id' => $qb->createParameter('user_id'),
+					'public' => $qb->createParameter('public'),
+					'added' => $qb->createFunction('UNIX_TIMESTAMP()'),
+					'lastmodified' => $qb->createFunction('UNIX_TIMESTAMP()'),
+					'description' => $qb->createParameter('description')
+				))
+				->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')));
+			$qb->setParameters(array(
+				'user_id' => $userid,
+				'url' => $decodedUrl,
+				'title' => htmlspecialchars_decode($title), // XXX: Should the title update above also decode it first?
+				'public' => $public,
+				'description' => $description
+			));	
 
-			$params = array(
-				$decodedUrl,
-				htmlspecialchars_decode($title),
-				$userid,
-				$public,
-				$description,
-			);
-			$query->execute($params);
+			$qb->execute();
 
-			$insertId = $this->db->lastInsertId('*PREFIX*bookmarks');
+			$insertId = $qb->getLastInsertId();
 
 			if ($insertId !== false) {
 				$this->addTags($insertId, $tags);
@@ -512,23 +532,32 @@ class Bookmarks {
 	 * @param array $tags Set of tags to add to the bookmark
 	 * */
 	private function addTags($bookmarkID, $tags) {
-		$sql = 'INSERT INTO `*PREFIX*bookmarks_tags` (`bookmark_id`, `tag`) select ?, ? ';
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-
-		if ($dbType === 'mysql') {
-			$sql .= 'from dual ';
-		}
-		$sql .= 'where not exists(select * from `*PREFIX*bookmarks_tags` where `bookmark_id` = ? and `tag` = ?)';
-
-		$query = $this->db->prepare($sql);
 		foreach ($tags as $tag) {
 			$tag = trim($tag);
 			if (empty($tag)) {
 				//avoid saving white spaces
 				continue;
 			}
-			$params = array($bookmarkID, $tag, $bookmarkID, $tag);
-			$query->execute($params);
+
+			// check if tag for this bookmark exists
+
+			$qb = $this->db->getQueryBuilder();
+			$qb
+			->select('*')
+			->from('bookmarks_tags')
+				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkID)))
+				->andWhere($qb->expr()->eq('tag', $qb->createNamedParameter($tag)));
+
+			if ($qb->execute()->fetch()) continue;
+
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->insert('bookmarks_tags')
+				->values(array(
+					'tag' => $qb->createNamedParameter($tag),
+					'bookmark_id' => $qb->createNamedParameter($bookmarkID)
+				));
+			$qb->execute();
 		}
 	}
 
