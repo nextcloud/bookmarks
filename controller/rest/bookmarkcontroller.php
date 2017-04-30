@@ -124,7 +124,7 @@ class BookmarkController extends ApiController {
 				$sqlSortColumn = $sortby;
 			}
 			
-			$attributesToSelect = array('url', 'title');		
+			$attributesToSelect = array('url', 'title', 'id');		
 			if ($select !== null) {		
 				$attributesToSelect = array_merge($attributesToSelect, $select);		
 				$attributesToSelect = array_unique($attributesToSelect);		
