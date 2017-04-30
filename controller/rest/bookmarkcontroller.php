@@ -62,7 +62,6 @@ class BookmarkController extends ApiController {
 	 * @param string $sort
 	 * @return JSONResponse
 	 *
-	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
@@ -145,7 +144,6 @@ class BookmarkController extends ApiController {
 	 * @param string $description
 	 * @return JSONResponse
 	 *
-	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
@@ -222,7 +220,6 @@ class BookmarkController extends ApiController {
 	 * @param string $description
 	 * @return JSONResponse
 	 *
-	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
@@ -262,7 +259,6 @@ class BookmarkController extends ApiController {
 	 * @param int $id
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 *
-	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */

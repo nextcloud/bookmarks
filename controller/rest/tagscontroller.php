@@ -25,7 +25,6 @@ class TagsController extends ApiController {
 	 * @param string $old_name
 	 * @return JSONResponse
 	 *
-	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
@@ -44,7 +43,6 @@ class TagsController extends ApiController {
 	 * @param string $new_name
 	 * @return JSONResponse
 	 *
-	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
@@ -59,7 +57,6 @@ class TagsController extends ApiController {
 	}
 
 	/**
-	 * @CORS
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
