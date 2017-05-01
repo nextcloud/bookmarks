@@ -60,10 +60,33 @@ class Application extends App {
 				$c->query('ServerContainer')->getUserManager()
 			);
 		});
+		
+		$container->registerService('InternalBookmarkController', function($c) {
+			/** @var IContainer $c */
+			return new InternalBookmarkController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$c->query('ServerContainer')->getDatabaseConnection(),
+				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
+				$c->query('ServerContainer')->query(Bookmarks::class),
+				$c->query('ServerContainer')->getUserManager()
+			);
+		});
 
 		$container->registerService('TagsController', function($c) {
 			/** @var IContainer $c */
 			return new TagsController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$c->query('ServerContainer')->query(Bookmarks::class)
+			);
+		});
+		
+		$container->registerService('InternalTagsController', function($c) {
+			/** @var IContainer $c */
+			return new InternalTagsController(
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),

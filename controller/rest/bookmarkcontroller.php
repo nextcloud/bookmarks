@@ -64,6 +64,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * @CORS
 	 */
 	public function getBookmarks(
 		$type = "bookmark",
@@ -146,6 +147,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * @CORS
 	 */
 	public function newBookmark($url = "", $item = array(), $title = "", $is_public = false, $description = "") {
 		$title = trim($title);
@@ -200,6 +202,7 @@ class BookmarkController extends ApiController {
 	 * @return Http\TemplateResponse
 	 *
 	 * @NoAdminRequired
+	 * @CORS
 	 */
 	//TODO id vs record_id?
 	public function legacyEditBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
@@ -222,6 +225,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * @CORS
 	 */
 	public function editBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
 
@@ -261,6 +265,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * @CORS
 	 */
 	public function deleteBookmark($id = -1) {
 		if ($id == -1) {
