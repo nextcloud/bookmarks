@@ -19,7 +19,8 @@ use \OCP\IContainer;
 use \OCA\Bookmarks\Controller\WebViewController;
 use OCA\Bookmarks\Controller\Rest\TagsController;
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
-use OCA\Bookmarks\Controller\Rest\PublicController;
+use OCA\Bookmarks\Controller\Rest\InternalTagsController;
+use OCA\Bookmarks\Controller\Rest\InternalBookmarkController;
 use OCP\IUser;
 
 class Application extends App {

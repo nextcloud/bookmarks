@@ -6,6 +6,7 @@ use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OCP\AppFramework\ApiController;
+use OCA\Bookmarks\Controller\Rest\InternalTagsController;
 use \OCP\IRequest;
 
 class InternalTagsController extends ApiController {
