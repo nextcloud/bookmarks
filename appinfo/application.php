@@ -28,7 +28,6 @@ class Application extends App {
 		parent::__construct('bookmarks', $urlParams);
 
 		$container = $this->getContainer();
-		$server = $container->getServer();
 
 		/**
 		 * Controllers
@@ -81,6 +80,7 @@ class Application extends App {
 				$c->query('ServerContainer')->getUserManager()
 			);
 		});
+
 	}
 
 }

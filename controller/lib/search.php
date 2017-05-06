@@ -34,23 +34,6 @@ class Search extends PagedProvider {
 		$this->db = $server->getDatabaseConnection();
 		$this->libBookmarks = $server->query(Bookmarks::class);
 	}
-
-	public function search($query) {
-		$filters = explode(' ', $query);
-		$results = $this->libBookmarks->findBookmarks(
-			$this->userid,
-			$this->getOption('offset'),
-			$this->getOption('sortby'),
-			$filters,
-			$this->getOption('filterTagsOnly'),
-			$this->getOption('limit'),
-			$this->getOption('publicOnly'),
-			$this->getOption('returnedAttrs'),
-			$this->getOption('conjunction')
-		);
-		
-		return array_map([$this, 'mapResult'], $results);
-	}
 	
 	public function searchPaged($query, $page, $size) {
 		$filters = explode(' ', $query);
