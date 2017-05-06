@@ -31,7 +31,8 @@ like to access the bookmarks app. This can be done using Basic Auth and must hap
 
 ### Query bookmarks
 ```
-GET /apps/bookmarks/bookmark
+GET
+/apps/bookmarks/public/rest/v2/bookmark
 ```
 
 
@@ -45,7 +46,8 @@ Parameters:
 
 Example:
 ```
-GET /apps/bookmarks/bookmark?tags[]=firsttag&tags[]=secondtag&page=-1
+GET
+/apps/bookmarks/public/rest/v2/bookmark?tags[]=firsttag&tags[]=secondtag&page=-1
 ```
 
 ```json
@@ -59,7 +61,8 @@ GET /apps/bookmarks/bookmark?tags[]=firsttag&tags[]=secondtag&page=-1
 
 ### Create a bookmark
 ```
-POST /apps/bookmarks/bookmark
+POST
+/apps/bookmarks/public/rest/v2/bookmark
 ```
 
 Parameters:
@@ -71,7 +74,7 @@ Parameters:
 
 Example:
 ```
-POST /apps/bookmarks/bookmark?url=http%3A%2F%2Fgoogle.com&title=Google&description=in%20case%20you%20forget
+POST /apps/bookmarks/public/rest/v2/bookmark?url=http%3A%2F%2Fgoogle.com&title=Google&description=in%20case%20you%20forget
 ```
 
 ```json
@@ -87,7 +90,7 @@ POST /apps/bookmarks/bookmark?url=http%3A%2F%2Fgoogle.com&title=Google&descripti
 
 ### Edit a bookmark
 ```
-PUT /apps/bookmarks/bookmark/:id
+PUT /apps/bookmarks/public/rest/v2/bookmark/:id
 ```
 
 * `id`: The id of the bookmark to edit
@@ -102,7 +105,7 @@ Parameters:
 
 Example:
 ```
-PUT /apps/bookmarks/bookmark/7?record_id=7&title=Boogle
+PUT /apps/bookmarks/public/rest/v2/bookmark/7?record_id=7&title=Boogle
 ```
 
 ```json
@@ -118,7 +121,7 @@ PUT /apps/bookmarks/bookmark/7?record_id=7&title=Boogle
 
 ### Delete a bookmark
 ```
-DELETE /apps/bookmarks/bookmark/:id
+DELETE /apps/bookmarks/public/rest/v2/bookmark/:id
 ```
 
 * `id`: The bookmark to delete
@@ -127,7 +130,7 @@ Parameters: *None*
 
 Example:
 ```
-DELETE /apps/bookmarks/bookmark/7
+DELETE /apps/bookmarks/public/rest/v2/bookmark/7
 ```
 
 ```json
@@ -136,14 +139,14 @@ DELETE /apps/bookmarks/bookmark/7
 
 ### List all tags
 ```
-GET /apps/bookmarks/tag
+GET /apps/bookmarks/public/rest/v2/tag
 ```
 
 Parameters: *None*
 
 Example:
 ```
-GET /apps/bookmarks/tag
+GET /apps/bookmarks/public/rest/v2/tag
 ```
 
 ```
@@ -153,7 +156,7 @@ GET /apps/bookmarks/tag
 
 ### Delete a tag
 ```
-DELETE /apps/bookmarks/tag
+DELETE /apps/bookmarks/public/rest/v2/tag
 ```
 
 Parameters:
@@ -162,7 +165,7 @@ Parameters:
 Example:
 
 ```
-DELETE /apps/bookmarks/tag?old_name=mytag
+DELETE /apps/bookmarks/public/rest/v2/tag?old_name=mytag
 ```
 
 ```
@@ -171,7 +174,7 @@ DELETE /apps/bookmarks/tag?old_name=mytag
 
 ### Rename a tag
 ```
-POST /apps/bookmarks/tag
+POST /apps/bookmarks/public/rest/v2/tag
 ```
 
 Parameters:
@@ -180,7 +183,7 @@ Parameters:
 
 Example:
 ```
-POST /apps/bookmarks/tag?old_name=politics&new_name=satire
+POST /apps/bookmarks/public/rest/v2/tag?old_name=politics&new_name=satire
 ```
 
 ```
