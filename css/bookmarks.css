@@ -22,11 +22,12 @@ input.disabled, input.disabled:hover, input.disabled:focus {
     padding: 0.5ex;
 }
 
-.bookmarks_list, #firstrun {
+.bookmarks_list, #firstrun, #searchresults {
     overflow: auto;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     height: 100%;
+	margin-top: 0 !important;
 }
 
 #add_form {

@@ -1,6 +1,7 @@
 <?php
 script('bookmarks', 'settings');
 script('bookmarks', 'bookmarks');
+script('bookmarks', 'search');
 style('bookmarks', 'bookmarks');
 
 script('bookmarks', '3rdparty/tag-it');
@@ -76,6 +77,7 @@ function bookmarklet($bookmarkleturl) {
             </a></div>
     </div>
     <div class="bookmarks_list"></div>
+	<div id="searchresults" class="hidden"></div>
 </div>
 
 <?php

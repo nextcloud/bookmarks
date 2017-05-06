@@ -1,51 +1,77 @@
 <?php
-
 /**
- * @author David Iwanowitsch
- * @copyright 2012 David Iwanowitsch <david at unclouded dot de>
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * @author Marcel Klehr <mklehr@gmx.net>
+ * @copyright Marcel Klehr 2017
  */
-
 namespace OCA\Bookmarks\Controller\Lib;
 
-use OCA\Bookmarks\AppInfo\Application;
+use \OCA\Bookmarks\Appinfo\Application;
+use \OCP\Search\PagedProvider;
+use OCP\IDBConnection;
 
-class Search extends \OCP\Search\Provider{
+class Search extends PagedProvider {
+	private $userid;
+	private $db;
+	private $libBookmarks;
 
-	function search($query) {
-		$results = array();
-
-		if (substr_count($query, ' ') > 0) {
-			$search_words = explode(' ', $query);
-		} else {
-			$search_words = $query;
-		}
-
-		$user = \OCP\User::getUser();
-
+	public function __construct($options) {
+		parent::__construct(array_merge([
+			self::OPTION_APPS => ['bookmarks'],
+			'offset' => 0,
+			'sortby' => 'title',
+			'filterTagsOnly' => false,
+			'limit' => 0,
+			'publicOnly' => false,
+			'returnedAttrs' => null,
+			'conjunction' => "and",
+		], $options));
 		$app = new Application();
-		$libBookmarks = $app->getContainer()->query(Bookmarks::class);
-
-		$bookmarks = $libBookmarks->findBookmarks($user, 0, 'id', $search_words, false);
-		$l = \OC::$server->getL10N('bookmarks'); //resulttype can't be localized, javascript relies on that type
-		foreach ($bookmarks as $bookmark) {
-			$results[] = new \OC_Search_Result($bookmark['title'], $bookmark['title'], $bookmark['url'], (string) $l->t('Bookm.'));
-		}
-
-		return $results;
+		$server = $app->getContainer()->getServer();
+		$this->userid = $server->getUserSession()->getUser()->getUID();
+		$this->db = $server->getDatabaseConnection();
+		$this->libBookmarks = $server->query(Bookmarks::class);
 	}
 
+	public function search($query) {
+		$filters = explode(' ', $query);
+		$results = $this->libBookmarks->findBookmarks(
+			$this->userid,
+			$this->getOption('offset'),
+			$this->getOption('sortby'),
+			$filters,
+			$this->getOption('filterTagsOnly'),
+			$this->getOption('limit'),
+			$this->getOption('publicOnly'),
+			$this->getOption('returnedAttrs'),
+			$this->getOption('conjunction')
+		);
+		
+		return array_map([$this, 'mapResult'], $results);
+	}
+	
+	public function searchPaged($query, $page, $size) {
+		$filters = explode(' ', $query);
+		$results = $this->libBookmarks->findBookmarks(
+			$this->userid,
+			($page-1)*$size,
+			$this->getOption('sortby'),
+			$filters,
+			$this->getOption('filterTagsOnly'),
+			$size,
+			$this->getOption('publicOnly'),
+			$this->getOption('returnedAttrs'),
+			$this->getOption('conjunction')
+		);
+
+		return array_map([$this, 'mapResult'], $results);
+	}
+
+	public function mapResult($result) {
+		return new SearchResult('bookmarks/'+$result['id'], $result['title'], $result['url']);
+	}
 }
+
+?>
