@@ -40,7 +40,6 @@ Parameters:
 * (optional) `conjunction`: Set to `and` to require all tags to be present, `or` if one should suffice. Default: `or`
 * (optional) `page`: if this is non-negative, results will be paginated by 10 bookmarks a page. Default: `0`
 * (optional) `sortby`: The column to sort the results by; one of `url`, `title`, `description`, `public`, `lastmodified`, `clickcount`. Default: `lastmodified`.
-* (optional) `select[]` An array of columns to select in the query. Can be `url`, `title`, `description`, `public`, `lastmodified`, `clickcount`. Default: `title`, `url`.
 * (optional) `search[]`: An array of words to search for in the following columns `url`, `title`, `description`
 * (optional) `user`: Instead of returning the bookmarks of the current user, return the public bookmarks of the user passed as this parameter.
 

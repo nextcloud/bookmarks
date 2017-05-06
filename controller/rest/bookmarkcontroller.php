@@ -74,7 +74,6 @@ class BookmarkController extends ApiController {
 		$user = null,
 		$tags = array(),
 		$conjunction = "or",
-		$select = null,
 		$sortby = "",
 		$search = array()
 	) {
@@ -125,11 +124,8 @@ class BookmarkController extends ApiController {
 				$sqlSortColumn = $sortby;
 			}
 			
-			$attributesToSelect = array('url', 'title', 'id');		
-			if ($select !== null) {		
-				$attributesToSelect = array_merge($attributesToSelect, $select);		
-				$attributesToSelect = array_unique($attributesToSelect);		
-			}
+			$attributesToSelect = array('url', 'title', 'id', 'user_id', 'description', 'public',
+				'added', 'lastmodified', 'clickcount', 'tags');		
 
 			$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag,
 				$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
@@ -280,7 +276,7 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	  @NoAdminRequired
+		@NoAdminRequired
 	 * 
 	 * @param string $url
 	 * @return \OCP\AppFramework\Http\JSONResponse
@@ -305,7 +301,7 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	  @NoAdminRequired
+		@NoAdminRequired
 	 * 
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 */
@@ -333,7 +329,7 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	  @NoAdminRequired
+		@NoAdminRequired
 	 * 
 	 * @return \OCP\AppFramework\Http\Response
 	 */

@@ -49,11 +49,10 @@ class InternalBookmarkController extends ApiController {
 		$user = null,
 		$tags = array(),
 		$conjunction = "or",
-		$select = null,
 		$sortby = "",
 		$search = array()
 	) {
-		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $select, $sortby, $search);
+		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search);
 	}
 
 	/**
