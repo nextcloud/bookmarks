@@ -220,7 +220,6 @@ class Bookmarks {
 				$qb->setFirstResult($offset);
 			}
 		}
-
 		$results = $qb->execute()->fetchAll();
 		$bookmarks = array();
 		foreach ($results as $result) {
@@ -255,17 +254,21 @@ class Bookmarks {
 		}
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
-    $i = 0;
+    	$i = 0;
 		foreach ($filters as $filter) {
-      $qb->leftJoin('b', 'bookmarks_tags', 't' . $i, $qb->expr()->eq('t' . $i . '.bookmark_id', 'b.id'));
-			$filterExpressions[] = $qb->expr()->eq('t'.$i.'.tag', $qb->createNamedParameter($filter));
+			$qb->leftJoin('b', 'bookmarks_tags', 't' . $i, $qb->expr()->eq('t' . $i . '.bookmark_id', 'b.id'));
+      		$expr = [];
+			$expr[] = $qb->expr()->eq('t'.$i.'.tag', $qb->createNamedParameter($filter));
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
-					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $qb->getColumnName($col) . ')'),
-						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%'));
+					$expr[] = $qb->expr()->like(
+						$qb->createFunction('lower(' . $qb->getColumnName($col) . ')'),
+						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%')
+					);
 				}
 			}
-      $i++;
+			$filterExpressions[] = call_user_func_array([$qb->expr(), 'orX'], $expr);
+      		$i++;
 		}
 		if ($connectWord == 'AND') {
 			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $filterExpressions);
