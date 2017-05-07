@@ -5,7 +5,8 @@ Bookmarks app
 
 Maintainers:
 ------------
-- [Blizzz] (https://github.com/Blizzz)
+- [Blizzz](https://github.com/Blizzz)
+- [Marcel Klehr](https://github.com/marcelklehr)
 
 Developer setup info:
 ---------------------
