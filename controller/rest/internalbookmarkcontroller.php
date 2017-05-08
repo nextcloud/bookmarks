@@ -19,9 +19,6 @@ use \OCP\AppFramework\Http;
 use \OC\User\Manager;
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
-use \OCA\Bookmarks\Controller\Lib\ExportResponse;
-use \OCA\Bookmarks\Controller\Lib\Helper;
-use OCP\Util;
 
 class InternalBookmarkController extends ApiController {
 
@@ -37,6 +34,11 @@ class InternalBookmarkController extends ApiController {
 	 * @param string $tag
 	 * @param int $page
 	 * @param string $sort
+	 * @param string user
+	 * @param array tags
+	 * @param string conjunction
+	 * @param string sortby
+	 * @param array search
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -66,7 +68,7 @@ class InternalBookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 */
 	public function newBookmark($url = "", $item = array(), $title = "", $is_public = false, $description = "") {
-		return $this->publicController->newBookmark($url, $item, $title, $is_publiic, $description);
+		return $this->publicController->newBookmark($url, $item, $title, $is_public, $description);
 	}
 
 	/**
@@ -122,28 +124,28 @@ class InternalBookmarkController extends ApiController {
 	}
 
 	/**
-	  @NoAdminRequired
 	 * 
 	 * @param string $url
 	 * @return \OCP\AppFramework\Http\JSONResponse
+	 * @NoAdminRequired
 	 */
 	public function clickBookmark($url = "") {
 		return $this->publicController->clickBookmark($url);
 	}
 
 	/**
-	  @NoAdminRequired
 	 * 
 	 * @return \OCP\AppFramework\Http\JSONResponse
+	 * @NoAdminRequired
 	 */
 	public function importBookmark() {
 		return $this->importBookmark();
 	}
 
 	/**
-	  @NoAdminRequired
 	 * 
 	 * @return \OCP\AppFramework\Http\Response
+	 * @NoAdminRequired
 	 */
 	public function exportBookmark() {
 		return $this->publicController->exportBookmark();

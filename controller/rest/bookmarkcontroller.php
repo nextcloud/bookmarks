@@ -60,6 +60,11 @@ class BookmarkController extends ApiController {
 	 * @param string $tag
 	 * @param int $page
 	 * @param string $sort
+	 * @param string user
+	 * @param array tags
+	 * @param string conjunction
+	 * @param string sortby
+	 * @param array search
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -83,7 +88,8 @@ class BookmarkController extends ApiController {
 		}else {
 			$publicOnly = true;
 			if ($this->userManager->userExists($user) == false) {
-				return $this->newJsonErrorMessage("User could not be identified");
+				$error = "User could not be identified";
+				return new JSONResponse(array('status' => 'error', 'data'=> $error));
 			}
 		}
 		if ($type === 'rel_tags' && !$publicOnly) { // XXX: libbookmarks#findTags needs a publicOnly option
@@ -276,10 +282,11 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-		@NoAdminRequired
 	 * 
 	 * @param string $url
 	 * @return \OCP\AppFramework\Http\JSONResponse
+	 *
+	 * @NoAdminRequired
 	 */
 	public function clickBookmark($url = "") {
 		$urlData = parse_url($url);
@@ -301,9 +308,10 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-		@NoAdminRequired
 	 * 
 	 * @return \OCP\AppFramework\Http\JSONResponse
+	 *
+	 * @NoAdminRequired
 	 */
 	public function importBookmark() {
 		$full_input = $this->request->getUploadedFile("bm_import");
@@ -329,9 +337,9 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-		@NoAdminRequired
 	 * 
 	 * @return \OCP\AppFramework\Http\Response
+	 * @NoAdminRequired
 	 */
 	public function exportBookmark() {
 

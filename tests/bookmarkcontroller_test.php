@@ -15,11 +15,13 @@ class Test_BookmarkController extends TestCase {
 	/** @var	Bookmarks */
 	protected $libBookmarks;
 	private $userid;
+	private $otherUser;
 	private $request;
 	private $db;
 	private $userManager;
-	/** @var	PublicController */
+	/** @var	BookmarkController */
 	private $controller;
+	/** @var	BookmarkController */
 	private $publicController;
 
 	protected function setUp() {
