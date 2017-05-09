@@ -17,7 +17,6 @@ use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OC\User\Manager;
-use OCA\Bookmarks\Controller\Rest\BookmarkController;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 
 class InternalBookmarkController extends ApiController {
@@ -26,7 +25,7 @@ class InternalBookmarkController extends ApiController {
 
 	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks, Manager $userManager) {
 		parent::__construct($appName, $request);
-	  $this->publicController = new BookmarkController($appname, $request, $userId, $db, $l10n, $bookmarks, $userManager);
+	  $this->publicController = new BookmarkController($appName, $request, $userId, $db, $l10n, $bookmarks, $userManager);
 	}
 
 	/**
