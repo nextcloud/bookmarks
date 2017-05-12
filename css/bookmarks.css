@@ -246,7 +246,9 @@ li:hover > .tags_actions > span {
     display:inline;
 }
 li:hover > .tags_actions > em { display : none; }
-
+#app-navigation #tag_filter ul {
+    display: block;
+}
 #tag_filter li, #tag_filter li:hover {
     background: none repeat scroll 0 0 #F8F8F8;
 }
