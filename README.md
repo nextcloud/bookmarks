@@ -22,7 +22,7 @@ Rewrite by [Stefan Klemm] aka ganomi (https://github.com/ganomi)
 * Dependency Injection for user and db is used througout the controllers
 * The Routing features a consistent rest api
 * The Routing provides some legacy routes, so that for exampe the Android Bookmarks App still works.
-* Merged all the changes from https://github.com/owncloud/bookmarks/pull/68 and added visual fixes. App uses the App Framework Styling on the Client side now.
+* Merged all the changes from https://github.com/nextcloud/bookmarks/pull/68 and added visual fixes. App uses the App Framework Styling on the Client side now.
 
 There is a publicly available api that provides access to bookmarks per user. (This is usefull in connection with the Wordpress Plugin https://github.com/mario-nolte/oc2wp-bookmarks)
 
