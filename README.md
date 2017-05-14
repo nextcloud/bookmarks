@@ -71,7 +71,7 @@ POST
 Parameters:
 * `url`: the url of the new bookmark
 * (optional) `item[]`: Array of tags for this bookmark (these needn't exist and are created on-the-fly)
-* (optional) `title`: the title of the bookmark. If absent the title of the html site referenced by `url` is used
+* (optional) `titel`: the title of the bookmark. If absent the title of the html site referenced by `url` is used
 * (optional) `is_public`: Set this parameter (without a value) to mark the new bookmark as public, so that other users can see it
 * (optional) `description`: A description for this bookmark
 
