@@ -70,14 +70,14 @@ POST
 
 Parameters:
 * `url`: the url of the new bookmark
-* (optional) `item[]`: Array of tags for this bookmark (these needn't exist and are created on-the-fly)
+* (optional) `item[tags][]`: Array of tags for this bookmark (these needn't exist and are created on-the-fly)
 * (optional) `title`: the title of the bookmark. If absent the title of the html site referenced by `url` is used
 * (optional) `is_public`: Set this parameter (without a value) to mark the new bookmark as public, so that other users can see it
 * (optional) `description`: A description for this bookmark
 
 Example:
 ```
-POST /apps/bookmarks/public/rest/v2/bookmark?url=http%3A%2F%2Fgoogle.com&title=Google&description=in%20case%20you%20forget
+POST /apps/bookmarks/public/rest/v2/bookmark?url=http%3A%2F%2Fgoogle.com&title=Google&description=in%20case%20you%20forget&item[tags][]=search-engines&item[tags][]=uselessbookmark
 ```
 
 ```json
@@ -101,7 +101,7 @@ PUT /apps/bookmarks/public/rest/v2/bookmark/:id
 Parameters:
 * `record_id`: The id of the bookmark to edit
 * (optional) `url`: The new url
-* (optional) `item[]`: the new tags. Existing tags will be deleted.
+* (optional) `item[tags][]`: the new tags. Existing tags will be deleted.
 * (optional) `title`: The new title
 * (optional) `is_public`: Set or leave unset to set the new public status.
 * (optional) `description`: The new description.
