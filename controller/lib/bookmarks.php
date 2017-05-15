@@ -115,7 +115,7 @@ class Bookmarks {
 			->select('tag')
 			->from('bookmarks_tags')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
-		$result['tags'] = $qb->execute()->fetchColumn();
+		$result['tags'] = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 		return $result;
 	}
 
