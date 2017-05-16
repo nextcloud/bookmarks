@@ -229,23 +229,29 @@ class BookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function editBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
+	public function editBookmark($id = null, $url = null, $item = null, $title = null, $is_public = null, $record_id = null, $description = null) {
 
-		// Check if it is a valid URL
-		$urlData = parse_url($url);
-		if(!$this->isProperURL($urlData)) {
+		if ($record_id !== null) {
+			$id = $record_id;
+		}
+		
+		$bookmark = $this->bookmarks-findUniqueBookmark($id, $this->userId);
+		$bookmark = array_merge($bookmark, [
+			'id' => $id,
+			'url' => $url,
+			'tags' => isset($item) ? $item['tags'] : null,
+			'title' => $title,
+			'is_public' => $is_public,
+			'description' => $description
+		]);
+
+		// Check if url and id are valid
+		$urlData = parse_url($bookmark['url']);
+		if(!$this->isProperURL($urlData) || !is_numeric($bookmark['id'])) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
-		if ($record_id == null) {
-			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
-		}
-
-		$tags = isset($item['tags']) ? $item['tags'] : array();
-
-		if (is_numeric($record_id)) {
-			$id = $this->bookmarks->editBookmark($this->userId, $record_id, $url, $title, $tags, $description, $is_public = false);
-		}
+		$id = $this->bookmarks->editBookmark($this->userId, $bookmark['id'], $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['is_public']);
 
 		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
