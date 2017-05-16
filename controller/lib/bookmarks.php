@@ -372,9 +372,8 @@ class Bookmarks {
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->delete('bookmarks_tags', 'tgs')
-				->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
-				->andWhere($qb->expr()->in('bm.user_id', $qb->createNamedParameter($bookmarks)));
+				->andWhere($qb->expr()->in('bookmark_id', $qb->createNamedParameter($bookmarks)));
 			return $qb->execute();
 		}
 		return true;
