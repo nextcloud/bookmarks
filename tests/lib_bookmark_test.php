@@ -143,13 +143,13 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("NewTitle", $bookmark['title']);
 		$this->assertEquals("http://www.google.de", $bookmark['url']);
-		$this->assertEquals($bookmark['tags'], 'three');
+		$this->assertEquals($bookmark['tags'], ['three']);
 		
 		// Make sure nothing else changed
 		$control_bookmark = $this->libBookmarks->findUniqueBookmark($control_bm_id, $this->userid);
 		$this->assertEquals("Golem", $control_bookmark['title']);
 		$this->assertEquals("http://www.golem.de", $control_bookmark['url']);
-		$this->assertEquals($control_bookmark['tags'], 'four');
+		$this->assertEquals($control_bookmark['tags'], ['four']);
 	}
 
 	function testDeleteBookmark() {
