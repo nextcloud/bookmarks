@@ -139,17 +139,17 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$control_bm_id = $this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		$this->libBookmarks->editBookmark($this->userid, $id, "http://www.google.de", "NewTitle", array("three"));
+		$this->libBookmarks->editBookmark($this->userid, $id, "http://www.google.de", "NewTitle", array("three", "four"));
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("NewTitle", $bookmark['title']);
 		$this->assertEquals("http://www.google.de", $bookmark['url']);
-		$this->assertEquals($bookmark['tags'], 'three');
+		$this->assertEquals(['four', 'three'], $bookmark['tags']);
 		
 		// Make sure nothing else changed
 		$control_bookmark = $this->libBookmarks->findUniqueBookmark($control_bm_id, $this->userid);
 		$this->assertEquals("Golem", $control_bookmark['title']);
 		$this->assertEquals("http://www.golem.de", $control_bookmark['url']);
-		$this->assertEquals($control_bookmark['tags'], 'four');
+		$this->assertEquals($control_bookmark['tags'], ['four']);
 	}
 
 	function testDeleteBookmark() {
