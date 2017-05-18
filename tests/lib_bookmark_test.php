@@ -156,8 +156,9 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$firstUserTags = $this->libBookmarks->findTags($this->userid);
 		$this->assertFalse(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
 		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
+		$this->assertTrue(in_array(['tag' => 'four', 'nbr' => 1], $firstUserTags));
 		$this->assertTrue(in_array(['tag' => 'three', 'nbr' => 1], $firstUserTags));
-		$this->assertEquals(count($firstUserTags), 2);
+		$this->assertEquals(count($firstUserTags), 3);
 		$secondUserTags = $this->libBookmarks->findTags($secondUser);
 		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 2], $secondUserTags));
 		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $secondUserTags));
