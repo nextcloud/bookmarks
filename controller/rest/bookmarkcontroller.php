@@ -235,7 +235,7 @@ class BookmarkController extends ApiController {
 			$id = $record_id;
 		}
 		
-		$bookmark = $this->bookmarks-findUniqueBookmark($id, $this->userId);
+		$bookmark = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		$bookmark = array_merge($bookmark, [
 			'id' => $id,
 			'url' => $url,
