@@ -113,7 +113,7 @@ class Test_BookmarkController extends TestCase {
 		$this->setupBookmarks();
 		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Golem", array("four"), "PublicNoTag", true);
 
-		$this->controller->editBookmark($id, 'https://www.heise.de', [], '', true, $id, '');
+		$this->controller->editBookmark($id, 'https://www.heise.de', null, '', true, $id, '');
 		
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("https://www.heise.de", $bookmark['url']);

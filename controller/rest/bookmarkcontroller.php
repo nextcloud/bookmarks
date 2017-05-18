@@ -239,7 +239,7 @@ class BookmarkController extends ApiController {
 		$bookmark = array_merge($bookmark, [
 			'id' => $id,
 			'url' => $url,
-			'tags' => isset($item) ? $item['tags'] : null,
+			'tags' => isset($item) && isset($item['tags']) ? $item['tags'] : null,
 			'title' => $title,
 			'is_public' => $is_public,
 			'description' => $description
