@@ -78,11 +78,10 @@ class Bookmarks {
 			->select('t.tag')
 			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'nbr')
 			->from('bookmarks_tags', 't')
-			->innerJoin('t','bookmarks','b',$qb->expr()->andX(
-				$qb->expr()->eq('b.id', 't.bookmark_id'),
-				$qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId))));
+			->innerJoin('t','bookmarks','b', $qb->expr()->eq('b.id', 't.bookmark_id'))
+			->where($qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)));
 		if (!empty($filterTags)) {
-			$qb->where($qb->expr()->notIn('t.tag', $filterTags));
+			$qb->andWhere($qb->expr()->notIn('t.tag', $filterTags));
 		}
 		$qb
 			->groupBy('t.tag')
