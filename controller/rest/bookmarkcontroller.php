@@ -251,8 +251,8 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
-		if ($bookmarks['tags'] === false) {
-			$bookmarks['tags'] = [];
+		if ($bookmark['tags'] === false) {
+			$bookmark['tags'] = [];
 		}
 
 		$id = $this->bookmarks->editBookmark($this->userId, $bookmark['id'], $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['is_public']);
