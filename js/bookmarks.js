@@ -143,7 +143,7 @@ function getBookmarks() {
 	$.ajax({
 		type: 'GET',
 		url: 'bookmark',
-		data: {type: 'bookmark', tag: $('#bookmarkFilterTag').val(), page: bookmarksPage, sort: bookmarksSorting},
+		data: {type: 'bookmark', tag: $('#bookmarkFilterTag').val(), page: bookmarksPage, conjunction: 'and', sort: bookmarksSorting},
 		complete: function () {
 			decreaseAjaxCallCount();
 		},
