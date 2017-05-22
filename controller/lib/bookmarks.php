@@ -322,7 +322,7 @@ class Bookmarks {
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($new)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
-		$duplicates = $qb->execute()->fetchColumn();
+		$duplicates = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 		if ($duplicates !== false) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
@@ -340,7 +340,7 @@ class Bookmarks {
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
-		$bookmarks = $qb->execute()->fetchColumn();
+		$bookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 		if ($bookmarks !== false) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
