@@ -372,7 +372,7 @@ class Bookmarks {
 			$qb
 				->delete('bookmarks_tags')
 				->where($qb->expr()->eq('tag', $qb->createNamedParameter($old)))
-				->andWhere($qb->expr()->in('bookmark_id', $qb->createNamedParameter($bookmarks)));
+				->andWhere($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $bookmarks)));
 			return $qb->execute();
 		}
 		return true;
