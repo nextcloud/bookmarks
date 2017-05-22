@@ -366,7 +366,7 @@ class Bookmarks {
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userid)));
-		$bookmarks = $qb->execute()->fetchColumn();
+		$bookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 		if ($bookmarks !== false) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
