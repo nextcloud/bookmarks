@@ -326,9 +326,9 @@ class Bookmarks {
 		if ($duplicates !== false) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
-				->delete('bookmarks_tags', 't')
-				->where($qb->expr()->in('t.bookmark_id', array_map([$qb, 'createNamedParameter'], $duplicates)))
-				->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
+				->delete('bookmarks_tags')
+				->where($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $duplicates)))
+				->andWhere($qb->expr()->eq('tag', $qb->createNamedParameter($old)));
 			$qb->execute();
 		}
 
