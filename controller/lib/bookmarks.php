@@ -323,7 +323,7 @@ class Bookmarks {
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
 		$duplicates = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
-		if ($duplicates !== false) {
+		if (count($duplicates) !== 0) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->delete('bookmarks_tags')
@@ -341,7 +341,7 @@ class Bookmarks {
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
 		$bookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
-		if ($bookmarks !== false) {
+		if (count($bookmarks) !== 0) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->update('bookmarks_tags')
