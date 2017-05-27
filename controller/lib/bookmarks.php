@@ -78,11 +78,10 @@ class Bookmarks {
 			->select('t.tag')
 			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'nbr')
 			->from('bookmarks_tags', 't')
-			->innerJoin('t','bookmarks','b',$qb->expr()->andX(
-				$qb->expr()->eq('b.id', 't.bookmark_id'),
-				$qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId))));
+			->innerJoin('t','bookmarks','b', $qb->expr()->eq('b.id', 't.bookmark_id'))
+			->where($qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)));
 		if (!empty($filterTags)) {
-			$qb->where($qb->expr()->notIn('t.tag', $filterTags));
+			$qb->andWhere($qb->expr()->notIn('t.tag', $filterTags));
 		}
 		$qb
 			->groupBy('t.tag')
@@ -367,13 +366,13 @@ class Bookmarks {
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userid)));
-		$bookmarks = $qb->execute()->fetchColumn();
+		$bookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 		if ($bookmarks !== false) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
-				->delete('bookmarks_tags', 'tgs')
-				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
-				->andWhere($qb->expr()->in('bm.user_id', $qb->createNamedParameter($bookmarks)));
+				->delete('bookmarks_tags')
+				->where($qb->expr()->eq('tag', $qb->createNamedParameter($old)))
+				->andWhere($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $bookmarks)));
 			return $qb->execute();
 		}
 		return true;
