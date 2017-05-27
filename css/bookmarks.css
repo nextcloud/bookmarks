@@ -43,7 +43,7 @@ input.disabled, input.disabled:hover, input.disabled:focus {
     margin: 0.3em;
 }
 #add_url {
-    width: 91.5%;
+    width: 98%;
 }
 .bookmarks_addBml {
     text-decoration: underline;
