@@ -226,11 +226,7 @@ class Bookmarks {
 		$bookmarks = array();
 		foreach ($results as $result) {
 			if ($returnTags) {
-				if ($result['tags'] != "") {
-					$result['tags'] = explode(',', $result['tags']);
-				} else {
-					$result['tags'] = [];
-				}
+				$result['tags'] = is_null($result['tags']) ? [] : explode(',', $result['tags']);
 			} else {
 				unset($result['tags']);
 			}
