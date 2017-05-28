@@ -94,7 +94,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
 		
 		$findTags = $this->libBookmarks->findTags($this->userid, ["two"]);
-		$this->assertEquals([array('tag' => 'four', 'nbr' => 1), array('tag' => 'one', 'nbr' => 2), array('tag' => 'three', 'nbr' => 1)], $findTags);
+		$this->assertEquals([array('tag' => 'one', 'nbr' => 2), array('tag' => 'four', 'nbr' => 1)], $findTags);
 	}
   
 	function testRenameTag() {
