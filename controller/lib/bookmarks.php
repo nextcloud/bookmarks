@@ -621,7 +621,10 @@ class Bookmarks {
 			$options = [];
 			if($tryHarder) {
 				$curlOptions = [ 'curl' =>
-					[ CURLOPT_HTTPHEADER => ['Expect:'] ]
+					[
+						CURLOPT_HTTPHEADER     => ['Expect:'],
+						CURLOPT_SSL_VERIFYPEER => 0
+					]
 				];
 				if(version_compare(ClientInterface::VERSION, '6') === -1) {
 					$options = ['config' => $curlOptions];
