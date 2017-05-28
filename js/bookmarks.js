@@ -279,6 +279,11 @@ function editBookmark() {
 	rec_form.bind('submit', function (event) {
 		event.preventDefault();
 		var form_values = $(this).serialize();
+		if(form_values.indexOf('item%5Btags%5D') === -1) {
+			// if not tag is selected, the input field does not exist, so
+			// we need to manually insert an empty array
+			form_values += "&item%5Btags%5D%5B%5D=";
+		}
 		$.ajax({
 			type: 'PUT',
 			url: $(this).attr('action') + "/" + this.elements['record_id'].value,
