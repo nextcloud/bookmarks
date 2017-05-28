@@ -237,13 +237,14 @@ class BookmarkController extends ApiController {
 		
 		$bookmark = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		$newProps = [
-			'id' => $id,
 			'url' => $url,
 			'title' => $title,
 			'is_public' => $is_public,
 			'description' => $description
 		];
-		if (isset($item) && isset($item['tags'])) $newProps['tags'] = $item['tags'];
+		if (is_array($item) && isset($item['tags']) && is_array($item['tags'])) {
+			$newProps['tags'] = $item['tags'];
+		}
 		$bookmark = array_merge($bookmark, $newProps);
 
 		// Check if url and id are valid
