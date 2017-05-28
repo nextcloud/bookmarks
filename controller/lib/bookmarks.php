@@ -225,7 +225,12 @@ class Bookmarks {
 		$bookmarks = array();
 		foreach ($results as $result) {
 			if ($returnTags) {
-				$result['tags'] = explode(',', $result['tags']);
+				// pgsql returns "", others null
+				if($result['tags'] === null || $result['tags'] === '') {
+					$result['tags'] = [];
+				} else {
+					$result['tags'] = explode(',', $result['tags']);
+				}
 			} else {
 				unset($result['tags']);
 			}

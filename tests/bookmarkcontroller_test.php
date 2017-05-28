@@ -128,6 +128,15 @@ class Test_BookmarkController extends TestCase {
 		$this->assertFalse($this->libBookmarks->bookmarkExists("http://www.google.com", $this->userid));
 	}
 
+	function testFindBookmarksEmptyTags() {
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", []);
+
+		$bookmarks = $this->libBookmarks->findBookmarks($this->userid, 0, 'id', [], true, -1);
+		$this->assertEquals([], $bookmarks[0]['tags']);
+	}
+
 	function cleanDB() {
 		$query1 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
 		$query1->execute();
