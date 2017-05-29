@@ -100,11 +100,13 @@ PUT /apps/bookmarks/public/rest/v2/bookmark/:id
 
 Parameters:
 * `record_id`: The id of the bookmark to edit
-* (optional) `url`: The new url
+* `url`: The new url
 * (optional) `item[tags][]`: the new tags. Existing tags will be deleted.
 * (optional) `title`: The new title
 * (optional) `is_public`: Set or leave unset to set the new public status.
 * (optional) `description`: The new description.
+
+If you leave out an optional parameter the corresponding attribute will be reset!
 
 Example:
 ```
