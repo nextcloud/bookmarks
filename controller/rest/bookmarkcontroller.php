@@ -245,7 +245,11 @@ class BookmarkController extends ApiController {
 		if (is_array($item) && isset($item['tags']) && is_array($item['tags'])) {
 			$newProps['tags'] = $item['tags'];
 		}
-		$bookmark = array_merge($bookmark, $newProps);
+		foreach ($newProps as $prop => $value) {
+			if(!is_null($value)) {
+				$bookmark[$prop] = $value;
+			}
+		}
 
 		// Check if url and id are valid
 		$urlData = parse_url($bookmark['url']);
