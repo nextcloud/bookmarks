@@ -254,11 +254,12 @@ class Bookmarks {
 		}
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
-    	$i = 0;
+		$i = 0;
 		foreach ($filters as $filter) {
-			$qb->leftJoin('b', 'bookmarks_tags', 't' . $i, $qb->expr()->eq('t' . $i . '.bookmark_id', 'b.id'));
       		$expr = [];
-			$expr[] = $qb->expr()->eq('t'.$i.'.tag', $qb->createNamedParameter($filter));
+			$expr[] = $qb->expr()->like('tags', $qb->createNamedParameter('_%,' . $this->db->escapeLikeParameter($filter) . ',_%'));
+			$expr[] = $qb->expr()->like('tags', $qb->createNamedParameter($this->db->escapeLikeParameter($filter) . ',_%'));
+			$expr[] = $qb->expr()->like('tags', $qb->createNamedParameter('_%,' . $this->db->escapeLikeParameter($filter)));
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
 					$expr[] = $qb->expr()->like(
@@ -275,7 +276,7 @@ class Bookmarks {
 		}else {
 			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
 		}
-		$qb->andWhere($filterExpression);
+		$qb->having($filterExpression);
 	}
 
 	/**

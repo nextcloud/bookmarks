@@ -73,10 +73,11 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$resultSetOne = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', array('one', 'three'), true, -1, false, array('url', 'title', 'tags'), 'or');
-		$this->assertEquals(3, count($resultSetOne));
+		var_dump($resultSetOne);
+    $this->assertEquals(3, count($resultSetOne));
 		$resultOne = $resultSetOne[0];
 		$this->assertFalse(isset($resultOne['lastmodified']));
-		$this->assertEquals(['one'], $resultOne['tags']);
+		$this->assertEquals(['three', 'two'], $resultOne['tags']);
 	}
 
 	function testFindTags() {
