@@ -257,10 +257,7 @@ class Bookmarks {
 		$i = 0;
 		foreach ($filters as $filter) {
       		$expr = [];
-			$expr[] = $qb->expr()->like('tags', $qb->createNamedParameter('_%,' . $this->db->escapeLikeParameter($filter) . ',_%'));
-			$expr[] = $qb->expr()->like('tags', $qb->createNamedParameter($this->db->escapeLikeParameter($filter) . ',_%'));
-			$expr[] = $qb->expr()->like('tags', $qb->createNamedParameter('_%,' . $this->db->escapeLikeParameter($filter)));
-			$expr[] = $qb->expr()->like('tags', $qb->createNamedParameter($this->db->escapeLikeParameter($filter)));
+			$expr[] = $qb->expr()->like('tags', $qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
 					$expr[] = $qb->expr()->like(
