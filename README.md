@@ -8,6 +8,11 @@ Maintainers:
 - [Blizzz](https://github.com/Blizzz)
 - [Marcel Klehr](https://github.com/marcelklehr)
 
+Useful companion apps for Browsers/Android:
+
+- [Floccus - Bookmark sync for Firefox/Chromium-based browsers](https://github.com/marcelklehr/floccus)
+- [NCBookmarks - App to view/edit/open bookmarks for Android](https://github.com/lenchan139/NCBookmark)
+
 Developer setup info:
 ---------------------
 ### Installation:
