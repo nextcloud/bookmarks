@@ -81,7 +81,7 @@ class Bookmarks {
 			->innerJoin('t','bookmarks','b', $qb->expr()->eq('b.id', 't.bookmark_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)));
 		if (!empty($filterTags)) {
-			$qb->andWhere($qb->expr()->notIn('t.tag', $filterTags));
+			$qb->where($qb->expr()->notIn('t.tag', array_map([$qb, 'createNamedParameter'], $filterTags)));
 		}
 		$qb
 			->groupBy('t.tag')
