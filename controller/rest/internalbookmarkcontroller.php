@@ -138,7 +138,7 @@ class InternalBookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 */
 	public function importBookmark() {
-		return $this->importBookmark();
+		return $this->publicController->importBookmark();
 	}
 
 	/**
