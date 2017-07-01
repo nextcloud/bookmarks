@@ -307,20 +307,17 @@ class BookmarkController extends ApiController {
 	public function clickBookmark($url = "") {
 		$urlData = parse_url($url);
 		if(!$this->isProperURL($urlData)) {
-			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
-		$query = $this->db->prepareQuery('
-			UPDATE `*PREFIX*bookmarks`
-			SET `clickcount` = `clickcount` + 1
-			WHERE `user_id` = ?
-				AND `url` LIKE ?
-		');
+		$qb = $this->db->getQueryBuilder();
+		$qb->update('bookmarks')
+			->set('clickcount', $qb->createFunction('`clickcount` +1'))
+			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($this->userId)))
+			->andWhere($qb->expr()->like('url', $qb->createNamedParameter(htmlspecialchars_decode($url))))
+			->execute();
 
-		$params = array($this->userId, htmlspecialchars_decode($url));
-		$query->execute($params);
-
-		return new JSONResponse(array('status' => 'success'), Http::STATUS_OK);
+		return new JSONResponse(['status' => 'success'], Http::STATUS_OK);
 	}
 
 	/**
