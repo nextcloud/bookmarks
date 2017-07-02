@@ -245,6 +245,7 @@ class Bookmarks {
 	 * @param string $tagFilterConjunction
 	 */
 	private function findBookmarksBuildFilter(&$qb, $filters, $filterTagOnly, $tagFilterConjunction) {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$connectWord = 'AND';
 		if ($tagFilterConjunction == 'or') {
 			$connectWord = 'OR';
@@ -257,7 +258,15 @@ class Bookmarks {
 		$i = 0;
 		foreach ($filters as $filter) {
       		$expr = [];
-			$expr[] = $qb->expr()->iLike('tags', $qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
+			if ($dbType == 'pgsql') {
+				$expr[] = $qb->expr()->iLike(
+					// Postgres doesn't like select aliases in HAVING clauses, well f*** you too!
+					$qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"),
+					$qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%')
+				);
+			}else{
+				$expr[] = $qb->expr()->iLike('tags', $qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
+			}
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
 					$expr[] = $qb->expr()->iLike(
