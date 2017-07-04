@@ -52,10 +52,12 @@ class Application extends App {
 
 		$container->registerService('BookmarkController', function($c) {
 			/** @var IContainer $c */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
 			return new BookmarkController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$uid,
 				$c->query('ServerContainer')->getDatabaseConnection(),
 				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
 				$c->query('ServerContainer')->query(Bookmarks::class),
@@ -65,10 +67,12 @@ class Application extends App {
 		
 		$container->registerService('InternalBookmarkController', function($c) {
 			/** @var IContainer $c */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
 			return new InternalBookmarkController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$uid,
 				$c->query('ServerContainer')->getDatabaseConnection(),
 				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
 				$c->query('ServerContainer')->query(Bookmarks::class),
@@ -78,30 +82,36 @@ class Application extends App {
 
 		$container->registerService('TagsController', function($c) {
 			/** @var IContainer $c */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
 			return new TagsController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$uid,
 				$c->query('ServerContainer')->query(Bookmarks::class)
 			);
 		});
 		
 		$container->registerService('InternalTagsController', function($c) {
 			/** @var IContainer $c */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
 			return new InternalTagsController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$uid,
 				$c->query('ServerContainer')->query(Bookmarks::class)
 			);
 		});
 
 		$container->registerService('PublicController', function($c) {
 			/** @var IContainer $c */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
 			return new PublicController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('ServerContainer')->getUserSession()->getUser()->getUID(),
+				$uid,
 				$c->query('ServerContainer')->query(Bookmarks::class),
 				$c->query('ServerContainer')->getUserManager()
 			);
