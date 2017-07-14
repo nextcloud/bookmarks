@@ -220,7 +220,6 @@ class Bookmarks {
 				$qb->setFirstResult($offset);
 			}
 		}
-
 		$results = $qb->execute()->fetchAll();
 		$bookmarks = array();
 		foreach ($results as $result) {
@@ -246,6 +245,7 @@ class Bookmarks {
 	 * @param string $tagFilterConjunction
 	 */
 	private function findBookmarksBuildFilter(&$qb, $filters, $filterTagOnly, $tagFilterConjunction) {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$connectWord = 'AND';
 		if ($tagFilterConjunction == 'or') {
 			$connectWord = 'OR';
@@ -255,24 +255,35 @@ class Bookmarks {
 		}
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
-    $i = 0;
+		$i = 0;
 		foreach ($filters as $filter) {
-      $qb->leftJoin('b', 'bookmarks_tags', 't' . $i, $qb->expr()->eq('t' . $i . '.bookmark_id', 'b.id'));
-			$filterExpressions[] = $qb->expr()->eq('t'.$i.'.tag', $qb->createNamedParameter($filter));
+      		$expr = [];
+			if ($dbType == 'pgsql') {
+				$expr[] = $qb->expr()->iLike(
+					// Postgres doesn't like select aliases in HAVING clauses, well f*** you too!
+					$qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"),
+					$qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%')
+				);
+			}else{
+				$expr[] = $qb->expr()->iLike('tags', $qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
+			}
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
-					$filterExpressions[] = $qb->expr()->like($qb->createFunction('lower(' . $qb->getColumnName($col) . ')'),
-						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%'));
+					$expr[] = $qb->expr()->iLike(
+						$qb->createFunction($qb->getColumnName($col)),
+						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%')
+					);
 				}
 			}
-      $i++;
+			$filterExpressions[] = call_user_func_array([$qb->expr(), 'orX'], $expr);
+      		$i++;
 		}
 		if ($connectWord == 'AND') {
 			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $filterExpressions);
 		}else {
 			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
 		}
-		$qb->andWhere($filterExpression);
+		$qb->having($filterExpression);
 	}
 
 	/**
