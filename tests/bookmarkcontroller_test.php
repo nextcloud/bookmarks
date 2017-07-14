@@ -148,6 +148,24 @@ class Test_BookmarkController extends TestCase {
 		$this->assertSame(Http::STATUS_OK, $r->getStatus());
 	}
 
+	public function testClickEscapeParam() {
+		$this->cleanDB();
+		$url1 = 'https://example.com/?foo%bar';
+		$id1 = $this->libBookmarks->addBookmark($this->userid, $url1, "Example Domain 1");
+		$id2 = $this->libBookmarks->addBookmark($this->userid, "https://example.com/?foo%bier", "Example Domain 2");
+
+		//$r = $this->publicController->clickBookmark(urlencode($url1));
+		$r = $this->controller->clickBookmark('https://example.com/?foo%25bar');
+		$this->assertInstanceOf(JSONResponse::class, $r);
+		$this->assertSame(Http::STATUS_OK, $r->getStatus());
+
+		$bm1 = $this->libBookmarks->findUniqueBookmark($id1, $this->userid);
+		$bm2 = $this->libBookmarks->findUniqueBookmark($id2, $this->userid);
+
+		$this->assertSame(1, intval($bm1['clickcount']));
+		$this->assertSame(0, intval($bm2['clickcount']));
+	}
+
 	function cleanDB() {
 		$query1 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
 		$query1->execute();
