@@ -154,7 +154,6 @@ class Test_BookmarkController extends TestCase {
 		$id1 = $this->libBookmarks->addBookmark($this->userid, $url1, "Example Domain 1");
 		$id2 = $this->libBookmarks->addBookmark($this->userid, "https://example.com/?foo%bier", "Example Domain 2");
 
-		//$r = $this->publicController->clickBookmark(urlencode($url1));
 		$r = $this->controller->clickBookmark('https://example.com/?foo%25bar');
 		$this->assertInstanceOf(JSONResponse::class, $r);
 		$this->assertSame(Http::STATUS_OK, $r->getStatus());
