@@ -4,6 +4,8 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\JSONResponse;
 
 /**
  * Class Test_BookmarkController
@@ -75,7 +77,7 @@ class Test_BookmarkController extends TestCase {
 		$this->cleanDB();
 		$this->setupBookmarks();
 		$this->controller->newBookmark("http://www.heise.de", array("tags"=> array("four")), "Heise", true, "PublicNoTag");
-		
+
 		// the bookmark should exist
 		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.heise.de", $this->userid));
 		// user should see this bookmark
@@ -135,6 +137,32 @@ class Test_BookmarkController extends TestCase {
 
 		$bookmarks = $this->libBookmarks->findBookmarks($this->userid, 0, 'id', [], true, -1);
 		$this->assertEquals([], $bookmarks[0]['tags']);
+	}
+
+	public function testClick() {
+		$this->cleanDB();
+		$this->setupBookmarks();
+
+		$r = $this->publicController->clickBookmark('http://www.golem.de');
+		$this->assertInstanceOf(JSONResponse::class, $r);
+		$this->assertSame(Http::STATUS_OK, $r->getStatus());
+	}
+
+	public function testClickEscapeParam() {
+		$this->cleanDB();
+		$url1 = 'https://example.com/?foo%bar';
+		$id1 = $this->libBookmarks->addBookmark($this->userid, $url1, "Example Domain 1");
+		$id2 = $this->libBookmarks->addBookmark($this->userid, "https://example.com/?foo%bier", "Example Domain 2");
+
+		$r = $this->controller->clickBookmark('https://example.com/?foo%25bar');
+		$this->assertInstanceOf(JSONResponse::class, $r);
+		$this->assertSame(Http::STATUS_OK, $r->getStatus());
+
+		$bm1 = $this->libBookmarks->findUniqueBookmark($id1, $this->userid);
+		$bm2 = $this->libBookmarks->findUniqueBookmark($id2, $this->userid);
+
+		$this->assertSame(1, intval($bm1['clickcount']));
+		$this->assertSame(0, intval($bm2['clickcount']));
 	}
 
 	function cleanDB() {
