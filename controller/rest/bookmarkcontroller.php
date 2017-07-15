@@ -316,11 +316,11 @@ class BookmarkController extends ApiController {
 		$config = \OC::$server->getConfig();
 		$escape = '';
 		if(
-			$config->getSystemValue('dbtype') === 'sqlite'
+			strpos($config->getSystemValue('dbtype'),'sqlite') !== false
 			&& version_compare($config->getSystemValue('version'), 12, '<')
 		) {
 			// sqlite requires the ESCAPE declaration, which is added per default as of Nc 12
-			$escape = 'ESCAPE \'\\\'';
+			$escape = ' ESCAPE \'\\\'';
 		}
 
 		$qb = $this->db->getQueryBuilder();
