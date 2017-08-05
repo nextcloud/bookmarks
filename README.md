@@ -10,6 +10,7 @@ Maintainers:
 
 Useful companion apps for Browsers/Android:
 --------------------
+- [Nextcloud Bookmarks - Android app with full add/edit/delete and view functionallity](https://github.com/theScrabi/OCBookmarks)
 - [Floccus - Bookmark sync for Firefox/Chromium-based browsers](https://github.com/marcelklehr/floccus)
 - [NCBookmarks - App to view/edit/open bookmarks for Android](https://github.com/lenchan139/NCBookmark)
 
