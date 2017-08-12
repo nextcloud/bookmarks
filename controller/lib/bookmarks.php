@@ -78,11 +78,10 @@ class Bookmarks {
 			->select('t.tag')
 			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'nbr')
 			->from('bookmarks_tags', 't')
-			->innerJoin('t','bookmarks','b',$qb->expr()->andX(
-				$qb->expr()->eq('b.id', 't.bookmark_id'),
-				$qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId))));
+			->innerJoin('t','bookmarks','b', $qb->expr()->eq('b.id', 't.bookmark_id'))
+			->where($qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)));
 		if (!empty($filterTags)) {
-			$qb->where($qb->expr()->notIn('t.tag', $filterTags));
+			$qb->where($qb->expr()->notIn('t.tag', array_map([$qb, 'createNamedParameter'], $filterTags)));
 		}
 		$qb
 			->groupBy('t.tag')
@@ -115,7 +114,7 @@ class Bookmarks {
 			->select('tag')
 			->from('bookmarks_tags')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
-		$result['tags'] = $qb->execute()->fetchColumn();
+		$result['tags'] = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 		return $result;
 	}
 
@@ -225,7 +224,12 @@ class Bookmarks {
 		$bookmarks = array();
 		foreach ($results as $result) {
 			if ($returnTags) {
-				$result['tags'] = explode(',', $result['tags']);
+				// pgsql returns "", others null
+				if($result['tags'] === null || $result['tags'] === '') {
+					$result['tags'] = [];
+				} else {
+					$result['tags'] = explode(',', $result['tags']);
+				}
 			} else {
 				unset($result['tags']);
 			}
@@ -241,6 +245,7 @@ class Bookmarks {
 	 * @param string $tagFilterConjunction
 	 */
 	private function findBookmarksBuildFilter(&$qb, $filters, $filterTagOnly, $tagFilterConjunction) {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$connectWord = 'AND';
 		if ($tagFilterConjunction == 'or') {
 			$connectWord = 'OR';
@@ -252,13 +257,20 @@ class Bookmarks {
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
 		$i = 0;
 		foreach ($filters as $filter) {
-			$qb->leftJoin('b', 'bookmarks_tags', 't' . $i, $qb->expr()->eq('t' . $i . '.bookmark_id', 'b.id'));
-			$expr = [];
-			$expr[] = $qb->expr()->eq('t'.$i.'.tag', $qb->createNamedParameter($filter));
+      		$expr = [];
+			if ($dbType == 'pgsql') {
+				$expr[] = $qb->expr()->iLike(
+					// Postgres doesn't like select aliases in HAVING clauses, well f*** you too!
+					$qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"),
+					$qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%')
+				);
+			}else{
+				$expr[] = $qb->expr()->iLike('tags', $qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
+			}
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
-					$expr[] = $qb->expr()->like(
-						$qb->createFunction('lower(' . $qb->getColumnName($col) . ')'),
+					$expr[] = $qb->expr()->iLike(
+						$qb->createFunction($qb->getColumnName($col)),
 						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%')
 					);
 				}
@@ -271,7 +283,7 @@ class Bookmarks {
 		}else {
 			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
 		}
-		$qb->andWhere($filterExpression);
+		$qb->having($filterExpression);
 	}
 
 	/**
@@ -325,13 +337,13 @@ class Bookmarks {
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($new)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
-		$duplicates = $qb->execute()->fetchColumn();
-		if ($duplicates !== false) {
+		$duplicates = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		if (count($duplicates) !== 0) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
-				->delete('bookmarks_tags', 't')
-				->where($qb->expr()->in('t.bookmark_id', $qb->createNamedParameter($duplicates)))
-				->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
+				->delete('bookmarks_tags')
+				->where($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $duplicates)))
+				->andWhere($qb->expr()->eq('tag', $qb->createNamedParameter($old)));
 			$qb->execute();
 		}
 
@@ -343,14 +355,14 @@ class Bookmarks {
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
-		$bookmarks = $qb->execute()->fetchColumn();
-		if ($bookmarks !== false) {
+		$bookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		if (count($bookmarks) !== 0) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->update('bookmarks_tags')
 				->set('tag', $qb->createNamedParameter($new))
 				->where($qb->expr()->eq('tag', $qb->createNamedParameter($old)))
-				->andWhere($qb->expr()->in('bookmark_id', $qb->createNamedParameter($bookmarks)));
+				->andWhere($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $bookmarks)));
 			$qb->execute();
 		}
 		return true;
@@ -370,13 +382,13 @@ class Bookmarks {
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userid)));
-		$bookmarks = $qb->execute()->fetchColumn();
+		$bookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 		if ($bookmarks !== false) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
-				->delete('bookmarks_tags', 'tgs')
-				->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
-				->andWhere($qb->expr()->in('bm.user_id', $qb->createNamedParameter($bookmarks)));
+				->delete('bookmarks_tags')
+				->where($qb->expr()->eq('tag', $qb->createNamedParameter($old)))
+				->andWhere($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $bookmarks)));
 			return $qb->execute();
 		}
 		return true;
