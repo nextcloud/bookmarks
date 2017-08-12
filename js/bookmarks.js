@@ -8,7 +8,7 @@ var ajaxCallCount = 0;
 $(document).ready(function () {
 	getTags();
 	watchUrlField();
-	$('#bm_import').change(attachSettingEvent);
+	$('#bm_import_submit').click(attachSettingEvent);
 	$('#add_url').on('keydown keyup change click', watchUrlField);
 	$('#app-settings').on('click keydown', toggleSettings);
 	$('#bm_export').click(exportBm);

@@ -24,8 +24,10 @@
 
 		<legend><strong><?php p($l->t('Export & Import')); ?></strong></legend>
 		<input type="button" id="bm_export" href="bookmark/export?requesttoken=<?php p(urlencode($_['requesttoken'])) ?>" value="<?php p($l->t('Export')); ?>" />
-		<input type="file" id="bm_import" name="bm_import" size="5">
+		</br>
+    <input type="file" id="bm_import" name="bm_import" size="5">
 		<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>" id="requesttoken">
+		<button type="button" name="bm_import_select" id="bm_import_select"><?php p($l->t('Select file')); ?></button>
 		<button type="button" name="bm_import_btn" id="bm_import_submit"><?php p($l->t('Import')); ?></button>
 		<div id="upload"></div>
 
