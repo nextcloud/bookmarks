@@ -3,6 +3,9 @@ script('bookmarks', 'settings');
 script('bookmarks', 'bookmarks');
 style('bookmarks', 'bookmarks');
 
+
+script('bookmarks', '3rdparty/backbone.radio');
+script('bookmarks', '3rdparty/backbone.marionette.min');
 script('bookmarks', '3rdparty/tag-it');
 script('bookmarks', '3rdparty/js_tpl');
 style('bookmarks', '3rdparty/jquery.tagit');
