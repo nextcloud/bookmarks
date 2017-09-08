@@ -40,6 +40,13 @@ var BookmarksView = Marionette.CollectionView.extend({
   tagName: "div"
 , className: 'bookmarks'
 , childView: BookmarkCardView
+, emptyView: EmptyBookmarksView
+})
+
+var EmptyBookmarksView = Marionette.CollectionView.extend({
+  template: _.template('<h2>No bookmarks, here.</h2><p>There are no bookmarks available for this query. Try adding some using the above form.</p>')
+, tagName: "div"
+, className: 'bookmarks-empty'
 })
 
 
@@ -56,7 +63,10 @@ Backbone.sync = function(method, model, options) {
 
 var bookmarks = new Bookmarks
 var view = new BookmarksView({collection: bookmarks})
-$('#app-content').empty().append(view.el)
 bookmarks.fetch({success: function() {
   view.render()
 }})
+
+$(function() {
+  $('#app-content').append(view.el)
+})

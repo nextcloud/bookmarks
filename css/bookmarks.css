@@ -1,14 +1,19 @@
-.bookmarks {
-  padding: .5cm;
+.bookmarks-empty {
+  width: 4cm;
+  margin: 30% auto;
 }
+
 .bookmark-card {
   width: 5cm;
   height: 5cm;
   float: left;
-  margin: 0 .5cm .5cm 0;
+  padding: .5cm;
+  border-right: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
 }
 .bookmark-card h1 {
-  font-weight: bold;
-  font-family: sans-serif;
-  font-size: .3cm;
+  font-size: .5cm;
+}
+.bookmark-card h2 {
+  font-size: .4cm;
 }
