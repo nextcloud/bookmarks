@@ -1,6 +1,21 @@
+.add-bookmark {
+  padding: .1cm;
+  border-bottom: 1px solid #ebebeb;
+}
+.add-bookmark input {
+  width: 93%;
+  font-size: .6cm;
+  border: none;
+  width: calc(100% - 1.5cm);
+}
+.add-bookmark button {
+  width: 1cm;
+  height: 1cm;
+}
+
 .bookmarks-empty {
-  width: 4cm;
-  margin: 30% auto;
+  width: 5cm;
+  margin: 20% auto;
 }
 
 .bookmark-card {
