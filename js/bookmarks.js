@@ -32,11 +32,10 @@ var App = Marionette.Application.extend({
   region: '#content'
 , onBeforeStart: function() {
     this.bookmarks = new Bookmarks
-    this.bookmarks.fetch()
     this.tags = new Tags
     this.tags.fetch()
 
-    this.router = new Router
+    this.router = new Router({app: this})
   }
 , onStart: function() {
     this.showView(new AppView({bookmarks: this.bookmarks, tags: this.tags}));
@@ -47,14 +46,19 @@ var App = Marionette.Application.extend({
 var Router = Marionette.AppRouter.extend({
   controller: {
     showAllBookmarks: function() {
+      this.app.bookmarks.fetch()
     }
   , showFavoriteBookmarks: function() {
     }
   , showSharedBookmarks: function() {
+      this.app.bookmarks.fetch()
     }
   , showTags: function() {
     }
   , showTag: function(tag) {
+      this.app.bookmarks.fetch({
+        data: {tags: [tag]}
+      })
     }
   }
 , appRoutes: {
@@ -63,6 +67,9 @@ var Router = Marionette.AppRouter.extend({
   , 'shared': 'showSharedBookmarks'
   , 'tags': 'showTags'
   , 'tag/:tag': 'showTag'
+  }
+, initialize: function(options) {
+    this.controller.app = options.app
   }
 , onRoute: function(name, path, args) {
     Radio.channel('nav').trigger('navigate', path, args)
