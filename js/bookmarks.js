@@ -60,6 +60,8 @@ var Router = Marionette.AppRouter.extend({
         data: {tags: [tag]}
       })
     }
+  , showBookmark: function() {
+    }
   }
 , appRoutes: {
     'all': 'showAllBookmarks'
@@ -67,6 +69,7 @@ var Router = Marionette.AppRouter.extend({
   , 'shared': 'showSharedBookmarks'
   , 'tags': 'showTags'
   , 'tag/:tag': 'showTag'
+  , 'bookmark/:bookmark': 'showBookmark'
   }
 , initialize: function(options) {
     this.controller.app = options.app
@@ -104,6 +107,12 @@ var AppView = Marionette.View.extend({
 })
 
 
+var nav_ids = {
+  all: true
+, favorites: true
+, shared: true
+, tags: true
+}
 var NavigationView = Marionette.View.extend({
   className: 'navigation'
 , tagName: 'ul'
@@ -123,7 +132,7 @@ var NavigationView = Marionette.View.extend({
   }
 , onNavigate: function(category) {
     $('.active', this.$el).removeClass('active')
-    if (category && category.indexOf('tag/') !== 0) $('.'+category, this.$el).addClass('active')
+    if (category && nav_ids[category]) $('.'+category, this.$el).addClass('active')
   }
 })
 
@@ -155,7 +164,7 @@ var TagsNavigationTagView = Marionette.View.extend({
 })
 
 var ContentView = Marionette.View.extend({
-  template: _.template('<div id="add-bookmark-slot"></div><div id="view-bookmarks-slot"></div>')
+  template: _.template('<div id="add-bookmark-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
 , regions: {
     'addBookmarks':  {
       el: '#add-bookmark-slot'
@@ -165,13 +174,24 @@ var ContentView = Marionette.View.extend({
       el: '#view-bookmarks-slot'
     , replaceElement: true
     }
+  , 'bookmarkDetail': {
+      el: '#bookmark-detail-slot'
+    , replaceElement: true
+    }
   }
 , initialize: function(options) {
     this.bookmarks = options.bookmarks
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this) // Turn this into a request!
   }
 , onRender: function() {
     this.showChildView('addBookmarks', new AddBookmarkView());
     this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
+  }
+, onNavigate: function(path, args) {
+    if ('bookmark/:bookmark' === path) {
+      var bm = app.bookmarks.get(args[0])
+      this.showChildView('bookmarkDetail', new BookmarkDetailView({model: bm}))
+    }
   }
 })
 
@@ -253,10 +273,22 @@ var BookmarkCardView = Marionette.View.extend({
   },
   initialize: function() {
     this.listenTo(this.model, "change", this.render);
-  },
+  }
+, open: function() {
+    Backbone.history.navigate('bookmark/'+this.model.get('id'), {trigger: true})
+  }
 })
 
 
+var BookmarkDetailView = Marionette.View.extend({
+  template: _.template('<h1><%- title %></h1><h2><%- new URL(url).host %></h2>'),
+  className: "bookmark-detail",
+  events: {
+  },
+  initialize: function() {
+    this.listenTo(this.model, "change", this.render);
+  },
+})
 
 var _sync = Backbone.sync
 Backbone.sync = function(method, model, options) {
