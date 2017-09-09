@@ -1,4 +1,4 @@
-var Backbone = OC.Backbone
+var Radio = Backbone.Radio
 
 var Bookmark = Backbone.Model.extend({
   defaults: {
@@ -28,48 +28,95 @@ var Tags = Backbone.Collection.extend({
 })
 
 
-var AppView = Marionette.View.extend({
-  template: _.template('<div id="app-navigation"></div><div id="app-content"></div>')
-, regions: {
-    'navigation': '#app-navigation'
-  , 'content': '#app-content'
-  }
-, initialize: function() {
+var App = Marionette.Application.extend({
+  region: '#content'
+, onBeforeStart: function() {
     this.bookmarks = new Bookmarks
     this.bookmarks.fetch()
     this.tags = new Tags
     this.tags.fetch()
+
+    this.router = new Router
   }
-, onRender: function() {
-    this.showChildView('navigation', new NavigationView({tags: this.tags}));
-    this.showChildView('content', new ContentView({bookmarks: this.bookmarks})); 
+, onStart: function() {
+    this.showView(new AppView({bookmarks: this.bookmarks, tags: this.tags}));
+    Backbone.history.start();
+  }
+});
+
+var Router = Marionette.AppRouter.extend({
+  controller: {
+    showAllBookmarks: function() {
+    }
+  , showFavoriteBookmarks: function() {
+    }
+  , showSharedBookmarks: function() {
+    }
+  , showTags: function() {
+    }
+  , showTag: function(tag) {
+    }
+  }
+, appRoutes: {
+    'all': 'showAllBookmarks'
+  , 'favorites': 'showFavoriteBookmarks'
+  , 'shared': 'showSharedBookmarks'
+  , 'tags': 'showTags'
+  , 'tag/:tag': 'showTag'
+  }
+, onRoute: function(name, path, args) {
+    Radio.channel('nav').trigger('navigate', path, args)
   }
 })
 
-var NavigationView = Marionette.View.extend({
-  className: 'navigation'
-, template: _.template('<ul><li data-id="all" class="all"><a href="#">All bookmarks</a></li><li data-id="facorites" class="favorites"><a href="#">Favorites</a></li><li data-id="shared" class="shared"><a href="#">Shared</a></li><li data-id="tags" class="tags"><a href="#">Tags</a></li></ul>Favorite tags<div id="favorite-tags-slot"></div>')
-, events: {
-    'click .all': 'onClick'
-  , 'lick .favorites': 'onClick'
-  , 'click .shared': 'onClick'
-  }
+var AppView = Marionette.View.extend({
+  template: _.template('<div id="app-navigation"><div id="navigation-slot"></div><h3>Favorite tags</h3><div id="favorite-tags-slot"></div></div><div id="app-content"><div id="content-slot"></div></div>')
 , regions: {
-    'tags': '#favorite-tags-slot'
+    'navigation': {
+      el: '#navigation-slot'
+    , replaceElement: true
+    }
+  , 'content': {
+      el: '#content-slot'
+    , replaceElement: true
+    }
+  , 'tags': {
+      el: '#favorite-tags-slot'
+    , replaceElement: true
+    }
   }
 , initialize: function(options) {
+    this.bookmarks = options.bookmarks
     this.tags = options.tags
+  }
+, onRender: function() {
+    this.showChildView('navigation', new NavigationView);
+    this.showChildView('content', new ContentView({bookmarks: this.bookmarks})); 
+    this.showChildView('tags', new TagsNavigationView({collection: this.tags}))
+  }
+})
+
+
+var NavigationView = Marionette.View.extend({
+  className: 'navigation'
+, tagName: 'ul'
+, template: _.template('<li data-id="all" class="all"><a href="#">All bookmarks</a></li><li data-id="favorites" class="favorites"><a href="#">Favorites</a></li><li data-id="shared" class="shared"><a href="#">Shared</a></li><li data-id="tags" class="tags"><a href="#">Tags</a></li>')
+, events: {
+    'click .all': 'onClick'
+  , 'click .favorites': 'onClick'
+  , 'click .shared': 'onClick'
+  , 'click .tags': 'onClick'
+  }
+, initialize: function() {
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this)
   }
 , onClick: function(e) {
     e.preventDefault()
-    this.triggerMethod('navigation:open', e.target.parentNode.dataset.id)
+    Backbone.history.navigate(e.target.parentNode.dataset.id, {trigger: true})
   }
-, onNavigationOpen: function(category) {
+, onNavigate: function(category) {
     $('.active', this.$el).removeClass('active')
-    $('.'+category, this.$el).addClass('active')
-  }
-, onRender: function() {
-    this.showChildView('tags', new TagsNavigationView({collection: this.tags}))
+    if (category && category.indexOf('tag/') !== 0) $('.'+category, this.$el).addClass('active')
   }
 })
 
@@ -81,7 +128,23 @@ var TagsNavigationView = Marionette.CollectionView.extend({
 var TagsNavigationTagView = Marionette.View.extend({
   className: 'tag-nav-item'
 , tagName: 'li'
-, template: _.template('<li><a href="#"><%- name %></a></li>')
+, template: _.template('<a href="#"><i><%- name %></a></i>')
+, events: {
+    'click': 'open'
+  }
+, initialize: function() {
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this)
+  }
+, open: function(e) {
+    e.preventDefault()
+    Backbone.history.navigate('tag/' + this.model.get('name'), {trigger: true});
+  }
+, onNavigate: function(category, args) {
+    this.$el.removeClass('active')
+    if (category && category.indexOf('tag/') === 0 && args[0] === this.model.get('name')) {
+      this.$el.addClass('active')
+    }
+  }
 })
 
 var ContentView = Marionette.View.extend({
@@ -146,14 +209,14 @@ Backbone.sync = function(method, model, options) {
     success: function(json) {
       console.log(json)
       if (!(model instanceof Tags)) options.success(json.data)
-      else options.success(json)
+      else options.success(json.map(function(name){return {name: name}}))
     }
   }))
 }
 
 // init
 
-var view = new AppView()
+var app = new App()
 $(function() {
-  $('#content').append(view.render().el)
+  app.start()
 })
