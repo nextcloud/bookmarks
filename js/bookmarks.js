@@ -2,12 +2,12 @@ var Radio = Backbone.Radio
 
 var Bookmark = Backbone.Model.extend({
   defaults: {
-    id: '',
-    url: '',
+    /*url: '',
     title: '',
-    description: '',
+    description: '',*/
     tags: Tags
   }
+, url: 'bookmark'
 })
 
 var Bookmarks = Backbone.Collection.extend({
@@ -17,9 +17,9 @@ var Bookmarks = Backbone.Collection.extend({
 
 var Tag = Backbone.Model.extend({
   defaults: {
-    id: ''
-  , name: ''
+    name: ''
   }
+, url: 'tag'
 })
 
 var Tags = Backbone.Collection.extend({
@@ -182,6 +182,54 @@ var ContentView = Marionette.View.extend({
 var AddBookmarkView = Marionette.View.extend({
   template: _.template('<input type="text" value="" placeholder="Address"/><button title="Add" class="icon-add"></button>')
 , className: 'add-bookmark'
+, events: {
+    'click button': 'submit'
+  , 'keydown input': 'onKeydown'
+  }
+, ui: {
+    'input': 'input'
+  , 'button': 'button'
+  }
+, onKeydown: function(e) {
+    if (e.which != 13) return
+    // Enter
+    this.submit()
+  }
+, submit: function() {
+    if (this.pending) return
+    var $input = this.getUI('input')
+    var url = $input.val()
+    var bm = new Bookmark({url: url})
+    this.setPending(true)
+    var that = this
+    bm.save(null,{
+      success: function() {
+      Backbone.history.navigate('all', {trigger: true})
+      app.bookmarks.fetch()
+      $input.val('')
+      that.setPending(false)
+    }
+    , error: function() {
+        that.setPending(false)
+        that.getUI('button').removeClass('icon-add')
+        that.getUI('button').addClass('icon-error-color')
+      }
+    })
+  }
+, setPending: function(pending) {
+    if (pending) {
+      this.getUI('button').removeClass('icon-add')
+      this.getUI('button').removeClass('icon-error-color')
+      this.getUI('button').addClass('icon-loading-small')
+      this.getUI('button').prop('disabled', true)
+    }else {
+      this.getUI('button').removeClass('icon-error-color')
+      this.getUI('button').addClass('icon-add')
+      this.getUI('button').removeClass('icon-loading-small')
+      this.getUI('button').prop('disabled', false) 
+    }
+    this.pending = pending
+  }
 })
 
 
