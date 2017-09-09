@@ -1,3 +1,10 @@
+#app-navigation h3 {
+	padding-top: .7cm;
+	padding-left: 0.1cm;
+	border-top: 1px solid #ededed;
+}
+
+
 .add-bookmark {
   padding: .1cm;
   border-bottom: 1px solid #ebebeb;
