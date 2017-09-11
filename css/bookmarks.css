@@ -36,6 +36,10 @@
   overflow: hidden;
   transition: transform .5s;
 }
+.bookmark-card,
+.bookmark-card * {
+  cursor: pointer;
+}
 .bookmark-card:hover {
   position: relative;
   background: white;
@@ -50,6 +54,9 @@
 .bookmark-card h2 {
   font-size: .4cm;
 }
+.bookmark-card h2 :link:hover {
+  text-decoration: underline;
+}
 
 .bookmark-detail {
 	position: absolute;
@@ -58,9 +65,27 @@
 	width: 100%;
 	height: 100%;
   box-sizing: border-box;
-  padding: .5cm;
+  padding: 1cm;
 	background: white; 
 }
 .bookmark-detail h1 {
   font-size: .8cm;
+}
+.bookmark-detail h2 :link:hover {
+  text-decoration: underline;
+}
+.bookmark-detail .close {
+  position: absolute;
+  top: .1cm;
+  right: .1cm;
+  width: 1cm;
+  height: 1cm;
+  cursor: pointer;
+}
+.bookmark-detail .actions {
+  float: right;
+}
+.bookmark-detail .actions button {
+  height: 1cm;
+  width: 1cm;
 }

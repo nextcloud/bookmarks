@@ -190,7 +190,12 @@ var ContentView = Marionette.View.extend({
 , onNavigate: function(path, args) {
     if ('bookmark/:bookmark' === path) {
       var bm = app.bookmarks.get(args[0])
-      this.showChildView('bookmarkDetail', new BookmarkDetailView({model: bm}))
+      var view = new BookmarkDetailView({model: bm})
+      this.showChildView('bookmarkDetail', view)
+      var that = this
+      view.on('close', function() {
+        that.detachChildView('bookmarkDetail')
+      })
     }
   }
 })
@@ -266,7 +271,7 @@ var EmptyBookmarksView = Marionette.View.extend({
 })
 
 var BookmarkCardView = Marionette.View.extend({
-  template: _.template('<h1><%- title %></h1><h2><%- new URL(url).host %></h2>'),
+  template: _.template('<h1><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2>'),
   className: "bookmark-card",
   events: {
     "click": "open",
@@ -281,14 +286,27 @@ var BookmarkCardView = Marionette.View.extend({
 
 
 var BookmarkDetailView = Marionette.View.extend({
-  template: _.template('<h1><%- title %></h1><h2><%- new URL(url).host %></h2>'),
+  template: _.template('<div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2><div class="close icon-close"></div>'),
   className: "bookmark-detail",
+  ui: {
+    'close': '.close'
+  , 'edit': '.edit'
+  , 'delete': '.delete'
+  },
   events: {
+    'click @ui.close': 'close'
+  , 'click @ui.edit': 'edit'
+  , 'click @ui.delete': 'delete'
   },
   initialize: function() {
     this.listenTo(this.model, "change", this.render);
   },
+  close: function() {
+    Backbone.history.history.back();
+    this.triggerMethod('close')
+  }
 })
+
 
 var _sync = Backbone.sync
 Backbone.sync = function(method, model, options) {
