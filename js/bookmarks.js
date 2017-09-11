@@ -80,9 +80,13 @@ var Router = Marionette.AppRouter.extend({
 })
 
 var AppView = Marionette.View.extend({
-  template: _.template('<div id="app-navigation"><div id="navigation-slot"></div><h3>Favorite tags</h3><div id="favorite-tags-slot"></div></div><div id="app-content"><div id="content-slot"></div></div>')
+  template: _.template('<div id="app-navigation"><div id="add-bookmark-slot"></div><div id="navigation-slot"></div><h3>Favorite tags</h3><div id="favorite-tags-slot"></div></div><div id="app-content"><div id="content-slot"></div></div>')
 , regions: {
-    'navigation': {
+    'addBookmarks':  {
+      el: '#add-bookmark-slot'
+    , replaceElement: true
+    }
+  , 'navigation': {
       el: '#navigation-slot'
     , replaceElement: true
     }
@@ -100,6 +104,7 @@ var AppView = Marionette.View.extend({
     this.tags = options.tags
   }
 , onRender: function() {
+    this.showChildView('addBookmarks', new AddBookmarkView());
     this.showChildView('navigation', new NavigationView);
     this.showChildView('content', new ContentView({bookmarks: this.bookmarks})); 
     this.showChildView('tags', new TagsNavigationView({collection: this.tags}))
@@ -144,7 +149,7 @@ var TagsNavigationView = Marionette.CollectionView.extend({
 var TagsNavigationTagView = Marionette.View.extend({
   className: 'tag-nav-item'
 , tagName: 'li'
-, template: _.template('<a href="#"><i><%- name %></a></i>')
+, template: _.template('<a href="#"><%- name %></a>')
 , events: {
     'click': 'open'
   }
@@ -164,13 +169,9 @@ var TagsNavigationTagView = Marionette.View.extend({
 })
 
 var ContentView = Marionette.View.extend({
-  template: _.template('<div id="add-bookmark-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
+  template: _.template('<div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
 , regions: {
-    'addBookmarks':  {
-      el: '#add-bookmark-slot'
-    , replaceElement: true
-    }
-  , 'viewBookmarks': {
+    'viewBookmarks': {
       el: '#view-bookmarks-slot'
     , replaceElement: true
     }
@@ -184,7 +185,6 @@ var ContentView = Marionette.View.extend({
     this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this) // Turn this into a request!
   }
 , onRender: function() {
-    this.showChildView('addBookmarks', new AddBookmarkView());
     this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
   }
 , onNavigate: function(path, args) {
