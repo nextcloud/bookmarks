@@ -11,13 +11,14 @@
 }
 .add-bookmark input {
   width: 93%;
-  font-size: .6cm;
-  border: none;
-  width: calc(100% - 1.5cm);
+  width: calc(100% - 40px);
 }
 .add-bookmark button {
-  width: 1cm;
-  height: 1cm;
+	width: 13px;
+	height: 13px;
+	padding: 7px;
+	box-sizing: content-box;
+	vertical-align: sub;
 }
 
 .bookmarks-empty {
