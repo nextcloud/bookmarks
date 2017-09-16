@@ -73,6 +73,8 @@ branches:
     - /^stable\d+(\.\d+)?$/
 
 before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libxml2-utils
   - wget https://raw.githubusercontent.com/$SERVER/before_install.sh
   - . ./before_install.sh "$APP_NAME" "$SERVER_BRANCH" "$DB"
   - cd ../core || cd ../server
