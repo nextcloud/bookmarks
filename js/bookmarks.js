@@ -271,16 +271,24 @@ var EmptyBookmarksView = Marionette.View.extend({
 })
 
 var BookmarkCardView = Marionette.View.extend({
-  template: _.template('<h1><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2>'),
+  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2>'),
   className: "bookmark-card",
+  ui: {
+    "checkbox": 'input[type="checkbox"]'
+  },
   events: {
     "click": "open",
+    "click @ui.checkbox": "select"
   },
   initialize: function() {
     this.listenTo(this.model, "change", this.render);
   }
 , open: function() {
     Backbone.history.navigate('bookmark/'+this.model.get('id'), {trigger: true})
+  }
+, select: function(e) {
+    e.stopPropagation()
+    this.$el.toggleClass('active')
   }
 })
 
