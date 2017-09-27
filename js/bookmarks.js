@@ -112,6 +112,58 @@ var AppView = Marionette.View.extend({
 })
 
 
+var AddBookmarkView = Marionette.View.extend({
+  template: _.template('<input type="text" value="" placeholder="Address"/><button title="Add" class="icon-add"></button>')
+, className: 'add-bookmark'
+, events: {
+    'click button': 'submit'
+  , 'keydown input': 'onKeydown'
+  }
+, ui: {
+    'input': 'input'
+  , 'button': 'button'
+  }
+, onKeydown: function(e) {
+    if (e.which != 13) return
+    // Enter
+    this.submit()
+  }
+, submit: function() {
+    if (this.pending) return
+    var $input = this.getUI('input')
+    var url = $input.val()
+    var bm = new Bookmark({url: url})
+    this.setPending(true)
+    var that = this
+    bm.save(null,{
+      success: function() {
+      Backbone.history.navigate('all', {trigger: true})
+      app.bookmarks.fetch()
+      $input.val('')
+      that.setPending(false)
+    }
+    , error: function() {
+        that.setPending(false)
+        that.getUI('button').removeClass('icon-add')
+        that.getUI('button').addClass('icon-error-color')
+      }
+    })
+  }
+, setPending: function(pending) {
+    if (pending) {
+      this.getUI('button').removeClass('icon-add')
+      this.getUI('button').removeClass('icon-error-color')
+      this.getUI('button').addClass('icon-loading-small')
+      this.getUI('button').prop('disabled', true)
+    }else {
+      this.getUI('button').removeClass('icon-error-color')
+      this.getUI('button').addClass('icon-add')
+      this.getUI('button').removeClass('icon-loading-small')
+      this.getUI('button').prop('disabled', false) 
+    }
+    this.pending = pending
+  }
+})
 var nav_ids = {
   all: true
 , favorites: true
@@ -169,9 +221,13 @@ var TagsNavigationTagView = Marionette.View.extend({
 })
 
 var ContentView = Marionette.View.extend({
-  template: _.template('<div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
+  template: _.template('<div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
 , regions: {
-    'viewBookmarks': {
+    'bulkActions': {
+      el: '#bulk-action-slot'
+    , replaceElement: true
+    }
+  , 'viewBookmarks': {
       el: '#view-bookmarks-slot'
     , replaceElement: true
     }
@@ -182,6 +238,15 @@ var ContentView = Marionette.View.extend({
   }
 , initialize: function(options) {
     this.bookmarks = options.bookmarks
+    var selected = new Bookmarks
+    this.bookmarks.on('select', function(model) {
+      selected.add(model)
+      if (selected.models.length == 1) this.showChildView('bulkActions', new BulkActionsView({collection: selected}))
+    })
+    this.bookmarks.on('unselect', function(model) {
+      selected.remove(model)
+      if (selected.models.length == 0) this.detachChildView('bulkActions')
+    })
     this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this) // Turn this into a request!
   }
 , onRender: function() {
@@ -202,61 +267,10 @@ var ContentView = Marionette.View.extend({
 
 
 
-
-
-var AddBookmarkView = Marionette.View.extend({
-  template: _.template('<input type="text" value="" placeholder="Address"/><button title="Add" class="icon-add"></button>')
-, className: 'add-bookmark'
-, events: {
-    'click button': 'submit'
-  , 'keydown input': 'onKeydown'
-  }
-, ui: {
-    'input': 'input'
-  , 'button': 'button'
-  }
-, onKeydown: function(e) {
-    if (e.which != 13) return
-    // Enter
-    this.submit()
-  }
-, submit: function() {
-    if (this.pending) return
-    var $input = this.getUI('input')
-    var url = $input.val()
-    var bm = new Bookmark({url: url})
-    this.setPending(true)
-    var that = this
-    bm.save(null,{
-      success: function() {
-      Backbone.history.navigate('all', {trigger: true})
-      app.bookmarks.fetch()
-      $input.val('')
-      that.setPending(false)
-    }
-    , error: function() {
-        that.setPending(false)
-        that.getUI('button').removeClass('icon-add')
-        that.getUI('button').addClass('icon-error-color')
-      }
-    })
-  }
-, setPending: function(pending) {
-    if (pending) {
-      this.getUI('button').removeClass('icon-add')
-      this.getUI('button').removeClass('icon-error-color')
-      this.getUI('button').addClass('icon-loading-small')
-      this.getUI('button').prop('disabled', true)
-    }else {
-      this.getUI('button').removeClass('icon-error-color')
-      this.getUI('button').addClass('icon-add')
-      this.getUI('button').removeClass('icon-loading-small')
-      this.getUI('button').prop('disabled', false) 
-    }
-    this.pending = pending
-  }
+var BulkActionsView = Marionette.View.extend({
+  className: 'bulk-actions'
+, template: _.template('<button class="delete icon-delete"></button>')
 })
-
 
 
 var BookmarksView = Marionette.CollectionView.extend({
@@ -288,6 +302,11 @@ var BookmarkCardView = Marionette.View.extend({
   }
 , select: function(e) {
     e.stopPropagation()
+    if (this.$el.hasClass('active')) {
+      this.triggerMethod('unselecct', this.model)
+    }else{
+      this.triggerMethod('select', this.model)
+    }
     this.$el.toggleClass('active')
   }
 })
