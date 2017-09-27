@@ -21,40 +21,58 @@
 	vertical-align: sub;
 }
 
+.bulk-actions {
+  position: fixed;
+  top: .5cm;
+  right: 1cm;
+}
+
 .bookmarks-empty {
   width: 5cm;
   margin: 20% auto;
 }
 
+.bookmarks {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
 .bookmark-card {
   position: relative;
   box-sizing: border-box; /*necessary for hover effect goodness to work*/
-  height: 2.5cm;
+  flex-grow: 1;
+  width: 6cm;
+  height: 6cm;
   padding: .5cm;
-  padding-left: .6cm;
   border-bottom: 1px solid #ebebeb;
+  border-right: 1px solid #ebebeb;
   overflow: hidden;
-  transition: padding-left .5s;
+  transition: transform .5s;
+  background: white;
 }
 .bookmark-card,
 .bookmark-card * {
   cursor: pointer;
 }
-.bookmark-card.active,
+.bookmark-card.active {
+  box-shadow: inset 0 0 10px #0082c9;
+}
 .bookmark-card:hover {
-  padding-left: 1cm;
-  background: white;
-  box-shadow: inset 2px 0 #0082c9;
+  transform: scale(1.03);
+  border-left: 1px solid #ebebeb;
+  border-top: 1px solid #ebebeb;
+  z-index: 1;
 }
 .bookmark-card input[type="checkbox"] {
+  display: none;
   position: absolute;
   left: .1cm;
-  top: 20%;
-  opacity: .4;
+  top: 0;
+  opacity: .7;
 }
 .bookmark-card:hover input[type="checkbox"],
 .bookmark-card.active input[type="checkbox"] {
-  opacity: .7;
+  display: inline-block;
 }
 .bookmark-card h1 {
   font-size: .5cm;
@@ -93,6 +111,7 @@
 .bookmark-detail .actions {
   float: right;
 }
+.bulk-actions button,
 .bookmark-detail .actions button {
   height: 1cm;
   width: 1cm;
