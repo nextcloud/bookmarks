@@ -62,6 +62,11 @@ var Router = Marionette.AppRouter.extend({
     }
   , showBookmark: function() {
     }
+  , search: function(query) {
+      this.app.bookmarks.fetch({
+        data: {search: query.split(' ')}
+      })
+    }
   }
 , appRoutes: {
     'all': 'showAllBookmarks'
@@ -70,6 +75,7 @@ var Router = Marionette.AppRouter.extend({
   , 'tags': 'showTags'
   , 'tag/:tag': 'showTag'
   , 'bookmark/:bookmark': 'showBookmark'
+  , 'search/:query': 'search'
   }
 , initialize: function(options) {
     this.controller.app = options.app
@@ -102,6 +108,7 @@ var AppView = Marionette.View.extend({
 , initialize: function(options) {
     this.bookmarks = options.bookmarks
     this.tags = options.tags
+    this.searchController = new SearchController
   }
 , onRender: function() {
     this.showChildView('addBookmarks', new AddBookmarkView());
@@ -111,6 +118,39 @@ var AppView = Marionette.View.extend({
   }
 })
 
+
+var SearchController = Marionette.View.extend({
+  el: '#searchbox'
+, initialize: function() {
+    var that = this
+    // register a dummy search plugin
+    OC.Plugins.register('OCA.Search', { attach: function(search) {
+        search.setFilter('bookmarks', function(query) {
+          that.submit(query)
+        })
+      }
+    });
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this)
+  }
+, events: {
+    'keydown': 'onKeydown'
+  }
+, onRender: function() {
+    this.$el.show()
+  }
+, onNavigate: function(route, query) {
+    if (route === 'search/:query') this.$el.val(query)
+  }
+, submit: function(query) {
+    if (query !== '') {
+      Backbone.history.navigate('search/'+query)
+      app.router.controller.search(query)
+    }else {
+      Backbone.history.navigate('all')
+      app.router.controller.showAllBookmarks()
+    }
+  }
+})
 
 var AddBookmarkView = Marionette.View.extend({
   template: _.template('<input type="text" value="" placeholder="Address"/><button title="Add" class="icon-add"></button>')
