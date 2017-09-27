@@ -1,429 +1,394 @@
-var bookmarksPage = 0;
-var bookmarksLoading = false;
-var dialog;
-var bookmarksSorting = 'bookmarks_sorting_recent';
-var fullTags = [];
-var ajaxCallCount = 0;
+var Radio = Backbone.Radio
 
-$(document).ready(function () {
-	getTags();
-	watchUrlField();
-	$('#bm_import').change(attachSettingEvent);
-	$('#add_url').on('keydown keyup change click', watchUrlField);
-	$('#app-settings').on('click keydown', toggleSettings);
-	$('#bm_export').click(exportBm);
-	$('#emptycontent-setting').click(function () {
-		if (!$('#app-settings').hasClass('open')) {
-			$('#app-settings').click();
-		}
-	});
-	$('.bookmarks_list').scroll(updateOnBottom).empty();
-	$('#tag_filter input').tagit({
-		allowSpaces: true,
-		availableTags: fullTags,
-		onTagFinishRemoved: filterTagsChanged,
-		placeholderText: t('bookmarks', 'Filter by tag')
-	}).tagit('option', 'onTagAdded', filterTagsChanged);
-	getBookmarks();
+var Bookmark = Backbone.Model.extend({
+  defaults: {
+    /*url: '',
+    title: '',
+    description: '',*/
+    tags: Tags
+  }
+, url: 'bookmark'
+})
+
+var Bookmarks = Backbone.Collection.extend({
+  model: Bookmark
+, url: 'bookmark'
+})
+
+var Tag = Backbone.Model.extend({
+  defaults: {
+    name: ''
+  }
+, url: 'tag'
+})
+
+var Tags = Backbone.Collection.extend({
+  model: Tag
+, url: 'tag'
+})
+
+
+var App = Marionette.Application.extend({
+  region: '#content'
+, onBeforeStart: function() {
+    this.bookmarks = new Bookmarks
+    this.tags = new Tags
+    this.tags.fetch()
+
+    this.router = new Router({app: this})
+  }
+, onStart: function() {
+    this.showView(new AppView({bookmarks: this.bookmarks, tags: this.tags}));
+    Backbone.history.start();
+  }
 });
 
-function getTags() {
-	jQuery.ajax({
-		url: 'tag',
-		success: function (result) {
-			fullTags = result;
-		},
-		async: false
-	});
+var Router = Marionette.AppRouter.extend({
+  controller: {
+    showAllBookmarks: function() {
+      this.app.bookmarks.fetch()
+    }
+  , showFavoriteBookmarks: function() {
+    }
+  , showSharedBookmarks: function() {
+      this.app.bookmarks.fetch()
+    }
+  , showTags: function() {
+    }
+  , showTag: function(tag) {
+      this.app.bookmarks.fetch({
+        data: {tags: [tag]}
+      })
+    }
+  , showBookmark: function() {
+    }
+  , search: function(query) {
+      this.app.bookmarks.fetch({
+        data: {search: query.split(' ')}
+      })
+    }
+  }
+, appRoutes: {
+    'all': 'showAllBookmarks'
+  , 'favorites': 'showFavoriteBookmarks'
+  , 'shared': 'showSharedBookmarks'
+  , 'tags': 'showTags'
+  , 'tag/:tag': 'showTag'
+  , 'bookmark/:bookmark': 'showBookmark'
+  , 'search/:query': 'search'
+  }
+, initialize: function(options) {
+    this.controller.app = options.app
+  }
+, onRoute: function(name, path, args) {
+    Radio.channel('nav').trigger('navigate', path, args)
+  }
+})
+
+var AppView = Marionette.View.extend({
+  template: _.template('<div id="app-navigation"><div id="add-bookmark-slot"></div><div id="navigation-slot"></div><h3>Favorite tags</h3><div id="favorite-tags-slot"></div></div><div id="app-content"><div id="content-slot"></div></div>')
+, regions: {
+    'addBookmarks':  {
+      el: '#add-bookmark-slot'
+    , replaceElement: true
+    }
+  , 'navigation': {
+      el: '#navigation-slot'
+    , replaceElement: true
+    }
+  , 'content': {
+      el: '#content-slot'
+    , replaceElement: true
+    }
+  , 'tags': {
+      el: '#favorite-tags-slot'
+    , replaceElement: true
+    }
+  }
+, initialize: function(options) {
+    this.bookmarks = options.bookmarks
+    this.tags = options.tags
+    this.searchController = new SearchController
+  }
+, onRender: function() {
+    this.showChildView('addBookmarks', new AddBookmarkView());
+    this.showChildView('navigation', new NavigationView);
+    this.showChildView('content', new ContentView({bookmarks: this.bookmarks})); 
+    this.showChildView('tags', new TagsNavigationView({collection: this.tags}))
+  }
+})
+
+
+var SearchController = Marionette.View.extend({
+  el: '#searchbox'
+, initialize: function() {
+    var that = this
+    // register a dummy search plugin
+    OC.Plugins.register('OCA.Search', { attach: function(search) {
+        search.setFilter('bookmarks', function(query) {
+          that.submit(query)
+        })
+      }
+    });
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this)
+  }
+, events: {
+    'keydown': 'onKeydown'
+  }
+, onRender: function() {
+    this.$el.show()
+  }
+, onNavigate: function(route, query) {
+    if (route === 'search/:query') this.$el.val(query)
+  }
+, submit: function(query) {
+    if (query !== '') {
+      Backbone.history.navigate('search/'+query)
+      app.router.controller.search(query)
+    }else {
+      Backbone.history.navigate('all')
+      app.router.controller.showAllBookmarks()
+    }
+  }
+})
+
+var AddBookmarkView = Marionette.View.extend({
+  template: _.template('<input type="text" value="" placeholder="Address"/><button title="Add" class="icon-add"></button>')
+, className: 'add-bookmark'
+, events: {
+    'click button': 'submit'
+  , 'keydown input': 'onKeydown'
+  }
+, ui: {
+    'input': 'input'
+  , 'button': 'button'
+  }
+, onKeydown: function(e) {
+    if (e.which != 13) return
+    // Enter
+    this.submit()
+  }
+, submit: function() {
+    if (this.pending) return
+    var $input = this.getUI('input')
+    var url = $input.val()
+    var bm = new Bookmark({url: url})
+    this.setPending(true)
+    var that = this
+    bm.save(null,{
+      success: function() {
+      Backbone.history.navigate('all', {trigger: true})
+      app.bookmarks.fetch()
+      $input.val('')
+      that.setPending(false)
+    }
+    , error: function() {
+        that.setPending(false)
+        that.getUI('button').removeClass('icon-add')
+        that.getUI('button').addClass('icon-error-color')
+      }
+    })
+  }
+, setPending: function(pending) {
+    if (pending) {
+      this.getUI('button').removeClass('icon-add')
+      this.getUI('button').removeClass('icon-error-color')
+      this.getUI('button').addClass('icon-loading-small')
+      this.getUI('button').prop('disabled', true)
+    }else {
+      this.getUI('button').removeClass('icon-error-color')
+      this.getUI('button').addClass('icon-add')
+      this.getUI('button').removeClass('icon-loading-small')
+      this.getUI('button').prop('disabled', false) 
+    }
+    this.pending = pending
+  }
+})
+var nav_ids = {
+  all: true
+, favorites: true
+, shared: true
+, tags: true
+}
+var NavigationView = Marionette.View.extend({
+  className: 'navigation'
+, tagName: 'ul'
+, template: _.template('<li data-id="all" class="all"><a href="#">All bookmarks</a></li><li data-id="favorites" class="favorites"><a href="#">Favorites</a></li><li data-id="shared" class="shared"><a href="#">Shared</a></li><li data-id="tags" class="tags"><a href="#">Tags</a></li>')
+, events: {
+    'click .all': 'onClick'
+  , 'click .favorites': 'onClick'
+  , 'click .shared': 'onClick'
+  , 'click .tags': 'onClick'
+  }
+, initialize: function() {
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this)
+  }
+, onClick: function(e) {
+    e.preventDefault()
+    Backbone.history.navigate(e.target.parentNode.dataset.id, {trigger: true})
+  }
+, onNavigate: function(category) {
+    $('.active', this.$el).removeClass('active')
+    if (category && nav_ids[category]) $('.'+category, this.$el).addClass('active')
+  }
+})
+
+var TagsNavigationView = Marionette.CollectionView.extend({
+  tagName: 'ul'
+, childView: function() {return TagsNavigationTagView}
+})
+
+var TagsNavigationTagView = Marionette.View.extend({
+  className: 'tag-nav-item'
+, tagName: 'li'
+, template: _.template('<a href="#"><%- name %></a>')
+, events: {
+    'click': 'open'
+  }
+, initialize: function() {
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this)
+  }
+, open: function(e) {
+    e.preventDefault()
+    Backbone.history.navigate('tag/' + this.model.get('name'), {trigger: true});
+  }
+, onNavigate: function(category, args) {
+    this.$el.removeClass('active')
+    if (category && category.indexOf('tag/') === 0 && args[0] === this.model.get('name')) {
+      this.$el.addClass('active')
+    }
+  }
+})
+
+var ContentView = Marionette.View.extend({
+  template: _.template('<div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
+, regions: {
+    'bulkActions': {
+      el: '#bulk-action-slot'
+    , replaceElement: true
+    }
+  , 'viewBookmarks': {
+      el: '#view-bookmarks-slot'
+    , replaceElement: true
+    }
+  , 'bookmarkDetail': {
+      el: '#bookmark-detail-slot'
+    , replaceElement: true
+    }
+  }
+, initialize: function(options) {
+    this.bookmarks = options.bookmarks
+    var selected = new Bookmarks
+    this.bookmarks.on('select', function(model) {
+      selected.add(model)
+      if (selected.models.length == 1) this.showChildView('bulkActions', new BulkActionsView({collection: selected}))
+    })
+    this.bookmarks.on('unselect', function(model) {
+      selected.remove(model)
+      if (selected.models.length == 0) this.detachChildView('bulkActions')
+    })
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this) // Turn this into a request!
+  }
+, onRender: function() {
+    this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
+  }
+, onNavigate: function(path, args) {
+    if ('bookmark/:bookmark' === path) {
+      var bm = app.bookmarks.get(args[0])
+      var view = new BookmarkDetailView({model: bm})
+      this.showChildView('bookmarkDetail', view)
+      var that = this
+      view.on('close', function() {
+        that.detachChildView('bookmarkDetail')
+      })
+    }
+  }
+})
+
+
+
+var BulkActionsView = Marionette.View.extend({
+  className: 'bulk-actions'
+, template: _.template('<button class="delete icon-delete"></button>')
+})
+
+
+var BookmarksView = Marionette.CollectionView.extend({
+  className: 'bookmarks'
+, childView: function() {return BookmarkCardView}
+, emptyView: function() {return EmptyBookmarksView}
+})
+
+var EmptyBookmarksView = Marionette.View.extend({
+  template: _.template('<h2>No bookmarks, here.</h2><p>There are no bookmarks available for this query. Try adding some using the above form.</p>')
+, className: 'bookmarks-empty'
+})
+
+var BookmarkCardView = Marionette.View.extend({
+  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2>'),
+  className: "bookmark-card",
+  ui: {
+    "checkbox": 'input[type="checkbox"]'
+  },
+  events: {
+    "click": "open",
+    "click @ui.checkbox": "select"
+  },
+  initialize: function() {
+    this.listenTo(this.model, "change", this.render);
+  }
+, open: function() {
+    Backbone.history.navigate('bookmark/'+this.model.get('id'), {trigger: true})
+  }
+, select: function(e) {
+    e.stopPropagation()
+    if (this.$el.hasClass('active')) {
+      this.triggerMethod('unselecct', this.model)
+    }else{
+      this.triggerMethod('select', this.model)
+    }
+    this.$el.toggleClass('active')
+  }
+})
+
+
+var BookmarkDetailView = Marionette.View.extend({
+  template: _.template('<div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2><div class="close icon-close"></div>'),
+  className: "bookmark-detail",
+  ui: {
+    'close': '.close'
+  , 'edit': '.edit'
+  , 'delete': '.delete'
+  },
+  events: {
+    'click @ui.close': 'close'
+  , 'click @ui.edit': 'edit'
+  , 'click @ui.delete': 'delete'
+  },
+  initialize: function() {
+    this.listenTo(this.model, "change", this.render);
+  },
+  close: function() {
+    Backbone.history.history.back();
+    this.triggerMethod('close')
+  }
+})
+
+
+var _sync = Backbone.sync
+Backbone.sync = function(method, model, options) {
+  _sync(method, model, _.extend({}, options, {
+    success: function(json) {
+      console.log(json)
+      if (!(model instanceof Tags)) options.success(json.data)
+      else options.success(json.map(function(name){return {name: name}}))
+    }
+  }))
 }
 
-var formatString = (function () {
-	var replacer = function (context) {
-		return function (s, name) {
-			return context[name];
-		};
-	};
+// init
 
-	return function (input, context) {
-		return input.replace(/\{(\w+)\}/g, replacer(context));
-	};
-})();
-
-function increaseAjaxCallCount() {
-	ajaxCallCount++;
-	if (ajaxCallCount - 1 === 0) {
-		updateLoadingAnimation();
-	}
-}
-
-function decreaseAjaxCallCount() {
-	if (ajaxCallCount > 0) {
-		ajaxCallCount--;
-		updateLoadingAnimation();
-	}
-}
-
-function updateLoadingAnimation() {
-	if (ajaxCallCount === 0) {
-		$('#bookmark_add_submit').removeClass('icon-loading-small');
-		$('#bookmark_add_submit').addClass('icon-add');
-	} else {
-		$('#bookmark_add_submit').removeClass('icon-add');
-		$('#bookmark_add_submit').addClass('icon-loading-small');
-	}
-}
-
-function watchClickInSetting(e) {
-	if ($('#app-settings').find($(e.target)).length === 0) {
-		toggleSettings();
-	}
-}
-
-function checkURL(url) {
-	if (url.substring(0, 3) === "htt") {
-		return url;
-	}
-	return "http://" + url;
-}
-
-function toggleSettings() {
-	if ($('#app-settings').hasClass('open')) { //Close
-		$('#app-settings').switchClass("open", "");
-		$('body').unbind('click', watchClickInSetting);
-	}
-	else {
-		$('#app-settings').switchClass("", "open");
-		$('body').bind('click', watchClickInSetting);
-	}
-}
-function addFilterTag(event) {
-	event.preventDefault();
-	$('#tag_filter input').tagit('createTag', $(this).text());
-}
-
-function updateTagsList(tag) {
-	var html = tmpl("tag_tmpl", tag);
-	$('.tag_list').append(html);
-}
-
-function filterTagsChanged()
-{
-	$('#bookmarkFilterTag').val($('#tag_filter input').val());
-	$('.bookmarks_list').empty();
-	bookmarksPage = 0;
-	getBookmarks();
-}
-function getBookmarks() {
-	if (bookmarksLoading) {
-		//have patience :)
-		return;
-	}
-	increaseAjaxCallCount();
-	bookmarksLoading = true;
-	//Update Rel Tags if first page
-	if (bookmarksPage === 0) {
-
-		$.ajax({
-			type: 'GET',
-			url: 'bookmark',
-			data: {type: 'rel_tags', tag: $('#bookmarkFilterTag').val(), page: bookmarksPage, sort: bookmarksSorting},
-			success: function (tags) {
-				$('.tag_list').empty();
-				for (var i in tags.data) {
-					updateTagsList(tags.data[i]);
-				}
-				$('.tag_list .tag_edit').click(renameTag);
-				$('.tag_list .tag_delete').click(deleteTag);
-				$('.tag_list a.tag').click(addFilterTag);
-
-
-			}
-		});
-	}
-	$.ajax({
-		type: 'GET',
-		url: 'bookmark',
-		data: {type: 'bookmark', tag: $('#bookmarkFilterTag').val(), page: bookmarksPage, conjunction: 'and', sort: bookmarksSorting},
-		complete: function () {
-			decreaseAjaxCallCount();
-		},
-		success: function (bookmarks) {
-			if (bookmarks.data.length) {
-				bookmarksPage += 1;
-			}
-			$('.bookmark_link').unbind('click', recordClick);
-			$('.bookmark_delete').unbind('click', delBookmark);
-			$('.bookmark_edit').unbind('click', editBookmark);
-
-			for (var i in bookmarks.data) {
-				updateBookmarksList(bookmarks.data[i]);
-			}
-			checkEmpty();
-
-			$('.bookmark_link').click(recordClick);
-			$('.bookmark_delete').click(delBookmark);
-			$('.bookmark_edit').click(editBookmark);
-
-			bookmarksLoading = false;
-			if (bookmarks.data.length) {
-				updateOnBottom();
-			}
-		}
-	});
-}
-
-function watchUrlField() {
-	var form = $('#add_form');
-	var el = $('#add_url');
-	var button = $('#bookmark_add_submit');
-	form.unbind('submit');
-	if (!acceptUrl(el.val())) {
-		form.bind('submit', function (e) {
-			e.preventDefault();
-		});
-		button.addClass('disabled');
-	}
-	else {
-		button.removeClass('disabled');
-		form.bind('submit', addBookmark);
-	}
-}
-
-function acceptUrl(url) {
-	return url.replace(/^\s+/g, '').replace(/\s+$/g, '') !== '';
-}
-
-function addBookmark(event) {
-	event.preventDefault();
-	var url = $('#add_url').val();
-	//If trim is empty
-	if (!acceptUrl(url)) {
-		return;
-	}
-
-	$('#add_url').val('');
-	var bookmark = {url: url, description: '', title: '', from_own: 0, added_date: new Date()};
-	increaseAjaxCallCount();
-	$.ajax({
-		type: 'POST',
-		url: 'bookmark',
-		data: bookmark,
-		complete: function () {
-			decreaseAjaxCallCount();
-		},
-		success: function (data) {
-			if (data.status === 'success') {
-				// First remove old BM if exists
-				$('.bookmark_single').filterAttr('data-id', data.item.id).remove();
-
-				var bookmark = $.extend({}, bookmark, data.item);
-				updateBookmarksList(bookmark, 'prepend');
-				checkEmpty();
-				watchUrlField();
-			}
-		},
-		error: function () {
-			OC.Notification.showTemporary(t('bookmarks', 'Could not add bookmark.'));
-		}
-	});
-}
-
-function delBookmark() {
-	var record = $(this).parent().parent();
-	OC.dialogs.confirm(t('bookmarks', 'Are you sure you want to remove this bookmark?'),
-			t('bookmarks', 'Warning'), function (answer) {
-		if (answer) {
-			$.ajax({
-				type: 'DELETE',
-				url: 'bookmark/' + record.data('id'),
-				success: function (data) {
-					if (data.status === 'success') {
-						record.remove();
-						checkEmpty();
-					}
-				}
-			});
-		}
-	});
-}
-
-function checkEmpty() {
-	if ($('.bookmarks_list').children().length === 0) {
-		$("#emptycontent").show();
-		$("#bm_export").addClass('disabled');
-		$('.bookmarks_list').hide();
-	} else {
-		$("#emptycontent").hide();
-		$("#bm_export").removeClass('disabled');
-		$('.bookmarks_list').show();
-	}
-}
-function editBookmark() {
-	if ($('.bookmark_single_form').length) {
-		$('.bookmark_single_form .reset').click();
-	}
-	var record = $(this).parent().parent();
-	var bookmark = record.data('record');
-	var html = tmpl("item_form_tmpl", bookmark);
-
-	record.after(html);
-	record.hide();
-	var rec_form = record.next().find('form');
-	rec_form.find('.bookmark_form_tags ul').tagit({
-		allowSpaces: true,
-		availableTags: fullTags,
-		placeholderText: t('bookmarks', 'Tags')
-	});
-
-	rec_form.find('.reset').bind('click', cancelBookmark);
-	rec_form.bind('submit', function (event) {
-		event.preventDefault();
-		var form_values = $(this).serialize();
-		if(form_values.indexOf('item%5Btags%5D') === -1) {
-			// if not tag is selected, the input field does not exist, so
-			// we need to manually insert an empty array
-			form_values += "&item%5Btags%5D%5B%5D=";
-		}
-		$.ajax({
-			type: 'PUT',
-			url: $(this).attr('action') + "/" + this.elements['record_id'].value,
-			data: form_values,
-			success: function (data) {
-				if (data.status === 'success') {
-					//@TODO : do better reaction than reloading the page
-					filterTagsChanged();
-				} else { // On failure
-					//@TODO : show error message?
-				}
-			}
-		});
-	});
-}
-
-function cancelBookmark(event) {
-	event.preventDefault();
-	var rec_form = $(this).closest('form').parent();
-	rec_form.prev().show();
-	rec_form.remove();
-}
-
-function updateBookmarksList(bookmark, position) {
-	position = typeof position !== 'undefined' ? position : 'append';
-	bookmark = $.extend({title: '', description: '', added_date: new Date('now'), tags: []}, bookmark);
-	var tags = bookmark.tags;
-	var taglist = '';
-	for (var i = 0, len = tags.length; i < len; ++i) {
-		if (tags[i] !== '')
-			taglist = taglist + '<a class="bookmark_tag" href="#">' + escapeHTML(tags[i]) + '</a> ';
-	}
-	if (!hasProtocol(bookmark.url)) {
-		bookmark.url = 'http://' + bookmark.url;
-	}
-
-	if (bookmark.added) {
-		bookmark.added_date.setTime(parseInt(bookmark.added) * 1000);
-	}
-
-	if (!bookmark.title)
-		bookmark.title = '';
-
-	var html = tmpl("item_tmpl", bookmark);
-	if (position === "prepend") {
-		$('.bookmarks_list').prepend(html);
-	} else {
-		$('.bookmarks_list').append(html);
-	}
-	var line = $('div[data-id="' + bookmark.id + '"]');
-	line.data('record', bookmark);
-	if (taglist !== '') {
-		line.append('<p class="bookmark_tags">' + taglist + '</p>');
-	}
-	line.find('a.bookmark_tag').bind('click', addFilterTag);
-	line.find('.bookmark_link').click(recordClick);
-	line.find('.bookmark_delete').click(delBookmark);
-	line.find('.bookmark_edit').click(editBookmark);
-
-}
-
-function updateOnBottom() {
-	//check wether user is on bottom of the page
-	var top = $('.bookmarks_list>:last-child').position().top;
-	var height = $('.bookmarks_list').height();
-	// use a bit of margin to begin loading before we are really at the
-	// bottom
-	if (top < height * 1.2) {
-		getBookmarks();
-	}
-}
-
-function recordClick() {
-	$.ajax({
-		type: 'POST',
-		url: 'bookmark/click',
-		data: 'url=' + encodeURIComponent($(this).attr('href'))
-	});
-}
-
-function hasProtocol(url) {
-	var regexp = /(ftp|http|https|sftp)/;
-	return regexp.test(url);
-}
-
-function renameTag() {
-	if ($('input[name="tag_new_name"]').length)
-		return; // Do nothing if a tag is currenlty edited
-	var tagElement = $(this).closest('li');
-	tagElement.append('<form><input name="tag_new_name" type="text"></form>');
-	var form = tagElement.find('form');
-	//tag_el.find('.tags_actions').hide();
-	var tagName = tagElement.find('.tag').hide().text();
-	tagElement.find('input').val(tagName).focus().bind('blur', function () {
-		form.trigger('submit');
-	});
-	form.bind('submit', submitTagName);
-}
-
-function submitTagName(event) {
-	event.preventDefault();
-	var tagElement = $(this).closest('li');
-	var newTagName = tagElement.find('input').val();
-	var oldTagName = tagElement.find('.tag').show().text();
-	//tag_el.find('.tag_edit').show();
-	//tag_el.find('.tags_actions').show();
-	tagElement.find('input').unbind('blur');
-	tagElement.find('form').unbind('submit').remove();
-
-	if (newTagName !== oldTagName && newTagName !== '') {
-		//submit
-		$.ajax({
-			type: 'POST',
-			url: 'tag',
-			data: {old_name: oldTagName, new_name: newTagName},
-			success: function (bookmarks) {
-				if (bookmarks.status === 'success') {
-					filterTagsChanged();
-				}
-			}
-		});
-	}
-}
-
-function deleteTag() {
-	var tag_el = $(this).closest('li');
-	var old_tag_name = tag_el.find('.tag').show().text();
-	OC.dialogs.confirm(t('bookmarks', 'Are you sure you want to remove this tag from every entry?'),
-			t('bookmarks', 'Warning'), function (answer) {
-		if (answer) {
-			$.ajax({
-				type: 'DELETE',
-				url: 'tag',
-				data: {old_name: old_tag_name},
-				success: function (bookmarks) {
-					if (bookmarks.status === 'success') {
-						filterTagsChanged();
-					}
-				}
-			});
-		}
-	});
-}
+var app = new App()
+$(function() {
+  app.start()
+})
