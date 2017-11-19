@@ -62,22 +62,22 @@ class Test_BookmarkController extends TestCase {
 		$output = $this->controller->getSingleBookmark($this->testSubjectPublicBmId, $this->userid);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status']);
-		$this->assertEquals("http://www.9gag.com", $data['data']['url']);
+		$this->assertEquals("http://www.9gag.com", $data['item']['url']);
 	}
 
   function testPublicReadSuccess() {
 		$this->cleanDB();
 		$this->setupBookmarks();
-		$output = $this->controller->getSingleBookmark($this->testSubjectPublicBmId, $this->otheruser);
+		$output = $this->controller->getSingleBookmark($this->testSubjectPublicBmId, $this->otherUser);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status']);
-		$this->assertEquals("http://www.9gag.com", $data['data']['url']);
+		$this->assertEquals("http://www.9gag.com", $data['item']['url']);
 	}
   
   function testPublicReadFailure() {
 		$this->cleanDB();
 		$this->setupBookmarks();
-		$output = $this->controller->getSingleBookmark($this->testSubjectPrivateBmId, $this->otheruser);
+		$output = $this->controller->getSingleBookmark($this->testSubjectPrivateBmId, $this->otherUser);
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status']);
 	}
