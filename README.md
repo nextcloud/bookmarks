@@ -97,6 +97,32 @@ POST /apps/bookmarks/public/rest/v2/bookmark?url=http%3A%2F%2Fgoogle.com&title=G
 }
 ```
 
+### Get a bookmark
+```
+GET /apps/bookmarks/public/rest/v2/bookmark/:id
+```
+
+* `id`: The id of the bookmark to edit
+
+Parameters:
+* (optional) `user`: The user this bookmark belongs to
+
+Example:
+```
+GET /apps/bookmarks/public/rest/v2/bookmark/7
+```
+
+```json
+{ "status": "success",
+  "item": {
+    "id": "7",
+	  "url": "http://google.com",
+  	"title": "Boogle",
+  	//...
+  }
+}
+```
+
 ### Edit a bookmark
 ```
 PUT /apps/bookmarks/public/rest/v2/bookmark/:id

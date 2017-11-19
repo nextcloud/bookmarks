@@ -54,6 +54,35 @@ class BookmarkController extends ApiController {
 	public function legacyGetBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent") {
 		return $this->getBookmarks($type, $tag, $page, $sort);
 	}
+	
+  /**
+	 * @param string $id
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function getSingleBookmark(
+		$id,
+    $user = null
+	) {
+		if ($user === null) {
+			$user = $this->userId;
+			$publicOnly = false;
+		}else {
+			$publicOnly = true;
+			if ($this->userManager->userExists($user) == false) {
+				$error = "User could not be identified";
+				return new JSONResponse(array('status' => 'error', 'data'=> $error), Http::STATUS_BAD_REQUEST);
+			}
+		}
+		$bm = $this->bookmarks->findUniqueBookmark($id, $user);
+    if ($publicOnly === TRUE && $bm['public'] !== '1') {
+			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
+    }
+		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
+  }
 
 	/**
 	 * @param string $type
