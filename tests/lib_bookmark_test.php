@@ -33,6 +33,12 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$clientService = \OC::$server->getHTTPClientService();
 		$logger = \OC::$server->getLogger();
 		$this->libBookmarks = new Bookmarks($db, $config, $l, $clientService, $logger);
+		
+    $this->otherUser = "otheruser";
+		$this->userManager = \OC::$server->getUserManager();
+		if (!$this->userManager->userExists($this->otherUser)) {
+			$this->userManager->createUser($this->otherUser, 'password');	
+		}
 	}
 
 	function testAddBookmark() {
