@@ -84,8 +84,9 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertEquals($this->libBookmarks->findTags($this->userid), array());
 		$this->libBookmarks->addBookmark($this->userid, 'http://nextcloud.com', 'Nextcloud project', array('oc', 'cloud'), 'An awesome project');
 		$this->assertEquals(array(0 => array('tag' => 'cloud', 'nbr' => 1), 1 => array('tag' => 'oc', 'nbr' => 1)), $this->libBookmarks->findTags($this->userid));
+		$this->assertEquals(array(), $this->libBookmarks->findTags($this->otherUser));
 	}
-	
+		
 	function testFindTagsFilter() {
 		$this->cleanDB();
 		$this->assertEquals($this->libBookmarks->findTags($this->userid), array());
