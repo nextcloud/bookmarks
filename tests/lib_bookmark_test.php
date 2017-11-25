@@ -102,6 +102,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		
 		$findTags = $this->libBookmarks->findTags($this->userid, ["two", "one"]);
 		$this->assertEquals([array('tag' => 'four', 'nbr' => 1)], $findTags);
+		$this->assertEquals(array(), $this->libBookmarks->findTags($this->otherUser, ["two", "one"]));
 	}
   
 	function testRenameTag() {
