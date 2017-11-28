@@ -33,6 +33,12 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$clientService = \OC::$server->getHTTPClientService();
 		$logger = \OC::$server->getLogger();
 		$this->libBookmarks = new Bookmarks($db, $config, $l, $clientService, $logger);
+		
+    $this->otherUser = "otheruser";
+		$this->userManager = \OC::$server->getUserManager();
+		if (!$this->userManager->userExists($this->otherUser)) {
+			$this->userManager->createUser($this->otherUser, 'password');	
+		}
 	}
 
 	function testAddBookmark() {
@@ -83,9 +89,14 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->cleanDB();
 		$this->assertEquals($this->libBookmarks->findTags($this->userid), array());
 		$this->libBookmarks->addBookmark($this->userid, 'http://nextcloud.com', 'Nextcloud project', array('oc', 'cloud'), 'An awesome project');
-		$this->assertEquals(array(0 => array('tag' => 'cloud', 'nbr' => 1), 1 => array('tag' => 'oc', 'nbr' => 1)), $this->libBookmarks->findTags($this->userid));
+
+    $tags = $this->libBookmarks->findTags($this->userid);
+		$this->assertTrue(in_array(['tag' => 'cloud', 'nbr' => 1], $tags));
+		$this->assertTrue(in_array(['tag' => 'oc', 'nbr' => 1], $tags));
+		$this->assertEquals(2, count($tags));
+		$this->assertEquals(array(), $this->libBookmarks->findTags($this->otherUser));
 	}
-	
+		
 	function testFindTagsFilter() {
 		$this->cleanDB();
 		$this->assertEquals($this->libBookmarks->findTags($this->userid), array());
@@ -95,6 +106,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		
 		$findTags = $this->libBookmarks->findTags($this->userid, ["two", "one"]);
 		$this->assertEquals([array('tag' => 'four', 'nbr' => 1)], $findTags);
+		$this->assertEquals(array(), $this->libBookmarks->findTags($this->otherUser, ["two", "one"]));
 	}
   
 	function testRenameTag() {
