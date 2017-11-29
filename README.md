@@ -22,15 +22,8 @@ Install it from the app store in Nextcloud itself or just clone this repo into y
 
 Status :
 ---------
-Rewrite by [Stefan Klemm] aka ganomi (https://github.com/ganomi)
+The bookmarks app is a bit of an unloved child among the nextcloud apps. It has gone through many hands. This version is a rewrite by [Stefan Klemm] aka ganomi (https://github.com/ganomi), which is itself a bit unsatisfactory, which is why a new REST API has been introduced to facilitate synchronization and 3rd party clients and additionally there are efforts to rewrite the browser client and introduce some new features along the way.
 
-* This is a refactored / rewritten version of the bookmarks app using the app framework
-* Dependency Injection for user and db is used througout the controllers
-* The Routing features a consistent rest api
-* The Routing provides some legacy routes, so that for exampe the Android Bookmarks App still works.
-* Merged all the changes from https://github.com/nextcloud/bookmarks/pull/68 and added visual fixes. App uses the App Framework Styling on the Client side now.
-
-There is a publicly available api that provides access to bookmarks per user. (This is usefull in connection with the Wordpress Plugin https://github.com/mario-nolte/oc2wp-bookmarks)
 
 REST API
 ---------
