@@ -78,7 +78,7 @@ class BookmarkController extends ApiController {
 			}
 		}
 		$bm = $this->bookmarks->findUniqueBookmark($id, $user);
-		if ($public_only === TRUE && $bm['public'] !== '1') {
+		if ($public_only === TRUE && $bm['public'] != '1') {
 			$error = "Insufficient permissions";
 			return new JSONResponse(array('status' => 'error', 'data' => $error), Http::STATUS_BAD_REQUEST);
     }
