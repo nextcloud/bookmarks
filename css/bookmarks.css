@@ -292,17 +292,12 @@ ul.tagit li.tagit-choice .close .text-icon {
 }
 
 .bookmark_desc{
-    height: 1.5em;
-    padding-left:1em;
+    padding-left:0.25em;
+    padding-bottom:0.25em;
     white-space:nowrap;
     text-overflow:ellipsis;
     overflow:hidden;
     display:block;
-    float:left;
-    position: absolute;
-    left: 25%;
-    width:40%;
-    top: 0.7em;
     font-weight:500;
     /* 	z-index: -10; */
 }
