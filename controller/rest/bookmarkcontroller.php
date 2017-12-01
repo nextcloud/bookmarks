@@ -269,7 +269,7 @@ class BookmarkController extends ApiController {
 		$newProps = [
 			'url' => $url,
 			'title' => $title,
-			'is_public' => $is_public,
+			'public' => $is_public,
 			'description' => $description
 		];
 		if (is_array($item) && isset($item['tags']) && is_array($item['tags'])) {
@@ -291,7 +291,7 @@ class BookmarkController extends ApiController {
 			$bookmark['tags'] = [];
 		}
 
-		$id = $this->bookmarks->editBookmark($this->userId, $bookmark['id'], $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['is_public']);
+		$id = $this->bookmarks->editBookmark($this->userId, $bookmark['id'], $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['public']);
 
 		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
