@@ -69,21 +69,24 @@ class BookmarkController extends ApiController {
 	) {
 		if ($user === null) {
 			$user = $this->userId;
-			$public_only = false;
+			$publicOnly = false;
 		}else {
-			$public_only = true;
+			$publicOnly = true;
 			if ($this->userManager->userExists($user) == false) {
 				$error = "User could not be identified";
 				return new JSONResponse(array('status' => 'error', 'data'=> $error), Http::STATUS_BAD_REQUEST);
 			}
 		}
 		$bm = $this->bookmarks->findUniqueBookmark($id, $user);
-		if ($public_only === TRUE && $bm['public'] != '1') {
-			$error = "Insufficient permissions";
+		if(!isset($bm['id'])) {
+			return new JSONResponse(['status' => 'error'], Http::STATUS_NOT_FOUND);
+		}
+		if ($public_only === true && isset($bm['public']) && $bm['public'] != '1') {
+            $error = "Insufficient permissions";
 			return new JSONResponse(array('status' => 'error', 'data' => $error), Http::STATUS_BAD_REQUEST);
-    }
+    	}
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
-  }
+	}
 
 	/**
 	 * @param string $type
