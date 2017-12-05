@@ -81,7 +81,7 @@ class BookmarkController extends ApiController {
 		if(!isset($bm['id'])) {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_NOT_FOUND);
 		}
-		if ($public_only === true && isset($bm['public']) && $bm['public'] != '1') {
+		if ($publicOnly === true && isset($bm['public']) && $bm['public'] != '1') {
             $error = "Insufficient permissions";
 			return new JSONResponse(array('status' => 'error', 'data' => $error), Http::STATUS_BAD_REQUEST);
     	}
