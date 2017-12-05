@@ -27,6 +27,7 @@ $application->registerRoutes($this, array('routes' => array(
 	//internal REST API
 	array('name' => 'internal_bookmark#get_bookmarks', 'url' => '/bookmark', 'verb' => 'GET'),
 	array('name' => 'internal_bookmark#new_bookmark', 'url' => '/bookmark', 'verb' => 'POST'),
+	array('name' => 'internal_bookmark#get_single_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'GET'),
 	array('name' => 'internal_bookmark#edit_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'PUT'),
 	array('name' => 'internal_bookmark#delete_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'DELETE'),
 	array('name' => 'internal_bookmark#click_bookmark', 'url' => '/bookmark/click', 'verb' => 'POST'),
@@ -38,6 +39,7 @@ $application->registerRoutes($this, array('routes' => array(
 	// Public REST API
 	array('name' => 'bookmark#get_bookmarks', 'url' => '/public/rest/v2/bookmark', 'verb' => 'GET'),
 	array('name' => 'bookmark#new_bookmark', 'url' => '/public/rest/v2/bookmark', 'verb' => 'POST'),
+	array('name' => 'bookmark#get_single_bookmark', 'url' => '/public/rest/v2/bookmark/{id}', 'verb' => 'GET'),
 	array('name' => 'bookmark#edit_bookmark', 'url' => '/public/rest/v2/bookmark/{id}', 'verb' => 'PUT'),
 	array('name' => 'bookmark#delete_bookmark', 'url' => '/public/rest/v2/bookmark/{id}', 'verb' => 'DELETE'),
 	array('name' => 'bookmark#click_bookmark', 'url' => '/public/rest/v2/bookmark/click', 'verb' => 'POST'),

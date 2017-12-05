@@ -55,6 +55,17 @@ class InternalBookmarkController extends ApiController {
 	) {
 		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search);
 	}
+	
+  /**
+	 * @param string $id
+	 * @param string $user
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function getSingleBookmark($id, $user = null) {
+		return $this->publicController->getSingleBookmark($id, $user);
+	}
 
 	/**
 	 * @param string $url

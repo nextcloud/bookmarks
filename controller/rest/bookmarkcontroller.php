@@ -54,6 +54,39 @@ class BookmarkController extends ApiController {
 	public function legacyGetBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent") {
 		return $this->getBookmarks($type, $tag, $page, $sort);
 	}
+	
+  /**
+	 * @param string $id
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function getSingleBookmark(
+		$id,
+		$user = null
+	) {
+		if ($user === null) {
+			$user = $this->userId;
+			$publicOnly = false;
+		}else {
+			$publicOnly = true;
+			if ($this->userManager->userExists($user) == false) {
+				$error = "User could not be identified";
+				return new JSONResponse(array('status' => 'error', 'data'=> $error), Http::STATUS_BAD_REQUEST);
+			}
+		}
+		$bm = $this->bookmarks->findUniqueBookmark($id, $user);
+		if(!isset($bm['id'])) {
+			return new JSONResponse(['status' => 'error'], Http::STATUS_NOT_FOUND);
+		}
+		if ($publicOnly === true && isset($bm['public']) && $bm['public'] != '1') {
+            $error = "Insufficient permissions";
+			return new JSONResponse(array('status' => 'error', 'data' => $error), Http::STATUS_BAD_REQUEST);
+    	}
+		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
+	}
 
 	/**
 	 * @param string $type
@@ -239,7 +272,7 @@ class BookmarkController extends ApiController {
 		$newProps = [
 			'url' => $url,
 			'title' => $title,
-			'is_public' => $is_public,
+			'public' => $is_public,
 			'description' => $description
 		];
 		if (is_array($item) && isset($item['tags']) && is_array($item['tags'])) {
@@ -261,7 +294,7 @@ class BookmarkController extends ApiController {
 			$bookmark['tags'] = [];
 		}
 
-		$id = $this->bookmarks->editBookmark($this->userId, $bookmark['id'], $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['is_public']);
+		$id = $this->bookmarks->editBookmark($this->userId, $bookmark['id'], $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['public']);
 
 		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
