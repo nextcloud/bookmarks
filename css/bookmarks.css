@@ -215,16 +215,25 @@ li.tag_list {
     overflow: hidden;
 }
 
+li.tag_list > li {
+    max-height: 30px;
+    display: inline-block;
+}
+
 li.tag_list a {
     display: inline !important;
-    padding: 5px 11px 5px 11px !important;
     border: 1px solid transparent;
+    margin: 0.2em 0.2em;
+    padding: 0 0.4em;
+    border-radius: 0.4em;
 }
 
 li.tag_list li:hover > a {
     background: none repeat scroll 0 0 #dee7f8 !important;
     border: 1px solid #cad8f3;
-    border-radius: 6px;
+    margin: 0.2em 0.2em;
+    padding: 0 0.4em;
+    border-radius: 0.4em;
 }
 
 .tag_list em , .share_list em{
@@ -242,6 +251,7 @@ li.tag_list li:hover > a {
     display:none;
     float:right;
 }
+
 li:hover > .tags_actions > span {
     display:inline;
 }

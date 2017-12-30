@@ -110,7 +110,8 @@ class BookmarkController extends ApiController {
 		$tags = array(),
 		$conjunction = "or",
 		$sortby = "",
-		$search = array()
+		$search = array(),
+		$limit = 10
 	) {
 		if ($user === null) {
 			$user = $this->userId;
@@ -138,7 +139,11 @@ class BookmarkController extends ApiController {
 		$tags = array_unique(array_merge($tags,$search), SORT_STRING);
 		if(count($search) > 0) $tagsOnly = false;
 
-		$limit = 10;
+		// @damko I don't understand why change 10 to something else
+		// produces tags duplication for some bookmarks. 
+		// It must be due to some js request.
+		// However
+		if(!is_numeric($limit)) $limit = 10;
 		$offset = $page * 10;
 		if ($page == -1) {
 			$limit = -1;
