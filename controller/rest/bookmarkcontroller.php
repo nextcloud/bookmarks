@@ -216,7 +216,14 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
 
-		$tags = isset($item['tags']) ? $item['tags'] : array();
+		$tags = array();
+		if(isset($item['tags'])) {
+			$tags = $item['tags'];
+		} else {
+			if(is_array($item) && count($item) > 0) {
+				$tags = $item;
+			}
+		}
 
 		$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public);
 		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
