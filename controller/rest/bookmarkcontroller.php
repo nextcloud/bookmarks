@@ -129,33 +129,14 @@ class BookmarkController extends ApiController {
 
 		//this populates the left bar with tags
 		if ($type === 'rel_tags' && !$publicOnly) { // XXX: libbookmarks#findTags needs a publicOnly option
-			//$tags = $this->bookmarks->analyzeTagRequest($tag);
 			$qtags = $this->bookmarks->findTags($user, $tags);
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
 		}
 
-		// type == bookmark
-		// $filterTag = $this->bookmarks->analyzeTagRequest($tag);
-		// if (!is_array($tags)) {
-		// 	if(is_string($tags) && $tags !== '') {
-		// 		$tags = [ $tags ];
-		// 	} else {
-		// 		$tags = array();
-		// 	}
-		// }
-
 		$tagsOnly = true;
 		$search = $this->bookmarks->analyzeTagRequest($search);
-		if(count($search) > 0) $tagsOnly = false;
 		$tags = array_unique(array_merge($tags,$search), SORT_STRING);
-
-		// if (count($search) > 0) {
-		// 	$tags = array_merge($tags, $search);
-		// 	$tagsOnly = false;
-		// }
-		// if (count($tags) > 0) {
-		// 	$filterTag = $tags;
-		// }
+		if(count($search) > 0) $tagsOnly = false;
 
 		$limit = 10;
 		$offset = $page * 10;
