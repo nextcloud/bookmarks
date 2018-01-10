@@ -286,11 +286,11 @@ var ContentView = Marionette.View.extend({
     if (this.selected.length == 1) this.showChildView('bulkActions', new BulkActionsView({collection: this.selected}))
   }
 , onUnselect: function(model) {
-    var that = this
     this.selected.remove(model)
     if (this.selected.length == 0) {
-      this.getRegion('bulkActions').currentView.$el.slideUp(function() {
-        that.getRegion('bulkActions').empty()
+      var bulkRegion = this.getRegion('bulkActions')
+      bulkRegion.currentView.close(function() {
+        bulkRegion.empty()
       })
     }
   }
@@ -314,9 +314,10 @@ var ContentView = Marionette.View.extend({
 
 var BulkActionsView = Marionette.View.extend({
   className: 'bulk-actions'
-, template: _.template('<button class="delete icon-delete"></button>')
+, template: _.template('<button class="delete icon-delete"></button><div class="close icon-close"></div>')
 , events: {
     'click .delete': 'delete'
+  , 'click .close': 'abort'
   }
 , initialize: function(opts) {
     this.selected = opts.collection
@@ -336,7 +337,13 @@ var BulkActionsView = Marionette.View.extend({
     this.$el.css('display', 'none')
     this.$el.slideDown()
   }
-, onBeforeDestroy: function() {
+, abort: function() {
+    this.selected.models.slice().forEach(function(model) {
+      model.trigger('unselect', model)
+    })
+  }
+, close: function(cb) {
+    this.$el.slideUp(cb)
   }
 })
 
@@ -364,6 +371,8 @@ var BookmarkCardView = Marionette.View.extend({
   },
   initialize: function() {
     this.listenTo(this.model, "change", this.render);
+    this.listenTo(this.model, "select", this.onSelect);
+    this.listenTo(this.model, "unselect", this.onUnselect);
   }
 , open: function() {
     Backbone.history.navigate('bookmark/'+this.model.get('id'), {trigger: true})
@@ -375,7 +384,13 @@ var BookmarkCardView = Marionette.View.extend({
     }else{
       this.model.trigger('select', this.model)
     }
-    this.$el.toggleClass('active')
+  }
+, onSelect: function() {
+    this.$el.addClass('active')
+  }
+, onUnselect: function() {
+    this.$el.removeClass('active')
+    this.render()
   }
 })
 
