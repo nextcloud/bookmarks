@@ -89,6 +89,22 @@
 .bookmark-card h2 :link:hover {
   text-decoration: underline;
 }
+.bookmark-card .tags {
+  max-height: 2.5cm;
+  overflow: hidden;
+  position: absolute;
+  bottom: .5cm;
+}
+.bookmark-card .tag-nav-item {
+  border-radius: .2cm;
+  background: #ebebeb;
+  display: inline-block;
+  padding: 0 .2cm;
+  margin: .1cm;
+}
+.bookmark-card .tag-nav-item:hover {
+  background: #e0e0e0;
+}
 
 .bookmark-detail {
 	position: absolute;

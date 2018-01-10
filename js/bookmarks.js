@@ -249,6 +249,7 @@ var TagsNavigationTagView = Marionette.View.extend({
   }
 , open: function(e) {
     e.preventDefault()
+    e.stopPropagation() // for when tags are displayed in BookmarkCardView, we don't want that view to get the click, too
     Backbone.history.navigate('tag/' + encodeURIComponent(this.model.get('name')), {trigger: true});
   }
 , onNavigate: function(category, args) {
@@ -360,10 +361,13 @@ var EmptyBookmarksView = Marionette.View.extend({
 })
 
 var BookmarkCardView = Marionette.View.extend({
-  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2>'),
+  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2><div class="tags"></div>'),
   className: "bookmark-card",
   ui: {
     "checkbox": 'input[type="checkbox"]'
+  },
+  regions: {
+    'tags': '.tags'
   },
   events: {
     "click": "open",
@@ -373,6 +377,12 @@ var BookmarkCardView = Marionette.View.extend({
     this.listenTo(this.model, "change", this.render);
     this.listenTo(this.model, "select", this.onSelect);
     this.listenTo(this.model, "unselect", this.onUnselect);
+  }
+, onRender: function() {
+    var tags = new Tags(this.model.get('tags').map(function(id) {
+      return new Tag({name: id})
+    }))
+    this.showChildView('tags', new TagsNavigationView({collection: tags}))
   }
 , open: function() {
     Backbone.history.navigate('bookmark/'+this.model.get('id'), {trigger: true})
