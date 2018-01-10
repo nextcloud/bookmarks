@@ -22,10 +22,16 @@
 }
 
 .bulk-actions {
+  position: relative;
   border-bottom: 1px solid #ebebeb;
-  padding: 5px;
-  text-align: right;
+  padding: 5px .5cm;
   background: #e9f7ff;
+}
+.bulk-actions .close {
+  position: absolute;
+  right: .5cm;
+  top: .5cm;
+  cursor: pointer;
 }
 
 .bookmarks-empty {
