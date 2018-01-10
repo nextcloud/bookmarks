@@ -22,9 +22,9 @@
 }
 
 .bulk-actions {
-  position: fixed;
-  top: .5cm;
-  right: 1cm;
+  border-bottom: 1px solid #ebebeb;
+  padding: 5px;
+  text-align: right;
 }
 
 .bookmarks-empty {
@@ -54,14 +54,18 @@
 .bookmark-card * {
   cursor: pointer;
 }
-.bookmark-card.active {
-  box-shadow: inset 0 0 10px #0082c9;
-}
 .bookmark-card:hover {
   transform: scale(1.03);
   border-left: 1px solid #ebebeb;
   border-top: 1px solid #ebebeb;
   z-index: 1;
+}
+.bookmark-card.active,
+.bookmark-card.active:hover {
+  transform: none;
+  border-left: none;
+  border-top: none;
+  box-shadow: inset 0 0 10px #0082c9;
 }
 .bookmark-card input[type="checkbox"] {
   display: none;
