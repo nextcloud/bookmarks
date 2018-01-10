@@ -72,8 +72,9 @@
   display: none;
   position: absolute;
   left: .1cm;
-  top: 0;
+  top: .3cm;
   opacity: .7;
+  width: .4cm;
 }
 .bookmark-card:hover input[type="checkbox"],
 .bookmark-card.active input[type="checkbox"] {
