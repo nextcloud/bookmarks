@@ -53,7 +53,6 @@
   padding: .5cm;
   border: 1px solid #ebebeb;
   overflow: hidden;
-  transition: transform .5s, z-index .5s, border .5s;
   background: white;
 }
 .bookmark-card,
@@ -61,9 +60,7 @@
   cursor: pointer;
 }
 .bookmark-card:hover {
-  transform: scale(1.03);
-  border: 2px solid #ebebeb;
-  z-index: 1;
+  background: #fcfcfc;
 }
 .bookmark-card.active,
 .bookmark-card.active:hover {
