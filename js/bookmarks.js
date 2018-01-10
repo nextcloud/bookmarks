@@ -7,7 +7,7 @@ var Bookmark = Backbone.Model.extend({
     description: '',*/
     tags: Tags
   }
-, url: 'bookmark'
+, urlRoot: 'bookmark'
 })
 
 var Bookmarks = Backbone.Collection.extend({
@@ -144,9 +144,9 @@ var SearchController = Marionette.View.extend({
 , submit: function(query) {
     if (query !== '') {
       query = encodeURIComponent(query)
-      Backbone.history.navigate('search/'+query)
+      Backbone.history.navigate('search/'+query, {trigger: true})
     }else {
-      Backbone.history.navigate('all')
+      Backbone.history.navigate('all', {trigger: true})
     }
   }
 })
@@ -263,8 +263,7 @@ var ContentView = Marionette.View.extend({
   template: _.template('<div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
 , regions: {
     'bulkActions': {
-      el: '#bulk-action-slot'
-    , replaceElement: true
+      el: '#bulk-actions-slot'
     }
   , 'viewBookmarks': {
       el: '#view-bookmarks-slot'
@@ -277,16 +276,23 @@ var ContentView = Marionette.View.extend({
   }
 , initialize: function(options) {
     this.bookmarks = options.bookmarks
-    var selected = new Bookmarks
-    this.bookmarks.on('select', function(model) {
-      selected.add(model)
-      if (selected.models.length == 1) this.showChildView('bulkActions', new BulkActionsView({collection: selected}))
-    })
-    this.bookmarks.on('unselect', function(model) {
-      selected.remove(model)
-      if (selected.models.length == 0) this.detachChildView('bulkActions')
-    })
+    this.selected = new Bookmarks
+    this.listenTo(this.bookmarks, 'select', this.onSelect)
+    this.listenTo(this.bookmarks, 'unselect', this.onUnselect)
     this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this) // Turn this into a request!
+  }
+, onSelect: function(model) {
+    this.selected.add(model)
+    if (this.selected.length == 1) this.showChildView('bulkActions', new BulkActionsView({collection: this.selected}))
+  }
+, onUnselect: function(model) {
+    var that = this
+    this.selected.remove(model)
+    if (this.selected.length == 0) {
+      this.getRegion('bulkActions').currentView.$el.slideUp(function() {
+        that.getRegion('bulkActions').empty()
+      })
+    }
   }
 , onRender: function() {
     this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
@@ -309,6 +315,29 @@ var ContentView = Marionette.View.extend({
 var BulkActionsView = Marionette.View.extend({
   className: 'bulk-actions'
 , template: _.template('<button class="delete icon-delete"></button>')
+, events: {
+    'click .delete': 'delete'
+  }
+, initialize: function(opts) {
+    this.selected = opts.collection
+  }
+, delete: function() {
+    var that = this
+    this.selected.forEach(function(model) {
+      model.trigger('unselect', model)
+      model.destroy({
+        error: function() {
+          Backbone.history.navigate('all', {trigger: true})
+        }
+      })
+    })
+  }
+, onAttach: function() {
+    this.$el.css('display', 'none')
+    this.$el.slideDown()
+  }
+, onBeforeDestroy: function() {
+  }
 })
 
 
@@ -342,9 +371,9 @@ var BookmarkCardView = Marionette.View.extend({
 , select: function(e) {
     e.stopPropagation()
     if (this.$el.hasClass('active')) {
-      this.triggerMethod('unselecct', this.model)
+      this.model.trigger('unselect', this.model)
     }else{
-      this.triggerMethod('select', this.model)
+      this.model.trigger('select', this.model)
     }
     this.$el.toggleClass('active')
   }
