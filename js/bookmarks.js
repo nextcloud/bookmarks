@@ -57,14 +57,14 @@ var Router = Marionette.AppRouter.extend({
     }
   , showTag: function(tag) {
       this.app.bookmarks.fetch({
-        data: {tags: [tag]}
+        data: {item: {tags: [decodeURIComponent(tag)]}}
       })
     }
   , showBookmark: function() {
     }
   , search: function(query) {
       this.app.bookmarks.fetch({
-        data: {search: query.split(' ')}
+        data: {search: decodeURIComponent(query).split(' ')}
       })
     }
   }
@@ -139,15 +139,14 @@ var SearchController = Marionette.View.extend({
     this.$el.show()
   }
 , onNavigate: function(route, query) {
-    if (route === 'search/:query') this.$el.val(query)
+    if (route === 'search/:query') this.$el.val(decodeURIComponent(query))
   }
 , submit: function(query) {
     if (query !== '') {
+      query = encodeURIComponent(query)
       Backbone.history.navigate('search/'+query)
-      app.router.controller.search(query)
     }else {
       Backbone.history.navigate('all')
-      app.router.controller.showAllBookmarks()
     }
   }
 })
@@ -250,11 +249,11 @@ var TagsNavigationTagView = Marionette.View.extend({
   }
 , open: function(e) {
     e.preventDefault()
-    Backbone.history.navigate('tag/' + this.model.get('name'), {trigger: true});
+    Backbone.history.navigate('tag/' + encodeURIComponent(this.model.get('name')), {trigger: true});
   }
 , onNavigate: function(category, args) {
     this.$el.removeClass('active')
-    if (category && category.indexOf('tag/') === 0 && args[0] === this.model.get('name')) {
+    if (category && category.indexOf('tag/') === 0 && decodeURIComponent(args[0]) === this.model.get('name')) {
       this.$el.addClass('active')
     }
   }
