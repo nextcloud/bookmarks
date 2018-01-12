@@ -217,7 +217,7 @@ var nav_ids = {
 var NavigationView = Marionette.View.extend({
   className: 'navigation'
 , tagName: 'ul'
-, template: _.template('<li data-id="all" class="all"><a href="#">All bookmarks</a></li><li data-id="favorites" class="favorites"><a href="#">Favorites</a></li><li data-id="shared" class="shared"><a href="#">Shared</a></li><li data-id="tags" class="tags"><a href="#">Tags</a></li>')
+, template: _.template('<li data-id="all" class="all"><a href="#"><img src="../../../core/img/places/home.svg?v=1" />All bookmarks</a></li><li data-id="favorites" class="favorites"><a href="#"><img src="../../../apps/files/css/../img/star.svg?v=1" />Favorites</a></li><li data-id="shared" class="shared"><a href="#"><img src="../../../apps/files/css/../img/share.svg?v=1" />Shared</a></li><li data-id="tags" class="tags"><a href="#"><img src="../../../apps/systemtags/css/../img/tag.svg?v=1" />Tags</a></li>')
 , events: {
     'click .all': 'onClick'
   , 'click .favorites': 'onClick'
@@ -421,7 +421,7 @@ var EmptyBookmarksView = Marionette.View.extend({
 })
 
 var BookmarkCardView = Marionette.View.extend({
-  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2><div class="tags"></div>'),
+  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><img src="../../../apps/files/css/../img/public.svg?v=1" /><%- new URL(url).host %></a></h2><div class="tags"></div>'),
   className: "bookmark-card",
   ui: {
     "checkbox": 'input[type="checkbox"]'
@@ -466,7 +466,7 @@ var BookmarkCardView = Marionette.View.extend({
 
 
 var BookmarkDetailView = Marionette.View.extend({
-  template: _.template('<div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><%- new URL(url).host %></a></h2><div class="close icon-close"></div>'),
+  template: _.template('<div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><img src="../../../apps/files/css/../img/public.svg?v=1" /><%- new URL(url).host %></a></h2><div class="close icon-close"></div>'),
   className: "bookmark-detail",
   ui: {
     'close': '.close'
