@@ -325,6 +325,7 @@ var ContentView = Marionette.View.extend({
 , regions: {
     'bulkActions': {
       el: '#bulk-actions-slot'
+    , replaceElement: true
     }
   , 'viewBookmarks': {
       el: '#view-bookmarks-slot'
@@ -342,18 +343,14 @@ var ContentView = Marionette.View.extend({
     this.listenTo(this.bookmarks, 'unselect', this.onUnselect)
     this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this) // Turn this into a request!
   }
+, onRender: function() {
+    this.showChildView('bulkActions', new BulkActionsView({collection: this.selected}))
+  }
 , onSelect: function(model) {
     this.selected.add(model)
-    if (this.selected.length == 1) this.showChildView('bulkActions', new BulkActionsView({collection: this.selected}))
   }
 , onUnselect: function(model) {
     this.selected.remove(model)
-    if (this.selected.length == 0) {
-      var bulkRegion = this.getRegion('bulkActions')
-      bulkRegion.currentView.close(function() {
-        bulkRegion.empty()
-      })
-    }
   }
 , onRender: function() {
     this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
@@ -382,6 +379,14 @@ var BulkActionsView = Marionette.View.extend({
   }
 , initialize: function(opts) {
     this.selected = opts.collection
+    this.listenTo(this.selected, 'remove', this.onReduceSelection)
+    this.listenTo(this.selected, 'add', this.onExtendSelection)
+  }
+, onReduceSelection: function() {
+    if (this.selected.length == 0) this.$el.slideUp()
+  }
+, onExtendSelection: function() {
+    if (this.selected.length == 1) this.$el.slideDown()
   }
 , delete: function() {
     var that = this
@@ -394,17 +399,10 @@ var BulkActionsView = Marionette.View.extend({
       })
     })
   }
-, onAttach: function() {
-    this.$el.css('display', 'none')
-    this.$el.slideDown()
-  }
 , abort: function() {
     this.selected.models.slice().forEach(function(model) {
       model.trigger('unselect', model)
     })
-  }
-, close: function(cb) {
-    this.$el.slideUp(cb)
   }
 })
 
