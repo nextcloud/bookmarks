@@ -267,7 +267,7 @@ var TagsNavigationTagView = Marionette.View.extend({
 
 var SettingsView = Marionette.View.extend({
   className: 'settings'
-, template: _.template('<button class="open"><i class="icon-settings"></i> Settings</button><div class="settings-content"><h3>Import & Export</h3><form class="import-form" action="bookmark/import" method="post" target="upload_iframe" enctype="multipart/form-data" encoding="multipart/form-data"><input type="file" class="import" name="bm_import" size="5" /><input type="hidden" name="requesttoken" value="'+oc_requesttoken+'" /><button class="import-facade">Import</button></form><iframe class="upload" name="upload_iframe" id="upload_iframe"></iframe><button class="export">Export</button><div class="import-status"></div></div>')
+, template: _.template('<a href="#" class="open"><img src="../../../core/img/actions/settings.svg?v=1" /> Settings</a><div class="settings-content"><h3>Import & Export</h3><form class="import-form" action="bookmark/import" method="post" target="upload_iframe" enctype="multipart/form-data" encoding="multipart/form-data"><input type="file" class="import" name="bm_import" size="5" /><input type="hidden" name="requesttoken" value="'+oc_requesttoken+'" /><button class="import-facade">Import</button></form><iframe class="upload" name="upload_iframe" id="upload_iframe"></iframe><button class="export">Export</button><div class="import-status"></div></div>')
 , ui: {
     'content': '.settings-content'
   , 'import': '.import'
@@ -282,7 +282,8 @@ var SettingsView = Marionette.View.extend({
   , 'load @ui.iframe': 'importResult'
   , 'click .export': 'exportTrigger'
   }
-, open: function() {
+, open: function(e) {
+    e.preventDefault()
     this.getUI('content').slideToggle()
   }
 , importTrigger: function(e) {
