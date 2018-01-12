@@ -321,9 +321,13 @@ var SettingsView = Marionette.View.extend({
 })
 
 var ContentView = Marionette.View.extend({
-  template: _.template('<div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
+  template: _.template('<div id="mobile-nav-slot"></div><div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
 , regions: {
-    'bulkActions': {
+    'mobileNav': {
+      el: '#mobile-nav-slot'
+    , replaceElement: true
+    }
+  , 'bulkActions': {
       el: '#bulk-actions-slot'
     , replaceElement: true
     }
@@ -344,16 +348,15 @@ var ContentView = Marionette.View.extend({
     this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this) // Turn this into a request!
   }
 , onRender: function() {
+    this.showChildView('mobileNav', new MobileNavView())
     this.showChildView('bulkActions', new BulkActionsView({collection: this.selected}))
+    this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
   }
 , onSelect: function(model) {
     this.selected.add(model)
   }
 , onUnselect: function(model) {
     this.selected.remove(model)
-  }
-, onRender: function() {
-    this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
   }
 , onNavigate: function(path, args) {
     if ('bookmark/:bookmark' === path) {
@@ -368,7 +371,17 @@ var ContentView = Marionette.View.extend({
   }
 })
 
-
+var MobileNavView = Marionette.View.extend({
+  className: 'mobile-nav'
+, template: _.template('<a href="#" class="icon-menu toggle-menu"></a>')
+, events: {
+    'click .toggle-menu': 'toggleMenu'
+  }
+, toggleMenu: function(e) {
+    e.preventDefault()
+    $('body').toggleClass('mobile-nav-open')
+  }
+})
 
 var BulkActionsView = Marionette.View.extend({
   className: 'bulk-actions'

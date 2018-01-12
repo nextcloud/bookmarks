@@ -14,6 +14,25 @@
 	border-top: 1px solid #ededed;
 }
 
+#app-content {
+  transition: transform .5s ease;
+  transform: none;
+}
+.mobile-nav {
+  padding: .3cm;
+  display: none;
+}
+.mobile-nav .toggle-menu {
+  display: inline-block;
+}
+@media only screen and (max-width: 768px) {
+  .mobile-nav-open #app-content {
+    transform: translate(250px, 0);
+  }
+  .mobile-nav {
+    display: block;
+  }
+}
 
 .add-bookmark {
   padding: .1cm;
