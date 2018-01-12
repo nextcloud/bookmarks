@@ -32,6 +32,7 @@
 }
 
 .bulk-actions {
+  display: none;
   position: relative;
   border-bottom: 1px solid #ebebeb;
   padding: 5px .5cm;
