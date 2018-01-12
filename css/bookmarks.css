@@ -94,7 +94,9 @@
   font-size: .5cm;
 }
 .bookmark-card h2 {
+  margin-top: .1cm;
   font-size: .4cm;
+  opacity: .4;
 }
 .bookmark-card h2 :link:hover {
   text-decoration: underline;
@@ -128,6 +130,10 @@
 }
 .bookmark-detail h1 {
   font-size: .8cm;
+}
+.bookmark-detail h2 {
+  margin-top: .3cm;
+  opacity: .4;
 }
 .bookmark-detail h2 :link:hover {
   text-decoration: underline;
