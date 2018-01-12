@@ -86,7 +86,7 @@ var Router = Marionette.AppRouter.extend({
 })
 
 var AppView = Marionette.View.extend({
-  template: _.template('<div id="app-navigation"><div id="add-bookmark-slot"></div><div id="navigation-slot"></div><h3>Favorite tags</h3><div id="favorite-tags-slot"></div></div><div id="app-content"><div id="content-slot"></div></div>')
+  template: _.template('<div id="app-navigation"><div id="add-bookmark-slot"></div><div id="navigation-slot"></div><h3>Favorite tags</h3><div id="favorite-tags-slot"></div><div id="settings-slot"></div></div><div id="app-content"><div id="content-slot"></div></div>')
 , regions: {
     'addBookmarks':  {
       el: '#add-bookmark-slot'
@@ -104,6 +104,10 @@ var AppView = Marionette.View.extend({
       el: '#favorite-tags-slot'
     , replaceElement: true
     }
+  , 'settings': {
+      el: '#settings-slot'
+    , replaceElement: true
+    }
   }
 , initialize: function(options) {
     this.bookmarks = options.bookmarks
@@ -115,6 +119,7 @@ var AppView = Marionette.View.extend({
     this.showChildView('navigation', new NavigationView);
     this.showChildView('content', new ContentView({bookmarks: this.bookmarks})); 
     this.showChildView('tags', new TagsNavigationView({collection: this.tags}))
+    this.showChildView('settings', new SettingsView())
   }
 })
 
@@ -257,6 +262,61 @@ var TagsNavigationTagView = Marionette.View.extend({
     if (category && category.indexOf('tag/') === 0 && decodeURIComponent(args[0]) === this.model.get('name')) {
       this.$el.addClass('active')
     }
+  }
+})
+
+var SettingsView = Marionette.View.extend({
+  className: 'settings'
+, template: _.template('<button class="open"><i class="icon-settings"></i> Settings</button><div class="settings-content"><h3>Import & Export</h3><form class="import-form" action="bookmark/import" method="post" target="upload_iframe" enctype="multipart/form-data" encoding="multipart/form-data"><input type="file" class="import" name="bm_import" size="5" /><input type="hidden" name="requesttoken" value="'+oc_requesttoken+'" /><button class="import-facade">Import</button></form><iframe class="upload" name="upload_iframe" id="upload_iframe"></iframe><button class="export">Export</button><div class="import-status"></div></div>')
+, ui: {
+    'content': '.settings-content'
+  , 'import': '.import'
+  , 'form': '.import-form'
+  , 'iframe': '.upload'
+  , 'status': '.import-status'
+  }
+, events: {
+    'click .open': 'open'
+  , 'click .import-facade': 'importTrigger'
+  , 'change @ui.import': 'importSubmit'
+  , 'load @ui.iframe': 'importResult'
+  , 'click .export': 'exportTrigger'
+  }
+, open: function() {
+    this.getUI('content').slideToggle()
+  }
+, importTrigger: function(e) {
+    e.preventDefault()
+    this.getUI('import').click()
+  }
+, importSubmit: function(e) {
+    e.preventDefault()
+    this.getUI('iframe').load(this.importResult.bind(this));
+    this.getUI('form').submit();
+    this.getUI('status').text(t('bookmark', 'Uploading...'));
+  }
+, importResult: function () {
+    var data;
+    try {
+      data = $.parseJSON(this.getUI('iframe').contents().text());
+    } catch (e) {
+      this.getUI('status').text(t('bookmark', 'Import error'));
+      return;
+    }
+    if (data.status == 'error') {
+      var list = $("<ul></ul>").addClass('setting_error_list');
+      console.log(data);
+      $.each(data.data, function (index, item) {
+        list.append($("<li></li>").text(item));
+      });
+      this.getUI('status').html(list);
+      return
+    }
+    this.getUI('status').text(t('bookmark', 'Import completed successfully.'));
+    Backbone.history.navigate('all', {trigger: true})
+  }
+, exportTrigger: function() {
+    window.location = 'bookmark/export?requesttoken='+oc_requesttoken
   }
 })
 

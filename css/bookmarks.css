@@ -1,3 +1,13 @@
+#content > div {
+  height: 100%;
+}
+#app-navigation {
+  height: 100%;
+  position: relative;
+}
+#app-navigation > ul {
+  height: auto;
+}
 #app-navigation h3 {
 	padding-top: .7cm;
 	padding-left: 0.1cm;
@@ -137,4 +147,31 @@
 .bookmark-detail .actions button {
   height: 1cm;
   width: 1cm;
+}
+
+.settings {
+  width: 98%;
+  position: absolute;
+  bottom: 0;
+  padding: .1cm;
+}
+.settings .open {
+  width: 98%;
+  height: 1cm;
+}
+.settings .icon-settings {
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+.settings .settings-content {
+  display: none;
+}
+.settings .import-form {
+  display: inline-block;
+}
+.settings .import {
+  display: none;
+}
+.settings .upload {
+  display: none;
 }
