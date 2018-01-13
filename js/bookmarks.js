@@ -157,35 +157,51 @@ var SearchController = Marionette.View.extend({
 })
 
 var AddBookmarkView = Marionette.View.extend({
-  template: _.template('<input type="text" value="" placeholder="Address"/><button title="Add" class="icon-add"></button>')
+  template: _.template('<li class="link"><a href="#"><span>Add Bookmark</span></a></li><li class="form"><input type="text" value="" placeholder="Address..."/><button title="Add" class="icon-add"></button></li>')
 , className: 'add-bookmark'
+, tagName: 'ul'
 , events: {
-    'click button': 'submit'
-  , 'keydown input': 'onKeydown'
+    'click @ui.link': 'activate'
+  , 'click @ui.button': 'submit'
+  , 'keydown @ui.input': 'onKeydown'
+  , 'blur @ui.input': 'deactivate'
   }
 , ui: {
-    'input': 'input'
+    'link': '.link a'
+  , 'linkEntry': '.link'
+  , 'formEntry': '.form'
+  , 'input': 'input'
   , 'button': 'button'
+  }
+, activate: function() {
+    this.getUI('linkEntry').hide()
+    this.getUI('formEntry').show()
+    this.getUI('input').focus()
+  }
+, deactivate: function() {
+    this.getUI('linkEntry').show()
+    this.getUI('formEntry').hide()
+    this.getUI('input').val('')
   }
 , onKeydown: function(e) {
     if (e.which != 13) return
     // Enter
     this.submit()
   }
-, submit: function() {
-    if (this.pending) return
+, submit: function(e) {
     var $input = this.getUI('input')
+    if (this.pending || $input.val() === '') return
     var url = $input.val()
     var bm = new Bookmark({url: url})
     this.setPending(true)
     var that = this
     bm.save(null,{
       success: function() {
-      Backbone.history.navigate('all', {trigger: true})
-      app.bookmarks.fetch()
-      $input.val('')
-      that.setPending(false)
-    }
+				Backbone.history.navigate('all', {trigger: true})
+				app.bookmarks.fetch()
+				that.setPending(false)
+        that.deactivate()
+			}
     , error: function() {
         that.setPending(false)
         that.getUI('button').removeClass('icon-add')
