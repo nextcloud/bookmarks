@@ -146,6 +146,11 @@
   font-size: .4cm;
   opacity: .4;
 }
+.bookmark-card h2 :link span {
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin-right: 3px;
+}
 .bookmark-card h2 :link:hover {
   text-decoration: underline;
 }
@@ -199,6 +204,11 @@
 }
 .bookmark-detail h2 :link:hover {
   text-decoration: underline;
+}
+.bookmark-detail h2 :link span {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 3px;
 }
 .bookmark-detail .close {
   position: absolute;

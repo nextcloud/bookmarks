@@ -450,7 +450,7 @@ var EmptyBookmarksView = Marionette.View.extend({
 })
 
 var BookmarkCardView = Marionette.View.extend({
-  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><img src="../../../apps/files/css/../img/public.svg?v=1" /><%- new URL(url).host %></a></h2><div class="actions"><div class="icon-more toggle"></div><div class="popovermenu"><ul><li><button class="action-edit"><span class="icon-edit"></span><span>Edit</span></button></li><li><button class="action-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div></div><div class="tags"></div>'),
+  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2><div class="actions"><div class="icon-more toggle"></div><div class="popovermenu"><ul><li><button class="action-edit"><span class="icon-edit"></span><span>Edit</span></button></li><li><button class="action-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div></div><div class="tags"></div>'),
   className: "bookmark-card",
   ui: {
     'checkbox': 'input[type="checkbox"]'
@@ -519,7 +519,7 @@ var BookmarkCardView = Marionette.View.extend({
 
 
 var BookmarkDetailView = Marionette.View.extend({
-  template: _.template('<div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><img src="../../../apps/files/css/../img/public.svg?v=1" /><%- new URL(url).host %></a></h2><div class="close icon-close"></div>'),
+  template: _.template('<div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2><div class="close icon-close"></div>'),
   className: "bookmark-detail",
   ui: {
     'close': '.close'
