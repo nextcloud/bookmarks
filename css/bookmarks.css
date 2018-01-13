@@ -205,15 +205,24 @@ button span,
 .bookmark-detail {
 	position: absolute;
 	top: 0;
+  right: 0;
   z-index: 2;
-	width: 100%;
+	width: 500px;
 	height: 100%;
   box-sizing: border-box;
   padding: 1cm;
-	background: white; 
+	background: white;
+  border-left: 1px solid #ebebeb;
+}
+@media only screen and (max-width: 768px) {
+  .bookmark-detail {
+    width: auto;
+    left: 0;
+  }
 }
 .bookmark-detail h1 {
   font-size: .8cm;
+  line-height: 1;
 }
 .bookmark-detail h2 {
   margin-top: .3cm;
