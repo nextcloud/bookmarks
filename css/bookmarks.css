@@ -8,6 +8,11 @@
 #app-navigation > ul {
   height: auto;
 }
+.navigation a > span {
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin-right: 12px;
+}
 #app-navigation h3 {
 	padding-top: .7cm;
 	padding-left: 0.1cm;
@@ -63,7 +68,7 @@
 }
 .add-bookmark li.link a span::before {
 	position: absolute;
-	left: 14px;
+	left: 12px;
 	content: '+';
 	font-weight: bold;
 	font-size: 28px;
