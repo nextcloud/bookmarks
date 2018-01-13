@@ -197,33 +197,6 @@
   width: 1cm;
 }
 
-.settings {
-  width: 98%;
-  position: absolute;
-  bottom: 0;
-  padding: .1cm;
-  margin-bottom: .2cm;
-}
-.settings .open {
-  display: inline-block;
-  width: 98%;
-  font-size: .4cm;
-  padding: .2cm;
-  opacity: .7;
-}
-.settings .open:hover {
-  opacity: 1;
-}
-.settings .open img {
-  vertical-align: text-bottom;
-}
-.settings .icon-settings {
-  display: inline-block;
-  vertical-align: text-bottom;
-}
-.settings .settings-content {
-  display: none;
-}
 .settings .import-form {
   display: inline-block;
 }
