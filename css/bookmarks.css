@@ -35,19 +35,41 @@
 }
 
 .add-bookmark {
-  padding: .1cm;
   border-bottom: 1px solid #ebebeb;
 }
 .add-bookmark input {
-  width: 93%;
-  width: calc(100% - 40px);
+	margin: 0;
+	width: 100%;
+	padding: 12px 40px 12px 12px;
+	box-sizing: border-box;
+	background-color: transparent;
+	border: none;
+	border-bottom: 1px solid #eee;
+	border-radius: 0;
 }
 .add-bookmark button {
-	width: 13px;
-	height: 13px;
-	padding: 7px;
-	box-sizing: content-box;
-	vertical-align: sub;
+	position: absolute;
+	right: 0;
+	top: 0;
+  min-height: 34px;
+	padding: 10px 20px;
+	background-color: transparent;
+	border: none;
+	opacity: .5;
+  font-weight: bold;
+}
+.add-bookmark li.link a span {
+  margin-left: 28px;
+}
+.add-bookmark li.link a span::before {
+	position: absolute;
+	left: 14px;
+	content: '+';
+	font-weight: bold;
+	font-size: 28px;
+}
+.add-bookmark .form {
+  display: none;
 }
 
 .bulk-actions {
