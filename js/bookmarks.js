@@ -233,7 +233,7 @@ var nav_ids = {
 var NavigationView = Marionette.View.extend({
   className: 'navigation'
 , tagName: 'ul'
-, template: _.template('<li data-id="all" class="all"><a href="#"><img src="../../../core/img/places/home.svg?v=1" />All bookmarks</a></li><li data-id="favorites" class="favorites"><a href="#"><img src="../../../apps/files/css/../img/star.svg?v=1" />Favorites</a></li><li data-id="shared" class="shared"><a href="#"><img src="../../../apps/files/css/../img/share.svg?v=1" />Shared</a></li><li data-id="tags" class="tags"><a href="#"><img src="../../../apps/systemtags/css/../img/tag.svg?v=1" />Tags</a></li>')
+, template: _.template('<li data-id="all" class="all"><a href="#"><span class="icon-home"></span>All bookmarks</a></li><li data-id="favorites" class="favorites"><a href="#"><span class="icon-favorite"></span>Favorites</a></li><li data-id="shared" class="shared"><a href="#"><span class="icon-share"></span>Shared</a></li><li data-id="tags" class="tags"><a href="#"><span class="icon-tag"></span>Tags</a></li>')
 , events: {
     'click .all': 'onClick'
   , 'click .favorites': 'onClick'
@@ -284,7 +284,7 @@ var TagsNavigationTagView = Marionette.View.extend({
 var SettingsView = Marionette.View.extend({
   className: 'settings'
 , id: 'app-settings'
-, template: _.template('<div id="app-settings-header"><button class="settings-button">Settings</a></div><div id="app-settings-content"><form class="import-form" action="bookmark/import" method="post" target="upload_iframe" enctype="multipart/form-data" encoding="multipart/form-data"><input type="file" class="import" name="bm_import" size="5" /><input type="hidden" name="requesttoken" value="'+oc_requesttoken+'" /><button class="import-facade">Import</button></form><iframe class="upload" name="upload_iframe" id="upload_iframe"></iframe><button class="export">Export</button><div class="import-status"></div></div>')
+, template: _.template('<div id="app-settings-header"><button class="settings-button">Settings</a></div><div id="app-settings-content"><form class="import-form" action="bookmark/import" method="post" target="upload_iframe" enctype="multipart/form-data" encoding="multipart/form-data"><input type="file" class="import" name="bm_import" size="5" /><input type="hidden" name="requesttoken" value="'+oc_requesttoken+'" /><button class="import-facade"><span class="icon-upload"></span> Import</button></form><iframe class="upload" name="upload_iframe" id="upload_iframe"></iframe><button class="export"><span class="icon-download"></span> Export</button><div class="import-status"></div></div>')
 , ui: {
     'content': '#app-settings-content'
   , 'import': '.import'
