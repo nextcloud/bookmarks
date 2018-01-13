@@ -134,6 +134,7 @@
 }
 .bookmark-card h1 {
   font-size: .5cm;
+  padding-right: .5cm;
 }
 .bookmark-card h2 {
   margin-top: .1cm;
@@ -142,6 +143,20 @@
 }
 .bookmark-card h2 :link:hover {
   text-decoration: underline;
+}
+.bookmark-card .actions {
+  display: none;
+  position: absolute;
+  top: .5cm;
+  right: .5cm;
+}
+.bookmark-card:hover .actions,
+.bookmark-card.actions-open .actions {
+  display: block;
+}
+.bookmark-card .actions .popovermenu {
+  top: 24px;
+  right: -14px;
 }
 .bookmark-card .tags {
   max-height: 2.5cm;
