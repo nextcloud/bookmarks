@@ -367,7 +367,7 @@ var ContentView = Marionette.View.extend({
   }
 , onRender: function() {
     this.showChildView('mobileNav', new MobileNavView())
-    this.showChildView('bulkActions', new BulkActionsView({collection: this.selected}))
+    this.showChildView('bulkActions', new BulkActionsView({all: this.bookmarks, selected: this.selected}))
     this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
   }
 , onSelect: function(model) {
@@ -403,13 +403,15 @@ var MobileNavView = Marionette.View.extend({
 
 var BulkActionsView = Marionette.View.extend({
   className: 'bulk-actions'
-, template: _.template('<button class="delete icon-delete"></button><div class="close icon-close"></div>')
+, template: _.template('<button class="delete"><span class="icon-delete"></span></button><div class="selection-tools"><button class="select-all"><span class="icon-checkmark"></span> Select all visible</button><div class="close"><span class="icon-close"></span></div></div>')
 , events: {
     'click .delete': 'delete'
+  , 'click .select-all': 'selectAll'
   , 'click .close': 'abort'
   }
 , initialize: function(opts) {
-    this.selected = opts.collection
+    this.all = opts.all
+    this.selected = opts.selected
     this.listenTo(this.selected, 'remove', this.onReduceSelection)
     this.listenTo(this.selected, 'add', this.onExtendSelection)
   }
@@ -428,6 +430,11 @@ var BulkActionsView = Marionette.View.extend({
           Backbone.history.navigate('all', {trigger: true})
         }
       })
+    })
+  }
+, selectAll: function() {
+    this.all.forEach(function(model) {
+      model.trigger('select', model) 
     })
   }
 , abort: function() {
