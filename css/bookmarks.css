@@ -84,10 +84,27 @@
   padding: 5px .5cm;
   background: #e9f7ff;
 }
-.bulk-actions .close {
+.bulk-actions .selection-tools {
   position: absolute;
   right: .5cm;
-  top: .5cm;
+  top: 5px;
+}
+.bulk-actions .close {
+  display: inline-block;
+  cursor: pointer;
+  margin: 3px 3px 3px 0; 
+  padding: 6px 12px;
+  width: auto;
+  min-height: 34px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.bulk-actions .close span {
+  display: inline-block;
+  vertical-align: text-top;
+}
+button span,
+.bulk-actions .close span {
   cursor: pointer;
 }
 
@@ -221,7 +238,6 @@
 .bookmark-detail .actions {
   float: right;
 }
-.bulk-actions button,
 .bookmark-detail .actions button {
   height: 1cm;
   width: 1cm;
