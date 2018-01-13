@@ -450,22 +450,30 @@ var EmptyBookmarksView = Marionette.View.extend({
 })
 
 var BookmarkCardView = Marionette.View.extend({
-  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><img src="../../../apps/files/css/../img/public.svg?v=1" /><%- new URL(url).host %></a></h2><div class="tags"></div>'),
+  template: _.template('<input type="checkbox"/><h1><img src="<%- "//:"+new URL(url).host+"/favicon.ico" %>"/><%- title %></h1><h2><a href="<%- url %>"><img src="../../../apps/files/css/../img/public.svg?v=1" /><%- new URL(url).host %></a></h2><div class="actions"><div class="icon-more toggle"></div><div class="popovermenu"><ul><li><button class="action-edit"><span class="icon-edit"></span><span>Edit</span></button></li><li><button class="action-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div></div><div class="tags"></div>'),
   className: "bookmark-card",
   ui: {
-    "checkbox": 'input[type="checkbox"]'
+    'checkbox': 'input[type="checkbox"]'
+  , 'actionsToggle': '.actions .toggle'
+  , 'actionsMenu': '.actions .popovermenu'
   },
   regions: {
     'tags': '.tags'
   },
   events: {
-    "click": "open",
-    "click @ui.checkbox": "select"
+    "click": "open"
+  , "click @ui.checkbox": "select"
+  , 'click @ui.actionsToggle': 'toggleActions'
+  , 'blur @ui.actionsToggle': 'closeActions'
+  , 'click .action-delete': 'actionDelete'
   },
   initialize: function() {
     this.listenTo(this.model, "change", this.render);
     this.listenTo(this.model, "select", this.onSelect);
     this.listenTo(this.model, "unselect", this.onUnselect);
+    
+    this.onDocumentClick = this.closeActions.bind(this)
+    $(window.document).click(this.onDocumentClick)
   }
 , onRender: function() {
     var tags = new Tags(this.model.get('tags').map(function(id) {
@@ -473,7 +481,8 @@ var BookmarkCardView = Marionette.View.extend({
     }))
     this.showChildView('tags', new TagsNavigationView({collection: tags}))
   }
-, open: function() {
+, open: function(e) {
+    if (e.target !== this.el && e.target !== this.$('h1')[0]) return
     Backbone.history.navigate('bookmark/'+this.model.get('id'), {trigger: true})
   }
 , select: function(e) {
@@ -490,6 +499,21 @@ var BookmarkCardView = Marionette.View.extend({
 , onUnselect: function() {
     this.$el.removeClass('active')
     this.render()
+  }
+, onDdestroy: function() {
+    $(window.document).unbind('click', this.onDocumentClick)
+  }
+, toggleActions: function(e) {
+    this.getUI('actionsMenu').toggleClass('open')
+    this.$el.toggleClass('actions-open')
+  }
+, closeActions: function(e) {
+    if (e.target === this.getUI('actionsToggle')[0]) return
+    this.getUI('actionsMenu').removeClass('open')
+    this.$el.removeClass('actions-open')
+  }
+, actionDelete: function() {
+    this.model.destroy()
   }
 })
 
