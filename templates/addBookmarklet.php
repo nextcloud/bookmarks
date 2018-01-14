@@ -11,7 +11,7 @@ $bookmarkExists = $_['bookmarkExists'];
 		<script type="text/javascript" src="tag"></script>
 
 		<h1 style="display: block; float: left"><?php p($l->t('Add a bookmark')); ?></h1>
-		<span style="display: inline; float: right"><div id="add_form_loading" style="margin: 3px;"><img src="<?php print_unescaped(OCP\image_path("bookmarks", "loading.gif")); ?>"> </div></span>
+		<span style="display: inline; float: right"><div id="add_form_loading" style="margin: 3px;"><img src="<?php print_unescaped(OCP\Template::image_path("bookmarks", "loading.gif")); ?>"> </div></span>
 
 		<div style="color: red; clear: both; visibility: <?php
 		if ($bookmarkExists === false) {
