@@ -2,7 +2,7 @@
     <div class="bookmark_single" data-id="<&= id &>">
         <p class="bookmark_actions">
             <span class="bookmark_delete">
-                <img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/delete.svg")); ?>"
+                <img class="svg" src="<?php print_unescaped(image_path("", "actions/delete.svg")); ?>"
                      title="<?php p($l->t('Delete')); ?>">
             </span>&nbsp;
         </p>
@@ -11,7 +11,7 @@
                 <&= escapeHTML(title == '' ? encodeURI(url) : title ) &>
             </a>
             <span class="bookmark_edit bookmark_edit_btn">
-                <img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/rename.svg")); ?>" title="<?php p($l->t('Edit')); ?>">
+                <img class="svg" src="<?php print_unescaped(image_path("", "actions/rename.svg")); ?>" title="<?php p($l->t('Edit')); ?>">
             </span>
         </p>
         <span class="bookmark_desc"><&= escapeHTML(description)&> </span>
@@ -51,11 +51,11 @@
     <li><a href="" class="tag"><&= escapeHTML(tag) &></a>
         <div class="tags_actions">
             <span class="tag_delete">
-                <img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/delete.svg")); ?>"
+                <img class="svg" src="<?php print_unescaped(image_path("", "actions/delete.svg")); ?>"
                      title="<?php p($l->t('Delete')); ?>">
             </span>
             <span class="tag_edit">
-                <img class="svg" src="<?php print_unescaped(OCP\image_path("", "actions/rename.svg")); ?>"
+                <img class="svg" src="<?php print_unescaped(image_path("", "actions/rename.svg")); ?>"
                      title="<?php p($l->t('Edit')); ?>">
             </span>
             <em><&= nbr &></em>
