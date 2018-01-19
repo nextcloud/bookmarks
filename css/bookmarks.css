@@ -223,6 +223,7 @@ button span,
 .bookmark-detail h1 {
   font-size: .8cm;
   line-height: 1;
+  padding-right: 2.3cm;
 }
 .bookmark-detail h2 {
   margin-top: .3cm;
@@ -245,11 +246,33 @@ button span,
   cursor: pointer;
 }
 .bookmark-detail .actions {
-  float: right;
+  position: absolute;
+  right: 1cm;
 }
 .bookmark-detail .actions button {
   height: 1cm;
   width: 1cm;
+}
+
+.bookmark-detail.editing h1 {
+  padding-right: 0;
+}
+.bookmark-detail.editing .actions button {
+  height: auto;
+  width: auto;
+}
+.bookmark-detail .input-url,
+.bookmark-detail .input-title,
+.bookmark-detail .input-desc {
+  width: 100%;
+  font-size: inherit;
+}
+.bookmark-detail .input-url {
+  padding-left: 25px;
+  background-position: 5px;
+}
+.bookmark-detail .input-desc {
+  height: 300px;
 }
 
 .settings .import-form {
