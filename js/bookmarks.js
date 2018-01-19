@@ -378,13 +378,15 @@ var ContentView = Marionette.View.extend({
   }
 , onNavigate: function(path, args) {
     if ('bookmark/:bookmark' === path) {
-      var bm = app.bookmarks.get(args[0])
-      var view = new BookmarkDetailView({model: bm})
-      this.showChildView('bookmarkDetail', view)
       var that = this
+      var bm = new Bookmark({id: args[0]})
+      var view = new BookmarkDetailView({model: bm})
       view.on('close', function() {
         that.detachChildView('bookmarkDetail')
-      })
+      }) 
+      bm.fetch({success: function() {
+        that.showChildView('bookmarkDetail', view)
+      }})
     }
   }
 })
@@ -585,7 +587,7 @@ Backbone.sync = function(method, model, options) {
   _sync(method, model, _.extend({}, options, {
     success: function(json) {
       console.log(json)
-      if (!(model instanceof Tags)) options.success(json.data)
+      if (!(model instanceof Tags)) options.success(json.item || json.data)
       else options.success(json.map(function(name){return {name: name}}))
     }
   }))
