@@ -526,7 +526,14 @@ var BookmarkCardView = Marionette.View.extend({
 
 
 var BookmarkDetailView = Marionette.View.extend({
-  template: _.template('<div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2><div class="close icon-close"></div>'),
+  getTemplate: function() {
+    if (this.editing) {
+      return this.templateEditing
+    }
+    return this.templateDefault
+  },
+  templateDefault: _.template('<div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2><div class="close icon-close"></div><div class="description"><%- description %></div>'),
+  templateEditing: _.template('<h1><input class="input-title" type="text" value="<%- title %>" /></h1><h2><input type="type" class="input-url icon-external" value="<%- url %>" /></h2><div class="close icon-close"></div><div class="description"><textarea class="input-desc"><%- description %></textarea></div><div class="actions editing"><button class="submit primary"><span class="icon-checkmark"></span> <span>Save</span></button><button class="cancel">Cancel</button></div>'),
   className: "bookmark-detail",
   ui: {
     'close': '.close'
@@ -537,6 +544,8 @@ var BookmarkDetailView = Marionette.View.extend({
     'click @ui.close': 'close'
   , 'click @ui.edit': 'edit'
   , 'click @ui.delete': 'delete'
+  , 'click .submit': 'submit'
+  , 'click .cancel': 'cancel'
   },
   initialize: function() {
     this.listenTo(this.model, "change", this.render);
@@ -544,6 +553,29 @@ var BookmarkDetailView = Marionette.View.extend({
   close: function() {
     Backbone.history.history.back();
     this.triggerMethod('close')
+  },
+  setEditing: function(isEditing) {
+    if (isEditing) {
+      this.editing = true
+      this.$el.addClass('editing')
+    }else{
+      this.editing = false
+      this.$el.removeClass('editing')
+    }
+    this.render()
+  },
+  edit: function() {
+    this.setEditing(true)
+  }
+, submit: function() {
+    this.model.set('title', this.$('.input-title').val())
+    this.model.set('url', this.$('.input-url').val())
+    this.model.set('description', this.$('.input-desc').val())
+    this.model.save()
+    this.cancel()
+  }
+, cancel: function() {
+    this.setEditing(false)
   }
 })
 
