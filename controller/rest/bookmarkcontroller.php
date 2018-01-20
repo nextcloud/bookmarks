@@ -251,15 +251,16 @@ class BookmarkController extends ApiController {
 	 * @param array $item
 	 * @param string $title
 	 * @param bool $is_public Description
-	 * @param null $record_id
+	 * @param int $record_id
 	 * @param string $description
+	 * @param array $tags
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function editBookmark($id = null, $url = null, $item = null, $title = null, $is_public = null, $record_id = null, $description = null) {
+	public function editBookmark($id = null, $url = null, $item = null, $title = null, $is_public = null, $record_id = null, $description = null, $tags = null) {
 
 		if ($record_id !== null) {
 			$id = $record_id;
@@ -274,6 +275,12 @@ class BookmarkController extends ApiController {
 		];
 		if (is_array($item) && isset($item['tags']) && is_array($item['tags'])) {
 			$newProps['tags'] = $item['tags'];
+		}elseif (is_array($tags)) {
+		    \OCP\Util::writeLog('bookmarks', var_export($tags, true), \OCP\Util::ERROR);
+			$newProps['tags'] = $tags;
+		}else{
+		    \OCP\Util::writeLog('bookmarks', var_export($tags, true), \OCP\Util::ERROR);
+			$newProps['tags'] = [];
 		}
 		foreach ($newProps as $prop => $value) {
 			if(!is_null($value)) {
@@ -285,10 +292,6 @@ class BookmarkController extends ApiController {
 		$urlData = parse_url($bookmark['url']);
 		if(!$this->isProperURL($urlData) || !is_numeric($bookmark['id'])) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
-		}
-
-		if ($bookmark['tags'] === false) {
-			$bookmark['tags'] = [];
 		}
 
 		$id = $this->bookmarks->editBookmark($this->userId, $bookmark['id'], $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['public']);
