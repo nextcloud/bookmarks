@@ -45,7 +45,12 @@ var App = Marionette.Application.extend({
 
 var Router = Marionette.AppRouter.extend({
   controller: {
-    showAllBookmarks: function() {
+    index: function() {
+      setTimeout(function(){
+        Backbone.history.navigate('all', {trigger: true})
+      }, 1)
+    }
+  , showAllBookmarks: function() {
       this.app.bookmarks.fetch()
     }
   , showFavoriteBookmarks: function() {
@@ -67,7 +72,8 @@ var Router = Marionette.AppRouter.extend({
     }
   }
 , appRoutes: {
-    'all': 'showAllBookmarks'
+    '': 'index'
+  , 'all': 'showAllBookmarks'
   , 'favorites': 'showFavoriteBookmarks'
   , 'shared': 'showSharedBookmarks'
   , 'tags': 'showTags'
