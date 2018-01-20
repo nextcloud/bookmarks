@@ -60,8 +60,6 @@ var Router = Marionette.AppRouter.extend({
         data: {item: {tags: [decodeURIComponent(tag)]}}
       })
     }
-  , showBookmark: function() {
-    }
   , search: function(query) {
       this.app.bookmarks.fetch({
         data: {search: decodeURIComponent(query).split(' ')}
@@ -74,7 +72,6 @@ var Router = Marionette.AppRouter.extend({
   , 'shared': 'showSharedBookmarks'
   , 'tags': 'showTags'
   , 'tag/:tag': 'showTag'
-  , 'bookmark/:bookmark': 'showBookmark'
   , 'search/:query': 'search'
   }
 , initialize: function(options) {
@@ -363,7 +360,9 @@ var ContentView = Marionette.View.extend({
     this.selected = new Bookmarks
     this.listenTo(this.bookmarks, 'select', this.onSelect)
     this.listenTo(this.bookmarks, 'unselect', this.onUnselect)
-    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this) // Turn this into a request!
+    this.listenTo(Radio.channel('details'), 'show', this.onShowDetails)
+    this.listenTo(Radio.channel('details'), 'edit', this.onEditDetails)
+    this.listenTo(Radio.channel('details'), 'close', this.onCloseDetails)
   }
 , onRender: function() {
     this.showChildView('mobileNav', new MobileNavView())
@@ -376,18 +375,17 @@ var ContentView = Marionette.View.extend({
 , onUnselect: function(model) {
     this.selected.remove(model)
   }
-, onNavigate: function(path, args) {
-    if ('bookmark/:bookmark' === path) {
-      var that = this
-      var bm = new Bookmark({id: args[0]})
-      var view = new BookmarkDetailView({model: bm})
-      view.on('close', function() {
-        that.detachChildView('bookmarkDetail')
-      }) 
-      bm.fetch({success: function() {
-        that.showChildView('bookmarkDetail', view)
-      }})
-    }
+, onShowDetails: function(model) {
+    var that = this
+    var view = new BookmarkDetailView({model: model})
+    this.showChildView('bookmarkDetail', view)
+  }
+, onEditDetails: function(model) {
+    this.onShowDetails(model)
+    this.getRegion('bookmarkDetail').currentView.setEditing(true)
+  }
+, onCloseDetails: function() {
+    this.detachChildView('bookmarkDetail')
   }
 })
 
@@ -474,6 +472,7 @@ var BookmarkCardView = Marionette.View.extend({
   , "click @ui.checkbox": "select"
   , 'click @ui.actionsToggle': 'toggleActions'
   , 'blur @ui.actionsToggle': 'closeActions'
+  , 'click .action-edit': 'actionEdit'
   , 'click .action-delete': 'actionDelete'
   },
   initialize: function() {
@@ -491,8 +490,8 @@ var BookmarkCardView = Marionette.View.extend({
     this.showChildView('tags', new TagsNavigationView({collection: tags}))
   }
 , open: function(e) {
-    if (e.target !== this.el && e.target !== this.$('h1')[0]) return
-    Backbone.history.navigate('bookmark/'+this.model.get('id'), {trigger: true})
+    if (e && e.target !== this.el && e.target !== this.$('h1')[0]) return
+    Radio.channel('details').trigger('show', this.model)
   }
 , select: function(e) {
     e.stopPropagation()
@@ -509,7 +508,7 @@ var BookmarkCardView = Marionette.View.extend({
     this.$el.removeClass('active')
     this.render()
   }
-, onDdestroy: function() {
+, onDestroy: function() {
     $(window.document).unbind('click', this.onDocumentClick)
   }
 , toggleActions: function(e) {
@@ -523,6 +522,9 @@ var BookmarkCardView = Marionette.View.extend({
   }
 , actionDelete: function() {
     this.model.destroy()
+  }
+, actionEdit: function() {
+    Radio.channel('details').trigger('edit', this.model)
   }
 })
 
@@ -555,7 +557,7 @@ var BookmarkDetailView = Marionette.View.extend({
   , 'click .submit': 'submit'
   , 'click .cancel': 'cancel'
   },
-  initialize: function() {
+  initialize: function(opts) {
     this.listenTo(this.model, "change", this.render);
   },
   onRender: function() {
@@ -578,8 +580,7 @@ var BookmarkDetailView = Marionette.View.extend({
     }
   },
   close: function() {
-    Backbone.history.history.back();
-    this.triggerMethod('close')
+    Radio.channel('details').trigger('close')
   },
   setEditing: function(isEditing) {
     if (isEditing) {
@@ -604,6 +605,9 @@ var BookmarkDetailView = Marionette.View.extend({
   }
 , cancel: function() {
     this.setEditing(false)
+  }
+, onDestroy: function() {
+    this.close() 
   }
 })
 
