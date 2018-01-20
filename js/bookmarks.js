@@ -312,7 +312,7 @@ function updateBookmarksList(bookmark, position) {
 	bookmark = $.extend({title: '', description: '', added_date: new Date('now'), tags: []}, bookmark);
 	var tags = bookmark.tags;
 	var taglist = '';
-	for (var i = 0, len = tags.length; i < len; ++i) {
+	for (var i = 0; i < tags.length; i++) {
 		if (tags[i] !== '')
 			taglist = taglist + '<a class="bookmark_tag" href="#">' + escapeHTML(tags[i]) + '</a> ';
 	}

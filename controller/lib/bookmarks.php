@@ -689,18 +689,17 @@ class Bookmarks {
 	}
 
 	/**
-	 * @brief Separate Url String at comma character
+	 * @brief Transforms comma separated string in array. Removes empty items.
 	 * @param $line String of Tags
 	 * @return array Array of Tags
 	 * */
 	public function analyzeTagRequest($line) {
-		$tags = explode(',', $line);
-		$filterTag = array();
-		foreach ($tags as $tag) {
-			if (trim($tag) != '')
-				$filterTag[] = trim($tag);
+		if(is_array($line)) {
+			array_filter(array_map('trim',$line),'strlen');
+			return $line;
 		}
-		return $filterTag;
+		if(!is_string($line)) return array();
+		return array_filter(explode(',', $line), 'strlen');
 	}
 
 }

@@ -54,8 +54,8 @@ class BookmarkController extends ApiController {
 	public function legacyGetBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent") {
 		return $this->getBookmarks($type, $tag, $page, $sort);
 	}
-	
-  /**
+
+	/**
 	 * @param string $id
 	 * @return JSONResponse
 	 *
@@ -63,10 +63,7 @@ class BookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function getSingleBookmark(
-		$id,
-		$user = null
-	) {
+	public function getSingleBookmark($id, $user = null) {
 		if ($user === null) {
 			$user = $this->userId;
 			$publicOnly = false;
@@ -113,7 +110,8 @@ class BookmarkController extends ApiController {
 		$tags = array(),
 		$conjunction = "or",
 		$sortby = "",
-		$search = array()
+		$search = array(),
+		$limit = 10
 	) {
 		if ($user === null) {
 			$user = $this->userId;
@@ -125,52 +123,51 @@ class BookmarkController extends ApiController {
 				return new JSONResponse(array('status' => 'error', 'data'=> $error));
 			}
 		}
+
+		$tag = $this->bookmarks->analyzeTagRequest($tag);
+		$tags = $this->bookmarks->analyzeTagRequest($tags);
+		$tags = array_unique(array_merge($tag,$tags), SORT_STRING);
+
+		//this populates the left bar with tags
 		if ($type === 'rel_tags' && !$publicOnly) { // XXX: libbookmarks#findTags needs a publicOnly option
-			$tags = $this->bookmarks->analyzeTagRequest($tag);
 			$qtags = $this->bookmarks->findTags($user, $tags);
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
-		} else { // type == bookmark
-			$filterTag = $this->bookmarks->analyzeTagRequest($tag);
-			if (!is_array($tags)) {		
-				if(is_string($tags) && $tags !== '') {		
-					$tags = [ $tags ];		
-				} else {		
-					$tags = array();		
-				}		
-			}
-			$tagsOnly = true;
-			if (count($search) > 0) {
-				$tags = array_merge($tags, $search);
-				$tagsOnly = false;
-			}
-			if (count($tags) > 0) {
-				$filterTag = $tags;
-			}
-
-			$limit = 10;
-			$offset = $page * 10;
-			if ($page == -1) {
-				$limit = -1;
-				$offset = 0;
-			}
-
-			if ($sort === 'bookmarks_sorting_clicks') {
-				$sqlSortColumn = 'clickcount';
-			} else {
-				$sqlSortColumn = 'lastmodified';
-			}
-			if ($sortby) {
-				$sqlSortColumn = $sortby;
-			}
-			
-			$attributesToSelect = array('url', 'title', 'id', 'user_id', 'description', 'public',
-				'added', 'lastmodified', 'clickcount', 'tags');		
-
-			$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag,
-				$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
-			return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
 		}
+
+		$tagsOnly = true;
+		$search = $this->bookmarks->analyzeTagRequest($search);
+		$tags = array_unique(array_merge($tags,$search), SORT_STRING);
+		if(count($search) > 0) $tagsOnly = false;
+
+		// @damko I don't understand why change 10 to something else
+		// produces tags duplication for some bookmarks. 
+		// It must be due to some js request.
+		// However
+		if(!is_numeric($limit)) $limit = 10;
+		$offset = $page * 10;
+		if ($page == -1) {
+			$limit = -1;
+			$offset = 0;
+		}
+
+		$sqlSortColumn = 'lastmodified';
+		if ($sort === 'bookmarks_sorting_clicks') {
+			$sqlSortColumn = 'clickcount';
+		}
+
+		if ($sortby) {
+			$sqlSortColumn = $sortby;
+		}
+
+		$attributesToSelect = array('url', 'title', 'id', 'user_id', 'description', 'public',
+			'added', 'lastmodified', 'clickcount', 'tags');
+
+		$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $tags,
+			$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
+		return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
+
 	}
+
 
 	/**
 	 * @param string $url
@@ -219,7 +216,14 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
 		}
 
-		$tags = isset($item['tags']) ? $item['tags'] : array();
+		$tags = array();
+		if(isset($item['tags'])) {
+			$tags = $item['tags'];
+		} else {
+			if(is_array($item) && count($item) > 0) {
+				$tags = $item;
+			}
+		}
 
 		$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public);
 		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
@@ -267,7 +271,7 @@ class BookmarkController extends ApiController {
 		if ($record_id !== null) {
 			$id = $record_id;
 		}
-		
+
 		$bookmark = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		$newProps = [
 			'url' => $url,
@@ -331,7 +335,7 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $url
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 *
@@ -367,7 +371,7 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -396,9 +400,14 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * 
+	 * Hit this GET endpoint to export bookmarks via your API client.
+	 * http://server_ip/nextcloud/index.php/apps/bookmarks/public/rest/v2/bookmark/export
+	 * Basic authentication required.
 	 * @return \OCP\AppFramework\Http\Response
+	 *
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
 	 */
 	public function exportBookmark() {
 
