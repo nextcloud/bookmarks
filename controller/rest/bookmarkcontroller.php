@@ -276,10 +276,8 @@ class BookmarkController extends ApiController {
 		if (is_array($item) && isset($item['tags']) && is_array($item['tags'])) {
 			$newProps['tags'] = $item['tags'];
 		}elseif (is_array($tags)) {
-		    \OCP\Util::writeLog('bookmarks', var_export($tags, true), \OCP\Util::ERROR);
 			$newProps['tags'] = $tags;
 		}else{
-		    \OCP\Util::writeLog('bookmarks', var_export($tags, true), \OCP\Util::ERROR);
 			$newProps['tags'] = [];
 		}
 		foreach ($newProps as $prop => $value) {
