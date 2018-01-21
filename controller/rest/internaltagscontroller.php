@@ -28,12 +28,13 @@ class InternalTagsController extends ApiController {
 	/**
 	 * @param string $old_name
 	 * @param string $new_name
+	 * @param string $name
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function renameTag($old_name = "", $new_name = "") {
-		return $this->publicController->renameTag($old_name, $new_name);
+	public function renameTag($old_name = "", $new_name = "", $name = '') {
+		return $this->publicController->renameTag($old_name, $new_name, $name);
 	}
 
 	/**

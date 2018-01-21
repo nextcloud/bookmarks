@@ -36,6 +36,8 @@ $application->registerRoutes($this, array('routes' => array(
 	array('name' => 'internal_tags#full_tags', 'url' => '/tag', 'verb' => 'GET'),
 	array('name' => 'internal_tags#rename_tag', 'url' => '/tag', 'verb' => 'POST'),
 	array('name' => 'internal_tags#delete_tag', 'url' => '/tag', 'verb' => 'DELETE'),
+	array('name' => 'internal_tags#rename_tag', 'url' => '/tag/{old_name}', 'verb' => 'POST'),
+	array('name' => 'internal_tags#delete_tag', 'url' => '/tag/{old_name}', 'verb' => 'DELETE'),
 	// Public REST API
 	array('name' => 'bookmark#get_bookmarks', 'url' => '/public/rest/v2/bookmark', 'verb' => 'GET'),
 	array('name' => 'bookmark#new_bookmark', 'url' => '/public/rest/v2/bookmark', 'verb' => 'POST'),
