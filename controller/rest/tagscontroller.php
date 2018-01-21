@@ -42,13 +42,17 @@ class TagsController extends ApiController {
 	/**
 	 * @param string $old_name
 	 * @param string $new_name
+	 * @param string $name
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function renameTag($old_name = "", $new_name = "") {
+	public function renameTag($old_name = "", $new_name = "", $name = '') {
+    if ($new_name === '') {
+      $new_name = $name;
+    }
 
 		if ($old_name == "" || $new_name == "") {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);

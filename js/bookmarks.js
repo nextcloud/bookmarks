@@ -1,13 +1,7 @@
 var Radio = Backbone.Radio
 
 var Bookmark = Backbone.Model.extend({
-  defaults: {
-    /*url: '',
-    title: '',
-    description: '',*/
-    tags: Tags
-  }
-, urlRoot: 'bookmark'
+  urlRoot: 'bookmark'
 })
 
 var Bookmarks = Backbone.Collection.extend({
@@ -16,10 +10,8 @@ var Bookmarks = Backbone.Collection.extend({
 })
 
 var Tag = Backbone.Model.extend({
-  defaults: {
-    name: ''
-  }
-, url: 'tag'
+  idAttribute: 'name'
+, urlRoot: 'tag'
 })
 
 var Tags = Backbone.Collection.extend({
@@ -31,15 +23,46 @@ var Tags = Backbone.Collection.extend({
 var App = Marionette.Application.extend({
   region: '#content'
 , onBeforeStart: function() {
+    var that = this
     this.bookmarks = new Bookmarks
     this.tags = new Tags
-    this.tags.fetch()
+    this.tags.fetch({
+      success: function() {
+        // we sadly cannot listen ot 'sync', which would fire after fetching, so we have to listen to these and add some timeout
+        that.listenTo(that.tags, 'sync', that.onTagChanged)
+        that.listenTo(that.tags, 'add', that.onTagChanged)
+        that.listenTo(that.tags, 'remove', that.onTagChanged)
+      }
+    })
+    this.listenTo(this.bookmarks, 'sync', this.onBookmarkTagsChanged)
 
     this.router = new Router({app: this})
   }
 , onStart: function() {
     this.showView(new AppView({bookmarks: this.bookmarks, tags: this.tags}));
     Backbone.history.start();
+  }
+, onTagChanged: function(tag) {
+    var that = this
+    if (this.bookmarkChanged) return this.bookmarkChanged = false // set to true by onBookmarkTagsChanged
+    this.tagChanged = true
+
+    // we need to wait 'till the tag change has been acknowledged by the server
+    setTimeout(function() {
+      that.bookmarks
+      .filter(function(bm) {
+        return ~bm.get('tags').indexOf(tag.get('name'))
+      })
+      .forEach(function(bm) {
+        bm.fetch()
+      })
+    }, 100)
+  }
+, onBookmarkTagsChanged: function() {
+    var that = this
+    if (this.tagChanged === true) return this.tagChanged = false
+    this.bokmarkChanged = true
+    that.tags.fetch() // we listen to 'sync', so we can fetch immediately
   }
 });
 
@@ -508,13 +531,14 @@ var BookmarkCardView = Marionette.View.extend({
     this.listenTo(this.model, "change", this.render);
     this.listenTo(this.model, "select", this.onSelect);
     this.listenTo(this.model, "unselect", this.onUnselect);
+    this.listenTo(app.tags, 'sync', this.render)
     
     this.onDocumentClick = this.closeActions.bind(this)
     $(window.document).click(this.onDocumentClick)
   }
 , onRender: function() {
     var tags = new Tags(this.model.get('tags').map(function(id) {
-      return new Tag({name: id})
+      return app.tags.findWhere({name: id})
     }))
     this.showChildView('tags', new TagsNavigationView({collection: tags}))
   }
@@ -588,6 +612,7 @@ var BookmarkDetailView = Marionette.View.extend({
   },
   initialize: function(opts) {
     this.listenTo(this.model, "change", this.render);
+    this.listenTo(app.tags, 'sync', this.render)
   },
   onRender: function() {
     if (this.editing) {
@@ -603,7 +628,7 @@ var BookmarkDetailView = Marionette.View.extend({
       })
     }else{
       var tags = new Tags(this.model.get('tags').map(function(id) {
-        return new Tag({name: id})
+        return app.tags.findWhere({name: id})
       }))
       this.showChildView('tags', new TagsNavigationView({collection: tags}))
     }
@@ -625,12 +650,17 @@ var BookmarkDetailView = Marionette.View.extend({
     this.setEditing(true)
   }
 , submit: function() {
-    this.model.set('title', this.$('.input-title').val())
-    this.model.set('url', this.$('.input-url').val())
-    this.model.set('tags', this.$('.tags input').tagit("assignedTags"))
-    this.model.set('description', this.$('.input-desc').val())
-    this.model.save()
-    this.cancel()
+    var that = this
+    this.model.set({
+      'title': this.$('.input-title').val()
+    , 'url': this.$('.input-url').val()
+    , 'tags': this.$('.tags input').tagit("assignedTags")
+    , 'description': this.$('.input-desc').val()
+    })
+    this.model.save({wait: true})
+    this.model.once('sync', function() {
+      that.cancel()
+    })
   }
 , cancel: function() {
     this.setEditing(false)
@@ -680,7 +710,6 @@ var TagsManagementView = Marionette.View.extend({
       }
       that.unselected.add(model)
     })
-    console.log(options.selected, this.tags, this.selected, this.unselected)
 
     this.listenTo(this.tags, 'select', this.onSelect)
     this.listenTo(this.tags, 'unselect', this.onUnselect)
@@ -724,6 +753,7 @@ var TagsManagementTagView = Marionette.View.extend({
 , template: _.template('<input type="checkbox" class="checkbox" name="selected" /><label for="selected" title="Select this"></label><a href="#"><%- name %></a><div class="actions"><ul><li class="action"><button class="edit icon-edit"></button></li><li class="action"><button class="delete icon-delete"></button></li></ul></div>')
 , events: {
     'click': 'open'
+  , 'click .action .delete': 'actionDelete'
   }
 , initialize: function(opts) {
     this.selected = opts.selected
@@ -736,9 +766,17 @@ var TagsManagementTagView = Marionette.View.extend({
   }
 , open: function(e) {
     e.preventDefault()
-    e.stopPropagation()
+    if (e && e.target !== this.el
+      && e.target !== this.$('.checkbox')[0]
+      && e.target !== this.$('a')[0]
+    ) {
+      return
+    }
     if (this.selected) this.model.trigger('unselect', this.model)
     else this.model.trigger('select', this.model)
+  }
+, actionDelete: function() {
+    this.model.destroy()
   }
 })
 
@@ -750,6 +788,9 @@ Backbone.sync = function(method, model, options) {
       console.log(json)
       if (!(model instanceof Tags)) options.success(json.item || json.data)
       else options.success(json.map(function(name){return {name: name}}))
+    }
+  , error: function() {
+      console.log(arguments)
     }
   }))
 }
