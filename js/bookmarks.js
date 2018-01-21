@@ -50,41 +50,48 @@ var Router = Marionette.AppRouter.extend({
         Backbone.history.navigate('all', {trigger: true})
       }, 1)
     }
-  , showAllBookmarks: function() {
+  , all: function() {
       this.app.bookmarks.fetch()
+      Radio.channel('nav').trigger('navigate', 'all')
     }
-  , showFavoriteBookmarks: function() {
+  , favorites: function() {
+      Radio.channel('nav').trigger('navigate', 'favorites')
     }
-  , showSharedBookmarks: function() {
+  , shared: function() {
       this.app.bookmarks.fetch()
+      Radio.channel('nav').trigger('navigate', 'shared')
     }
-  , showTags: function() {
+  , tags: function(tagString) {
+      var tags = tagString? tagString.split(',').map(decodeURIComponent) : [] 
+      this.app.bookmarks.fetch({
+        data: {item: {tags: tags}}
+      })
+      Radio.channel('nav').trigger('navigate', 'tags', tags)
     }
-  , showTag: function(tag) {
+  , tag: function(tag) {
       this.app.bookmarks.fetch({
         data: {item: {tags: [decodeURIComponent(tag)]}}
       })
+      Radio.channel('nav').trigger('navigate', 'tag', tag)
     }
   , search: function(query) {
       this.app.bookmarks.fetch({
         data: {search: decodeURIComponent(query).split(' ')}
       })
+      Radio.channel('nav').trigger('navigate', 'search', query)
     }
   }
 , appRoutes: {
     '': 'index'
-  , 'all': 'showAllBookmarks'
-  , 'favorites': 'showFavoriteBookmarks'
-  , 'shared': 'showSharedBookmarks'
-  , 'tags': 'showTags'
-  , 'tag/:tag': 'showTag'
+  , 'all': 'all'
+  , 'favorites': 'favorites'
+  , 'shared': 'shared'
+  , 'tags(/*tags)': 'tags'
+  , 'tag/:tag': 'tag'
   , 'search/:query': 'search'
   }
 , initialize: function(options) {
     this.controller.app = options.app
-  }
-, onRoute: function(name, path, args) {
-    Radio.channel('nav').trigger('navigate', path, args)
   }
 })
 
@@ -276,9 +283,9 @@ var TagsNavigationTagView = Marionette.View.extend({
     e.stopPropagation() // for when tags are displayed in BookmarkCardView, we don't want that view to get the click, too
     Backbone.history.navigate('tag/' + encodeURIComponent(this.model.get('name')), {trigger: true});
   }
-, onNavigate: function(category, args) {
+, onNavigate: function(category, tag) {
     this.$el.removeClass('active')
-    if (category && category.indexOf('tag/') === 0 && decodeURIComponent(args[0]) === this.model.get('name')) {
+    if (category === 'tag' && decodeURIComponent(tag) === this.model.get('name')) {
       this.$el.addClass('active')
     }
   }
@@ -342,10 +349,14 @@ var SettingsView = Marionette.View.extend({
 })
 
 var ContentView = Marionette.View.extend({
-  template: _.template('<div id="mobile-nav-slot"></div><div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
+  template: _.template('<div id="mobile-nav-slot"></div><div id="tags-management-slot"></div><div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
 , regions: {
     'mobileNav': {
       el: '#mobile-nav-slot'
+    , replaceElement: true
+    }
+  , 'tagsManagement': {
+      el: '#tags-management-slot'
     , replaceElement: true
     }
   , 'bulkActions': {
@@ -366,6 +377,7 @@ var ContentView = Marionette.View.extend({
     this.selected = new Bookmarks
     this.listenTo(this.bookmarks, 'select', this.onSelect)
     this.listenTo(this.bookmarks, 'unselect', this.onUnselect)
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate)
     this.listenTo(Radio.channel('details'), 'show', this.onShowDetails)
     this.listenTo(Radio.channel('details'), 'edit', this.onEditDetails)
     this.listenTo(Radio.channel('details'), 'close', this.onCloseDetails)
@@ -374,6 +386,14 @@ var ContentView = Marionette.View.extend({
     this.showChildView('mobileNav', new MobileNavView())
     this.showChildView('bulkActions', new BulkActionsView({all: this.bookmarks, selected: this.selected}))
     this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
+  }
+, onNavigate: function(route, tags) {
+    if (route.indexOf('tags') !== 0) {
+      this.detachChildView('tagsManagement')
+      return
+    }
+    if (this.getRegion('tagsManagement').hasView()) return
+    this.showChildView('tagsManagement', new TagsManagementView({tags: app.tags, selected: tags})) 
   }
 , onSelect: function(model) {
     this.selected.add(model)
@@ -453,6 +473,9 @@ var BulkActionsView = Marionette.View.extend({
 
 var BookmarksView = Marionette.CollectionView.extend({
   className: 'bookmarks'
+, regions: {
+
+  }
 , childView: function() {return BookmarkCardView}
 , emptyView: function() {return EmptyBookmarksView}
 })
@@ -614,6 +637,108 @@ var BookmarkDetailView = Marionette.View.extend({
   }
 , onDestroy: function() {
     this.close() 
+  }
+})
+
+
+
+var TagsManagementView = Marionette.View.extend({
+  template: _.template('<div id="selected-slot"></div><div id="unselected-slot"></div>')
+, className: 'tags-management'
+, regions: {
+    'selected': {
+      el: '#selected-slot'
+    , replaceElement: true
+    }
+  , 'unselected': {
+      el: '#unselected-slot'
+    , replaceElement: true
+    }
+  }
+, initialize: function(options) {
+    var that = this
+    this.tags = options.tags
+    
+    this.unselected = new Tags
+    this.unselected.comparator = 'name'
+    this.unselected.add(this.tags.models)
+    
+    this.selected = new Tags
+    this.selected.comparator = 'name'
+    options.selected.forEach(function(tagName) {
+      var tag = that.unselected.findWhere({name: tagName})
+      if (!tag) return
+
+      that.unselected.remove(tag)
+      that.selected.add(tag)
+    })
+    
+    this.tags.on('add', function(model) {
+      if (~options.selected.indexOf(model.get('name'))) {
+        that.selected.add(model)
+        return
+      }
+      that.unselected.add(model)
+    })
+    console.log(options.selected, this.tags, this.selected, this.unselected)
+
+    this.listenTo(this.tags, 'select', this.onSelect)
+    this.listenTo(this.tags, 'unselect', this.onUnselect)
+
+  }
+, onRender: function() {
+    this.showChildView('selected', new TagsManagementCollectionView({collection: this.selected, selected: true}))
+    this.showChildView('unselected', new TagsManagementCollectionView({collection: this.unselected}))
+  }
+, onSelect: function(model) {
+    this.selected.add(model)
+    this.unselected.remove(model)
+    this.triggerRoute()
+  }
+, onUnselect: function(model) {
+    this.selected.remove(model)
+    this.unselected.add(model)
+    this.triggerRoute()
+  }
+, triggerRoute: function() {
+    Backbone.history.navigate('tags/'+this.selected.pluck('name').map(encodeURIComponent).join(','), {trigger: true})
+  }
+})
+
+var TagsManagementCollectionView = Marionette.CollectionView.extend({
+  tagName: 'ul'
+, initialize: function(opts) {
+    this.selected = opts.selected
+  }
+, childView: function() {return TagsManagementTagView}
+, childViewOptions: function(model, i) {
+    return {
+      selected: this.selected
+    }
+  }
+})
+
+var TagsManagementTagView = Marionette.View.extend({
+  className: 'tag-man-item'
+, tagName: 'li'
+, template: _.template('<input type="checkbox" class="checkbox" name="selected" /><label for="selected" title="Select this"></label><a href="#"><%- name %></a><div class="actions"><ul><li class="action"><button class="edit icon-edit"></button></li><li class="action"><button class="delete icon-delete"></button></li></ul></div>')
+, events: {
+    'click': 'open'
+  }
+, initialize: function(opts) {
+    this.selected = opts.selected
+  }
+, onRender: function() {
+    this.$('.checkbox').prop('checked', this.selected)
+    if (this.selected) {
+      this.$el.addClass('selected')
+    }
+  }
+, open: function(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (this.selected) this.model.trigger('unselect', this.model)
+    else this.model.trigger('select', this.model)
   }
 })
 
