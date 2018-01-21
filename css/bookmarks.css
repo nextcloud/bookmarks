@@ -302,6 +302,50 @@ button span,
   height: 300px;
 }
 
+.tags-management {
+  float: left;
+  width: 250px;
+}
+@media only screen and (max-width: 768px) {
+  .tags-management {
+    width: auto;
+    float: none;
+    border-bottom: 2px solid #bbb;
+  }
+}
+.tags-management > ul:first-child {
+  border-bottom: 2px solid #ebebeb;
+}
+.tags-management .tag-man-item {
+  overflow: auto;
+  border-bottom: 1px solid #ebebeb;
+  padding: .3cm;
+  cursor: pointer;
+}
+.tags-management .tag-man-item:hover {
+  background: #fcfcfc;
+}
+.tags-management .tag-man-item.selected {
+  background: #f3f3f3;
+}
+.tags-management .tag-man-item > a {
+  padding-left: .2cm;
+}
+.tags-management .tag-man-item .actions {
+  float: right;
+}
+.tags-management .tag-man-item .actions .action {
+  display: inline-block;
+}
+.tags-management .tag-man-item .action button {
+	border: none;
+	background-color: transparent;
+	opacity: .45;
+}
+.tags-management .tag-man-item .action button:hover {
+  opacity: 1;
+}
+
 .settings .import-form {
   display: inline-block;
 }
