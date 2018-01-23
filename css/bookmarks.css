@@ -305,6 +305,7 @@ button span,
 .tags-management {
   float: left;
   width: 250px;
+  overflow: visible !important;
 }
 @media only screen and (max-width: 768px) {
   .tags-management {
@@ -313,19 +314,14 @@ button span,
     border-bottom: 2px solid #bbb;
   }
 }
-.tags-management > ul:first-child {
+.tags-management > ul:first-child > li:last-child {
   border-bottom: 2px solid #ebebeb;
 }
 .tags-management .tag-man-item {
-  overflow: auto;
-  border-bottom: 1px solid #ebebeb;
-  padding: .3cm;
+  /*padding: .3cm;*/
   cursor: pointer;
 }
-.tags-management .tag-man-item:hover {
-  background: #fcfcfc;
-}
-.tags-management .tag-man-item.selected {
+.tags-management .tag-man-item.active {
   background: #f3f3f3;
 }
 .tags-management .tag-man-item > a {
@@ -334,16 +330,44 @@ button span,
 .tags-management .tag-man-item .actions {
   float: right;
 }
+
+.tags-management .tag-man-item .actions ul {
+  display: block !important;
+}
 .tags-management .tag-man-item .actions .action {
   display: inline-block;
+  width: auto !important;
 }
 .tags-management .tag-man-item .action button {
 	border: none;
 	background-color: transparent;
 	opacity: .45;
+  padding: 3px 12px;
 }
 .tags-management .tag-man-item .action button:hover {
   opacity: 1;
+}
+.tags-management .tag-man-item input[type="text"] {
+  min-height: .7cm;
+  padding: 0 .1cm;
+  margin: 0;
+  width: 70%;
+}
+/* make checkbox look like an icon */
+.tags-management .tag-man-item .menu-filter-add span:first-child,
+.tags-management .tag-man-item .menu-filter-remove span:first-child {
+  padding: 0 10px;
+}
+
+/* display 'remove from filter' when selected, and 'add to ...' when unselected*/
+.tags-management .tag-man-item.active .menu-filter-add {
+  display: none;
+}
+.tags-management .tag-man-item .menu-filter-remove {
+  display: none;
+}
+.tags-management .tag-man-item.active .menu-filter-remove {
+  display: block;
 }
 
 .settings .import-form {
