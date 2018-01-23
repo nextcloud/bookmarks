@@ -44,6 +44,7 @@ var App = Marionette.Application.extend({
   }
 , onTagChanged: function(tag) {
     var that = this
+    if (!(tag instanceof Tag)) return // we can also receive 'sync' events from the collection, which we don't want here
     if (this.bookmarkChanged) return this.bookmarkChanged = false // set to true by onBookmarkTagsChanged
     this.tagChanged = true
 
@@ -51,7 +52,9 @@ var App = Marionette.Application.extend({
     setTimeout(function() {
       that.bookmarks
       .filter(function(bm) {
-        return ~bm.get('tags').indexOf(tag.get('name'))
+        return bm.get('tags').some(function(t) {
+          return t === tag.get('name') || t === tag.previous('name')
+        })
       })
       .forEach(function(bm) {
         bm.fetch()
@@ -119,7 +122,7 @@ var Router = Marionette.AppRouter.extend({
 })
 
 var AppView = Marionette.View.extend({
-  template: _.template('<div id="app-navigation"><div id="add-bookmark-slot"></div><div id="navigation-slot"></div><h3>Favorite tags</h3><div id="favorite-tags-slot"></div><div id="settings-slot"></div></div><div id="app-content"><div id="content-slot"></div></div>')
+  template: _.template('<div id="app-navigation"><div id="add-bookmark-slot"></div><div id="navigation-slot"></div><h3>Tags</h3><div id="favorite-tags-slot"></div><div id="settings-slot"></div></div><div id="app-content"><div id="content-slot"></div></div>')
 , regions: {
     'addBookmarks':  {
       el: '#add-bookmark-slot'
@@ -146,12 +149,16 @@ var AppView = Marionette.View.extend({
     this.bookmarks = options.bookmarks
     this.tags = options.tags
     this.searchController = new SearchController
+    
+    $(window.document).click(function(e) {
+      Radio.channel('documentClicked').trigger('click', e)
+    })
   }
 , onRender: function() {
     this.showChildView('addBookmarks', new AddBookmarkView());
     this.showChildView('navigation', new NavigationView);
     this.showChildView('content', new ContentView({bookmarks: this.bookmarks})); 
-    this.showChildView('tags', new TagsNavigationView({collection: this.tags}))
+    this.showChildView('tags', new TagsManagementView({collection: this.tags}))
     this.showChildView('settings', new SettingsView())
   }
 })
@@ -261,17 +268,15 @@ var nav_ids = {
   all: true
 , favorites: true
 , shared: true
-, tags: true
 }
 var NavigationView = Marionette.View.extend({
   className: 'navigation'
 , tagName: 'ul'
-, template: _.template('<li data-id="all" class="all"><a href="#"><span class="icon-home"></span>All bookmarks</a></li><li data-id="favorites" class="favorites"><a href="#"><span class="icon-favorite"></span>Favorites</a></li><li data-id="shared" class="shared"><a href="#"><span class="icon-share"></span>Shared</a></li><li data-id="tags" class="tags"><a href="#"><span class="icon-tag"></span>Tags</a></li>')
+, template: _.template('<li data-id="all" class="all"><a href="#"><span class="icon-home"></span>All bookmarks</a></li><li data-id="favorites" class="favorites"><a href="#"><span class="icon-favorite"></span>Favorites</a></li><li data-id="shared" class="shared"><a href="#"><span class="icon-share"></span>Shared</a></li>')
 , events: {
     'click .all': 'onClick'
   , 'click .favorites': 'onClick'
   , 'click .shared': 'onClick'
-  , 'click .tags': 'onClick'
   }
 , initialize: function() {
     this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this)
@@ -303,12 +308,11 @@ var TagsNavigationTagView = Marionette.View.extend({
   }
 , open: function(e) {
     e.preventDefault()
-    e.stopPropagation() // for when tags are displayed in BookmarkCardView, we don't want that view to get the click, too
-    Backbone.history.navigate('tag/' + encodeURIComponent(this.model.get('name')), {trigger: true});
+    Backbone.history.navigate('tags/' + encodeURIComponent(this.model.get('name')), {trigger: true});
   }
-, onNavigate: function(category, tag) {
+, onNavigate: function(category, tags) {
     this.$el.removeClass('active')
-    if (category === 'tag' && decodeURIComponent(tag) === this.model.get('name')) {
+    if (category === 'tags' && ~tags.indexOf(this.model.get('name'))) {
       this.$el.addClass('active')
     }
   }
@@ -372,14 +376,10 @@ var SettingsView = Marionette.View.extend({
 })
 
 var ContentView = Marionette.View.extend({
-  template: _.template('<div id="mobile-nav-slot"></div><div id="tags-management-slot"></div><div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
+  template: _.template('<div id="mobile-nav-slot"></div><div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
 , regions: {
     'mobileNav': {
       el: '#mobile-nav-slot'
-    , replaceElement: true
-    }
-  , 'tagsManagement': {
-      el: '#tags-management-slot'
     , replaceElement: true
     }
   , 'bulkActions': {
@@ -409,14 +409,6 @@ var ContentView = Marionette.View.extend({
     this.showChildView('mobileNav', new MobileNavView())
     this.showChildView('bulkActions', new BulkActionsView({all: this.bookmarks, selected: this.selected}))
     this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
-  }
-, onNavigate: function(route, tags) {
-    if (route.indexOf('tags') !== 0) {
-      this.detachChildView('tagsManagement')
-      return
-    }
-    if (this.getRegion('tagsManagement').hasView()) return
-    this.showChildView('tagsManagement', new TagsManagementView({tags: app.tags, selected: tags})) 
   }
 , onSelect: function(model) {
     this.selected.add(model)
@@ -532,9 +524,7 @@ var BookmarkCardView = Marionette.View.extend({
     this.listenTo(this.model, "select", this.onSelect);
     this.listenTo(this.model, "unselect", this.onUnselect);
     this.listenTo(app.tags, 'sync', this.render)
-    
-    this.onDocumentClick = this.closeActions.bind(this)
-    $(window.document).click(this.onDocumentClick)
+    this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions) 
   }
 , onRender: function() {
     var tags = new Tags(this.model.get('tags').map(function(id) {
@@ -560,9 +550,6 @@ var BookmarkCardView = Marionette.View.extend({
 , onUnselect: function() {
     this.$el.removeClass('active')
     this.render()
-  }
-, onDestroy: function() {
-    $(window.document).unbind('click', this.onDocumentClick)
   }
 , toggleActions: function(e) {
     this.getUI('actionsMenu').toggleClass('open')
@@ -672,119 +659,160 @@ var BookmarkDetailView = Marionette.View.extend({
 
 
 
-var TagsManagementView = Marionette.View.extend({
-  template: _.template('<div id="selected-slot"></div><div id="unselected-slot"></div>')
+var TagsManagementView = Marionette.CollectionView.extend({
+  childView: function() {return TagsManagementTagView}
+, tagName: 'ul'
 , className: 'tags-management'
-, regions: {
-    'selected': {
-      el: '#selected-slot'
-    , replaceElement: true
-    }
-  , 'unselected': {
-      el: '#unselected-slot'
-    , replaceElement: true
-    }
-  }
 , initialize: function(options) {
     var that = this
-    this.tags = options.tags
     
-    this.unselected = new Tags
-    this.unselected.comparator = 'name'
-    this.unselected.add(this.tags.models)
+    this.collection.comparator = 'name'
     
     this.selected = new Tags
     this.selected.comparator = 'name'
-    options.selected.forEach(function(tagName) {
-      var tag = that.unselected.findWhere({name: tagName})
+    
+    this.listenTo(this.collection, 'select', this.onSelect)
+    this.listenTo(this.collection, 'unselect', this.onUnselect)
+    this.listenTo(this.collection, 'add', this.onAdd)
+    this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate)
+  }
+, onNavigate: function(category, tags) {
+    // reset selection (needs slice, since we pull the models out from under the loop otherwise)
+    this.selected.slice().forEach(function(t) {
+      t.trigger('unselect', t, true)
+    })
+    if (category !== 'tags') {
+      this.lastRouteTags = [] // for the below hack
+      return
+    }
+
+    var that = this
+    // select all tags passed by router
+    tags.forEach(function(tagName) {
+      var tag = that.collection.findWhere({name: tagName})
       if (!tag) return
 
-      that.unselected.remove(tag)
-      that.selected.add(tag)
-    })
-    
-    this.tags.on('add', function(model) {
-      if (~options.selected.indexOf(model.get('name'))) {
-        that.selected.add(model)
-        return
-      }
-      that.unselected.add(model)
+      tag.trigger('select', tag, true)
     })
 
-    this.listenTo(this.tags, 'select', this.onSelect)
-    this.listenTo(this.tags, 'unselect', this.onUnselect)
-
+    // hack!
+    // this is for when the route is triggered before the tags are loaded
+    this.lastRouteTags = tags
   }
-, onRender: function() {
-    this.showChildView('selected', new TagsManagementCollectionView({collection: this.selected, selected: true}))
-    this.showChildView('unselected', new TagsManagementCollectionView({collection: this.unselected}))
+, onAdd: function(model) {
+    if (~this.lastRouteTags.indexOf(model.get('name'))) {
+      // wait for the tag view to render, so it can receive the event
+      setTimeout(function() {
+        model.trigger('select', model, true)
+      }, 1)
+      return
+    }
   }
-, onSelect: function(model) {
+, onSelect: function(model, silentRoute) {
     this.selected.add(model)
-    this.unselected.remove(model)
-    this.triggerRoute()
+    if (!silentRoute) this.triggerRoute()
   }
-, onUnselect: function(model) {
+, onUnselect: function(model, silentRoute) {
     this.selected.remove(model)
-    this.unselected.add(model)
-    this.triggerRoute()
+    if (!silentRoute) this.triggerRoute()
   }
 , triggerRoute: function() {
     Backbone.history.navigate('tags/'+this.selected.pluck('name').map(encodeURIComponent).join(','), {trigger: true})
   }
 })
 
-var TagsManagementCollectionView = Marionette.CollectionView.extend({
-  tagName: 'ul'
-, initialize: function(opts) {
-    this.selected = opts.selected
-  }
-, childView: function() {return TagsManagementTagView}
-, childViewOptions: function(model, i) {
-    return {
-      selected: this.selected
-    }
-  }
-})
-
 var TagsManagementTagView = Marionette.View.extend({
   className: 'tag-man-item'
 , tagName: 'li'
-, template: _.template('<input type="checkbox" class="checkbox" name="selected" /><label for="selected" title="Select this"></label><a href="#"><%- name %></a><div class="actions"><ul><li class="action"><button class="edit icon-edit"></button></li><li class="action"><button class="delete icon-delete"></button></li></ul></div>')
-, events: {
-    'click': 'open'
-  , 'click .action .delete': 'actionDelete'
+, getTemplate: function() {
+    if (this.editing) {
+      return this.templateEditing
+    }
+    return this.templateDefault
   }
-, initialize: function(opts) {
-    this.selected = opts.selected
+, templateDefault: _.template('<a href="#"><span><%- name %></span><div class="app-navigation-entry-utils"><ul><li class="app-navigation-entry-utils-menu-button"><button></button></li></ul></div></a><div class="popovermenu"><ul><li><button class="menu-filter-add"><span><input type="checkbox" name="select" class="checkbox" /><label for="select"></label></span><span>Add to filter</span></button></li><li><button class="menu-filter-remove"><span><input type="checkbox" name="select" checked class="checkbox" /><label for="select"></label></span><span>Remove from filter</span></button></li><li><button class="menu-edit"><span class="icon-rename"></span><span>Rename</span></button></li><li><button class="menu-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div>')
+, templateEditing: _.template('<a href="#"><input type="text" value="<%- name %>"><div class="actions"><ul><li class="action"><button class="submit icon-checkmark"></button></li><li class="action"><button class="cancel icon-close"></button></li></ul></div></a>')
+, ui: {
+    'actionsMenu': '.popovermenu'
+  , 'actionsToggle': '.app-navigation-entry-utils-menu-button'
+  }
+, events: {
+    'click': 'selectSimple'
+  , 'click @ui.actionsToggle': 'toggleActions'
+  , 'click .menu-filter-add': 'actionSelect'
+  , 'click .menu-filter-remove': 'actionUnselect'
+  , 'click .menu-delete': 'actionDelete'
+  , 'click .menu-edit': 'actionEdit'
+  , 'click .action .submit': 'actionSubmit'
+  , 'click .action .cancel': 'actionCancel'
+  }
+, initialize: function() {
+    this.listenTo(this.model, 'select', this.onSelect)
+    this.listenTo(this.model, 'unselect', this.onUnselect)
+    this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions)   
   }
 , onRender: function() {
-    this.$('.checkbox').prop('checked', this.selected)
     if (this.selected) {
-      this.$el.addClass('selected')
+      this.$el.addClass('active')
+    }else{
+      this.$el.removeClass('active')
+    }
+    if (this.editing) {
+      this.$('input').focus()
     }
   }
-, open: function(e) {
+, onSelect: function() {
+    this.selected = true
+    this.render()
+  }
+, onUnselect: function() {
+    this.selected = false
+    this.render()
+  }
+, selectSimple: function(e) {
     e.preventDefault()
-    if (e && e.target !== this.el
-      && e.target !== this.$('.checkbox')[0]
-      && e.target !== this.$('a')[0]
-    ) {
+    if (e && !~[ this.el, this.$('a')[0], this.$('span')[0] ].indexOf(e.target)) {
       return
     }
-    if (this.selected) this.model.trigger('unselect', this.model)
-    else this.model.trigger('select', this.model)
+    if (this.editing) return
+    Backbone.history.navigate('tags/'+encodeURIComponent(this.model.get('name')), {trigger: true})
+  }
+, toggleActions: function() {
+    this.getUI('actionsMenu').toggleClass('open')
+  }
+, closeActions: function(e) {
+    if (this.editing || $.contains(this.getUI('actionsToggle')[0], e.target)) return
+    this.getUI('actionsMenu').removeClass('open')
+  }
+, actionSelect: function(e) {
+    this.model.trigger('select', this.model)
+  }
+, actionUnselect: function(e) {
+    this.model.trigger('unselect', this.model)
   }
 , actionDelete: function() {
     this.model.destroy()
+  }
+, actionEdit: function() {
+    this.editing = true
+    this.render()
+  }
+, actionSubmit: function() {
+    this.model.set('name', this.$('input').val())
+    this.model.save()
+    this.actionCancel()
+  }
+, actionCancel: function() {
+    this.editing = false
+    this.render()
   }
 })
 
 
 var _sync = Backbone.sync
 Backbone.sync = function(method, model, options) {
-  _sync(method, model, _.extend({}, options, {
-    success: function(json) {
+  var overrideOptions = {
+   success: function(json) {
       console.log(json)
       if (!(model instanceof Tags)) options.success(json.item || json.data)
       else options.success(json.map(function(name){return {name: name}}))
@@ -792,7 +820,9 @@ Backbone.sync = function(method, model, options) {
   , error: function() {
       console.log(arguments)
     }
-  }))
+  }
+  if (method === 'update' && model instanceof Tag) overrideOptions.url = model.urlRoot+'/'+model.previous('name') 
+  _sync(method, model, _.extend({}, options, overrideOptions))
 }
 
 // init
