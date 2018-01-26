@@ -54,8 +54,8 @@ class BookmarkController extends ApiController {
 	public function legacyGetBookmarks($type = "bookmark", $tag = '', $page = 0, $sort = "bookmarks_sorting_recent") {
 		return $this->getBookmarks($type, $tag, $page, $sort);
 	}
-	
-  /**
+
+	/**
 	 * @param string $id
 	 * @return JSONResponse
 	 *
@@ -63,10 +63,7 @@ class BookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function getSingleBookmark(
-		$id,
-		$user = null
-	) {
+	public function getSingleBookmark($id, $user = null) {
 		if ($user === null) {
 			$user = $this->userId;
 			$publicOnly = false;
@@ -131,12 +128,12 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
 		} else { // type == bookmark
 			$filterTag = $this->bookmarks->analyzeTagRequest($tag);
-			if (!is_array($tags)) {		
-				if(is_string($tags) && $tags !== '') {		
-					$tags = [ $tags ];		
-				} else {		
-					$tags = array();		
-				}		
+			if (!is_array($tags)) {
+				if(is_string($tags) && $tags !== '') {
+					$tags = [ $tags ];
+				} else {
+					$tags = array();
+				}
 			}
 			$tagsOnly = true;
 			if (count($search) > 0) {
@@ -162,9 +159,9 @@ class BookmarkController extends ApiController {
 			if ($sortby) {
 				$sqlSortColumn = $sortby;
 			}
-			
+
 			$attributesToSelect = array('url', 'title', 'id', 'user_id', 'description', 'public',
-				'added', 'lastmodified', 'clickcount', 'tags');		
+				'added', 'lastmodified', 'clickcount', 'tags');
 
 			$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag,
 				$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
@@ -267,7 +264,7 @@ class BookmarkController extends ApiController {
 		if ($record_id !== null) {
 			$id = $record_id;
 		}
-		
+
 		$bookmark = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		$newProps = [
 			'url' => $url,
@@ -331,7 +328,7 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $url
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 *
@@ -367,7 +364,7 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -396,9 +393,14 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * 
+	 * Hit this GET endpoint to export bookmarks via your API client.
+	 * http://server_ip/nextcloud/index.php/apps/bookmarks/public/rest/v2/bookmark/export
+	 * Basic authentication required.
 	 * @return \OCP\AppFramework\Http\Response
+	 *
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
 	 */
 	public function exportBookmark() {
 
