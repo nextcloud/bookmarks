@@ -107,7 +107,7 @@ class BookmarkController extends ApiController {
 		$page = 0,
 		$sort = "bookmarks_sorting_recent", // legacy
 		$user = null,
-		$tags = array(),
+		$tags = null,
 		$conjunction = "or",
 		$sortby = "",
 		$search = array()
@@ -126,47 +126,47 @@ class BookmarkController extends ApiController {
 			$tags = $this->bookmarks->analyzeTagRequest($tag);
 			$qtags = $this->bookmarks->findTags($user, $tags);
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
-		} else { // type == bookmark
-			$filterTag = $this->bookmarks->analyzeTagRequest($tag);
-			if (!is_array($tags)) {
-				if(is_string($tags) && $tags !== '') {
-					$tags = [ $tags ];
-				} else {
-					$tags = array();
-				}
-			}
-			$tagsOnly = true;
-			if (count($search) > 0) {
-				$tags = array_merge($tags, $search);
-				$tagsOnly = false;
-			}
-			if (count($tags) > 0) {
-				$filterTag = $tags;
-			}
-
-			$limit = 10;
-			$offset = $page * 10;
-			if ($page == -1) {
-				$limit = -1;
-				$offset = 0;
-			}
-
-			if ($sort === 'bookmarks_sorting_clicks') {
-				$sqlSortColumn = 'clickcount';
-			} else {
-				$sqlSortColumn = 'lastmodified';
-			}
-			if ($sortby) {
-				$sqlSortColumn = $sortby;
-			}
-
-			$attributesToSelect = array('url', 'title', 'id', 'user_id', 'description', 'public',
-				'added', 'lastmodified', 'clickcount', 'tags');
-
-			$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag,
-				$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
-			return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
 		}
+		
+		// type == bookmark
+		
+		if ($tag !== '') {
+		  $filterTag = $this->bookmarks->analyzeTagRequest($tag);
+		} elseif (is_array($tags)) {		
+		  $filterTag = $tags;
+		} elseif (is_string($tags) && $tags !== '') {		
+			$filterTag= [ $tags ];		
+		} else {		
+			$filterTag = array();		
+		}
+		
+		$tagsOnly = true;
+		if (count($search) > 0) {
+			$filterTag = array_merge($filterTag, $search);
+			$tagsOnly = false;
+		}
+
+		$limit = 10;
+		$offset = $page * 10;
+		if ($page == -1) {
+			$limit = -1;
+			$offset = 0;
+		}
+
+		if ($sort === 'bookmarks_sorting_clicks') {
+			$sqlSortColumn = 'clickcount';
+		} elseif ($sortby) {
+			$sqlSortColumn = $sortby;
+		} else {
+			$sqlSortColumn = 'lastmodified';
+		}
+		
+		$attributesToSelect = array('url', 'title', 'id', 'user_id', 'description', 'public',
+			'added', 'lastmodified', 'clickcount', 'tags');		
+
+		$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag,
+			$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
+		return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
 	}
 
 	/**
