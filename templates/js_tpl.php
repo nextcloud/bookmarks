@@ -29,7 +29,7 @@
             </p>
             <p class="bookmark_form_url">
                 <input type="text" name="url" placeholder="<?php p($l->t('The address of the page')); ?>"
-                       value="<&= encodeURI(url)&>"/>
+                       value="<&= escapeHTML(url)&>"/>
             </p>
             <div class="bookmark_form_tags"><ul>
                     <& for ( var i = 0; i < tags.length; i++ ) { &>
