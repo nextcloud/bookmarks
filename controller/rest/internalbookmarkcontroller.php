@@ -14,18 +14,45 @@ use OCP\IDBConnection;
 use OCP\IL10N;
 use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
+use \OCP\AppFramework\Http\DataDisplayResponse;
+use \OCP\AppFramework\Http\NotFoundResponse;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OC\User\Manager;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
+use \OCA\Bookmarks\Controller\Lib\ImageService;
+use DateInterval;
+use DateTime;
+use OCP\AppFramework\Utility\ITimeFactory;
 
 class InternalBookmarkController extends ApiController {
 
-	private $publicController;
+	const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
 
-	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks, Manager $userManager) {
+	private $publicController;
+	
+	private $userId;
+	private $libBookmarks;
+	private $imageService;
+	private $timeFactory;
+
+	public function __construct(
+		$appName,
+		IRequest $request,
+		$userId,
+		IDBConnection $db,
+		IL10N $l10n,
+		Bookmarks $bookmarks,
+		Manager $userManager,
+		ImageService $imageService,
+		ITimeFactory $timeFactory
+	) {
 		parent::__construct($appName, $request);
-	  $this->publicController = new BookmarkController($appName, $request, $userId, $db, $l10n, $bookmarks, $userManager);
+		$this->publicController = new BookmarkController($appName, $request, $userId, $db, $l10n, $bookmarks, $userManager);
+		$this->userId = $userId;
+		$this->libBookmarks = $bookmarks;
+		$this->imageService = $imageService;
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
@@ -160,5 +187,38 @@ class InternalBookmarkController extends ApiController {
 	 */
 	public function exportBookmark() {
 		return $this->publicController->exportBookmark();
+	}
+
+	/**
+	 *
+	 * @param int $id The id of the bookmark whose image shoudl be returned
+	 * @return \OCP\AppFramework\Http\Reponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function getBookmarkImage($id) {
+		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userId);
+		if (!isset($bookmark) || !isset($bookmark['image']) || $bookmark['image'] === '') {	
+			return new NotFoundResponse();
+		}
+
+		$image = $this->imageService->getImage($bookmark['image']);
+		if (!isset($image)) {	
+			return new NotFoundResponse();
+		}
+		
+		$response = new DataDisplayResponse($image['data']);
+		$response->addHeader('Content-Type', $image['contentType']);	
+		
+		$response->cacheFor(self::IMAGES_CACHE_TTL);
+		 
+		$expires = new DateTime();
+		$expires->setTimestamp($this->timeFactory->getTime());
+		$expires->add(new DateInterval('PT' . self::IMAGES_CACHE_TTL . 'S'));
+		$response->addHeader('Expires', $expires->format(DateTime::RFC1123));
+		$response->addHeader('Pragma', 'cache');
+		
+		return $response;
 	}
 }

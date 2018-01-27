@@ -24,16 +24,15 @@
 
 namespace OCA\Bookmarks\Controller\Lib;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Dusterio\LinkPreview\Client as LinkPreview;
+use Dusterio\LinkPreview\Exceptions\ConnectionErrorException;
 
 class Bookmarks {
 
@@ -46,9 +45,6 @@ class Bookmarks {
 	/** @var IL10N */
 	private $l;
 
-	/** @var IClientService */
-	private $httpClientService;
-
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
 
@@ -59,14 +55,12 @@ class Bookmarks {
 		IDBConnection $db,
 		IConfig $config,
 		IL10N $l,
-		IClientService $httpClientService,
 		EventDispatcherInterface $eventDispatcher,
 		ILogger $logger
 	) {
 		$this->db = $db;
 		$this->config = $config;
 		$this->l = $l;
-		$this->httpClientService = $httpClientService;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->logger = $logger;
 	}
@@ -471,9 +465,10 @@ class Bookmarks {
 	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
 	 * @param string $description A longer description about the bookmark
 	 * @param boolean $isPublic True if the bookmark is publishable to not registered users
+	 * @param string $image URL to a visual representation of the bookmarked site
 	 * @return int The id of the bookmark created
 	 */
-	public function addBookmark($userid, $url, $title, $tags = array(), $description = '', $isPublic = false) {
+	public function addBookmark($userid, $url, $title, $tags = array(), $description = '', $isPublic = false, $image = null) {
 		$public = $isPublic ? 1 : 0;
 		$urlWithoutPrefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
 		if($urlWithoutPrefix === '') {
@@ -512,6 +507,10 @@ class Bookmarks {
 			if (trim($description) != '') { // Do we replace the old description
 				$qb->set('description', $qb->createParameter('description'));
 			}
+			
+			if (isset($image)) { // Do we replace the old description
+				$qb->set('image', $qb->createParameter('image'));
+			}
 
 			$qb
 				->where($qb->expr()->like('url', $qb->createParameter('compareUrl'))) // Find url in the db independantly from its protocol
@@ -522,6 +521,7 @@ class Bookmarks {
 					'compareUrl' => '%' . $this->db->escapeLikeParameter($decodedUrlNoPrefix),
 					'title' => $title,
 					'description' => $description,
+					'image' => $image,
 				]);
 				$qb->execute();
 
@@ -542,7 +542,8 @@ class Bookmarks {
 					'public' => $qb->createParameter('public'),
 					'added' => $qb->createFunction('UNIX_TIMESTAMP()'),
 					'lastmodified' => $qb->createFunction('UNIX_TIMESTAMP()'),
-					'description' => $qb->createParameter('description')
+					'description' => $qb->createParameter('description'),
+					'image' => $qb->createParameter('image'),
 				))
 				->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')));
 			$qb->setParameters(array(
@@ -550,7 +551,8 @@ class Bookmarks {
 				'url' => $decodedUrl,
 				'title' => htmlspecialchars_decode($title), // XXX: Should the title update above also decode it first?
 				'public' => $public,
-				'description' => $description
+				'description' => $description,
+				'image' => $image,
 			));	
 
 			$qb->execute();
@@ -663,69 +665,27 @@ class Bookmarks {
 	 * @return array Metadata for url;
 	 * @throws \Exception|ClientException
 	 */
-	public function getURLMetadata($url, $tryHarder = false) {
-		$metadata = ['url' => $url];
-		$page = $contentType = '';
-		
+	public function getURLMetadata($url) {
+		$data = ['url' => $url];
+
+		// Use LinkPreview to get the meta data
+		$previewClient = new LinkPreview($url);
+		$previewClient->getParser('general')->setMinimumImageDimension(0,0);
 		try {
-			$client = $this->httpClientService->newClient();
-			$options = [];
-			if($tryHarder) {
-				$curlOptions = [ 'curl' =>
-					[ CURLOPT_HTTPHEADER => ['Expect:'] ]
-				];
-				if(version_compare(ClientInterface::VERSION, '6') === -1) {
-					$options = ['config' => $curlOptions];
-				} else {
-					$options = $curlOptions;
-				}
-			}
-			$request = $client->get($url, $options);
-			$page = $request->getBody();
-			$contentType = $request->getHeader('Content-Type');
-		} catch (ClientException $e) {
-			$errorCode = $e->getCode();
-			if (!($errorCode >= 401 && $errorCode <= 403)) {
-				// whitelist Unauthorized, Forbidden and Paid pages
-				throw $e;
-			}
-		} catch (\GuzzleHttp\Exception\RequestException $e) {
-			if($tryHarder) {
-				throw $e;
-			}
-			return $this->getURLMetadata($url, true);
-		} catch (\Exception $e) {
-			throw $e;
+			$preview = $previewClient->getPreview('general');
+		} catch (\Dusterio\LinkPreview\Exceptions\ConnectionErrorException $e) {
+			return $data;
 		}
 		
-		//Check for encoding of site.
-		//If not UTF-8 convert it.
-		$encoding = array();
-		preg_match('#.+?/.+?;\\s?charset\\s?=\\s?(.+)#i', $contentType, $encoding);
-		if(empty($encoding)) {
-			preg_match('/charset="?(.*?)["|;]/i', $page, $encoding);
+		$data = $preview->toArray();
+		if (!isset($data)) {
+			return ['url' => $url];
 		}
 
-		if (isset($encoding[1])) {
-			$decodeFrom = strtoupper($encoding[1]);
-		} else {
-			$decodeFrom = 'UTF-8';
-		}
+		$data['url'] = (string) $previewClient->getUrl();
+		$data['image'] = $data['cover'];
 
-		if ($page) {
-
-			if ($decodeFrom != 'UTF-8') {
-				$page = iconv($decodeFrom, "UTF-8", $page);
-			}
-
-			preg_match("/<title>(.*)<\/title>/si", $page, $match);
-			
-			if (isset($match[1])) {
-				$metadata['title'] = html_entity_decode($match[1]);
-			}
-		}
-		
-		return $metadata;
+		return $data;
 	}
 
 	/**

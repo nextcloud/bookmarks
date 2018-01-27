@@ -124,23 +124,32 @@ button span,
   flex-grow: 1;
   width: 6cm;
   height: 6cm;
+  margin: .4cm;
   padding: .5cm;
-  border: 1px solid #ebebeb;
+  border: 1px solid #ddd;
   overflow: hidden;
-  background: white;
+  background-color: rgb(210, 210, 210);
+  background-size: cover;
 }
 .bookmark-card,
 .bookmark-card * {
   cursor: pointer;
-}
-.bookmark-card:hover {
-  background: #fcfcfc;
 }
 .bookmark-card.active,
 .bookmark-card.active:hover {
   transform: none;
   border: 1px solid #0082c9;
   box-shadow: inset 0 0 10px #0082c9;
+}
+.bookmark-card .panel {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: .5cm .5cm .1cm .6cm;
+  background: rgba(255, 255, 255, .8);
+  box-shadow: #aaa 0 0 5px;
+}
+.bookmark-card:hover .panel {
+  background: rgba(255, 255, 255, .90); 
 }
 .bookmark-card input[type="checkbox"] {
   display: none;
