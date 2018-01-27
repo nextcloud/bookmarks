@@ -32,6 +32,8 @@ use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Bookmarks {
 
@@ -47,6 +49,9 @@ class Bookmarks {
 	/** @var IClientService */
 	private $httpClientService;
 
+	/** @var EventDispatcher */
+	private $eventDispatcher;
+
 	/** @var ILogger */
 	private $logger;
 
@@ -55,12 +60,14 @@ class Bookmarks {
 		IConfig $config,
 		IL10N $l,
 		IClientService $httpClientService,
+		EventDispatcher $eventDispatcher,
 		ILogger $logger
 	) {
 		$this->db = $db;
 		$this->config = $config;
 		$this->l = $l;
 		$this->httpClientService = $httpClientService;
+		$this->eventDispatcher = $eventDispatcher;
 		$this->logger = $logger;
 	}
 
@@ -316,6 +323,12 @@ class Bookmarks {
 			->delete('bookmarks_tags')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
 		$qb->execute();
+
+		$this->eventDispatcher->dispatch(
+			'\OCA\Bookmarks::onBookmarkDelete',
+			new GenericEvent(null, ['id' => $id, 'userId' => $userId])
+		);
+
 		return true;
 	}
 
@@ -430,6 +443,11 @@ class Bookmarks {
 			exit();
 		}
 
+		$this->eventDispatcher->dispatch(
+			'\OCA\Bookmarks::onBookmarkUpdate',
+			new GenericEvent(null, ['id' => $id, 'userId' => $userid])
+		);
+
 		// Remove old tags
 
 		$qb = $this->db->getQueryBuilder();
@@ -506,6 +524,12 @@ class Bookmarks {
 					'description' => $description,
 				]);
 				$qb->execute();
+
+			$this->eventDispatcher->dispatch(
+				'\OCA\Bookmarks::onBookmarkUpdate',
+				new GenericEvent(null, ['id' => $row['id'], 'userId' => $userid])
+			);
+
 			return $row['id'];
 		} else {
 			$qb = $this->db->getQueryBuilder();
@@ -535,6 +559,12 @@ class Bookmarks {
 
 			if ($insertId !== false) {
 				$this->addTags($insertId, $tags);
+
+				$this->eventDispatcher->dispatch(
+					'\OCA\Bookmarks::onBookmarkCreate',
+					new GenericEvent(null, ['id' => $insertId, 'userId' => $userid])
+				);
+
 				return $insertId;
 			}
 		}
