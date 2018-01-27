@@ -16,6 +16,8 @@ use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Controller;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 use OCP\IURLGenerator;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class WebViewController extends Controller {
 
@@ -28,6 +30,10 @@ class WebViewController extends Controller {
 	/** @var Bookmarks */
 	private $bookmarks;
 
+	/** @var EventDispatcher */
+	private $eventDispatcher;
+
+
 	/**
 	 * WebViewController constructor.
 	 *
@@ -36,12 +42,14 @@ class WebViewController extends Controller {
 	 * @param $userId
 	 * @param IURLGenerator $urlgenerator
 	 * @param Bookmarks $bookmarks
+	 * @param EventDispatcher $eventDispatcher
 	 */
-	public function __construct($appName, IRequest $request, $userId, IURLGenerator $urlgenerator, Bookmarks $bookmarks) {
+	public function __construct($appName, IRequest $request, $userId, IURLGenerator $urlgenerator, Bookmarks $bookmarks, EventDispatcher $eventDispatcher) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->urlgenerator = $urlgenerator;
 		$this->bookmarks = $bookmarks;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -54,6 +62,10 @@ class WebViewController extends Controller {
 
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedFrameDomain("'self'");
+
+		$this->eventDispatcher->dispatch(
+			'\OCA\Bookmarks::loadAdditionalScripts', new GenericEvent(null, [])
+		);
 
 		$response = new TemplateResponse('bookmarks', 'main', $params);
 		$response->setContentSecurityPolicy($policy);
