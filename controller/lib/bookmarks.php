@@ -32,7 +32,7 @@ use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Bookmarks {
@@ -49,7 +49,7 @@ class Bookmarks {
 	/** @var IClientService */
 	private $httpClientService;
 
-	/** @var EventDispatcher */
+	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
 
 	/** @var ILogger */
@@ -60,7 +60,7 @@ class Bookmarks {
 		IConfig $config,
 		IL10N $l,
 		IClientService $httpClientService,
-		EventDispatcher $eventDispatcher,
+		EventDispatcherInterface $eventDispatcher,
 		ILogger $logger
 	) {
 		$this->db = $db;

@@ -16,7 +16,7 @@ use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Controller;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 use OCP\IURLGenerator;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class WebViewController extends Controller {
@@ -30,7 +30,7 @@ class WebViewController extends Controller {
 	/** @var Bookmarks */
 	private $bookmarks;
 
-	/** @var EventDispatcher */
+	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
 
 
@@ -42,9 +42,9 @@ class WebViewController extends Controller {
 	 * @param $userId
 	 * @param IURLGenerator $urlgenerator
 	 * @param Bookmarks $bookmarks
-	 * @param EventDispatcher $eventDispatcher
+	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function __construct($appName, IRequest $request, $userId, IURLGenerator $urlgenerator, Bookmarks $bookmarks, EventDispatcher $eventDispatcher) {
+	public function __construct($appName, IRequest $request, $userId, IURLGenerator $urlgenerator, Bookmarks $bookmarks, EventDispatcherInterface $eventDispatcher) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->urlgenerator = $urlgenerator;
