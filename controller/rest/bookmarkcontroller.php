@@ -183,31 +183,41 @@ class BookmarkController extends ApiController {
 	 */
 	public function newBookmark($url = "", $item = array(), $title = "", $is_public = false, $description = "") {
 		$title = trim($title);
-		if ($title === '') {
-			$title = $url;
-			// allow only http(s) and (s)ftp
-			$protocols = '/^(https?|s?ftp)\:\/\//i';
-			try {
-				if (preg_match($protocols, $url)) {
-					$data = $this->bookmarks->getURLMetadata($url);
-					$title = isset($data['title']) ? $data['title'] : $title;
-				} else {
-					// if no allowed protocol is given, evaluate https and https
-					foreach(['https://', 'http://'] as $protocol) {
-						$testUrl = $protocol . $url;
-						$data = $this->bookmarks->getURLMetadata($testUrl);
-						if(isset($data['title'])) {
-							$title = $data['title'];
-							$url   = $testUrl;
-							break;
-						}
+		$image = null;
+
+		// do some meta tag inspection of the link...
+
+		// allow only http(s) and (s)ftp
+		$protocols = '/^(https?|s?ftp)\:\/\//i';
+		try {
+			if (preg_match($protocols, $url)) {
+				$data = $this->bookmarks->getURLMetadata($url);
+			} else {
+				// if no allowed protocol is given, evaluate https and https
+				foreach(['https://', 'http://'] as $protocol) {
+					$testUrl = $protocol . $url;
+					$data = $this->bookmarks->getURLMetadata($testUrl);
+					if(isset($data['title'])) {
+						break;
 					}
 				}
-			} catch (\Exception $e) {
-				// only because the server cannot reach a certain URL it does not
-				// mean the user's browser cannot.
-				\OC::$server->getLogger()->logException($e, ['app' => 'bookmarks']);
 			}
+		} catch (\Exception $e) {
+			// only because the server cannot reach a certain URL it does not
+			// mean the user's browser cannot.
+			\OC::$server->getLogger()->logException($e, ['app' => 'bookmarks']);
+		}
+		if (isset($data['url'])) {
+			$url   = $data['url'];
+		}
+		if ((!isset($title) || trim($title) === '')) {
+			$title =  isset($data['title'])? $data['title'] : $url;
+		}
+		if (isset($data['description']) && (!isset($description) || trim($description) === '')) {
+		  $description = $data['description'];
+		}
+		if (isset($data['image'])) {
+		  $image = $data['image'];
 		}
 
 		// Check if it is a valid URL (after adding http(s) prefix)
@@ -218,7 +228,7 @@ class BookmarkController extends ApiController {
 
 		$tags = isset($item['tags']) ? $item['tags'] : array();
 
-		$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public);
+		$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public, $image);
 		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
 	}
