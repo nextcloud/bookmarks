@@ -176,16 +176,15 @@ button span,
 .bookmark-card:hover .panel {
   background: rgba(255, 255, 255, .90); 
 }
-.bookmark-card input[type="checkbox"] {
+.bookmark-card .selectbox {
   display: none;
   position: absolute;
   left: .1cm;
-  top: .3cm;
-  opacity: .7;
-  width: .4cm;
+  top: .5cm;
 }
-.bookmark-card:hover input[type="checkbox"],
-.bookmark-card.active input[type="checkbox"] {
+.selection-active .bookmark-card .selectbox,
+.bookmark-card:hover .selectbox,
+.bookmark-card.active .selectbox {
   display: inline-block;
 }
 .bookmark-card h1 {
@@ -218,6 +217,14 @@ button span,
 .bookmark-card .actions .popovermenu {
   top: 24px;
   right: -14px;
+}
+.bookmark-card .actions .action-select,
+.bookmark-card.active .actions .action-unselect {
+  display: block;
+}
+.bookmark-card .actions .action-unselect,
+.bookmark-card.active .actions .action-select {
+  display: none;
 }
 .bookmark-card .tags {
   max-height: 2.5cm;
@@ -387,9 +394,9 @@ button span,
   margin: 0;
   width: 70%;
 }
+
 /* make checkbox look like an icon */
-.tags-management .tag-man-item .menu-filter-add span:first-child,
-.tags-management .tag-man-item .menu-filter-remove span:first-child {
+.menu-item-checkbox span:first-child {
   padding: 0 10px;
 }
 

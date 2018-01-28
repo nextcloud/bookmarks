@@ -411,9 +411,15 @@ var ContentView = Marionette.View.extend({
     this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
   }
 , onSelect: function(model) {
-    this.selected.add(model)
+    if (this.selected.length == 0) {
+      this.$el.addClass('selection-active')
+	}
+	this.selected.add(model)
   }
 , onUnselect: function(model) {
+    if (this.selected.length == 1) {
+      this.$el.removeClass('selection-active')
+	}
     this.selected.remove(model)
   }
 , onShowDetails: function(model) {
@@ -505,10 +511,10 @@ var EmptyBookmarksView = Marionette.View.extend({
 })
 
 var BookmarkCardView = Marionette.View.extend({
-  template: _.template('<div class="panel"><input type="checkbox"/><h1><%- title %></h1><h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2><div class="actions"><div class="icon-more toggle"></div><div class="popovermenu"><ul><li><button class="action-edit"><span class="icon-edit"></span><span>Edit</span></button></li><li><button class="action-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div></div></div><div class="tags"></div>'),
+  template: _.template('<div class="panel"><input type="checkbox" class="checkbox"/><label class="selectbox"></label><h1><%- title %></h1><h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2><div class="actions"><div class="icon-more toggle"></div><div class="popovermenu"><ul><li><button class="menu-item-checkbox action-select"><span><input type="checkbox" name="select" class="checkbox" /><label for="select"></label></span><span>Select</span></button></li><li><button class="menu-item-checkbox action-unselect"><span><input type="checkbox" name="select" checked class="checkbox" /><label for="select"></label></span><span>Unselect</span></button></li><li><button class="action-edit"><span class="icon-edit"></span><span>Edit</span></button></li><li><button class="action-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div></div></div><div class="tags"></div>'),
   className: "bookmark-card",
   ui: {
-    'checkbox': 'input[type="checkbox"]'
+    'checkbox': '.selectbox'
   , 'actionsToggle': '.actions .toggle'
   , 'actionsMenu': '.actions .popovermenu'
   },
@@ -522,6 +528,8 @@ var BookmarkCardView = Marionette.View.extend({
   , 'blur @ui.actionsToggle': 'closeActions'
   , 'click .action-edit': 'actionEdit'
   , 'click .action-delete': 'actionDelete'
+  , 'click .action-select': 'select'
+  , 'click .action-unselect': 'select'
   },
   initialize: function() {
     this.listenTo(this.model, "change", this.render);
@@ -536,6 +544,7 @@ var BookmarkCardView = Marionette.View.extend({
       return app.tags.findWhere({name: id})
     }))
     this.showChildView('tags', new TagsNavigationView({collection: tags}))
+    this.$('.checkbox').prop('checked', this.$el.hasClass('active'))
   }
 , open: function(e) {
     if (e && e.target !== this.el && e.target !== this.$('h1')[0]) return
@@ -551,6 +560,7 @@ var BookmarkCardView = Marionette.View.extend({
   }
 , onSelect: function() {
     this.$el.addClass('active')
+    this.render()
   }
 , onUnselect: function() {
     this.$el.removeClass('active')
