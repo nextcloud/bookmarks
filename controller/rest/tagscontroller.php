@@ -63,11 +63,12 @@ class TagsController extends ApiController {
 	}
 
 	/**
+	 * @param bool $count whether to add the count of bookmarks per tag
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function fullTags() {
+	public function fullTags($count) {
 		
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
@@ -75,7 +76,11 @@ class TagsController extends ApiController {
 		$qtags = $this->bookmarks->findTags($this->userId, array(), 0, 400);
 		$tags = array();
 		foreach ($qtags as $tag) {
-			$tags[] = $tag['tag'];
+			if ($count === TRUE) {
+				$tags[] = ['name' => $tag['tag'], 'count' => $tag['nbr']];
+			} else {
+				$tags[] = $tag['tag'];
+			}
 		}
 
 		return new JSONResponse($tags);
