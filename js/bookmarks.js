@@ -236,10 +236,12 @@ var AddBookmarkView = Marionette.View.extend({
     var that = this
     bm.save(null,{
       success: function() {
-				Backbone.history.navigate('all', {trigger: true})
-				that.setPending(false)
-				that.deactivate()
-			}
+	    // needed in order for the route to be revaluated when it's already active
+        Backbone.history.navigate('dummyroute')
+        Backbone.history.navigate('all', {trigger: true})
+        that.setPending(false)
+        that.deactivate()
+      }
     , error: function() {
         that.setPending(false)
         that.getUI('button').removeClass('icon-add')
