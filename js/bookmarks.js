@@ -77,32 +77,30 @@ var Router = Marionette.AppRouter.extend({
       }, 1)
     }
   , all: function() {
-      this.app.bookmarks.fetch()
+      this.app.bookmarks.fetch({ 
+        data: {page: -1}
+	  })
       Radio.channel('nav').trigger('navigate', 'all')
     }
   , favorites: function() {
       Radio.channel('nav').trigger('navigate', 'favorites')
     }
   , shared: function() {
-      this.app.bookmarks.fetch()
+      this.app.bookmarks.fetch({ 
+        data: {page: -1}
+	  })
       Radio.channel('nav').trigger('navigate', 'shared')
     }
   , tags: function(tagString) {
       var tags = tagString? tagString.split(',').map(decodeURIComponent) : [] 
       this.app.bookmarks.fetch({
-        data: {item: {tags: tags}}
+        data: {item: {tags: tags}, page: -1}
       })
       Radio.channel('nav').trigger('navigate', 'tags', tags)
     }
-  , tag: function(tag) {
-      this.app.bookmarks.fetch({
-        data: {item: {tags: [decodeURIComponent(tag)]}}
-      })
-      Radio.channel('nav').trigger('navigate', 'tag', tag)
-    }
   , search: function(query) {
       this.app.bookmarks.fetch({
-        data: {search: decodeURIComponent(query).split(' ')}
+        data: {search: decodeURIComponent(query).split(' '), page: -1}
       })
       Radio.channel('nav').trigger('navigate', 'search', query)
     }
@@ -113,7 +111,6 @@ var Router = Marionette.AppRouter.extend({
   , 'favorites': 'favorites'
   , 'shared': 'shared'
   , 'tags(/*tags)': 'tags'
-  , 'tag/:tag': 'tag'
   , 'search/:query': 'search'
   }
 , initialize: function(options) {
@@ -238,9 +235,8 @@ var AddBookmarkView = Marionette.View.extend({
     bm.save(null,{
       success: function() {
 				Backbone.history.navigate('all', {trigger: true})
-				app.bookmarks.fetch()
 				that.setPending(false)
-        that.deactivate()
+				that.deactivate()
 			}
     , error: function() {
         that.setPending(false)
