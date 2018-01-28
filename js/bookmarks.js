@@ -453,10 +453,14 @@ var BulkActionsView = Marionette.View.extend({
     this.listenTo(this.selected, 'add', this.onExtendSelection)
   }
 , onReduceSelection: function() {
-    if (this.selected.length == 0) this.$el.slideUp()
+    if (this.selected.length == 0) {
+	  this.$el.removeClass('active')
+	}
   }
 , onExtendSelection: function() {
-    if (this.selected.length == 1) this.$el.slideDown()
+    if (this.selected.length == 1) {
+	  this.$el.addClass('active')
+	}
   }
 , delete: function() {
     var that = this

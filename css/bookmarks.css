@@ -79,15 +79,35 @@
 
 .bulk-actions {
   display: none;
-  position: relative;
+  position: fixed;
+  top: 45px;
+  left: 250px;
+  right: 0;
   border-bottom: 1px solid #ebebeb;
-  padding: 5px .5cm;
+  padding: .3cm .5cm;
   background: #e9f7ff;
+  z-index: 3;
+}
+.bulk-actions + * {
+  transition: margin-top .5s ease;
+}
+.bulk-actions.active {
+  display: block;
+}
+.bulk-actions.active + * {
+  margin-top: 1.5cm;
+}
+@media only screen and (max-width: 768px) {
+  .bulk-actions {
+    position: relative;
+	top: 0; right: 0; bottom: 0; left: 0;
+  }
+  .bulk-actions.active + * {
+    margin-top: 0;
+  }
 }
 .bulk-actions .selection-tools {
-  position: absolute;
-  right: .5cm;
-  top: 5px;
+  float: right;
 }
 .bulk-actions .close {
   display: inline-block;
@@ -117,6 +137,7 @@ button span,
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
+  padding-right: .6cm;
 }
 .bookmark-card {
   position: relative;
@@ -124,16 +145,20 @@ button span,
   flex-grow: 1;
   width: 6cm;
   height: 6cm;
-  margin: .4cm;
+  margin: .6cm 0 0 .6cm;
   padding: .5cm;
   border: 1px solid #ddd;
   overflow: hidden;
   background-color: rgb(210, 210, 210);
   background-size: cover;
+  background-blend-mode: overlay;
 }
 .bookmark-card,
 .bookmark-card * {
   cursor: pointer;
+}
+.bookmark-card:hover {
+  background-blend-mode: multiply;
 }
 .bookmark-card.active,
 .bookmark-card.active:hover {
@@ -212,15 +237,15 @@ button span,
 }
 
 .bookmark-detail {
-	position: absolute;
-	top: 0;
+  position: fixed;
+  top: 45px;
   right: 0;
   z-index: 2;
-	width: 500px;
-	height: 100%;
+  width: 500px;
+  height: 100%;
   box-sizing: border-box;
   padding: 1cm;
-	background: white;
+  background: white;
   border-left: 1px solid #ebebeb;
 }
 @media only screen and (max-width: 768px) {
