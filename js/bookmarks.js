@@ -16,6 +16,7 @@ var Tag = Backbone.Model.extend({
 
 var Tags = Backbone.Collection.extend({
   model: Tag
+, comparator: function(t) {return -t.get('count')}
 , url: 'tag'
 })
 
@@ -27,7 +28,8 @@ var App = Marionette.Application.extend({
     this.bookmarks = new Bookmarks
     this.tags = new Tags
     this.tags.fetch({
-      success: function() {
+	  data: {count: true}
+    , success: function() {
         // we sadly cannot listen ot 'sync', which would fire after fetching, so we have to listen to these and add some timeout
         that.listenTo(that.tags, 'sync', that.onTagChanged)
         that.listenTo(that.tags, 'add', that.onTagChanged)
@@ -65,7 +67,7 @@ var App = Marionette.Application.extend({
     var that = this
     if (this.tagChanged === true) return this.tagChanged = false
     this.bokmarkChanged = true
-    that.tags.fetch() // we listen to 'sync', so we can fetch immediately
+    that.tags.fetch({data: {count: true}}) // we listen to 'sync', so we can fetch immediately
   }
 });
 
@@ -666,9 +668,7 @@ var TagsManagementView = Marionette.CollectionView.extend({
 , className: 'tags-management'
 , initialize: function(options) {
     var that = this
-    
-    this.collection.comparator = 'name'
-    
+     
     this.selected = new Tags
     this.selected.comparator = 'name'
     
@@ -731,7 +731,7 @@ var TagsManagementTagView = Marionette.View.extend({
     }
     return this.templateDefault
   }
-, templateDefault: _.template('<a href="#"><span><%- name %></span><div class="app-navigation-entry-utils"><ul><li class="app-navigation-entry-utils-menu-button"><button></button></li></ul></div></a><div class="popovermenu"><ul><li><button class="menu-filter-add"><span><input type="checkbox" name="select" class="checkbox" /><label for="select"></label></span><span>Add to filter</span></button></li><li><button class="menu-filter-remove"><span><input type="checkbox" name="select" checked class="checkbox" /><label for="select"></label></span><span>Remove from filter</span></button></li><li><button class="menu-edit"><span class="icon-rename"></span><span>Rename</span></button></li><li><button class="menu-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div>')
+, templateDefault: _.template('<a href="#"><span><%- name %></span><div class="app-navigation-entry-utils"><ul><li class="app-navigation-entry-utils-counter"><%- count > 999 ? "999+" :count  %></li><li class="app-navigation-entry-utils-menu-button"><button></button></li></ul></div></a><div class="popovermenu"><ul><li><button class="menu-filter-add"><span><input type="checkbox" name="select" class="checkbox" /><label for="select"></label></span><span>Add to filter</span></button></li><li><button class="menu-filter-remove"><span><input type="checkbox" name="select" checked class="checkbox" /><label for="select"></label></span><span>Remove from filter</span></button></li><li><button class="menu-edit"><span class="icon-rename"></span><span>Rename</span></button></li><li><button class="menu-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div>')
 , templateEditing: _.template('<a href="#"><input type="text" value="<%- name %>"><div class="actions"><ul><li class="action"><button class="submit icon-checkmark"></button></li><li class="action"><button class="cancel icon-close"></button></li></ul></div></a>')
 , ui: {
     'actionsMenu': '.popovermenu'
@@ -816,7 +816,7 @@ Backbone.sync = function(method, model, options) {
    success: function(json) {
       console.log(json)
       if (!(model instanceof Tags)) options.success(json.item || json.data)
-      else options.success(json.map(function(name){return {name: name}}))
+      else options.success(json)
     }
   , error: function() {
       console.log(arguments)

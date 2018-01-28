@@ -38,10 +38,11 @@ class InternalTagsController extends ApiController {
 	}
 
 	/**
+	 * @param bool $count whether to add the count of bookmarks per tag
 	 * @NoAdminRequired
 	 */
-	public function fullTags() {
-		return $this->publicController->fullTags();
+	public function fullTags($count) {
+		return $this->publicController->fullTags($count);
 	}
 
 }
