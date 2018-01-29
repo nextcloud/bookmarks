@@ -96,7 +96,7 @@ var Router = Marionette.AppRouter.extend({
   , tags: function(tagString) {
       var tags = tagString? tagString.split(',').map(decodeURIComponent) : [] 
       this.app.bookmarks.fetch({
-        data: {item: {tags: tags}, page: -1}
+        data: {tags: tags, page: -1}
       })
       Radio.channel('nav').trigger('navigate', 'tags', tags)
     }
