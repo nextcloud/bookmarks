@@ -46,7 +46,8 @@ class Application extends App {
 				$c->query('Request'),
 				$uid,
 				$c->query('ServerContainer')->getURLGenerator(),
-				$c->query('ServerContainer')->query(Bookmarks::class)
+				$c->query('ServerContainer')->query(Bookmarks::class),
+				$c->query('ServerContainer')->getEventDispatcher()
 			);
 		});
 
