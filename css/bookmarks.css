@@ -151,6 +151,8 @@ button span,
   overflow: hidden;
   background-color: rgb(210, 210, 210);
   background-size: cover;
+  background-position: center;
+  transition: background-color .3s ease;
   background-blend-mode: overlay;
 }
 .bookmark-card,
@@ -158,7 +160,7 @@ button span,
   cursor: pointer;
 }
 .bookmark-card:hover {
-  background-blend-mode: multiply;
+  background-color: rgb(180, 180, 180);
 }
 .bookmark-card.active,
 .bookmark-card.active:hover {
