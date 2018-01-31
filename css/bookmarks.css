@@ -122,6 +122,10 @@ input.disabled, input.disabled:hover, input.disabled:focus {
     text-align: right;
 }
 
+#app-navigation > ul > li {
+  display: block !important;
+}
+
 .bookmark_tags {
     left:0%;
     position: relative;
