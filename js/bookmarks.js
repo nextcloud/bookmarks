@@ -333,7 +333,7 @@ function updateBookmarksList(bookmark, position) {
 	} else {
 		$('.bookmarks_list').append(html);
 	}
-	var line = $('div[data-id="' + bookmark.id + '"]');
+	var line = $('.bookmark_single[data-id="' + bookmark.id + '"]');
 	line.data('record', bookmark);
 	if (taglist !== '') {
 		line.append('<p class="bookmark_tags">' + taglist + '</p>');
