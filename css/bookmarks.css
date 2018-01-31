@@ -106,10 +106,21 @@
     margin-top: 0;
   }
 }
+.bulk-actions > button {
+  vertical-align: text-bottom;
+}
+.bulk-actions .tags {
+  display: inline-block;
+  width: 60%;
+  margin: 3px 3px 3px 0;
+}
+.bulk-actions .tagit {
+  background: white;
+}
 .bulk-actions .selection-tools {
   float: right;
 }
-.bulk-actions .close {
+.bulk-actions .selection-tools .close {
   display: inline-block;
   cursor: pointer;
   margin: 3px 3px 3px 0; 
@@ -119,12 +130,12 @@
   cursor: pointer;
   box-sizing: border-box;
 }
-.bulk-actions .close span {
+.bulk-actions .selection-tools .close span {
   display: inline-block;
   vertical-align: text-top;
 }
 button span,
-.bulk-actions .close span {
+.bulk-actions .selection-tools .close span {
   cursor: pointer;
 }
 
@@ -296,6 +307,7 @@ button span,
   height: 1cm;
   width: 1cm;
 }
+.bulk-actions ul.tagit li.tagit-choice,
 .bookmark-detail ul.tagit li.tagit-choice,
 .bookmark-detail .tag-nav-item {
   border-radius: .2cm;
@@ -305,6 +317,7 @@ button span,
   padding: .1cm .4cm;
   margin: .1cm;
 }
+.bulk-actions ul.tagit li.tagit-choice:hover,
 .bookmark-detail ul.tagit li.tagit-choice:hover,
 .bookmark-detail .tag-nav-item:hover {
   background: #e0e0e0;
@@ -323,23 +336,25 @@ button span,
 .bookmark-detail .input-url,
 .bookmark-detail .input-title,
 .bookmark-detail .input-desc,
-.bookmark-detail ul.tagit {
+ul.tagit {
   width: 100%;
   font-size: inherit;
   box-sizing: border-box;
+  padding: 0 !important;
 }
 .bookmark-detail .input-url {
   padding-left: 25px;
   background-position: 5px;
 }
-.bookmark-detail ul.tagit li.tagit-choice {
+ul.tagit li.tagit-choice {
   padding: .1cm .5cm .1cm .2cm;
 }
-.bookmark-detail ul.tagit li.tagit-new {
+ul.tagit li.tagit-new {
   float: none;
   display: inline-block;
-  padding: 0;
+  padding: 0 !important;
   cursor: auto;
+  margin: 0;
 }
 .bookmark-detail .input-desc {
   height: 300px;
