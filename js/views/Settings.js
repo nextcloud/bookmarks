@@ -1,4 +1,6 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
+import templateString from '../templates/Settings.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
@@ -6,7 +8,7 @@ const Radio = Backbone.Radio
 export default Marionette.View.extend({
   className: 'settings'
 , id: 'app-settings'
-, template: _.template('<div id="app-settings-header"><button class="settings-button">Settings</a></div><div id="app-settings-content"><form class="import-form" action="bookmark/import" method="post" target="upload_iframe" enctype="multipart/form-data" encoding="multipart/form-data"><input type="file" class="import" name="bm_import" size="5" /><input type="hidden" name="requesttoken" value="'+oc_requesttoken+'" /><button class="import-facade"><span class="icon-upload"></span> Import</button></form><iframe class="upload" name="upload_iframe" id="upload_iframe"></iframe><button class="export"><span class="icon-download"></span> Export</button><div class="import-status"></div></div>')
+, template: _.template(templateString)
 , ui: {
     'content': '#app-settings-content'
   , 'import': '.import'

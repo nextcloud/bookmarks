@@ -1,4 +1,7 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
+import templateStringDefault from '../templates/TagsManagementTag_default.html'
+import templateStringEditing from '../templates/TagsManagementTag_editing.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
@@ -12,8 +15,8 @@ export default Marionette.View.extend({
     }
     return this.templateDefault
   }
-, templateDefault: _.template('<a href="#"><span><%- name %></span><div class="app-navigation-entry-utils"><ul><li class="app-navigation-entry-utils-counter"><%- count > 999 ? "999+" :count  %></li><li class="app-navigation-entry-utils-menu-button"><button></button></li></ul></div></a><div class="popovermenu"><ul><li><button class="menu-filter-add"><span><input type="checkbox" name="select" class="checkbox" /><label for="select"></label></span><span>Add to filter</span></button></li><li><button class="menu-filter-remove"><span><input type="checkbox" name="select" checked class="checkbox" /><label for="select"></label></span><span>Remove from filter</span></button></li><li><button class="menu-edit"><span class="icon-rename"></span><span>Rename</span></button></li><li><button class="menu-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div>')
-, templateEditing: _.template('<a href="#"><input type="text" value="<%- name %>"><div class="actions"><ul><li class="action"><button class="submit icon-checkmark"></button></li><li class="action"><button class="cancel icon-close"></button></li></ul></div></a>')
+, templateDefault: _.template(templateString_default)
+, templateEditing: _.template(templateString_editing)
 , ui: {
     'actionsMenu': '.popovermenu'
   , 'actionsToggle': '.app-navigation-entry-utils-menu-button'

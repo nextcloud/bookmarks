@@ -1,16 +1,18 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
-import SearchController from './views/SearchController'
-import AddBookmarkView from './views/AddBookmark'
-import NavigationView from './views/Navigation'
-import TagsManagementView from './views/TagsManagement'
-import ContentView from './views/Content'
-import SettingsView from './views/Settings'
+import SearchController from './SearchController'
+import AddBookmarkView from './AddBookmark'
+import NavigationView from './Navigation'
+import TagsManagementView from './TagsManagement'
+import ContentView from './Content'
+import SettingsView from './Settings'
+import templateString from '../templates/App.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
-  template: _.template('<div id="app-navigation"><div id="add-bookmark-slot"></div><div id="navigation-slot"></div><h3>Tags</h3><div id="favorite-tags-slot"></div><div id="settings-slot"></div></div><div id="app-content"><div id="content-slot"></div></div>')
+  template: _.template(templateString)
 , regions: {
     'addBookmarks':  {
       el: '#add-bookmark-slot'

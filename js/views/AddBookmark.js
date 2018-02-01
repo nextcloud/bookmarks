@@ -1,11 +1,13 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
 import Bookmark from '../models/Bookmark'
+import templateString from '../templates/AddBookmark.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
-  template: _.template('<li class="link"><a href="#"><span>Add Bookmark</span></a></li><li class="form"><input type="text" value="" placeholder="Address..."/><button title="Add" class="icon-add"></button></li>')
+  template: _.template(templateString)
 , className: 'add-bookmark'
 , tagName: 'ul'
 , events: {

@@ -1,11 +1,13 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
+import templateString from '../templates/BulkActions.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
   className: 'bulk-actions'
-, template: _.template('<div class="selection-tools"><button class="select-all"><span class="icon-checkmark"></span> Select all visible</button><div class="close"><span class="icon-close"></span></div></div><button class="delete"><span class="icon-delete"></span><span>Delete</span></button><div class="tags"><input type="text" /></div></div>')
+, template: _.template(templateString)
 , events: {
     'click .delete': 'delete'
   , 'click .select-all': 'selectAll'

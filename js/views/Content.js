@@ -1,15 +1,17 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
 import Bookmarks from '../models/Bookmarks'
-import MobileNavView from './views/MobileNav'
-import BulkActionsView from './views/BulkActions'
-import BookmarksView from './views/Bookmarks'
-import BookmarkDetailView from './views/BookmarkDetail'
+import MobileNavView from './MobileNav'
+import BulkActionsView from './BulkActions'
+import BookmarksView from './Bookmarks'
+import BookmarkDetailView from './BookmarkDetail'
+import templateString from '../templates/Content.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
-  template: _.template('<div id="mobile-nav-slot"></div><div id="bulk-actions-slot"></div><div id="view-bookmarks-slot"></div><div id="bookmark-detail-slot"></div>')
+  template: _.template(templateString)
 , regions: {
     'mobileNav': {
       el: '#mobile-nav-slot'
