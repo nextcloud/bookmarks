@@ -345,15 +345,49 @@ var SettingsView = Marionette.View.extend({
     this.getUI('import').click()
   }
 , importSubmit: function(e) {
+    var that = this
     e.preventDefault()
-    this.getUI('iframe').load(this.importResult.bind(this));
-    this.getUI('form').submit();
+    if (typeof(window.fetch) !== 'undefined') {
+      // If we have fetch() do a little hapiness dance and go!
+      var data = new FormData()
+      data.append('bm_import', this.getUI('import')[0].files[0])
+      fetch(this.getUI('form').attr('action'), {
+        method: 'POST'
+      , headers: {
+          requesttoken: oc_requesttoken
+        }
+      , body: data 
+      , mode: 'same-origin'
+      , credentials: 'same-origin'
+      })
+      .then(function(res) {
+        if (!res.ok) {
+          if (res.status === 413) {
+            return {status: 'error', data: ['Selected file is too large']}
+          }
+          return {status: 'error', data: [res.statusText]} 
+        }
+        return res.json()
+      })
+      .then(function(json) {
+        that.importResult(JSON.stringify(json));
+      })
+      .catch(function(e) {
+        that.importResult(JSON.stringify({status: 'error', data: [e.message]}));
+      })
+    } else {
+      // If we don't have fetch() ask grandpa iframe to send it
+      this.getUI('iframe').load(function() {
+        that.importResult(that.getUI('iframe').contents().text());
+      })
+      this.getUI('form').submit();
+    }
     this.getUI('status').text(t('bookmark', 'Uploading...'));
   }
-, importResult: function () {
+, importResult: function (data) {
     var data;
     try {
-      data = $.parseJSON(this.getUI('iframe').contents().text());
+      data = $.parseJSON(data);
     } catch (e) {
       this.getUI('status').text(t('bookmark', 'Import error'));
       return;
