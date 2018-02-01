@@ -1,4 +1,6 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
+import templateString from '../templates/TagsNavigationTag.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
@@ -6,7 +8,7 @@ const Radio = Backbone.Radio
 export default Marionette.View.extend({
   className: 'tag-nav-item'
 , tagName: 'li'
-, template: _.template('<a href="#"><%- name %></a>')
+, template: _.template(templateString)
 , events: {
     'click': 'open'
   }

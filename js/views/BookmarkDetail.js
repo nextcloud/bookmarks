@@ -1,5 +1,8 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
 import TagsNavigationView from './TagsNavigation'
+import templateStringDefault from '../templates/BookmarkDetail_default.html'
+import templateStringEditing from '../templates/BookmarkDetail_default.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
@@ -11,8 +14,8 @@ export default Marionette.View.extend({
     }
     return this.templateDefault
   },
-  templateDefault: _.template('<div class="close icon-close"></div><div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2><div class="tags"></div><div class="description"><%- description %></div>'),
-  templateEditing: _.template('<div class="close icon-close"></div><h1><input class="input-title" type="text" value="<%- title %>" /></h1><h2><input type="type" class="input-url icon-external" value="<%- url %>" /></h2><div class="tags"><input type="text" /></div><div class="description"><textarea class="input-desc"><%- description %></textarea></div><div class="actions editing"><button class="submit primary"><span class="icon-checkmark"></span> <span>Save</span></button><button class="cancel">Cancel</button></div>'),
+  templateDefault: _.template(templateStringDefault),
+  templateEditing: _.template(templateStringEditing),
   className: "bookmark-detail",
   regions: {
     'tags': {

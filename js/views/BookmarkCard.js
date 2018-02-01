@@ -1,11 +1,13 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
 import TagsNavigationView from './TagsNavigation'
+import templateString from '../templates/BookmarkCard.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
-  template: _.template('<div class="panel"><input type="checkbox" class="checkbox"/><label class="selectbox"></label><h1><%- title %></h1><h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2><div class="actions"><div class="icon-more toggle"></div><div class="popovermenu"><ul><li><button class="menu-item-checkbox action-select"><span><input type="checkbox" name="select" class="checkbox" /><label for="select"></label></span><span>Select</span></button></li><li><button class="menu-item-checkbox action-unselect"><span><input type="checkbox" name="select" checked class="checkbox" /><label for="select"></label></span><span>Unselect</span></button></li><li><button class="action-edit"><span class="icon-edit"></span><span>Edit</span></button></li><li><button class="action-delete"><span class="icon-delete"></span><span>Delete</span></button></li></ul></div></div></div><div class="tags"></div>'),
+  template: _.template(templateString),
   className: "bookmark-card",
   ui: {
     'checkbox': '.selectbox'

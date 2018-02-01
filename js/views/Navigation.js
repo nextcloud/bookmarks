@@ -1,4 +1,6 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
+import templateString from '../templates/Navigation.html'
 
 const Marionette = Backone.Marionette
 const Radio = Backbone.Radio
@@ -6,7 +8,7 @@ const Radio = Backbone.Radio
 export default Marionette.View.extend({
   className: 'navigation'
 , tagName: 'ul'
-, template: _.template('<li data-id="all" class="all"><a href="#"><span class="icon-home"></span>All bookmarks</a></li><li data-id="favorites" class="favorites"><a href="#"><span class="icon-favorite"></span>Favorites</a></li><li data-id="shared" class="shared"><a href="#"><span class="icon-share"></span>Shared</a></li>')
+, template: _.template(templateString)
 , events: {
     'click .all': 'onClick'
   , 'click .favorites': 'onClick'

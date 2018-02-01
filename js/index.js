@@ -1,5 +1,6 @@
+import _ from 'underscore'
 import Backbone from 'backbone'
-import Marionette from 'backbone-marionette'
+import Marionette from 'backbone.marionette'
 import Tag from './models/Tag'
 import Tags from './models/Tags'
 import App from './Application'
