@@ -336,7 +336,8 @@ button span,
 .bookmark-detail .input-url,
 .bookmark-detail .input-title,
 .bookmark-detail .input-desc,
-ul.tagit {
+.bookmarks-detail ul.tagit,
+.bulk-actions ul.tagit {
   width: 100%;
   font-size: inherit;
   box-sizing: border-box;
@@ -346,10 +347,12 @@ ul.tagit {
   padding-left: 25px;
   background-position: 5px;
 }
-ul.tagit li.tagit-choice {
+.bookmatks-detail ul.tagit li.tagit-choice,
+.bulk-actions ul.tagit li.tagit-choice {
   padding: .1cm .5cm .1cm .2cm;
 }
-ul.tagit li.tagit-new {
+.bulk-actions ul.tagit li.tagit-new,
+.bookmarks-detail ul.tagit li.tagit-new {
   float: none;
   display: inline-block;
   padding: 0 !important;
