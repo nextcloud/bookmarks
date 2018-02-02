@@ -2,10 +2,7 @@
 script('bookmarks', 'dist/bundle');
 style('bookmarks', 'bookmarks');
 
-
-script('bookmarks', '3rdparty/tag-it');
-style('bookmarks', '3rdparty/jquery.tagit');
-
+style('bookmarks', 'select2');
 /**
  * Copyright (c) 2011 Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * Copyright (c) 2011 Arthur Schiwon <blizzz@arthur-schiwon.de>
