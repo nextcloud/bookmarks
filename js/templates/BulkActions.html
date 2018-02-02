@@ -1,1 +1,11 @@
-<div class="selection-tools"><button class="select-all"><span class="icon-checkmark"></span> Select all visible</button><div class="close"><span class="icon-close"></span></div></div><button class="delete"><span class="icon-delete"></span><span>Delete</span></button><div class="tags"><input type="text" /></div></div>
+<div class="selection-tools">
+	<button class="select-all"><span class="icon-checkmark"></span><span><%- t('bookmarks', 'Select all visible bookmarks') %></span></button>
+	<div class="close" title="<%- t('bookmarks', 'Cancel') %>"><span class="icon-close"></span></div>
+</div>
+<button class="delete">
+	<span class="icon-delete"></span>
+	<span><%- t('bookmarks', 'Delete') %></span>
+</button>
+<div class="tags">
+	<input type="text" />
+</div>

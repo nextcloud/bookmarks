@@ -1,1 +1,9 @@
-<div class="close icon-close"></div><div class="actions"><button class="edit icon-rename"></button><button class="delete icon-delete"></button></div><h1><%- title %></h1><h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2><div class="tags"></div><div class="description"><%- description %></div>
+<div class="close icon-close" title="<%- t('bookmarks', 'Close') %>"></div>
+<div class="actions">
+	<button class="edit icon-rename"></button>
+	<button class="delete icon-delete"></button>
+</div>
+<h1><%- title %></h1>
+<h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2>
+<div class="tags"></div>
+<div class="description"><%- description %></div>
