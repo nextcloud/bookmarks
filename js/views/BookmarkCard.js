@@ -1,5 +1,6 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
+import Tags from '../models/Tags'
 import TagsNavigationView from './TagsNavigation'
 import templateString from '../templates/BookmarkCard.html'
 
@@ -32,7 +33,7 @@ export default Marionette.View.extend({
     this.listenTo(this.model, "change", this.render);
     this.listenTo(this.model, "select", this.onSelect);
     this.listenTo(this.model, "unselect", this.onUnselect);
-    this.listenTo(app.tags, 'sync', this.render)
+    this.listenTo(this.app.tags, 'sync', this.render)
     this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions) 
   }
 , onRender: function() {

@@ -1,6 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 import Marionette from 'backbone.marionette'
+import select2 from 'select2'
 import Tag from './models/Tag'
 import Tags from './models/Tags'
 import App from './Application'
@@ -18,6 +19,9 @@ Backbone.sync = function(method, model, options) {
     }
   , error: function() {
       console.log(arguments)
+    }
+  , headers: {
+      'requesttoken': oc_requesttoken
     }
   }
   if (method === 'update' && model instanceof Tag) {

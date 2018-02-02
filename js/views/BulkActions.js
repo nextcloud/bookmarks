@@ -1,5 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
+import Tags from '../models/Tags'
+import TagsSelectionView from './TagsSelection'
 import templateString from '../templates/BulkActions.html'
 
 const Marionette = Backbone.Marionette
@@ -8,7 +10,12 @@ const Radio = Backbone.Radio
 export default Marionette.View.extend({
   className: 'bulk-actions'
 , template: _.template(templateString)
-, events: {
+, regions: {
+    'tags': {
+      el: '.tags'
+    }
+  },
+  events: {
     'click .delete': 'delete'
   , 'click .select-all': 'selectAll'
   , 'click .selection-tools .close': 'abort'
@@ -17,36 +24,37 @@ export default Marionette.View.extend({
     this.app = opts.app
     this.all = this.app.bookmarks
     this.selected = opts.selected
+    this.tags = new Tags
+    this.listenTo(this.tags, 'remove', this.onTagRemoved)
+    this.listenTo(this.tags, 'add', this.onTagAdded)
     this.listenTo(this.selected, 'remove', this.onReduceSelection)
     this.listenTo(this.selected, 'add', this.onExtendSelection)
   }
 , onRender: function() {
-    // hack to ignore events caused by tagit setup -- we should really get something else...
-    this.rendering = true
-    this.$('.tags input')
-    .val(_.intersection.apply(_, this.selected.pluck('tags')).join(','))
-    .tagit({
-      allowSpaces: true,
-      availableTags: this.app.tags.pluck('name'),
-      placeholderText: t('bookmarks', 'Enter tags'),
-      onTagRemoved: this.onTagRemoved.bind(this),
-      onTagAdded: this.onTagAdded.bind(this),
-      onTagFinishRemoved: function() {},
-      onTagClicked: function(){}
-    })
-    this.rendering = false
+    this.showChildView('tags', new TagsSelectionView({collection: this.app.tags, selected: this.tags, app: this.app }))
+  }
+, updateTags: function() {
+    var that = this
+    this.triggeredByAlgo = true
+    this.tags.reset(
+      _.intersection.apply(_, this.selected.pluck('tags'))
+        .map(function(name) {
+        return that.app.tags.get(name)
+      })
+    )
+    this.triggeredByAlgo = false
   }
 , onReduceSelection: function() {
     if (this.selected.length == 0) {
 	    this.$el.removeClass('active')
     }
-    this.render()
+    this.updateTags()
   }
 , onExtendSelection: function() {
     if (this.selected.length == 1) {
       this.$el.addClass('active')
     }
-    this.render()
+    this.updateTags()
   }
 , delete: function() {
     var that = this
@@ -59,21 +67,19 @@ export default Marionette.View.extend({
       })
     })
   }
-, onTagAdded: function(e, el) {
-    if (this.rendering) return
-    var tagName = $('.tagit-label', el).text()
+, onTagAdded: function(tag) {
+    if (this.triggeredByAlgo) return
     this.selected.forEach(function(model) {
       var tags = model.get('tags')
-      model.set('tags', _.union(tags, [tagName]))
+      model.set('tags', _.union(tags, [tag.get('name')]))
       model.save()
     }) 
   }
-, onTagRemoved: function(e, el) {
-    if (this.rendering) return
-    var tagName = $('.tagit-label', el).text()
+, onTagRemoved: function(tag) {
+    if (this.triggeredByAlgo) return
     this.selected.forEach(function(model) {
       var tags = model.get('tags')
-      model.set('tags', _.without(tags, tagName))
+      model.set('tags', _.without(tags, tag.get('name')))
       model.save()
     }) 
   }

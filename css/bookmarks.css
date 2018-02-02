@@ -95,7 +95,7 @@
   display: block;
 }
 .bulk-actions.active + * {
-  margin-top: 1.5cm;
+  margin-top: 2.5cm;
 }
 @media only screen and (max-width: 768px) {
   .bulk-actions {
@@ -107,15 +107,17 @@
   }
 }
 .bulk-actions > button {
-  vertical-align: text-bottom;
+  vertical-align: top;
 }
 .bulk-actions .tags {
   display: inline-block;
   width: 60%;
   margin: 3px 3px 3px 0;
+  position: relative;
 }
-.bulk-actions .tagit {
-  background: white;
+.bulk-actions .tags-selection {
+  display: block;
+  width: 100%;
 }
 .bulk-actions .selection-tools {
   float: right;
@@ -307,18 +309,18 @@ button span,
   height: 1cm;
   width: 1cm;
 }
-.bulk-actions ul.tagit li.tagit-choice,
-.bookmark-detail ul.tagit li.tagit-choice,
+.bookmark-detail .select2-container--default .select2-selection--multiple .select2-selection__choice,
+.bulk-actions .select2-container--default .select2-selection--multiple .select2-selection__choice,
 .bookmark-detail .tag-nav-item {
   border-radius: .2cm;
   border: none;
   background: #ebebeb;
   display: inline-block;
-  padding: .1cm .4cm;
+  padding: .1cm .2cm;
   margin: .1cm;
 }
-.bulk-actions ul.tagit li.tagit-choice:hover,
-.bookmark-detail ul.tagit li.tagit-choice:hover,
+.bookmark-detail .select2-container--default .select2-selection--multiple .select2-selection__choice:hover,
+.bulk-actions .select2-container--default .select2-selection--multiple .select2-selection__choice:hover,
 .bookmark-detail .tag-nav-item:hover {
   background: #e0e0e0;
 }
@@ -336,28 +338,15 @@ button span,
 .bookmark-detail .input-url,
 .bookmark-detail .input-title,
 .bookmark-detail .input-desc,
-.bookmarks-detail ul.tagit,
-.bulk-actions ul.tagit {
+.bookmark-detail .tags-selection  {
   width: 100%;
   font-size: inherit;
   box-sizing: border-box;
   padding: 0 !important;
 }
 .bookmark-detail .input-url {
-  padding-left: 25px;
+  padding-left: 25px !important;
   background-position: 5px;
-}
-.bookmatks-detail ul.tagit li.tagit-choice,
-.bulk-actions ul.tagit li.tagit-choice {
-  padding: .1cm .5cm .1cm .2cm;
-}
-.bulk-actions ul.tagit li.tagit-new,
-.bookmarks-detail ul.tagit li.tagit-new {
-  float: none;
-  display: inline-block;
-  padding: 0 !important;
-  cursor: auto;
-  margin: 0;
 }
 .bookmark-detail .input-desc {
   height: 300px;

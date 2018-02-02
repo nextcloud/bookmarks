@@ -1,8 +1,10 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
+import Tags from '../models/Tags'
 import TagsNavigationView from './TagsNavigation'
+import TagsSelectionView from './TagsSelection'
 import templateStringDefault from '../templates/BookmarkDetail_default.html'
-import templateStringEditing from '../templates/BookmarkDetail_default.html'
+import templateStringEditing from '../templates/BookmarkDetail_editing.html'
 
 const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
@@ -20,7 +22,6 @@ export default Marionette.View.extend({
   regions: {
     'tags': {
       el: '.tags'
-    , replaceElement: true
     }
   },
   ui: {
@@ -38,26 +39,17 @@ export default Marionette.View.extend({
   initialize: function(opts) {
     this.app = opts.app
     this.listenTo(this.model, "change", this.render);
-    this.listenTo(app.tags, 'sync', this.render)
+    this.listenTo(this.app.tags, 'sync', this.render)
   },
   onRender: function() {
     var that = this
+    this.tags = new Tags(this.model.get('tags').map(function(id) {
+      return that.app.tags.findWhere({name: id})
+    }))
     if (this.editing) {
-      this.$('.tags input')
-      .val(this.model.get('tags').join(','))
-      .tagit({
-        allowSpaces: true,
-        availableTags: this.app.tags.pluck('name'),
-        placeholderText: t('bookmarks', 'Enter tags'),
-        onTagRemoved: function() {},
-        onTagFinishRemoved: function() {},
-        onTagClicked: function(){}
-      })
+      this.showChildView('tags', new TagsSelectionView({collection: this.app.tags, selected: this.tags, app: this.app }))
     }else{
-      var tags = new Tags(this.model.get('tags').map(function(id) {
-        return that.app.tags.findWhere({name: id})
-      }))
-      this.showChildView('tags', new TagsNavigationView({collection: tags}))
+      this.showChildView('tags', new TagsNavigationView({collection: this.tags}))
     }
   },
   close: function() {
@@ -81,7 +73,7 @@ export default Marionette.View.extend({
     this.model.set({
       'title': this.$('.input-title').val()
     , 'url': this.$('.input-url').val()
-    , 'tags': this.$('.tags input').tagit("assignedTags")
+    , 'tags': this.tags.pluck('name')
     , 'description': this.$('.input-desc').val()
     })
     this.model.save({wait: true})

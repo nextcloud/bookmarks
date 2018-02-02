@@ -1,4 +1,5 @@
 import Backbone from 'backbone'
+import Tags from '../models/Tags'
 import TagView from './TagsManagementTag'
 
 const Marionette = Backbone.Marionette

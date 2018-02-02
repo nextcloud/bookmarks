@@ -1,5 +1,6 @@
 import Backbone from 'backbone'
 import Bookmarks from './models/Bookmarks'
+import Tag from './models/Tag'
 import Tags from './models/Tags'
 import Router from './Router'
 import AppView from './views/App'
