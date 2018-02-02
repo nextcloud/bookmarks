@@ -1,1 +1,15 @@
-<div class="close icon-close"></div><h1><input class="input-title" type="text" value="<%- title %>" /></h1><h2><input type="type" class="input-url icon-external" value="<%- url %>" /></h2><div class="tags"><input type="text" /></div><div class="description"><textarea class="input-desc"><%- description %></textarea></div><div class="actions editing"><button class="submit primary"><span class="icon-checkmark"></span> <span>Save</span></button><button class="cancel">Cancel</button></div>
+<div class="close icon-close" title="<%- t('bookmarks', 'Close') %>"></div>
+<h1><input class="input-title" type="text" value="<%- title %>" placeholder="<%- t('bookmarks', 'The title of the page') %>" /></h1>
+<h2><input type="type" class="input-url icon-external" value="<%- url %>" placeholder="<%- t('bookmarks', 'The address of the page') %>" /></h2>
+<div class="tags">
+	<input type="text" />
+</div>
+<div class="description">
+	<textarea class="input-desc" placeholder="<%- t('bookmarks', 'A description of the page') %>"><%- description %></textarea>
+</div>
+<div class="actions editing">
+	<button class="submit primary">
+		<span class="icon-checkmark"></span> <span><%- t('bookmarks', 'Save') %></span>
+	</button>
+	<button class="cancel"><%- t('bookmarks', 'Cancel') %></button>
+</div>
