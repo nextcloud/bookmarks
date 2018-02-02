@@ -3,7 +3,7 @@ import Backbone from 'backbone'
 import Bookmark from '../models/Bookmark'
 import templateString from '../templates/AddBookmark.html'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({

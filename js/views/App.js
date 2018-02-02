@@ -8,7 +8,7 @@ import ContentView from './Content'
 import SettingsView from './Settings'
 import templateString from '../templates/App.html'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
@@ -36,8 +36,7 @@ export default Marionette.View.extend({
     }
   }
 , initialize: function(options) {
-    this.bookmarks = options.bookmarks
-    this.tags = options.tags
+    this.app = options.app
     this.searchController = new SearchController
     
     $(window.document).click(function(e) {
@@ -47,8 +46,8 @@ export default Marionette.View.extend({
 , onRender: function() {
     this.showChildView('addBookmarks', new AddBookmarkView());
     this.showChildView('navigation', new NavigationView);
-    this.showChildView('content', new ContentView({bookmarks: this.bookmarks})); 
-    this.showChildView('tags', new TagsManagementView({collection: this.tags}))
+    this.showChildView('content', new ContentView({app: this.app})); 
+    this.showChildView('tags', new TagsManagementView({collection: this.app.tags}))
     this.showChildView('settings', new SettingsView())
   }
 })

@@ -2,7 +2,7 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import templateString from '../templates/EmptyBookmarks.html'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({

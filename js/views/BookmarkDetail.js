@@ -4,7 +4,7 @@ import TagsNavigationView from './TagsNavigation'
 import templateStringDefault from '../templates/BookmarkDetail_default.html'
 import templateStringEditing from '../templates/BookmarkDetail_default.html'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
@@ -36,16 +36,18 @@ export default Marionette.View.extend({
   , 'click .cancel': 'cancel'
   },
   initialize: function(opts) {
+    this.app = opts.app
     this.listenTo(this.model, "change", this.render);
     this.listenTo(app.tags, 'sync', this.render)
   },
   onRender: function() {
+    var that = this
     if (this.editing) {
       this.$('.tags input')
       .val(this.model.get('tags').join(','))
       .tagit({
         allowSpaces: true,
-        availableTags: app.tags.pluck('name'),
+        availableTags: this.app.tags.pluck('name'),
         placeholderText: t('bookmarks', 'Enter tags'),
         onTagRemoved: function() {},
         onTagFinishRemoved: function() {},
@@ -53,7 +55,7 @@ export default Marionette.View.extend({
       })
     }else{
       var tags = new Tags(this.model.get('tags').map(function(id) {
-        return app.tags.findWhere({name: id})
+        return that.app.tags.findWhere({name: id})
       }))
       this.showChildView('tags', new TagsNavigationView({collection: tags}))
     }

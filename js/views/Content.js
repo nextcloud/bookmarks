@@ -7,7 +7,7 @@ import BookmarksView from './Bookmarks'
 import BookmarkDetailView from './BookmarkDetail'
 import templateString from '../templates/Content.html'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
@@ -31,7 +31,8 @@ export default Marionette.View.extend({
     }
   }
 , initialize: function(options) {
-    this.bookmarks = options.bookmarks
+    this.app = options.app
+    this.bookmarks = this.app.bookmarks
     this.selected = new Bookmarks
     this.listenTo(this.bookmarks, 'select', this.onSelect)
     this.listenTo(this.bookmarks, 'unselect', this.onUnselect)
@@ -42,14 +43,14 @@ export default Marionette.View.extend({
   }
 , onRender: function() {
     this.showChildView('mobileNav', new MobileNavView())
-    this.showChildView('bulkActions', new BulkActionsView({all: this.bookmarks, selected: this.selected}))
-    this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks}));
+    this.showChildView('bulkActions', new BulkActionsView({selected: this.selected, app: this.app}))
+    this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks, app: this.app}));
   }
 , onSelect: function(model) {
     if (this.selected.length == 0) {
-      this.$el.addClass('selection-active')
-	}
-	this.selected.add(model)
+        this.$el.addClass('selection-active')
+    }
+    this.selected.add(model)
   }
 , onUnselect: function(model) {
     if (this.selected.length == 1) {
@@ -59,7 +60,7 @@ export default Marionette.View.extend({
   }
 , onShowDetails: function(model) {
     var that = this
-    var view = new BookmarkDetailView({model: model})
+    var view = new BookmarkDetailView({model: model, app: this.app})
     this.showChildView('bookmarkDetail', view)
   }
 , onEditDetails: function(model) {
