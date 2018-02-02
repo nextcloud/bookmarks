@@ -7,6 +7,7 @@
 }
 #app-navigation > ul {
   height: auto;
+  overflow: hidden;
 }
 .navigation a > span {
   display: inline-block;
@@ -352,7 +353,7 @@ button span,
 .tags-management {
   float: left;
   width: 250px;
-  overflow: visible !important;
+  overflow: auto !important;
 }
 @media only screen and (max-width: 768px) {
   .tags-management {
