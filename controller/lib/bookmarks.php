@@ -199,7 +199,7 @@ class Bookmarks {
 
 		if ($dbType == 'pgsql') {
 			$qb->selectAlias($qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"), 'tags');
-        }else{
+		}else{
 			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')'), 'tags');
 		}
 		if (!in_array($sqlSortColumn, $tableAttributes)) {
@@ -283,7 +283,7 @@ class Bookmarks {
 				}
 			}
 			$filterExpressions[] = call_user_func_array([$qb->expr(), 'orX'], $expr);
-      		$i++;
+			$i++;
 		}
 		if ($connectWord == 'AND') {
 			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $filterExpressions);
@@ -649,7 +649,7 @@ class Bookmarks {
 	 * @brief Load Url and receive Metadata (Title)
 	 * @param string $url Url to load and analyze
 	 * @param bool $tryHarder modifies cURL options for another atttempt if the
-	 *                        first request did not succeed (e.g. cURL error 18)
+	 *						  first request did not succeed (e.g. cURL error 18)
 	 * @return array Metadata for url;
 	 * @throws \Exception|ClientException
 	 */
