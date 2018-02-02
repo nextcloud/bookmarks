@@ -1,5 +1,7 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
+import Tag from '../models/Tag'
+import Tags from '../models/Tags'
 
 const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
@@ -9,8 +11,8 @@ export default Marionette.View.extend({
 , template: _.template('')
 , className: 'tags-selection'
 , events: {
-    'select2:select': 'onAdd'
-  , 'select2:unselect': 'onRemove'
+    'select2:select': 'onAddByUser'
+  , 'select2:unselect': 'onRemoveByUser'
   }
 , initialize: function(options) {
     this.app = options.app 
@@ -44,21 +46,16 @@ export default Marionette.View.extend({
     this.$el.select2('destroy')
   }
 , onAddByUser: function(e) {
-    if (this.triggeredByAlgo) {
-      return this.triggeredByAlgo = false
-    }
-    this.selected.add(this.app.tags.get(e.params.data.id))
+    var tag = this.app.tags.get(e.params.data.text) || new Tag({name: e.params.data.text})
+    this.selected.add(tag)
   }
 , onRemoveByUser: function(e) {
-    if (this.triggeredByAlgo) {
-      return this.triggeredByAlgo = false
-    }
-    this.selected.remove(this.app.tags.get(e.params.data.id))
+    var tag = this.app.tags.get(e.params.data.text) || new Tag({name: e.params.data.text})
+    this.selected.remove(tag)
   }
 , onChangeByAlgo: function(e) {
     this.$el
     .val(this.selected.pluck('name'))
     .trigger('change')
-    this.triggeredByAlgo = true
   }
 })
