@@ -1,5 +1,5 @@
 <?php
-script('bookmarks', 'bookmarks');
+script('bookmarks', 'dist/bundle');
 style('bookmarks', 'bookmarks');
 
 

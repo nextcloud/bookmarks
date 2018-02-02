@@ -3,7 +3,7 @@ import Backbone from 'backbone'
 import templateStringDefault from '../templates/TagsManagementTag_default.html'
 import templateStringEditing from '../templates/TagsManagementTag_editing.html'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
@@ -15,8 +15,8 @@ export default Marionette.View.extend({
     }
     return this.templateDefault
   }
-, templateDefault: _.template(templateString_default)
-, templateEditing: _.template(templateString_editing)
+, templateDefault: _.template(templateStringDefault)
+, templateEditing: _.template(templateStringEditing)
 , ui: {
     'actionsMenu': '.popovermenu'
   , 'actionsToggle': '.app-navigation-entry-utils-menu-button'

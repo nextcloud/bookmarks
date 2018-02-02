@@ -1,7 +1,7 @@
 import Backbone from 'backbone'
 import TagView from './TagsManagementTag'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.CollectionView.extend({

@@ -3,7 +3,7 @@ import Backbone from 'backbone'
 import TagsNavigationView from './TagsNavigation'
 import templateString from '../templates/BookmarkCard.html'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
@@ -27,7 +27,8 @@ export default Marionette.View.extend({
   , 'click .action-select': 'select'
   , 'click .action-unselect': 'select'
   },
-  initialize: function() {
+  initialize: function(opts) {
+    this.app = opts.app
     this.listenTo(this.model, "change", this.render);
     this.listenTo(this.model, "select", this.onSelect);
     this.listenTo(this.model, "unselect", this.onUnselect);
@@ -35,9 +36,10 @@ export default Marionette.View.extend({
     this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions) 
   }
 , onRender: function() {
-	this.$el.css('background-image', 'url(bookmark/'+this.model.get('id')+'/image)')
+	  var that = this
+    this.$el.css('background-image', 'url(bookmark/'+this.model.get('id')+'/image)')
     var tags = new Tags(this.model.get('tags').map(function(id) {
-      return app.tags.findWhere({name: id})
+      return that.app.tags.findWhere({name: id})
     }))
     this.showChildView('tags', new TagsNavigationView({collection: tags}))
     this.$('.checkbox').prop('checked', this.$el.hasClass('active'))

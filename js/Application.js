@@ -4,7 +4,7 @@ import Tags from './models/Tags'
 import Router from './Router'
 import AppView from './views/App'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 
 export default Marionette.Application.extend({
   region: '#content'
@@ -26,7 +26,7 @@ export default Marionette.Application.extend({
     this.router = new Router({app: this})
   }
 , onStart: function() {
-    this.showView(new AppView({bookmarks: this.bookmarks, tags: this.tags}));
+    this.showView(new AppView({app: this}));
     Backbone.history.start();
   }
 , onTagChanged: function(tag) {

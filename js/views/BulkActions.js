@@ -2,7 +2,7 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import templateString from '../templates/BulkActions.html'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.View.extend({
@@ -14,19 +14,20 @@ export default Marionette.View.extend({
   , 'click .selection-tools .close': 'abort'
   }
 , initialize: function(opts) {
-    this.all = opts.all
+    this.app = opts.app
+    this.all = this.app.bookmarks
     this.selected = opts.selected
     this.listenTo(this.selected, 'remove', this.onReduceSelection)
     this.listenTo(this.selected, 'add', this.onExtendSelection)
   }
 , onRender: function() {
     // hack to ignore events caused by tagit setup -- we should really get something else...
-	this.rendering = true
+    this.rendering = true
     this.$('.tags input')
     .val(_.intersection.apply(_, this.selected.pluck('tags')).join(','))
     .tagit({
       allowSpaces: true,
-      availableTags: app.tags.pluck('name'),
+      availableTags: this.app.tags.pluck('name'),
       placeholderText: t('bookmarks', 'Enter tags'),
       onTagRemoved: this.onTagRemoved.bind(this),
       onTagAdded: this.onTagAdded.bind(this),

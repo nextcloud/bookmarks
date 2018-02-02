@@ -4,7 +4,7 @@ import Tags from './models/Tags'
 import Router from './Router'
 import AppView from './views/App'
 
-const Marionette = Backone.Marionette
+const Marionette = Backbone.Marionette
 const Radio = Backbone.Radio
 
 export default Marionette.AppRouter.extend({
