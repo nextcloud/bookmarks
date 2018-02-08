@@ -1,6 +1,6 @@
-import Backbone from 'backbone'
+import Backbone from 'backbone';
 
 export default Backbone.Model.extend({
-  idAttribute: 'name'
-, urlRoot: 'tag'
-})
+	idAttribute: 'name',
+	urlRoot: 'tag'
+});
