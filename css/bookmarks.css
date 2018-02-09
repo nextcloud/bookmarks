@@ -1,1 +1,429 @@
+#content > div {
+  height: 100%;
+}
+#app-navigation {
+  height: 100%;
+  position: relative;
+}
+#app-navigation > ul {
+  height: auto;
+  overflow: hidden;
+}
+.navigation a > span {
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin-right: 12px;
+}
+#app-navigation h3 {
+	padding-top: .7cm;
+	padding-left: 12px;
+	border-top: 1px solid #ededed;
+}
 
+#app-content {
+  transition: transform .5s ease;
+  transform: none;
+}
+.mobile-nav {
+  padding: .3cm;
+  display: none;
+}
+.mobile-nav .toggle-menu {
+  display: inline-block;
+}
+@media only screen and (max-width: 768px) {
+  .mobile-nav-open #app-content {
+    transform: translate(250px, 0);
+  }
+  .mobile-nav {
+    display: block;
+  }
+}
+
+.add-bookmark input {
+	margin: 0;
+	width: 100%;
+	padding: 12px 40px 12px 12px;
+	box-sizing: border-box;
+	background-color: transparent;
+	border: none;
+	border-bottom: 1px solid #eee;
+	border-radius: 0;
+}
+.add-bookmark button {
+	position: absolute;
+	right: 0;
+	top: 0;
+  min-height: 34px;
+	padding: 10px 20px;
+	background-color: transparent;
+	border: none;
+	opacity: .5;
+  font-weight: bold;
+}
+.add-bookmark li.link a span {
+  margin-left: 28px;
+}
+.add-bookmark li.link a span::before {
+	position: absolute;
+	left: 12px;
+	content: '+';
+	font-weight: bold;
+	font-size: 28px;
+}
+.add-bookmark .form {
+  display: none;
+}
+
+.bulk-actions {
+  display: none;
+  position: fixed;
+  top: 45px;
+  left: 250px;
+  right: 0;
+  border-bottom: 1px solid #ebebeb;
+  padding: .3cm .5cm;
+  background: #e9f7ff;
+  z-index: 3;
+}
+.bulk-actions + * {
+  transition: margin-top .5s ease;
+}
+.bulk-actions.active {
+  display: block;
+}
+.bulk-actions.active + * {
+  margin-top: 2.5cm;
+}
+@media only screen and (max-width: 768px) {
+  .bulk-actions {
+    position: relative;
+	top: 0; right: 0; bottom: 0; left: 0;
+  }
+  .bulk-actions.active + * {
+    margin-top: 0;
+  }
+}
+.bulk-actions > button {
+  vertical-align: top;
+}
+.bulk-actions .tags {
+  display: inline-block;
+  width: 60%;
+  margin: 3px 3px 3px 0;
+  position: relative;
+}
+.bulk-actions .tags-selection {
+  display: block;
+  width: 100%;
+}
+.bulk-actions .selection-tools {
+  float: right;
+}
+.bulk-actions .selection-tools .close {
+  display: inline-block;
+  cursor: pointer;
+  margin: 3px 3px 3px 0; 
+  padding: 6px 12px;
+  width: auto;
+  min-height: 34px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.bulk-actions .selection-tools .close span {
+  display: inline-block;
+  vertical-align: text-top;
+}
+button span,
+.bulk-actions .selection-tools .close span {
+  cursor: pointer;
+}
+
+.bookmarks-empty {
+  width: 5cm;
+  margin: 20% auto;
+}
+
+.bookmarks {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  padding-right: .6cm;
+}
+.bookmark-card {
+  position: relative;
+  box-sizing: border-box; /*necessary for hover effect goodness to work*/
+  flex-grow: 1;
+  width: 6cm;
+  height: 6cm;
+  margin: .6cm 0 0 .6cm;
+  padding: .5cm;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  background-color: rgb(210, 210, 210);
+  background-size: cover;
+  background-position: center;
+  transition: background-color .3s ease;
+  background-blend-mode: overlay;
+}
+.bookmark-card,
+.bookmark-card * {
+  cursor: pointer;
+}
+.bookmark-card:hover {
+  background-color: rgb(180, 180, 180);
+}
+.bookmark-card.active,
+.bookmark-card.active:hover {
+  transform: none;
+  border: 1px solid #0082c9;
+  box-shadow: inset 0 0 10px #0082c9;
+}
+.bookmark-card .panel {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: .5cm .5cm .1cm .6cm;
+  background: rgba(255, 255, 255, .8);
+  box-shadow: #aaa 0 0 5px;
+}
+.bookmark-card:hover .panel {
+  background: rgba(255, 255, 255, .90); 
+}
+.bookmark-card .selectbox {
+  display: none;
+  position: absolute;
+  left: .1cm;
+  top: .5cm;
+}
+.selection-active .bookmark-card .selectbox,
+.bookmark-card:hover .selectbox,
+.bookmark-card.active .selectbox {
+  display: inline-block;
+}
+.bookmark-card h1 {
+  font-size: .5cm;
+  padding-right: .5cm;
+}
+.bookmark-card h2 {
+  margin-top: .1cm;
+  font-size: .4cm;
+  opacity: .4;
+}
+.bookmark-card h2 :link span {
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin-right: 3px;
+}
+.bookmark-card h2 :link:hover {
+  text-decoration: underline;
+}
+.bookmark-card .actions {
+  display: none;
+  position: absolute;
+  top: .5cm;
+  right: .5cm;
+}
+.bookmark-card:hover .actions,
+.bookmark-card.actions-open .actions {
+  display: block;
+}
+.bookmark-card .actions .popovermenu {
+  top: 24px;
+  right: -14px;
+}
+.bookmark-card .actions .action-select,
+.bookmark-card.active .actions .action-unselect {
+  display: block;
+}
+.bookmark-card .actions .action-unselect,
+.bookmark-card.active .actions .action-select {
+  display: none;
+}
+.bookmark-card .tags {
+  max-height: 2.5cm;
+  overflow: hidden;
+  position: absolute;
+  bottom: .5cm;
+}
+.bookmark-card .tag-nav-item {
+  border-radius: .2cm;
+  background: #ebebeb;
+  display: inline-block;
+  padding: 0 .2cm;
+  margin: .1cm;
+}
+.bookmark-card .tag-nav-item:hover {
+  background: #e0e0e0;
+}
+
+.bookmark-detail {
+  position: fixed;
+  top: 45px;
+  right: 0;
+  z-index: 2;
+  width: 500px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 1cm;
+  background: white;
+  border-left: 1px solid #ebebeb;
+}
+@media only screen and (max-width: 768px) {
+  .bookmark-detail {
+    width: auto;
+    left: 0;
+  }
+}
+.bookmark-detail h1 {
+  font-size: .8cm;
+  line-height: 1;
+  padding-right: 2.3cm;
+}
+.bookmark-detail h2 {
+  margin-top: .3cm;
+  opacity: .4;
+}
+.bookmark-detail h2 :link:hover {
+  text-decoration: underline;
+}
+.bookmark-detail h2 :link span {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 3px;
+}
+.bookmark-detail > .close {
+  position: absolute;
+  top: .1cm;
+  right: .1cm;
+  width: 1cm;
+  height: 1cm;
+  cursor: pointer;
+}
+.bookmark-detail .actions {
+  position: absolute;
+  right: 1cm;
+}
+.bookmark-detail .actions button {
+  height: 1cm;
+  width: 1cm;
+}
+.bookmark-detail .select2-container--default .select2-selection--multiple .select2-selection__choice,
+.bulk-actions .select2-container--default .select2-selection--multiple .select2-selection__choice,
+.bookmark-detail .tag-nav-item {
+  border-radius: .2cm;
+  border: none;
+  background: #ebebeb;
+  display: inline-block;
+  padding: .1cm .2cm;
+  margin: .1cm;
+}
+.bookmark-detail .select2-container--default .select2-selection--multiple .select2-selection__choice:hover,
+.bulk-actions .select2-container--default .select2-selection--multiple .select2-selection__choice:hover,
+.bookmark-detail .tag-nav-item:hover {
+  background: #e0e0e0;
+}
+.bookmark-detail .description {
+  margin-top: .5cm;
+}
+
+.bookmark-detail.editing h1 {
+  padding-right: 0;
+}
+.bookmark-detail.editing .actions button {
+  height: auto;
+  width: auto;
+}
+.bookmark-detail .input-url,
+.bookmark-detail .input-title,
+.bookmark-detail .input-desc,
+.bookmark-detail .tags-selection  {
+  width: 100%;
+  font-size: inherit;
+  box-sizing: border-box;
+  padding: 0 !important;
+}
+.bookmark-detail .input-url {
+  padding-left: 25px !important;
+  background-position: 5px;
+}
+.bookmark-detail .input-desc {
+  height: 300px;
+}
+
+.tags-management {
+  float: left;
+  width: 250px;
+  overflow: auto !important;
+}
+@media only screen and (max-width: 768px) {
+  .tags-management {
+    width: auto;
+    float: none;
+    border-bottom: 2px solid #bbb;
+  }
+}
+.tags-management > ul:first-child > li:last-child {
+  border-bottom: 2px solid #ebebeb;
+}
+.tags-management .tag-man-item {
+  /*padding: .3cm;*/
+  cursor: pointer;
+}
+.tags-management .tag-man-item.active {
+  background: #f3f3f3;
+}
+.tags-management .tag-man-item > a {
+  padding-left: .2cm;
+}
+.tags-management .tag-man-item .actions {
+  float: right;
+}
+
+.tags-management .tag-man-item .actions ul {
+  display: block !important;
+}
+.tags-management .tag-man-item .actions .action {
+  display: inline-block;
+  width: auto !important;
+}
+.tags-management .tag-man-item .action button {
+	border: none;
+	background-color: transparent;
+	opacity: .45;
+  padding: 3px 12px;
+}
+.tags-management .tag-man-item .action button:hover {
+  opacity: 1;
+}
+.tags-management .tag-man-item input[type="text"] {
+  min-height: .7cm;
+  padding: 0 .1cm;
+  margin: 0;
+  width: 70%;
+}
+
+/* make checkbox look like an icon */
+.menu-item-checkbox span:first-child {
+  padding: 0 10px;
+}
+
+/* display 'remove from filter' when selected, and 'add to ...' when unselected*/
+.tags-management .tag-man-item.active .menu-filter-add {
+  display: none;
+}
+.tags-management .tag-man-item .menu-filter-remove {
+  display: none;
+}
+.tags-management .tag-man-item.active .menu-filter-remove {
+  display: block;
+}
+
+.settings .import-form {
+  display: inline-block;
+}
+.settings .import {
+  display: none;
+}
+.settings .upload {
+  display: none;
+}
