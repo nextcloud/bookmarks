@@ -632,8 +632,19 @@ class Bookmarks {
 			$tags = explode(',', $tagStr);
 
 			$descriptionStr = '';
-			if ($link->hasAttribute("description"))
-				$descriptionStr = $link->getAttribute("description");
+			if ($link->hasAttribute("description")) {
+				$desc_str = $link->getAttribute("description");
+			} else {
+				/* Get description from a following <DD> when link in a
+				 * <DT> (e.g., Delicious export, firefox) */
+				$parent = $link->parentNode;
+				if ($parent && $parent->tagName == "dt") {
+					$dd = $parent->nextSibling;
+					if ($dd->tagName == "dd") {
+						$desc_str = trim($dd->nodeValue);
+					}
+				}
+			}
 			try {
 				$this->addBookmark($user, $ref, $title, $tags, $descriptionStr);
 			} catch (\InvalidArgumentException $e) {
