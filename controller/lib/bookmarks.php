@@ -616,7 +616,7 @@ class Bookmarks {
 		libxml_use_internal_errors(true);
 		$dom = new \domDocument();
 
-		$dom->loadHTMLFile($file);
+		$dom->loadHTMLFile($file, \LIBXML_PARSEHUGE);
 		$links = $dom->getElementsByTagName('a');
 
 		$errors = [];
@@ -641,7 +641,6 @@ class Bookmarks {
 				$errors[] =  $this->l->t('Failed to import one bookmark, because: ') . $e->getMessage();
 			}
 		}
-
 		return $errors;
 	}
 
