@@ -184,53 +184,15 @@ class BookmarkController extends ApiController {
 	public function newBookmark($url = "", $item = array(), $title = "", $is_public = false, $description = "") {
 		$title = trim($title);
 		$image = null;
-
-		// do some meta tag inspection of the link...
-
-		// allow only http(s) and (s)ftp
-		$protocols = '/^(https?|s?ftp)\:\/\//i';
-		try {
-			if (preg_match($protocols, $url)) {
-				$data = $this->bookmarks->getURLMetadata($url);
-			} else {
-				// if no allowed protocol is given, evaluate https and https
-				foreach(['https://', 'http://'] as $protocol) {
-					$testUrl = $protocol . $url;
-					$data = $this->bookmarks->getURLMetadata($testUrl);
-					if(isset($data['title'])) {
-						break;
-					}
-				}
-			}
-		} catch (\Exception $e) {
-			// only because the server cannot reach a certain URL it does not
-			// mean the user's browser cannot.
-			\OC::$server->getLogger()->logException($e, ['app' => 'bookmarks']);
-		}
-		if (isset($data['url'])) {
-			$url   = $data['url'];
-		}
-		if ((!isset($title) || trim($title) === '')) {
-			$title =  isset($data['title'])? $data['title'] : $url;
-		}
-		if (isset($data['description']) && (!isset($description) || trim($description) === '')) {
-		  $description = $data['description'];
-		}
-		if (isset($data['image'])) {
-		  $image = $data['image'];
-		}
-
-		// Check if it is a valid URL (after adding http(s) prefix)
-		$urlData = parse_url($url);
-		if(!$this->isProperURL($urlData)) {
-			return new JSONResponse(array('status' => 'error'), Http::STATUS_BAD_REQUEST);
-		}
-
 		$tags = isset($item['tags']) ? $item['tags'] : array();
 
-		$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public, $image);
-		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
-		return new JSONResponse(array('item' => $bm, 'status' => 'success'));
+        try {
+            $id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public, $image);
+		} catch(\InvalidArgumentException $e) {
+			return new JSONResponse(array('status' => 'error', 'data' => [$e->getMessage()]), Http::STATUS_BAD_REQUEST);
+        }
+        $bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
+        return new JSONResponse(array('item' => $bm, 'status' => 'success'));
 	}
 
 	/**
@@ -298,7 +260,7 @@ class BookmarkController extends ApiController {
 
 		// Check if url and id are valid
 		$urlData = parse_url($bookmark['url']);
-		if(!$this->isProperURL($urlData) || !is_numeric($bookmark['id'])) {
+		if(!$this->bookmarks->isProperURL($urlData) || !is_numeric($bookmark['id'])) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
@@ -348,7 +310,7 @@ class BookmarkController extends ApiController {
 	public function clickBookmark($url = "") {
 		$url = urldecode($url);
 		$urlData = parse_url($url);
-		if(!$this->isProperURL($urlData)) {
+		if(!$this->bookmarks->isProperURL($urlData)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 		// prepare url for query
@@ -441,18 +403,4 @@ EOT;
 
 		return new ExportResponse($file);
 	}
-
-	/**
-	 * Checks whether parse_url was able to return proper URL data
-	 *
-	 * @param bool|array $urlData result of parse_url
-	 * @return bool
-	 */
-	protected function isProperURL($urlData) {
-		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
-			return false;
-		}
-		return true;
-	}
-
 }
