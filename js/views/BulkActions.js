@@ -57,7 +57,7 @@ export default Marionette.View.extend({
 		this.updateTags();
 	},
 	delete: function() {
-		this.selected.forEach(function(model) {
+		this.selected.slice().forEach(function(model) {
 			model.trigger('unselect', model);
 			model.destroy({
 				error: function() {
