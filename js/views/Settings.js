@@ -88,7 +88,7 @@ export default Marionette.View.extend({
 			return;
 		}
 		this.getUI('status').text(t('bookmark', 'Import completed successfully.'));
-		Backbone.history.navigate('all', {trigger: true});
+		Backbone.history.navigate('', {trigger: true}); // reload app
 	},
 	exportTrigger: function() {
 		window.location = 'bookmark/export?requesttoken='+oc_requesttoken;
