@@ -749,7 +749,7 @@ class Bookmarks {
 	 * @param bool|array $urlData result of parse_url
 	 * @return bool
 	 */
-	protected function isProperURL($urlData) {
+	public function isProperURL($urlData) {
 		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
 			return false;
 		}
