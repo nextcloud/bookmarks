@@ -470,10 +470,49 @@ class Bookmarks {
 	 */
 	public function addBookmark($userid, $url, $title, $tags = array(), $description = '', $isPublic = false, $image = null) {
 		$public = $isPublic ? 1 : 0;
-		$urlWithoutPrefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
-		if($urlWithoutPrefix === '') {
-			throw new \InvalidArgumentException('Bookmark URL is missing');
+		
+        // do some meta tag inspection of the link...
+
+		// allow only http(s) and (s)ftp
+		$protocols = '/^(https?|s?ftp)\:\/\//i';
+		try {
+			if (preg_match($protocols, $url)) {
+				$data = $this->getURLMetadata($url);
+			} else {
+				// if no allowed protocol is given, evaluate https and https
+				foreach(['https://', 'http://'] as $protocol) {
+					$testUrl = $protocol . $url;
+					$data = $this->getURLMetadata($testUrl);
+					if(isset($data['title'])) {
+						break;
+					}
+				}
+			}
+		} catch (\Exception $e) {
+			// only because the server cannot reach a certain URL it does not
+			// mean the user's browser cannot.
+			\OC::$server->getLogger()->logException($e, ['app' => 'bookmarks']);
 		}
+		if (isset($data['url'])) {
+			$url   = $data['url'];
+		}
+		if ((!isset($title) || trim($title) === '')) {
+			$title =  isset($data['title'])? $data['title'] : $url;
+		}
+		if (isset($data['description']) && (!isset($description) || trim($description) === '')) {
+		  $description = $data['description'];
+		}
+		if (isset($data['image']) && !isset($image)) {
+		  $image = $data['image'];
+		}
+
+		// Check if it is a valid URL (after adding http(s) prefix)
+        $urlData = parse_url($url);
+		if(!$this->isProperURL($urlData)) {
+			throw new \InvalidArgumentException('Invalid URL supplied');
+		}
+    
+        $urlWithoutPrefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
 		$decodedUrlNoPrefix = htmlspecialchars_decode($urlWithoutPrefix);
 		$decodedUrl = htmlspecialchars_decode($url);
 
@@ -704,4 +743,16 @@ class Bookmarks {
 		return $filterTag;
 	}
 
+	/**
+	 * Checks whether parse_url was able to return proper URL data
+	 *
+	 * @param bool|array $urlData result of parse_url
+	 * @return bool
+	 */
+	protected function isProperURL($urlData) {
+		if ($urlData === false || !isset($urlData['scheme']) || !isset($urlData['host'])) {
+			return false;
+		}
+		return true;
+	}
 }
