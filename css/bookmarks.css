@@ -61,19 +61,6 @@
 	opacity: .5;
   font-weight: bold;
 }
-.add-bookmark li.link a span {
-  margin-left: 28px;
-}
-.add-bookmark li.link a span::before {
-	position: absolute;
-	left: 12px;
-	content: '+';
-	font-weight: bold;
-	font-size: 28px;
-}
-.add-bookmark .form {
-  display: none;
-}
 
 .bulk-actions {
   display: none;
