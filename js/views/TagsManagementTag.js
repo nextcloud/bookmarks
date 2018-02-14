@@ -18,7 +18,7 @@ export default Marionette.View.extend({
 	templateDefault: _.template(templateStringDefault),
 	templateEditing: _.template(templateStringEditing),
 	ui: {
-		'actionsMenu': '.popovermenu',
+		'actionsMenu': '.app-navigation-entry-menu',
 		'actionsToggle': '.app-navigation-entry-utils-menu-button'
 	},
 	events: {

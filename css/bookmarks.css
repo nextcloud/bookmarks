@@ -338,9 +338,8 @@ button span,
 }
 
 .tags-management {
-  float: left;
-  width: 250px;
-  overflow: auto !important;
+  height: 80% !important;
+  height: calc(100% - 80px - 100px) !important;
 }
 @media only screen and (max-width: 768px) {
   .tags-management {
@@ -349,11 +348,7 @@ button span,
     border-bottom: 2px solid #bbb;
   }
 }
-.tags-management > ul:first-child > li:last-child {
-  border-bottom: 2px solid #ebebeb;
-}
 .tags-management .tag-man-item {
-  /*padding: .3cm;*/
   cursor: pointer;
 }
 .tags-management .tag-man-item.active {
