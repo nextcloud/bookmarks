@@ -2,7 +2,7 @@
 	<input type="checkbox" name="selector" class="checkbox"/>
 	<label class="selectbox" for="selector"  title="<%- t('bookmarks', 'Select') %>"></label>
 	<h1><%- title %></h1>
-	<h2><a href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2>
+	<h2><a target="_blank" href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2>
 	<div class="actions">
 		<div class="icon-more toggle" title="<%- t('bookmarks', 'Open menu') %>"></div>
 		<div class="popovermenu">

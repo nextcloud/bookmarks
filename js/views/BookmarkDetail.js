@@ -25,11 +25,13 @@ export default Marionette.View.extend({
 		}
 	},
 	ui: {
+		'link': 'h2 > a',
 		'close': '> .close',
 		'edit': '.edit',
 		'delete': '.delete'
 	},
 	events: {
+		'click @ui.link': 'clickLink',
 		'click @ui.close': 'close',
 		'click @ui.edit': 'edit',
 		'click @ui.delete': 'delete',
@@ -51,6 +53,9 @@ export default Marionette.View.extend({
 		}else{
 			this.showChildView('tags', new TagsNavigationView({collection: this.tags}));
 		}
+	},
+	clickLink: function() {
+		this.model.clickLink();
 	},
 	close: function() {
 		Radio.channel('details').trigger('close');

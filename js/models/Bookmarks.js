@@ -3,5 +3,6 @@ import Bookmark from './Bookmark';
 
 export default Backbone.Collection.extend({
 	model: Bookmark,
-	url: 'bookmark'
+	url: 'bookmark',
+	comparator: function(b) {return -b.get('clickcount');}
 });
