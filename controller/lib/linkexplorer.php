@@ -18,7 +18,8 @@ class LinkExplorer {
 		$previewClient = new LinkPreview($url);
 		$previewClient->getParser('general')->setMinimumImageDimension(0,0);
 		try {
-			$preview = $previewClient->getPreview('general');
+			libxml_use_internal_errors(false);
+            $preview = $previewClient->getPreview('general');
 		} catch (\Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException $e) {
 			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
 			return $data;
