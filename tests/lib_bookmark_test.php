@@ -2,12 +2,8 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
-use OCP\Http\Client\IClient;
-use OCP\Http\Client\IClientService;
-use OCP\Http\Client\IResponse;
+use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 use OCP\User;
 
 /**
@@ -225,105 +221,6 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.heise.de", $this->userid));
 		$this->libBookmarks->deleteUrl($this->userid, $id);
 		$this->assertFalse($this->libBookmarks->bookmarkExists("http://www.heise.de", $this->userid));
-	}
-
-	function testGetURLMetadata() {
-		$amazonResponse = $this->fetchMock(IResponse::class);
-		$amazonResponse->expects($this->once())
-			->method('getBody')
-			->will($this->returnValue(file_get_contents(__DIR__ . '/res/amazonHtml.file')));
-		$amazonResponse->expects($this->once())
-			->method('getHeader')
-			->with('Content-Type')
-			->will($this->returnValue(''));
-
-		$golemResponse = $this->fetchMock(IResponse::class);
-		$golemResponse->expects($this->once())
-			->method('getBody')
-			->will($this->returnValue(file_get_contents(__DIR__ . '/res/golemHtml.file')));
-		$golemResponse->expects($this->once())
-			->method('getHeader')
-			->with('Content-Type')
-			->will($this->returnValue('text/html; charset=UTF-8'));
-
-		$clientMock = $this->fetchMock(IClient::class);
-		$clientMock->expects($this->exactly(2))
-			->method('get')
-			->will($this->returnCallback(function ($page) use($amazonResponse, $golemResponse) {
-				if($page === 'amazonHtml') {
-					return $amazonResponse;
-				} else if($page === 'golemHtml') {
-					return $golemResponse;
-				}
-				return null;
-			}));
-
-		$clientServiceMock = $this->fetchMock(IClientService::class);
-		$clientServiceMock->expects($this->any())
-			->method('newClient')
-			->will($this->returnValue($clientMock));
-
-		$this->registerHttpService($clientServiceMock);
-
-		// ugly, but works
-		$db = \OC::$server->getDatabaseConnection();
-		$config = \OC::$server->getConfig();
-		$l = \OC::$server->getL10N('bookmarks');
-		$clientService = \OC::$server->getHTTPClientService();
-		$event = \OC::$server->getEventDispatcher();
-		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new Bookmarks($db, $config, $l, $clientService, $event, $logger);
-
-		$metadataAmazon = $this->libBookmarks->getURLMetadata('amazonHtml');
-		$this->assertTrue($metadataAmazon['url'] == 'amazonHtml');
-		$this->assertTrue(strpos($metadataAmazon['title'], 'ü') !== false);
-
-		$metadataGolem = $this->libBookmarks->getURLMetadata('golemHtml');
-		$this->assertTrue($metadataGolem['url'] == 'golemHtml');
-		$this->assertTrue(strpos($metadataGolem['title'], 'f&uuml;r') == false);
-	}
-
-	/**
-	 * @expectedException \GuzzleHttp\Exception\RequestException
-	 */
-	public function testGetURLMetaDataTryHarder() {
-		$url = 'https://yolo.swag/check';
-
-		$curlOptions = [ 'curl' =>
-			[ CURLOPT_HTTPHEADER => ['Expect:'] ]
-		];
-		if(version_compare(ClientInterface::VERSION, '6') === -1) {
-			$options = ['config' => $curlOptions];
-		} else {
-			$options = $curlOptions;
-		}
-
-		$exceptionMock = $this->getMockBuilder(RequestException::class)
-			->disableOriginalConstructor()
-			->getMock();
-		$clientMock = $this->fetchMock(IClient::class);
-		$clientMock->expects($this->exactly(2))
-			->method('get')
-			->withConsecutive(
-				[$url, []],
-				[$url, $options]
-			)
-			->willThrowException($exceptionMock);
-
-		$clientServiceMock = $this->fetchMock(IClientService::class);
-		$clientServiceMock->expects($this->any())
-			->method('newClient')
-			->will($this->returnValue($clientMock));
-
-		// ugly, but works
-		$db = \OC::$server->getDatabaseConnection();
-		$config = \OC::$server->getConfig();
-		$l = \OC::$server->getL10N('bookmarks');
-		$event = \OC::$server->getEventDispatcher();
-		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new Bookmarks($db, $config, $l, $clientServiceMock, $event, $logger);
-
-		$this->libBookmarks->getURLMetadata($url);
 	}
 
 	protected function tearDown() {
