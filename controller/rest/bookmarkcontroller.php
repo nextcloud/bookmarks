@@ -313,24 +313,12 @@ class BookmarkController extends ApiController {
 		if(!$this->bookmarks->isProperURL($urlData)) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		// prepare url for query
-		$url = $this->db->escapeLikeParameter(htmlspecialchars_decode($url));
-
-		$config = \OC::$server->getConfig();
-		$escape = '';
-		if(
-			strpos($config->getSystemValue('dbtype'),'sqlite') !== false
-			&& version_compare($config->getSystemValue('version'), 12, '<')
-		) {
-			// sqlite requires the ESCAPE declaration, which is added per default as of Nc 12
-			$escape = ' ESCAPE \'\\\'';
-		}
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->update('bookmarks')
 			->set('clickcount', $qb->createFunction('`clickcount` +1'))
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($this->userId)))
-			->andWhere($qb->expr()->like('url', $qb->createNamedParameter($url)) . $escape)
+			->andWhere($qb->expr()->eq('url', $qb->createNamedParameter(htmlspecialchars_decode($url))))
 			->execute();
 
 		return new JSONResponse(['status' => 'success'], Http::STATUS_OK);
