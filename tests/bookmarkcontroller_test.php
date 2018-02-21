@@ -55,7 +55,7 @@ class Test_BookmarkController extends TestCase {
 
 	function setupBookmarks() {
 		$this->testSubjectPrivateBmId = $this->libBookmarks->addBookmark($this->userid, "https://www.golem.de", "Golem", array("four"), "PublicNoTag", false);
-		$this->testSubjectPublicBmId = $this->libBookmarks->addBookmark($this->userid, "https://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->testSubjectPublicBmId = $this->libBookmarks->addBookmark($this->userid, "https://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 	}
 	
 	function testPrivateRead() {
@@ -64,7 +64,7 @@ class Test_BookmarkController extends TestCase {
 		$output = $this->controller->getSingleBookmark($this->testSubjectPublicBmId);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status']);
-		$this->assertEquals("https://www.9gag.com", $data['item']['url']);
+		$this->assertEquals("https://9gag.com", $data['item']['url']);
 	}
 
 	function testPublicReadSuccess() {
@@ -73,7 +73,7 @@ class Test_BookmarkController extends TestCase {
 		$output = $this->publicController->getSingleBookmark($this->testSubjectPublicBmId, $this->userid);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status']);
-		$this->assertEquals("https://www.9gag.com", $data['item']['url']);
+		$this->assertEquals("https://9gag.com", $data['item']['url']);
 	}
   
 	function testPublicReadFailure() {

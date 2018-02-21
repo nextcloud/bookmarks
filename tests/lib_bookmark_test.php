@@ -53,7 +53,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateTwoTags", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("one"), "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$outputPrivate = $this->libBookmarks->findBookmarks($this->userid, 0, "", [], true, -1, false);
 		$this->assertCount(5, $outputPrivate);
 		$outputPrivateFiltered = $this->libBookmarks->findBookmarks($this->userid, 0, "", ["one"], true, -1, false);
@@ -70,11 +70,11 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($secondUser, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$resultSetOne = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', array('one', 'three'), true, -1, false, array('url', 'title', 'tags'), 'or');
     $this->assertEquals(3, count($resultSetOne));
 		$resultOne = $resultSetOne[0];
@@ -112,11 +112,11 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($secondUser, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		
 		$firstUserTags = $this->libBookmarks->findTags($this->userid);
 		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
@@ -152,11 +152,11 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($secondUser, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		
 		$firstUserTags = $this->libBookmarks->findTags($this->userid);
 		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
@@ -198,7 +198,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 	function testEditBookmark() {
 		$this->cleanDB();
 		$control_bm_id = $this->libBookmarks->addBookmark($this->userid, "https://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($this->userid, "https://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "https://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$id = $this->libBookmarks->addBookmark($this->userid, "https://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->editBookmark($this->userid, $id, "https://www.google.de", "NewTitle", array("three", "four"));
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
