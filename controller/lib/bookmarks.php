@@ -657,7 +657,6 @@ class Bookmarks {
 	 * @return null
 	 * */
 	public function importFile($user, $file) {
-		libxml_use_internal_errors(true);
 		$dom = new \domDocument();
 
 		$dom->loadHTMLFile($file, \LIBXML_PARSEHUGE);
