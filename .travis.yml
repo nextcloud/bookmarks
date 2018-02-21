@@ -104,6 +104,7 @@ branches:
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y libxml2-utils
+  - composer install
   - wget https://raw.githubusercontent.com/$SERVER/before_install.sh
   - . ./before_install.sh "$APP_NAME" "$SERVER_BRANCH" "$DB"
   - cd ../core || cd ../server
