@@ -11,6 +11,7 @@ export default Marionette.View.extend({
 	template: _.template(templateString),
 	className: 'bookmark-card',
 	ui: {
+		'link': 'h2 > a',
 		'checkbox': '.selectbox',
 		'actionsToggle': '.actions .toggle',
 		'actionsMenu': '.actions .popovermenu'
@@ -20,8 +21,9 @@ export default Marionette.View.extend({
 	},
 	events: {
 		'click': 'open',
-		 'click @ui.checkbox': 'select',
-		 'click @ui.actionsToggle': 'toggleActions',
+		'click @ui.link': 'clickLink',
+		'click @ui.checkbox': 'select',
+		'click @ui.actionsToggle': 'toggleActions',
 		'blur @ui.actionsToggle': 'closeActions',
 		'click .action-edit': 'actionEdit',
 		'click .action-delete': 'actionDelete',
@@ -44,6 +46,9 @@ export default Marionette.View.extend({
 		}));
 		this.showChildView('tags', new TagsNavigationView({collection: tags}));
 		this.$('.checkbox').prop('checked', this.$el.hasClass('active'));
+	},
+	clickLink: function() {
+		this.model.clickLink();
 	},
 	open: function(e) {
 		if (e && e.target !== this.el && e.target !== this.$('h1')[0]) return;
