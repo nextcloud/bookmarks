@@ -197,30 +197,30 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 
 	function testEditBookmark() {
 		$this->cleanDB();
-		$control_bm_id = $this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($this->userid, "http://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
-		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		$this->libBookmarks->editBookmark($this->userid, $id, "http://www.google.de", "NewTitle", array("three", "four"));
+		$control_bm_id = $this->libBookmarks->addBookmark($this->userid, "https://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "https://www.9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$id = $this->libBookmarks->addBookmark($this->userid, "https://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->libBookmarks->editBookmark($this->userid, $id, "https://www.google.de", "NewTitle", array("three", "four"));
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("NewTitle", $bookmark['title']);
-		$this->assertEquals("http://www.google.de", $bookmark['url']);
+		$this->assertEquals("https://www.google.de", $bookmark['url']);
 		$this->assertEquals(['four', 'three'], $bookmark['tags']);
 		
 		// Make sure nothing else changed
 		$control_bookmark = $this->libBookmarks->findUniqueBookmark($control_bm_id, $this->userid);
 		$this->assertEquals("Golem", $control_bookmark['title']);
-		$this->assertEquals("http://www.golem.de", $control_bookmark['url']);
+		$this->assertEquals("https://www.golem.de", $control_bookmark['url']);
 		$this->assertEquals($control_bookmark['tags'], ['four']);
 	}
 
 	function testDeleteBookmark() {
 		$this->cleanDB();
-		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
-		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.google.de", $this->userid));
-		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("http://www.heise.de", $this->userid));
+		$this->libBookmarks->addBookmark($this->userid, "https://www.google.de", "Google", array("one"), "PrivateNoTag", false);
+		$id = $this->libBookmarks->addBookmark($this->userid, "https://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("https://www.google.de", $this->userid));
+		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("https://www.heise.de", $this->userid));
 		$this->libBookmarks->deleteUrl($this->userid, $id);
-		$this->assertFalse($this->libBookmarks->bookmarkExists("http://www.heise.de", $this->userid));
+		$this->assertFalse($this->libBookmarks->bookmarkExists("https://www.heise.de", $this->userid));
 	}
 
 	protected function tearDown() {
