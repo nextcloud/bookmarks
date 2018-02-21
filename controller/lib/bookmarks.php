@@ -31,8 +31,6 @@ use OCP\IL10N;
 use OCP\ILogger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Marcelklehr\LinkPreview\Client as LinkPreview;
-use Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException;
 
 class Bookmarks {
 
@@ -44,6 +42,9 @@ class Bookmarks {
 
 	/** @var IL10N */
 	private $l;
+	
+    /** @var LinkExplorer */
+	private $linkExplorer;
 
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
@@ -55,12 +56,14 @@ class Bookmarks {
 		IDBConnection $db,
 		IConfig $config,
 		IL10N $l,
+        LinkExplorer $linkExplorer,
 		EventDispatcherInterface $eventDispatcher,
 		ILogger $logger
 	) {
 		$this->db = $db;
 		$this->config = $config;
 		$this->l = $l;
+		$this->linkExplorer = $linkExplorer;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->logger = $logger;
 	}
@@ -699,34 +702,12 @@ class Bookmarks {
 	/**
 	 * @brief Load Url and receive Metadata (Title)
 	 * @param string $url Url to load and analyze
-	 * @param bool $tryHarder modifies cURL options for another atttempt if the
-	 *                        first request did not succeed (e.g. cURL error 18)
 	 * @return array Metadata for url;
 	 * @throws \Exception|ClientException
 	 */
 	public function getURLMetadata($url) {
-		$data = ['url' => $url];
-
-		// Use LinkPreview to get the meta data
-		$previewClient = new LinkPreview($url);
-		$previewClient->getParser('general')->setMinimumImageDimension(0,0);
-		try {
-			$preview = $previewClient->getPreview('general');
-		} catch (\Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException $e) {
-			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
-			return $data;
-		}
-		
-		$data = $preview->toArray();
-		if (!isset($data)) {
-			return ['url' => $url];
-		}
-
-		$data['url'] = (string) $previewClient->getUrl();
-		$data['image'] = $data['cover'];
-
-		return $data;
-	}
+	    return $this->linkExplorer->get($url);
+    }
 
 	/**
 	 * @brief Separate Url String at comma character
