@@ -4,6 +4,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 
@@ -43,10 +44,10 @@ class Test_BookmarkController extends TestCase {
 
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('bookmarks');
-		$clientService = \OC::$server->getHTTPClientService();
+		$linkExplorer = \OC::$server->query(LinkExplorer::class);
 		$event = \OC::$server->getEventDispatcher();
 		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $clientService, $event, $logger);
+		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $linkExplorer, $event, $logger);
 
 		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager);
 		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUser, $this->db, $l, $this->libBookmarks, $this->userManager);

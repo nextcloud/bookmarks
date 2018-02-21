@@ -26,10 +26,10 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$db = \OC::$server->getDatabaseConnection();
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('bookmarks');
-		$clientService = \OC::$server->getHTTPClientService();
+		$linkExplorer = \OC::$server->query(LinkExplorer::class);
 		$event = \OC::$server->getEventDispatcher();
 		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new Bookmarks($db, $config, $l, $clientService, $event, $logger);
+		$this->libBookmarks = new Bookmarks($db, $config, $l, $linkExplorer, $event, $logger);
 		
     $this->otherUser = "otheruser";
 		$this->userManager = \OC::$server->getUserManager();
