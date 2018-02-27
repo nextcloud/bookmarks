@@ -79,9 +79,9 @@
 	top: 45px;
 	left: 250px;
 	right: 0;
-	border-bottom: 1px solid #ebebeb;
-	padding: .3cm .5cm;
-	background: #e9f7ff;
+	box-shadow: 2px 1px 4px 0px #666;
+    padding: .3cm .5cm;
+	background: white;
 	z-index: 3;
 }
 
@@ -108,9 +108,8 @@
 	}
 
 	.bulk-actions.active + * {
-		margin-top: 0;
+		margin-top: 0 !important;
 	}
-
 }
 
 .bulk-actions > button {
@@ -152,6 +151,20 @@
 button span,
 .bulk-actions .selection-tools .close span {
 	cursor: pointer;
+}
+
+@media only screen and (max-width: 925px) {
+    .bulk-actions .tags {
+        width: 80%;
+    }
+    .bulk-actions .selection-tools {
+        float: none;
+        text-align: right;
+        margin-bottom: .5cm;
+    }
+	.bulk-actions.active + * {
+		margin-top: 3.5cm;
+	}
 }
 
 .bookmarks-empty {
