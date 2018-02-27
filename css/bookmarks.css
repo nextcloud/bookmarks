@@ -379,6 +379,9 @@ button span,
 .bookmark-detail.editing h1 {
 	padding-right: 0;
 }
+.bookmark-detail.editing h2 {
+	opacity: 1;
+}
 
 .bookmark-detail.editing .actions button {
 	height: auto;
