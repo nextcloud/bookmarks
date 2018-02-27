@@ -30,7 +30,6 @@ export default Marionette.View.extend({
 		}
 		this.$el.select2({
 			placeholder: t('bookmarks', 'Set tags'),
-			allowClear: true,
 			width: '100%',
 			tags: true,
 			multiple: true,
