@@ -635,3 +635,21 @@
 .select2-container--classic.select2-container--open .select2-dropdown {
 	border-color: #5897fb;
 }
+
+/* Nextcloud styling */
+
+.select2-selection__choice__remove,
+.select2-selection__clear {
+	font-size: .5cm;
+	vertical-align: bottom;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+	border-color: #0082c9;
+}
+.select2-container--default .select2-selection--multiple {
+	border-color: #dbdbdb;
+}
+.select2-container--default .select2-selection--multiple:hover {
+	border-color: #0082c9;
+}
