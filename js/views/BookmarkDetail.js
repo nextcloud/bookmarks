@@ -3,21 +3,13 @@ import Backbone from 'backbone';
 import Tags from '../models/Tags';
 import TagsNavigationView from './TagsNavigation';
 import TagsSelectionView from './TagsSelection';
-import templateStringDefault from '../templates/BookmarkDetail_default.html';
-import templateStringEditing from '../templates/BookmarkDetail_editing.html';
+import templateString from '../templates/BookmarkDetail.html';
 
 const Marionette = Backbone.Marionette;
 const Radio = Backbone.Radio;
 
 export default Marionette.View.extend({
-	getTemplate: function() {
-		if (this.editing) {
-			return this.templateEditing;
-		}
-		return this.templateDefault;
-	},
-	templateDefault: _.template(templateStringDefault),
-	templateEditing: _.template(templateStringEditing),
+	template: _.template(templateString),
 	className: 'bookmark-detail',
 	regions: {
 		'tags': {
@@ -33,8 +25,10 @@ export default Marionette.View.extend({
 	events: {
 		'click @ui.link': 'clickLink',
 		'click @ui.close': 'close',
-		'click @ui.edit': 'edit',
 		'click @ui.delete': 'delete',
+		'click h1': 'edit',
+		'click h2 .edit': 'edit',
+		'click .description': 'edit',
 		'click .submit': 'submit',
 		'click .cancel': 'cancel'
 	},
@@ -48,11 +42,8 @@ export default Marionette.View.extend({
 		this.tags = new Tags(this.model.get('tags').map(function(id) {
 			return that.app.tags.findWhere({name: id});
 		}));
-		if (this.editing) {
-			this.showChildView('tags', new TagsSelectionView({collection: this.app.tags, selected: this.tags, app: this.app }));
-		}else{
-			this.showChildView('tags', new TagsNavigationView({collection: this.tags}));
-		}
+		this.listenTo(this.tags, 'add remove', this.submitTags);
+		this.showChildView('tags', new TagsSelectionView({collection: this.app.tags, selected: this.tags, app: this.app }));
 	},
 	clickLink: function() {
 		this.model.clickLink();
@@ -60,34 +51,44 @@ export default Marionette.View.extend({
 	close: function() {
 		Radio.channel('details').trigger('close');
 	},
-	setEditing: function(isEditing) {
-		if (isEditing) {
-			this.editing = true;
-			this.$el.addClass('editing');
-		}else{
-			this.editing = false;
-			this.$el.removeClass('editing');
+	edit: function(e) {
+	    var that = this;
+		e.preventDefault();
+		
+		var $el = $(e.target).closest('[data-attribute]');
+		
+		switch($el.data('attribute')) {
+		case 'url':
+			$el.text(this.model.get('url'));
+			// fallthrough
+		case 'title':
+			$el.keydown(function(e) {
+				// enter
+				if (e.which === 13) {
+					that.submit($el);
+				}
+			});
+			break;
+		case 'description':
+			break;
 		}
-		this.render();
+		$el.prop('contenteditable', true);
+		$el.blur(function() {
+			that.submit($el);
+		});
+		$el.focus();
 	},
-	edit: function() {
-		this.setEditing(true);
-	},
-	submit: function() {
-		var that = this;
+	submitTags: function() {
 		this.model.set({
-			'title': this.$('.input-title').val(),
-			'url': this.$('.input-url').val(),
 			'tags': this.tags.pluck('name'),
-			'description': this.$('.input-desc').val()
 		});
 		this.model.save({wait: true});
-		this.model.once('sync', function() {
-			that.cancel();
-		});
 	},
-	cancel: function() {
-		this.setEditing(false);
+	submit: function($el) {
+		this.model.set({
+			[$el.data('attribute')]: $el.text()
+		});
+		this.model.save({wait: true});
 	},
 	onDestroy: function() {
 		this.close(); 

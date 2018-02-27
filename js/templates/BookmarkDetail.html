@@ -1,0 +1,14 @@
+<div class="close icon-close" title="<%- t('bookmarks', 'Close') %>"></div>
+<div class="actions">
+	<button class="delete icon-delete"></button>
+</div>
+<h1 data-attribute="title"><%- title %></h1>
+<h3>Link</h3>
+<h2 data-attribute="url">
+	<a target="_blank" href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a>
+	<a href="#" class="edit"><span class="icon-rename"></span></a>
+</h2>
+<h3><%- t('bookmarks', 'Tags') %></h3>
+<div class="tags"></div>
+<h3><%- t('bookmarks', 'Description') %></h3>
+<div class="description" data-attribute="description"><%- description %></div>
