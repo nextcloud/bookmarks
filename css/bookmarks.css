@@ -317,6 +317,7 @@ button span,
 	padding: 1cm;
 	background: white;
 	border-left: 1px solid #ebebeb;
+    color: #333;
 }
 
 @media only screen and (max-width: 768px) {
@@ -329,14 +330,22 @@ button span,
 }
 
 .bookmark-detail h1 {
-	font-size: .8cm;
-	line-height: 1;
+	font-size: .7cm;
+	line-height: 1.3;
 	padding-right: 2.3cm;
 }
 
 .bookmark-detail h2 {
 	margin-top: .3cm;
 	opacity: .4;
+}
+.bookmark-detail h2 .edit {
+    float: right;
+}
+.bookmark-detail h3 {
+	margin-top: 1cm;
+	margin-bottom: .3cm;
+    border-bottom: 1px solid #ebebeb;
 }
 
 .bookmark-detail h2 :link:hover {
@@ -387,39 +396,12 @@ button span,
 
 .bookmark-detail .description {
 	margin-top: .5cm;
+    font-size: .4cm;
+	/*for editing*/
+    width: auto;
+    min-height: 300px;
 }
 
-.bookmark-detail.editing h1 {
-	padding-right: 0;
-}
-.bookmark-detail.editing h2 {
-	opacity: 1;
-}
-
-.bookmark-detail.editing .actions button {
-	height: auto;
-	width: auto;
-}
-
-.bookmark-detail .input-url,
-.bookmark-detail .input-title,
-.bookmark-detail .input-desc,
-.bookmark-detail .tags-selection {
-	width: 100%;
-	font-size: inherit;
-	box-sizing: border-box;
-	padding: 0 !important;
-}
-
-.bookmark-detail .input-url {
-	padding-left: 25px !important;
-	background-position: 5px;
-}
-
-.bookmark-detail .input-desc {
-	height: 300px;
-    resize: vertical;
-}
 
 .tags-management {
 	height: 80% !important;

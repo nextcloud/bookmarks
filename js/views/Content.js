@@ -38,7 +38,6 @@ export default Marionette.View.extend({
 		this.listenTo(this.bookmarks, 'unselect', this.onUnselect);
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
 		this.listenTo(Radio.channel('details'), 'show', this.onShowDetails);
-		this.listenTo(Radio.channel('details'), 'edit', this.onEditDetails);
 		this.listenTo(Radio.channel('details'), 'close', this.onCloseDetails);
 	},
 	onRender: function() {
@@ -61,10 +60,6 @@ export default Marionette.View.extend({
 	onShowDetails: function(model) {
 		var view = new BookmarkDetailView({model: model, app: this.app});
 		this.showChildView('bookmarkDetail', view);
-	},
-	onEditDetails: function(model) {
-		this.onShowDetails(model);
-		this.getRegion('bookmarkDetail').currentView.setEditing(true);
 	},
 	onCloseDetails: function() {
 		this.detachChildView('bookmarkDetail');

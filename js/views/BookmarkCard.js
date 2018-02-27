@@ -25,7 +25,6 @@ export default Marionette.View.extend({
 		'click @ui.checkbox': 'select',
 		'click @ui.actionsToggle': 'toggleActions',
 		'blur @ui.actionsToggle': 'closeActions',
-		'click .action-edit': 'actionEdit',
 		'click .action-delete': 'actionDelete',
 		'click .action-select': 'select',
 		'click .action-unselect': 'select'
@@ -81,8 +80,5 @@ export default Marionette.View.extend({
 	},
 	actionDelete: function() {
 		this.model.destroy();
-	},
-	actionEdit: function() {
-		Radio.channel('details').trigger('edit', this.model);
 	}
 });
