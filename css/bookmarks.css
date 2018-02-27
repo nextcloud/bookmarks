@@ -402,6 +402,7 @@ button span,
 
 .bookmark-detail .input-desc {
 	height: 300px;
+    resize: vertical;
 }
 
 .tags-management {
@@ -465,7 +466,7 @@ button span,
 /* make checkbox look like an icon */
 
 .menu-item-checkbox span:first-child {
-	padding: 0 10px;
+  padding: 5px 5px;
 }
 
 /* display 'remove from filter' when selected, and 'add to ...' when unselected*/
