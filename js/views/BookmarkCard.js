@@ -43,7 +43,13 @@ export default Marionette.View.extend({
 		this.model.clickLink();
 	},
 	open: function(e) {
-		if (e && e.target !== this.el && e.target !== this.$('h1')[0]) return;
+		if (e && (e.target === this.getUI('checkbox')[0] || e.target === this.getUI('link')[0])) {
+			return;
+		}
+		if (this.$el.closest('.selection-active').length) {
+			this.select(e);
+			return
+		}
 		Radio.channel('details').trigger('show', this.model);
 	},
 	select: function(e) {
