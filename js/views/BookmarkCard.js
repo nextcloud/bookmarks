@@ -13,8 +13,6 @@ export default Marionette.View.extend({
 	ui: {
 		'link': 'h2 > a',
 		'checkbox': '.selectbox',
-		'actionsToggle': '.actions .toggle',
-		'actionsMenu': '.actions .popovermenu'
 	},
 	regions: {
 		'tags': '.tags'
@@ -23,11 +21,6 @@ export default Marionette.View.extend({
 		'click': 'open',
 		'click @ui.link': 'clickLink',
 		'click @ui.checkbox': 'select',
-		'click @ui.actionsToggle': 'toggleActions',
-		'blur @ui.actionsToggle': 'closeActions',
-		'click .action-delete': 'actionDelete',
-		'click .action-select': 'select',
-		'click .action-unselect': 'select'
 	},
 	initialize: function(opts) {
 		this.app = opts.app;
@@ -68,17 +61,5 @@ export default Marionette.View.extend({
 	onUnselect: function() {
 		this.$el.removeClass('active');
 		this.render();
-	},
-	toggleActions: function(e) {
-		this.getUI('actionsMenu').toggleClass('open');
-		this.$el.toggleClass('actions-open');
-	},
-	closeActions: function(e) {
-		if (e.target === this.getUI('actionsToggle')[0]) return;
-		this.getUI('actionsMenu').removeClass('open');
-		this.$el.removeClass('actions-open');
-	},
-	actionDelete: function() {
-		this.model.destroy();
 	}
 });
