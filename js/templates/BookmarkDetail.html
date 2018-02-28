@@ -11,4 +11,4 @@
 <h3><%- t('bookmarks', 'Tags') %></h3>
 <div class="tags"></div>
 <h3><%- t('bookmarks', 'Description') %></h3>
-<div class="description" data-attribute="description"><%- description %></div>
+<div class="description <%- !description.trim()? 'empty' : '' %>" data-attribute="description"><%- description.trim()? description : t('bookmarks', 'Add a description...') %></div>
