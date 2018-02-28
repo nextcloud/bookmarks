@@ -70,6 +70,9 @@ export default Marionette.View.extend({
 			});
 			break;
 		case 'description':
+			if ($el.hasClass('empty')) {
+				$el.text('')
+			}
 			break;
 		}
 		$el.prop('contenteditable', true);

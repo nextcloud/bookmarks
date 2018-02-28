@@ -333,6 +333,7 @@ button span,
 	font-size: .7cm;
 	line-height: 1.3;
 	padding-right: 2.3cm;
+    cursor: text;
 }
 
 .bookmark-detail h2 {
@@ -396,12 +397,16 @@ button span,
 
 .bookmark-detail .description {
 	margin-top: .5cm;
-    font-size: .4cm;
+	font-size: .4cm;
 	/*for editing*/
-    width: auto;
-    min-height: 300px;
+	width: auto;
+	min-height: 300px;
+	cursor: text;
 }
 
+.bookmark-detail .description.empty {
+	opacity: .4;
+}
 
 .tags-management {
 	height: 80% !important;
