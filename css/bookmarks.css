@@ -333,6 +333,43 @@ button span,
 	cursor: pointer;
 }
 
+.bookmark-detail .status {
+	position: absolute;
+	top: .4cm;
+	left: 1cm;
+	font-size: .4cm;
+	opacity: .4;
+}
+.bookmark-detail .status [class^="icon-"] {
+	display: inline-block;
+}
+.bookmark-detail .status .message {
+	display: none;
+}
+.bookmark-detail .status.saving .message.message-saving {
+	display: inline;
+	position: relative;
+	left: .2cm;
+}
+.bookmark-detail .status.saved .message.message-saved {
+	display: inline;
+	animation: fadeout ease 5s both 1;
+}
+@keyframes fadeout {
+	0% {
+		opacity: 1;
+		display: inline;
+	}
+	99% {
+		opacity: 0;
+		display: inline;
+	}
+	100% {
+		opacity: 0;
+		display: none;
+	}
+}
+
 .bookmark-detail .actions {
 	position: absolute;
 	right: 1cm;

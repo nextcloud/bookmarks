@@ -17,9 +17,7 @@ export default Marionette.Application.extend({
 			data: {count: true},
 			success: function() {
 				// we sadly cannot listen ot 'sync', which would fire after fetching, so we have to listen to these and add some timeout
-				that.listenTo(that.tags, 'sync', that.onTagChanged);
-				that.listenTo(that.tags, 'add', that.onTagChanged);
-				that.listenTo(that.tags, 'remove', that.onTagChanged);
+				that.listenTo(that.tags, 'sync add remove', that.onTagChanged);
 			}
 		});
 		this.listenTo(this.bookmarks, 'sync', this.onBookmarkTagsChanged);

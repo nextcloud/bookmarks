@@ -20,7 +20,8 @@ export default Marionette.View.extend({
 		'link': 'h2 > a',
 		'close': '> .close',
 		'edit': '.edit',
-		'delete': '.delete'
+		'delete': '.delete',
+		'status': '.status'
 	},
 	events: {
 		'click @ui.link': 'clickLink',
@@ -45,6 +46,13 @@ export default Marionette.View.extend({
 		}));
 		this.listenTo(this.tags, 'add remove', this.submitTags);
 		this.showChildView('tags', new TagsSelectionView({collection: this.app.tags, selected: this.tags, app: this.app }));
+		
+		if (this.savingState === 'saving') {
+			this.savingState = 'saved';
+		}
+		if (this.savingState === 'saved') {
+			this.getUI('status').addClass('saved');
+		}
 	},
 	clickLink: function() {
 		this.model.clickLink();
@@ -57,13 +65,17 @@ export default Marionette.View.extend({
 		e.preventDefault();
 		
 		var $el = $(e.target).closest('[data-attribute]');
-		
+
+		if ($el.prop('contenteditable') === true) {
+			return;
+		}
+
 		switch($el.data('attribute')) {
 		case 'url':
 			$el.text(this.model.get('url'));
 			// fallthrough
 		case 'title':
-			$el.keydown(function(e) {
+			$el.on('keydown', function(e) {
 				// enter
 				if (e.which === 13) {
 					that.submit($el);
@@ -77,7 +89,7 @@ export default Marionette.View.extend({
 			break;
 		}
 		$el.prop('contenteditable', true);
-		$el.blur(function() {
+		$el.one('blur', function() {
 			that.submit($el);
 		});
 		$el.focus();
@@ -87,12 +99,19 @@ export default Marionette.View.extend({
 			'tags': this.tags.pluck('name'),
 		});
 		this.model.save({wait: true});
+		this.savingState = 'saving';
+		this.getUI('status').removeClass('saved').addClass('saving');
 	},
 	submit: function($el) {
+		if (this.savingState === 'saving') {
+			return;
+		}
+		this.savingState = 'saving';
 		this.model.set({
 			[$el.data('attribute')]: $el.text()
 		});
 		this.model.save({wait: true});
+		this.getUI('status').removeClass('saved').addClass('saving');
 	},
 	delete: function() {
 		this.model.destroy()
