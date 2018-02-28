@@ -3,30 +3,5 @@
 	<label class="selectbox" for="selector"  title="<%- t('bookmarks', 'Select') %>"></label>
 	<h1><%- title %></h1>
 	<h2><a target="_blank" href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2>
-	<div class="actions">
-		<div class="icon-more toggle" title="<%- t('bookmarks', 'Open menu') %>"></div>
-		<div class="popovermenu">
-			<ul>
-				<li>
-					<button class="menu-item-checkbox action-select">
-						<span><input type="checkbox" name="select" class="checkbox" /><label for="select"></label></span>
-						<span><%- t('bookmarks', 'Select') %></span>
-					</button>
-				</li>
-				<li>
-					<button class="menu-item-checkbox action-unselect">
-						<span><input type="checkbox" name="select" checked class="checkbox" /><label for="select"></label></span>
-						<span><%- t('bookmarks', 'Unselect') %></span>
-					</button>
-				</li>
-				<li>
-					<button class="action-delete">
-						<span class="icon-delete"></span>
-						<span><%- t('bookmarks', 'Delete') %></span>
-					</button>
-				</li>
-			</ul>
-		</div>
-	</div>
 </div>
 <div class="tags"></div>

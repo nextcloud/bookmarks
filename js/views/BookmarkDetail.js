@@ -35,6 +35,7 @@ export default Marionette.View.extend({
 	initialize: function(opts) {
 		this.app = opts.app;
 		this.listenTo(this.model, 'change', this.render);
+		this.listenTo(this.model, 'destroy', this.onDestroy);
 		this.listenTo(this.app.tags, 'sync', this.render);
 	},
 	onRender: function() {
@@ -92,6 +93,9 @@ export default Marionette.View.extend({
 			[$el.data('attribute')]: $el.text()
 		});
 		this.model.save({wait: true});
+	},
+	delete: function() {
+		this.model.destroy()
 	},
 	onDestroy: function() {
 		this.close(); 

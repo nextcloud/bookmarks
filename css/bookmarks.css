@@ -227,16 +227,9 @@ button span,
 }
 
 .bookmark-card .selectbox {
-	display: none;
 	position: absolute;
 	left: .1cm;
 	top: .5cm;
-}
-
-.selection-active .bookmark-card .selectbox,
-.bookmark-card:hover .selectbox,
-.bookmark-card.active .selectbox {
-	display: inline-block;
 }
 
 .bookmark-card h1 {
@@ -258,33 +251,6 @@ button span,
 
 .bookmark-card h2 :link:hover {
 	text-decoration: underline;
-}
-
-.bookmark-card .actions {
-	display: none;
-	position: absolute;
-	top: .5cm;
-	right: .5cm;
-}
-
-.bookmark-card:hover .actions,
-.bookmark-card.actions-open .actions {
-	display: block;
-}
-
-.bookmark-card .actions .popovermenu {
-	top: 24px;
-	right: -14px;
-}
-
-.bookmark-card .actions .action-select,
-.bookmark-card.active .actions .action-unselect {
-	display: block;
-}
-
-.bookmark-card .actions .action-unselect,
-.bookmark-card.active .actions .action-select {
-	display: none;
 }
 
 .bookmark-card .tags {
