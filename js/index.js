@@ -19,6 +19,7 @@ Backbone.sync = function(method, model, options) {
 		},
 		error: function() {
 			console.log(arguments);
+			options.error.apply(null, arguments)
 		},
 		headers: {
 			'requesttoken': oc_requesttoken
