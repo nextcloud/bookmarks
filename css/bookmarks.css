@@ -9,7 +9,6 @@
 
 #app-navigation > ul {
 	height: auto;
-	overflow: hidden;
 }
 
 .navigation a > span {
