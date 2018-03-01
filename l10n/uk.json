@@ -1,0 +1,24 @@
+{ "translations": {
+    "Bookmarks" : "Закладки",
+    "Failed to import one bookmark, because: " : "Помилка з імпортом закладки:",
+    "Bookm." : "Закладки",
+    "No file provided for import" : "Відсутній файл для імпорту",
+    "Unsupported file type for import" : "Цей тип файлу не підтримується",
+    "Some Error happened." : "Сталася помилка.",
+    "Error" : "Помилка",
+    "Tags" : "Позначки",
+    "Could not add bookmark." : "Не вдалося додати позначку",
+    "Are you sure you want to remove this bookmark?" : "Ви впевнені, що бажаєте вилучити цю закладку?",
+    "Warning" : "Увага",
+    "Are you sure you want to remove this tag from every entry?" : "Ви впевнені, що бажаєте вилучити цю позначку зі всіх записів?",
+    "Import error" : "Помилка під час імпорту",
+    "Import completed successfully." : "Імпорт успішно завершено",
+    "Uploading..." : "Завантажується...",
+    "Add a bookmark" : "Додати закладку",
+    "Save" : "Зберегти",
+    "Delete" : "Вилучити",
+    "Edit" : "Редагувати",
+    "Cancel" : "Скасувати",
+    "Add to " : "Додати до"
+},"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"
+}

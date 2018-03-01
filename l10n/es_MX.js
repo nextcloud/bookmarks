@@ -2,6 +2,8 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Marcadores",
+    "Failed to import one bookmark, because: " : "Se presentó una falla al importar un marcador debido a:",
+    "Unsupported file type for import" : "Tipo de archivo no soportado para importar",
     "Some Error happened." : "Se presentó un error.",
     "Error" : "Error",
     "Tags" : "Etiquetas",
@@ -19,6 +21,7 @@ OC.L10N.register(
     "Delete" : "Borrar",
     "Edit" : "Editar",
     "Cancel" : "Cancelar",
+    "Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:" : "Arrastralo a los marcadores de tu navegador y haz click, cuando quieras marcar una página rápido:",
     "Add to " : "Agregar a",
     "Address" : "Dirección",
     "You have no bookmarks" : "No tienes marcadores",
