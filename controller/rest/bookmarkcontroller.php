@@ -433,8 +433,9 @@ EOT;
 			$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 			$description = htmlspecialchars($bm['description'], ENT_QUOTES, 'UTF-8');
 
-			$file .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '">' . $title . '</A><DD>' . $description . "\n";
-
+			$file .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '">' . $title . '</A>';
+			if(strlen($description)>0) $file .= '<DD>' . $description;
+			$file .= . "\n";
 		}
 
 		return new ExportResponse($file);
