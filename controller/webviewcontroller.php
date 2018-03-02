@@ -62,6 +62,7 @@ class WebViewController extends Controller {
 
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedFrameDomain("'self'");
+		$policy->allowInlineScript(true);
 
 		$this->eventDispatcher->dispatch(
 			'\OCA\Bookmarks::loadAdditionalScripts', new GenericEvent(null, [])
