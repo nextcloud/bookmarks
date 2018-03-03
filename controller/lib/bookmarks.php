@@ -174,7 +174,7 @@ class Bookmarks {
 		}
 
 		$tableAttributes = array('id', 'url', 'title', 'user_id', 'description',
-			'public', 'added', 'lastmodified', 'clickcount',);
+			'public', 'added', 'lastmodified', 'clickcount', 'image');
 
 		$returnTags = true;
 		
