@@ -58,6 +58,7 @@ export default Marionette.View.extend({
 	onSelect: function(model) {
 		if (this.selected.length == 0) {
 			this.$el.addClass('selection-active');
+			Radio.channel('details').trigger('close')
 		}
 		this.selected.add(model);
 	},
