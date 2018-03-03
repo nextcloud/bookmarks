@@ -23,6 +23,10 @@
 	padding-left: 12px;
 	border-top: 1px solid #ededed;
 }
+#app-navigation h3 [class^=icon-] {
+	display: inline-block;
+	vertical-align: sub;
+}
 
 #app-content {
 	transition: transform .5s ease;
@@ -169,7 +173,7 @@ button span,
 
 .bookmarks-empty {
 	width: 5cm;
-	margin: 20% auto;
+	margin: 5cm auto;
 }
 
 .bookmarks {
