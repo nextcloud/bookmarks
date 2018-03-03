@@ -162,7 +162,7 @@ class BookmarkController extends ApiController {
 		}
 		
 		$attributesToSelect = array('url', 'title', 'id', 'user_id', 'description', 'public',
-			'added', 'lastmodified', 'clickcount', 'tags');		
+			'added', 'lastmodified', 'clickcount', 'tags', 'image');
 
 		$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag,
 			$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
