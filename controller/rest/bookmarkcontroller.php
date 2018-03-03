@@ -95,6 +95,7 @@ class BookmarkController extends ApiController {
 	 * @param string conjunction
 	 * @param string sortby
 	 * @param array search
+	 * @param int limit
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -110,7 +111,8 @@ class BookmarkController extends ApiController {
 		$tags = null,
 		$conjunction = "or",
 		$sortby = "",
-		$search = array()
+		$search = array(),
+    $limit = 10
 	) {
 		if ($user === null) {
 			$user = $this->userId;
@@ -146,8 +148,7 @@ class BookmarkController extends ApiController {
 			$tagsOnly = false;
 		}
 
-		$limit = 10;
-		$offset = $page * 10;
+		$offset = $page * $limit;
 		if ($page == -1) {
 			$limit = -1;
 			$offset = 0;

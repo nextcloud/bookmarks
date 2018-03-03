@@ -11,31 +11,27 @@ export default Marionette.AppRouter.extend({
 			}, 1);
 		},
 		all: function() {
-			this.app.bookmarks.fetch({ 
-				data: {page: -1}
-			});
+			this.app.bookmarks.setFetchQuery({})
+			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'all');
 		},
 		favorites: function() {
 			Radio.channel('nav').trigger('navigate', 'favorites');
 		},
 		shared: function() {
-			this.app.bookmarks.fetch({ 
-				data: {page: -1}
-			});
+			this.app.bookmarks.setFetchQuery({});
+			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'shared');
 		},
 		tags: function(tagString) {
 			var tags = tagString? tagString.split(',').map(decodeURIComponent) : []; 
-			this.app.bookmarks.fetch({
-				data: {tags: tags, page: -1, conjunction: 'and'}
-			});
+			this.app.bookmarks.setFetchQuery({tags: tags, conjunction: 'and'});
+			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'tags', tags);
 		},
 		search: function(query) {
-			this.app.bookmarks.fetch({
-				data: {search: decodeURIComponent(query).split(' '), page: -1}
-			});
+			this.app.bookmarks.setFetchQuery({search: decodeURIComponent(query).split(' ')});
+			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'search', query);
 		}
 	},

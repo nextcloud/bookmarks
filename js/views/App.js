@@ -23,7 +23,7 @@ export default Marionette.View.extend({
 			replaceElement: true
 		},
 		'content': {
-			el: '#content-slot',
+			el: '#app-content',
 			replaceElement: true
 		},
 		'tags': {

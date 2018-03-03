@@ -12,6 +12,7 @@ const Radio = Backbone.Radio;
 
 export default Marionette.View.extend({
 	template: _.template(templateString),
+	id: 'app-content',
 	regions: {
 		'mobileNav': {
 			el: '#mobile-nav-slot',
@@ -30,10 +31,14 @@ export default Marionette.View.extend({
 			replaceElement: true
 		}
 	},
+	events: {
+		'scroll': 'infiniteScroll'
+	},
 	initialize: function(options) {
 		this.app = options.app;
 		this.bookmarks = this.app.bookmarks;
 		this.selected = new Bookmarks;
+		this.listenTo(this.bookmarks, 'fetchPage', this.infiniteScroll);
 		this.listenTo(this.bookmarks, 'select', this.onSelect);
 		this.listenTo(this.bookmarks, 'unselect', this.onUnselect);
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
@@ -44,6 +49,11 @@ export default Marionette.View.extend({
 		this.showChildView('mobileNav', new MobileNavView());
 		this.showChildView('bulkActions', new BulkActionsView({selected: this.selected, app: this.app}));
 		this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks, app: this.app}));
+	},
+	infiniteScroll: function(e) {
+		if (this.$el.prop('scrollHeight') < this.$el.prop('scrollTop') + this.$el.height() + 500) {
+			this.bookmarks.fetchPage()
+		}
 	},
 	onSelect: function(model) {
 		if (this.selected.length == 0) {

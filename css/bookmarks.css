@@ -1,5 +1,6 @@
 #content > div {
 	height: 100%;
+  overflow: auto;
 }
 
 #app-navigation {
@@ -175,7 +176,7 @@ button span,
 	display: flex;
 	flex-wrap: wrap;
 	overflow: hidden;
-	padding-right: .6cm;
+	padding: 0 .6cm .6cm 0;
 }
 
 .bookmark-card {

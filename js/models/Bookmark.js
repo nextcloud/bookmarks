@@ -12,5 +12,5 @@ export default Backbone.Model.extend({
 				'requesttoken': oc_requesttoken
 			}
 		})
-	}
+	},
 });
