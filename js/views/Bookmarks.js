@@ -14,5 +14,8 @@ export default Marionette.CollectionView.extend({
 		return {app: this.app};
 	},
 	childView: function() {return BookmarkCardView;},
+	emptyViewOptions: function() {
+		return {app: this.app};
+	},
 	emptyView: function() {return EmptyBookmarksView;}
 });

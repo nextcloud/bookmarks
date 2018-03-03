@@ -38,7 +38,7 @@ export default Marionette.View.extend({
 		this.app = options.app;
 		this.bookmarks = this.app.bookmarks;
 		this.selected = new Bookmarks;
-		this.listenTo(this.bookmarks, 'fetchPage', this.infiniteScroll);
+		this.listenTo(this.bookmarks.loadingState, 'change:fetching', this.infiniteScroll);
 		this.listenTo(this.bookmarks, 'select', this.onSelect);
 		this.listenTo(this.bookmarks, 'unselect', this.onUnselect);
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
