@@ -9,6 +9,7 @@ const Marionette = Backbone.Marionette;
 
 export default Marionette.Application.extend({
 	region: '#content',
+	page: 1,
 	onBeforeStart: function() {
 		var that = this;
 		this.bookmarks = new Bookmarks;

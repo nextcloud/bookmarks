@@ -65,6 +65,7 @@ class InternalBookmarkController extends ApiController {
 	 * @param string conjunction
 	 * @param string sortby
 	 * @param array search
+	 * @param int limit
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -78,9 +79,10 @@ class InternalBookmarkController extends ApiController {
 		$tags = array(),
 		$conjunction = "or",
 		$sortby = "",
-		$search = array()
+		$search = array(),
+		$limit = 10
 	) {
-		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search);
+		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search, $limit);
 	}
 	
   /**

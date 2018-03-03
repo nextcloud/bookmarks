@@ -9,18 +9,6 @@ import App from './Application';
 var _sync = Backbone.sync;
 Backbone.sync = function(method, model, options) {
 	var overrideOptions = {
-		success: function(json) {
-			console.log(json);
-			if (!(model instanceof Tags)) {
-				options.success(json.item || json.data);
-			} else {
-				options.success(json);
-			}
-		},
-		error: function() {
-			console.log(arguments);
-			options.error.apply(null, arguments)
-		},
 		headers: {
 			'requesttoken': oc_requesttoken
 		}
