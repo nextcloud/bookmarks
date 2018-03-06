@@ -6,7 +6,7 @@ OC.L10N.register(
     "Bookm." : "Marcad.",
     "No file provided for import" : "No se seleccionó un archivo para importar",
     "Unsupported file type for import" : "Tipo de archivo no soportado",
-    "Some Error happened." : "Ha ocurrido un error.",
+    "Some Error happened." : "Se ha producido un error.",
     "Error" : "Error",
     "Tags" : "Etiquetas",
     "Filter by tag" : "Filtrar por etiqueta",
