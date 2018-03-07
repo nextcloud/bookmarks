@@ -493,6 +493,17 @@ button span,
 	display: block;
 }
 
+
+#app-navigation .settings h3 {
+	padding-top: 0;
+	padding-left: 0;
+	border-top: none;
+}
+
+.settings .button {
+	display: inline-block;
+}
+
 .settings .import-form {
 	display: inline-block;
 }

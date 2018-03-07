@@ -11,6 +11,7 @@ export default Marionette.View.extend({
 	template: _.template(templateString),
 	ui: {
 		'content': '#app-settings-content',
+		'bookmarklet': '.bookmarklet',
 		'import': '.import',
 		'form': '.import-form',
 		'iframe': '.upload',
@@ -18,14 +19,23 @@ export default Marionette.View.extend({
 	},
 	events: {
 		'click .settings-button': 'open',
+		'click @ui.bookmarklet': 'bookmarkletClick',
 		'click .import-facade': 'importTrigger',
 		'change @ui.import': 'importSubmit',
 		'load @ui.iframe': 'importResult',
 		'click .export': 'exportTrigger'
 	},
+	onRender: function() {
+		const bookmarkletUrl = window.location.origin + oc_webroot + '/index.php/apps/bookmarks/bookmarklet';
+		const bookmarkletSrc = `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?output=popup&url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=400px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`; 
+		this.getUI('bookmarklet').prop('href', bookmarkletSrc);
+	},
 	open: function(e) {
 		e.preventDefault();
 		this.getUI('content').slideToggle();
+	},
+	bookmarkletClick: function(e) {
+		e.preventDefault();
 	},
 	importTrigger: function(e) {
 		e.preventDefault();

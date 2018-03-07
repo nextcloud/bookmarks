@@ -57,8 +57,7 @@ class WebViewController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		$bookmarkleturl = $this->urlgenerator->getAbsoluteURL('index.php/apps/bookmarks/bookmarklet');
-		$params = array('user' => $this->userId, 'bookmarkleturl' => $bookmarkleturl);
+		$params = array('user' => $this->userId);
 
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedFrameDomain("'self'");

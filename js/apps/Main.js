@@ -1,15 +1,14 @@
 import Backbone from 'backbone';
-import Bookmarks from './models/Bookmarks';
-import Tag from './models/Tag';
-import Tags from './models/Tags';
-import Router from './Router';
-import AppView from './views/App';
+import Bookmarks from '../models/Bookmarks';
+import Tag from '../models/Tag';
+import Tags from '../models/Tags';
+import Router from './MainRouter';
+import AppView from '../views/App';
 
 const Marionette = Backbone.Marionette;
 
 export default Marionette.Application.extend({
 	region: '#content',
-	page: 1,
 	onBeforeStart: function() {
 		var that = this;
 		this.bookmarks = new Bookmarks;
