@@ -1,0 +1,28 @@
+#bookmarklet_form {
+	padding: .2cm;
+}
+#bookmarklet_form #add_form_loading {
+	margin: .5cm;
+	float: right;
+	visibility: hidden;
+}
+#bookmarklet_form .addBm {
+	position: relative;
+}
+#bookmarklet_form h1 {
+	clear: both;
+	margin: .5cm 0;
+	font-size: .8cm;
+}
+#bookmarklet_form .bookmark-exists {
+	font-weight: bold;
+	border: 1px #ebebeb solid;
+	border-radius: 5px;
+	margin: .5cm 0;
+	padding: .2cm;
+}
+#bookmarklet_form input,
+#bookmarklet_form textarea {
+	resize: vertical;
+	width: 100%;
+}

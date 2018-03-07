@@ -2,7 +2,11 @@
 	<button class="settings-button"><%- t('bookmarks', 'Settings') %></button>
 </div>
 <div id="app-settings-content">
-	<form class="import-form" action="bookmark/import" method="post" target="upload_iframe" enctype="multipart/form-data" encoding="multipart/form-data">
+	<h3><%- t('bookmarks', 'Bookmarklet') %></h3>
+  <p><%- t('bookmarks', 'Drag this to your browser bookmarks and click it, when you want to bookmark a webpage quickly:') %></p>
+  <a class="button bookmarklet" href=""><%- t('bookmarks', 'Add to {instanceName} ', {instanceName: oc_defaults.name}) %></a>
+  <h3><%- t('bookmarks', 'Import & Export') %></h3>
+  <form class="import-form" action="bookmark/import" method="post" target="upload_iframe" enctype="multipart/form-data" encoding="multipart/form-data">
 		<input type="file" class="import" name="bm_import" size="5" />
 		<input type="hidden" name="requesttoken" value="<%- oc_requesttoken %>" />
 		<button class="import-facade"><span class="icon-upload"></span> <%- t('bookmarks', 'Import') %></button>
