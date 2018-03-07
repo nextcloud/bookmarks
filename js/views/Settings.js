@@ -91,6 +91,6 @@ export default Marionette.View.extend({
 		Backbone.history.navigate('', {trigger: true}); // reload app
 	},
 	exportTrigger: function() {
-		window.location = 'bookmark/export?requesttoken='+oc_requesttoken;
+		window.location = 'bookmark/export?requesttoken='+encodeURIComponent(oc_requesttoken);
 	}
 });
