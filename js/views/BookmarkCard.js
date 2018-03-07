@@ -45,7 +45,7 @@ export default Marionette.View.extend({
 		if (this.model.get('image')) {
 		 this.$el.css('background-image', 'url(bookmark/'+this.model.get('id')+'/image)');
 		} else {
-			this.$el.css('background-color', COLORS[simpleHash(this.model.get('url')) & 63] + 'aa')
+			this.$el.css('background-color', COLORS[simpleHash(this.model.get('url')) & 63] + '66')
 		}
 		var tags = new Tags(this.model.get('tags').map(function(id) {
 			return that.app.tags.findWhere({name: id});
