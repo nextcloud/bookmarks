@@ -33,7 +33,7 @@ OC.L10N.register(
     "You have no bookmarks" : "Nemáte žádné záložky",
     "You can also import a bookmark file" : "Můžete také importovat soubor záložek",
     "Bookmarklet" : "Záložky",
-    "Export & Import" : "Export & Import",
+    "Export & Import" : "Export a import",
     "Export" : "Export",
     "Import" : "Import"
 },
