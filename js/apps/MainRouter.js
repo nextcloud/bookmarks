@@ -30,7 +30,7 @@ export default Marionette.AppRouter.extend({
 			Radio.channel('nav').trigger('navigate', 'tags', tags);
 		},
 		search: function(query) {
-			this.app.bookmarks.setFetchQuery({search: decodeURIComponent(query).split(' ')});
+			this.app.bookmarks.setFetchQuery({search: decodeURIComponent(query).split(' '), conjunction: 'and'});
 			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'search', query);
 		}
