@@ -16,11 +16,18 @@ Install this app in the app store of your nextcloud instance (you must have admi
 ### Manual install
 #### Dependencies
  - [git](https://git-scm.org/)
+ - [Node.js and npm](https://nodejs.org/)
+ - [php](https://php.net/)
+ - [composer](https://getcompoert.org/)
 
 #### Setup
 ```
 cd /path/to/nextcloud/apps/
 git clone https://github.com/nextcloud/bookmarks.git
+cd bookmarks
+composer install
+npm install
+npm run build
 ```
 
 ## Third-party clients
