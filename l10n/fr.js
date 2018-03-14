@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Une erreur est apparue.",
     "Error" : "Erreur",
     "Tags" : "Etiquettes",
+    "An error occurred while trying to save the bookmark." : "Une erreur est survenue lors de la sauvegarde du marque-page.",
     "Uploading..." : "Envoi en cours…",
     "Import error" : "Erreur d'importation",
     "Import completed successfully." : "Importation terminée avec succès.",
