@@ -13,6 +13,7 @@ OC.L10N.register(
     "Uploading..." : "Envoi en cours…",
     "Import error" : "Erreur d'importation",
     "Import completed successfully." : "Importation terminée avec succès.",
+    "Set tags" : "Choisir des étiquettes",
     "Add a bookmark" : "Ajouter un favori",
     "This URL is already bookmarked! Overwrite?" : "Cette URL est déjà dans les favoris ! Remplacer ?",
     "The title of the page" : "Titre de la page",
