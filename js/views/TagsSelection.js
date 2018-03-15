@@ -15,10 +15,10 @@ export default Marionette.View.extend({
 		'select2:unselect': 'onRemoveByUser'
 	},
 	initialize: function(options) {
-		this.app = options.app; 
+		this.app = options.app;
 		this.selected = options.selected || new Tags;
 		this.selected.comparator = 'name';
-    
+
 		this.listenTo(this.selected, 'add', this.onChangeByAlgo);
 		this.listenTo(this.selected, 'remove', this.onChangeByAlgo);
 		this.listenTo(this.selected, 'reset', this.onChangeByAlgo);
@@ -33,7 +33,7 @@ export default Marionette.View.extend({
 			width: '100%',
 			tags: true,
 			multiple: true,
-			tokenSeparators: [',', ' '],
+			tokenSeparators: [','],
 			data: this.app.tags.pluck('name').map(function(name) {
 				return {id: name, text: name};
 			})
