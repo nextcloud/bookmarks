@@ -24,7 +24,7 @@ export default Marionette.AppRouter.extend({
 			Radio.channel('nav').trigger('navigate', 'shared');
 		},
 		tags: function(tagString) {
-			var tags = tagString? tagString.split(',').map(decodeURIComponent) : []; 
+			var tags = tagString? tagString.split(',') : [];
 			this.app.bookmarks.setFetchQuery({tags: tags, conjunction: 'and'});
 			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'tags', tags);
