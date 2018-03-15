@@ -42,11 +42,11 @@ export default Marionette.View.extend({
 	onRender: function() {
 		var that = this;
 		this.tags = new Tags(this.model.get('tags').map(function(id) {
-			return that.app.tags.findWhere({name: id});
+			return that.app.tags.get(id);
 		}));
 		this.listenTo(this.tags, 'add remove', this.submitTags);
 		this.showChildView('tags', new TagsSelectionView({collection: this.app.tags, selected: this.tags, app: this.app }));
-		
+
 		if (this.savingState === 'saving') {
 			this.savingState = 'saved';
 		}
@@ -61,10 +61,10 @@ export default Marionette.View.extend({
 		Radio.channel('details').trigger('close');
 	},
 	edit: function(e) {
-	    var that = this;
+		var that = this;
 		e.preventDefault();
-		
-		var $el = $(e.target).closest('[data-attribute]');
+
+		var $el = this.$(e.target).closest('[data-attribute]');
 
 		if ($el.prop('contenteditable') === true) {
 			return;
@@ -84,7 +84,7 @@ export default Marionette.View.extend({
 			break;
 		case 'description':
 			if ($el.hasClass('empty')) {
-				$el.text('')
+				$el.text('');
 			}
 			break;
 		}
@@ -114,9 +114,9 @@ export default Marionette.View.extend({
 		this.getUI('status').removeClass('saved').addClass('saving');
 	},
 	delete: function() {
-		this.model.destroy()
+		this.model.destroy();
 	},
 	onDestroy: function() {
-		this.close(); 
+		this.close();
 	}
 });

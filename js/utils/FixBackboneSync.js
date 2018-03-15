@@ -1,4 +1,6 @@
+import _ from 'underscore';
 import Backbone from 'backbone';
+import Tag from '../models/Tag';
 
 var _sync = Backbone.sync;
 Backbone.sync = function(method, model, options) {
@@ -8,7 +10,7 @@ Backbone.sync = function(method, model, options) {
 		}
 	};
 	if (method === 'update' && model instanceof Tag) {
-		overrideOptions.url = model.urlRoot+'/'+model.previous('name'); 
+		overrideOptions.url = model.urlRoot+'/'+model.previous('name');
 	}
 	_sync(method, model, _.extend({}, options, overrideOptions));
 };
