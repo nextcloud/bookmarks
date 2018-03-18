@@ -42,7 +42,7 @@ class Bookmarks {
 
 	/** @var IL10N */
 	private $l;
-	
+
     /** @var LinkExplorer */
 	private $linkExplorer;
 
@@ -112,7 +112,7 @@ class Bookmarks {
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 		$result = $qb->execute()->fetch();
-		
+
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('tag')
@@ -177,9 +177,9 @@ class Bookmarks {
 			'public', 'added', 'lastmodified', 'clickcount', 'image');
 
 		$returnTags = true;
-		
+
 		$qb = $this->db->getQueryBuilder();
-		
+
 		if ($requestedAttributes != null) {
 			$key = array_search('tags', $requestedAttributes);
 			if ($key == false) {
@@ -212,7 +212,7 @@ class Bookmarks {
 		if ($public) {
 			$qb->andWhere($qb->expr()->eq('public', $qb->createNamedParameter(1)));
 		}
-		
+
 		if (count($filters) > 0) {
 			$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $tagFilterConjunction);
 		}
@@ -473,7 +473,7 @@ class Bookmarks {
 	 */
 	public function addBookmark($userid, $url, $title, $tags = array(), $description = '', $isPublic = false, $image = null) {
 		$public = $isPublic ? 1 : 0;
-		
+
         // do some meta tag inspection of the link...
 
 		// allow only http(s) and (s)ftp
@@ -510,12 +510,12 @@ class Bookmarks {
 		}
 
 		// Check if it is a valid URL (after adding http(s) prefix)
-        $urlData = parse_url($url);
+    $urlData = parse_url($url);
 		if(!$this->isProperURL($urlData)) {
 			throw new \InvalidArgumentException('Invalid URL supplied');
 		}
-    
-        $urlWithoutPrefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
+
+    $urlWithoutPrefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
 		$decodedUrlNoPrefix = htmlspecialchars_decode($urlWithoutPrefix);
 		$decodedUrl = htmlspecialchars_decode($url);
 
@@ -523,7 +523,7 @@ class Bookmarks {
 		$description = mb_substr($description, 0, 4096);
 
 		// Change lastmodified date if the record if already exists
-		
+
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -535,42 +535,21 @@ class Bookmarks {
 			'url' => '%' . $this->db->escapeLikeParameter($decodedUrlNoPrefix)
 		]);
 		$row = $qb->execute()->fetch();
-		
+
 		if ($row) {
-			$qb = $this->db->getQueryBuilder();
-			$qb
-				->update('bookmarks')
-				->set('lastmodified', $qb->createFunction('UNIX_TIMESTAMP()'))
-				->set('url', $qb->createParameter('url'));
-			if (trim($title) != '') { // Do we replace the old title
-				$qb->set('title', $qb->createParameter('title'));
+			if (trim($title) == '') { // Do we replace the old title
+				$title = $row['title'];
 			}
 
-			if (trim($description) != '') { // Do we replace the old description
-				$qb->set('description', $qb->createParameter('description'));
-			}
-			
-			if (isset($image)) { // Do we replace the old description
-				$qb->set('image', $qb->createParameter('image'));
+			if (trim($description) == '') { // Do we replace the old description
+				$description = $row['description'];
 			}
 
-			$qb
-				->where($qb->expr()->like('url', $qb->createParameter('compareUrl'))) // Find url in the db independantly from its protocol
-				->andWhere($qb->expr()->eq('user_id', $qb->createParameter('userID')));
-				$qb->setParameters([
-					'userID' => $userid,
-					'url' => $decodedUrl,
-					'compareUrl' => '%' . $this->db->escapeLikeParameter($decodedUrlNoPrefix),
-					'title' => $title,
-					'description' => $description,
-					'image' => $image,
-				]);
-				$qb->execute();
+			if (!isset($image)) { // Do we replace the old description
+				$image = $row['image'];
+			}
 
-			$this->eventDispatcher->dispatch(
-				'\OCA\Bookmarks::onBookmarkUpdate',
-				new GenericEvent(null, ['id' => $row['id'], 'userId' => $userid])
-			);
+			$this->editBookmark($userid, $row['id'], $url, $title, $tags, $description, $isPublic, $image);
 
 			return $row['id'];
 		} else {
@@ -595,7 +574,7 @@ class Bookmarks {
 				'public' => $public,
 				'description' => $description,
 				'image' => $image,
-			));	
+			));
 
 			$qb->execute();
 
