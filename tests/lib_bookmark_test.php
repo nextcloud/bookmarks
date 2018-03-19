@@ -30,11 +30,11 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$event = \OC::$server->getEventDispatcher();
 		$logger = \OC::$server->getLogger();
 		$this->libBookmarks = new Bookmarks($db, $config, $l, $linkExplorer, $event, $logger);
-		
+
     $this->otherUser = "otheruser";
 		$this->userManager = \OC::$server->getUserManager();
 		if (!$this->userManager->userExists($this->otherUser)) {
-			$this->userManager->createUser($this->otherUser, 'password');	
+			$this->userManager->createUser($this->otherUser, 'password');
 		}
 	}
 
@@ -79,7 +79,9 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
     $this->assertEquals(3, count($resultSetOne));
 		$resultOne = $resultSetOne[0];
 		$this->assertFalse(isset($resultOne['lastmodified']));
-		$this->assertEquals(['three', 'two'], $resultOne['tags']);
+		$this->assertCount(2, $resultOne['tags']);
+		$this->assertTrue(in_array('two', $resultOne['tags']));
+		$this->assertTrue(in_array('three', $resultOne['tags']));
 	}
 
 	function testFindTags() {
@@ -93,19 +95,19 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertEquals(2, count($tags));
 		$this->assertEquals(array(), $this->libBookmarks->findTags($this->otherUser));
 	}
-		
+
 	function testFindTagsFilter() {
 		$this->cleanDB();
 		$this->assertEquals($this->libBookmarks->findTags($this->userid), array());
 		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
-		
+
 		$findTags = $this->libBookmarks->findTags($this->userid, ["two", "one"]);
 		$this->assertEquals([array('tag' => 'four', 'nbr' => 1)], $findTags);
 		$this->assertEquals(array(), $this->libBookmarks->findTags($this->otherUser, ["two", "one"]));
 	}
-  
+
 	function testRenameTag() {
 		$this->cleanDB();
 		$secondUser = $this->userid . "andHisClone435";
@@ -117,7 +119,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
 		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
-		
+
 		$firstUserTags = $this->libBookmarks->findTags($this->userid);
 		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
 		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
@@ -132,7 +134,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertEquals(count($secondUserTags), 4);
 
 		$this->libBookmarks->renameTag($this->userid, 'four', 'one');
-		
+
 		$firstUserTags = $this->libBookmarks->findTags($this->userid);
 		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 3], $firstUserTags));
 		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
@@ -145,7 +147,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertTrue(in_array(['tag' => 'three', 'nbr' => 1], $secondUserTags));
 		$this->assertEquals(count($secondUserTags), 4);
 	}
-	
+
 	function testDeleteTag() {
 		$this->cleanDB();
 		$secondUser = $this->userid . "andHisClone435";
@@ -157,7 +159,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
 		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
 		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
-		
+
 		$firstUserTags = $this->libBookmarks->findTags($this->userid);
 		$this->assertTrue(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
 		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
@@ -172,7 +174,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertEquals(count($secondUserTags), 4);
 
 		$this->libBookmarks->deleteTag($this->userid, 'one');
-		
+
 		$firstUserTags = $this->libBookmarks->findTags($this->userid);
 		$this->assertFalse(in_array(['tag' => 'one', 'nbr' => 2], $firstUserTags));
 		$this->assertTrue(in_array(['tag' => 'two', 'nbr' => 2], $firstUserTags));
@@ -204,8 +206,10 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("NewTitle", $bookmark['title']);
 		$this->assertEquals("https://www.google.de", $bookmark['url']);
-		$this->assertEquals(['four', 'three'], $bookmark['tags']);
-		
+		$this->assertCount(2, $bookmark['tags']);
+		$this->assertTrue(in_array('four', $bookmark['tags']));
+		$this->assertTrue(in_array('three', $bookmark['tags']));
+
 		// Make sure nothing else changed
 		$control_bookmark = $this->libBookmarks->findUniqueBookmark($control_bm_id, $this->userid);
 		$this->assertEquals("Golem", $control_bookmark['title']);
