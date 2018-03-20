@@ -7,10 +7,19 @@
     "Some Error happened." : "Сталася помилка.",
     "Error" : "Помилка",
     "Tags" : "Позначки",
+    "An error occurred while trying to save the bookmark." : "Під час спроби зберегти закладку сталася помилка.",
     "Uploading..." : "Завантажується...",
     "Import error" : "Помилка під час імпорту",
     "Import completed successfully." : "Імпорт успішно завершено",
+    "Set tags" : "Встановити мітки",
     "Add a bookmark" : "Додати закладку",
-    "Save" : "Зберегти"
+    "This URL is already bookmarked! Overwrite?" : "Цей URL вже є в закладках! Перезаписати?",
+    "The title of the page" : "Назва сторінки",
+    "The address of the page" : "Адреса сторінки",
+    "Description of the page" : "Опис сторінки",
+    "Save" : "Зберегти",
+    "Export & Import" : "Експорт та Імпорт",
+    "Export" : "Експорт",
+    "Import" : "Імпорт"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"
 }
