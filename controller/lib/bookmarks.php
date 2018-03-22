@@ -676,7 +676,7 @@ class Bookmarks {
 
 			$descriptionStr = '';
 			if ($link->hasAttribute("description")) {
-				$desc_str = $link->getAttribute("description");
+				$descriptionStr = $link->getAttribute("description");
 			} else {
 				/* Get description from a following <DD> when link in a
 				 * <DT> (e.g., Delicious export, firefox) */
@@ -684,7 +684,7 @@ class Bookmarks {
 				if ($parent && $parent->tagName == "dt") {
 					$dd = $parent->nextSibling;
 					if ($dd->tagName == "dd") {
-						$desc_str = trim($dd->nodeValue);
+						$descriptionStr = trim($dd->nodeValue);
 					}
 				}
 			}
