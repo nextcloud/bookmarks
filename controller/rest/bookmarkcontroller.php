@@ -294,6 +294,12 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		}
 
+		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
+		if(!isset($bm['id'])) {
+			// If the item to delete is non-existent, let them believe we'ved deleted it
+			return new JSONResponse(array('status' => 'success'), Http::STATUS_OK);
+		}
+
 		if (!$this->bookmarks->deleteUrl($this->userId, $id)) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
 		} else {
