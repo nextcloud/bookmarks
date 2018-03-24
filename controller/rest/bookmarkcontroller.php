@@ -129,19 +129,19 @@ class BookmarkController extends ApiController {
 			$qtags = $this->bookmarks->findTags($user, $tags);
 			return new JSONResponse(array('data' => $qtags, 'status' => 'success'));
 		}
-		
+
 		// type == bookmark
-		
+
 		if ($tag !== '') {
 		  $filterTag = $this->bookmarks->analyzeTagRequest($tag);
-		} elseif (is_array($tags)) {		
+		} elseif (is_array($tags)) {
 		  $filterTag = $tags;
-		} elseif (is_string($tags) && $tags !== '') {		
-			$filterTag= [ $tags ];		
-		} else {		
-			$filterTag = array();		
+		} elseif (is_string($tags) && $tags !== '') {
+			$filterTag= [ $tags ];
+		} else {
+			$filterTag = array();
 		}
-		
+
 		$tagsOnly = true;
 		if (count($search) > 0) {
 			$filterTag = array_merge($filterTag, $search);
@@ -161,7 +161,7 @@ class BookmarkController extends ApiController {
 		} else {
 			$sqlSortColumn = 'lastmodified';
 		}
-		
+
 		$attributesToSelect = array('url', 'title', 'id', 'user_id', 'description', 'public',
 			'added', 'lastmodified', 'clickcount', 'tags', 'image');
 
@@ -292,6 +292,12 @@ class BookmarkController extends ApiController {
 	public function deleteBookmark($id = -1) {
 		if ($id == -1) {
 			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
+		}
+
+		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
+		if(!isset($bm['id'])) {
+			// If the item to delete is non-existent, let them believe we'ved deleted it
+			return new JSONResponse(array('status' => 'success'), Http::STATUS_OK);
 		}
 
 		if (!$this->bookmarks->deleteUrl($this->userId, $id)) {
