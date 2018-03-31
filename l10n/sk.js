@@ -8,6 +8,7 @@ OC.L10N.register(
     "The address of the page" : "Adresa stránky",
     "Description of the page" : "Popis stránky",
     "Save" : "Uložiť",
+    "Export & Import" : "Export & Import",
     "Export" : "Exportovať",
     "Import" : "Importovať"
 },
