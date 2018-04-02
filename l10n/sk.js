@@ -3,6 +3,8 @@ OC.L10N.register(
     {
     "Bookmarks" : "Záložky",
     "Error" : "Chyba",
+    "Uploading..." : "Nahrávam...",
+    "Import completed successfully." : "Import úspešne dokončený.",
     "Add a bookmark" : "Pridať záložku",
     "The title of the page" : "Názov stránky",
     "The address of the page" : "Adresa stránky",
