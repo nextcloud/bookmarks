@@ -12,6 +12,7 @@ OC.L10N.register(
     "Uploading..." : "Laster opp...",
     "Import error" : "Feil under importering",
     "Import completed successfully." : "Importering fullført uten feil",
+    "Set tags" : "Sett merkelapper",
     "Add a bookmark" : "Legg til bokmerke",
     "This URL is already bookmarked! Overwrite?" : "Denne lenken eksisterer allerede, ønsker du overskrive?",
     "The title of the page" : "Sidetittel",
