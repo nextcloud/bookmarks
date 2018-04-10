@@ -34,6 +34,7 @@ $application->registerRoutes($this, array('routes' => array(
 	array('name' => 'internal_bookmark#get_single_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'GET'),
 	array('name' => 'internal_bookmark#delete_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'DELETE'),
 	array('name' => 'internal_bookmark#get_bookmark_image', 'url' => '/bookmark/{id}/image', 'verb' => 'GET'),
+	array('name' => 'internal_bookmark#get_bookmark_favicon', 'url' => '/bookmark/{id}/favicon', 'verb' => 'GET'),
 	array('name' => 'internal_tags#full_tags', 'url' => '/tag', 'verb' => 'GET'),
 	array('name' => 'internal_tags#rename_tag', 'url' => '/tag', 'verb' => 'POST'),
 	array('name' => 'internal_tags#delete_tag', 'url' => '/tag', 'verb' => 'DELETE'),
@@ -56,7 +57,7 @@ $application->registerRoutes($this, array('routes' => array(
 		'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']),
 	// Legacy Routes
 	array('name' => 'public#return_as_json', 'url' => '/public/rest/v1/bookmark', 'verb' => 'GET'),
-	
+
 	array('name' => 'bookmark#legacy_get_bookmarks', 'url' => '/ajax/updateList.php', 'verb' => 'POST'),
 	array('name' => 'bookmark#legacy_edit_bookmark', 'url' => '/ajax/editBookmark.php', 'verb' => 'POST'),
 	array('name' => 'bookmark#legacy_delete_bookmark', 'url' => '/ajax/delBookmark.php', 'verb' => 'POST'),

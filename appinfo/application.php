@@ -15,6 +15,7 @@ namespace OCA\Bookmarks\AppInfo;
 
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
 use OCA\Bookmarks\Controller\Lib\ImageService;
+use OCA\Bookmarks\Controller\Lib\FaviconService;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\Utility\ITimeFactory;
 use \OCP\IContainer;
@@ -67,12 +68,12 @@ class Application extends App {
 				$c->query('ServerContainer')->getUserManager()
 			);
 		});
-		
+
 		$container->registerService('InternalBookmarkController', function($c) {
 			/** @var IContainer $c */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
-			
+
 			return new InternalBookmarkController(
 				$c->query('AppName'),
 				$c->query('Request'),
@@ -82,6 +83,7 @@ class Application extends App {
 				$c->query('ServerContainer')->query(Bookmarks::class),
 				$c->query('ServerContainer')->getUserManager(),
 				$c->query('ServerContainer')->query(ImageService::class),
+				$c->query('ServerContainer')->query(FaviconService::class),
 				$c->query('ServerContainer')->query(ITimeFactory::class)
 			);
 		});
@@ -97,7 +99,7 @@ class Application extends App {
 				$c->query('ServerContainer')->query(Bookmarks::class)
 			);
 		});
-		
+
 		$container->registerService('InternalTagsController', function($c) {
 			/** @var IContainer $c */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
@@ -122,7 +124,7 @@ class Application extends App {
 				$c->query('ServerContainer')->getUserManager()
 			);
 		});
-		
+
 	}
 
 }

@@ -21,6 +21,7 @@ use \OCP\AppFramework\Http;
 use \OC\User\Manager;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 use \OCA\Bookmarks\Controller\Lib\ImageService;
+use \OCA\Bookmarks\Controller\Lib\FaviconService;
 use DateInterval;
 use DateTime;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -30,10 +31,11 @@ class InternalBookmarkController extends ApiController {
 	const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
 
 	private $publicController;
-	
+
 	private $userId;
 	private $libBookmarks;
 	private $imageService;
+	private $faviconService;
 	private $timeFactory;
 
 	public function __construct(
@@ -45,6 +47,7 @@ class InternalBookmarkController extends ApiController {
 		Bookmarks $bookmarks,
 		Manager $userManager,
 		ImageService $imageService,
+		FaviconService $faviconService,
 		ITimeFactory $timeFactory
 	) {
 		parent::__construct($appName, $request);
@@ -52,6 +55,7 @@ class InternalBookmarkController extends ApiController {
 		$this->userId = $userId;
 		$this->libBookmarks = $bookmarks;
 		$this->imageService = $imageService;
+		$this->faviconService = $faviconService;
 		$this->timeFactory = $timeFactory;
 	}
 
@@ -84,7 +88,7 @@ class InternalBookmarkController extends ApiController {
 	) {
 		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search, $limit);
 	}
-	
+
   /**
 	 * @param string $id
 	 * @param string $user
@@ -164,7 +168,7 @@ class InternalBookmarkController extends ApiController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $url
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 * @NoAdminRequired
@@ -174,7 +178,7 @@ class InternalBookmarkController extends ApiController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 * @NoAdminRequired
 	 */
@@ -183,12 +187,34 @@ class InternalBookmarkController extends ApiController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return \OCP\AppFramework\Http\Response
 	 * @NoAdminRequired
 	 */
 	public function exportBookmark() {
 		return $this->publicController->exportBookmark();
+	}
+
+	/**
+	 *
+	 * @param int $id The id of the bookmark whose favicon shoudl be returned
+	 * @return \OCP\AppFramework\Http\Reponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function getBookmarkImage($id) {
+		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userId);
+		if (!isset($bookmark) || !isset($bookmark['image']) || $bookmark['image'] === '') {
+			return new NotFoundResponse();
+		}
+
+		$image = $this->imageService->getImage($bookmark['image']);
+		if (!isset($image)) {
+			return new NotFoundResponse();
+		}
+
+		return $this->doImageResponse($image);
 	}
 
 	/**
@@ -199,28 +225,31 @@ class InternalBookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function getBookmarkImage($id) {
+	public function getBookmarkFavicon($id) {
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userId);
-		if (!isset($bookmark) || !isset($bookmark['image']) || $bookmark['image'] === '') {	
+		if (!isset($bookmark) || !isset($bookmark['favicon']) || $bookmark['favicon'] === '') {
 			return new NotFoundResponse();
 		}
 
-		$image = $this->imageService->getImage($bookmark['image']);
-		if (!isset($image)) {	
+		$image = $this->faviconService->getImage($bookmark['favicon']);
+		if (!isset($image)) {
 			return new NotFoundResponse();
 		}
-		
+		return $this->doImageResponse($image);
+	}
+
+	public function doImageResponse($image) {
 		$response = new DataDisplayResponse($image['data']);
-		$response->addHeader('Content-Type', $image['contentType']);	
-		
+		$response->addHeader('Content-Type', $image['contentType']);
+
 		$response->cacheFor(self::IMAGES_CACHE_TTL);
-		 
+
 		$expires = new DateTime();
 		$expires->setTimestamp($this->timeFactory->getTime());
 		$expires->add(new DateInterval('PT' . self::IMAGES_CACHE_TTL . 'S'));
 		$response->addHeader('Expires', $expires->format(DateTime::RFC1123));
 		$response->addHeader('Pragma', 'cache');
-		
+
 		return $response;
 	}
 }
