@@ -23,14 +23,20 @@ export default Marionette.View.extend({
 	ui: {
 		'link': 'h2 > a',
 		'checkbox': '.selectbox',
+		'actionsMenu': '.popovermenu',
+		'actionsToggle': '.toggle-actions'
 	},
 	regions: {
 		'tags': '.tags'
 	},
 	events: {
-		'click': 'open',
-		'click @ui.link': 'clickLink',
+		'click': 'clickLink',
 		'click @ui.checkbox': 'select',
+		'click @ui.actionsToggle': 'toggleActions',
+		'click .menu-filter-add': 'select',
+		'click .menu-filter-remove': 'select',
+		'click .menu-delete': 'delete',
+		'click .menu-details': 'open',
 	},
 	initialize: function(opts) {
 		this.app = opts.app;
@@ -38,12 +44,12 @@ export default Marionette.View.extend({
 		this.listenTo(this.model, 'select', this.onSelect);
 		this.listenTo(this.model, 'unselect', this.onUnselect);
 		this.listenTo(this.app.tags, 'sync', this.render);
-		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions); 
+		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);
 	},
 	onRender: function() {
-	  var that = this;
+		var that = this;
 		if (this.model.get('image')) {
-		 this.$el.css('background-image', 'url(bookmark/'+this.model.get('id')+'/image)');
+			this.$el.css('background-image', 'url(bookmark/'+this.model.get('id')+'/image)');
 		} else {
 			this.$el.css('background-color', COLORS[simpleHash(this.model.get('url')) & 63] + '66')
 		}
@@ -53,18 +59,22 @@ export default Marionette.View.extend({
 		this.showChildView('tags', new TagsNavigationView({collection: tags}));
 		this.$('.checkbox').prop('checked', this.$el.hasClass('active'));
 	},
-	clickLink: function() {
-		this.model.clickLink();
-	},
-	open: function(e) {
-		if (e && (e.target === this.getUI('checkbox')[0] || e.target === this.getUI('link')[0])) {
+	clickLink: function(e) {
+		if (e &&  e.target === this.getUI('actionsToggle')[0]) {
 			return;
 		}
 		if (this.$el.closest('.selection-active').length) {
 			this.select(e);
+			e.preventDefault();
 			return
 		}
+		this.model.clickLink();
+	},
+	open: function() {
 		Radio.channel('details').trigger('show', this.model);
+	},
+	toggleActions: function() {
+		this.getUI('actionsMenu').toggleClass('open').toggleClass('closed')
 	},
 	select: function(e) {
 		e.stopPropagation();
@@ -81,5 +91,8 @@ export default Marionette.View.extend({
 	onUnselect: function() {
 		this.$el.removeClass('active');
 		this.render();
+	},
+	delete: function() {
+		this.model.destroy();
 	}
 });

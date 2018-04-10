@@ -1,7 +1,34 @@
+<input type="checkbox" name="select" class="checkbox select-mode-checkbox" /><label for="select"></label>
 <div class="panel">
-	<input type="checkbox" name="selector" class="checkbox"/>
-	<label class="selectbox" for="selector"  title="<%- t('bookmarks', 'Select') %>"></label>
-	<h1><%- title %></h1>
-	<h2><a target="_blank" href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a></h2>
+	<h2><a target="_blank" href="<%- url %>"><%- title %></a></h2>
+  <button class="toggle-actions icon-more-white"></button>
+	<div class="popovermenu closed">
+		<ul>
+			<li>
+				<button class="menu-item-checkbox menu-filter-add">
+					<span><input type="checkbox" name="select" class="checkbox" /><label for="select"></label></span>
+					<span><%- t('bookmarks', 'Select') %></span>
+				</button>
+			</li>
+			<li>
+				<button class="menu-item-checkbox menu-filter-remove">
+					<span><input type="checkbox" name="select" checked class="checkbox" /><label for="select"></label></span>
+					<span><%- t('bookmarks', 'Deselect') %></span>
+				</button>
+			</li>
+			<li>
+				<button class="menu-details">
+					<span class="icon-rename"></span>
+					<span><%- t('bookmarks', 'Details') %></span>
+				</button>
+			</li>
+			<li>
+				<button class="menu-delete">
+					<span class="icon-delete"></span>
+					<span><%- t('bookmarks', 'Delete') %></span>
+				</button>
+			</li>
+		</ul>
+	</div>
 </div>
 <div class="tags"></div>
