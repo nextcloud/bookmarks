@@ -80,9 +80,16 @@
 				<notnull>false</notnull>
 				<length>4096</length>
 			</field>
+			<field>
+				<name>favicon</name>
+				<type>text</type>
+				<default></default>
+				<notnull>false</notnull>
+				<length>4096</length>
+			</field>
 		</declaration>
 	</table>
-	
+
 	<table>
 		<name>*dbprefix*bookmarks_tags</name>
 		<declaration>
@@ -91,7 +98,7 @@
 				<type>integer</type>
 				<length>64</length>
 			</field>
-			
+
 			<field>
 				<name>tag</name>
 				<type>text</type>
@@ -114,4 +121,3 @@
 		</declaration>
 	</table>
 </database>
-			

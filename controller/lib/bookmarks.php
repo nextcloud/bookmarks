@@ -174,7 +174,7 @@ class Bookmarks {
 		}
 
 		$tableAttributes = array('id', 'url', 'title', 'user_id', 'description',
-			'public', 'added', 'lastmodified', 'clickcount', 'image');
+			'public', 'added', 'lastmodified', 'clickcount', 'image', 'favicon');
 
 		$returnTags = true;
 
@@ -471,10 +471,10 @@ class Bookmarks {
 	 * @param string $image URL to a visual representation of the bookmarked site
 	 * @return int The id of the bookmark created
 	 */
-	public function addBookmark($userid, $url, $title, $tags = array(), $description = '', $isPublic = false, $image = null) {
+	public function addBookmark($userid, $url, $title, $tags = array(), $description = '', $isPublic = false, $image = null, $favicon = null) {
 		$public = $isPublic ? 1 : 0;
 
-        // do some meta tag inspection of the link...
+    // do some meta tag inspection of the link...
 
 		// allow only http(s) and (s)ftp
 		$protocols = '/^(https?|s?ftp)\:\/\//i';
@@ -507,6 +507,9 @@ class Bookmarks {
 		}
 		if (isset($data['image']) && !isset($image)) {
 		  $image = $data['image'];
+		}
+		if (isset($data['favicon']) && !isset($favicon)) {
+		  $favicon = $data['favicon'];
 		}
 
 		// Check if it is a valid URL (after adding http(s) prefix)
@@ -549,6 +552,10 @@ class Bookmarks {
 				$image = $row['image'];
 			}
 
+			if (!isset($favicon)) { // Do we replace the old description
+				$favicon = $row['favicon'];
+			}
+
 			$this->editBookmark($userid, $row['id'], $url, $title, $tags, $description, $isPublic, $image);
 
 			return $row['id'];
@@ -565,6 +572,7 @@ class Bookmarks {
 					'lastmodified' => $qb->createFunction('UNIX_TIMESTAMP()'),
 					'description' => $qb->createParameter('description'),
 					'image' => $qb->createParameter('image'),
+					'favicon' => $qb->createParameter('favicon'),
 				))
 				->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')));
 			$qb->setParameters(array(
@@ -574,6 +582,7 @@ class Bookmarks {
 				'public' => $public,
 				'description' => $description,
 				'image' => $image,
+				'favicon' => $favicon
 			));
 
 			$qb->execute();
