@@ -1,6 +1,8 @@
 <input type="checkbox" name="select" class="checkbox select-mode-checkbox" /><label for="select"></label>
 <div class="panel">
-	<h2><a target="_blank" href="<%- url %>"><%- title %></a></h2>
+	<h2 style="background-image: url('bookmark/<%- id %>/favicon');" class="<%- favicon? 'with-favicon' : '' %>">
+		<a target="_blank" href="<%- url %>"><%- title %></a>
+	</h2>
   <button class="toggle-actions icon-more-white"></button>
 	<div class="popovermenu closed">
 		<ul>

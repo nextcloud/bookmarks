@@ -272,7 +272,18 @@ button span,
 	max-height: 1.4cm; /* max two lines */
 	box-sizing: border-box;
 	overflow: hidden;
+	/*background-image: bookmark/{id}/favicon*/
 }
+
+.bookmark-card h2.with-favicon {
+	background-position: 0px 5px;
+  background-size: .5cm .5cm;
+  background-repeat: no-repeat;
+	position: relative;
+	right: .3cm;
+	padding-left: .6cm;
+}
+
 .bookmark-card h2 * {
 	color: white;
 }
