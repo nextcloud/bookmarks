@@ -330,6 +330,8 @@ class BookmarkController extends ApiController {
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 *
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS	 
 	 */
 	public function importBookmark() {
 		$full_input = $this->request->getUploadedFile("bm_import");
