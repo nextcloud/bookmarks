@@ -206,11 +206,11 @@ class Bookmarks {
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userid)))
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userid)))
 			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
 
 		if ($public) {
-			$qb->andWhere($qb->expr()->eq('public', $qb->createNamedParameter(1)));
+			$qb->andWhere($qb->expr()->eq('public', $qb->createPositionalParameter(1)));
 		}
 
 		if (count($filters) > 0) {
@@ -266,16 +266,16 @@ class Bookmarks {
 				$expr[] = $qb->expr()->iLike(
 					// Postgres doesn't like select aliases in HAVING clauses, well f*** you too!
 					$qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"),
-					$qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%')
+					$qb->createPositionalParameter('%'.$this->db->escapeLikeParameter($filter).'%')
 				);
 			}else{
-				$expr[] = $qb->expr()->iLike('tags', $qb->createNamedParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
+				$expr[] = $qb->expr()->iLike('tags', $qb->createPositionalParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
 			}
 			if (!$filterTagOnly) {
 				foreach ($otherColumns as $col) {
 					$expr[] = $qb->expr()->iLike(
 						$qb->createFunction($qb->getColumnName($col)),
-						$qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%')
+						$qb->createPositionalParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%')
 					);
 				}
 			}
