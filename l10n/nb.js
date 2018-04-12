@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "En feil har oppstått",
     "Error" : "Feil",
     "Tags" : "Knagger",
+    "An error occurred while trying to save the bookmark." : "En feil inntraff under forsøk på å lagre bokmerket.",
     "Uploading..." : "Laster opp...",
     "Import error" : "Feil under importering",
     "Import completed successfully." : "Importering fullført uten feil",

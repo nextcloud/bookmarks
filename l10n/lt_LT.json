@@ -8,6 +8,9 @@
     "The title of the page" : "Puslapio pavadinimas",
     "The address of the page" : "Puslapio adresas",
     "Description of the page" : "Puslapio aprašas",
-    "Save" : "Įrašyti"
+    "Save" : "Įrašyti",
+    "Export & Import" : "Eksportas ir Importas",
+    "Export" : "Eksportas",
+    "Import" : "Importas"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
 }
