@@ -195,11 +195,6 @@ button span,
 	background-position: center;
 }
 
-.bookmark-card,
-.bookmark-card * {
-	cursor: pointer;
-}
-
 .bookmark-card:hover {
 	box-shadow: 0 1px 10px rgba(77, 77, 77, 0.75);
 	opacity: 1;
@@ -271,10 +266,11 @@ button span,
 	max-height: 1.4cm; /* max two lines */
 	box-sizing: border-box;
 	overflow: hidden;
-	/*background-image: bookmark/{id}/favicon*/
+	cursor: pointer;
 }
 
 .bookmark-card h2.with-favicon {
+	/*background-image: bookmark/{id}/favicon*/
 	background-position: 0px 5px;
   background-size: .5cm .5cm;
   background-repeat: no-repeat;
@@ -285,6 +281,7 @@ button span,
 
 .bookmark-card h2 * {
 	color: white;
+	cursor: pointer;
 }
 
 .bookmark-card .tags {
