@@ -78,14 +78,14 @@
 				<type>text</type>
 				<default></default>
 				<notnull>false</notnull>
-				<length>4096</length>
+				<length>512</length>
 			</field>
 			<field>
 				<name>favicon</name>
 				<type>text</type>
 				<default></default>
 				<notnull>false</notnull>
-				<length>4096</length>
+				<length>512</length>
 			</field>
 		</declaration>
 	</table>
