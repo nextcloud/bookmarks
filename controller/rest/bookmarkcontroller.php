@@ -337,7 +337,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS	 
+	 * @CORS
 	 */
 	public function importBookmark() {
 		$full_input = $this->request->getUploadedFile("bm_import");
@@ -390,7 +390,7 @@ EOT;
 
 			$url = \OC_Util::sanitizeHTML($bm['url']);
 
-			// discards records with no URL. This should not happen but 
+			// discards records with no URL. This should not happen but
 			// a database could have old entries
 			if ($url === '') continue;
 
@@ -405,7 +405,7 @@ EOT;
 
 			$file .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '">' . $title . '</A>';
 			if(strlen($description)>0) $file .= '<DD>' . $description;
-			$file .= . "\n";
+			$file .= "\n";
 		}
 
 		return new ExportResponse($file);
