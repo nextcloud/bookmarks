@@ -315,6 +315,7 @@ button span,
 	background: white;
 	border-left: 1px solid #ebebeb;
 	color: #333;
+	overflow-y: auto;
 }
 
 @media only screen and (max-width: 768px) {
