@@ -10,7 +10,7 @@ OC.L10N.register(
     "Error" : "Ошибка",
     "Tags" : "Метки",
     "An error occurred while trying to save the bookmark." : "Не удалось сохранить закладку.",
-    "Uploading..." : "Идет загрузка...",
+    "Uploading..." : "Идет загрузка…",
     "Import error" : "Ошибка импорта",
     "Import completed successfully." : "Успешное завершение импорта.",
     "Set tags" : "Задать метки",
