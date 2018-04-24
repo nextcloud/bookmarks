@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import Bookmarks from '../models/Bookmarks';
+import EmptyBookmarksView from './EmptyBookmarks';
 import MobileNavView from './MobileNav';
 import BulkActionsView from './BulkActions';
 import BookmarksView from './Bookmarks';
@@ -26,6 +27,10 @@ export default Marionette.View.extend({
 			el: '#view-bookmarks-slot',
 			replaceElement: true
 		},
+		'emptyBookmarks': {
+			el: '#empty-bookmarks-slot',
+			replaceElement: true
+		},
 		'bookmarkDetail': {
 			el: '#bookmark-detail-slot',
 			replaceElement: true
@@ -49,6 +54,7 @@ export default Marionette.View.extend({
 		this.showChildView('mobileNav', new MobileNavView());
 		this.showChildView('bulkActions', new BulkActionsView({selected: this.selected, app: this.app}));
 		this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks, app: this.app}));
+		this.showChildView('emptyBookmarks', new EmptyBookmarksView({app: this.app}));
 	},
 	infiniteScroll: function(e) {
 		if (this.$el.prop('scrollHeight') < this.$el.prop('scrollTop') + this.$el.height() + 500) {
