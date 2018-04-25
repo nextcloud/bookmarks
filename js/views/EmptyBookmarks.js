@@ -10,9 +10,10 @@ export default Marionette.View.extend({
 	getTemplate: function() {
 		if (this.app.bookmarks.loadingState.get('fetching')) {
 			return _.template(templateStringLoading);
-		
-		} else {
+		} else if (this.app.bookmarks.length === 0) {
 			return _.template(templateStringEmpty);
+		} else {
+			return _.template('');
 		}
 	},
 	className: 'bookmarks-empty',

@@ -179,7 +179,6 @@ button span,
 .bookmarks {
 	display: flex;
 	flex-wrap: wrap;
-	overflow: hidden;
 	padding: 0 .6cm .6cm 0;
 }
 
@@ -194,11 +193,6 @@ button span,
 	background-color: rgb(210, 210, 210);
 	background-size: cover;
 	background-position: center;
-}
-
-.bookmark-card,
-.bookmark-card * {
-	cursor: pointer;
 }
 
 .bookmark-card:hover {
@@ -272,10 +266,11 @@ button span,
 	max-height: 1.4cm; /* max two lines */
 	box-sizing: border-box;
 	overflow: hidden;
-	/*background-image: bookmark/{id}/favicon*/
+	cursor: pointer;
 }
 
 .bookmark-card h2.with-favicon {
+	/*background-image: bookmark/{id}/favicon*/
 	background-position: 0px 5px;
   background-size: .5cm .5cm;
   background-repeat: no-repeat;
@@ -286,6 +281,7 @@ button span,
 
 .bookmark-card h2 * {
 	color: white;
+	cursor: pointer;
 }
 
 .bookmark-card .tags {
@@ -319,6 +315,7 @@ button span,
 	background: white;
 	border-left: 1px solid #ebebeb;
 	color: #333;
+	overflow-y: auto;
 }
 
 @media only screen and (max-width: 768px) {

@@ -34,8 +34,8 @@ export default Backbone.Collection.extend({
 		const nextPage = this.loadingState.get('page');
 		this.loadingState.set({page: nextPage+1, fetching: true});
 
-		// Show spinner after 1.5s
-		const spinnerTimeout = setTimeout(() => this.reset(), 1500);
+		// Show spinner after 1.5s if we're fetching a new query
+		const spinnerTimeout = setTimeout(() => nextPage === 0 && this.reset(), 1500);
 
 		return this.fetch({
 			data: _.extend({}, this.loadingState.get('query'), {page: nextPage, limit: BATCH_SIZE}),
