@@ -337,7 +337,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS	 
+	 * @CORS
 	 */
 	public function importBookmark() {
 		$full_input = $this->request->getUploadedFile("bm_import");
@@ -385,16 +385,26 @@ Do Not Edit! -->
 <DL><p>
 EOT;
 		$bookmarks = $this->bookmarks->findBookmarks($this->userId, 0, 'id', [], true, -1);
+
 		foreach ($bookmarks as $bm) {
-			$title = $bm['title'];
-			if (trim($title) === '') {
+
+			$url = \OC_Util::sanitizeHTML($bm['url']);
+
+			// discards records with no URL. This should not happen but
+			// a database could have old entries
+			if ($url === '') continue;
+
+			$tags = implode(',', \OC_Util::sanitizeHTML($bm['tags']));
+			$title = trim($bm['title']);
+			if ($title === '') {
 				$url_parts = parse_url($bm['url']);
-				$title = isset($url_parts['host']) ? Helper::getDomainWithoutExt($url_parts['host']) : $bm['url'];
+				$title = isset($url_parts['host']) ? Helper::getDomainWithoutExt($url_parts['host']) : $url;
 			}
-			$file .= '<DT><A HREF="' . \OC_Util::sanitizeHTML($bm['url']) . '" TAGS="' . implode(',', \OC_Util::sanitizeHTML($bm['tags'])) . '">';
-			$file .= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '</A>';
-			if ($bm['description'])
-				$file .= '<DD>' . htmlspecialchars($bm['description'], ENT_QUOTES, 'UTF-8');
+			$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+			$description = htmlspecialchars($bm['description'], ENT_QUOTES, 'UTF-8');
+
+			$file .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '">' . $title . '</A>';
+			if(strlen($description)>0) $file .= '<DD>' . $description;
 			$file .= "\n";
 		}
 
