@@ -49,6 +49,9 @@ class Bookmarks {
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
 
+	/** @var UrlNormalizer */
+	private $urlNormalizer;
+
 	/** @var ILogger */
 	private $logger;
 
@@ -57,6 +60,7 @@ class Bookmarks {
 		IConfig $config,
 		IL10N $l,
         LinkExplorer $linkExplorer,
+		UrlNormalizer $urlNormalizer,
 		EventDispatcherInterface $eventDispatcher,
 		ILogger $logger
 	) {
@@ -65,6 +69,7 @@ class Bookmarks {
 		$this->l = $l;
 		$this->linkExplorer = $linkExplorer;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->urlNormalizer = $urlNormalizer;
 		$this->logger = $logger;
 	}
 
@@ -130,6 +135,10 @@ class Bookmarks {
 	 */
 	public function bookmarkExists($url, $userId) {
 		$encodedUrl = htmlspecialchars_decode($url);
+
+		// normalize url
+		$encodedUrl = $this->urlNormalizer->normalize($encodedUrl);
+
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('id')
@@ -420,6 +429,9 @@ class Bookmarks {
 
 		$isPublic = $isPublic ? 1 : 0;
 
+		// normalize url
+		$url = $this->urlNormalizer->normalize($url);
+
 		// Update the record
 
 		$qb = $this->db->getQueryBuilder();
@@ -513,12 +525,15 @@ class Bookmarks {
 		}
 
 		// Check if it is a valid URL (after adding http(s) prefix)
-    $urlData = parse_url($url);
+		$urlData = parse_url($url);
 		if(!$this->isProperURL($urlData)) {
 			throw new \InvalidArgumentException('Invalid URL supplied');
 		}
 
-    $urlWithoutPrefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
+		// normalize url
+		$url = $this->urlNormalizer->normalize($url);
+
+		$urlWithoutPrefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
 		$decodedUrlNoPrefix = htmlspecialchars_decode($urlWithoutPrefix);
 		$decodedUrl = htmlspecialchars_decode($url);
 
@@ -531,12 +546,10 @@ class Bookmarks {
 		$qb
 			->select('*')
 			->from('bookmarks')
-			->where($qb->expr()->like('url', $qb->createParameter('url'))) // Find url in the db independantly from its protocol
-			->andWhere($qb->expr()->eq('user_id', $qb->createParameter('userID')));
-		$qb->setParameters([
-			'userID' => $userid,
-			'url' => '%' . $this->db->escapeLikeParameter($decodedUrlNoPrefix)
-		]);
+			->where($qb->expr()->like('url', $qb->createPositionalParameter(
+				'%' . $this->db->escapeLikeParameter($decodedUrlNoPrefix)
+			))) // Find url in the db independantly from its protocol
+			->andWhere($qb->expr()->eq('user_id', $qb->createPositionalParameter($userid)));
 		$row = $qb->execute()->fetch();
 
 		if ($row) {

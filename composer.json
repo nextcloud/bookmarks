@@ -1,5 +1,6 @@
 {
 	"require": {
-		"marcelklehr/link-preview": "^2"
+		"marcelklehr/link-preview": "^2",
+		"glenscott/url-normalizer": "^1.4"
   }
 }
