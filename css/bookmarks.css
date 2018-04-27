@@ -201,7 +201,7 @@ button span,
 }
 
 .selection-active .bookmark-card {
-		opacity: .5;
+	opacity: .5;
 }
 
 .bookmark-card .select-mode-checkbox + label {
@@ -234,17 +234,17 @@ button span,
 }
 
 .bookmark-card .popovermenu {
-  position: absolute;
-  top: 2.1cm;
+	position: absolute;
+	top: 1.5cm;
 	right: .1cm;
 	margin-right: -4px;
 }
 
 .bookmark-card .toggle-actions {
-  background-color: transparent;
-  border: none;
-  position: absolute;
-  top: 1.25cm;
+	background-color: transparent;
+	border: none;
+	position: absolute;
+	top: .6cm;
 	right: .1cm;
 }
 
