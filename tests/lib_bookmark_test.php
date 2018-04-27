@@ -4,6 +4,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
+use OCA\Bookmarks\Controller\Lib\UrlNormalizer;
 use OCP\User;
 
 /**
@@ -27,11 +28,12 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('bookmarks');
 		$linkExplorer = \OC::$server->query(LinkExplorer::class);
+		$urlNormalizer = \OC::$server->query(UrlNormalizer::class);
 		$event = \OC::$server->getEventDispatcher();
 		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new Bookmarks($db, $config, $l, $linkExplorer, $event, $logger);
+		$this->libBookmarks = new Bookmarks($db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger);
 
-    $this->otherUser = "otheruser";
+		$this->otherUser = "otheruser";
 		$this->userManager = \OC::$server->getUserManager();
 		if (!$this->userManager->userExists($this->otherUser)) {
 			$this->userManager->createUser($this->otherUser, 'password');
@@ -199,13 +201,13 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 
 	function testEditBookmark() {
 		$this->cleanDB();
-		$control_bm_id = $this->libBookmarks->addBookmark($this->userid, "https://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
+		$control_bm_id = $this->libBookmarks->addBookmark($this->userid, "https://www.golem.de/", "Golem", array("four"), "PublicNoTag", true);
 		$this->libBookmarks->addBookmark($this->userid, "https://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$id = $this->libBookmarks->addBookmark($this->userid, "https://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
-		$this->libBookmarks->editBookmark($this->userid, $id, "https://www.google.de", "NewTitle", array("three", "four"));
+		$this->libBookmarks->editBookmark($this->userid, $id, "https://www.google.de/", "NewTitle", array("three", "four"));
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("NewTitle", $bookmark['title']);
-		$this->assertEquals("https://www.google.de", $bookmark['url']);
+		$this->assertEquals("https://www.google.de/", $bookmark['url']);
 		$this->assertCount(2, $bookmark['tags']);
 		$this->assertTrue(in_array('four', $bookmark['tags']));
 		$this->assertTrue(in_array('three', $bookmark['tags']));
@@ -213,7 +215,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		// Make sure nothing else changed
 		$control_bookmark = $this->libBookmarks->findUniqueBookmark($control_bm_id, $this->userid);
 		$this->assertEquals("Golem", $control_bookmark['title']);
-		$this->assertEquals("https://www.golem.de", $control_bookmark['url']);
+		$this->assertEquals("https://www.golem.de/", $control_bookmark['url']);
 		$this->assertEquals($control_bookmark['tags'], ['four']);
 	}
 
