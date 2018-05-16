@@ -35,6 +35,7 @@ npm run build
 - [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based browsers
 - [NCBookmarks](https://github.com/lenchan139/NCBookmark) - App to view/edit/open bookmarks for Android
 - [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
+- [FreedomMarks](https://github.com/damko/freedommarks-browser-webextension) - Addon for Firefox and Chrome. No sync, just a client.
 
 ## API
 This app exposes a public REST API that third-party clients can interface with.
