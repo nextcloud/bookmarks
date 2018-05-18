@@ -20,5 +20,5 @@
     "Export & Import" : "ექსპორტი და იმპორტი",
     "Export" : "ექსპორტი",
     "Import" : "იმპორტი"
-},"pluralForm" :"nplurals=2; plural=(n==1);"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
 }
