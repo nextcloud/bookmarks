@@ -6,6 +6,7 @@ OC.L10N.register(
     "Some Error happened." : "'n Fout het voorgekom",
     "Error" : "Fout",
     "Tags" : "Merkers",
+    "Bookmarklet" : "Boekmerkie",
     "Uploading..." : "Laai tans op...",
     "Import error" : "Invoer fout",
     "Import completed successfully." : "Invoer suksesvol voltooi.",
@@ -16,7 +17,6 @@ OC.L10N.register(
     "The address of the page" : "Die adres van die bladsy",
     "Description of the page" : "Beskrywing van die bladsy",
     "Save" : "Stoor",
-    "Bookmarklet" : "Boekmerkie",
     "Export & Import" : "Uitvoer & Invoer",
     "Export" : "Uitvoer",
     "Import" : "Invoer"

@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Einhver villa kom upp.",
     "Error" : "Villa",
     "Tags" : "Merki",
+    "Bookmarklet" : "Bókamerklingur",
     "An error occurred while trying to save the bookmark." : "Villa kom upp við að reyna að vista bókamerkið.",
     "Uploading..." : "Sendi inn ...",
     "Import error" : "Villa í innflutningi",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "The address of the page" : "Slóð á síðuna",
     "Description of the page" : "Lýsing á síðunni",
     "Save" : "Vista",
-    "Bookmarklet" : "Bókamerklingur",
     "Export & Import" : "Flytja út og inn",
     "Export" : "Flytja út",
     "Import" : "Flytja inn"

@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "אירעה שגיאה כלשהי.",
     "Error" : "שגיאה",
     "Tags" : "תגיות",
+    "Bookmarklet" : "יישומון סימנייה",
     "An error occurred while trying to save the bookmark." : "אירעה שגיאה בעת הניסיון לשמור סימניה.",
     "Uploading..." : "מתבצעת העלאה…",
     "Import error" : "שגיאת ייבוא",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "The address of the page" : "כתובת העמוד",
     "Description of the page" : "תיאור העמוד",
     "Save" : "שמירה",
-    "Bookmarklet" : "יישומון סימנייה",
     "Export & Import" : "ייצוא וייבוא",
     "Export" : "ייצוא",
     "Import" : "ייבוא"

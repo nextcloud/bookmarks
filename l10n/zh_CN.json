@@ -6,6 +6,7 @@
     "Some Error happened." : "发生了一些错误。",
     "Error" : "错误",
     "Tags" : "标签",
+    "Bookmarklet" : "小书签",
     "Uploading..." : "正在上传...",
     "Import error" : "导入错误",
     "Import completed successfully." : "导入成功。",
@@ -15,7 +16,6 @@
     "The address of the page" : "页面地址",
     "Description of the page" : "页面描述",
     "Save" : "保存",
-    "Bookmarklet" : "小书签",
     "Export & Import" : "导出&导入",
     "Export" : "导出",
     "Import" : "导入"

@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Десила се непозната грешка.",
     "Error" : "Грешка",
     "Tags" : "Ознаке",
+    "Bookmarklet" : "Забележник",
     "An error occurred while trying to save the bookmark." : "Дошло је до грешке при покушају чувања забелешке.",
     "Uploading..." : "Отпремам…",
     "Import error" : "Грешка приликом увоза",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "The address of the page" : "Адреса стране",
     "Description of the page" : "Опис стране",
     "Save" : "Сачувај",
-    "Bookmarklet" : "Забележник",
     "Export & Import" : "Извоз & увоз",
     "Export" : "Извоз",
     "Import" : "Увоз"

@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Възникна грешка.",
     "Error" : "Грешка",
     "Tags" : "Маркери",
+    "Bookmarklet" : "Скриптова отметка",
     "Uploading..." : "Качване...",
     "Import error" : "Грешка при импортиране",
     "Import completed successfully." : "Импортирането приключи успешно.",
@@ -18,7 +19,6 @@ OC.L10N.register(
     "The address of the page" : "Адреса на страницата",
     "Description of the page" : "Описание на страницата",
     "Save" : "Запиши",
-    "Bookmarklet" : "Скриптова отметка",
     "Export & Import" : "Експортиране и Импортиране",
     "Export" : "Експортирай",
     "Import" : "Импортирай"

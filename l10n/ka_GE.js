@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "მოხდა რაღაც შეცდომა.",
     "Error" : "შეცდომა",
     "Tags" : "ტეგები",
+    "Bookmarklet" : "Bookmarklet-ი",
     "Uploading..." : "მიმდინარეობს ატვირთვა...",
     "Import error" : "იმპორტის შეცდომა",
     "Import completed successfully." : "იმპორტი წარმატებით დასრულდა.",
@@ -18,7 +19,6 @@ OC.L10N.register(
     "The address of the page" : "გვერდის მისამართი",
     "Description of the page" : "გვერდის აღწერილობა",
     "Save" : "შენახვა",
-    "Bookmarklet" : "Bookmarklet-ი",
     "Export & Import" : "ექსპორტი და იმპორტი",
     "Export" : "ექსპორტი",
     "Import" : "იმპორტი"

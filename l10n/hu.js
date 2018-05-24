@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Valami hiba történt.",
     "Error" : "Hiba",
     "Tags" : "Címkék",
+    "Bookmarklet" : "Bookmarklet",
     "An error occurred while trying to save the bookmark." : "Hiba történt a könyvjelző mentése közben.",
     "Uploading..." : "Frissítés...",
     "Import error" : "Importálási hiba",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "The address of the page" : "Az oldal címe",
     "Description of the page" : "Az oldal leírása",
     "Save" : "Mentés",
-    "Bookmarklet" : "Bookmarklet",
     "Export & Import" : "Export & Import",
     "Export" : "Export",
     "Import" : "Import"

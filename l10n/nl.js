@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Er is een fout opgetreden.",
     "Error" : "Fout",
     "Tags" : "Labels",
+    "Bookmarklet" : "Bookmarklet",
     "An error occurred while trying to save the bookmark." : "Er trad een fout op bij je poging de bladwijzer op te slaan",
     "Uploading..." : "Uploaden...",
     "Import error" : "Importeer fout",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "The address of the page" : "Het adres van de pagina",
     "Description of the page" : "Beschrijving van de pagina",
     "Save" : "Opslaan",
-    "Bookmarklet" : "Bookmarklet",
     "Export & Import" : "Exporteren & Importeren",
     "Export" : "Exporteren",
     "Import" : "Importeren"

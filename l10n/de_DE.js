@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Fehler sind aufgetreten.",
     "Error" : "Fehler",
     "Tags" : "Schlagworte",
+    "Bookmarklet" : "Bookmarklet",
     "An error occurred while trying to save the bookmark." : "Beim Speichern des Lesezeichens ist ein Fehler aufgetreten.",
     "Uploading..." : "Lade hoch…",
     "Import error" : "Fehler beim Import",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "The address of the page" : "Adresse der Seite",
     "Description of the page" : "Beschreibung der Seite",
     "Save" : "Speichern",
-    "Bookmarklet" : "Bookmarklet",
     "Export & Import" : "Exportieren & importieren",
     "Export" : "Exportieren",
     "Import" : "Importieren"

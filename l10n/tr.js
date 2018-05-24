@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Bir sorun çıktı.",
     "Error" : "Hata",
     "Tags" : "Etiketler",
+    "Bookmarklet" : "Bookmarklet",
     "An error occurred while trying to save the bookmark." : "Yer imi kaydedilmeye çalışılırken bir sorun çıktı.",
     "Uploading..." : "Yükleniyor...",
     "Import error" : "İçe aktarma sorunu",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "The address of the page" : "Sayfa adresi",
     "Description of the page" : "Sayfa açıklaması",
     "Save" : "Kaydet",
-    "Bookmarklet" : "Bookmarklet",
     "Export & Import" : "Dışa/İçe Aktarma",
     "Export" : "Dışa Aktar",
     "Import" : "İçe Aktar"

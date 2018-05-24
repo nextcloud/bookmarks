@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Došlo k určité chybě.",
     "Error" : "Chyba",
     "Tags" : "Příznaky",
+    "Bookmarklet" : "Záložky",
     "An error occurred while trying to save the bookmark." : "Při pokusu o uložení záložky nastala chyba.",
     "Uploading..." : "Nahrávání",
     "Import error" : "Import selhal",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "The address of the page" : "Adresa stránky",
     "Description of the page" : "Popis stránky",
     "Save" : "Uložit",
-    "Bookmarklet" : "Záložky",
     "Export & Import" : "Export a import",
     "Export" : "Export",
     "Import" : "Import"

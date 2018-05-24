@@ -9,6 +9,7 @@ OC.L10N.register(
     "Some Error happened." : "Произошла ошибка.",
     "Error" : "Ошибка",
     "Tags" : "Метки",
+    "Bookmarklet" : "Приложение для панели закладок",
     "An error occurred while trying to save the bookmark." : "Не удалось сохранить закладку.",
     "Uploading..." : "Идет загрузка…",
     "Import error" : "Ошибка импорта",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "The address of the page" : "Адрес страницы",
     "Description of the page" : "Описание страницы",
     "Save" : "Сохранить",
-    "Bookmarklet" : "Приложение для панели закладок",
     "Export & Import" : "Экспорт и импорт",
     "Export" : "Экспорт",
     "Import" : "Импорт"
