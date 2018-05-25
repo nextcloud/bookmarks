@@ -1,4 +1,6 @@
-{ "translations": {
+OC.L10N.register(
+    "bookmarks",
+    {
     "Bookmarks" : "Marcadores",
     "Failed to import one bookmark, because: " : "Se presentó una falla al importar un marcador debido a:",
     "Bookm." : "Marcdr.",
@@ -7,12 +9,6 @@
     "Some Error happened." : "Se presentó un error.",
     "Error" : "Error",
     "Tags" : "Etiquetas",
-    "Add a Bookmark" : "Agregar un Marcador",
-    "Select" : "Seleccionar",
-    "Deselect" : "Deseleccionar",
-    "Details" : "Detalles",
-    "Delete" : "Borrar",
-    "Saved" : "Guardado",
     "Bookmarklet" : "Marcador a código ",
     "An error occurred while trying to save the bookmark." : "Se presentó un error al intentar guardar el marcador. ",
     "Uploading..." : "Cargando...",
@@ -28,5 +24,5 @@
     "Export & Import" : "Exportar & Importar",
     "Export" : "Exportar",
     "Import" : "Importar"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
-}
+},
+"nplurals=2; plural=(n != 1);");
