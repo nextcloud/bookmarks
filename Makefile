@@ -21,7 +21,12 @@ clean:
 	rm -rf $(build_dir)
 	rm -rf node_modules
 
-appstore: clean
+build: clean
+	npm install
+	npm run build
+	composer install
+
+appstore: build
 	mkdir -p $(sign_dir)
 	rsync -a \
 	--exclude=/build \
