@@ -15,6 +15,7 @@ OC.L10N.register(
     "Details" : "Detalles",
     "Delete" : "Borrar",
     "Saved" : "Guardado",
+    "Add a description..." : "Agregar una descripción...",
     "Bookmarklet" : "Marcador a código ",
     "An error occurred while trying to save the bookmark." : "Se presentó un error al intentar guardar el marcador. ",
     "Uploading..." : "Cargando...",
