@@ -22,6 +22,7 @@ exclude = [
 	"js/views",
 	"js/bookmarklet.js",
 	"js/main.js",
+	"*.md",
 ]
 
 before_cmds = [

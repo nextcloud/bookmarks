@@ -11,30 +11,19 @@ env:
     - PHP_COVERAGE=FALSE
   matrix:
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable13
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
-    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable13
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-    - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-    - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable13
-    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable9
 
 matrix:
   exclude:
   - php: 5.6
     env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
-  - php: 5.6
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 5.6
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
   - php: 5.6
     env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
   - php: 5.6
@@ -44,49 +33,15 @@ matrix:
   - php: 5.6
     env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
   - php: 5.6
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 5.6
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
-  - php: 5.6
     env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
   - php: 7
     env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
-  - php: 7
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 7
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
   - php: 7
     env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
   - php: 7
     env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
   - php: 7
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 7
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
-  - php: 7
     env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-  - php: 7.1
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable9
-  - php: 7.1
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 7.1
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 7.1
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 7.2
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable9
-  - php: 7.2
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 7.2
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 7.2
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable10
-  - php: 7.2
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
-  - php: 7.2
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
-  - php: 7.2
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable11
   - php: 7.2
     env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
   - php: 7.2
