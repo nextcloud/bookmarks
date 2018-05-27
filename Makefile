@@ -7,7 +7,7 @@ source_dir=$(build_dir)/source
 sign_dir=$(build_dir)/sign
 package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
-version+=0.11.0
+version+=0.12.0-rc1
 
 all: appstore
 
@@ -21,7 +21,12 @@ clean:
 	rm -rf $(build_dir)
 	rm -rf node_modules
 
-appstore: clean
+build: clean
+	npm install
+	npm run build
+	composer install
+
+appstore: build
 	mkdir -p $(sign_dir)
 	rsync -a \
 	--exclude=/build \
@@ -42,6 +47,8 @@ appstore: clean
 	--exclude=/.travis.yml \
 	--exclude=/Makefile \
 	--exclude=/node_modules \
+	--include=/js/dist \
+	--exclude=/js/* \
 	$(project_dir)/ $(sign_dir)/$(app_name)
 	tar -czf $(build_dir)/$(app_name)-$(version).tar.gz \
 		-C $(sign_dir) $(app_name)

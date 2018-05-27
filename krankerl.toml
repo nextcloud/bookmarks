@@ -1,0 +1,32 @@
+[package]
+exclude = [
+	".tx",
+	"screenshots",
+	"tests",
+	".scrutinizer.yml",
+	".travis.yml",
+	".git",
+	"Makefile",
+	"composer.json",
+	"composer.lock",
+	"issue_template.md",
+	"package-lock.json",
+	"package.json",
+	"webpack.config.js",
+	"krankerl.toml",
+	"node_modules",
+	"js/apps",
+	"js/models",
+	"js/templates",
+	"js/utils",
+	"js/views",
+	"js/bookmarklet.js",
+	"js/main.js",
+	"*.md",
+]
+
+before_cmds = [
+	"npm install",
+	"npm run build",
+	"composer install",
+]
