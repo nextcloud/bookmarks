@@ -15,6 +15,13 @@ exclude = [
 	"webpack.config.js",
 	"krankerl.toml",
 	"node_modules",
+	"js/apps",
+	"js/models",
+	"js/templates",
+	"js/utils",
+	"js/views",
+	"js/bookmarklet.js",
+	"js/main.js",
 ]
 
 before_cmds = [
