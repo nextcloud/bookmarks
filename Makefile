@@ -47,6 +47,8 @@ appstore: build
 	--exclude=/.travis.yml \
 	--exclude=/Makefile \
 	--exclude=/node_modules \
+	--include=/js/dist \
+	--exclude=/js/* \
 	$(project_dir)/ $(sign_dir)/$(app_name)
 	tar -czf $(build_dir)/$(app_name)-$(version).tar.gz \
 		-C $(sign_dir) $(app_name)
