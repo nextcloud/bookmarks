@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "ブックマーク",
     "Error" : "エラー",
-    "Tags" : "タグ",
     "Uploading..." : "アップロード中...",
     "Import error" : "インポート エラー",
     "Import completed successfully." : "インポートに成功しました",

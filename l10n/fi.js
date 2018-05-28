@@ -3,10 +3,8 @@ OC.L10N.register(
     {
     "Bookmarks" : "Kirjanmerkit",
     "Failed to import one bookmark, because: " : "Yhden kirjanmerkin tuominen epäonnistui, syy:",
-    "Some Error happened." : "Tapahtui virhe.",
-    "Error" : "Virhe",
-    "Tags" : "Tunnisteet",
     "An error occurred while trying to save the bookmark." : "Kirjanmerkin tallennusta yrittäessä tapahtui virhe.",
+    "Error" : "Virhe",
     "Uploading..." : "Lähetetään...",
     "Import error" : "Tuontivirhe",
     "Import completed successfully." : "Tuonti suoritettiin onnistuneesti.",

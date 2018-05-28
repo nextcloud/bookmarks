@@ -3,10 +3,8 @@ OC.L10N.register(
     {
     "Bookmarks" : "Boekmerke",
     "No file provided for import" : "Geen lêer verskaf om in te voer nie ",
-    "Some Error happened." : "'n Fout het voorgekom",
-    "Error" : "Fout",
-    "Tags" : "Merkers",
     "Bookmarklet" : "Boekmerkie",
+    "Error" : "Fout",
     "Uploading..." : "Laai tans op...",
     "Import error" : "Invoer fout",
     "Import completed successfully." : "Invoer suksesvol voltooi.",

@@ -1,9 +1,7 @@
 OC.L10N.register(
     "bookmarks",
     {
-    "Some Error happened." : "Įvyko kažkokia klaida.",
     "Error" : "Klaida",
-    "Tags" : "Žymės",
     "Uploading..." : "Įkeliama...",
     "Import error" : "Importavimo klaida",
     "Import completed successfully." : "Importavimas sėkmingai užbaigtas.",

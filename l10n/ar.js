@@ -2,9 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "الفواصل المرجعية",
-    "Some Error happened." : "لقد طرأ نفس الخطأ.",
     "Error" : "خطأ",
-    "Tags" : "الوسوم",
     "Uploading..." : "عملية التحميل جارية …",
     "Import error" : "خطأ في الإستعادة",
     "Add a bookmark" : "إضافة فاصلة مرجعية",
