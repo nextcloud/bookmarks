@@ -13,6 +13,8 @@ OC.L10N.register(
     "Delete" : "Borrar",
     "Saved" : "Guardado",
     "Add a description..." : "Agregar una descripción...",
+    "No bookmarks here." : "No hay marcadores aquí.",
+    "All bookmarks" : "Todos los marcadores",
     "Bookmarklet" : "Marcador a código ",
     "An error occurred while trying to save the bookmark." : "Se presentó un error al intentar guardar el marcador. ",
     "Error" : "Error",
