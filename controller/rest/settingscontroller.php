@@ -84,7 +84,7 @@ class SettingsController extends ApiController {
 
 		$legalArguments = array('title','added','clickcount','lastmodified');
 		if (!in_array($sorting, $legalArguments)) {
-			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
 			$sorting = $this->config->setUserValue(
@@ -94,9 +94,9 @@ class SettingsController extends ApiController {
 				$sorting
 			);
 		} catch(\Exception $e) {
-			return new JSONResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
-		return new JSONResponse([], Http::STATUS_OK);
+		return new JSONResponse(['status' => 'success'], Http::STATUS_OK);
 	}
 }
