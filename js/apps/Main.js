@@ -14,6 +14,7 @@ export default Marionette.Application.extend({
 		this.bookmarks = new Bookmarks;
 		this.tags = new Tags;
 		this.tags.fetch({
+			reset: true,
 			data: {count: true},
 			success: function() {
 				// we sadly cannot listen ot 'sync', which would fire after fetching, so we have to listen to these and add some timeout
