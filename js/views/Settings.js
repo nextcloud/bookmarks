@@ -1,5 +1,6 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
+import Settings from '../models/Settings';
 import templateString from '../templates/Settings.html';
 
 const Marionette = Backbone.Marionette;
@@ -15,7 +16,12 @@ export default Marionette.View.extend({
 		'import': '.import',
 		'form': '.import-form',
 		'iframe': '.upload',
-		'status': '.import-status'
+		'status': '.import-status',
+		'sort': '#sort',
+		'title': '#title',
+		'added': '#added',
+		'clickcount': '#clickcount',
+		'lastmodified': '#lastmodified'
 	},
 	events: {
 		'click .settings-button': 'open',
@@ -23,11 +29,13 @@ export default Marionette.View.extend({
 		'click .import-facade': 'importTrigger',
 		'change @ui.import': 'importSubmit',
 		'load @ui.iframe': 'importResult',
-		'click .export': 'exportTrigger'
+		'click .export': 'exportTrigger',
+		'change @ui.sort': 'setSorting' 
 	},
 	onRender: function() {
 		const bookmarkletUrl = window.location.origin + oc_webroot + '/index.php/apps/bookmarks/bookmarklet';
-		const bookmarkletSrc = `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?output=popup&url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=400px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`; 
+		const bookmarkletSrc = `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?output=popup&url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=400px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`;
+		this.getUI(this.model.get('sorting')).prop('selected',true);
 		this.getUI('bookmarklet').prop('href', bookmarkletSrc);
 	},
 	open: function(e) {
@@ -102,5 +110,11 @@ export default Marionette.View.extend({
 	},
 	exportTrigger: function() {
 		window.location = 'bookmark/export?requesttoken='+encodeURIComponent(oc_requesttoken);
+	},
+	setSorting: function(e) {
+		e.preventDefault();
+		var select = document.getElementById("sort");
+		var value = select.options[select.selectedIndex].value;
+		this.model.setSorting(value);
 	}
 });

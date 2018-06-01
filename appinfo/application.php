@@ -25,6 +25,7 @@ use OCA\Bookmarks\Controller\Rest\BookmarkController;
 use OCA\Bookmarks\Controller\Rest\InternalTagsController;
 use OCA\Bookmarks\Controller\Rest\InternalBookmarkController;
 use OCA\Bookmarks\Controller\Rest\PublicController;
+use OCA\Bookmarks\Controller\Rest\SettingsController;
 use OCP\IUser;
 
 class Application extends App {
@@ -122,6 +123,18 @@ class Application extends App {
 				$uid,
 				$c->query('ServerContainer')->query(Bookmarks::class),
 				$c->query('ServerContainer')->getUserManager()
+			);
+		});
+
+		$container->registerService('SettingsController', function($c) {
+			/** @var IContainer $c */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
+			return new SettingsController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$uid,
+				$c->query('ServerContainer')->getConfig()
 			);
 		});
 
