@@ -52,7 +52,6 @@ export default Marionette.View.extend({
 	},
 	onRender: function() {
 		this.showChildView('mobileNav', new MobileNavView());
-		this.showChildView('bulkActions', new BulkActionsView({selected: this.selected, app: this.app}));
 		this.showChildView('viewBookmarks', new BookmarksView({collection: this.bookmarks, app: this.app}));
 		this.showChildView('emptyBookmarks', new EmptyBookmarksView({app: this.app}));
 	},
@@ -65,12 +64,14 @@ export default Marionette.View.extend({
 		if (this.selected.length == 0) {
 			this.$el.addClass('selection-active');
 			Radio.channel('details').trigger('close')
+			this.showChildView('bulkActions', new BulkActionsView({selected: this.selected, app: this.app}));
 		}
 		this.selected.add(model);
 	},
 	onUnselect: function(model) {
 		if (this.selected.length == 1) {
 			this.$el.removeClass('selection-active');
+			this.detachChildView('bulkActions');
 		}
 		this.selected.remove(model);
 	},
