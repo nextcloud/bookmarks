@@ -32,10 +32,13 @@ export default Marionette.View.extend({
 		'click .export': 'exportTrigger',
 		'change @ui.sort': 'setSorting' 
 	},
+	initialize: function() {
+		this.model = new Settings();
+		this.listenTo(this.model, 'change', this.getSorting);
+	},
 	onRender: function() {
 		const bookmarkletUrl = window.location.origin + oc_webroot + '/index.php/apps/bookmarks/bookmarklet';
 		const bookmarkletSrc = `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?output=popup&url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=400px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`;
-		this.getUI(this.model.get('sorting')).prop('selected',true);
 		this.getUI('bookmarklet').prop('href', bookmarkletSrc);
 	},
 	open: function(e) {
@@ -110,6 +113,9 @@ export default Marionette.View.extend({
 	},
 	exportTrigger: function() {
 		window.location = 'bookmark/export?requesttoken='+encodeURIComponent(oc_requesttoken);
+	},
+	getSorting: function() {
+		this.getUI(this.model.get('sorting')).prop('selected',true);
 	},
 	setSorting: function(e) {
 		e.preventDefault();
