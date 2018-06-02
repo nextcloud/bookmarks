@@ -56,6 +56,7 @@ class SettingsController extends ApiController {
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
+	 * @CORS
 	 */
 	public function getSorting() {
 		try {
@@ -79,6 +80,7 @@ class SettingsController extends ApiController {
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
+	 * @CORS
 	 */
 	public function setSorting($sorting = "") {
 
