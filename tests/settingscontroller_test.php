@@ -26,7 +26,7 @@ class Test_SettingsController extends TestCase {
 		parent::setUp();
 
 		$this->userid = "tuser";
-		$this->appName = "bookmarks"
+		$this->appName = "bookmarks";
 		$this->request = \OC::$server->getRequest();
 		$userManager = \OC::$server->getUserManager();
 		if (!$userManager->userExists($this->userid)) {
