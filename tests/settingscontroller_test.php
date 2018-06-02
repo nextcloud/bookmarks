@@ -57,7 +57,7 @@ class Test_SettingsController extends TestCase {
 	/**
 	 * @covers SettingsController::setSorting
 	 */
-	function testGetSorting() {
+	function testSetSorting() {
 		$output = $this->controller->setSorting('added'); //case: set a normal sorting option
 		$this->assertEquals('added', $this->config->getUserValue($this->userId,$this->appName,'sorting','')); 
 		$output = $this->controller->setSorting('foo'); //case: set an invalid sorting option
