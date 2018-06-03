@@ -87,7 +87,7 @@ class SettingsController extends ApiController {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
-			$sorting = $this->config->setUserValue(
+			$this->config->setUserValue(
 				$this->userId,
 				$this->appName,
 				'sorting',

@@ -33,6 +33,6 @@ export default Backbone.Model.extend({
 			success: function() {
 				that.set({sorting : sorting});
 			},
-		})
+		});
 	},
 });
