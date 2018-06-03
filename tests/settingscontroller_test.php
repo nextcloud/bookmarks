@@ -25,29 +25,25 @@ class Test_SettingsController extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->userid = "tuser";
+		$this->userId = "tuser";
 		$this->appName = "bookmarks";
 		$this->request = \OC::$server->getRequest();
 		$userManager = \OC::$server->getUserManager();
-		if (!$userManager->userExists($this->userid)) {
-			$userManager->createUser($this->userid, 'password');
+		if (!$userManager->userExists($this->userId)) {
+			$userManager->createUser($this->userId, 'password');
 		}
 		$this->config = \OC::$server->getConfig();
-		$this->controller = new SettingsController("bookmarks", $this->request, $this->userid, $this->config);
+		$this->controller = new SettingsController("bookmarks", $this->request, $this->userId, $this->config);
 	}
 	
 	/**
-	 * @covers SettingsController::getSorting
+	 * @covers \OCA\Bookmarks\Controller\Rest\SettingsController::getSorting
 	 */
 	function testGetSorting() {
 		$this->config->setUserValue($this->userId,$this->appName,'sorting','clickcount'); //case: user has a normal sorting option
 		$output = $this->controller->getSorting();
 		$data = $output->getData();
 		$this->assertEquals('clickcount', $data['sorting']);
-		$this->config->setUserValue($this->userId,$this->appName,'sorting','foo'); //case: user has an invalid sorting option 
-		$output = $this->controller->getSorting();
-		$data = $output->getData();
-		$this->assertEquals('lastmodified', $data['sorting']); //returns default
 		$this->config->deleteUserValue($this->userId, $this->appName, 'sorting'); //case: user has no sorting option 
 		$output = $this->controller->getSorting();
 		$data = $output->getData();
@@ -55,7 +51,7 @@ class Test_SettingsController extends TestCase {
 	}
 
 	/**
-	 * @covers SettingsController::setSorting
+	 * @covers \OCA\Bookmarks\Controller\Rest\SettingsController::setSorting
 	 */
 	function testSetSorting() {
 		$output = $this->controller->setSorting('added'); //case: set a normal sorting option
@@ -63,7 +59,10 @@ class Test_SettingsController extends TestCase {
 		$output = $this->controller->setSorting('foo'); //case: set an invalid sorting option
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status']);
-		$this->config->deleteUserValue($this->userId, $this->appName, 'sorting'); //clean test data
+	}
+	
+	protected function tearDown() {
+		$this->config->deleteUserValue($this->userId, $this->appName, 'sorting');
 	}
 
 }
