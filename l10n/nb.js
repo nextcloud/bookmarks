@@ -8,7 +8,7 @@ OC.L10N.register(
     "Unsupported file type for import" : "Usupportert filtype for import",
     "An error occurred while trying to save the bookmark." : "En feil inntraff under forsøk på å lagre bokmerket.",
     "Error" : "Feil",
-    "Uploading..." : "Laster opp...",
+    "Uploading..." : "Laster opp …",
     "Import error" : "Feil under importering",
     "Import completed successfully." : "Importering fullført uten feil",
     "Set tags" : "Sett merkelapper",
