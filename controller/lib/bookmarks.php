@@ -209,7 +209,9 @@ class Bookmarks {
 			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')'), 'tags');
 		}
 		
-		$sqlSortColumn = $this->config->getUserValue($userid, 'bookmarks', 'sorting', 'lastmodified');
+		if (!in_array($sqlSortColumn, $tableAttributes)) {
+			$sqlSortColumn = 'lastmodified';
+		}
 
 		$qb
 			->from('bookmarks', 'b')

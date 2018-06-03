@@ -8,6 +8,7 @@ export default Backbone.Model.extend({
 		$.ajax({
 			method: 'GET',
 			url: 'settings/sort',
+			async: 'false',
 			headers: {
 				'requesttoken': oc_requesttoken
 			},
