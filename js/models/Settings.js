@@ -19,6 +19,7 @@ export default Backbone.Model.extend({
 		});
 	},
 	setSorting: function(sorting) {
+		var that = this;
 		$.ajax({
 			method: 'POST',
 			url: 'settings/sort',
@@ -29,7 +30,7 @@ export default Backbone.Model.extend({
 				sorting: sorting
 			},
 			success: function() {
-				location.reload();
+				that.set({sorting : sorting});
 			},
 		})
 	},

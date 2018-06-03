@@ -47,8 +47,8 @@ export default Marionette.View.extend({
 	onRender: function() {
 		this.showChildView('addBookmarks', new AddBookmarkView());
 		this.showChildView('navigation', new NavigationView);
+		this.showChildView('settings', new SettingsView({model: this.app.settings, app: this.app}));
 		this.showChildView('content', new ContentView({app: this.app})); 
 		this.showChildView('tags', new TagsManagementView({collection: this.app.tags}));
-		this.showChildView('settings', new SettingsView());
 	}
 });

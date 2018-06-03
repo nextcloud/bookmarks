@@ -32,9 +32,10 @@ export default Marionette.View.extend({
 		'click .export': 'exportTrigger',
 		'change @ui.sort': 'setSorting' 
 	},
-	initialize: function() {
-		this.model = new Settings();
-		this.listenTo(this.model, 'change', this.getSorting);
+	initialize: function(options) {
+		this.app = options.app;
+		this.bookmarks = this.app.bookmarks;
+		this.listenTo(this.model, 'change:sorting', this.getSorting);
 	},
 	onRender: function() {
 		const bookmarkletUrl = window.location.origin + oc_webroot + '/index.php/apps/bookmarks/bookmarklet';
@@ -116,6 +117,7 @@ export default Marionette.View.extend({
 	},
 	getSorting: function() {
 		this.getUI(this.model.get('sorting')).prop('selected',true);
+		this.bookmarks.fetch();
 	},
 	setSorting: function(e) {
 		e.preventDefault();
