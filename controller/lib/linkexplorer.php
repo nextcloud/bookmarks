@@ -3,6 +3,7 @@ namespace OCA\Bookmarks\Controller\Lib;
 
 use Marcelklehr\LinkPreview\Client as LinkPreview;
 use Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException;
+use phpUri;
 
 class LinkExplorer {
 
@@ -24,14 +25,15 @@ class LinkExplorer {
 			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
 			return $data;
 		}
-		
+
 		$data = $preview->toArray();
 		if (!isset($data)) {
 			return ['url' => $url];
 		}
 
 		$data['url'] = (string) $previewClient->getUrl();
-		$data['image'] = $data['cover'];
+		$data['image'] = phpUri::parse($data['url'])->join($data['cover']);
+		$data['favicon'] = phpUri::parse($data['url'])->join($data['favicon']);
 
 		return $data;
 	}
