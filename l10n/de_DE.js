@@ -27,7 +27,7 @@ OC.L10N.register(
     "Uploading..." : "Lade hoch…",
     "Import error" : "Fehler beim Import",
     "Import completed successfully." : "Import erfolgreich beendet.",
-    "Set tags" : "Tag setzen",
+    "Set tags" : "Schlagworte setzen",
     "A Bookmark manager for Nextcloud" : "Eine Lesezeichenverwaltung für Nextcloud",
     "Add a bookmark" : "Lesezeichen hinzufügen",
     "This URL is already bookmarked! Overwrite?" : "Diese URL ist bereits als Lesezeichen gespeichert!. Überschreiben?",
