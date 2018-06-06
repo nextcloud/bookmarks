@@ -4,19 +4,8 @@ import $ from 'jquery'
 export default Backbone.Model.extend({
 	urlRoot: 'settings',
 	initialize: function() {
-		var that = this;
-		$.ajax({
-			method: 'GET',
-			url: 'settings/sort',
-			async: 'false',
-			headers: {
-				'requesttoken': oc_requesttoken
-			},
-			dataType: 'json',
-			success: function(response) {
-				var value = response.sorting;
-				that.set({sorting : value});
-			}
+		this.fetch({
+			url:'settings/sort'
 		});
 	},
 	setSorting: function(sorting) {

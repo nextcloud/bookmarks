@@ -33,8 +33,6 @@ export default Marionette.View.extend({
 		'change @ui.sort': 'setSorting' 
 	},
 	initialize: function(options) {
-		this.app = options.app;
-		this.bookmarks = this.app.bookmarks;
 		this.listenTo(this.model, 'change:sorting', this.getSorting);
 	},
 	onRender: function() {
@@ -117,9 +115,6 @@ export default Marionette.View.extend({
 	},
 	getSorting: function() {
 		this.getUI(this.model.get('sorting')).prop('selected',true);
-		this.bookmarks.sortby = this.model.get('sorting');
-		this.bookmarks.loadingState.set({page: 0, fetching: false, reachedEnd: false});
-		this.bookmarks.fetchPage();
 	},
 	setSorting: function(e) {
 		e.preventDefault();
