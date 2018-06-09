@@ -29,6 +29,7 @@ OC.L10N.register(
     "Import completed successfully." : "Увоз успешно завршен.",
     "Set tags" : "Постави ознаке",
     "A Bookmark manager for Nextcloud" : "Менаџер забелешки за Некстклауд",
+    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Ова апликација Вам омогућава да складиштите и организујете Ваша омиљена места на интернету на једном месту, док у исто време можете да их синхронизујете са разним уређајима и веб читачима.\nПогледајте клијенте треће стране излистане овде: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Додај забелешку",
     "This URL is already bookmarked! Overwrite?" : "Ова адреса је већ у белешкама! Да је препишете?",
     "The title of the page" : "Наслов стране",
