@@ -7,7 +7,7 @@ OC.L10N.register(
     "Import error" : "インポート エラー",
     "Import completed successfully." : "インポートに成功しました",
     "Add a bookmark" : "ブックマークへ追加",
-    "This URL is already bookmarked! Overwrite?" : "このURLは既にブックマークされています! 上書きしますか?",
+    "This URL is already bookmarked! Overwrite?" : "このURLはすでにブックマークされています! 上書きしますか?",
     "The title of the page" : "ページのタイトル",
     "The address of the page" : "ページのアドレス",
     "Description of the page" : "ページの説明",
