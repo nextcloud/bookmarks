@@ -11,7 +11,7 @@ The bookmarks app is quite old and has gone through many hands. It is now more r
 
 ## Install
 ### One-click
-Install this app in the app store of your nextcloud instance (you must have administrator privileges).
+Install this app in the app store of your nextcloud instance (you must have administrator privileges). You will find it in the 'Organization' category.
 
 ### Manual install
 #### Dependencies
