@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "ブックマーク",
+    "Saved" : "保存しました",
     "Error" : "エラー",
     "Uploading..." : "アップロード中...",
     "Import error" : "インポート エラー",
