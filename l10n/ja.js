@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Bookmarks" : "ブックマーク",
     "Saved" : "保存しました",
+    "An error occurred while trying to save the bookmark." : "ブックマークの保存を試している際にエラーが発生しました。",
     "Error" : "エラー",
     "Uploading..." : "アップロード中...",
     "Import error" : "インポート エラー",
