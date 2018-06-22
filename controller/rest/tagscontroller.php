@@ -69,11 +69,11 @@ class TagsController extends ApiController {
 	 * @CORS
 	 */
 	public function fullTags($count=FALSE) {
-		
+
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-		
-		$qtags = $this->bookmarks->findTags($this->userId, array(), 0, 400);
+
+		$qtags = $this->bookmarks->findTags($this->userId, array(), 0);
 		$tags = array();
 		foreach ($qtags as $tag) {
 			if ($count === TRUE) {
