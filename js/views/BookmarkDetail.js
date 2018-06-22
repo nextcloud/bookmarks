@@ -1,5 +1,6 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
+import Tag from '../models/Tag';
 import Tags from '../models/Tags';
 import TagsNavigationView from './TagsNavigation';
 import TagsSelectionView from './TagsSelection';
@@ -38,13 +39,14 @@ export default Marionette.View.extend({
 		this.listenTo(this.model, 'change', this.render);
 		this.listenTo(this.model, 'destroy', this.onDestroy);
 		this.listenTo(this.app.tags, 'sync', this.render);
-	},
-	onRender: function() {
+
 		var that = this;
 		this.tags = new Tags(this.model.get('tags').map(function(id) {
 			return that.app.tags.get(id);
 		}));
 		this.listenTo(this.tags, 'add remove', this.submitTags);
+	},
+	onRender: function() {
 		this.showChildView('tags', new TagsSelectionView({collection: this.app.tags, selected: this.tags, app: this.app }));
 
 		if (this.savingState === 'saving') {
@@ -95,6 +97,7 @@ export default Marionette.View.extend({
 		$el.focus();
 	},
 	submitTags: function() {
+		this.app.tags.add(this.tags.models)
 		this.model.set({
 			'tags': this.tags.pluck('name'),
 		});

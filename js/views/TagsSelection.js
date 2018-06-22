@@ -22,7 +22,6 @@ export default Marionette.View.extend({
 		this.listenTo(this.selected, 'add', this.onChangeByAlgo);
 		this.listenTo(this.selected, 'remove', this.onChangeByAlgo);
 		this.listenTo(this.selected, 'reset', this.onChangeByAlgo);
-		this.listenTo(this.collection, 'add', this.onAttach);
 	},
 	onAttach: function() {
 		if (this.$el.hasClass('select2-hidden-accessible')) {
@@ -45,12 +44,12 @@ export default Marionette.View.extend({
 		this.$el.select2('destroy');
 	},
 	onAddByUser: function(e) {
-		var tag = this.app.tags.get(e.params.data.text) || new Tag({name: e.params.data.text});
+		var tag = this.app.tags.get(e.params.data.text) ||
+			new Tag({name: e.params.data.text, count: 1});
 		this.selected.add(tag);
 	},
 	onRemoveByUser: function(e) {
-		var tag = this.app.tags.get(e.params.data.text) || new Tag({name: e.params.data.text});
-		this.selected.remove(tag);
+		this.selected.remove(e.params.data.text);
 	},
 	onChangeByAlgo: function(e) {
 		this.$el
