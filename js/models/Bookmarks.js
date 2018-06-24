@@ -47,6 +47,9 @@ export default Backbone.Collection.extend({
 					fetching: false,
 					reachedEnd: response.data.length < BATCH_SIZE
 				});
+				if (nextPage <= 1) {
+					that.fetchPage()
+				}
 			}
 		});
 	}
