@@ -13,7 +13,7 @@ export default Backbone.Collection.extend({
 	//override Backbone#comparator
 	comparator: function(m) {
 		if (this.sortby == 'title') {
-			return m.get('title').toLowerCase(); //for case insensitive sorting 
+			return m.get('title').toLowerCase(); //for case insensitive sorting
 		} else if (this.sortby == 'added') {
 			return (-1)*m.get('added'); //for descending sorting
 		} else if (this.sortby == 'lastmodified') {
@@ -38,6 +38,10 @@ export default Backbone.Collection.extend({
 			reachedEnd: false
 		})
 	},
+	setSortBy: function(sortby) {
+		this.sortby = sortby
+		this.loadingState.set({page: 0, reachedEnd: false})
+	}
 	fetchPage: function() {
 	    var that = this;
 		if (this.loadingState.get('fetching') || this.loadingState.get('reachedEnd')) {

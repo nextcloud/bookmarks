@@ -56,7 +56,7 @@ export default Marionette.Application.extend({
 		that.tags.fetch({data: {count: true}}); // we listen to 'sync', so we can fetch immediately
 	},
 	onSortingChanged: function() {
-		this.bookmarks.sortby = this.settings.get('sorting');
-		this.bookmarks.sort();	
+		this.bookmarks.setSortBy(this.settings.get('sorting'));
+		this.bookmarks.fetchPage();
 	},
 });
