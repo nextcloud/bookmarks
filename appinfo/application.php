@@ -138,6 +138,15 @@ class Application extends App {
 			);
 		});
 
+		$container->registerService('RecreateAllBookmarks', function($c) {
+				/** @var IContainer $c*/
+				return new RecreateAllBookmarks(
+					$c->query('ServerContainer')->getDb(),
+					$c->query('ServerContainer')->query(Bookmarks::class),
+					$c->query('ServerContainer')->getConfig()
+				);
+		});
+
 	}
 
 }
