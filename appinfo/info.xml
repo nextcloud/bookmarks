@@ -22,4 +22,9 @@ Check out the third-party clients listed here: https://github.com/nextcloud/book
 	<dependencies>
 		<nextcloud min-version="12" max-version="14" />
 	</dependencies>
+	<repair-steps>
+              <pre-migration>
+                      <step>OCA\Bookmarks\Migration\RecreateAllBookmarks</step>
+              </pre-migration>
+      </repair-steps>
 </info>
