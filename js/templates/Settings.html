@@ -14,13 +14,13 @@
 	<iframe class="upload" name="upload_iframe" id="upload_iframe"></iframe>
 	<button class="export"><span class="icon-download"></span> <%- t('bookmarks', 'Export') %></button>
 	<div class="import-status"></div>
-  <h3> <%- t('bookmarks', 'Sorting Options') %></h3>
+  <h3> <%- t('bookmarks', 'Sorting') %></h3>
   <form class="sort-form" action="settings/sort" method="post">
   	<select id="sort" name="sorting">
+		<option id="added" value="added"> <%- t('bookmarks', 'Recently added') %></option>
 		<option id="title" value="title"> <%- t('bookmarks', 'Alphabetically') %></option>
-		<option id="added" value="added"> <%- t('bookmarks', 'Most Recent') %></option>
-		<option id="clickcount" value="clickcount"> <%- t('bookmarks', 'Most Visited') %></option>
-		<option id="lastmodified" value="lastmodified"> <%- t('bookmarks', 'Latest Modified') %></option>
+		<option id="clickcount" value="clickcount"> <%- t('bookmarks', 'Most visited') %></option>
+		<option id="lastmodified" value="lastmodified"> <%- t('bookmarks', 'Latest modified') %></option>
   	</select>
   </form>
 </div>
