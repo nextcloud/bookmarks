@@ -41,7 +41,7 @@ export default Backbone.Collection.extend({
 	setSortBy: function(sortby) {
 		this.sortby = sortby
 		this.loadingState.set({page: 0, reachedEnd: false})
-	}
+	},
 	fetchPage: function() {
 	    var that = this;
 		if (this.loadingState.get('fetching') || this.loadingState.get('reachedEnd')) {
