@@ -78,7 +78,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", array("four"), "PublicNoTag", true);
 		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
 		$resultSetOne = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', array('one', 'three'), true, -1, false, array('url', 'title', 'tags'), 'or');
-    $this->assertEquals(3, count($resultSetOne));
+		$this->assertEquals(3, count($resultSetOne));
 		$resultOne = $resultSetOne[0];
 		$this->assertFalse(isset($resultOne['lastmodified']));
 		$this->assertCount(2, $resultOne['tags']);
@@ -86,12 +86,40 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertTrue(in_array('three', $resultOne['tags']));
 	}
 
+	function testFindBookmarksUntagged() {
+		$this->cleanDB();
+		$secondUser = $this->userid . "andHisClone435";
+		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", [], "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", [], "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.google.de", "Google", array("one"), "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.heise.de", "Heise", array("one", "two"), "PrivatTag", false);
+		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", [], "PublicNoTag", true);
+		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+
+		$resultSet = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], false, -1, false, array('url', 'title', 'tags'), null, true);
+	    $this->assertEquals(2, count($resultSet));
+
+		$resultOne = $resultSet[0];
+		$this->assertFalse(isset($resultOne['lastmodified']));
+		$this->assertCount(0, $resultOne['tags']);
+		$this->assertEquals('Golem', $resultOne['title']);
+		$this->assertEquals('https://www.golem.de/', $resultOne['url']);
+
+		$resultTwo = $resultSet[1];
+		$this->assertFalse(isset($resultTwo['lastmodified']));
+		$this->assertCount(0, $resultTwo['tags']);
+		$this->assertEquals('Google', $resultTwo['title']);
+		$this->assertEquals('http://www.google.de/', $resultTwo['url']);
+	}
+
 	function testFindTags() {
 		$this->cleanDB();
 		$this->assertEquals($this->libBookmarks->findTags($this->userid), array());
 		$this->libBookmarks->addBookmark($this->userid, 'http://nextcloud.com', 'Nextcloud project', array('oc', 'cloud'), 'An awesome project');
 
-    $tags = $this->libBookmarks->findTags($this->userid);
+ 		$tags = $this->libBookmarks->findTags($this->userid);
 		$this->assertTrue(in_array(['tag' => 'cloud', 'nbr' => 1], $tags));
 		$this->assertTrue(in_array(['tag' => 'oc', 'nbr' => 1], $tags));
 		$this->assertEquals(2, count($tags));

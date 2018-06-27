@@ -11,6 +11,7 @@ export default Marionette.View.extend({
 	template: _.template(templateString),
 	events: {
 		'click .all': 'onClick',
+		'click .untagged': 'onClick',
 		'click .favorites': 'onClick',
 		'click .shared': 'onClick'
 	},
