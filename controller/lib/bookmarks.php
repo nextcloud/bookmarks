@@ -164,6 +164,7 @@ class Bookmarks {
 	 * @param bool $public check if only public bookmarks should be returned
 	 * @param array $requestedAttributes select all the attributes that should be returned. default is * + tags
 	 * @param string $tagFilterConjunction select wether the filterTagOnly should filter with an AND or an OR  conjunction
+	 * @param bool untagged if `true` only untagged bookmarks will be returned and the filters will have no effect
 	 * @return array Collection of specified bookmarks
 	 */
 	public function findBookmarks(
@@ -175,7 +176,8 @@ class Bookmarks {
 		$limit = 10,
 		$public = false,
 		$requestedAttributes = null,
-		$tagFilterConjunction = "and"
+		$tagFilterConjunction = "and",
+		$untagged = false
 	) {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		if (is_string($filters)) {
@@ -223,7 +225,17 @@ class Bookmarks {
 			$qb->andWhere($qb->expr()->eq('public', $qb->createPositionalParameter(1)));
 		}
 
-		if (count($filters) > 0) {
+		if ($untagged) {
+			if ($dbType == 'pgsql') {
+				$tagCol = $qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')");
+	        }else{
+				$tagCol = 'tags';
+			}
+			$qb->having($qb->expr()->orX(
+				$qb->expr()->emptyString($tagCol),
+				$qb->expr()->isNull($tagCol)
+			));
+		} elseif (count($filters) > 0) {
 			$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $tagFilterConjunction);
 		}
 

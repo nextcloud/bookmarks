@@ -96,6 +96,7 @@ class BookmarkController extends ApiController {
 	 * @param string sortby
 	 * @param array search
 	 * @param int limit
+	 * @param bool untagged
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -112,7 +113,8 @@ class BookmarkController extends ApiController {
 		$conjunction = "or",
 		$sortby = "",
 		$search = array(),
-    $limit = 10
+		$limit = 10,
+		$untagged = false
 	) {
 		if ($user === null) {
 			$user = $this->userId;
@@ -166,7 +168,7 @@ class BookmarkController extends ApiController {
 			'added', 'lastmodified', 'clickcount', 'tags', 'image', 'favicon');
 
 		$bookmarks = $this->bookmarks->findBookmarks($user, $offset, $sqlSortColumn, $filterTag,
-			$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction);
+			$tagsOnly, $limit, $publicOnly, $attributesToSelect, $conjunction, $untagged);
 		return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
 	}
 

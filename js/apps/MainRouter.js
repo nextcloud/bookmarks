@@ -33,6 +33,11 @@ export default Marionette.AppRouter.extend({
 			this.app.bookmarks.setFetchQuery({search: decodeURIComponent(query).split(' '), conjunction: 'and'});
 			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'search', query);
+		},
+		untagged: function() {
+			this.app.bookmarks.setFetchQuery({untagged: true});
+			this.app.bookmarks.fetchPage();
+			Radio.channel('nav').trigger('navigate', 'untagged');
 		}
 	},
 	appRoutes: {
@@ -41,7 +46,8 @@ export default Marionette.AppRouter.extend({
 		'favorites': 'favorites',
 		'shared': 'shared',
 		'tags(/*tags)': 'tags',
-		'search/:query': 'search'
+		'search/:query': 'search',
+		'untagged': 'untagged'
 	},
 	initialize: function(options) {
 		this.controller.app = options.app;
