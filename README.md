@@ -31,7 +31,7 @@ npm run build
 ```
 
 ## Third-party clients
-- [Nextcloud Bookmarks](https://github.com/theScrabi/OCBookmarks) - Android app with full add/edit/delete and view functionallity
+- [Nextcloud Bookmarks](https://gitlab.com/derSchabi/OCBookmarks) - Android app with full add/edit/delete and view functionallity
 - [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based browsers
 - [NCBookmarks](https://github.com/lenchan139/NCBookmark) - App to view/edit/open bookmarks for Android
 - [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
