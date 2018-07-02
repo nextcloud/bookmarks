@@ -1,5 +1,6 @@
 { "translations": {
     "Bookmarks" : "ブックマーク",
+    "Failed to import one bookmark, because: " : "ブックマークのインポートに失敗しました。原因:",
     "Saved" : "保存しました",
     "An error occurred while trying to save the bookmark." : "ブックマークの保存を試している際にエラーが発生しました。",
     "Error" : "エラー",
