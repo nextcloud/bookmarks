@@ -2,6 +2,7 @@ import Backbone from 'backbone';
 import Bookmarks from '../models/Bookmarks';
 import Tag from '../models/Tag';
 import Tags from '../models/Tags';
+import Settings from '../models/Settings';
 import Router from './MainRouter';
 import AppView from '../views/App';
 
@@ -12,6 +13,7 @@ export default Marionette.Application.extend({
 	onBeforeStart: function() {
 		var that = this;
 		this.bookmarks = new Bookmarks;
+		this.settings = new Settings;
 		this.tags = new Tags;
 		this.tags.fetch({
 			reset: true,
@@ -22,7 +24,7 @@ export default Marionette.Application.extend({
 			}
 		});
 		this.listenTo(this.bookmarks, 'sync', this.onBookmarkTagsChanged);
-
+		this.listenTo(this.settings, 'change:sorting', this.onSortingChanged);
 		this.router = new Router({app: this});
 	},
 	onStart: function() {
@@ -53,5 +55,9 @@ export default Marionette.Application.extend({
 		if (this.tagChanged === true) return this.tagChanged = false;
 		this.bokmarkChanged = true;
 		that.tags.fetch({data: {count: true}}); // we listen to 'sync', so we can fetch immediately
-	}
+	},
+	onSortingChanged: function() {
+		this.bookmarks.setSortBy(this.settings.get('sorting'));
+		this.bookmarks.fetchPage();
+	},
 });

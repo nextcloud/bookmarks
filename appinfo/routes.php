@@ -55,6 +55,9 @@ $application->registerRoutes($this, array('routes' => array(
 	array('name' => 'tags#delete_tag', 'url' => '/public/rest/v2/tag', 'verb' => 'DELETE'),
 	array('name' => 'bookmark#preflighted_cors', 'url' => '/public/rest/v2/{path}',
 		'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']),
+	//Settings
+	array('name' => 'settings#set_sorting', 'url' => '/settings/sort', 'verb' => 'POST'),
+	array('name' => 'settings#get_sorting', 'url' => '/settings/sort', 'verb' => 'GET'),
 	// Legacy Routes
 	array('name' => 'public#return_as_json', 'url' => '/public/rest/v1/bookmark', 'verb' => 'GET'),
 

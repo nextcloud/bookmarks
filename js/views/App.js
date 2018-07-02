@@ -6,6 +6,7 @@ import NavigationView from './Navigation';
 import TagsManagementView from './TagsManagement';
 import ContentView from './Content';
 import SettingsView from './Settings';
+import Settings from '../models/Settings';
 import templateString from '../templates/App.html';
 
 const Marionette = Backbone.Marionette;
@@ -46,8 +47,8 @@ export default Marionette.View.extend({
 	onRender: function() {
 		this.showChildView('addBookmarks', new AddBookmarkView());
 		this.showChildView('navigation', new NavigationView);
+		this.showChildView('settings', new SettingsView({model: this.app.settings}));
 		this.showChildView('content', new ContentView({app: this.app})); 
 		this.showChildView('tags', new TagsManagementView({collection: this.app.tags}));
-		this.showChildView('settings', new SettingsView());
 	}
 });

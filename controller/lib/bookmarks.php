@@ -208,6 +208,7 @@ class Bookmarks {
         }else{
 			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')'), 'tags');
 		}
+		
 		if (!in_array($sqlSortColumn, $tableAttributes)) {
 			$sqlSortColumn = 'lastmodified';
 		}
@@ -226,7 +227,12 @@ class Bookmarks {
 			$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $tagFilterConjunction);
 		}
 
-		$qb->orderBy($sqlSortColumn, 'DESC');
+		if ($sqlSortColumn == 'title') {
+			$qb->orderBy($qb->createFunction('UPPER(`title`)'), 'ASC');
+		} else {
+			$qb->orderBy($sqlSortColumn, 'DESC');
+		}
+
 		if ($limit != -1 && $limit !== false) {
 			$qb->setMaxResults($limit);
 			if ($offset != null) {
