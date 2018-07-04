@@ -19,6 +19,8 @@ OC.L10N.register(
     "Settings" : "Impostazioni",
     "Bookmarklet" : "Bookmarklet",
     "Add to {instanceName} " : "Aggiungi a {instanceName} ",
+    "Recently added" : "Aggiunti di recente",
+    "Most visited" : "Più visitati",
     "Add to filter" : "Aggiungi a filtro",
     "Remove from filter" : "Rimuovi da filtro",
     "Rename" : "Rinomina",

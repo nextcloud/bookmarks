@@ -19,6 +19,8 @@ OC.L10N.register(
     "Settings" : "Поставке",
     "Bookmarklet" : "Забележник",
     "Add to {instanceName} " : "Додај на {instanceName} ",
+    "Recently added" : "Недавно додате",
+    "Most visited" : "Најпосећеније",
     "Add to filter" : "Додај у филтер",
     "Remove from filter" : "Уклони из филтера",
     "Rename" : "Преименуј",

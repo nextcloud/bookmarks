@@ -19,6 +19,8 @@ OC.L10N.register(
     "Settings" : "Настройки",
     "Bookmarklet" : "Приложение для панели закладок",
     "Add to {instanceName} " : "Добавить в {instanceName} ",
+    "Recently added" : "Недавно добавленные",
+    "Most visited" : "Самый посещаемые",
     "Add to filter" : "Добавить в фильтр",
     "Remove from filter" : "Удалить из фильтра",
     "Rename" : "Переименовать",
