@@ -19,6 +19,8 @@ OC.L10N.register(
     "Settings" : "Ayarlar",
     "Bookmarklet" : "Bookmarklet",
     "Add to {instanceName} " : "{instanceName} üzerine ekle  ",
+    "Recently added" : "Son Eklenenler",
+    "Most visited" : "En Çok Bakılanlar",
     "Add to filter" : "Süzgece ekle",
     "Remove from filter" : "Süzgeçten kaldır",
     "Rename" : "Yeniden adlandır",
