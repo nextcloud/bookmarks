@@ -20,6 +20,7 @@ OC.L10N.register(
     "Bookmarklet" : "Favelets",
     "Add to {instanceName} " : "Ajouter à {instanceName}",
     "Recently added" : "Ajoutés récemment",
+    "Most visited" : "Les plus visités",
     "Add to filter" : "Ajouter au filtre",
     "Remove from filter" : "Supprimer du filtre",
     "Rename" : "Renommer",
