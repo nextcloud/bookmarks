@@ -178,7 +178,7 @@ class BookmarkController extends ApiController {
 			$conjunction,
 			$untagged
 		);
-		return new JSONResponse(['data' => $bookmarks, 'status' => 'success']);
+		return new DataResponse(['data' => $bookmarks, 'status' => 'success']);
 	}
 
 	/**
