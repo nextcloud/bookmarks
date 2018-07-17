@@ -37,9 +37,6 @@ OC.L10N.register(
     "The title of the page" : "Seitentitel",
     "The address of the page" : "Adresse der Seite",
     "Description of the page" : "Beschreibung der Seite",
-    "Save" : "Speichern",
-    "Export & Import" : "Exportieren & importieren",
-    "Export" : "Exportieren",
-    "Import" : "Importieren"
+    "Save" : "Speichern"
 },
 "nplurals=2; plural=(n != 1);");

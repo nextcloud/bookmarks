@@ -33,9 +33,6 @@
     "The title of the page" : "Sidens titel",
     "The address of the page" : "Sidens adresse",
     "Description of the page" : "Sidens beskrivelse",
-    "Save" : "Gem",
-    "Export & Import" : "Eksport og import",
-    "Export" : "Eksport",
-    "Import" : "Import"
+    "Save" : "Gem"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

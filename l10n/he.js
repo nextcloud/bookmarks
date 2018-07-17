@@ -37,9 +37,6 @@ OC.L10N.register(
     "The title of the page" : "כותרת העמוד",
     "The address of the page" : "כתובת העמוד",
     "Description of the page" : "תיאור העמוד",
-    "Save" : "שמירה",
-    "Export & Import" : "ייצוא וייבוא",
-    "Export" : "ייצוא",
-    "Import" : "ייבוא"
+    "Save" : "שמירה"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

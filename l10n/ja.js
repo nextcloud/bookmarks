@@ -14,9 +14,6 @@ OC.L10N.register(
     "The title of the page" : "ページのタイトル",
     "The address of the page" : "ページのアドレス",
     "Description of the page" : "ページの説明",
-    "Save" : "保存",
-    "Export & Import" : "エクスポート & インポート",
-    "Export" : "エクスポート",
-    "Import" : "インポート"
+    "Save" : "保存"
 },
 "nplurals=1; plural=0;");

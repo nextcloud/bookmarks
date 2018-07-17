@@ -26,9 +26,6 @@ OC.L10N.register(
     "The title of the page" : "La titolo de la paĝo",
     "The address of the page" : "La adreso de la paĝo",
     "Description of the page" : "La preskribo de la paĝo",
-    "Save" : "Konservi",
-    "Export & Import" : "Elporti kaj Enporti",
-    "Export" : "Elporti",
-    "Import" : "Enporti"
+    "Save" : "Konservi"
 },
 "nplurals=2; plural=(n != 1);");

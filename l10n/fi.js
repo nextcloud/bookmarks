@@ -26,9 +26,6 @@ OC.L10N.register(
     "The title of the page" : "Sivun otsikko",
     "The address of the page" : "Sivun osoite",
     "Description of the page" : "Sivun kuvaus",
-    "Save" : "Tallenna",
-    "Export & Import" : "Vienti ja tuonti",
-    "Export" : "Vie",
-    "Import" : "Tuo"
+    "Save" : "Tallenna"
 },
 "nplurals=2; plural=(n != 1);");

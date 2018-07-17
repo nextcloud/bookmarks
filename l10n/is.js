@@ -18,9 +18,6 @@ OC.L10N.register(
     "The title of the page" : "Titill síðunnar",
     "The address of the page" : "Slóð á síðuna",
     "Description of the page" : "Lýsing á síðunni",
-    "Save" : "Vista",
-    "Export & Import" : "Flytja út og inn",
-    "Export" : "Flytja út",
-    "Import" : "Flytja inn"
+    "Save" : "Vista"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

@@ -16,9 +16,6 @@ OC.L10N.register(
     "The title of the page" : "გვერდის სახელი",
     "The address of the page" : "გვერდის მისამართი",
     "Description of the page" : "გვერდის აღწერილობა",
-    "Save" : "შენახვა",
-    "Export & Import" : "ექსპორტი და იმპორტი",
-    "Export" : "ექსპორტი",
-    "Import" : "იმპორტი"
+    "Save" : "შენახვა"
 },
 "nplurals=2; plural=(n!=1);");

@@ -17,9 +17,6 @@ OC.L10N.register(
     "The title of the page" : "Ο τίτλος της σελίδας",
     "The address of the page" : "Η διεύθυνση της σελίδας",
     "Description of the page" : "Περιγραφή της σελίδας",
-    "Save" : "Αποθήκευση",
-    "Export & Import" : "Εξαγωγή & Εισαγωγή",
-    "Export" : "Εξαγωγή",
-    "Import" : "Εισαγωγή"
+    "Save" : "Αποθήκευση"
 },
 "nplurals=2; plural=(n != 1);");

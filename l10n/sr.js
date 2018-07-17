@@ -37,9 +37,6 @@ OC.L10N.register(
     "The title of the page" : "Наслов стране",
     "The address of the page" : "Адреса стране",
     "Description of the page" : "Опис стране",
-    "Save" : "Сачувај",
-    "Export & Import" : "Извоз & увоз",
-    "Export" : "Извоз",
-    "Import" : "Увоз"
+    "Save" : "Сачувај"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

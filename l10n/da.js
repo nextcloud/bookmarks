@@ -35,9 +35,6 @@ OC.L10N.register(
     "The title of the page" : "Sidens titel",
     "The address of the page" : "Sidens adresse",
     "Description of the page" : "Sidens beskrivelse",
-    "Save" : "Gem",
-    "Export & Import" : "Eksport og import",
-    "Export" : "Eksport",
-    "Import" : "Import"
+    "Save" : "Gem"
 },
 "nplurals=2; plural=(n != 1);");

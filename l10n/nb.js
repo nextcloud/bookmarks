@@ -17,9 +17,6 @@ OC.L10N.register(
     "The title of the page" : "Sidetittel",
     "The address of the page" : "Adresse til siden",
     "Description of the page" : "Beskrivelse av siden",
-    "Save" : "Lagre",
-    "Export & Import" : "Eksporter og Importer",
-    "Export" : "Eksporter",
-    "Import" : "Importer"
+    "Save" : "Lagre"
 },
 "nplurals=2; plural=(n != 1);");

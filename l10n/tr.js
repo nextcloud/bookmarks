@@ -37,9 +37,6 @@ OC.L10N.register(
     "The title of the page" : "Sayfa başlığı",
     "The address of the page" : "Sayfa adresi",
     "Description of the page" : "Sayfa açıklaması",
-    "Save" : "Kaydet",
-    "Export & Import" : "Dışa/İçe Aktarma",
-    "Export" : "Dışa Aktar",
-    "Import" : "İçe Aktar"
+    "Save" : "Kaydet"
 },
 "nplurals=2; plural=(n > 1);");

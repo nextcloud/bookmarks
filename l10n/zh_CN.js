@@ -15,9 +15,6 @@ OC.L10N.register(
     "The title of the page" : "页面标题",
     "The address of the page" : "页面地址",
     "Description of the page" : "页面描述",
-    "Save" : "保存",
-    "Export & Import" : "导出&导入",
-    "Export" : "导出",
-    "Import" : "导入"
+    "Save" : "保存"
 },
 "nplurals=1; plural=0;");

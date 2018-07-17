@@ -34,9 +34,6 @@ OC.L10N.register(
     "The title of the page" : "Nadpis stránky",
     "The address of the page" : "Adresa stránky",
     "Description of the page" : "Popis stránky",
-    "Save" : "Uložit",
-    "Export & Import" : "Export a import",
-    "Export" : "Export",
-    "Import" : "Import"
+    "Save" : "Uložit"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

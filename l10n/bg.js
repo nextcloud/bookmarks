@@ -16,9 +16,6 @@ OC.L10N.register(
     "The title of the page" : "Заглавието на страницата",
     "The address of the page" : "Адреса на страницата",
     "Description of the page" : "Описание на страницата",
-    "Save" : "Запиши",
-    "Export & Import" : "Експортиране и Импортиране",
-    "Export" : "Експортирай",
-    "Import" : "Импортирай"
+    "Save" : "Запиши"
 },
 "nplurals=2; plural=(n != 1);");

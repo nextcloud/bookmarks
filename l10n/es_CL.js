@@ -18,9 +18,6 @@ OC.L10N.register(
     "The title of the page" : "El título de la página",
     "The address of the page" : "La dirección de la página",
     "Description of the page" : "Descripción de la página",
-    "Save" : "Guardar",
-    "Export & Import" : "Exportar & Importar",
-    "Export" : "Exportar",
-    "Import" : "Importar"
+    "Save" : "Guardar"
 },
 "nplurals=2; plural=(n != 1);");

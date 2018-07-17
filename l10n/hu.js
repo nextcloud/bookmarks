@@ -37,9 +37,6 @@ OC.L10N.register(
     "The title of the page" : "Az oldal tárgya",
     "The address of the page" : "Az oldal címe",
     "Description of the page" : "Az oldal leírása",
-    "Save" : "Mentés",
-    "Export & Import" : "Export & Import",
-    "Export" : "Export",
-    "Import" : "Import"
+    "Save" : "Mentés"
 },
 "nplurals=2; plural=(n != 1);");
