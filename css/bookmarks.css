@@ -1,6 +1,6 @@
 #content > div {
 	height: 100%;
-  overflow: auto;
+	overflow: auto;
 }
 
 #app-navigation {
@@ -20,22 +20,22 @@
 }
 
 #app-navigation h3 {
-	padding-top: .7cm;
+	padding-top: 0.7cm;
 	padding-left: 12px;
 	border-top: 1px solid #ededed;
 }
-#app-navigation h3 [class^=icon-] {
+#app-navigation h3 [class^='icon-'] {
 	display: inline-block;
 	vertical-align: sub;
 }
 
 #app-content {
-	transition: transform .5s ease;
+	transition: transform 0.5s ease;
 	transform: none;
 }
 
 .mobile-nav {
-	padding: .3cm;
+	padding: 0.3cm;
 	display: none;
 }
 
@@ -44,7 +44,6 @@
 }
 
 @media only screen and (max-width: 768px) {
-
 	.mobile-nav-open #app-content {
 		transform: translate(250px, 0);
 	}
@@ -52,7 +51,6 @@
 	.mobile-nav {
 		display: block;
 	}
-
 }
 
 .add-bookmark input {
@@ -74,7 +72,7 @@
 	padding: 10px 20px;
 	background-color: transparent;
 	border: none;
-	opacity: .5;
+	opacity: 0.5;
 	font-weight: bold;
 }
 
@@ -85,13 +83,13 @@
 	left: 250px;
 	right: 0;
 	box-shadow: 2px 1px 4px 0px #666;
-    padding: .3cm .5cm;
+	padding: 0.3cm 0.5cm;
 	background: white;
 	z-index: 3;
 }
 
 .bulk-actions + * {
-	transition: margin-top .5s ease;
+	transition: margin-top 0.5s ease;
 }
 
 .bulk-actions.active {
@@ -103,7 +101,6 @@
 }
 
 @media only screen and (max-width: 768px) {
-
 	.bulk-actions {
 		position: relative;
 		top: 0;
@@ -159,14 +156,14 @@ button span,
 }
 
 @media only screen and (max-width: 925px) {
-  .bulk-actions .tags {
-      width: 80%;
-  }
-  .bulk-actions .selection-tools {
-      float: none;
-      text-align: right;
-      margin-bottom: .5cm;
-  }
+	.bulk-actions .tags {
+		width: 80%;
+	}
+	.bulk-actions .selection-tools {
+		float: none;
+		text-align: right;
+		margin-bottom: 0.5cm;
+	}
 	.bulk-actions.active + * {
 		margin-top: 3.5cm;
 	}
@@ -180,7 +177,7 @@ button span,
 .bookmarks {
 	display: flex;
 	flex-wrap: wrap;
-	padding: 0 .6cm .6cm 0;
+	padding: 0 0.6cm 0.6cm 0;
 }
 
 .bookmark-card {
@@ -189,8 +186,8 @@ button span,
 	flex-grow: 1;
 	width: 6cm;
 	height: 6cm;
-	margin: .6cm 0 0 .6cm;
-	padding: .5cm;
+	margin: 0.6cm 0 0 0.6cm;
+	padding: 0.5cm;
 	background-color: rgb(210, 210, 210);
 	background-size: cover;
 	background-position: center;
@@ -202,7 +199,11 @@ button span,
 }
 
 .selection-active .bookmark-card {
-	opacity: .5;
+	opacity: 0.5;
+}
+.selection-active .bookmark-card:hover {
+	opacity: 0.6;
+	cursor: pointer;
 }
 
 .bookmark-card .select-mode-checkbox + label {
@@ -228,16 +229,28 @@ button span,
 	bottom: 0;
 	left: 0;
 	right: 0;
-	padding: .5cm .5cm .2cm;
-	background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%);
-	background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
-	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
+	padding: 0.5cm 0.5cm 0.2cm;
+	background: -moz-linear-gradient(
+		top,
+		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0.65) 100%
+	);
+	background: -webkit-linear-gradient(
+		top,
+		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0.65) 100%
+	);
+	background: linear-gradient(
+		to bottom,
+		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0.65) 100%
+	);
 }
 
 .bookmark-card .popovermenu {
 	position: absolute;
 	top: 1.5cm;
-	right: .1cm;
+	right: 0.1cm;
 	margin-right: -4px;
 }
 
@@ -245,8 +258,8 @@ button span,
 	background-color: transparent;
 	border: none;
 	position: absolute;
-	top: .6cm;
-	right: .1cm;
+	top: 0.6cm;
+	right: 0.1cm;
 }
 
 .bookmark-card .popovermenu .menu-filter-remove {
@@ -261,9 +274,9 @@ button span,
 }
 
 .bookmark-card h2 {
-	font-size: .5cm;
-	text-shadow: 0 0 2px rgba(0, 0, 0, .4);
-	padding-right: .5cm;
+	font-size: 0.5cm;
+	text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+	padding-right: 0.5cm;
 	max-height: 1.4cm; /* max two lines */
 	box-sizing: border-box;
 	overflow: hidden;
@@ -273,11 +286,11 @@ button span,
 .bookmark-card h2.with-favicon {
 	/*background-image: bookmark/{id}/favicon*/
 	background-position: 0px 5px;
-  background-size: .5cm .5cm;
-  background-repeat: no-repeat;
+	background-size: 0.5cm 0.5cm;
+	background-repeat: no-repeat;
 	position: relative;
-	right: .3cm;
-	padding-left: .6cm;
+	right: 0.3cm;
+	padding-left: 0.6cm;
 }
 
 .bookmark-card h2 * {
@@ -289,15 +302,15 @@ button span,
 	max-height: 2.5cm;
 	overflow: hidden;
 	position: absolute;
-	top: .5cm;
+	top: 0.5cm;
 }
 
 .bookmark-card .tag-nav-item {
-	border-radius: .2cm;
+	border-radius: 0.2cm;
 	background: #ebebeb;
 	display: inline-block;
-	padding: 0 .2cm;
-	margin: .1cm;
+	padding: 0 0.2cm;
+	margin: 0.1cm;
 }
 
 .bookmark-card .tag-nav-item:hover {
@@ -320,32 +333,30 @@ button span,
 }
 
 @media only screen and (max-width: 768px) {
-
 	.bookmark-detail {
 		width: auto;
 		left: 0;
 	}
-
 }
 
 .bookmark-detail h1 {
-	font-size: .7cm;
+	font-size: 0.7cm;
 	line-height: 1.3;
 	padding-right: 2.3cm;
-    cursor: text;
+	cursor: text;
 }
 
 .bookmark-detail h2 {
-	margin-top: .3cm;
-	opacity: .4;
+	margin-top: 0.3cm;
+	opacity: 0.4;
 }
 .bookmark-detail h2 .edit {
-    float: right;
+	float: right;
 }
 .bookmark-detail h3 {
 	margin-top: 1cm;
-	margin-bottom: .3cm;
-    border-bottom: 1px solid #ebebeb;
+	margin-bottom: 0.3cm;
+	border-bottom: 1px solid #ebebeb;
 }
 
 .bookmark-detail h2 :link:hover {
@@ -360,8 +371,8 @@ button span,
 
 .bookmark-detail > .close {
 	position: absolute;
-	top: .1cm;
-	right: .1cm;
+	top: 0.1cm;
+	right: 0.1cm;
 	width: 1cm;
 	height: 1cm;
 	cursor: pointer;
@@ -369,12 +380,12 @@ button span,
 
 .bookmark-detail .status {
 	position: absolute;
-	top: .4cm;
+	top: 0.4cm;
 	left: 1cm;
-	font-size: .4cm;
-	opacity: .4;
+	font-size: 0.4cm;
+	opacity: 0.4;
 }
-.bookmark-detail .status [class^="icon-"] {
+.bookmark-detail .status [class^='icon-'] {
 	display: inline-block;
 }
 .bookmark-detail .status .message {
@@ -383,7 +394,7 @@ button span,
 .bookmark-detail .status.saving .message.message-saving {
 	display: inline;
 	position: relative;
-	left: .2cm;
+	left: 0.2cm;
 }
 .bookmark-detail .status.saved .message.message-saved {
 	display: inline;
@@ -414,26 +425,38 @@ button span,
 	width: 1cm;
 }
 
-.bookmark-detail .select2-container--default .select2-selection--multiple .select2-selection__choice,
-.bulk-actions .select2-container--default .select2-selection--multiple .select2-selection__choice,
+.bookmark-detail
+	.select2-container--default
+	.select2-selection--multiple
+	.select2-selection__choice,
+.bulk-actions
+	.select2-container--default
+	.select2-selection--multiple
+	.select2-selection__choice,
 .bookmark-detail .tag-nav-item {
-	border-radius: .2cm;
+	border-radius: 0.2cm;
 	border: none;
 	background: #ebebeb;
 	display: inline-block;
-	padding: .1cm .2cm;
-	margin: .1cm;
+	padding: 0.1cm 0.2cm;
+	margin: 0.1cm;
 }
 
-.bookmark-detail .select2-container--default .select2-selection--multiple .select2-selection__choice:hover,
-.bulk-actions .select2-container--default .select2-selection--multiple .select2-selection__choice:hover,
+.bookmark-detail
+	.select2-container--default
+	.select2-selection--multiple
+	.select2-selection__choice:hover,
+.bulk-actions
+	.select2-container--default
+	.select2-selection--multiple
+	.select2-selection__choice:hover,
 .bookmark-detail .tag-nav-item:hover {
 	background: #e0e0e0;
 }
 
 .bookmark-detail .description {
-	margin-top: .5cm;
-	font-size: .4cm;
+	margin-top: 0.5cm;
+	font-size: 0.4cm;
 	/*for editing*/
 	width: auto;
 	min-height: 300px;
@@ -441,7 +464,7 @@ button span,
 }
 
 .bookmark-detail .description.empty {
-	opacity: .4;
+	opacity: 0.4;
 }
 
 .tags-management {
@@ -451,13 +474,11 @@ button span,
 }
 
 @media only screen and (max-width: 768px) {
-
 	.tags-management {
 		width: auto;
 		float: none;
 		border-bottom: 2px solid #bbb;
 	}
-
 }
 
 .tags-management .tag-man-item {
@@ -469,7 +490,7 @@ button span,
 }
 
 .tags-management .tag-man-item > a {
-	padding-left: .2cm;
+	padding-left: 0.2cm;
 }
 
 .tags-management .tag-man-item .actions {
@@ -488,7 +509,7 @@ button span,
 .tags-management .tag-man-item .action button {
 	border: none;
 	background-color: transparent;
-	opacity: .45;
+	opacity: 0.45;
 	padding: 3px 12px;
 }
 
@@ -496,9 +517,9 @@ button span,
 	opacity: 1;
 }
 
-.tags-management .tag-man-item input[type="text"] {
-	min-height: .7cm;
-	padding: 0 .1cm;
+.tags-management .tag-man-item input[type='text'] {
+	min-height: 0.7cm;
+	padding: 0 0.1cm;
 	margin: 0;
 	width: 70%;
 }
@@ -506,7 +527,7 @@ button span,
 /* make checkbox look like an icon */
 
 .menu-item-checkbox span:first-child {
-  padding: 5px 5px;
+	padding: 5px 5px;
 }
 
 /* display 'remove from filter' when selected, and 'add to ...' when unselected*/
@@ -522,7 +543,6 @@ button span,
 .tags-management .tag-man-item.active .menu-filter-remove {
 	display: block;
 }
-
 
 #app-navigation .settings h3 {
 	padding-top: 0;
