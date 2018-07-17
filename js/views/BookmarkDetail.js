@@ -13,21 +13,19 @@ export default Marionette.View.extend({
 	template: _.template(templateString),
 	className: 'bookmark-detail',
 	regions: {
-		'tags': {
+		tags: {
 			el: '.tags'
 		}
 	},
 	ui: {
-		'link': 'h2 > a',
-		'close': '> .close',
-		'edit': '.edit',
-		'delete': '.delete',
-		'status': '.status'
+		link: 'h2 > a',
+		close: '> .close',
+		edit: '.edit',
+		status: '.status'
 	},
 	events: {
 		'click @ui.link': 'clickLink',
 		'click @ui.close': 'close',
-		'click @ui.delete': 'delete',
 		'click h1': 'edit',
 		'click h2 .edit': 'edit',
 		'click .description': 'edit',
@@ -41,13 +39,22 @@ export default Marionette.View.extend({
 		this.listenTo(this.app.tags, 'sync', this.render);
 
 		var that = this;
-		this.tags = new Tags(this.model.get('tags').map(function(id) {
-			return that.app.tags.get(id);
-		}));
+		this.tags = new Tags(
+			this.model.get('tags').map(function(id) {
+				return that.app.tags.get(id);
+			})
+		);
 		this.listenTo(this.tags, 'add remove', this.submitTags);
 	},
 	onRender: function() {
-		this.showChildView('tags', new TagsSelectionView({collection: this.app.tags, selected: this.tags, app: this.app }));
+		this.showChildView(
+			'tags',
+			new TagsSelectionView({
+				collection: this.app.tags,
+				selected: this.tags,
+				app: this.app
+			})
+		);
 
 		if (this.savingState === 'saving') {
 			this.savingState = 'saved';
@@ -72,23 +79,23 @@ export default Marionette.View.extend({
 			return;
 		}
 
-		switch($el.data('attribute')) {
-		case 'url':
-			$el.text(this.model.get('url'));
+		switch ($el.data('attribute')) {
+			case 'url':
+				$el.text(this.model.get('url'));
 			// fallthrough
-		case 'title':
-			$el.on('keydown', function(e) {
-				// enter
-				if (e.which === 13) {
-					that.submit($el);
+			case 'title':
+				$el.on('keydown', function(e) {
+					// enter
+					if (e.which === 13) {
+						that.submit($el);
+					}
+				});
+				break;
+			case 'description':
+				if ($el.hasClass('empty')) {
+					$el.text('');
 				}
-			});
-			break;
-		case 'description':
-			if ($el.hasClass('empty')) {
-				$el.text('');
-			}
-			break;
+				break;
 		}
 		$el.prop('contenteditable', true);
 		$el.one('blur', function() {
@@ -97,13 +104,15 @@ export default Marionette.View.extend({
 		$el.focus();
 	},
 	submitTags: function() {
-		this.app.tags.add(this.tags.models)
+		this.app.tags.add(this.tags.models);
 		this.model.set({
-			'tags': this.tags.pluck('name'),
+			tags: this.tags.pluck('name')
 		});
-		this.model.save({wait: true});
+		this.model.save({ wait: true });
 		this.savingState = 'saving';
-		this.getUI('status').removeClass('saved').addClass('saving');
+		this.getUI('status')
+			.removeClass('saved')
+			.addClass('saving');
 	},
 	submit: function($el) {
 		if (this.savingState === 'saving') {
@@ -113,11 +122,10 @@ export default Marionette.View.extend({
 		this.model.set({
 			[$el.data('attribute')]: $el.text()
 		});
-		this.model.save({wait: true});
-		this.getUI('status').removeClass('saved').addClass('saving');
-	},
-	delete: function() {
-		this.model.destroy();
+		this.model.save({ wait: true });
+		this.getUI('status')
+			.removeClass('saved')
+			.addClass('saving');
 	},
 	onDestroy: function() {
 		this.close();
