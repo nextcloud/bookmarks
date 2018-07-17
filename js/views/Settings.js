@@ -22,6 +22,7 @@ export default Marionette.View.extend({
 		added: '#added',
 		clickcount: '#clickcount',
 		lastmodified: '#lastmodified',
+		rsslink: '.rss-link',
 		clearData: '.clear-data'
 	},
 	events: {
@@ -32,10 +33,13 @@ export default Marionette.View.extend({
 		'load @ui.iframe': 'importResult',
 		'click .export': 'exportTrigger',
 		'change @ui.sort': 'setSorting',
+		'focus @ui.rsslink': 'clickRssLink',
 		'click @ui.clearData': 'deleteAllBookmarks'
 	},
 	initialize: function(options) {
+		this.app = options.app;
 		this.listenTo(this.model, 'change:sorting', this.getSorting);
+		this.listenTo(this.app.bookmarks.loadingState, 'change:query', this.render);
 	},
 	onRender: function() {
 		const bookmarkletUrl =
@@ -44,6 +48,18 @@ export default Marionette.View.extend({
 			'/index.php/apps/bookmarks/bookmarklet';
 		const bookmarkletSrc = `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?output=popup&url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=400px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`;
 		this.getUI('bookmarklet').prop('href', bookmarkletSrc);
+
+		const rssURL =
+			window.location.origin +
+			oc_webroot +
+			'/index.php/apps/bookmarks/public/rest/v2/bookmark?' +
+			$.param(
+				Object.assign({}, this.app.bookmarks.loadingState.get('query'), {
+					format: 'rss',
+					page: -1
+				})
+			);
+		this.getUI('rsslink').val(rssURL);
 	},
 	open: function(e) {
 		e.preventDefault();
@@ -134,6 +150,12 @@ export default Marionette.View.extend({
 		var select = document.getElementById('sort');
 		var value = select.options[select.selectedIndex].value;
 		this.model.setSorting(value);
+	},
+	clickRssLink: function() {
+		var that = this;
+		setTimeout(function() {
+			that.getUI('rsslink').select();
+		}, 100);
 	},
 	deleteAllBookmarks: function() {
 		var app = this.app;
