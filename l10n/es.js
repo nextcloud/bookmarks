@@ -15,6 +15,7 @@ OC.L10N.register(
     "Add a description..." : "Añadir una descripción...",
     "No bookmarks here." : "No hay marcadores aquí.",
     "All bookmarks" : "Todos los marcadores",
+    "Untagged" : "Sin etiquetas",
     "Shared" : "Compartidos",
     "Settings" : "Configuración",
     "Bookmarklet" : "Bookmarklet",
