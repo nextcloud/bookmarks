@@ -468,7 +468,7 @@ button span,
 }
 
 .tags-management {
-	overflow-y: auto;
+	overflow-y: auto !important;
 	height: 80% !important;
 	height: calc(100% - 80px - 100px) !important;
 }
