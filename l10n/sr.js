@@ -15,6 +15,7 @@ OC.L10N.register(
     "Add a description..." : "Додај опис…",
     "No bookmarks here." : "Овде нема забелешки",
     "All bookmarks" : "Све забелешке",
+    "Untagged" : "Неозначене",
     "Shared" : "Дељене",
     "Settings" : "Поставке",
     "Bookmarklet" : "Забележник",
