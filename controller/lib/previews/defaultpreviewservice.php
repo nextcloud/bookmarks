@@ -17,27 +17,31 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-namespace OCA\Bookmarks\Controller\Lib;
+namespace OCA\Bookmarks\Controller\Lib\Previews;
 
 use OCP\ICache;
 use OCP\ICacheFactory;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 
-class ImageService {
-
+class DefaultPreviewService implements IPreviewService {
 	// Cache for one month
 	const CACHE_TTL = 4 * 7 * 24 * 60 * 60;
 
 	/** @var ICache */
-	private $cache;
+	protected $cache;
+
+	/** @var LinkExplorer */
+	protected $linkExplorer;
 
 	/**
 	 * @param ICacheFactory $cacheFactory
+	 * @param LinkExplorer $linkExplorer
 	 */
-	public function __construct(ICacheFactory $cacheFactory) {
-		$this->cache = $cacheFactory->create('bookmarks.images');
+	public function __construct(ICacheFactory $cacheFactory, LinkExplorer $linkExplorer) {
+		$this->cache = $cacheFactory->create('bookmarks.DefaultPreviewService');
+		$this->linkExplorer = $linkExplorer;
 	}
 
 	private function buildKey($url) {
@@ -48,13 +52,41 @@ class ImageService {
 	 * @param string $url
 	 * @return string|null image data
 	 */
-	public function getImage($url) {
-		$key = $this->buildKey($url);
+	public function getImage($bookmark) {
+		if (!isset($bookmark)) {
+			return null;
+		}
+		$site = $this->scrapeUrl($bookmark['url']);
+		if (!isset($site['image'])) {
+			return  null;
+		}
+		return $this->getOrFetchImageUrl($site['image']);
+	}
+
+	public function scrapeUrl($url) {
+		$key = $this->buildKey('meta:'.$url);
+		if ($data = $this->cache->get($key)) {
+			return $data;
+		}
+		$data = $this->linkExplorer->get($url);
+		$this->cache->set($key, json_encode($data), self::CACHE_TTL);
+		return $data;
+	}
+
+	public function getOrFetchImageUrl($url) {
+		if (!isset($url) || $url === '') {
+			return null;
+		}
+
+		$key = $this->buildKey('image:'.$url);
 		// Try cache first
 		if ($image = $this->cache->get($key)) {
-			 $image = json_decode($image, true);
-			 return [
-			 	'contentType' => $image['contentType'],
+			$image = json_decode($image, true);
+			if (is_null($image)) {
+				return null;
+			}
+			return [
+				'contentType' => $image['contentType'],
 				'data' => base64_decode($image['data'])
 			];
 		}
@@ -63,6 +95,8 @@ class ImageService {
 		$image = $this->fetchImage($url);
 
 		if (is_null($image)) {
+			$json = json_encode(null);
+			$this->cache->set($key, $json, self::CACHE_TTL);
 			return null;
 		}
 
@@ -73,14 +107,14 @@ class ImageService {
 		]);
 		$this->cache->set($key, $json, self::CACHE_TTL);
 
-		return $image; 
+		return $image;
 	}
-	
+
 	/**
 	 * @param string $url
 	 * @return string|null fetched image data
 	 */
-	private function fetchImage($url) {	
+	private function fetchImage($url) {
 		$body = $contentType = '';
 		try {
 			$client = new \GuzzleHTTP\Client();
@@ -102,11 +136,10 @@ class ImageService {
 		if (!$contentType || stripos($contentType, 'image') !== 0) {
 			return null;
 		}
-		
+
 		return [
 			'contentType' => $contentType,
 			'data' => $body
 		];
 	}
 }
-

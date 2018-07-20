@@ -10,9 +10,9 @@ const Radio = Backbone.Radio;
 
 // 100 palettes * 5 colors = 500 colors
 const COLORS = colorPalettes.reduce((p1, p2) => p1.concat(p2), []);
-const simpleHash = (str) => {
+const simpleHash = str => {
 	var hash = 0;
-	for (var i = 0; i<str.length; i++){
+	for (var i = 0; i < str.length; i++) {
 		hash = str.charCodeAt(i) + (hash << 6) + (hash << 16) - hash;
 	}
 	return Math.abs(hash);
@@ -22,22 +22,22 @@ export default Marionette.View.extend({
 	template: _.template(templateString),
 	className: 'bookmark-card',
 	ui: {
-		'link': 'h2 > a',
-		'checkbox': '.selectbox',
-		'actionsMenu': '.popovermenu',
-		'actionsToggle': '.toggle-actions'
+		link: 'h2 > a',
+		checkbox: '.selectbox',
+		actionsMenu: '.popovermenu',
+		actionsToggle: '.toggle-actions'
 	},
 	regions: {
-		'tags': '.tags'
+		tags: '.tags'
 	},
 	events: {
-		'click': 'clickLink',
+		click: 'clickLink',
 		'click @ui.checkbox': 'select',
 		'click @ui.actionsToggle': 'toggleActions',
 		'click .menu-filter-add': 'select',
 		'click .menu-filter-remove': 'select',
 		'click .menu-delete': 'delete',
-		'click .menu-details': 'open',
+		'click .menu-details': 'open'
 	},
 	initialize: function(opts) {
 		this.app = opts.app;
@@ -49,19 +49,25 @@ export default Marionette.View.extend({
 	},
 	onRender: function() {
 		var that = this;
-		if (this.model.get('image')) {
-			this.$el.css('background-image', 'url(bookmark/'+this.model.get('id')+'/image)');
-		} else {
-			this.$el.css('background-color', COLORS[simpleHash(new URL(this.model.get('url')).host) % COLORS.length]);
-		}
-		var tags = new Tags(this.model.get('tags').map(function(id) {
-			return that.app.tags.findWhere({name: id});
-		}));
-		this.showChildView('tags', new TagsNavigationView({collection: tags}));
+		this.$el.css(
+			'background-image',
+			'url(bookmark/' + this.model.get('id') + '/image)'
+		);
+		this.$el.css(
+			'background-color',
+			COLORS[simpleHash(new URL(this.model.get('url')).host) % COLORS.length]
+		);
+
+		var tags = new Tags(
+			this.model.get('tags').map(function(id) {
+				return that.app.tags.findWhere({ name: id });
+			})
+		);
+		this.showChildView('tags', new TagsNavigationView({ collection: tags }));
 		this.$('.checkbox').prop('checked', this.$el.hasClass('active'));
 	},
 	clickLink: function(e) {
-		if (e &&  e.target === this.getUI('actionsToggle')[0]) {
+		if (e && e.target === this.getUI('actionsToggle')[0]) {
 			return;
 		}
 		if (this.$el.closest('.selection-active').length) {
@@ -75,19 +81,23 @@ export default Marionette.View.extend({
 		Radio.channel('details').trigger('show', this.model);
 	},
 	toggleActions: function() {
-		this.getUI('actionsMenu').toggleClass('open').toggleClass('closed');
+		this.getUI('actionsMenu')
+			.toggleClass('open')
+			.toggleClass('closed');
 	},
 	closeActions: function(e) {
 		if (e && this.getUI('actionsToggle')[0] === e.target) {
 			return;
 		}
-		this.getUI('actionsMenu').removeClass('open').addClass('closed');
+		this.getUI('actionsMenu')
+			.removeClass('open')
+			.addClass('closed');
 	},
 	select: function(e) {
 		e.stopPropagation();
 		if (this.$el.hasClass('active')) {
 			this.model.trigger('unselect', this.model);
-		}else{
+		} else {
 			this.model.trigger('select', this.model);
 		}
 	},

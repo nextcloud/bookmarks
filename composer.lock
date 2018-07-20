@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b2e4153d174a8f74c090cdd2589746e",
+    "content-hash": "b4f3be71a31dd235a4c7f8dda5a556a1",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -757,6 +757,56 @@
                 "shim"
             ],
             "time": "2018-04-26T10:06:28+00:00"
+        },
+        {
+            "name": "wnx/screeenly-client",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stefanzweifel/ScreeenlyClient.git",
+                "reference": "52fef5a2363b25e0fb654fb026f901da969a5228"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stefanzweifel/ScreeenlyClient/zipball/52fef5a2363b25e0fb654fb026f901da969a5228",
+                "reference": "52fef5a2363b25e0fb654fb026f901da969a5228",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~5",
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Wnx\\ScreeenlyClient": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Zweifel",
+                    "email": "hello@stefanzweifel.io",
+                    "homepage": "http://stefanzweifel.io",
+                    "role": "Developer & Maintainer"
+                }
+            ],
+            "description": "PHP API Wrapper for screeenly.com",
+            "homepage": "https://github.com/stefanzweifel/ScreeenlyClient",
+            "keywords": [
+                "api",
+                "laravel",
+                "screeenly",
+                "screenshot"
+            ],
+            "time": "2015-02-13T18:57:29+00:00"
         }
     ],
     "packages-dev": [],

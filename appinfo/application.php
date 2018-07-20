@@ -14,8 +14,9 @@
 namespace OCA\Bookmarks\AppInfo;
 
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
-use OCA\Bookmarks\Controller\Lib\ImageService;
-use OCA\Bookmarks\Controller\Lib\FaviconService;
+use OCA\Bookmarks\Controller\Lib\Previews\DefaultPreviewService;
+use OCA\Bookmarks\Controller\Lib\Previews\ScreenlyPreviewService;
+use OCA\Bookmarks\Controller\Lib\Previews\FaviconPreviewService;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\Utility\ITimeFactory;
 use \OCP\IContainer;
@@ -29,8 +30,7 @@ use OCA\Bookmarks\Controller\Rest\SettingsController;
 use OCP\IUser;
 
 class Application extends App {
-
-	public function __construct(array $urlParams = array()) {
+	public function __construct(array $urlParams = []) {
 		parent::__construct('bookmarks', $urlParams);
 
 		$container = $this->getContainer();
@@ -39,7 +39,7 @@ class Application extends App {
 		 * Controllers
 		 * @param IContainer $c The Container instance that handles the request
 		 */
-		$container->registerService('WebViewController', function($c) {
+		$container->registerService('WebViewController', function ($c) {
 			/** @var IUser|null $user */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
@@ -55,7 +55,7 @@ class Application extends App {
 			);
 		});
 
-		$container->registerService('BookmarkController', function($c) {
+		$container->registerService('BookmarkController', function ($c) {
 			/** @var IContainer $c */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
@@ -70,7 +70,7 @@ class Application extends App {
 			);
 		});
 
-		$container->registerService('InternalBookmarkController', function($c) {
+		$container->registerService('InternalBookmarkController', function ($c) {
 			/** @var IContainer $c */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
@@ -83,13 +83,13 @@ class Application extends App {
 				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
 				$c->query('ServerContainer')->query(Bookmarks::class),
 				$c->query('ServerContainer')->getUserManager(),
-				$c->query('ServerContainer')->query(ImageService::class),
-				$c->query('ServerContainer')->query(FaviconService::class),
+				$c->query('ServerContainer')->query(DefaultPreviewService::class),
+				$c->query('ServerContainer')->query(FaviconPreviewService::class),
 				$c->query('ServerContainer')->query(ITimeFactory::class)
 			);
 		});
 
-		$container->registerService('TagsController', function($c) {
+		$container->registerService('TagsController', function ($c) {
 			/** @var IContainer $c */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
@@ -101,7 +101,7 @@ class Application extends App {
 			);
 		});
 
-		$container->registerService('InternalTagsController', function($c) {
+		$container->registerService('InternalTagsController', function ($c) {
 			/** @var IContainer $c */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
@@ -113,7 +113,7 @@ class Application extends App {
 			);
 		});
 
-		$container->registerService('PublicController', function($c) {
+		$container->registerService('PublicController', function ($c) {
 			/** @var IContainer $c */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
@@ -126,7 +126,7 @@ class Application extends App {
 			);
 		});
 
-		$container->registerService('SettingsController', function($c) {
+		$container->registerService('SettingsController', function ($c) {
 			/** @var IContainer $c */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
@@ -138,15 +138,13 @@ class Application extends App {
 			);
 		});
 
-		$container->registerService('RecreateAllBookmarks', function($c) {
-				/** @var IContainer $c*/
-				return new RecreateAllBookmarks(
+		$container->registerService('RecreateAllBookmarks', function ($c) {
+			/** @var IContainer $c*/
+			return new RecreateAllBookmarks(
 					$c->query('ServerContainer')->getDb(),
 					$c->query('ServerContainer')->query(Bookmarks::class),
 					$c->query('ServerContainer')->getConfig()
 				);
 		});
-
 	}
-
 }

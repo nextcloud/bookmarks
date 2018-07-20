@@ -18,19 +18,43 @@
  *
  */
 
-namespace OCA\Bookmarks\Controller\Lib;
+namespace OCA\Bookmarks\Controller\Lib\Previews;
 
 use OCP\ICache;
 use OCP\ICacheFactory;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 
-class FaviconService extends ImageService {
+class FaviconPreviewService extends DefaultPreviewService {
+
 	/**
 	 * @param ICacheFactory $cacheFactory
+	 * @param LinkExplorer $linkExplorer
 	 */
-	public function __construct(ICacheFactory $cacheFactory) {
-		parent::__construct($cacheFactory);
-		$this->cache = $cacheFactory->create('bookmarks.favicons');
+	public function __construct(ICacheFactory $cacheFactory, LinkExplorer $linkExplorer) {
+		parent::__construct($cacheFactory, $linkExplorer);
+		$this->cache = $cacheFactory->create('bookmarks.FaviconPreviewService');
+	}
+
+	public function getImage($bookmark) {
+		if (!isset($bookmark)) {
+			return null;
+		}
+		$url = $bookmark['url'];
+		$site = $this->scrapeUrl($url);
+
+		if (isset($site['favicon'])) {
+			$image = $this->getOrFetchImageUrl($site['favicon']);
+			if (!is_null($image)) {
+				return $image;
+			}
+		}
+
+		$url_parts = parse_url($bookmark['url']);
+
+		return $this->getOrFetchImageUrl(
+			$url_parts['scheme'] . $url_parts['host'] . '/favicon.ico'
+		);
 	}
 }

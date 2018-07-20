@@ -20,21 +20,19 @@ use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OC\User\Manager;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
-use \OCA\Bookmarks\Controller\Lib\ImageService;
-use \OCA\Bookmarks\Controller\Lib\FaviconService;
+use \OCA\Bookmarks\Controller\Lib\Previews\IPreviewService;
 use DateInterval;
 use DateTime;
 use OCP\AppFramework\Utility\ITimeFactory;
 
 class InternalBookmarkController extends ApiController {
-
 	const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
 
 	private $publicController;
 
 	private $userId;
 	private $libBookmarks;
-	private $imageService;
+	private $previewService;
 	private $faviconService;
 	private $timeFactory;
 
@@ -46,15 +44,15 @@ class InternalBookmarkController extends ApiController {
 		IL10N $l10n,
 		Bookmarks $bookmarks,
 		Manager $userManager,
-		ImageService $imageService,
-		FaviconService $faviconService,
+		IPreviewService $previewService,
+		IPreviewService $faviconService,
 		ITimeFactory $timeFactory
 	) {
 		parent::__construct($appName, $request);
 		$this->publicController = new BookmarkController($appName, $request, $userId, $db, $l10n, $bookmarks, $userManager);
 		$this->userId = $userId;
 		$this->libBookmarks = $bookmarks;
-		$this->imageService = $imageService;
+		$this->previewService = $previewService;
 		$this->faviconService = $faviconService;
 		$this->timeFactory = $timeFactory;
 	}
@@ -81,17 +79,17 @@ class InternalBookmarkController extends ApiController {
 		$page = 0,
 		$sort = "bookmarks_sorting_recent", // legacy
 		$user = null,
-		$tags = array(),
+		$tags = [],
 		$conjunction = "or",
 		$sortby = "",
-		$search = array(),
+		$search = [],
 		$limit = 10,
 		$untagged = false
 	) {
 		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search, $limit, $untagged);
 	}
 
-  /**
+	/**
 	 * @param string $id
 	 * @param string $user
 	 * @return JSONResponse
@@ -112,7 +110,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $item = array(), $title = "", $is_public = false, $description = "") {
+	public function newBookmark($url = "", $item = [], $title = "", $is_public = false, $description = "") {
 		return $this->publicController->newBookmark($url, $item, $title, $is_public, $description);
 	}
 
@@ -128,7 +126,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function legacyEditBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "") {
+	public function legacyEditBookmark($id = null, $url = "", $item = [], $title = "", $is_public = false, $record_id = null, $description = "") {
 		return $this->publicController->legacyEditBookmark($id, $url, $item, $title, $is_public, $record_id, $description);
 	}
 
@@ -145,7 +143,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editBookmark($id = null, $url = "", $item = array(), $title = "", $is_public = false, $record_id = null, $description = "", $tags = []) {
+	public function editBookmark($id = null, $url = "", $item = [], $title = "", $is_public = false, $record_id = null, $description = "", $tags = []) {
 		return $this->publicController->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description, $tags);
 	}
 
@@ -207,11 +205,7 @@ class InternalBookmarkController extends ApiController {
 	 */
 	public function getBookmarkImage($id) {
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userId);
-		if (!isset($bookmark) || !isset($bookmark['image']) || $bookmark['image'] === '') {
-			return new NotFoundResponse();
-		}
-
-		$image = $this->imageService->getImage($bookmark['image']);
+		$image = $this->previewService->getImage($bookmark);
 		if (!isset($image)) {
 			return new NotFoundResponse();
 		}
@@ -229,11 +223,7 @@ class InternalBookmarkController extends ApiController {
 	 */
 	public function getBookmarkFavicon($id) {
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userId);
-		if (!isset($bookmark) || !isset($bookmark['favicon']) || $bookmark['favicon'] === '') {
-			return new NotFoundResponse();
-		}
-
-		$image = $this->faviconService->getImage($bookmark['favicon']);
+		$image = $this->faviconService->getImage($bookmark);
 		if (!isset($image)) {
 			return new NotFoundResponse();
 		}
