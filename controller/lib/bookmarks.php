@@ -185,7 +185,7 @@ class Bookmarks {
 		}
 
 		$tableAttributes = ['id', 'url', 'title', 'user_id', 'description',
-			'public', 'added', 'lastmodified', 'clickcount', 'image', 'favicon'];
+			'public', 'added', 'lastmodified', 'clickcount'];
 
 		$returnTags = true;
 
