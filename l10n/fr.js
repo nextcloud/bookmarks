@@ -15,6 +15,7 @@ OC.L10N.register(
     "Add a description..." : "Ajouter une description...",
     "No bookmarks here." : "Pas de favoris ici.",
     "All bookmarks" : "Tous les favoris",
+    "Untagged" : "Non étiqueté",
     "Shared" : "Partagé",
     "Settings" : "Paramètres",
     "Bookmarklet" : "Favelets",
