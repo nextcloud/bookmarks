@@ -195,9 +195,10 @@ button span,
 }
 
 .bookmark-card:hover {
-	box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.75) 0 1px 10px
-		rgba(77, 77, 77, 0.75);
+	box-shadow: 0 1px 10px rgba(77, 77, 77, 0.75);
+	box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.65);
 	opacity: 1;
+	cursor: pointer;
 }
 
 .selection-active .bookmark-card {
@@ -286,6 +287,10 @@ button span,
 	box-sizing: border-box;
 	overflow: hidden;
 	cursor: pointer;
+}
+
+.bookmark-card h2:hover {
+	text-decoration: underline;
 }
 
 .bookmark-card h2.with-favicon {

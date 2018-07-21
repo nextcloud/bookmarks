@@ -20,7 +20,8 @@ export default Marionette.View.extend({
 		tags: '.tags'
 	},
 	events: {
-		click: 'clickLink',
+		click: 'open',
+		'click @ui.link': 'clickLink',
 		'click @ui.checkbox': 'select',
 		'click @ui.actionsToggle': 'toggleActions',
 		'click .menu-filter-add': 'select',
@@ -56,14 +57,22 @@ export default Marionette.View.extend({
 		if (e && e.target === this.getUI('actionsToggle')[0]) {
 			return;
 		}
+		this.model.clickLink();
+	},
+	open: function(e) {
+		if (
+			e &&
+			(this.getUI('actionsToggle')[0] === e.target ||
+				this.getUI('link')[0] === e.target ||
+				$.contains(this.$('.tags')[0], e.target))
+		) {
+			return;
+		}
 		if (this.$el.closest('.selection-active').length) {
 			this.select(e);
 			e.preventDefault();
 			return;
 		}
-		this.model.clickLink();
-	},
-	open: function() {
 		Radio.channel('details').trigger('show', this.model);
 	},
 	toggleActions: function() {
