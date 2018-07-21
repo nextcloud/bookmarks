@@ -17,7 +17,7 @@ class LinkExplorer {
 
 		// Use LinkPreview to get the meta data
 		$previewClient = new LinkPreview($url);
-		$previewClient->getParser('general')->setMinimumImageDimension(0, 0);
+		$previewClient->getParser('general')->setMinimumImageDimension(200, 200);
 		try {
 			libxml_use_internal_errors(false);
 			$preview = $previewClient->getPreview('general');
