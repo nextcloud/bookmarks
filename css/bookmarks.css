@@ -344,6 +344,16 @@ button span,
 	}
 }
 
+.bookmark-detail .preview {
+	height: 7cm;
+	background-color: rgb(210, 210, 210);
+	background-size: cover;
+	background-position: center;
+	box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.65);
+	margin: -1cm;
+	margin-bottom: 0.25cm;
+}
+
 .bookmark-detail h1 {
 	font-size: 0.7cm;
 	line-height: 1.3;

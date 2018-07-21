@@ -3,20 +3,9 @@ import Backbone from 'backbone';
 import Tags from '../models/Tags';
 import TagsNavigationView from './TagsNavigation';
 import templateString from '../templates/BookmarkCard.html';
-import colorPalettes from 'nice-color-palettes';
 
 const Marionette = Backbone.Marionette;
 const Radio = Backbone.Radio;
-
-// 100 palettes * 5 colors = 500 colors
-const COLORS = colorPalettes.reduce((p1, p2) => p1.concat(p2), []);
-const simpleHash = str => {
-	var hash = 0;
-	for (var i = 0; i < str.length; i++) {
-		hash = str.charCodeAt(i) + (hash << 6) + (hash << 16) - hash;
-	}
-	return Math.abs(hash);
-};
 
 export default Marionette.View.extend({
 	template: _.template(templateString),
@@ -53,10 +42,7 @@ export default Marionette.View.extend({
 			'background-image',
 			'url(bookmark/' + this.model.get('id') + '/image)'
 		);
-		this.$el.css(
-			'background-color',
-			COLORS[simpleHash(new URL(this.model.get('url')).host) % COLORS.length]
-		);
+		this.$el.css('background-color', this.model.getColor());
 
 		var tags = new Tags(
 			this.model.get('tags').map(function(id) {
