@@ -73,20 +73,6 @@
 				<unsigned>true</unsigned>
 				<length>4</length>
 			</field>
-			<field>
-				<name>image</name>
-				<type>text</type>
-				<default></default>
-				<notnull>false</notnull>
-				<length>512</length>
-			</field>
-			<field>
-				<name>favicon</name>
-				<type>text</type>
-				<default></default>
-				<notnull>false</notnull>
-				<length>512</length>
-			</field>
 		</declaration>
 	</table>
 

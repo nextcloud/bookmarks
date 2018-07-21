@@ -18,6 +18,7 @@ export default Marionette.View.extend({
 		}
 	},
 	ui: {
+		preview: '.preview',
 		link: 'h2 > a',
 		close: '> .close',
 		edit: '.edit',
@@ -47,6 +48,12 @@ export default Marionette.View.extend({
 		this.listenTo(this.tags, 'add remove', this.submitTags);
 	},
 	onRender: function() {
+		this.getUI('preview').css(
+			'background-image',
+			'url(bookmark/' + this.model.get('id') + '/image)'
+		);
+		this.getUI('preview').css('background-color', this.model.getColor());
+
 		this.showChildView(
 			'tags',
 			new TagsSelectionView({

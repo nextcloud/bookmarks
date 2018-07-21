@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Marcel Klehr
- * @copyright 2016 Marcel Klehr mklehr@gmx.net
+ * @copyright 2018 Marcel Klehr mklehr@gmx.net
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -17,27 +17,37 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+namespace OCA\Bookmarks\Controller\Lib\Previews;
 
-namespace OCA\Bookmarks\Controller\Lib;
-
+use Wnx\ScreeenlyClient\Screenshot;
 use OCP\ICache;
+use OCP\IConfig;
 use OCP\ICacheFactory;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException;
 
-class ImageService {
-
+class ScreenlyPreviewService implements IPreviewService {
 	// Cache for one month
 	const CACHE_TTL = 4 * 7 * 24 * 60 * 60;
+
+	private $apiKey;
+
+	/** @var IConfig */
+	private $config;
 
 	/** @var ICache */
 	private $cache;
 
+	private $width = 800;
+
+	private $height = 800;
+
 	/**
 	 * @param ICacheFactory $cacheFactory
 	 */
-	public function __construct(ICacheFactory $cacheFactory) {
-		$this->cache = $cacheFactory->create('bookmarks.images');
+	public function __construct(ICacheFactory $cacheFactory, IConfig $config) {
+		$this->config = $config;
+		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
+		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
+		$this->cache = $cacheFactory->create('bookmarks.ScreenlyPreviewService');
 	}
 
 	private function buildKey($url) {
@@ -48,21 +58,34 @@ class ImageService {
 	 * @param string $url
 	 * @return string|null image data
 	 */
-	public function getImage($url) {
+	public function getImage($bookmark) {
+		if (!isset($bookmark)) {
+			return null;
+		}
+		if ('' === $this->apiKey) {
+			return null;
+		}
+		$url = $bookmark['url'];
+
 		$key = $this->buildKey($url);
 		// Try cache first
 		if ($image = $this->cache->get($key)) {
-			 $image = json_decode($image, true);
-			 return [
-			 	'contentType' => $image['contentType'],
+			$image = json_decode($image, true);
+			if (is_null($image)) {
+				return null;
+			}
+			return [
+				'contentType' => $image['contentType'],
 				'data' => base64_decode($image['data'])
 			];
 		}
 
 		// Fetch image from remote server
-		$image = $this->fetchImage($url);
+		$image = $this->fetchScreenshot($url);
 
 		if (is_null($image)) {
+			$json = json_encode(null);
+			$this->cache->set($key, $json, self::CACHE_TTL);
 			return null;
 		}
 
@@ -73,40 +96,37 @@ class ImageService {
 		]);
 		$this->cache->set($key, $json, self::CACHE_TTL);
 
-		return $image; 
+		return $image;
 	}
-	
-	/**
-	 * @param string $url
-	 * @return string|null fetched image data
-	 */
-	private function fetchImage($url) {	
-		$body = $contentType = '';
+
+	public function fetchScreenshot($url) {
 		try {
 			$client = new \GuzzleHTTP\Client();
-			$request = $client->get($url);
-			$body = $request->getBody();
-			$contentType = $request->getHeader('Content-Type');
+			$request = $client->post($this->apiUrl, ['body' => [
+					'key'    => $this->apiKey,
+					'url'    => $url,
+					'width'  => $this->width,
+					'height' => $this->height
+				]
+		  ]);
+			$body = $request->json();
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
+			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
 			return null;
 		} catch (\Exception $e) {
 			throw $e;
 		}
+
+		\OCP\Util::writeLog('bookmarks', $body, \OCP\Util::WARN);
 
 		// Some HTPP Error occured :/
 		if (200 != $request->getStatusCode()) {
 			return null;
 		}
 
-		// It's not actually an image, doh.
-		if (!$contentType || stripos($contentType, 'image') !== 0) {
-			return null;
-		}
-		
 		return [
-			'contentType' => $contentType,
-			'data' => $body
+			'contentType' => 'image/jpeg',
+			'data' => base64_decode($body['base64_raw'])
 		];
 	}
 }
-

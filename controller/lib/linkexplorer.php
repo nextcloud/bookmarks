@@ -7,7 +7,7 @@ use phpUri;
 
 class LinkExplorer {
 
-    /**
+	/**
 	 * @brief Load Url and receive Metadata (Title)
 	 * @param string $url Url to load and analyze
 	 * @return array Metadata for url;
@@ -17,11 +17,14 @@ class LinkExplorer {
 
 		// Use LinkPreview to get the meta data
 		$previewClient = new LinkPreview($url);
-		$previewClient->getParser('general')->setMinimumImageDimension(0,0);
+		$previewClient->getParser('general')->setMinimumImageDimension(200, 200);
 		try {
 			libxml_use_internal_errors(false);
-            $preview = $previewClient->getPreview('general');
+			$preview = $previewClient->getPreview('general');
 		} catch (\Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException $e) {
+			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
+			return $data;
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
 			return $data;
 		}
@@ -37,5 +40,4 @@ class LinkExplorer {
 
 		return $data;
 	}
-
 }
