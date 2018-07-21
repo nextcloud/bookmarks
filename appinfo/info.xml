@@ -8,7 +8,7 @@
 This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.
 Check out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients
 ]]></description>
-	<version>0.12.0-rc2</version>
+	<version>0.12.0-rc3</version>
 	<licence>agpl</licence>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
@@ -22,9 +22,8 @@ Check out the third-party clients listed here: https://github.com/nextcloud/book
 	<dependencies>
 		<nextcloud min-version="12" max-version="14" />
 	</dependencies>
-	<repair-steps>
-              <pre-migration>
-                      <step>OCA\Bookmarks\Migration\RecreateAllBookmarks</step>
-              </pre-migration>
-      </repair-steps>
+	<settings>
+		<admin>OCA\Bookmarks\Settings\AdminSettings</admin>
+		<admin-section>OCA\Bookmarks\Settings\AdminSection</admin-section>
+	</settings>
 </info>

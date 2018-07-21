@@ -46,6 +46,7 @@ class InternalBookmarkController extends ApiController {
 		Manager $userManager,
 		IPreviewService $previewService,
 		IPreviewService $faviconService,
+		IPreviewService $screenshotService,
 		ITimeFactory $timeFactory
 	) {
 		parent::__construct($appName, $request);
@@ -54,6 +55,7 @@ class InternalBookmarkController extends ApiController {
 		$this->libBookmarks = $bookmarks;
 		$this->previewService = $previewService;
 		$this->faviconService = $faviconService;
+		$this->screenshotService = $screenshotService;
 		$this->timeFactory = $timeFactory;
 	}
 
@@ -206,11 +208,16 @@ class InternalBookmarkController extends ApiController {
 	public function getBookmarkImage($id) {
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userId);
 		$image = $this->previewService->getImage($bookmark);
-		if (!isset($image)) {
-			return new NotFoundResponse();
+		if (isset($image)) {
+			return $this->doImageResponse($image);
 		}
 
-		return $this->doImageResponse($image);
+		$image = $this->screenshotService->getImage($bookmark);
+		if (isset($image)) {
+			return $this->doImageResponse($image);
+		}
+		
+		return new NotFoundResponse();
 	}
 
 	/**

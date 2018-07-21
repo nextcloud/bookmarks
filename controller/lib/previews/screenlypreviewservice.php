@@ -21,6 +21,7 @@ namespace OCA\Bookmarks\Controller\Lib\Previews;
 
 use Wnx\ScreeenlyClient\Screenshot;
 use OCP\ICache;
+use OCP\IConfig;
 use OCP\ICacheFactory;
 
 class ScreenlyPreviewService implements IPreviewService {
@@ -28,6 +29,9 @@ class ScreenlyPreviewService implements IPreviewService {
 	const CACHE_TTL = 4 * 7 * 24 * 60 * 60;
 
 	private $apiKey;
+
+	/** @var IConfig */
+	private $config;
 
 	/** @var ICache */
 	private $cache;
@@ -39,9 +43,10 @@ class ScreenlyPreviewService implements IPreviewService {
 	/**
 	 * @param ICacheFactory $cacheFactory
 	 */
-	public function __construct(ICacheFactory $cacheFactory) {
-		$this->apiUrl = 'http://screeenly.com/api/v1/fullsize';
-		$this->apiKey = 'xxx';
+	public function __construct(ICacheFactory $cacheFactory, IConfig $config) {
+		$this->config = $config;
+		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
+		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
 		$this->cache = $cacheFactory->create('bookmarks.ScreenlyPreviewService');
 	}
 
@@ -55,6 +60,9 @@ class ScreenlyPreviewService implements IPreviewService {
 	 */
 	public function getImage($bookmark) {
 		if (!isset($bookmark)) {
+			return null;
+		}
+		if ('' === $this->apiKey) {
 			return null;
 		}
 		$url = $bookmark['url'];

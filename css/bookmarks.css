@@ -191,10 +191,12 @@ button span,
 	background-color: rgb(210, 210, 210);
 	background-size: cover;
 	background-position: center;
+	box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.65);
 }
 
 .bookmark-card:hover {
-	box-shadow: 0 1px 10px rgba(77, 77, 77, 0.75);
+	box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.75) 0 1px 10px
+		rgba(77, 77, 77, 0.75);
 	opacity: 1;
 }
 
@@ -229,27 +231,30 @@ button span,
 	bottom: 0;
 	left: 0;
 	right: 0;
-	padding: 0.5cm 0.5cm 0.2cm;
+	padding: 1cm 0.5cm 0.2cm 0.5cm;
 	background: -moz-linear-gradient(
 		top,
 		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0.4) 40%,
 		rgba(0, 0, 0, 0.65) 100%
 	);
 	background: -webkit-linear-gradient(
 		top,
 		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0.4) 40%,
 		rgba(0, 0, 0, 0.65) 100%
 	);
 	background: linear-gradient(
 		to bottom,
 		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0.4) 40%,
 		rgba(0, 0, 0, 0.65) 100%
 	);
 }
 
 .bookmark-card .popovermenu {
 	position: absolute;
-	top: 1.5cm;
+	top: 2cm;
 	right: 0.1cm;
 	margin-right: -4px;
 }
@@ -258,7 +263,7 @@ button span,
 	background-color: transparent;
 	border: none;
 	position: absolute;
-	top: 0.6cm;
+	top: 1.1cm;
 	right: 0.1cm;
 }
 
