@@ -66,7 +66,7 @@ class DefaultPreviewService implements IPreviewService {
 	public function scrapeUrl($url) {
 		$key = $this->buildKey('meta:'.$url);
 		if ($data = $this->cache->get($key)) {
-			return $data;
+			return json_decode($data, true);
 		}
 		$data = $this->linkExplorer->get($url);
 		$this->cache->set($key, json_encode($data), self::CACHE_TTL);
