@@ -9,9 +9,9 @@
 			setting: 'previews.screenly.url'
 		}
 	].forEach(function(entry) {
-		$el = $(entry.el);
-		$statusSuccess = $(entry.el + ' ~ .success-status');
-		$statusError = $(entry.el + ' ~ .error-status');
+		var $el = $(entry.el);
+		var $statusSuccess = $(entry.el + ' ~ .success-status');
+		var $statusError = $(entry.el + ' ~ .error-status');
 
 		$statusSuccess.hide();
 		$statusError.hide();
