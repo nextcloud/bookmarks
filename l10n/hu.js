@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Részletek",
     "Delete" : "Törlés",
     "Saved" : "Mentve",
-    "Add a description..." : "Leírás hozzáadása...",
     "No bookmarks here." : "Nincsenek könyvjelzők.",
     "All bookmarks" : "Minden könyvjelző",
     "Shared" : "Megosztva",

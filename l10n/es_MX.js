@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Detalles",
     "Delete" : "Borrar",
     "Saved" : "Guardado",
-    "Add a description..." : "Agregar una descripción...",
     "No bookmarks here." : "No hay marcadores aquí.",
     "All bookmarks" : "Todos los marcadores",
     "Shared" : "Compartido",

@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Детаљи",
     "Delete" : "Обриши",
     "Saved" : "Сачувано",
-    "Add a description..." : "Додај опис…",
     "No bookmarks here." : "Овде нема забелешки",
     "All bookmarks" : "Све забелешке",
     "Untagged" : "Неозначене",

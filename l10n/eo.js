@@ -11,7 +11,6 @@ OC.L10N.register(
     "Details" : "Detaloj",
     "Delete" : "Forigi",
     "Saved" : "Konservita",
-    "Add a description..." : "Aldonis priskribon...",
     "No bookmarks here." : "Neniu legosigno estas ĉi tie.",
     "All bookmarks" : "Ĉiuj legosignoj",
     "Shared" : "Kunhavata",

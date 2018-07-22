@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Szczegóły",
     "Delete" : "Usuń",
     "Saved" : "Zapisano",
-    "Add a description..." : "Dodaj opis…",
     "All bookmarks" : "Wszystkie zakładki",
     "Settings" : "Ustawienia",
     "Bookmarklet" : "Skryptozakładka",

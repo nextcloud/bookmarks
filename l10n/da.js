@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Detaljer",
     "Delete" : "Slet",
     "Saved" : "Gemt",
-    "Add a description..." : "Tilføj en beskrivelse...",
     "No bookmarks here." : "Ingen bogmærker her.",
     "All bookmarks" : "Alle bogmærker",
     "Shared" : "Delt",

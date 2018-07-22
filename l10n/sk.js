@@ -10,7 +10,6 @@ OC.L10N.register(
     "Details" : "Detaily",
     "Delete" : "Zmazať",
     "Saved" : "Uložené",
-    "Add a description..." : "Pridať popis...",
     "All bookmarks" : "Všetky záložky",
     "Settings" : "Nastavenia",
     "Bookmarklet" : "Záložky",

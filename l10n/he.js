@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "פרטים",
     "Delete" : "מחיקה",
     "Saved" : "נשמרה",
-    "Add a description..." : "הוספת תיאור…",
     "No bookmarks here." : "אין כאן סימניות.",
     "All bookmarks" : "כל הסימניות",
     "Shared" : "משותפת",

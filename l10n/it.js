@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Dettagli",
     "Delete" : "Elimina",
     "Saved" : "Salvato",
-    "Add a description..." : "Aggiungi una descrizione...",
     "No bookmarks here." : "Qui non c'è alcun segnalibro",
     "All bookmarks" : "Tutti i segnalibri",
     "Untagged" : "Non etichettati",

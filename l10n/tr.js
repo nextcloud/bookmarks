@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Ayrıntılar",
     "Delete" : "Sil",
     "Saved" : "Kaydedildi",
-    "Add a description..." : "Açıklama ekle...",
     "No bookmarks here." : "Henüz bir yer imi yok.",
     "All bookmarks" : "Tüm yer imleri",
     "Shared" : "Paylaşılan",

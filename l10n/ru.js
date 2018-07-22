@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Подробно",
     "Delete" : "Удалить",
     "Saved" : "Сохранено",
-    "Add a description..." : "Добавить описание",
     "No bookmarks here." : "Нет закладок",
     "All bookmarks" : "Все закладки",
     "Shared" : "Поделиться",

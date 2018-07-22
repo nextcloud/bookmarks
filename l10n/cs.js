@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Podrobnosti",
     "Delete" : "Smazat",
     "Saved" : "Uloženo",
-    "Add a description..." : "Přidat popis…",
     "No bookmarks here." : "Nejsou zde žádné záložky.",
     "All bookmarks" : "Všechny záložky",
     "Untagged" : "Neoznačeno",

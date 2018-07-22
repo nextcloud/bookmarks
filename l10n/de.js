@@ -12,7 +12,6 @@ OC.L10N.register(
     "Details" : "Details",
     "Delete" : " Löschen",
     "Saved" : "Gespeichert",
-    "Add a description..." : "Beschreibung hinzufügen...",
     "No bookmarks here." : "Keine Lesezeichen vorhanden.",
     "All bookmarks" : "Alle Lesezeichen",
     "Untagged" : "Unmarkiert",
