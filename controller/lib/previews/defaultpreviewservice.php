@@ -91,8 +91,14 @@ class DefaultPreviewService implements IPreviewService {
 			];
 		}
 
-		// Fetch image from remote server
-		$image = $this->fetchImage($url);
+		try {
+			// Fetch image from remote server
+			$image = $this->fetchImage($url);
+		} catch (\Exception $e) {
+			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
+			// TODO: We could return an error image here
+			return null;
+		}
 
 		if (is_null($image)) {
 			$json = json_encode(null);
@@ -118,13 +124,15 @@ class DefaultPreviewService implements IPreviewService {
 		$body = $contentType = '';
 		try {
 			$client = new \GuzzleHTTP\Client();
-			$request = $client->get($url);
+			$request = $client->get($url, ['timeout' => 3.5]);
 			$body = $request->getBody();
 			$contentType = $request->getHeader('Content-Type');
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
 			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
-			if ($e->getResponse()->getStatusCode() === 404) {
-				return null;
+			if ($e->hasResponse()) {
+				if ($e->getResponse()->getStatusCode() === 404) {
+					return null;
+				}
 			}
 			throw $e;
 		}

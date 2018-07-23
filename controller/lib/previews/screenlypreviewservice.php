@@ -80,8 +80,14 @@ class ScreenlyPreviewService implements IPreviewService {
 			];
 		}
 
-		// Fetch image from remote server
-		$image = $this->fetchScreenshot($url);
+		try {
+			// Fetch image from remote server
+			$image = $this->fetchScreenshot($url);
+		} catch (\Exception $e) {
+			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
+			// TODO: We could return an error image here
+			return null;
+		}
 
 		if (is_null($image)) {
 			$json = json_encode(null);
@@ -107,13 +113,16 @@ class ScreenlyPreviewService implements IPreviewService {
 					'url'    => $url,
 					'width'  => $this->width,
 					'height' => $this->height
-				]
+				],
+				'timeout' => 4
 		  ]);
 			$body = $request->json();
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
 			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
-			if ($e->getResponse()->getStatusCode() === 404) {
-				return null;
+			if ($e->hasResponse()) {
+				if ($e->getResponse()->getStatusCode() === 404) {
+					return null;
+				}
 			}
 			throw $e;
 		}
