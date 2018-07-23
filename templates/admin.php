@@ -1,7 +1,7 @@
 <?php
 /** @var $l \OCP\IL10N */
 /** @var $_ array */
-script('bookmarks', 'admin');
+script('bookmarks', 'dist/admin.bundle');
 ?>
 
 <div id="bookmarks" class="section">

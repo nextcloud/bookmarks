@@ -2,7 +2,8 @@ var path = require('path')
 module.exports = {
 	entry: {
 		main: './js/main.js',
-		bookmarklet: './js/bookmarklet.js'
+		bookmarklet: './js/bookmarklet.js',
+    admin: './js/admin.js'
 	},
 	output: {
 		filename: '[name].bundle.js',
