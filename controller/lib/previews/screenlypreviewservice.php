@@ -112,12 +112,11 @@ class ScreenlyPreviewService implements IPreviewService {
 			$body = $request->json();
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
 			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
-			return null;
-		} catch (\Exception $e) {
+			if ($e->getResponse()->getStatusCode() === 404) {
+				return null;
+			}
 			throw $e;
 		}
-
-		\OCP\Util::writeLog('bookmarks', $body, \OCP\Util::WARN);
 
 		// Some HTPP Error occured :/
 		if (200 != $request->getStatusCode()) {

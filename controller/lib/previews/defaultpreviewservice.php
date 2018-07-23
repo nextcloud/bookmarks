@@ -122,8 +122,10 @@ class DefaultPreviewService implements IPreviewService {
 			$body = $request->getBody();
 			$contentType = $request->getHeader('Content-Type');
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
-			return null;
-		} catch (\Exception $e) {
+			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
+			if ($e->getResponse()->getStatusCode() === 404) {
+				return null;
+			}
 			throw $e;
 		}
 
