@@ -37,38 +37,52 @@ export default Backbone.Collection.extend({
 			fetching: false,
 			reachedEnd: false
 		});
+		this.abortCurrentRequest();
 	},
 	setSortBy: function(sortby) {
 		this.sortby = sortby;
 		this.loadingState.set({ page: 0, reachedEnd: false });
+		this.abortCurrentRequest();
+	},
+	abortCurrentRequest: function() {
+		if (this.currentRequest) {
+			this.currentRequest.abort();
+		}
+		if (this.spinnerTimeout) {
+			clearTimeout(this.spinnerTimeout);
+		}
 	},
 	fetchPage: function() {
 		var that = this;
-		if (
-			this.loadingState.get('fetching') ||
-			this.loadingState.get('reachedEnd')
-		) {
+		if (this.loadingState.get('reachedEnd')) {
 			return;
 		}
 		const nextPage = this.loadingState.get('page');
+		const firstPage = nextPage === 0;
+		if (!firstPage && this.loadingState.get('fetching') === true) {
+			return;
+		}
 		this.loadingState.set({ page: nextPage + 1, fetching: true });
 		var sortby = this.sortby;
-		// Show spinner after 1.5s if we're fetching a new query
-		const spinnerTimeout = setTimeout(
-			() => nextPage === 0 && this.reset(),
-			1500
-		);
 
-		return this.fetch({
+		// Show spinner after 1.5s if we're fetching a new query
+		this.abortCurrentRequest();
+		this.spinnerTimeout = setTimeout(() => {
+			firstPage && this.reset();
+		}, 1500);
+
+		const currentQuery = this.loadingState.get('query');
+
+		this.currentRequest = this.fetch({
 			data: _.extend({}, this.loadingState.get('query'), {
 				page: nextPage,
 				limit: BATCH_SIZE,
 				sortby: sortby
 			}),
-			reset: nextPage === 0,
+			reset: firstPage,
 			remove: false,
 			success: function(collections, response) {
-				clearTimeout(spinnerTimeout);
+				clearTimeout(that.spinnerTimeout);
 				let reachedEnd = response.data.length < BATCH_SIZE;
 				that.loadingState.set({
 					fetching: false,
