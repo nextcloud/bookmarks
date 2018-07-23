@@ -33,7 +33,7 @@ class AdminSection implements IIconSection {
 	}
 
 	public function getIcon() {
-		return '/custom_apps/bookmarks/img/bookmarks-black.svg';
+		return '/apps/bookmarks/img/bookmarks-black.svg';
 	}
 
 	/**
