@@ -2,15 +2,20 @@
 namespace OCA\Bookmarks\Settings;
 
 use OCP\IL10N;
+use OCP\IURLGenerator;
 use OCP\Settings\IIconSection;
 
 class AdminSection implements IIconSection {
 
-		/** @var IL10N */
+	/** @var IL10N */
 	private $l;
 
-	public function __construct(IL10N $l) {
+	/** @var IURLGenerator */
+	private $urlgen;
+
+	public function __construct(IL10N $l, IURLGenerator $urlgen) {
 		$this->l = $l;
+		$this->urlgen = $urlgen;
 	}
 
 	/**
@@ -33,7 +38,7 @@ class AdminSection implements IIconSection {
 	}
 
 	public function getIcon() {
-		return '/apps/bookmarks/img/bookmarks-black.svg';
+		return $this->urlgen->imagePath('bookmarks', 'bookmarks-black.svg');
 	}
 
 	/**
