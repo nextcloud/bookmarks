@@ -32,7 +32,7 @@ class AdminSettings implements ISettings {
 	 */
 	public function getForm() {
 		$parameters = [
-		  'previews.screenly.url' => $this->config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize'),
+		  'previews.screenly.url' => $this->config->getAppValue('bookmarks', 'previews.screenly.url', 'https://secure.screeenly.com/api/v1/fullsize'),
 			'previews.screenly.token' => $this->config->getAppValue('bookmarks', 'previews.screenly.token', '')
 		];
 

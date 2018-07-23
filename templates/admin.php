@@ -10,7 +10,7 @@ script('bookmarks', 'dist/admin.bundle');
             <?php p($l->t('In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those.')); ?>
         </p>
         <p>
-            <?php print($l->t('You can either sign up for free at <a href="https://screeenly.com">screeenly.com</a> or <a href="https://github.com/stefanzweifel/screeenly">setup your own server</a>.')); ?>
+            <?php print($l->t('You can either sign up for free at <a href="http://screeenly.com">screeenly.com</a> or <a href="https://github.com/stefanzweifel/screeenly">setup your own server</a>.')); ?>
         </p>
         <p>
                 <label for="bookmarks_previews_screenly_url"><?php p($l->t('Screenly API URL')); ?></label>
