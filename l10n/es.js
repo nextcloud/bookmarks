@@ -12,6 +12,8 @@ OC.L10N.register(
     "Details" : "Detalles",
     "Delete" : "Eliminar",
     "Saved" : "Guardado",
+    "Tags" : "Etiquetas",
+    "Description" : "Descripción",
     "No bookmarks here." : "No hay marcadores aquí.",
     "All bookmarks" : "Todos los marcadores",
     "Untagged" : "Sin etiquetas",
@@ -37,6 +39,11 @@ OC.L10N.register(
     "The title of the page" : "El título de la página",
     "The address of the page" : "La dirección de la página",
     "Description of the page" : "Descripción de la página",
-    "Save" : "Guardar"
+    "Save" : "Guardar",
+    "Previews" : "Vista previa",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Con el fin de mostrar capturas de pantalla reales de sus sitios web marcados, la app Marcadores puede usar un servicio de terceros para generarlos.",
+    "You can either sign up for free at <a href=\"https://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Puede registrarse gratis en <a href=\"https://screeenly.com\">screeenly.com</a> o <a href=\"https://github.com/stefanzweifel/screeenly\">configurar su propio servidor</a>.",
+    "Screenly API URL" : "Screenly API URL",
+    "Screenly API key" : "Screenly API key"
 },
 "nplurals=2; plural=(n != 1);");

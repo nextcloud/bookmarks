@@ -12,6 +12,8 @@ OC.L10N.register(
     "Details" : "Details",
     "Delete" : "Löschen",
     "Saved" : "Gespeichert",
+    "Tags" : "Schlagworte",
+    "Description" : "Beschreibung",
     "No bookmarks here." : "Keine Lesezeichen vorhanden",
     "All bookmarks" : "Alle Lesezeichen",
     "Untagged" : "Unmarkiert",
@@ -37,6 +39,11 @@ OC.L10N.register(
     "The title of the page" : "Seitentitel",
     "The address of the page" : "Adresse der Seite",
     "Description of the page" : "Beschreibung der Seite",
-    "Save" : "Speichern"
+    "Save" : "Speichern",
+    "Previews" : "Vorschau",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Um Screenshots der  gespeicherten Seiten zu erzeugen kann die Lesezeichen-App einen externen Service verwenden.",
+    "You can either sign up for free at <a href=\"https://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Sie können sich entweder kostenlos unter <a href=\"https://screeenly.com\">screenly.com</a> anmelden oder Ihren <a href=\"https://github.com/stefanzweifel/screeenly\">eigenen Server aufsetzen</a>.",
+    "Screenly API URL" : "Screenly API URL",
+    "Screenly API key" : "Screenly API key"
 },
 "nplurals=2; plural=(n != 1);");
