@@ -285,6 +285,7 @@ button span,
 	text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
 	padding-right: 20px;
 	max-height: 55px; /* max two lines */
+	min-height: 25px; /* at min two lines */
 	box-sizing: border-box;
 	overflow: hidden;
 	cursor: pointer;
@@ -364,6 +365,10 @@ button span,
 	font-size: 28px;
 	line-height: 1.3;
 	cursor: text;
+}
+
+.bookmark-detail h1.empty {
+	opacity: 0.4;
 }
 
 .bookmark-detail h2 {

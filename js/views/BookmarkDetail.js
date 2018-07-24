@@ -97,10 +97,10 @@ export default Marionette.View.extend({
 						that.submit($el);
 					}
 				});
-				break;
 			case 'description':
 				if ($el.hasClass('empty')) {
 					$el.text('');
+					$el.removeClass('empty');
 				}
 				break;
 		}

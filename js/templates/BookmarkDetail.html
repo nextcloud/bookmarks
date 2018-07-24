@@ -4,7 +4,9 @@
 	<span class="message message-saved"><span class="icon-checkmark"></span> <%- t('bookmarks', 'Saved') %></span>
 </div>
 <div class="preview"></div>
-<h1 data-attribute="title"><%- title %></h1>
+<h1 data-attribute="title" class="<%- !title.trim()? 'empty' : '' %>"><%-
+	title.trim()? title : t('bookmarks', 'Add a title...')
+%></h1>
 <h3>Link</h3>
 <h2 data-attribute="url">
 	<a target="_blank" href="<%- url %>"><span class="icon-external"></span><%- new URL(url).host %></a>
