@@ -42,7 +42,6 @@ OC.L10N.register(
     "Save" : "Enregistrer",
     "Previews" : "Prévisualisations",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Pour afficher de vrais captures d'écran de vos sites internet mis en favoris, Favoris peux utiliser un service tiers pour les générer.",
-    "You can either sign up for free at <a href=\"https://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Vous pouvez soit vous inscrire gratuitement sur <a href=\"https://screeenly.com\">screenly.com</a> ou <a href=\"https://github.com/stefanzweifel/screeenly\">configurer votre propre serveur</a>.",
     "Screenly API URL" : "URL API Screenly",
     "Screenly API key" : "Clé API Screenly"
 },
