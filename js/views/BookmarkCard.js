@@ -45,6 +45,8 @@ export default Marionette.View.extend({
 		);
 		this.$el.css('background-color', this.model.getColor());
 
+		this.$el.prop('title', t('bookmarks', 'Open details'));
+
 		var tags = new Tags(
 			this.model.get('tags').map(function(id) {
 				return that.app.tags.findWhere({ name: id });

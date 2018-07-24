@@ -4,7 +4,7 @@
 	<span class="message message-saved"><span class="icon-checkmark"></span> <%- t('bookmarks', 'Saved') %></span>
 </div>
 <div class="preview"></div>
-<h1 data-attribute="title" class="<%- !title.trim()? 'empty' : '' %>"><%-
+<h1 data-attribute="title" class="<%- !title.trim()? 'empty' : '' %>" title="<%- t('bookmarks', 'Click to edit title') %>"><%-
 	title.trim()? title : t('bookmarks', 'Add a title...')
 %></h1>
 <h3>Link</h3>
@@ -15,4 +15,4 @@
 <h3><%- t('bookmarks', 'Tags') %></h3>
 <div class="tags"></div>
 <h3><%- t('bookmarks', 'Description') %></h3>
-<div class="description <%- !description.trim()? 'empty' : '' %>" data-attribute="description"><%- description.trim()? description : t('bookmarks', 'Add a description...') %></div>
+<div class="description <%- !description.trim()? 'empty' : '' %>" data-attribute="description" title="<%- t('bookmarks', 'Click to edit description') %>"><%- description.trim()? description : t('bookmarks', 'Add a description...') %></div>
