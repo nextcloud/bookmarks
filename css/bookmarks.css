@@ -188,33 +188,39 @@ button span,
 	width: 225px;
 	height: 225px;
 	margin: 20px 0 0 20px;
-	padding: 20px;
+	padding: 15px;
 	background-color: rgb(210, 210, 210);
 	background-size: cover;
 	background-position: center;
 	box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.65);
+	opacity: 0.93;
+	border: 2px solid white;
 }
 
-.bookmark-card:hover {
-	box-shadow: 0 1px 10px rgba(77, 77, 77, 0.75),
-		inset 0 0 150px rgba(0, 0, 0, 0.65);
+.bookmark-card:hover,
+.bookmark-card:focus {
 	opacity: 1;
 	cursor: pointer;
 }
 
 .selection-active .bookmark-card {
-	opacity: 0.5;
+	opacity: 0.45;
 }
-.selection-active .bookmark-card:hover {
+.selection-active .bookmark-card:hover,
+.selection-active .bookmark-card:focus {
 	opacity: 0.6;
 	cursor: pointer;
 }
 
 .bookmark-card .select-mode-checkbox + label {
 	display: none;
+	transform: scale(2);
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 40%;
+	left: 45%;
+	box-shadow: 0 0 10px white;
+	background: white;
+	border-radius: 3px;
 }
 .selection-active .bookmark-card .select-mode-checkbox + label {
 	display: block;
@@ -222,9 +228,7 @@ button span,
 
 .bookmark-card.active,
 .bookmark-card.active:hover {
-	transform: none;
-	border: 1px solid #0082c9;
-	box-shadow: 0 1px 10px rgba(77, 77, 77, 0.75), inset 0 0 150px #0082c9;
+	border-color: #0082c9;
 	opacity: 1;
 }
 
@@ -233,7 +237,9 @@ button span,
 	bottom: 0;
 	left: 0;
 	right: 0;
-	padding: 30px 20px 5px 20px;
+	padding: 15px;
+	background: rgba(255, 255, 255, 0.7);
+	/*
 	background: -moz-linear-gradient(
 		top,
 		rgba(0, 0, 0, 0) 0%,
@@ -251,13 +257,17 @@ button span,
 		rgba(0, 0, 0, 0) 0%,
 		rgba(0, 0, 0, 0.4) 37%,
 		rgba(0, 0, 0, 0.65) 100%
-	);
+	);*/
+}
+
+.bookmark-card .panel:hover {
+	background: rgba(255, 255, 255, 0.8);
 }
 
 .bookmark-card .popovermenu {
 	position: absolute;
-	top: 60px;
-	right: 3px;
+	top: 50px;
+	right: 5px;
 	margin-right: -4px;
 }
 
@@ -265,8 +275,8 @@ button span,
 	background-color: transparent;
 	border: none;
 	position: absolute;
-	top: 30px;
-	right: 3px;
+	top: 15px;
+	right: 5px;
 }
 
 .bookmark-card .popovermenu .menu-filter-remove {
@@ -281,11 +291,12 @@ button span,
 }
 
 .bookmark-card h2 {
-	font-size: 20px;
-	text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
-	padding-right: 20px;
-	max-height: 55px; /* max two lines */
-	min-height: 25px; /* at min two lines */
+	font-size: 18px;
+	line-height: 1.2;
+	text-shadow: 0 0 2px rgba(255, 255, 255, 0.7);
+	margin: 0;
+	margin-right: 20px;
+	height: 42px; /* max two lines */
 	box-sizing: border-box;
 	overflow: hidden;
 	cursor: pointer;
@@ -297,23 +308,25 @@ button span,
 
 .bookmark-card h2.with-favicon {
 	/*background-image: bookmark/{id}/favicon*/
-	background-position: 0px 6px;
-	background-size: 16px 16px;
+	background-position: 0px 0px;
+	background-size: 24px 24px;
 	background-repeat: no-repeat;
-	position: relative;
-	padding-left: 24px;
+	padding-left: 42px;
 }
 
-.bookmark-card h2 * {
-	color: white;
+.bookmark-card h2 a {
+	color: black;
 	cursor: pointer;
+	/* extend link 42px to the left without moving text:
+		 (for the favicon)
+	*/
+	padding-left: 42px;
+	margin-left: -42px;
 }
 
 .bookmark-card .tags {
 	max-height: 100px;
 	overflow: hidden;
-	position: absolute;
-	top: 20px;
 }
 
 .bookmark-card .tag-nav-item {
@@ -333,10 +346,10 @@ button span,
 	top: 45px;
 	right: 0;
 	z-index: 2;
-	width: 500px;
+	width: 450px;
 	height: 100%;
 	box-sizing: border-box;
-	padding: 30px;
+	padding: 20px;
 	background: white;
 	border-left: 1px solid #ebebeb;
 	color: #333;
@@ -352,19 +365,18 @@ button span,
 }
 
 .bookmark-detail .preview {
-	height: 300px;
-	background-color: rgb(210, 210, 210);
+	height: 240px;
 	background-size: cover;
-	background-position: center;
+	background-position: center 0;
 	box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.65);
-	margin: -30px;
+	margin: -20px;
 	margin-bottom: 20px;
 }
 
 .bookmark-detail h1 {
-	min-height: 28px;
-	font-size: 28px;
-	line-height: 1.3;
+	min-height: 25px;
+	font-size: 23px;
+	line-height: 1.2;
 	cursor: text;
 }
 
