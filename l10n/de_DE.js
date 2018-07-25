@@ -42,6 +42,7 @@ OC.L10N.register(
     "Save" : "Speichern",
     "Previews" : "Vorschau",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Um Screenshots der  gespeicherten Seiten zu erzeugen kann die Lesezeichen-App einen externen Service verwenden.",
+    "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Sie können sich entweder kostenlos unter <a href=\"http://screeenly.com\">screeenly.com</a> anmelden oder Ihren <a href=\"https://github.com/stefanzweifel/screeenly\">eigenen Server aufsetzen</a>.",
     "Screenly API URL" : "Screenly API URL",
     "Screenly API key" : "Screenly API key"
 },
