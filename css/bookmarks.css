@@ -191,7 +191,7 @@ button span,
 	padding: 15px;
 	background-color: rgb(210, 210, 210);
 	background-size: cover;
-	background-position: center;
+	background-position: center top;
 	box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.65);
 	opacity: 0.93;
 	border: 2px solid white;
