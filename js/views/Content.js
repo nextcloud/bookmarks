@@ -101,7 +101,13 @@ export default Marionette.View.extend({
 			this.showChildView('bookmarkDetail', view);
 		}
 	},
-	onCloseDetails: function() {
-		this.detachChildView('bookmarkDetail');
+	onCloseDetails: function(evt) {
+		var that = this;
+		var view = this.getChildView('bookmarkDetail');
+		if (view) {
+			this.getChildView('bookmarkDetail').slideOut(function() {
+				that.detachChildView('bookmarkDetail');
+			});
+		}
 	}
 });

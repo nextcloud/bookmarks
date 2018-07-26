@@ -46,6 +46,11 @@ export default Marionette.View.extend({
 			})
 		);
 		this.listenTo(this.tags, 'add remove', this.submitTags);
+		this.listenTo(
+			Radio.channel('documentClicked'),
+			'click',
+			this.onDocumentClicked
+		);
 	},
 	onRender: function() {
 		this.getUI('preview').css(
@@ -136,5 +141,15 @@ export default Marionette.View.extend({
 	},
 	onDestroy: function() {
 		this.close();
+	},
+	onDocumentClicked: function(evt) {
+		if (evt && $.contains(this.el, evt.currentTarget)) {
+			return;
+		}
+		this.close();
+	},
+	slideOut: function(cb) {
+		this.$el.addClass('slide-out');
+		setTimeout(cb, 200);
 	}
 });

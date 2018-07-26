@@ -351,10 +351,32 @@ button span,
 	box-sizing: border-box;
 	padding: 20px;
 	background: white;
-	border-left: 1px solid #ebebeb;
 	color: #333;
 	overflow-y: auto;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	animation: slide-in 0.2s both 1;
+}
+
+.bookmark-detail.slide-out {
+	animation: slide-out 0.2s both 1;
+}
+
+@keyframes slide-in {
+	0% {
+		right: -450px;
+	}
+	100% {
+		right: 0;
+	}
+}
+
+@keyframes slide-out {
+	0% {
+		right: 0;
+	}
+	100% {
+		right: -450px;
+	}
 }
 
 @media only screen and (max-width: 768px) {
