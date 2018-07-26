@@ -238,7 +238,7 @@ button span,
 	left: 0;
 	right: 0;
 	padding: 15px;
-	background: rgba(255, 255, 255, 0.7);
+	background: rgba(255, 255, 255, 0.8);
 	/*
 	background: -moz-linear-gradient(
 		top,
@@ -261,7 +261,7 @@ button span,
 }
 
 .bookmark-card .panel:hover {
-	background: rgba(255, 255, 255, 0.8);
+	background: rgba(255, 255, 255, 0.85);
 }
 
 .bookmark-card .popovermenu {
@@ -293,7 +293,7 @@ button span,
 .bookmark-card h2 {
 	font-size: 18px;
 	line-height: 1.2;
-	text-shadow: 0 0 2px rgba(255, 255, 255, 0.7);
+	text-shadow: 0 0 4px rgba(255, 255, 255, 0.9);
 	margin: 0;
 	margin-right: 20px;
 	height: 42px; /* max two lines */
