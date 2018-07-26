@@ -12,8 +12,11 @@ OC.L10N.register(
     "Details" : "פרטים",
     "Delete" : "מחיקה",
     "Saved" : "נשמרה",
+    "Tags" : "תגיות",
+    "Description" : "תיאור",
     "No bookmarks here." : "אין כאן סימניות.",
     "All bookmarks" : "כל הסימניות",
+    "Untagged" : "ללא תגית",
     "Shared" : "משותפת",
     "Settings" : "הגדרות",
     "Bookmarklet" : "יישומון סימנייה",
@@ -23,6 +26,7 @@ OC.L10N.register(
     "Add to filter" : "הוספה למסנן",
     "Remove from filter" : "הסרה ממסנן",
     "Rename" : "שינוי שם",
+    "Open details" : "פתיחת פרטים",
     "An error occurred while trying to save the bookmark." : "אירעה שגיאה בעת הניסיון לשמור סימניה.",
     "Error" : "שגיאה",
     "Uploading..." : "מתבצעת העלאה…",
@@ -36,6 +40,11 @@ OC.L10N.register(
     "The title of the page" : "כותרת העמוד",
     "The address of the page" : "כתובת העמוד",
     "Description of the page" : "תיאור העמוד",
-    "Save" : "שמירה"
+    "Save" : "שמירה",
+    "Previews" : "תצוגות מקדימות",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "כדי להציג צילומי מסך אמתיים של האתרים שהוספת למועדפים, הסימניות יכולות להשתמש בשירות צד־שלישי כדי לייצר אותן.",
+    "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "ניתן להירשם בחינם לשירות <a href=\"http://screeenly.com\">screeenly.com</a> או <a href=\"https://github.com/stefanzweifel/screeenly\">להקים שרת משלך</a>.",
+    "Screenly API URL" : "כתובת ה־API של Screenly",
+    "Screenly API key" : "מפתח ה־API של Screenly"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

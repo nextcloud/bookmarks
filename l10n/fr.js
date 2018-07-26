@@ -26,6 +26,7 @@ OC.L10N.register(
     "Add to filter" : "Ajouter au filtre",
     "Remove from filter" : "Supprimer du filtre",
     "Rename" : "Renommer",
+    "Open details" : "Ouvrir les détails",
     "An error occurred while trying to save the bookmark." : "Une erreur est survenue lors de la sauvegarde du marque-page.",
     "Error" : "Erreur",
     "Uploading..." : "Envoi en cours…",

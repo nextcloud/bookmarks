@@ -12,6 +12,8 @@ OC.L10N.register(
     "Details" : "Podrobnosti",
     "Delete" : "Smazat",
     "Saved" : "Uloženo",
+    "Tags" : "Štítky",
+    "Description" : "Popis",
     "No bookmarks here." : "Nejsou zde žádné záložky.",
     "All bookmarks" : "Všechny záložky",
     "Untagged" : "Neoznačeno",
@@ -24,6 +26,7 @@ OC.L10N.register(
     "Add to filter" : "Přidat do filtru",
     "Remove from filter" : "Odebrat z filtru",
     "Rename" : "Přejmenovat",
+    "Open details" : "Otevřít podorobnosti",
     "An error occurred while trying to save the bookmark." : "Při pokusu o uložení záložky nastala chyba.",
     "Error" : "Chyba",
     "Uploading..." : "Nahrávání",
@@ -37,6 +40,7 @@ OC.L10N.register(
     "The title of the page" : "Nadpis stránky",
     "The address of the page" : "Adresa stránky",
     "Description of the page" : "Popis stránky",
-    "Save" : "Uložit"
+    "Save" : "Uložit",
+    "Previews" : "Náhledy"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");
