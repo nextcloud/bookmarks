@@ -75,8 +75,10 @@ export default Marionette.View.extend({
 			e.preventDefault();
 			return;
 		}
+		if (e) {
+			e.stopPropagation();
+		}
 		Radio.channel('details').trigger('show', this.model);
-		e.stopPropagation();
 	},
 	toggleActions: function() {
 		this.getUI('actionsMenu')

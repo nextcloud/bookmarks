@@ -354,6 +354,9 @@ button span,
 	color: #333;
 	overflow-y: auto;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.bookmark-detail.slide-in {
 	animation: slide-in 0.2s both 1;
 }
 

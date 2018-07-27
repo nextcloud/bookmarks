@@ -97,17 +97,20 @@ export default Marionette.View.extend({
 		if (view && view.model.id === model.id) {
 			Radio.channel('details').trigger('close');
 		} else {
-			view = new BookmarkDetailView({ model: model, app: this.app });
-			this.showChildView('bookmarkDetail', view);
+			var newView = new BookmarkDetailView({
+				model: model,
+				app: this.app,
+				slideIn: !view
+			});
+			this.showChildView('bookmarkDetail', newView);
 		}
 	},
 	onCloseDetails: function(evt) {
 		var that = this;
 		var view = this.getChildView('bookmarkDetail');
-		if (view) {
-			this.getChildView('bookmarkDetail').slideOut(function() {
-				that.detachChildView('bookmarkDetail');
-			});
-		}
+		if (!view) return;
+		that.getChildView('bookmarkDetail').slideOut(function() {
+			that.detachChildView('bookmarkDetail');
+		});
 	}
 });

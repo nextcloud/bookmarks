@@ -34,6 +34,7 @@ export default Marionette.View.extend({
 		'click .cancel': 'cancel'
 	},
 	initialize: function(opts) {
+		this.doSlideIn = opts.slideIn;
 		this.app = opts.app;
 		this.listenTo(this.model, 'change', this.render);
 		this.listenTo(this.model, 'destroy', this.onDestroy);
@@ -73,6 +74,11 @@ export default Marionette.View.extend({
 		}
 		if (this.savingState === 'saved') {
 			this.getUI('status').addClass('saved');
+		}
+
+		if (this.doSlideIn) {
+			this.slideIn();
+			this.doSlideIn = false;
 		}
 	},
 	clickLink: function() {
@@ -148,8 +154,12 @@ export default Marionette.View.extend({
 		}
 		this.close();
 	},
+	slideIn: function(cb) {
+		this.$el.addClass('slide-in');
+		if (cb) setTimeout(cb, 200);
+	},
 	slideOut: function(cb) {
 		this.$el.addClass('slide-out');
-		setTimeout(cb, 200);
+		if (cb) setTimeout(cb, 200);
 	}
 });
