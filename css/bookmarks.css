@@ -297,7 +297,7 @@ button span,
 	text-shadow: 0 0 4px rgba(255, 255, 255, 0.9);
 	margin: 0;
 	margin-right: 20px;
-	height: 42px; /* max two lines */
+	height: 40px; /* max two lines */
 	box-sizing: border-box;
 	overflow: hidden;
 	cursor: pointer;
@@ -316,6 +316,8 @@ button span,
 }
 
 .bookmark-card h2 a {
+	font-weight: normal;
+	font-size: 16px;
 	color: black;
 	cursor: pointer;
 	/* extend link 42px to the left without moving text:
