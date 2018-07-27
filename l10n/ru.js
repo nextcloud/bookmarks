@@ -26,6 +26,7 @@ OC.L10N.register(
     "Add to filter" : "Добавить в фильтр",
     "Remove from filter" : "Удалить из фильтра",
     "Rename" : "Переименовать",
+    "Open details" : "Открыть подробности",
     "An error occurred while trying to save the bookmark." : "Не удалось сохранить закладку.",
     "Error" : "Ошибка",
     "Uploading..." : "Идет загрузка…",
