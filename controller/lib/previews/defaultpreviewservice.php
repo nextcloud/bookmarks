@@ -29,6 +29,8 @@ class DefaultPreviewService implements IPreviewService {
 	// Cache for one month
 	const CACHE_TTL = 4 * 7 * 24 * 60 * 60;
 
+	const HTTP_TIMEOUT = 10 * 1000;
+
 	/** @var ICache */
 	protected $cache;
 
@@ -124,7 +126,7 @@ class DefaultPreviewService implements IPreviewService {
 		$body = $contentType = '';
 		try {
 			$client = new \GuzzleHTTP\Client();
-			$request = $client->get($url, ['timeout' => 3.5]);
+			$request = $client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
 			$body = $request->getBody();
 			$contentType = $request->getHeader('Content-Type');
 		} catch (\GuzzleHttp\Exception\RequestException $e) {

@@ -28,6 +28,8 @@ class ScreenlyPreviewService implements IPreviewService {
 	// Cache for one month
 	const CACHE_TTL = 4 * 7 * 24 * 60 * 60;
 
+	const HTTP_TIMEOUT = 10 * 1000;
+
 	private $apiKey;
 
 	/** @var IConfig */
@@ -114,7 +116,7 @@ class ScreenlyPreviewService implements IPreviewService {
 					'width'  => $this->width,
 					'height' => $this->height
 				],
-				'timeout' => 4
+				'timeout' => self::HTTP_TIMEOUT
 		  ]);
 			$body = $request->json();
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
