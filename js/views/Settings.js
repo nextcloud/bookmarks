@@ -21,7 +21,8 @@ export default Marionette.View.extend({
 		title: '#title',
 		added: '#added',
 		clickcount: '#clickcount',
-		lastmodified: '#lastmodified'
+		lastmodified: '#lastmodified',
+		clearData: '.clear-data'
 	},
 	events: {
 		'click .settings-button': 'open',
@@ -30,7 +31,8 @@ export default Marionette.View.extend({
 		'change @ui.import': 'importSubmit',
 		'load @ui.iframe': 'importResult',
 		'click .export': 'exportTrigger',
-		'change @ui.sort': 'setSorting'
+		'change @ui.sort': 'setSorting',
+		'click @ui.clearData': 'deleteAllBookmarks'
 	},
 	initialize: function(options) {
 		this.listenTo(this.model, 'change:sorting', this.getSorting);
@@ -132,5 +134,19 @@ export default Marionette.View.extend({
 		var select = document.getElementById('sort');
 		var value = select.options[select.selectedIndex].value;
 		this.model.setSorting(value);
+	},
+	deleteAllBookmarks: function() {
+		var app = this.app;
+		$.ajax({
+			method: 'DELETE',
+			url: 'bookmark',
+			headers: {
+				requesttoken: oc_requesttoken
+			},
+			success: function() {
+				Backbone.history.navigate('dummy', { trigger: true });
+				Backbone.history.navigate('all', { trigger: true });
+			}
+		});
 	}
 });
