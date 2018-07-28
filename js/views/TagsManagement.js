@@ -10,12 +10,12 @@ export default Marionette.CollectionView.extend({
 	tagName: 'ul',
 	className: 'tags-management',
 	initialize: function(options) {
-		this.selected = new Tags;
+		this.selected = new Tags();
 		this.selected.comparator = 'name';
-    
+
 		this.listenTo(this.collection, 'select', this.onSelect);
 		this.listenTo(this.collection, 'unselect', this.onUnselect);
-		this.listenTo(this.collection, 'add', this.onAdd);
+		this.listenTo(this.collection, 'reset', this.onReset);
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
 	},
 	onNavigate: function(category, tags) {
@@ -31,7 +31,7 @@ export default Marionette.CollectionView.extend({
 		var that = this;
 		// select all tags passed by router
 		tags.forEach(function(tagName) {
-			var tag = that.collection.findWhere({name: tagName});
+			var tag = that.collection.findWhere({ name: tagName });
 			if (!tag) return;
 
 			tag.trigger('select', tag, true);
@@ -41,14 +41,16 @@ export default Marionette.CollectionView.extend({
 		// this is for when the route is triggered before the tags are loaded
 		this.lastRouteTags = tags;
 	},
-	onAdd: function(model) {
-		if (~this.lastRouteTags.indexOf(model.get('name'))) {
-			// wait for the tag view to render, so it can receive the event
-			setTimeout(function() {
-				model.trigger('select', model, true);
-			}, 1);
-			return;
-		}
+	onReset: function() {
+		var that = this;
+		this.collection.forEach(function(tag) {
+			if (~that.lastRouteTags.indexOf(tag.get('name'))) {
+				// wait for the tag view to render, so it can receive the event
+				setTimeout(function() {
+					tag.trigger('select', tag, true);
+				}, 50);
+			}
+		});
 	},
 	onSelect: function(model, silentRoute) {
 		this.selected.add(model);
@@ -59,6 +61,13 @@ export default Marionette.CollectionView.extend({
 		if (!silentRoute) this.triggerRoute();
 	},
 	triggerRoute: function() {
-		Backbone.history.navigate('tags/'+this.selected.pluck('name').map(encodeURIComponent).join(','), {trigger: true});
+		Backbone.history.navigate(
+			'tags/' +
+				this.selected
+					.pluck('name')
+					.map(encodeURIComponent)
+					.join(','),
+			{ trigger: true }
+		);
 	}
 });
