@@ -12,6 +12,8 @@ OC.L10N.register(
     "Details" : "Детаљи",
     "Delete" : "Обриши",
     "Saved" : "Сачувано",
+    "Tags" : "Ознаке",
+    "Description" : "Опис",
     "No bookmarks here." : "Овде нема забелешки",
     "All bookmarks" : "Све забелешке",
     "Untagged" : "Неозначене",
@@ -24,6 +26,7 @@ OC.L10N.register(
     "Add to filter" : "Додај у филтер",
     "Remove from filter" : "Уклони из филтера",
     "Rename" : "Преименуј",
+    "Open details" : "Отвори детаље",
     "An error occurred while trying to save the bookmark." : "Дошло је до грешке при покушају чувања забелешке.",
     "Error" : "Грешка",
     "Uploading..." : "Отпремам…",
@@ -37,6 +40,11 @@ OC.L10N.register(
     "The title of the page" : "Наслов стране",
     "The address of the page" : "Адреса стране",
     "Description of the page" : "Опис стране",
-    "Save" : "Сачувај"
+    "Save" : "Сачувај",
+    "Previews" : "Претпрегледи",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Да би приказале прави снимак екрана забележеног сајта, Забелешке могу користити сервис треће стране да би их генерисале.",
+    "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Можете се или бесплатно регистровати на <a href=\"http://screeenly.com\">screeenly.com</a> или <a href=\"https://github.com/stefanzweifel/screeenly\">подесити сопствени сервер</a>.",
+    "Screenly API URL" : "Адреса Screenly API-ја",
+    "Screenly API key" : "Screenly API кључ"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

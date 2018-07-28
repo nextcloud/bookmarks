@@ -12,8 +12,11 @@ OC.L10N.register(
     "Details" : "Ayrıntılar",
     "Delete" : "Sil",
     "Saved" : "Kaydedildi",
+    "Tags" : "İşaretler",
+    "Description" : "Açıklama",
     "No bookmarks here." : "Henüz bir yer imi yok.",
     "All bookmarks" : "Tüm yer imleri",
+    "Untagged" : "İşaretlenmemiş",
     "Shared" : "Paylaşılan",
     "Settings" : "Ayarlar",
     "Bookmarklet" : "Bookmarklet",
@@ -23,6 +26,7 @@ OC.L10N.register(
     "Add to filter" : "Süzgece ekle",
     "Remove from filter" : "Süzgeçten kaldır",
     "Rename" : "Yeniden adlandır",
+    "Open details" : "Ayrıntıları aç",
     "An error occurred while trying to save the bookmark." : "Yer imi kaydedilmeye çalışılırken bir sorun çıktı.",
     "Error" : "Hata",
     "Uploading..." : "Yükleniyor...",
@@ -36,6 +40,11 @@ OC.L10N.register(
     "The title of the page" : "Sayfa başlığı",
     "The address of the page" : "Sayfa adresi",
     "Description of the page" : "Sayfa açıklaması",
-    "Save" : "Kaydet"
+    "Save" : "Kaydet",
+    "Previews" : "Önizlemeler",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Yer imlerine eklediğiniz web sitelerinin gerçek ekran görüntülerinin görüntülenmesi için Yer İmleri uygulaması üçüncü taraf bir hizmet kullanabilir.",
+    "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "<a href=\"http://screeenly.com\">screeenly.com</a> üzerinde ücretsiz bir hesap açabilir ya da <a href=\"https://github.com/stefanzweifel/screeenly\">kendi sunucunuzu kurabilirsiniz</a>.",
+    "Screenly API URL" : "Screenly API Adresi",
+    "Screenly API key" : "Screenly API Anahtarı"
 },
 "nplurals=2; plural=(n > 1);");
