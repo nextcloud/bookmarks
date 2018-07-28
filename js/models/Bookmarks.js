@@ -88,7 +88,7 @@ export default Backbone.Collection.extend({
 					fetching: false,
 					reachedEnd: reachedEnd
 				});
-				if (!reachedEnd && (nextPage <= 1 || nextPage % 2 == 0)) {
+				if (!reachedEnd && nextPage % 2 == 0) {
 					setTimeout(function() {
 						that.fetchPage();
 					}, 500);
