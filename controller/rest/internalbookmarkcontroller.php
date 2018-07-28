@@ -170,6 +170,16 @@ class InternalBookmarkController extends ApiController {
 	}
 
 	/**
+	 * @return \OCP\AppFramework\Http\JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function deleteAllBookmarks() {
+		$this->libBookmarks->deleteAllBookmarks($this->userId);
+		return ['status' => 'success'];
+	}
+
+	/**
 	 *
 	 * @param string $url
 	 * @return \OCP\AppFramework\Http\JSONResponse
@@ -216,7 +226,7 @@ class InternalBookmarkController extends ApiController {
 		if (isset($image)) {
 			return $this->doImageResponse($image);
 		}
-		
+
 		return new NotFoundResponse();
 	}
 

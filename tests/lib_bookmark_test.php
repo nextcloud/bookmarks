@@ -255,7 +255,21 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->deleteUrl($this->userid, $id);
 		$this->assertFalse($this->libBookmarks->bookmarkExists("https://www.heise.de", $this->userid));
 	}
-	
+
+	public function testDeleteAllBookmarks() {
+		$this->cleanDB();
+		$this->libBookmarks->addBookmark($this->userid, "https://www.google.de", "Google", ["one"], "PrivateNoTag", false);
+		$this->libBookmarks->addBookmark($this->userid, "https://www.heise.de", "Heise", ["one", "two"], "PrivatTag", false);
+		$this->libBookmarks->addBookmark($this->otherUser, "http://www.golem.de", "Golem", ["four"], "PublicNoTag", false);
+		$this->libBookmarks->addBookmark($this->otherUser, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", false);
+
+		$this->libBookmarks->deleteAllBookmarks($this->userid);
+		$bookmarks = $this->libBookmarks->findBookmarks($this->userid, 0, 'id', [], false, false);
+		$this->assertCount(0, $bookmarks);
+		$otherBookmarks = $this->libBookmarks->findBookmarks($this->otherUser, 0, 'id', [], false, false);
+		$this->assertCount(2, $otherBookmarks);
+	}
+
 	protected function tearDown() {
 		$this->cleanDB();
 	}
