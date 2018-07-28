@@ -357,6 +357,17 @@ class Bookmarks {
 	}
 
 	/**
+	 * Delete all bookmarks of a specific user
+	 * @param string $userrId User ID
+	 */
+	public function deleteAllBookmarks($userId) {
+		$allBookmarks = $this->findBookmarks($userId, -1, 'id', [], false, -1);
+		foreach ($allBookmarks as $bookmark) {
+			$this->deleteUrl($userId, $bookmark['id']);
+		}
+	}
+
+	/**
 	 * @brief Rename a tag
 	 * @param string $userId UserId
 	 * @param string $old Old Tag Name

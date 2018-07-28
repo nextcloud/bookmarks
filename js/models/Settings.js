@@ -1,11 +1,11 @@
 import Backbone from 'backbone';
-import $ from 'jquery'
+import $ from 'jquery';
 
 export default Backbone.Model.extend({
 	urlRoot: 'settings',
 	initialize: function() {
 		this.fetch({
-			url:'settings/sort'
+			url: 'settings/sort'
 		});
 	},
 	setSorting: function(sorting) {
@@ -14,14 +14,14 @@ export default Backbone.Model.extend({
 			method: 'POST',
 			url: 'settings/sort',
 			headers: {
-				'requesttoken': oc_requesttoken
+				requesttoken: oc_requesttoken
 			},
 			data: {
 				sorting: sorting
 			},
 			success: function() {
-				that.set({sorting : sorting});
-			},
+				that.set({ sorting: sorting });
+			}
 		});
-	},
+	}
 });
