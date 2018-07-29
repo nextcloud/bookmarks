@@ -70,10 +70,14 @@ export default Marionette.View.extend({
 		);
 
 		if (this.savingState === 'saving') {
-			this.savingState = 'saved';
+			this.getUI('status')
+				.removeClass('saved')
+				.addClass('saving');
 		}
 		if (this.savingState === 'saved') {
-			this.getUI('status').addClass('saved');
+			this.getUI('status')
+				.addClass('saved')
+				.removeClass('saving');
 		}
 
 		if (this.doSlideIn) {
@@ -122,17 +126,19 @@ export default Marionette.View.extend({
 		$el.focus();
 	},
 	submitTags: function() {
+		var that = this;
+		this.savingState = 'saving';
 		this.app.tags.add(this.tags.models);
 		this.model.set({
 			tags: this.tags.pluck('name')
 		});
-		this.model.save({ wait: true });
-		this.savingState = 'saving';
-		this.getUI('status')
-			.removeClass('saved')
-			.addClass('saving');
+		this.model.once('sync', function() {
+			that.savingState = 'saved';
+		});
+		this.model.save();
 	},
 	submit: function($el) {
+		var that = this;
 		if (this.savingState === 'saving') {
 			return;
 		}
@@ -140,10 +146,10 @@ export default Marionette.View.extend({
 		this.model.set({
 			[$el.data('attribute')]: $el.text()
 		});
-		this.model.save({ wait: true });
-		this.getUI('status')
-			.removeClass('saved')
-			.addClass('saving');
+		this.model.once('sync', function() {
+			that.savingState = 'saved';
+		});
+		this.model.save();
 	},
 	onDestroy: function() {
 		this.close();
