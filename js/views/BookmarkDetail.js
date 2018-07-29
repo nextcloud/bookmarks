@@ -149,7 +149,7 @@ export default Marionette.View.extend({
 		this.close();
 	},
 	onDocumentClicked: function(evt) {
-		if (evt && $.contains(this.el, evt.currentTarget)) {
+		if (evt && (this.el === evt.target || $.contains(this.el, evt.target))) {
 			return;
 		}
 		this.close();
