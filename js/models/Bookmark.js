@@ -14,6 +14,12 @@ const simpleHash = str => {
 
 export default Backbone.Model.extend({
 	urlRoot: 'bookmark',
+	parse: function(json) {
+		if (json.item) {
+			return json.item;
+		}
+		return json;
+	},
 	clickLink: function() {
 		const url = encodeURIComponent(this.get('url'));
 		$.ajax({
