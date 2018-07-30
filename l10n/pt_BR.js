@@ -23,6 +23,7 @@ OC.L10N.register(
     "Add to {instanceName} " : "Adicionar a {instanceName} ",
     "Recently added" : "Adicionados recentemente",
     "Most visited" : "Mais visitados",
+    "Clear data" : "Limpar dados",
     "Add to filter" : "Adicionar ao filtro",
     "Remove from filter" : "Excluir do filtro",
     "Rename" : "Renomear",
