@@ -334,6 +334,28 @@ button span,
 	background: #e0e0e0;
 }
 
+@media (max-width: 600px) {
+	.bookmark-card {
+		width: 150px;
+		height: 150px;
+		margin: 10px 0 0 10px;
+	}
+	.bookmark-card .panel {
+		padding: 15px 10px;
+	}
+	.bookmark-card h2.with-favicon {
+		/*background-image: bookmark/{id}/favicon*/
+		background-position: 0px 3px;
+		background-size: 16px 16px;
+		background-repeat: no-repeat;
+		padding-left: 0;
+	}
+	.bookmark-card h2 a {
+		font-size: 14px;
+		padding-left: 20px;
+		margin-left: 0;
+	}
+}
 .bookmark-detail {
 	position: fixed;
 	top: 45px;
