@@ -23,6 +23,7 @@ OC.L10N.register(
     "Add to {instanceName} " : "Bæta við {instanceName} ",
     "Recently added" : "Nýlega bætt við",
     "Most visited" : "Mest heimsótt",
+    "Clear data" : "Hreinsa gögn",
     "Add to filter" : "Bæta við síu",
     "Remove from filter" : "Fjarlægja úr síu",
     "Rename" : "Endurnefna",
