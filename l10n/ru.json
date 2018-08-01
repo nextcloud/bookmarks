@@ -21,6 +21,7 @@
     "Add to {instanceName} " : "Добавить в {instanceName} ",
     "Recently added" : "Недавно добавленные",
     "Most visited" : "Самый посещаемые",
+    "Clear data" : "Очистить данные",
     "Add to filter" : "Добавить в фильтр",
     "Remove from filter" : "Удалить из фильтра",
     "Rename" : "Переименовать",
@@ -39,6 +40,10 @@
     "The address of the page" : "Адрес страницы",
     "Description of the page" : "Описание страницы",
     "Save" : "Сохранить",
-    "Previews" : "Предварительный просмотр"
+    "Previews" : "Предварительный просмотр",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Чтобы отображать реальные скриншоты ваших сайтов с закладками, Bookmarks могут использовать сторонний сервис для их создания.",
+    "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Вы можете бесплатно зарегистрироваться <a href=\"http://screeenly.com\">screeenly.com</a> или <a href=\"https://github.com/stefanzweifel/screeenly\">настроить Ваш собственный сервер</a>.",
+    "Screenly API URL" : "Screenly API URL",
+    "Screenly API key" : "Screenly API key"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }
