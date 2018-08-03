@@ -13,6 +13,7 @@ const Radio = Backbone.Radio;
 
 export default Marionette.View.extend({
 	el: '.app-bookmarks',
+	template: _.noop,
 	regions: {
 		addBookmarks: {
 			el: '#add-bookmark-slot',
@@ -36,8 +37,6 @@ export default Marionette.View.extend({
 		}
 	},
 	initialize: function(options) {
-		this.bindUIElements();
-
 		this.app = options.app;
 		this.searchController = new SearchController();
 
@@ -45,8 +44,7 @@ export default Marionette.View.extend({
 			Radio.channel('documentClicked').trigger('click', e);
 		});
 	},
-	render: function() {},
-	magic: function() {
+	onRender: function() {
 		this.showChildView('addBookmarks', new AddBookmarkView());
 		this.showChildView('navigation', new NavigationView());
 		this.showChildView(

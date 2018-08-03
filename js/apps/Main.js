@@ -9,7 +9,6 @@ import AppView from '../views/App';
 const Marionette = Backbone.Marionette;
 
 export default Marionette.Application.extend({
-	region: '#app-content',
 	onBeforeStart: function() {
 		var that = this;
 		this.bookmarks = new Bookmarks();
@@ -28,8 +27,8 @@ export default Marionette.Application.extend({
 		this.router = new Router({ app: this });
 	},
 	onStart: function() {
-		var view = new AppView({ app: this });
-		view.magic();
+		this.view = new AppView({ app: this });
+		this.view.render();
 		Backbone.history.start();
 	},
 	onTagChanged: function(tag) {
