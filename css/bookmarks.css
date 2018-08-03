@@ -1,13 +1,3 @@
-#content > div {
-	height: 100%;
-	overflow: auto;
-}
-
-#app-navigation {
-	height: 100%;
-	position: relative;
-}
-
 #app-navigation > ul {
 	height: auto;
 	overflow-y: hidden;
