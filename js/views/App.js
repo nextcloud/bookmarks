@@ -7,13 +7,12 @@ import TagsManagementView from './TagsManagement';
 import ContentView from './Content';
 import SettingsView from './Settings';
 import Settings from '../models/Settings';
-import templateString from '../templates/App.html';
 
 const Marionette = Backbone.Marionette;
 const Radio = Backbone.Radio;
 
 export default Marionette.View.extend({
-	template: _.template(templateString),
+	el: '.app-bookmarks',
 	regions: {
 		'addBookmarks':  {
 			el: '#add-bookmark-slot',
@@ -37,6 +36,8 @@ export default Marionette.View.extend({
 		}
 	},
 	initialize: function(options) {
+		this.bindUIElements();
+
 		this.app = options.app;
 		this.searchController = new SearchController;
     
@@ -44,11 +45,14 @@ export default Marionette.View.extend({
 			Radio.channel('documentClicked').trigger('click', e);
 		});
 	},
-	onRender: function() {
+	render: function() {
+
+	},
+	magic: function() {
 		this.showChildView('addBookmarks', new AddBookmarkView());
 		this.showChildView('navigation', new NavigationView);
 		this.showChildView('settings', new SettingsView({model: this.app.settings}));
-		this.showChildView('content', new ContentView({app: this.app})); 
+		this.showChildView('content', new ContentView({app: this.app}));
 		this.showChildView('tags', new TagsManagementView({collection: this.app.tags}));
-	}
+	},
 });
