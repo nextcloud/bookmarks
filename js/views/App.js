@@ -7,48 +7,54 @@ import TagsManagementView from './TagsManagement';
 import ContentView from './Content';
 import SettingsView from './Settings';
 import Settings from '../models/Settings';
-import templateString from '../templates/App.html';
 
 const Marionette = Backbone.Marionette;
 const Radio = Backbone.Radio;
 
 export default Marionette.View.extend({
-	template: _.template(templateString),
+	el: '.app-bookmarks',
+	template: _.noop,
 	regions: {
-		'addBookmarks':  {
+		addBookmarks: {
 			el: '#add-bookmark-slot',
 			replaceElement: true
 		},
-		'navigation': {
+		navigation: {
 			el: '#navigation-slot',
 			replaceElement: true
 		},
-		'content': {
+		content: {
 			el: '#app-content',
 			replaceElement: true
 		},
-		'tags': {
+		tags: {
 			el: '#favorite-tags-slot',
 			replaceElement: true
 		},
-		'settings': {
+		settings: {
 			el: '#settings-slot',
 			replaceElement: true
 		}
 	},
 	initialize: function(options) {
 		this.app = options.app;
-		this.searchController = new SearchController;
-    
+		this.searchController = new SearchController();
+
 		$(window.document).click(function(e) {
 			Radio.channel('documentClicked').trigger('click', e);
 		});
 	},
 	onRender: function() {
 		this.showChildView('addBookmarks', new AddBookmarkView());
-		this.showChildView('navigation', new NavigationView);
-		this.showChildView('settings', new SettingsView({model: this.app.settings}));
-		this.showChildView('content', new ContentView({app: this.app})); 
-		this.showChildView('tags', new TagsManagementView({collection: this.app.tags}));
+		this.showChildView('navigation', new NavigationView());
+		this.showChildView(
+			'settings',
+			new SettingsView({ model: this.app.settings })
+		);
+		this.showChildView('content', new ContentView({ app: this.app }));
+		this.showChildView(
+			'tags',
+			new TagsManagementView({ collection: this.app.tags })
+		);
 	}
 });
