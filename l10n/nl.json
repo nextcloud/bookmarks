@@ -4,7 +4,22 @@
     "Bookm." : "Bladw.",
     "No file provided for import" : "Geen bestand verschaft om te importeren",
     "Unsupported file type for import" : "Niet ondersteund bestandstype om te importeren",
+    "Select" : "Selecteren",
+    "Deselect" : "Deselecteren",
+    "Details" : "Details",
+    "Delete" : "Verwijderen",
+    "Saved" : "Opgeslagen",
+    "Tags" : "Tags",
+    "Description" : "Beschrijving",
+    "All bookmarks" : "Alle bladwijzers",
+    "Untagged" : "Niet getagd",
+    "Shared" : "Gedeeld",
+    "Settings" : "Instellingen",
     "Bookmarklet" : "Bookmarklet",
+    "Add to {instanceName} " : "Toevoegen aan {instanceName} ",
+    "Recently added" : "Recent toegevoegd",
+    "Rename" : "Hernoemen",
+    "Open details" : "Openen details",
     "An error occurred while trying to save the bookmark." : "Er trad een fout op bij je poging de bladwijzer op te slaan",
     "Error" : "Fout",
     "Uploading..." : "Uploaden...",
@@ -16,6 +31,9 @@
     "The title of the page" : "De titel van de pagina",
     "The address of the page" : "Het adres van de pagina",
     "Description of the page" : "Beschrijving van de pagina",
-    "Save" : "Opslaan"
+    "Save" : "Opslaan",
+    "Previews" : "Voorbeeldweergaven",
+    "Screenly API URL" : "Screenly API URL",
+    "Screenly API key" : "Screenly API key"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
