@@ -49,7 +49,7 @@ export default Marionette.View.extend({
 		this.showChildView('navigation', new NavigationView());
 		this.showChildView(
 			'settings',
-			new SettingsView({ model: this.app.settings })
+			new SettingsView({ app: this.app, model: this.app.settings })
 		);
 		this.showChildView('content', new ContentView({ app: this.app }));
 		this.showChildView(

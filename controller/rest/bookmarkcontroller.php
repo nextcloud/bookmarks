@@ -15,6 +15,8 @@ use OCP\IL10N;
 use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
+use \OCP\AppFramework\Http\DataResponse;
+use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Http;
 use \OC\User\Manager;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
@@ -115,6 +117,31 @@ class BookmarkController extends ApiController {
 		$limit = 10,
 		$untagged = false
 	) {
+		$this->registerResponder('rss', function ($res) {
+			if ($res->getData()['status'] === 'success') {
+				$bookmarks = $res->getData()['data'];
+				$description = '';
+			} else {
+				$bookmarks = [['id' => -1]];
+				$description = $res->getData()['data'];
+			}
+
+			$response = new TemplateResponse('bookmarks', 'rss', [
+				'rssLang'		=> $this->l10n->getLanguageCode(),
+				'rssPubDate'	=> date('r'),
+				'description'	=> $description,
+				'bookmarks'		=> $bookmarks
+			], '');
+			$response->setHeaders($res->getHeaders());
+			$response->setStatus($res->getStatus());
+			if (stristr($this->request->getHeader('accept'), 'application/rss+xml')) {
+				$response->addHeader('Content-Type', 'application/rss+xml');
+			} else {
+				$response->addHeader('Content-Type', 'text/xml; charset=UTF-8');
+			}
+			return $response;
+		});
+
 		if ($user === null) {
 			$user = $this->userId;
 			$publicOnly = false;
@@ -122,13 +149,13 @@ class BookmarkController extends ApiController {
 			$publicOnly = true;
 			if ($this->userManager->userExists($user) == false) {
 				$error = "User could not be identified";
-				return new JSONResponse(['status' => 'error', 'data'=> $error]);
+				return new DataResponse(['status' => 'error', 'data'=> $error]);
 			}
 		}
 		if ($type === 'rel_tags' && !$publicOnly) { // XXX: libbookmarks#findTags needs a publicOnly option
 			$tags = $this->bookmarks->analyzeTagRequest($tag);
 			$qtags = $this->bookmarks->findTags($user, $tags);
-			return new JSONResponse(['data' => $qtags, 'status' => 'success']);
+			return new DataResponse(['data' => $qtags, 'status' => 'success']);
 		}
 
 		// type == bookmark
@@ -178,7 +205,7 @@ class BookmarkController extends ApiController {
 			$conjunction,
 			$untagged
 		);
-		return new JSONResponse(['data' => $bookmarks, 'status' => 'success']);
+		return new DataResponse(['data' => $bookmarks, 'status' => 'success']);
 	}
 
 	/**
