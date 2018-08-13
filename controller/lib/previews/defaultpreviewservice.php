@@ -26,8 +26,8 @@ use GuzzleHttp\Exception\ClientException;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 
 class DefaultPreviewService implements IPreviewService {
-	// Cache for one month
-	const CACHE_TTL = 4 * 7 * 24 * 60 * 60;
+	// Cache for 4 months
+	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
 
 	const HTTP_TIMEOUT = 10 * 1000;
 

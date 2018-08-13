@@ -26,7 +26,7 @@ use OCP\ICacheFactory;
 
 class ScreenlyPreviewService implements IPreviewService {
 	// Cache for one month
-	const CACHE_TTL = 4 * 7 * 24 * 60 * 60;
+	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
 
 	const HTTP_TIMEOUT = 10 * 1000;
 
