@@ -23,7 +23,6 @@ OC.L10N.register(
     "Add to {instanceName} " : "Додај на {instanceName} ",
     "Recently added" : "Недавно додате",
     "Most visited" : "Најпосећеније",
-    "Clear data" : "Очисти податке",
     "Add to filter" : "Додај у филтер",
     "Remove from filter" : "Уклони из филтера",
     "Rename" : "Преименуј",
