@@ -23,6 +23,9 @@ OC.L10N.register(
     "Add to {instanceName} " : "{instanceName} üzerine ekle  ",
     "Recently added" : "Son Eklenenler",
     "Most visited" : "En Çok Bakılanlar",
+    "RSS Feed" : "RSS Akışı",
+    "Permanently remove all bookmarks from your account. There is no going back!" : "Hesabınızdaki tüm yer imlerini kalıcı olarak siler. Bu işlem geri alınamaz!",
+    "Delete all bookmarks" : "Tüm yer imlerini sil",
     "Add to filter" : "Süzgece ekle",
     "Remove from filter" : "Süzgeçten kaldır",
     "Rename" : "Yeniden adlandır",
@@ -45,6 +48,7 @@ OC.L10N.register(
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Yer imlerine eklediğiniz web sitelerinin gerçek ekran görüntülerinin görüntülenmesi için Yer İmleri uygulaması üçüncü taraf bir hizmet kullanabilir.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "<a href=\"http://screeenly.com\">screeenly.com</a> üzerinde ücretsiz bir hesap açabilir ya da <a href=\"https://github.com/stefanzweifel/screeenly\">kendi sunucunuzu kurabilirsiniz</a>.",
     "Screenly API URL" : "Screenly API Adresi",
-    "Screenly API key" : "Screenly API Anahtarı"
+    "Screenly API key" : "Screenly API Anahtarı",
+    "Bookmarks feed" : "Yer imleri akışı"
 },
 "nplurals=2; plural=(n > 1);");
