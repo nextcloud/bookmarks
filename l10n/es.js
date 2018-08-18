@@ -23,6 +23,9 @@ OC.L10N.register(
     "Add to {instanceName} " : "Añadir a {instanceName}",
     "Recently added" : "Añadido recientemente",
     "Most visited" : "Más visitado",
+    "RSS Feed" : "Fuente RSS",
+    "Permanently remove all bookmarks from your account. There is no going back!" : "Eliminar permanentemente todos los marcadores de tu cuenta. ¡No hay vuelta atrás!",
+    "Delete all bookmarks" : "Eliminar todos los marcadores",
     "Add to filter" : "Añadir al filtro",
     "Remove from filter" : "Eliminar del filtro",
     "Rename" : "Renombrar",
@@ -45,6 +48,7 @@ OC.L10N.register(
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Con el fin de mostrar capturas de pantalla reales de sus sitios web marcados, la app Marcadores puede usar un servicio de terceros para generarlos.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Puede registrarse gratis en <a href=\"http://screeenly.com\">screeenly.com</a> o <a href=\"https://github.com/stefanzweifel/screeenly\">configurar tu propio servidor</a>.",
     "Screenly API URL" : "Screenly API URL",
-    "Screenly API key" : "Screenly API key"
+    "Screenly API key" : "Screenly API key",
+    "Bookmarks feed" : "Fuente de marcadores"
 },
 "nplurals=2; plural=(n != 1);");
