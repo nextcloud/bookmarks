@@ -23,6 +23,7 @@ OC.L10N.register(
     "Add to {instanceName} " : "Přidat do {instanceName} ",
     "Recently added" : "Nedávno přidáno",
     "Most visited" : "Nejnavštěvovanější",
+    "Delete all bookmarks" : "Smazat všechny záložky",
     "Add to filter" : "Přidat do filtru",
     "Remove from filter" : "Odebrat z filtru",
     "Rename" : "Přejmenovat",
