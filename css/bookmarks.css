@@ -570,7 +570,7 @@ button span,
 }
 
 .tags-management .tag-man-item > a {
-	padding-left: 4px;
+	padding-left: 12px !important;
 }
 
 .tags-management .tag-man-item .actions {
