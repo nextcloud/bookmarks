@@ -36,6 +36,7 @@ npm run build
 - [NCBookmarks](https://github.com/lenchan139/NCBookmark) - App to view/edit/open bookmarks for Android
 - [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
 - [FreedomMarks](https://github.com/damko/freedommarks-browser-webextension) - Addon for Firefox and Chrome. No sync, just a client.
+- [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) - A MacOS client for managing, searching and opening bookmarks.
 
 ## API
 This app exposes a public REST API that third-party clients can interface with.
