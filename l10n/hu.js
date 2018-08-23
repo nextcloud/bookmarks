@@ -24,7 +24,7 @@ OC.L10N.register(
     "Recently added" : "Utoljára hozzáadva",
     "Most visited" : "Legtöbbet látogatva",
     "RSS Feed" : "RSS folyam",
-    "Permanently remove all bookmarks from your account. There is no going back!" : "Véglegesen törlöd az összes könyvjelzőt a fiókodból!",
+    "Permanently remove all bookmarks from your account. There is no going back!" : "Véglegesen törlöd az összes könyvjelzőt a fiókodból! Nincs visszaút!",
     "Delete all bookmarks" : "Összes könyvjelzők törlése",
     "Add to filter" : "Hozzáadás szűrőhöz",
     "Remove from filter" : "Eltávolítás a szűrőből",
@@ -46,6 +46,9 @@ OC.L10N.register(
     "Save" : "Mentés",
     "Previews" : "Előnézet",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Ahhoz, hogy valódi képernyőképeket kapj a könyvjelzőzött weboldalakról, a könyvjelzőknek szüksége van egy harmadik fél által üzemeltetett szolgáltatásra, amely legenerálja a képernyőképeket.",
+    "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Feliratkozhatsz a  <a href=\"http://screeenly.com\">screeenly.com</a> oldalon, vagy  <a href=\"https://github.com/stefanzweifel/screeenly\">telepíts saját szervert</a>.",
+    "Screenly API URL" : "Screenly API URL",
+    "Screenly API key" : "Screenly API kulcs",
     "Bookmarks feed" : "Könyvjelző folyam"
 },
 "nplurals=2; plural=(n != 1);");

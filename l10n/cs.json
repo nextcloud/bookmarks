@@ -21,6 +21,8 @@
     "Add to {instanceName} " : "Přidat do {instanceName} ",
     "Recently added" : "Nedávno přidáno",
     "Most visited" : "Nejnavštěvovanější",
+    "RSS Feed" : "RSS kanál",
+    "Permanently remove all bookmarks from your account. There is no going back!" : "Trvale odstraní z vašeho účtu všechny záložky. Tato operace je nevratná!",
     "Delete all bookmarks" : "Smazat všechny záložky",
     "Add to filter" : "Přidat do filtru",
     "Remove from filter" : "Odebrat z filtru",
@@ -40,6 +42,7 @@
     "The address of the page" : "Adresa stránky",
     "Description of the page" : "Popis stránky",
     "Save" : "Uložit",
-    "Previews" : "Náhledy"
+    "Previews" : "Náhledy",
+    "Bookmarks feed" : "Kanál záložek"
 },"pluralForm" :"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;"
 }
