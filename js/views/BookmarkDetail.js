@@ -155,7 +155,12 @@ export default Marionette.View.extend({
 		this.close();
 	},
 	onDocumentClicked: function(evt) {
-		if (evt && (this.el === evt.target || $.contains(this.el, evt.target))) {
+		if (
+			evt &&
+			(this.el === evt.target ||
+				$.contains(this.el, evt.target) ||
+				!$.contains(document.body, evt.target))
+		) {
 			return;
 		}
 		this.close();
