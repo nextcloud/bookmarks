@@ -97,6 +97,10 @@ export default Marionette.View.extend({
 		if (view && view.model.id === model.id) {
 			Radio.channel('details').trigger('close');
 		} else {
+			var oldView;
+			if ((oldView = this.detachChildView('bookmarkDetail'))) {
+				oldView.destroy();
+			}
 			var newView = new BookmarkDetailView({
 				model: model,
 				app: this.app,
@@ -110,7 +114,7 @@ export default Marionette.View.extend({
 		var view = this.getChildView('bookmarkDetail');
 		if (!view) return;
 		that.getChildView('bookmarkDetail').slideOut(function() {
-			that.detachChildView('bookmarkDetail');
+			that.detachChildView('bookmarkDetail').destroy();
 		});
 	}
 });
