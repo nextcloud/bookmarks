@@ -6,6 +6,8 @@ OC.L10N.register(
     "Bookm." : "Bokmerk",
     "No file provided for import" : "Ingen fil valgt for import",
     "Unsupported file type for import" : "Usupportert filtype for import",
+    "Select" : "Velg",
+    "Deselect" : "Fjern markering",
     "An error occurred while trying to save the bookmark." : "En feil inntraff under forsøk på å lagre bokmerket.",
     "Error" : "Feil",
     "Uploading..." : "Laster opp …",
