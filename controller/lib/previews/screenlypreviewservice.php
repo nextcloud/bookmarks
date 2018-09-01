@@ -19,9 +19,9 @@
  */
 namespace OCA\Bookmarks\Controller\Lib\Previews;
 
-use Wnx\ScreeenlyClient\Screenshot;
 use OCP\ICache;
 use OCP\IConfig;
+use OCP\Http\Client\IClientService;
 use OCP\ICacheFactory;
 
 class ScreenlyPreviewService implements IPreviewService {
@@ -31,6 +31,8 @@ class ScreenlyPreviewService implements IPreviewService {
 	const HTTP_TIMEOUT = 10 * 1000;
 
 	private $apiKey;
+
+	private $client;
 
 	/** @var IConfig */
 	private $config;
@@ -45,11 +47,12 @@ class ScreenlyPreviewService implements IPreviewService {
 	/**
 	 * @param ICacheFactory $cacheFactory
 	 */
-	public function __construct(ICacheFactory $cacheFactory, IConfig $config) {
+	public function __construct(ICacheFactory $cacheFactory, IConfig $config, IClientService $clientService) {
 		$this->config = $config;
 		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
 		$this->cache = $cacheFactory->create('bookmarks.ScreenlyPreviewService');
+		$this->client = $clientService->newClient();
 	}
 
 	private function buildKey($url) {
@@ -82,14 +85,8 @@ class ScreenlyPreviewService implements IPreviewService {
 			];
 		}
 
-		try {
-			// Fetch image from remote server
-			$image = $this->fetchScreenshot($url);
-		} catch (\Exception $e) {
-			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
-			// TODO: We could return an error image here
-			return null;
-		}
+		// Fetch image from remote server
+		$image = $this->fetchScreenshot($url);
 
 		if (is_null($image)) {
 			$json = json_encode(null);
@@ -109,8 +106,7 @@ class ScreenlyPreviewService implements IPreviewService {
 
 	public function fetchScreenshot($url) {
 		try {
-			$client = new \GuzzleHTTP\Client();
-			$request = $client->post($this->apiUrl, ['body' => [
+			$response = $this->client->post($this->apiUrl, ['body' => [
 					'key'    => $this->apiKey,
 					'url'    => $url,
 					'width'  => $this->width,
@@ -118,19 +114,14 @@ class ScreenlyPreviewService implements IPreviewService {
 				],
 				'timeout' => self::HTTP_TIMEOUT
 		  ]);
-			$body = $request->json();
-		} catch (\GuzzleHttp\Exception\RequestException $e) {
-			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
-			if ($e->hasResponse()) {
-				if ($e->getResponse()->getStatusCode() === 404) {
-					return null;
-				}
-			}
-			throw $e;
+			$body = json_decode($response->getBody(), true);
+		} catch (\Exception $e) {
+			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::DEBUG);
+			return null;
 		}
 
 		// Some HTPP Error occured :/
-		if (200 != $request->getStatusCode()) {
+		if (200 != $response->getStatusCode()) {
 			return null;
 		}
 
