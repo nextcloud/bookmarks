@@ -20,7 +20,7 @@ Check out the third-party clients listed here: https://github.com/nextcloud/book
 	<repository type="git">https://github.com/nextcloud/bookmarks.git</repository>
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
 	<dependencies>
-		<nextcloud min-version="12" max-version="14" />
+		<nextcloud min-version="14" max-version="15" />
 	</dependencies>
 	<settings>
 		<admin>OCA\Bookmarks\Settings\AdminSettings</admin>
