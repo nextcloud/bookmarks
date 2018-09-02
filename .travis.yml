@@ -10,44 +10,13 @@ env:
     - PHP_COVERAGE=FALSE
   matrix:
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable13
+#    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable14
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
-    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable13
+#    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable14
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-    - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-    - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable13
+#    - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable14
 
 matrix:
-  exclude:
-  - php: 5.6
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
-  - php: 5.6
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-  - php: 5.6
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-  - php: 5.6
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-  - php: 5.6
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-  - php: 5.6
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-  - php: 7
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
-  - php: 7
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-  - php: 7
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
-  - php: 7
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-  - php: 7.2
-    env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-  - php: 7.2
-    env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-  - php: 7.2
-    env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable12
-
   fast_finish: true
 
 branches:
@@ -64,11 +33,12 @@ before_install:
   - cd ../core || cd ../server
   - php occ app:enable $APP_NAME
 
-script:
+before_script:
   # Test lint
   - cd apps/$APP_NAME
   - find . -name \*.php -exec php -l "{}" \;
 
+script:
   # Check info.xml schema validity
   - wget https://apps.nextcloud.com/schema/apps/info.xsd
   - xmllint appinfo/info.xml --schema info.xsd --noout
