@@ -13,7 +13,7 @@ class LinkExplorer {
 
 	public function __construct(IClientService $clientService) {
 		$client = $clientService->newClient();
-		$this->linkPreview = new LinkPreview(new Client($client), new RequestFactory($client));
+		$this->linkPreview = new LinkPreview(new Client($client), new RequestFactory());
 		$this->linkPreview->getParser('general')->setMinimumImageDimensions(150, 550);
 	}
 
@@ -30,9 +30,6 @@ class LinkExplorer {
 			libxml_use_internal_errors(false);
 			$preview = $this->linkPreview->getLink($url)->getPreview();
 		} catch (\Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException $e) {
-			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::DEBUG);
-			return $data;
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::DEBUG);
 			return $data;
 		}

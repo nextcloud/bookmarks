@@ -22,6 +22,7 @@ namespace OCA\Bookmarks\Controller\Lib\Previews;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use OCP\Http\Client\IClientService;
+use OCP\Http\Client\IClient;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 
 class DefaultPreviewService implements IPreviewService {
@@ -32,6 +33,9 @@ class DefaultPreviewService implements IPreviewService {
 
 	/** @var ICache */
 	protected $cache;
+
+	/** @var IClient */
+	protected $client;
 
 	/** @var LinkExplorer */
 	protected $linkExplorer;
@@ -121,7 +125,6 @@ class DefaultPreviewService implements IPreviewService {
 	 * @return string|null fetched image data
 	 */
 	private function fetchImage($url) {
-		$body = $contentType = '';
 		try {
 			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
 		} catch (\Exception $e) {
