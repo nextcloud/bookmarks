@@ -46,7 +46,7 @@
 .add-bookmark input {
 	width: 100%;
 	margin: 0;
-	margin-bottom: 1px;
+	margin-bottom: 4px;
 	padding: 12px 40px 12px 12px;
 	box-sizing: border-box;
 	background-color: transparent;
@@ -605,6 +605,9 @@ button span,
 }
 
 /* make checkbox look like an icon */
+.menu-item span {
+	margin: 0;
+}
 
 .menu-item-checkbox span:first-child {
 	padding: 5px 5px;
@@ -622,6 +625,11 @@ button span,
 
 .tags-management .tag-man-item.active .menu-filter-remove {
 	display: block;
+}
+
+.settings {
+	position: absolute;
+	bottom: 0;
 }
 
 #app-navigation .settings h3 {
