@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd0576ca6e4822c68d6d771f96f997a5",
+    "content-hash": "22b46dcb033e8ab5146a719a7cea61f6",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -276,16 +276,16 @@
         },
         {
             "name": "marcelklehr/link-preview",
-            "version": "dev-master",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marcelklehr/link-preview.git",
-                "reference": "b3cf3895d78d49e227497c69918e92d49fb1be82"
+                "reference": "2b79492e2cba41f0464265c09b93263c0276fc07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marcelklehr/link-preview/zipball/b3cf3895d78d49e227497c69918e92d49fb1be82",
-                "reference": "b3cf3895d78d49e227497c69918e92d49fb1be82",
+                "url": "https://api.github.com/repos/marcelklehr/link-preview/zipball/2b79492e2cba41f0464265c09b93263c0276fc07",
+                "reference": "2b79492e2cba41f0464265c09b93263c0276fc07",
                 "shasum": ""
             },
             "require": {
@@ -326,7 +326,7 @@
                 "scraping",
                 "url"
             ],
-            "time": "2018-09-01T20:53:52+00:00"
+            "time": "2018-09-01T21:10:51+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -783,9 +783,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "marcelklehr/link-preview": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
