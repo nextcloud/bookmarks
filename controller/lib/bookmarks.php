@@ -526,7 +526,7 @@ class Bookmarks {
 				foreach (['https://', 'http://'] as $protocol) {
 					$testUrl = $protocol . $url;
 					$data = $this->getURLMetadata($testUrl);
-					if (isset($data['title'])) {
+					if (isset($data['basic']) && isset($data['basic']['title'])) {
 						break;
 					}
 				}
@@ -540,10 +540,10 @@ class Bookmarks {
 			$url = $data['url'];
 		}
 		if ((!isset($title) || trim($title) === '')) {
-			$title = isset($data['title'])? $data['title'] : $url;
+			$title = isset($data['basic']) && isset($data['basic']['title'])? $data['basic']['title'] : $url;
 		}
-		if (isset($data['description']) && (!isset($description) || trim($description) === '')) {
-			$description = $data['description'];
+		if (isset($data['basic']['description']) && (!isset($description) || trim($description) === '')) {
+			$description = $data['basic']['description'];
 		}
 
 		// Check if it is a valid URL (after adding http(s) prefix)

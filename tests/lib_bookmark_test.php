@@ -104,7 +104,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertFalse(isset($resultOne['lastmodified']));
 		$this->assertCount(0, $resultOne['tags']);
 		$this->assertEquals('Golem', $resultOne['title']);
-		$this->assertEquals('https://www.golem.de/', $resultOne['url']);
+		$this->assertEquals('http://www.golem.de/', $resultOne['url']);
 
 		$resultTwo = $resultSet[1];
 		$this->assertFalse(isset($resultTwo['lastmodified']));
@@ -260,8 +260,8 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->cleanDB();
 		$this->libBookmarks->addBookmark($this->userid, "https://www.google.de", "Google", ["one"], "PrivateNoTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "https://www.heise.de", "Heise", ["one", "two"], "PrivatTag", false);
-		$this->libBookmarks->addBookmark($this->otherUser, "http://www.golem.de", "Golem", ["four"], "PublicNoTag", false);
-		$this->libBookmarks->addBookmark($this->otherUser, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", false);
+		$this->libBookmarks->addBookmark($this->otherUser, "https://www.golem.de", "Golem", ["four"], "PublicNoTag", false);
+		$this->libBookmarks->addBookmark($this->otherUser, "https://9gag.com", "9gag", ["two", "three"], "PublicTag", false);
 
 		$this->libBookmarks->deleteAllBookmarks($this->userid);
 		$bookmarks = $this->libBookmarks->findBookmarks($this->userid, 0, 'id', [], false, false);

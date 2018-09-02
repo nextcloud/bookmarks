@@ -21,8 +21,8 @@ namespace OCA\Bookmarks\Controller\Lib\Previews;
 
 use OCP\ICache;
 use OCP\ICacheFactory;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException;
+use OCP\Http\Client\IClientService;
+use OCP\Http\Client\IClient;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 
 class DefaultPreviewService implements IPreviewService {
@@ -34,6 +34,9 @@ class DefaultPreviewService implements IPreviewService {
 	/** @var ICache */
 	protected $cache;
 
+	/** @var IClient */
+	protected $client;
+
 	/** @var LinkExplorer */
 	protected $linkExplorer;
 
@@ -41,9 +44,10 @@ class DefaultPreviewService implements IPreviewService {
 	 * @param ICacheFactory $cacheFactory
 	 * @param LinkExplorer $linkExplorer
 	 */
-	public function __construct(ICacheFactory $cacheFactory, LinkExplorer $linkExplorer) {
+	public function __construct(ICacheFactory $cacheFactory, LinkExplorer $linkExplorer, IClientService $clientService) {
 		$this->cache = $cacheFactory->create('bookmarks.DefaultPreviewService');
 		$this->linkExplorer = $linkExplorer;
+		$this->client = $clientService->newClient();
 	}
 
 	private function buildKey($url) {
@@ -59,10 +63,14 @@ class DefaultPreviewService implements IPreviewService {
 			return null;
 		}
 		$site = $this->scrapeUrl($bookmark['url']);
-		if (!isset($site['image'])) {
-			return  null;
+		\OCP\Util::writeLog('bookmarks', 'getImage for URL: '.$bookmark['url'].' '.var_export($site, true), \OCP\Util::DEBUG);
+		if (isset($site['image']['small'])) {
+			return $this->getOrFetchImageUrl($site['image']['small']);
 		}
-		return $this->getOrFetchImageUrl($site['image']);
+		if (isset($site['image']['large'])) {
+			return $this->getOrFetchImageUrl($site['image']['large']);
+		}
+		return  null;
 	}
 
 	public function scrapeUrl($url) {
@@ -93,14 +101,8 @@ class DefaultPreviewService implements IPreviewService {
 			];
 		}
 
-		try {
-			// Fetch image from remote server
-			$image = $this->fetchImage($url);
-		} catch (\Exception $e) {
-			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
-			// TODO: We could return an error image here
-			return null;
-		}
+		// Fetch image from remote server
+		$image = $this->fetchImage($url);
 
 		if (is_null($image)) {
 			$json = json_encode(null);
@@ -123,29 +125,22 @@ class DefaultPreviewService implements IPreviewService {
 	 * @return string|null fetched image data
 	 */
 	private function fetchImage($url) {
-		$body = $contentType = '';
 		try {
-			$client = new \GuzzleHTTP\Client();
-			$request = $client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
-			$body = $request->getBody();
-			$contentType = $request->getHeader('Content-Type');
-		} catch (\GuzzleHttp\Exception\RequestException $e) {
-			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::WARN);
-			if ($e->hasResponse()) {
-				if ($e->getResponse()->getStatusCode() === 404) {
-					return null;
-				}
-			}
-			throw $e;
+			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
+		} catch (\Exception $e) {
+			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::DEBUG);
+			return null;
 		}
+		$body = $response->getBody();
+		$contentType = $response->getHeader('Content-Type');
 
 		// Some HTPP Error occured :/
-		if (200 != $request->getStatusCode()) {
+		if (200 != $response->getStatusCode()) {
 			return null;
 		}
 
 		// It's not actually an image, doh.
-		if (!$contentType || stripos($contentType, 'image') !== 0) {
+		if (!isset($contentType) || stripos($contentType, 'image') !== 0) {
 			return null;
 		}
 
