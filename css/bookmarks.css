@@ -611,6 +611,7 @@ button span,
 
 .menu-item-checkbox span:first-child {
 	padding: 5px 5px;
+	margin: 0;
 }
 
 /* display 'remove from filter' when selected, and 'add to ...' when unselected*/
