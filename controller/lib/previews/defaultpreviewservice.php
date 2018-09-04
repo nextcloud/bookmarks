@@ -20,7 +20,6 @@
 namespace OCA\Bookmarks\Controller\Lib\Previews;
 
 use OCP\ICache;
-use OCP\ICacheFactory;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IClient;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
@@ -28,6 +27,7 @@ use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 class DefaultPreviewService implements IPreviewService {
 	// Cache for 4 months
 	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
+	const CACHE_PREFIX = 'bookmarks.DefaultPreviewService';
 
 	const HTTP_TIMEOUT = 10 * 1000;
 
@@ -41,17 +41,25 @@ class DefaultPreviewService implements IPreviewService {
 	protected $linkExplorer;
 
 	/**
-	 * @param ICacheFactory $cacheFactory
+	 * @param CacheFactory $cacheFactory
 	 * @param LinkExplorer $linkExplorer
 	 */
-	public function __construct(ICacheFactory $cacheFactory, LinkExplorer $linkExplorer, IClientService $clientService) {
-		$this->cache = $cacheFactory->create('bookmarks.DefaultPreviewService');
+	public function __construct(ICache $cache, LinkExplorer $linkExplorer, IClientService $clientService) {
+		$this->cache = $cache;
 		$this->linkExplorer = $linkExplorer;
 		$this->client = $clientService->newClient();
 	}
 
-	private function buildKey($url) {
-		return base64_encode($url);
+	protected function buildKey($url) {
+		return self::CACHE_PREFIX.'-'.md5($url);
+	}
+
+	private function buildScrapeKey($url) {
+		return $this->buildKey('meta-'.$url);
+	}
+
+	private function buildImageKey($url) {
+		return $this->buildKey('image-'.$url);
 	}
 
 	/**
@@ -74,7 +82,7 @@ class DefaultPreviewService implements IPreviewService {
 	}
 
 	public function scrapeUrl($url) {
-		$key = $this->buildKey('meta:'.$url);
+		$key = $this->buildScrapeKey($url);
 		if ($data = $this->cache->get($key)) {
 			return json_decode($data, true);
 		}
@@ -88,7 +96,7 @@ class DefaultPreviewService implements IPreviewService {
 			return null;
 		}
 
-		$key = $this->buildKey('image:'.$url);
+		$key = $this->buildImageKey($url);
 		// Try cache first
 		if ($image = $this->cache->get($key)) {
 			$image = json_decode($image, true);

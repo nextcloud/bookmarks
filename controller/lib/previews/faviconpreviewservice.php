@@ -21,19 +21,16 @@
 namespace OCA\Bookmarks\Controller\Lib\Previews;
 
 use OCP\ICache;
-use OCP\ICacheFactory;
 use OCP\Http\Client\IClientService;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 
 class FaviconPreviewService extends DefaultPreviewService {
-
 	/**
 	 * @param ICacheFactory $cacheFactory
 	 * @param LinkExplorer $linkExplorer
 	 */
-	public function __construct(ICacheFactory $cacheFactory, LinkExplorer $linkExplorer, IClientService $clientService) {
-		parent::__construct($cacheFactory, $linkExplorer, $clientService);
-		$this->cache = $cacheFactory->create('bookmarks.FaviconPreviewService');
+	public function __construct(ICache $cache, LinkExplorer $linkExplorer, IClientService $clientService) {
+		parent::__construct($cache, $linkExplorer, $clientService);
 	}
 
 	public function getImage($bookmark) {

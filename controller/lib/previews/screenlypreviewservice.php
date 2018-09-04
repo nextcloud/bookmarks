@@ -22,11 +22,11 @@ namespace OCA\Bookmarks\Controller\Lib\Previews;
 use OCP\ICache;
 use OCP\IConfig;
 use OCP\Http\Client\IClientService;
-use OCP\ICacheFactory;
 
 class ScreenlyPreviewService implements IPreviewService {
 	// Cache for one month
 	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
+	const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
 
 	const HTTP_TIMEOUT = 10 * 1000;
 
@@ -47,16 +47,16 @@ class ScreenlyPreviewService implements IPreviewService {
 	/**
 	 * @param ICacheFactory $cacheFactory
 	 */
-	public function __construct(ICacheFactory $cacheFactory, IConfig $config, IClientService $clientService) {
+	public function __construct(ICache $cache, IConfig $config, IClientService $clientService) {
 		$this->config = $config;
 		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
-		$this->cache = $cacheFactory->create('bookmarks.ScreenlyPreviewService');
+		$this->cache = $cache;
 		$this->client = $clientService->newClient();
 	}
 
 	private function buildKey($url) {
-		return base64_encode($url);
+		return self::CACHE_PREFIX.'-'.md5($url);
 	}
 
 	/**
