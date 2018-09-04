@@ -29,7 +29,7 @@ class LinkExplorer {
 		try {
 			libxml_use_internal_errors(false);
 			$preview = $this->linkPreview->getLink($url)->getPreview();
-		} catch (\Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException $e) {
+		} catch (\Exception $e) {
 			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::DEBUG);
 			return $data;
 		}
