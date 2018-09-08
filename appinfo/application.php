@@ -21,10 +21,12 @@ use \OCP\AppFramework\App;
 use OCP\AppFramework\Utility\ITimeFactory;
 use \OCP\IContainer;
 use \OCA\Bookmarks\Controller\WebViewController;
-use OCA\Bookmarks\Controller\Rest\TagsController;
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
-use OCA\Bookmarks\Controller\Rest\InternalTagsController;
 use OCA\Bookmarks\Controller\Rest\InternalBookmarkController;
+use OCA\Bookmarks\Controller\Rest\TagsController;
+use OCA\Bookmarks\Controller\Rest\InternalTagsController;
+use OCA\Bookmarks\Controller\Rest\FoldersController;
+use OCA\Bookmarks\Controller\Rest\InternalFoldersController;
 use OCA\Bookmarks\Controller\Rest\PublicController;
 use OCA\Bookmarks\Controller\Rest\SettingsController;
 use OCP\IUser;
@@ -107,6 +109,30 @@ class Application extends App {
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			$uid = is_null($user) ? null : $user->getUID();
 			return new InternalTagsController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$uid,
+				$c->query('ServerContainer')->query(Bookmarks::class)
+			);
+		});
+
+		$container->registerService('FoldersController', function ($c) {
+			/** @var IContainer $c */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
+			return new FoldersController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$uid,
+				$c->query('ServerContainer')->query(Bookmarks::class)
+			);
+		});
+
+		$container->registerService('InternalFoldersController', function ($c) {
+			/** @var IContainer $c */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
+			return new InternalFoldersController(
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,

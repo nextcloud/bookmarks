@@ -42,6 +42,11 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'internal_tags#rename_tag', 'url' => '/tag/{old_name}', 'verb' => 'POST'],
 	['name' => 'internal_tags#rename_tag', 'url' => '/tag/{old_name}', 'verb' => 'PUT'],
 	['name' => 'internal_tags#delete_tag', 'url' => '/tag/{old_name}', 'verb' => 'DELETE'],
+	['name' => 'internal_folders#get_folders', 'url' => '/foders', 'verb' => 'GET'],
+	['name' => 'internal_folders#get_folder', 'url' => '/foders/{folderId}', 'verb' => 'GET'],
+	['name' => 'internal_folders#add_folder', 'url' => '/foders', 'verb' => 'POST'],
+	['name' => 'internal_folders#edit_folder', 'url' => '/folders/{folderId}', 'verb' => 'PUT'],
+	['name' => 'internal_folders#delete_folder', 'url' => '/folders/{folderId}', 'verb' => 'DELETE'],
 	// Public REST API
 	['name' => 'bookmark#get_bookmarks', 'url' => '/public/rest/v2/bookmark', 'verb' => 'GET'],
 	['name' => 'bookmark#new_bookmark', 'url' => '/public/rest/v2/bookmark', 'verb' => 'POST'],
@@ -54,6 +59,11 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'tags#full_tags', 'url' => '/public/rest/v2/tag', 'verb' => 'GET'],
 	['name' => 'tags#rename_tag', 'url' => '/public/rest/v2/tag', 'verb' => 'POST'],
 	['name' => 'tags#delete_tag', 'url' => '/public/rest/v2/tag', 'verb' => 'DELETE'],
+	['name' => 'folders#get_folders', 'url' => '/public/rest/v2/foders', 'verb' => 'GET'],
+	['name' => 'folders#get_folder', 'url' => '/public/rest/v2/foders/{folderId}', 'verb' => 'GET'],
+	['name' => 'folders#add_folder', 'url' => '/public/rest/v2/foders', 'verb' => 'POST'],
+	['name' => 'folders#edit_folder', 'url' => '/public/rest/v2/folders/{folderId}', 'verb' => 'PUT'],
+	['name' => 'folders#delete_folder', 'url' => '/public/rest/v2/folders/{folderId}', 'verb' => 'DELETE'],
 	['name' => 'bookmark#preflighted_cors', 'url' => '/public/rest/v2/{path}',
 		'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']],
 	//Settings

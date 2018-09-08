@@ -13,7 +13,7 @@
 				<autoincrement>1</autoincrement>
 				<default>0</default>
 				<notnull>true</notnull>
-				<length>4</length>
+				<length>64</length>
 			</field>
 			<field>
 				<name>url</name>
@@ -84,7 +84,6 @@
 				<type>integer</type>
 				<length>64</length>
 			</field>
-
 			<field>
 				<name>tag</name>
 				<type>text</type>
@@ -104,6 +103,53 @@
 					<sorting>ascending</sorting>
 				</field>
 			</index>
+		</declaration>
+	</table>
+	<table>
+		<name>*dbprefix*bookmarks_folders</name>
+		<declaration>
+			<field>
+				<name>id</name>
+				<type>integer</type>
+				<autoincrement>1</autoincrement>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+			<field>
+				<name>parent_folder</name>
+				<type>integer</type>
+				<length>64</length>
+			</field>
+			<field>
+				<name>title</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>4096</length>
+			</field>
+			<field>
+				<name>user_id</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+		</declaration>
+	</table>
+	<table>
+		<name>*dbprefix*bookmarks_folders_bookmarks</name>
+		<declaration>
+			<field>
+				<name>folder_id</name>
+				<type>integer</type>
+				<length>64</length>
+			</field>
+			<field>
+				<name>bookmark_id</name>
+				<type>integer</type>
+				<length>64</length>
+			</field>
 		</declaration>
 	</table>
 </database>

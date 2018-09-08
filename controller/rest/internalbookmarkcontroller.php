@@ -86,9 +86,10 @@ class InternalBookmarkController extends ApiController {
 		$sortby = "",
 		$search = [],
 		$limit = 10,
-		$untagged = false
+		$untagged = false,
+		$folder = null
 	) {
-		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search, $limit, $untagged);
+		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search, $limit, $untagged, $null);
 	}
 
 	/**

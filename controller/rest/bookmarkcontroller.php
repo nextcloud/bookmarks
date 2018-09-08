@@ -91,13 +91,14 @@ class BookmarkController extends ApiController {
 	 * @param string $tag
 	 * @param int $page
 	 * @param string $sort
-	 * @param string user
-	 * @param array tags
-	 * @param string conjunction
-	 * @param string sortby
-	 * @param array search
-	 * @param int limit
-	 * @param bool untagged
+	 * @param string $user
+	 * @param array $tags
+	 * @param string $conjunction
+	 * @param string $sortby
+	 * @param array $search
+	 * @param int $limit
+	 * @param bool $untagged
+	 * @param int $folder
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -115,7 +116,8 @@ class BookmarkController extends ApiController {
 		$sortby = "",
 		$search = [],
 		$limit = 10,
-		$untagged = false
+		$untagged = false,
+		$folder = null
 	) {
 		$this->registerResponder('rss', function ($res) {
 			if ($res->getData()['status'] === 'success') {
@@ -203,7 +205,8 @@ class BookmarkController extends ApiController {
 			$publicOnly,
 			$attributesToSelect,
 			$conjunction,
-			$untagged
+			$untagged,
+			$folder
 		);
 		return new DataResponse(['data' => $bookmarks, 'status' => 'success']);
 	}
@@ -222,13 +225,12 @@ class BookmarkController extends ApiController {
 	 */
 	public function newBookmark($url = "", $item = [], $title = "", $is_public = false, $description = "", $tags = []) {
 		$title = trim($title);
-		$image = null;
 		if (count($tags) === 0) {
 			$tags = isset($item['tags']) ? $item['tags'] : [];
 		}
 
 		try {
-			$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public, $image);
+			$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public);
 		} catch (\InvalidArgumentException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => [$e->getMessage()]], Http::STATUS_BAD_REQUEST);
 		}
@@ -267,13 +269,14 @@ class BookmarkController extends ApiController {
 	 * @param int $record_id
 	 * @param string $description
 	 * @param array $tags
+	 * @param array $folders
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function editBookmark($id = null, $url = null, $item = null, $title = null, $is_public = null, $record_id = null, $description = null, $tags = null) {
+	public function editBookmark($id = null, $url = null, $item = null, $title = null, $is_public = null, $record_id = null, $description = null, $tags = null, $folders = null) {
 		if ($record_id !== null) {
 			$id = $record_id;
 		}
@@ -304,7 +307,7 @@ class BookmarkController extends ApiController {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
-		$id = $this->bookmarks->editBookmark($this->userId, $bookmark['id'], $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['public']);
+		$id = $this->bookmarks->editBookmark($this->userId, $bookmark['id'], $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['public'], $folders);
 
 		$bm = $this->bookmarks->findUniqueBookmark($id, $this->userId);
 		return new JSONResponse(['item' => $bm, 'status' => 'success']);
