@@ -18,6 +18,7 @@ OC.L10N.register(
     "Untagged" : "Χωρίς ετικέτα",
     "Settings" : "Ρυθμίσεις",
     "Recently added" : "Προστέθηκαν πρόσφατα",
+    "RSS Feed" : "Ροή RSS",
     "Add to filter" : "Προσθήκη στο φίλτρο",
     "Rename" : "Μετονομασία",
     "Open details" : "Άνοιγμα λεπτομερειών",

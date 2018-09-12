@@ -15,6 +15,8 @@ OC.L10N.register(
     "All bookmarks" : "Wszystkie zakładki",
     "Settings" : "Ustawienia",
     "Bookmarklet" : "Skryptozakładka",
+    "RSS Feed" : "Kanał RSS",
+    "Rename" : "Zmień nazwę",
     "An error occurred while trying to save the bookmark." : "Wystąpił błąd podczas próby zapisania zakładki.",
     "Error" : "Błąd",
     "Uploading..." : "Wysyłanie…",
