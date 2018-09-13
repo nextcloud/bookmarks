@@ -47,6 +47,8 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'internal_folders#add_folder', 'url' => '/foders', 'verb' => 'POST'],
 	['name' => 'internal_folders#edit_folder', 'url' => '/folders/{folderId}', 'verb' => 'PUT'],
 	['name' => 'internal_folders#delete_folder', 'url' => '/folders/{folderId}', 'verb' => 'DELETE'],
+	['name' => 'internal_folders#add_to_folder', 'url' => '/folders/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'POST'],
+	['name' => 'internal_folders#remove_from_folder', 'url' => '/folders/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'DELETE'],
 	// Public REST API
 	['name' => 'bookmark#get_bookmarks', 'url' => '/public/rest/v2/bookmark', 'verb' => 'GET'],
 	['name' => 'bookmark#new_bookmark', 'url' => '/public/rest/v2/bookmark', 'verb' => 'POST'],
@@ -64,6 +66,8 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'folders#add_folder', 'url' => '/public/rest/v2/foders', 'verb' => 'POST'],
 	['name' => 'folders#edit_folder', 'url' => '/public/rest/v2/folders/{folderId}', 'verb' => 'PUT'],
 	['name' => 'folders#delete_folder', 'url' => '/public/rest/v2/folders/{folderId}', 'verb' => 'DELETE'],
+	['name' => 'folders#add_to_folder', 'url' => '/public/rest/v2/folders/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'POST'],
+	['name' => 'folders#remove_from_folder', 'url' => '/public/rest/v2/folders/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'DELETE'],
 	['name' => 'bookmark#preflighted_cors', 'url' => '/public/rest/v2/{path}',
 		'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']],
 	//Settings

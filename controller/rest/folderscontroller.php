@@ -52,6 +52,45 @@ class FoldersController extends ApiController {
 
 	/**
 	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function addToFolder($folderId, $bookmarkId) {
+		if (!$this->bookmarks->addToFolders($this->userId, $bookmarkId, [$folderId])) {
+			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
+		}
+
+		return new JSONResponse(['status' => 'success']);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function removeFromFolder($folderId, $bookmarkId) {
+		if (!($bookmark = $this->bookmarks->findUniqueBookmark($bookmarkId, $this->userId))) {
+			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
+		}
+		array_push($bookmark['folders'], $folderId);
+		if (!($bookmark = $this->bookmarks->editBookmark($this->userId, $bookmarkId, $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['public'], $bookmark['folders']))) {
+			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
+		}
+
+		return new JSONResponse(['status' => 'success']);
+	}
+
+
+	/**
+	 * @param int $folderId
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired

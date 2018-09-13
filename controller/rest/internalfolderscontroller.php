@@ -43,6 +43,32 @@ class InternalFoldersController extends ApiController {
 
 	/**
 	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function addToFolder($folderId, $bookmarkId) {
+		return $this->controller->addToFolder($folderId, $bookmarkId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function removeFromFolder($folderId, $bookmarkId) {
+		return $this->controller->removeFromFolder($folderId, $bookmarkId);
+	}
+
+	/**
+	 * @param int $folderId
 	 * @param string $title
 	 * @param int $parent
 	 * @return JSONResponse
@@ -50,7 +76,7 @@ class InternalFoldersController extends ApiController {
 	 * @NoAdminRequired
 	 */
 	public function editFolder($folderId, $title = null, $parent = null) {
-		return $this->bookmarks->editFolder($folderId, $title, $parent);
+		return $this->controller->editFolder($folderId, $title, $parent);
 	}
 
 	/**

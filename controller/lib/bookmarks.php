@@ -679,7 +679,7 @@ class Bookmarks {
 		// Abort the operation if bookmark couldn't be set
 		// (probably because the user is not allowed to edit this bookmark)
 		if ($result == 0) {
-			exit();
+			return false;
 		}
 
 		$this->eventDispatcher->dispatch(
@@ -707,7 +707,7 @@ class Bookmarks {
 			$qb->execute();
 
 			// Add New Tags
-			$this->addToFolders($id, $folders);
+			$this->addToFolders($userid, $id, $folders);
 		}
 
 		return $id;
@@ -834,7 +834,7 @@ class Bookmarks {
 
 			if ($insertId !== false) {
 				$this->addTags($insertId, $tags);
-				$this->addToFolders($insertId, $folders);
+				$this->addToFolders($userid, $insertId, $folders);
 
 				$this->eventDispatcher->dispatch(
 					'\OCA\Bookmarks::onBookmarkCreate',
@@ -852,19 +852,24 @@ class Bookmarks {
 	 * @param int $bookmarkID The bookmark reference
 	 * @param array $folders Set of folders ids to add the bookmark to
 	 * */
-	private function addToFolders($bookmarkId, $folders) {
+	public function addToFolders($userId, $bookmarkId, $folders) {
 		foreach ($folders as $folderId) {
 			// check if folder exists
-			if ($folderId !== -1) {
+			if ($folderId != -1) {
 				$qb = $this->db->getQueryBuilder();
 				$row = $qb
 				->select('*')
 				->from('bookmarks_folders')
-				->where($qb->expr()->eq('user_id', $qb->createNamedParameter($folderId)));
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
+				->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
 
-				if ($qb->execute()->fetch()) {
+				if (!$qb->execute()->fetch()) {
 					continue;
 				}
+			}
+
+			if (!$this->findUniqueBookmark($bookmarkId, $userId)) {
+				return false;
 			}
 
 			// check if this folder<->bookmark mapping already exists
