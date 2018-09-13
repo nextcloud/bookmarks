@@ -23,6 +23,8 @@ OC.L10N.register(
     "Add to {instanceName} " : "Toevoegen aan {instanceName} ",
     "Recently added" : "Recent toegevoegd",
     "Most visited" : "Meest bezocht",
+    "RSS Feed" : "RSS Feed",
+    "Delete all bookmarks" : "Verwijder alle bladwijzers",
     "Add to filter" : "Toevoegen aan filter",
     "Remove from filter" : "Verwijderen uit filter",
     "Rename" : "Hernoemen",
@@ -45,6 +47,7 @@ OC.L10N.register(
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Om schermafdrukken van je bladwijzers te bekijken, kan de app een derde partij dienst gebruiken om die te genereren.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Je kunt je gratis aanmelden voor <a href=\"http://screeenly.com\">screeenly.com</a> of <a href=\"https://github.com/stefanzweifel/screeenly\">je eigen server instellen</a>.",
     "Screenly API URL" : "Screenly API URL",
-    "Screenly API key" : "Screenly API key"
+    "Screenly API key" : "Screenly API key",
+    "Bookmarks feed" : "Bladwijzerfeed"
 },
 "nplurals=2; plural=(n != 1);");
