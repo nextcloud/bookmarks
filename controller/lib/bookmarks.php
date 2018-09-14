@@ -55,6 +55,9 @@ class Bookmarks {
 	/** @var ILogger */
 	private $logger;
 
+	/** @var BookmarksParser */
+	private $bookmarksParser;
+
 	public function __construct(
 		IDBConnection $db,
 		IConfig $config,
@@ -62,7 +65,8 @@ class Bookmarks {
 		LinkExplorer $linkExplorer,
 		UrlNormalizer $urlNormalizer,
 		EventDispatcherInterface $eventDispatcher,
-		ILogger $logger
+		ILogger $logger,
+		BookmarksParser $bookmarksParser
 	) {
 		$this->db = $db;
 		$this->config = $config;
@@ -71,6 +75,7 @@ class Bookmarks {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
 		$this->logger = $logger;
+		$this->bookmarksParser = $bookmarksParser;
 	}
 
 	/**
@@ -938,47 +943,31 @@ class Bookmarks {
 	 * @param string $file Content to import
 	 * @return null
 	 * */
-	public function importFile($user, $file) {
-		$dom = new \domDocument();
-
-		$dom->loadHTMLFile($file, \LIBXML_PARSEHUGE);
-		$links = $dom->getElementsByTagName('a');
-
+	public function importFile($userId, $file) {
+		try {
+			$this->bookmarksParser->parse(file_get_contents($file), false);
+		} catch (\Exception $e) {
+			return [$e->message];
+		}
 		$errors = [];
-
-		// Reintroduce transaction here!?
-		foreach ($links as $link) {
-			/* @var \DOMElement $link */
-			$title = $link->nodeValue;
-			$ref = $link->getAttribute("href");
-			$tagStr = '';
-			if ($link->hasAttribute("tags")) {
-				$tagStr = $link->getAttribute("tags");
-			}
-			$tags = explode(',', $tagStr);
-
-			$descriptionStr = '';
-			if ($link->hasAttribute("description")) {
-				$descriptionStr = $link->getAttribute("description");
-			} else {
-				/* Get description from a following <DD> when link in a
-				 * <DT> (e.g., Delicious export, firefox) */
-				$parent = $link->parentNode;
-				if ($parent && $parent->tagName == "dt") {
-					$dd = $parent->nextSibling;
-					if ($dd->tagName == "dd") {
-						$descriptionStr = trim($dd->nodeValue);
-					}
-				}
-			}
+		$this->importFolder($userId, $this->bookmarksParser->currentFolder, -1);
+		foreach ($this->bookmarksParser->bookmarks as $bookmark) {
 			try {
-				$this->addBookmark($user, $ref, $title, $tags, $descriptionStr);
+				$this->addBookmark($userId, $bookmark['href'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], false, $bookmark['folder']['id']);
 			} catch (\InvalidArgumentException $e) {
 				$this->logger->logException($e, ['app' => 'bookmarks']);
 				$errors[] =  $this->l->t('Failed to import one bookmark, because: ') . $e->getMessage();
 			}
 		}
 		return $errors;
+	}
+
+	private function importFolder($userId, $folder, $parentId) {
+		$folderId = $this->addFolder($userId, $folder['title'], $parentId);
+		$folder['id'] = $folderId;
+		foreach ($folder['children'] as $childFolder) {
+			$this->importFolder($userId, $childFolder, $folderId);
+		}
 	}
 
 	/**

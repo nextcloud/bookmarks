@@ -3,6 +3,7 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCA\Bookmarks\Controller\Lib\BookmarksParser;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 use OCA\Bookmarks\Controller\Lib\UrlNormalizer;
 use OCP\User;
@@ -30,7 +31,8 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$urlNormalizer = \OC::$server->query(UrlNormalizer::class);
 		$event = \OC::$server->getEventDispatcher();
 		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new Bookmarks($db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger);
+		$parser = \OC::$server->query(BookmarksParser::class);
+		$this->libBookmarks = new Bookmarks($db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger, $parser);
 
 		$this->otherUser = "otheruser";
 		$this->userManager = \OC::$server->getUserManager();
