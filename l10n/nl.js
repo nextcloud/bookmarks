@@ -24,6 +24,7 @@ OC.L10N.register(
     "Recently added" : "Recent toegevoegd",
     "Most visited" : "Meest bezocht",
     "RSS Feed" : "RSS Feed",
+    "Permanently remove all bookmarks from your account. There is no going back!" : "Verwijder alle bladwijzers permanent uit je account. Je kunt niet terug!",
     "Delete all bookmarks" : "Verwijder alle bladwijzers",
     "Add to filter" : "Toevoegen aan filter",
     "Remove from filter" : "Verwijderen uit filter",
