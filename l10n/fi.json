@@ -9,12 +9,17 @@
     "Details" : "Tiedot",
     "Delete" : "Poista",
     "Saved" : "Tallennettu",
+    "Tags" : "Tunnisteet",
+    "Description" : "Kuvaus",
     "No bookmarks here." : "Täällä ei ole kirjanmerkkejä.",
     "All bookmarks" : "Kaikki kirjanmerkit",
     "Shared" : "Jaettu",
     "Settings" : "Asetukset",
     "Recently added" : "Äskettäin lisätty",
     "Most visited" : "Vierailuimmat",
+    "RSS Feed" : "RSS-syöte",
+    "Permanently remove all bookmarks from your account. There is no going back!" : "Poista kaikki tililläsi olevat kirjanmerkit pysyvästi. Tätä toimintoa ei voi perua!",
+    "Delete all bookmarks" : "Poista kaikki kirjanmerkit",
     "Rename" : "Nimeä uudelleen",
     "An error occurred while trying to save the bookmark." : "Kirjanmerkin tallennusta yrittäessä tapahtui virhe.",
     "Error" : "Virhe",
@@ -28,6 +33,10 @@
     "The title of the page" : "Sivun otsikko",
     "The address of the page" : "Sivun osoite",
     "Description of the page" : "Sivun kuvaus",
-    "Save" : "Tallenna"
+    "Save" : "Tallenna",
+    "Previews" : "Esikatselut",
+    "Screenly API URL" : "Screenly-palvelun API:n URL",
+    "Screenly API key" : "Screenly-palvelun API-avain",
+    "Bookmarks feed" : "Kirjanmerkkien syöte"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
