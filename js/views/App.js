@@ -3,7 +3,6 @@ import Backbone from 'backbone';
 import SearchController from './SearchController';
 import AddBookmarkView from './AddBookmark';
 import NavigationView from './Navigation';
-import TagsManagementView from './TagsManagement';
 import ContentView from './Content';
 import SettingsView from './Settings';
 import Settings from '../models/Settings';
@@ -27,10 +26,6 @@ export default Marionette.View.extend({
 			el: '#app-content',
 			replaceElement: true
 		},
-		tags: {
-			el: '#favorite-tags-slot',
-			replaceElement: true
-		},
 		settings: {
 			el: '#settings-slot',
 			replaceElement: true
@@ -46,15 +41,11 @@ export default Marionette.View.extend({
 	},
 	onRender: function() {
 		this.showChildView('addBookmarks', new AddBookmarkView());
-		this.showChildView('navigation', new NavigationView());
+		this.showChildView('navigation', new NavigationView({ app: this.app }));
 		this.showChildView(
 			'settings',
 			new SettingsView({ app: this.app, model: this.app.settings })
 		);
 		this.showChildView('content', new ContentView({ app: this.app }));
-		this.showChildView(
-			'tags',
-			new TagsManagementView({ collection: this.app.tags })
-		);
 	}
 });

@@ -68,8 +68,8 @@ export default Marionette.View.extend({
 	},
 	infiniteScroll: function(e) {
 		if (
-			document.body.scrollHeight <
-			window.scrollY + window.innerHeight + 500
+			document.body.scrollHeight < window.scrollY + window.innerHeight + 500 &&
+			this.bookmarks.loadingState.get('page') !== 0
 		) {
 			this.bookmarks.fetchPage();
 		}

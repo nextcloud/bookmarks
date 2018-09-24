@@ -19,6 +19,74 @@
 	vertical-align: sub;
 }
 
+#app-navigation ul > li > ul > li > ul {
+	flex: 0 1 auto;
+	position: relative;
+	width: 100%;
+}
+#app-navigation ul > li > ul > li > ul > li {
+	display: inline-flex;
+	flex-wrap: wrap;
+	padding: 0;
+	margin-left: 44px;
+}
+
+#app-navigation
+	ul
+	> li
+	> ul
+	> li
+	> ul
+	> li.editing
+	> .app-navigation-entry-edit {
+	opacity: 1;
+	z-index: 250;
+	margin-left: 4px;
+	padding-left: 10px !important;
+	width: 170px;
+}
+
+#app-navigation ul > li > ul > li > ul > li > a {
+	background-size: 16px 16px;
+	background-position: 14px center;
+	background-repeat: no-repeat;
+	display: block;
+	justify-content: space-between;
+	line-height: 44px;
+	min-height: 44px;
+	padding: 0 12px 0 44px;
+	overflow: hidden;
+	box-sizing: border-box;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: var(--color-main-text);
+	opacity: 0.57;
+	flex: 1 1 0px;
+	z-index: 100;
+}
+
+#app-navigation ul > li > ul > li > ul > li.active > a,
+#app-navigation ul > li > ul > li > ul > li > a:hover,
+#app-navigation ul > li > ul > li > ul > li > a:focus,
+#app-navigation ul > li > ul > li > ul > li > a:active {
+	opacity: 1;
+}
+
+#app-navigation ul li.collapsible > ul {
+	transition: max-height 2000ms ease-in-out, opacity 250ms ease-in-out;
+	opacity: 0;
+	max-height: 0px;
+}
+
+#app-navigation ul li.collapsible.open > ul {
+	opacity: 1;
+	max-height: 9999px;
+}
+
+#app-navigation .app-navigation-entry-menu {
+	top: 40px;
+}
+
 #app-content {
 	transition: transform 0.5s ease;
 	transform: none;
@@ -610,8 +678,8 @@ button span,
 }
 
 .menu-item-checkbox span:first-child {
-	padding: 5px 5px;
-	margin: 0;
+	margin: 0 !important;
+	width: 38px;
 }
 
 /* display 'remove from filter' when selected, and 'add to ...' when unselected*/

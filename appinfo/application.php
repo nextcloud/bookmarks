@@ -136,7 +136,7 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,
-				$c->query('ServerContainer')->query(Bookmarks::class)
+				$c->query('FoldersController')
 			);
 		});
 

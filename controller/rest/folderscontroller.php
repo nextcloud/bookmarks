@@ -22,15 +22,15 @@ class FoldersController extends ApiController {
 
 	/**
 	 * @param string $title
-	 * @param int $parent
+	 * @param int $parent_folder
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function addFolder($title = '', $parent = -1) {
-		$this->bookmarks->addFolder($this->userId, $title, $parent);
+	public function addFolder($title = '', $parent_folder = -1) {
+		$this->bookmarks->addFolder($this->userId, $title, $parent_folder);
 		return new JSONResponse(['status' => 'success']);
 	}
 
@@ -47,7 +47,7 @@ class FoldersController extends ApiController {
 		if (!$folder) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not get folder']);
 		}
-		return new JSONResponse(['status' => 'success', 'data' => $folder]);
+		return new JSONResponse(['status' => 'success', 'item' => $folder]);
 	}
 
 	/**
@@ -123,15 +123,17 @@ class FoldersController extends ApiController {
 	/**
 	 * @param int $root the id of the root folder whose descendants to return
 	 * @param int $layers the number of layers of hierarchy too return
+	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function getFolders($root = -1, $layers = -1) {
+	public function getFolders($root = -1, $layers = 0) {
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
-		if ($folders = $this->bookmarks->listFolders($this->userId, $root, $layers)) {
+		$folders = $this->bookmarks->listFolders($this->userId, $root, $layers);
+		if ($folders !== false) {
 			return new JSONResponse(['status' => 'success', 'data' => $folders]);
 		} else {
 			return new JSONResponse(['status' => 'error', 'data' => 'Folder does not exist'], Http::STATUS_BAD_REQUEST);

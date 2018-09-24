@@ -1,5 +1,7 @@
 import Backbone from 'backbone';
 import Bookmarks from '../models/Bookmarks';
+import Folder from '../models/Folder';
+import Folders from '../models/Folders';
 import Tag from '../models/Tag';
 import Tags from '../models/Tags';
 import Settings from '../models/Settings';
@@ -13,6 +15,15 @@ export default Marionette.Application.extend({
 		var that = this;
 		this.bookmarks = new Bookmarks();
 		this.settings = new Settings();
+		this.folders = new Folders();
+		this.folders.fetch({
+			reset: true
+		});
+		this.folders.once('reset', function() {
+			setTimeout(function() {
+				Backbone.history.start();
+			}, 100);
+		});
 		this.tags = new Tags();
 		this.tags.fetch({
 			reset: true,
@@ -29,7 +40,6 @@ export default Marionette.Application.extend({
 	onStart: function() {
 		this.view = new AppView({ app: this });
 		this.view.render();
-		Backbone.history.start();
 	},
 	onTagChanged: function(tag) {
 		var that = this;

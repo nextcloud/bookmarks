@@ -22,13 +22,13 @@ class InternalFoldersController extends ApiController {
 
 	/**
 	 * @param string $title
-	 * @param int $parent
+	 * @param int $parent_folder
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function addFolder($title = '', $parent = -1) {
-		return $this->controller->addFolder($title, $parent);
+	public function addFolder($title = '', $parent_folder = -1) {
+		return $this->controller->addFolder($title, $parent_folder);
 	}
 
 	/**
@@ -47,8 +47,6 @@ class InternalFoldersController extends ApiController {
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @CORS
 	 */
 	public function addToFolder($folderId, $bookmarkId) {
 		return $this->controller->addToFolder($folderId, $bookmarkId);
@@ -60,8 +58,6 @@ class InternalFoldersController extends ApiController {
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @CORS
 	 */
 	public function removeFromFolder($folderId, $bookmarkId) {
 		return $this->controller->removeFromFolder($folderId, $bookmarkId);
@@ -82,9 +78,11 @@ class InternalFoldersController extends ApiController {
 	/**
 	 * @param int $root the id of the root folder whose descendants to return
 	 * @param int $layers the number of layers of hierarchy too return
+	 * @return JSONResponse
+	 *
 	 * @NoAdminRequired
 	 */
-	public function getFolders($root = -1, $layers = -1) {
+	public function getFolders($root = -1, $layers = 0) {
 		return $this->controller->getFolders($root, $layers);
 	}
 }

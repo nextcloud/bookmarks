@@ -51,6 +51,9 @@ export default Backbone.Collection.extend({
 		if (this.spinnerTimeout) {
 			clearTimeout(this.spinnerTimeout);
 		}
+		if (this.secondPageTimeout) {
+			clearTimeout(this.secondPageTimeout);
+		}
 	},
 	fetchPage: function() {
 		var that = this;
@@ -62,8 +65,8 @@ export default Backbone.Collection.extend({
 		if (!firstPage && this.loadingState.get('fetching') === true) {
 			return;
 		}
-		this.loadingState.set({ page: nextPage + 1, fetching: true });
 		var sortby = this.sortby;
+		this.loadingState.set({ page: nextPage + 1, fetching: true });
 
 		// Show spinner after 1.5s if we're fetching a new query
 		this.abortCurrentRequest();
@@ -89,7 +92,7 @@ export default Backbone.Collection.extend({
 					reachedEnd: reachedEnd
 				});
 				if (!reachedEnd && nextPage % 2 == 0) {
-					setTimeout(function() {
+					that.secondPageTimeout = setTimeout(function() {
 						that.fetchPage();
 					}, 500);
 				}
