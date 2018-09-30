@@ -805,8 +805,8 @@ class Bookmarks {
 				$description = $row['description'];
 			}
 
-			$oldParentFolders = $this->getBookmarkParentFolders($userId, $row['id']);
-			array_push($folders, $oldParentFolders);
+			$oldParentFolders = $this->getBookmarkParentFolders($row['id']);
+			$folders = array_unique(array_merge($folders, $oldParentFolders), \SORT_STRING);
 
 			$this->editBookmark($userid, $row['id'], $url, $title, $tags, $description, $isPublic, $folders);
 
@@ -950,10 +950,12 @@ class Bookmarks {
 			return [$e->message];
 		}
 		$errors = [];
-		$this->importFolder($userId, $this->bookmarksParser->currentFolder, -1);
-		foreach ($this->bookmarksParser->bookmarks as $bookmark) {
+		foreach ($this->bookmarksParser->currentFolder['children'] as $folder) {
+			$this->importFolder($userId, $folder, -1);
+		}
+		foreach ($this->bookmarksParser->currentFolder['bookmarks'] as $bookmark) {
 			try {
-				$this->addBookmark($userId, $bookmark['href'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], false, $bookmark['folder']['id']);
+				$this->addBookmark($userId, $bookmark['href'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], false, [-1]);
 			} catch (\InvalidArgumentException $e) {
 				$this->logger->logException($e, ['app' => 'bookmarks']);
 				$errors[] =  $this->l->t('Failed to import one bookmark, because: ') . $e->getMessage();
@@ -964,7 +966,14 @@ class Bookmarks {
 
 	private function importFolder($userId, $folder, $parentId) {
 		$folderId = $this->addFolder($userId, $folder['title'], $parentId);
-		$folder['id'] = $folderId;
+		foreach ($folder['bookmarks'] as $bookmark) {
+			try {
+				$this->addBookmark($userId, $bookmark['href'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], false, [$folderId]);
+			} catch (\InvalidArgumentException $e) {
+				$this->logger->logException($e, ['app' => 'bookmarks']);
+				$errors[] =  $this->l->t('Failed to import one bookmark, because: ') . $e->getMessage();
+			}
+		}
 		foreach ($folder['children'] as $childFolder) {
 			$this->importFolder($userId, $childFolder, $folderId);
 		}

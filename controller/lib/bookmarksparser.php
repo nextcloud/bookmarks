@@ -108,6 +108,11 @@ class BookmarksParser {
 		$this->ignorePersonalToolbarFolder = $ignorePersonalToolbarFolder;
 		$this->includeFolderTags = $includeFolderTags;
 		$this->useDateTimeObjects = $useDateTimeObjects;
+
+		// set root folder
+		$this->currentFolder = ['bookmarks' => [], 'children' => []];
+		$this->folderDepth[] =& $this->currentFolder;
+
 		$this->traverse();
 		return empty($this->bookmarks) ? null : $this->bookmarks;
 	}
@@ -123,10 +128,15 @@ class BookmarksParser {
 			switch ($entry->nodeName) {
 				case 'dl':
 					$this->traverse($entry);
-					$this->closeFolder();
+					if (count($this->folderDepth) > 1) {
+						$this->closeFolder();
+					}
 					break;
 				case 'a':
 					$this->addBookmark($entry);
+					break;
+				case 'dd':
+					$this->addDescription($entry);
 					break;
 				case 'h3':
 					$this->addFolder($entry);
@@ -145,33 +155,24 @@ class BookmarksParser {
 	 */
 	private function addFolder(\DOMNode $node) {
 		$folder = [
-			'name' => $node->nodeValue,
-			'children' => []
+			'title' => $node->textContent,
+			'children' => [],
+			'bookmarks' => []
 		];
 		$folder = array_merge($folder, $this->getAttributes($node));
 		if (isset($folder['personal_toolbar_folder']) && $this->ignorePersonalToolbarFolder) {
 			return;
 		}
-		$this->parentFolder = end($this->folderDepth);
-		if (!empty($this->currentFolder)) {
-			$folder['parent'] = $this->currentFolder;
-			array_push($this->currentFolder['children'], $folder);
-		}
-		array_push($this->folderDepth, $folder);
-		$this->currentFolder = end($this->folderDepth);
+		$this->currentFolder['children'][] =& $folder;
+		$this->folderDepth[] =& $folder;
+		$this->currentFolder =& $folder;
 	}
 	/**
 	 * Close current folder
 	 */
 	private function closeFolder() {
-		if (1 >= count($this->folderDepth)) {
-			$this->folderDepth = [];
-			$this->currentFolder = $this->ignorePersonalToolbarFolder ? [] : $this->parentFolder;
-		} else {
-			unset($this->folderDepth[count($this->folderDepth) - 1]);
-			$this->folderDepth = array_values($this->folderDepth);
-			$this->currentFolder = end($this->folderDepth);
-		}
+		array_pop($this->folderDepth);
+		$this->currentFolder =& $this->folderDepth[count($this->folderDepth) - 1];
 	}
 	/**
 	 * Add a bookmark from a \DOMNode
@@ -180,22 +181,28 @@ class BookmarksParser {
 	 */
 	private function addBookmark(\DOMNode $node) {
 		$bookmark = [
-			'title' => $node->nodeValue,
+			'title' => $node->textContent,
+			'description' => '',
+			'tags' => []
 		];
-		if ($node->nextSibling->tagName == 'dd') {
-			$bookmark['description'] = $node->nextSibling->nodeValue;
-		}
-		if (!empty($this->currentFolder)) {
-			$bookmark['folder'] = $this->currentFolder;
-			if ($this->includeFolderTags) {
-				$tags = $this->getCurrentFolderTags($this->currentFolder);
-				if (!empty($tags)) {
-					$bookmark['tags'] = $tags;
-				}
+		$bookmark = array_merge($bookmark, $this->getAttributes($node));
+		if ($this->includeFolderTags) {
+			$tags = $this->getCurrentFolderTags($this->currentFolder);
+			if (!empty($tags)) {
+				$bookmark['tags'] = $tags;
 			}
 		}
-		$bookmark = array_merge($bookmark, $this->getAttributes($node));
+		$this->currentFolder['bookmarks'][] =& $bookmark;
 		$this->bookmarks[] = $bookmark;
+	}
+	/**
+	 * Add a bookmark from a \DOMNode
+	 *
+	 * @param \DOMNode $node
+	 */
+	private function addDescription(\DOMNode $node) {
+		$bookmark = $this->bookmarks[count($this->bookmarks)-1];
+		$bookmark['description'] = $node->textContent;
 	}
 	/**
 	 * Get attributes of a \DOMNode
@@ -207,7 +214,7 @@ class BookmarksParser {
 		$attributes = [];
 		$length = $node->attributes->length;
 		for ($i = 0; $i < $length; ++$i) {
-			$attributes[$node->attributes->item($i)->name] = $node->attributes->item($i)->value;
+			$attributes[strtolower($node->attributes->item($i)->name)] = $node->attributes->item($i)->value;
 		}
 		if ($this->useDateTimeObjects) {
 			if (isset($attributes['add_date'])) {
@@ -222,7 +229,7 @@ class BookmarksParser {
 			}
 		}
 		if (isset($attributes['tags'])) {
-			$attributes['last_modified'] = explode(',', $attributes['tags']);
+			$attributes['tags'] = explode(',', $attributes['tags']);
 		}
 		return $attributes;
 	}

@@ -117,7 +117,9 @@ export default Marionette.View.extend({
 			});
 			this.getUI('form').submit();
 		}
-		this.getUI('status').text(t('bookmark', 'Uploading...'));
+		this.$('.import-facade .icon-upload')
+			.removeClass('icon-upload')
+			.addClass('icon-loading-small');
 	},
 	importResult: function(data) {
 		try {
@@ -137,6 +139,7 @@ export default Marionette.View.extend({
 		}
 		this.getUI('status').text(t('bookmark', 'Import completed successfully.'));
 		Backbone.history.navigate('', { trigger: true }); // reload app
+		this.app.folders.fetch();
 	},
 	exportTrigger: function() {
 		window.location =
