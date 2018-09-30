@@ -30,7 +30,7 @@ var Folders = Backbone.Collection.extend({
 		if (~this.pluck('id').indexOf(id)) return true;
 		if (
 			this.some(function(folder) {
-				folder.contains(id);
+				return folder.contains(id);
 			})
 		)
 			return true;
