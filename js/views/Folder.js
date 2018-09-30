@@ -182,9 +182,9 @@ export default Marionette.View.extend({
 	},
 	quiver: function() {
 		var that = this;
-		that.$el.addClass('quiver-vertically');
+		that.$('> a').addClass('quiver-vertically');
 		setTimeout(function() {
-			that.$el.removeClass('quiver-vertically');
+			that.$('> a').removeClass('quiver-vertically');
 		}, 600);
 	},
 	moveBookmark: function(bm) {
