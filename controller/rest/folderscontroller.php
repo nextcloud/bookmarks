@@ -30,8 +30,11 @@ class FoldersController extends ApiController {
 	 * @CORS
 	 */
 	public function addFolder($title = '', $parent_folder = -1) {
-		$this->bookmarks->addFolder($this->userId, $title, $parent_folder);
-		return new JSONResponse(['status' => 'success']);
+		$id = $this->bookmarks->addFolder($this->userId, $title, $parent_folder);
+		if ($id === false) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Parent folder does not exist'], Http::STATUS_BAD_REQUEST);
+		}
+		return new JSONResponse(['status' => 'success', 'item' => ['id' => $id, 'title' => $title, 'parent_folder' => $parent_folder]]);
 	}
 
 	/**
