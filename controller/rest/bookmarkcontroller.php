@@ -429,23 +429,18 @@ EOT;
 	private function serializeFolder($userId, $id) {
 		if ($id != -1) {
 			$folder = $this->bookmarks->getFolder($userId, $id);
-			$output = '<DT><h3>'.htmlscpecialchars($folder['title']).'</h3>'."\n"
+			$output = '<DT><h3>'.htmlspecialchars($folder['title']).'</h3>'."\n"
 					  .'<DL><p>';
 		} else {
-			$ouput = '<H1>Bookmarks</h1>'."\n"
+			$output = '<H1>Bookmarks</h1>'."\n"
 					  .'<DL><p>';
 		}
 
-		$childFolders = $this->bookmarks->listFolders($userId, $id, 1);
-		foreach ($childFolders as $childFolder) {
-			$output .= $this->serializeFolder($userId, $childFolder['id']);
-		}
-
-		$childBookmarks = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, $id);
+		$childBookmarks = $this->bookmarks->findBookmarks($userId, 0, 'lastmodified', [], true, -1, false, null, "and", false, $id);
 		foreach ($childBookmarks as $bookmark) {
 			// discards records with no URL. This should not happen but
 			// a database could have old entries
-			if ($url === '') {
+			if ($bookmark['url'] === '') {
 				continue;
 			}
 
@@ -464,6 +459,11 @@ EOT;
 				$output .= '<DD>' . $description .'</DD>';
 			}
 			$output .= "\n";
+		}
+
+		$childFolders = $this->bookmarks->listFolders($userId, $id, 1);
+		foreach ($childFolders as $childFolder) {
+			$output .= $this->serializeFolder($userId, $childFolder['id']);
 		}
 
 		$output .= '</p></DL>';
