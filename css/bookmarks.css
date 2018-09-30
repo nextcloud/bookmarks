@@ -139,7 +139,7 @@
 	display: none;
 	position: fixed;
 	top: 45px;
-	left: 250px;
+	left: 300px;
 	right: 0;
 	box-shadow: 2px 1px 4px 0px #666;
 	padding: 12px 20px;
@@ -266,13 +266,6 @@ button span,
 	cursor: pointer;
 }
 
-.bookmark-card.dragging {
-	position: relative;
-	box-shadow: #adadad 5px 5px 15px;
-	opacity: 0.5;
-	z-index: 100;
-}
-
 .selection-active .bookmark-card {
 	opacity: 0.45;
 }
@@ -280,6 +273,21 @@ button span,
 .selection-active .bookmark-card:focus {
 	opacity: 0.6;
 	cursor: pointer;
+}
+
+.bookmark-card.dragging {
+	position: relative;
+	box-shadow: #adadad 5px 5px 15px;
+	opacity: 0.5;
+	z-index: 100;
+}
+
+.selection-active .bookmark-card.dragging:not(.active) {
+	position: relative;
+	top: 0 !important;
+	left: 0 !important;
+	cursor: no-drop;
+	box-shadow: none;
 }
 
 .bookmark-card .select-mode-checkbox + label {

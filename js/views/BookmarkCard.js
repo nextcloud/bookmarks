@@ -36,6 +36,9 @@ export default Marionette.View.extend({
 		this.listenTo(this.model, 'change', this.render);
 		this.listenTo(this.model, 'select', this.onSelect);
 		this.listenTo(this.model, 'unselect', this.onUnselect);
+		this.listenTo(this.model, 'dragstart', this.onDragStart);
+		this.listenTo(this.model, 'dragmove', this.onDragMove);
+		this.listenTo(this.model, 'dragend', this.onDragEnd);
 		this.listenTo(this.app.tags, 'sync', this.render);
 		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);
 		this.interactable = interact(this.el).draggable({
@@ -120,14 +123,33 @@ export default Marionette.View.extend({
 	delete: function() {
 		this.model.destroy();
 	},
-	onDragStart: function() {
+	onDragStart: function(e, propagate) {
 		this.$el.addClass('dragging');
+		if (propagate !== false) {
+			this.app.selectedBookmarks.forEach(function(bm) {
+				bm.trigger('dragstart', e, false);
+			});
+		}
 	},
-	onDragMove: function(e) {
+	onDragMove: function(e, propagate) {
 		this.$el.offset({ top: e.pageY + 20, left: e.pageX + 20 });
+		if (propagate !== false) {
+			this.app.selectedBookmarks.forEach(function(bm, i) {
+				bm.trigger(
+					'dragmove',
+					{ pageY: e.pageY + 10 * (i + 1), pageX: e.pageX + 10 * (i + 1) },
+					false
+				);
+			});
+		}
 	},
-	onDragEnd: function() {
+	onDragEnd: function(e, propagate) {
 		this.$el.removeClass('dragging');
 		this.$el.css({ position: 'relative', top: 0, left: 0 });
+		if (propagate !== false) {
+			this.app.selectedBookmarks.forEach(function(bm) {
+				bm.trigger('dragend', e, false);
+			});
+		}
 	}
 });

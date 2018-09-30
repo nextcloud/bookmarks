@@ -143,6 +143,7 @@ export default Marionette.View.extend({
 		this.render();
 	},
 	onDropActivate: function(e) {
+		if (this.$el.hasClass('active')) return;
 		this.$el.addClass('droptarget');
 	},
 	onMouseOver: function() {
@@ -156,7 +157,39 @@ export default Marionette.View.extend({
 	},
 	onDrop: function(e) {
 		var that = this;
-		var folders = e.draggable.model.get('folders'),
+		if (this.app.selectedBookmarks.length) {
+			this.app.selectedBookmarks.models.slice().forEach(function(bm, i) {
+				bm.trigger('unselect');
+				that.moveBookmark(bm);
+				// quiver only once
+				if (i === that.app.selectedBookmarks.length - 1) {
+					bm.once('sync', function() {
+						setTimeout(function() {
+							that.quiver();
+						}, 500);
+					});
+				}
+			});
+			this.app.selectedBookmarks.reset();
+			return;
+		}
+		this.moveBookmark(e.draggable.model);
+		e.draggable.model.once('sync', function() {
+			setTimeout(function() {
+				that.quiver();
+			}, 500);
+		});
+	},
+	quiver: function() {
+		var that = this;
+		that.$el.addClass('quiver-vertically');
+		setTimeout(function() {
+			that.$el.removeClass('quiver-vertically');
+		}, 600);
+	},
+	moveBookmark: function(bm) {
+		var that = this;
+		var folders = bm.get('folders'),
 			isInsideFolder =
 				'undefined' !==
 				typeof this.app.bookmarks.loadingState.get('query').folder;
@@ -173,18 +206,12 @@ export default Marionette.View.extend({
 			);
 		}
 		folders.push(this.model.get('id'));
-		e.draggable.model.set('folders', folders);
-		e.draggable.model.once('sync', function() {
-			setTimeout(function() {
-				that.$el.addClass('quiver-vertically');
-				setTimeout(function() {
-					that.$el.removeClass('quiver-vertically');
-				}, 600);
-			}, 500);
-			if (isInsideFolder) {
-				that.app.bookmarks.remove(e.draggable.model);
-			}
-		});
-		e.draggable.model.save();
+		bm.set('folders', folders);
+		if (isInsideFolder) {
+			bm.once('sync', function() {
+				that.app.bookmarks.remove(bm);
+			});
+		}
+		bm.save();
 	}
 });
