@@ -11,12 +11,14 @@ export default Marionette.CollectionView.extend({
 	tagName: 'ul',
 	className: 'folders',
 	initialize: function(options) {
+		this.app = options.app;
 		this.parentFolder = options.parentFolder;
 		this.selectedFolder = options.selectedFolder;
 	},
 	childViewOptions: function() {
 		return {
-			selectedFolder: this.selectedFolder
+			selectedFolder: this.selectedFolder,
+			app: this.app
 		};
 	},
 	onRender: function() {

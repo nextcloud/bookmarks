@@ -1,5 +1,6 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
+import interact from 'interactjs';
 import templateString from '../templates/Folder.html';
 import FoldersView from './Folders';
 
@@ -29,12 +30,20 @@ export default Marionette.View.extend({
 		'click .menu-move': 'actionMove',
 		'click .action.submit': 'actionSubmit',
 		'click .action.cancel': 'actionCancel',
-		'keyup input.title': 'onKeyup'
+		'keyup input.title': 'onKeyup',
+		mouseover: 'onMouseOver',
+		mouseout: 'onMouseOut'
 	},
 	initialize: function(options) {
+		this.app = options.app;
 		this.selectedFolder = options.selectedFolder;
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
 		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);
+		interact(this.el).dropzone({
+			ondrop: this.onDrop.bind(this),
+			ondropactivate: this.onDropActivate.bind(this),
+			ondropdeactivate: this.onDropDeactivate.bind(this)
+		});
 	},
 	onRender: function() {
 		if (this.model.get('children')) {
@@ -47,7 +56,8 @@ export default Marionette.View.extend({
 			new FoldersView({
 				collection: this.model.get('children'),
 				parentFolder: this.model,
-				selectedFolder: this.selectedFolder
+				selectedFolder: this.selectedFolder,
+				app: this.app
 			})
 		);
 
@@ -131,5 +141,50 @@ export default Marionette.View.extend({
 	actionCancel: function() {
 		this.editing = false;
 		this.render();
+	},
+	onDropActivate: function(e) {
+		this.$el.addClass('droptarget');
+	},
+	onMouseOver: function() {
+		if (this.$el.hasClass('droptarget')) this.showChildren();
+	},
+	onMouseOut: function() {
+		if (this.$el.hasClass('droptarget')) this.toggleChildren();
+	},
+	onDropDeactivate: function(e) {
+		this.$el.removeClass('droptarget');
+	},
+	onDrop: function(e) {
+		var that = this;
+		var folders = e.draggable.model.get('folders'),
+			isInsideFolder =
+				'undefined' !==
+				typeof this.app.bookmarks.loadingState.get('query').folder;
+		if (isInsideFolder) {
+			if (
+				this.app.bookmarks.loadingState.get('query').folder ===
+				this.model.get('id')
+			) {
+				return;
+			}
+			folders = _.without(
+				folders,
+				this.app.bookmarks.loadingState.get('query').folder
+			);
+		}
+		folders.push(this.model.get('id'));
+		e.draggable.model.set('folders', folders);
+		e.draggable.model.once('sync', function() {
+			setTimeout(function() {
+				that.$el.addClass('quiver-vertically');
+				setTimeout(function() {
+					that.$el.removeClass('quiver-vertically');
+				}, 600);
+			}, 500);
+			if (isInsideFolder) {
+				that.app.bookmarks.remove(e.draggable.model);
+			}
+		});
+		e.draggable.model.save();
 	}
 });

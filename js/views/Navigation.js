@@ -36,7 +36,7 @@ export default Marionette.View.extend({
 	onRender: function() {
 		this.showChildView(
 			'folders',
-			new FoldersView({ collection: this.app.folders })
+			new FoldersView({ collection: this.app.folders, app: this.app })
 		);
 		this.showChildView(
 			'tags',

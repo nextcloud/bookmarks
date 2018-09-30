@@ -253,12 +253,24 @@ button span,
 	box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.65);
 	opacity: 0.93;
 	border: 2px solid white;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .bookmark-card:hover,
 .bookmark-card:focus {
 	opacity: 1;
 	cursor: pointer;
+}
+
+.bookmark-card.dragging {
+	position: relative;
+	box-shadow: #adadad 5px 5px 15px;
+	opacity: 0.5;
+	z-index: 100;
 }
 
 .selection-active .bookmark-card {
@@ -615,6 +627,11 @@ button span,
 	opacity: 0.4;
 }
 
+.folders-item.droptarget > a {
+	background-color: #f3f3f3;
+	cursor: copy;
+}
+
 .tags-management {
 	overflow-y: auto !important;
 	height: 80% !important;
@@ -722,4 +739,35 @@ button span,
 
 .settings .upload {
 	display: none;
+}
+
+.quiver-vertically {
+	position: relative;
+	animation-name: quiver-vertically;
+	animation-duration: 500ms;
+	animation-iteration-count: 1;
+}
+
+@keyframes quiver-vertically {
+	0% {
+		top: 0;
+	}
+	16% {
+		top: 5px;
+	}
+	33% {
+		top: -5px;
+	}
+	49% {
+		top: 5px;
+	}
+	66% {
+		top: -5px;
+	}
+	83% {
+		top: 5px;
+	}
+	100% {
+		top: 0;
+	}
 }
