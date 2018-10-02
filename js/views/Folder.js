@@ -3,6 +3,7 @@ import Backbone from 'backbone';
 import interact from 'interactjs';
 import templateString from '../templates/Folder.html';
 import FoldersView from './Folders';
+import Folder from '../models/Folder';
 
 const Marionette = Backbone.Marionette;
 const Radio = Backbone.Radio;
@@ -39,11 +40,18 @@ export default Marionette.View.extend({
 		this.selectedFolder = options.selectedFolder;
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
 		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);
-		interact(this.el).dropzone({
-			ondrop: this.onDrop.bind(this),
-			ondropactivate: this.onDropActivate.bind(this),
-			ondropdeactivate: this.onDropDeactivate.bind(this)
-		});
+		this.interactable = interact(this.el)
+			.dropzone({
+				ondrop: this.onDrop.bind(this),
+				ondropactivate: this.onDropActivate.bind(this),
+				ondropdeactivate: this.onDropDeactivate.bind(this)
+			})
+			.draggable({
+				onstart: this.onDragStart.bind(this),
+				onend: this.onDragEnd.bind(this),
+				onmove: this.onDragMove.bind(this)
+			});
+		this.interactable.model = this.model;
 	},
 	onRender: function() {
 		if (this.model.get('children')) {
@@ -147,15 +155,26 @@ export default Marionette.View.extend({
 		this.$el.addClass('droptarget');
 	},
 	onMouseOver: function() {
-		if (this.$el.hasClass('droptarget')) this.showChildren();
+		if (this.$el.hasClass('droptarget') && this.model.get('children').length) {
+			this.showChildren();
+		}
 	},
 	onMouseOut: function() {
-		if (this.$el.hasClass('droptarget')) this.toggleChildren();
+		if (this.$el.hasClass('droptarget') && this.model.get('children').length) {
+			this.toggleChildren();
+		}
 	},
 	onDropDeactivate: function(e) {
 		this.$el.removeClass('droptarget');
 	},
 	onDrop: function(e) {
+		if (e.draggable.model instanceof Folder) {
+			this.onDropFolder(e);
+		} else {
+			this.onDropBookmark(e);
+		}
+	},
+	onDropBookmark: function(e) {
 		var that = this;
 		if (this.app.selectedBookmarks.length) {
 			this.app.selectedBookmarks.models.slice().forEach(function(bm, i) {
@@ -180,12 +199,28 @@ export default Marionette.View.extend({
 			}, 500);
 		});
 	},
-	quiver: function() {
+	onDropFolder: function(e) {
+		var that = this;
+		this.moveFolder(e.draggable.model);
+		e.draggable.model.once('sync', function() {
+			setTimeout(function() {
+				that.quiver(function() {
+					that.app.folders.fetch({ reset: true });
+				});
+			}, 500);
+		});
+	},
+	quiver: function(cb) {
 		var that = this;
 		that.$('> a').addClass('quiver-vertically');
 		setTimeout(function() {
 			that.$('> a').removeClass('quiver-vertically');
+			cb && cb();
 		}, 600);
+	},
+	moveFolder: function(folder) {
+		folder.set('parent_folder', this.model.get('id'));
+		folder.save();
 	},
 	moveBookmark: function(bm) {
 		var that = this;
@@ -213,5 +248,15 @@ export default Marionette.View.extend({
 			});
 		}
 		bm.save();
+	},
+	onDragStart: function(e) {
+		this.$el.addClass('dragging');
+	},
+	onDragMove: function(e) {
+		this.$el.offset({ top: e.pageY + 5, left: e.pageX });
+	},
+	onDragEnd: function(e) {
+		this.$el.removeClass('dragging');
+		this.$el.css({ position: 'relative', top: 0, left: 0 });
 	}
 });

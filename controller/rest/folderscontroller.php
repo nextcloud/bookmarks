@@ -115,9 +115,9 @@ class FoldersController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function editFolder($folderId, $title = null, $parent = null) {
-		if ($this->bookmarks->editFolder($this->userId, $folderId, $title, $parent)) {
-			return new JSONResponse(['status' => 'success']);
+	public function editFolder($folderId, $title = null, $parent_folder = null) {
+		if ($this->bookmarks->editFolder($this->userId, $folderId, $title, $parent_folder)) {
+			return new JSONResponse(['status' => 'success', 'item' => $this->bookmarks->getFolder($userId, $folderId)]);
 		} else {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not modify folder'], Http::STATUS_BAD_REQUEST);
 		}

@@ -642,6 +642,21 @@ button span,
 	opacity: 0.4;
 }
 
+.folders-item {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.folders-item.dragging {
+	position: relative;
+	box-shadow: #adadad 5px 5px 15px;
+	opacity: 0.5;
+	z-index: 100;
+}
+
 .folders-item.droptarget > a {
 	background-color: #f3f3f3;
 	cursor: copy;

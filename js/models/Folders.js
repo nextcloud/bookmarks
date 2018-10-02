@@ -2,6 +2,13 @@ import Backbone from 'backbone';
 
 export var Folder = Backbone.Model.extend({
 	urlRoot: 'folder',
+	initialize: function() {
+		this.listenTo(
+			this.get('children'),
+			'change',
+			this.trigger.bind(this, 'change')
+		);
+	},
 	parse: function(obj) {
 		return obj.item
 			? Object.assign(obj.item, {

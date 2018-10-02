@@ -71,8 +71,8 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editFolder($folderId, $title = null, $parent = null) {
-		return $this->controller->editFolder($folderId, $title, $parent);
+	public function editFolder($folderId, $title = null, $parent_folder = null) {
+		return $this->controller->editFolder($folderId, $title, $parent_folder);
 	}
 
 	/**
