@@ -46,6 +46,16 @@ export default Marionette.View.extend({
 	onClick: function(e) {
 		e.preventDefault();
 		var $li = this.$(e.target).closest('li');
+		if (e.target.parentNode.dataset.id === 'folder') {
+			$li
+				.siblings()
+				.removeClass('open')
+				.removeClass('active');
+			$li.addClass('active');
+			$li.addClass('open');
+			Backbone.history.navigate('folder/-1', { trigger: true });
+			return;
+		}
 		if ($li.hasClass('collapsible')) {
 			$li
 				.siblings()
