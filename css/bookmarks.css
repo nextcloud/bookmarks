@@ -239,6 +239,13 @@ button span,
 	padding: 0 20px 20px 0;
 }
 
+.bookmarks .empty-space {
+	flex-grow: 1;
+	width: 225px;
+	height: 1px;
+	margin: 20px 0 0 20px;
+}
+
 .bookmark-card {
 	position: relative;
 	box-sizing: border-box; /*necessary for hover effect goodness to work*/

@@ -10,7 +10,21 @@ export default Marionette.CollectionView.extend({
 		this.app = opts.app;
 	},
 	childViewOptions: function() {
-		return {app: this.app};
+		return { app: this.app };
 	},
-	childView: function() {return BookmarkCardView;}
+	childView: function() {
+		return BookmarkCardView;
+	},
+	onRender: function() {
+		this.addChildView(new EmptySpaceView(), this.collection.length);
+		this.addChildView(new EmptySpaceView(), this.collection.length);
+		this.addChildView(new EmptySpaceView(), this.collection.length);
+		this.addChildView(new EmptySpaceView(), this.collection.length);
+		this.addChildView(new EmptySpaceView(), this.collection.length);
+	}
+});
+
+var EmptySpaceView = Marionette.View.extend({
+	className: 'empty-space',
+	render: function() {}
 });
