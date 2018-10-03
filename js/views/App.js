@@ -1,11 +1,8 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import SearchController from './SearchController';
-import AddBookmarkView from './AddBookmark';
 import NavigationView from './Navigation';
 import ContentView from './Content';
-import SettingsView from './Settings';
-import Settings from '../models/Settings';
 
 const Marionette = Backbone.Marionette;
 const Radio = Backbone.Radio;
@@ -14,20 +11,12 @@ export default Marionette.View.extend({
 	el: '.app-bookmarks',
 	template: _.noop,
 	regions: {
-		addBookmarks: {
-			el: '#add-bookmark-slot',
-			replaceElement: true
-		},
 		navigation: {
 			el: '#navigation-slot',
 			replaceElement: true
 		},
 		content: {
 			el: '#app-content',
-			replaceElement: true
-		},
-		settings: {
-			el: '#settings-slot',
 			replaceElement: true
 		}
 	},
@@ -40,12 +29,7 @@ export default Marionette.View.extend({
 		});
 	},
 	onRender: function() {
-		this.showChildView('addBookmarks', new AddBookmarkView());
 		this.showChildView('navigation', new NavigationView({ app: this.app }));
-		this.showChildView(
-			'settings',
-			new SettingsView({ app: this.app, model: this.app.settings })
-		);
 		this.showChildView('content', new ContentView({ app: this.app }));
 	}
 });

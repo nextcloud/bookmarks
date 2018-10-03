@@ -26,9 +26,9 @@ export default Marionette.View.extend({
 		'click > a': 'select',
 		'click > .collapse': 'toggleChildren',
 		'click @ui.actionsToggle': 'toggleActions',
-		'click .menu-delete': 'actionDelete',
-		'click .menu-edit': 'actionEdit',
-		'click .menu-move': 'actionMove',
+		'click > .app-navigation-entry-menu .menu-delete': 'actionDelete',
+		'click > .app-navigation-entry-menu .menu-edit': 'actionEdit',
+		'click > .app-navigation-entry-menu .menu-addsub': 'actionAddSubFolder',
 		'click .action.submit': 'actionSubmit',
 		'click .action.cancel': 'actionCancel',
 		'keyup input.title': 'onKeyup',
@@ -40,8 +40,14 @@ export default Marionette.View.extend({
 		this.selectedFolder = options.selectedFolder;
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
 		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);
+		this.listenTo(this.model, 'dropFolder', this.onDropFolder);
+		this.initInteractable();
+	},
+	initInteractable: function() {
 		this.interactable = interact(this.el)
 			.dropzone({
+				overlap: 'pointer',
+				ignoreFrom: '.folders, input',
 				ondrop: this.onDrop.bind(this),
 				ondropactivate: this.onDropActivate.bind(this),
 				ondropdeactivate: this.onDropDeactivate.bind(this)
@@ -54,10 +60,11 @@ export default Marionette.View.extend({
 		this.interactable.model = this.model;
 	},
 	onRender: function() {
-		if (this.model.get('children')) {
+		if (this.model.get('children') && this.model.get('children').length) {
 			this.$el.addClass('collapsible');
 		} else {
 			this.$el.removeClass('collapsible');
+			this.$('> .collapse').hide();
 		}
 		this.showChildView(
 			'children',
@@ -128,11 +135,18 @@ export default Marionette.View.extend({
 			return;
 		this.getUI('actionsMenu').removeClass('open');
 	},
-	actionMove: function() {},
-	actionDelete: function() {
+	actionDelete: function(e) {
+		if (e) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
 		this.model.destroy();
 	},
-	actionEdit: function() {
+	actionEdit: function(e) {
+		if (e) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
 		this.editing = true;
 		this.render();
 	},
@@ -141,37 +155,80 @@ export default Marionette.View.extend({
 			this.actionSubmit();
 		}
 	},
-	actionSubmit: function() {
+	actionSubmit: function(e) {
+		if (e) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
 		this.model.set('title', this.$('input.title').val());
 		this.model.save();
 		this.actionCancel();
 	},
-	actionCancel: function() {
+	actionCancel: function(e) {
+		if (e) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
 		this.editing = false;
 		this.render();
 	},
-	onDropActivate: function(e) {
-		if (this.$el.hasClass('active')) return;
-		this.$el.addClass('droptarget');
+	actionAddSubFolder: function(e) {
+		if (e) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
+		this.model.trigger('addSubFolder'); // communicate to AddFolderView
+		this.$el.addClass('collapsible');
+		this.toggleActions();
+		this.showChildren();
 	},
-	onMouseOver: function() {
-		if (this.$el.hasClass('droptarget') && this.model.get('children').length) {
+	onDropActivate: function(e) {
+		if (e.draggable.model instanceof Folder) {
+			this.folderBeingDragged = e.draggable.model;
+			this.$el.addClass('droptarget-folder');
+			return;
+		}
+		if (this.$el.hasClass('active')) return;
+		this.$el.addClass('droptarget-bookmark');
+	},
+	onMouseOver: function(e) {
+		if (
+			this.$el.hasClass('droptarget-bookmark') &&
+			this.model.get('children').length
+		) {
+			this.showChildren();
+		}
+		if (this.folderBeingDragged) {
 			this.showChildren();
 		}
 	},
-	onMouseOut: function() {
-		if (this.$el.hasClass('droptarget') && this.model.get('children').length) {
+	onMouseOut: function(e) {
+		if (
+			this.$el.hasClass('droptarget-bookmark') &&
+			this.model.get('children').length
+		) {
+			this.toggleChildren();
+		}
+
+		// Only hide children if this is a folder AND the folder being dragged is not within this one
+		if (
+			this.folderBeingDragged &&
+			!this.model.contains(this.folderBeingDragged.get('id'))
+		) {
 			this.toggleChildren();
 		}
 	},
 	onDropDeactivate: function(e) {
-		this.$el.removeClass('droptarget');
+		// TODO: Wait for 'sync' til we remove this
+		this.folderBeingDragged = false;
+		this.$el.removeClass('droptarget-bookmark');
+		this.$el.removeClass('droptarget-bookmark');
 	},
 	onDrop: function(e) {
-		if (e.draggable.model instanceof Folder) {
-			this.onDropFolder(e);
-		} else {
+		if (!(e.draggable.model instanceof Folder)) {
 			this.onDropBookmark(e);
+		} else {
+			this.onDropFolder(e);
 		}
 	},
 	onDropBookmark: function(e) {
@@ -201,7 +258,6 @@ export default Marionette.View.extend({
 	},
 	onDropFolder: function(e) {
 		var that = this;
-		this.moveFolder(e.draggable.model);
 		e.draggable.model.once('sync', function() {
 			setTimeout(function() {
 				that.quiver(function() {
@@ -209,6 +265,7 @@ export default Marionette.View.extend({
 				});
 			}, 500);
 		});
+		this.moveFolder(e.draggable.model);
 	},
 	quiver: function(cb) {
 		var that = this;
@@ -258,5 +315,8 @@ export default Marionette.View.extend({
 	onDragEnd: function(e) {
 		this.$el.removeClass('dragging');
 		this.$el.css({ position: 'relative', top: 0, left: 0 });
+	},
+	onDestroy: function() {
+		this.interactable.unset();
 	}
 });

@@ -1,3 +1,5 @@
+<div id="add-bookmark-slot"></div>
+<ul>
 <li data-id="all" class="all">
 	<a href="#" class="icon-home"><%- t('bookmarks', 'All bookmarks') %></a>
 </li>
@@ -9,15 +11,12 @@
 	<a href="#"><span class="icon-share"></span><%- t('bookmarks', 'Shared') %></a>
 </li>
 -->
-<li data-id="folder" class="folders collapsible">
-	<button class="collapse"></button>
-	<a href="#" class="icon-folder"><%- t('bookmarks', 'Folders') %></a>
-	<div id="folders-slot"></div>
-</li>
-<li data-id="tags" class="tags collapsible">
-	<a href="#" class="icon-tag"><%- t('bookmarks', 'Tags') %></a>
-	<div id="favorite-tags-slot"></div>
-</li>
+</ul>
+<div id="folders-slot"></div>
+<ul>
 <li data-id="untagged" class="untagged">
 	<a href="#" class="icon-category-disabled"><%- t('bookmarks', 'Untagged') %></a>
 </li>
+</ul>
+<div id="favorite-tags-slot"></div>
+<div id="settings-slot"></div>

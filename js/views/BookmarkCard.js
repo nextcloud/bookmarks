@@ -151,5 +151,8 @@ export default Marionette.View.extend({
 				bm.trigger('dragend', e, false);
 			});
 		}
+	},
+	onDestroy: function() {
+		this.interactable.unset();
 	}
 });

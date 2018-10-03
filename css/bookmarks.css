@@ -1,6 +1,6 @@
 #app-navigation > ul {
 	height: auto;
-	overflow-y: hidden;
+	overflow: initial; /* in order to display popupmenus correctly*/
 }
 
 .navigation a > span {
@@ -642,12 +642,25 @@ button span,
 	opacity: 0.4;
 }
 
+.folders {
+	flex-shrink: 0;
+}
+
 .folders-item {
 	-moz-user-select: none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.folders-item.add-folder {
+	display: none !important;
+}
+
+.folders-item.add-folder.droptarget-folder,
+.folders-item.add-folder.editing {
+	display: inline-flex !important;
 }
 
 .folders-item.dragging {
@@ -657,23 +670,19 @@ button span,
 	z-index: 100;
 }
 
-.folders-item.droptarget > a {
+.folders-item.droptarget-folder > a,
+.folders-item.droptarget-bookmark > a {
 	background-color: #f3f3f3;
 	cursor: copy;
+	border: 1px #ababab dashed;
 }
 
 .tags-management {
 	overflow-y: auto !important;
-	height: 80% !important;
-	height: calc(100% - 80px - 100px) !important;
 }
 
-@media only screen and (max-width: 768px) {
-	.tags-management {
-		width: auto;
-		float: none;
-		border-bottom: 2px solid #bbb;
-	}
+.tags-management .tag-man-item:last-child {
+	margin-bottom: 50px; /* in order to not have it hidden behind settings */
 }
 
 .tags-management .tag-man-item {
@@ -682,10 +691,6 @@ button span,
 
 .tags-management .tag-man-item.active {
 	background: #f3f3f3;
-}
-
-.tags-management .tag-man-item > a {
-	padding-left: 12px !important;
 }
 
 .tags-management .tag-man-item .actions {

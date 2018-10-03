@@ -1,5 +1,6 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
+import interact from 'interactjs';
 import templateStringDefault from '../templates/AddFolder.html';
 import Folder from '../models/Folder';
 import Folders from '../models/Folders';
@@ -21,8 +22,19 @@ export default Marionette.View.extend({
 		this.parentFolder = options.parentFolder;
 		this.collection = options.collection;
 		this.listenTo(Radio.channel('documentClicked'), 'click', this.click);
+		this.listenTo(this.parentFolder, 'addSubFolder', this.actionEdit);
+		this.initInteractable();
+	},
+	initInteractable: function() {
+		this.interactable = interact(this.el).dropzone({
+			overlap: 'pointer',
+			ondrop: this.onDrop.bind(this),
+			ondropactivate: this.onDropActivate.bind(this),
+			ondropdeactivate: this.onDropDeactivate.bind(this)
+		});
 	},
 	onRender: function() {
+		this.$el.addClass('add-folder');
 		this.$el.removeClass('editing');
 		if (this.editing) {
 			this.$el.addClass('editing');
@@ -30,8 +42,10 @@ export default Marionette.View.extend({
 		}
 	},
 	actionEdit: function(e) {
-		e.preventDefault();
-		e.stopPropagation();
+		if (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
 		if (this.editing) {
 			return;
 		}
@@ -70,6 +84,25 @@ export default Marionette.View.extend({
 	keyup: function(e) {
 		if (e.which === 13) {
 			this.actionSubmit();
+		}
+	},
+	onDropActivate: function(e) {
+		if (this.parentFolder.get('id') !== '-1') return;
+		if (
+			!(e.draggable.model instanceof Folder) ||
+			e.draggable.model.get('parent_folder') === this.parentFolder.get('id') ||
+			e.draggable.model.get('id') === this.parentFolder.get('id')
+		) {
+			return;
+		}
+		this.$el.addClass('droptarget-folder');
+	},
+	onDropDeactivate: function(e) {
+		this.$el.removeClass('droptarget-folder');
+	},
+	onDrop: function(e) {
+		if (e.draggable.model instanceof Folder) {
+			this.parentFolder.trigger('dropFolder', e);
 		}
 	}
 });
