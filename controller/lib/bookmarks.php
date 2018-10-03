@@ -117,7 +117,7 @@ class Bookmarks {
 	 *               ["id" => int, "title" => string, "parent_folder" => int, "children"=> array() ]
 	 */
 	public function listFolders($userId, $root = -1, $layers = 0) {
-		if ($root !== -1 && !$this->existsFolder($userId, $root)) {
+		if ($root !== -1 && $root !== '-1' && !$this->existsFolder($userId, $root)) {
 			return false;
 		}
 		$childFolders = $this->listChildFolders($userId, $root);
@@ -154,7 +154,7 @@ class Bookmarks {
 	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
 	 */
 	public function addFolder($userId, $title='', $parent = -1) {
-		if ($parent !== -1 && !$this->existsFolder($userId, $parent)) {
+		if ($parent !== -1 && $parent !== '-1' && !$this->existsFolder($userId, $parent)) {
 			return false;
 		}
 		$qb = $this->db->getQueryBuilder();
@@ -185,7 +185,7 @@ class Bookmarks {
 		}
 
 		if (!isset($title) && !isset($parent)) {
-			return;
+			return true;
 		}
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -194,7 +194,7 @@ class Bookmarks {
 			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
 
 		if (isset($parent)) {
-			if ($parent !== -1 && !$this->existsFolder($userId, $parent)) {
+			if ($parent !== -1 && $parent !== '-1' && !$this->existsFolder($userId, $parent)) {
 				return false;
 			}
 			$qb->set('parent_folder', $qb->createNamedParameter($parent));
@@ -860,7 +860,7 @@ class Bookmarks {
 	public function addToFolders($userId, $bookmarkId, $folders) {
 		foreach ($folders as $folderId) {
 			// check if folder exists
-			if ($folderId != -1) {
+			if ($folderId !== -1 && $folderId !== '-1') {
 				$qb = $this->db->getQueryBuilder();
 				$row = $qb
 				->select('*')
