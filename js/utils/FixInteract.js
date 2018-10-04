@@ -1,2 +1,2 @@
 import interact from 'interactjs';
-interact.dynamicDrop();
+interact.dynamicDrop(true);
