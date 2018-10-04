@@ -36,10 +36,8 @@ export default Marionette.View.extend({
 			replaceElement: true
 		}
 	},
-	events: {
-		scroll: 'infiniteScroll'
-	},
 	initialize: function(options) {
+		var that = this;
 		this.app = options.app;
 		this.bookmarks = this.app.bookmarks;
 		this.selected = new Bookmarks();
@@ -53,6 +51,9 @@ export default Marionette.View.extend({
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
 		this.listenTo(Radio.channel('details'), 'show', this.onShowDetails);
 		this.listenTo(Radio.channel('details'), 'close', this.onCloseDetails);
+		document.addEventListener('scroll', function() {
+			that.infiniteScroll();
+		});
 	},
 	onRender: function() {
 		this.showChildView('mobileNav', new MobileNavView());
@@ -67,8 +68,8 @@ export default Marionette.View.extend({
 	},
 	infiniteScroll: function(e) {
 		if (
-			this.$el.prop('scrollHeight') <
-			this.$el.prop('scrollTop') + window.innerHeight + 500
+			document.body.scrollHeight <
+			window.scrollY + window.innerHeight + 500
 		) {
 			this.bookmarks.fetchPage();
 		}
