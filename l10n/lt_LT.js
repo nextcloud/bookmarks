@@ -7,6 +7,7 @@ OC.L10N.register(
     "Description" : "Aprašymas",
     "Settings" : "Nustatymai",
     "Bookmarklet" : "Išsaugojimo mygtukas",
+    "RSS Feed" : "RSS kanalas",
     "Error" : "Klaida",
     "Uploading..." : "Įkeliama...",
     "Import error" : "Įkėlimo klaida",
