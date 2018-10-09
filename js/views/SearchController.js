@@ -8,16 +8,18 @@ export default Marionette.View.extend({
 	initialize: function() {
 		var that = this;
 		// register a dummy search plugin
-		OC.Plugins.register('OCA.Search', { attach: function(search) {
-			search.setFilter('bookmarks', function(query) {
+		new OCA.Search(
+			function(query) {
 				that.submit(query);
-			});
-		}
-		});
+			},
+			function() {
+				that.submit('');
+			}
+		);
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate, this);
 	},
 	events: {
-		'keydown': 'onKeydown'
+		keydown: 'onKeydown'
 	},
 	onRender: function() {
 		this.$el.show();
@@ -28,9 +30,9 @@ export default Marionette.View.extend({
 	submit: function(query) {
 		if (query !== '') {
 			query = encodeURIComponent(query);
-			Backbone.history.navigate('search/'+query, {trigger: true});
-		}else {
-			Backbone.history.navigate('all', {trigger: true});
+			Backbone.history.navigate('search/' + query, { trigger: true });
+		} else {
+			Backbone.history.navigate('all', { trigger: true });
 		}
 	}
 });
