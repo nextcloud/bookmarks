@@ -23,7 +23,7 @@ OC.L10N.register(
     "Add to {instanceName} " : "Hozzáadás a következőhöz: {instanceName}",
     "Recently added" : "Utoljára hozzáadva",
     "Most visited" : "Legtöbbet látogatva",
-    "RSS Feed" : "RSS folyam",
+    "RSS Feed" : "RSS-csatorna",
     "Permanently remove all bookmarks from your account. There is no going back!" : "Véglegesen törlöd az összes könyvjelzőt a fiókodból! Nincs visszaút!",
     "Delete all bookmarks" : "Összes könyvjelzők törlése",
     "Add to filter" : "Hozzáadás szűrőhöz",
