@@ -41,6 +41,7 @@ export default Marionette.View.extend({
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
 		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);
 		this.listenTo(this.model, 'dropFolder', this.onDropFolder);
+		this.listenTo(this.model, 'dropped', this.onDropped);
 		this.initInteractable();
 	},
 	initInteractable: function() {
@@ -233,6 +234,7 @@ export default Marionette.View.extend({
 	},
 	onDropBookmark: function(e) {
 		var that = this;
+		e.draggable.model.trigger('dropped');
 		if (this.app.selectedBookmarks.length) {
 			this.app.selectedBookmarks.models.slice().forEach(function(bm, i) {
 				bm.trigger('unselect');
@@ -240,9 +242,7 @@ export default Marionette.View.extend({
 				// quiver only once
 				if (i === that.app.selectedBookmarks.length - 1) {
 					bm.once('sync', function() {
-						setTimeout(function() {
-							that.quiver();
-						}, 500);
+						that.quiver();
 					});
 				}
 			});
@@ -251,19 +251,16 @@ export default Marionette.View.extend({
 		}
 		this.moveBookmark(e.draggable.model);
 		e.draggable.model.once('sync', function() {
-			setTimeout(function() {
-				that.quiver();
-			}, 500);
+			that.quiver();
 		});
 	},
 	onDropFolder: function(e) {
 		var that = this;
+		e.draggable.model.trigger('dropped');
 		e.draggable.model.once('sync', function() {
-			setTimeout(function() {
-				that.quiver(function() {
-					that.app.folders.fetch({ reset: true });
-				});
-			}, 500);
+			that.quiver(function() {
+				that.app.folders.fetch({ reset: true });
+			});
 		});
 		this.moveFolder(e.draggable.model);
 	},
@@ -315,6 +312,10 @@ export default Marionette.View.extend({
 	onDragEnd: function(e) {
 		this.$el.removeClass('dragging');
 		this.$el.css({ position: 'relative', top: 0, left: 0 });
+	},
+	onDropped: function() {
+		var that = this;
+		this.$el.hide();
 	},
 	onDestroy: function() {
 		this.interactable.unset();

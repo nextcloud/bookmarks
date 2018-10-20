@@ -36,9 +36,14 @@ export default Marionette.View.extend({
 		this.listenTo(this.model, 'change', this.render);
 		this.listenTo(this.model, 'select', this.onSelect);
 		this.listenTo(this.model, 'unselect', this.onUnselect);
+		// when bulk selection is active, the cards not being dragged directly
+		// get their events through the models
 		this.listenTo(this.model, 'dragstart', this.onDragStart);
 		this.listenTo(this.model, 'dragmove', this.onDragMove);
 		this.listenTo(this.model, 'dragend', this.onDragEnd);
+
+		this.listenTo(this.model, 'dropped', this.onDropped);
+
 		this.listenTo(this.app.tags, 'sync', this.render);
 		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);
 		this.interactable = interact(this.el).draggable({
@@ -151,6 +156,10 @@ export default Marionette.View.extend({
 				bm.trigger('dragend', e, false);
 			});
 		}
+	},
+	onDropped: function() {
+		var that = this;
+		this.$el.hide();
 	},
 	onDestroy: function() {
 		this.interactable.unset();
