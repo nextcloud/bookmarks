@@ -40,7 +40,7 @@ OC.L10N.register(
     "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Ez az alkalmazás lehetővé teszi, hogy kedvenc helyeit egy központi helyen tárolja és rendezze, miközben biztosítja a különböző eszközökkel és böngészőkkel való szinkronizálást.\n\nNézze meg a harmadik féltől származó klienseket: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Könyvjelző hozzáadása",
     "This URL is already bookmarked! Overwrite?" : "Ez a cím már jegyezve van. Felülírod?",
-    "The title of the page" : "Az oldal tárgya",
+    "The title of the page" : "Az oldal címe",
     "The address of the page" : "Az oldal címe",
     "Description of the page" : "Az oldal leírása",
     "Save" : "Mentés",
