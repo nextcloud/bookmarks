@@ -222,7 +222,7 @@ export default Marionette.View.extend({
 		// TODO: Wait for 'sync' til we remove this
 		this.folderBeingDragged = false;
 		this.$el.removeClass('droptarget-bookmark');
-		this.$el.removeClass('droptarget-bookmark');
+		this.$el.removeClass('droptarget-folder');
 	},
 	onDrop: function(e) {
 		if (!(e.draggable.model instanceof Folder)) {
