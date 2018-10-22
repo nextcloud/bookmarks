@@ -23,6 +23,7 @@ OC.L10N.register(
     "Permanently remove all bookmarks from your account. There is no going back!" : "Poista kaikki tililläsi olevat kirjanmerkit pysyvästi. Tätä toimintoa ei voi perua!",
     "Delete all bookmarks" : "Poista kaikki kirjanmerkit",
     "Rename" : "Nimeä uudelleen",
+    "Open details" : "Avaa yksityiskohdat",
     "An error occurred while trying to save the bookmark." : "Kirjanmerkin tallennusta yrittäessä tapahtui virhe.",
     "Error" : "Virhe",
     "Uploading..." : "Lähetetään...",
