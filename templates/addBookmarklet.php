@@ -23,12 +23,12 @@ $bookmarkExists = $_['bookmarkExists'];
 						<input id="bookmarkID" type="hidden" class="hidden" value="<?php p($bookmarkExists); ?>" />
 						<?php } ?>
 						<input id="title" type="text" name="title" class="title" value="<?php p($_['title']); ?>"
-										 placeholder="<?php p($l->t('The title of the page')); ?>" />
+										 placeholder="<?php p($l->t('The title of the page')); ?>" autocomplete="off" />
 					</li>
 
 					<li>
 						<input id="url" type="text" name="url" class="url_input" value="<?php p($_['url']); ?>"
-										 placeholder="<?php p($l->t('The address of the page')); ?>" />
+										 placeholder="<?php p($l->t('The address of the page')); ?>" autocomplete="off" />
 					</li>
 
 					<li>
