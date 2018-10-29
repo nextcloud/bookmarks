@@ -47,6 +47,8 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'internal_folders#add_folder', 'url' => '/folder', 'verb' => 'POST'],
 	['name' => 'internal_folders#edit_folder', 'url' => '/folder/{folderId}', 'verb' => 'PUT'],
 	['name' => 'internal_folders#delete_folder', 'url' => '/folder/{folderId}', 'verb' => 'DELETE'],
+	['name' => 'internal_folders#get_folder_children_order', 'url' => '/folder/{folderId}/childorder', 'verb' => 'GET'],
+	['name' => 'internal_folders#set_folder_children_order', 'url' => '/folder/{folderId}/childorder', 'verb' => 'PATCH'],
 	['name' => 'internal_folders#add_to_folder', 'url' => '/folder/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'POST'],
 	['name' => 'internal_folders#remove_from_folder', 'url' => '/folder/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'DELETE'],
 	// Public REST API
@@ -66,6 +68,8 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'folders#add_folder', 'url' => '/public/rest/v2/folder', 'verb' => 'POST'],
 	['name' => 'folders#edit_folder', 'url' => '/public/rest/v2/folder/{folderId}', 'verb' => 'PUT'],
 	['name' => 'folders#delete_folder', 'url' => '/public/rest/v2/folder/{folderId}', 'verb' => 'DELETE'],
+	['name' => 'folders#get_folder_children_order', 'url' => '/public/rest/v2/folder/{folderId}/childorder', 'verb' => 'GET'],
+	['name' => 'folders#set_folder_children_order', 'url' => '/public/rest/v2/folder/{folderId}/childorder', 'verb' => 'PATCH'],
 	['name' => 'folders#add_to_folder', 'url' => '/public/rest/v2/folder/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'POST'],
 	['name' => 'folders#remove_from_folder', 'url' => '/public/rest/v2/folder/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'DELETE'],
 	['name' => 'bookmark#preflighted_cors', 'url' => '/public/rest/v2/{path}',

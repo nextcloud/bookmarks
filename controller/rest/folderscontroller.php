@@ -123,6 +123,37 @@ class FoldersController extends ApiController {
 		}
 	}
 
+
+	/**
+	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function getFolderChildrenOrder($folderId) {
+		$children = $this->bookmarks->getFolderChildren($this->userId, $folderId);
+		return new JSONResponse(['status' => 'success', 'data' => $children]);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param array $data
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function setFolderChildrenOrder($folderId, $data = []) {
+		if ($this->bookmarks->setFolderChildren($userId, $folderId, $data)) {
+			return new JSONResponse(['status' => 'success']);
+		} else {
+			return new JSONResponse(['status' => 'error', 'data' => 'Malformatted input or not all current children were included'], Http::STATUS_BAD_REQUEST);
+		}
+	}
+
 	/**
 	 * @param int $root the id of the root folder whose descendants to return
 	 * @param int $layers the number of layers of hierarchy too return

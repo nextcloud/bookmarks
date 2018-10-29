@@ -148,6 +148,85 @@ class Bookmarks {
 	}
 
 	/**
+	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param string $userId UserId
+	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
+	 * @return array the folders each in the format ["id" => int, "title" => string, "parent_folder" => int ]
+	 */
+	public function getFolderChildren($userId, $folderId = -1) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('id', 'title', 'parent_folder', 'index')
+			->from('bookmarks_folders')
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
+			->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
+			->orderBy('title', 'DESC');
+		$childFolders = $qb->execute()->fetchAll();
+
+
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('bookmark_id', 'index')
+			->from('bookmarks_folders_bookmarks')
+			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId)));
+		$childBookmarks = $qb->execute()->fetchAll();
+
+		$children = array_merge($childFolders, $childBookmarks);
+		array_multisort(array_column($children, 'index'), \SORT_ASC, $children);
+		$children = array_map(function ($child) {
+			return isset($child['bookmark_id']) ?
+			  ['type' =>  'bookmark', 'id' => $child['bookmark_id']]
+			: ['type' => 'folder', 'id' => $child['id']];
+		}, $children);
+
+		return $children;
+	}
+
+	/**
+	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param string $userId UserId
+	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
+	 * @return array the folders each in the format ["id" => int, "title" => string, "parent_folder" => int ]
+	 */
+	public function setFolderChildren($userId, $folderId, $newChildrenOrder) {
+		$existingChildren = $this->getFolderChildren($userId, $folderId);
+		foreach ($existingChildren as $child) {
+			if (!in_array($child, $newChildrenOrder)) {
+				return false;
+			}
+			if (!isset($child['id'], $child['type'])) {
+				return false;
+			}
+		}
+		if (count($newChildrenOrder) !== count($existingChildren)) {
+			return false;
+		}
+		foreach ($newChildrenOrder as $i => $child) {
+			switch ($child['type']) {
+				case'bookmark':
+					$qb = $this->db->getQueryBuilder();
+					$qb
+						->update('bookmarks_folders_bookmarks')
+						->set('index', $qb->createPositionalParameter($i))
+						->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($child['id'])))
+						->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId)));
+					$qb->execute();
+					break;
+				case 'folder':
+					$qb = $this->db->getQueryBuilder();
+					$qb
+						->update('bookmarks_folders')
+						->set('index', $qb->createPositionalParameter($i))
+						->where($qb->expr()->eq('id', $qb->createPositionalParameter($child['id'])))
+						->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)));
+					$qb->execute();
+					break;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * @brief Add a folder
 	 * @param string $userId UserId
 	 * @param string title
@@ -163,7 +242,8 @@ class Bookmarks {
 			->values([
 				'title' => $qb->createNamedParameter($title),
 				'user_id' => $qb->createNamedParameter($userId),
-				'parent_folder' => $qb->createNamedParameter($parent)
+				'parent_folder' => $qb->createNamedParameter($parent),
+				'index' => count($this->getFolderChildren($userId, $parent))
 		  ]);
 		if ($qb->execute()) {
 			$id = $qb->getLastInsertId();
@@ -210,7 +290,7 @@ class Bookmarks {
 	public function getFolder($userId, $folderId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select('*')
+			->select('id', 'parent_folder', 'title', 'user_id')
 			->from('bookmarks_folders')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
 			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
@@ -894,7 +974,8 @@ class Bookmarks {
 				->insert('bookmarks_folders_bookmarks')
 				->values([
 					'folder_id' => $qb->createNamedParameter($folderId),
-					'bookmark_id' => $qb->createNamedParameter($bookmarkId)
+					'bookmark_id' => $qb->createNamedParameter($bookmarkId),
+					'index' => count($this->getFolderChildren($userId, $folderId))
 				]);
 			$qb->execute();
 		}
