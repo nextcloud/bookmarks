@@ -933,7 +933,7 @@ class Bookmarks {
 	}
 
 	/**
-	 * @brief Add a set of tags for a bookmark
+	 * @brief Add a bookmark to a set of folders
 	 * @param int $bookmarkID The bookmark reference
 	 * @param array $folders Set of folders ids to add the bookmark to
 	 * */
@@ -979,6 +979,63 @@ class Bookmarks {
 				]);
 			$qb->execute();
 		}
+	}
+
+	/**
+	 * @brief Remove a bookmark from a set of folders
+	 * @param int $bookmarkID The bookmark reference
+	 * @param array $folders Set of folders ids to add the bookmark to
+	 * */
+	public function removeFromFolders($userId, $bookmarkId, $folders) {
+		$bm = $this->findUniqueBookmark($bookmarkId, $userId);
+
+		if (!bm) {
+			return false;
+		}
+
+		$foldersLeft = count($bm['folders']);
+
+		foreach ($folders as $folderId) {
+			// check if folder exists
+			if ($folderId !== -1 && $folderId !== '-1') {
+				$qb = $this->db->getQueryBuilder();
+				$row = $qb
+				->select('*')
+				->from('bookmarks_folders')
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
+				->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+
+				if (!$qb->execute()->fetch()) {
+					continue;
+				}
+			}
+
+			// check if this folder<->bookmark mapping exists
+			$qb = $this->db->getQueryBuilder();
+			$qb
+			->select('*')
+			->from('bookmarks_folders_bookmarks')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)))
+			->andWhere($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId)));
+
+			if (!$qb->execute()->fetch()) {
+				continue;
+			}
+
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->delete('bookmarks_folders_bookmarks')
+				->where($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId)))
+				->andwhere($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)));
+			$qb->execute();
+
+			$foldersLeft--;
+		}
+		if ($foldersLeft <= 0) {
+			$this->deleteUrl($userId, $bookmarkId);
+		}
+
+		return true;
 	}
 
 	/**
