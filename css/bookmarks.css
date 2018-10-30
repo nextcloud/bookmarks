@@ -1,6 +1,6 @@
 #app-navigation > ul {
 	height: auto;
-	overflow-y: hidden;
+	overflow: initial; /* in order to display popupmenus correctly*/
 }
 
 .navigation a > span {
@@ -17,6 +17,74 @@
 #app-navigation h3 [class^='icon-'] {
 	display: inline-block;
 	vertical-align: sub;
+}
+
+#app-navigation ul > li > ul > li > ul {
+	flex: 0 1 auto;
+	position: relative;
+	width: 100%;
+}
+#app-navigation ul > li > ul > li > ul > li {
+	display: inline-flex;
+	flex-wrap: wrap;
+	padding: 0;
+	margin-left: 30px;
+}
+
+#app-navigation
+	ul
+	> li
+	> ul
+	> li
+	> ul
+	> li.editing
+	> .app-navigation-entry-edit {
+	opacity: 1;
+	z-index: 250;
+	margin-left: 4px;
+	padding-left: 10px !important;
+	width: 170px;
+}
+
+#app-navigation ul > li > ul > li > ul > li > a {
+	background-size: 16px 16px;
+	background-position: 14px center;
+	background-repeat: no-repeat;
+	display: block;
+	justify-content: space-between;
+	line-height: 44px;
+	min-height: 44px;
+	padding: 0 12px 0 44px;
+	overflow: hidden;
+	box-sizing: border-box;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: var(--color-main-text);
+	opacity: 0.57;
+	flex: 1 1 0px;
+	z-index: 100;
+}
+
+#app-navigation ul > li > ul > li > ul > li.active > a,
+#app-navigation ul > li > ul > li > ul > li > a:hover,
+#app-navigation ul > li > ul > li > ul > li > a:focus,
+#app-navigation ul > li > ul > li > ul > li > a:active {
+	opacity: 1;
+}
+
+#app-navigation ul li.collapsible > ul {
+	transition: max-height 2000ms ease-in-out, opacity 250ms ease-in-out;
+	opacity: 0;
+	max-height: 0px;
+}
+
+#app-navigation ul li.collapsible.open > ul {
+	opacity: 1;
+	max-height: 9999px;
+}
+
+#app-navigation .app-navigation-entry-menu {
+	top: 40px;
 }
 
 #app-content {
@@ -71,7 +139,7 @@
 	display: none;
 	position: fixed;
 	top: 45px;
-	left: 250px;
+	left: 300px;
 	right: 0;
 	box-shadow: 2px 1px 4px 0px #666;
 	padding: 12px 20px;
@@ -171,6 +239,13 @@ button span,
 	padding: 0 20px 20px 0;
 }
 
+.bookmarks .empty-space {
+	flex-grow: 1;
+	width: 225px;
+	height: 1px;
+	margin: 20px 0 0 20px;
+}
+
 .bookmark-card {
 	position: relative;
 	box-sizing: border-box; /*necessary for hover effect goodness to work*/
@@ -185,6 +260,11 @@ button span,
 	box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.65);
 	opacity: 0.93;
 	border: 2px solid white;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .bookmark-card:hover,
@@ -200,6 +280,21 @@ button span,
 .selection-active .bookmark-card:focus {
 	opacity: 0.6;
 	cursor: pointer;
+}
+
+.bookmark-card.dragging {
+	position: relative;
+	box-shadow: #adadad 5px 5px 15px;
+	opacity: 0.5;
+	z-index: 100;
+}
+
+.selection-active .bookmark-card.dragging:not(.active) {
+	position: relative;
+	top: 0 !important;
+	left: 0 !important;
+	cursor: no-drop;
+	box-shadow: none;
 }
 
 .bookmark-card .select-mode-checkbox + label {
@@ -547,18 +642,47 @@ button span,
 	opacity: 0.4;
 }
 
-.tags-management {
-	overflow-y: auto !important;
-	height: 80% !important;
-	height: calc(100% - 80px - 100px) !important;
+.folders {
+	flex-shrink: 0;
 }
 
-@media only screen and (max-width: 768px) {
-	.tags-management {
-		width: auto;
-		float: none;
-		border-bottom: 2px solid #bbb;
-	}
+.folders-item {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.folders-item.add-folder {
+	display: none !important;
+}
+
+.folders-item.add-folder.droptarget-folder,
+.folders-item.add-folder.editing {
+	display: inline-flex !important;
+}
+
+.folders-item.dragging {
+	position: relative;
+	box-shadow: #adadad 5px 5px 15px;
+	opacity: 0.5;
+	z-index: 100;
+}
+
+.folders-item.droptarget-folder > a,
+.folders-item.droptarget-bookmark > a {
+	background-color: #f3f3f3;
+	cursor: copy;
+	border: 1px #ababab dashed;
+}
+
+.tags-management {
+	overflow-y: auto !important;
+}
+
+.tags-management .tag-man-item:last-child {
+	margin-bottom: 50px; /* in order to not have it hidden behind settings */
 }
 
 .tags-management .tag-man-item {
@@ -567,10 +691,6 @@ button span,
 
 .tags-management .tag-man-item.active {
 	background: #f3f3f3;
-}
-
-.tags-management .tag-man-item > a {
-	padding-left: 12px !important;
 }
 
 .tags-management .tag-man-item .actions {
@@ -610,8 +730,8 @@ button span,
 }
 
 .menu-item-checkbox span:first-child {
-	padding: 5px 5px;
-	margin: 0;
+	margin: 0 !important;
+	width: 38px;
 }
 
 /* display 'remove from filter' when selected, and 'add to ...' when unselected*/
@@ -654,4 +774,35 @@ button span,
 
 .settings .upload {
 	display: none;
+}
+
+.quiver-vertically {
+	position: relative;
+	animation-name: quiver-vertically;
+	animation-duration: 500ms;
+	animation-iteration-count: 1;
+}
+
+@keyframes quiver-vertically {
+	0% {
+		top: 0;
+	}
+	16% {
+		top: 5px;
+	}
+	33% {
+		top: -5px;
+	}
+	49% {
+		top: 5px;
+	}
+	66% {
+		top: -5px;
+	}
+	83% {
+		top: 5px;
+	}
+	100% {
+		top: 0;
+	}
 }

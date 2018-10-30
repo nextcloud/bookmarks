@@ -4,6 +4,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCA\Bookmarks\Controller\Lib\BookmarksParser;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 use OCA\Bookmarks\Controller\Lib\UrlNormalizer;
 use OCP\AppFramework\Http;
@@ -49,18 +50,19 @@ class Test_BookmarkController extends TestCase {
 		$urlNormalizer = \OC::$server->query(UrlNormalizer::class);
 		$event = \OC::$server->getEventDispatcher();
 		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger);
+		$parser = \OC::$server->query(BookmarksParser::class);
+		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger, $parser);
 
 		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager);
 		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUser, $this->db, $l, $this->libBookmarks, $this->userManager);
 	}
 
-	function setupBookmarks() {
-		$this->testSubjectPrivateBmId = $this->libBookmarks->addBookmark($this->userid, "https://www.golem.de", "Golem", array("four"), "PublicNoTag", false);
-		$this->testSubjectPublicBmId = $this->libBookmarks->addBookmark($this->userid, "https://9gag.com", "9gag", array("two", "three"), "PublicTag", true);
+	public function setupBookmarks() {
+		$this->testSubjectPrivateBmId = $this->libBookmarks->addBookmark($this->userid, "https://www.golem.de", "Golem", ["four"], "PublicNoTag", false);
+		$this->testSubjectPublicBmId = $this->libBookmarks->addBookmark($this->userid, "https://9gag.com", "9gag", ["two", "three"], "PublicTag", true);
 	}
 
-	function testPrivateRead() {
+	public function testPrivateRead() {
 		$this->cleanDB();
 		$this->setupBookmarks();
 		$output = $this->controller->getSingleBookmark($this->testSubjectPublicBmId);
@@ -69,7 +71,7 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals("https://9gag.com/", $data['item']['url']);
 	}
 
-	function testPublicReadSuccess() {
+	public function testPublicReadSuccess() {
 		$this->cleanDB();
 		$this->setupBookmarks();
 		$output = $this->publicController->getSingleBookmark($this->testSubjectPublicBmId, $this->userid);
@@ -78,7 +80,7 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals("https://9gag.com/", $data['item']['url']);
 	}
 
-	function testPublicReadFailure() {
+	public function testPublicReadFailure() {
 		$this->cleanDB();
 		$this->setupBookmarks();
 		$output = $this->publicController->getSingleBookmark($this->testSubjectPrivateBmId, $this->userid);
@@ -86,16 +88,16 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals('error', $data['status']);
 	}
 
-	function testPrivateReadNotFound() {
-       $this->cleanDB();
-       $this->setupBookmarks();
-       $output = $this->controller->getSingleBookmark(987);
-       $data = $output->getData();
-       $this->assertSame('error', $data['status']);
-       $this->assertSame(404, $output->getStatus());
-   }
+	public function testPrivateReadNotFound() {
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$output = $this->controller->getSingleBookmark(987);
+		$data = $output->getData();
+		$this->assertSame('error', $data['status']);
+		$this->assertSame(404, $output->getStatus());
+	}
 
-	function testPrivateQuery() {
+	public function testPrivateQuery() {
 		$this->cleanDB();
 		$this->setupBookmarks();
 		$output = $this->controller->getBookmarks();
@@ -103,7 +105,7 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals(2, count($data['data']));
 	}
 
-	function testPublicQuery() {
+	public function testPublicQuery() {
 		$this->cleanDB();
 		$this->setupBookmarks();
 
@@ -112,10 +114,10 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals(1, count($data['data']));
 	}
 
-	function testPublicCreate() {
+	public function testPublicCreate() {
 		$this->cleanDB();
 		$this->setupBookmarks();
-		$this->controller->newBookmark("https://www.heise.de", array("tags"=> array("four")), "Heise", true, "PublicNoTag");
+		$this->controller->newBookmark("https://www.heise.de", ["tags"=> ["four"]], "Heise", true, "PublicNoTag");
 
 		// the bookmark should exist
 		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("https://www.heise.de", $this->userid));
@@ -130,10 +132,10 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals(2, count($data['data']));
 	}
 
-	function testPrivateCreate() {
+	public function testPrivateCreate() {
 		$this->cleanDB();
 		$this->setupBookmarks();
-		$this->controller->newBookmark("https://www.heise.de", array("tags"=> array("four")), "Heise", false, "PublicNoTag");
+		$this->controller->newBookmark("https://www.heise.de", ["tags"=> ["four"]], "Heise", false, "PublicNoTag");
 
 		// the bookmark should exist
 		$this->assertNotEquals(false, $this->libBookmarks->bookmarkExists("https://www.heise.de", $this->userid));
@@ -149,10 +151,10 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals(1, count($data['data']));
 	}
 
-	function testPrivateEditBookmark() {
+	public function testPrivateEditBookmark() {
 		$this->cleanDB();
 		$this->setupBookmarks();
-		$id = $this->libBookmarks->addBookmark($this->userid, "https://www.heise.de", "Golem", array("four"), "PublicNoTag", true);
+		$id = $this->libBookmarks->addBookmark($this->userid, "https://www.heise.de", "Golem", ["four"], "PublicNoTag", true);
 
 		$this->controller->editBookmark($id, 'https://www.heise.de', null, '', true, $id, '');
 
@@ -160,22 +162,13 @@ class Test_BookmarkController extends TestCase {
 		$this->assertEquals("https://www.heise.de/", $bookmark['url']); // normalized URL
 	}
 
-	function testPrivateDeleteBookmark() {
+	public function testPrivateDeleteBookmark() {
 		$this->cleanDB();
 		$this->setupBookmarks();
-		$id = $this->libBookmarks->addBookmark($this->userid, "https://www.google.com", "Heise", array("one", "two"), "PrivatTag", false);
+		$id = $this->libBookmarks->addBookmark($this->userid, "https://www.google.com", "Heise", ["one", "two"], "PrivatTag", false);
 
 		$this->controller->deleteBookmark($id);
 		$this->assertFalse($this->libBookmarks->bookmarkExists("https://www.google.com", $this->userid));
-	}
-
-	function testFindBookmarksEmptyTags() {
-		$this->cleanDB();
-		$this->setupBookmarks();
-		$id = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", []);
-
-		$bookmarks = $this->libBookmarks->findBookmarks($this->userid, 0, 'id', [], true, -1);
-		$this->assertEquals([], $bookmarks[0]['tags']);
 	}
 
 	public function testClick() {
@@ -187,11 +180,10 @@ class Test_BookmarkController extends TestCase {
 		$this->assertSame(Http::STATUS_OK, $r->getStatus());
 	}
 
-	function cleanDB() {
+	public function cleanDB() {
 		$query1 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
 		$query1->execute();
 		$query2 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
 		$query2->execute();
 	}
-
 }

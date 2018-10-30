@@ -86,9 +86,10 @@ class InternalBookmarkController extends ApiController {
 		$sortby = "",
 		$search = [],
 		$limit = 10,
-		$untagged = false
+		$untagged = false,
+		$folder = null
 	) {
-		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search, $limit, $untagged);
+		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder);
 	}
 
 	/**
@@ -145,8 +146,8 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editBookmark($id = null, $url = "", $item = [], $title = "", $is_public = false, $record_id = null, $description = "", $tags = []) {
-		return $this->publicController->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description, $tags);
+	public function editBookmark($id = null, $url = "", $item = [], $title = "", $is_public = false, $record_id = null, $description = "", $tags = [], $folders = null) {
+		return $this->publicController->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description, $tags, $folders);
 	}
 
 	/**

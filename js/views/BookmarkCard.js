@@ -1,5 +1,6 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
+import interact from 'interactjs';
 import Tags from '../models/Tags';
 import TagsNavigationView from './TagsNavigation';
 import templateString from '../templates/BookmarkCard.html';
@@ -27,15 +28,30 @@ export default Marionette.View.extend({
 		'click .menu-filter-add': 'select',
 		'click .menu-filter-remove': 'select',
 		'click .menu-delete': 'delete',
-		'click .menu-details': 'open'
+		'click .menu-details': 'open',
+		'click .menu-move': 'move'
 	},
 	initialize: function(opts) {
 		this.app = opts.app;
 		this.listenTo(this.model, 'change', this.render);
 		this.listenTo(this.model, 'select', this.onSelect);
 		this.listenTo(this.model, 'unselect', this.onUnselect);
+		// when bulk selection is active, the cards not being dragged directly
+		// get their events through the models
+		this.listenTo(this.model, 'dragstart', this.onDragStart);
+		this.listenTo(this.model, 'dragmove', this.onDragMove);
+		this.listenTo(this.model, 'dragend', this.onDragEnd);
+
+		this.listenTo(this.model, 'dropped', this.onDropped);
+
 		this.listenTo(this.app.tags, 'sync', this.render);
 		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);
+		this.interactable = interact(this.el).draggable({
+			onstart: this.onDragStart.bind(this),
+			onend: this.onDragEnd.bind(this),
+			onmove: this.onDragMove.bind(this)
+		});
+		this.interactable.model = this.model;
 	},
 	onRender: function() {
 		var that = this;
@@ -111,5 +127,41 @@ export default Marionette.View.extend({
 	},
 	delete: function() {
 		this.model.destroy();
+	},
+	onDragStart: function(e, propagate) {
+		this.$el.addClass('dragging');
+		if (propagate !== false) {
+			this.app.selectedBookmarks.forEach(function(bm) {
+				bm.trigger('dragstart', e, false);
+			});
+		}
+	},
+	onDragMove: function(e, propagate) {
+		this.$el.offset({ top: e.pageY + 20, left: e.pageX + 20 });
+		if (propagate !== false) {
+			this.app.selectedBookmarks.forEach(function(bm, i) {
+				bm.trigger(
+					'dragmove',
+					{ pageY: e.pageY + 10 * (i + 1), pageX: e.pageX + 10 * (i + 1) },
+					false
+				);
+			});
+		}
+	},
+	onDragEnd: function(e, propagate) {
+		this.$el.removeClass('dragging');
+		this.$el.css({ position: 'relative', top: 0, left: 0 });
+		if (propagate !== false) {
+			this.app.selectedBookmarks.forEach(function(bm) {
+				bm.trigger('dragend', e, false);
+			});
+		}
+	},
+	onDropped: function() {
+		var that = this;
+		this.$el.hide();
+	},
+	onDestroy: function() {
+		this.interactable.unset();
 	}
 });

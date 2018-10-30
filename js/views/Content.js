@@ -41,6 +41,7 @@ export default Marionette.View.extend({
 		this.app = options.app;
 		this.bookmarks = this.app.bookmarks;
 		this.selected = new Bookmarks();
+		this.app.selectedBookmarks = this.selected;
 		this.listenTo(
 			this.bookmarks.loadingState,
 			'change:fetching',
@@ -68,8 +69,8 @@ export default Marionette.View.extend({
 	},
 	infiniteScroll: function(e) {
 		if (
-			document.body.scrollHeight <
-			window.scrollY + window.innerHeight + 500
+			document.body.scrollHeight < window.scrollY + window.innerHeight + 500 &&
+			this.bookmarks.loadingState.get('page') !== 0
 		) {
 			this.bookmarks.fetchPage();
 		}
@@ -86,7 +87,7 @@ export default Marionette.View.extend({
 		this.selected.add(model);
 	},
 	onUnselect: function(model) {
-		if (this.selected.length == 1) {
+		if (this.selected.length <= 1) {
 			this.$el.removeClass('selection-active');
 			this.detachChildView('bulkActions');
 		}

@@ -3,6 +3,7 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCA\Bookmarks\Controller\Lib\BookmarksParser;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
 use OCA\Bookmarks\Controller\Lib\UrlNormalizer;
 use OCP\User;
@@ -30,7 +31,8 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$urlNormalizer = \OC::$server->query(UrlNormalizer::class);
 		$event = \OC::$server->getEventDispatcher();
 		$logger = \OC::$server->getLogger();
-		$this->libBookmarks = new Bookmarks($db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger);
+		$parser = \OC::$server->query(BookmarksParser::class);
+		$this->libBookmarks = new Bookmarks($db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger, $parser);
 
 		$this->otherUser = "otheruser";
 		$this->userManager = \OC::$server->getUserManager();
@@ -270,6 +272,178 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertCount(2, $otherBookmarks);
 	}
 
+	public function testCRUDFolders() {
+		$this->cleanDB();
+		$this->libBookmarks->addFolder($this->otherUser, 'test');
+		$test = $this->libBookmarks->addFolder($this->userid, 'test');
+		$test2 = $this->libBookmarks->addFolder($this->userid, 'test2', $test);
+		$test3 = $this->libBookmarks->addFolder($this->userid, 'test3', $test);
+
+		// check basic folder listing
+		$folders = $this->libBookmarks->listFolders($this->userid);
+		$this->assertCount(1, $folders);
+		$this->assertEquals('test', $folders[0]['title']);
+		$this->assertEquals($test, $folders[0]['id']);
+		$this->assertCount(2, $folders[0]['children']);
+		$this->assertTrue(in_array(['id' => $test2, 'title' => 'test2', 'parent_folder' => $test, 'children'=>[]], $folders[0]['children']));
+		$this->assertTrue(in_array(['id' => $test3, 'title' => 'test3', 'parent_folder' => $test, 'children'=>[]], $folders[0]['children']));
+
+		// check getFolder
+		$folder = $this->libBookmarks->getFolder($this->userid, $test2);
+		$this->assertEquals(['id'=> (string) $test2, 'parent_folder' => (string) $test, 'title' => 'test2', 'user_id' => $this->userid], $folder);
+
+		// check editFolder
+		$this->libBookmarks->editFolder($this->userid, $test2, 'edited');
+
+		$folder = $this->libBookmarks->getFolder($this->userid, $test2);
+		$this->assertEquals(['id'=> (string) $test2, 'parent_folder' => (string) $test, 'title' => 'edited', 'user_id' => $this->userid], $folder);
+
+		$this->libBookmarks->editFolder($this->userid, $test2, null, -1);
+
+		$folder = $this->libBookmarks->getFolder($this->userid, $test2);
+		$this->assertEquals(['id'=> (string) $test2, 'parent_folder' => '-1', 'title' => 'edited', 'user_id' => $this->userid], $folder);
+
+		$folders = $this->libBookmarks->listFolders($this->userid);
+		$this->assertCount(2, $folders);
+		$this->assertEquals('test', $folders[0]['title']);
+		$this->assertEquals($test, $folders[0]['id']);
+		$this->assertTrue(in_array(['id' => (string) $test2, 'title' => 'edited', 'parent_folder'=> '-1', 'children'=>[]], $folders));
+		$this->assertCount(1, $folders[0]['children']);
+		$this->assertTrue(in_array(['id' => (string) $test3, 'title' => 'test3', 'parent_folder' => (string) $test, 'children'=>[]], $folders[0]['children']));
+
+		// Check deleteFolder
+		$this->libBookmarks->deleteFolder($this->userid, $test2);
+
+		$folders = $this->libBookmarks->listFolders($this->userid);
+		$this->assertCount(1, $folders);
+		$this->assertEquals('test', $folders[0]['title']);
+		$this->assertEquals($test, $folders[0]['id']);
+		$this->assertCount(1, $folders[0]['children']);
+		$this->assertTrue(in_array(['id' => (string) $test3, 'title' => 'test3', 'parent_folder' => (string) $test, 'children'=>[]], $folders[0]['children']));
+	}
+
+	public function testBookmarksInFolders() {
+		$this->cleanDB();
+		$this->libBookmarks->addFolder($this->otherUser, 'test');
+		$test = $this->libBookmarks->addFolder($this->userid, 'test');
+		$test2 = $this->libBookmarks->addFolder($this->userid, 'test2', $test);
+		$test3 = $this->libBookmarks->addFolder($this->userid, 'test3', $test);
+
+		$test2Bookmark = $this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", ["one"], "PrivateNoTag", false, [$test2]);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", ["one", "two"], "PrivatTag", false, [$test]);
+		$test3Bookmark = $this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", ["four"], "PublicNoTag", true, [$test3, -1]);
+		$test3OnlyBookmark = $this->libBookmarks->addBookmark($this->userid, "https://www.duckduckgo.com", "DuckDuckGo", ["four"], "PublicNoTag", false, [$test3]);
+		$rootBookmark = $this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", true, [-1]);
+		$this->libBookmarks->addBookmark($this->otherUser, "http://www.google.de", "Google", ["one"], "PrivateNoTag", false, [-1]);
+
+		// check findBookmarks
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, $test2);
+		$this->assertCount(1, $folderContents);
+		$this->assertEquals($test2Bookmark, $folderContents[0]['id']);
+
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, -1);
+		$this->assertCount(2, $folderContents);
+		$this->assertTrue(in_array($test3Bookmark, [$folderContents[0]['id'], $folderContents[1]['id']]));
+		$this->assertTrue(in_array($rootBookmark, [$folderContents[0]['id'], $folderContents[1]['id']]));
+
+		// check editBookmark
+		$this->libBookmarks->editBookmark($this->userid, $test2Bookmark, 'http://www.google.de', 'Google', [], '', false, [-1]);
+
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, -1);
+		$this->assertCount(3, $folderContents);
+		$this->assertTrue(in_array($test3Bookmark, [$folderContents[0]['id'], $folderContents[1]['id'], $folderContents[2]['id']]));
+		$this->assertTrue(in_array((string)$test2Bookmark, [$folderContents[0]['id'], $folderContents[1]['id'], $folderContents[2]['id']]));
+		$this->assertTrue(in_array((string)$rootBookmark, [$folderContents[0]['id'], $folderContents[1]['id'], $folderContents[2]['id']]));
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, $test2);
+		$this->assertCount(0, $folderContents);
+
+		// check multiple folders per bookmark
+		$this->libBookmarks->editBookmark($this->userid, $test2Bookmark, 'http://www.google.de', 'Google', [], '', false, [-1, $test2]);
+
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, -1);
+		$this->assertCount(3, $folderContents);
+		$this->assertTrue(in_array($test3Bookmark, [$folderContents[0]['id'], $folderContents[1]['id'], $folderContents[2]['id']]));
+		$this->assertTrue(in_array($test2Bookmark, [$folderContents[0]['id'], $folderContents[1]['id'], $folderContents[2]['id']]));
+		$this->assertTrue(in_array($rootBookmark, [$folderContents[0]['id'], $folderContents[1]['id'], $folderContents[2]['id']]));
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, $test2);
+		$this->assertCount(1, $folderContents);
+		$this->assertEquals($test2Bookmark, $folderContents[0]['id']);
+
+		// Check deleteUrl
+		$this->libBookmarks->deleteUrl($this->userid, $test2Bookmark);
+
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, -1);
+		$this->assertCount(2, $folderContents);
+		$this->assertTrue(in_array($test3Bookmark, [$folderContents[0]['id'], $folderContents[1]['id']]));
+		$this->assertTrue(in_array($rootBookmark, [$folderContents[0]['id'], $folderContents[1]['id']]));
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, $test2);
+		$this->assertCount(0, $folderContents);
+
+		// check deleteFolder
+		$this->libBookmarks->deleteFolder($this->userid, $test);
+
+		$folders = $this->libBookmarks->listFolders($this->userid);
+		$this->assertCount(0, $folders);
+
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, -1);
+		$this->assertCount(2, $folderContents);
+		$this->assertTrue(in_array($test3Bookmark, [$folderContents[0]['id'], $folderContents[1]['id']]));
+		$this->assertTrue(in_array($rootBookmark, [$folderContents[0]['id'], $folderContents[1]['id']]));
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, $test);
+		$this->assertCount(0, $folderContents);
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, $test2);
+		$this->assertCount(0, $folderContents);
+		$folderContents = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], true, -1, false, null, "and", false, $test3);
+		$this->assertCount(0, $folderContents);
+		$this->assertFalse($this->libBookmarks->findUniqueBookmark($test3OnlyBookmark, $this->userid));
+	}
+
+	public function testFolderChildrenOrder() {
+		$this->cleanDB();
+		$this->libBookmarks->addFolder($this->otherUser, 'test');
+		$test = $this->libBookmarks->addFolder($this->userid, 'test');
+		$test2 = $this->libBookmarks->addFolder($this->userid, 'test2', $test);
+
+		$bm1 = $this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", ["one"], "PrivateNoTag", false, [-1]);
+		$bm2 = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", ["one", "two"], "PrivatTag", false, [$test]);
+		$bm3 = $this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", ["four"], "PublicNoTag", true, [$test]);
+		$bm4 = $this->libBookmarks->addBookmark($this->userid, "https://www.duckduckgo.com", "DuckDuckGo", ["four"], "PublicNoTag", false, [$test]);
+		$bm5 = $this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", true, [$test]);
+		$bm6 = $this->libBookmarks->addBookmark($this->otherUser, "http://www.google.de", "Google", ["one"], "PrivateNoTag", false, [$test]);
+
+		$children = $this->libBookmarks->getFolderChildren($this->userid, $test);
+		$this->assertNotEquals(false, $children);
+		$this->assertEquals([
+			['type' => 'folder', 'id' => $test2],
+			['type' => 'bookmark', 'id' => $bm2],
+			['type' => 'bookmark', 'id' => $bm3],
+			['type' => 'bookmark', 'id' => $bm4],
+			['type' => 'bookmark', 'id' => $bm5]
+		], $children);
+
+		$children = [
+			['type' => 'bookmark', 'id' => $bm2],
+			['type' => 'bookmark', 'id' => $bm3],
+			['type' => 'folder', 'id' => $test2],
+			['type' => 'bookmark', 'id' => $bm4],
+			['type' => 'bookmark', 'id' => $bm5]
+		];
+		$this->libBookmarks->setFolderChildren($this->userid, $test, $children);
+		$actualChildren = $this->libBookmarks->getFolderChildren($this->userid, $test);
+		$this->assertEquals($children, $actualChildren);
+
+		$children = [
+			['type' => 'bookmark', 'id' => $bm1],
+			['type' => 'bookmark', 'id' => $bm2],
+			['type' => 'bookmark', 'id' => $bm3],
+			['type' => 'bookmark', 'id' => $bm4],
+			['type' => 'bookmark', 'id' => $bm5],
+			['type' => 'bookmark', 'id' => $bm6]
+		];
+		$result = $this->libBookmarks->setFolderChildren($this->userid, $test, $children);
+		$this->assertFalse($result);
+	}
+
 	protected function tearDown() {
 		$this->cleanDB();
 	}
@@ -279,6 +453,10 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$query1->execute();
 		$query2 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
 		$query2->execute();
+		$query3 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
+		$query3->execute();
+		$query4 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
+		$query4->execute();
 	}
 
 	/**

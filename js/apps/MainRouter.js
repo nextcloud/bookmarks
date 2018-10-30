@@ -6,12 +6,12 @@ const Radio = Backbone.Radio;
 export default Marionette.AppRouter.extend({
 	controller: {
 		index: function() {
-			setTimeout(function(){
-				Backbone.history.navigate('all', {trigger: true});
+			setTimeout(function() {
+				Backbone.history.navigate('all', { trigger: true });
 			}, 1);
 		},
 		all: function() {
-			this.app.bookmarks.setFetchQuery({})
+			this.app.bookmarks.setFetchQuery({});
 			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'all');
 		},
@@ -24,30 +24,39 @@ export default Marionette.AppRouter.extend({
 			Radio.channel('nav').trigger('navigate', 'shared');
 		},
 		tags: function(tagString) {
-			var tags = tagString? tagString.split(',') : [];
-			this.app.bookmarks.setFetchQuery({tags: tags, conjunction: 'and'});
+			var tags = tagString ? tagString.split(',') : [];
+			this.app.bookmarks.setFetchQuery({ tags: tags, conjunction: 'and' });
 			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'tags', tags);
 		},
+		folder: function(folderId) {
+			this.app.bookmarks.setFetchQuery({ folder: folderId });
+			this.app.bookmarks.fetchPage();
+			Radio.channel('nav').trigger('navigate', 'folder', folderId);
+		},
 		search: function(query) {
-			this.app.bookmarks.setFetchQuery({search: decodeURIComponent(query).split(' '), conjunction: 'and'});
+			this.app.bookmarks.setFetchQuery({
+				search: decodeURIComponent(query).split(' '),
+				conjunction: 'and'
+			});
 			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'search', query);
 		},
 		untagged: function() {
-			this.app.bookmarks.setFetchQuery({untagged: true});
+			this.app.bookmarks.setFetchQuery({ untagged: true });
 			this.app.bookmarks.fetchPage();
 			Radio.channel('nav').trigger('navigate', 'untagged');
 		}
 	},
 	appRoutes: {
 		'': 'index',
-		'all': 'all',
-		'favorites': 'favorites',
-		'shared': 'shared',
+		all: 'all',
+		favorites: 'favorites',
+		shared: 'shared',
 		'tags(/*tags)': 'tags',
+		'folder/:folderId': 'folder',
 		'search/:query': 'search',
-		'untagged': 'untagged'
+		untagged: 'untagged'
 	},
 	initialize: function(options) {
 		this.controller.app = options.app;

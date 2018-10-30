@@ -11,7 +11,7 @@ export default Marionette.View.extend({
 	className: 'bulk-actions',
 	template: _.template(templateString),
 	regions: {
-		'tags': {
+		tags: {
 			el: '.tags'
 		}
 	},
@@ -24,23 +24,29 @@ export default Marionette.View.extend({
 		this.app = opts.app;
 		this.all = this.app.bookmarks;
 		this.selected = opts.selected;
-		this.tags = new Tags;
+		this.tags = new Tags();
 		this.listenTo(this.tags, 'remove', this.onTagRemoved);
 		this.listenTo(this.tags, 'add', this.onTagAdded);
 		this.listenTo(this.selected, 'remove', this.onReduceSelection);
 		this.listenTo(this.selected, 'add', this.onExtendSelection);
 	},
 	onRender: function() {
-		this.showChildView('tags', new TagsSelectionView({collection: this.app.tags, selected: this.tags, app: this.app }));
+		this.showChildView(
+			'tags',
+			new TagsSelectionView({
+				collection: this.app.tags,
+				selected: this.tags,
+				app: this.app
+			})
+		);
 	},
 	updateTags: function() {
 		var that = this;
 		this.triggeredByAlgo = true;
 		this.tags.reset(
-			_.intersection.apply(_, this.selected.pluck('tags'))
-				.map(function(name) {
-					return that.app.tags.get(name);
-				})
+			_.intersection.apply(_, this.selected.pluck('tags')).map(function(name) {
+				return that.app.tags.get(name);
+			})
 		);
 		this.triggeredByAlgo = false;
 	},
@@ -61,7 +67,7 @@ export default Marionette.View.extend({
 			model.trigger('unselect', model);
 			model.destroy({
 				error: function() {
-					Backbone.history.navigate('all', {trigger: true});
+					Backbone.history.navigate('all', { trigger: true });
 				}
 			});
 		});
@@ -72,7 +78,7 @@ export default Marionette.View.extend({
 			var tags = model.get('tags');
 			model.set('tags', _.union(tags, [tag.get('name')]));
 			model.save();
-		}); 
+		});
 	},
 	onTagRemoved: function(tag) {
 		if (this.triggeredByAlgo) return;
@@ -80,16 +86,17 @@ export default Marionette.View.extend({
 			var tags = model.get('tags');
 			model.set('tags', _.without(tags, tag.get('name')));
 			model.save();
-		}); 
+		});
 	},
 	selectAll: function() {
 		this.all.forEach(function(model) {
-			model.trigger('select', model); 
+			model.trigger('select', model);
 		});
 	},
 	abort: function() {
 		this.selected.models.slice().forEach(function(model) {
 			model.trigger('unselect', model);
 		});
+		this.app.bookmarks.trigger('unselect');
 	}
 });

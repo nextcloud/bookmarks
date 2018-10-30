@@ -18,11 +18,11 @@ export default Marionette.View.extend({
 	templateDefault: _.template(templateStringDefault),
 	templateEditing: _.template(templateStringEditing),
 	ui: {
-		'actionsMenu': '.app-navigation-entry-menu',
-		'actionsToggle': '.app-navigation-entry-utils-menu-button'
+		actionsMenu: '.app-navigation-entry-menu',
+		actionsToggle: '.app-navigation-entry-utils-menu-button'
 	},
 	events: {
-		'click': 'selectSimple',
+		click: 'selectSimple',
 		'click @ui.actionsToggle': 'toggleActions',
 		'click .menu-filter-add': 'actionSelect',
 		'click .menu-filter-remove': 'actionUnselect',
@@ -34,12 +34,12 @@ export default Marionette.View.extend({
 	initialize: function() {
 		this.listenTo(this.model, 'select', this.onSelect);
 		this.listenTo(this.model, 'unselect', this.onUnselect);
-		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);   
+		this.listenTo(Radio.channel('documentClicked'), 'click', this.closeActions);
 	},
 	onRender: function() {
 		if (this.selected) {
 			this.$el.addClass('active');
-		}else{
+		} else {
 			this.$el.removeClass('active');
 		}
 		if (this.editing) {
@@ -56,17 +56,21 @@ export default Marionette.View.extend({
 	},
 	selectSimple: function(e) {
 		e.preventDefault();
-		if (e && !~[ this.el, this.$('a')[0], this.$('span')[0] ].indexOf(e.target)) {
+		if (e && !~[this.el, this.$('a')[0], this.$('span')[0]].indexOf(e.target)) {
 			return;
 		}
 		if (this.editing) return;
-		Backbone.history.navigate('tags/'+encodeURIComponent(this.model.get('name')), {trigger: true});
+		Backbone.history.navigate(
+			'tags/' + encodeURIComponent(this.model.get('name')),
+			{ trigger: true }
+		);
 	},
 	toggleActions: function() {
 		this.getUI('actionsMenu').toggleClass('open');
 	},
 	closeActions: function(e) {
-		if (this.editing || $.contains(this.getUI('actionsToggle')[0], e.target)) return;
+		if (this.editing || $.contains(this.getUI('actionsToggle')[0], e.target))
+			return;
 		this.getUI('actionsMenu').removeClass('open');
 	},
 	actionSelect: function(e) {

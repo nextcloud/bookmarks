@@ -55,6 +55,9 @@ class Bookmarks {
 	/** @var ILogger */
 	private $logger;
 
+	/** @var BookmarksParser */
+	private $bookmarksParser;
+
 	public function __construct(
 		IDBConnection $db,
 		IConfig $config,
@@ -62,7 +65,8 @@ class Bookmarks {
 		LinkExplorer $linkExplorer,
 		UrlNormalizer $urlNormalizer,
 		EventDispatcherInterface $eventDispatcher,
-		ILogger $logger
+		ILogger $logger,
+		BookmarksParser $bookmarksParser
 	) {
 		$this->db = $db;
 		$this->config = $config;
@@ -71,6 +75,7 @@ class Bookmarks {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
 		$this->logger = $logger;
+		$this->bookmarksParser = $bookmarksParser;
 	}
 
 	/**
@@ -104,6 +109,266 @@ class Bookmarks {
 	}
 
 	/**
+	 * @brief Lists bookmark folders
+	 * @param string $userId UserId
+	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
+	 * @param int $layers Number of hierarchy layers to return; 0 for all
+	 * @return array the folders each in the format
+	 *               ["id" => int, "title" => string, "parent_folder" => int, "children"=> array() ]
+	 */
+	public function listFolders($userId, $root = -1, $layers = 0) {
+		if ($root !== -1 && $root !== '-1' && !$this->existsFolder($userId, $root)) {
+			return false;
+		}
+		$childFolders = $this->listChildFolders($userId, $root);
+		foreach ($childFolders as &$folder) {
+			if ($layers !== 1) {
+				$folder['children'] = $this->listFolders($userId, $folder['id'], $layers !== 0 ? $layers-1 : 0);
+			}
+		}
+		return $childFolders;
+	}
+
+	/**
+	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param string $userId UserId
+	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
+	 * @return array the folders each in the format ["id" => int, "title" => string, "parent_folder" => int ]
+	 */
+	public function listChildFolders($userId, $root = -1) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('id', 'title', 'parent_folder')
+			->from('bookmarks_folders')
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
+			->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($root)))
+			->orderBy('title', 'DESC');
+		$childFolders = $qb->execute()->fetchAll();
+		return $childFolders;
+	}
+
+	/**
+	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param string $userId UserId
+	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
+	 * @return array the folders each in the format ["id" => int, "title" => string, "parent_folder" => int ]
+	 */
+	public function getFolderChildren($userId, $folderId = -1) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('id', 'title', 'parent_folder', 'index')
+			->from('bookmarks_folders')
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
+			->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
+			->orderBy('title', 'DESC');
+		$childFolders = $qb->execute()->fetchAll();
+
+
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('bookmark_id', 'index')
+			->from('bookmarks_folders_bookmarks')
+			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId)));
+		$childBookmarks = $qb->execute()->fetchAll();
+
+		$children = array_merge($childFolders, $childBookmarks);
+		array_multisort(array_column($children, 'index'), \SORT_ASC, $children);
+		$children = array_map(function ($child) {
+			return isset($child['bookmark_id']) ?
+			  ['type' =>  'bookmark', 'id' => $child['bookmark_id']]
+			: ['type' => 'folder', 'id' => $child['id']];
+		}, $children);
+
+		return $children;
+	}
+
+	/**
+	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param string $userId UserId
+	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
+	 * @return array the folders each in the format ["id" => int, "title" => string, "parent_folder" => int ]
+	 */
+	public function setFolderChildren($userId, $folderId, $newChildrenOrder) {
+		$existingChildren = $this->getFolderChildren($userId, $folderId);
+		foreach ($existingChildren as $child) {
+			if (!in_array($child, $newChildrenOrder)) {
+				return false;
+			}
+			if (!isset($child['id'], $child['type'])) {
+				return false;
+			}
+		}
+		if (count($newChildrenOrder) !== count($existingChildren)) {
+			return false;
+		}
+		foreach ($newChildrenOrder as $i => $child) {
+			switch ($child['type']) {
+				case'bookmark':
+					$qb = $this->db->getQueryBuilder();
+					$qb
+						->update('bookmarks_folders_bookmarks')
+						->set('index', $qb->createPositionalParameter($i))
+						->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($child['id'])))
+						->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId)));
+					$qb->execute();
+					break;
+				case 'folder':
+					$qb = $this->db->getQueryBuilder();
+					$qb
+						->update('bookmarks_folders')
+						->set('index', $qb->createPositionalParameter($i))
+						->where($qb->expr()->eq('id', $qb->createPositionalParameter($child['id'])))
+						->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)));
+					$qb->execute();
+					break;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @brief Add a folder
+	 * @param string $userId UserId
+	 * @param string title
+	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
+	 */
+	public function addFolder($userId, $title='', $parent = -1) {
+		if ($parent !== -1 && $parent !== '-1' && !$this->existsFolder($userId, $parent)) {
+			return false;
+		}
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->insert('bookmarks_folders')
+			->values([
+				'title' => $qb->createNamedParameter($title),
+				'user_id' => $qb->createNamedParameter($userId),
+				'parent_folder' => $qb->createNamedParameter($parent),
+				'index' => count($this->getFolderChildren($userId, $parent))
+		  ]);
+		if ($qb->execute()) {
+			$id = $qb->getLastInsertId();
+			return $id;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * @brief Modify a folder
+	 * @param string $userId UserId
+	 * @param string $title new title
+	 * @param int $parent (optional) new parent folder, -1 for absolute root
+	 */
+	public function editFolder($userId, $folderId, $title=null, $parent = null) {
+		if (!$this->existsFolder($userId, $folderId)) {
+			return false;
+		}
+
+		if (!isset($title) && !isset($parent)) {
+			return true;
+		}
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->update('bookmarks_folders')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
+			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+
+		if (isset($parent)) {
+			if ($parent !== -1 && $parent !== '-1' && !$this->existsFolder($userId, $parent)) {
+				return false;
+			}
+			$qb->set('parent_folder', $qb->createNamedParameter($parent));
+		}
+		if (isset($title)) {
+			$qb->set('title', $qb->createNamedParameter($title));
+		}
+
+		$result = $qb->execute();
+		return $result !== 0;
+	}
+
+	public function getFolder($userId, $folderId) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('id', 'parent_folder', 'title', 'user_id')
+			->from('bookmarks_folders')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
+			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+		return $qb->execute()->fetch();
+	}
+
+	private function existsFolder($userId, $folderId) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('*')
+			->from('bookmarks_folders')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
+			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+		$result = $qb->execute()->fetchAll();
+
+		if (count($result) === 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function deleteFolder($userId, $folderId) {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->delete('bookmarks_folders')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
+			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+		$result = $qb->execute();
+
+		if ($result === 0) {
+			return;
+		}
+
+		// get all bookmarks that are in this folder *only*
+		$qb = $this->db->getQueryBuilder();
+		$qb
+				->select('id')
+				->from('bookmarks', 'b')
+				->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('b.id', 'f.bookmark_id'))
+				->where($qb->expr()->eq('f.folder_id', $qb->createNamedParameter($folderId)));
+		$bookmarksToDelete = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		// ... and "delete" them
+		foreach ($bookmarksToDelete as $bookmarkId) {
+			// remove this folder from the list of parent folders
+			$bookmark = $this->findUniqueBookmark($bookmarkId, $userId);
+			$newFolders = [];
+			foreach ($bookmark['folders'] as $oldFolderId) {
+				if ((string) $oldFolderId === (string) $folderId) {
+					continue;
+				}
+				$newFolders[] = $oldFolderId;
+			}
+			// only if no parent folders are left do we delete the bookmark as a whole
+			if (count($newFolders) > 0) {
+				$this->editBookmark($userId, $bookmarkId, $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['public'], $newFolders);
+			} else {
+				$this->deleteUrl($userId, $bookmarkId);
+			}
+		}
+
+		// delete all subfolders
+		$childFolders = $this->listChildFolders($userId, $folderId);
+		foreach ($childFolders as $folder) {
+			$this->deleteFolder($userId, $folder['id']);
+		}
+	}
+
+	private function getBookmarkParentFolders($bookmarkId) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('folder_id')
+			->from('bookmarks_folders_bookmarks')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)));
+		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+	}
+
+	/**
 	 * @brief Finds Bookmark with certain ID
 	 * @param int $id BookmarkId
 	 * @param string $userId UserId
@@ -117,14 +382,19 @@ class Bookmarks {
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 		$result = $qb->execute()->fetch();
-
-		$qb = $this->db->getQueryBuilder();
-		$qb
+		if ($result) {
+			$qb = $this->db->getQueryBuilder();
+			$qb
 			->select('tag')
 			->from('bookmarks_tags')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
-		$result['tags'] = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
-		return $result;
+			$result['tags'] = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+			$result['folders'] = $this->getBookmarkParentFolders($id);
+
+			return $result;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -164,7 +434,8 @@ class Bookmarks {
 	 * @param bool $public check if only public bookmarks should be returned
 	 * @param array $requestedAttributes select all the attributes that should be returned. default is * + tags
 	 * @param string $tagFilterConjunction select wether the filterTagOnly should filter with an AND or an OR  conjunction
-	 * @param bool untagged if `true` only untagged bookmarks will be returned and the filters will have no effect
+	 * @param bool $untagged if `true` only untagged bookmarks will be returned and the filters will have no effect
+	 * @param int $parentFolder if set, only bookmarks that are in the specified folder will be returned
 	 * @return array Collection of specified bookmarks
 	 */
 	public function findBookmarks(
@@ -177,20 +448,21 @@ class Bookmarks {
 		$public = false,
 		$requestedAttributes = null,
 		$tagFilterConjunction = "and",
-		$untagged = false
+		$untagged = false,
+		$parentFolder = null
 	) {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		if (is_string($filters)) {
 			$filters = [$filters];
 		}
 
-		$tableAttributes = ['id', 'url', 'title', 'user_id', 'description',
+		$tableAttributes = ['url', 'title', 'user_id', 'description',
 			'public', 'added', 'lastmodified', 'clickcount'];
-
-		$returnTags = true;
 
 		$qb = $this->db->getQueryBuilder();
 
+		$returnTags = true;
+		$returnFolders = true;
 		if ($requestedAttributes != null) {
 			$key = array_search('tags', $requestedAttributes);
 			if ($key == false) {
@@ -199,9 +471,10 @@ class Bookmarks {
 				unset($requestedAttributes[$key]);
 			}
 			$selectedAttributes = array_intersect($tableAttributes, $requestedAttributes);
-			$qb->select($selectedAttributes);
+			array_push($selectedAttributes, 'id');
 		} else {
 			$selectedAttributes = $tableAttributes;
+			array_push($selectedAttributes, 'id');
 		}
 		$qb->select($selectedAttributes);
 
@@ -218,8 +491,13 @@ class Bookmarks {
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
+			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userid)))
 			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
+
+		if (isset($parentFolder)) {
+			$qb->andWhere($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter($parentFolder)));
+		}
 
 		if ($public) {
 			$qb->andWhere($qb->expr()->eq('public', $qb->createPositionalParameter(1)));
@@ -263,6 +541,9 @@ class Bookmarks {
 				}
 			} else {
 				unset($result['tags']);
+			}
+			if ($returnFolders) {
+				$result['folders'] = $this->getBookmarkParentFolders($result['id']);
 			}
 			$bookmarks[] = $result;
 		}
@@ -345,6 +626,12 @@ class Bookmarks {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->delete('bookmarks_tags')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
+		$qb->execute();
+
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->delete('bookmarks_folders_bookmarks')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
 		$qb->execute();
 
@@ -454,7 +741,7 @@ class Bookmarks {
 	 * @param boolean $isPublic True if the bookmark is publishable to not registered users
 	 * @return null
 	 */
-	public function editBookmark($userid, $id, $url, $title, $tags = [], $description = '', $isPublic = false) {
+	public function editBookmark($userid, $id, $url, $title, $tags = [], $description = '', $isPublic = false, $folders = null) {
 		$isPublic = $isPublic ? 1 : 0;
 
 		// normalize url
@@ -477,7 +764,7 @@ class Bookmarks {
 		// Abort the operation if bookmark couldn't be set
 		// (probably because the user is not allowed to edit this bookmark)
 		if ($result == 0) {
-			exit();
+			return false;
 		}
 
 		$this->eventDispatcher->dispatch(
@@ -486,7 +773,6 @@ class Bookmarks {
 		);
 
 		// Remove old tags
-
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->delete('bookmarks_tags')
@@ -495,6 +781,19 @@ class Bookmarks {
 
 		// Add New Tags
 		$this->addTags($id, $tags);
+
+		// Update folders
+		if (isset($folders)) {
+			// Remove from old folders
+			$qb = $this->db->getQueryBuilder();
+			$qb
+			->delete('bookmarks_folders_bookmarks')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
+			$qb->execute();
+
+			// Add New Tags
+			$this->addToFolders($userid, $id, $folders);
+		}
 
 		return $id;
 	}
@@ -508,11 +807,14 @@ class Bookmarks {
 	 * @param array $tags Simple array of tags to qualify the bookmark (different tags are taken from values)
 	 * @param string $description A longer description about the bookmark
 	 * @param boolean $isPublic True if the bookmark is publishable to not registered users
-	 * @param string $image URL to a visual representation of the bookmarked site
+	 * @param array $folders ids of the parent folders for the new bookmark
 	 * @return int The id of the bookmark created
 	 */
-	public function addBookmark($userid, $url, $title, $tags = [], $description = '', $isPublic = false, $image = null, $favicon = null) {
+	public function addBookmark($userid, $url, $title, $tags = [], $description = '', $isPublic = false, $folders = [-1]) {
 		$public = $isPublic ? 1 : 0;
+		if (count($folders) === 0) {
+			$folders = [-1]; // we have to do it this way, as we don't want people to add a bookmark with [] parents
+		}
 
 		// do some meta tag inspection of the link...
 
@@ -583,7 +885,10 @@ class Bookmarks {
 				$description = $row['description'];
 			}
 
-			$this->editBookmark($userid, $row['id'], $url, $title, $tags, $description, $isPublic);
+			$oldParentFolders = $this->getBookmarkParentFolders($row['id']);
+			$folders = array_unique(array_merge($folders, $oldParentFolders), \SORT_STRING);
+
+			$this->editBookmark($userid, $row['id'], $url, $title, $tags, $description, $isPublic, $folders);
 
 			return $row['id'];
 		} else {
@@ -614,6 +919,7 @@ class Bookmarks {
 
 			if ($insertId !== false) {
 				$this->addTags($insertId, $tags);
+				$this->addToFolders($userid, $insertId, $folders);
 
 				$this->eventDispatcher->dispatch(
 					'\OCA\Bookmarks::onBookmarkCreate',
@@ -624,6 +930,112 @@ class Bookmarks {
 			}
 		}
 		return -1;
+	}
+
+	/**
+	 * @brief Add a bookmark to a set of folders
+	 * @param int $bookmarkID The bookmark reference
+	 * @param array $folders Set of folders ids to add the bookmark to
+	 * */
+	public function addToFolders($userId, $bookmarkId, $folders) {
+		foreach ($folders as $folderId) {
+			// check if folder exists
+			if ($folderId !== -1 && $folderId !== '-1') {
+				$qb = $this->db->getQueryBuilder();
+				$row = $qb
+				->select('*')
+				->from('bookmarks_folders')
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
+				->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+
+				if (!$qb->execute()->fetch()) {
+					continue;
+				}
+			}
+
+			if (!$this->findUniqueBookmark($bookmarkId, $userId)) {
+				return false;
+			}
+
+			// check if this folder<->bookmark mapping already exists
+			$qb = $this->db->getQueryBuilder();
+			$qb
+			->select('*')
+			->from('bookmarks_folders_bookmarks')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)))
+			->andWhere($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId)));
+
+			if ($qb->execute()->fetch()) {
+				continue;
+			}
+
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->insert('bookmarks_folders_bookmarks')
+				->values([
+					'folder_id' => $qb->createNamedParameter($folderId),
+					'bookmark_id' => $qb->createNamedParameter($bookmarkId),
+					'index' => count($this->getFolderChildren($userId, $folderId))
+				]);
+			$qb->execute();
+		}
+	}
+
+	/**
+	 * @brief Remove a bookmark from a set of folders
+	 * @param int $bookmarkID The bookmark reference
+	 * @param array $folders Set of folders ids to add the bookmark to
+	 * */
+	public function removeFromFolders($userId, $bookmarkId, $folders) {
+		$bm = $this->findUniqueBookmark($bookmarkId, $userId);
+
+		if (!bm) {
+			return false;
+		}
+
+		$foldersLeft = count($bm['folders']);
+
+		foreach ($folders as $folderId) {
+			// check if folder exists
+			if ($folderId !== -1 && $folderId !== '-1') {
+				$qb = $this->db->getQueryBuilder();
+				$row = $qb
+				->select('*')
+				->from('bookmarks_folders')
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
+				->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+
+				if (!$qb->execute()->fetch()) {
+					continue;
+				}
+			}
+
+			// check if this folder<->bookmark mapping exists
+			$qb = $this->db->getQueryBuilder();
+			$qb
+			->select('*')
+			->from('bookmarks_folders_bookmarks')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)))
+			->andWhere($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId)));
+
+			if (!$qb->execute()->fetch()) {
+				continue;
+			}
+
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->delete('bookmarks_folders_bookmarks')
+				->where($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId)))
+				->andwhere($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)));
+			$qb->execute();
+
+			$foldersLeft--;
+		}
+		if ($foldersLeft <= 0) {
+			$this->deleteUrl($userId, $bookmarkId);
+		}
+
+		return true;
 	}
 
 	/**
@@ -669,47 +1081,40 @@ class Bookmarks {
 	 * @param string $file Content to import
 	 * @return null
 	 * */
-	public function importFile($user, $file) {
-		$dom = new \domDocument();
-
-		$dom->loadHTMLFile($file, \LIBXML_PARSEHUGE);
-		$links = $dom->getElementsByTagName('a');
-
+	public function importFile($userId, $file) {
+		try {
+			$this->bookmarksParser->parse(file_get_contents($file), false);
+		} catch (\Exception $e) {
+			return [$e->message];
+		}
 		$errors = [];
-
-		// Reintroduce transaction here!?
-		foreach ($links as $link) {
-			/* @var \DOMElement $link */
-			$title = $link->nodeValue;
-			$ref = $link->getAttribute("href");
-			$tagStr = '';
-			if ($link->hasAttribute("tags")) {
-				$tagStr = $link->getAttribute("tags");
-			}
-			$tags = explode(',', $tagStr);
-
-			$descriptionStr = '';
-			if ($link->hasAttribute("description")) {
-				$descriptionStr = $link->getAttribute("description");
-			} else {
-				/* Get description from a following <DD> when link in a
-				 * <DT> (e.g., Delicious export, firefox) */
-				$parent = $link->parentNode;
-				if ($parent && $parent->tagName == "dt") {
-					$dd = $parent->nextSibling;
-					if ($dd->tagName == "dd") {
-						$descriptionStr = trim($dd->nodeValue);
-					}
-				}
-			}
+		foreach ($this->bookmarksParser->currentFolder['children'] as $folder) {
+			$this->importFolder($userId, $folder, -1);
+		}
+		foreach ($this->bookmarksParser->currentFolder['bookmarks'] as $bookmark) {
 			try {
-				$this->addBookmark($user, $ref, $title, $tags, $descriptionStr);
+				$this->addBookmark($userId, $bookmark['href'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], false, [-1]);
 			} catch (\InvalidArgumentException $e) {
 				$this->logger->logException($e, ['app' => 'bookmarks']);
 				$errors[] =  $this->l->t('Failed to import one bookmark, because: ') . $e->getMessage();
 			}
 		}
 		return $errors;
+	}
+
+	private function importFolder($userId, $folder, $parentId) {
+		$folderId = $this->addFolder($userId, $folder['title'], $parentId);
+		foreach ($folder['bookmarks'] as $bookmark) {
+			try {
+				$this->addBookmark($userId, $bookmark['href'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], false, [$folderId]);
+			} catch (\InvalidArgumentException $e) {
+				$this->logger->logException($e, ['app' => 'bookmarks']);
+				$errors[] =  $this->l->t('Failed to import one bookmark, because: ') . $e->getMessage();
+			}
+		}
+		foreach ($folder['children'] as $childFolder) {
+			$this->importFolder($userId, $childFolder, $folderId);
+		}
 	}
 
 	/**

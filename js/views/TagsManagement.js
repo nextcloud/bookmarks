@@ -17,6 +17,7 @@ export default Marionette.CollectionView.extend({
 		this.listenTo(this.collection, 'unselect', this.onUnselect);
 		this.listenTo(this.collection, 'reset', this.onReset);
 		this.listenTo(Radio.channel('nav'), 'navigate', this.onNavigate);
+		this.lastRouteTags = []; // for the below hack
 	},
 	onNavigate: function(category, tags) {
 		// reset selection (needs slice, since we pull the models out from under the loop otherwise)
