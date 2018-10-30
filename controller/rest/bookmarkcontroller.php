@@ -223,14 +223,14 @@ class BookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function newBookmark($url = "", $item = [], $title = "", $is_public = false, $description = "", $tags = []) {
+	public function newBookmark($url = "", $item = [], $title = "", $is_public = false, $description = "", $tags = [], $folders = null) {
 		$title = trim($title);
 		if (count($tags) === 0) {
 			$tags = isset($item['tags']) ? $item['tags'] : [];
 		}
 
 		try {
-			$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public);
+			$id = $this->bookmarks->addBookmark($this->userId, $url, $title, $tags, $description, $is_public, $folders);
 		} catch (\InvalidArgumentException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => [$e->getMessage()]], Http::STATUS_BAD_REQUEST);
 		}
