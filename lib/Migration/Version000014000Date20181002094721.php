@@ -148,7 +148,7 @@ class Version000014000Date20181002094721 extends SimpleMigrationStep {
 		$query = $this->db->getQueryBuilder();
 		$query->select('id', 'user_id')->from('bookmarks');
 		$bookmarks = $query->execute()->fetchAll();
-		foreach ($bookmarks as $bookmark) {
+		foreach ($bookmarks as $i => $bookmark) {
 			$query = $this->db->getQueryBuilder();
 			$query->select('bookmark_id')
 			->from('bookmarks_folders_bookmarks')

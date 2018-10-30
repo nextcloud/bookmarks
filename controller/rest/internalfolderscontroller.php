@@ -31,6 +31,32 @@ class InternalFoldersController extends ApiController {
 		return $this->controller->addFolder($title, $parent_folder);
 	}
 
+
+	/**
+	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function getFolderChildrenOrder($folderId) {
+		return $this->controller->getFolderChildrenOrder($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param array $data
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function setFolderChildrenOrder($folderId, $data = []) {
+		return $this->controller->setFolderChildrenOrder($folderId, $data);
+	}
+
 	/**
 	 * @param int $folderId
 	 * @return JSONResponse

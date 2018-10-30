@@ -398,6 +398,52 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertFalse($this->libBookmarks->findUniqueBookmark($test3OnlyBookmark, $this->userid));
 	}
 
+	public function testFolderChildrenOrder() {
+		$this->cleanDB();
+		$this->libBookmarks->addFolder($this->otherUser, 'test');
+		$test = $this->libBookmarks->addFolder($this->userid, 'test');
+		$test2 = $this->libBookmarks->addFolder($this->userid, 'test2', $test);
+
+		$bm1 = $this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", ["one"], "PrivateNoTag", false, [-1]);
+		$bm2 = $this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", ["one", "two"], "PrivatTag", false, [$test]);
+		$bm3 = $this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", ["four"], "PublicNoTag", true, [$test]);
+		$bm4 = $this->libBookmarks->addBookmark($this->userid, "https://www.duckduckgo.com", "DuckDuckGo", ["four"], "PublicNoTag", false, [$test]);
+		$bm5 = $this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", true, [$test]);
+		$bm6 = $this->libBookmarks->addBookmark($this->otherUser, "http://www.google.de", "Google", ["one"], "PrivateNoTag", false, [$test]);
+
+		$children = $this->libBookmarks->getFolderChildren($this->userid, $test);
+		$this->assertNotEquals(false, $children);
+		$this->assertEquals([
+			['type' => 'folder', 'id' => $test2],
+			['type' => 'bookmark', 'id' => $bm2],
+			['type' => 'bookmark', 'id' => $bm3],
+			['type' => 'bookmark', 'id' => $bm4],
+			['type' => 'bookmark', 'id' => $bm5]
+		], $children);
+
+		$children = [
+			['type' => 'bookmark', 'id' => $bm2],
+			['type' => 'bookmark', 'id' => $bm3],
+			['type' => 'folder', 'id' => $test2],
+			['type' => 'bookmark', 'id' => $bm4],
+			['type' => 'bookmark', 'id' => $bm5]
+		];
+		$this->libBookmarks->setFolderChildren($this->userid, $test, $children);
+		$actualChildren = $this->libBookmarks->getFolderChildren($this->userid, $test);
+		$this->assertEquals($children, $actualChildren);
+
+		$children = [
+			['type' => 'bookmark', 'id' => $bm1],
+			['type' => 'bookmark', 'id' => $bm2],
+			['type' => 'bookmark', 'id' => $bm3],
+			['type' => 'bookmark', 'id' => $bm4],
+			['type' => 'bookmark', 'id' => $bm5],
+			['type' => 'bookmark', 'id' => $bm6]
+		];
+		$result = $this->libBookmarks->setFolderChildren($this->userid, $test, $children);
+		$this->assertFalse($result);
+	}
+
 	protected function tearDown() {
 		$this->cleanDB();
 	}
