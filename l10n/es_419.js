@@ -8,7 +8,6 @@ OC.L10N.register(
     "Unsupported file type for import" : "Tipo de archivo no admitido para importar",
     "Bookmarklet" : "Marcadores",
     "Error" : "Error",
-    "Uploading..." : "Subiendo...",
     "Import error" : "Error al importar",
     "Import completed successfully." : "Importar completado con éxito",
     "Add a bookmark" : "Agregar un marcador",

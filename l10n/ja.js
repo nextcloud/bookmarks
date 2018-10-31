@@ -8,7 +8,6 @@ OC.L10N.register(
     "Saved" : "保存しました",
     "An error occurred while trying to save the bookmark." : "ブックマークの保存を試している際にエラーが発生しました。",
     "Error" : "エラー",
-    "Uploading..." : "アップロード中...",
     "Import error" : "インポート エラー",
     "Import completed successfully." : "インポートに成功しました",
     "Add a bookmark" : "ブックマークへ追加",

@@ -8,7 +8,6 @@ OC.L10N.register(
     "Unsupported file type for import" : "Цей тип файлу не підтримується",
     "An error occurred while trying to save the bookmark." : "Під час спроби зберегти закладку сталася помилка.",
     "Error" : "Помилка",
-    "Uploading..." : "Завантажується...",
     "Import error" : "Помилка під час імпорту",
     "Import completed successfully." : "Імпорт успішно завершено",
     "Set tags" : "Встановити мітки",

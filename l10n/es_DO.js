@@ -9,7 +9,6 @@ OC.L10N.register(
     "Bookmarklet" : "Marcador a código ",
     "An error occurred while trying to save the bookmark." : "Se presentó un error al intentar guardar el marcador. ",
     "Error" : "Error",
-    "Uploading..." : "Cargando...",
     "Import error" : "Error al importar",
     "Import completed successfully." : "El importar terminón exitosamente.",
     "Set tags" : "Establecer etiquetas",

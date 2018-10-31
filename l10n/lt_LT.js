@@ -9,7 +9,6 @@ OC.L10N.register(
     "Bookmarklet" : "Išsaugojimo mygtukas",
     "RSS Feed" : "RSS kanalas",
     "Error" : "Klaida",
-    "Uploading..." : "Įkeliama...",
     "Import error" : "Įkėlimo klaida",
     "Import completed successfully." : "Įkelta",
     "The title of the page" : "Pavadinimas",

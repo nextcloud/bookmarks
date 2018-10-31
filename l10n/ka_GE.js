@@ -8,7 +8,6 @@ OC.L10N.register(
     "Unsupported file type for import" : "იმპორტისთვის მხარდაუჭერელი ფაილის სახეობა",
     "Bookmarklet" : "Bookmarklet-ი",
     "Error" : "შეცდომა",
-    "Uploading..." : "მიმდინარეობს ატვირთვა...",
     "Import error" : "იმპორტის შეცდომა",
     "Import completed successfully." : "იმპორტი წარმატებით დასრულდა.",
     "Add a bookmark" : "სანიშნის დამატება",
