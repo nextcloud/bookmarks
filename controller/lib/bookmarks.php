@@ -810,9 +810,9 @@ class Bookmarks {
 	 * @param array $folders ids of the parent folders for the new bookmark
 	 * @return int The id of the bookmark created
 	 */
-	public function addBookmark($userid, $url, $title, $tags = [], $description = '', $isPublic = false, $folders = [-1]) {
+	public function addBookmark($userid, $url, $title, $tags = [], $description = '', $isPublic = false, $folders = null) {
 		$public = $isPublic ? 1 : 0;
-		if (count($folders) === 0) {
+		if (!isset($folders) || count($folders) === 0) {
 			$folders = [-1]; // we have to do it this way, as we don't want people to add a bookmark with [] parents
 		}
 
