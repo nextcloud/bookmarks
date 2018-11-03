@@ -21,6 +21,7 @@ namespace OCA\Bookmarks\Controller\Lib\Previews;
 
 use OCP\ICache;
 use OCP\IConfig;
+use OCP\ILogger;
 use OCP\Http\Client\IClientService;
 
 class ScreenlyPreviewService implements IPreviewService {
@@ -40,6 +41,9 @@ class ScreenlyPreviewService implements IPreviewService {
 	/** @var ICache */
 	private $cache;
 
+	/** @var ILogger */
+	private $logger;
+
 	private $width = 800;
 
 	private $height = 800;
@@ -47,12 +51,13 @@ class ScreenlyPreviewService implements IPreviewService {
 	/**
 	 * @param ICacheFactory $cacheFactory
 	 */
-	public function __construct(ICache $cache, IConfig $config, IClientService $clientService) {
+	public function __construct(ICache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
 		$this->config = $config;
 		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
 		$this->cache = $cache;
 		$this->client = $clientService->newClient();
+		$this->logger = $logger;
 	}
 
 	private function buildKey($url) {
@@ -116,7 +121,7 @@ class ScreenlyPreviewService implements IPreviewService {
 		  ]);
 			$body = json_decode($response->getBody(), true);
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::DEBUG);
+			$this->logger->logException($e, ['app' => 'bookmarks']);
 			return null;
 		}
 

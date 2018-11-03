@@ -14,7 +14,7 @@
 namespace OCA\Bookmarks\AppInfo;
 
 if ((@include_once __DIR__ . '/../vendor/autoload.php')===false) {
-  throw new \Exception('Cannot include autoload. Did you run install dependencies using composer?');
+	throw new \Exception('Cannot include autoload. Did you run install dependencies using composer?');
 }
 
 $navigationEntry = function () {
@@ -27,5 +27,3 @@ $navigationEntry = function () {
 	];
 };
 \OC::$server->getNavigationManager()->add($navigationEntry);
-
-\OC::$server->getSearch()->registerProvider('OCA\Bookmarks\Controller\Lib\Search', array('apps' => array('bookmarks')));
