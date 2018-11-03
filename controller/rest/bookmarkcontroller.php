@@ -70,7 +70,7 @@ class BookmarkController extends ApiController {
 			$publicOnly = false;
 		} else {
 			$publicOnly = true;
-			if ($this->userManager->userExists($user) == false) {
+			if ($this->userManager->userExists($user) === false) {
 				$error = "User could not be identified";
 				return new JSONResponse(['status' => 'error', 'data'=> $error], Http::STATUS_BAD_REQUEST);
 			}
@@ -149,7 +149,7 @@ class BookmarkController extends ApiController {
 			$publicOnly = false;
 		} else {
 			$publicOnly = true;
-			if ($this->userManager->userExists($user) == false) {
+			if ($this->userManager->userExists($user) === false) {
 				$error = "User could not be identified";
 				return new DataResponse(['status' => 'error', 'data'=> $error]);
 			}
@@ -179,7 +179,7 @@ class BookmarkController extends ApiController {
 		}
 
 		$offset = $page * $limit;
-		if ($page == -1) {
+		if ($page === -1) {
 			$limit = -1;
 			$offset = 0;
 		}
@@ -253,7 +253,7 @@ class BookmarkController extends ApiController {
 	 */
 	//TODO id vs record_id?
 	public function legacyEditBookmark($id = null, $url = "", $item = [], $title = "", $is_public = false, $record_id = null, $description = "") {
-		if ($id == null) {
+		if ($id === null) {
 			return $this->newBookmark($url, $item, $title, $is_public, $description);
 		} else {
 			return $this->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description);
@@ -332,7 +332,7 @@ class BookmarkController extends ApiController {
 	 * @CORS
 	 */
 	public function deleteBookmark($id = -1) {
-		if ($id == -1) {
+		if ($id === -1) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -391,7 +391,7 @@ class BookmarkController extends ApiController {
 		} else {
 			$error = [];
 			$file = $full_input['tmp_name'];
-			if ($full_input['type'] == 'text/html') {
+			if ($full_input['type'] === 'text/html') {
 				$error = $this->bookmarks->importFile($this->userId, $file);
 				if (empty($error)) {
 					return new JSONResponse(['status' => 'success']);
@@ -427,7 +427,7 @@ EOT;
 	}
 
 	private function serializeFolder($userId, $id) {
-		if ($id != -1) {
+		if ($id !== -1) {
 			$folder = $this->bookmarks->getFolder($userId, $id);
 			$output = '<DT><h3>'.htmlspecialchars($folder['title']).'</h3>'."\n"
 					  .'<DL><p>';

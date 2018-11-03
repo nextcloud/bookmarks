@@ -143,7 +143,7 @@ class DefaultPreviewService implements IPreviewService {
 		$contentType = $response->getHeader('Content-Type');
 
 		// Some HTPP Error occured :/
-		if (200 != $response->getStatusCode()) {
+		if (200 !== $response->getStatusCode()) {
 			return null;
 		}
 
