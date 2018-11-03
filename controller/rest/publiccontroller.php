@@ -8,7 +8,6 @@ use \OCP\AppFramework\Http;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OC\User\Manager;
 use OCA\Bookmarks\Controller\Lib\Bookmarks;
-use OCP\Util;
 
 class PublicController extends ApiController {
 	private $userManager;
@@ -62,7 +61,6 @@ class PublicController extends ApiController {
 
 		if (!$public && !$this->userManager->checkPassword($user, $password)) {
 			$msg = 'REST API accessed with wrong password';
-			Util::writeLog('bookmarks', $msg, Util::WARN);
 
 			return $this->newJsonErrorMessage("Wrong password for user " . $user);
 		}

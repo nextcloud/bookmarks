@@ -3,6 +3,7 @@ namespace OCA\Bookmarks\Controller\Lib;
 
 use Marcelklehr\LinkPreview\Client as LinkPreview;
 use Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException;
+use OCP\ILogger;
 use OCP\Http\Client\IClientService;
 use OCA\Bookmarks\Controller\Lib\Http\RequestFactory;
 use OCA\Bookmarks\Controller\Lib\Http\Client;
@@ -11,10 +12,13 @@ use phpUri;
 class LinkExplorer {
 	private $linkPreview;
 
-	public function __construct(IClientService $clientService) {
+	private $logger;
+
+	public function __construct(IClientService $clientService, ILogger $logger) {
 		$client = $clientService->newClient();
 		$this->linkPreview = new LinkPreview(new Client($client), new RequestFactory());
 		$this->linkPreview->getParser('general')->setMinimumImageDimensions(150, 550);
+		$this->logger = $logger;
 	}
 
 	/**
@@ -30,13 +34,13 @@ class LinkExplorer {
 			libxml_use_internal_errors(false);
 			$preview = $this->linkPreview->getLink($url)->getPreview();
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::DEBUG);
+			$this->logger->debug($e, ['app' => 'bookmarks']);
 			return $data;
 		}
 
 		$data = $preview->toArray();
 
-		\OCP\Util::writeLog('bookmarks', 'getImage for URL: '.$url.' '.var_export($data, true), \OCP\Util::DEBUG);
+		$this->logger->debug('getImage for URL: '.$url.' '.var_export($data, true), ['app' => 'bookmarks']);
 
 		if (!isset($data)) {
 			return ['url' => $url];

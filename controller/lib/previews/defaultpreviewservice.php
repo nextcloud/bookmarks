@@ -20,6 +20,7 @@
 namespace OCA\Bookmarks\Controller\Lib\Previews;
 
 use OCP\ICache;
+use OCP\ILogger;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IClient;
 use OCA\Bookmarks\Controller\Lib\LinkExplorer;
@@ -40,14 +41,18 @@ class DefaultPreviewService implements IPreviewService {
 	/** @var LinkExplorer */
 	protected $linkExplorer;
 
+	/** @var ILogger */
+	private $logger;
+
 	/**
 	 * @param CacheFactory $cacheFactory
 	 * @param LinkExplorer $linkExplorer
 	 */
-	public function __construct(ICache $cache, LinkExplorer $linkExplorer, IClientService $clientService) {
+	public function __construct(ICache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
 		$this->cache = $cache;
 		$this->linkExplorer = $linkExplorer;
 		$this->client = $clientService->newClient();
+		$this->logger = $logger;
 	}
 
 	protected function buildKey($url) {
@@ -71,7 +76,7 @@ class DefaultPreviewService implements IPreviewService {
 			return null;
 		}
 		$site = $this->scrapeUrl($bookmark['url']);
-		\OCP\Util::writeLog('bookmarks', 'getImage for URL: '.$bookmark['url'].' '.var_export($site, true), \OCP\Util::DEBUG);
+		$this->logger->debug('getImage for URL: '.$bookmark['url'].' '.var_export($site, true), ['app' => 'bookmarks']);
 		if (isset($site['image']['small'])) {
 			return $this->getOrFetchImageUrl($site['image']['small']);
 		}
@@ -136,7 +141,7 @@ class DefaultPreviewService implements IPreviewService {
 		try {
 			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('bookmarks', $e, \OCP\Util::DEBUG);
+			$this->logger->debug($e, ['app' => 'bookmarks']);
 			return null;
 		}
 		$body = $response->getBody();

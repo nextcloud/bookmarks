@@ -12,6 +12,7 @@ namespace OCA\Bookmarks\Controller\Rest;
 
 use OCP\IDBConnection;
 use OCP\IL10N;
+use OCP\ILogger;
 use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
@@ -29,11 +30,12 @@ class BookmarkController extends ApiController {
 	private $db;
 	private $l10n;
 	private $userManager;
+	private $logger;
 
 	/** @var Bookmarks */
 	private $bookmarks;
 
-	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks, Manager $userManager) {
+	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks, Manager $userManager, ILogger $logger) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->db = $db;
@@ -41,6 +43,7 @@ class BookmarkController extends ApiController {
 		$this->l10n = $l10n;
 		$this->bookmarks = $bookmarks;
 		$this->userManager = $userManager;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -385,7 +388,7 @@ class BookmarkController extends ApiController {
 		$full_input = $this->request->getUploadedFile("bm_import");
 
 		if (empty($full_input)) {
-			Util::writeLog('bookmarks', "No file provided for import", Util::WARN);
+			$this->logger->warn("No file provided for import", ['app' => 'bookmarks']);
 			$error = [];
 			$error[] = $this->l10n->t('No file provided for import');
 		} else {
@@ -444,15 +447,15 @@ EOT;
 				continue;
 			}
 
-			$tags = implode(',', \OC_Util::sanitizeHTML($bookmark['tags']));
+			$tags = implode(',', Util::sanitizeHTML($bookmark['tags']));
 			$title = trim($bookmark['title']);
 			if ($title === '') {
 				$url_parts = parse_url($bookmark['url']);
 				$title = isset($url_parts['host']) ? Helper::getDomainWithoutExt($url_parts['host']) : $url;
 			}
-			$url = \OC_Util::sanitizeHTML($bookmark['url']);
-			$title = \OC_Util::sanitizeHTML($title);
-			$description = \OC_Util::sanitizeHTML($bookmark['description']);
+			$url = Util::sanitizeHTML($bookmark['url']);
+			$title = Util::sanitizeHTML($title);
+			$description = Util::sanitizeHTML($bookmark['description']);
 
 			$output .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '">' . $title . '</A>'."\n";
 			if (strlen($description)>0) {
