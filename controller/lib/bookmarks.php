@@ -101,7 +101,7 @@ class Bookmarks {
 			->groupBy('t.tag')
 			->orderBy('nbr', 'DESC')
 			->setFirstResult($offset);
-		if ($limit != -1) {
+		if ($limit !== -1) {
 			$qb->setMaxResults($limit);
 		}
 		$tags = $qb->execute()->fetchAll();
@@ -463,9 +463,9 @@ class Bookmarks {
 
 		$returnTags = true;
 		$returnFolders = true;
-		if ($requestedAttributes != null) {
+		if ($requestedAttributes !== null) {
 			$key = array_search('tags', $requestedAttributes);
-			if ($key == false) {
+			if ($key === false) {
 				$returnTags = false;
 			} else {
 				unset($requestedAttributes[$key]);
@@ -478,7 +478,7 @@ class Bookmarks {
 		}
 		$qb->select($selectedAttributes);
 
-		if ($dbType == 'pgsql') {
+		if ($dbType === 'pgsql') {
 			$qb->selectAlias($qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"), 'tags');
 		} else {
 			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')'), 'tags');
@@ -504,7 +504,7 @@ class Bookmarks {
 		}
 
 		if ($untagged) {
-			if ($dbType == 'pgsql') {
+			if ($dbType === 'pgsql') {
 				$tagCol = $qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')");
 			} else {
 				$tagCol = 'tags';
@@ -517,15 +517,15 @@ class Bookmarks {
 			$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $tagFilterConjunction);
 		}
 
-		if ($sqlSortColumn == 'title') {
+		if ($sqlSortColumn === 'title') {
 			$qb->orderBy($qb->createFunction('UPPER(`title`)'), 'ASC');
 		} else {
 			$qb->orderBy($sqlSortColumn, 'DESC');
 		}
 
-		if ($limit != -1 && $limit !== false) {
+		if ($limit !== -1 && $limit !== false) {
 			$qb->setMaxResults($limit);
-			if ($offset != null) {
+			if ($offset !== null) {
 				$qb->setFirstResult($offset);
 			}
 		}
@@ -559,10 +559,10 @@ class Bookmarks {
 	private function findBookmarksBuildFilter(&$qb, $filters, $filterTagOnly, $tagFilterConjunction) {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$connectWord = 'AND';
-		if ($tagFilterConjunction == 'or') {
+		if ($tagFilterConjunction === 'or') {
 			$connectWord = 'OR';
 		}
-		if (count($filters) == 0) {
+		if (count($filters) === 0) {
 			return;
 		}
 		$filterExpressions = [];
@@ -570,7 +570,7 @@ class Bookmarks {
 		$i = 0;
 		foreach ($filters as $filter) {
 			$expr = [];
-			if ($dbType == 'pgsql') {
+			if ($dbType === 'pgsql') {
 				$expr[] = $qb->expr()->iLike(
 					// Postgres doesn't like select aliases in HAVING clauses, well f*** you too!
 					$qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"),
@@ -590,7 +590,7 @@ class Bookmarks {
 			$filterExpressions[] = call_user_func_array([$qb->expr(), 'orX'], $expr);
 			$i++;
 		}
-		if ($connectWord == 'AND') {
+		if ($connectWord === 'AND') {
 			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $filterExpressions);
 		} else {
 			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
@@ -763,7 +763,7 @@ class Bookmarks {
 		$result = $qb->execute();
 		// Abort the operation if bookmark couldn't be set
 		// (probably because the user is not allowed to edit this bookmark)
-		if ($result == 0) {
+		if ($result === 0) {
 			return false;
 		}
 
@@ -877,11 +877,11 @@ class Bookmarks {
 		$row = $qb->execute()->fetch();
 
 		if ($row) {
-			if (trim($title) == '') { // Do we replace the old title
+			if (trim($title) === '') { // Do we replace the old title
 				$title = $row['title'];
 			}
 
-			if (trim($description) == '') { // Do we replace the old description
+			if (trim($description) === '') { // Do we replace the old description
 				$description = $row['description'];
 			}
 
@@ -1136,7 +1136,7 @@ class Bookmarks {
 		$tags = explode(',', $line);
 		$filterTag = [];
 		foreach ($tags as $tag) {
-			if (trim($tag) != '') {
+			if (trim($tag) !== '') {
 				$filterTag[] = trim($tag);
 			}
 		}

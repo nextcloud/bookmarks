@@ -9,7 +9,6 @@ use \OCP\AppFramework\ApiController;
 use \OCP\IRequest;
 
 class TagsController extends ApiController {
-
 	private $userId;
 
 	/** @var Bookmarks */
@@ -30,13 +29,12 @@ class TagsController extends ApiController {
 	 * @CORS
 	 */
 	public function deleteTag($old_name = "") {
-
-		if ($old_name == "") {
-			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
+		if ($old_name === "") {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
 		$this->bookmarks->deleteTag($this->userId, $old_name);
-		return new JSONResponse(array('status' => 'success'));
+		return new JSONResponse(['status' => 'success']);
 	}
 
 	/**
@@ -50,16 +48,16 @@ class TagsController extends ApiController {
 	 * @CORS
 	 */
 	public function renameTag($old_name = "", $new_name = "", $name = '') {
-    if ($new_name === '') {
-      $new_name = $name;
-    }
+		if ($new_name === '') {
+			$new_name = $name;
+		}
 
-		if ($old_name == "" || $new_name == "") {
-			return new JSONResponse(array(), Http::STATUS_BAD_REQUEST);
+		if ($old_name === "" || $new_name === "") {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
 		$this->bookmarks->renameTag($this->userId, $old_name, $new_name);
-		return new JSONResponse(array('status' => 'success'));
+		return new JSONResponse(['status' => 'success']);
 	}
 
 	/**
@@ -68,15 +66,14 @@ class TagsController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function fullTags($count=FALSE) {
-
+	public function fullTags($count=false) {
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
-		$qtags = $this->bookmarks->findTags($this->userId, array(), 0);
-		$tags = array();
+		$qtags = $this->bookmarks->findTags($this->userId, [], 0);
+		$tags = [];
 		foreach ($qtags as $tag) {
-			if ($count === TRUE) {
+			if ($count === true) {
 				$tags[] = ['name' => $tag['tag'], 'count' => $tag['nbr']];
 			} else {
 				$tags[] = $tag['tag'];
@@ -85,5 +82,4 @@ class TagsController extends ApiController {
 
 		return new JSONResponse($tags);
 	}
-
 }
