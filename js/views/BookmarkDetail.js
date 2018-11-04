@@ -144,7 +144,7 @@ export default Marionette.View.extend({
 		}
 		this.savingState = 'saving';
 		this.model.set({
-			[$el.data('attribute')]: $el.text()
+			[$el.data('attribute')]: $el[0].innerText
 		});
 		this.model.once('sync', function() {
 			that.savingState = 'saved';
