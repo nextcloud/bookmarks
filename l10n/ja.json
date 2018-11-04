@@ -2,8 +2,15 @@
     "Bookmarks" : "ブックマーク",
     "Failed to import one bookmark, because: " : "ブックマークのインポートに失敗しました。原因:",
     "Add a Bookmark" : "ブックマークを追加",
+    "Add folder" : "フォルダを追加",
     "Select" : "選択",
+    "Details" : "詳細",
+    "Delete" : "削除",
     "Saved" : "保存しました",
+    "Tags" : "タグ",
+    "Favorites" : "お気に入り",
+    "Settings" : "設定",
+    "RSS Feed" : "RSS フィード",
     "An error occurred while trying to save the bookmark." : "ブックマークの保存を試している際にエラーが発生しました。",
     "Error" : "エラー",
     "Import error" : "インポート エラー",
@@ -13,6 +20,7 @@
     "The title of the page" : "ページのタイトル",
     "The address of the page" : "ページのアドレス",
     "Description of the page" : "ページの説明",
-    "Save" : "保存"
+    "Save" : "保存",
+    "Previews" : "プレビュー"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
