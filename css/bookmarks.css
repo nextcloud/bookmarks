@@ -636,6 +636,7 @@ button span,
 	width: auto;
 	min-height: 300px;
 	cursor: text;
+	white-space: pre-wrap;
 }
 
 .bookmark-detail .description.empty {
