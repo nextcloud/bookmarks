@@ -89,7 +89,8 @@ class Application extends App {
 				$c->query('ServerContainer')->query(DefaultPreviewService::class),
 				$c->query('ServerContainer')->query(FaviconPreviewService::class),
 				$c->query('ServerContainer')->query(ScreenlyPreviewService::class),
-				$c->query('ServerContainer')->query(ITimeFactory::class)
+				$c->query('ServerContainer')->query(ITimeFactory::class),
+				$c->query('ServerContainer')->getLogger()
 			);
 		});
 
