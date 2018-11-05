@@ -68,7 +68,8 @@ class Application extends App {
 				$c->query('ServerContainer')->getDatabaseConnection(),
 				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
 				$c->query('ServerContainer')->query(Bookmarks::class),
-				$c->query('ServerContainer')->getUserManager()
+				$c->query('ServerContainer')->getUserManager(),
+				$c->query('ServerContainer')->getLogger()
 			);
 		});
 
@@ -163,15 +164,6 @@ class Application extends App {
 				$uid,
 				$c->query('ServerContainer')->getConfig()
 			);
-		});
-
-		$container->registerService('RecreateAllBookmarks', function ($c) {
-			/** @var IContainer $c*/
-			return new RecreateAllBookmarks(
-					$c->query('ServerContainer')->getDb(),
-					$c->query('ServerContainer')->query(Bookmarks::class),
-					$c->query('ServerContainer')->getConfig()
-				);
 		});
 	}
 }
