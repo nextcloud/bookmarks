@@ -12,6 +12,7 @@ namespace OCA\Bookmarks\Controller\Rest;
 
 use OCP\IDBConnection;
 use OCP\IL10N;
+use OCP\ILogger;
 use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\DataDisplayResponse;
@@ -47,10 +48,11 @@ class InternalBookmarkController extends ApiController {
 		IPreviewService $previewService,
 		IPreviewService $faviconService,
 		IPreviewService $screenshotService,
-		ITimeFactory $timeFactory
+		ITimeFactory $timeFactory,
+		ILogger $logger
 	) {
 		parent::__construct($appName, $request);
-		$this->publicController = new BookmarkController($appName, $request, $userId, $db, $l10n, $bookmarks, $userManager);
+		$this->publicController = new BookmarkController($appName, $request, $userId, $db, $l10n, $bookmarks, $userManager, $logger);
 		$this->userId = $userId;
 		$this->libBookmarks = $bookmarks;
 		$this->previewService = $previewService;

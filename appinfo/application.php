@@ -137,7 +137,8 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,
-				$c->query('FoldersController')
+				$c->query('FoldersController'),
+				$c->query('ServerContainer')->getLogger()
 			);
 		});
 
