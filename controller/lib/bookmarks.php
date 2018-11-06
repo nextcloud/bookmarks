@@ -989,7 +989,7 @@ class Bookmarks {
 	public function removeFromFolders($userId, $bookmarkId, $folders) {
 		$bm = $this->findUniqueBookmark($bookmarkId, $userId);
 
-		if (!bm) {
+		if (!$bm) {
 			return false;
 		}
 
