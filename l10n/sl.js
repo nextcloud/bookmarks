@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Zaznamki",
     "Failed to import one bookmark, because: " : "Uvoz izbranega zaznamka je spodletel:",
-    "Bookm." : "Zaznamek",
     "No file provided for import" : "Ni navedenih datotek za uvoz",
     "Unsupported file type for import" : "Nepodprta vrsta datoteke za uvoz",
     "Add a Bookmark" : "Dodaj zaznamek",

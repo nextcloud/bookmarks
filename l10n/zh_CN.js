@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "书签",
     "Failed to import one bookmark, because: " : "无法导入一个书签，因为：",
-    "Bookm." : "书签.",
     "No file provided for import" : "未提供导入文件",
     "Unsupported file type for import" : "不支持导入的文件类型",
     "Add a Bookmark" : "添加书签",

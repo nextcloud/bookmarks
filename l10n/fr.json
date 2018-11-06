@@ -1,7 +1,6 @@
 { "translations": {
     "Bookmarks" : "Favoris",
     "Failed to import one bookmark, because: " : "Impossible d'importer un favori",
-    "Bookm." : "Favoris",
     "No file provided for import" : "Aucun fichier à importer.",
     "Unsupported file type for import" : "Type de fichier non supporté",
     "Add a Bookmark" : "Ajouter un favori",

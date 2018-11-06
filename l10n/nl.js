@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Bladwijzers",
     "Failed to import one bookmark, because: " : "Mislukt om een bladwijzer te importeren, want:",
-    "Bookm." : "Bladw.",
     "No file provided for import" : "Geen bestand verschaft om te importeren",
     "Unsupported file type for import" : "Niet ondersteund bestandstype om te importeren",
     "Add a Bookmark" : "Toevoegen bladwijzer",

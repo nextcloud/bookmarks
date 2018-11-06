@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Segnalibri",
     "Failed to import one bookmark, because: " : "Importazione di un segnalibro non riuscita, motivo:",
-    "Bookm." : "Segnal.",
     "No file provided for import" : "Nessun file fornito per l'importazione",
     "Unsupported file type for import" : "Tipo di file non supportato per l'importazione",
     "Add a Bookmark" : "Aggiungi un segnalibro",

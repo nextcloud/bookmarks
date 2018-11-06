@@ -7,6 +7,7 @@ OC.L10N.register(
     "Description" : "Aprašymas",
     "Settings" : "Nustatymai",
     "Bookmarklet" : "Išsaugojimo mygtukas",
+    "Add to {instanceName} " : "Pridėti į {instanceName} ",
     "RSS Feed" : "RSS kanalas",
     "Error" : "Klaida",
     "Import error" : "Įkėlimo klaida",

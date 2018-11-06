@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Legosignoj",
     "Failed to import one bookmark, because: " : "Malsukcesis enporti unu legosignon ĉar:",
-    "Bookm." : "Legosigno.",
     "No file provided for import" : "Neniu dosiero donis por enporti",
     "Add a Bookmark" : "Aldoni legosignon",
     "Select" : "Elekti",

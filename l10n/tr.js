@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Yer İmleri",
     "Failed to import one bookmark, because: " : "Bir yer imi şu nedenle içe aktarılamadı:",
-    "Bookm." : "Yer imi",
     "No file provided for import" : "İçe aktarılacak bir dosya seçilmemiş",
     "Unsupported file type for import" : "İçe aktarılacak dosya türü desteklenmiyor",
     "Add a Bookmark" : "Yer İmi Ekle",

@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Marcadores",
     "Failed to import one bookmark, because: " : "Se presentó una falla al importar un marcador debido a:",
-    "Bookm." : "Marcdr.",
     "No file provided for import" : "No se especificó un archivo para importar",
     "Unsupported file type for import" : "Tipo de archivo no soportado para importar",
     "Bookmarklet" : "Marcador a código ",

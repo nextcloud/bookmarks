@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Könyvjelzők",
     "Failed to import one bookmark, because: " : "Nem sikerült egy könyvjelző betöltése, mert:",
-    "Bookm." : "Könyvj.",
     "No file provided for import" : "Nincs fájl megadva importáláshoz",
     "Unsupported file type for import" : "Nem támogatott fájltípus az importáláshoz",
     "Add a Bookmark" : "Könyvjelző hozzáadása",

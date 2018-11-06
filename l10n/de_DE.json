@@ -1,7 +1,6 @@
 { "translations": {
     "Bookmarks" : "Lesezeichen",
     "Failed to import one bookmark, because: " : "Ein Lesezeichen konnte nicht importiert werden, weil:",
-    "Bookm." : "Lesez.",
     "No file provided for import" : "Keine Datei zum Importieren ausgewählt",
     "Unsupported file type for import" : "Ein Import von Dateien dieses Typs wird nicht unterstützt",
     "Add a Bookmark" : "Lesezeichen hinzufügen",

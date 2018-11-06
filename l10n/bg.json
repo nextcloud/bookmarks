@@ -1,7 +1,6 @@
 { "translations": {
     "Bookmarks" : "Отметки",
     "Failed to import one bookmark, because: " : "Неуспешно внасяне на една отметка защото:",
-    "Bookm." : "Отметки",
     "No file provided for import" : "Няма избран файл за внасяне",
     "Unsupported file type for import" : "Типът на файла за внасяне не се поддържа",
     "Add a Bookmark" : "Добави отметка",

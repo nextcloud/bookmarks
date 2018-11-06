@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Bokmärken",
     "Failed to import one bookmark, because: " : "Misslyckades att importera bokmärken eftersom:",
-    "Bookm." : "Bokm.",
     "No file provided for import" : "Inga filer given för importering",
     "Unsupported file type for import" : "Ogiltig filtyp för import",
     "Add a Bookmark" : "Lägg till ett bokmärke",

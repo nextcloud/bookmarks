@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Zakładki",
     "Failed to import one bookmark, because: " : "Nie można było zaimportować jednej zakładki ponieważ:",
-    "Bookm." : "Bookm.",
     "No file provided for import" : "Brak pliku do importu",
     "Unsupported file type for import" : "NIewspierany typ pliku importowania",
     "Add a Bookmark" : "Dodaj Zakładkę",

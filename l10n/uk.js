@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Закладки",
     "Failed to import one bookmark, because: " : "Помилка з імпортом закладки:",
-    "Bookm." : "Закладки",
     "No file provided for import" : "Відсутній файл для імпорту",
     "Unsupported file type for import" : "Цей тип файлу не підтримується",
     "An error occurred while trying to save the bookmark." : "Під час спроби зберегти закладку сталася помилка.",

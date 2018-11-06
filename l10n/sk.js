@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Záložky",
     "Failed to import one bookmark, because: " : "Nepodarilo sa importovať jednu záložku, pretože:",
-    "Bookm." : "Záložky",
     "No file provided for import" : "Nie je k dispozícii žiadny súbor na import",
     "Unsupported file type for import" : "Nepodporovaný typ súboru na import",
     "Add a Bookmark" : "Pridať záložku",

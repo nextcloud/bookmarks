@@ -1,7 +1,6 @@
 { "translations": {
     "Bookmarks" : "Забелешке",
     "Failed to import one bookmark, because: " : "Грешка приликом увоза забелешке, зато што:",
-    "Bookm." : "Забелеш.",
     "No file provided for import" : "Није дат фајл за увоз",
     "Unsupported file type for import" : "Неподржани тип фајла за увоз",
     "Add a Bookmark" : "Додај забелешку",
