@@ -142,10 +142,11 @@ class FoldersController extends ApiController {
 	 * @CORS
 	 */
 	public function setFolderChildrenOrder($folderId, $data = []) {
-		if ($this->bookmarks->setFolderChildren($userId, $folderId, $data)) {
+		try {
+			$this->bookmarks->setFolderChildren($this->userId, $folderId, $data);
 			return new JSONResponse(['status' => 'success']);
-		} else {
-			return new JSONResponse(['status' => 'error', 'data' => 'Malformatted input or not all current children were included'], Http::STATUS_BAD_REQUEST);
+		} catch (Exception $e) {
+			return new JSONResponse(['status' => 'error', 'data' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
 		}
 	}
 
