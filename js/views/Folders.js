@@ -38,14 +38,14 @@ export default Marionette.CollectionView.extend({
 				0
 			);
 			length++;
-			this.addChildView(
-				new AddFolderView({
-					parentFolder: this.parentFolder,
-					collection: this.collection
-				}),
-				length
-			);
 		}
+		this.addChildView(
+			new AddFolderView({
+				parentFolder: this.parentFolder,
+				collection: this.collection
+			}),
+			length
+		);
 	}
 });
 

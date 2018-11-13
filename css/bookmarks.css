@@ -655,6 +655,10 @@ button span,
 	user-select: none;
 }
 
+.folders-item .folders-item.add-folder {
+	display: none !important;
+}
+
 .folders-item.add-folder.droptarget-folder,
 .folders-item.add-folder.editing {
 	display: inline-flex !important;
