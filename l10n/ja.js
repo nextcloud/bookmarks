@@ -19,6 +19,7 @@ OC.L10N.register(
     "Settings" : "設定",
     "Bookmarklet" : "ブックマークレット",
     "Add to {instanceName} " : "{instanceName}に追加",
+    "Recently added" : "最近追加",
     "Most visited" : "最も訪れた",
     "RSS Feed" : "RSS フィード",
     "Permanently remove all bookmarks from your account. There is no going back!" : "アカウントからすべてのブックマークを完全に削除します。 戻ることはありません！",
