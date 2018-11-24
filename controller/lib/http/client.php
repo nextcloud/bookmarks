@@ -38,7 +38,7 @@ class Client implements ClientInterface {
 	 */
 	public function sendRequest(RequestInterface $request) : ResponseInterface {
 		if ($request->getMethod() === 'GET' || $request->getMethod() === 'OPTIONS') {
-			$ncRes = $this->nextcloudClient->{strtolower($request->getMethod())}($request->getUri());
+			$ncRes = $this->nextcloudClient->{strtolower($request->getMethod())}($request->getUri(), ['timeout' => 10]);
 			$res = new Response();
 
 			foreach ($ncRes->getHeaders() as $key => $value) {
