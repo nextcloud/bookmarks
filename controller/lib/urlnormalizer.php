@@ -26,7 +26,6 @@ class UrlNormalizer {
 ];
 
 	public function __construct() {
-		$this->normalizer = new NormalisedUrl();
 	}
 
 	/**
@@ -67,29 +66,29 @@ class UrlNormalizer {
 
 	public static function construct($parts) {
 		$url = '';
-		if ($parts['scheme']) {
+		if (strlen($parts['scheme'])>0) {
 			if (in_array($parts['scheme'], self::SCHEMES)) {
 				$url .= $parts['scheme'] . '://';
 			} else {
 				$url .= $parts['scheme'] . ':';
 			}
 		}
-		if ($parts['username'] && $parts['password']) {
+		if (strlen($parts['username'])>0 && strlen($parts['password'])>0) {
 			$url .= $parts['username'] . ':' . $parts['password'] . '@';
-		} elseif ($parts['username']) {
+		} elseif (strlen($parts['username'])>0) {
 			$url .= $parts['username'] . '@';
 		}
 		$url .= $parts['host'];
-		if ($parts['port']) {
+		if (strlen($parts['port'])>0) {
 			$url .= ':' . $parts['port'];
 		}
-		if ($parts['path']) {
+		if (strlen($parts['path'])>0) {
 			$url .= $parts['path'];
 		}
-		if ($parts['query']) {
+		if (strlen($parts['query'])>0) {
 			$url .= '?' . $parts['query'];
 		}
-		if ($parts['fragment']) {
+		if (strlen($parts['fragment'])>0) {
 			$url .= '#' . $parts['fragment'];
 		}
 		return $url;
@@ -117,7 +116,7 @@ class UrlNormalizer {
 			return '/';
 		}
 		$npath = self::get_absolute_path(self::unquote($path, self::QUOTE_EXCEPTIONS['path']));
-		if ($path[count($path)-1] === '/' && $npath != '/') {
+		if ($path[strlen($path)-1] === '/' && $npath != '/') {
 			$npath .= '/';
 		}
 		return $npath;
@@ -140,7 +139,7 @@ class UrlNormalizer {
 	}
 
 	public static function normalize_query($query) {
-		if ($query === '' || count($query) <= 2) {
+		if ($query === '' || strlen($query) <= 2) {
 			return '';
 		}
 		$nquery = self::unquote($query, self::QUOTE_EXCEPTIONS['query']);
@@ -181,9 +180,9 @@ class UrlNormalizer {
 		$res = $s[0];
 		for ($i=1; $i < count($s); $i++) {
 			$h = $s[$i];
-			$c = _hextochr.get(substr($h, 0, 2));
-			if ($c && false === strpos($exceptions, $c)) {
-				if (strlen(h) > 2) {
+			$c = isset($_hextochr[substr($h, 0, 2)]) ? $_hextochr[substr($h, 0, 2)] : '';
+			if (strlen($c) > 0 && false === strpos($exceptions, $c)) {
+				if (strlen($h) > 2) {
 					$res .= $c . substr($h, 2);
 				} else {
 					$res .= $c;
@@ -208,7 +207,7 @@ class UrlNormalizer {
 				if (strpos(self::SCHEME_CHARS, $c) === false) {
 					break;
 				} else {
-					$scheme = strtolower(substr(url, 0, $scheme_end));
+					$scheme = strtolower(substr($url, 0, $scheme_end));
 					$rest = ltrim(substr($url, $scheme_end), ':/');
 				}
 			}
@@ -221,19 +220,19 @@ class UrlNormalizer {
 		$l_frag = strpos($rest, '#');
 		if ($l_path > 0) {
 			if ($l_query > 0 && $l_frag > 0) {
-				$netloc = substr(rest, 0, $l_path);
+				$netloc = substr($rest, 0, $l_path);
 				$path = substr($rest, $l_path, min($l_query, $l_frag));
 			} elseif ($l_query > 0) {
 				if ($l_query > $l_path) {
 					$netloc = substr($rest, 0, $l_path);
-					$path = substr($rest, $l_path, $l_query);
+					$path = substr($rest, $l_path, $l_query-$l_path);
 				} else {
 					$netloc = substr($rest, 0, $l_query);
 					$path = '';
 				}
 			} elseif ($l_frag > 0) {
 				$netloc = substr($rest, 0, $l_path);
-				$path = substr($rest, $l_path, $l_frag);
+				$path = substr($rest, $l_path, $l_frag-$l_path);
 			} else {
 				$netloc = substr($rest, 0, $l_path);
 				$path = substr($rest, $l_path);
@@ -249,9 +248,9 @@ class UrlNormalizer {
 		}
 		if ($l_query > 0) {
 			if ($l_frag > 0) {
-				$query = substr($rest, $l_query+1, $l_frag);
+				$query = substr($rest, $l_query+1, $l_frag-($l_query+1));
 			} else {
-				$query = subtr($rest, $l_query+1);
+				$query = substr($rest, $l_query+1);
 			}
 		}
 		if ($l_frag > 0) {
@@ -261,7 +260,7 @@ class UrlNormalizer {
 			$path = $netloc . $path;
 			$netloc = '';
 		}
-		return [$scheme, $netloc, $path, $query, $fragment];
+		return ['scheme' => $scheme, 'netloc'=> $netloc, 'path' => $path, 'query'=>$query, 'fragment' => $fragment];
 	}
 
 	public static function _clean_netloc($netloc) {
@@ -281,7 +280,7 @@ class UrlNormalizer {
 			}
 		}
 		$netloc = self::_clean_netloc($netloc);
-		if (strpos($netloc, ':') !== false && $netloc[count($netloc)-1] !== ']') {
+		if (strpos($netloc, ':') !== false && $netloc[strlen($netloc)-1] !== ']') {
 			$host = substr($netloc, 0, strpos($netloc, ':'));
 			$port = substr($netloc, strpos($netloc, ':')+1);
 		} else {
