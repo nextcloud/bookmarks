@@ -167,8 +167,10 @@ class Bookmarks {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('bookmark_id', 'index')
-			->from('bookmarks_folders_bookmarks')
-			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId)));
+			->from('bookmarks_folders_bookmarks', 'f')
+			->innerJoin('f', 'bookmarks', 'b', $qb->expr()->eq('b.id', 'f.bookmark_id'))
+			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId)))
+			->andWhere($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
 		$childBookmarks = $qb->execute()->fetchAll();
 
 		$children = array_merge($childFolders, $childBookmarks);
