@@ -39,7 +39,8 @@ class UrlNormalizer {
 			return '';
 		}
 		$parts = self::split($url);
-		if ($parts['scheme']) {
+
+		if (isset($parts['scheme']) && strlen($parts['scheme']) > 0) {
 			$netloc = $parts['netloc'];
 			if (in_array($parts['scheme'], self::SCHEMES)) {
 				$path = self::normalize_path($parts['path']);
@@ -66,6 +67,7 @@ class UrlNormalizer {
 
 	public static function construct($parts) {
 		$url = '';
+
 		if (strlen($parts['scheme'])>0) {
 			if (in_array($parts['scheme'], self::SCHEMES)) {
 				$url .= $parts['scheme'] . '://';
@@ -135,7 +137,7 @@ class UrlNormalizer {
 				$absolutes[] = $part;
 			}
 		}
-		return implode('/', $absolutes);
+		return '/'.implode('/', $absolutes);
 	}
 
 	public static function normalize_query($query) {
@@ -221,7 +223,7 @@ class UrlNormalizer {
 		if ($l_path > 0) {
 			if ($l_query > 0 && $l_frag > 0) {
 				$netloc = substr($rest, 0, $l_path);
-				$path = substr($rest, $l_path, min($l_query, $l_frag));
+				$path = substr($rest, $l_path, min($l_query, $l_frag)-$l_path);
 			} elseif ($l_query > 0) {
 				if ($l_query > $l_path) {
 					$netloc = substr($rest, 0, $l_path);
