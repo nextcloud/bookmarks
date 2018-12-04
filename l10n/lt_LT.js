@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Nuorodos",
-    "Unsupported file type for import" : "Įkeliami duomenys neturi nuorodų",
     "Delete" : "Ištrinti",
     "Description" : "Aprašymas",
     "Settings" : "Nustatymai",
