@@ -1,3 +1,7 @@
+#app-navigation {
+	transform: translateX(0) !important;
+}
+
 #app-navigation > ul {
 	height: auto;
 	overflow: initial; /* in order to display popupmenus correctly*/
