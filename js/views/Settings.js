@@ -129,7 +129,7 @@ export default Marionette.View.extend({
 			data = $.parseJSON(data);
 		} catch (e) {
 			this.getUI('status').text(
-				t('bookmark', 'Error parsing the import result')
+				t('bookmarks', 'Error parsing the import result')
 			);
 			return;
 		}
@@ -142,7 +142,7 @@ export default Marionette.View.extend({
 			this.getUI('status').html(list);
 			return;
 		}
-		this.getUI('status').text(t('bookmark', 'Import completed successfully.'));
+		this.getUI('status').text(t('bookmarks', 'Import completed successfully.'));
 		Backbone.history.navigate('', { trigger: true }); // reload app
 		this.app.folders.fetch();
 	},
@@ -167,6 +167,13 @@ export default Marionette.View.extend({
 	},
 	deleteAllBookmarks: function() {
 		var app = this.app;
+		if (
+			!confirm(
+				t('bookmarks', 'Do you really want to delete all your bookmarks?')
+			)
+		) {
+			return;
+		}
 		$.ajax({
 			method: 'DELETE',
 			url: 'bookmark',
