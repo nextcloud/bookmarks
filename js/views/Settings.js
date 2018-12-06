@@ -122,10 +122,15 @@ export default Marionette.View.extend({
 			.addClass('icon-loading-small');
 	},
 	importResult: function(data) {
+		this.$('.import-facade .icon-upload')
+			.addClass('icon-upload')
+			.removeClass('icon-loading-small');
 		try {
 			data = $.parseJSON(data);
 		} catch (e) {
-			this.getUI('status').text(t('bookmark', 'Import error'));
+			this.getUI('status').text(
+				t('bookmark', 'Error parsing the import result')
+			);
 			return;
 		}
 		if (data.status == 'error') {
