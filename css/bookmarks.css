@@ -754,7 +754,7 @@ button span,
 }
 
 .settings {
-	position: absolute;
+	position: sticky;
 	bottom: 0;
 	z-index: 100;
 	width: 100%;
