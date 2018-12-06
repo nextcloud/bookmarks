@@ -97,6 +97,10 @@ class WebViewController extends Controller {
 			'bookmarkExists'=> $bookmarkExists,
 			'tags'          => $tags
 		];
-		return new TemplateResponse('bookmarks', 'addBookmarklet', $params);  // templates/main.php
+		$policy = new ContentSecurityPolicy();
+		$policy->allowEvalScript(true);
+		$res = new TemplateResponse('bookmarks', 'addBookmarklet', $params);  // templates/main.php
+		$res->setContentSecurityPolicy($policy);
+		return $res;
 	}
 }
