@@ -57,13 +57,15 @@ class WebViewController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		$params = array('user' => $this->userId);
+		$params = ['user' => $this->userId];
 
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedFrameDomain("'self'");
+		$policy->allowEvalScript(true);
 
 		$this->eventDispatcher->dispatch(
-			'\OCA\Bookmarks::loadAdditionalScripts', new GenericEvent(null, [])
+			'\OCA\Bookmarks::loadAdditionalScripts',
+			new GenericEvent(null, [])
 		);
 
 		$response = new TemplateResponse('bookmarks', 'main', $params);
@@ -82,20 +84,19 @@ class WebViewController extends Controller {
 	public function bookmarklet($url = "", $title = "") {
 		$bookmarkExists = $this->bookmarks->bookmarkExists($url, $this->userId);
 		$description = "";
-        $tags = [];
-		if ($bookmarkExists !== false){
+		$tags = [];
+		if ($bookmarkExists !== false) {
 			$bookmark = $this->bookmarks->findUniqueBookmark($bookmarkExists, $this->userId);
 			$description = $bookmark['description'];
-            $tags = $bookmark['tags'];
+			$tags = $bookmark['tags'];
 		}
-		$params = array(
-            'url'           => $url,
-            'title'         => $title,
-            'description'   => $description,
-            'bookmarkExists'=> $bookmarkExists,
-            'tags'          => $tags
-        );
+		$params = [
+			'url'           => $url,
+			'title'         => $title,
+			'description'   => $description,
+			'bookmarkExists'=> $bookmarkExists,
+			'tags'          => $tags
+		];
 		return new TemplateResponse('bookmarks', 'addBookmarklet', $params);  // templates/main.php
 	}
-
 }
