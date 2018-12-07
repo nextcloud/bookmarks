@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Beim Speichern des Lesezeichens ist ein Fehler aufgetreten.",
     "Error" : "Fehler",
     "Uncategorized" : "Ohne Kategorie",
-    "Import error" : "Fehler beim Import",
     "Import completed successfully." : "Import erfolgreich beendet.",
     "Set tags" : "Schlagworte setzen",
     "A Bookmark manager for Nextcloud" : "Eine Lesezeichenverwaltung für Nextcloud",

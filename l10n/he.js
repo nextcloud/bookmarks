@@ -25,7 +25,6 @@ OC.L10N.register(
     "Open details" : "פתיחת פרטים",
     "An error occurred while trying to save the bookmark." : "אירעה שגיאה בעת הניסיון לשמור סימניה.",
     "Error" : "שגיאה",
-    "Import error" : "שגיאת ייבוא",
     "Import completed successfully." : "הייבוא הושלם בהצלחה.",
     "Set tags" : "הגדרת תגיות",
     "A Bookmark manager for Nextcloud" : "מנהל סימניות ל־Nextcloud",

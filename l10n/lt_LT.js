@@ -9,7 +9,6 @@ OC.L10N.register(
     "Add to {instanceName} " : "Pridėti į {instanceName} ",
     "RSS Feed" : "RSS kanalas",
     "Error" : "Klaida",
-    "Import error" : "Įkėlimo klaida",
     "Import completed successfully." : "Įkelta",
     "The title of the page" : "Pavadinimas",
     "The address of the page" : "Nuoroda",

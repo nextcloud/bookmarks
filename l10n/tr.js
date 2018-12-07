@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Yer imi kaydedilmeye çalışılırken bir sorun çıktı.",
     "Error" : "Hata",
     "Uncategorized" : "Kategorisiz",
-    "Import error" : "İçe aktarma sorunu",
     "Import completed successfully." : "İçe aktarma tamamlandı.",
     "Set tags" : "Etiketleri ayarla",
     "A Bookmark manager for Nextcloud" : "Nextcloud için yer imi yöneticisi",

@@ -24,7 +24,6 @@ OC.L10N.register(
     "Open details" : "Öppna detaljer",
     "An error occurred while trying to save the bookmark." : "Ett fel uppstod när bokmärket skulle sparas.",
     "Error" : "Fel",
-    "Import error" : "Importeringsfel",
     "Import completed successfully." : "Importen slutfördes utan problem.",
     "Set tags" : "Ange taggar",
     "A Bookmark manager for Nextcloud" : "En bokmärkeshanterare för Nextcloud",

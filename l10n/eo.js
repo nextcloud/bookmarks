@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Eraro dum la konservado de la legosigno",
     "Error" : "Eraro",
     "Uncategorized" : "Senkategoria",
-    "Import error" : "Eraro dum enporto",
     "Import completed successfully." : "Enporto okazis sukcese",
     "Set tags" : "Skribu etikedojn",
     "A Bookmark manager for Nextcloud" : "Mastrumilo de legosignoj por Nextcloud",

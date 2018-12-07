@@ -25,7 +25,6 @@ OC.L10N.register(
     "Open details" : "Otwórz szczegóły",
     "An error occurred while trying to save the bookmark." : "Wystąpił błąd podczas próby zapisania zakładki.",
     "Error" : "Błąd",
-    "Import error" : "Błąd importu",
     "Import completed successfully." : "Importowanie zakończone pomyślnie.",
     "Set tags" : "Ustaw tagi",
     "A Bookmark manager for Nextcloud" : "Menadżer zakładek dla Nextcloud",

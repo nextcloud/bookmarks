@@ -17,7 +17,6 @@ OC.L10N.register(
     "Add to {instanceName} " : "Add to {instanceName} ",
     "An error occurred while trying to save the bookmark." : "An error occurred while trying to save the bookmark.",
     "Error" : "Error",
-    "Import error" : "Import error",
     "Import completed successfully." : "Import completed successfully.",
     "Set tags" : "Set tags",
     "A Bookmark manager for Nextcloud" : "A Bookmark manager for Nextcloud",

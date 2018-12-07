@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "ブックマークの保存を試している際にエラーが発生しました。",
     "Error" : "エラー",
     "Uncategorized" : "未分類",
-    "Import error" : "インポート エラー",
     "Import completed successfully." : "インポートに成功しました",
     "Set tags" : "タグを設定",
     "A Bookmark manager for Nextcloud" : "Nextcloudのブックマークマネージャー",

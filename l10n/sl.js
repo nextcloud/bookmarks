@@ -24,7 +24,6 @@ OC.L10N.register(
     "Open details" : "Odpri podrobnosti",
     "An error occurred while trying to save the bookmark." : "Prišlo je do napake med shranjevanjem zaznamka.",
     "Error" : "Napaka",
-    "Import error" : "Napaka uvoza",
     "Import completed successfully." : "Uvoz je uspešno končan.",
     "Set tags" : "Nastavitve oznak",
     "A Bookmark manager for Nextcloud" : "Upravljalnik zaznamkov za Nextcloud",

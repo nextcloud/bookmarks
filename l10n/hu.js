@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Hiba történt a könyvjelző mentése közben.",
     "Error" : "Hiba",
     "Uncategorized" : "Kategorizálatlan",
-    "Import error" : "Importálási hiba",
     "Import completed successfully." : "Sikeres importálás.",
     "Set tags" : "Cimke beállítás",
     "A Bookmark manager for Nextcloud" : "Könyvjelző kezelő Nextcloud-hoz",

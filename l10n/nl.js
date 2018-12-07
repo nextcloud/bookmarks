@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Er trad een fout op bij je poging de bladwijzer op te slaan",
     "Error" : "Fout",
     "Uncategorized" : "Niet gecategoriseerd",
-    "Import error" : "Importeer fout",
     "Import completed successfully." : "Importeren succesvol afgerond.",
     "Set tags" : "Instellen tags",
     "A Bookmark manager for Nextcloud" : "Een bladwijzerbeheerder voor Nextcloud",

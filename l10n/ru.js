@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Не удалось сохранить закладку.",
     "Error" : "Ошибка",
     "Uncategorized" : "Без категории",
-    "Import error" : "Ошибка импорта",
     "Import completed successfully." : "Успешное завершение импорта.",
     "Set tags" : "Задать метки",
     "A Bookmark manager for Nextcloud" : "Менеджер закладок для Nextcloud",

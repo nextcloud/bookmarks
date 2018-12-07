@@ -15,7 +15,6 @@ OC.L10N.register(
     "Recently added" : "Последно добавени",
     "RSS Feed" : "RSS емисия",
     "Error" : "Грешка",
-    "Import error" : "Грешка при внасяне",
     "Import completed successfully." : "Внасянето приключи успешно.",
     "Add a bookmark" : "Добави отметка",
     "This URL is already bookmarked! Overwrite?" : "Този адрес е вече добавен към отметките! Искате ли да презапишете?",

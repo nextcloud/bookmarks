@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Дошло је до грешке при покушају чувања забелешке.",
     "Error" : "Грешка",
     "Uncategorized" : "Некатегоризовано",
-    "Import error" : "Грешка приликом увоза",
     "Import completed successfully." : "Увоз успешно завршен.",
     "Set tags" : "Постави ознаке",
     "A Bookmark manager for Nextcloud" : "Менаџер забелешки за Некстклауд",

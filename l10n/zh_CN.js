@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "尝试保存书签时发生错误.",
     "Error" : "错误",
     "Uncategorized" : "未分类",
-    "Import error" : "导入错误",
     "Import completed successfully." : "导入完全成功.",
     "Set tags" : "设置标签",
     "A Bookmark manager for Nextcloud" : "适用于 Nextcloud 的书签管理",

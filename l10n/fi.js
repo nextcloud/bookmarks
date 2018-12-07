@@ -26,7 +26,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Kirjanmerkin tallennusta yrittäessä tapahtui virhe.",
     "Error" : "Virhe",
     "Uncategorized" : "Luokittelematon",
-    "Import error" : "Tuontivirhe",
     "Import completed successfully." : "Tuonti suoritettiin onnistuneesti.",
     "Set tags" : "Aseta tunnisteet",
     "A Bookmark manager for Nextcloud" : "Kirjanmerkkien hallinta Nextcloudille",

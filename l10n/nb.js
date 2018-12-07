@@ -9,7 +9,6 @@ OC.L10N.register(
     "Deselect" : "Fjern markering",
     "An error occurred while trying to save the bookmark." : "En feil inntraff under forsøk på å lagre bokmerket.",
     "Error" : "Feil",
-    "Import error" : "Feil under importering",
     "Import completed successfully." : "Importering fullført uten feil",
     "Set tags" : "Sett merkelapper",
     "Add a bookmark" : "Legg til bokmerke",

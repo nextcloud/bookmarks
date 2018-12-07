@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Pri pokuse o uloženie záložky sa vyskytla chyba.",
     "Error" : "Chyba",
     "Uncategorized" : "Nezaradené",
-    "Import error" : "Chyba pri importovaní",
     "Import completed successfully." : "Import úspešne dokončený.",
     "Set tags" : "Nastaviť štítky",
     "A Bookmark manager for Nextcloud" : "Manažér záložiek pre Nextcloud",

@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Um erro ocorreu enquanto tentava salvar o favorito.",
     "Error" : "Erro",
     "Uncategorized" : "Não categorizado",
-    "Import error" : "Erro na importação",
     "Import completed successfully." : "Importação finalizada com sucesso.",
     "Set tags" : "Atribuir tags",
     "A Bookmark manager for Nextcloud" : "Um gerenciador de marcadores para o Nextcloud",

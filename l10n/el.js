@@ -21,7 +21,6 @@ OC.L10N.register(
     "Open details" : "Άνοιγμα λεπτομερειών",
     "An error occurred while trying to save the bookmark." : "Παρουσιάστηκε σφάλμα κατά την αποθήκευση του σελιδοδείκτη",
     "Error" : "Σφάλμα",
-    "Import error" : "Σφάλμα εισαγωγής",
     "Set tags" : "Ορισμός ετικετών",
     "Add a bookmark" : "Προσθήκη σελιδοδείκτη",
     "The title of the page" : "Ο τίτλος της σελίδας",

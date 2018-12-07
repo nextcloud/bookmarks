@@ -17,7 +17,6 @@ OC.L10N.register(
     "Add to {instanceName} " : "Tilføj til {instanceName} ",
     "An error occurred while trying to save the bookmark." : "Der opstod en fejl, da bogmærket skulle gemmes.",
     "Error" : "Fejl",
-    "Import error" : "Importfejl",
     "Import completed successfully." : "Import afsluttet korrekt.",
     "Set tags" : "Sæt markering",
     "A Bookmark manager for Nextcloud" : "En app til at administrere bogmærker i Nextcloud",

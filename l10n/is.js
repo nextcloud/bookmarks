@@ -28,7 +28,6 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Villa kom upp við að reyna að vista bókamerkið.",
     "Error" : "Villa",
     "Uncategorized" : "Óflokkað",
-    "Import error" : "Villa í innflutningi",
     "Import completed successfully." : "Tókst að flytja inn.",
     "Set tags" : "Stilla merki",
     "A Bookmark manager for Nextcloud" : "Bókamerkjastjóri fyrir Nextcloud",
