@@ -29,6 +29,7 @@ OC.L10N.register(
     "Error" : "Fout",
     "Uncategorized" : "Niet gecategoriseerd",
     "Import completed successfully." : "Importeren succesvol afgerond.",
+    "Do you really want to delete all your bookmarks?" : "Wil je echt al je bladwijzers verwijderen?",
     "Set tags" : "Instellen tags",
     "A Bookmark manager for Nextcloud" : "Een bladwijzerbeheerder voor Nextcloud",
     "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Deze app laat je al je favoriete plekjes op het web op één plaats opslaan en beheren, waarbij je ze ook nog eens kunt synchroniseren met al je apparaten en browsers.\nBekijk derde partij clients hier: https://github.com/nextcloud/bookmarks#third-party-clients",
