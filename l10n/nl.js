@@ -28,6 +28,7 @@ OC.L10N.register(
     "An error occurred while trying to save the bookmark." : "Er trad een fout op bij je poging de bladwijzer op te slaan",
     "Error" : "Fout",
     "Uncategorized" : "Niet gecategoriseerd",
+    "Error parsing the import result" : "Fout bij interpreteren importresultaat",
     "Import completed successfully." : "Importeren succesvol afgerond.",
     "Do you really want to delete all your bookmarks?" : "Wil je echt al je bladwijzers verwijderen?",
     "Set tags" : "Instellen tags",
