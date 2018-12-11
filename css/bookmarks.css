@@ -1,5 +1,7 @@
 #app-navigation {
 	transform: translateX(0) !important;
+	display: block;
+	overflow-x: hidden;
 }
 
 #app-navigation > ul {
