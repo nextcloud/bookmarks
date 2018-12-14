@@ -820,34 +820,36 @@ class Bookmarks {
 
 		// do some meta tag inspection of the link...
 
-		// allow only http(s) and (s)ftp
-		$protocols = '/^(https?|s?ftp)\:\/\//i';
-		try {
-			if (preg_match($protocols, $url)) {
-				$data = $this->getURLMetadata($url);
-			} else {
-				// if no allowed protocol is given, evaluate https and https
-				foreach (['https://', 'http://'] as $protocol) {
-					$testUrl = $protocol . $url;
-					$data = $this->getURLMetadata($testUrl);
-					if (isset($data['basic']) && isset($data['basic']['title'])) {
-						break;
+		if (!isset($title)) {
+			// allow only http(s) and (s)ftp
+			$protocols = '/^(https?|s?ftp)\:\/\//i';
+			try {
+				if (preg_match($protocols, $url)) {
+					$data = $this->getURLMetadata($url);
+				} else {
+					// if no allowed protocol is given, evaluate https and https
+					foreach (['https://', 'http://'] as $protocol) {
+						$testUrl = $protocol . $url;
+						$data = $this->getURLMetadata($testUrl);
+						if (isset($data['basic']) && isset($data['basic']['title'])) {
+							break;
+						}
 					}
 				}
+			} catch (\Exception $e) {
+				// only because the server cannot reach a certain URL it does not
+				// mean the user's browser cannot.
+				\OC::$server->getLogger()->logException($e, ['app' => 'bookmarks']);
 			}
-		} catch (\Exception $e) {
-			// only because the server cannot reach a certain URL it does not
-			// mean the user's browser cannot.
-			\OC::$server->getLogger()->logException($e, ['app' => 'bookmarks']);
-		}
-		if (isset($data['url'])) {
-			$url = $data['url'];
-		}
-		if ((!isset($title) || trim($title) === '')) {
-			$title = isset($data['basic']) && isset($data['basic']['title'])? $data['basic']['title'] : $url;
-		}
-		if (isset($data['basic']['description']) && (!isset($description) || trim($description) === '')) {
-			$description = $data['basic']['description'];
+			if (isset($data['url'])) {
+				$url = $data['url'];
+			}
+			if ((!isset($title) || trim($title) === '')) {
+				$title = isset($data['basic']) && isset($data['basic']['title'])? $data['basic']['title'] : $url;
+			}
+			if (isset($data['basic']['description']) && (!isset($description) || trim($description) === '')) {
+				$description = $data['basic']['description'];
+			}
 		}
 
 		// Check if it is a valid URL (after adding http(s) prefix)
