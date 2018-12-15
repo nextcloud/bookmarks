@@ -34,14 +34,15 @@ class InternalFoldersController extends ApiController {
 
 	/**
 	 * @param int $folderId
+	 * @param int $layers
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function getFolderChildrenOrder($folderId) {
-		return $this->controller->getFolderChildrenOrder($folderId);
+	public function getFolderChildrenOrder($folderId, $layers) {
+		return $this->controller->getFolderChildrenOrder($folderId, $layers);
 	}
 
 	/**

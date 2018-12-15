@@ -121,14 +121,15 @@ class FoldersController extends ApiController {
 
 	/**
 	 * @param int $folderId
+	 * @param int $layers
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function getFolderChildrenOrder($folderId) {
-		$children = $this->bookmarks->getFolderChildren($this->userId, $folderId);
+	public function getFolderChildrenOrder($folderId, $layers=1) {
+		$children = $this->bookmarks->getFolderChildren($this->userId, $folderId, $layers);
 		return new JSONResponse(['status' => 'success', 'data' => $children]);
 	}
 

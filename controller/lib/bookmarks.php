@@ -153,7 +153,7 @@ class Bookmarks {
 	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
 	 * @return array the folders each in the format ["id" => int, "title" => string, "parent_folder" => int ]
 	 */
-	public function getFolderChildren($userId, $folderId = -1) {
+	public function getFolderChildren($userId, $folderId = -1, $layers=1) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('id', 'title', 'parent_folder', 'index')
@@ -175,10 +175,10 @@ class Bookmarks {
 
 		$children = array_merge($childFolders, $childBookmarks);
 		array_multisort(array_column($children, 'index'), \SORT_ASC, $children);
-		$children = array_map(function ($child) {
+		$children = array_map(function ($child) use ($userId, $layers) {
 			return isset($child['bookmark_id']) ?
 			  ['type' =>  'bookmark', 'id' => $child['bookmark_id']]
-			: ['type' => 'folder', 'id' => $child['id']];
+			: ['type' => 'folder', 'id' => $child['id'], 'children' => $layers === 1 ? null : $this->getFolderChildren($userId, $child['id'], $layers-1)];
 		}, $children);
 
 		return $children;
