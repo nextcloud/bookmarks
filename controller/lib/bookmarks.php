@@ -176,7 +176,6 @@ class Bookmarks {
 		$children = array_merge($childFolders, $childBookmarks);
 		array_multisort(array_column($children, 'index'), \SORT_ASC, $children);
 		$children = array_map(function ($child) use ($userId, $layers) {
-			var_dump($child);
 			return isset($child['bookmark_id'])
 			  ? ['type' =>  'bookmark', 'id' => $child['bookmark_id']]
 			  : ($layers === 1
