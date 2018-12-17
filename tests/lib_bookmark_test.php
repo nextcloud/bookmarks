@@ -79,6 +79,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://www.golem.de", "Golem", ["four"], "PublicNoTag", true);
 		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", true);
 		$resultSetOne = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', ['one', 'three'], true, -1, false, ['url', 'title', 'tags'], 'or');
+		var_dump($resultSetOne);
 		$this->assertEquals(3, count($resultSetOne));
 		$resultOne = $resultSetOne[0];
 		$this->assertFalse(isset($resultOne['lastmodified']));
@@ -100,6 +101,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", true);
 
 		$resultSet = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], false, -1, false, ['url', 'title', 'tags'], null, true);
+		var_dump($resultSet);
 		$this->assertEquals(2, count($resultSet));
 
 		$resultOne = $resultSet[0];
