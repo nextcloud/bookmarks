@@ -15,6 +15,7 @@ OC.L10N.register(
     "Tags" : "Schlagworte",
     "Description" : "Beschreibung",
     "No bookmarks here." : "Keine Lesezeichen vorhanden.",
+    "There are no bookmarks available for this query. Try changing your filter or add some using the menu entry on the left." : "Für diese Abfrage sind keine Lesezeichen verfügbar. Ändern Sie Ihren Filter oder fügen Sie Lesezeichen hinzu, indem Sie den Menüeintrag auf der linken Seite verwenden.",
     "Favorites" : "Favoriten",
     "Settings" : "Einstellungen",
     "Bookmarklet" : "Bookmarklet",
