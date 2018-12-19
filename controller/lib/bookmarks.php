@@ -478,6 +478,12 @@ class Bookmarks {
 			} else {
 				unset($requestedAttributes[$key]);
 			}
+			$key = array_search('folders', $requestedAttributes);
+			if ($key === false) {
+				$returnFolders = false;
+			} else {
+				unset($requestedAttributes[$key]);
+			}
 			$selectedAttributes = array_intersect($tableAttributes, $requestedAttributes);
 			array_push($selectedAttributes, 'id');
 		} else {
