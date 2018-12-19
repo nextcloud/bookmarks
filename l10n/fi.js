@@ -27,6 +27,7 @@ OC.L10N.register(
     "Error" : "Virhe",
     "Uncategorized" : "Luokittelematon",
     "Import completed successfully." : "Tuonti suoritettiin onnistuneesti.",
+    "Do you really want to delete all your bookmarks?" : "Haluatko varmasti poistaa kaikki kirjanmerkkisi?",
     "Set tags" : "Aseta tunnisteet",
     "A Bookmark manager for Nextcloud" : "Kirjanmerkkien hallinta Nextcloudille",
     "Add a bookmark" : "Lisää kirjanmerkki",
