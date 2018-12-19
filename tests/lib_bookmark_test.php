@@ -86,10 +86,10 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertEquals(3, count($resultSetOne));
 		var_dump($resultSetOne);
 		$resultThree = $resultSetOne[2];
-		$this->assertFalse(isset($resultOne['lastmodified']));
-		$this->assertCount(2, $resultOne['tags']);
-		$this->assertTrue(in_array('two', $resultOne['tags']));
-		$this->assertTrue(in_array('three', $resultOne['tags']));
+		$this->assertFalse(isset($resultThree['lastmodified']));
+		$this->assertCount(2, $resultThree['tags']);
+		$this->assertTrue(in_array('two', $resultThree['tags']));
+		$this->assertTrue(in_array('three', $resultThree['tags']));
 	}
 
 	public function testFindBookmarksUntagged() {
@@ -112,13 +112,13 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertEquals(2, count($resultSet));
 		var_dump($resultSet);
 
-		$resultOne = $resultSet[1];
+		$resultOne = $resultSet[0];
 		$this->assertFalse(isset($resultOne['lastmodified']));
 		$this->assertCount(0, $resultOne['tags']);
 		$this->assertEquals('Golem', $resultOne['title']);
 		$this->assertEquals('http://www.golem.de/', $resultOne['url']);
 
-		$resultTwo = $resultSet[0];
+		$resultTwo = $resultSet[1];
 		$this->assertFalse(isset($resultTwo['lastmodified']));
 		$this->assertCount(0, $resultTwo['tags']);
 		$this->assertEquals('Google', $resultTwo['title']);
