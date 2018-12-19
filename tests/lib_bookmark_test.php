@@ -80,6 +80,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", true);
 		$resultSetOne = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', ['one', 'three'], true, -1, false, ['url', 'title', 'tags'], 'or');
 		$this->assertEquals(3, count($resultSetOne));
+		var_dump($resultSetOne);
 		$this->assertTrue(in_array(['id' => $googleId, 'url' => 'http://www.google.de', 'title'=>'Google', 'tags' => ['one']], $resultSetOne));
 		$this->assertTrue(in_array(['id' => $heiseId, 'url' => 'http://heise.de', 'title'=>'Heise', 'tags' => ['one', 'two']], $resultSetOne));
 		$this->assertTrue(in_array(['id' => $_9gagId, 'url' => 'http://9gag.com', 'title'=>'9gag', 'tags' => ['two', 'three']], $resultSetOne));
@@ -99,7 +100,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 
 		$resultSet = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], false, -1, false, ['url', 'title', 'tags'], null, true);
 		$this->assertEquals(2, count($resultSet));
-
+		var_dump($resultSet);
 		$this->assertTrue(in_array(['url' => 'http://www.google.de/', 'title' => 'Google', 'tags' => []], $resultSet));
 		$this->assertTrue(in_array(['url' => 'http://www.golem.de/', 'title' => 'Golem', 'tags' => []], $resultSet));
 	}
