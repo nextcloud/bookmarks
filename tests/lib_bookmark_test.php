@@ -80,11 +80,9 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->addBookmark($secondUser, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", true);
 		$resultSetOne = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', ['one', 'three'], true, -1, false, ['url', 'title', 'tags'], 'or');
 		$this->assertEquals(3, count($resultSetOne));
-		$resultThree = $resultSetOne[2];
-		$this->assertFalse(isset($resultThree['lastmodified']));
-		$this->assertCount(2, $resultThree['tags']);
-		$this->assertTrue(in_array('two', $resultThree['tags']));
-		$this->assertTrue(in_array('three', $resultThree['tags']));
+		$this->assertTrue(in_array($resultSetOne, ['url' => 'http://www.google.de', 'title'=>'Google', 'tags' => ['one']]));
+		$this->assertTrue(in_array($resultSetOne, ['url' => 'http://heie.de', 'title'=>'Heise', 'tags' => ['one', 'two']]));
+		$this->assertTrue(in_array($resultSetOne, ['url' => 'http://9gag.com', 'title'=>'9gag', 'tags' => ['two', 'three']]));
 	}
 
 	public function testFindBookmarksUntagged() {
@@ -102,17 +100,8 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$resultSet = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', [], false, -1, false, ['url', 'title', 'tags'], null, true);
 		$this->assertEquals(2, count($resultSet));
 
-		$resultOne = $resultSet[0];
-		$this->assertFalse(isset($resultOne['lastmodified']));
-		$this->assertCount(0, $resultOne['tags']);
-		$this->assertEquals('Google', $resultOne['title']);
-		$this->assertEquals('http://www.google.de/', $resultOne['url']);
-
-		$resultTwo = $resultSet[1];
-		$this->assertFalse(isset($resultTwo['lastmodified']));
-		$this->assertCount(0, $resultTwo['tags']);
-		$this->assertEquals('Golem', $resultTwo['title']);
-		$this->assertEquals('http://www.golem.de/', $resultTwo['url']);
+		$this->assertTrue(in_array($resultSet, ['url' => 'http://www.google.de/', 'title' => 'Google', 'tags' => []]));
+		$this->assertTrue(in_array($resultSet, ['url' => 'http://www.golem.de/', 'title' => 'Golem', 'tags' => []]));
 	}
 
 	public function testFindTags() {
