@@ -85,11 +85,11 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$resultSetOne = $this->libBookmarks->findBookmarks($this->userid, 0, 'lastmodified', ['one', 'three'], true, -1, false, ['url', 'title', 'tags'], 'or');
 		$this->assertEquals(3, count($resultSetOne));
 		var_dump($resultSetOne);
-		$resultThree = $resultSetOne[2];
-		$this->assertFalse(isset($resultThree['lastmodified']));
-		$this->assertCount(2, $resultThree['tags']);
-		$this->assertTrue(in_array('two', $resultThree['tags']));
-		$this->assertTrue(in_array('three', $resultThree['tags']));
+		$resultOne = $resultSetOne[0];
+		$this->assertFalse(isset($resultOne['lastmodified']));
+		$this->assertCount(2, $resultOne['tags']);
+		$this->assertTrue(in_array('two', $resultOne['tags']));
+		$this->assertTrue(in_array('three', $resultOne['tags']));
 	}
 
 	public function testFindBookmarksUntagged() {
