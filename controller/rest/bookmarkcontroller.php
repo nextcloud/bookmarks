@@ -457,7 +457,7 @@ EOT;
 			$title = Util::sanitizeHTML($title);
 			$description = Util::sanitizeHTML($bookmark['description']);
 
-			$output .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '">' . $title . '</A>'."\n";
+			$output .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '" ADD_DATE="' . $bookmark['added']. '">' . $title . '</A>'."\n";
 			if (strlen($description)>0) {
 				$output .= '<DD>' . $description .'</DD>';
 			}

@@ -824,7 +824,7 @@ class Bookmarks {
 	 * @param array $folders ids of the parent folders for the new bookmark
 	 * @return int The id of the bookmark created
 	 */
-	public function addBookmark($userid, $url, $title, $tags = [], $description = '', $isPublic = false, $folders = null) {
+	public function addBookmark($userid, $url, $title, $tags = [], $description = '', $isPublic = false, $folders = null, $date_added = null) {
 		$public = $isPublic ? 1 : 0;
 		if (!isset($folders) || count($folders) === 0) {
 			$folders = [-1]; // we have to do it this way, as we don't want people to add a bookmark with [] parents
@@ -916,7 +916,7 @@ class Bookmarks {
 					'title' => $qb->createParameter('title'),
 					'user_id' => $qb->createParameter('user_id'),
 					'public' => $qb->createParameter('public'),
-					'added' => $qb->createFunction('UNIX_TIMESTAMP()'),
+					'added' => isset($date_added) ? $date_added : $qb->createFunction('UNIX_TIMESTAMP()'),
 					'lastmodified' => $qb->createFunction('UNIX_TIMESTAMP()'),
 					'description' => $qb->createParameter('description'),
 				])
@@ -1122,7 +1122,7 @@ class Bookmarks {
 		$folderId = $this->addFolder($userId, $folder['title'], $parentId);
 		foreach ($folder['bookmarks'] as $bookmark) {
 			try {
-				$this->addBookmark($userId, $bookmark['href'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], false, [$folderId]);
+				$this->addBookmark($userId, $bookmark['href'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], false, [$folderId], $bookmark['add_date']);
 			} catch (\InvalidArgumentException $e) {
 				$this->logger->logException($e, ['app' => 'bookmarks']);
 				$errors[] =  $this->l->t('Failed to import one bookmark, because: ') . $e->getMessage();
