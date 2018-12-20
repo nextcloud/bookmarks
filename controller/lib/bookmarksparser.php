@@ -222,6 +222,11 @@ class BookmarksParser {
 				$addDate->setTimestamp($attributes['add_date']);
 				$attributes['add_date'] = $addDate;
 			}
+			if (isset($attributes['time_added'])) {
+				$addDate = new \DateTime();
+				$addDate->setTimestamp($attributes['add_date']);
+				$attributes['add_date'] = $addDate;
+			}
 			if (isset($attributes['last_modified'])) {
 				$lastModified = new \DateTime();
 				$lastModified->setTimestamp($attributes['last_modified']);
