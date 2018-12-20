@@ -196,7 +196,7 @@ class BookmarkController extends ApiController {
 		}
 
 		$attributesToSelect = ['url', 'title', 'id', 'user_id', 'description', 'public',
-			'added', 'lastmodified', 'clickcount', 'tags', 'image', 'favicon'];
+			'added', 'lastmodified', 'clickcount', 'tags', 'image', 'favicon', 'folders'];
 
 		$bookmarks = $this->bookmarks->findBookmarks(
 			$user,
