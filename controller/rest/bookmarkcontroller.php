@@ -226,8 +226,10 @@ class BookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function newBookmark($url = "", $item = [], $title = "", $is_public = false, $description = "", $tags = [], $folders = null) {
-		$title = trim($title);
+	public function newBookmark($url = "", $item = [], $title = null, $is_public = false, $description = "", $tags = [], $folders = null) {
+		if (isset($title)) {
+			$title = trim($title);
+		}
 		if (count($tags) === 0) {
 			$tags = isset($item['tags']) ? $item['tags'] : [];
 		}

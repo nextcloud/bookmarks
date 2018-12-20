@@ -856,7 +856,7 @@ class Bookmarks {
 			if (isset($data['url'])) {
 				$url = $data['url'];
 			}
-			if ((!isset($title) || trim($title) === '')) {
+			if ((!isset($title) || trim($title) === '' && strlen($title) !== 0)) {
 				$title = isset($data['basic']) && isset($data['basic']['title'])? $data['basic']['title'] : $url;
 			}
 			if (isset($data['basic']['description']) && (!isset($description) || trim($description) === '')) {

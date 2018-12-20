@@ -115,7 +115,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $item = [], $title = "", $is_public = false, $description = "", $tags = []) {
+	public function newBookmark($url = "", $item = [], $title = null, $is_public = false, $description = "", $tags = []) {
 		return $this->publicController->newBookmark($url, $item, $title, $is_public, $description, $tags);
 	}
 
@@ -148,7 +148,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editBookmark($id = null, $url = "", $item = [], $title = "", $is_public = false, $record_id = null, $description = "", $tags = [], $folders = null) {
+	public function editBookmark($id = null, $url = null, $item = [], $title = null, $is_public = false, $record_id = null, $description = "", $tags = [], $folders = null) {
 		return $this->publicController->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description, $tags, $folders);
 	}
 
