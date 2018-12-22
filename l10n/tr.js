@@ -12,6 +12,8 @@ OC.L10N.register(
     "Details" : "Ayrıntılar",
     "Delete" : "Sil",
     "Saved" : "Kaydedildi",
+    "Date added" : "Eklendiği tarih",
+    "Link" : "Bağlantı",
     "Tags" : "İşaretler",
     "Description" : "Açıklama",
     "No bookmarks here." : "Henüz bir yer imi yok.",

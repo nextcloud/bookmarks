@@ -11,6 +11,8 @@ OC.L10N.register(
     "Deselect" : "Размаркирай",
     "Details" : "Подробности",
     "Delete" : "Изтрий",
+    "Date added" : "Дата на добавяне",
+    "Link" : "Връзка",
     "Tags" : "Етикети",
     "Description" : "Описание",
     "No bookmarks here." : "Тук няма отметки.",
