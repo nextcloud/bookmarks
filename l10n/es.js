@@ -12,6 +12,8 @@ OC.L10N.register(
     "Details" : "Detalles",
     "Delete" : "Eliminar",
     "Saved" : "Guardado",
+    "Date added" : "Fecha en que se añadió",
+    "Link" : "Enlace",
     "Tags" : "Etiquetas",
     "Description" : "Descripción",
     "No bookmarks here." : "No hay marcadores aquí.",
