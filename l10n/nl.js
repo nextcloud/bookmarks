@@ -12,6 +12,7 @@ OC.L10N.register(
     "Details" : "Details",
     "Delete" : "Verwijderen",
     "Saved" : "Opgeslagen",
+    "Link" : "Link",
     "Tags" : "Tags",
     "Description" : "Beschrijving",
     "No bookmarks here." : "Hier zijn geen bladwijzers.",
