@@ -433,7 +433,7 @@ class Bookmarks {
 
 	/**
 	 * @brief Finds all bookmarks, matching the filter
-	 * @param string $userid UserId
+	 * @param string $userid UserId pass -1 to not restrict bookmarks to one user
 	 * @param int $offset offset
 	 * @param string $sqlSortColumn result with this column
 	 * @param string|array $filters filters can be: empty -> no filter, a string -> filter this, a string array -> filter for all strings
@@ -506,8 +506,11 @@ class Bookmarks {
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userid)))
 			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
+
+		if ($userid !== -1) {
+			$qb->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userid)));
+		}
 
 		if (isset($parentFolder)) {
 			$qb->andWhere($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter($parentFolder)));
