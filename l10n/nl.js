@@ -12,6 +12,7 @@ OC.L10N.register(
     "Details" : "Details",
     "Delete" : "Verwijderen",
     "Saved" : "Opgeslagen",
+    "Date added" : "Datum toegevoegd",
     "Link" : "Link",
     "Tags" : "Tags",
     "Description" : "Beschrijving",

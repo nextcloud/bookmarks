@@ -12,6 +12,8 @@ OC.L10N.register(
     "Details" : "Podrobnosti",
     "Delete" : "Smazat",
     "Saved" : "Uloženo",
+    "Date added" : "Datum přidání",
+    "Link" : "Odkaz",
     "Tags" : "Štítky",
     "Description" : "Popis",
     "No bookmarks here." : "Nejsou zde žádné záložky.",
