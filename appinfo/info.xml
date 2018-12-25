@@ -26,4 +26,7 @@ Check out the third-party clients listed here: https://github.com/nextcloud/book
 		<admin>OCA\Bookmarks\Settings\AdminSettings</admin>
 		<admin-section>OCA\Bookmarks\Settings\AdminSection</admin-section>
 	</settings>
+	<background-jobs>
+		<job>OCA\Bookmarks\Lib\BackgroundJobs\PreviewsJob</job>
+	</background-jobs>
 </info>
