@@ -150,25 +150,27 @@ class BookmarkController extends ApiController {
 			return $response;
 		});
 
-		if ($this->request->getHeader('Authorization')) {
-			list($method, $credentials) = explode(' ', $this->request->getHeader('Authorization'));
-		} else {
-			$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
-			$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
-			return $res;
-		}
-		if ($method !== 'Basic') {
-			$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
-			$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
-			return $res;
-		} else {
-			list($username, $password) = explode(':', base64_decode($credentials));
-			if (false === $this->userSession->login($username, $password)) {
+		if (!$this->userId) {
+			if ($this->request->getHeader('Authorization')) {
+				list($method, $credentials) = explode(' ', $this->request->getHeader('Authorization'));
+			} else {
 				$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
 				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
 				return $res;
 			}
-			$this->userId = $this->userSession->getUser()->getUID();
+			if ($method !== 'Basic') {
+				$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
+				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
+				return $res;
+			} else {
+				list($username, $password) = explode(':', base64_decode($credentials));
+				if (false === $this->userSession->login($username, $password)) {
+					$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
+					$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
+					return $res;
+				}
+				$this->userId = $this->userSession->getUser()->getUID();
+			}
 		}
 
 		if ($user === null) {
