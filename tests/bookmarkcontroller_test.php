@@ -51,11 +51,12 @@ class Test_BookmarkController extends TestCase {
 		$urlNormalizer = \OC::$server->query(UrlNormalizer::class);
 		$event = \OC::$server->getEventDispatcher();
 		$logger = \OC::$server->getLogger();
+		$userSession = \OC::$server->getUserSession();
 		$parser = \OC::$server->query(BookmarksParser::class);
 		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger, $parser);
 
-		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager, $logger);
-		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUser, $this->db, $l, $this->libBookmarks, $this->userManager, $logger);
+		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager, $logger, $userSession);
+		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUser, $this->db, $l, $this->libBookmarks, $this->userManager, $logger, $userSession);
 	}
 
 	public function setupBookmarks() {
