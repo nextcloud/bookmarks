@@ -10,11 +10,14 @@
     "Details" : "Detaljer",
     "Delete" : "Radera",
     "Saved" : "Sparad",
+    "Date added" : "Tillagd datum",
+    "Link" : "Länk",
     "Tags" : "Taggar",
     "Description" : "Beskrivning",
     "No bookmarks here." : "Inga bokmärken här.",
     "Favorites" : "Favoriter",
     "Settings" : "Inställningar",
+    "Bookmarklet" : "Bookmarklet",
     "Add to {instanceName} " : "Lägg till {instanceName} ",
     "Recently added" : "Nyligen tillagd",
     "Most visited" : "Mest besökta",
@@ -25,6 +28,7 @@
     "An error occurred while trying to save the bookmark." : "Ett fel uppstod när bokmärket skulle sparas.",
     "Error" : "Fel",
     "Uncategorized" : "Okategoriserad",
+    "Error parsing the import result" : "Fel vid analys av importresultatet",
     "Import completed successfully." : "Importen slutfördes utan problem.",
     "Do you really want to delete all your bookmarks?" : "Vill du verkligen radera alla dina bokmärken?",
     "Set tags" : "Ange taggar",
@@ -38,6 +42,8 @@
     "Previews" : "Förhandsvisningar",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "För att kunna visa riktiga skärmdumpar av dina bokmärkta webbplatser kan bokmärken använda en tredjepartstjänst för att generera dom.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Du kan antingen registrera dig gratis hos <a href=\"http://screeenly.com\">screeenly.com</a> eller <a href=\"https://github.com/stefanzweifel/screeenly\">sätta upp din egen server</a>.",
+    "Screenly API URL" : "Screenly API URL",
+    "Screenly API key" : "Screenly API-nyckel",
     "Bookmarks feed" : "Bokmärkesflöde"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

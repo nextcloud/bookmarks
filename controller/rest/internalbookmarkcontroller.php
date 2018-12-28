@@ -15,9 +15,11 @@ use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUserSession;
 use \OCP\IRequest;
+use \OCP\IURLGenerator;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\DataDisplayResponse;
 use \OCP\AppFramework\Http\NotFoundResponse;
+use \OCP\AppFramework\Http\RedirectResponse;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OC\User\Manager;
@@ -51,7 +53,8 @@ class InternalBookmarkController extends ApiController {
 		IPreviewService $screenshotService,
 		ITimeFactory $timeFactory,
 		ILogger $logger,
-		IUserSession $userSession
+		IUserSession $userSession,
+		IURLGenerator $url
 	) {
 		parent::__construct($appName, $request);
 		$this->publicController = new BookmarkController($appName, $request, $userId, $db, $l10n, $bookmarks, $userManager, $logger, $userSession);
@@ -61,6 +64,7 @@ class InternalBookmarkController extends ApiController {
 		$this->faviconService = $faviconService;
 		$this->screenshotService = $screenshotService;
 		$this->timeFactory = $timeFactory;
+		$this->url = $url;
 	}
 
 	/**
@@ -247,7 +251,8 @@ class InternalBookmarkController extends ApiController {
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userId);
 		$image = $this->faviconService->getImage($bookmark);
 		if (!isset($image)) {
-			return new NotFoundResponse();
+			// Return a placeholder
+			return new RedirectResponse($this->url->getAbsoluteURL('/svg/core/places/link?color=666666'));
 		}
 		return $this->doImageResponse($image);
 	}

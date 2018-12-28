@@ -30,6 +30,7 @@ use OCA\Bookmarks\Controller\Rest\InternalFoldersController;
 use OCA\Bookmarks\Controller\Rest\PublicController;
 use OCA\Bookmarks\Controller\Rest\SettingsController;
 use OCP\IUser;
+use OCP\IURLGenerator;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
@@ -92,7 +93,8 @@ class Application extends App {
 				$c->query('ServerContainer')->query(ScreenlyPreviewService::class),
 				$c->query('ServerContainer')->query(ITimeFactory::class),
 				$c->query('ServerContainer')->getLogger(),
-				$c->query('ServerContainer')->getUserSession()
+				$c->query('ServerContainer')->getUserSession(),
+				$c->query('ServerContainer')->query(IURLGenerator::class)
 			);
 		});
 

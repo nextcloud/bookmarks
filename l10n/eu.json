@@ -1,0 +1,28 @@
+{ "translations": {
+    "Bookmarks" : "Gogokoak",
+    "Add a Bookmark" : "Gehitu gogoko bat",
+    "Add folder" : "Gehitu karpeta",
+    "Select" : "Hautatu",
+    "Deselect" : "Deshautatu",
+    "Details" : "Xehetasunak",
+    "Delete" : "Ezabatu",
+    "Saved" : "Gordeta",
+    "Date added" : "Gehitze data",
+    "Link" : "Esteka",
+    "Tags" : "Etiketak",
+    "Description" : "Deskripzioa",
+    "No bookmarks here." : "Ez dago gogokorik hemen.",
+    "Favorites" : "Gogokoak",
+    "Settings" : "Ezarpenak",
+    "Recently added" : "Gehitu berriak",
+    "Most visited" : "Bisitatuenak",
+    "RSS Feed" : "RSS jarioa",
+    "Delete all bookmarks" : "Ezabatu gogoko guztiak",
+    "Open details" : "Ireki xehetasunak",
+    "Error" : "Errorea",
+    "Set tags" : "Ezarri etiketak",
+    "Add a bookmark" : "Gehitu gogoko bat",
+    "Save" : "Gorde",
+    "Previews" : "Aurrebistak"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
