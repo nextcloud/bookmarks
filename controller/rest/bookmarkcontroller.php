@@ -150,7 +150,13 @@ class BookmarkController extends ApiController {
 			return $response;
 		});
 
-		list($method, $credentials) = explode(' ', $this->request->getHeader('Authorization'));
+		if ($this->request->getHeader('Authorization')) {
+			list($method, $credentials) = explode(' ', $this->request->getHeader('Authorization'));
+		} else {
+			$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
+			$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
+			return $res;
+		}
 		if ($method !== 'Basic') {
 			$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
 			$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
