@@ -69,7 +69,8 @@ class Application extends App {
 				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
 				$c->query('ServerContainer')->query(Bookmarks::class),
 				$c->query('ServerContainer')->getUserManager(),
-				$c->query('ServerContainer')->getLogger()
+				$c->query('ServerContainer')->getLogger(),
+				$c->query('ServerContainer')->getUserSession()
 			);
 		});
 
@@ -90,7 +91,8 @@ class Application extends App {
 				$c->query('ServerContainer')->query(FaviconPreviewService::class),
 				$c->query('ServerContainer')->query(ScreenlyPreviewService::class),
 				$c->query('ServerContainer')->query(ITimeFactory::class),
-				$c->query('ServerContainer')->getLogger()
+				$c->query('ServerContainer')->getLogger(),
+				$c->query('ServerContainer')->getUserSession()
 			);
 		});
 
