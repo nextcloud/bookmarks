@@ -25,7 +25,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
-		<title><?php p($l->t('Bookmarks feed')); ?></title>uuu
+		<title><?php p($l->t('Bookmarks feed')); ?></title>
 		<language><?php p($_['rssLang']); ?></language>
 		<description><?php p($_['description']); ?></description>
 		<pubDate><?php p($_['rssPubDate']); ?></pubDate>

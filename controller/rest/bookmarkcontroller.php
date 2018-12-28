@@ -20,6 +20,7 @@ use \OCP\AppFramework\Http\DataResponse;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Http;
 use \OC\User\Manager;
+use \OCP\IUserSession;
 use \OCA\Bookmarks\Controller\Lib\Bookmarks;
 use \OCA\Bookmarks\Controller\Lib\ExportResponse;
 use \OCA\Bookmarks\Controller\Lib\Helper;
@@ -35,7 +36,7 @@ class BookmarkController extends ApiController {
 	/** @var Bookmarks */
 	private $bookmarks;
 
-	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks, Manager $userManager, ILogger $logger) {
+	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks, Manager $userManager, ILogger $logger, IUserSession $userSession) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->db = $db;
@@ -44,6 +45,7 @@ class BookmarkController extends ApiController {
 		$this->bookmarks = $bookmarks;
 		$this->userManager = $userManager;
 		$this->logger = $logger;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -107,6 +109,7 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function getBookmarks(
 		$type = "bookmark",
@@ -146,6 +149,29 @@ class BookmarkController extends ApiController {
 			}
 			return $response;
 		});
+
+		if (!$this->userId) {
+			if ($this->request->getHeader('Authorization')) {
+				list($method, $credentials) = explode(' ', $this->request->getHeader('Authorization'));
+			} else {
+				$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
+				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
+				return $res;
+			}
+			if ($method !== 'Basic') {
+				$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
+				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
+				return $res;
+			} else {
+				list($username, $password) = explode(':', base64_decode($credentials));
+				if (false === $this->userSession->login($username, $password)) {
+					$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
+					$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
+					return $res;
+				}
+				$this->userId = $this->userSession->getUser()->getUID();
+			}
+		}
 
 		if ($user === null) {
 			$user = $this->userId;
