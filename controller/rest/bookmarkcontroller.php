@@ -168,6 +168,7 @@ class BookmarkController extends ApiController {
 				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
 				return $res;
 			}
+			$this->userId = $this->userSession->getUser()->getUID();
 		}
 
 		if ($user === null) {
