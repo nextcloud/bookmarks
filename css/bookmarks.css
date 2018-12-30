@@ -242,7 +242,22 @@ button span,
 .bookmarks {
 	display: flex;
 	flex-wrap: wrap;
-	padding: 0 20px 20px 0;
+	padding: 20px 20px 20px 0;
+}
+
+.bookmarks-display {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+
+.bookmarks-display button {
+	padding: 12px;
+}
+
+.bookmarks.list-view {
+	flex-direction: column;
+	padding: 40px 0;
 }
 
 .bookmarks .empty-space {
@@ -271,6 +286,12 @@ button span,
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.list-view .bookmark-card {
+	width: auto;
+	height: 74px;
+	margin: 0;
 }
 
 .bookmark-card:hover,
@@ -317,6 +338,12 @@ button span,
 	display: block;
 }
 
+.list-view .bookmark-card .select-mode-checkbox + label {
+	top: 17px;
+	left: 18px;
+	z-index: 10;
+}
+
 .bookmark-card.active,
 .bookmark-card.active:hover {
 	border-color: #0082c9;
@@ -329,7 +356,7 @@ button span,
 	left: 0;
 	right: 0;
 	padding: 15px;
-	background: rgba(255, 255, 255, 0.8);
+	background: rgba(255, 255, 255, 0.9);
 	/*
 	background: -moz-linear-gradient(
 		top,
@@ -352,7 +379,8 @@ button span,
 }
 
 .bookmark-card .panel:hover {
-	background: rgba(255, 255, 255, 0.85);
+	background: rgba(255, 255, 255, 0.95);
+	text-decoration: underline;
 }
 
 .bookmark-card .popovermenu {
@@ -392,6 +420,7 @@ button span,
 	box-sizing: border-box;
 	overflow: hidden;
 	cursor: pointer;
+	background-image: var(--icon-link-000);
 }
 
 .bookmark-card h2:hover {
@@ -423,16 +452,32 @@ button span,
 	overflow: hidden;
 }
 
+.list-view .bookmark-card .tags {
+	position: absolute;
+	z-index: 10;
+	top: 34px;
+	left: 50px;
+}
+
 .bookmark-card .tag-nav-item {
 	border-radius: 8px;
 	background: #ebebeb;
 	display: inline-block;
 	padding: 0 8px;
 	margin: 4px;
+	box-shadow: 0px 0px 2px #0006;
 }
 
 .bookmark-card .tag-nav-item:hover {
 	background: #e0e0e0;
+}
+
+.list-view .bookmark-card .tag-nav-item {
+	background: #8282826e;
+	box-shadow: inset 0px 0px 4px #0006 !important;
+}
+.list-view .bookmark-card .tag-nav-item:hover {
+	background: #828282ef;
 }
 
 @media (max-width: 600px) {

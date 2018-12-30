@@ -1,20 +1,43 @@
-<input type="checkbox" name="select" class="checkbox select-mode-checkbox" /><label for="select"></label>
+<input
+	type="checkbox"
+	name="select"
+	class="checkbox select-mode-checkbox"
+/><label for="select"></label>
 <div class="panel">
-	<h2 title="<%- t('bookmarks', 'Open website in new tab') %>" style="background-image: url('bookmark/<%- id %>/favicon');" class="with-favicon">
-		<a target="_blank" draggable="false" href="<%- url %>"><%- title %></a>
-	</h2>
-  <button class="toggle-actions icon-more" title="<%- t('bookmarks', 'Actions') %>"></button>
+	<a target="_blank" draggable="false" href="<%- url %>">
+		<h2
+			title="<%- t('bookmarks', 'Open website in new tab') %>"
+			style="background-image: url('bookmark/<%- id %>/favicon');"
+			class="with-favicon"
+		>
+			<%- title %>
+		</h2></a
+	>
+	<button
+		class="toggle-actions icon-more"
+		title="<%- t('bookmarks', 'Actions') %>"
+	></button>
 	<div class="popovermenu closed">
 		<ul>
 			<li>
 				<button class="menu-item-checkbox menu-filter-add">
-					<span><input type="checkbox" name="select" class="checkbox" /><label for="select"></label></span>
+					<span
+						><input type="checkbox" name="select" class="checkbox"/><label
+							for="select"
+						></label
+					></span>
 					<span><%- t('bookmarks', 'Select') %></span>
 				</button>
 			</li>
 			<li>
 				<button class="menu-item-checkbox menu-filter-remove">
-					<span><input type="checkbox" name="select" checked class="checkbox" /><label for="select"></label></span>
+					<span
+						><input
+							type="checkbox"
+							name="select"
+							checked
+							class="checkbox"/><label for="select"></label
+					></span>
 					<span><%- t('bookmarks', 'Deselect') %></span>
 				</button>
 			</li>
