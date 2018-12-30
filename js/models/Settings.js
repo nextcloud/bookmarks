@@ -7,6 +7,9 @@ export default Backbone.Model.extend({
 		this.fetch({
 			url: 'settings/sort'
 		});
+		this.fetch({
+			url: 'settings/view'
+		});
 	},
 	setSorting: function(sorting) {
 		var that = this;
@@ -21,6 +24,22 @@ export default Backbone.Model.extend({
 			},
 			success: function() {
 				that.set({ sorting: sorting });
+			}
+		});
+	},
+	setViewMode: function(viewMode) {
+		var that = this;
+		$.ajax({
+			method: 'POST',
+			url: 'settings/view',
+			headers: {
+				requesttoken: oc_requesttoken
+			},
+			data: {
+				viewMode: viewMode
+			},
+			success: function() {
+				that.set({ viewMode: viewMode });
 			}
 		});
 	}

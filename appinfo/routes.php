@@ -77,6 +77,8 @@ $application->registerRoutes($this, ['routes' => [
 	//Settings
 	['name' => 'settings#set_sorting', 'url' => '/settings/sort', 'verb' => 'POST'],
 	['name' => 'settings#get_sorting', 'url' => '/settings/sort', 'verb' => 'GET'],
+	['name' => 'settings#set_view_mode', 'url' => '/settings/view', 'verb' => 'POST'],
+	['name' => 'settings#get_view_mode', 'url' => '/settings/view', 'verb' => 'GET'],
 	// Legacy Routes
 	['name' => 'public#return_as_json', 'url' => '/public/rest/v1/bookmark', 'verb' => 'GET'],
 

@@ -65,7 +65,7 @@ class SettingsController extends ApiController {
 				'sorting',
 				'lastmodified' //default value
 			);
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			return new JSONResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
@@ -81,8 +81,7 @@ class SettingsController extends ApiController {
 	 * @NoAdminRequired
 	 */
 	public function setSorting($sorting = "") {
-
-		$legalArguments = array('title','added','clickcount','lastmodified');
+		$legalArguments = ['title','added','clickcount','lastmodified'];
 		if (!in_array($sorting, $legalArguments)) {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
 		}
@@ -93,7 +92,56 @@ class SettingsController extends ApiController {
 				'sorting',
 				$sorting
 			);
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
+			return new JSONResponse(['status' => 'error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+
+		return new JSONResponse(['status' => 'success'], Http::STATUS_OK);
+	}
+
+	/**
+	 * get view mode option config value
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function getViewMode() {
+		try {
+			$viewMode = $this->config->getUserValue(
+				$this->userId,
+				$this->appName,
+				'viewMode',
+				'grid' //default value
+			);
+		} catch (\Exception $e) {
+			return new JSONResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+
+		return new JSONResponse(['viewMode' => $viewMode], Http::STATUS_OK);
+	}
+
+	/**
+	 * set sorting option config value
+	 *
+	 * @param string $sorting
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function setViewMode($viewMode = "") {
+		$legalArguments = ['grid', 'list'];
+		if (!in_array($viewMode, $legalArguments)) {
+			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
+		}
+		try {
+			$this->config->setUserValue(
+				$this->userId,
+				$this->appName,
+				'viewMode',
+				$viewMode
+			);
+		} catch (\Exception $e) {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 

@@ -23,6 +23,9 @@ export default Marionette.View.extend({
 		clickcount: '#clickcount',
 		lastmodified: '#lastmodified',
 		rsslink: '.rss-link',
+		viewMode: '.view-mode',
+		list: '#list',
+		grid: '#grid',
 		clearData: '.clear-data'
 	},
 	events: {
@@ -34,11 +37,13 @@ export default Marionette.View.extend({
 		'click .export': 'exportTrigger',
 		'change @ui.sort': 'setSorting',
 		'focus @ui.rsslink': 'clickRssLink',
+		'change @ui.viewMode': 'changeViewMode',
 		'click @ui.clearData': 'deleteAllBookmarks'
 	},
 	initialize: function(options) {
 		this.app = options.app;
 		this.listenTo(this.model, 'change:sorting', this.getSorting);
+		this.listenTo(this.model, 'change:viewMode', this.getViewMode);
 		this.listenTo(this.app.bookmarks.loadingState, 'change:query', this.render);
 	},
 	onRender: function() {
@@ -158,6 +163,12 @@ export default Marionette.View.extend({
 		var select = document.getElementById('sort');
 		var value = select.options[select.selectedIndex].value;
 		this.model.setSorting(value);
+	},
+	getViewMode: function() {
+		this.getUI(this.model.get('viewMode')).prop('selected', true);
+	},
+	changeViewMode: function() {
+		this.model.setViewMode(this.getUI('viewMode').val());
 	},
 	clickRssLink: function() {
 		var that = this;
