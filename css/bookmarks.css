@@ -564,6 +564,10 @@ button span,
 	font-size: 23px;
 	line-height: 1.2;
 	cursor: text;
+	background-position: 0px 0px;
+	background-size: 24px 24px;
+	background-repeat: no-repeat;
+	padding-left: 42px;
 }
 
 .bookmark-detail h1.empty {

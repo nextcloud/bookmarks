@@ -10,11 +10,12 @@
 	data-attribute="title"
 	class="<%- !title.trim()? 'empty' : '' %>"
 	title="<%- t('bookmarks', 'Click to edit title') %>"
+	style="background-image: url('bookmark/<%- id %>/favicon');"
 >
 	<%- title.trim()? title : t('bookmarks', 'Add a title...') %>
 </h1>
 <h3><%- t('bookmarks', 'Date added') %></h3>
-<span class="icon-calendar-dark" style="display: inline-block"></span><%- new
+<span class="icon-calendar-dark" style="display: inline-block"></span> <%- new
 Date(Number(added)*1000).toLocaleDateString() %>
 <h3><%- t('bookmarks', 'Link') %></h3>
 <h2 data-attribute="url">
