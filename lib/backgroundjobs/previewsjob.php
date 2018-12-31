@@ -47,5 +47,6 @@ class PreviewsJob extends TimedJob {
 			}
 			$this->faviconPreviews->getImage($bookmark);
 		}
+		$this->userSession->logout();
 	}
 }
