@@ -23,6 +23,8 @@ OC.L10N.register(
     "Add to {instanceName} " : "Toevoegen aan {instanceName} ",
     "Recently added" : "Recent toegevoegd",
     "Most visited" : "Meest bezocht",
+    "View mode" : "Kijkmodus",
+    "List view" : "Lijstweergave",
     "RSS Feed" : "RSS Feed",
     "Permanently remove all bookmarks from your account. There is no going back!" : "Verwijder alle bladwijzers permanent uit je account. Je kunt niet terug!",
     "Delete all bookmarks" : "Verwijder alle bladwijzers",

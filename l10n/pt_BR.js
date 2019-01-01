@@ -23,6 +23,8 @@ OC.L10N.register(
     "Add to {instanceName} " : "Adicionar a {instanceName} ",
     "Recently added" : "Adicionados recentemente",
     "Most visited" : "Mais visitados",
+    "View mode" : "Modo de visualização",
+    "List view" : "Visualizar como lista",
     "RSS Feed" : "Feed RSS",
     "Permanently remove all bookmarks from your account. There is no going back!" : "Remover permanentemente todos os favoritos. Não há como desfazer isso!",
     "Delete all bookmarks" : "Excluir todos os favoritos",

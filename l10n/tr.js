@@ -23,6 +23,8 @@ OC.L10N.register(
     "Add to {instanceName} " : "{instanceName} üzerine ekle  ",
     "Recently added" : "Son Eklenenler",
     "Most visited" : "En Çok Bakılanlar",
+    "View mode" : "Görünüm kipi",
+    "List view" : "Liste görünümü",
     "RSS Feed" : "RSS Akışı",
     "Permanently remove all bookmarks from your account. There is no going back!" : "Hesabınızdaki tüm yer imlerini kalıcı olarak siler. Bu işlem geri alınamaz!",
     "Delete all bookmarks" : "Tüm yer imlerini sil",

@@ -23,6 +23,8 @@ OC.L10N.register(
     "Add to {instanceName} " : "Aggiungi a {instanceName} ",
     "Recently added" : "Aggiunti di recente",
     "Most visited" : "Più visitati",
+    "View mode" : "Modalità di visualizzazione",
+    "List view" : "Vista a elenco",
     "RSS Feed" : "Fonte RSS",
     "Permanently remove all bookmarks from your account. There is no going back!" : "Rimuovi definitivamente tutti i segnalibri dal tuo account. Non si torna indietro!",
     "Delete all bookmarks" : "Elimina tutti i segnalibri",

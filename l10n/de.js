@@ -23,6 +23,8 @@ OC.L10N.register(
     "Add to {instanceName} " : "Hinzufügen zu {instanceName} ",
     "Recently added" : "Vor kurzem hinzugefügt",
     "Most visited" : "Am meisten besucht",
+    "View mode" : "Anzeigemodus",
+    "List view" : "Listenansicht",
     "RSS Feed" : "RSS-Feed",
     "Permanently remove all bookmarks from your account. There is no going back!" : "Alle Lesezeichen Deines Kontos dauerhaft löschen. Es gibt kein zurück!",
     "Delete all bookmarks" : "Alle Lesezeichen löschen",
