@@ -30,19 +30,19 @@ use OC\HintException;
 use OCP\AppFramework\Http\Response;
 
 class ExportResponse extends Response {
-
 	private $returnstring;
 
 	public function __construct($returnstring) {
 		$user = \OC::$server->getUserSession()->getUser();
-		if(is_null($user)) {
+		if (is_null($user)) {
 			throw new HintException('User not logged in');
 		}
 
 		$userName = $user->getDisplayName();
 		$productName = \OC::$server->getThemingDefaults()->getName();
+		$dateTime = \OC::$server->getDateTimeFormatter();
 
-		$export_name = '"' . $productName . ' Bookmarks (' . $userName . ') (' . date('Y-m-d') . ').html"';
+		$export_name = '"' . $productName . ' Bookmarks (' . $userName . ') (' . $dateTime->formatDate($dateTime->getDateTime(null)) . ').html"';
 		$this->addHeader("Cache-Control", "private");
 		$this->addHeader("Content-Type", " application/stream");
 		$this->addHeader("Content-Length", strlen($returnstring));
@@ -53,5 +53,4 @@ class ExportResponse extends Response {
 	public function render() {
 		return $this->returnstring;
 	}
-
 }
