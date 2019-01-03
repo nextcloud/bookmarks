@@ -2,9 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Favoris",
-    "Failed to import one bookmark, because: " : "Impossible d'importer un favori",
+    "Failed to import one bookmark, because: " : "Échec lors de l\\'importation d'un favori. Raison: ",
     "No file provided for import" : "Aucun fichier à importer.",
-    "Unsupported file type for import" : "Type de fichier non supporté",
+    "Unsupported file type for import" : "Type de fichier non pris en charge",
     "Add a Bookmark" : "Ajouter un favori",
     "Add folder" : "Ajouter un dossier",
     "Select" : "Sélectionner",
