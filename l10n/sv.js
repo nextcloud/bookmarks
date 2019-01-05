@@ -23,6 +23,8 @@ OC.L10N.register(
     "Add to {instanceName} " : "Lägg till {instanceName} ",
     "Recently added" : "Nyligen tillagd",
     "Most visited" : "Mest besökta",
+    "View mode" : "Visningsläge",
+    "List view" : "Listvy",
     "RSS Feed" : "RSS-flöde",
     "Permanently remove all bookmarks from your account. There is no going back!" : "Ta bort alla bokmärken permanent från ditt konto. Det går inte att ångra!",
     "Delete all bookmarks" : "Ta bort alla bokmärken",

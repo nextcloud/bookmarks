@@ -23,6 +23,8 @@ OC.L10N.register(
     "Add to {instanceName} " : "Přidat do {instanceName} ",
     "Recently added" : "Nedávno přidáno",
     "Most visited" : "Nejnavštěvovanější",
+    "View mode" : "Režim zobrazení",
+    "List view" : "Zobrazení v seznamu",
     "RSS Feed" : "RSS kanál",
     "Permanently remove all bookmarks from your account. There is no going back!" : "Trvale odstraní z vašeho účtu všechny záložky. Tato operace je nevratná!",
     "Delete all bookmarks" : "Smazat všechny záložky",
