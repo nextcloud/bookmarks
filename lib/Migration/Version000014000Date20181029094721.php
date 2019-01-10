@@ -71,7 +71,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 			$qb
 			->select('bookmark_id')
 			->from('bookmarks_folders_bookmarks')
-			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId)));
+			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder)));
 			$childBookmarks = $qb->execute()->fetchAll();
 
 			$children = array_merge($childFolders, $childBookmarks);
