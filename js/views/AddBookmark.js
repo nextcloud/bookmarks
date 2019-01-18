@@ -49,9 +49,14 @@ export default Marionette.View.extend({
 				// needed in order for the route to be revaluated when it's already active
 				Backbone.history.navigate('dummyroute');
 				Backbone.history.navigate('all', { trigger: true });
+
+				// reset input field
 				that.setPending(false);
 				that.deactivate();
 				this.getUI('input').val('');
+
+				// show new bookmark
+				Radio.channel('details').trigger('show', bm);
 			},
 			error: function() {
 				that.setPending(false);
