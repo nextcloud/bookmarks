@@ -53,7 +53,7 @@ export default Marionette.View.extend({
 				// reset input field
 				that.setPending(false);
 				that.deactivate();
-				this.getUI('input').val('');
+				that.getUI('input').val('');
 
 				// show new bookmark
 				Radio.channel('details').trigger('show', bm);
