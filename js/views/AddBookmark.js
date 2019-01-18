@@ -17,11 +17,11 @@ export default Marionette.View.extend({
 		'blur @ui.input': 'deactivate'
 	},
 	ui: {
-		'link': '.link a',
-		'linkEntry': '.link',
-		'formEntry': '.form',
-		'input': 'input',
-		'button': 'button'
+		link: '.link a',
+		linkEntry: '.link',
+		formEntry: '.form',
+		input: 'input',
+		button: 'button'
 	},
 	activate: function() {
 		this.getUI('linkEntry').hide();
@@ -31,7 +31,6 @@ export default Marionette.View.extend({
 	deactivate: function() {
 		this.getUI('linkEntry').show();
 		this.getUI('formEntry').hide();
-		this.getUI('input').val('');
 	},
 	onKeydown: function(e) {
 		if (e.which != 13) return;
@@ -42,16 +41,17 @@ export default Marionette.View.extend({
 		var $input = this.getUI('input');
 		if (this.pending || $input.val() === '') return;
 		var url = $input.val();
-		var bm = new Bookmark({url: url});
+		var bm = new Bookmark({ url: url });
 		this.setPending(true);
 		var that = this;
-		bm.save(null,{
+		bm.save(null, {
 			success: function() {
 				// needed in order for the route to be revaluated when it's already active
 				Backbone.history.navigate('dummyroute');
-				Backbone.history.navigate('all', {trigger: true});
+				Backbone.history.navigate('all', { trigger: true });
 				that.setPending(false);
 				that.deactivate();
+				this.getUI('input').val('');
 			},
 			error: function() {
 				that.setPending(false);
@@ -66,11 +66,11 @@ export default Marionette.View.extend({
 			this.getUI('button').removeClass('icon-error-color');
 			this.getUI('button').addClass('icon-loading-small');
 			this.getUI('button').prop('disabled', true);
-		}else {
+		} else {
 			this.getUI('button').removeClass('icon-error-color');
 			this.getUI('button').addClass('icon-add');
 			this.getUI('button').removeClass('icon-loading-small');
-			this.getUI('button').prop('disabled', false); 
+			this.getUI('button').prop('disabled', false);
 		}
 		this.pending = pending;
 	}
