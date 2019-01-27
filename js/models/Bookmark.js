@@ -31,6 +31,10 @@ export default Backbone.Model.extend({
 		});
 	},
 	getColor: function() {
-		return COLORS[simpleHash(new URL(this.get('url')).host) % COLORS.length];
+		try {
+			return COLORS[simpleHash(new URL(this.get('url')).host) % COLORS.length];
+		} catch (e) {
+			return '#666';
+		}
 	}
 });
