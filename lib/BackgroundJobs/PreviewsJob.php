@@ -7,8 +7,9 @@ use \OCA\Bookmarks\Previews\ScreenlyPreviewService;
 use \OCA\Bookmarks\Bookmarks;
 use OC\BackgroundJob\TimedJob;
 use OCP\AppFramework\Utility\ITimeFactory;
-use OCP\IUserSession;
+use OCP\IConfig;
 use OCP\IUserManager;
+use OCP\IUserSession;
 
 class PreviewsJob extends TimedJob {
 	public function __construct(
