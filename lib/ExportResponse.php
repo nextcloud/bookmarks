@@ -24,7 +24,7 @@
  *
  */
 
-namespace OCA\Bookmarks\Controller\Lib;
+namespace OCA\Bookmarks;
 
 use OC\HintException;
 use OCP\AppFramework\Http\Response;
@@ -42,7 +42,7 @@ class ExportResponse extends Response {
 		$productName = \OC::$server->getThemingDefaults()->getName();
 		$dateTime = \OC::$server->getDateTimeFormatter();
 
-		$export_name = '"' . $productName . ' Bookmarks (' . $userName . ') (' . $dateTime->formatDate($dateTime->getDateTime(null)) . ').html"';
+		$export_name = '"' . $productName . ' Bookmarks (' . $userName . ') (' . $dateTime->formatDate(time()) . ').html"';
 		$this->addHeader("Cache-Control", "private");
 		$this->addHeader("Content-Type", " application/stream");
 		$this->addHeader("Content-Length", strlen($returnstring));
