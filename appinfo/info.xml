@@ -23,7 +23,7 @@ Check out the third-party clients listed here: https://github.com/nextcloud/book
 		<nextcloud min-version="14" max-version="16" />
 	</dependencies>
 	<background-jobs>
-		<job>OCA\Bookmarks\Lib\BackgroundJobs\PreviewsJob</job>
+		<job>OCA\Bookmarks\BackgroundJobs\PreviewsJob</job>
 	</background-jobs>
 	<settings>
 		<admin>OCA\Bookmarks\Settings\AdminSettings</admin>

@@ -21,9 +21,9 @@ use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Http;
 use \OC\User\Manager;
 use \OCP\IUserSession;
-use \OCA\Bookmarks\Controller\Lib\Bookmarks;
-use \OCA\Bookmarks\Controller\Lib\ExportResponse;
-use \OCA\Bookmarks\Controller\Lib\Helper;
+use \OCA\Bookmarks\Bookmarks;
+use \OCA\Bookmarks\ExportResponse;
+use \OCA\Bookmarks\Helper;
 use OCP\Util;
 
 class BookmarkController extends ApiController {

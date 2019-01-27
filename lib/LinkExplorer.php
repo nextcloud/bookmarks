@@ -1,12 +1,12 @@
 <?php
-namespace OCA\Bookmarks\Controller\Lib;
+namespace OCA\Bookmarks;
 
 use Marcelklehr\LinkPreview\Client as LinkPreview;
 use Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException;
 use OCP\ILogger;
 use OCP\Http\Client\IClientService;
-use OCA\Bookmarks\Controller\Lib\Http\RequestFactory;
-use OCA\Bookmarks\Controller\Lib\Http\Client;
+use OCA\Bookmarks\Http\RequestFactory;
+use OCA\Bookmarks\Http\Client;
 use phpUri;
 
 class LinkExplorer {

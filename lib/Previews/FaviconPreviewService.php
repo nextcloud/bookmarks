@@ -18,12 +18,12 @@
  *
  */
 
-namespace OCA\Bookmarks\Controller\Lib\Previews;
+namespace OCA\Bookmarks\Previews;
 
 use OCP\ICache;
 use OCP\ILogger;
 use OCP\Http\Client\IClientService;
-use OCA\Bookmarks\Controller\Lib\LinkExplorer;
+use OCA\Bookmarks\LinkExplorer;
 
 class FaviconPreviewService extends DefaultPreviewService {
 	/**

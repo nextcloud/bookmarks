@@ -1,5 +1,5 @@
 <?php
-namespace OCA\Bookmarks\Controller\Lib;
+namespace OCA\Bookmarks;
 
 class UrlNormalizer {
 	private $normalizer;

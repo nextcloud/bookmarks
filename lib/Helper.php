@@ -1,10 +1,9 @@
 <?php
 
-namespace OCA\Bookmarks\Controller\Lib;
+namespace OCA\Bookmarks;
 
 class Helper {
-
-	static function getDomainWithoutExt($name) {
+	public static function getDomainWithoutExt($name) {
 		$pos = strripos($name, '.');
 		if ($pos === false) {
 			return $name;
@@ -12,5 +11,4 @@ class Helper {
 			return substr($name, 0, $pos);
 		}
 	}
-
 }

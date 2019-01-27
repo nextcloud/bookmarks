@@ -17,13 +17,13 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-namespace OCA\Bookmarks\Controller\Lib\Previews;
+namespace OCA\Bookmarks\Previews;
 
 use OCP\ICache;
 use OCP\ILogger;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IClient;
-use OCA\Bookmarks\Controller\Lib\LinkExplorer;
+use OCA\Bookmarks\LinkExplorer;
 
 class DefaultPreviewService implements IPreviewService {
 	// Cache for 4 months

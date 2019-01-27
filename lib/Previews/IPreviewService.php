@@ -1,5 +1,5 @@
 <?php
-namespace OCA\Bookmarks\Controller\Lib\Previews;
+namespace OCA\Bookmarks\Previews;
 
 interface IPreviewService {
 	/**

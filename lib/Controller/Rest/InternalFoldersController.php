@@ -2,7 +2,7 @@
 
 namespace OCA\Bookmarks\Controller\Rest;
 
-use \OCA\Bookmarks\Controller\Lib\Bookmarks;
+use \OCA\Bookmarks\Bookmarks;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OCP\AppFramework\ApiController;

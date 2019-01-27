@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Bookmarks\Controller\Lib\Http;
+namespace OCA\Bookmarks\Http;
 
 use Psr\Http\Message\RequestFactoryInterface;
 

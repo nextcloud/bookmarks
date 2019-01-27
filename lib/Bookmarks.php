@@ -22,7 +22,7 @@
  * This class manages bookmarks
  */
 
-namespace OCA\Bookmarks\Controller\Lib;
+namespace OCA\Bookmarks;
 
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;

@@ -1,10 +1,10 @@
 <?php
-namespace OCA\Bookmarks\Lib\BackgroundJobs;
+namespace OCA\Bookmarks\BackgroundJobs;
 
-use \OCA\Bookmarks\Controller\Lib\Previews\DefaultPreviewService;
-use \OCA\Bookmarks\Controller\Lib\Previews\FaviconPreviewService;
-use \OCA\Bookmarks\Controller\Lib\Previews\ScreenlyPreviewService;
-use \OCA\Bookmarks\Controller\Lib\Bookmarks;
+use \OCA\Bookmarks\Previews\DefaultPreviewService;
+use \OCA\Bookmarks\Previews\FaviconPreviewService;
+use \OCA\Bookmarks\Previews\ScreenlyPreviewService;
+use \OCA\Bookmarks\Bookmarks;
 use OC\BackgroundJob\TimedJob;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IUserSession;
@@ -12,6 +12,7 @@ use OCP\IUserManager;
 
 class PreviewsJob extends TimedJob {
 	public function __construct(
+		ITimeFactory $time,
 		IConfig $settings,
 		IUserManager $userManager,
 		IUserSession $userSession,
@@ -28,7 +29,7 @@ class PreviewsJob extends TimedJob {
 		$this->faviconPreviews = $faviconPreviews;
 		$this->screenlyPreviews = $screenlyPreviews;
 
-		$this->setInterval(60*60*24); //run daily
+		$this->setInterval(60);//*60*24); //run daily
 	}
 
 	protected function run($argument) {

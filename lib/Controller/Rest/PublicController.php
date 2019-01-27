@@ -7,7 +7,7 @@ use \OCP\IRequest;
 use \OCP\AppFramework\Http;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OC\User\Manager;
-use OCA\Bookmarks\Controller\Lib\Bookmarks;
+use OCA\Bookmarks\Bookmarks;
 
 class PublicController extends ApiController {
 	private $userManager;

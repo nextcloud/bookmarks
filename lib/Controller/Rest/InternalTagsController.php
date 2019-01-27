@@ -2,7 +2,7 @@
 
 namespace OCA\Bookmarks\Controller\Rest;
 
-use \OCA\Bookmarks\Controller\Lib\Bookmarks;
+use \OCA\Bookmarks\Bookmarks;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\ApiController;
 use \OCP\IRequest;
@@ -44,5 +44,4 @@ class InternalTagsController extends ApiController {
 	public function fullTags($count) {
 		return $this->publicController->fullTags($count);
 	}
-
 }

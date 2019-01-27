@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Bookmarks\Controller\Lib\Http;
+namespace OCA\Bookmarks\Http;
 
 use OCP\Http\Client\IClient;
 use Psr\Http\Client\ClientInterface;

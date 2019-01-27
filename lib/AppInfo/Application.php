@@ -13,10 +13,10 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
-use OCA\Bookmarks\Controller\Lib\Bookmarks;
-use OCA\Bookmarks\Controller\Lib\Previews\DefaultPreviewService;
-use OCA\Bookmarks\Controller\Lib\Previews\ScreenlyPreviewService;
-use OCA\Bookmarks\Controller\Lib\Previews\FaviconPreviewService;
+use OCA\Bookmarks\Bookmarks;
+use OCA\Bookmarks\Previews\DefaultPreviewService;
+use OCA\Bookmarks\Previews\ScreenlyPreviewService;
+use OCA\Bookmarks\Previews\FaviconPreviewService;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\Utility\ITimeFactory;
 use \OCP\IContainer;

@@ -14,7 +14,7 @@ use OCP\AppFramework\Http\ContentSecurityPolicy;
 use \OCP\IRequest;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Controller;
-use \OCA\Bookmarks\Controller\Lib\Bookmarks;
+use \OCA\Bookmarks\Bookmarks;
 use OCP\IURLGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
