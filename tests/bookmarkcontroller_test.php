@@ -3,10 +3,10 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\Rest\BookmarkController;
-use OCA\Bookmarks\Controller\Lib\Bookmarks;
-use OCA\Bookmarks\Controller\Lib\BookmarksParser;
-use OCA\Bookmarks\Controller\Lib\LinkExplorer;
-use OCA\Bookmarks\Controller\Lib\UrlNormalizer;
+use OCA\Bookmarks\Bookmarks;
+use OCA\Bookmarks\BookmarksParser;
+use OCA\Bookmarks\LinkExplorer;
+use OCA\Bookmarks\UrlNormalizer;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 
