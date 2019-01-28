@@ -1,8 +1,5 @@
 { "translations": {
     "Bookmarks" : "סימניות",
-    "Failed to import one bookmark, because: " : "הייבוא של אחת מהסימניות נכשל, הסיבה:",
-    "No file provided for import" : "לא סופק קובץ לייבוא",
-    "Unsupported file type for import" : "סוג הקובץ לייבוא אינו נתמך",
     "Add a Bookmark" : "הוספת סימנייה",
     "Select" : "בחירה",
     "Deselect" : "ביטול בחירה",
@@ -25,6 +22,9 @@
     "Error" : "שגיאה",
     "Import completed successfully." : "הייבוא הושלם בהצלחה.",
     "Set tags" : "הגדרת תגיות",
+    "Failed to import one bookmark, because: " : "הייבוא של אחת מהסימניות נכשל, הסיבה:",
+    "No file provided for import" : "לא סופק קובץ לייבוא",
+    "Unsupported file type for import" : "סוג הקובץ לייבוא אינו נתמך",
     "A Bookmark manager for Nextcloud" : "מנהל סימניות ל־Nextcloud",
     "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "יישומון זה מאפשר לך לאחסן ולארגן את המיקומים המועדפים עליך באינטרנט במיקום אחיד, תוך מתן האפשרות לסנכרן אותם עם ההתקנים והדפדפנים השונים שלך.\nכדאי לעיין בלקוחות הצד השלישי שמופיעים כאן: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "הוספת סימנייה",

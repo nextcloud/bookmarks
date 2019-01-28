@@ -1,8 +1,5 @@
 { "translations": {
     "Bookmarks" : "Закладки",
-    "Failed to import one bookmark, because: " : "Не удалось импортировать одну закладку, потому, что:",
-    "No file provided for import" : "Не указан файл для импорта",
-    "Unsupported file type for import" : "Неподдерживаемый тип файла для импорта",
     "Add a Bookmark" : "Добавить закладку",
     "Add folder" : "Добавить каталог",
     "Select" : "Пометить",
@@ -33,6 +30,9 @@
     "Import completed successfully." : "Успешное завершение импорта.",
     "Do you really want to delete all your bookmarks?" : "Вы действительно хотите удалить все ваши закладки?",
     "Set tags" : "Задать метки",
+    "Failed to import one bookmark, because: " : "Не удалось импортировать одну закладку, потому, что:",
+    "No file provided for import" : "Не указан файл для импорта",
+    "Unsupported file type for import" : "Неподдерживаемый тип файла для импорта",
     "A Bookmark manager for Nextcloud" : "Менеджер закладок для Nextcloud",
     "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Это приложение позволяет хранить и упорядочивать ваши любимые места в Интернете в одном месте, позволяя вам синхронизировать их с различными устройствами и браузерами. Проверьте сторонние клиенты, перечисленные здесь:  https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Добавить закладку",

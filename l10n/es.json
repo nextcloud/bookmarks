@@ -1,8 +1,5 @@
 { "translations": {
     "Bookmarks" : "Marcadores",
-    "Failed to import one bookmark, because: " : "Error al importar un marcador a causa de:",
-    "No file provided for import" : "No se seleccionó un archivo para importar",
-    "Unsupported file type for import" : "Tipo de archivo no soportado",
     "Add a Bookmark" : "Añadir un marcador",
     "Add folder" : "Añadir carpeta",
     "Select" : "Seleccionar",
@@ -34,6 +31,9 @@
     "Import completed successfully." : "Importación completada con éxito.",
     "Do you really want to delete all your bookmarks?" : "¿Seguro que quieres eliminar todos tus marcadores?",
     "Set tags" : "Poner etiquetas",
+    "Failed to import one bookmark, because: " : "Error al importar un marcador a causa de:",
+    "No file provided for import" : "No se seleccionó un archivo para importar",
+    "Unsupported file type for import" : "Tipo de archivo no soportado",
     "A Bookmark manager for Nextcloud" : "Un gestor de marcadores para Nextcloud",
     "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Esta app te permite almacenar y organizar tus lugares favoritos de la web en un solo lugar, permitiéndote sincronizarlos con varios dispositivos y navegadores.\nComprueba los clientes de terceras partes enumerados aquí: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Añadir un marcador",

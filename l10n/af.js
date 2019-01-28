@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Boekmerke",
-    "No file provided for import" : "Geen lêer verskaf om in te voer nie ",
     "Add a Bookmark" : "Voeg 'n boekmerk by",
     "Add folder" : "Voeg 'n gids by",
     "Select" : "Kies",
@@ -28,6 +27,7 @@ OC.L10N.register(
     "Error" : "Fout",
     "Import completed successfully." : "Invoer suksesvol voltooi.",
     "Set tags" : "Stel merkers",
+    "No file provided for import" : "Geen lêer verskaf om in te voer nie ",
     "A Bookmark manager for Nextcloud" : "'n Boekmerkbestuurder vir Nextcloud",
     "Add a bookmark" : "Voeg 'n boekmerk by",
     "This URL is already bookmarked! Overwrite?" : "'n Boekmerk van die URL bestaan reeds. Skryf oor?",

@@ -1,8 +1,5 @@
 { "translations": {
     "Bookmarks" : "Zaznamki",
-    "Failed to import one bookmark, because: " : "Uvoz izbranega zaznamka je spodletel:",
-    "No file provided for import" : "Ni navedenih datotek za uvoz",
-    "Unsupported file type for import" : "Nepodprta vrsta datoteke za uvoz",
     "Add a Bookmark" : "Dodaj zaznamek",
     "Select" : "Izbor",
     "Deselect" : "Odstrani izbor",
@@ -24,6 +21,9 @@
     "Error" : "Napaka",
     "Import completed successfully." : "Uvoz je uspešno končan.",
     "Set tags" : "Nastavitve oznak",
+    "Failed to import one bookmark, because: " : "Uvoz izbranega zaznamka je spodletel:",
+    "No file provided for import" : "Ni navedenih datotek za uvoz",
+    "Unsupported file type for import" : "Nepodprta vrsta datoteke za uvoz",
     "A Bookmark manager for Nextcloud" : "Upravljalnik zaznamkov za Nextcloud",
     "Add a bookmark" : "Dodaj zaznamek",
     "This URL is already bookmarked! Overwrite?" : "Ta naslov URL je že dodan med zaznamke. Ali ga želite prepisati?",
