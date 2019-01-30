@@ -44,7 +44,7 @@ OC.L10N.register(
     "Description of the page" : "Sidans beskrivning",
     "Save" : "Spara",
     "Previews" : "Förhandsvisningar",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "För att kunna visa riktiga skärmdumpar av dina bokmärkta webbplatser kan bokmärken använda en tredjepartstjänst för att generera dom.",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "För att kunna visa riktiga skärmdumpar av dina bokmärkta webbplatser kan bokmärken använda en tredjepartstjänst för att generera dem.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Du kan antingen registrera dig gratis hos <a href=\"http://screeenly.com\">screeenly.com</a> eller <a href=\"https://github.com/stefanzweifel/screeenly\">sätta upp din egen server</a>.",
     "Screenly API URL" : "Screenly API URL",
     "Screenly API key" : "Screenly API-nyckel",
