@@ -289,9 +289,12 @@ button span,
 }
 
 .list-view .bookmark-card {
-	width: auto;
-	height: 74px;
+	width: 100%;
+	height: auto;
 	margin: 0;
+	background-image: none !important;
+	padding: 0;
+	border-width: 1px;
 }
 
 .bookmark-card:hover,
@@ -383,6 +386,12 @@ button span,
 	text-decoration: underline;
 }
 
+.list-view .bookmark-card .panel {
+	padding: 10px;
+	position: static;
+	margin: 0;
+}
+
 .bookmark-card .popovermenu {
 	position: absolute;
 	top: 50px;
@@ -447,6 +456,12 @@ button span,
 	margin-left: -42px;
 }
 
+.list-view .bookmark-card h2 {
+	width: 70%;
+	height: auto;
+	min-height: 25px;
+}
+
 .bookmark-card .tags {
 	max-height: 100px;
 	overflow: hidden;
@@ -455,8 +470,10 @@ button span,
 .list-view .bookmark-card .tags {
 	position: absolute;
 	z-index: 10;
-	top: 34px;
-	left: 50px;
+	top: 6px;
+	left: 71%;
+	right: 25px;
+	height: 30px;
 }
 
 .bookmark-card .tag-nav-item {
