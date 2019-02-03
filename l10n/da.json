@@ -1,6 +1,7 @@
 { "translations": {
     "Bookmarks" : "Favoritter",
     "Add a Bookmark" : "Tilføj et bogmærke",
+    "Add folder" : "Tilføj mappe",
     "Select" : "Vælg",
     "Deselect" : "Fravælg",
     "Details" : "Detaljer",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Bookmarks" : "Favoritter",
     "Add a Bookmark" : "Tilføj et bogmærke",
+    "Add folder" : "Tilføj mappe",
     "Select" : "Vælg",
     "Deselect" : "Fravælg",
     "Details" : "Detaljer",
