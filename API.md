@@ -11,7 +11,7 @@ like to access the bookmarks app. This can be done using Basic Auth and must hap
 
 ```
 GET
-/apps/bookmarks/public/rest/v2/bookmark
+/index.php/apps/bookmarks/public/rest/v2/bookmark
 ```
 
 Parameters:
@@ -28,13 +28,13 @@ Example:
 
 ```
 GET
-/apps/bookmarks/public/rest/v2/bookmark?tags[]=firsttag&tags[]=secondtag&page=-1
+/index.php/apps/bookmarks/public/rest/v2/bookmark?tags[]=firsttag&tags[]=secondtag&page=-1
 ```
 
 ```json
 {
-	"status": "success",
-	"data": [{ "id": "7", "title": "Google", "tags": ["firsttag"] /*...*/ }]
+    "status": "success",
+    "data": [{ "id": "7", "title": "Google", "tags": ["firsttag"] /*...*/ }]
 }
 ```
 
@@ -42,7 +42,7 @@ GET
 
 ```
 POST
-/apps/bookmarks/public/rest/v2/bookmark
+/index.php/apps/bookmarks/public/rest/v2/bookmark
 ```
 
 Parameters:
@@ -57,25 +57,25 @@ Parameters:
 Example:
 
 ```
-POST /apps/bookmarks/public/rest/v2/bookmark?url=http%3A%2F%2Fgoogle.com&title=Google&description=in%20case%20you%20forget&item[tags][]=search-engines&item[tags][]=uselessbookmark
+POST /index.php/apps/bookmarks/public/rest/v2/bookmark?url=http%3A%2F%2Fgoogle.com&title=Google&description=in%20case%20you%20forget&item[tags][]=search-engines&item[tags][]=uselessbookmark
 ```
 
 ```json
 {
-	"status": "success",
-	"item": {
-		"id": "7",
-		"url": "http://google.com",
-		"title": "Google"
-		//...
-	}
+    "status": "success",
+    "item": {
+        "id": "7",
+        "url": "http://google.com",
+        "title": "Google"
+        //...
+    }
 }
 ```
 
 ### Get a bookmark
 
 ```
-GET /apps/bookmarks/public/rest/v2/bookmark/:id
+GET /index.php/apps/bookmarks/public/rest/v2/bookmark/:id
 ```
 
 - `id`: The id of the bookmark to edit
@@ -87,25 +87,25 @@ Parameters:
 Example:
 
 ```
-GET /apps/bookmarks/public/rest/v2/bookmark/7
+GET /index.php/apps/bookmarks/public/rest/v2/bookmark/7
 ```
 
 ```json
 {
-	"status": "success",
-	"item": {
-		"id": "7",
-		"url": "http://google.com",
-		"title": "Boogle"
-		//...
-	}
+    "status": "success",
+    "item": {
+        "id": "7",
+        "url": "http://google.com",
+        "title": "Boogle"
+        //...
+    }
 }
 ```
 
 ### Edit a bookmark
 
 ```
-PUT /apps/bookmarks/public/rest/v2/bookmark/:id
+PUT /index.php/apps/bookmarks/public/rest/v2/bookmark/:id
 ```
 
 - `id`: The id of the bookmark to edit
@@ -123,25 +123,25 @@ Parameters:
 Example:
 
 ```
-PUT /apps/bookmarks/public/rest/v2/bookmark/7?record_id=7&title=Boogle
+PUT /index.php/apps/bookmarks/public/rest/v2/bookmark/7?record_id=7&title=Boogle
 ```
 
 ```json
 {
-	"status": "success",
-	"item": {
-		"id": "7",
-		"url": "http://google.com",
-		"title": "Boogle"
-		//...
-	}
+    "status": "success",
+    "item": {
+        "id": "7",
+        "url": "http://google.com",
+        "title": "Boogle"
+        //...
+    }
 }
 ```
 
 ### Delete a bookmark
 
 ```
-DELETE /apps/bookmarks/public/rest/v2/bookmark/:id
+DELETE /index.php/apps/bookmarks/public/rest/v2/bookmark/:id
 ```
 
 - `id`: The bookmark to delete
@@ -153,7 +153,7 @@ Parameters: _None_
 Example:
 
 ```
-DELETE /apps/bookmarks/public/rest/v2/bookmark/7
+DELETE /index.php/apps/bookmarks/public/rest/v2/bookmark/7
 ```
 
 ```json
@@ -163,7 +163,7 @@ DELETE /apps/bookmarks/public/rest/v2/bookmark/7
 ### List all tags
 
 ```
-GET /apps/bookmarks/public/rest/v2/tag
+GET /index.php/apps/bookmarks/public/rest/v2/tag
 ```
 
 Parameters: _None_
@@ -171,7 +171,7 @@ Parameters: _None_
 Example:
 
 ```
-GET /apps/bookmarks/public/rest/v2/tag
+GET /index.php/apps/bookmarks/public/rest/v2/tag
 ```
 
 ```
@@ -181,7 +181,7 @@ GET /apps/bookmarks/public/rest/v2/tag
 ### Delete a tag
 
 ```
-DELETE /apps/bookmarks/public/rest/v2/tag
+DELETE /index.php/apps/bookmarks/public/rest/v2/tag
 ```
 
 Parameters:
@@ -191,7 +191,7 @@ Parameters:
 Example:
 
 ```
-DELETE /apps/bookmarks/public/rest/v2/tag?old_name=mytag
+DELETE /index.php/apps/bookmarks/public/rest/v2/tag?old_name=mytag
 ```
 
 ```
@@ -201,7 +201,7 @@ DELETE /apps/bookmarks/public/rest/v2/tag?old_name=mytag
 ### Rename a tag
 
 ```
-POST /apps/bookmarks/public/rest/v2/tag
+POST /index.php/apps/bookmarks/public/rest/v2/tag
 ```
 
 Parameters:
@@ -212,7 +212,7 @@ Parameters:
 Example:
 
 ```
-POST /apps/bookmarks/public/rest/v2/tag?old_name=politics&new_name=satire
+POST /index.php/apps/bookmarks/public/rest/v2/tag?old_name=politics&new_name=satire
 ```
 
 ```
@@ -222,7 +222,7 @@ POST /apps/bookmarks/public/rest/v2/tag?old_name=politics&new_name=satire
 ### List folders
 
 ```
-GET /apps/bookmarks/public/rest/v2/folder
+GET /index.php/apps/bookmarks/public/rest/v2/folder
 ```
 
 Parameters:
@@ -233,7 +233,7 @@ Parameters:
 Example:
 
 ```
-GET /apps/bookmarks/public/rest/v2/folder
+GET /index.php/apps/bookmarks/public/rest/v2/folder
 ```
 
 ```
@@ -249,7 +249,7 @@ GET /apps/bookmarks/public/rest/v2/folder
 ### Show single folder
 
 ```
-GET /apps/bookmarks/public/rest/v2/folder/:id
+GET /index.php/apps/bookmarks/public/rest/v2/folder/:id
 ```
 
 - `id`: The id of the folder to show
@@ -259,7 +259,7 @@ Parameters: _None_
 Example:
 
 ```
-GET /apps/bookmarks/public/rest/v2/folder/2
+GET /index.php/apps/bookmarks/public/rest/v2/folder/2
 ```
 
 ```
@@ -269,7 +269,7 @@ GET /apps/bookmarks/public/rest/v2/folder/2
 ### Create folder
 
 ```
-POST /apps/bookmarks/public/rest/v2/folder
+POST /index.php/apps/bookmarks/public/rest/v2/folder
 ```
 
 Parameters:
@@ -280,7 +280,7 @@ Parameters:
 Example:
 
 ```
-POST /apps/bookmarks/public/rest/v2/folder
+POST /index.php/apps/bookmarks/public/rest/v2/folder
 
 {"title": "sports", "parent_folder": "-1"}
 ```
@@ -292,7 +292,7 @@ POST /apps/bookmarks/public/rest/v2/folder
 ### Edit folders
 
 ```
-PUT /apps/bookmarks/public/rest/v2/folder
+PUT /index.php/apps/bookmarks/public/rest/v2/folder
 ```
 
 Parameters:
@@ -303,7 +303,7 @@ Parameters:
 Example:
 
 ```
-PUT /apps/bookmarks/public/rest/v2/folder/5
+PUT /index.php/apps/bookmarks/public/rest/v2/folder/5
 
 {"title": "physical activity"}
 ```
@@ -315,7 +315,7 @@ PUT /apps/bookmarks/public/rest/v2/folder/5
 ### Delete folders
 
 ```
-DELETE /apps/bookmarks/public/rest/v2/folder/:id
+DELETE /index.php/apps/bookmarks/public/rest/v2/folder/:id
 ```
 
 - `id`: The id of the folder to remove
@@ -325,7 +325,7 @@ Parameters: _None_
 Example:
 
 ```
-DELETE /apps/bookmarks/public/rest/v2/folder/2
+DELETE /index.php/apps/bookmarks/public/rest/v2/folder/2
 ```
 
 ```
@@ -335,7 +335,7 @@ DELETE /apps/bookmarks/public/rest/v2/folder/2
 ### Put bookmarks into a folder
 
 ```
-POST /apps/bookmarks/public/rest/v2/folder/:id/bookmarks/:bookmark
+POST /index.php/apps/bookmarks/public/rest/v2/folder/:id/bookmarks/:bookmark
 ```
 
 - `id`: The id of the folder
@@ -346,7 +346,7 @@ Parameters: _None_
 Example:
 
 ```
-POST /apps/bookmarks/public/rest/v2/folder/2/bookmarks/15
+POST /index.php/apps/bookmarks/public/rest/v2/folder/2/bookmarks/15
 ```
 
 ```
@@ -356,7 +356,7 @@ POST /apps/bookmarks/public/rest/v2/folder/2/bookmarks/15
 ### Remove a bookmark from a folder
 
 ```
-DELETE /apps/bookmarks/public/rest/v2/folder/:id/bookmarks/:bookmark
+DELETE /index.php/apps/bookmarks/public/rest/v2/folder/:id/bookmarks/:bookmark
 ```
 
 - `id`: The id of the folder
@@ -367,7 +367,7 @@ Parameters: _None_
 Example:
 
 ```
-DELETE /apps/bookmarks/public/rest/v2/folder/2/bookmarks/15
+DELETE /index.php/apps/bookmarks/public/rest/v2/folder/2/bookmarks/15
 ```
 
 ```
@@ -377,7 +377,7 @@ DELETE /apps/bookmarks/public/rest/v2/folder/2/bookmarks/15
 ### Order folder contents
 
 ```
-PATCH /apps/bookmarks/public/rest/v2/folder/:id/childorder
+PATCH /index.php/apps/bookmarks/public/rest/v2/folder/:id/childorder
 ```
 
 - `id`: the folder's ID
@@ -389,7 +389,7 @@ Parameters:
 Example:
 
 ```
-PATCH /apps/bookmarks/public/rest/v2/folder/2/childorder
+PATCH /index.php/apps/bookmarks/public/rest/v2/folder/2/childorder
 
 {"data": [
   {"type": "folder", "id": "17"},
@@ -406,7 +406,7 @@ PATCH /apps/bookmarks/public/rest/v2/folder/2/childorder
 ### Retrieve current order of folder contents
 
 ```
-GET /apps/bookmarks/public/rest/v2/folder/:id/childorder
+GET /index.php/apps/bookmarks/public/rest/v2/folder/:id/childorder
 ```
 
 - `id`: the folder's ID
@@ -416,7 +416,7 @@ Parameters: _None_
 Example:
 
 ```
-GET /apps/bookmarks/public/rest/v2/folder/2/childorder
+GET /index.php/apps/bookmarks/public/rest/v2/folder/2/childorder
 ```
 
 ```
