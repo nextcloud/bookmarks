@@ -273,7 +273,7 @@ button span,
 	flex-grow: 1;
 	width: 225px;
 	height: 225px;
-	margin: 20px 0 0 20px;
+	margin: 10px 0 0 10px;
 	padding: 15px;
 	background-color: rgb(210, 210, 210);
 	background-size: cover;
@@ -358,7 +358,7 @@ button span,
 	bottom: 0;
 	left: 0;
 	right: 0;
-	padding: 15px;
+	padding: 10px 7px 7px;
 	background: rgba(255, 255, 255, 0.9);
 	/*
 	background: -moz-linear-gradient(
@@ -387,7 +387,7 @@ button span,
 }
 
 .list-view .bookmark-card .panel {
-	padding: 10px;
+	padding: 7px 5px 5px;
 	position: static;
 	margin: 0;
 }
@@ -403,8 +403,12 @@ button span,
 	background-color: transparent;
 	border: none;
 	position: absolute;
-	top: 15px;
+	top: 7px;
 	right: 5px;
+}
+
+.list-view .bookmark-card .toggle-actions {
+	top: 5px;
 }
 
 .bookmark-card .popovermenu .menu-filter-remove {
@@ -424,7 +428,7 @@ button span,
 	line-height: 1.2;
 	text-shadow: 0 0 4px rgba(255, 255, 255, 0.9);
 	margin: 0;
-	margin-right: 20px;
+	margin-right: 25px;
 	height: 40px; /* max two lines */
 	box-sizing: border-box;
 	overflow: hidden;
@@ -470,7 +474,7 @@ button span,
 .list-view .bookmark-card .tags {
 	position: absolute;
 	z-index: 10;
-	top: 6px;
+	top: 3px;
 	left: 71%;
 	right: 25px;
 	height: 30px;
@@ -501,22 +505,14 @@ button span,
 	.bookmark-card {
 		width: 150px;
 		height: 150px;
-		margin: 10px 0 0 10px;
-	}
-	.bookmark-card .panel {
-		padding: 15px 10px;
+		margin: 5px 0 0 5px;
 	}
 	.bookmark-card h2.with-favicon {
 		/*background-image: bookmark/{id}/favicon*/
 		background-position: 0px 3px;
 		background-size: 16px 16px;
 		background-repeat: no-repeat;
-		padding-left: 0;
-	}
-	.bookmark-card h2 a {
-		font-size: 14px;
 		padding-left: 20px;
-		margin-left: 0;
 	}
 }
 .bookmark-detail {
