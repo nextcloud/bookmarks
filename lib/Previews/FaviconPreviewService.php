@@ -50,8 +50,11 @@ class FaviconPreviewService extends DefaultPreviewService {
 
 		$url_parts = parse_url($bookmark['url']);
 
-		return $this->getOrFetchImageUrl(
-			$url_parts['scheme'] . '://' . $url_parts['host'] . '/favicon.ico'
-		);
+		if (isset($url_parts['scheme'], $url_parts['host'])) {
+			return $this->getOrFetchImageUrl(
+				$url_parts['scheme'] . '://' . $url_parts['host'] . '/favicon.ico'
+			);
+		}
+		return null;
 	}
 }
