@@ -40,7 +40,6 @@ class PreviewsJob extends TimedJob {
 		) !== 'cron') {
 			return;
 		}
-		\OCP\Util::writeLog('bookmarks', 'starting PreviewsJob', \OCP\Util::WARN);
 		$allBookmarks = $this->libBookmarks->findBookmarks(-1, 0, 'lastmodified', [], true, -1);
 		foreach ($allBookmarks as $bookmark) {
 			$this->userSession->setUser($this->userManager->get($bookmark['user_id']));
