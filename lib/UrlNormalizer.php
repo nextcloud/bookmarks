@@ -141,7 +141,7 @@ class UrlNormalizer {
 	}
 
 	public static function normalize_query($query) {
-		if ($query === '') {
+		if ($query === '' || strlen($query) <= 2) {
 			return '';
 		}
 		$nquery = self::unquote($query, self::QUOTE_EXCEPTIONS['query']);
@@ -152,8 +152,6 @@ class UrlNormalizer {
 				$k = substr($param, 0, strpos($param, '='));
 				$v = substr($param, strpos($param, '=')+1);
 				array_push($nparams, $k.'='.$v);
-			} else {
-				array_push($nparams, $param);
 			}
 		}
 		sort($nparams);
