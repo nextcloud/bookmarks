@@ -145,6 +145,9 @@ class UrlNormalizer {
 			return '';
 		}
 		$nquery = self::unquote($query, self::QUOTE_EXCEPTIONS['query']);
+		if (strpos($nquery, ';') !== false && strpos($nquery, '&') === false) {
+			return $nquery;
+		}
 		$params = explode('&', $nquery);
 		$nparams = [];
 		foreach ($params as $param) {
