@@ -20,6 +20,8 @@ OC.L10N.register(
     "Add to {instanceName} " : "添加到 {instanceName}",
     "Recently added" : "最近添加",
     "Most visited" : "访问最多",
+    "View mode" : "浏览模式",
+    "List view" : "列表视图",
     "RSS Feed" : "RSS ",
     "Permanently remove all bookmarks from your account. There is no going back!" : "永久删除您帐户中的所有书签。此操作无法恢复！",
     "Delete all bookmarks" : "删除所有书签",
