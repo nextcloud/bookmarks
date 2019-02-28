@@ -1,7 +1,12 @@
 { "translations": {
     "Bookmarks" : "Bokmerker",
+    "Add a Bookmark" : "Legg til bokmerke",
+    "Add folder" : "Legg til mappe",
     "Select" : "Velg",
     "Deselect" : "Fjern markering",
+    "Details" : "Detaljer",
+    "Delete" : "Slett",
+    "Saved" : "Lagret",
     "An error occurred while trying to save the bookmark." : "En feil inntraff under forsøk på å lagre bokmerket.",
     "Error" : "Feil",
     "Import completed successfully." : "Importering fullført uten feil",
