@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Bookmarks" : "ブックマーク",
     "Add a Bookmark" : "ブックマークを追加",
-    "Add folder" : "フォルダを追加",
+    "Add folder" : "フォルダーを追加",
     "Select" : "選択",
     "Deselect" : "選択解除",
     "Details" : "詳細",
