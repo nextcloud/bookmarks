@@ -186,7 +186,7 @@ class UrlNormalizer {
 		for ($i=1; $i < count($s); $i++) {
 			$h = $s[$i];
 			$c = isset($_hextochr[substr($h, 0, 2)]) ? $_hextochr[substr($h, 0, 2)] : '';
-			if (strlen($c) > 0 && false === strpos($exceptions, $c)) {
+			if (strlen($c) > 0 && false === strpos($exceptions, $c) && hexdec(substr($h, 0, 2)) < 128) {
 				if (strlen($h) > 2) {
 					$res .= $c . substr($h, 2);
 				} else {
