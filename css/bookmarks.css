@@ -394,9 +394,10 @@ button span,
 
 .bookmark-card .popovermenu {
 	position: absolute;
-	top: 50px;
-	right: 5px;
+	top: 36px;
+	right: 7px;
 	margin-right: -4px;
+	z-index: 100;
 }
 
 .bookmark-card .toggle-actions {
