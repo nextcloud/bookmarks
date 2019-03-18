@@ -49,7 +49,8 @@ export default Marionette.View.extend({
 		this.interactable = interact(this.el).draggable({
 			onstart: this.onDragStart.bind(this),
 			onend: this.onDragEnd.bind(this),
-			onmove: this.onDragMove.bind(this)
+			onmove: this.onDragMove.bind(this),
+			hold: 500
 		});
 		this.interactable.model = this.model;
 	},
