@@ -9,6 +9,11 @@ OC.L10N.register(
     "Details" : "Detaljer",
     "Delete" : "Slett",
     "Saved" : "Lagret",
+    "Settings" : "Innstillinger",
+    "Recently added" : "Nylig lagt til",
+    "Most visited" : "Mest besøkt",
+    "RSS Feed" : "RSS-strøm",
+    "Delete all bookmarks" : "Slett alle bokmerker",
     "An error occurred while trying to save the bookmark." : "En feil inntraff under forsøk på å lagre bokmerket.",
     "Error" : "Feil",
     "Import completed successfully." : "Importering fullført uten feil",
@@ -21,6 +26,7 @@ OC.L10N.register(
     "The title of the page" : "Sidetittel",
     "The address of the page" : "Adresse til siden",
     "Description of the page" : "Beskrivelse av siden",
-    "Save" : "Lagre"
+    "Save" : "Lagre",
+    "Bookmarks feed" : "Bokmerker-strøm"
 },
 "nplurals=2; plural=(n != 1);");
