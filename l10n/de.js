@@ -31,7 +31,7 @@ OC.L10N.register(
     "Uncategorized" : "Ohne Kategorie",
     "Error parsing the import result" : "Fehler beim Analysieren des Importergebnisses",
     "Import completed successfully." : "Import erfolgreich beendet.",
-    "Do you really want to delete all your bookmarks?" : "Möchtest Du wirklich das Lesezeichen löschen?",
+    "Do you really want to delete all your bookmarks?" : "Möchtest Du wirklich alle Lesezeichen löschen?",
     "Set tags" : "Schlagworte setzen",
     "Failed to import one bookmark, because: " : "Ein Lesezeichen konnte nicht importiert werden, weil:",
     "No file provided for import" : "Keine Datei zum Importieren ausgewählt",

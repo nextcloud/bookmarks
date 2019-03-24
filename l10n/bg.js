@@ -12,7 +12,7 @@ OC.L10N.register(
     "Link" : "Връзка",
     "Tags" : "Етикети",
     "Description" : "Описание",
-    "No bookmarks here." : "Тук няма отметки.",
+    "No bookmarks here." : "Няма отметки.",
     "Favorites" : "Любими",
     "Settings" : "Настройки",
     "Bookmarklet" : "Скриптова отметка",
