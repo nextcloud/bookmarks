@@ -45,8 +45,6 @@
     "Previews" : "Previsualitzacions",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Per poder mostrar captures reals de pantalla de les pàgines web de les vostres adreces d'interès favorites, podeu fer servir un servei de tercers per generar-les",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Podeu registrar-vos gratuïtament a <a href=\"http://screeenly.com\">screeenly.com</a> o bé <a href=\"https://github.com/stefanzweifel/screeenly\">configureu el vostre servidor</a>",
-    "Screenly API URL" : "URL de l'API Screenly",
-    "Screenly API key" : "Clau de l'API Screenly",
     "Bookmarks feed" : "Canal d'adreces d'interès"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

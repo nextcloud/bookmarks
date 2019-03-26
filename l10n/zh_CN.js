@@ -47,8 +47,6 @@ OC.L10N.register(
     "Previews" : "预览",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "为了显示您书签网站的真实截图，书签应用使用第三方服务生成截图。",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "您即可以在 <a href=\"http://screeenly.com\">screeenly.com</a> 免费注册，也可以 <a href=\"https://github.com/stefanzweifel/screeenly\">设置您自己的服务器</a>。",
-    "Screenly API URL" : "Screenly API 地址",
-    "Screenly API key" : "Screenly API 密钥",
     "Bookmarks feed" : "书签 Feed"
 },
 "nplurals=1; plural=0;");

@@ -47,8 +47,6 @@ OC.L10N.register(
     "Previews" : "Náhľady",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Pre zobrazenie skutočných snímok obrazovky stránok v záložkách, aplikácia môže použiť službu tretej strany na ich vygenerovanie.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Môžete sa zaregistrovať zadarmo na <a href=\"http://screeenly.com\">screenly.com</a> alebo <a href=\"https://github.com/stefanzweifel/screeenly\">nastaviť vlastný server</a>.",
-    "Screenly API URL" : "Screenly API URL",
-    "Screenly API key" : "Screenly API kľúč",
     "Bookmarks feed" : "Kanál záložiek"
 },
 "nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");

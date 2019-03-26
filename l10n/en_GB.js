@@ -47,8 +47,6 @@ OC.L10N.register(
     "Previews" : "Previews",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>.",
-    "Screenly API URL" : "Screenly API URL",
-    "Screenly API key" : "Screenly API key",
     "Bookmarks feed" : "Bookmarks feed"
 },
 "nplurals=2; plural=(n != 1);");

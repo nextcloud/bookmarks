@@ -47,8 +47,6 @@ OC.L10N.register(
     "Previews" : "Forskoðun",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Til þess að birta raunverulegar skjámyndir af þeim vefsíðum sem þú bókamerkir, getur bókamerkjaforritið notað þjónustu utanaðkomandi aðila til að útbúa skjámyndirnar.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Þú getur annað hvort skráð þig ókeypis á <a href=\"http://screeenly.com\">screeenly.com</a> eða <a href=\"https://github.com/stefanzweifel/screeenly\">sett upp þinn eigin þjón</a>.",
-    "Screenly API URL" : "Slóð á API-forritsviðmót Screenly",
-    "Screenly API key" : "Lykill á API-forritsviðmót Screenly",
     "Bookmarks feed" : "Bókamerkjastreymi"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

@@ -44,8 +44,6 @@ OC.L10N.register(
     "Save" : "保存",
     "Previews" : "プレビュー",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "ブックマークされたウェブサイトの実際のスクリーンショットを表示するために、ブックマークはそれらを生成するためにサードパーティのサービスを使用することができます。",
-    "Screenly API URL" : "Screenly API URL",
-    "Screenly API key" : "Screenly API key",
     "Bookmarks feed" : "ブックマークフィード"
 },
 "nplurals=1; plural=0;");

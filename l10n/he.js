@@ -47,8 +47,6 @@ OC.L10N.register(
     "Previews" : "תצוגות מקדימות",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "כדי להציג צילומי מסך אמתיים של האתרים שהוספת למועדפים, הסימניות יכולות להשתמש בשירות צד־שלישי כדי לייצר אותן.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "ניתן להירשם בחינם לשירות <a href=\"http://screeenly.com\">screeenly.com</a> או <a href=\"https://github.com/stefanzweifel/screeenly\">להקים שרת משלך</a>.",
-    "Screenly API URL" : "כתובת ה־API של Screenly",
-    "Screenly API key" : "מפתח ה־API של Screenly",
     "Bookmarks feed" : "ערוץ סימניות"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

@@ -45,8 +45,6 @@
     "Previews" : "Forhåndsvisning",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Bogmærker kan bruge en tredjepartsteneste til at danne skærmprints af dine bogmærker af hjemmesider",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Du kan enten skrive dig op gratis på <a href=\"http://screeenly.com\">screeenly.com</a> eller <a href=\"https://github.com/stefanzweifel/screeenly\"> konfigurere din egen server</a>.",
-    "Screenly API URL" : "URL til Screenly's API",
-    "Screenly API key" : "Nøgle til Screenly's API",
     "Bookmarks feed" : "Bogmærkestrøm"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

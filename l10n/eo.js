@@ -47,8 +47,6 @@ OC.L10N.register(
     "Previews" : "Antaŭrigardoj",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Por vidigi realajn ekrankopiojn de viaj legosignoj, Legosignaro povas uzi servon de ekstera liveranto por krei ilin.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Vi povas aŭ krei senpagan konton ĉe <a href=\"http://screeenly.com\">screeenly.com</a> aŭ <a href=\"https://github.com/stefanzweifel/screeenly\">instali vian propran servilon</a>.",
-    "Screenly API URL" : "API-adreso de Screeenly",
-    "Screenly API key" : "API-ŝlosilo de Screeenly",
     "Bookmarks feed" : "Fluo de legosignoj"
 },
 "nplurals=2; plural=(n != 1);");

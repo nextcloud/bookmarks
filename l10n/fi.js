@@ -42,8 +42,6 @@ OC.L10N.register(
     "Save" : "Tallenna",
     "Previews" : "Esikatselut",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Voit rekisteröityä ilmaiseksi osoitteessa <a href=\"http://screeenly.com\">screeenly.com</a> tai <a href=\"https://github.com/stefanzweifel/screeenly\">pystyttää oman palvelimen</a>.",
-    "Screenly API URL" : "Screenly-palvelun API:n URL",
-    "Screenly API key" : "Screenly-palvelun API-avain",
     "Bookmarks feed" : "Kirjanmerkkien syöte"
 },
 "nplurals=2; plural=(n != 1);");
