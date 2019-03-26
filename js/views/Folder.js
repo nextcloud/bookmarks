@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import interact from 'interactjs';
+import isTouchDevice from '../utils/IsTouchscreen';
 import templateString from '../templates/Folder.html';
 import FoldersView from './Folders';
 import Folder from '../models/Folder';
@@ -57,7 +58,7 @@ export default Marionette.View.extend({
 				onstart: this.onDragStart.bind(this),
 				onend: this.onDragEnd.bind(this),
 				onmove: this.onDragMove.bind(this),
-				hold: 500
+				hold: isTouchDevice() ? 500 : 0
 			});
 		this.interactable.model = this.model;
 	},

@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import interact from 'interactjs';
+import isTouchDevice from '../utils/IsTouchscreen';
 import Tags from '../models/Tags';
 import TagsNavigationView from './TagsNavigation';
 import templateString from '../templates/BookmarkCard.html';
@@ -29,7 +30,8 @@ export default Marionette.View.extend({
 		'click .menu-filter-remove': 'select',
 		'click .menu-delete': 'delete',
 		'click .menu-details': 'open',
-		'click .menu-move': 'move'
+		'click .menu-move': 'move',
+		contextmenu: 'preventRightClick'
 	},
 	initialize: function(opts) {
 		this.app = opts.app;
@@ -50,7 +52,7 @@ export default Marionette.View.extend({
 			onstart: this.onDragStart.bind(this),
 			onend: this.onDragEnd.bind(this),
 			onmove: this.onDragMove.bind(this),
-			hold: 500
+			hold: isTouchDevice() ? 500 : 0
 		});
 		this.interactable.model = this.model;
 	},
@@ -164,5 +166,8 @@ export default Marionette.View.extend({
 	},
 	onDestroy: function() {
 		this.interactable.unset();
+	},
+	preventRightClick: function(e) {
+		e.preventDefault();
 	}
 });
