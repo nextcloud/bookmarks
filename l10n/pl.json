@@ -45,6 +45,8 @@
     "Previews" : "Podglądy",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Aby wyświetlać prawdziwe zrzuty ekranu witryn z zakładek, aplikacja Zakładki może korzystać z usług stron trzecich w celu ich wygenerowania.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Możesz zarejestrować się za darmo na <a href=\"http://screeenly.com\">screeenly.com</a> lub <a href=\"https://github.com/stefanzweifel/screeenly\">skonfigurować własny serwer</a>.",
+    "Screeenly API URL" : "URL API dla Screenly",
+    "Screeenly API key" : "Klucz API dla Screenly",
     "Bookmarks feed" : "Kanał zakładek"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }
