@@ -60,6 +60,8 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'bookmark#get_single_bookmark', 'url' => '/public/rest/v2/bookmark/{id}', 'verb' => 'GET'],
 	['name' => 'bookmark#edit_bookmark', 'url' => '/public/rest/v2/bookmark/{id}', 'verb' => 'PUT'],
 	['name' => 'bookmark#delete_bookmark', 'url' => '/public/rest/v2/bookmark/{id}', 'verb' => 'DELETE'],
+	['name' => 'bookmark#get_bookmark_image', 'url' => '/public/rest/v2/bookmark/{id}/image', 'verb' => 'GET'],
+	['name' => 'bookmark#get_bookmark_favicon', 'url' => '/public/rest/v2/bookmark/{id}/favicon', 'verb' => 'GET'],
 	['name' => 'tags#full_tags', 'url' => '/public/rest/v2/tag', 'verb' => 'GET'],
 	['name' => 'tags#rename_tag', 'url' => '/public/rest/v2/tag', 'verb' => 'POST'],
 	['name' => 'tags#delete_tag', 'url' => '/public/rest/v2/tag', 'verb' => 'DELETE'],
