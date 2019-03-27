@@ -18,6 +18,7 @@ use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http\DataResponse;
 use \OCP\AppFramework\Http\TemplateResponse;
+use \OCP\AppFramework\Http\DataDisplayResponse;
 use \OCP\AppFramework\Http;
 use \OC\User\Manager;
 use \OCP\IUserSession;
@@ -25,8 +26,14 @@ use \OCA\Bookmarks\Bookmarks;
 use \OCA\Bookmarks\ExportResponse;
 use \OCA\Bookmarks\Helper;
 use OCP\Util;
+use \OCA\Bookmarks\Previews\IPreviewService;
+use OCP\AppFramework\Utility\ITimeFactory;
+use DateTime;
+use DateInterval;
 
 class BookmarkController extends ApiController {
+	const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
+
 	private $userId;
 	private $db;
 	private $l10n;
@@ -36,7 +43,21 @@ class BookmarkController extends ApiController {
 	/** @var Bookmarks */
 	private $bookmarks;
 
-	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, IL10N $l10n, Bookmarks $bookmarks, Manager $userManager, ILogger $logger, IUserSession $userSession) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		$userId,
+		IDBConnection $db,
+		IL10N $l10n,
+		Bookmarks $bookmarks,
+		Manager $userManager,
+		IPreviewService $previewService,
+		IPreviewService $faviconService,
+		IPreviewService $screenshotService,
+		ITimeFactory $timeFactory,
+		ILogger $logger,
+		IUserSession $userSession
+	) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->db = $db;
@@ -44,6 +65,10 @@ class BookmarkController extends ApiController {
 		$this->l10n = $l10n;
 		$this->bookmarks = $bookmarks;
 		$this->userManager = $userManager;
+		$this->previewService = $previewService;
+		$this->faviconService = $faviconService;
+		$this->screenshotService = $screenshotService;
+		$this->timeFactory = $timeFactory;
 		$this->logger = $logger;
 		$this->userSession = $userSession;
 	}
@@ -402,6 +427,64 @@ class BookmarkController extends ApiController {
 			->execute();
 
 		return new JSONResponse(['status' => 'success'], Http::STATUS_OK);
+	}
+
+	/**
+	 *
+	 * @param int $id The id of the bookmark whose favicon shoudl be returned
+	 * @return \OCP\AppFramework\Http\Reponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function getBookmarkImage($id) {
+		$bookmark = $this->bookmarks->findUniqueBookmark($id, $this->userId);
+		$image = $this->previewService->getImage($bookmark);
+		if (isset($image)) {
+			return $this->doImageResponse($image);
+		}
+
+		$image = $this->screenshotService->getImage($bookmark);
+		if (isset($image)) {
+			return $this->doImageResponse($image);
+		}
+
+		return new NotFoundResponse();
+	}
+
+	/**
+	 *
+	 * @param int $id The id of the bookmark whose image shoudl be returned
+	 * @return \OCP\AppFramework\Http\Reponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function getBookmarkFavicon($id) {
+		$bookmark = $this->bookmarks->findUniqueBookmark($id, $this->userId);
+		$image = $this->faviconService->getImage($bookmark);
+		if (!isset($image)) {
+			// Return a placeholder
+			return new RedirectResponse($this->url->getAbsoluteURL('/svg/core/places/link?color=666666'));
+		}
+		return $this->doImageResponse($image);
+	}
+
+	public function doImageResponse($image) {
+		$response = new DataDisplayResponse($image['data']);
+		$response->addHeader('Content-Type', $image['contentType']);
+
+		$response->cacheFor(self::IMAGES_CACHE_TTL);
+
+		$expires = new DateTime();
+		$expires->setTimestamp($this->timeFactory->getTime());
+		$expires->add(new DateInterval('PT' . self::IMAGES_CACHE_TTL . 'S'));
+		$response->addHeader('Expires', $expires->format(DateTime::RFC1123));
+		$response->addHeader('Pragma', 'cache');
+
+		return $response;
 	}
 
 	/**

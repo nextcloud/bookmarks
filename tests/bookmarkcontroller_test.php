@@ -9,6 +9,11 @@ use OCA\Bookmarks\LinkExplorer;
 use OCA\Bookmarks\UrlNormalizer;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
+use \OCA\Bookmarks\Previews\IPreviewService;
+use OCA\Bookmarks\Previews\DefaultPreviewService;
+use OCA\Bookmarks\Previews\ScreenlyPreviewService;
+use OCA\Bookmarks\Previews\FaviconPreviewService;
+use OCP\AppFramework\Utility\ITimeFactory;
 
 /**
  * Class Test_BookmarkController
@@ -50,13 +55,17 @@ class Test_BookmarkController extends TestCase {
 		$linkExplorer = \OC::$server->query(LinkExplorer::class);
 		$urlNormalizer = \OC::$server->query(UrlNormalizer::class);
 		$event = \OC::$server->getEventDispatcher();
+		$previewService = \OC::$server->query(DefaultPreviewService::class);
+		$faviconService = \OC::$server->query(FaviconPreviewService::class);
+		$screenshotService = \OC::$server->query(ScreenlyPreviewService::class);
+		$timeFactory = \OC::$server->getTimeFactory();
 		$logger = \OC::$server->getLogger();
 		$userSession = \OC::$server->getUserSession();
 		$parser = \OC::$server->query(BookmarksParser::class);
 		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger, $parser);
 
-		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager, $logger, $userSession);
-		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUser, $this->db, $l, $this->libBookmarks, $this->userManager, $logger, $userSession);
+		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager, $previewService, $faviconService, $screenshotService, $timeFactory, $logger, $userSession);
+		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUser, $this->db, $l, $this->libBookmarks, $this->userManager, $previewService, $faviconService, $screenshotService, $timeFactory, $logger, $userSession);
 	}
 
 	public function setupBookmarks() {

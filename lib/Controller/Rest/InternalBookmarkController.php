@@ -30,8 +30,6 @@ use DateTime;
 use OCP\AppFramework\Utility\ITimeFactory;
 
 class InternalBookmarkController extends ApiController {
-	const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
-
 	private $publicController;
 
 	private $userId;
@@ -57,13 +55,23 @@ class InternalBookmarkController extends ApiController {
 		IURLGenerator $url
 	) {
 		parent::__construct($appName, $request);
-		$this->publicController = new BookmarkController($appName, $request, $userId, $db, $l10n, $bookmarks, $userManager, $logger, $userSession);
+		$this->publicController = new BookmarkController(
+			$appName,
+			$request,
+			$userId,
+			$db,
+			$l10n,
+			$bookmarks,
+			$userManager,
+			$previewService,
+			$faviconService,
+			$screenshotService,
+			$timeFactory,
+			$logger,
+			$userSession
+		);
 		$this->userId = $userId;
 		$this->libBookmarks = $bookmarks;
-		$this->previewService = $previewService;
-		$this->faviconService = $faviconService;
-		$this->screenshotService = $screenshotService;
-		$this->timeFactory = $timeFactory;
 		$this->url = $url;
 	}
 
@@ -225,18 +233,7 @@ class InternalBookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 */
 	public function getBookmarkImage($id) {
-		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userId);
-		$image = $this->previewService->getImage($bookmark);
-		if (isset($image)) {
-			return $this->doImageResponse($image);
-		}
-
-		$image = $this->screenshotService->getImage($bookmark);
-		if (isset($image)) {
-			return $this->doImageResponse($image);
-		}
-
-		return new NotFoundResponse();
+		return $this->publicController->getBookmarkImage($id);
 	}
 
 	/**
@@ -248,27 +245,6 @@ class InternalBookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 */
 	public function getBookmarkFavicon($id) {
-		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userId);
-		$image = $this->faviconService->getImage($bookmark);
-		if (!isset($image)) {
-			// Return a placeholder
-			return new RedirectResponse($this->url->getAbsoluteURL('/svg/core/places/link?color=666666'));
-		}
-		return $this->doImageResponse($image);
-	}
-
-	public function doImageResponse($image) {
-		$response = new DataDisplayResponse($image['data']);
-		$response->addHeader('Content-Type', $image['contentType']);
-
-		$response->cacheFor(self::IMAGES_CACHE_TTL);
-
-		$expires = new DateTime();
-		$expires->setTimestamp($this->timeFactory->getTime());
-		$expires->add(new DateInterval('PT' . self::IMAGES_CACHE_TTL . 'S'));
-		$response->addHeader('Expires', $expires->format(DateTime::RFC1123));
-		$response->addHeader('Pragma', 'cache');
-
-		return $response;
+		return $this->publicController->getBookmarkFavicon($id);
 	}
 }
