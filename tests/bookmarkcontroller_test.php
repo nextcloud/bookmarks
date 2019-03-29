@@ -58,7 +58,7 @@ class Test_BookmarkController extends TestCase {
 		$previewService = \OC::$server->query(DefaultPreviewService::class);
 		$faviconService = \OC::$server->query(FaviconPreviewService::class);
 		$screenshotService = \OC::$server->query(ScreenlyPreviewService::class);
-		$timeFactory = \OC::$server->getTimeFactory();
+		$timeFactory = \OC::$server->query(ITimeFactory::class);
 		$logger = \OC::$server->getLogger();
 		$userSession = \OC::$server->getUserSession();
 		$parser = \OC::$server->query(BookmarksParser::class);
