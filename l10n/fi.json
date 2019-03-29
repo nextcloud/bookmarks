@@ -14,6 +14,8 @@
     "No bookmarks here." : "Täällä ei ole kirjanmerkkejä.",
     "Favorites" : "Suosikit",
     "Settings" : "Asetukset",
+    "Bookmarklet" : "Sovelluskirjanmerkki",
+    "Add to {instanceName} " : "Lisää kohteeseen {instanceName}",
     "Recently added" : "Äskettäin lisätty",
     "Most visited" : "Vierailuimmat",
     "View mode" : "Näkymätila",
@@ -25,6 +27,7 @@
     "An error occurred while trying to save the bookmark." : "Kirjanmerkin tallennusta yrittäessä tapahtui virhe.",
     "Error" : "Virhe",
     "Uncategorized" : "Luokittelematon",
+    "Error parsing the import result" : "Virhe jäsentäessä tuonnin tulosta",
     "Import completed successfully." : "Tuonti suoritettiin onnistuneesti.",
     "Do you really want to delete all your bookmarks?" : "Haluatko varmasti poistaa kaikki kirjanmerkkisi?",
     "Set tags" : "Aseta tunnisteet",
@@ -32,6 +35,7 @@
     "No file provided for import" : "Tuotavaa tiedostoa ei ole valittu",
     "Unsupported file type for import" : "Tiedoston tyyppi ei ole tuotavaa muotoa",
     "A Bookmark manager for Nextcloud" : "Kirjanmerkkien hallinta Nextcloudille",
+    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Tämä sovellus mahdollistaa verkon suosikkipaikkojesi tallentamisen ja järjestelyn yhdessä paikassa, mahdollistaen myös niiden synkronoinnin eri laitteisiin ja selaimiin.\nKatso lista kolmannen osapuolen sovelluksista täältä: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Lisää kirjanmerkki",
     "This URL is already bookmarked! Overwrite?" : "Osoite on jo lisätty kirjanmerkkeihin. Korvataanko se?",
     "The title of the page" : "Sivun otsikko",
@@ -39,7 +43,10 @@
     "Description of the page" : "Sivun kuvaus",
     "Save" : "Tallenna",
     "Previews" : "Esikatselut",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Näyttääkseen aitoja kuvakaappauksia kirjanmerkkeihin lisäämistäsi verkkosivuista, Kirjanmerkit voi käyttää kolmannen osapuolen palvelua niiden luomiseen.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Voit rekisteröityä ilmaiseksi osoitteessa <a href=\"http://screeenly.com\">screeenly.com</a> tai <a href=\"https://github.com/stefanzweifel/screeenly\">pystyttää oman palvelimen</a>.",
+    "Screeenly API URL" : "Screeenly-palvelun API:n URL",
+    "Screeenly API key" : "Screeenly-palvelun API-avain",
     "Bookmarks feed" : "Kirjanmerkkien syöte"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
