@@ -40,12 +40,13 @@ npm run build
 
 ## Third-party clients
 
-- [Nextcloud Bookmarks](https://gitlab.com/derSchabi/OCBookmarks) - Android app with full add/edit/delete and view functionallity
-- [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based browsers
-- [NCBookmarks](https://github.com/lenchan139/NCBookmark) - App to view/edit/open bookmarks for Android
+- [Nextcloud Bookmarks](https://gitlab.com/derSchabi/OCBookmarks) - client app for Android
+- [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based
+- [NCBookmarks](https://github.com/lenchan139/NCBookmark) - Android App
 - [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
 - [FreedomMarks](https://github.com/damko/freedommarks-browser-webextension) - Addon for Firefox and Chrome. No sync, just a client.
-- [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) - A MacOS client for managing, searching and opening bookmarks.
+- [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) A MacOS client
+- [Nextcloud Bookmarks](https://play.google.com/store/apps/details?id=org.bisw.nxbookmarks)
 
 ## API
 
