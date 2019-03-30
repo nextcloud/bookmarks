@@ -5,7 +5,7 @@ OC.L10N.register(
     "Add a Bookmark" : "Afegeix una adreça d'interès",
     "Add folder" : "Afegeix una carpeta",
     "Select" : "Marca",
-    "Deselect" : "Desmarca",
+    "Deselect" : "No seleccionis",
     "Details" : "Detalls",
     "Delete" : "Suprimeix",
     "Saved" : "Desat",
