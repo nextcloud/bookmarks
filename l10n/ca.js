@@ -35,11 +35,11 @@ OC.L10N.register(
     "Set tags" : "Establiu etiquetes",
     "Failed to import one bookmark, because: " : "Ha fallat la importació d'una adreça d'interès, perquè:",
     "No file provided for import" : "No s'ha proporcionat cap fitxer per importar",
-    "Unsupported file type for import" : "El tipus de fitxer per importar no està suportat",
+    "Unsupported file type for import" : "El tipus de fitxer a importar no està suportat",
     "A Bookmark manager for Nextcloud" : "Un gestor d'adreces d'interès per Nextcloud",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Aquesta app us permet emmagatzemar i organitzar els vostres llocs favorits de la web des d'un sol punt, mentre que a la vegada també us permet sincronitzar-los amb diversos dispositius i navegadors.\nVerifiqueu els clients de tercers llistats aquí: https://github.com/nextcloud/bookmarks#third-party-clients",
+    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Aquesta aplicació us permet emmagatzemar i organitzar els vostres llocs favorits de la web des d'un sol punt, mentre que a la vegada també us permet sincronitzar-los amb diversos dispositius i navegadors.\nVerifiqueu els clients de tercers llistats aquí: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Afegeix una adreça d'interès",
-    "This URL is already bookmarked! Overwrite?" : "Ja teniu aquest URL a les adreces d'interès. Voleu sobreescriure'l?",
+    "This URL is already bookmarked! Overwrite?" : "Ja teniu aquesta URL a les adreces d'interès. Voleu sobreescriure-la?",
     "The title of the page" : "El títol de la pàgina",
     "The address of the page" : "L'adreça de la pàgina",
     "Description of the page" : "Descripció de la pàgina",
@@ -47,6 +47,8 @@ OC.L10N.register(
     "Previews" : "Previsualitzacions",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Per poder mostrar captures reals de pantalla de les pàgines web de les vostres adreces d'interès favorites, podeu fer servir un servei de tercers per generar-les",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "Podeu registrar-vos gratuïtament a <a href=\"http://screeenly.com\">screeenly.com</a> o bé <a href=\"https://github.com/stefanzweifel/screeenly\">configureu el vostre servidor</a>",
+    "Screeenly API URL" : "URL de l'API d'Screeenly",
+    "Screeenly API key" : "Clau de l'API d'Screeenly",
     "Bookmarks feed" : "Canal d'adreces d'interès"
 },
 "nplurals=2; plural=(n != 1);");
