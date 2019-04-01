@@ -47,6 +47,8 @@ OC.L10N.register(
     "Previews" : "Önizlemeler",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Yer imlerine eklediğiniz web sitelerinin gerçek ekran görüntülerinin görüntülenmesi için Yer İmleri uygulaması üçüncü taraf bir hizmet kullanabilir.",
     "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "<a href=\"http://screeenly.com\">screeenly.com</a> üzerinde ücretsiz bir hesap açabilir ya da <a href=\"https://github.com/stefanzweifel/screeenly\">kendi sunucunuzu kurabilirsiniz</a>.",
+    "Screeenly API URL" : "Screeenly API Adresi",
+    "Screeenly API key" : "Screeenly API Anahtarı",
     "Bookmarks feed" : "Yer imleri akışı"
 },
 "nplurals=2; plural=(n > 1);");
