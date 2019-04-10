@@ -137,6 +137,9 @@ class BookmarksParser {
 					break;
 				case 'dd':
 					$this->addDescription($entry);
+					if ($entry->hasChildNodes()) {
+						$this->traverse($entry);
+					}
 					break;
 				case 'h3':
 					$this->addFolder($entry);
@@ -201,7 +204,11 @@ class BookmarksParser {
 	 * @param \DOMNode $node
 	 */
 	private function addDescription(\DOMNode $node) {
-		$bookmark = $this->bookmarks[count($this->bookmarks)-1];
+		$count = count($this->bookmarks);
+		if ($count === 0) {
+			return;
+		}
+		$bookmark = $this->bookmarks[$count-1];
 		$bookmark['description'] = $node->textContent;
 	}
 	/**
