@@ -19,6 +19,7 @@ use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http\DataResponse;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Http\DataDisplayResponse;
+use \OCP\AppFramework\Http\RedirectResponse;
 use \OCP\AppFramework\Http;
 use \OC\User\Manager;
 use \OCP\IUserSession;
