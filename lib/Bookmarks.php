@@ -876,7 +876,7 @@ class Bookmarks {
 		// normalize url
 		$url = $this->urlNormalizer->normalize($url);
 
-		$urlWithoutPrefix = trim(substr($url, strpos($url, "://") + 3)); // Removes everything from the url before the "://" pattern (included)
+		$urlWithoutPrefix = trim(substr($url, strpos($url, "://"))); // Removes everything from the url before the "://" pattern (excluded)
 		$decodedUrlNoPrefix = htmlspecialchars_decode($urlWithoutPrefix);
 		$decodedUrl = htmlspecialchars_decode($url);
 
