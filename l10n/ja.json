@@ -27,6 +27,7 @@
     "An error occurred while trying to save the bookmark." : "ブックマークの保存中にエラーが発生しました。",
     "Error" : "エラー",
     "Uncategorized" : "未分類",
+    "Error parsing the import result" : "インポート結果の解析中にエラーが発生しました",
     "Import completed successfully." : "インポートに成功しました",
     "Do you really want to delete all your bookmarks?" : "本当にすべてのブックマークを削除しますか？",
     "Set tags" : "タグを設定",
@@ -34,6 +35,7 @@
     "No file provided for import" : "インポート用に提供されたファイルがありません",
     "Unsupported file type for import" : "インポートにサポートされていないファイルタイプ",
     "A Bookmark manager for Nextcloud" : "Nextcloud のブックマークマネージャー",
+    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "このアプリでは、Web上のお気に入りの場所を一カ所で保存・整理し、さらに各種のデバイスやブラウザーと同期することができます。\nこちらに掲載されたサードパーティのクライアントをチェックしてください: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "ブックマークを追加",
     "This URL is already bookmarked! Overwrite?" : "このURLはすでにブックマークされています! 上書きしますか?",
     "The title of the page" : "ページのタイトル",
@@ -42,6 +44,9 @@
     "Save" : "保存",
     "Previews" : "プレビュー",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "ブックマークされたウェブサイトの実際のスクリーンショットを表示するために、ブックマークはそれらを生成するためにサードパーティのサービスを使用することができます。",
+    "You can either sign up for free at <a href=\"http://screeenly.com\">screeenly.com</a> or <a href=\"https://github.com/stefanzweifel/screeenly\">setup your own server</a>." : "<a href=\"http://screeenly.com\">screeenly.com</a>で無料でサインアップすることも、<a href=\"https://github.com/stefanzweifel/screeenly\">自分のサーバーをセットアップ</a>することもできます。",
+    "Screeenly API URL" : "Screeenly API URL",
+    "Screeenly API key" : "Screeenly API キー",
     "Bookmarks feed" : "ブックマークフィード"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

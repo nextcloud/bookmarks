@@ -14,7 +14,7 @@ OC.L10N.register(
     "Tags" : "Etiquetes",
     "Description" : "Descripció",
     "No bookmarks here." : "No hi ha adreces d'interès aquí.",
-    "Favorites" : "Favorits",
+    "Favorites" : "Preferits",
     "Settings" : "Paràmetres",
     "Bookmarklet" : "Miniaplicació d'adreces d'interès",
     "Add to {instanceName} " : "Afegeix a {instanceName}",
