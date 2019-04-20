@@ -665,8 +665,12 @@ class Bookmarks {
 	 * @param string $userrId User ID
 	 */
 	public function deleteAllBookmarks($userId) {
-		$allBookmarks = $this->findBookmarks($userId, -1, 'id', [], false, -1);
-		foreach ($allBookmarks as $bookmark) {
+		$rootFolders = $this->listChildFolders($userId, -1);
+		foreach ($childFolders as $folder) {
+			$this->deleteFolder($userId, $folder['id']);
+		}
+		$restBookmarks = $this->findBookmarks($userId, -1, 'id', [], false, -1);
+		foreach ($restBookmarks as $bookmark) {
 			$this->deleteUrl($userId, $bookmark['id']);
 		}
 	}
