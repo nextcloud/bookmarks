@@ -666,7 +666,7 @@ class Bookmarks {
 	 */
 	public function deleteAllBookmarks($userId) {
 		$rootFolders = $this->listChildFolders($userId, -1);
-		foreach ($childFolders as $folder) {
+		foreach ($rootFolders as $folder) {
 			$this->deleteFolder($userId, $folder['id']);
 		}
 		$restBookmarks = $this->findBookmarks($userId, -1, 'id', [], false, -1);
