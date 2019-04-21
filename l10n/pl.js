@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Bookmarks" : "Zakładki",
     "Add a Bookmark" : "Dodaj Zakładkę",
-    "Add folder" : "Dodaj folder",
+    "Add folder" : "Dodaj katalog",
     "Select" : "Wybierz",
     "Deselect" : "Odznacz",
     "Details" : "Szczegóły",
