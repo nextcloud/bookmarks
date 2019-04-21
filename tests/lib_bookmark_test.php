@@ -452,6 +452,25 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertFalse($result);
 	}
 
+	public function testFolderHashes() {
+		$this->cleanDB();
+		$this->libBookmarks->addFolder($this->otherUser, 'test');
+		$test = $this->libBookmarks->addFolder($this->userid, 'test');
+		$test2 = $this->libBookmarks->addFolder($this->userid, 'test2', $test);
+		$test3 = $this->libBookmarks->addFolder($this->userid, 'test3', $test);
+
+		$test2Bookmark = $this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", ["one"], "PrivateNoTag", false, [$test2]);
+		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", ["one", "two"], "PrivatTag", false, [$test]);
+		$test3Bookmark = $this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", ["four"], "PublicNoTag", true, [$test3, -1]);
+		$test3OnlyBookmark = $this->libBookmarks->addBookmark($this->userid, "https://www.duckduckgo.com", "DuckDuckGo", ["four"], "PublicNoTag", false, [$test3]);
+		$rootBookmark = $this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", true, [-1]);
+		$this->libBookmarks->addBookmark($this->otherUser, "http://www.google.de", "Google", ["one"], "PrivateNoTag", false, [-1]);
+		$hash1 = $this->libBookmarks->hashFolder($this->userid, $test, ['title', 'url']);
+		$this->libBookmarks->deleteUrl($this->userid, $test3OnlyBookmark);
+		$hash2 = $this->libBookmarks->hashFolder($this->userid, $test, ['title', 'url']);
+		$this->assertNotEquals($hash1, $hash2);
+	}
+
 	protected function tearDown() {
 		$this->cleanDB();
 	}

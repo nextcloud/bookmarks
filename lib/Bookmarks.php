@@ -320,6 +320,23 @@ class Bookmarks {
 		return true;
 	}
 
+	public function hashFolder($userId, $folderId, $fields = ['title', 'url']) {
+		$folderRecord = $this->getFolder($userId, $folderId);
+		$children = $this->getFolderChildren($userId, $folderId);
+		$childHashes = array_map(function ($item) use ($userId, $fields) {
+			switch ($item['type']) {
+				case 'bookmark':
+				  return $this->hashBookmark($userId, $item['id'], $fields);
+				case 'folder':
+				  return $this->hashFolder($userId, $item['id'], $fields);
+			  default:
+				  throw new UnexpectedValueException('Expected bookmark or folder, but not '.$item['type']);
+			}
+		}, $children);
+		$folder = ['title' => $folderRecord['title'], 'children' => $childHashes];
+		return Murmur2Hash::hash(json_encode($folder));
+	}
+
 	public function deleteFolder($userId, $folderId) {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$qb = $this->db->getQueryBuilder();
@@ -404,6 +421,18 @@ class Bookmarks {
 			return false;
 		}
 	}
+
+	public function hashBookmark($userId, $bookmarkId, $fields) {
+		$bookmarkRecord = $this->findUniqueBookmark($bookmarkId, $userId);
+		$bookmark = [];
+		foreach ($fields as $field) {
+			if (isset($bookmarkRecord[$field])) {
+				$bookmark[$field] = $bookmarkRecord[$field];
+			}
+		}
+		return Murmur2Hash::hash(json_encode($bookmark));
+	}
+
 
 	/**
 	 * @brief Check if an URL is bookmarked
