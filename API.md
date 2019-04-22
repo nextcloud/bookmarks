@@ -33,8 +33,8 @@ GET
 
 ```json
 {
-    "status": "success",
-    "data": [{ "id": "7", "title": "Google", "tags": ["firsttag"] /*...*/ }]
+	"status": "success",
+	"data": [{ "id": "7", "title": "Google", "tags": ["firsttag"] /*...*/ }]
 }
 ```
 
@@ -62,13 +62,13 @@ POST /index.php/apps/bookmarks/public/rest/v2/bookmark?url=http%3A%2F%2Fgoogle.c
 
 ```json
 {
-    "status": "success",
-    "item": {
-        "id": "7",
-        "url": "http://google.com",
-        "title": "Google"
-        //...
-    }
+	"status": "success",
+	"item": {
+		"id": "7",
+		"url": "http://google.com",
+		"title": "Google"
+		//...
+	}
 }
 ```
 
@@ -92,13 +92,13 @@ GET /index.php/apps/bookmarks/public/rest/v2/bookmark/7
 
 ```json
 {
-    "status": "success",
-    "item": {
-        "id": "7",
-        "url": "http://google.com",
-        "title": "Boogle"
-        //...
-    }
+	"status": "success",
+	"item": {
+		"id": "7",
+		"url": "http://google.com",
+		"title": "Boogle"
+		//...
+	}
 }
 ```
 
@@ -128,13 +128,13 @@ PUT /index.php/apps/bookmarks/public/rest/v2/bookmark/7?record_id=7&title=Boogle
 
 ```json
 {
-    "status": "success",
-    "item": {
-        "id": "7",
-        "url": "http://google.com",
-        "title": "Boogle"
-        //...
-    }
+	"status": "success",
+	"item": {
+		"id": "7",
+		"url": "http://google.com",
+		"title": "Boogle"
+		//...
+	}
 }
 ```
 
@@ -292,7 +292,7 @@ POST /index.php/apps/bookmarks/public/rest/v2/folder
 ### Edit folders
 
 ```
-PUT /index.php/apps/bookmarks/public/rest/v2/folder
+PUT /index.php/apps/bookmarks/public/rest/v2/folder/:id
 ```
 
 Parameters:
@@ -311,6 +311,46 @@ PUT /index.php/apps/bookmarks/public/rest/v2/folder/5
 ```
 { "status": "success", "item": {"id": 5, "title": "physical activity", "parent_folder": "-1"}}
 ```
+
+### Hash folders
+
+```
+GET /index.php/apps/bookmarks/public/rest/v2/folder/:id/hash
+```
+
+Parameters:
+
+- (optional) `fields[]`: All bookmarks fields that should be hashed (default: `title`, `url`)
+
+Example:
+
+```
+GET /index.php/apps/bookmarks/public/rest/v2/folder/5/hash
+```
+
+```
+{ "status": "success", "data": "65432378"}
+```
+
+Description:
+
+This endpoint is useful for synchronizing data between the server and a client. By comparing the hash of the data on your client with the hash from the server you can figure out which parts of the tree have changed.
+
+The algorithm works as follows:
+
+- Hash endpoint: `hashFolder(id, fields)`
+- `hashFolder(id, fields)`
+  - for all children of the folder
+    - if it's a folder
+      - add to `childrenHashes`: `hashFolder(folderId, fields)`
+    - if it's a bookmark
+      - add to `childrenHashes`: `hashBookmark(bookmarkId, fields)`
+  - Return `murmur2(to_json({title: folderTitle, children: childrenHashes}))`
+- `hashBookmark(id, fields)`
+  - for all entries in `fields`
+    - set `object[field]` to the value of the associated field of the bookmark
+  - Return `murmur2(to_json(object))`
+- `murmur2`: [The murmur2 hashing algorithm](https://en.wikipedia.org/wiki/MurmurHash)
 
 ### Delete folders
 
