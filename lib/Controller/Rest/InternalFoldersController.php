@@ -103,6 +103,17 @@ class InternalFoldersController extends ApiController {
 	}
 
 	/**
+	 * @param int $folderId
+	 * @param string[] $fields
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function hashFolder($folderId, $fields=['title', 'url']) {
+		return $this->controller->hashFolder($folderId, $fields);
+	}
+
+	/**
 	 * @param int $root the id of the root folder whose descendants to return
 	 * @param int $layers the number of layers of hierarchy too return
 	 * @return JSONResponse

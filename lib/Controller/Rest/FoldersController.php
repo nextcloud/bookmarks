@@ -118,6 +118,24 @@ class FoldersController extends ApiController {
 		}
 	}
 
+	/**
+	 * @param int $folderId
+	 * @param string[] $fields
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function hashFolder($folderId, $fields=['title', 'url']) {
+		try {
+			$hash = $this->bookmarks->hashFolder($this->userId, $folderId, $fields);
+			return new JSONResponse(['status' => 'success', 'data' => $hash]);
+		} catch (Exception $e) {
+			return new JSONResponse(['status' => 'error', 'data' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
+		}
+	}
+
 
 	/**
 	 * @param int $folderId
