@@ -149,7 +149,8 @@ class BookmarkController extends ApiController {
 		$search = [],
 		$limit = 10,
 		$untagged = false,
-		$folder = null
+		$folder = null,
+		$url = null
 	) {
 		$this->registerResponder('rss', function ($res) {
 			if ($res->getData()['status'] === 'success') {
@@ -216,6 +217,19 @@ class BookmarkController extends ApiController {
 		}
 
 		// type == bookmark
+
+		if ($url !== null) {
+			$id = $this->bookmarks->bookmarkExists($url, $user);
+			if ($id === false) {
+				return new DataResponse(['data' => [], 'status' => 'success']);
+			}
+			$bookmark = $this->bookmarks->findUniqueBookmark($id, $user);
+			if ($publicOnly && $bookmark['public'] != true) {
+				return new DataResponse(['data' => [], 'status' => 'success']);
+			}
+			$bookmarks = [$this->bookmarks->findUniqueBookmark($id, $user)];
+			return new DataResponse(['data' => $bookmarks, 'status' => 'success']);
+		}
 
 		if ($tag !== '') {
 			$filterTag = $this->bookmarks->analyzeTagRequest($tag);

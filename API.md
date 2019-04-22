@@ -23,6 +23,7 @@ Parameters:
 - (optional) `search[]`: An array of words to search for in the following columns `url`, `title`, `description`
 - (optional) `user`: Instead of returning the bookmarks of the current user, return the public bookmarks of the user passed as this parameter.
 - (optional) `folder`: Only return bookmarks that are direct children of the folder with the passed ID. The root folder has id `-1`.
+- (optional) `url`: Only return bookmarks with this URL. This will only ever return just one bookmark or none, because the app doesn't store duplicates. Thus, with this parameter you can test whether a URL exists in the user's bookmarks.
 
 Example:
 
