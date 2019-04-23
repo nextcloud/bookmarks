@@ -14,6 +14,7 @@ use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;
 use \OCP\IRequest;
+use \OCP\IURLGenerator;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http\DataResponse;
@@ -57,7 +58,8 @@ class BookmarkController extends ApiController {
 		IPreviewService $screenshotService,
 		ITimeFactory $timeFactory,
 		ILogger $logger,
-		IUserSession $userSession
+		IUserSession $userSession,
+		IURLGenerator $url
 	) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
@@ -72,6 +74,7 @@ class BookmarkController extends ApiController {
 		$this->timeFactory = $timeFactory;
 		$this->logger = $logger;
 		$this->userSession = $userSession;
+		$this->url = $url;
 	}
 
 	/**

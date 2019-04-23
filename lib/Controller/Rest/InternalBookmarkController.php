@@ -68,11 +68,11 @@ class InternalBookmarkController extends ApiController {
 			$screenshotService,
 			$timeFactory,
 			$logger,
-			$userSession
+			$userSession,
+			$url
 		);
 		$this->userId = $userId;
 		$this->libBookmarks = $bookmarks;
-		$this->url = $url;
 	}
 
 	/**
