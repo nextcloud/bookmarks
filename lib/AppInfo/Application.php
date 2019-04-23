@@ -75,7 +75,8 @@ class Application extends App {
 				$c->query('ServerContainer')->query(ScreenlyPreviewService::class),
 				$c->query('ServerContainer')->query(ITimeFactory::class),
 				$c->query('ServerContainer')->getLogger(),
-				$c->query('ServerContainer')->getUserSession()
+				$c->query('ServerContainer')->getUserSession(),
+				$c->query('ServerContainer')->query(IURLGenerator::class)
 			);
 		});
 
