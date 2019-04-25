@@ -350,7 +350,7 @@ class Bookmarks {
 			return;
 		}
 
-		// get all bookmarks that are in this folder *only*
+		// get all bookmarks that are in this folder
 		$qb = $this->db->getQueryBuilder();
 		$qb
 				->select('id')
@@ -360,21 +360,7 @@ class Bookmarks {
 		$bookmarksToDelete = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 		// ... and "delete" them
 		foreach ($bookmarksToDelete as $bookmarkId) {
-			// remove this folder from the list of parent folders
-			$bookmark = $this->findUniqueBookmark($bookmarkId, $userId);
-			$newFolders = [];
-			foreach ($bookmark['folders'] as $oldFolderId) {
-				if ((string) $oldFolderId === (string) $folderId) {
-					continue;
-				}
-				$newFolders[] = $oldFolderId;
-			}
-			// only if no parent folders are left do we delete the bookmark as a whole
-			if (count($newFolders) > 0) {
-				$this->editBookmark($userId, $bookmarkId, $bookmark['url'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], $bookmark['public'], $newFolders);
-			} else {
-				$this->deleteUrl($userId, $bookmarkId);
-			}
+			$this->removeFromFolders($userId, $bookmarkId, [$folderId]);
 		}
 
 		// delete all subfolders
