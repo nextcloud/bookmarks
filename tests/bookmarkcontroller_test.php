@@ -14,6 +14,7 @@ use OCA\Bookmarks\Previews\DefaultPreviewService;
 use OCA\Bookmarks\Previews\ScreenlyPreviewService;
 use OCA\Bookmarks\Previews\FaviconPreviewService;
 use OCP\AppFramework\Utility\ITimeFactory;
+use \OCP\IURLGenerator;
 
 /**
  * Class Test_BookmarkController
@@ -62,10 +63,11 @@ class Test_BookmarkController extends TestCase {
 		$logger = \OC::$server->getLogger();
 		$userSession = \OC::$server->getUserSession();
 		$parser = \OC::$server->query(BookmarksParser::class);
+		$urlGenerator = \OC::$server->query(IURLGenerator::class);
 		$this->libBookmarks = new Bookmarks($this->db, $config, $l, $linkExplorer, $urlNormalizer, $event, $logger, $parser);
 
-		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager, $previewService, $faviconService, $screenshotService, $timeFactory, $logger, $userSession);
-		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUser, $this->db, $l, $this->libBookmarks, $this->userManager, $previewService, $faviconService, $screenshotService, $timeFactory, $logger, $userSession);
+		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userid, $this->db, $l, $this->libBookmarks, $this->userManager, $previewService, $faviconService, $screenshotService, $timeFactory, $logger, $userSession, $urlGenerator);
+		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUser, $this->db, $l, $this->libBookmarks, $this->userManager, $previewService, $faviconService, $screenshotService, $timeFactory, $logger, $userSession, $urlGenerator);
 	}
 
 	public function setupBookmarks() {
