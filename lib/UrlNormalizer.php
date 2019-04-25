@@ -151,11 +151,7 @@ class UrlNormalizer {
 		$params = explode('&', $nquery);
 		$nparams = [];
 		foreach ($params as $param) {
-			if (strpos($param, '=') !== false) {
-				$k = substr($param, 0, strpos($param, '='));
-				$v = substr($param, strpos($param, '=')+1);
-				array_push($nparams, $k.'='.$v);
-			}
+			array_push($nparams, $params);
 		}
 		sort($nparams);
 		return implode('&', $nparams);
