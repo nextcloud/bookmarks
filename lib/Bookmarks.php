@@ -339,16 +339,6 @@ class Bookmarks {
 
 	public function deleteFolder($userId, $folderId) {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->delete('bookmarks_folders')
-			->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
-			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
-		$result = $qb->execute();
-
-		if ($result === 0) {
-			return;
-		}
 
 		// get all bookmarks that are in this folder
 		$qb = $this->db->getQueryBuilder();
@@ -368,6 +358,14 @@ class Bookmarks {
 		foreach ($childFolders as $folder) {
 			$this->deleteFolder($userId, $folder['id']);
 		}
+
+		// delete this folder
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->delete('bookmarks_folders')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($folderId)))
+			->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+		$result = $qb->execute();
 	}
 
 	private function getBookmarkParentFolders($bookmarkId) {
