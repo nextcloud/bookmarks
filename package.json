@@ -1,6 +1,6 @@
 {
 	"name": "bookmarks",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"main": "js/index.js",
 	"scripts": {
 		"build": "webpack"
