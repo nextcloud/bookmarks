@@ -46,6 +46,7 @@ npm run build
 - [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
 - [FreedomMarks](https://github.com/damko/freedommarks-browser-webextension) - Addon for Firefox and Chrome. No sync, just a client.
 - [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) A MacOS client
+- [QOwnNotes](https://www.qownnotes.org/) - Plain-text file markdown note taking desktop application (no sync, just importing bookmarks)
 
 ## API
 
