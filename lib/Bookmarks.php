@@ -374,7 +374,12 @@ class Bookmarks {
 			->select('folder_id')
 			->from('bookmarks_folders_bookmarks')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)));
-		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		$parentIds = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		// normalize postgres numbers to strings to be en par with mysql
+		foreach ($parentIds as $key => $id) {
+			$parentIds[$key] = (string) $id;
+		}
+		return $parentId;
 	}
 
 	/**
