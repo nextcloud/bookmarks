@@ -342,8 +342,8 @@ button span,
 }
 
 .list-view .bookmark-card .select-mode-checkbox + label {
-	top: 17px;
-	left: 18px;
+	top: 10px;
+	left: 10px;
 	z-index: 10;
 }
 
