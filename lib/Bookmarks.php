@@ -379,7 +379,7 @@ class Bookmarks {
 		foreach ($parentIds as $key => $id) {
 			$parentIds[$key] = (string) $id;
 		}
-		return $parentId;
+		return $parentIds;
 	}
 
 	/**
