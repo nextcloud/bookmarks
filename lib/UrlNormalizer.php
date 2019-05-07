@@ -84,7 +84,7 @@ class UrlNormalizer {
 		if (strlen($parts['port'])>0) {
 			$url .= ':' . $parts['port'];
 		}
-		if (strlen($parts['path'])>0) {
+		if (strlen($parts['path'])>1 || strlen($parts['query']) > 0 || strlen($parts['fragment']) > 0) {
 			$url .= $parts['path'];
 		}
 		if (strlen($parts['query'])>0) {
