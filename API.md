@@ -346,12 +346,13 @@ The algorithm works as follows:
       - add to `childrenHashes`: `hashFolder(folderId, fields)`
     - if it's a bookmark
       - add to `childrenHashes`: `hashBookmark(bookmarkId, fields)`
-  - Return `murmur2(to_json({title: folderTitle, children: childrenHashes}))`
+  - Return `sha256(to_json({title: folderTitle, children: childrenHashes}))` with the title being unset in case of the root folder
 - `hashBookmark(id, fields)`
   - for all entries in `fields`
     - set `object[field]` to the value of the associated field of the bookmark
-  - Return `murmur2(to_json(object))`
-- `murmur2`: [The murmur2 hashing algorithm](https://en.wikipedia.org/wiki/MurmurHash)
+  - Return `sha256(to_json(object))`
+- `to_json`: A JSON stringification algorithm that adds no unnecessary white-space and doesn't use JSON's backslash escaping unless necessary (character set is UTF-8)
+- `sha256`: The SHA-256 hashing algorithm
 
 ### Delete folders
 

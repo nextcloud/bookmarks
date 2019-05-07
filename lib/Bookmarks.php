@@ -333,8 +333,12 @@ class Bookmarks {
 				  throw new UnexpectedValueException('Expected bookmark or folder, but not '.$item['type']);
 			}
 		}, $children);
-		$folder = ['title' => $folderRecord['title'], 'children' => $childHashes];
-		return Murmur2Hash::hash(json_encode($folder));
+		$folder = [];
+		if (isset($folderRecord['title'])) {
+			$folder['title'] = $folderRecord['title'];
+		}
+		$folder['children'] = $childHashes;
+		return hash('sha256', json_encode($folder, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	}
 
 	public function deleteFolder($userId, $folderId) {
@@ -419,7 +423,7 @@ class Bookmarks {
 				$bookmark[$field] = $bookmarkRecord[$field];
 			}
 		}
-		return Murmur2Hash::hash(json_encode($bookmark));
+		return hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	}
 
 
