@@ -19,6 +19,7 @@
  */
 namespace OCA\Bookmarks\Previews;
 
+use OCA\Bookmarks\FileCache;
 use OCP\ICache;
 use OCP\ILogger;
 use OCP\Http\Client\IClientService;
@@ -32,7 +33,7 @@ class DefaultPreviewService implements IPreviewService {
 
 	const HTTP_TIMEOUT = 10 * 1000;
 
-	/** @var ICache */
+	/** @var FileCache */
 	protected $cache;
 
 	/** @var IClient */
@@ -48,7 +49,7 @@ class DefaultPreviewService implements IPreviewService {
 	 * @param CacheFactory $cacheFactory
 	 * @param LinkExplorer $linkExplorer
 	 */
-	public function __construct(ICache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
+	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
 		$this->cache = $cache;
 		$this->linkExplorer = $linkExplorer;
 		$this->client = $clientService->newClient();
