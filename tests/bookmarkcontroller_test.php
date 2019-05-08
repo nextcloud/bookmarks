@@ -172,7 +172,7 @@ class Test_BookmarkController extends TestCase {
 		$this->controller->editBookmark($id, 'https://www.heise.de', null, '', true, $id, '');
 
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
-		$this->assertEquals("https://www.heise.de/", $bookmark['url']); // normalized URL
+		$this->assertEquals("https://www.heise.de", $bookmark['url']); // normalized URL
 	}
 
 	public function testPrivateDeleteBookmark() {

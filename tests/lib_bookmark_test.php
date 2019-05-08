@@ -114,7 +114,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertFalse(isset($resultOne['lastmodified']));
 		$this->assertCount(0, $resultOne['tags']);
 		$this->assertEquals('Golem', $resultOne['title']);
-		$this->assertEquals('http://www.golem.de/', $resultOne['url']);
+		$this->assertEquals('http://www.golem.de', $resultOne['url']);
 
 		$resultTwo = $resultSet[1];
 		$this->assertFalse(isset($resultTwo['lastmodified']));
@@ -244,7 +244,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->editBookmark($this->userid, $id, "https://www.google.de", "NewTitle", ["three", "four"]);
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("NewTitle", $bookmark['title']);
-		$this->assertEquals("https://www.google.de/", $bookmark['url']);
+		$this->assertEquals("https://www.google.de", $bookmark['url']);
 		$this->assertCount(2, $bookmark['tags']);
 		$this->assertTrue(in_array('four', $bookmark['tags']));
 		$this->assertTrue(in_array('three', $bookmark['tags']));
