@@ -4,7 +4,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\UrlNormalizer;
 
-class Test_SettingsController extends TestCase {
+class Test_UrlNormalizer extends TestCase {
 	private $url;
 
 	protected function setUp() {
