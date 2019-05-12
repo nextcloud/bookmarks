@@ -67,10 +67,10 @@ class Test_UrlNormalizer extends TestCase {
 			['http://sindresorhus.com//foo', 'http://sindresorhus.com/foo']
 		];
 		foreach ($data as $item) {
-			echo $item[1];
+			echo $item[1]."\r\n";
 			$this->assertEquals($item[1], $this->url->normalize($item[0]));
 			// idempotence
-			$this->assertEquals($item[1], $this->url->normalize($url->normalize($item[0])));
+			$this->assertEquals($item[1], $this->url->normalize($this->url->normalize($item[0])));
 		}
 	}
 }
