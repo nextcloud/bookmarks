@@ -4,7 +4,7 @@ namespace OCA\Bookmarks;
 class UrlNormalizer {
 	private $normalizer;
 
-
+	const DEFAULT_SCHEME = 42;
 	const SCHEMES = ['http', 'https', 'ftp', 'sftp', 'file', 'gopher', 'imap', 'mms',
 		   'news', 'nntp', 'telnet', 'prospero', 'rsync', 'rtsp', 'rtspu',
 		   'svn', 'git', 'ws', 'wss'];
@@ -67,8 +67,9 @@ class UrlNormalizer {
 
 	public static function construct($parts) {
 		$url = '';
-
-		if (strlen($parts['scheme'])>0) {
+		if ($parts['scheme'] === self::DEFAULT_SCHEME) {
+			$url .= '//';
+		} elseif (strlen($parts['scheme'])>0) {
 			if (in_array($parts['scheme'], self::SCHEMES)) {
 				$url .= $parts['scheme'] . '://';
 			} else {
@@ -202,7 +203,11 @@ class UrlNormalizer {
 		if ($ip6_start !== false && $scheme_end !== false && $ip6_start < $scheme_end) {
 			$scheme_end = -1;
 		}
-		if ($scheme_end > 0) {
+		if (substr($url, 0, 2) === '//') {
+			$scheme = self::DEFAULT_SCHEME;
+			$rest = substr($url, 2);
+		}
+		if ($scheme === '' && $scheme_end > 0) {
 			for ($i = 0; $i < $scheme_end; $i++) {
 				$c = $url[$i];
 				if (strpos(self::SCHEME_CHARS, $c) === false) {
@@ -213,7 +218,7 @@ class UrlNormalizer {
 				}
 			}
 		}
-		if (!$scheme) {
+		if ($scheme === '') {
 			$rest = $url;
 		}
 		$l_path = strpos($rest, '/');
