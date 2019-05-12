@@ -39,7 +39,7 @@ class UrlNormalizer {
 			return '';
 		}
 		$parts = self::split($url);
-
+		var_dump($parts);
 		if (isset($parts['scheme']) && strlen($parts['scheme']) > 0 || $parts['scheme'] === self::DEFAULT_SCHEME) {
 			$netloc = $parts['netloc'];
 			if (in_array($parts['scheme'], self::SCHEMES)) {
@@ -69,6 +69,7 @@ class UrlNormalizer {
 
 	public static function construct($parts) {
 		$url = '';
+		var_dump($parts);
 		if ($parts['scheme'] === self::DEFAULT_SCHEME) {
 			$url .= '//';
 		} elseif (strlen($parts['scheme'])>0) {
@@ -121,7 +122,7 @@ class UrlNormalizer {
 			return '/';
 		}
 		$npath = self::get_absolute_path(self::unquote($path, self::QUOTE_EXCEPTIONS['path']));
-		if ($path[strlen($path)-1] === '/' && $npath != '/') {
+		if (substr($path, strlen($path)-1, 1) === '/' && $npath != '/') {
 			$npath .= '/';
 		}
 		return $npath;
@@ -166,36 +167,69 @@ class UrlNormalizer {
 
 
 	public static function unquote($text, $exceptions=[]) {
-		$_hextochr = [];
-		for ($i = 0; $i < 256; $i++) {
-			$_hextochr[dechex($i)] = chr($i);
-			$_hextochr[strtoupper(dechex($i))] = chr($i);
-		}
-		if (strlen($text) == 0) {
-			return $text;
-		}
-		if (!isset($text)) {
-			throw new Exception('text is not set and thus cannot be unquoted');
-		}
-		if (strpos($text, '%') === false) {
-			return $text;
-		}
-		$s = explode('%', $text);
-		$res = $s[0];
-		for ($i=1; $i < count($s); $i++) {
-			$h = $s[$i];
-			$c = isset($_hextochr[substr($h, 0, 2)]) ? $_hextochr[substr($h, 0, 2)] : '';
-			if (strlen($c) > 0 && false === strpos($exceptions, $c) && hexdec(substr($h, 0, 2)) < 128) {
-				if (strlen($h) > 2) {
-					$res .= $c . substr($h, 2);
+		$r = '';
+		$k = 0;
+		var_dump($text);
+		while ($k < strlen($text)) {
+			$c = substr($text, 0, 1);
+			if ($c !== '%') {
+				if (ord($c) >= 128 || ord($c) <= 32 || preg_match('/[a-zA-Z0-9]/', $c) === false && !in_array($c, $exceptions)) {
+					$revert = ['%21'=>'!', '%2A'=>'*', '%27'=>"'", '%28'=>'(', '%29'=>')'];
+					$s = strtr(rawurlencode($c), $revert);
 				} else {
-					$res .= $c;
+					$s = $c;
 				}
 			} else {
-				$res .= '%' . $h;
+				$start = $k;
+				if ($k + 2 >= strlen($text)) {
+					throw new Exception('URIError');
+				}
+				if (preg_match('/[0-9a-fA-F]/', substr($text, $k + 1, 1)) === false || preg_match('/[0-9a-fA-F]/', substr($text, $k + 2, 1)) === false) {
+					throw new Exception('URIError');
+				}
+				$b = hexdec(substr($text, $k + 1, 2));
+				$k += 2;
+				if ($b <= 32) {
+					// noop
+					$s = substr($text, $start, $k - $start +1);
+				} elseif (($b & (1 << 7)) == 0) {
+					$c = chr($b);
+					if (!in_array($c, $exceptions)) {
+						$s = $c;
+					} else {
+						$s = substr($text, $start, $k - $start +1);
+					}
+				} else {
+					$n = 0;
+					while ((($b << $n) & x80) !== 0) {
+						$n++;
+					}
+					if ($n === 1 || $n > 4) {
+						throw new Exception('URIError');
+					}
+					if ($k + 3 * (n -1) > strlen($text)) {
+						throw new Exception('URIError');
+					}
+					$j = 1;
+					while ($j < $n) {
+						$k++;
+						if (substr($text, $k, 1) !== '%') {
+							throw new Exception('URIError');
+						}
+						if (preg_match('/[0-9a-fA-F]/', substr($text, $k+1, 1)) === false || preg_match('/[0-9a-fA-F]/', substr($text, $k+2, 1)) === false) {
+							throw new Exception('URIError');
+						}
+						$k += 2;
+						$j++;
+					}
+					$s = substr($text, $start, $k - $start +1);
+				}
 			}
+			$r .= $s;
+			$k++;
 		}
-		return $res;
+		var_dump($r);
+		return $r;
 	}
 
 	public static function split($url) {
