@@ -52,9 +52,9 @@ class UrlNormalizer {
 			$netloc = $parts['path'];
 			$path = '';
 			if (strpos($netloc, '/') !== false) {
-				$netloc = substr(netloc, 0, strpos($netloc, '/'));
+				$netloc = substr($netloc, 0, strpos($netloc, '/'));
 				$path_raw = substr($netloc, strpos($netloc, '/')+1);
-				$path = self::normalize_path('/' + $path_raw);
+				$path = self::normalize_path('/' . $path_raw);
 			}
 		}
 		list($username, $password, $host, $port) = self::split_netloc($netloc);
@@ -104,10 +104,10 @@ class UrlNormalizer {
 	}
 
 	public static function normalize_port($scheme, $port) {
-		if (!isset($scheme)) {
+		if (!isset($scheme) || $scheme === '') {
 			return $port;
 		}
-		if (isset($port) && $port != self::DEFAULT_PORT[$scheme]) {
+		if (isset($port) && $port !== '' && $port != self::DEFAULT_PORT[$scheme]) {
 			return $port;
 		}
 		return '';
