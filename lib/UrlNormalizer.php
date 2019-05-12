@@ -40,7 +40,7 @@ class UrlNormalizer {
 		}
 		$parts = self::split($url);
 
-		if (isset($parts['scheme']) && strlen($parts['scheme']) > 0) {
+		if (isset($parts['scheme']) && strlen($parts['scheme']) > 0 || $parts['scheme'] === self::DEFAULT_SCHEME) {
 			$netloc = $parts['netloc'];
 			if (in_array($parts['scheme'], self::SCHEMES)) {
 				$path = self::normalize_path($parts['path']);
@@ -52,8 +52,10 @@ class UrlNormalizer {
 			$netloc = $parts['path'];
 			$path = '';
 			if (strpos($netloc, '/') !== false) {
-				$netloc = substr($netloc, 0, strpos($netloc, '/'));
-				$path_raw = substr($netloc, strpos($netloc, '/')+1);
+				$pos = strpos($netloc, '/');
+				$newnetloc = substr($netloc, 0, $pos);
+				$path_raw = substr($netloc, $pos+1);
+				$netloc = $newnetloc;
 				$path = self::normalize_path('/' . $path_raw);
 			}
 		}
@@ -224,7 +226,7 @@ class UrlNormalizer {
 		$l_path = strpos($rest, '/');
 		$l_query = strpos($rest, '?');
 		$l_frag = strpos($rest, '#');
-		if ($l_path > 0) {
+		if ($l_path > 0 && (($l_frag > $l_path && $l_frag > 0) || ($l_query > $l_path && $l_query > 0) || $l_query === false && $l_frag === false)) {
 			if ($l_query > 0 && $l_frag > 0) {
 				$netloc = substr($rest, 0, $l_path);
 				$path = substr($rest, $l_path, min($l_query, $l_frag)-$l_path);
@@ -244,7 +246,7 @@ class UrlNormalizer {
 				$path = substr($rest, $l_path);
 			}
 		} else {
-			if ($l_query > 0) {
+			if ($l_query > 0 && ($l_frag > $l_query || $l_frag === false)) {
 				$netloc = substr($rest, 0, $l_query);
 			} elseif ($l_frag > 0) {
 				$netloc = substr($rest, 0, $l_frag);
@@ -252,7 +254,7 @@ class UrlNormalizer {
 				$netloc = $rest;
 			}
 		}
-		if ($l_query > 0) {
+		if ($l_query > 0 && ($l_frag > $l_query || $l_frag === false)) {
 			if ($l_frag > 0) {
 				$query = substr($rest, $l_query+1, $l_frag-($l_query+1));
 			} else {
@@ -262,7 +264,7 @@ class UrlNormalizer {
 		if ($l_frag > 0) {
 			$fragment = substr($rest, $l_frag+1);
 		}
-		if (!$scheme) {
+		if ($scheme === '') {
 			$path = $netloc . $path;
 			$netloc = '';
 		}
