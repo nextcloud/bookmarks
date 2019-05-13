@@ -101,7 +101,7 @@ class UrlNormalizer {
 	}
 
 	public static function normalize_host($host) {
-		if (strpos($host, 'xn--') === false) {
+		if (strpos($host, 'xn--') !== false) {
 			return $host;
 		}
 		return idn_to_ascii($host, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
