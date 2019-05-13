@@ -171,9 +171,9 @@ class UrlNormalizer {
 		$k = 0;
 		var_dump($text);
 		while ($k < strlen($text)) {
-			$c = substr($text, 0, 1);
+			$c = substr($text, $k, 1);
 			if ($c !== '%') {
-				if (ord($c) >= 128 || ord($c) <= 32 || preg_match('/[a-zA-Z0-9]/', $c) === false && !in_array($c, $exceptions)) {
+				if (ord($c) >= 128 || ord($c) <= 32 || preg_match('/[a-zA-Z0-9]/', $c) == false && strpos($exceptions, $c) === false) {
 					$revert = ['%21'=>'!', '%2A'=>'*', '%27'=>"'", '%28'=>'(', '%29'=>')'];
 					$s = strtr(rawurlencode($c), $revert);
 				} else {
@@ -184,7 +184,7 @@ class UrlNormalizer {
 				if ($k + 2 >= strlen($text)) {
 					throw new Exception('URIError');
 				}
-				if (preg_match('/[0-9a-fA-F]/', substr($text, $k + 1, 1)) === false || preg_match('/[0-9a-fA-F]/', substr($text, $k + 2, 1)) === false) {
+				if (preg_match('/[0-9a-fA-F]/', substr($text, $k + 1, 1)) == false || preg_match('/[0-9a-fA-F]/', substr($text, $k + 2, 1)) == false) {
 					throw new Exception('URIError');
 				}
 				$b = hexdec(substr($text, $k + 1, 2));
@@ -194,7 +194,7 @@ class UrlNormalizer {
 					$s = substr($text, $start, $k - $start +1);
 				} elseif (($b & (1 << 7)) == 0) {
 					$c = chr($b);
-					if (!in_array($c, $exceptions)) {
+					if (strpos($exceptions, $c) === false) {
 						$s = $c;
 					} else {
 						$s = substr($text, $start, $k - $start +1);
@@ -216,7 +216,7 @@ class UrlNormalizer {
 						if (substr($text, $k, 1) !== '%') {
 							throw new Exception('URIError');
 						}
-						if (preg_match('/[0-9a-fA-F]/', substr($text, $k+1, 1)) === false || preg_match('/[0-9a-fA-F]/', substr($text, $k+2, 1)) === false) {
+						if (preg_match('/[0-9a-fA-F]/', substr($text, $k+1, 1)) == false || preg_match('/[0-9a-fA-F]/', substr($text, $k+2, 1)) == false) {
 							throw new Exception('URIError');
 						}
 						$k += 2;
