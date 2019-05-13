@@ -22,7 +22,7 @@ class UrlNormalizer {
 	const QUOTE_EXCEPTIONS = [
 	'path'=> ' /?+#~',
 	'query'=> ' &=+#',
-	'fragment'=> ' +#'
+	'fragment'=> ' +#/'
 ];
 
 	public function __construct() {
