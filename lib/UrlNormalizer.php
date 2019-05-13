@@ -39,7 +39,6 @@ class UrlNormalizer {
 			return '';
 		}
 		$parts = self::split($url);
-		var_dump($parts);
 		if (isset($parts['scheme']) && strlen($parts['scheme']) > 0 || $parts['scheme'] === self::DEFAULT_SCHEME) {
 			$netloc = $parts['netloc'];
 			if (in_array($parts['scheme'], self::SCHEMES)) {
@@ -69,7 +68,6 @@ class UrlNormalizer {
 
 	public static function construct($parts) {
 		$url = '';
-		var_dump($parts);
 		if ($parts['scheme'] === self::DEFAULT_SCHEME) {
 			$url .= '//';
 		} elseif (strlen($parts['scheme'])>0) {
@@ -169,7 +167,6 @@ class UrlNormalizer {
 	public static function unquote($text, $exceptions=[]) {
 		$r = '';
 		$k = 0;
-		var_dump($text);
 		while ($k < strlen($text)) {
 			$c = substr($text, $k, 1);
 			if ($c !== '%') {
@@ -228,7 +225,6 @@ class UrlNormalizer {
 			$r .= $s;
 			$k++;
 		}
-		var_dump($r);
 		return $r;
 	}
 
