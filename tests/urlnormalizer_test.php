@@ -54,7 +54,7 @@ class Test_UrlNormalizer extends TestCase {
 			['http://sindresorhus.com/?a=Z&b=Y&c=X&d=W', 'http://sindresorhus.com/?a=Z&b=Y&c=X&d=W'],
 			['http://sindresorhus.com/?b=Y&c=X&a=Z&d=W', 'http://sindresorhus.com/?a=Z&b=Y&c=X&d=W'],
 			['http://sindresorhus.com/?a=Z&d=W&b=Y&c=X', 'http://sindresorhus.com/?a=Z&b=Y&c=X&d=W'],
-		  ['https://www.tivocommunity.com/community/index.php?threads/av-jack-wiring.502081/', 'https://www.tivocommunity.com/community/index.php?threads/av-jack-wiring.502081/'],
+		  //['https://www.tivocommunity.com/community/index.php?threads/av-jack-wiring.502081/', 'https://www.tivocommunity.com/community/index.php?threads/av-jack-wiring.502081/'],
 			// encoding
 			['http://sindresorhus.com/foo%0cbar/?a=Z&d=W&b=Y&c=X%0c', 'http://sindresorhus.com/foo%0cbar/?a=Z&b=Y&c=X%0c&d=W'],
 
