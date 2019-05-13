@@ -20,7 +20,7 @@ class UrlNormalizer {
 	'ldap'=> '389'
 ];
 	const QUOTE_EXCEPTIONS = [
-	'path'=> ' /?+#',
+	'path'=> ' /?+#~',
 	'query'=> ' &=+#',
 	'fragment'=> ' +#'
 ];
@@ -194,10 +194,10 @@ class UrlNormalizer {
 					$s = substr($text, $start, $k - $start +1);
 				} elseif (($b & (1 << 7)) == 0) {
 					$c = chr($b);
-					if (strpos($exceptions, $c) === false) {
-						$s = $c;
-					} else {
+					if (preg_match('/[a-zA-Z0-9]/', $c) == false && strpos($exceptions, $c) === false) {
 						$s = substr($text, $start, $k - $start +1);
+					} else {
+						$s = $c;
 					}
 				} else {
 					$n = 0;
