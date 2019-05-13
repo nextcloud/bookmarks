@@ -111,7 +111,7 @@ class UrlNormalizer {
 		if (!isset($scheme) || $scheme === '') {
 			return $port;
 		}
-		if (isset($port) && $port !== '' && $port != self::DEFAULT_PORT[$scheme]) {
+		if (isset($port) && $port !== '' && ($scheme === self::DEFAULT_SCHEME || $port != self::DEFAULT_PORT[$scheme])) {
 			return $port;
 		}
 		return '';
@@ -322,7 +322,7 @@ class UrlNormalizer {
 			}
 		}
 		$netloc = self::_clean_netloc($netloc);
-		if (strpos($netloc, ':') !== false && $netloc[strlen($netloc)-1] !== ']') {
+		if (strpos($netloc, ':') !== false && substr($netloc, strlen($netloc)-1, 1) !== ']') {
 			$host = substr($netloc, 0, strpos($netloc, ':'));
 			$port = substr($netloc, strpos($netloc, ':')+1);
 		} else {
