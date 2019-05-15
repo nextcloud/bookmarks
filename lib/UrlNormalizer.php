@@ -4,7 +4,7 @@ namespace OCA\Bookmarks;
 class UrlNormalizer {
 	private $normalizer;
 
-
+	const DEFAULT_SCHEME = 42;
 	const SCHEMES = ['http', 'https', 'ftp', 'sftp', 'file', 'gopher', 'imap', 'mms',
 		   'news', 'nntp', 'telnet', 'prospero', 'rsync', 'rtsp', 'rtspu',
 		   'svn', 'git', 'ws', 'wss'];
@@ -20,9 +20,9 @@ class UrlNormalizer {
 	'ldap'=> '389'
 ];
 	const QUOTE_EXCEPTIONS = [
-	'path'=> ' /?+#',
+	'path'=> ' /?+#~',
 	'query'=> ' &=+#',
-	'fragment'=> ' +#'
+	'fragment'=> ' +#/'
 ];
 
 	public function __construct() {
@@ -39,8 +39,7 @@ class UrlNormalizer {
 			return '';
 		}
 		$parts = self::split($url);
-
-		if (isset($parts['scheme']) && strlen($parts['scheme']) > 0) {
+		if (isset($parts['scheme']) && strlen($parts['scheme']) > 0 || $parts['scheme'] === self::DEFAULT_SCHEME) {
 			$netloc = $parts['netloc'];
 			if (in_array($parts['scheme'], self::SCHEMES)) {
 				$path = self::normalize_path($parts['path']);
@@ -52,9 +51,11 @@ class UrlNormalizer {
 			$netloc = $parts['path'];
 			$path = '';
 			if (strpos($netloc, '/') !== false) {
-				$netloc = substr(netloc, 0, strpos($netloc, '/'));
-				$path_raw = substr($netloc, strpos($netloc, '/')+1);
-				$path = self::normalize_path('/' + $path_raw);
+				$pos = strpos($netloc, '/');
+				$newnetloc = substr($netloc, 0, $pos);
+				$path_raw = substr($netloc, $pos+1);
+				$netloc = $newnetloc;
+				$path = self::normalize_path('/' . $path_raw);
 			}
 		}
 		list($username, $password, $host, $port) = self::split_netloc($netloc);
@@ -67,8 +68,9 @@ class UrlNormalizer {
 
 	public static function construct($parts) {
 		$url = '';
-
-		if (strlen($parts['scheme'])>0) {
+		if ($parts['scheme'] === self::DEFAULT_SCHEME) {
+			$url .= '//';
+		} elseif (strlen($parts['scheme'])>0) {
 			if (in_array($parts['scheme'], self::SCHEMES)) {
 				$url .= $parts['scheme'] . '://';
 			} else {
@@ -97,17 +99,17 @@ class UrlNormalizer {
 	}
 
 	public static function normalize_host($host) {
-		if (strpos($host, 'xn--') === false) {
+		if (strpos($host, 'xn--') !== false) {
 			return $host;
 		}
 		return idn_to_ascii($host, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
 	}
 
 	public static function normalize_port($scheme, $port) {
-		if (!isset($scheme)) {
+		if (!isset($scheme) || $scheme === '') {
 			return $port;
 		}
-		if (isset($port) && $port != self::DEFAULT_PORT[$scheme]) {
+		if (isset($port) && $port !== '' && ($scheme === self::DEFAULT_SCHEME || $port != self::DEFAULT_PORT[$scheme])) {
 			return $port;
 		}
 		return '';
@@ -118,7 +120,7 @@ class UrlNormalizer {
 			return '/';
 		}
 		$npath = self::get_absolute_path(self::unquote($path, self::QUOTE_EXCEPTIONS['path']));
-		if ($path[strlen($path)-1] === '/' && $npath != '/') {
+		if (substr($path, strlen($path)-1, 1) === '/' && $npath != '/') {
 			$npath .= '/';
 		}
 		return $npath;
@@ -163,36 +165,67 @@ class UrlNormalizer {
 
 
 	public static function unquote($text, $exceptions=[]) {
-		$_hextochr = [];
-		for ($i = 0; $i < 256; $i++) {
-			$_hextochr[dechex($i)] = chr($i);
-			$_hextochr[strtoupper(dechex($i))] = chr($i);
-		}
-		if (strlen($text) == 0) {
-			return $text;
-		}
-		if (!isset($text)) {
-			throw new Exception('text is not set and thus cannot be unquoted');
-		}
-		if (strpos($text, '%') === false) {
-			return $text;
-		}
-		$s = explode('%', $text);
-		$res = $s[0];
-		for ($i=1; $i < count($s); $i++) {
-			$h = $s[$i];
-			$c = isset($_hextochr[substr($h, 0, 2)]) ? $_hextochr[substr($h, 0, 2)] : '';
-			if (strlen($c) > 0 && false === strpos($exceptions, $c) && hexdec(substr($h, 0, 2)) < 128) {
-				if (strlen($h) > 2) {
-					$res .= $c . substr($h, 2);
+		$r = '';
+		$k = 0;
+		while ($k < strlen($text)) {
+			$c = substr($text, $k, 1);
+			if ($c !== '%') {
+				if (ord($c) >= 128 || ord($c) <= 32 || preg_match('/[a-zA-Z0-9]/', $c) == false && strpos($exceptions, $c) === false) {
+					$revert = ['%21'=>'!', '%2A'=>'*', '%27'=>"'", '%28'=>'(', '%29'=>')'];
+					$s = strtr(rawurlencode($c), $revert);
 				} else {
-					$res .= $c;
+					$s = $c;
 				}
 			} else {
-				$res .= '%' . $h;
+				$start = $k;
+				if ($k + 2 >= strlen($text)) {
+					throw new Exception('URIError');
+				}
+				if (preg_match('/[0-9a-fA-F]/', substr($text, $k + 1, 1)) == false || preg_match('/[0-9a-fA-F]/', substr($text, $k + 2, 1)) == false) {
+					throw new Exception('URIError');
+				}
+				$b = hexdec(substr($text, $k + 1, 2));
+				$k += 2;
+				if ($b <= 32) {
+					// noop
+					$s = substr($text, $start, $k - $start +1);
+				} elseif (($b & (1 << 7)) == 0) {
+					$c = chr($b);
+					if (preg_match('/[a-zA-Z0-9]/', $c) == false && strpos($exceptions, $c) === false) {
+						$s = substr($text, $start, $k - $start +1);
+					} else {
+						$s = $c;
+					}
+				} else {
+					$n = 0;
+					while ((($b << $n) & x80) !== 0) {
+						$n++;
+					}
+					if ($n === 1 || $n > 4) {
+						throw new Exception('URIError');
+					}
+					if ($k + 3 * (n -1) > strlen($text)) {
+						throw new Exception('URIError');
+					}
+					$j = 1;
+					while ($j < $n) {
+						$k++;
+						if (substr($text, $k, 1) !== '%') {
+							throw new Exception('URIError');
+						}
+						if (preg_match('/[0-9a-fA-F]/', substr($text, $k+1, 1)) == false || preg_match('/[0-9a-fA-F]/', substr($text, $k+2, 1)) == false) {
+							throw new Exception('URIError');
+						}
+						$k += 2;
+						$j++;
+					}
+					$s = substr($text, $start, $k - $start +1);
+				}
 			}
+			$r .= $s;
+			$k++;
 		}
-		return $res;
+		return $r;
 	}
 
 	public static function split($url) {
@@ -202,7 +235,11 @@ class UrlNormalizer {
 		if ($ip6_start !== false && $scheme_end !== false && $ip6_start < $scheme_end) {
 			$scheme_end = -1;
 		}
-		if ($scheme_end > 0) {
+		if (substr($url, 0, 2) === '//') {
+			$scheme = self::DEFAULT_SCHEME;
+			$rest = substr($url, 2);
+		}
+		if ($scheme === '' && $scheme_end > 0) {
 			for ($i = 0; $i < $scheme_end; $i++) {
 				$c = $url[$i];
 				if (strpos(self::SCHEME_CHARS, $c) === false) {
@@ -213,13 +250,13 @@ class UrlNormalizer {
 				}
 			}
 		}
-		if (!$scheme) {
+		if ($scheme === '') {
 			$rest = $url;
 		}
 		$l_path = strpos($rest, '/');
 		$l_query = strpos($rest, '?');
 		$l_frag = strpos($rest, '#');
-		if ($l_path > 0) {
+		if ($l_path > 0 && (($l_frag > $l_path && $l_frag > 0) || ($l_query > $l_path && $l_query > 0) || $l_query === false && $l_frag === false)) {
 			if ($l_query > 0 && $l_frag > 0) {
 				$netloc = substr($rest, 0, $l_path);
 				$path = substr($rest, $l_path, min($l_query, $l_frag)-$l_path);
@@ -239,7 +276,7 @@ class UrlNormalizer {
 				$path = substr($rest, $l_path);
 			}
 		} else {
-			if ($l_query > 0) {
+			if ($l_query > 0 && ($l_frag > $l_query || $l_frag === false)) {
 				$netloc = substr($rest, 0, $l_query);
 			} elseif ($l_frag > 0) {
 				$netloc = substr($rest, 0, $l_frag);
@@ -247,7 +284,7 @@ class UrlNormalizer {
 				$netloc = $rest;
 			}
 		}
-		if ($l_query > 0) {
+		if ($l_query > 0 && ($l_frag > $l_query || $l_frag === false)) {
 			if ($l_frag > 0) {
 				$query = substr($rest, $l_query+1, $l_frag-($l_query+1));
 			} else {
@@ -257,7 +294,7 @@ class UrlNormalizer {
 		if ($l_frag > 0) {
 			$fragment = substr($rest, $l_frag+1);
 		}
-		if (!$scheme) {
+		if ($scheme === '') {
 			$path = $netloc . $path;
 			$netloc = '';
 		}
@@ -281,7 +318,7 @@ class UrlNormalizer {
 			}
 		}
 		$netloc = self::_clean_netloc($netloc);
-		if (strpos($netloc, ':') !== false && $netloc[strlen($netloc)-1] !== ']') {
+		if (strpos($netloc, ':') !== false && substr($netloc, strlen($netloc)-1, 1) !== ']') {
 			$host = substr($netloc, 0, strpos($netloc, ':'));
 			$port = substr($netloc, strpos($netloc, ':')+1);
 		} else {
