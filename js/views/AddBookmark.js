@@ -29,8 +29,11 @@ export default Marionette.View.extend({
 		this.getUI('input').focus();
 	},
 	deactivate: function() {
-		this.getUI('linkEntry').show();
-		this.getUI('formEntry').hide();
+		var that = this;
+		setTimeout(function() {
+			that.getUI('linkEntry').show();
+			that.getUI('formEntry').hide();
+		}, 300);
 	},
 	onKeydown: function(e) {
 		if (e.which != 13) return;
