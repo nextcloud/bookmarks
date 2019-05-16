@@ -198,13 +198,13 @@ class UrlNormalizer {
 					}
 				} else {
 					$n = 0;
-					while ((($b << $n) & x80) !== 0) {
+					while ((($b << $n) & 0x80) !== 0) {
 						$n++;
 					}
 					if ($n === 1 || $n > 4) {
 						throw new Exception('URIError');
 					}
-					if ($k + 3 * (n -1) > strlen($text)) {
+					if ($k + 3 * ($n -1) > strlen($text)) {
 						throw new Exception('URIError');
 					}
 					$j = 1;
