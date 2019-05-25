@@ -41,6 +41,8 @@ npm run build
 ## Third-party clients
 
 - [Nextcloud Bookmarks](https://gitlab.com/derSchabi/OCBookmarks) - client app for Android ([new PlayStore entry](https://play.google.com/store/apps/details?id=org.bisw.nxbookmarks))
+- [Owncloud Bookmarks](https://chrome.google.com/webstore/detail/owncloud-bookmarks/eomolhpeokmbnincelpkagpapjpeeckc?hl=de
+) - Bookmarks extension for Chromium-based browsers (Chromium/Chrome/Opera/Vivaldi)
 - [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based
 - [NCBookmarks](https://github.com/lenchan139/NCBookmark) - Android App
 - [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
