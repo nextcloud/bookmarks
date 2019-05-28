@@ -527,8 +527,12 @@ class Bookmarks {
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
-			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
-			->groupBy(array_merge($selectedAttributes, [$sqlSortColumn]));
+			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'));
+		if (in_array('lastmodified', array_merge($selectedAttributes, [$sqlSortColumn]))) {
+			$qb->groupBy(['id', 'lastmodified']);
+		} else {
+			$qb->groupBy(['id']);
+		}
 
 		if ($userid !== -1) {
 			$qb->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userid)));
