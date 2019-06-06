@@ -89,6 +89,10 @@
 	max-height: 9999px;
 }
 
+#app-navigation ul > li > ul > li.collapsible .collapse {
+	left: 44px;
+}
+
 #app-navigation .app-navigation-entry-menu {
 	top: 40px;
 }
