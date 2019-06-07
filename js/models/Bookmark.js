@@ -1,16 +1,5 @@
 import Backbone from 'backbone';
-import colorPalettes from 'nice-color-palettes';
 import $ from 'jquery';
-
-// 100 palettes * 5 colors = 500 colors
-const COLORS = colorPalettes.reduce((p1, p2) => p1.concat(p2), []);
-const simpleHash = str => {
-	var hash = 0;
-	for (var i = 0; i < str.length; i++) {
-		hash = str.charCodeAt(i) + (hash << 6) + (hash << 16) - hash;
-	}
-	return Math.abs(hash);
-};
 
 export default Backbone.Model.extend({
 	urlRoot: 'bookmark',
@@ -31,10 +20,6 @@ export default Backbone.Model.extend({
 		});
 	},
 	getColor: function() {
-		try {
-			return COLORS[simpleHash(new URL(this.get('url')).host) % COLORS.length];
-		} catch (e) {
-			return '#666';
-		}
+		return '#666';
 	}
 });
