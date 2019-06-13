@@ -34,6 +34,18 @@ class UrlNormalizer {
 	 * @return string Normalized url;
 	 */
 	public function normalize($url) {
+		try {
+			return self::_normalize($url);
+		} catch (\Exception $e) {
+			return $url;
+		}
+	}
+	/**
+	 * @brief Normalize Url
+	 * @param string $url Url to load and analyze
+	 * @return string Normalized url;
+	 */
+	public static function _normalize($url) {
 		$url = trim($url);
 		if ($url === '') {
 			return '';
@@ -179,10 +191,10 @@ class UrlNormalizer {
 			} else {
 				$start = $k;
 				if ($k + 2 >= strlen($text)) {
-					throw new Exception('URIError');
+					throw new \Exception('URIError');
 				}
 				if (preg_match('/[0-9a-fA-F]/', substr($text, $k + 1, 1)) == false || preg_match('/[0-9a-fA-F]/', substr($text, $k + 2, 1)) == false) {
-					throw new Exception('URIError');
+					throw new \Exception('URIError');
 				}
 				$b = hexdec(substr($text, $k + 1, 2));
 				$k += 2;
@@ -202,19 +214,19 @@ class UrlNormalizer {
 						$n++;
 					}
 					if ($n === 1 || $n > 4) {
-						throw new Exception('URIError');
+						throw new \Exception('URIError');
 					}
 					if ($k + 3 * ($n -1) > strlen($text)) {
-						throw new Exception('URIError');
+						throw new \Exception('URIError');
 					}
 					$j = 1;
 					while ($j < $n) {
 						$k++;
 						if (substr($text, $k, 1) !== '%') {
-							throw new Exception('URIError');
+							throw new \Exception('URIError');
 						}
 						if (preg_match('/[0-9a-fA-F]/', substr($text, $k+1, 1)) == false || preg_match('/[0-9a-fA-F]/', substr($text, $k+2, 1)) == false) {
-							throw new Exception('URIError');
+							throw new \Exception('URIError');
 						}
 						$k += 2;
 						$j++;
