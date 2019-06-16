@@ -46,6 +46,7 @@ export default Marionette.View.extend({
 				return that.app.tags.get(id);
 			})
 		);
+		this.submitTagsTimeout = null;
 		this.listenTo(this.tags, 'add remove', this.submitTags);
 		this.listenTo(
 			Radio.channel('documentClicked'),
@@ -127,15 +128,18 @@ export default Marionette.View.extend({
 	},
 	submitTags: function() {
 		var that = this;
-		this.savingState = 'saving';
-		this.app.tags.add(this.tags.models);
-		this.model.set({
-			tags: this.tags.pluck('name')
-		});
-		this.model.once('sync', function() {
-			that.savingState = 'saved';
-		});
-		this.model.save();
+		clearTimeout(this.submitTagsTimeout);
+		this.submitTagsTimeout = setTimeout(function() {
+			that.savingState = 'saving';
+			that.app.tags.add(that.tags.models);
+			that.model.set({
+				tags: that.tags.pluck('name')
+			});
+			that.model.once('sync', function() {
+				that.savingState = 'saved';
+			});
+			that.model.save();
+		}, 5000);
 	},
 	submit: function($el) {
 		var that = this;
