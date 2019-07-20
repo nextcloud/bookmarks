@@ -436,8 +436,8 @@ class Bookmarks {
 	public function bookmarkExists($url, $userId) {
 		$encodedUrl = htmlspecialchars_decode($url);
 
-		// normalize url -- too many false negatives to bother
-		//$encodedUrl = $this->urlNormalizer->normalize($encodedUrl);
+		// normalize url
+		$encodedUrl = $this->urlNormalizer->normalize($encodedUrl);
 
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -791,8 +791,8 @@ class Bookmarks {
 	public function editBookmark($userid, $id, $url, $title, $tags = [], $description = '', $isPublic = false, $folders = null) {
 		$isPublic = $isPublic ? 1 : 0;
 
-		// normalize url -- too many false negatives to bother
-		//$url = $this->urlNormalizer->normalize($url);
+		// normalize url
+		$url = $this->urlNormalizer->normalize($url);
 
 		// Update the record
 
@@ -903,8 +903,8 @@ class Bookmarks {
 			throw new \InvalidArgumentException('Invalid URL supplied');
 		}
 
-		// normalize url -- too many false negatives to bother
-		// $url = $this->urlNormalizer->normalize($url);
+		// normalize url
+		$url = $this->urlNormalizer->normalize($url);
 
 		$urlWithoutPrefix = trim(substr($url, strpos($url, "://"))); // Removes everything from the url before the "://" pattern (excluded)
 		$decodedUrlNoPrefix = htmlspecialchars_decode($urlWithoutPrefix);
