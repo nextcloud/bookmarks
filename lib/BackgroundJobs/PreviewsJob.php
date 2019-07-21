@@ -27,7 +27,7 @@ class PreviewsJob extends TimedJob {
 		$this->faviconPreviews = $faviconPreviews;
 		$this->screenlyPreviews = $screenlyPreviews;
 
-		$this->setInterval(60);//*60*24); //run daily
+		$this->setInterval(60);//*60*24); //run hourly
 	}
 
 	protected function run($argument) {
@@ -37,8 +37,8 @@ class PreviewsJob extends TimedJob {
 		) !== 'cron') {
 			return;
 		}
-		$allBookmarks = $this->libBookmarks->findBookmarks(-1, 0, 'lastmodified', [], true, -1);
-		foreach ($allBookmarks as $bookmark) {
+		$bookmarks = $this->libBookmarks->findBookmarksNeedingPreview(100, DefaultPreviewService::CACHE_TTL);
+		foreach ($bookmarks as $bookmark) {
 			if (null === $this->defaultPreviews->getImage($bookmark)) {
 				$this->screenlyPreviews->getImage($bookmark);
 			}

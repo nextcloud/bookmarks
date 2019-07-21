@@ -641,6 +641,17 @@ class Bookmarks {
 		$qb->having($filterExpression);
 	}
 
+	public function findBookmarksNeedingPreview($limit, $stalePeriod) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*');
+		$qb->from('bookmarks', 'b');
+		$qb->where($qb->expr()->lt('last_preview', $qb->createPositionalParameter(time()-$stalePeriod)));
+		$qb->orWhere($qb->expr()->isNull('last_preview'));
+		$qb->setMaxResults($limit);
+		$results = $qb->execute()->fetchAll();
+		return $results;
+	}
+
 	/**
 	 * @brief Delete bookmark with specific id
 	 * @param string $userId UserId
