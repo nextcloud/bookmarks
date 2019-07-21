@@ -9,7 +9,7 @@ use OCP\IDBConnection;
 /**
  * Auto-generated migration step: Please modify to your needs!
  */
-class Version000000007Date20190721094721 extends SimpleMigrationStep {
+class Version001000007Date20190721094721 extends SimpleMigrationStep {
 	private $db;
 
 	public function __construct(IDBConnection $db) {
