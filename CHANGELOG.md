@@ -1,3 +1,7 @@
+## v1.0.7
+
+- NEW: gmp, intl, mbstring are now required
+
 ## v1.0.6
 
 - FIX: Set timeout for submitting tags

@@ -14,6 +14,12 @@ The bookmarks app is quite old and has gone through many hands. It is now more r
 
 Please _avoid_ installing the **bookmarks_fulltextsearch** app along with the bookmarks app, as it is _not compatible_ with newer versions of this app.
 
+This app requires the following php extensions to be installed:
+
+- gmp: \*
+- intl: \*
+- mbstring: \*
+
 ### One-click
 
 Install this app in the app store of your nextcloud instance (you must have administrator privileges). You will find it in the 'Organization' category.
