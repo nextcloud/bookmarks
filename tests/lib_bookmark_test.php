@@ -114,7 +114,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertFalse(isset($resultOne['lastmodified']));
 		$this->assertCount(0, $resultOne['tags']);
 		$this->assertEquals('Golem', $resultOne['title']);
-		$this->assertEquals('http://www.golem.de', $resultOne['url']);
+		$this->assertEquals('http://www.golem.de/', $resultOne['url']);
 
 		$resultTwo = $resultSet[1];
 		$this->assertFalse(isset($resultTwo['lastmodified']));
