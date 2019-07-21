@@ -4,6 +4,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\BackgroundJobs\PreviewsJob;
 use OCA\Bookmarks\Bookmarks;
+use OC\BackgroundJob\JobList;
 
 /**
  * Class Test_BackgroundJob
@@ -14,6 +15,7 @@ class Test_BackgroundJob extends TestCase {
 
 		$this->libBookmarks = \OC::$server->query(Bookmarks::class);
 		$this->previewsJob = \OC::$server->query(PreviewsJob::class);
+		$this->jobList = \OC::$server->query(JobList::class);
 		$this->userid = 'test';
 
 		$this->libBookmarks->addBookmark($this->userid, "http://www.duckduckgo.com", "DuckDuckGo", [], "PrivateNoTag", false);
@@ -24,6 +26,6 @@ class Test_BackgroundJob extends TestCase {
 	}
 
 	public function testPreviewsJob() {
-		$this->previewsJob->run([]);
+		$this->previewsJob->execute($this->jobList);
 	}
 }
