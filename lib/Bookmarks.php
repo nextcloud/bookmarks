@@ -652,6 +652,15 @@ class Bookmarks {
 		return $results;
 	}
 
+	public function markPreviewCreated($id) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->update('bookmarks')
+			->set('last_preview', $qb->createNamedParameter(time()))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+		return $qb->execute();
+	}
+
 	/**
 	 * @brief Delete bookmark with specific id
 	 * @param string $userId UserId
