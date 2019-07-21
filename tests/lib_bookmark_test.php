@@ -120,7 +120,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->assertFalse(isset($resultTwo['lastmodified']));
 		$this->assertCount(0, $resultTwo['tags']);
 		$this->assertEquals('Google', $resultTwo['title']);
-		$this->assertEquals('http://www.google.de', $resultTwo['url']);
+		$this->assertEquals('http://www.google.de/', $resultTwo['url']);
 	}
 
 	public function testFindTags() {
@@ -244,7 +244,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		$this->libBookmarks->editBookmark($this->userid, $id, "https://www.google.de", "NewTitle", ["three", "four"]);
 		$bookmark = $this->libBookmarks->findUniqueBookmark($id, $this->userid);
 		$this->assertEquals("NewTitle", $bookmark['title']);
-		$this->assertEquals("https://www.google.de", $bookmark['url']);
+		$this->assertEquals("https://www.google.de/", $bookmark['url']);
 		$this->assertCount(2, $bookmark['tags']);
 		$this->assertTrue(in_array('four', $bookmark['tags']));
 		$this->assertTrue(in_array('three', $bookmark['tags']));
@@ -252,7 +252,7 @@ class Test_LibBookmarks_Bookmarks extends TestCase {
 		// Make sure nothing else changed
 		$control_bookmark = $this->libBookmarks->findUniqueBookmark($control_bm_id, $this->userid);
 		$this->assertEquals("Golem", $control_bookmark['title']);
-		$this->assertEquals("https://www.golem.de", $control_bookmark['url']);
+		$this->assertEquals("https://www.golem.de/", $control_bookmark['url']);
 		$this->assertEquals($control_bookmark['tags'], ['four']);
 	}
 
