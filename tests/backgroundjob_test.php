@@ -14,6 +14,7 @@ class Test_BackgroundJob extends TestCase {
 
 		$this->libBookmarks = \OC::$server->query(Bookmarks::class);
 		$this->previewsJob = \OC::$server->query(PreviewsJob::class);
+		$this->userid = 'test';
 
 		$this->libBookmarks->addBookmark($this->userid, "http://www.duckduckgo.com", "DuckDuckGo", [], "PrivateNoTag", false);
 		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", ["one"], "PrivateTwoTags", false);
