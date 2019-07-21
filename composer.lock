@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f7aaaef77e137a6f9eac840b1fb14c0",
+    "content-hash": "d9a4a9c7d65d07f72253a30628f038c4",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -417,16 +417,16 @@
         },
         {
             "name": "psr/http-factory",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-factory.git",
-                "reference": "378bfe27931ecc54ff824a20d6f6bfc303bbd04c"
+                "reference": "12ac7fcd07e5b077433f5f2bee95b3a771bf61be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/378bfe27931ecc54ff824a20d6f6bfc303bbd04c",
-                "reference": "378bfe27931ecc54ff824a20d6f6bfc303bbd04c",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/12ac7fcd07e5b077433f5f2bee95b3a771bf61be",
+                "reference": "12ac7fcd07e5b077433f5f2bee95b3a771bf61be",
                 "shasum": ""
             },
             "require": {
@@ -465,7 +465,7 @@
                 "request",
                 "response"
             ],
-            "time": "2018-07-30T21:54:04+00:00"
+            "time": "2019-04-30T12:38:16+00:00"
         },
         {
             "name": "psr/http-message",
@@ -556,6 +556,66 @@
             ],
             "description": "A polyfill for getallheaders.",
             "time": "2016-02-11T07:05:27+00:00"
+        },
+        {
+            "name": "rowbot/url",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TRowbotham/URL-Parser.git",
+                "reference": "91f6803545ca08881f30c8406f2f7e8b7ba2bda4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/91f6803545ca08881f30c8406f2f7e8b7ba2bda4",
+                "reference": "91f6803545ca08881f30c8406f2f7e8b7ba2bda4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gmp": "*",
+                "ext-intl": "*",
+                "ext-mbstring": "*",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.3",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpstan/phpstan": "^0.10.1",
+                "phpstan/phpstan-deprecation-rules": "^0.10.0",
+                "phpstan/phpstan-phpunit": "^0.10.0",
+                "phpstan/phpstan-strict-rules": "^0.10.0",
+                "phpunit/phpunit": "^7.0",
+                "squizlabs/php_codesniffer": "3.*",
+                "symfony/cache": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rowbot\\URL\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Trevor Rowbotham",
+                    "homepage": "http://trowbotham.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A WHATWG URL spec compliant URL parser for working with URLs and their query strings.",
+            "keywords": [
+                "WHATWG",
+                "query-string",
+                "querystring",
+                "uri",
+                "url",
+                "url-parser",
+                "url-parsing"
+            ],
+            "time": "2019-07-15T19:29:19+00:00"
         },
         {
             "name": "symfony/css-selector",
