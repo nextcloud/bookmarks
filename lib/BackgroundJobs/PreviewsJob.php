@@ -43,7 +43,7 @@ class PreviewsJob extends TimedJob {
 				$this->screenlyPreviews->getImage($bookmark);
 			}
 			$this->faviconPreviews->getImage($bookmark);
-			$this->libBookmarks->markPreviewCreated($bookmark['bookmark_id']);
+			$this->libBookmarks->markPreviewCreated($bookmark['id']);
 		}
 	}
 }

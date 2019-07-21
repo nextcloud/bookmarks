@@ -1,6 +1,10 @@
 ## v1.0.7
 
 - NEW: gmp, intl, mbstring are now required
+- NEW translations
+- FIX: Switch URL normalizer to adhere strictly to WHATWG URL spec
+- FIX: Update dependencies
+- FIX: Run previews job in small batches instead of all at once
 
 ## v1.0.6
 
