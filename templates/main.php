@@ -1,11 +1,5 @@
 <?php
-script('bookmarks', 'dist/main.bundle');
-style('bookmarks', 'bookmarks');
-
-style('bookmarks', 'select2');
+script('bookmarks', 'bookmarks');
+style('bookmarks', 'style');
 ?>
-
-<div id="navigation-slot">
-</div>
-<div id="app-content">
-</div>
+<div id="vue-content"></div>
