@@ -508,33 +508,36 @@ class BookmarkController extends ApiController {
 
 	/**
 	 *
+	 * @param int $folder The id of the folder to import into
 	 * @return \OCP\AppFramework\Http\JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function importBookmark() {
+	public function importBookmark($folder=-1) {
 		$full_input = $this->request->getUploadedFile("bm_import");
 
+		$result = ['error' => []];
 		if (empty($full_input)) {
-			$this->logger->warn("No file provided for import", ['app' => 'bookmarks']);
-			$error = [];
-			$error[] = $this->l10n->t('No file provided for import');
+			$this->logger->warning("No file provided for import", ['app' => 'bookmarks']);
+			$result['error'][] = $this->l10n->t('No file provided for import');
 		} else {
-			$error = [];
 			$file = $full_input['tmp_name'];
 			if ($full_input['type'] === 'text/html') {
-				$error = $this->bookmarks->importFile($this->userId, $file);
-				if (empty($error)) {
-					return new JSONResponse(['status' => 'success']);
+				$result = $this->bookmarks->importFile($this->userId, $file, $folder);
+				if (count($result['error']) === 0) {
+					return new JSONResponse([
+						'status' => 'success',
+						'data' => $result['children']
+					]);
 				}
 			} else {
-				$error[] = $this->l10n->t('Unsupported file type for import');
+				$result['error'][] = $this->l10n->t('Unsupported file type for import');
 			}
 		}
 
-		return new JSONResponse(['status' => 'error', 'data' => $error]);
+		return new JSONResponse(['status' => 'error', 'data' => $result['error']]);
 	}
 
 	/**

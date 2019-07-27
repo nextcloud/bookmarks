@@ -72,6 +72,7 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'folders#edit_folder', 'url' => '/public/rest/v2/folder/{folderId}', 'verb' => 'PUT'],
 	['name' => 'folders#delete_folder', 'url' => '/public/rest/v2/folder/{folderId}', 'verb' => 'DELETE'],
 	['name' => 'folders#hash_folder', 'url' => '/public/rest/v2/folder/{folderId}/hash', 'verb' => 'GET'],
+	['name' => 'bookmark#import_bookmark', 'url' => '/public/rest/v2/folder/{folder}/import', 'verb' => 'POST'],
 	['name' => 'folders#get_folder_children_order', 'url' => '/public/rest/v2/folder/{folderId}/childorder', 'verb' => 'GET'],
 	['name' => 'folders#set_folder_children_order', 'url' => '/public/rest/v2/folder/{folderId}/childorder', 'verb' => 'PATCH'],
 	['name' => 'folders#add_to_folder', 'url' => '/public/rest/v2/folder/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'POST'],
