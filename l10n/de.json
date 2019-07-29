@@ -31,6 +31,7 @@
     "Import completed successfully." : "Import erfolgreich beendet.",
     "Do you really want to delete all your bookmarks?" : "Möchtest Du wirklich alle Lesezeichen löschen?",
     "Set tags" : "Schlagworte setzen",
+    "Not allowed to access folder to import into" : "Kein Zugriff auf den Ordner um in ihn zu importieren ",
     "Failed to import one bookmark, because: " : "Ein Lesezeichen konnte nicht importiert werden, weil:",
     "No file provided for import" : "Keine Datei zum Importieren ausgewählt",
     "Unsupported file type for import" : "Ein Import von Dateien dieses Typs wird nicht unterstützt",

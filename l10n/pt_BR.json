@@ -31,6 +31,7 @@
     "Import completed successfully." : "Importação finalizada com sucesso.",
     "Do you really want to delete all your bookmarks?" : "Deseja realmente excluir todos os favoritos?",
     "Set tags" : "Atribuir tags",
+    "Not allowed to access folder to import into" : "Não é permitido acessar a pasta para onde importar",
     "Failed to import one bookmark, because: " : "Falha ao importar os favoritos, porque: ",
     "No file provided for import" : "Nenhum arquivo para importar",
     "Unsupported file type for import" : "O tipo de arquivo não é suportado",

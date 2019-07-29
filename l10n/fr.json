@@ -31,6 +31,7 @@
     "Import completed successfully." : "Importation terminée avec succès.",
     "Do you really want to delete all your bookmarks?" : "Voulez-vous réellement supprimer tous vos favoris ?",
     "Set tags" : "Choisir des étiquettes",
+    "Not allowed to access folder to import into" : "Non autorisé à accéder au dossier dans lequel importer",
     "Failed to import one bookmark, because: " : "Échec lors de l\\'importation d'un favori. Raison: ",
     "No file provided for import" : "Aucun fichier à importer.",
     "Unsupported file type for import" : "Type de fichier non pris en charge",

@@ -31,6 +31,7 @@
     "Import completed successfully." : "S'ha completat correctament la importació.",
     "Do you really want to delete all your bookmarks?" : "Esteu segurs de voler suprimir totes les vostres adreces d'interès?",
     "Set tags" : "Establiu etiquetes",
+    "Not allowed to access folder to import into" : "No es permet accedir a la carpeta per importar-hi",
     "Failed to import one bookmark, because: " : "Ha fallat la importació d'una adreça d'interès, perquè:",
     "No file provided for import" : "No s'ha proporcionat cap fitxer per importar",
     "Unsupported file type for import" : "El tipus de fitxer a importar no està suportat",

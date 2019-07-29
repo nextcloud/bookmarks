@@ -33,6 +33,7 @@ OC.L10N.register(
     "Import completed successfully." : "İçe aktarma tamamlandı.",
     "Do you really want to delete all your bookmarks?" : "Tüm yer imlerinizi silmek istediğinize emin misiniz?",
     "Set tags" : "Etiketleri ayarla",
+    "Not allowed to access folder to import into" : "İçe aktarım yapılacak klasöre erişilemedi",
     "Failed to import one bookmark, because: " : "Bir yer imi şu nedenle içe aktarılamadı:",
     "No file provided for import" : "İçe aktarılacak bir dosya seçilmemiş",
     "Unsupported file type for import" : "İçe aktarılacak dosya türü desteklenmiyor",

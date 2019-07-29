@@ -31,6 +31,7 @@
     "Import completed successfully." : "Importazione completata correttamente.",
     "Do you really want to delete all your bookmarks?" : "Vuoi davvero eliminare tutti i tuoi segnalibri?",
     "Set tags" : "Imposta etichette",
+    "Not allowed to access folder to import into" : "Non è consentito accedere alla cartella per l'importazione",
     "Failed to import one bookmark, because: " : "Importazione di un segnalibro non riuscita, motivo:",
     "No file provided for import" : "Nessun file fornito per l'importazione",
     "Unsupported file type for import" : "Tipo di file non supportato per l'importazione",
