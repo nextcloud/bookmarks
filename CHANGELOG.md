@@ -1,3 +1,7 @@
+## v1.1.0
+- NEW translations
+- NEW: API endpoint to import into a specific folder
+
 ## v1.0.8
 
 - NEW: gmp, intl, mbstring are now required
