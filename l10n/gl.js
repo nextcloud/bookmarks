@@ -33,6 +33,7 @@ OC.L10N.register(
     "Import completed successfully." : "A importación completouse correctamente",
     "Do you really want to delete all your bookmarks?" : "Confirma que quere eliminar todos os seus marcadores?",
     "Set tags" : "Poñer etiquetas",
+    "Not allowed to access folder to import into" : "Non está permitido o acceso ao cartafol para importar cara el",
     "Failed to import one bookmark, because: " : "Produciuse un erro ao importar un marcador por mor de:",
     "No file provided for import" : "Non forneceu ningún ficheiro para importar",
     "Unsupported file type for import" : "Tipo de ficheiro non admitido para importar",

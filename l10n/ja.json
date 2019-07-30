@@ -31,6 +31,7 @@
     "Import completed successfully." : "インポートに成功しました",
     "Do you really want to delete all your bookmarks?" : "本当にすべてのブックマークを削除しますか？",
     "Set tags" : "タグを設定",
+    "Not allowed to access folder to import into" : "インポート先フォルダへのアクセスが許可されていません",
     "Failed to import one bookmark, because: " : "ブックマークのインポートに失敗しました。原因:",
     "No file provided for import" : "インポート用に提供されたファイルがありません",
     "Unsupported file type for import" : "インポートにサポートされていないファイルタイプ",

@@ -31,6 +31,7 @@
     "Import completed successfully." : "Importación completada con éxito.",
     "Do you really want to delete all your bookmarks?" : "¿Seguro que quieres eliminar todos tus marcadores?",
     "Set tags" : "Poner etiquetas",
+    "Not allowed to access folder to import into" : "No tienes permiso para acceder a esta carpeta para importar en ella",
     "Failed to import one bookmark, because: " : "Error al importar un marcador a causa de:",
     "No file provided for import" : "No se seleccionó un archivo para importar",
     "Unsupported file type for import" : "Tipo de archivo no soportado",
