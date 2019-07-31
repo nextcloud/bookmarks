@@ -290,6 +290,7 @@ button span,
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	touch-action: none;
 }
 
 .list-view .bookmark-card {
@@ -726,6 +727,7 @@ button span,
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+  touch-action: none;
 }
 
 .folders-item .folders-item.add-folder {
