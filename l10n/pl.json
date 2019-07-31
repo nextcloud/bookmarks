@@ -31,6 +31,7 @@
     "Import completed successfully." : "Importowanie zakończone pomyślnie.",
     "Do you really want to delete all your bookmarks?" : "Czy na pewno chcesz usunąć wszystkie swoje zakładki?",
     "Set tags" : "Ustaw etykiety",
+    "Not allowed to access folder to import into" : "Nie można uzyskać dostępu do katalogu, aby go zaimportować",
     "Failed to import one bookmark, because: " : "Nie można było zaimportować jednej zakładki ponieważ:",
     "No file provided for import" : "Brak pliku do importu",
     "Unsupported file type for import" : "NIewspierany typ pliku importowania",
