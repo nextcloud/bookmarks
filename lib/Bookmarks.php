@@ -306,6 +306,7 @@ class Bookmarks {
 	}
 
 	private function existsFolder($userId, $folderId) {
+		if ($folderId === -1) return true;
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -1163,18 +1164,18 @@ class Bookmarks {
 			return $result;
 		}
 		foreach ($this->bookmarksParser->currentFolder['children'] as $folder) {
-			$rootContent['children'][] = $this->importFolder($userId, $folder, $rootFolder, $result['errors']);
+			$result['children'][] = $this->importFolder($userId, $folder, $rootFolder, $result['errors']);
 		}
 		foreach ($this->bookmarksParser->currentFolder['bookmarks'] as $bookmark) {
 			try {
 				$bmId = $this->addBookmark($userId, $bookmark['href'], $bookmark['title'], $bookmark['tags'], $bookmark['description'], false, [$rootFolder]);
-				$rootContent['children'][] = ['type' => 'bookmark', 'id' => $bmId, 'title' => $bookmark['title'], 'url' => $bookmark['href']];
+				$result['children'][] = ['type' => 'bookmark', 'id' => $bmId, 'title' => $bookmark['title'], 'url' => $bookmark['href']];
 			} catch (\InvalidArgumentException $e) {
 				$this->logger->logException($e, ['app' => 'bookmarks']);
 				$result['errors'][] = $this->l->t('Failed to import one bookmark, because: ') . $e->getMessage();
 			}
 		}
-		return $rootContent;
+		return $result;
 	}
 
 	private function importFolder($userId, $folder, $parentId, &$errors = []) {

@@ -518,26 +518,26 @@ class BookmarkController extends ApiController {
 	public function importBookmark($folder=-1) {
 		$full_input = $this->request->getUploadedFile("bm_import");
 
-		$result = ['error' => []];
+		$result = ['errors' => []];
 		if (empty($full_input)) {
-			$this->logger->warning("No file provided for import", ['app' => 'bookmarks']);
-			$result['error'][] = $this->l10n->t('No file provided for import');
+			$result['errors'][] = $this->l10n->t('No file provided for import');
 		} else {
 			$file = $full_input['tmp_name'];
 			if ($full_input['type'] === 'text/html') {
 				$result = $this->bookmarks->importFile($this->userId, $file, $folder);
-				if (count($result['error']) === 0) {
+				if (count($result['errors']) === 0) {
 					return new JSONResponse([
 						'status' => 'success',
 						'data' => $result['children']
 					]);
 				}
 			} else {
-				$result['error'][] = $this->l10n->t('Unsupported file type for import');
+				$result['errors'][] = $this->l10n->t('Unsupported file type for import');
 			}
 		}
 
-		return new JSONResponse(['status' => 'error', 'data' => $result['error']]);
+		$this->logger->warning(var_export($result['errors'], true), ['app' => 'bookmarks']);
+		return new JSONResponse(['status' => 'error', 'data' => $result['errors']]);
 	}
 
 	/**
