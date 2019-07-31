@@ -1,3 +1,6 @@
+## v1.1.1
+- FIX import from web UI
+
 ## v1.1.0
 - NEW translations
 - NEW: API endpoint to import into a specific folder
