@@ -33,6 +33,7 @@ OC.L10N.register(
     "Import completed successfully." : "Увоз успешно завршен.",
     "Do you really want to delete all your bookmarks?" : "Заиста желите да обришете све своје обележиваче?",
     "Set tags" : "Постави ознаке",
+    "Not allowed to access folder to import into" : "Није дозвољено да се приступа фасцикли у коју се увози",
     "Failed to import one bookmark, because: " : "Неуспешан увоз обележивача, јер:",
     "No file provided for import" : "није дат фајл за увоз",
     "Unsupported file type for import" : "врста фајла за увоз није подржана",
