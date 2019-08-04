@@ -33,6 +33,7 @@ OC.L10N.register(
     "Import completed successfully." : "导入完全成功。",
     "Do you really want to delete all your bookmarks?" : "您确定准备好删除所有的书签吗？",
     "Set tags" : "设置标签",
+    "Not allowed to access folder to import into" : "不允许访问要导入的文件夹",
     "Failed to import one bookmark, because: " : "无法导入一个书签，因为：",
     "No file provided for import" : "未提供导入文件",
     "Unsupported file type for import" : "不支持导入的文件类型",
