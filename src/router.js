@@ -5,7 +5,7 @@ import ViewPrivate from './components/ViewPrivate';
 Vue.use(Router);
 
 export default new Router({
-	mode: 'history',
+	mode: 'hash',
 	base: OC.generateUrl('/apps/bookmarks'),
 	linkActiveClass: 'active',
 	routes: [
@@ -16,20 +16,23 @@ export default new Router({
 		},
 		{
 			path: '/search/:search',
-			name: 'home',
-			component: ViewPrivate,
-			props: true
+			name: 'search',
+			component: ViewPrivate
 		},
 		{
-			path: '/folder/:folderId',
+			path: '/folder/:folder',
 			name: 'folder',
 			component: ViewPrivate
 		},
 		{
 			path: '/tags/:tags',
 			name: 'tags',
-			components: ViewPrivate,
-			props: true
+			component: ViewPrivate
+		},
+		{
+			path: '/untagged',
+			name: 'untagged',
+			component: ViewPrivate
 		}
 	]
 });

@@ -1,7 +1,9 @@
 export default {
 	methods: {
 		t,
-		n,
+		n
+	},
+	props: {
 		OC,
 		OCA
 	}
