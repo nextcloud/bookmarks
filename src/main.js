@@ -22,16 +22,20 @@
 import '@babel/polyfill/noConflict';
 
 import Vue from 'vue';
+import { Tooltip } from 'nextcloud-vue';
 import App from './App';
 import router from './router';
 import store from './store';
 import AppGlobal from './mixins/AppGlobal';
 
 Vue.mixin(AppGlobal);
+Vue.directive('tooltip', Tooltip);
 
-export default new Vue({
+const BookmarksApp = (global['Bookmarks'] = new Vue({
 	el: '#content',
 	store,
 	router,
 	render: h => h(App)
-});
+}));
+
+export default BookmarksApp;
