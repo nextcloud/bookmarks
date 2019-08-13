@@ -15,6 +15,11 @@ export default new Router({
 			component: ViewPrivate
 		},
 		{
+			path: '/recent',
+			name: 'recent',
+			component: ViewPrivate
+		},
+		{
 			path: '/search/:search',
 			name: 'search',
 			component: ViewPrivate

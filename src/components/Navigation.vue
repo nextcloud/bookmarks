@@ -22,7 +22,7 @@ import {
 } from 'nextcloud-vue';
 // import Settings from './Settings';
 // import NavigationList from './NavigationList';
-import { actions } from '../store';
+import { actions, mutations } from '../store';
 
 export default {
 	name: 'App',
@@ -55,6 +55,11 @@ export default {
 							icon: 'icon-rename',
 							text: 'Rename',
 							action: () => this.setEditingTag(tag.name, true)
+						},
+						{
+							icon: 'icon-delete',
+							text: 'Delete',
+							action: () => this.onDeleteTag(tag.name)
 						}
 					]
 				}
@@ -69,9 +74,9 @@ export default {
 					text: this.t('bookmarks', 'All Bookmarks')
 				},
 				{
-					router: { name: 'folder', params: { folder: '-1' } },
-					icon: 'icon-category-files',
-					text: this.t('bookmarks', 'Folders')
+					router: { name: 'recent' },
+					icon: 'icon-category-monitoring',
+					text: this.t('bookmarks', 'Recent Bookmarks')
 				},
 				{
 					router: { name: 'untagged' },
@@ -86,7 +91,12 @@ export default {
 	created() {},
 
 	methods: {
-		onNewBookmark() {},
+		onNewBookmark() {
+			this.$store.commit(mutations.DISPLAY_NEW_BOOKMARK, true);
+		},
+		onDeleteTag(tag) {
+			this.$store.dispatch(actions.DELETE_TAG, tag);
+		},
 		onRenameTag(e, newName) {
 			if (!this.editingTag) return;
 			const oldName = this.editingTag;
