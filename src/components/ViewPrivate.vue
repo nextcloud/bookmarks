@@ -3,14 +3,9 @@
 		<Navigation />
 		<AppContent>
 			<Breadcrumbs />
-			<BookmarksList
-				:loading="loading.bookmarks"
-				:creating="loading.createBookmark"
-				:bookmarks="bookmarks"
-				:new-bookmark="newBookmark"
-				@create-bookmark="onCreateBookmark"
-			/>
+			<BookmarksList :loading="loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
+		<SidebarBookmark />
 	</Content>
 </template>
 
@@ -20,6 +15,7 @@ import { Content, AppContent } from 'nextcloud-vue';
 import Navigation from './Navigation';
 import BookmarksList from './BookmarksList';
 import Breadcrumbs from './Breadcrumbs';
+import SidebarBookmark from './SidebarBookmark';
 import { actions } from '../store';
 
 export default {
@@ -29,8 +25,9 @@ export default {
 		Content,
 		AppContent,
 		// Settings,
+		Breadcrumbs,
 		BookmarksList,
-		Breadcrumbs
+		SidebarBookmark
 	},
 	data: function() {
 		return {
@@ -49,45 +46,6 @@ export default {
 		},
 		loading() {
 			return this.$store.state.loading;
-		},
-		menu() {
-			let defaultItems = [
-				{
-					router: { name: 'home' },
-					icon: 'icon-home',
-					text: this.t('bookmarks', 'All Bookmarks')
-				},
-				{
-					router: { name: 'folder', params: { folder: '-1' } },
-					icon: 'icon-category-files',
-					text: this.t('bookmarks', 'Folders')
-				},
-				{
-					router: { name: 'untagged' },
-					icon: 'icon-category-disabled',
-					text: this.t('bookmarks', 'Untagged')
-				}
-			];
-			return defaultItems.concat(
-				this.$store.state.tags.map(tag => ({
-					action: () => this.onSelectTag(tag.name),
-					icon: 'icon-tag',
-					text: tag.name,
-					edit: {
-						action: newName => this.onRenameTag(tag.name, newName)
-					},
-					utils: {
-						counter: tag.count,
-						actions: [
-							{
-								icon: 'icon-rename',
-								text: 'rename',
-								action: () => this.setEditingTag(tag.name)
-							}
-						]
-					}
-				}))
-			);
 		}
 	},
 
@@ -107,6 +65,9 @@ export default {
 			const route = this.$route;
 			switch (route.name) {
 				case 'home':
+					this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder);
+					break;
+				case 'recent':
 					this.$store.dispatch(actions.NO_FILTER);
 					break;
 				case 'untagged':
@@ -131,20 +92,6 @@ export default {
 		},
 		reloadFolders() {
 			this.$store.dispatch(actions.LOAD_FOLDERS);
-		},
-
-		onNewBookmark() {
-			this.newBookmark = true;
-		},
-		onCreateBookmark(url) {
-			// todo: create bookmark inside current folder
-			this.$store.dispatch(actions.CREATE_BOOKMARK, url).then(() => {
-				this.newBookmark = false;
-			});
-		},
-
-		onRenameTag(oldName, newName) {
-			this.$store.dispatch(actions.RENAME_TAG, { oldName, newName });
 		},
 
 		onScroll() {

@@ -41,6 +41,7 @@ export default {
 	border-radius: var(--border-radius-pill);
 	padding: 5px 10px;
 	margin: 0 3px;
+	background-color: var(--color-main-background);
 }
 .Bookmarks__TagLine_Tag:hover {
 	background-color: var(--color-background-dark);

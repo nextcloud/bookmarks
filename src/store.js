@@ -8,27 +8,36 @@ Vue.use(Vuex);
 const BATCH_SIZE = 42;
 
 export const mutations = {
+	DISPLAY_NEW_BOOKMARK: 'DISPLAY_NEW_BOOKMARK',
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
 	REMOVE_ALL_BOOKMARK: 'REMOVE_ALL_BOOKMARK',
 	SET_TAGS: 'SET_TAGS',
-	SET_SIDEBAR_OPEN: 'SET_SIDEBAR_OPEN',
 	INCREMENT_PAGE: 'INCREMENT_PAGE',
 	SET_QUERY: 'SET_QUERY',
 	SET_SORTBY: 'SET_SORTBY',
 	FETCH_START: 'FETCH_START',
 	FETCH_END: 'FETCH_END',
-	SET_REACHED_END: 'SET_REACHED_END',
+	REACHED_END: 'REACHED_END',
 	SET_ERROR: 'SET_ERROR',
-	SET_FOLDERS: 'SET_FOLDERS'
+	SET_FOLDERS: 'SET_FOLDERS',
+	SET_SIDEBAR: 'SET_SIDEBAR'
 };
 
 export const actions = {
 	ADD_ALL_BOOKMARKS: 'ADD_ALL_BOOKMARKS',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
-	RENAME_TAG: 'RENAME_TAG',
+	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
+	OPEN_BOOKMARK: 'OPEN_BOOKMARK',
+	SAVE_BOOKMARK: 'SAVE_BOOKMARK',
+
 	LOAD_TAGS: 'LOAD_TAGS',
+	RENAME_TAG: 'RENAME_TAG',
+	DELETE_TAG: 'DELETE_TAG',
+
 	LOAD_FOLDERS: 'LOAD_FOLDERS',
+	DELETE_FOLDER: 'DELETE_FOLDER',
+
 	NO_FILTER: 'NO_FILTER',
 	FILTER_BY_UNTAGGED: 'FILTER_BY_UNTAGGED',
 	FILTER_BY_TAGS: 'FILTER_BY_TAGS',
@@ -56,17 +65,18 @@ export default new Vuex.Store({
 		tags: [],
 		folders: [],
 		foldersById: {},
-		sidebarOpen: false
+		displayNewBookmark: false,
+		sidebar: null
 	},
 
 	getters: {
 		getBookmark: state => id => {
-			if (state.bookmarksById[id] === undefined) {
-				return null;
-			}
 			return state.bookmarksById[id];
 		},
 		getFolder: state => id => {
+			if (Number(id) === -1) {
+				return [{ id: '-1', children: state.folders }];
+			}
 			return findFolder(id, state.folders);
 		}
 	},
@@ -80,6 +90,9 @@ export default new Vuex.Store({
 		},
 		[mutations.SET_TAGS](state, tags) {
 			state.tags = tags;
+		},
+		[mutations.DISPLAY_NEW_BOOKMARK](state, display) {
+			state.displayNewBookmark = display;
 		},
 
 		[mutations.ADD_BOOKMARK](state, bookmark) {
@@ -101,8 +114,8 @@ export default new Vuex.Store({
 			state.bookmarksById = {};
 		},
 
-		[mutations.SET_SIDEBAR_OPEN](state, open) {
-			state.sidebarOpen = open;
+		[mutations.SET_SIDEBAR](state, sidebar) {
+			state.sidebar = sidebar;
 		},
 
 		[mutations.INCREMENT_PAGE](state) {
@@ -148,7 +161,9 @@ export default new Vuex.Store({
 					if (status !== 'success') {
 						throw new Error(response.data);
 					}
-					return dispatch(actions.OPEN_BOOKMARK, bookmark);
+					commit(mutations.DISPLAY_NEW_BOOKMARK, false);
+					commit(mutations.ADD_BOOKMARK, bookmark);
+					return dispatch(actions.OPEN_BOOKMARK, bookmark.id);
 				})
 				.catch(err => {
 					console.error(err);
@@ -160,6 +175,54 @@ export default new Vuex.Store({
 				})
 				.finally(() => {
 					commit(mutations.FETCH_END, 'createBookmark');
+				});
+		},
+		[actions.SAVE_BOOKMARK]({ commit, dispatch, state }, id) {
+			commit(mutations.FETCH_START, 'saveBookmark');
+			return axios
+				.put(url(`/bookmark/${id}`), this.getters.getBookmark(id))
+				.then(response => {
+					const {
+						data: { status }
+					} = response;
+					if (status !== 'success') {
+						throw new Error(response.data);
+					}
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', 'Failed to save bookmark')
+					);
+					throw err;
+				})
+				.finally(() => {
+					commit(mutations.FETCH_END, 'saveBookmark');
+				});
+		},
+		[actions.OPEN_BOOKMARK]({ commit }, id) {
+			commit(mutations.SET_SIDEBAR, { type: 'bookmark', id });
+		},
+		[actions.DELETE_BOOKMARK]({ commit, dispatch, state }, id) {
+			return axios
+				.delete(url(`/bookmark/${id}`))
+				.then(response => {
+					const {
+						data: { status }
+					} = response;
+					if (status !== 'success') {
+						throw new Error(response.data);
+					}
+					commit(mutations.REMOVE_BOOKMARK, id);
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', 'Failed to delete bookmark')
+					);
+					throw err;
 				});
 		},
 
@@ -190,7 +253,6 @@ export default new Vuex.Store({
 					commit(mutations.FETCH_END, 'tag');
 				});
 		},
-
 		[actions.LOAD_TAGS]({ commit, dispatch, state }, link) {
 			if (state.loading.bookmarks) return;
 			commit(mutations.FETCH_START, 'tags');
@@ -212,6 +274,28 @@ export default new Vuex.Store({
 					commit(mutations.FETCH_END, 'tags');
 				});
 		},
+		[actions.DELETE_TAG]({ commit, dispatch, state }, tag) {
+			return axios
+				.delete(url(`/tag/${tag}`))
+				.then(response => {
+					const {
+						data: { status }
+					} = response;
+					if (status !== 'success') {
+						throw new Error(response.data);
+					}
+					dispatch(actions.LOAD_TAGS);
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', 'Failed to delete bookmark')
+					);
+					throw err;
+				});
+		},
+
 		[actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
 			if (state.loading.bookmarks) return;
 			commit(mutations.FETCH_START, 'folders');
@@ -235,6 +319,27 @@ export default new Vuex.Store({
 				})
 				.finally(() => {
 					commit(mutations.FETCH_END, 'folders');
+				});
+		},
+		[actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
+			return axios
+				.delete(url(`/folder/${id}`))
+				.then(response => {
+					const {
+						data: { status }
+					} = response;
+					if (status !== 'success') {
+						throw new Error(response.data);
+					}
+					dispatch(actions.LOAD_FOLDERS, id);
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
+					);
+					throw err;
 				});
 		},
 
@@ -277,6 +382,9 @@ export default new Vuex.Store({
 					if (status !== 'success') throw new Error(data);
 					const bookmarks = data;
 					commit(mutations.INCREMENT_PAGE);
+					if (bookmarks.length < BATCH_SIZE) {
+						commit(mutations.REACHED_END);
+					}
 					return dispatch(actions.ADD_ALL_BOOKMARKS, bookmarks);
 				})
 				.catch(err => {

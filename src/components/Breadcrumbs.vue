@@ -1,16 +1,16 @@
 <template>
 	<div class="Bookmarks__Breadcrumbs">
-		<a class="icon-home" />
+		<a class="icon-home" @click="onSelectHome" />
 		<span class="icon-breadcrumb" />
 		<template v-if="$route.name === 'folder'">
 			<template v-for="folder in folderPath">
 				<a
 					href="#"
-					:key="folder.id"
+					:key="'a' + folder.id"
 					@click.prevent="onSelectFolder(folder.id)"
 					>{{ folder.title }}</a
 				>
-				<span :key="folder.id" class="icon-breadcrumb" />
+				<span :key="'b' + folder.id" class="icon-breadcrumb" />
 			</template>
 		</template>
 		<template v-if="$route.name === 'tags'">
@@ -24,9 +24,6 @@
 				:multiple="true"
 				@input="onTagsChange"
 			/>
-		</template>
-		<template v-if="$route.name === 'untagged'">
-			<span class="icon-category-disabled" /> Untagged
 		</template>
 	</div>
 </template>
@@ -59,6 +56,9 @@ export default {
 	},
 	created() {},
 	methods: {
+		onSelectHome() {
+			this.$router.push({ name: 'home' });
+		},
 		onTagsChange(tags) {
 			this.$router.push({ name: 'tags', params: { tags } });
 		},
@@ -71,7 +71,7 @@ export default {
 </script>
 <style>
 .Bookmarks__Breadcrumbs {
-	padding: 5px;
+	padding: 8px;
 	display: flex;
 	align-items: center;
 	position: fixed;
@@ -80,7 +80,7 @@ export default {
 	background: var(--color-main-background-translucent);
 }
 .Bookmarks__Breadcrumbs + * {
-	margin-top: 40px;
+	margin-top: 50px;
 }
 .Bookmarks__Breadcrumbs > * {
 	display: inline-block;

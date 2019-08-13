@@ -5,14 +5,24 @@
 			:loading="creating"
 			@create-bookmark="onCreateBookmark"
 		/>
+		<template v-if="$route.name === 'folder' || $route.name === 'home'">
+			<BookmarksListFolder
+				v-for="folder in folderChildren"
+				:key="'f' + folder.id"
+				:folder="folder"
+			/>
+		</template>
 		<template v-if="bookmarks.length">
-			<BookmarksListItem
+			<BookmarksListBookmark
 				v-for="bookmark in bookmarks"
-				:key="bookmark.id"
+				:key="'b' + bookmark.id"
 				:bookmark="bookmark"
 			/>
 		</template>
-		<div v-else-if="!loading" class="Bookmarks__BookmarksList_Empty">
+		<div
+			v-else-if="!loading && !folderChildren.length"
+			class="Bookmarks__BookmarksList_Empty"
+		>
 			<h2>No bookmarks here</h2>
 			<p>Try changing your query or add some using the button on the left.</p>
 		</div>
@@ -23,13 +33,16 @@
 </template>
 
 <script>
-import BookmarksListItem from './BookmarksListItem';
+import BookmarksListBookmark from './BookmarksListBookmark';
+import BookmarksListFolder from './BookmarksListFolder';
 import CreateBookmark from './CreateBookmark';
+import { actions } from '../store';
 
 export default {
-	name: 'NavigationList',
+	name: 'BookmarksList',
 	components: {
-		BookmarksListItem,
+		BookmarksListBookmark,
+		BookmarksListFolder,
 		CreateBookmark
 	},
 	props: {
@@ -37,23 +50,31 @@ export default {
 			type: Array,
 			required: true
 		},
-		newBookmark: {
-			type: Boolean,
-			required: true
-		},
-		creating: {
-			type: Boolean,
-			required: true
-		},
 		loading: {
 			type: Boolean,
 			required: true
 		}
 	},
+	computed: {
+		folderChildren() {
+			const folderId = this.$route.params.folder || '-1';
+			if (!folderId) return [];
+			const folder = this.$store.getters.getFolder(folderId)[0];
+			if (!folder) return [];
+			return folder.children;
+		},
+		newBookmark() {
+			return this.$store.state.displayNewBookmark;
+		},
+		creating() {
+			return this.$store.state.loading.createBookmark;
+		}
+	},
 	created() {},
 	methods: {
 		onCreateBookmark(url) {
-			this.$emit('create-bookmark', url);
+			// todo: create bookmark inside current folder
+			this.$store.dispatch(actions.CREATE_BOOKMARK, url);
 		}
 	}
 };
