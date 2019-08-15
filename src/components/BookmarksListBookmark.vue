@@ -1,32 +1,48 @@
 <template>
 	<div :class="{ Bookmarks__BookmarksList__Bookmark: true, active: isOpen }">
-		<a
-			:href="url"
-			target="_blank"
-			class="Bookmarks__BookmarksList__Bookmark__Title"
-		>
-			<h3>
-				<figure
-					class="Bookmarks__BookmarksList__Bookmark__Icon"
-					:style="{ backgroundImage: 'url(' + iconUrl + ')' }"
-				/>
-				{{ bookmark.title }}
-			</h3>
-		</a>
-		<span
-			v-if="bookmark.description"
-			v-tooltip="bookmark.description"
-			class="icon-file Bookmarks__BookmarksList__Bookmark__Description"
-		/>
-		<TagLine :tags="bookmark.tags" />
-		<Actions class="Bookmarks__BookmarksList__Bookmark__Actions">
-			<ActionButton icon="icon-info" @click="onDetails">{{
-				t('bookmarks', 'Details')
-			}}</ActionButton>
-			<ActionButton icon="icon-delete" @click="onDelete">{{
-				t('bookmarks', 'Delete')
-			}}</ActionButton>
-		</Actions>
+		<template v-if="!renaming">
+			<a
+				:href="url"
+				target="_blank"
+				class="Bookmarks__BookmarksList__Bookmark__Title"
+			>
+				<h3>
+					<figure
+						class="Bookmarks__BookmarksList__Bookmark__Icon"
+						:style="{ backgroundImage: 'url(' + iconUrl + ')' }"
+					/>
+					{{ bookmark.title }}
+				</h3>
+			</a>
+			<span
+				v-if="bookmark.description"
+				v-tooltip="bookmark.description"
+				class="icon-file Bookmarks__BookmarksList__Bookmark__Description"
+			/>
+			<TagLine :tags="bookmark.tags" />
+			<Actions class="Bookmarks__BookmarksList__Bookmark__Actions">
+				<ActionButton icon="icon-info" @click="onDetails">{{
+					t('bookmarks', 'Details')
+				}}</ActionButton>
+				<ActionButton icon="icon-rename" @click="onRename">{{
+					t('bookmarks', 'Rename')
+				}}</ActionButton>
+				<ActionButton icon="icon-delete" @click="onDelete">{{
+					t('bookmarks', 'Delete')
+				}}</ActionButton>
+			</Actions>
+		</template>
+		<h3 class="Bookmarks__BookmarksList__Bookmark__Title" v-else>
+			<figure
+				class="Bookmarks__BookmarksList__Bookmark__Icon"
+				:style="{ backgroundImage: 'url(' + iconUrl + ')' }"
+			/>
+			<input type="text" v-model="title" @keyup.enter="onRenameSubmit" />
+			<button type="submit" @click="onRenameSubmit">
+				<span class="icon-checkmark"></span>
+				Save
+			</button>
+		</h3>
 	</div>
 </template>
 <script>
@@ -46,6 +62,9 @@ export default {
 			type: Object,
 			required: true
 		}
+	},
+	data() {
+		return { title: this.bookmark.title, renaming: false };
 	},
 	created() {},
 	computed: {
@@ -70,6 +89,14 @@ export default {
 		},
 		onDetails() {
 			this.$store.dispatch(actions.OPEN_BOOKMARK, this.bookmark.id);
+		},
+		onRename() {
+			this.renaming = true;
+		},
+		async onRenameSubmit() {
+			this.bookmark.title = this.title;
+			await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id);
+			this.renaming = false;
 		}
 	}
 };
@@ -117,5 +144,14 @@ export default {
 }
 .Bookmarks__BookmarksList__Bookmark__Actions {
 	flex: 0;
+}
+.Bookmarks__BookmarksList__Bookmark__Title > input {
+	width: 100%;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+.Bookmarks__BookmarksList__Bookmark__Title button {
+	height: 20px;
 }
 </style>
