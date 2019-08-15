@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "d9a4a9c7d65d07f72253a30628f038c4",
@@ -563,16 +563,16 @@
         },
         {
             "name": "rowbot/url",
-            "version": "2.0.1",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/URL-Parser.git",
-                "reference": "91f6803545ca08881f30c8406f2f7e8b7ba2bda4"
+                "reference": "3e9f479cd8ffa42e4d66cc6ee40bd99f4a536685"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/91f6803545ca08881f30c8406f2f7e8b7ba2bda4",
-                "reference": "91f6803545ca08881f30c8406f2f7e8b7ba2bda4",
+                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/3e9f479cd8ffa42e4d66cc6ee40bd99f4a536685",
+                "reference": "3e9f479cd8ffa42e4d66cc6ee40bd99f4a536685",
                 "shasum": ""
             },
             "require": {
@@ -605,8 +605,8 @@
             "authors": [
                 {
                     "name": "Trevor Rowbotham",
-                    "homepage": "http://trowbotham.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "http://trowbotham.com"
                 }
             ],
             "description": "A WHATWG URL spec compliant URL parser for working with URLs and their query strings.",
@@ -619,7 +619,7 @@
                 "url-parser",
                 "url-parsing"
             ],
-            "time": "2019-07-15T19:29:19+00:00"
+            "time": "2019-08-11T20:03:32+00:00"
         },
         {
             "name": "symfony/css-selector",
