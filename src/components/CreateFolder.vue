@@ -1,12 +1,12 @@
 <template>
-	<div class="Bookmarks__CreateBookmark">
-		<h3 class="Bookmarks__CreateBookmark__Title">
-			<span class="icon-add Bookmarks__CreateBookmark__Icon" />
+	<div class="Bookmarks__CreateFolder">
+		<h3 class="Bookmarks__CreateFolder__Title">
+			<span class="icon-folder Bookmarks__CreateFolder__Icon" />
 			<input
 				type="text"
-				:placeholder="t('bookmarks', 'Enter a Link...')"
-				:disabled="creating"
-				v-model="url"
+				:placeholder="t('bookmarks', 'Enter folder title')"
+				:disabled="loading"
+				v-model="title"
 				@keyup.enter="submit"
 			/>
 		</h3>
@@ -18,35 +18,40 @@
 </template>
 <script>
 import { actions, mutations } from '../store';
+
 export default {
-	name: 'CreateBookmark',
+	name: 'CreateFolder',
 	components: {},
 	data() {
 		return {
-			url: ''
+			title: ''
 		};
 	},
 	created() {},
 	computed: {
-		creating() {
-			return this.$store.state.loading.createBookmark;
+		loading() {
+			return this.$store.state.loading.createFolder;
 		}
 	},
 	methods: {
 		submit() {
-			this.$store.dispatch(actions.CREATE_BOOKMARK, this.url);
+			const parentFolder = this.$route.params.folder;
+			this.$store.dispatch(actions.CREATE_FOLDER, {
+				parentFolder,
+				title: this.title
+			});
 		}
 	}
 };
 </script>
 <style>
-.Bookmarks__CreateBookmark {
+.Bookmarks__CreateFolder {
 	border-bottom: 1px solid var(--color-border);
 	padding: 5px;
 	display: flex;
 	align-items: center;
 }
-.Bookmarks__CreateBookmark__Icon {
+.Bookmarks__CreateFolder__Icon {
 	display: inline-block;
 	flex-shrink: 0;
 	height: 20px;
@@ -56,17 +61,17 @@ export default {
 	position: relative;
 	top: 8px;
 }
-.Bookmarks__CreateBookmark__Title {
+.Bookmarks__CreateFolder__Title {
 	display: flex;
 	flex-grow: 1;
 }
-.Bookmarks__CreateBookmark__Title > input {
+.Bookmarks__CreateFolder__Title > input {
 	width: 100%;
 }
-.Bookmarks__CreateBookmark button {
+.Bookmarks__CreateFolder button {
 	height: 20px;
 }
-.Bookmarks__CreateBookmark input {
+.Bookmarks__CreateFolder input {
 	border-top: none;
 	border-left: none;
 	border-right: none;

@@ -9,6 +9,7 @@ const BATCH_SIZE = 42;
 
 export const mutations = {
 	DISPLAY_NEW_BOOKMARK: 'DISPLAY_NEW_BOOKMARK',
+	DISPLAY_NEW_FOLDER: 'DISPLAY_NEW_FOLDER',
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
 	REMOVE_ALL_BOOKMARK: 'REMOVE_ALL_BOOKMARK',
@@ -36,6 +37,7 @@ export const actions = {
 	DELETE_TAG: 'DELETE_TAG',
 
 	LOAD_FOLDERS: 'LOAD_FOLDERS',
+	CREATE_FOLDER: 'CREATE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
 
 	NO_FILTER: 'NO_FILTER',
@@ -58,7 +60,8 @@ export default new Vuex.Store({
 			tags: false,
 			folders: false,
 			bookmarks: false,
-			createBookmark: false
+			createBookmark: false,
+			createFolder: false
 		},
 		bookmarks: [],
 		bookmarksById: {},
@@ -66,6 +69,7 @@ export default new Vuex.Store({
 		folders: [],
 		foldersById: {},
 		displayNewBookmark: false,
+		displayNewFolder: false,
 		sidebar: null
 	},
 
@@ -93,6 +97,10 @@ export default new Vuex.Store({
 		},
 		[mutations.DISPLAY_NEW_BOOKMARK](state, display) {
 			state.displayNewBookmark = display;
+		},
+
+		[mutations.DISPLAY_NEW_FOLDER](state, display) {
+			state.displayNewFolder = display;
 		},
 
 		[mutations.ADD_BOOKMARK](state, bookmark) {
@@ -331,13 +339,41 @@ export default new Vuex.Store({
 					if (status !== 'success') {
 						throw new Error(response.data);
 					}
-					dispatch(actions.LOAD_FOLDERS, id);
+					dispatch(actions.LOAD_FOLDERS);
 				})
 				.catch(err => {
 					console.error(err);
 					commit(
 						mutations.SET_ERROR,
 						AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
+					);
+					throw err;
+				});
+		},
+		[actions.CREATE_FOLDER](
+			{ commit, dispatch, state },
+			{ parentFolder, title }
+		) {
+			return axios
+				.post(url(`/folder`), {
+					parent_folder: parentFolder,
+					title
+				})
+				.then(response => {
+					const {
+						data: { status }
+					} = response;
+					if (status !== 'success') {
+						throw new Error(response.data);
+					}
+					commit(mutations.DISPLAY_NEW_FOLDER, false);
+					dispatch(actions.LOAD_FOLDERS);
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', 'Failed to create folder')
 					);
 					throw err;
 				});
