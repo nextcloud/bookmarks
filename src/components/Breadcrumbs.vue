@@ -25,13 +25,18 @@
 				@input="onTagsChange"
 			/>
 		</template>
+		<button
+			class="button icon-add Bookmarks__Breadcrumbs__AddFolder"
+			@click="onAddFolder"
+		></button>
 	</div>
 </template>
 <script>
 import { Multiselect } from 'nextcloud-vue';
+import { actions, mutations } from '../store';
 
 export default {
-	name: 'CreateBookmark',
+	name: 'Breadcrumbs',
 	components: { Multiselect },
 	props: {},
 	data() {
@@ -65,6 +70,10 @@ export default {
 
 		onSelectFolder(folder) {
 			this.$router.push({ name: 'folder', params: { folder } });
+		},
+
+		onAddFolder() {
+			this.$store.commit(mutations.DISPLAY_NEW_FOLDER, true);
 		}
 	}
 };
@@ -101,5 +110,8 @@ export default {
 	border-top: none !important;
 	border-left: none !important;
 	border-right: none !important;
+}
+.Bookmarks__Breadcrumbs__AddFolder {
+	margin-left: 5px;
 }
 </style>

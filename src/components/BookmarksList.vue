@@ -1,10 +1,7 @@
 <template>
 	<div class="Bookmarks__BookmarksList">
-		<CreateBookmark
-			v-if="newBookmark"
-			:loading="creating"
-			@create-bookmark="onCreateBookmark"
-		/>
+		<CreateBookmark v-if="newBookmark" />
+		<CreateFolder v-if="newFolder" />
 		<template v-if="$route.name === 'folder' || $route.name === 'home'">
 			<BookmarksListFolder
 				v-for="folder in folderChildren"
@@ -36,6 +33,7 @@
 import BookmarksListBookmark from './BookmarksListBookmark';
 import BookmarksListFolder from './BookmarksListFolder';
 import CreateBookmark from './CreateBookmark';
+import CreateFolder from './CreateFolder';
 import { actions } from '../store';
 
 export default {
@@ -43,7 +41,8 @@ export default {
 	components: {
 		BookmarksListBookmark,
 		BookmarksListFolder,
-		CreateBookmark
+		CreateBookmark,
+		CreateFolder
 	},
 	props: {
 		bookmarks: {
@@ -66,17 +65,12 @@ export default {
 		newBookmark() {
 			return this.$store.state.displayNewBookmark;
 		},
-		creating() {
-			return this.$store.state.loading.createBookmark;
+		newFolder() {
+			return this.$store.state.displayNewFolder;
 		}
 	},
 	created() {},
-	methods: {
-		onCreateBookmark(url) {
-			// todo: create bookmark inside current folder
-			this.$store.dispatch(actions.CREATE_BOOKMARK, url);
-		}
-	}
+	methods: {}
 };
 </script>
 <style>
