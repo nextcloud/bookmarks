@@ -31,6 +31,7 @@
     "Import completed successfully." : "Enporto okazis sukcese",
     "Do you really want to delete all your bookmarks?" : "Ĉu vi ja volas forigi ĉiujn viaj legosignoj?",
     "Set tags" : "Skribu etikedojn",
+    "Not allowed to access folder to import into" : "Ne permesita aliri la dosierujon, en kiu oni devas enmeti la datumojn",
     "Failed to import one bookmark, because: " : "Malsukcesis enporti unu legosignon ĉar:",
     "No file provided for import" : "Neniu dosiero provizita por enporto",
     "Unsupported file type for import" : "Nesubtenita dosiertipo por enporto",
