@@ -38,6 +38,7 @@ export const actions = {
 
 	LOAD_FOLDERS: 'LOAD_FOLDERS',
 	CREATE_FOLDER: 'CREATE_FOLDER',
+	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
 
 	NO_FILTER: 'NO_FILTER',
@@ -61,7 +62,9 @@ export default new Vuex.Store({
 			folders: false,
 			bookmarks: false,
 			createBookmark: false,
-			createFolder: false
+			saveBookmark: false,
+			createFolder: false,
+			saveFolder: false
 		},
 		bookmarks: [],
 		bookmarksById: {},
@@ -376,6 +379,35 @@ export default new Vuex.Store({
 						AppGlobal.methods.t('bookmarks', 'Failed to create folder')
 					);
 					throw err;
+				});
+		},
+		[actions.SAVE_FOLDER]({ commit, dispatch, state }, id) {
+			const folder = this.getters.getFolder(id)[0];
+			commit(mutations.FETCH_END, 'saveFolder');
+			// ! todo: Check endpoint -- 405
+			return axios
+				.put(url(`/folder`), {
+					parent_folder: folder.parent_folder,
+					title: folder.title
+				})
+				.then(response => {
+					const {
+						data: { status }
+					} = response;
+					if (status !== 'success') {
+						throw new Error(response.data);
+					}
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', 'Failed to create folder')
+					);
+					throw err;
+				})
+				.finally(() => {
+					commit(mutations.FETCH_END, 'saveFolder');
 				});
 		},
 

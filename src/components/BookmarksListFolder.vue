@@ -1,17 +1,32 @@
 <template>
 	<div class="Bookmarks__BookmarksList__Folder">
-		<h3 class="Bookmarks__BookmarksList__Folder__Title" @click="onSelect">
-			<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
-			{{ folder.title }}
-		</h3>
-		<Actions class="Bookmarks__BookmarksList__Folder__Actions">
-			<ActionButton icon="icon-info" @click="onDetails">{{
-				t('bookmarks', 'Details')
-			}}</ActionButton>
-			<ActionButton icon="icon-delete" @click="onDelete">{{
-				t('bookmarks', 'Delete')
-			}}</ActionButton>
-		</Actions>
+		<template v-if="!renaming">
+			<h3 class="Bookmarks__BookmarksList__Folder__Title" @click="onSelect">
+				<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
+				{{ folder.title }}
+			</h3>
+			<Actions class="Bookmarks__BookmarksList__Folder__Actions">
+				<ActionButton icon="icon-info" @click="onDetails">{{
+					t('bookmarks', 'Details')
+				}}</ActionButton>
+				<ActionButton icon="icon-rename" @click="onRename">{{
+					t('bookmarks', 'Rename')
+				}}</ActionButton>
+				<ActionButton icon="icon-delete" @click="onDelete">{{
+					t('bookmarks', 'Delete')
+				}}</ActionButton>
+			</Actions>
+		</template>
+		<template v-else>
+			<h3 class="Bookmarks__BookmarksList__Folder__Title">
+				<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
+				<input type="text" v-model="title" @keyup.enter="onRenameSubmit" />
+				<button type="submit" @click="onRenameSubmit">
+					<span class="icon-checkmark" />
+					Save
+				</button>
+			</h3>
+		</template>
 	</div>
 </template>
 <script>
@@ -30,6 +45,9 @@ export default {
 			required: true
 		}
 	},
+	data() {
+		return { renaming: false, title: this.folder.title };
+	},
 	created() {},
 	computed: {},
 	methods: {
@@ -39,6 +57,14 @@ export default {
 		onDetails() {},
 		onSelect() {
 			this.$router.push({ name: 'folder', params: { folder: this.folder.id } });
+		},
+		onRename() {
+			this.renaming = true;
+		},
+		onRenameSubmit() {
+			this.folder.title = this.title;
+			this.$store.dispatch(actions.SAVE_FOLDER, this.folder.id);
+			this.renaming = false;
 		}
 	}
 };
@@ -79,5 +105,14 @@ export default {
 }
 .Bookmarks__BookmarksList__Folder__Actions {
 	flex: 0;
+}
+.Bookmarks__BookmarksList__Folder__Title input {
+	width: 100%;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+.Bookmarks__BookmarksList__Folder__Title button {
+	height: 20px;
 }
 </style>

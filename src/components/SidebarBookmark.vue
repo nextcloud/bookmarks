@@ -7,7 +7,7 @@
 		:background="background"
 		@close="onClose"
 	>
-		<AppSidebarTab :name="t('bookmarks', 'Information')" icon="icon-info">
+		<AppSidebarTab :name="t('bookmarks', 'Details')" icon="icon-info">
 			<div>
 				<h3>
 					<span class="icon-calendar-dark" />
