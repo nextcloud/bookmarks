@@ -14,9 +14,7 @@ export default {
 	watch: {
 		error(error) {
 			if (!error) return;
-			OC.Notification.showTemporary(
-				error + ' ' + this.t('bookmarks', 'See JavaScript console for details.')
-			);
+			OC.Notification.showTemporary(error);
 			this.$store.commit(mutations.SET_ERROR, null);
 		}
 	}

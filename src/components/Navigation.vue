@@ -9,8 +9,7 @@
 		<ul>
 			<AppNavigationItem v-for="item in menu" :item="item" :key="item.text" />
 		</ul>
-		<!-- <Settings />
-			-->
+		<AppNavigationSettings><Settings /></AppNavigationSettings>
 	</AppNavigation>
 </template>
 
@@ -18,10 +17,10 @@
 import {
 	AppNavigation,
 	AppNavigationNew,
-	AppNavigationItem
+	AppNavigationItem,
+	AppNavigationSettings
 } from 'nextcloud-vue';
-// import Settings from './Settings';
-// import NavigationList from './NavigationList';
+import Settings from './Settings';
 import { actions, mutations } from '../store';
 
 export default {
@@ -29,8 +28,9 @@ export default {
 	components: {
 		AppNavigation,
 		AppNavigationNew,
-		AppNavigationItem
-		// Settings,
+		AppNavigationItem,
+		AppNavigationSettings,
+		Settings
 	},
 	data() {
 		return {
