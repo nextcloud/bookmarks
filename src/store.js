@@ -22,7 +22,8 @@ export const mutations = {
 	REACHED_END: 'REACHED_END',
 	SET_ERROR: 'SET_ERROR',
 	SET_FOLDERS: 'SET_FOLDERS',
-	SET_SIDEBAR: 'SET_SIDEBAR'
+	SET_SIDEBAR: 'SET_SIDEBAR',
+	SET_SETTING: 'SET_SETTING'
 };
 
 export const actions = {
@@ -31,6 +32,8 @@ export const actions = {
 	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
 	OPEN_BOOKMARK: 'OPEN_BOOKMARK',
 	SAVE_BOOKMARK: 'SAVE_BOOKMARK',
+	IMPORT_BOOKMARKS: 'IMPORT_BOOKMARKS',
+	DELETE_BOOKMARKS: 'IMPORT_BOOKMARKS',
 
 	LOAD_TAGS: 'LOAD_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
@@ -42,11 +45,16 @@ export const actions = {
 	DELETE_FOLDER: 'DELETE_FOLDER',
 
 	NO_FILTER: 'NO_FILTER',
+	FILTER_BY_RECENT: 'FILTER_BY_RECENT',
 	FILTER_BY_UNTAGGED: 'FILTER_BY_UNTAGGED',
 	FILTER_BY_TAGS: 'FILTER_BY_TAGS',
 	FILTER_BY_FOLDER: 'FILTER_BY_FOLDER',
 	FILTER_BY_SEARCH: 'FILTER_BY_SEARCH',
-	FETCH_PAGE: 'FETCH_PAGE'
+	FETCH_PAGE: 'FETCH_PAGE',
+
+	SET_SETTING: 'SET_SETTING',
+	LOAD_SETTING: 'LOAD_SETTING',
+	LOAD_SETTINGS: 'SLOAD_SETTINGS'
 };
 
 export default new Vuex.Store({
@@ -54,8 +62,7 @@ export default new Vuex.Store({
 		fetchState: {
 			page: 0,
 			query: {},
-			reachedEnd: false,
-			sortby: 'lastmodified'
+			reachedEnd: false
 		},
 		loading: {
 			tags: false,
@@ -65,6 +72,11 @@ export default new Vuex.Store({
 			saveBookmark: false,
 			createFolder: false,
 			saveFolder: false
+		},
+		error: null,
+		settings: {
+			viewMode: 'list',
+			sorting: 'lastmodified'
 		},
 		bookmarks: [],
 		bookmarksById: {},
@@ -91,6 +103,9 @@ export default new Vuex.Store({
 	mutations: {
 		[mutations.SET_ERROR](state, error) {
 			state.error = error;
+		},
+		[mutations.SET_SETTING](state, { key, value }) {
+			Vue.set(state.settings, key, value);
 		},
 		[mutations.SET_FOLDERS](state, folders) {
 			state.folders = folders;
@@ -232,6 +247,55 @@ export default new Vuex.Store({
 					commit(
 						mutations.SET_ERROR,
 						AppGlobal.methods.t('bookmarks', 'Failed to delete bookmark')
+					);
+					throw err;
+				});
+		},
+		[actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, file) {
+			var data = new FormData();
+			data.append('bm_import', file);
+			return axios
+				.post(url(`/bookmark/import`), data)
+				.then(response => {
+					if (!response.ok) {
+						if (response.status === 413) {
+							throw new Error('Selected file is too large');
+						}
+						throw new Error(response.statusText);
+					} else {
+						const {
+							data: { status }
+						} = response;
+						if (status !== 'success') {
+							throw new Error(response.data);
+						}
+					}
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', err.message)
+					);
+					throw err;
+				});
+		},
+		[actions.DELETE_BOOKMARKS]({ commit, dispatch, state }) {
+			return axios
+				.delete(url(`/bookmark`))
+				.then(response => {
+					const {
+						data: { status }
+					} = response;
+					if (status !== 'success') {
+						throw new Error(response.data);
+					}
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', err.message)
 					);
 					throw err;
 				});
@@ -415,6 +479,10 @@ export default new Vuex.Store({
 			commit(mutations.SET_QUERY, {});
 			return dispatch(actions.FETCH_PAGE);
 		},
+		[actions.FILTER_BY_RECENT]({ dispatch, commit }, search) {
+			commit(mutations.SET_QUERY, { sortby: 'lastmodified' });
+			return dispatch(actions.FETCH_PAGE);
+		},
 		[actions.FILTER_BY_SEARCH]({ dispatch, commit }, search) {
 			commit(mutations.SET_QUERY, { search: search.split(' ') });
 			return dispatch(actions.FETCH_PAGE);
@@ -438,9 +506,10 @@ export default new Vuex.Store({
 			return axios
 				.get(url('/bookmark'), {
 					params: {
-						...state.fetchState.query,
 						limit: BATCH_SIZE,
-						page: state.fetchState.page
+						page: state.fetchState.page,
+						sortby: state.settings.sorting,
+						...state.fetchState.query
 					}
 				})
 				.then(response => {
@@ -466,6 +535,47 @@ export default new Vuex.Store({
 				.finally(() => {
 					commit(mutations.FETCH_END, 'bookmarks');
 				});
+		},
+
+		[actions.SET_SETTING]({ commit, dispatch, state }, { key, value }) {
+			return axios
+				.post(url(`/settings/${key}`), {
+					[key]: value
+				})
+				.then(response => {
+					commit(mutations.SET_SETTING, key, value);
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', 'Failed to change setting')
+					);
+					throw err;
+				});
+		},
+		[actions.LOAD_SETTING]({ commit, dispatch, state }, key) {
+			return axios
+				.get(url(`/settings/${key}`))
+				.then(response => {
+					const {
+						data: { [key]: value }
+					} = response;
+					commit(mutations.SET_SETTING, { key, value });
+				})
+				.catch(err => {
+					console.error(err);
+					commit(
+						mutations.SET_ERROR,
+						AppGlobal.methods.t('bookmarks', 'Failed to load setting ' + key)
+					);
+					throw err;
+				});
+		},
+		[actions.LOAD_SETTINGS]({ commit, dispatch, state }) {
+			return Promise.all(
+				['sorting', 'viewMode'].map(key => dispatch(actions.LOAD_SETTING, key))
+			);
 		}
 	}
 });

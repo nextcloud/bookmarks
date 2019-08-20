@@ -54,6 +54,7 @@ export default {
 	},
 
 	created() {
+		this.reloadSettings();
 		this.reloadTags();
 		this.reloadFolders();
 		this.onRoute();
@@ -61,14 +62,15 @@ export default {
 	},
 
 	methods: {
-		onRoute() {
+		async onRoute() {
 			const route = this.$route;
 			switch (route.name) {
 				case 'home':
+					await this.$store.dispatch(actions.LOAD_SETTINGS);
 					this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder);
 					break;
 				case 'recent':
-					this.$store.dispatch(actions.NO_FILTER);
+					this.$store.dispatch(actions.FILTER_BY_RECENT);
 					break;
 				case 'untagged':
 					this.$store.dispatch(actions.FILTER_BY_UNTAGGED);
@@ -92,6 +94,9 @@ export default {
 		},
 		reloadFolders() {
 			this.$store.dispatch(actions.LOAD_FOLDERS);
+		},
+		reloadSettings() {
+			this.$store.dispatch(actions.LOAD_SETTINGS);
 		},
 
 		onScroll() {

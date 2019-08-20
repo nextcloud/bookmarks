@@ -26,6 +26,7 @@
 			/>
 		</template>
 		<button
+			v-if="$route.name === 'folder' || $route.name === 'home'"
 			class="button icon-add Bookmarks__Breadcrumbs__AddFolder"
 			@click="onAddFolder"
 		></button>

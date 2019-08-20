@@ -79,10 +79,10 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'bookmark#preflighted_cors', 'url' => '/public/rest/v2/{path}',
 		'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']],
 	//Settings
-	['name' => 'settings#set_sorting', 'url' => '/settings/sort', 'verb' => 'POST'],
-	['name' => 'settings#get_sorting', 'url' => '/settings/sort', 'verb' => 'GET'],
-	['name' => 'settings#set_view_mode', 'url' => '/settings/view', 'verb' => 'POST'],
-	['name' => 'settings#get_view_mode', 'url' => '/settings/view', 'verb' => 'GET'],
+	['name' => 'settings#set_sorting', 'url' => '/settings/sorting', 'verb' => 'POST'],
+	['name' => 'settings#get_sorting', 'url' => '/settings/sorting', 'verb' => 'GET'],
+	['name' => 'settings#set_view_mode', 'url' => '/settings/viewMode', 'verb' => 'POST'],
+	['name' => 'settings#get_view_mode', 'url' => '/settings/viewMode', 'verb' => 'GET'],
 	// Legacy Routes
 	['name' => 'public#return_as_json', 'url' => '/public/rest/v1/bookmark', 'verb' => 'GET'],
 
