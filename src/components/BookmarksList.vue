@@ -56,6 +56,9 @@ export default {
 	},
 	computed: {
 		folderChildren() {
+			if (this.$route.name !== 'home' && this.$route.name !== 'folder') {
+				return [];
+			}
 			const folderId = this.$route.params.folder || '-1';
 			if (!folderId) return [];
 			const folder = this.$store.getters.getFolder(folderId)[0];

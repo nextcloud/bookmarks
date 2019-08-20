@@ -59,6 +59,7 @@ export default {
 		this.reloadFolders();
 		this.onRoute();
 		document.addEventListener('scroll', this.onScroll);
+		this.search = new OCA.Search(this.onSearch, this.onResetSearch);
 	},
 
 	methods: {
@@ -97,6 +98,14 @@ export default {
 		},
 		reloadSettings() {
 			this.$store.dispatch(actions.LOAD_SETTINGS);
+		},
+
+		onSearch(search) {
+			this.$router.push({ name: 'search', params: { search } });
+		},
+
+		onResetSearch() {
+			this.$router.push({ name: 'home' });
 		},
 
 		onScroll() {
