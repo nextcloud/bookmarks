@@ -5,18 +5,19 @@
 			{{
 				t(
 					'bookmarks',
-					'Drag this to your browser bookmarks and click it, when' +
+					'Drag this to your browser bookmarks and click it, when ' +
 						'you want to bookmark a webpage quickly:'
 				)
 			}}
 		</p>
-		<div>
+		<p>&nbsp;</p>
+		<p>
 			<a class="button" href="" @click.prevent="void 0">{{
 				t('bookmarks', 'Add to {instanceName} ', {
 					instanceName: oc_defaults.name
 				})
 			}}</a>
-		</div>
+		</p>
 
 		<h3>{{ t('bookmarks', 'Import & Export') }}</h3>
 		<input type="file" class="import" size="5" @change="onImportSubmit" />
@@ -54,7 +55,7 @@
 			{{
 				t(
 					'bookmarks',
-					'This is an RSS feed of the current result set with' +
+					'This is an RSS feed of the current result set with ' +
 						'access restricted to you.'
 				)
 			}}
@@ -66,7 +67,7 @@
 			{{
 				t(
 					'bookmarks',
-					'Permanently remove all bookmarks from your account.' +
+					'Permanently remove all bookmarks from your account. ' +
 						'There is no going back!'
 				)
 			}}
