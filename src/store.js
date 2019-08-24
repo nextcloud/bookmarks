@@ -23,7 +23,8 @@ export const mutations = {
 	SET_ERROR: 'SET_ERROR',
 	SET_FOLDERS: 'SET_FOLDERS',
 	SET_SIDEBAR: 'SET_SIDEBAR',
-	SET_SETTING: 'SET_SETTING'
+	SET_SETTING: 'SET_SETTING',
+	SET_VIEW_MODE: 'SET_VIEW_MODE'
 };
 
 export const actions = {
@@ -85,7 +86,8 @@ export default new Vuex.Store({
 		foldersById: {},
 		displayNewBookmark: false,
 		displayNewFolder: false,
-		sidebar: null
+		sidebar: null,
+		viewMode: 'list'
 	},
 
 	getters: {
@@ -101,6 +103,9 @@ export default new Vuex.Store({
 	},
 
 	mutations: {
+		[mutations.SET_VIEW_MODE](state, viewMode) {
+			state.viewMode = viewMode;
+		},
 		[mutations.SET_ERROR](state, error) {
 			state.error = error;
 		},
@@ -290,6 +295,7 @@ export default new Vuex.Store({
 					if (status !== 'success') {
 						throw new Error(response.data);
 					}
+					return dispatch(actions.LOAD_FOLDERS);
 				})
 				.catch(err => {
 					console.error(err);
@@ -544,6 +550,9 @@ export default new Vuex.Store({
 				})
 				.then(response => {
 					commit(mutations.SET_SETTING, key, value);
+					if (key === 'viewMode' && state.settings.viewMode !== value) {
+						commit(mutations.SET_VIEW_MODE, value);
+					}
 				})
 				.catch(err => {
 					console.error(err);
@@ -562,6 +571,9 @@ export default new Vuex.Store({
 						data: { [key]: value }
 					} = response;
 					commit(mutations.SET_SETTING, { key, value });
+					if (key === 'viewMode' && state.settings.viewMode !== value) {
+						commit(mutations.SET_VIEW_MODE, value);
+					}
 				})
 				.catch(err => {
 					console.error(err);

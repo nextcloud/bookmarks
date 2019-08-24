@@ -11,7 +11,7 @@
 			/>
 		</h3>
 		<button type="button" class="button" @click="submit">
-			<span :class="loading ? 'icon-loading' : 'icon-checkmark'"></span>
+			<span :class="creating ? 'icon-loading' : 'icon-checkmark'"></span>
 			Create
 		</button>
 	</div>

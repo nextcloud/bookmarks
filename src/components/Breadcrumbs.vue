@@ -30,6 +30,10 @@
 			class="button icon-add Bookmarks__Breadcrumbs__AddFolder"
 			@click="onAddFolder"
 		></button>
+		<div class="Bookmarks__Breadcrumbs__ViewMode">
+			<button @click="onSetGridView" class="icon-toggle-pictures"></button>
+			<button @click="onSetListView" class="icon-toggle-filelist"></button>
+		</div>
 	</div>
 </template>
 <script>
@@ -66,7 +70,7 @@ export default {
 			this.$router.push({ name: 'home' });
 		},
 		onTagsChange(tags) {
-			this.$router.push({ name: 'tags', params: { tags } });
+			this.$router.push({ name: 'tags', params: { tags: tags.join(',') } });
 		},
 
 		onSelectFolder(folder) {
@@ -75,25 +79,41 @@ export default {
 
 		onAddFolder() {
 			this.$store.commit(mutations.DISPLAY_NEW_FOLDER, true);
+		},
+
+		onSetGridView() {
+			this.$store.commit(mutations.SET_VIEW_MODE, 'grid');
+		},
+
+		onSetListView() {
+			this.$store.commit(mutations.SET_VIEW_MODE, 'list');
 		}
 	}
 };
 </script>
 <style>
 .Bookmarks__Breadcrumbs {
-	padding: 8px;
+	padding: 2px 8px;
 	display: flex;
 	align-items: center;
 	position: fixed;
-	width: 100%;
 	z-index: 100;
 	background: var(--color-main-background-translucent);
+	right: 0;
+	left: 300px;
+}
+@media only screen and (max-width: 768px) {
+	.Bookmarks__Breadcrumbs {
+		padding-left: 52px;
+		left: 0;
+	}
 }
 .Bookmarks__Breadcrumbs + * {
 	margin-top: 50px;
 }
 .Bookmarks__Breadcrumbs > * {
 	display: inline-block;
+	flex: 0;
 	height: 30px;
 	padding: 7px;
 }
@@ -106,6 +126,7 @@ export default {
 }
 .Bookmarks__Breadcrumbs__Tags {
 	width: 300px;
+	flex: 1;
 }
 .Bookmarks__Breadcrumbs__Tags .multiselect__tags {
 	border-top: none !important;
@@ -114,5 +135,11 @@ export default {
 }
 .Bookmarks__Breadcrumbs__AddFolder {
 	margin-left: 5px;
+}
+.Bookmarks__Breadcrumbs__ViewMode {
+	flex: 2;
+	display: flex;
+	flex-direction: row-reverse;
+	padding: 0;
 }
 </style>
