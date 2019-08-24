@@ -1,12 +1,17 @@
 <template>
-	<div :class="{ Bookmarks__BookmarksList__Bookmark: true, active: isOpen }">
+	<div
+		:class="{ Bookmarks__BookmarksList__Bookmark: true, active: isOpen }"
+		:style="{
+			background: `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
+		}"
+	>
 		<template v-if="!renaming">
 			<a
 				:href="url"
 				target="_blank"
 				class="Bookmarks__BookmarksList__Bookmark__Title"
 			>
-				<h3>
+				<h3 :title="bookmark.title">
 					<figure
 						class="Bookmarks__BookmarksList__Bookmark__Icon"
 						:style="{ backgroundImage: 'url(' + iconUrl + ')' }"
@@ -73,6 +78,11 @@ export default {
 				'/apps/bookmarks/bookmark/' + this.bookmark.id + '/favicon'
 			);
 		},
+		imageUrl() {
+			return OC.generateUrl(
+				'/apps/bookmarks/bookmark/' + this.bookmark.id + '/image'
+			);
+		},
 		url() {
 			return this.bookmark.url;
 		},
@@ -106,10 +116,20 @@ export default {
 	border-bottom: 1px solid var(--color-border);
 	display: flex;
 	align-items: center;
+	background-position: center !important;
+	background-size: cover !important;
+	position: relative;
 }
-.Bookmarks__BookmarksList__Bookmark.active,
-.Bookmarks__BookmarksList__Bookmark:hover {
-	background: var(--color-background-dark);
+*:not(.Bookmarks__BookmarksList--GridView)
+	> .Bookmarks__BookmarksList__Bookmark {
+	background: var(--color-main-background) !important;
+}
+
+*:not(.Bookmarks__BookmarksList--GridView)
+	> .Bookmarks__BookmarksList__Bookmark.active,
+*:not(.Bookmarks__BookmarksList--GridView)
+	> .Bookmarks__BookmarksList__Bookmark:hover {
+	background: var(--color-background-dark) !important;
 }
 .Bookmarks__BookmarksList__Bookmark__Icon {
 	display: inline-block;
@@ -138,8 +158,8 @@ export default {
 .Bookmarks__BookmarksList__Bookmark__Description {
 	display: inline-block;
 	flex: 0;
-	width: 16px;
-	height: 16px;
+	width: 20px;
+	height: 47px;
 	margin: 0 10px;
 }
 .Bookmarks__BookmarksList__Bookmark__Actions {
@@ -153,5 +173,12 @@ export default {
 }
 .Bookmarks__BookmarksList__Bookmark__Title button {
 	height: 20px;
+}
+.Bookmarks__BookmarksList--GridView .Bookmarks__TagLine {
+	position: absolute;
+	top: 10px;
+}
+.Bookmarks__BookmarksList--GridView .Bookmarks__BookmarksList__Bookmark__Icon {
+	margin: 0 5px 0 10px;
 }
 </style>

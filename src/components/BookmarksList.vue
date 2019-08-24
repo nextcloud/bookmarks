@@ -1,5 +1,10 @@
 <template>
-	<div class="Bookmarks__BookmarksList">
+	<div
+		:class="{
+			Bookmarks__BookmarksList: true,
+			'Bookmarks__BookmarksList--GridView': viewMode === 'grid'
+		}"
+	>
 		<CreateBookmark v-if="newBookmark" />
 		<CreateFolder v-if="newFolder" />
 		<template v-if="$route.name === 'folder' || $route.name === 'home'">
@@ -70,6 +75,9 @@ export default {
 		},
 		newFolder() {
 			return this.$store.state.displayNewFolder;
+		},
+		viewMode() {
+			return this.$store.state.viewMode;
 		}
 	},
 	created() {},
@@ -88,5 +96,22 @@ export default {
 }
 .Bookmarks__BookmarksList_Loading {
 	text-align: center;
+}
+
+.Bookmarks__BookmarksList--GridView {
+	display: flex;
+	flex-flow: wrap;
+}
+.Bookmarks__BookmarksList--GridView > .Bookmarks__BookmarksList__Folder,
+.Bookmarks__BookmarksList--GridView > .Bookmarks__BookmarksList__Bookmark,
+.Bookmarks__BookmarksList--GridView > .Bookmarks__CreateFolder,
+.Bookmarks__BookmarksList--GridView > .Bookmarks__CreateBookmark {
+	width: 200px;
+	flex: 1;
+	height: 200px;
+	align-items: flex-end;
+	background: rgb(255, 255, 255);
+	margin: 10px 0 0 10px;
+	border: 1px solid var(--color-border);
 }
 </style>

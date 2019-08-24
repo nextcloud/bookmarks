@@ -1,7 +1,11 @@
 <template>
 	<div class="Bookmarks__BookmarksList__Folder">
 		<template v-if="!renaming">
-			<h3 class="Bookmarks__BookmarksList__Folder__Title" @click="onSelect">
+			<h3
+				class="Bookmarks__BookmarksList__Folder__Title"
+				@click="onSelect"
+				:title="folder.title"
+			>
 				<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
 				{{ folder.title }}
 			</h3>
@@ -19,7 +23,6 @@
 		</template>
 		<template v-else>
 			<h3 class="Bookmarks__BookmarksList__Folder__Title">
-				<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
 				<input type="text" v-model="title" @keyup.enter="onRenameSubmit" />
 				<button type="submit" @click="onRenameSubmit">
 					<span class="icon-checkmark" />
