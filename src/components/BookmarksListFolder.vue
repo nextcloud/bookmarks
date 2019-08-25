@@ -1,12 +1,12 @@
 <template>
 	<div class="Bookmarks__BookmarksList__Folder">
 		<template v-if="!renaming">
+			<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
 			<h3
 				class="Bookmarks__BookmarksList__Folder__Title"
 				@click="onSelect"
 				:title="folder.title"
 			>
-				<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
 				{{ folder.title }}
 			</h3>
 			<Actions class="Bookmarks__BookmarksList__Folder__Actions">
@@ -22,6 +22,7 @@
 			</Actions>
 		</template>
 		<template v-else>
+			<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
 			<h3 class="Bookmarks__BookmarksList__Folder__Title">
 				<input type="text" v-model="title" @keyup.enter="onRenameSubmit" />
 				<button type="submit" @click="onRenameSubmit">
@@ -83,11 +84,11 @@ export default {
 }
 .Bookmarks__BookmarksList__Folder__Icon {
 	display: inline-block;
-	flex-shrink: 0;
+	flex: 0;
 	height: 20px;
 	width: 20px;
 	background-size: cover;
-	margin: 0 15px;
+	margin: 15px 15px 0;
 }
 .Bookmarks__BookmarksList__Folder__Title {
 	display: flex;

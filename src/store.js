@@ -456,7 +456,7 @@ export default new Vuex.Store({
 			commit(mutations.FETCH_END, 'saveFolder');
 			// ! todo: Check endpoint -- 405
 			return axios
-				.put(url(`/folder`), {
+				.put(url(`/folder/${id}`), {
 					parent_folder: folder.parent_folder,
 					title: folder.title
 				})
