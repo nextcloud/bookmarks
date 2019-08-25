@@ -171,7 +171,7 @@ export default {
 	opacity: 0;
 	position: absolute;
 }
-.Bookmarks__Settings a:link {
+.Bookmarks__Settings a:link:not(.button) {
 	text-decoration: underline;
 }
 </style>

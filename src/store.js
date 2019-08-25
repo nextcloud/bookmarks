@@ -549,7 +549,7 @@ export default new Vuex.Store({
 				})
 				.then(response => {
 					commit(mutations.SET_SETTING, key, value);
-					if (key === 'viewMode' && state.settings.viewMode !== value) {
+					if (key === 'viewMode' && state.viewMode !== value) {
 						commit(mutations.SET_VIEW_MODE, value);
 					}
 				})
@@ -570,7 +570,7 @@ export default new Vuex.Store({
 						data: { [key]: value }
 					} = response;
 					commit(mutations.SET_SETTING, { key, value });
-					if (key === 'viewMode' && state.settings.viewMode !== value) {
+					if (key === 'viewMode' && state.viewMode !== value) {
 						commit(mutations.SET_VIEW_MODE, value);
 					}
 				})
