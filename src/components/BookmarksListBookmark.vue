@@ -19,12 +19,12 @@
 					{{ bookmark.title }}
 				</h3>
 			</a>
+			<TagLine :tags="bookmark.tags" />
 			<span
 				v-if="bookmark.description"
 				v-tooltip="bookmark.description"
 				class="icon-file Bookmarks__BookmarksList__Bookmark__Description"
 			/>
-			<TagLine :tags="bookmark.tags" />
 			<Actions class="Bookmarks__BookmarksList__Bookmark__Actions">
 				<ActionButton icon="icon-info" @click="onDetails">{{
 					t('bookmarks', 'Details')

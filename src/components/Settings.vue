@@ -19,6 +19,15 @@
 			}}</a>
 		</p>
 
+		<h3>{{ t('bookmarks', 'Client apps') }}</h3>
+		<p>
+			Check out the collection of
+			<a href="https://github.com/nextcloud/bookmarks#third-party-clients"
+				>client apps</a
+			>
+			that integrate with this app.
+		</p>
+
 		<h3>{{ t('bookmarks', 'Import & Export') }}</h3>
 		<input type="file" class="import" size="5" @change="onImportSubmit" />
 		<button @click="onImportOpen">
@@ -161,5 +170,8 @@ export default {
 .import {
 	opacity: 0;
 	position: absolute;
+}
+.Bookmarks__Settings a:link {
+	text-decoration: underline;
 }
 </style>

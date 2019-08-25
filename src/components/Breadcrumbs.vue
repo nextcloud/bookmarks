@@ -1,35 +1,37 @@
 <template>
 	<div class="Bookmarks__Breadcrumbs">
-		<a class="icon-home" @click="onSelectHome" />
-		<span class="icon-breadcrumb" />
-		<template v-if="$route.name === 'folder'">
-			<template v-for="folder in folderPath">
-				<a
-					href="#"
-					:key="'a' + folder.id"
-					@click.prevent="onSelectFolder(folder.id)"
-					>{{ folder.title }}</a
-				>
-				<span :key="'b' + folder.id" class="icon-breadcrumb" />
+		<div class="Bookmarks__Breadcrumbs__Path">
+			<a class="icon-home" @click="onSelectHome" />
+			<span class="icon-breadcrumb" />
+			<template v-if="$route.name === 'folder'">
+				<template v-for="folder in folderPath">
+					<a
+						href="#"
+						:key="'a' + folder.id"
+						@click.prevent="onSelectFolder(folder.id)"
+						>{{ folder.title }}</a
+					>
+					<span :key="'b' + folder.id" class="icon-breadcrumb" />
+				</template>
 			</template>
-		</template>
-		<template v-if="$route.name === 'tags'">
-			<span class="icon-tag" />
-			<Multiselect
-				class="Bookmarks__Breadcrumbs__Tags"
-				:value="tags"
-				:autoLimit="false"
-				:limit="7"
-				:options="allTags"
-				:multiple="true"
-				@input="onTagsChange"
-			/>
-		</template>
-		<button
-			v-if="$route.name === 'folder' || $route.name === 'home'"
-			class="button icon-add Bookmarks__Breadcrumbs__AddFolder"
-			@click="onAddFolder"
-		></button>
+			<template v-if="$route.name === 'tags'">
+				<span class="icon-tag" />
+				<Multiselect
+					class="Bookmarks__Breadcrumbs__Tags"
+					:value="tags"
+					:autoLimit="false"
+					:limit="7"
+					:options="allTags"
+					:multiple="true"
+					@input="onTagsChange"
+				/>
+			</template>
+			<button
+				v-if="$route.name === 'folder' || $route.name === 'home'"
+				class="button icon-add Bookmarks__Breadcrumbs__AddFolder"
+				@click="onAddFolder"
+			></button>
+		</div>
 		<div class="Bookmarks__Breadcrumbs__ViewMode">
 			<button @click="onSetGridView" class="icon-toggle-pictures"></button>
 			<button @click="onSetListView" class="icon-toggle-filelist"></button>
@@ -78,7 +80,10 @@ export default {
 		},
 
 		onAddFolder() {
-			this.$store.commit(mutations.DISPLAY_NEW_FOLDER, true);
+			this.$store.commit(
+				mutations.DISPLAY_NEW_FOLDER,
+				!this.$store.state.displayNewFolder
+			);
 		},
 
 		onSetGridView() {
@@ -95,7 +100,6 @@ export default {
 .Bookmarks__Breadcrumbs {
 	padding: 2px 8px;
 	display: flex;
-	align-items: center;
 	position: fixed;
 	z-index: 100;
 	background: var(--color-main-background-translucent);
@@ -111,17 +115,21 @@ export default {
 .Bookmarks__Breadcrumbs + * {
 	margin-top: 50px;
 }
-.Bookmarks__Breadcrumbs > * {
-	display: inline-block;
+.Bookmarks__Breadcrumbs__Path {
+	display: flex;
+	align-items: center;
 	flex: 0;
+}
+.Bookmarks__Breadcrumbs__Path > * {
+	display: inline-block;
 	height: 30px;
 	padding: 7px;
 }
-.Bookmarks__Breadcrumbs > *:not(.icon-breadcrumb) {
-	opacity: 0.6;
+.Bookmarks__Breadcrumbs__Path > *:not(.icon-breadcrumb) {
 	min-width: 30px;
+	opacity: 0.7;
 }
-.Bookmarks__Breadcrumbs > a:hover {
+.Bookmarks__Breadcrumbs__Path > *:hover {
 	opacity: 1;
 }
 .Bookmarks__Breadcrumbs__Tags {
