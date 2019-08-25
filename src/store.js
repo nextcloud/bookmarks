@@ -10,6 +10,12 @@ const BATCH_SIZE = 42;
 export const mutations = {
 	DISPLAY_NEW_BOOKMARK: 'DISPLAY_NEW_BOOKMARK',
 	DISPLAY_NEW_FOLDER: 'DISPLAY_NEW_FOLDER',
+	DISPLAY_MOVE_DIALOG: 'DISPLAY_MOVE_DIALOG',
+	RESET_SELECTION: 'RESET_SELECTION',
+	REMOVE_SELECTION_BOOKMARK: 'REMOVE_SELECTION_BOOKMARK',
+	ADD_SELECTION_BOOKMARK: 'ADD_SELECTION_BOOKMARK',
+	REMOVE_SELECTION_FOLDER: 'REMOVE_SELECTION_FOLDER',
+	ADD_SELECTION_FOLDER: 'ADD_SELECTION_FOLDER',
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
 	REMOVE_ALL_BOOKMARK: 'REMOVE_ALL_BOOKMARK',
@@ -33,6 +39,7 @@ export const actions = {
 	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
 	OPEN_BOOKMARK: 'OPEN_BOOKMARK',
 	SAVE_BOOKMARK: 'SAVE_BOOKMARK',
+	MOVE_BOOKMARK: 'MOVE_BOOKMARK',
 	IMPORT_BOOKMARKS: 'IMPORT_BOOKMARKS',
 	DELETE_BOOKMARKS: 'IMPORT_BOOKMARKS',
 
@@ -44,6 +51,10 @@ export const actions = {
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
+
+	MOVE_SELECTION: 'MOVE_SELECTION',
+
+	RELOAD_VIEW: 'RELOAD_VIEW',
 
 	NO_FILTER: 'NO_FILTER',
 	FILTER_BY_RECENT: 'FILTER_BY_RECENT',
@@ -84,8 +95,13 @@ export default new Vuex.Store({
 		tags: [],
 		folders: [],
 		foldersById: {},
+		selection: {
+			folders: [],
+			bookmarks: []
+		},
 		displayNewBookmark: false,
 		displayNewFolder: false,
+		displayMoveDialog: false,
 		sidebar: null,
 		viewMode: 'list'
 	},
@@ -121,9 +137,35 @@ export default new Vuex.Store({
 		[mutations.DISPLAY_NEW_BOOKMARK](state, display) {
 			state.displayNewBookmark = display;
 		},
-
 		[mutations.DISPLAY_NEW_FOLDER](state, display) {
 			state.displayNewFolder = display;
+		},
+		[mutations.DISPLAY_MOVE_DIALOG](state, display) {
+			state.displayMoveDialog = display;
+		},
+
+		[mutations.RESET_SELECTION](state) {
+			state.selection = { folders: [], bookmarks: [] };
+		},
+		[mutations.ADD_SELECTION_BOOKMARK](state, item) {
+			state.selection.bookmarks.push(item);
+		},
+		[mutations.REMOVE_SELECTION_BOOKMARK](state, item) {
+			Vue.set(
+				state.selection,
+				'bookmarks',
+				state.selection.bookmarks.filter(s => !(s.id === item.id))
+			);
+		},
+		[mutations.ADD_SELECTION_FOLDER](state, item) {
+			state.selection.folders.push(item);
+		},
+		[mutations.REMOVE_SELECTION_FOLDER](state, item) {
+			Vue.set(
+				state.selection,
+				'folders',
+				state.selection.folders.filter(s => !(s.id === item.id))
+			);
 		},
 
 		[mutations.ADD_BOOKMARK](state, bookmark) {
@@ -232,29 +274,75 @@ export default new Vuex.Store({
 					commit(mutations.FETCH_END, 'saveBookmark');
 				});
 		},
+		async [actions.MOVE_BOOKMARK](
+			{ commit, dispatch, state },
+			{ bookmark, oldFolder, newFolder }
+		) {
+			commit(mutations.FETCH_START, 'moveBookmark');
+			try {
+				let response = await axios.post(
+					url(`/folder/${newFolder}/bookmarks/${bookmark}`)
+				);
+				if (response.data.status !== 'success') {
+					throw new Error(response.data);
+				}
+				let response2 = await axios.delete(
+					url(`/folder/${oldFolder}/bookmarks/${bookmark}`)
+				);
+				if (response2.data.status !== 'success') {
+					throw new Error(response2.data);
+				}
+			} catch (err) {
+				console.error(err);
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to move bookmark')
+				);
+				throw err;
+			} finally {
+				commit(mutations.FETCH_END, 'moveBookmark');
+			}
+		},
 		[actions.OPEN_BOOKMARK]({ commit }, id) {
 			commit(mutations.SET_SIDEBAR, { type: 'bookmark', id });
 		},
-		[actions.DELETE_BOOKMARK]({ commit, dispatch, state }, id) {
-			return axios
-				.delete(url(`/bookmark/${id}`))
-				.then(response => {
-					const {
-						data: { status }
-					} = response;
-					if (status !== 'success') {
+		async [actions.DELETE_BOOKMARK](
+			{ commit, dispatch, state },
+			{ id, folder }
+		) {
+			if (folder) {
+				try {
+					const response = await axios.delete(
+						url(`/folder/${folder}/bookmarks/${id}`)
+					);
+					if (response.data.status !== 'success') {
 						throw new Error(response.data);
 					}
 					commit(mutations.REMOVE_BOOKMARK, id);
-				})
-				.catch(err => {
+				} catch (err) {
 					console.error(err);
 					commit(
 						mutations.SET_ERROR,
 						AppGlobal.methods.t('bookmarks', 'Failed to delete bookmark')
 					);
 					throw err;
-				});
+				}
+				return;
+			}
+			try {
+				const response = await axios.delete(url(`/bookmark/${id}`));
+				if (response.data.status !== 'success') {
+					throw new Error(response.data);
+				}
+				commit(mutations.REMOVE_BOOKMARK, id);
+			} catch (err) {
+				console.error(err);
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to delete bookmark')
+				);
+				throw err;
+			}
 		},
 		[actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, file) {
 			var data = new FormData();
@@ -453,7 +541,7 @@ export default new Vuex.Store({
 		},
 		[actions.SAVE_FOLDER]({ commit, dispatch, state }, id) {
 			const folder = this.getters.getFolder(id)[0];
-			commit(mutations.FETCH_END, 'saveFolder');
+			commit(mutations.FETCH_START, 'saveFolder');
 			return axios
 				.put(url(`/folder/${id}`), {
 					parent_folder: folder.parent_folder,
@@ -478,6 +566,42 @@ export default new Vuex.Store({
 				.finally(() => {
 					commit(mutations.FETCH_END, 'saveFolder');
 				});
+		},
+
+		async [actions.MOVE_SELECTION]({ commit, dispatch, state }, folderId) {
+			commit(mutations.FETCH_START, 'moveSelection');
+			try {
+				for (const folder of state.selection.folders) {
+					if (folderId === folder.id) {
+						throw new Error('Cannot move folder into itself');
+					}
+					folder.parent_folder = folderId;
+					await dispatch(actions.SAVE_FOLDER, folder.id);
+				}
+
+				for (const bookmark of state.selection.bookmarks) {
+					await dispatch(actions.MOVE_BOOKMARK, {
+						oldFolder: bookmark.folders[bookmark.folders.length - 1], // FIXME This is veeeery ugly and will cause issues. Inevitably.
+						newFolder: folderId,
+						bookmark: bookmark.id
+					});
+				}
+			} catch (err) {
+				console.error(err);
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to move parts of selection')
+				);
+				throw err;
+			} finally {
+				commit(mutations.FETCH_END, 'moveSelection');
+			}
+		},
+
+		[actions.RELOAD_VIEW]({ state, dispatch, commit }) {
+			commit(mutations.SET_QUERY, state.fetchState.query);
+			dispatch(actions.LOAD_FOLDERS);
+			dispatch(actions.LOAD_TAGS);
 		},
 
 		[actions.NO_FILTER]({ dispatch, commit }) {

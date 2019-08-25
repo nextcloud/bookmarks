@@ -10,11 +10,11 @@
 				{{ folder.title }}
 			</h3>
 			<Actions class="Bookmarks__BookmarksList__Folder__Actions">
-				<ActionButton icon="icon-info" @click="onDetails">{{
-					t('bookmarks', 'Details')
-				}}</ActionButton>
 				<ActionButton icon="icon-rename" @click="onRename">{{
 					t('bookmarks', 'Rename')
+				}}</ActionButton>
+				<ActionButton icon="icon-category-folder" @click="onMove">{{
+					t('bookmarks', 'Move')
 				}}</ActionButton>
 				<ActionButton icon="icon-delete" @click="onDelete">{{
 					t('bookmarks', 'Delete')
@@ -58,7 +58,11 @@ export default {
 		onDelete() {
 			this.$store.dispatch(actions.DELETE_FOLDER, this.folder.id);
 		},
-		onDetails() {},
+		onMove() {
+			this.$store.commit(mutations.RESET_SELECTION);
+			this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder);
+			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true);
+		},
 		onSelect() {
 			this.$router.push({ name: 'folder', params: { folder: this.folder.id } });
 		},
