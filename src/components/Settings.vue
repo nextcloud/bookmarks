@@ -12,7 +12,7 @@
 		</p>
 		<p>&nbsp;</p>
 		<p>
-			<a class="button" href="" @click.prevent="void 0">{{
+			<a class="button" :href="bookmarklet" @click.prevent="void 0">{{
 				t('bookmarks', 'Add to {instanceName} ', {
 					instanceName: oc_defaults.name
 				})
@@ -88,20 +88,22 @@ export default {
 			return window.oc_defaults;
 		},
 		bookmarklet() {
-			const bookmarkletUrl = OC.generateUrl(
-				'/index.php/apps/bookmarks/bookmarklet'
-			);
+			const bookmarkletUrl =
+				window.location.origin + OC.generateUrl('/apps/bookmarks/bookmarklet');
 			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?output=popup&url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=500px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`;
 		},
 		rssURL() {
-			return OC.generateUrl(
-				'/index.php/apps/bookmarks/public/rest/v2/bookmark?' +
-					$.param(
-						Object.assign({}, this.$store.state.fetchState.query, {
-							format: 'rss',
-							page: -1
-						})
-					)
+			return (
+				window.location.origin +
+				OC.generateUrl(
+					'/apps/bookmarks/public/rest/v2/bookmark?' +
+						$.param(
+							Object.assign({}, this.$store.state.fetchState.query, {
+								format: 'rss',
+								page: -1
+							})
+						)
+				)
 			);
 		},
 		viewMode() {

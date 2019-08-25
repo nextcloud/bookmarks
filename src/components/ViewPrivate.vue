@@ -11,7 +11,6 @@
 
 <script>
 import { Content, AppContent } from 'nextcloud-vue';
-// import Settings from './Settings';
 import Navigation from './Navigation';
 import BookmarksList from './BookmarksList';
 import Breadcrumbs from './Breadcrumbs';
@@ -24,7 +23,6 @@ export default {
 		Navigation,
 		Content,
 		AppContent,
-		// Settings,
 		Breadcrumbs,
 		BookmarksList,
 		SidebarBookmark
@@ -68,7 +66,7 @@ export default {
 			switch (route.name) {
 				case 'home':
 					await this.$store.dispatch(actions.LOAD_SETTINGS);
-					this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder);
+					this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1');
 					break;
 				case 'recent':
 					this.$store.dispatch(actions.FILTER_BY_RECENT);
