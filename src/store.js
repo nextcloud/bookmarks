@@ -617,7 +617,7 @@ export default new Vuex.Store({
 			return dispatch(actions.FETCH_PAGE);
 		},
 		[actions.FILTER_BY_TAGS]({ dispatch, commit }, tags) {
-			commit(mutations.SET_QUERY, { tags });
+			commit(mutations.SET_QUERY, { tags, conjunction: 'and' });
 			return dispatch(actions.FETCH_PAGE);
 		},
 		[actions.FILTER_BY_UNTAGGED]({ dispatch, commit }) {

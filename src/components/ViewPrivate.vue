@@ -81,7 +81,10 @@ export default {
 					this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder);
 					break;
 				case 'tags':
-					this.$store.dispatch(actions.FILTER_BY_TAGS, route.params.tags);
+					this.$store.dispatch(
+						actions.FILTER_BY_TAGS,
+						route.params.tags.split(',')
+					);
 					break;
 				case 'search':
 					this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search);
