@@ -32,6 +32,9 @@
 				<ActionButton icon="icon-rename" @click="onRename">{{
 					t('bookmarks', 'Rename')
 				}}</ActionButton>
+				<ActionButton icon="icon-category-files" @click="onMove">{{
+					t('bookmarks', 'Move')
+				}}</ActionButton>
 				<ActionButton icon="icon-delete" @click="onDelete">{{
 					t('bookmarks', 'Delete')
 				}}</ActionButton>
@@ -52,7 +55,7 @@
 </template>
 <script>
 import { Actions, ActionButton } from 'nextcloud-vue';
-import { actions } from '../store';
+import { actions, mutations } from '../store';
 import TagLine from './TagLine';
 
 export default {
@@ -95,10 +98,18 @@ export default {
 	},
 	methods: {
 		onDelete() {
-			this.$store.dispatch(actions.DELETE_BOOKMARK, this.bookmark.id);
+			this.$store.dispatch(actions.DELETE_BOOKMARK, {
+				id: this.bookmark.id,
+				folder: this.$store.state.fetchState.query.folder
+			});
 		},
 		onDetails() {
 			this.$store.dispatch(actions.OPEN_BOOKMARK, this.bookmark.id);
+		},
+		onMove() {
+			this.$store.commit(mutations.RESET_SELECTION);
+			this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark);
+			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true);
 		},
 		onRename() {
 			this.renaming = true;
