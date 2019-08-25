@@ -123,3 +123,14 @@ export default {
 	}
 };
 </script>
+<style>
+#app-content {
+	width: calc(100% - 300px);
+}
+
+@media only screen and (max-width: 768px) {
+	#app-content {
+		width: 100%;
+	}
+}
+</style>
