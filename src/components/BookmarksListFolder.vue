@@ -1,7 +1,7 @@
 <template>
 	<div class="Bookmarks__BookmarksList__Folder">
+		<figure class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
 		<template v-if="!renaming">
-			<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
 			<h3
 				class="Bookmarks__BookmarksList__Folder__Title"
 				@click="onSelect"
@@ -82,17 +82,27 @@ export default {
 	border-bottom: 1px solid var(--color-border);
 	display: flex;
 	align-items: center;
+	position: relative;
 }
 .Bookmarks__BookmarksList__Folder:hover {
 	background: var(--color-background-dark);
 }
 .Bookmarks__BookmarksList__Folder__Icon {
-	display: inline-block;
+	background-size: cover;
 	flex: 0;
 	height: 20px;
 	width: 20px;
 	background-size: cover;
-	margin: 15px 15px;
+	margin: 15px;
+}
+.Bookmarks__BookmarksList--GridView .Bookmarks__BookmarksList__Folder__Icon {
+	background-size: cover;
+	height: 70px;
+	width: 70px;
+	background-size: cover;
+	position: absolute;
+	top: 20%;
+	left: calc(45% - 35px);
 }
 .Bookmarks__BookmarksList__Folder__Title {
 	display: flex;
@@ -103,6 +113,9 @@ export default {
 	cursor: pointer;
 	margin: 0;
 	padding: 15px 0;
+}
+.Bookmarks__BookmarksList--GridView .Bookmarks__BookmarksList__Folder__Title {
+	margin-left: 15px;
 }
 .Bookmarks__BookmarksList__Folder__Description {
 	display: inline-block;
