@@ -107,6 +107,7 @@ export default {
 .Bookmarks__BookmarksList--GridView > .Bookmarks__CreateFolder,
 .Bookmarks__BookmarksList--GridView > .Bookmarks__CreateBookmark {
 	width: 200px;
+	max-width: 300px;
 	flex: 1;
 	height: 200px;
 	align-items: flex-end;
