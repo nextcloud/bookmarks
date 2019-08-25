@@ -88,7 +88,7 @@ export default {
 	height: 20px;
 	width: 20px;
 	background-size: cover;
-	margin: 15px 15px 0;
+	margin: 15px 15px;
 }
 .Bookmarks__BookmarksList__Folder__Title {
 	display: flex;
