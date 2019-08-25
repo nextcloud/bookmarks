@@ -13,7 +13,7 @@
 				<ActionButton icon="icon-rename" @click="onRename">{{
 					t('bookmarks', 'Rename')
 				}}</ActionButton>
-				<ActionButton icon="icon-category-folder" @click="onMove">{{
+				<ActionButton icon="icon-category-files" @click="onMove">{{
 					t('bookmarks', 'Move')
 				}}</ActionButton>
 				<ActionButton icon="icon-delete" @click="onDelete">{{
@@ -35,7 +35,7 @@
 </template>
 <script>
 import { Actions, ActionButton } from 'nextcloud-vue';
-import { actions } from '../store';
+import { actions, mutations } from '../store';
 
 export default {
 	name: 'BookmarksListFolder',
