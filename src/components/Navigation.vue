@@ -92,7 +92,10 @@ export default {
 
 	methods: {
 		onNewBookmark() {
-			this.$store.commit(mutations.DISPLAY_NEW_BOOKMARK, true);
+			this.$store.commit(
+				mutations.DISPLAY_NEW_BOOKMARK,
+				!this.$store.state.displayNewBookmark
+			);
 		},
 		onDeleteTag(tag) {
 			this.$store.dispatch(actions.DELETE_TAG, tag);
