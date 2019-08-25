@@ -29,12 +29,21 @@
 			<button
 				v-if="$route.name === 'folder' || $route.name === 'home'"
 				class="button icon-add Bookmarks__Breadcrumbs__AddFolder"
+				v-tooltip="t('bookmarks', 'New folder')"
 				@click="onAddFolder"
 			></button>
 		</div>
 		<div class="Bookmarks__Breadcrumbs__ViewMode">
-			<button @click="onSetGridView" class="icon-toggle-pictures"></button>
-			<button @click="onSetListView" class="icon-toggle-filelist"></button>
+			<button
+				@click="onSetGridView"
+				class="icon-toggle-pictures"
+				v-tooltip="t('bookmarks', 'Grid view')"
+			></button>
+			<button
+				@click="onSetListView"
+				class="icon-toggle-filelist"
+				v-tooltip="t('bookmarks', 'List view')"
+			></button>
 		</div>
 	</div>
 </template>
@@ -149,5 +158,8 @@ export default {
 	display: flex;
 	flex-direction: row-reverse;
 	padding: 0;
+}
+.Bookmarks__Breadcrumbs__ViewMode > * {
+	min-width: 30px;
 }
 </style>
