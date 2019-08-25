@@ -1048,6 +1048,7 @@ class Bookmarks {
 				]);
 			$qb->execute();
 		}
+		return true;
 	}
 
 	/**
