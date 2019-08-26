@@ -142,14 +142,15 @@ export default {
 	align-items: center;
 	background-position: center !important;
 	background-size: cover !important;
+  background-color: var(--color-main-background);
 	position: relative;
-	background: var(--color-main-background);
 }
 
 .bookmark.active,
 .bookmark:hover {
 	background: var(--color-background-dark);
 }
+
 .bookmark__icon {
 	display: inline-block;
 	flex: 0;
@@ -160,20 +161,24 @@ export default {
 	position: relative;
 	top: 3px;
 }
+
 .bookmark__title {
 	display: flex;
 	flex: 1;
 }
+
 .bookmark__title,
 .bookmark__title > h3 {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
 }
+
 .bookmark__title > h3 {
 	margin: 0;
 	padding: 15px 0;
 }
+
 .bookmark__description {
 	display: inline-block;
 	flex: 0;
@@ -181,24 +186,29 @@ export default {
 	height: 47px;
 	margin: 0 10px;
 }
+
 .bookmark__actions {
 	flex: 0;
 }
+
 .bookmark__title > input {
 	width: 100%;
 	border-top: none;
 	border-left: none;
 	border-right: none;
 }
+
 .bookmark__title button {
 	height: 20px;
 }
+
 .bookmark--gridview .tagline {
 	position: absolute;
 	bottom: 47px;
 	left: 10px;
 	margin: 0;
 }
+
 .bookmark--gridview .bookmark__icon {
 	margin: 0 5px 0 10px;
 }

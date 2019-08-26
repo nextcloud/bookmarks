@@ -35,6 +35,7 @@ export default {
 	display: inline-block;
 	margin: 0 15px;
 }
+
 .tagline__tag {
 	display: inline-block;
 	border: 1px solid var(--color-border);
@@ -43,6 +44,7 @@ export default {
 	margin-right: 3px;
 	background-color: var(--color-main-background);
 }
+
 .tagline__tag:hover {
 	background-color: var(--color-background-dark);
 	cursor: pointer;

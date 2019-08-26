@@ -133,9 +133,11 @@ export default {
 	top: 3px;
 	opacity: 0.5;
 }
+
 .sidebar__tags {
 	width: 100%;
 }
+
 .sidebar__notes {
 	min-height: 400px !important;
 	width: auto !important;

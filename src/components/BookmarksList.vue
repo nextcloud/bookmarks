@@ -83,14 +83,16 @@ export default {
 </script>
 <style>
 .bookmarkslist
-	> *:first-child:not(.bookmarkslist_Loading):not(.bookmarkslist_Empty) {
+> *:first-child:not(.bookmarkslist__loading):not(.bookmarkslist__empty) {
 	border-top: 1px solid var(--color-border);
 }
+
 .bookmarkslist__loading,
 .bookmarkslist__empty {
 	width: 200px;
 	margin: 200px auto;
 }
+
 .bookmarkslist__loading {
 	text-align: center;
 }
@@ -99,6 +101,7 @@ export default {
 	display: flex;
 	flex-flow: wrap;
 }
+
 .folder--gridview,
 .bookmark--gridview,
 .bookmarkslist--gridview > .create-folder,

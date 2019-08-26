@@ -44,17 +44,21 @@ export default {
 	display: flex;
 	align-items: center;
 }
+
 .treefolder__title:hover {
-  background: var(--color-background-dark);
+	background: var(--color-background-dark);
 }
+
 .treefolder__title > h4 {
 	flex: 1;
 	display: flex;
 	cursor: pointer;
 }
+
 .treefolder__title > h4 > figure {
 	margin: 0 5px;
 }
+
 .treefolder__children {
 	padding-left: 20px;
 }
