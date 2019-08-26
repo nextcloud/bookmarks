@@ -10,10 +10,14 @@
         @keyup.enter="submit"
       >
     </h3>
-    <button type="button" class="button" @click="submit">
-      <span :class="loading ? 'icon-loading' : 'icon-checkmark'" />
-      Create
-    </button>
+    <Actions>
+      <ActionButton
+        :icon="loading ? 'icon-loading' : 'icon-checkmark'"
+        @click="submit"
+      >
+        Create
+      </ActionButton>
+    </Actions>
   </div>
 </template>
 <script>

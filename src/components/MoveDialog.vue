@@ -1,17 +1,17 @@
 <template>
-	<Modal v-if="showModal" :title="title" @close="onClose">
-		<div class="move-dialog">
-			<TreeFolder
-				:folder="{
-					title: t('bookmarks', 'Root folder'),
-					id: '-1',
-					children: allFolders
-				}"
-				:show-children="true"
-				@select="onSelect"
-			/>
-		</div>
-	</Modal>
+  <Modal v-if="showModal" :title="title" @close="onClose">
+    <div class="move-dialog">
+      <TreeFolder
+        :folder="{
+          title: t('bookmarks', 'Root folder'),
+          id: '-1',
+          children: allFolders
+        }"
+        :show-children="true"
+        @select="onSelect"
+      />
+    </div>
+  </Modal>
 </template>
 <script>
 import { Modal } from 'nextcloud-vue';

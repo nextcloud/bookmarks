@@ -1,37 +1,37 @@
 <template>
-	<div
-		:class="{
-			bookmarkslist: true,
-			'bookmarkslist--gridview': viewMode === 'grid'
-		}"
-	>
-		<CreateBookmark v-if="newBookmark" />
-		<CreateFolder v-if="newFolder" />
-		<template v-if="$route.name === 'folder' || $route.name === 'home'">
-			<Folder
-				v-for="folder in folderChildren"
-				:key="'f' + folder.id"
-				:folder="folder"
-			/>
-		</template>
-		<template v-if="bookmarks.length">
-			<Bookmark
-				v-for="bookmark in bookmarks"
-				:key="'b' + bookmark.id"
-				:bookmark="bookmark"
-			/>
-		</template>
-		<div
-			v-else-if="!loading && !folderChildren.length"
-			class="bookmarkslist__empty"
-		>
-			<h2>No bookmarks here</h2>
-			<p>Try changing your query or add some using the button on the left.</p>
-		</div>
-		<div v-if="loading" class="bookmarkslist__loading">
-			<span class="icon-loading" />
-		</div>
-	</div>
+  <div
+    :class="{
+      bookmarkslist: true,
+      'bookmarkslist--gridview': viewMode === 'grid'
+    }"
+  >
+    <CreateBookmark v-if="newBookmark" />
+    <CreateFolder v-if="newFolder" />
+    <template v-if="$route.name === 'folder' || $route.name === 'home'">
+      <Folder
+        v-for="folder in folderChildren"
+        :key="'f' + folder.id"
+        :folder="folder"
+      />
+    </template>
+    <template v-if="bookmarks.length">
+      <Bookmark
+        v-for="bookmark in bookmarks"
+        :key="'b' + bookmark.id"
+        :bookmark="bookmark"
+      />
+    </template>
+    <div
+      v-else-if="!loading && !folderChildren.length"
+      class="bookmarkslist__empty"
+    >
+      <h2>No bookmarks here</h2>
+      <p>Try changing your query or add some using the button on the left.</p>
+    </div>
+    <div v-if="loading" class="bookmarkslist__loading">
+      <span class="icon-loading" />
+    </div>
+  </div>
 </template>
 
 <script>

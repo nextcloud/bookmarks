@@ -32,10 +32,10 @@ export default {
 			type: Object,
 			required: true
 		},
-    showChildren: {
-      type: Boolean,
-      default: false
-    }
+		showChildren: {
+			type: Boolean,
+			default: false
+		}
 	}
 };
 </script>
