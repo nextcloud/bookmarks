@@ -185,7 +185,10 @@ export default {
 .import {
 	opacity: 0;
 	position: absolute;
+	top: 0;
+	left: -1000px;
 }
+
 .settings a:link:not(.button) {
 	text-decoration: underline;
 }
