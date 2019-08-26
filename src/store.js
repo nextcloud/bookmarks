@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'nextcloud-axios';
+import { generateUrl } from 'nextcloud-router';
 import AppGlobal from './mixins/AppGlobal';
 
 Vue.use(Vuex);
@@ -717,7 +718,7 @@ export default new Vuex.Store({
 
 function url(url) {
 	url = `/apps/bookmarks${url}`;
-	return OC.generateUrl(url);
+	return generateUrl(url);
 }
 
 function findFolder(id, children) {

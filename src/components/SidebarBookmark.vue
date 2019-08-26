@@ -45,6 +45,7 @@
 </template>
 <script>
 import { AppSidebar, AppSidebarTab, Multiselect } from 'nextcloud-vue';
+import { generateUrl } from 'nextcloud-router'
 import humanizeDuration from 'humanize-duration';
 import { actions, mutations } from '../store';
 
@@ -68,7 +69,7 @@ export default {
 			return this.$store.getters.getBookmark(this.$store.state.sidebar.id);
 		},
 		background() {
-			return OC.generateUrl(
+			return generateUrl(
 				`/apps/bookmarks/bookmark/${this.bookmark.id}/image`
 			);
 		},
