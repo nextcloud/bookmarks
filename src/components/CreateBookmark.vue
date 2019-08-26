@@ -54,6 +54,7 @@ export default {
 	display: flex;
 	align-items: center;
 }
+
 .create-bookmark__icon {
 	display: inline-block;
 	flex-shrink: 0;
@@ -64,16 +65,20 @@ export default {
 	position: relative;
 	top: 10px;
 }
+
 .create-bookmark__title {
 	display: flex;
 	flex-grow: 1;
 }
+
 .create-bookmark__title > input {
 	width: 100%;
 }
+
 .create-bookmark button {
 	height: 20px;
 }
+
 .create-bookmark input {
 	border-top: none;
 	border-left: none;

@@ -59,6 +59,7 @@ export default {
 	display: flex;
 	align-items: center;
 }
+
 .create-folder__icon {
 	display: inline-block;
 	flex-shrink: 0;
@@ -69,16 +70,20 @@ export default {
 	position: relative;
 	top: 8px;
 }
+
 .create-folder__title {
 	display: flex;
 	flex-grow: 1;
 }
+
 .create-folder__title > input {
 	width: 100%;
 }
+
 .create-folder button {
 	height: 20px;
 }
+
 .create-folder input {
 	border-top: none;
 	border-left: none;

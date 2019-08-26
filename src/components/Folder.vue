@@ -93,19 +93,20 @@ export default {
 	align-items: center;
 	position: relative;
 }
+
 .folder:hover {
 	background: var(--color-background-dark);
 }
+
 .folder__icon {
-	background-size: cover;
 	flex: 0;
 	height: 20px;
 	width: 20px;
 	background-size: cover;
 	margin: 15px;
 }
+
 .folder--gridview .folder__icon {
-	background-size: cover;
 	height: 70px;
 	width: 70px;
 	background-size: cover;
@@ -113,6 +114,7 @@ export default {
 	top: 20%;
 	left: calc(45% - 35px);
 }
+
 .folder__title {
 	display: flex;
 	flex: 1;
@@ -123,18 +125,22 @@ export default {
 	margin: 0;
 	padding: 15px 0;
 }
+
 .folder--gridview .folder__title {
 	margin-left: 15px;
 }
+
 .folder__actions {
 	flex: 0;
 }
+
 .folder__title input {
 	width: 100%;
 	border-top: none;
 	border-left: none;
 	border-right: none;
 }
+
 .folder__title button {
 	height: 20px;
 }

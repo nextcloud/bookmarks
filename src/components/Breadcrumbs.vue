@@ -120,44 +120,54 @@ export default {
 		left: 0;
 	}
 }
+
 .breadcrumbs + * {
 	margin-top: 50px;
 }
+
 .breadcrumbs__path {
 	display: flex;
 	align-items: center;
 	flex: 0;
 }
+
 .breadcrumbs__path > * {
 	display: inline-block;
 	height: 30px;
 	padding: 7px;
 }
+
 .breadcrumbs__path > *:not(.icon-breadcrumb) {
 	min-width: 30px;
 	opacity: 0.7;
 }
+
 .breadcrumbs__path > *:hover {
 	opacity: 1;
 }
+
 .breadcrumbs__tags {
 	width: 300px;
 	flex: 1;
 }
+
 .breadcrumbs__tags .multiselect__tags {
 	border-top: none !important;
 	border-left: none !important;
 	border-right: none !important;
 }
+
 .breadcrumbs__AddFolder {
 	margin-left: 5px;
 }
+
 .breadcrumbs__viewmode {
 	flex: 2;
 	display: flex;
 	flex-direction: row-reverse;
 	padding: 0;
 }
+
 .breadcrumbs__viewmode > * {
 	min-width: 30px;
 }
