@@ -1,57 +1,65 @@
 <template>
-	<div
-		:class="{ Bookmarks__BookmarksList__Bookmark: true, active: isOpen }"
-		:style="{
-			background: `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
-		}"
-	>
-		<template v-if="!renaming">
-			<a
-				:href="url"
-				target="_blank"
-				class="Bookmarks__BookmarksList__Bookmark__Title"
-			>
-				<h3 :title="bookmark.title">
-					<figure
-						class="Bookmarks__BookmarksList__Bookmark__Icon"
-						:style="{ backgroundImage: 'url(' + iconUrl + ')' }"
-					/>
-					{{ bookmark.title }}
-				</h3>
-			</a>
-			<TagLine :tags="bookmark.tags" />
-			<span
-				v-if="bookmark.description"
-				v-tooltip="bookmark.description"
-				class="icon-file Bookmarks__BookmarksList__Bookmark__Description"
-			/>
-			<Actions class="Bookmarks__BookmarksList__Bookmark__Actions">
-				<ActionButton icon="icon-info" @click="onDetails">{{
-					t('bookmarks', 'Details')
-				}}</ActionButton>
-				<ActionButton icon="icon-rename" @click="onRename">{{
-					t('bookmarks', 'Rename')
-				}}</ActionButton>
-				<ActionButton icon="icon-category-files" @click="onMove">{{
-					t('bookmarks', 'Move')
-				}}</ActionButton>
-				<ActionButton icon="icon-delete" @click="onDelete">{{
-					t('bookmarks', 'Delete')
-				}}</ActionButton>
-			</Actions>
-		</template>
-		<h3 class="Bookmarks__BookmarksList__Bookmark__Title" v-else>
-			<figure
-				class="Bookmarks__BookmarksList__Bookmark__Icon"
-				:style="{ backgroundImage: 'url(' + iconUrl + ')' }"
-			/>
-			<input type="text" v-model="title" @keyup.enter="onRenameSubmit" />
-			<button type="submit" @click="onRenameSubmit">
-				<span class="icon-checkmark"></span>
-				Save
-			</button>
-		</h3>
-	</div>
+  <div
+    :class="{ Bookmarks__BookmarksList__Bookmark: true, active: isOpen }"
+    :style="{
+      background: `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
+    }"
+  >
+    <template v-if="!renaming">
+      <a
+        :href="url"
+        target="_blank"
+        class="Bookmarks__BookmarksList__Bookmark__Title"
+      >
+        <h3 :title="bookmark.title">
+          <figure
+            class="Bookmarks__BookmarksList__Bookmark__Icon"
+            :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
+          />
+          {{ bookmark.title }}
+        </h3>
+      </a>
+      <TagLine :tags="bookmark.tags" />
+      <span
+        v-if="bookmark.description"
+        v-tooltip="bookmark.description"
+        class="icon-file Bookmarks__BookmarksList__Bookmark__Description"
+      />
+      <Actions class="Bookmarks__BookmarksList__Bookmark__Actions">
+        <ActionButton icon="icon-info" @click="onDetails">
+          {{
+            t('bookmarks', 'Details')
+          }}
+        </ActionButton>
+        <ActionButton icon="icon-rename" @click="onRename">
+          {{
+            t('bookmarks', 'Rename')
+          }}
+        </ActionButton>
+        <ActionButton icon="icon-category-files" @click="onMove">
+          {{
+            t('bookmarks', 'Move')
+          }}
+        </ActionButton>
+        <ActionButton icon="icon-delete" @click="onDelete">
+          {{
+            t('bookmarks', 'Delete')
+          }}
+        </ActionButton>
+      </Actions>
+    </template>
+    <h3 v-else class="Bookmarks__BookmarksList__Bookmark__Title">
+      <figure
+        class="Bookmarks__BookmarksList__Bookmark__Icon"
+        :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
+      />
+      <input v-model="title" type="text" @keyup.enter="onRenameSubmit">
+      <button type="submit" @click="onRenameSubmit">
+        <span class="icon-checkmark" />
+        Save
+      </button>
+    </h3>
+  </div>
 </template>
 <script>
 import { Actions, ActionButton } from 'nextcloud-vue';
@@ -74,7 +82,6 @@ export default {
 	data() {
 		return { title: this.bookmark.title, renaming: false };
 	},
-	created() {},
 	computed: {
 		iconUrl() {
 			return OC.generateUrl(
@@ -90,12 +97,13 @@ export default {
 			return this.bookmark.url;
 		},
 		isOpen() {
-			return this.$store.state.sidebar &&
-				this.$store.state.sidebar.type === 'bookmark'
+			return this.$store.state.sidebar
+				&& this.$store.state.sidebar.type === 'bookmark'
 				? this.$store.state.sidebar.id === this.bookmark.id
 				: false;
 		}
 	},
+	created() {},
 	methods: {
 		onDelete() {
 			this.$store.dispatch(actions.DELETE_BOOKMARK, {

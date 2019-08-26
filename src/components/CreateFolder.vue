@@ -1,23 +1,23 @@
 <template>
-	<div class="Bookmarks__CreateFolder">
-		<h3 class="Bookmarks__CreateFolder__Title">
-			<span class="icon-folder Bookmarks__CreateFolder__Icon" />
-			<input
-				type="text"
-				:placeholder="t('bookmarks', 'Enter folder title')"
-				:disabled="loading"
-				v-model="title"
-				@keyup.enter="submit"
-			/>
-		</h3>
-		<button type="button" class="button" @click="submit">
-			<span :class="loading ? 'icon-loading' : 'icon-checkmark'"></span>
-			Create
-		</button>
-	</div>
+  <div class="Bookmarks__CreateFolder">
+    <h3 class="Bookmarks__CreateFolder__Title">
+      <span class="icon-folder Bookmarks__CreateFolder__Icon" />
+      <input
+        v-model="title"
+        type="text"
+        :placeholder="t('bookmarks', 'Enter folder title')"
+        :disabled="loading"
+        @keyup.enter="submit"
+      >
+    </h3>
+    <button type="button" class="button" @click="submit">
+      <span :class="loading ? 'icon-loading' : 'icon-checkmark'" />
+      Create
+    </button>
+  </div>
 </template>
 <script>
-import { actions, mutations } from '../store';
+import { actions } from '../store';
 
 export default {
 	name: 'CreateFolder',
@@ -27,12 +27,12 @@ export default {
 			title: ''
 		};
 	},
-	created() {},
 	computed: {
 		loading() {
 			return this.$store.state.loading.createFolder;
 		}
 	},
+	created() {},
 	methods: {
 		submit() {
 			const parentFolder = this.$route.params.folder;

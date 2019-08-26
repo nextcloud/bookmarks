@@ -1,23 +1,23 @@
 <template>
-	<div class="Bookmarks__CreateBookmark">
-		<h3 class="Bookmarks__CreateBookmark__Title">
-			<span class="icon-add Bookmarks__CreateBookmark__Icon" />
-			<input
-				type="text"
-				:placeholder="t('bookmarks', 'Enter a Link...')"
-				:disabled="creating"
-				v-model="url"
-				@keyup.enter="submit"
-			/>
-		</h3>
-		<button type="button" class="button" @click="submit">
-			<span :class="creating ? 'icon-loading' : 'icon-checkmark'"></span>
-			Create
-		</button>
-	</div>
+  <div class="Bookmarks__CreateBookmark">
+    <h3 class="Bookmarks__CreateBookmark__Title">
+      <span class="icon-add Bookmarks__CreateBookmark__Icon" />
+      <input
+        v-model="url"
+        type="text"
+        :placeholder="t('bookmarks', 'Enter a Link...')"
+        :disabled="creating"
+        @keyup.enter="submit"
+      >
+    </h3>
+    <button type="button" class="button" @click="submit">
+      <span :class="creating ? 'icon-loading' : 'icon-checkmark'" />
+      Create
+    </button>
+  </div>
 </template>
 <script>
-import { actions, mutations } from '../store';
+import { actions } from '../store';
 export default {
 	name: 'CreateBookmark',
 	components: {},
@@ -26,12 +26,12 @@ export default {
 			url: ''
 		};
 	},
-	created() {},
 	computed: {
 		creating() {
 			return this.$store.state.loading.createBookmark;
 		}
 	},
+	created() {},
 	methods: {
 		submit() {
 			this.$store.dispatch(actions.CREATE_BOOKMARK, this.url);

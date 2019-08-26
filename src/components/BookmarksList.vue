@@ -1,37 +1,37 @@
 <template>
-	<div
-		:class="{
-			Bookmarks__BookmarksList: true,
-			'Bookmarks__BookmarksList--GridView': viewMode === 'grid'
-		}"
-	>
-		<CreateBookmark v-if="newBookmark" />
-		<CreateFolder v-if="newFolder" />
-		<template v-if="$route.name === 'folder' || $route.name === 'home'">
-			<BookmarksListFolder
-				v-for="folder in folderChildren"
-				:key="'f' + folder.id"
-				:folder="folder"
-			/>
-		</template>
-		<template v-if="bookmarks.length">
-			<BookmarksListBookmark
-				v-for="bookmark in bookmarks"
-				:key="'b' + bookmark.id"
-				:bookmark="bookmark"
-			/>
-		</template>
-		<div
-			v-else-if="!loading && !folderChildren.length"
-			class="Bookmarks__BookmarksList_Empty"
-		>
-			<h2>No bookmarks here</h2>
-			<p>Try changing your query or add some using the button on the left.</p>
-		</div>
-		<div v-if="loading" class="Bookmarks__BookmarksList_Loading">
-			<span class="icon-loading" />
-		</div>
-	</div>
+  <div
+    :class="{
+      Bookmarks__BookmarksList: true,
+      'Bookmarks__BookmarksList--GridView': viewMode === 'grid'
+    }"
+  >
+    <CreateBookmark v-if="newBookmark" />
+    <CreateFolder v-if="newFolder" />
+    <template v-if="$route.name === 'folder' || $route.name === 'home'">
+      <BookmarksListFolder
+        v-for="folder in folderChildren"
+        :key="'f' + folder.id"
+        :folder="folder"
+      />
+    </template>
+    <template v-if="bookmarks.length">
+      <BookmarksListBookmark
+        v-for="bookmark in bookmarks"
+        :key="'b' + bookmark.id"
+        :bookmark="bookmark"
+      />
+    </template>
+    <div
+      v-else-if="!loading && !folderChildren.length"
+      class="Bookmarks__BookmarksList_Empty"
+    >
+      <h2>No bookmarks here</h2>
+      <p>Try changing your query or add some using the button on the left.</p>
+    </div>
+    <div v-if="loading" class="Bookmarks__BookmarksList_Loading">
+      <span class="icon-loading" />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -39,7 +39,6 @@ import BookmarksListBookmark from './BookmarksListBookmark';
 import BookmarksListFolder from './BookmarksListFolder';
 import CreateBookmark from './CreateBookmark';
 import CreateFolder from './CreateFolder';
-import { actions } from '../store';
 
 export default {
 	name: 'BookmarksList',
@@ -79,9 +78,7 @@ export default {
 		viewMode() {
 			return this.$store.state.viewMode;
 		}
-	},
-	created() {},
-	methods: {}
+	}
 };
 </script>
 <style>

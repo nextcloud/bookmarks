@@ -24,7 +24,8 @@ module.exports = {
 		'plugin:import/warnings',
 		'plugin:node/recommended',
 		'plugin:vue/essential',
-		//'plugin:vue/recommended',
+		'plugin:vue/recommended',
+		'plugin:nextcloud/recommended',
 		'standard'
 	],
 	settings: {

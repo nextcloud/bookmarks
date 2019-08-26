@@ -1,16 +1,16 @@
 <template>
-	<AppNavigation>
-		<AppNavigationNew
-			:text="t('bookmarks', 'New Bookmark')"
-			:disabled="false"
-			button-class="icon-add"
-			@click="onNewBookmark"
-		/>
-		<ul>
-			<AppNavigationItem v-for="item in menu" :item="item" :key="item.text" />
-		</ul>
-		<AppNavigationSettings><Settings /></AppNavigationSettings>
-	</AppNavigation>
+  <AppNavigation>
+    <AppNavigationNew
+      :text="t('bookmarks', 'New Bookmark')"
+      :disabled="false"
+      button-class="icon-add"
+      @click="onNewBookmark"
+    />
+    <ul>
+      <AppNavigationItem v-for="item in menu" :key="item.text" :item="item" />
+    </ul>
+    <AppNavigationSettings><Settings /></AppNavigationSettings>
+  </AppNavigation>
 </template>
 
 <script>

@@ -1,37 +1,43 @@
 <template>
-	<div class="Bookmarks__BookmarksList__Folder">
-		<figure class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
-		<template v-if="!renaming">
-			<h3
-				class="Bookmarks__BookmarksList__Folder__Title"
-				@click="onSelect"
-				:title="folder.title"
-			>
-				{{ folder.title }}
-			</h3>
-			<Actions class="Bookmarks__BookmarksList__Folder__Actions">
-				<ActionButton icon="icon-rename" @click="onRename">{{
-					t('bookmarks', 'Rename')
-				}}</ActionButton>
-				<ActionButton icon="icon-category-files" @click="onMove">{{
-					t('bookmarks', 'Move')
-				}}</ActionButton>
-				<ActionButton icon="icon-delete" @click="onDelete">{{
-					t('bookmarks', 'Delete')
-				}}</ActionButton>
-			</Actions>
-		</template>
-		<template v-else>
-			<span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
-			<h3 class="Bookmarks__BookmarksList__Folder__Title">
-				<input type="text" v-model="title" @keyup.enter="onRenameSubmit" />
-				<button type="submit" @click="onRenameSubmit">
-					<span class="icon-checkmark" />
-					Save
-				</button>
-			</h3>
-		</template>
-	</div>
+  <div class="Bookmarks__BookmarksList__Folder">
+    <figure class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
+    <template v-if="!renaming">
+      <h3
+        class="Bookmarks__BookmarksList__Folder__Title"
+        :title="folder.title"
+        @click="onSelect"
+      >
+        {{ folder.title }}
+      </h3>
+      <Actions class="Bookmarks__BookmarksList__Folder__Actions">
+        <ActionButton icon="icon-rename" @click="onRename">
+          {{
+            t('bookmarks', 'Rename')
+          }}
+        </ActionButton>
+        <ActionButton icon="icon-category-files" @click="onMove">
+          {{
+            t('bookmarks', 'Move')
+          }}
+        </ActionButton>
+        <ActionButton icon="icon-delete" @click="onDelete">
+          {{
+            t('bookmarks', 'Delete')
+          }}
+        </ActionButton>
+      </Actions>
+    </template>
+    <template v-else>
+      <span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
+      <h3 class="Bookmarks__BookmarksList__Folder__Title">
+        <input v-model="title" type="text" @keyup.enter="onRenameSubmit">
+        <button type="submit" @click="onRenameSubmit">
+          <span class="icon-checkmark" />
+          Save
+        </button>
+      </h3>
+    </template>
+  </div>
 </template>
 <script>
 import { Actions, ActionButton } from 'nextcloud-vue';
@@ -52,8 +58,8 @@ export default {
 	data() {
 		return { renaming: false, title: this.folder.title };
 	},
-	created() {},
 	computed: {},
+	created() {},
 	methods: {
 		onDelete() {
 			this.$store.dispatch(actions.DELETE_FOLDER, this.folder.id);

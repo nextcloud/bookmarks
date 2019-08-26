@@ -1,34 +1,28 @@
 <template>
-	<div class="Bookmarks__TreeFolder">
-		<div class="Bookmarks__TreeFolder__Title">
-			<h4 @click="showChildren = !showChildren">
-				<figure class="icon-folder"></figure>
-				{{ folder.title }}
-			</h4>
-			<button @click="$emit('select', folder.id)">
-				{{ t('bookmarks', 'Select') }}
-			</button>
-		</div>
-		<div class="Bookmarks__TreeFolder__Children" v-if="showChildren">
-			<TreeFolder
-				v-for="folder in folder.children"
-				:folder="folder"
-				@select="$emit('select', $event)"
-			/>
-		</div>
-	</div>
+  <div class="Bookmarks__TreeFolder">
+    <div class="Bookmarks__TreeFolder__Title">
+      <h4 @click="showChildren = !showChildren">
+        <figure class="icon-folder" />
+        {{ folder.title }}
+      </h4>
+      <button @click="$emit('select', folder.id)">
+        {{ t('bookmarks', 'Select') }}
+      </button>
+    </div>
+    <div v-if="showChildren" class="Bookmarks__TreeFolder__Children">
+      <TreeFolder
+        v-for="child in folder.children"
+        :key="child.id"
+        :folder="child"
+        @select="$emit('select', $event)"
+      />
+    </div>
+  </div>
 </template>
 <script>
-import { Modal } from 'nextcloud-vue';
-import { actions, mutations } from '../store';
-import TreeFolder from './TreeFolder';
 
 export default {
 	name: 'TreeFolder',
-	components: {
-		Modal,
-		TreeFolder
-	},
 	props: {
 		folder: {
 			type: Object,
