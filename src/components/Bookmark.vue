@@ -63,6 +63,7 @@
 </template>
 <script>
 import { Actions, ActionButton } from 'nextcloud-vue';
+import { generateUrl } from 'nextcloud-router'
 import { actions, mutations } from '../store';
 import TagLine from './TagLine';
 
@@ -84,12 +85,12 @@ export default {
 	},
 	computed: {
 		iconUrl() {
-			return OC.generateUrl(
+			return generateUrl(
 				'/apps/bookmarks/bookmark/' + this.bookmark.id + '/favicon'
 			);
 		},
 		imageUrl() {
-			return OC.generateUrl(
+			return generateUrl(
 				'/apps/bookmarks/bookmark/' + this.bookmark.id + '/image'
 			);
 		},

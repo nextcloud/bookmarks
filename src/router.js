@@ -1,12 +1,13 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import ViewPrivate from './components/ViewPrivate';
+import { generateUrl } from 'nextcloud-router';
 
 Vue.use(Router);
 
 export default new Router({
 	mode: 'hash',
-	base: OC.generateUrl('/apps/bookmarks'),
+	base: generateUrl('/apps/bookmarks'),
 	linkActiveClass: 'active',
 	routes: [
 		{
