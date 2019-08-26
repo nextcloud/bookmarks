@@ -38,18 +38,10 @@
     <div class="breadcrumbs__viewmode">
       <Actions>
         <ActionButton
-          v-if="viewMod !== 'grid'"
-          icon="icon-toggle-pictures"
-          @click="onSetGridView"
+          :icon="viewMode === 'list'? 'icon-toggle-pictures' : 'icon-toggle-filelist'"
+          @click="onToggleViewMode"
         >
-          {{ t('bookmarks', 'Grid view') }}
-        </ActionButton>
-        <ActionButton
-          v-else
-          icon="icon-toggle-filelist"
-          @click="onSetGridView"
-        >
-          {{ t('bookmarks', 'List view') }}
+          {{ t('bookmarks', viewMode === 'list'? 'Grid view' : 'List view') }}
         </ActionButton>
       </Actions>
     </div>
@@ -106,12 +98,8 @@ export default {
 			);
 		},
 
-		onSetGridView() {
-			this.$store.commit(mutations.SET_VIEW_MODE, 'grid');
-		},
-
-		onSetListView() {
-			this.$store.commit(mutations.SET_VIEW_MODE, 'list');
+		onToggleViewMode() {
+			this.$store.commit(mutations.SET_VIEW_MODE, this.$store.state.viewMode === 'grid' ? 'list' : 'grid');
 		}
 	}
 };
