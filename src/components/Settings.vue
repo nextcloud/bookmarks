@@ -1,5 +1,5 @@
 <template>
-  <div class="Bookmarks__Settings">
+  <div class="settings">
     <h3>{{ t('bookmarks', 'Bookmarklet') }}</h3>
     <p>
       {{
@@ -185,7 +185,7 @@ export default {
 	opacity: 0;
 	position: absolute;
 }
-.Bookmarks__Settings a:link:not(.button) {
+.settings a:link:not(.button) {
 	text-decoration: underline;
 }
 </style>

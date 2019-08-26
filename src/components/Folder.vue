@@ -1,15 +1,15 @@
 <template>
-  <div class="Bookmarks__BookmarksList__Folder">
-    <figure class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
+  <div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
+    <figure class="folder__icon icon-folder" />
     <template v-if="!renaming">
       <h3
-        class="Bookmarks__BookmarksList__Folder__Title"
+        class="folder__title"
         :title="folder.title"
         @click="onSelect"
       >
         {{ folder.title }}
       </h3>
-      <Actions class="Bookmarks__BookmarksList__Folder__Actions">
+      <Actions class="folder__actions">
         <ActionButton icon="icon-rename" @click="onRename">
           {{
             t('bookmarks', 'Rename')
@@ -28,8 +28,8 @@
       </Actions>
     </template>
     <template v-else>
-      <span class="Bookmarks__BookmarksList__Folder__Icon icon-folder" />
-      <h3 class="Bookmarks__BookmarksList__Folder__Title">
+      <span class="folder__icon icon-folder" />
+      <h3 class="folder__title">
         <input v-model="title" type="text" @keyup.enter="onRenameSubmit">
         <button type="submit" @click="onRenameSubmit">
           <span class="icon-checkmark" />
@@ -44,7 +44,7 @@ import { Actions, ActionButton } from 'nextcloud-vue';
 import { actions, mutations } from '../store';
 
 export default {
-	name: 'BookmarksListFolder',
+	name: 'Folder',
 	components: {
 		Actions,
 		ActionButton
@@ -58,7 +58,11 @@ export default {
 	data() {
 		return { renaming: false, title: this.folder.title };
 	},
-	computed: {},
+	computed: {
+		viewMode() {
+			return this.$store.state.viewMode;
+		}
+	},
 	created() {},
 	methods: {
 		onDelete() {
@@ -84,16 +88,16 @@ export default {
 };
 </script>
 <style>
-.Bookmarks__BookmarksList__Folder {
+.folder {
 	border-bottom: 1px solid var(--color-border);
 	display: flex;
 	align-items: center;
 	position: relative;
 }
-.Bookmarks__BookmarksList__Folder:hover {
+.folder:hover {
 	background: var(--color-background-dark);
 }
-.Bookmarks__BookmarksList__Folder__Icon {
+.folder__icon {
 	background-size: cover;
 	flex: 0;
 	height: 20px;
@@ -101,7 +105,7 @@ export default {
 	background-size: cover;
 	margin: 15px;
 }
-.Bookmarks__BookmarksList--GridView .Bookmarks__BookmarksList__Folder__Icon {
+.folder--gridview .folder__icon {
 	background-size: cover;
 	height: 70px;
 	width: 70px;
@@ -110,7 +114,7 @@ export default {
 	top: 20%;
 	left: calc(45% - 35px);
 }
-.Bookmarks__BookmarksList__Folder__Title {
+.folder__title {
 	display: flex;
 	flex: 1;
 	text-overflow: ellipsis;
@@ -120,26 +124,19 @@ export default {
 	margin: 0;
 	padding: 15px 0;
 }
-.Bookmarks__BookmarksList--GridView .Bookmarks__BookmarksList__Folder__Title {
+.folder--gridview .folder__title {
 	margin-left: 15px;
 }
-.Bookmarks__BookmarksList__Folder__Description {
-	display: inline-block;
-	flex: 0;
-	width: 16px;
-	height: 16px;
-	margin: 0 10px;
-}
-.Bookmarks__BookmarksList__Folder__Actions {
+.folder__actions {
 	flex: 0;
 }
-.Bookmarks__BookmarksList__Folder__Title input {
+.folder__title input {
 	width: 100%;
 	border-top: none;
 	border-left: none;
 	border-right: none;
 }
-.Bookmarks__BookmarksList__Folder__Title button {
+.folder__title button {
 	height: 20px;
 }
 </style>

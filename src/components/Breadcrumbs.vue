@@ -1,6 +1,6 @@
 <template>
-  <div class="Bookmarks__Breadcrumbs">
-    <div class="Bookmarks__Breadcrumbs__Path">
+  <div class="breadcrumbs">
+    <div class="breadcrumbs__path">
       <a class="icon-home" @click="onSelectHome" />
       <span class="icon-breadcrumb" />
       <template v-if="$route.name === 'folder'">
@@ -16,7 +16,7 @@
       <template v-if="$route.name === 'tags'">
         <span class="icon-tag" />
         <Multiselect
-          class="Bookmarks__Breadcrumbs__Tags"
+          class="breadcrumbs__tags"
           :value="tags"
           :auto-limit="false"
           :limit="7"
@@ -30,12 +30,12 @@
           v-if="$route.name === 'folder' || $route.name === 'home'"
           v-tooltip="t('bookmarks', 'New folder')"
           icon="icon-add"
-          class="Bookmarks__Breadcrumbs__AddFolder"
+          class="breadcrumbs__AddFolder"
           @click="onAddFolder"
         />
       </Actions>
     </div>
-    <div class="Bookmarks__Breadcrumbs__ViewMode">
+    <div class="breadcrumbs__viewmode">
       <Actions>
         <ActionButton
           v-if="viewMod !== 'grid'"
@@ -117,7 +117,7 @@ export default {
 };
 </script>
 <style>
-.Bookmarks__Breadcrumbs {
+.breadcrumbs {
 	padding: 2px 8px;
 	display: flex;
 	position: fixed;
@@ -127,50 +127,50 @@ export default {
 	left: 300px;
 }
 @media only screen and (max-width: 768px) {
-	.Bookmarks__Breadcrumbs {
+	.breadcrumbs {
 		padding-left: 52px;
 		left: 0;
 	}
 }
-.Bookmarks__Breadcrumbs + * {
+.breadcrumbs + * {
 	margin-top: 50px;
 }
-.Bookmarks__Breadcrumbs__Path {
+.breadcrumbs__path {
 	display: flex;
 	align-items: center;
 	flex: 0;
 }
-.Bookmarks__Breadcrumbs__Path > * {
+.breadcrumbs__path > * {
 	display: inline-block;
 	height: 30px;
 	padding: 7px;
 }
-.Bookmarks__Breadcrumbs__Path > *:not(.icon-breadcrumb) {
+.breadcrumbs__path > *:not(.icon-breadcrumb) {
 	min-width: 30px;
 	opacity: 0.7;
 }
-.Bookmarks__Breadcrumbs__Path > *:hover {
+.breadcrumbs__path > *:hover {
 	opacity: 1;
 }
-.Bookmarks__Breadcrumbs__Tags {
+.breadcrumbs__tags {
 	width: 300px;
 	flex: 1;
 }
-.Bookmarks__Breadcrumbs__Tags .multiselect__tags {
+.breadcrumbs__tags .multiselect__tags {
 	border-top: none !important;
 	border-left: none !important;
 	border-right: none !important;
 }
-.Bookmarks__Breadcrumbs__AddFolder {
+.breadcrumbs__AddFolder {
 	margin-left: 5px;
 }
-.Bookmarks__Breadcrumbs__ViewMode {
+.breadcrumbs__viewmode {
 	flex: 2;
 	display: flex;
 	flex-direction: row-reverse;
 	padding: 0;
 }
-.Bookmarks__Breadcrumbs__ViewMode > * {
+.breadcrumbs__viewmode > * {
 	min-width: 30px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="Bookmarks__TagLine">
-    <div v-for="tag in tags" :key="tag" class="Bookmarks__TagLine_Tag">
+  <div class="tagline">
+    <div v-for="tag in tags" :key="tag" class="tagline__tag">
       {{ tag }}
     </div>
   </div>
@@ -27,7 +27,7 @@ export default {
 };
 </script>
 <style>
-.Bookmarks__TagLine {
+.tagline {
 	font-size: 12px;
 	height: 24px;
 	line-height: 1;
@@ -35,7 +35,7 @@ export default {
 	display: inline-block;
 	margin: 0 15px;
 }
-.Bookmarks__TagLine_Tag {
+.tagline__tag {
 	display: inline-block;
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius-pill);
@@ -43,7 +43,7 @@ export default {
 	margin: 0 3px;
 	background-color: var(--color-main-background);
 }
-.Bookmarks__TagLine_Tag:hover {
+.tagline__tag:hover {
 	background-color: var(--color-background-dark);
 	cursor: pointer;
 }

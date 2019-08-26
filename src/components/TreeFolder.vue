@@ -1,6 +1,6 @@
 <template>
-  <div class="Bookmarks__TreeFolder">
-    <div class="Bookmarks__TreeFolder__Title">
+  <div class="treefolder">
+    <div class="treefolder__title">
       <h4 @click="showChildren = !showChildren">
         <figure class="icon-folder" />
         {{ folder.title }}
@@ -9,7 +9,7 @@
         {{ t('bookmarks', 'Select') }}
       </button>
     </div>
-    <div v-if="showChildren" class="Bookmarks__TreeFolder__Children">
+    <div v-if="showChildren" class="treefolder__children">
       <TreeFolder
         v-for="child in folder.children"
         :key="child.id"
@@ -35,22 +35,22 @@ export default {
 };
 </script>
 <style>
-.Bookmarks__TreeFolder__Title {
+.treefolder__title {
 	display: flex;
 	align-items: center;
 }
-.Bookmarks__TreeFolder__Title > h4 {
+.treefolder__title > h4 {
 	flex: 1;
 	display: flex;
 	cursor: pointer;
 }
-.Bookmarks__TreeFolder__Title > h4 > figure {
+.treefolder__title > h4 > figure {
 	margin: 0 5px;
 }
-.Bookmarks__TreeFolder__Title > button {
+.treefolder__title > button {
 	flex: 0;
 }
-.Bookmarks__TreeFolder__Children {
+.treefolder__children {
 	padding-left: 20px;
 }
 </style>

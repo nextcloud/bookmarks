@@ -6,7 +6,7 @@
       <BookmarksList :loading="loading.bookmarks" :bookmarks="bookmarks" />
     </AppContent>
     <SidebarBookmark />
-    <ModalMove />
+    <MoveDialog />
   </Content>
 </template>
 
@@ -16,7 +16,7 @@ import Navigation from './Navigation';
 import BookmarksList from './BookmarksList';
 import Breadcrumbs from './Breadcrumbs';
 import SidebarBookmark from './SidebarBookmark';
-import ModalMove from './ModalMove';
+import MoveDialog from './MoveDialog';
 import { actions } from '../store';
 
 export default {
@@ -28,7 +28,7 @@ export default {
 		Breadcrumbs,
 		BookmarksList,
 		SidebarBookmark,
-		ModalMove
+		MoveDialog
 	},
 	data: function() {
 		return {

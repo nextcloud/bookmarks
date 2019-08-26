@@ -1,7 +1,7 @@
 <template>
-  <div class="Bookmarks__CreateBookmark">
-    <h3 class="Bookmarks__CreateBookmark__Title">
-      <span class="icon-add Bookmarks__CreateBookmark__Icon" />
+  <div class="create-bookmark">
+    <h3 class="create-bookmark__title">
+      <span class="icon-add create-bookmark__icon" />
       <input
         v-model="url"
         type="text"
@@ -40,13 +40,13 @@ export default {
 };
 </script>
 <style>
-.Bookmarks__CreateBookmark {
+.create-bookmark {
 	border-bottom: 1px solid var(--color-border);
 	padding: 5px;
 	display: flex;
 	align-items: center;
 }
-.Bookmarks__CreateBookmark__Icon {
+.create-bookmark__icon {
 	display: inline-block;
 	flex-shrink: 0;
 	height: 20px;
@@ -56,17 +56,17 @@ export default {
 	position: relative;
 	top: 8px;
 }
-.Bookmarks__CreateBookmark__Title {
+.create-bookmark__title {
 	display: flex;
 	flex-grow: 1;
 }
-.Bookmarks__CreateBookmark__Title > input {
+.create-bookmark__title > input {
 	width: 100%;
 }
-.Bookmarks__CreateBookmark button {
+.create-bookmark button {
 	height: 20px;
 }
-.Bookmarks__CreateBookmark input {
+.create-bookmark input {
 	border-top: none;
 	border-left: none;
 	border-right: none;

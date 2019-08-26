@@ -1,19 +1,19 @@
 <template>
   <div
-    :class="{ Bookmarks__BookmarksList__Bookmark: true, active: isOpen }"
+    :class="{ 'bookmark': true, active: isOpen, 'bookmark--gridview': viewMode === 'grid' }"
     :style="{
-      background: `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
+      background: viewMode === 'grid'? `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')` : undefined
     }"
   >
     <template v-if="!renaming">
       <a
         :href="url"
         target="_blank"
-        class="Bookmarks__BookmarksList__Bookmark__Title"
+        class="bookmark__title"
       >
         <h3 :title="bookmark.title">
           <figure
-            class="Bookmarks__BookmarksList__Bookmark__Icon"
+            class="bookmark__icon"
             :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
           />
           {{ bookmark.title }}
@@ -23,9 +23,9 @@
       <span
         v-if="bookmark.description"
         v-tooltip="bookmark.description"
-        class="icon-file Bookmarks__BookmarksList__Bookmark__Description"
+        class="icon-file bookmark__description"
       />
-      <Actions class="Bookmarks__BookmarksList__Bookmark__Actions">
+      <Actions class="bookmark__actions">
         <ActionButton icon="icon-info" @click="onDetails">
           {{
             t('bookmarks', 'Details')
@@ -48,9 +48,9 @@
         </ActionButton>
       </Actions>
     </template>
-    <h3 v-else class="Bookmarks__BookmarksList__Bookmark__Title">
+    <h3 v-else class="bookmark__title">
       <figure
-        class="Bookmarks__BookmarksList__Bookmark__Icon"
+        class="bookmark__icon"
         :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
       />
       <input v-model="title" type="text" @keyup.enter="onRenameSubmit">
@@ -67,7 +67,7 @@ import { actions, mutations } from '../store';
 import TagLine from './TagLine';
 
 export default {
-	name: 'BookmarksListBookmark',
+	name: 'Bookmark',
 	components: {
 		Actions,
 		ActionButton,
@@ -101,6 +101,9 @@ export default {
 				&& this.$store.state.sidebar.type === 'bookmark'
 				? this.$store.state.sidebar.id === this.bookmark.id
 				: false;
+		},
+		viewMode() {
+			return this.$store.state.viewMode;
 		}
 	},
 	created() {},
@@ -131,26 +134,21 @@ export default {
 };
 </script>
 <style>
-.Bookmarks__BookmarksList__Bookmark {
+.bookmark {
 	border-bottom: 1px solid var(--color-border);
 	display: flex;
 	align-items: center;
 	background-position: center !important;
 	background-size: cover !important;
 	position: relative;
-}
-*:not(.Bookmarks__BookmarksList--GridView)
-	> .Bookmarks__BookmarksList__Bookmark {
-	background: var(--color-main-background) !important;
+	background: var(--color-main-background);
 }
 
-*:not(.Bookmarks__BookmarksList--GridView)
-	> .Bookmarks__BookmarksList__Bookmark.active,
-*:not(.Bookmarks__BookmarksList--GridView)
-	> .Bookmarks__BookmarksList__Bookmark:hover {
-	background: var(--color-background-dark) !important;
+.bookmark.active,
+.bookmark:hover {
+	background: var(--color-background-dark);
 }
-.Bookmarks__BookmarksList__Bookmark__Icon {
+.bookmark__icon {
 	display: inline-block;
 	flex: 0;
 	height: 20px;
@@ -160,44 +158,44 @@ export default {
 	position: relative;
 	top: 3px;
 }
-.Bookmarks__BookmarksList__Bookmark__Title {
+.bookmark__title {
 	display: flex;
 	flex: 1;
 }
-.Bookmarks__BookmarksList__Bookmark__Title,
-.Bookmarks__BookmarksList__Bookmark__Title > h3 {
+.bookmark__title,
+.bookmark__title > h3 {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
 }
-.Bookmarks__BookmarksList__Bookmark__Title > h3 {
+.bookmark__title > h3 {
 	margin: 0;
 	padding: 15px 0;
 }
-.Bookmarks__BookmarksList__Bookmark__Description {
+.bookmark__description {
 	display: inline-block;
 	flex: 0;
 	width: 20px;
 	height: 47px;
 	margin: 0 10px;
 }
-.Bookmarks__BookmarksList__Bookmark__Actions {
+.bookmark__actions {
 	flex: 0;
 }
-.Bookmarks__BookmarksList__Bookmark__Title > input {
+.bookmark__title > input {
 	width: 100%;
 	border-top: none;
 	border-left: none;
 	border-right: none;
 }
-.Bookmarks__BookmarksList__Bookmark__Title button {
+.bookmark__title button {
 	height: 20px;
 }
-.Bookmarks__BookmarksList--GridView .Bookmarks__TagLine {
+.bookmark--gridview .tagline {
 	position: absolute;
 	top: 10px;
 }
-.Bookmarks__BookmarksList--GridView .Bookmarks__BookmarksList__Bookmark__Icon {
+.bookmark--gridview .bookmark__icon {
 	margin: 0 5px 0 10px;
 }
 </style>
