@@ -1,9 +1,9 @@
 <template>
-  <div class="tagline">
-    <div v-for="tag in tags" :key="tag" class="tagline__tag">
-      {{ tag }}
-    </div>
-  </div>
+	<div class="tagline">
+		<div v-for="tag in tags" :key="tag" class="tagline__tag">
+			{{ tag }}
+		</div>
+	</div>
 </template>
 <script>
 export default {
@@ -40,7 +40,7 @@ export default {
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius-pill);
 	padding: 5px 10px;
-	margin: 0 3px;
+	margin-right: 3px;
 	background-color: var(--color-main-background);
 }
 .tagline__tag:hover {
