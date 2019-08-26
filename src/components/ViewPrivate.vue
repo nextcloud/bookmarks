@@ -68,7 +68,6 @@ export default {
 			const route = this.$route;
 			switch (route.name) {
 			case 'home':
-				await this.$store.dispatch(actions.LOAD_SETTINGS);
 				this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1');
 				break;
 			case 'recent':
