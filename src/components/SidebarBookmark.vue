@@ -28,9 +28,6 @@
 					@input="onTagsChange"
 					@tag="onAddTag"
 				>
-					<template #option="{ option }">
-						<span>{{ option | tagLabel }}</span>
-					</template>
 				</Multiselect>
 			</div>
 			<div>
@@ -125,11 +122,6 @@ export default {
 				await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id);
 				await this.$store.dispatch(actions.LOAD_TAGS);
 			}, 1000);
-		}
-	},
-	filters: {
-		tagLabel(tag) {
-			return tag.isTag ? tag.label : tag;
 		}
 	}
 };
