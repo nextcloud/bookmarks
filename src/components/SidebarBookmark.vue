@@ -1,7 +1,7 @@
 <template>
   <AppSidebar
     v-if="isActive"
-    class="Bookmarks__Sidebar"
+    class="sidebar"
     :title="bookmark.title"
     :subtitle="bookmark.url"
     :background="background"
@@ -18,7 +18,7 @@
       <div>
         <h3><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}</h3>
         <Multiselect
-          class="Bookmarks__Sidebar__Tags"
+          class="sidebar__tags"
           :value="tags"
           :auto-limit="false"
           :limit="7"
@@ -32,7 +32,7 @@
       <div>
         <h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
         <div
-          class="Bookmarks__Sidebar__Notes"
+          class="sidebar__notes"
           contenteditable
           @input="onNotesChange"
         >
@@ -126,16 +126,16 @@ export default {
 };
 </script>
 <style>
-.Bookmarks__Sidebar span[class^='icon-'] {
+.sidebar span[class^='icon-'] {
 	display: inline-block;
 	position: relative;
 	top: 3px;
 	opacity: 0.5;
 }
-.Bookmarks__Sidebar__Tags {
+.sidebar__tags {
 	width: 100%;
 }
-.Bookmarks__Sidebar__Notes {
+.sidebar__notes {
 	min-height: 400px !important;
 	width: auto !important;
 }

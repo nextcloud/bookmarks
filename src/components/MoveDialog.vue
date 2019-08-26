@@ -1,6 +1,6 @@
 <template>
   <Modal v-if="showModal" :title="title" @close="onClose">
-    <div class="Bookmarks__ModalMove">
+    <div class="move-dialog">
       <TreeFolder
         :folder="{
           title: t('bookmarks', 'Root folder'),
@@ -18,7 +18,7 @@ import { actions, mutations } from '../store';
 import TreeFolder from './TreeFolder';
 
 export default {
-	name: 'ModalMove',
+	name: 'MoveDialog',
 	components: {
 		Modal,
 		TreeFolder
@@ -75,7 +75,7 @@ export default {
 };
 </script>
 <style>
-.Bookmarks__ModalMove {
+.move-dialog {
 	min-width: 300px;
 	height: 300px;
 	overflow-y: scroll;

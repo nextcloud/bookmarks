@@ -1,7 +1,7 @@
 <template>
-  <div class="Bookmarks__CreateFolder">
-    <h3 class="Bookmarks__CreateFolder__Title">
-      <span class="icon-folder Bookmarks__CreateFolder__Icon" />
+  <div class="create-folder">
+    <h3 class="create-folder__title">
+      <span class="icon-folder create-folder__icon" />
       <input
         v-model="title"
         type="text"
@@ -45,13 +45,13 @@ export default {
 };
 </script>
 <style>
-.Bookmarks__CreateFolder {
+.create-folder {
 	border-bottom: 1px solid var(--color-border);
 	padding: 5px;
 	display: flex;
 	align-items: center;
 }
-.Bookmarks__CreateFolder__Icon {
+.create-folder__icon {
 	display: inline-block;
 	flex-shrink: 0;
 	height: 20px;
@@ -61,17 +61,17 @@ export default {
 	position: relative;
 	top: 8px;
 }
-.Bookmarks__CreateFolder__Title {
+.create-folder__title {
 	display: flex;
 	flex-grow: 1;
 }
-.Bookmarks__CreateFolder__Title > input {
+.create-folder__title > input {
 	width: 100%;
 }
-.Bookmarks__CreateFolder button {
+.create-folder button {
 	height: 20px;
 }
-.Bookmarks__CreateFolder input {
+.create-folder input {
 	border-top: none;
 	border-left: none;
 	border-right: none;
