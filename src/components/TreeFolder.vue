@@ -5,9 +5,11 @@
         <figure class="icon-folder" />
         {{ folder.title }}
       </h4>
-      <button @click="$emit('select', folder.id)">
-        {{ t('bookmarks', 'Select') }}
-      </button>
+      <Actions>
+        <ActionButton icon="icon-checkmark" @click="$emit('select', folder.id)">
+          {{ t('bookmarks', 'Select') }}
+        </ActionButton>
+      </Actions>
     </div>
     <div v-if="showChildren" class="treefolder__children">
       <TreeFolder
@@ -20,17 +22,20 @@
   </div>
 </template>
 <script>
+import { Actions, ActionButton } from 'nextcloud-vue';
 
 export default {
 	name: 'TreeFolder',
+	components: { Actions, ActionButton },
 	props: {
 		folder: {
 			type: Object,
 			required: true
-		}
-	},
-	data() {
-		return { showChildren: false };
+		},
+    showChildren: {
+      type: Boolean,
+      default: false
+    }
 	}
 };
 </script>
@@ -39,6 +44,9 @@ export default {
 	display: flex;
 	align-items: center;
 }
+.treefolder__title:hover {
+  background: var(--color-background-dark);
+}
 .treefolder__title > h4 {
 	flex: 1;
 	display: flex;
@@ -46,9 +54,6 @@ export default {
 }
 .treefolder__title > h4 > figure {
 	margin: 0 5px;
-}
-.treefolder__title > button {
-	flex: 0;
 }
 .treefolder__children {
 	padding-left: 20px;
