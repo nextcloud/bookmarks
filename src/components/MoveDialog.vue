@@ -1,16 +1,17 @@
 <template>
-  <Modal v-if="showModal" :title="title" @close="onClose">
-    <div class="move-dialog">
-      <TreeFolder
-        :folder="{
-          title: t('bookmarks', 'Root folder'),
-          id: '-1',
-          children: allFolders
-        }"
-        @select="onSelect"
-      />
-    </div>
-  </Modal>
+	<Modal v-if="showModal" :title="title" @close="onClose">
+		<div class="move-dialog">
+			<TreeFolder
+				:folder="{
+					title: t('bookmarks', 'Root folder'),
+					id: '-1',
+					children: allFolders
+				}"
+				:show-children="true"
+				@select="onSelect"
+			/>
+		</div>
+	</Modal>
 </template>
 <script>
 import { Modal } from 'nextcloud-vue';
@@ -31,7 +32,7 @@ export default {
 			return this.$store.state.selection;
 		},
 		allFolders() {
-			return this.$store.state.folders;
+			return this.filterFolders(this.$store.state.folders);
 		},
 		title() {
 			if (this.selection.folders.length) {
@@ -70,6 +71,17 @@ export default {
 		},
 		onClose() {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, false);
+		},
+		filterFolders(children) {
+			return children
+				.filter(
+					child =>
+						!this.selection.folders.some(folder => folder.id === child.id)
+				)
+				.map(child => ({
+					...child,
+					children: this.filterFolders(child.children)
+				}));
 		}
 	}
 };
