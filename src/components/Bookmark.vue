@@ -48,7 +48,9 @@
         class="bookmark__icon"
         :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
       />
-      <input v-model="title" type="text" @keyup.enter="onRenameSubmit">
+      <input ref="input" v-model="title" type="text"
+             @keyup.enter="onRenameSubmit"
+      >
       <Actions>
         <ActionButton icon="icon-checkmark" @click="onRenameSubmit">
           {{ t('bookmarks', 'Save') }}
@@ -58,6 +60,7 @@
   </div>
 </template>
 <script>
+import Vue from 'vue';
 import { Actions, ActionButton } from 'nextcloud-vue';
 import { generateUrl } from 'nextcloud-router';
 import { actions, mutations } from '../store';
@@ -119,8 +122,10 @@ export default {
 			this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark);
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true);
 		},
-		onRename() {
+		async onRename() {
 			this.renaming = true;
+			await Vue.nextTick();
+			this.$refs['input'].focus();
 		},
 		async onRenameSubmit() {
 			this.bookmark.title = this.title;

@@ -137,9 +137,15 @@ export default new Vuex.Store({
 		},
 		[mutations.DISPLAY_NEW_BOOKMARK](state, display) {
 			state.displayNewBookmark = display;
+			if (display) {
+				state.displayNewFolder = false;
+			}
 		},
 		[mutations.DISPLAY_NEW_FOLDER](state, display) {
 			state.displayNewFolder = display;
+			if (display) {
+				state.displayNewBookmark = false;
+			}
 		},
 		[mutations.DISPLAY_MOVE_DIALOG](state, display) {
 			state.displayMoveDialog = display;
