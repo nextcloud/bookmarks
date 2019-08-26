@@ -11,35 +11,32 @@
       </h3>
       <Actions class="folder__actions">
         <ActionButton icon="icon-rename" @click="onRename">
-          {{
-            t('bookmarks', 'Rename')
-          }}
+          {{ t('bookmarks', 'Rename') }}
         </ActionButton>
         <ActionButton icon="icon-category-files" @click="onMove">
-          {{
-            t('bookmarks', 'Move')
-          }}
+          {{ t('bookmarks', 'Move') }}
         </ActionButton>
         <ActionButton icon="icon-delete" @click="onDelete">
-          {{
-            t('bookmarks', 'Delete')
-          }}
+          {{ t('bookmarks', 'Delete') }}
         </ActionButton>
       </Actions>
     </template>
     <template v-else>
-      <span class="folder__icon icon-folder" />
-      <h3 class="folder__title">
-        <input v-model="title" type="text" @keyup.enter="onRenameSubmit">
-        <button type="submit" @click="onRenameSubmit">
-          <span class="icon-checkmark" />
-          Save
-        </button>
-      </h3>
+      <span class="folder__title">
+        <input ref="input" v-model="title" type="text"
+               @keyup.enter="onRenameSubmit"
+        >
+        <Actions>
+          <ActionButton icon="icon-checkmark" @click="onRenameSubmit">
+            {{ t('bookmarks', 'Save') }}
+          </ActionButton>
+        </Actions>
+      </span>
     </template>
   </div>
 </template>
 <script>
+import Vue from 'vue';
 import { Actions, ActionButton } from 'nextcloud-vue';
 import { actions, mutations } from '../store';
 
@@ -76,8 +73,10 @@ export default {
 		onSelect() {
 			this.$router.push({ name: 'folder', params: { folder: this.folder.id } });
 		},
-		onRename() {
+		async onRename() {
 			this.renaming = true;
+			await Vue.nextTick();
+			this.$refs['input'].focus();
 		},
 		onRenameSubmit() {
 			this.folder.title = this.title;

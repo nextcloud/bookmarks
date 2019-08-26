@@ -1,15 +1,16 @@
 <template>
   <div class="create-bookmark">
-    <h3 class="create-bookmark__title">
-      <span class="icon-add create-bookmark__icon" />
+    <span class="create-bookmark__title">
+      <figure class="icon-link create-bookmark__icon" />
       <input
+        ref="input"
         v-model="url"
         type="text"
-        :placeholder="t('bookmarks', 'Enter a Link...')"
         :disabled="creating"
+        :placeholder="t('bookmarks', 'Enter a link')"
         @keyup.enter="submit"
       >
-    </h3>
+    </span>
     <Actions>
       <ActionButton
         :icon="creating ? 'icon-loading' : 'icon-checkmark'"
@@ -21,10 +22,11 @@
   </div>
 </template>
 <script>
+import { Actions, ActionButton } from 'nextcloud-vue';
 import { actions } from '../store';
 export default {
 	name: 'CreateBookmark',
-	components: {},
+	components: { Actions, ActionButton },
 	data() {
 		return {
 			url: ''
@@ -35,7 +37,9 @@ export default {
 			return this.$store.state.loading.createBookmark;
 		}
 	},
-	created() {},
+	mounted() {
+		this.$refs['input'].focus();
+	},
 	methods: {
 		submit() {
 			this.$store.dispatch(actions.CREATE_BOOKMARK, this.url);
@@ -58,7 +62,7 @@ export default {
 	background-size: cover;
 	margin: 0 10px;
 	position: relative;
-	top: 8px;
+	top: 10px;
 }
 .create-bookmark__title {
 	display: flex;

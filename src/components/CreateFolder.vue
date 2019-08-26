@@ -1,15 +1,16 @@
 <template>
   <div class="create-folder">
-    <h3 class="create-folder__title">
-      <span class="icon-folder create-folder__icon" />
+    <span class="create-folder__title">
+      <figure class="icon-folder create-folder__icon" />
       <input
+        ref="input"
         v-model="title"
         type="text"
-        :placeholder="t('bookmarks', 'Enter folder title')"
         :disabled="loading"
+        :placeholder="t('bookmarks', 'Enter folder title')"
         @keyup.enter="submit"
       >
-    </h3>
+    </span>
     <Actions>
       <ActionButton
         :icon="loading ? 'icon-loading' : 'icon-checkmark'"
@@ -21,11 +22,12 @@
   </div>
 </template>
 <script>
+import { Actions, ActionButton } from 'nextcloud-vue';
 import { actions } from '../store';
 
 export default {
 	name: 'CreateFolder',
-	components: {},
+	components: { Actions, ActionButton },
 	data() {
 		return {
 			title: ''
@@ -36,7 +38,9 @@ export default {
 			return this.$store.state.loading.createFolder;
 		}
 	},
-	created() {},
+	mounted() {
+		this.$refs['input'].focus();
+	},
 	methods: {
 		submit() {
 			const parentFolder = this.$route.params.folder;
