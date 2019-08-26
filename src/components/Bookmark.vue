@@ -1,65 +1,60 @@
 <template>
-  <div
-    :class="{ 'bookmark': true, active: isOpen, 'bookmark--gridview': viewMode === 'grid' }"
-    :style="{
-      background: viewMode === 'grid'? `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')` : undefined
-    }"
-  >
-    <template v-if="!renaming">
-      <a
-        :href="url"
-        target="_blank"
-        class="bookmark__title"
-      >
-        <h3 :title="bookmark.title">
-          <figure
-            class="bookmark__icon"
-            :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
-          />
-          {{ bookmark.title }}
-        </h3>
-      </a>
-      <TagLine :tags="bookmark.tags" />
-      <span
-        v-if="bookmark.description"
-        v-tooltip="bookmark.description"
-        class="icon-file bookmark__description"
-      />
-      <Actions class="bookmark__actions">
-        <ActionButton icon="icon-info" @click="onDetails">
-          {{
-            t('bookmarks', 'Details')
-          }}
-        </ActionButton>
-        <ActionButton icon="icon-rename" @click="onRename">
-          {{
-            t('bookmarks', 'Rename')
-          }}
-        </ActionButton>
-        <ActionButton icon="icon-category-files" @click="onMove">
-          {{
-            t('bookmarks', 'Move')
-          }}
-        </ActionButton>
-        <ActionButton icon="icon-delete" @click="onDelete">
-          {{
-            t('bookmarks', 'Delete')
-          }}
-        </ActionButton>
-      </Actions>
-    </template>
-    <h3 v-else class="bookmark__title">
-      <figure
-        class="bookmark__icon"
-        :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
-      />
-      <input v-model="title" type="text" @keyup.enter="onRenameSubmit">
-      <button type="submit" @click="onRenameSubmit">
-        <span class="icon-checkmark" />
-        Save
-      </button>
-    </h3>
-  </div>
+	<div
+		:class="{
+			bookmark: true,
+			active: isOpen,
+			'bookmark--gridview': viewMode === 'grid'
+		}"
+		:style="{
+			background:
+				viewMode === 'grid'
+					? `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
+					: undefined
+		}"
+	>
+		<template v-if="!renaming">
+			<a :href="url" target="_blank" class="bookmark__title">
+				<h3 :title="bookmark.title">
+					<figure
+						class="bookmark__icon"
+						:style="{ backgroundImage: 'url(' + iconUrl + ')' }"
+					/>
+					{{ bookmark.title }}
+				</h3>
+			</a>
+			<TagLine :tags="bookmark.tags" />
+			<span
+				v-if="bookmark.description"
+				v-tooltip="bookmark.description"
+				class="icon-file bookmark__description"
+			/>
+			<Actions class="bookmark__actions">
+				<ActionButton icon="icon-info" @click="onDetails">
+					{{ t('bookmarks', 'Details') }}
+				</ActionButton>
+				<ActionButton icon="icon-rename" @click="onRename">
+					{{ t('bookmarks', 'Rename') }}
+				</ActionButton>
+				<ActionButton icon="icon-category-files" @click="onMove">
+					{{ t('bookmarks', 'Move') }}
+				</ActionButton>
+				<ActionButton icon="icon-delete" @click="onDelete">
+					{{ t('bookmarks', 'Delete') }}
+				</ActionButton>
+			</Actions>
+		</template>
+		<h3 v-else class="bookmark__title">
+			<figure
+				class="bookmark__icon"
+				:style="{ backgroundImage: 'url(' + iconUrl + ')' }"
+			/>
+			<input v-model="title" type="text" @keyup.enter="onRenameSubmit" />
+			<button type="submit" @click="onRenameSubmit">
+				<span class="icon-checkmark" />
+				Save
+			</button>
+		</h3>
+	</div>
 </template>
 <script>
 import { Actions, ActionButton } from 'nextcloud-vue';
@@ -98,8 +93,8 @@ export default {
 			return this.bookmark.url;
 		},
 		isOpen() {
-			return this.$store.state.sidebar
-				&& this.$store.state.sidebar.type === 'bookmark'
+			return this.$store.state.sidebar &&
+				this.$store.state.sidebar.type === 'bookmark'
 				? this.$store.state.sidebar.id === this.bookmark.id
 				: false;
 		},
@@ -180,7 +175,7 @@ export default {
 	height: 47px;
 	margin: 0 10px;
 }
-.bookmark__actions {
+.bookmark__actions { 
 	flex: 0;
 }
 .bookmark__title > input {
@@ -194,7 +189,9 @@ export default {
 }
 .bookmark--gridview .tagline {
 	position: absolute;
-	top: 10px;
+	bottom: 47px;
+	left: 10px;
+	margin: 0;
 }
 .bookmark--gridview .bookmark__icon {
 	margin: 0 5px 0 10px;
