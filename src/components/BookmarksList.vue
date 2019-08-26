@@ -114,5 +114,6 @@ export default {
 	background: rgb(255, 255, 255);
 	margin: 10px 0 0 10px;
 	border: 1px solid var(--color-border);
+	box-shadow: #efefef7d 0px 0 13px 0px inset;
 }
 </style>
