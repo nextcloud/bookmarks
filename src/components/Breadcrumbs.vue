@@ -1,62 +1,63 @@
 <template>
-	<div class="Bookmarks__Breadcrumbs">
-		<div class="Bookmarks__Breadcrumbs__Path">
-			<a class="icon-home" @click="onSelectHome" />
-			<span class="icon-breadcrumb" />
-			<template v-if="$route.name === 'folder'">
-				<template v-for="folder in folderPath">
-					<a
-						href="#"
-						:key="'a' + folder.id"
-						@click.prevent="onSelectFolder(folder.id)"
-						>{{ folder.title }}</a
-					>
-					<span :key="'b' + folder.id" class="icon-breadcrumb" />
-				</template>
-			</template>
-			<template v-if="$route.name === 'tags'">
-				<span class="icon-tag" />
-				<Multiselect
-					class="Bookmarks__Breadcrumbs__Tags"
-					:value="tags"
-					:autoLimit="false"
-					:limit="7"
-					:options="allTags"
-					:multiple="true"
-					@input="onTagsChange"
-				/>
-			</template>
-			<Actions>
-				<ActionButton
-					v-if="$route.name === 'folder' || $route.name === 'home'"
-					icon="icon-add"
-					class="Bookmarks__Breadcrumbs__AddFolder"
-					v-tooltip="t('bookmarks', 'New folder')"
-					@click="onAddFolder"
-				/>
-			</Actions>
-		</div>
-		<div class="Bookmarks__Breadcrumbs__ViewMode">
-			<Actions>
-				<ActionButton
-					v-if="viewMod !== 'grid'"
-					icon="icon-toggle-pictures"
-					@click="onSetGridView"
-					>{{ t('bookmarks', 'Grid view') }}</ActionButton
-				>
-				<ActionButton
-					v-else
-					icon="icon-toggle-filelist"
-					@click="onSetGridView"
-					>{{ t('bookmarks', 'List view') }}</ActionButton
-				>
-			</Actions>
-		</div>
-	</div>
+  <div class="Bookmarks__Breadcrumbs">
+    <div class="Bookmarks__Breadcrumbs__Path">
+      <a class="icon-home" @click="onSelectHome" />
+      <span class="icon-breadcrumb" />
+      <template v-if="$route.name === 'folder'">
+        <template v-for="folder in folderPath">
+          <a
+            :key="'a' + folder.id"
+            href="#"
+            @click.prevent="onSelectFolder(folder.id)"
+          >{{ folder.title }}</a>
+          <span :key="'b' + folder.id" class="icon-breadcrumb" />
+        </template>
+      </template>
+      <template v-if="$route.name === 'tags'">
+        <span class="icon-tag" />
+        <Multiselect
+          class="Bookmarks__Breadcrumbs__Tags"
+          :value="tags"
+          :auto-limit="false"
+          :limit="7"
+          :options="allTags"
+          :multiple="true"
+          @input="onTagsChange"
+        />
+      </template>
+      <Actions>
+        <ActionButton
+          v-if="$route.name === 'folder' || $route.name === 'home'"
+          v-tooltip="t('bookmarks', 'New folder')"
+          icon="icon-add"
+          class="Bookmarks__Breadcrumbs__AddFolder"
+          @click="onAddFolder"
+        />
+      </Actions>
+    </div>
+    <div class="Bookmarks__Breadcrumbs__ViewMode">
+      <Actions>
+        <ActionButton
+          v-if="viewMod !== 'grid'"
+          icon="icon-toggle-pictures"
+          @click="onSetGridView"
+        >
+          {{ t('bookmarks', 'Grid view') }}
+        </ActionButton>
+        <ActionButton
+          v-else
+          icon="icon-toggle-filelist"
+          @click="onSetGridView"
+        >
+          {{ t('bookmarks', 'List view') }}
+        </ActionButton>
+      </Actions>
+    </div>
+  </div>
 </template>
 <script>
 import { Multiselect, Actions, ActionButton } from 'nextcloud-vue';
-import { actions, mutations } from '../store';
+import { mutations } from '../store';
 
 export default {
 	name: 'Breadcrumbs',

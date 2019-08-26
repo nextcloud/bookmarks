@@ -1,48 +1,47 @@
 <template>
-	<AppSidebar
-		class="Bookmarks__Sidebar"
-		v-if="isActive"
-		:title="bookmark.title"
-		:subtitle="bookmark.url"
-		:background="background"
-		@close="onClose"
-	>
-		<AppSidebarTab :name="t('bookmarks', 'Details')" icon="icon-info">
-			<div>
-				<h3>
-					<span class="icon-calendar-dark" />
-					{{ t('bookmarks', 'Creation date') }}
-				</h3>
-				{{ addedDate }}
-			</div>
-			<div>
-				<h3><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}</h3>
-				<Multiselect
-					class="Bookmarks__Sidebar__Tags"
-					:value="tags"
-					:autoLimit="false"
-					:limit="7"
-					:options="allTags"
-					:multiple="true"
-					:taggable="true"
-					@input="onTagsChange"
-					@tag="onAddTag"
-				>
-				</Multiselect>
-			</div>
-			<div>
-				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-				<div
-					class="Bookmarks__Sidebar__Notes"
-					contenteditable
-					@input="onNotesChange"
-				>
-					{{ description }}
-				</div>
-			</div>
-		</AppSidebarTab>
-		<AppSidebarTab :name="t('bookmarks', 'Sharing')" icon="icon-sharing" />
-	</AppSidebar>
+  <AppSidebar
+    v-if="isActive"
+    class="Bookmarks__Sidebar"
+    :title="bookmark.title"
+    :subtitle="bookmark.url"
+    :background="background"
+    @close="onClose"
+  >
+    <AppSidebarTab :name="t('bookmarks', 'Details')" icon="icon-info">
+      <div>
+        <h3>
+          <span class="icon-calendar-dark" />
+          {{ t('bookmarks', 'Creation date') }}
+        </h3>
+        {{ addedDate }}
+      </div>
+      <div>
+        <h3><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}</h3>
+        <Multiselect
+          class="Bookmarks__Sidebar__Tags"
+          :value="tags"
+          :auto-limit="false"
+          :limit="7"
+          :options="allTags"
+          :multiple="true"
+          :taggable="true"
+          @input="onTagsChange"
+          @tag="onAddTag"
+        />
+      </div>
+      <div>
+        <h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
+        <div
+          class="Bookmarks__Sidebar__Notes"
+          contenteditable
+          @input="onNotesChange"
+        >
+          {{ description }}
+        </div>
+      </div>
+    </AppSidebarTab>
+    <AppSidebarTab :name="t('bookmarks', 'Sharing')" icon="icon-sharing" />
+  </AppSidebar>
 </template>
 <script>
 import { AppSidebar, AppSidebarTab, Multiselect } from 'nextcloud-vue';
@@ -54,7 +53,6 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7; // one week
 export default {
 	name: 'SidebarBookmark',
 	components: { AppSidebar, AppSidebarTab, Multiselect },
-	created() {},
 	data() {
 		return {
 			description: ''
@@ -100,6 +98,7 @@ export default {
 			this.description = newBookmark.description;
 		}
 	},
+	created() {},
 	methods: {
 		onClose() {
 			this.$store.commit(mutations.SET_SIDEBAR, null);
@@ -118,7 +117,7 @@ export default {
 		},
 		scheduleSave() {
 			if (this.changeTimeout) clearTimeout(this.changeTimeout);
-			this.changeTimeout = setTimeout(async () => {
+			this.changeTimeout = setTimeout(async() => {
 				await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id);
 				await this.$store.dispatch(actions.LOAD_TAGS);
 			}, 1000);

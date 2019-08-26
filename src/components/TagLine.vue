@@ -1,9 +1,9 @@
 <template>
-	<div class="Bookmarks__TagLine">
-		<div v-for="tag in tags" :key="tag" class="Bookmarks__TagLine_Tag">
-			{{ tag }}
-		</div>
-	</div>
+  <div class="Bookmarks__TagLine">
+    <div v-for="tag in tags" :key="tag" class="Bookmarks__TagLine_Tag">
+      {{ tag }}
+    </div>
+  </div>
 </template>
 <script>
 export default {

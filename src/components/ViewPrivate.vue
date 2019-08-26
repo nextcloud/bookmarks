@@ -1,13 +1,13 @@
 <template>
-	<Content app-name="bookmarks">
-		<Navigation />
-		<AppContent>
-			<Breadcrumbs />
-			<BookmarksList :loading="loading.bookmarks" :bookmarks="bookmarks" />
-		</AppContent>
-		<SidebarBookmark />
-		<ModalMove />
-	</Content>
+  <Content app-name="bookmarks">
+    <Navigation />
+    <AppContent>
+      <Breadcrumbs />
+      <BookmarksList :loading="loading.bookmarks" :bookmarks="bookmarks" />
+    </AppContent>
+    <SidebarBookmark />
+    <ModalMove />
+  </Content>
 </template>
 
 <script>
@@ -67,30 +67,30 @@ export default {
 		async onRoute() {
 			const route = this.$route;
 			switch (route.name) {
-				case 'home':
-					await this.$store.dispatch(actions.LOAD_SETTINGS);
-					this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1');
-					break;
-				case 'recent':
-					this.$store.dispatch(actions.FILTER_BY_RECENT);
-					break;
-				case 'untagged':
-					this.$store.dispatch(actions.FILTER_BY_UNTAGGED);
-					break;
-				case 'folder':
-					this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder);
-					break;
-				case 'tags':
-					this.$store.dispatch(
-						actions.FILTER_BY_TAGS,
-						route.params.tags.split(',')
-					);
-					break;
-				case 'search':
-					this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search);
-					break;
-				default:
-					throw new Error('Nothing here. Move along.');
+			case 'home':
+				await this.$store.dispatch(actions.LOAD_SETTINGS);
+				this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1');
+				break;
+			case 'recent':
+				this.$store.dispatch(actions.FILTER_BY_RECENT);
+				break;
+			case 'untagged':
+				this.$store.dispatch(actions.FILTER_BY_UNTAGGED);
+				break;
+			case 'folder':
+				this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder);
+				break;
+			case 'tags':
+				this.$store.dispatch(
+					actions.FILTER_BY_TAGS,
+					route.params.tags.split(',')
+				);
+				break;
+			case 'search':
+				this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search);
+				break;
+			default:
+				throw new Error('Nothing here. Move along.');
 			}
 		},
 
@@ -114,8 +114,8 @@ export default {
 
 		onScroll() {
 			if (
-				document.body.scrollHeight <
-				window.scrollY + window.innerHeight + 500
+				document.body.scrollHeight
+				< window.scrollY + window.innerHeight + 500
 			) {
 				this.$store.dispatch(actions.FETCH_PAGE);
 			}
