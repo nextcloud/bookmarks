@@ -45,7 +45,7 @@
 </template>
 <script>
 import { AppSidebar, AppSidebarTab, Multiselect } from 'nextcloud-vue';
-import { generateUrl } from 'nextcloud-router'
+import { generateUrl } from 'nextcloud-router';
 import humanizeDuration from 'humanize-duration';
 import { actions, mutations } from '../store';
 
