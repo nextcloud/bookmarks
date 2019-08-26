@@ -26,34 +26,35 @@
 					@input="onTagsChange"
 				/>
 			</template>
-			<button
-				v-if="$route.name === 'folder' || $route.name === 'home'"
-				class="button icon-add Bookmarks__Breadcrumbs__AddFolder"
-				v-tooltip="t('bookmarks', 'New folder')"
-				@click="onAddFolder"
-			></button>
+			<Actions>
+				<ActionButton
+					v-if="$route.name === 'folder' || $route.name === 'home'"
+					icon="icon-add"
+					class="Bookmarks__Breadcrumbs__AddFolder"
+					v-tooltip="t('bookmarks', 'New folder')"
+					@click="onAddFolder"
+				/>
+			</Actions>
 		</div>
 		<div class="Bookmarks__Breadcrumbs__ViewMode">
-			<button
-				@click="onSetGridView"
-				class="icon-toggle-pictures"
-				v-tooltip="t('bookmarks', 'Grid view')"
-			></button>
-			<button
-				@click="onSetListView"
-				class="icon-toggle-filelist"
-				v-tooltip="t('bookmarks', 'List view')"
-			></button>
+			<Actions>
+				<ActionButton icon="icon-toggle-pictures" @click="onSetGridView">{{
+					t('bookmarks', 'Grid view')
+				}}</ActionButton>
+				<ActionButton icon="icon-toggle-filelist" @click="onSetGridView">{{
+					t('bookmarks', 'List view')
+				}}</ActionButton>
+			</Actions>
 		</div>
 	</div>
 </template>
 <script>
-import { Multiselect } from 'nextcloud-vue';
+import { Multiselect, Actions, ActionButton } from 'nextcloud-vue';
 import { actions, mutations } from '../store';
 
 export default {
 	name: 'Breadcrumbs',
-	components: { Multiselect },
+	components: { Multiselect, Actions, ActionButton },
 	props: {},
 	data() {
 		return {
