@@ -38,12 +38,18 @@
 		</div>
 		<div class="Bookmarks__Breadcrumbs__ViewMode">
 			<Actions>
-				<ActionButton icon="icon-toggle-pictures" @click="onSetGridView">{{
-					t('bookmarks', 'Grid view')
-				}}</ActionButton>
-				<ActionButton icon="icon-toggle-filelist" @click="onSetGridView">{{
-					t('bookmarks', 'List view')
-				}}</ActionButton>
+				<ActionButton
+					v-if="viewMod !== 'grid'"
+					icon="icon-toggle-pictures"
+					@click="onSetGridView"
+					>{{ t('bookmarks', 'Grid view') }}</ActionButton
+				>
+				<ActionButton
+					v-else
+					icon="icon-toggle-filelist"
+					@click="onSetGridView"
+					>{{ t('bookmarks', 'List view') }}</ActionButton
+				>
 			</Actions>
 		</div>
 	</div>
@@ -74,6 +80,9 @@ export default {
 			const folder = this.$route.params.folder;
 			if (!folder) return [];
 			return this.$store.getters.getFolder(folder).reverse();
+		},
+		viewMode() {
+			return this.$store.state.viewMode;
 		}
 	},
 	created() {},
