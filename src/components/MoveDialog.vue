@@ -7,7 +7,7 @@
           id: '-1',
           children: allFolders
         }"
-        :show-children="true"
+        :show-children-default="true"
         @select="onSelect"
       />
     </div>

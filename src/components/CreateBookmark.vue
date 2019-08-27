@@ -13,7 +13,7 @@
     </span>
     <Actions>
       <ActionButton
-        :icon="creating ? 'icon-loading' : 'icon-checkmark'"
+        :icon="creating ? 'icon-loading' : 'icon-confirm'"
         @click="submit"
       >
         Create

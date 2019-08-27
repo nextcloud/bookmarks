@@ -607,6 +607,7 @@ export default new Vuex.Store({
 
 		[actions.RELOAD_VIEW]({ state, dispatch, commit }) {
 			commit(mutations.SET_QUERY, state.fetchState.query);
+			dispatch(actions.FETCH_PAGE);
 			dispatch(actions.LOAD_FOLDERS);
 			dispatch(actions.LOAD_TAGS);
 		},

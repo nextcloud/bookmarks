@@ -6,7 +6,7 @@
         {{ folder.title }}
       </h4>
       <Actions>
-        <ActionButton icon="icon-checkmark" @click="$emit('select', folder.id)">
+        <ActionButton icon="icon-confirm" @click="$emit('select', folder.id)">
           {{ t('bookmarks', 'Select') }}
         </ActionButton>
       </Actions>
@@ -32,10 +32,16 @@ export default {
 			type: Object,
 			required: true
 		},
-		showChildren: {
+		showChildrenDefault: {
 			type: Boolean,
 			default: false
 		}
+	},
+	data() {
+		return { showChildren: false };
+	},
+	mounted() {
+		this.showChildren = this.showChildrenDefault;
 	}
 };
 </script>
