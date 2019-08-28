@@ -72,35 +72,4 @@ class WebViewController extends Controller {
 		$response->setContentSecurityPolicy($policy);
 		return $response;
 	}
-
-	/**
-	 * @param string $url
-	 * @param string $title
-	 * @return TemplateResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 */
-	public function bookmarklet($url = "", $title = "") {
-		$bookmarkExists = $this->bookmarks->bookmarkExists($url, $this->userId);
-		$description = "";
-		$tags = [];
-		if ($bookmarkExists !== false) {
-			$bookmark = $this->bookmarks->findUniqueBookmark($bookmarkExists, $this->userId);
-			$description = $bookmark['description'];
-			$tags = $bookmark['tags'];
-		}
-		$params = [
-			'url'           => $url,
-			'title'         => $title,
-			'description'   => $description,
-			'bookmarkExists'=> $bookmarkExists,
-			'tags'          => $tags
-		];
-		$policy = new ContentSecurityPolicy();
-		$policy->allowEvalScript(true);
-		$res = new TemplateResponse('bookmarks', 'addBookmarklet', $params);  // templates/main.php
-		$res->setContentSecurityPolicy($policy);
-		return $res;
-	}
 }

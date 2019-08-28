@@ -42,7 +42,7 @@ export default {
 	},
 	methods: {
 		submit() {
-			this.$store.dispatch(actions.CREATE_BOOKMARK, this.url);
+			this.$store.dispatch(actions.CREATE_BOOKMARK, { url: this.url });
 		}
 	}
 };

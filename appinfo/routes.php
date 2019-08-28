@@ -23,7 +23,6 @@ $application = new Application();
 $application->registerRoutes($this, ['routes' => [
 	//Web Template Route
 	['name' => 'web_view#index', 'url' => '/', 'verb' => 'GET'],
-	['name' => 'web_view#bookmarklet', 'url' => '/bookmarklet', 'verb' => 'GET'],
 	//internal REST API
 	['name' => 'internal_bookmark#get_bookmarks', 'url' => '/bookmark', 'verb' => 'GET'],
 	['name' => 'internal_bookmark#new_bookmark', 'url' => '/bookmark', 'verb' => 'POST'],
