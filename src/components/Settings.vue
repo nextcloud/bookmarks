@@ -1,32 +1,5 @@
 <template>
   <div class="settings">
-    <h3>{{ t('bookmarks', 'Bookmarklet') }}</h3>
-    <p>
-      {{
-        t(
-          'bookmarks',
-          'Drag this to your browser bookmarks and click it, when ' +
-            'you want to bookmark a webpage quickly:'
-        )
-      }}
-    </p>
-    <p>&nbsp;</p>
-    <p>
-      <a class="button" :href="bookmarklet" @click.prevent="void 0">{{
-        t('bookmarks', 'Add to {instanceName} ', {
-          instanceName: oc_defaults.name
-        })
-      }}</a>
-    </p>
-
-    <h3>{{ t('bookmarks', 'Client apps') }}</h3>
-    <p>
-      Check out the collection of
-      <a href="https://github.com/nextcloud/bookmarks#third-party-clients">client apps</a>
-      that integrate with this app.
-    </p>
-
-    <h3>{{ t('bookmarks', 'Import & Export') }}</h3>
     <input type="file" class="import" size="5"
            @change="onImportSubmit"
     >
@@ -37,68 +10,66 @@
       <span class="icon-download" /> {{ t('bookmarks', 'Export') }}
     </button>
 
-    <h3>{{ t('bookmarks', 'Sorting') }}</h3>
-    <select :value="sorting" @change="onChangeSorting">
-      <option id="added" value="added">
-        {{
-          t('bookmarks', 'Recently added')
-        }}
-      </option>
-      <option id="title" value="title">
-        {{
-          t('bookmarks', 'Alphabetically')
-        }}
-      </option>
-      <option id="clickcount" value="clickcount">
-        {{
-          t('bookmarks', 'Most visited')
-        }}
-      </option>
-      <option id="lastmodified" value="lastmodified">
-        {{
-          t('bookmarks', 'Last modified')
-        }}
-      </option>
-    </select>
+    <label>{{ t('bookmarks', 'Sorting') }}
+      <select :value="sorting" @change="onChangeSorting">
+        <option id="added" value="added">
+          {{
+            t('bookmarks', 'Recently added')
+          }}
+        </option>
+        <option id="title" value="title">
+          {{
+            t('bookmarks', 'Alphabetically')
+          }}
+        </option>
+        <option id="clickcount" value="clickcount">
+          {{
+            t('bookmarks', 'Most visited')
+          }}
+        </option>
+        <option id="lastmodified" value="lastmodified">
+          {{
+            t('bookmarks', 'Last modified')
+          }}
+        </option>
+      </select></label>
 
-    <h3>{{ t('bookmarks', 'View mode') }}</h3>
-    <select :value="viewMode" @change="onChangeViewMode">
-      <option id="grid" value="grid">
-        {{ t('bookmarks', 'Grid view') }}
-      </option>
-      <option id="list" value="list">
-        {{ t('bookmarks', 'List view') }}
-      </option>
-    </select>
+    <label>{{ t('bookmarks', 'View mode') }}
+      <select :value="viewMode" @change="onChangeViewMode">
+        <option id="grid" value="grid">
+          {{ t('bookmarks', 'Grid view') }}
+        </option>
+        <option id="list" value="list">
+          {{ t('bookmarks', 'List view') }}
+        </option>
+      </select></label>
 
-    <h3>{{ t('bookmarks', 'RSS Feed') }}</h3>
+    <label>{{ t('bookmarks', 'RSS Feed') }}
+      <input v-tooltip="t('bookmarks', 'This is an RSS feed of the current result set with access restricted to you.')" type="text" readonly
+             :value="rssURL" @click="onRssClick"
+      ></label>
+
+    <label>{{ t('bookmarks', 'Clear data') }}
+      <button v-tooltip="t('bookmarks', 'Permanently remove all bookmarks from your account. There is no going back!')" class="clear-data" @click="onClearData">
+        <span class="icon-delete" />
+        {{ t('bookmarks', 'Delete all bookmarks') }}
+      </button>
+    </label>
+
+    <label>{{ t('bookmarks', 'Bookmarklet') }}
+      <a v-tooltip="t('bookmarks', 'Drag this to your browser bookmarks and click it to quickly bookmark a webpage')" class="button" :href="bookmarklet"
+         @click.prevent="void 0"
+      >{{
+        t('bookmarks', 'Add to {instanceName} ', {
+          instanceName: oc_defaults.name
+        })
+      }}</a>
+    </label>
+
     <p>
-      {{
-        t(
-          'bookmarks',
-          'This is an RSS feed of the current result set with ' +
-            'access restricted to you.'
-        )
-      }}
+      {{ t('bookmarks', 'Also check out the collection of client apps that integrate with this app: ') }}
+      <a href="https://github.com/nextcloud/bookmarks#third-party-clients">{{ t('bookmarks', 'Client apps') }}</a>
     </p>
-    <input type="text" readonly :value="rssURL"
-           @click="onRssClick"
-    >
-
-    <h3>{{ t('bookmarks', 'Clear data') }}</h3>
-    <p>
-      {{
-        t(
-          'bookmarks',
-          'Permanently remove all bookmarks from your account. ' +
-            'There is no going back!'
-        )
-      }}
-    </p>
-    <button class="clear-data" @click="onClearData">
-      <span class="icon-delete" />
-      {{ t('bookmarks', 'Delete all bookmarks') }}
-    </button>
   </div>
 </template>
 <script>
@@ -187,6 +158,18 @@ export default {
 	position: absolute;
 	top: 0;
 	left: -1000px;
+}
+
+.settings label,
+.settings input,
+.settings select,
+.settings label button,
+.settings label a.button {
+  display: block;
+}
+
+.settings label {
+  margin-top: 10px;
 }
 
 .settings a:link:not(.button) {
