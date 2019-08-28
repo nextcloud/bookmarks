@@ -1,5 +1,4 @@
 <?php
-script('bookmarks', 'bookmarks');
-style('bookmarks', 'style');
+script('bookmarks', 'bookmarks.main');
 ?>
 <div id="vue-content"></div>
