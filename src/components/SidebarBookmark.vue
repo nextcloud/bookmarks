@@ -139,7 +139,7 @@ export default {
 }
 
 .sidebar__notes {
-	min-height: 400px !important;
+	min-height: 200px !important;
 	width: auto !important;
 }
 </style>

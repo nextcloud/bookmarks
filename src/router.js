@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import ViewPrivate from './components/ViewPrivate';
+import ViewBookmarklet from './components/ViewBookmarklet';
 import { generateUrl } from 'nextcloud-router';
 
 Vue.use(Router);
@@ -39,6 +40,24 @@ export default new Router({
 			path: '/untagged',
 			name: 'untagged',
 			component: ViewPrivate
+		},
+		{
+			path: '/bookmarklet',
+			name: 'bookmarklet',
+			component: ViewBookmarklet,
+			props: true
+		},
+		{
+			path: '/bookmarklet/:url',
+			name: 'bookmarklet',
+			component: ViewBookmarklet,
+			props: true
+		},
+		{
+			path: '/bookmarklet/:url/:title',
+			name: 'bookmarklet',
+			component: ViewBookmarklet,
+			props: true
 		}
 	]
 });

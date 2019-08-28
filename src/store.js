@@ -37,6 +37,7 @@ export const mutations = {
 export const actions = {
 	ADD_ALL_BOOKMARKS: 'ADD_ALL_BOOKMARKS',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
+	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
 	OPEN_BOOKMARK: 'OPEN_BOOKMARK',
 	SAVE_BOOKMARK: 'SAVE_BOOKMARK',
@@ -227,12 +228,41 @@ export default new Vuex.Store({
 			}
 		},
 
-		[actions.CREATE_BOOKMARK]({ commit, dispatch, state }, link) {
+		async [actions.FIND_BOOKMARK]({ commit, dispatch, state }, link) {
+			if (state.loading.bookmarks) return;
+			try {
+				const response = await axios
+					.get(url('/bookmark'), { params: {
+						url: link
+					} });
+				const {
+					data: { data: bookmarks, status }
+				} = response;
+				if (status !== 'success') {
+					throw new Error(response.data);
+				}
+				if (!bookmarks.length) return;
+				commit(mutations.ADD_BOOKMARK, bookmarks[0]);
+				return bookmarks[0];
+			} catch (err) {
+				console.error(err);
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to find existing bookmark')
+				);
+				throw err;
+			}
+		},
+		[actions.CREATE_BOOKMARK]({ commit, dispatch, state }, data) {
 			if (state.loading.bookmarks) return;
 			commit(mutations.FETCH_START, 'createBookmark');
 			return axios
 				.post(url('/bookmark'), {
-					url: link
+					url: data.url,
+					title: data.title,
+					description: data.description,
+					folders: data.folders,
+					tags: data.tags
 				})
 				.then(response => {
 					const {
