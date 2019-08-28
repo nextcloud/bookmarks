@@ -4,12 +4,15 @@ const { VueLoaderPlugin } = require('vue-loader');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
-	entry: path.join(__dirname, 'src', 'main.js'),
+	entry: {
+		main: path.join(__dirname, 'src', 'main.js'),
+		admin: path.join(__dirname, 'src', 'admin.js')
+	},
 	output: {
 		path: path.resolve(__dirname, './js'),
 		publicPath: '/js/',
-		filename: 'bookmarks.js',
-		chunkFilename: 'chunks/[name].js'
+		filename: 'bookmarks.[name].js',
+		chunkFilename: 'chunks/bookmarks.[name].js'
 	},
 	module: {
 		rules: [
