@@ -49,7 +49,7 @@
 </template>
 <script>
 import { Multiselect, Actions, ActionButton } from 'nextcloud-vue';
-import { mutations } from '../store';
+import { mutations } from '../store/';
 
 export default {
 	name: 'Breadcrumbs',

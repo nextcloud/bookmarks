@@ -15,7 +15,7 @@
 </template>
 <script>
 import { Modal } from 'nextcloud-vue';
-import { actions, mutations } from '../store';
+import { actions, mutations } from '../store/';
 import TreeFolder from './TreeFolder';
 
 export default {

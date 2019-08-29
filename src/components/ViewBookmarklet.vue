@@ -41,7 +41,7 @@
 
 <script>
 import { Content, Multiselect } from 'nextcloud-vue';
-import { actions } from '../store';
+import { actions } from '../store/';
 
 export default {
 	name: 'ViewBookmarklet',

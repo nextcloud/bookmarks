@@ -22,7 +22,7 @@
 import Vue from 'vue';
 import { Tooltip } from 'nextcloud-vue';
 import App from './components/ViewAdmin';
-import store from './store';
+import store from './store/';
 import AppGlobal from './mixins/AppGlobal';
 
 Vue.mixin(AppGlobal);

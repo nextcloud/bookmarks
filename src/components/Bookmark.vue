@@ -63,7 +63,7 @@
 import Vue from 'vue';
 import { Actions, ActionButton } from 'nextcloud-vue';
 import { generateUrl } from 'nextcloud-router';
-import { actions, mutations } from '../store';
+import { actions, mutations } from '../store/';
 import TagLine from './TagLine';
 
 export default {

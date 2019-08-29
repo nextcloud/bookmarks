@@ -74,7 +74,7 @@
 </template>
 <script>
 import { generateUrl } from 'nextcloud-router';
-import { actions } from '../store';
+import { actions } from '../store/';
 export default {
 	name: 'Settings',
 	components: {},
