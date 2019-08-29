@@ -92,12 +92,11 @@ export default {
 				window.location.origin
 				+ generateUrl(
 					'/apps/bookmarks/public/rest/v2/bookmark?'
-						+ $.param(
-							Object.assign({}, this.$store.state.fetchState.query, {
-								format: 'rss',
-								page: -1
-							})
-						)
+						+ new URLSearchParams(Object.assign({}, this.$store.state.fetchState.query, {
+							format: 'rss',
+							page: -1
+						})
+						).toString()
 				)
 			);
 		},

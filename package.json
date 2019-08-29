@@ -62,5 +62,8 @@
 		"webpack-cli": "^3.3.7",
 		"webpack-merge": "^4.2.1",
 		"webpack-node-externals": "^1.7.2"
+	},
+	"engines": {
+		"node": ">=10.0.0"
 	}
 }
