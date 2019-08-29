@@ -62,7 +62,8 @@
 </template>
 <script>
 import Vue from 'vue';
-import { Actions, ActionButton } from 'nextcloud-vue';
+import Actions from 'nextcloud-vue/dist/Components/Actions';
+import ActionButton from 'nextcloud-vue/dist/Components/ActionButton';
 import { generateUrl } from 'nextcloud-router';
 import { actions, mutations } from '../store/';
 import TagLine from './TagLine';

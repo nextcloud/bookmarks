@@ -48,7 +48,9 @@
   </div>
 </template>
 <script>
-import { Multiselect, Actions, ActionButton } from 'nextcloud-vue';
+import Multiselect from 'nextcloud-vue/dist/Components/Multiselect';
+import Actions from 'nextcloud-vue/dist/Components/Actions';
+import ActionButton from 'nextcloud-vue/dist/Components/ActionButton';
 import { mutations } from '../store/';
 
 export default {
