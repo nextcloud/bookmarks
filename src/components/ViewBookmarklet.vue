@@ -129,26 +129,31 @@ export default {
 </script>
 <style>
 .bookmarklet {
-margin: 30px auto;
-width: 70%;
+	margin: 30px auto;
+	width: 70%;
 }
+
 .bookmarklet__exists {
-  background: var(--color-background-dark);
-  border-radius: var(--border-radius-pill);
-  font-weight: bold;
-  padding: 10px 20px;
+	background: var(--color-background-dark);
+	border-radius: var(--border-radius-pill);
+	font-weight: bold;
+	padding: 10px 20px;
 }
+
 figure[class^=icon-] {
-  display: inline-block;
+	display: inline-block;
 }
+
 .bookmarklet label {
-  margin-top: 10px;
-  display: block;
+	margin-top: 10px;
+	display: block;
 }
+
 .bookmarklet input {
-  width: 100%;
-  display: block;
+	width: 100%;
+	display: block;
 }
+
 .bookmarklet__notes {
 	min-height: 100px !important;
 	width: auto !important;

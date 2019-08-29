@@ -143,7 +143,7 @@ export default {
 	align-items: center;
 	background-position: center !important;
 	background-size: cover !important;
-  background-color: var(--color-main-background);
+	background-color: var(--color-main-background);
 	position: relative;
 }
 
