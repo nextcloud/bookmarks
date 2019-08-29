@@ -165,11 +165,11 @@ export default {
 .settings select,
 .settings label button,
 .settings label a.button {
-  display: block;
+	display: block;
 }
 
 .settings label {
-  margin-top: 10px;
+	margin-top: 10px;
 }
 
 .settings a:link:not(.button) {
