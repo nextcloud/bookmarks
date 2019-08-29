@@ -40,7 +40,8 @@
 </template>
 
 <script>
-import { Content, Multiselect } from 'nextcloud-vue';
+import Content from 'nextcloud-vue/dist/Components/Content';
+import Multiselect from 'nextcloud-vue/dist/Components/Multiselect';
 import { actions } from '../store/';
 
 export default {

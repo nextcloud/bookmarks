@@ -20,7 +20,7 @@
  *
  */
 import Vue from 'vue';
-import { Tooltip } from 'nextcloud-vue';
+import Tooltip from 'nextcloud-vue/dist/Directives/Tooltip';
 import App from './components/ViewAdmin';
 import store from './store/';
 import AppGlobal from './mixins/AppGlobal';

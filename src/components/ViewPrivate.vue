@@ -11,7 +11,8 @@
 </template>
 
 <script>
-import { Content, AppContent } from 'nextcloud-vue';
+import Content from 'nextcloud-vue/dist/Components/Content';
+import AppContent from 'nextcloud-vue/dist/Components/AppContent';
 import Navigation from './Navigation';
 import BookmarksList from './BookmarksList';
 import Breadcrumbs from './Breadcrumbs';
