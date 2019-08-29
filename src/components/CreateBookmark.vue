@@ -16,7 +16,7 @@
         :icon="creating ? 'icon-loading' : 'icon-confirm'"
         @click="submit"
       >
-        Create
+        {{ t('bookmarks', 'Create') }}
       </ActionButton>
     </Actions>
   </div>

@@ -33,7 +33,7 @@
         {{ bookmark.description }}
       </div>
       <button class="primary" @click="submit">
-        <span class="icon-confirm-white" /> Save
+        <span class="icon-confirm-white" />{{ t('bookmarks', 'Save') }}
       </button>
     </div>
   </Content>

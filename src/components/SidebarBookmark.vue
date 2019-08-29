@@ -82,7 +82,7 @@ export default {
 					units: ['d', 'h', 'm', 's'],
 					largest: 1
 				});
-				return duration + ' ' + this.t('bookmarks', 'ago');
+				return this.t('bookmarks', '{time} ago', { time: duration });
 			} else {
 				return date.toLocaleDateString();
 			}
