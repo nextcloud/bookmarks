@@ -21,7 +21,7 @@ import {
 	AppNavigationSettings
 } from 'nextcloud-vue';
 import Settings from './Settings';
-import { actions, mutations } from '../store';
+import { actions, mutations } from '../store/';
 
 export default {
 	name: 'App',

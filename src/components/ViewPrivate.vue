@@ -17,7 +17,7 @@ import BookmarksList from './BookmarksList';
 import Breadcrumbs from './Breadcrumbs';
 import SidebarBookmark from './SidebarBookmark';
 import MoveDialog from './MoveDialog';
-import { actions } from '../store';
+import { actions } from '../store/';
 
 export default {
 	name: 'App',

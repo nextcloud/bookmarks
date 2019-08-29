@@ -23,7 +23,7 @@
 </template>
 <script>
 import { Actions, ActionButton } from 'nextcloud-vue';
-import { actions } from '../store';
+import { actions } from '../store/';
 export default {
 	name: 'CreateBookmark',
 	components: { Actions, ActionButton },

@@ -47,7 +47,7 @@
 import { AppSidebar, AppSidebarTab, Multiselect } from 'nextcloud-vue';
 import { generateUrl } from 'nextcloud-router';
 import humanizeDuration from 'humanize-duration';
-import { actions, mutations } from '../store';
+import { actions, mutations } from '../store/';
 
 const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7; // one week
 
