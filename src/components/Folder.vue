@@ -24,7 +24,7 @@
     <template v-else>
       <span class="folder__title">
         <input ref="input" v-model="title" type="text"
-               @keyup.enter="onRenameSubmit"
+               :placeholder="t('bookmarks', 'Enter folder title')" @keyup.enter="onRenameSubmit"
         >
         <Actions>
           <ActionButton icon="icon-checkmark" @click="onRenameSubmit">

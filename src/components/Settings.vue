@@ -60,7 +60,7 @@
       <a v-tooltip="t('bookmarks', 'Drag this to your browser bookmarks and click it to quickly bookmark a webpage')" class="button" :href="bookmarklet"
          @click.prevent="void 0"
       >{{
-        t('bookmarks', 'Add to {instanceName} ', {
+        t('bookmarks', 'Add to {instanceName}', {
           instanceName: oc_defaults.name
         })
       }}</a>

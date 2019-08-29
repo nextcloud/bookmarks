@@ -49,6 +49,7 @@
         :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
       />
       <input ref="input" v-model="title" type="text"
+             :placeholder="t('bookmarks', 'Enter bookmark title')"
              @keyup.enter="onRenameSubmit"
       >
       <Actions>
