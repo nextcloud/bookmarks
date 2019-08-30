@@ -33,6 +33,7 @@ OC.L10N.register(
     "Import completed successfully." : "Import úspešne dokončený.",
     "Do you really want to delete all your bookmarks?" : "Naozaj chcete zmazať všetky svoje zložky?",
     "Set tags" : "Nastaviť štítky",
+    "Not allowed to access folder to import into" : "Prístup do priečinka na import bol zamietnutý",
     "Failed to import one bookmark, because: " : "Nepodarilo sa importovať jednu záložku, pretože:",
     "No file provided for import" : "Nie je k dispozícii žiadny súbor na import",
     "Unsupported file type for import" : "Nepodporovaný typ súboru na import",
