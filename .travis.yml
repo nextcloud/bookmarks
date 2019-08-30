@@ -2,6 +2,7 @@ language: php
 php:
   - 7.1
   - 7.2
+  - 7.3
 
 services:
   - postgresql
@@ -14,10 +15,13 @@ env:
   matrix:
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable16
+    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable15
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable16
+    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable15
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable16
+    - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable15
 
 matrix:
   fast_finish: true
