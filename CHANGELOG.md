@@ -1,3 +1,6 @@
+## v2.0.1
+- fix composer lock file
+
 ## v2.0.0
 - NEW: gmp, intl, mbstring are now required
 - NEW: Drop support for nextcloud 14 and php 7.0
