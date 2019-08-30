@@ -18,7 +18,7 @@ Required PHP extensions:
  - ext-intl: *
  - ext-mbstring: *
 ]]></description>
-	<version>2.0.0</version>
+	<version>2.0.2</version>
 	<licence>agpl</licence>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
@@ -30,7 +30,7 @@ Required PHP extensions:
 	<repository type="git">https://github.com/nextcloud/bookmarks.git</repository>
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
 	<dependencies>
-		<nextcloud min-version="15" max-version="17" />
+		<nextcloud min-version="16" max-version="17" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\PreviewsJob</job>

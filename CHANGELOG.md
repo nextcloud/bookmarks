@@ -1,3 +1,6 @@
+## v2.0.2
+- NEW: Drop support for nextcloud 15
+
 ## v2.0.1
 - fix composer lock file
 
