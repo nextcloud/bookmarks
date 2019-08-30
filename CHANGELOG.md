@@ -1,3 +1,6 @@
+## v1.1.2
+- Revert breaking changes of v1.0.8
+
 ## v1.1.1
 - FIX import from web UI
 
