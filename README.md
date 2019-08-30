@@ -6,15 +6,8 @@
 
 This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via the tags you give them and by using the built-in search feature. Furthermore, in order to be able to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API.
 
-## Background
-
-The bookmarks app is quite old and has gone through many hands. It is now more relevant than ever, as the nextcloud app providing support for Firefox Sync doesn't work with the latest versions of Firefox anymore. Currently, there are efforts to make it live up to the expectations produced by the gap that was left by the firefox sync app.
-
 ## Install
-
-Please _avoid_ installing the **bookmarks_fulltextsearch** app along with the bookmarks app, as it is _not compatible_ with newer versions of this app.
-
-This app requires the following php extensions to be installed:
+This app requires at leasts php v7.1 as well as the following php extensions to be installed:
 
 - gmp: \*
 - intl: \*

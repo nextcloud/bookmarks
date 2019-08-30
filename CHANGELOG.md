@@ -1,3 +1,8 @@
+## v2.0.0
+- NEW: gmp, intl, mbstring are now required
+- NEW: Drop support for nextcloud 14 and php 7.0
+- FIX: Switch URL normalizer to adhere strictly to WHATWG URL spec
+
 ## v1.1.2
 - Revert breaking changes of v1.0.8
 
