@@ -1,3 +1,6 @@
+## v2.0.3
+- NEW: Properly specify dependencies in app manifest (allows conditional support for nc 15 again)
+
 ## v2.0.2
 - NEW: Drop support for nextcloud 15
 
