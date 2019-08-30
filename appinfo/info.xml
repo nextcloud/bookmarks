@@ -8,15 +8,6 @@
 This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.
 
 Check out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients
-
-## Requirements
-
-Minimum PHP version:
- - v7.1
-Required PHP extensions:
- - ext-gmp: *
- - ext-intl: *
- - ext-mbstring: *
 ]]></description>
 	<version>2.0.2</version>
 	<licence>agpl</licence>
@@ -31,6 +22,10 @@ Required PHP extensions:
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="16" max-version="17" />
+		<php min-version="5.6" />
+		<lib>gmp</lib>
+		<lib>intl</lib>
+		<lib>mbstring</lib>
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\PreviewsJob</job>
