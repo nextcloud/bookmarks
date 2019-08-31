@@ -37,7 +37,6 @@ OC.L10N.register(
     "No file provided for import" : "Δεν δόθηκε αρχείο για εισαγωγή",
     "Unsupported file type for import" : "Μη υποστηριζόμενος τύπος αρχείου",
     "A Bookmark manager for Nextcloud" : "Διαχειριστής σελιδοδεικτών του Nextcloud",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Αυτή η εφαρμογή σας επιτρέπει να αποθηκεύετε και να οργανώνετε τις αγαπημένες σας σελίδες στον ιστό σε ένα σημείο, επιτρέποντας ταυτόχρονα να τα συγχρονίζετε με τις διάφορες συσκευές και προγράμματα περιήγησης.\nΕλέγξτε τους πελάτες τρίτων που αναφέρονται εδώ: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Προσθήκη σελιδοδείκτη",
     "This URL is already bookmarked! Overwrite?" : "Υπάρχει ήδη σελιδοδείκτης με αυτή τη διεύθυνση URL! Αντικατάσταση;",
     "The title of the page" : "Ο τίτλος της σελίδας",

@@ -38,7 +38,6 @@ OC.L10N.register(
     "No file provided for import" : "İçe aktarılacak bir dosya seçilmemiş",
     "Unsupported file type for import" : "İçe aktarılacak dosya türü desteklenmiyor",
     "A Bookmark manager for Nextcloud" : "Nextcloud için yer imi yöneticisi",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Bu uygulama İnternet üzerinde sık ziyaret ettiğiniz konumları bir noktada toplamanızı ve farklı aygıt ve tarayıcılar ile eşitlemenizi sağlar.\nÜçüncü taraf istemcileri şurada görebilirsiniz: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Yer imi ekle",
     "This URL is already bookmarked! Overwrite?" : "Bu adres zaten yer imlerine eklenmiş! Üzerine yazılsın mı?",
     "The title of the page" : "Sayfa başlığı",

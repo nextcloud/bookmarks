@@ -35,7 +35,6 @@
     "No file provided for import" : "가져올 파일을 지정하지 않았음",
     "Unsupported file type for import" : "지원하지 않는 가져오기 파일 형식",
     "A Bookmark manager for Nextcloud" : "Nextcloud 북마크 관리자",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "이 앱을 사용하여 즐겨찾는 웹 사이트를 한 곳에 모아서 관리하고, 다양한 장치와 브라우저와 동기화할 수 있습니다.\n여기에서 제 3자 클라이언트 목록을 확인할 수 있습니다: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "북마크 추가",
     "This URL is already bookmarked! Overwrite?" : "이 URL이 북마크에 이미 추가되어 있습니다! 덮어쓰시겠습니까?",
     "The title of the page" : "페이지 제목",

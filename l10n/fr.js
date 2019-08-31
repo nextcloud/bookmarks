@@ -38,7 +38,6 @@ OC.L10N.register(
     "No file provided for import" : "Aucun fichier à importer.",
     "Unsupported file type for import" : "Type de fichier non pris en charge",
     "A Bookmark manager for Nextcloud" : "Un gestionnaire de favoris pour Nextcloud",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Cette application vous permet d'enregistrer et d'organiser vos sites favoris du web en un seul lieu, et vous permettre de les synchroniser avec vos différents appareils et navigateurs.\nConsultez la liste des clients tiers ici : https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Ajouter un favori",
     "This URL is already bookmarked! Overwrite?" : "Cette URL est déjà dans les favoris ! Remplacer ?",
     "The title of the page" : "Titre de la page",

@@ -38,7 +38,6 @@ OC.L10N.register(
     "No file provided for import" : "No s'ha proporcionat cap fitxer per importar",
     "Unsupported file type for import" : "El tipus de fitxer que voleu importar no és compatible",
     "A Bookmark manager for Nextcloud" : "Un gestor d'adreces d'interès per al Nextcloud",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Aquesta aplicació us permet emmagatzemar i organitzar els vostres llocs web preferits des d'un sol punt, i alhora també us permet sincronitzar-los amb diversos dispositius i navegadors.\nConsulteu els clients de tercers llistats aquí: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Afegeix una adreça d'interès",
     "This URL is already bookmarked! Overwrite?" : "Ja teniu aquest URL a les adreces d'interès. Voleu sobreescriure'l?",
     "The title of the page" : "Títol de la pàgina",

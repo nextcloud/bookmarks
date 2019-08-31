@@ -36,7 +36,6 @@
     "No file provided for import" : "Nije navedena datoteka za uvoz",
     "Unsupported file type for import" : "Nepodržana vrsta datoteke za uvoz",
     "A Bookmark manager for Nextcloud" : "Upravitelj knjižnim oznakama za Nextcloud",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Ova aplikacija omogućuje pohranjivanje i organiziranje omiljenih mjesta na webu na jednom mjestu i istovremeno sinkroniziranje s različitim uređajima i preglednicima.\nIsprobajte klijente trećih strana navedene ovdje: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Dodaj knjižnu oznaku",
     "This URL is already bookmarked! Overwrite?" : "Ovaj URL je već označen! Prepiši?",
     "The title of the page" : "Naslov stranice",

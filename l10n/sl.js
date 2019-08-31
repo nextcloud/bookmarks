@@ -36,7 +36,6 @@ OC.L10N.register(
     "No file provided for import" : "Ni navedenih datotek za uvoz",
     "Unsupported file type for import" : "Nepodprta vrsta datoteke za uvoz",
     "A Bookmark manager for Nextcloud" : "Upravljalnik zaznamkov za Nextcloud",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Program omogoča shranjevanje in urejanje zaznamkov priljubljenih spletnih strani in hkrati usklajevanje z različnimi napravami in brskalniki.\nNabor odjemalcev, ki so podprti s sistemom, je mogoče preveriti na: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Dodaj zaznamek",
     "This URL is already bookmarked! Overwrite?" : "Ta naslov URL je že dodan med zaznamke. Ali ga želite prepisati?",
     "The title of the page" : "Naziv strani",

@@ -35,7 +35,6 @@
     "No file provided for import" : "Tuotavaa tiedostoa ei ole valittu",
     "Unsupported file type for import" : "Tiedoston tyyppi ei ole tuotavaa muotoa",
     "A Bookmark manager for Nextcloud" : "Kirjanmerkkien hallinta Nextcloudille",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Tämä sovellus mahdollistaa verkon suosikkipaikkojesi tallentamisen ja järjestelyn yhdessä paikassa, mahdollistaen myös niiden synkronoinnin eri laitteisiin ja selaimiin.\nKatso lista kolmannen osapuolen sovelluksista täältä: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Lisää kirjanmerkki",
     "This URL is already bookmarked! Overwrite?" : "Osoite on jo lisätty kirjanmerkkeihin. Korvataanko se?",
     "The title of the page" : "Sivun otsikko",
