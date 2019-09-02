@@ -38,6 +38,7 @@ OC.L10N.register(
     "No file provided for import" : "Geen bestand aangeboden om te importeren",
     "Unsupported file type for import" : "Bestandstype wordt niet ondersteund voor importeren",
     "A Bookmark manager for Nextcloud" : "Een bladwijzerbeheerder voor Nextcloud",
+    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Deze app laat je al je favoriete plekken op het web op één plaats opslaan en beheren, waarbij je ze ook nog eens kunt synchroniseren met al je apparaten en browsers.\n\nBekijk derde partij clients hier: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Add a bookmark" : "Voeg een bladwijzer toe",
     "This URL is already bookmarked! Overwrite?" : "Deze URL is al als bladwijzer aangemerkt! Overschrijven?",
     "The title of the page" : "De titel van de pagina",
