@@ -7,6 +7,7 @@
 This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via the tags you give them and by using the built-in search feature. Furthermore, in order to be able to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API.
 
 ## Install
+
 This app requires at leasts php v7.1 as well as the following php extensions to be installed:
 
 - gmp: \*
@@ -58,6 +59,14 @@ This app exposes a public REST API that third-party clients can interface with.
 
 - [Blizzz](https://github.com/Blizzz)
 - [Marcel Klehr](https://github.com/marcelklehr)
+
+## Donate
+
+If you'd like to support the creation and maintenance of this software, consider donating.
+
+| [<img src="https://img.shields.io/badge/paypal-donate-blue.svg?logo=paypal&style=for-the-badge">](https://www.paypal.me/marcelklehr1) | [<img src="http://img.shields.io/liberapay/receives/marcelklehr.svg?logo=liberapay&style=for-the-badge">](https://liberapay.com/marcelklehr/donate) |
+| :-----------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------: |
+
 
 ## Contribute
 
