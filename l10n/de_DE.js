@@ -43,7 +43,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Diese URL ist bereits als Lesezeichen gespeichert!. Überschreiben?",
     "The title of the page" : "Seitentitel",
     "The address of the page" : "Adresse der Seite",
-    "Description of the page" : "Beschreibung der Seite",
+    "Description of the page" : "Seitenbeschreibung",
     "Save" : "Speichern",
     "Previews" : "Vorschau",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Um Screenshots der  gespeicherten Seiten zu erzeugen kann die Lesezeichen-App einen externen Service verwenden.",
