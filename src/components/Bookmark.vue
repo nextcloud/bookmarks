@@ -22,12 +22,13 @@
           {{ bookmark.title }}
         </h3>
       </a>
-      <TagLine :tags="bookmark.tags" />
       <span
         v-if="bookmark.description"
         v-tooltip="bookmark.description"
-        class="icon-file bookmark__description"
-      />
+        class="bookmark__description"
+      ><figure class="icon-file" />
+        {{ bookmark.description }}</span>
+      <TagLine :tags="bookmark.tags" />
       <Actions class="bookmark__actions">
         <ActionButton icon="icon-info" @click="onDetails">
           {{ t('bookmarks', 'Details') }}
@@ -48,9 +49,12 @@
         class="bookmark__icon"
         :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
       />
-      <input ref="input" v-model="title" type="text"
-             :placeholder="t('bookmarks', 'Enter bookmark title')"
-             @keyup.enter="onRenameSubmit"
+      <input
+        ref="input"
+        v-model="title"
+        type="text"
+        :placeholder="t('bookmarks', 'Enter bookmark title')"
+        @keyup.enter="onRenameSubmit"
       >
       <Actions>
         <ActionButton icon="icon-checkmark" @click="onRenameSubmit">
@@ -183,10 +187,24 @@ export default {
 
 .bookmark__description {
 	display: inline-block;
+	flex: 1;
+	margin: 13px 10px;
+	height: 20px;
+	color: var(--color-text-lighter);
+	text-overflow: ellipsis;
+	overflow: hidden;
+	min-width: 20px;
+}
+.bookmark__description figure {
+	display: none !important;
+}
+
+.bookmark--gridview .bookmark__description {
 	flex: 0;
-	width: 20px;
-	height: 47px;
-	margin: 0 10px;
+}
+
+.bookmark--gridview .bookmark__description figure {
+	display: inline-block !important;
 }
 
 .bookmark__actions {

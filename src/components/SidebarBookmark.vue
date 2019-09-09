@@ -25,17 +25,14 @@
           :options="allTags"
           :multiple="true"
           :taggable="true"
+          :placeholder="t('bookmarks', 'Select tags are create new ones')"
           @input="onTagsChange"
           @tag="onAddTag"
         />
       </div>
       <div>
         <h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-        <div
-          class="sidebar__notes"
-          contenteditable
-          @input="onNotesChange"
-        >
+        <div class="sidebar__notes" contenteditable @input="onNotesChange">
           {{ description }}
         </div>
       </div>
@@ -71,9 +68,7 @@ export default {
 			return this.$store.getters.getBookmark(this.$store.state.sidebar.id);
 		},
 		background() {
-			return generateUrl(
-				`/apps/bookmarks/bookmark/${this.bookmark.id}/image`
-			);
+			return generateUrl(`/apps/bookmarks/bookmark/${this.bookmark.id}/image`);
 		},
 		addedDate() {
 			const date = new Date(Number(this.bookmark.added) * 1000);

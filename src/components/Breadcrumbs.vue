@@ -22,6 +22,7 @@
           :limit="7"
           :options="allTags"
           :multiple="true"
+          :placeholder="t('bookmarks', 'Select one or more tags')"
           @input="onTagsChange"
         />
       </template>
@@ -38,10 +39,14 @@
     <div class="breadcrumbs__viewmode">
       <Actions>
         <ActionButton
-          :icon="viewMode === 'list'? 'icon-toggle-pictures' : 'icon-toggle-filelist'"
+          :icon="
+            viewMode === 'list'
+              ? 'icon-toggle-pictures'
+              : 'icon-toggle-filelist'
+          "
           @click="onToggleViewMode"
         >
-          {{ t('bookmarks', viewMode === 'list'? 'Grid view' : 'List view') }}
+          {{ t('bookmarks', viewMode === 'list' ? 'Grid view' : 'List view') }}
         </ActionButton>
       </Actions>
     </div>
@@ -101,7 +106,10 @@ export default {
 		},
 
 		onToggleViewMode() {
-			this.$store.commit(mutations.SET_VIEW_MODE, this.$store.state.viewMode === 'grid' ? 'list' : 'grid');
+			this.$store.commit(
+				mutations.SET_VIEW_MODE,
+				this.$store.state.viewMode === 'grid' ? 'list' : 'grid'
+			);
 		}
 	}
 };
