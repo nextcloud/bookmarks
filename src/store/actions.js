@@ -52,10 +52,11 @@ export default {
 	async [actions.FIND_BOOKMARK]({ commit, dispatch, state }, link) {
 		if (state.loading.bookmarks) return;
 		try {
-			const response = await axios
-				.get(url('/bookmark'), { params: {
+			const response = await axios.get(url('/bookmark'), {
+				params: {
 					url: link
-				} });
+				}
+			});
 			const {
 				data: { data: bookmarks, status }
 			} = response;
@@ -164,10 +165,7 @@ export default {
 	[actions.OPEN_BOOKMARK]({ commit }, id) {
 		commit(mutations.SET_SIDEBAR, { type: 'bookmark', id });
 	},
-	async [actions.DELETE_BOOKMARK](
-		{ commit, dispatch, state },
-		{ id, folder }
-	) {
+	async [actions.DELETE_BOOKMARK]({ commit, dispatch, state }, { id, folder }) {
 		if (folder) {
 			try {
 				const response = await axios.delete(
@@ -526,15 +524,13 @@ export default {
 	},
 
 	[actions.SET_SETTING]({ commit, dispatch, state }, { key, value }) {
+		commit(mutations.SET_SETTING, key, value);
+		if (key === 'viewMode' && state.viewMode !== value) {
+			commit(mutations.SET_VIEW_MODE, value);
+		}
 		return axios
 			.post(url(`/settings/${key}`), {
 				[key]: value
-			})
-			.then(response => {
-				commit(mutations.SET_SETTING, key, value);
-				if (key === 'viewMode' && state.viewMode !== value) {
-					commit(mutations.SET_VIEW_MODE, value);
-				}
 			})
 			.catch(err => {
 				console.error(err);
@@ -571,8 +567,7 @@ export default {
 			['sorting', 'viewMode'].map(key => dispatch(actions.LOAD_SETTING, key))
 		);
 	}
-}
-;
+};
 
 function url(url) {
 	url = `/apps/bookmarks${url}`;
