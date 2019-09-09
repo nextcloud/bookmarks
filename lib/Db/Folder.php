@@ -7,6 +7,7 @@ class Bookmark extends Entity {
 	protected $parentFolder;
 	protected $title;
 	protected $userId;
+	protected $index;
 
 
 	public function __construct() {
@@ -14,5 +15,6 @@ class Bookmark extends Entity {
 		$this->addType('parentFolder', 'integer');
 		$this->addType('title', 'string');
 		$this->addType('userId', 'integer');
+		$this->addType('index', 'integer');
 	}
 }

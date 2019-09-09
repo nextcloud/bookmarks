@@ -27,8 +27,6 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function find(int $userId, int $id) : Bookmark {
 		$qb = $this->db->getQueryBuilder();
-
-		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
 			->from('bookmarks')
@@ -149,10 +147,18 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter($folderId)));
+			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter($folderId)));
+		return $this->findEntities($qb);
+	}
+
+	public function findByRootFolder(int $userId) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*')
+			->from('bookmarks', 'b')
+			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
+			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter(-1)));
+			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntities($qb);
 	}
 
@@ -194,7 +200,7 @@ class BookmarkMapper extends QBMapper {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 
-		parent::insertOrUpdate($entity);
+		parent::update($entity);
 
 		// trigger event
 		$this->eventDispatcher->dispatch(
@@ -213,18 +219,19 @@ class BookmarkMapper extends QBMapper {
 		);
 	}
 
-	/**
-	 * Delete all bookmarks of a specific user
-	 * @param string $userrId User ID
-	 */
-	public function deleteAll($userId) {
-		/*$rootFolders = $this->listChildFolders($userId, -1);
-		foreach ($rootFolders as $folder) {
-			$this->deleteFolder($userId, $folder['id']);
-		}*/
-		$restBookmarks = $this->findByFolder($userId, -1);
-		foreach ($restBookmarks as $bookmark) {
-			$this->delete($bookmark);
+	public function hash(Bookmark $entity, $fields) {
+		$bookmark = [];
+		foreach ($fields as $field) {
+			if (isset($entity->{$field})) {
+				$bookmark[$field] = $entity->{$field};
+			}
 		}
+		return hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+	}
+
+
+	public function markPreviewCreated(Bookmark $entity) {
+		$entity->setLastPreview(time());
+		return $this->update($entity);
 	}
 }
