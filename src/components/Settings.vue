@@ -13,52 +13,60 @@
     <label>{{ t('bookmarks', 'Sorting') }}
       <select :value="sorting" @change="onChangeSorting">
         <option id="added" value="added">
-          {{
-            t('bookmarks', 'Recently added')
-          }}
+          {{ t('bookmarks', 'Recently added') }}
         </option>
         <option id="title" value="title">
-          {{
-            t('bookmarks', 'Alphabetically')
-          }}
+          {{ t('bookmarks', 'Alphabetically') }}
         </option>
         <option id="clickcount" value="clickcount">
-          {{
-            t('bookmarks', 'Most visited')
-          }}
+          {{ t('bookmarks', 'Most visited') }}
         </option>
         <option id="lastmodified" value="lastmodified">
-          {{
-            t('bookmarks', 'Last modified')
-          }}
-        </option>
-      </select></label>
-
-    <label>{{ t('bookmarks', 'View mode') }}
-      <select :value="viewMode" @change="onChangeViewMode">
-        <option id="grid" value="grid">
-          {{ t('bookmarks', 'Grid view') }}
-        </option>
-        <option id="list" value="list">
-          {{ t('bookmarks', 'List view') }}
+          {{ t('bookmarks', 'Last modified') }}
         </option>
       </select></label>
 
     <label>{{ t('bookmarks', 'RSS Feed') }}
-      <input v-tooltip="t('bookmarks', 'This is an RSS feed of the current result set with access restricted to you.')" type="text" readonly
-             :value="rssURL" @click="onRssClick"
+      <input
+        v-tooltip="
+          t(
+            'bookmarks',
+            'This is an RSS feed of the current result set with access restricted to you.'
+          )
+        "
+        type="text"
+        readonly
+        :value="rssURL"
+        @click="onRssClick"
       ></label>
 
     <label>{{ t('bookmarks', 'Clear data') }}
-      <button v-tooltip="t('bookmarks', 'Permanently remove all bookmarks from your account. There is no going back!')" class="clear-data" @click="onClearData">
+      <button
+        v-tooltip="
+          t(
+            'bookmarks',
+            'Permanently remove all bookmarks from your account. There is no going back!'
+          )
+        "
+        class="clear-data"
+        @click="onClearData"
+      >
         <span class="icon-delete" />
         {{ t('bookmarks', 'Delete all bookmarks') }}
       </button>
     </label>
 
     <label>{{ t('bookmarks', 'Bookmarklet') }}
-      <a v-tooltip="t('bookmarks', 'Drag this to your browser bookmarks and click it to quickly bookmark a webpage')" class="button" :href="bookmarklet"
-         @click.prevent="void 0"
+      <a
+        v-tooltip="
+          t(
+            'bookmarks',
+            'Drag this to your browser bookmarks and click it to quickly bookmark a webpage'
+          )
+        "
+        class="button"
+        :href="bookmarklet"
+        @click.prevent="void 0"
       >{{
         t('bookmarks', 'Add to {instanceName}', {
           instanceName: oc_defaults.name
@@ -67,8 +75,15 @@
     </label>
 
     <p>
-      {{ t('bookmarks', 'Also check out the collection of client apps that integrate with this app: ') }}
-      <a href="https://github.com/nextcloud/bookmarks#third-party-clients">{{ t('bookmarks', 'Client apps') }}</a>
+      {{
+        t(
+          'bookmarks',
+          'Also check out the collection of client apps that integrate with this app: '
+        )
+      }}
+      <a href="https://github.com/nextcloud/bookmarks#third-party-clients">{{
+        t('bookmarks', 'Client apps')
+      }}</a>
     </p>
   </div>
 </template>
@@ -92,10 +107,11 @@ export default {
 				window.location.origin
 				+ generateUrl(
 					'/apps/bookmarks/public/rest/v2/bookmark?'
-						+ new URLSearchParams(Object.assign({}, this.$store.state.fetchState.query, {
-							format: 'rss',
-							page: -1
-						})
+						+ new URLSearchParams(
+							Object.assign({}, this.$store.state.fetchState.query, {
+								format: 'rss',
+								page: -1
+							})
 						).toString()
 				)
 			);
@@ -126,12 +142,7 @@ export default {
 			});
 			this.$router.push({ name: 'home' });
 		},
-		onChangeViewMode(e) {
-			this.$store.dispatch(actions.SET_SETTING, {
-				key: 'viewMode',
-				value: e.target.value
-			});
-		},
+		onChangeViewMode(e) {},
 		onRssClick(e) {
 			setTimeout(() => {
 				e.target.select();

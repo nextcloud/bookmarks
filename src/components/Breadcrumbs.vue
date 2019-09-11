@@ -56,7 +56,7 @@
 import Multiselect from 'nextcloud-vue/dist/Components/Multiselect';
 import Actions from 'nextcloud-vue/dist/Components/Actions';
 import ActionButton from 'nextcloud-vue/dist/Components/ActionButton';
-import { mutations } from '../store/';
+import { mutations, actions } from '../store/';
 
 export default {
 	name: 'Breadcrumbs',
@@ -106,10 +106,10 @@ export default {
 		},
 
 		onToggleViewMode() {
-			this.$store.commit(
-				mutations.SET_VIEW_MODE,
-				this.$store.state.viewMode === 'grid' ? 'list' : 'grid'
-			);
+			this.$store.dispatch(actions.SET_SETTING, {
+				key: 'viewMode',
+				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid'
+			});
 		}
 	}
 };
