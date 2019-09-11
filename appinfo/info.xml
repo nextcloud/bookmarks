@@ -25,7 +25,7 @@ Check out the third-party clients listed here: https://github.com/nextcloud/book
 		<lib>gmp</lib>
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="15" max-version="17" />
+		<nextcloud min-version="15" max-version="18" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\PreviewsJob</job>
