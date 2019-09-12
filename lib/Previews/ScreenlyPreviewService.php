@@ -47,9 +47,6 @@ class ScreenlyPreviewService implements IPreviewService {
 
 	private $height = 800;
 
-	/**
-	 * @param ICacheFactory $cacheFactory
-	 */
 	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
 		$this->config = $config;
 		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
@@ -57,6 +54,7 @@ class ScreenlyPreviewService implements IPreviewService {
 		$this->cache = $cache;
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
+		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', true);
 	}
 
 	private function buildKey($url) {
@@ -68,6 +66,9 @@ class ScreenlyPreviewService implements IPreviewService {
 	 * @return string|null image data
 	 */
 	public function getImage($bookmark) {
+		if ($this->enabled === 'false') {
+			return null;
+		}
 		if (!isset($bookmark)) {
 			return null;
 		}
