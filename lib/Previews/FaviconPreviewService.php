@@ -22,6 +22,7 @@ namespace OCA\Bookmarks\Previews;
 
 use OCA\Bookmarks\FileCache;
 use OCP\ILogger;
+use OCP\IConfig;
 use OCP\Http\Client\IClientService;
 use OCA\Bookmarks\LinkExplorer;
 
@@ -30,11 +31,14 @@ class FaviconPreviewService extends DefaultPreviewService {
 	 * @param ICacheFactory $cacheFactory
 	 * @param LinkExplorer $linkExplorer
 	 */
-	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
-		parent::__construct($cache, $linkExplorer, $clientService, $logger);
+	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger, IConfig $config) {
+		parent::__construct($cache, $linkExplorer, $clientService, $logger, $config);
 	}
 
 	public function getImage($bookmark) {
+		if ($this->enabled === 'false') {
+			return null;
+		}
 		if (!isset($bookmark)) {
 			return null;
 		}

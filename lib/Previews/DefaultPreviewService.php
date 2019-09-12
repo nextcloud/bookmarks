@@ -22,6 +22,7 @@ namespace OCA\Bookmarks\Previews;
 use OCA\Bookmarks\FileCache;
 use OCP\ICache;
 use OCP\ILogger;
+use OCP\IConfig;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IClient;
 use OCA\Bookmarks\LinkExplorer;
@@ -45,15 +46,20 @@ class DefaultPreviewService implements IPreviewService {
 	/** @var ILogger */
 	private $logger;
 
+	/** @var IConfig */
+	private $config;
+
 	/**
 	 * @param CacheFactory $cacheFactory
 	 * @param LinkExplorer $linkExplorer
 	 */
-	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
+	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger, IConfig $config) {
 		$this->cache = $cache;
 		$this->linkExplorer = $linkExplorer;
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
+		$this->config = $config;
+		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', true);
 	}
 
 	protected function buildKey($url) {
@@ -73,6 +79,9 @@ class DefaultPreviewService implements IPreviewService {
 	 * @return string|null image data
 	 */
 	public function getImage($bookmark) {
+		if ($this->enabled === 'false') {
+			return null;
+		}
 		if (!isset($bookmark)) {
 			return null;
 		}
@@ -84,7 +93,7 @@ class DefaultPreviewService implements IPreviewService {
 		if (isset($site['image']['large'])) {
 			return $this->getOrFetchImageUrl($site['image']['large']);
 		}
-		return  null;
+		return null;
 	}
 
 	public function scrapeUrl($url) {

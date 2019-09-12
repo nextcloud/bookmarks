@@ -4,6 +4,7 @@ namespace OCA\Bookmarks;
 use Marcelklehr\LinkPreview\Client as LinkPreview;
 use Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException;
 use OCP\ILogger;
+use OCP\IConfig;
 use OCP\Http\Client\IClientService;
 use OCA\Bookmarks\Http\RequestFactory;
 use OCA\Bookmarks\Http\Client;
@@ -14,11 +15,15 @@ class LinkExplorer {
 
 	private $logger;
 
-	public function __construct(IClientService $clientService, ILogger $logger) {
+	private $config;
+
+	public function __construct(IClientService $clientService, ILogger $logger, IConfig $config) {
 		$client = $clientService->newClient();
 		$this->linkPreview = new LinkPreview(new Client($client), new RequestFactory());
 		$this->linkPreview->getParser('general')->setMinimumImageDimensions(150, 550);
 		$this->logger = $logger;
+		$this->config = $config;
+		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', true);
 	}
 
 	/**
@@ -28,6 +33,10 @@ class LinkExplorer {
 	 */
 	public function get($url) {
 		$data = ['url' => $url];
+
+		if ($this->enabled === 'false') {
+			return $data;
+		}
 
 		// Use LinkPreview to get the meta data
 		try {

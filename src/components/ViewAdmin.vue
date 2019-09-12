@@ -3,25 +3,71 @@
     <figure v-if="loading" class="icon-loading loading" />
     <h2>{{ t('bookmarks', 'Previews') }}</h2>
     <p>
-      {{ t('bookmarks', 'In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those.') }}
+      {{
+        t(
+          'bookmarks',
+          'In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those.'
+        )
+      }}
     </p>
     <h3>{{ t('bookmarks', 'Screeenly') }}</h3>
     <p>
-      {{ t('bookmarks', 'You can either sign up for free at screeenly.com or setup your own server.') }}
+      {{
+        t(
+          'bookmarks',
+          'You can either sign up for free at screeenly.com or setup your own server.'
+        )
+      }}
     </p>
     <p>
       <label>{{ t('bookmarks', 'Screeenly API URL') }}
-        <input v-model="settings['previews.screenly.url']" type="text" @input="onChange"></label>
+        <input
+          v-model="settings['previews.screenly.url']"
+          type="text"
+          @input="onChange"
+        ></label>
     </p>
     <p>
-      <label>{{ t('bookmarks','Screeenly API key') }}
-        <input v-model="settings['previews.screenly.token']" type="text" @input="onChange"></label>
+      <label>{{ t('bookmarks', 'Screeenly API key') }}
+        <input
+          v-model="settings['previews.screenly.token']"
+          type="text"
+          @input="onChange"
+        ></label>
+    </p>
+    <h2>{{ t('bookmarks', 'Privacy') }}</h2>
+    <p>
+      {{
+        t(
+          'bookmarks',
+          'Bookmarks will try to access web pages that you add to automatically add information about them.'
+        )
+      }}
+    </p>
+    <p>
+      <input
+        id="enableScraping"
+        v-model="settings['privacy.enableScraping']"
+        type="checkbox"
+        class="checkbox"
+        @input="onChange"
+      >
+      <label for="enableScraping">{{
+        t(
+          'bookmarks',
+          'Enable accessing and collecting information from the web pages you add'
+        )
+      }}</label>
     </p>
   </div>
 </template>
 
 <script>
-const SETTINGS = ['previews.screenly.url', 'previews.screenly.token'];
+const SETTINGS = [
+	'previews.screenly.url',
+	'previews.screenly.token',
+	'privacy.enableScraping'
+];
 
 export default {
 	name: 'ViewAdmin',
@@ -46,6 +92,9 @@ export default {
 		try {
 			for (const setting of SETTINGS) {
 				this.settings[setting] = await this.getValue(setting);
+				if (['true', 'false'].includes(this.settings[setting])) {
+					this.settings[setting] = (this.settings[setting] === 'true');
+				}
 			}
 		} catch (e) {
 			this.error = this.t('bookmarks', 'Failed to load settings');
@@ -73,10 +122,12 @@ export default {
 
 		async setValue(setting, value) {
 			try {
-				await new Promise((resolve, reject) => OCP.AppConfig.setValue('bookmarks', setting, value, {
-					success: resolve,
-					error: reject
-				}));
+				await new Promise((resolve, reject) =>
+					OCP.AppConfig.setValue('bookmarks', setting, value, {
+						success: resolve,
+						error: reject
+					})
+				);
 			} catch (e) {
 				this.error = this.t('bookmarks', 'Failed to save settings');
 				throw e;
@@ -85,10 +136,12 @@ export default {
 
 		async getValue(setting) {
 			try {
-				const resDocument = await new Promise((resolve, reject) => OCP.AppConfig.getValue('bookmarks', setting, null, {
-					success: resolve,
-					error: reject
-				}));
+				const resDocument = await new Promise((resolve, reject) =>
+					OCP.AppConfig.getValue('bookmarks', setting, null, {
+						success: resolve,
+						error: reject
+					})
+				);
 				if (resDocument.querySelector('status').textContent !== 'ok') {
 					this.error = this.t('bookmarks', 'Failed to load settings');
 					console.error('Failed request', resDocument);
@@ -105,7 +158,7 @@ export default {
 };
 </script>
 <style>
-figure[class^=icon-] {
+figure[class^='icon-'] {
 	display: inline-block;
 }
 
