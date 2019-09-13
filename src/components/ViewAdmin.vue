@@ -1,6 +1,7 @@
 <template>
   <div id="bookmarks" class="section">
     <figure v-if="loading" class="icon-loading loading" />
+    <figure v-if="!loading && success" class="icon-checkmark success" />
     <h2>{{ t('bookmarks', 'Previews') }}</h2>
     <p>
       {{
@@ -101,6 +102,7 @@ export default {
 		return {
 			settings: SETTINGS.reduce((obj, key) => ({ ...obj, [key]: '' }), {}),
 			loading: false,
+			success: false,
 			error: '',
 			timeout: null
 		};
@@ -144,6 +146,8 @@ export default {
 				this.setValue(setting, this.settings[setting]);
 			}
 			this.loading = false;
+			this.success = true;
+			setTimeout(() => this.success = false, 3000);
 		},
 
 		async setValue(setting, value) {
@@ -188,11 +192,16 @@ figure[class^='icon-'] {
 	display: inline-block;
 }
 
+#bookmarks h2 {
+  margin-top: 40px;
+}
+
 #bookmarks {
 	position: relative;
 }
 
-#bookmarks .loading {
+#bookmarks .loading,
+#bookmarks .success {
 	position: absolute;
 	top: 20px;
 	right: 20px;
