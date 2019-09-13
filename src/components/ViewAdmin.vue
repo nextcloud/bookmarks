@@ -147,7 +147,7 @@ export default {
 			}
 			this.loading = false;
 			this.success = true;
-			setTimeout(() => this.success = false, 3000);
+			setTimeout(() => { this.success = false; }, 3000);
 		},
 
 		async setValue(setting, value) {
