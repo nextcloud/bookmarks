@@ -76,6 +76,7 @@ class Bookmarks {
 		$this->urlNormalizer = $urlNormalizer;
 		$this->logger = $logger;
 		$this->bookmarksParser = $bookmarksParser;
+		$this->limit = intval($config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0));
 	}
 
 	/**
@@ -306,7 +307,9 @@ class Bookmarks {
 	}
 
 	private function existsFolder($userId, $folderId) {
-		if ($folderId === -1) return true;
+		if ($folderId === -1) {
+			return true;
+		}
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -962,6 +965,18 @@ class Bookmarks {
 
 			return $row['id'];
 		} else {
+			if ($this->limit !== 0) {
+				$qb = $this->db->getQueryBuilder();
+				$qb->select($qb->createFunction('COUNT(*)'))
+				->from('bookmarks', 'b')
+				->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userid)));
+				$count = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+
+				if (intval($count[0]) > $this->limit) {
+					throw new \InvalidArgumentException('Not allowed to create more than '.$this->limit.' bookmarks');
+				}
+			}
+
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->insert('bookmarks')

@@ -59,6 +59,31 @@
         )
       }}</label>
     </p>
+    <h2>{{ t('bookmarks', 'Performance') }}</h2>
+    <p>
+      {{
+        t(
+          'bookmarks',
+          'In an installation with  a lot of users it may be useful to restrict the number of bookmarks per account.'
+        )
+      }}
+    </p>
+    <p>
+      <label for="enableScraping">{{
+                                    t(
+                                      'bookmarks',
+                                      'Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)'
+                                    )
+                                  }}
+        <input
+          v-model.number="settings['performance.maxBookmarksperAccount']"
+          type="number"
+          min="0"
+          placeholder="0"
+          step="1"
+          @input="onChange"
+        ></label>
+    </p>
   </div>
 </template>
 
@@ -66,7 +91,8 @@
 const SETTINGS = [
 	'previews.screenly.url',
 	'previews.screenly.token',
-	'privacy.enableScraping'
+	'privacy.enableScraping',
+	'performance.maxBookmarksperAccount'
 ];
 
 export default {
