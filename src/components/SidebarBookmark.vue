@@ -37,7 +37,7 @@
         </div>
       </div>
     </AppSidebarTab>
-    <AppSidebarTab :name="t('bookmarks', 'Sharing')" icon="icon-sharing" />
+    <!--<AppSidebarTab :name="t('bookmarks', 'Sharing')" icon="icon-sharing" />-->
   </AppSidebar>
 </template>
 <script>
