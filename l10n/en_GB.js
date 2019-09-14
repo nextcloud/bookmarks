@@ -18,7 +18,6 @@ OC.L10N.register(
     "Tags" : "Tags",
     "Select" : "Select",
     "Previews" : "Previews",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those.",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Screeenly API key",
     "Add a bookmark" : "Add a bookmark",

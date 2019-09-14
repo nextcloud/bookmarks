@@ -20,7 +20,6 @@ OC.L10N.register(
     "Tags" : "Mærker",
     "Select" : "Vælg",
     "Previews" : "Forhåndsvisning",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Bogmærker kan bruge en tredjepartsteneste til at danne skærmprints af dine bogmærker af hjemmesider",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Screeenly API nøgle",
     "Add a bookmark" : "Tilføj et bogmærke",

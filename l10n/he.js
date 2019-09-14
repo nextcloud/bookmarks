@@ -18,7 +18,6 @@ OC.L10N.register(
     "Tags" : "תגיות",
     "Select" : "בחירה",
     "Previews" : "תצוגות מקדימות",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "כדי להציג צילומי מסך אמתיים של האתרים שהוספת למועדפים, הסימניות יכולות להשתמש בשירות צד־שלישי כדי לייצר אותן.",
     "Add a bookmark" : "הוספת סימנייה",
     "This URL is already bookmarked! Overwrite?" : "כתובת זו כבר נשמרה בסימניות! לשכתב?",
     "Link" : "קישור",

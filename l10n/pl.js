@@ -20,7 +20,6 @@ OC.L10N.register(
     "Tags" : "Etykiety",
     "Select" : "Wybierz",
     "Previews" : "Podglądy",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Aby wyświetlać prawdziwe zrzuty ekranu witryn z zakładek, aplikacja Zakładki może korzystać z usług stron trzecich w celu ich wygenerowania.",
     "Screeenly API URL" : "URL API dla Screenly",
     "Screeenly API key" : "Klucz API dla Screenly",
     "Add a bookmark" : "Dodaj zakładkę",

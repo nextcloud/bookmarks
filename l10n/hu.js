@@ -18,7 +18,6 @@ OC.L10N.register(
     "Tags" : "Cimkék",
     "Select" : "Kijelöl",
     "Previews" : "Előnézet",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Ahhoz, hogy valódi képernyőképeket kapj a könyvjelzőzött weboldalakról, a könyvjelzőknek szüksége van egy harmadik fél által üzemeltetett szolgáltatásra, amely legenerálja a képernyőképeket.",
     "Add a bookmark" : "Könyvjelző hozzáadása",
     "This URL is already bookmarked! Overwrite?" : "Ez a cím már jegyezve van. Felülírod?",
     "Bookmarks feed" : "Könyvjelző folyam"

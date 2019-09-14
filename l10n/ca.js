@@ -19,7 +19,6 @@ OC.L10N.register(
     "Tags" : "Etiquetes",
     "Select" : "Selecciona",
     "Previews" : "Previsualitzacions",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Per poder mostrar captures de pantalla reals de les pàgines web de les vostres adreces d'interès, podeu fer servir un servei de tercers per generar-les.",
     "Screeenly API URL" : "URL de l'API de Screeenly",
     "Screeenly API key" : "Clau API de Screeenly",
     "Add a bookmark" : "Afegeix una adreça d'interès",

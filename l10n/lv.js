@@ -20,7 +20,6 @@ OC.L10N.register(
     "Tags" : "Birkas",
     "Select" : "Atzīmēt",
     "Previews" : "Priekšskatījumi",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Lai parādītu jūsu grāmatzīmju vietņu reālos ekrānuzņēmumus, grāmatzīmes to ģenerēšanai var izmantot trešās puses pakalpojumu.",
     "Screeenly API URL" : "Screeenly API saite",
     "Screeenly API key" : "Screeenly API atslēga",
     "Add a bookmark" : "Pievienot grāmatzīmi",

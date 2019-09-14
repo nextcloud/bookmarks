@@ -19,7 +19,6 @@ OC.L10N.register(
     "Tags" : "標籤",
     "Select" : "選擇",
     "Previews" : "預覽",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "為了顯示您書籤的及時畫面，Bookmarks程式會使用第三方服務來產生螢幕截圖",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Screeenly API key",
     "Add a bookmark" : "新增書籤",

@@ -19,7 +19,6 @@ OC.L10N.register(
     "Tags" : "Ознаке",
     "Select" : "Изабери",
     "Previews" : "Прегледи",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Да би приказале прави изглед сајта, Обележивач може користити сервис треће стране да би их генерисале.",
     "Screeenly API URL" : "УРЛ Screeenly АПИ-ја",
     "Screeenly API key" : "АПИ кључ за Screeenly",
     "Add a bookmark" : "Додај обележивач",

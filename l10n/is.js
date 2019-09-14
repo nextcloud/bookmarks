@@ -18,7 +18,6 @@ OC.L10N.register(
     "Tags" : "Merki",
     "Select" : "Velja",
     "Previews" : "Forskoðun",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Til þess að birta raunverulegar skjámyndir af þeim vefsíðum sem þú bókamerkir, getur bókamerkjaforritið notað þjónustu utanaðkomandi aðila til að útbúa skjámyndirnar.",
     "Screeenly API URL" : "Slóð á API-forritsviðmót Screenly",
     "Screeenly API key" : "Screeenly API-lykill",
     "Add a bookmark" : "Bæta við bókamerki",

@@ -19,7 +19,6 @@ OC.L10N.register(
     "Tags" : "Taggar",
     "Select" : "Välj",
     "Previews" : "Förhandsvisningar",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "För att kunna visa riktiga skärmdumpar av dina bokmärkta webbplatser kan bokmärken använda en tredjepartstjänst för att generera dem.",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Screeenly API-nyckel",
     "Add a bookmark" : "Lägg till ett bokmärke",

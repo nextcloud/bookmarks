@@ -19,7 +19,6 @@ OC.L10N.register(
     "Tags" : "Štítky",
     "Select" : "Označiť",
     "Previews" : "Náhľady",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Pre zobrazenie skutočných snímok obrazovky stránok v záložkách, aplikácia môže použiť službu tretej strany na ich vygenerovanie.",
     "Screeenly API URL" : "Screenly API URL",
     "Screeenly API key" : "Screenly API kľúč",
     "Add a bookmark" : "Pridať záložku",
