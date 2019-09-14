@@ -12,11 +12,3 @@ These docs describe how to use this API.
    bookmark
    tag
    folder
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
