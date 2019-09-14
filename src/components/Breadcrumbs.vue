@@ -145,6 +145,7 @@ export default {
 	display: inline-block;
 	height: 30px;
 	padding: 7px;
+  flex-shrink: 0;
 }
 
 .breadcrumbs__path > *:not(.icon-breadcrumb) {
