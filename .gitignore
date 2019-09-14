@@ -1,0 +1,6 @@
+.*.sw*
+js
+build
+_build
+node_modules
+vendor
