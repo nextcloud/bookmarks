@@ -7,7 +7,7 @@ source_dir=$(build_dir)/source
 sign_dir=$(build_dir)/sign
 package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
-version+=2.1.0
+version+=2.1.1
 
 all: appstore
 
@@ -47,8 +47,7 @@ appstore: build
 	--exclude=/.travis.yml \
 	--exclude=/Makefile \
 	--exclude=/node_modules \
-	--include=/js/dist \
-	--exclude=/js/* \
+	--include=/js \
 	$(project_dir)/ $(sign_dir)/$(app_name)
 	tar -czf $(build_dir)/$(app_name)-$(version).tar.gz \
 		-C $(sign_dir) $(app_name)
