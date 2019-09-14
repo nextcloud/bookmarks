@@ -4,11 +4,15 @@
 
 > Bookmarks app for Nextcloud
 
-This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via the tags you give them and by using the built-in search feature. Furthermore, in order to be able to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API.
+This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.
 
 ## Install
 
-This app requires at leasts php v7.1 as well as the following php extensions to be installed:
+### Requirements
+
+- php v7.1+
+
+PHP extensions:
 
 - gmp: \*
 - intl: \*
@@ -40,14 +44,21 @@ npm run build
 
 ## Third-party clients
 
+### Android
 - [Nextcloud Bookmarks](https://gitlab.com/bisada/OCBookmarks) - client app for Android ([new PlayStore entry](https://play.google.com/store/apps/details?id=org.bisw.nxbookmarks))
-- [Owncloud Bookmarks](https://chrome.google.com/webstore/detail/owncloud-bookmarks/eomolhpeokmbnincelpkagpapjpeeckc?hl=de) - Bookmarks extension for Chromium-based browsers (Chromium/Chrome/Opera/Vivaldi)
-- [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based
 - [NCBookmarks](https://github.com/lenchan139/NCBookmark) - Android App
-- [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
+
+### Browser
+- [Owncloud Bookmarks](https://chrome.google.com/webstore/detail/owncloud-bookmarks/eomolhpeokmbnincelpkagpapjpeeckc?hl=de) - Bookmarks extension for Chromium-based browsers (Chromium/Chrome/Opera/Vivaldi)
+- [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based browsers
 - [FreedomMarks](https://github.com/damko/freedommarks-browser-webextension) - Addon for Firefox and Chrome. No sync, just a client.
+
+### Desktop
 - [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) A MacOS client
 - [QOwnNotes](https://www.qownnotes.org/) - Plain-text file markdown note taking desktop application (no sync, just importing bookmarks)
+
+### Other
+- [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
 
 ## API
 
