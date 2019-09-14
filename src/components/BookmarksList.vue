@@ -106,7 +106,7 @@ export default {
 .bookmark--gridview,
 .bookmarkslist--gridview > .create-folder,
 .bookmarkslist--gridview > .create-bookmark {
-	width: 200px;
+	min-width: 200px;
 	max-width: 300px;
 	flex: 1;
 	height: 200px;
