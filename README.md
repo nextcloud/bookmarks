@@ -64,7 +64,7 @@ npm run build
 
 This app exposes a public REST API that third-party clients can interface with.
 
-[Go to the API docs](./API.md).
+[Head over to the API docs](https://nextcloud-bookmarks.readthedocs.io/en/latest/).
 
 ## Maintainers
 
