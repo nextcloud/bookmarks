@@ -5,7 +5,6 @@
     "No file provided for import" : "No se seleccionó un archivo para importar",
     "Unsupported file type for import" : "Tipo de archivo no soportado",
     "A Bookmark manager for Nextcloud" : "Un gestor de marcadores para Nextcloud",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Esta app permite almacenar y organizar sus sitios favoritos de la web en un único punto, a la vez que facilita sincronizarlos con varios dispositivos y navegadores.\n\nCompruebe la lista de clientes de terceras partes listados en: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Details" : "Detalles",
     "Rename" : "Renombrar",
     "Move" : "Mover",

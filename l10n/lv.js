@@ -7,7 +7,6 @@ OC.L10N.register(
     "No file provided for import" : "Nav norādīta importējamā datne",
     "Unsupported file type for import" : "Importam neatbalstīts datnes tips",
     "A Bookmark manager for Nextcloud" : "Nextcloud grāmatzīmju pārvaldnieks",
-    "This app allows you to store and organize your favorite places on the web in one spot, while allowing you to sync them with your various devices and browsers.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Šī lietotne ļauj vienuviet saglabāt un sakārtot iecienītās tīmekļa vietnes, vienlaikus ļaujot tās sinhronizēt ar dažādām ierīcēm un pārlūkprogrammām.\n\nIepazīstieties ar šeit uzskaitītajiem trešo pušu klientiem: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Details" : "Detaļas",
     "Delete" : "Dzēst",
     "Save" : "Saglabāt",
