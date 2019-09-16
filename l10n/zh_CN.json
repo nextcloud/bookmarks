@@ -5,6 +5,7 @@
     "No file provided for import" : "未提供导入文件",
     "Unsupported file type for import" : "不支持导入的文件类型",
     "A Bookmark manager for Nextcloud" : "适用于 Nextcloud 的书签管理",
+    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "此应用为您提供一个Web界面，用于收集和组织对您有价值的网站书签。您可以通过标签和文件夹来浏览和过滤您的书签并使用内置的搜索功能。另外，为使您能从任何地点访问您的书签，它允许您通过内建的REST API与第三方客户端同步——在您的浏览器和您的手机上。\n\n请在这里查看第三方客户端：https://github.com/nextcloud/bookmarks#third-party-clients",
     "Details" : "详情",
     "Rename" : "重命名",
     "Move" : "移动",

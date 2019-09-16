@@ -7,6 +7,7 @@ OC.L10N.register(
     "No file provided for import" : "Keine Datei zum Importieren ausgewählt",
     "Unsupported file type for import" : "Ein Import von Dateien dieses Typs wird nicht unterstützt",
     "A Bookmark manager for Nextcloud" : "Eine Lesezeichenverwaltung für Nextcloud",
+    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Diese App bietet eine Webschnittstelle zum Sammeln und Organisieren von Lesezeichen für Webseiten. Du kannst Deine Lesezeichen mittels Schlagworten und Ordnern sowie mithilfe der integrierten Suchfunktion ordnen und durchsuchen. Um von überall auf Deine Lesezeichen zugreifen zu können, kannst Du außerdem Clients von Drittanbietern über eine integrierte REST-API synchronisieren - Im Browser sowie auf Deinem Smartphone.\n\nSehe Dir auch die Liste der Drittanbieter-Clients an:\nhttps://github.com/nextcloud/bookmarks#third-party-clients",
     "Details" : "Details",
     "Rename" : "Umbenennen",
     "Move" : "Verschieben",
