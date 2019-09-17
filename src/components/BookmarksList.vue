@@ -82,8 +82,13 @@ export default {
 };
 </script>
 <style>
+.bookmarkslist {
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: visible;
+}
 .bookmarkslist
-> *:first-child:not(.bookmarkslist__loading):not(.bookmarkslist__empty) {
+	> *:first-child:not(.bookmarkslist__loading):not(.bookmarkslist__empty) {
 	border-top: 1px solid var(--color-border);
 }
 

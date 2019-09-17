@@ -13,21 +13,23 @@
     }"
   >
     <template v-if="!renaming">
-      <a :href="url" target="_blank" class="bookmark__title">
-        <h3 :title="bookmark.title">
-          <figure
-            class="bookmark__icon"
-            :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
-          />
-          {{ bookmark.title }}
-        </h3>
-      </a>
-      <span
-        v-if="bookmark.description"
-        v-tooltip="bookmark.description"
-        class="bookmark__description"
-      ><figure class="icon-file" />
-        {{ bookmark.description }}</span>
+      <div class="bookmark__labels">
+        <a :href="url" target="_blank" class="bookmark__title">
+          <h3 :title="bookmark.title">
+            <figure
+              class="bookmark__icon"
+              :style="{ backgroundImage: 'url(' + iconUrl + ')' }"
+            />
+            {{ bookmark.title }}
+          </h3>
+        </a>
+        <span
+          v-if="bookmark.description"
+          v-tooltip="bookmark.description"
+          class="bookmark__description"
+        ><figure class="icon-file" />
+          {{ bookmark.description }}</span>
+      </div>
       <TagLine :tags="bookmark.tags" />
       <Actions class="bookmark__actions">
         <ActionButton icon="icon-info" @click="onDetails">
@@ -168,9 +170,15 @@ export default {
 	top: 3px;
 }
 
-.bookmark__title {
+.bookmark__labels {
 	display: flex;
 	flex: 1;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.bookmark__title {
+	display: flex;
 }
 
 .bookmark__title,
@@ -188,7 +196,7 @@ export default {
 .bookmark__description {
 	display: inline-block;
 	flex: 1;
-	margin: 13px 10px;
+	margin: auto 10px;
 	height: 20px;
 	color: var(--color-text-lighter);
 	text-overflow: ellipsis;
@@ -205,6 +213,8 @@ export default {
 
 .bookmark--gridview .bookmark__description figure {
 	display: inline-block !important;
+	position: relative;
+	top: 5px;
 }
 
 .bookmark__actions {
