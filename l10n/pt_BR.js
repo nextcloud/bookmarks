@@ -40,6 +40,7 @@ OC.L10N.register(
     "Do you really want to delete all your bookmarks?" : "Deseja realmente excluir todos os favoritos?",
     "Creation date" : "Data de criação",
     "Tags" : "Etiquetas",
+    "Select tags are create new ones" : "Selecione os rótulos ou crie novos",
     "Notes" : "Anotações",
     "Sharing" : "Compartilhando",
     "{time} ago" : "{time} atrás",
