@@ -1,28 +1,27 @@
 <template>
-  <AppNavigation>
-    <AppNavigationNew
-      :text="t('bookmarks', 'New Bookmark')"
-      :disabled="false"
-      button-class="icon-add"
-      @click="onNewBookmark"
-    />
-    <ul>
-      <AppNavigationItem v-for="item in menu" :key="item.text" :item="item" />
-    </ul>
-    <AppNavigationSettings><Settings /></AppNavigationSettings>
-  </AppNavigation>
+	<AppNavigation>
+		<AppNavigationNew
+			:text="t('bookmarks', 'New Bookmark')"
+			:disabled="false"
+			button-class="icon-add"
+			@click="onNewBookmark" />
+		<ul>
+			<AppNavigationItem v-for="item in menu" :key="item.text" :item="item" />
+		</ul>
+		<AppNavigationSettings><Settings /></AppNavigationSettings>
+	</AppNavigation>
 </template>
 
 <script>
-import AppNavigation from 'nextcloud-vue/dist/Components/AppNavigation';
-import AppNavigationNew from 'nextcloud-vue/dist/Components/AppNavigationNew';
-import AppNavigationItem from 'nextcloud-vue/dist/Components/AppNavigationItem';
-import AppNavigationSettings from 'nextcloud-vue/dist/Components/AppNavigationSettings';
-import Settings from './Settings';
-import { actions, mutations } from '../store/';
+import AppNavigation from 'nextcloud-vue/dist/Components/AppNavigation'
+import AppNavigationNew from 'nextcloud-vue/dist/Components/AppNavigationNew'
+import AppNavigationItem from 'nextcloud-vue/dist/Components/AppNavigationItem'
+import AppNavigationSettings from 'nextcloud-vue/dist/Components/AppNavigationSettings'
+import Settings from './Settings'
+import { actions, mutations } from '../store/'
 
 export default {
-	name: 'App',
+	name: 'Navigation',
 	components: {
 		AppNavigation,
 		AppNavigationNew,
@@ -33,7 +32,7 @@ export default {
 	data() {
 		return {
 			editingTag: false
-		};
+		}
 	},
 	computed: {
 		tagMenu() {
@@ -61,7 +60,7 @@ export default {
 						}
 					]
 				}
-			}));
+			}))
 		},
 
 		menu() {
@@ -82,7 +81,7 @@ export default {
 					text: this.t('bookmarks', 'Untagged')
 				},
 				...this.tagMenu
-			];
+			]
 		}
 	},
 
@@ -93,24 +92,24 @@ export default {
 			this.$store.commit(
 				mutations.DISPLAY_NEW_BOOKMARK,
 				!this.$store.state.displayNewBookmark
-			);
+			)
 		},
 		onDeleteTag(tag) {
-			this.$store.dispatch(actions.DELETE_TAG, tag);
+			this.$store.dispatch(actions.DELETE_TAG, tag)
 		},
 		onRenameTag(e, newName) {
-			if (!this.editingTag) return;
-			const oldName = this.editingTag;
-			this.editingTag = false;
-			this.$store.dispatch(actions.RENAME_TAG, { oldName, newName });
+			if (!this.editingTag) return
+			const oldName = this.editingTag
+			this.editingTag = false
+			this.$store.dispatch(actions.RENAME_TAG, { oldName, newName })
 		},
 		setEditingTag(tag, set) {
 			if (set) {
-				this.editingTag = tag;
+				this.editingTag = tag
 			} else {
-				this.editingTag = false;
+				this.editingTag = false
 			}
 		}
 	}
-};
+}
 </script>

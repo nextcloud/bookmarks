@@ -19,21 +19,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-import Vue from 'vue';
-import Tooltip from 'nextcloud-vue/dist/Directives/Tooltip';
-import App from './App';
-import router from './router';
-import store from './store/';
-import AppGlobal from './mixins/AppGlobal';
+import Vue from 'vue'
+import Tooltip from 'nextcloud-vue/dist/Directives/Tooltip'
+import App from './App'
+import router from './router'
+import store from './store/'
+import AppGlobal from './mixins/AppGlobal'
 
-Vue.mixin(AppGlobal);
-Vue.directive('tooltip', Tooltip);
+Vue.mixin(AppGlobal)
+Vue.directive('tooltip', Tooltip)
 
 const BookmarksApp = (global['Bookmarks'] = new Vue({
 	el: '#content',
 	store,
 	router,
 	render: h => h(App)
-}));
+}))
 
-export default BookmarksApp;
+export default BookmarksApp

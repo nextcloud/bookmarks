@@ -1,27 +1,27 @@
 <template>
-  <Content app-name="bookmarks">
-    <Navigation />
-    <AppContent>
-      <Breadcrumbs />
-      <BookmarksList :loading="loading.bookmarks" :bookmarks="bookmarks" />
-    </AppContent>
-    <SidebarBookmark />
-    <MoveDialog />
-  </Content>
+	<Content app-name="bookmarks">
+		<Navigation />
+		<AppContent>
+			<Breadcrumbs />
+			<BookmarksList :loading="loading.bookmarks" :bookmarks="bookmarks" />
+		</AppContent>
+		<SidebarBookmark />
+		<MoveDialog />
+	</Content>
 </template>
 
 <script>
-import Content from 'nextcloud-vue/dist/Components/Content';
-import AppContent from 'nextcloud-vue/dist/Components/AppContent';
-import Navigation from './Navigation';
-import BookmarksList from './BookmarksList';
-import Breadcrumbs from './Breadcrumbs';
-import SidebarBookmark from './SidebarBookmark';
-import MoveDialog from './MoveDialog';
-import { actions } from '../store/';
+import Content from 'nextcloud-vue/dist/Components/Content'
+import AppContent from 'nextcloud-vue/dist/Components/AppContent'
+import Navigation from './Navigation'
+import BookmarksList from './BookmarksList'
+import Breadcrumbs from './Breadcrumbs'
+import SidebarBookmark from './SidebarBookmark'
+import MoveDialog from './MoveDialog'
+import { actions } from '../store/'
 
 export default {
-	name: 'App',
+	name: 'ViewPrivate',
 	components: {
 		Navigation,
 		Content,
@@ -34,20 +34,20 @@ export default {
 	data: function() {
 		return {
 			newBookmark: false
-		};
+		}
 	},
 	computed: {
 		bookmarks() {
-			return this.$store.state.bookmarks;
+			return this.$store.state.bookmarks
 		},
 		folders() {
-			return this.$store.state.folders;
+			return this.$store.state.folders
 		},
 		tags() {
-			return this.$store.state.tags;
+			return this.$store.state.tags
 		},
 		loading() {
-			return this.$store.state.loading;
+			return this.$store.state.loading
 		}
 	},
 
@@ -56,60 +56,60 @@ export default {
 	},
 
 	created() {
-		this.reloadSettings();
-		this.reloadTags();
-		this.reloadFolders();
-		this.onRoute();
-		document.addEventListener('scroll', this.onScroll);
-		this.search = new OCA.Search(this.onSearch, this.onResetSearch);
+		this.reloadSettings()
+		this.reloadTags()
+		this.reloadFolders()
+		this.onRoute()
+		document.addEventListener('scroll', this.onScroll)
+		this.search = new OCA.Search(this.onSearch, this.onResetSearch)
 	},
 
 	methods: {
 		async onRoute() {
-			const route = this.$route;
+			const route = this.$route
 			switch (route.name) {
 			case 'home':
-				this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1');
-				break;
+				this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1')
+				break
 			case 'recent':
-				this.$store.dispatch(actions.FILTER_BY_RECENT);
-				break;
+				this.$store.dispatch(actions.FILTER_BY_RECENT)
+				break
 			case 'untagged':
-				this.$store.dispatch(actions.FILTER_BY_UNTAGGED);
-				break;
+				this.$store.dispatch(actions.FILTER_BY_UNTAGGED)
+				break
 			case 'folder':
-				this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder);
-				break;
+				this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder)
+				break
 			case 'tags':
 				this.$store.dispatch(
 					actions.FILTER_BY_TAGS,
 					route.params.tags.split(',')
-				);
-				break;
+				)
+				break
 			case 'search':
-				this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search);
-				break;
+				this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search)
+				break
 			default:
-				throw new Error('Nothing here. Move along.');
+				throw new Error('Nothing here. Move along.')
 			}
 		},
 
 		reloadTags() {
-			this.$store.dispatch(actions.LOAD_TAGS);
+			this.$store.dispatch(actions.LOAD_TAGS)
 		},
 		reloadFolders() {
-			this.$store.dispatch(actions.LOAD_FOLDERS);
+			this.$store.dispatch(actions.LOAD_FOLDERS)
 		},
 		reloadSettings() {
-			this.$store.dispatch(actions.LOAD_SETTINGS);
+			this.$store.dispatch(actions.LOAD_SETTINGS)
 		},
 
 		onSearch(search) {
-			this.$router.push({ name: 'search', params: { search } });
+			this.$router.push({ name: 'search', params: { search } })
 		},
 
 		onResetSearch() {
-			this.$router.push({ name: 'home' });
+			this.$router.push({ name: 'home' })
 		},
 
 		onScroll() {
@@ -117,11 +117,11 @@ export default {
 				document.body.scrollHeight
 				< window.scrollY + window.innerHeight + 500
 			) {
-				this.$store.dispatch(actions.FETCH_PAGE);
+				this.$store.dispatch(actions.FETCH_PAGE)
 			}
 		}
 	}
-};
+}
 </script>
 <style>
 #app-content {

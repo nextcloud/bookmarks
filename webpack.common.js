@@ -1,7 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
-const { VueLoaderPlugin } = require('vue-loader');
-const StyleLintPlugin = require('stylelint-webpack-plugin');
+const path = require('path')
+const { VueLoaderPlugin } = require('vue-loader')
+const StyleLintPlugin = require('stylelint-webpack-plugin')
+const packageJson = require('./package.json')
+const appName = packageJson.name
 
 module.exports = {
 	entry: {
@@ -11,8 +12,8 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, './js'),
 		publicPath: '/js/',
-		filename: 'bookmarks.[name].js',
-		chunkFilename: 'chunks/bookmarks.[name].js'
+		filename: `${appName}.[name].js`,
+		chunkFilename: 'chunks/[name]-[hash].js'
 	},
 	module: {
 		rules: [
@@ -27,28 +28,26 @@ module.exports = {
 			{
 				test: /\.(js|vue)$/,
 				use: 'eslint-loader',
+				exclude: /node_modules/,
 				enforce: 'pre'
 			},
 			{
 				test: /\.vue$/,
-				loader: 'vue-loader'
+				loader: 'vue-loader',
+				exclude: /node_modules/
 			},
 			{
 				test: /\.js$/,
 				loader: 'babel-loader',
 				exclude: /node_modules/
-			},
-			{
-				test: /\.(png|jpg|gif|svg)$/,
-				loader: 'file-loader',
-				options: {
-					name: '[name].[ext]?[hash]'
-				}
 			}
 		]
 	},
-	plugins: [new VueLoaderPlugin(), new StyleLintPlugin()],
+	plugins: [
+		new VueLoaderPlugin(),
+		new StyleLintPlugin()
+	],
 	resolve: {
-		extensions: ['*', '.js', '.vue', '.json']
+		extensions: ['*', '.js', '.vue']
 	}
-};
+}

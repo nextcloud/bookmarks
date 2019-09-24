@@ -9,7 +9,7 @@ package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
 version+=2.1.1
 
-all: appstore
+all: dev-setup lint build-js-production test test-php
 
 release: appstore create-tag
 
@@ -17,16 +17,47 @@ create-tag:
 	git tag -s -a v$(version) -m "Tagging the $(version) release."
 	git push origin v$(version)
 
+# Dev env management
+dev-setup: clean clean-dev npm-init
+
+npm-init:
+	npm install
+
+npm-update:
+	npm update
+
+# Building
+build-js:
+	npm run dev
+
+build-js-production:
+	npm run build
+
+watch-js:
+	npm run watch
+
+# Linting
+lint:
+	npm run lint
+
+lint-fix:
+	npm run lint:fix
+
+# Style linting
+stylelint:
+	npm run stylelint
+
+stylelint-fix:
+	npm run stylelint:fix
+
+# Cleaning
 clean:
-	rm -rf $(build_dir)
+	rm -rf js
+
+clean-dev:
 	rm -rf node_modules
 
-build: clean
-	npm install
-	npm run build
-	composer install
-
-appstore: build
+appstore:
 	mkdir -p $(sign_dir)
 	rsync -a \
 	--exclude=/build \

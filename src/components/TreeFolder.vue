@@ -1,29 +1,28 @@
 <template>
-  <div class="treefolder">
-    <div class="treefolder__title">
-      <h4 @click="showChildren = !showChildren">
-        <figure class="icon-folder" />
-        {{ folder.title }}
-      </h4>
-      <Actions>
-        <ActionButton icon="icon-confirm" @click="$emit('select', folder.id)">
-          {{ t('bookmarks', 'Select') }}
-        </ActionButton>
-      </Actions>
-    </div>
-    <div v-if="showChildren" class="treefolder__children">
-      <TreeFolder
-        v-for="child in folder.children"
-        :key="child.id"
-        :folder="child"
-        @select="$emit('select', $event)"
-      />
-    </div>
-  </div>
+	<div class="treefolder">
+		<div class="treefolder__title">
+			<h4 @click="showChildren = !showChildren">
+				<figure class="icon-folder" />
+				{{ folder.title }}
+			</h4>
+			<Actions>
+				<ActionButton icon="icon-confirm" @click="$emit('select', folder.id)">
+					{{ t('bookmarks', 'Select') }}
+				</ActionButton>
+			</Actions>
+		</div>
+		<div v-if="showChildren" class="treefolder__children">
+			<TreeFolder
+				v-for="child in folder.children"
+				:key="child.id"
+				:folder="child"
+				@select="$emit('select', $event)" />
+		</div>
+	</div>
 </template>
 <script>
-import Actions from 'nextcloud-vue/dist/Components/Actions';
-import ActionButton from 'nextcloud-vue/dist/Components/ActionButton';
+import Actions from 'nextcloud-vue/dist/Components/Actions'
+import ActionButton from 'nextcloud-vue/dist/Components/ActionButton'
 
 export default {
 	name: 'TreeFolder',
@@ -39,12 +38,12 @@ export default {
 		}
 	},
 	data() {
-		return { showChildren: false };
+		return { showChildren: false }
 	},
 	mounted() {
-		this.showChildren = this.showChildrenDefault;
+		this.showChildren = this.showChildrenDefault
 	}
-};
+}
 </script>
 <style>
 .treefolder__title {

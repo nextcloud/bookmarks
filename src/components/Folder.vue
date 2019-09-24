@@ -1,45 +1,46 @@
 <template>
-  <div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
-    <figure class="folder__icon icon-folder" />
-    <template v-if="!renaming">
-      <h3
-        class="folder__title"
-        :title="folder.title"
-        @click="onSelect"
-      >
-        {{ folder.title }}
-      </h3>
-      <Actions class="folder__actions">
-        <ActionButton icon="icon-rename" @click="onRename">
-          {{ t('bookmarks', 'Rename') }}
-        </ActionButton>
-        <ActionButton icon="icon-category-files" @click="onMove">
-          {{ t('bookmarks', 'Move') }}
-        </ActionButton>
-        <ActionButton icon="icon-delete" @click="onDelete">
-          {{ t('bookmarks', 'Delete') }}
-        </ActionButton>
-      </Actions>
-    </template>
-    <template v-else>
-      <span class="folder__title">
-        <input ref="input" v-model="title" type="text"
-               :placeholder="t('bookmarks', 'Enter folder title')" @keyup.enter="onRenameSubmit"
-        >
-        <Actions>
-          <ActionButton icon="icon-checkmark" @click="onRenameSubmit">
-            {{ t('bookmarks', 'Save') }}
-          </ActionButton>
-        </Actions>
-      </span>
-    </template>
-  </div>
+	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
+		<figure class="folder__icon icon-folder" />
+		<template v-if="!renaming">
+			<h3
+				class="folder__title"
+				:title="folder.title"
+				@click="onSelect">
+				{{ folder.title }}
+			</h3>
+			<Actions class="folder__actions">
+				<ActionButton icon="icon-rename" @click="onRename">
+					{{ t('bookmarks', 'Rename') }}
+				</ActionButton>
+				<ActionButton icon="icon-category-files" @click="onMove">
+					{{ t('bookmarks', 'Move') }}
+				</ActionButton>
+				<ActionButton icon="icon-delete" @click="onDelete">
+					{{ t('bookmarks', 'Delete') }}
+				</ActionButton>
+			</Actions>
+		</template>
+		<template v-else>
+			<span class="folder__title">
+				<input ref="input"
+					v-model="title"
+					type="text"
+					:placeholder="t('bookmarks', 'Enter folder title')"
+					@keyup.enter="onRenameSubmit">
+				<Actions>
+					<ActionButton icon="icon-checkmark" @click="onRenameSubmit">
+						{{ t('bookmarks', 'Save') }}
+					</ActionButton>
+				</Actions>
+			</span>
+		</template>
+	</div>
 </template>
 <script>
-import Vue from 'vue';
-import Actions from 'nextcloud-vue/dist/Components/Actions';
-import ActionButton from 'nextcloud-vue/dist/Components/ActionButton';
-import { actions, mutations } from '../store/';
+import Vue from 'vue'
+import Actions from 'nextcloud-vue/dist/Components/Actions'
+import ActionButton from 'nextcloud-vue/dist/Components/ActionButton'
+import { actions, mutations } from '../store/'
 
 export default {
 	name: 'Folder',
@@ -54,38 +55,38 @@ export default {
 		}
 	},
 	data() {
-		return { renaming: false, title: this.folder.title };
+		return { renaming: false, title: this.folder.title }
 	},
 	computed: {
 		viewMode() {
-			return this.$store.state.viewMode;
+			return this.$store.state.viewMode
 		}
 	},
 	created() {},
 	methods: {
 		onDelete() {
-			this.$store.dispatch(actions.DELETE_FOLDER, this.folder.id);
+			this.$store.dispatch(actions.DELETE_FOLDER, this.folder.id)
 		},
 		onMove() {
-			this.$store.commit(mutations.RESET_SELECTION);
-			this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder);
-			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true);
+			this.$store.commit(mutations.RESET_SELECTION)
+			this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
+			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
 		onSelect() {
-			this.$router.push({ name: 'folder', params: { folder: this.folder.id } });
+			this.$router.push({ name: 'folder', params: { folder: this.folder.id } })
 		},
 		async onRename() {
-			this.renaming = true;
-			await Vue.nextTick();
-			this.$refs['input'].focus();
+			this.renaming = true
+			await Vue.nextTick()
+			this.$refs['input'].focus()
 		},
 		onRenameSubmit() {
-			this.folder.title = this.title;
-			this.$store.dispatch(actions.SAVE_FOLDER, this.folder.id);
-			this.renaming = false;
+			this.folder.title = this.title
+			this.$store.dispatch(actions.SAVE_FOLDER, this.folder.id)
+			this.renaming = false
 		}
 	}
-};
+}
 </script>
 <style>
 .folder {
