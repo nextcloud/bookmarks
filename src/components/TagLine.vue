@@ -1,9 +1,9 @@
 <template>
-  <div class="tagline">
-    <div v-for="tag in tags" :key="tag" class="tagline__tag">
-      {{ tag }}
-    </div>
-  </div>
+	<div class="tagline">
+		<div v-for="tag in tags" :key="tag" class="tagline__tag">
+			{{ tag }}
+		</div>
+	</div>
 </template>
 <script>
 export default {
@@ -16,15 +16,15 @@ export default {
 		}
 	},
 	data() {
-		return {};
+		return {}
 	},
 	created() {},
 	methods: {
 		submit() {
-			this.$emit('create-bookmark', this.url);
+			this.$emit('create-bookmark', this.url)
 		}
 	}
-};
+}
 </script>
 <style>
 .tagline {

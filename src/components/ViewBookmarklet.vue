@@ -1,48 +1,46 @@
 <template>
-  <Content app-name="bookmarks">
-    <div class="bookmarklet">
-      <h2><figure :class="loading? 'icon-loading' : 'icon-link'" /> {{ t('bookmarks', 'Add a bookmark') }}</h2>
-      <div v-if="exists" class="bookmarklet__exists">
-        {{ t('bookmarks', 'This URL is already bookmarked! Overwrite?') }}
-      </div>
-      <label>{{ t('bookmarks', 'Title') }}
-        <input v-model="bookmark.title" type="text" :placeholder="t('bookmarks', 'Enter bookmark title')">
-      </label>
-      <label>{{ t('bookmarks', 'Link') }}
-        <input v-model="bookmark.url" type="text" :placeholder="t('bookmarks', 'Enter bookmark url')">
-      </label>
-      <label><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}
-        <Multiselect
-          class="sidebar__tags"
-          :value="bookmark.tags"
-          :auto-limit="false"
-          :limit="7"
-          :options="allTags"
-          :multiple="true"
-          :taggable="true"
-          @input="onTagsChange"
-          @tag="onAddTag"
-        />
-      </label>
-      <label>{{ t('bookmarks', 'Notes') }}</label>
-      <div
-        class="bookmarklet__notes"
-        contenteditable
-        @input="onNotesChange"
-      >
-        {{ bookmark.description }}
-      </div>
-      <button class="primary" @click="submit">
-        <span class="icon-confirm-white" />{{ t('bookmarks', 'Save') }}
-      </button>
-    </div>
-  </Content>
+	<Content app-name="bookmarks">
+		<div class="bookmarklet">
+			<h2><figure :class="loading? 'icon-loading' : 'icon-link'" /> {{ t('bookmarks', 'Add a bookmark') }}</h2>
+			<div v-if="exists" class="bookmarklet__exists">
+				{{ t('bookmarks', 'This URL is already bookmarked! Overwrite?') }}
+			</div>
+			<label>{{ t('bookmarks', 'Title') }}
+				<input v-model="bookmark.title" type="text" :placeholder="t('bookmarks', 'Enter bookmark title')">
+			</label>
+			<label>{{ t('bookmarks', 'Link') }}
+				<input v-model="bookmark.url" type="text" :placeholder="t('bookmarks', 'Enter bookmark url')">
+			</label>
+			<label><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}
+				<Multiselect
+					class="sidebar__tags"
+					:value="bookmark.tags"
+					:auto-limit="false"
+					:limit="7"
+					:options="allTags"
+					:multiple="true"
+					:taggable="true"
+					@input="onTagsChange"
+					@tag="onAddTag" />
+			</label>
+			<label>{{ t('bookmarks', 'Notes') }}</label>
+			<div
+				class="bookmarklet__notes"
+				contenteditable
+				@input="onNotesChange">
+				{{ bookmark.description }}
+			</div>
+			<button class="primary" @click="submit">
+				<span class="icon-confirm-white" />{{ t('bookmarks', 'Save') }}
+			</button>
+		</div>
+	</Content>
 </template>
 
 <script>
-import Content from 'nextcloud-vue/dist/Components/Content';
-import Multiselect from 'nextcloud-vue/dist/Components/Multiselect';
-import { actions } from '../store/';
+import Content from 'nextcloud-vue/dist/Components/Content'
+import Multiselect from 'nextcloud-vue/dist/Components/Multiselect'
+import { actions } from '../store/'
 
 export default {
 	name: 'ViewBookmarklet',
@@ -69,64 +67,64 @@ export default {
 				description: ''
 			},
 			exists: false
-		};
+		}
 	},
 	computed: {
 		allTags() {
-			return this.$store.state.tags.map(tag => tag.name);
+			return this.$store.state.tags.map(tag => tag.name)
 		},
 		folders() {
-			return this.$store.state.folders;
+			return this.$store.state.folders
 		}
 	},
 
 	created() {
-		this.reloadTags();
-		this.reloadFolders();
+		this.reloadTags()
+		this.reloadFolders()
 	},
 
 	mounted() {
-		this.findBookmark(this.bookmark.url);
+		this.findBookmark(this.bookmark.url)
 	},
 
 	methods: {
 		reloadTags() {
-			this.$store.dispatch(actions.LOAD_TAGS);
+			this.$store.dispatch(actions.LOAD_TAGS)
 		},
 		reloadFolders() {
-			this.$store.dispatch(actions.LOAD_FOLDERS);
+			this.$store.dispatch(actions.LOAD_FOLDERS)
 		},
 		reloadSettings() {
-			this.$store.dispatch(actions.LOAD_SETTINGS);
+			this.$store.dispatch(actions.LOAD_SETTINGS)
 		},
 		onNotesChange(e) {
-			this.bookmark.description = e.target.textContent;
+			this.bookmark.description = e.target.textContent
 		},
 		onTagsChange(tags) {
-			this.bookmark.tags = tags;
+			this.bookmark.tags = tags
 		},
 		onAddTag(tag) {
-			this.bookmark.tags.push(tag);
+			this.bookmark.tags.push(tag)
 		},
 		async findBookmark(url) {
-			const bookmark = await this.$store.dispatch(actions.FIND_BOOKMARK, url);
+			const bookmark = await this.$store.dispatch(actions.FIND_BOOKMARK, url)
 			if (bookmark) {
-				this.exists = true;
-				this.bookmark = bookmark;
+				this.exists = true
+				this.bookmark = bookmark
 			}
 		},
 
 		async submit() {
-			this.loading = true;
+			this.loading = true
 			if (this.exists) {
-				await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id);
+				await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id)
 			} else {
-				await this.$store.dispatch(actions.CREATE_BOOKMARK, this.bookmark);
+				await this.$store.dispatch(actions.CREATE_BOOKMARK, this.bookmark)
 			}
-			window.close();
+			window.close()
 		}
 	}
-};
+}
 </script>
 <style>
 .bookmarklet {

@@ -1,13 +1,13 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import ViewPrivate from './components/ViewPrivate';
-import ViewBookmarklet from './components/ViewBookmarklet';
-import { generateUrl } from 'nextcloud-router';
+import Vue from 'vue'
+import Router from 'vue-router'
+import ViewPrivate from './components/ViewPrivate'
+import ViewBookmarklet from './components/ViewBookmarklet'
+import { generateUrl } from 'nextcloud-router'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
-	mode: 'hash',
+	mode: 'history',
 	base: generateUrl('/apps/bookmarks'),
 	linkActiveClass: 'active',
 	routes: [
@@ -45,19 +45,21 @@ export default new Router({
 			path: '/bookmarklet',
 			name: 'bookmarklet',
 			component: ViewBookmarklet,
-			props: true
-		},
-		{
-			path: '/bookmarklet/:url',
-			name: 'bookmarklet',
-			component: ViewBookmarklet,
-			props: true
-		},
-		{
-			path: '/bookmarklet/:url/:title',
-			name: 'bookmarklet',
-			component: ViewBookmarklet,
-			props: true
+			props: true,
+			children: [
+				{
+					path: ':url',
+					name: 'bookmarklet',
+					component: ViewBookmarklet,
+					props: true
+				},
+				{
+					path: ':url/:title',
+					name: 'bookmarklet',
+					component: ViewBookmarklet,
+					props: true
+				}
+			]
 		}
 	]
-});
+})

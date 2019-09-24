@@ -23,6 +23,15 @@ $application = new Application();
 $application->registerRoutes($this, ['routes' => [
 	//Web Template Route
 	['name' => 'web_view#index', 'url' => '/', 'verb' => 'GET'],
+	['name' => 'web_view#index', 'url' => '/recent', 'verb' => 'GET', 'postfix' => 'recent'],
+	['name' => 'web_view#index', 'url' => '/search/{search}', 'verb' => 'GET', 'postfix' => 'search'],
+	['name' => 'web_view#index', 'url' => '/folder/{folder}', 'verb' => 'GET', 'postfix' => 'folder'],
+	['name' => 'web_view#index', 'url' => '/tags/{tags}', 'verb' => 'GET', 'postfix' => 'tags'],
+	['name' => 'web_view#index', 'url' => '/untagged', 'verb' => 'GET', 'postfix' => 'untagged'],
+	['name' => 'web_view#index', 'url' => '/bookmarklet', 'verb' => 'GET', 'postfix' => 'bookmarklet'],
+	['name' => 'web_view#index', 'url' => '/bookmarklet/{url}', 'verb' => 'GET', 'postfix' => 'bookmarklet.url'],
+	['name' => 'web_view#index', 'url' => '/bookmarklet/{url}/{title}', 'verb' => 'GET', 'postfix' => 'bookmarklet.url.title'],
+
 	//internal REST API
 	['name' => 'internal_bookmark#get_bookmarks', 'url' => '/bookmark', 'verb' => 'GET'],
 	['name' => 'internal_bookmark#new_bookmark', 'url' => '/bookmark', 'verb' => 'POST'],
@@ -51,6 +60,7 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'internal_folders#set_folder_children_order', 'url' => '/folder/{folderId}/childorder', 'verb' => 'PATCH'],
 	['name' => 'internal_folders#add_to_folder', 'url' => '/folder/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'POST'],
 	['name' => 'internal_folders#remove_from_folder', 'url' => '/folder/{folderId}/bookmarks/{bookmarkId}', 'verb' => 'DELETE'],
+
 	// Public REST API
 	['name' => 'bookmark#get_bookmarks', 'url' => '/public/rest/v2/bookmark', 'verb' => 'GET'],
 	['name' => 'bookmark#new_bookmark', 'url' => '/public/rest/v2/bookmark', 'verb' => 'POST'],

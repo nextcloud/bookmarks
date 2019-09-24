@@ -1,13 +1,13 @@
-import Vue from 'vue';
-import Vuex, { Store } from 'vuex';
-import Mutations from './mutations';
-import Actions from './actions';
+import Vue from 'vue'
+import Vuex, { Store } from 'vuex'
+import Mutations from './mutations'
+import Actions from './actions'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
-export { mutations } from './mutations';
+export { mutations } from './mutations'
 
-export { actions } from './actions';
+export { actions } from './actions'
 
 export default new Store({
 	mutations: Mutations,
@@ -50,30 +50,30 @@ export default new Store({
 
 	getters: {
 		getBookmark: state => id => {
-			return state.bookmarksById[id];
+			return state.bookmarksById[id]
 		},
 		getFolder: state => id => {
 			if (Number(id) === -1) {
-				return [{ id: '-1', children: state.folders }];
+				return [{ id: '-1', children: state.folders }]
 			}
-			return findFolder(id, state.folders);
+			return findFolder(id, state.folders)
 		}
 	}
-});
+})
 
 function findFolder(id, children) {
-	if (!children || !children.length) return [];
-	let folders = children.filter(folder => Number(folder.id) === Number(id));
+	if (!children || !children.length) return []
+	let folders = children.filter(folder => Number(folder.id) === Number(id))
 	if (folders.length) {
-		return folders;
+		return folders
 	} else {
 		for (let child of children) {
-			let folders = findFolder(id, child.children);
+			let folders = findFolder(id, child.children)
 			if (folders.length) {
-				folders.push(child);
-				return folders;
+				folders.push(child)
+				return folders
 			}
 		}
-		return [];
+		return []
 	}
 }
