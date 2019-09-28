@@ -45,21 +45,7 @@ export default new Router({
 			path: '/bookmarklet',
 			name: 'bookmarklet',
 			component: ViewBookmarklet,
-			props: true,
-			children: [
-				{
-					path: ':url',
-					name: 'bookmarklet',
-					component: ViewBookmarklet,
-					props: true
-				},
-				{
-					path: ':url/:title',
-					name: 'bookmarklet',
-					component: ViewBookmarklet,
-					props: true
-				}
-			]
+			props: (route) => ({ url: route.query.url, title: route.query.title })
 		}
 	]
 })

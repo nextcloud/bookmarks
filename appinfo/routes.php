@@ -29,8 +29,6 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'web_view#index', 'url' => '/tags/{tags}', 'verb' => 'GET', 'postfix' => 'tags'],
 	['name' => 'web_view#index', 'url' => '/untagged', 'verb' => 'GET', 'postfix' => 'untagged'],
 	['name' => 'web_view#index', 'url' => '/bookmarklet', 'verb' => 'GET', 'postfix' => 'bookmarklet'],
-	['name' => 'web_view#index', 'url' => '/bookmarklet/{url}', 'verb' => 'GET', 'postfix' => 'bookmarklet.url'],
-	['name' => 'web_view#index', 'url' => '/bookmarklet/{url}/{title}', 'verb' => 'GET', 'postfix' => 'bookmarklet.url.title'],
 
 	//internal REST API
 	['name' => 'internal_bookmark#get_bookmarks', 'url' => '/bookmark', 'verb' => 'GET'],
