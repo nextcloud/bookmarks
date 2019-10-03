@@ -39,6 +39,7 @@ OC.L10N.register(
     "Do you really want to delete all your bookmarks?" : "Segur que voleu suprimir totes les adreces d'interès?",
     "Creation date" : "Data de creació",
     "Tags" : "Etiquetes",
+    "Select tags are create new ones" : "Seleccioneu etiquetes i creeu-ne de noves",
     "Notes" : "Notes",
     "Sharing" : "Compartició",
     "{time} ago" : "fa {time}",
