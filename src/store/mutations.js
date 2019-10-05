@@ -36,7 +36,7 @@ export default {
 		Vue.set(state.settings, key, value)
 	},
 	[mutations.SET_FOLDERS](state, folders) {
-		state.folders = folders
+		state.folders = sortFolders(folders)
 	},
 	[mutations.SET_TAGS](state, tags) {
 		state.tags = tags
@@ -124,4 +124,11 @@ export default {
 	[mutations.REACHED_END](state) {
 		Vue.set(state.fetchState, 'reachedEnd', true)
 	}
+}
+
+function sortFolders(folders) {
+	folders.forEach(folder => {
+		folder.children = sortFolders(folder.children)
+	})
+	return folders.sort((a, b) => a.title > b.title ? 1 : -1)
 }
