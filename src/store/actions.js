@@ -14,7 +14,7 @@ export const actions = {
 	SAVE_BOOKMARK: 'SAVE_BOOKMARK',
 	MOVE_BOOKMARK: 'MOVE_BOOKMARK',
 	IMPORT_BOOKMARKS: 'IMPORT_BOOKMARKS',
-	DELETE_BOOKMARKS: 'IMPORT_BOOKMARKS',
+	DELETE_BOOKMARKS: 'DELETE_BOOKMARKS',
 
 	LOAD_TAGS: 'LOAD_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
@@ -210,11 +210,9 @@ export default {
 					if (response.status === 413) {
 						throw new Error('Selected file is too large')
 					}
-					throw new Error(response.statusText)
+					throw new Error(response.data.data.join('\n'))
 				} else {
-					const {
-						data: { status }
-					} = response
+					const status = response.data.status
 					if (status !== 'success') {
 						throw new Error(response.data)
 					}
