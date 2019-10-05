@@ -91,7 +91,7 @@ export default {
 					data: { item: bookmark, status }
 				} = response
 				if (status !== 'success') {
-					throw new Error(response.data)
+					throw new Error(response.data.data.join('\n'))
 				}
 				commit(mutations.DISPLAY_NEW_BOOKMARK, false)
 				commit(mutations.ADD_BOOKMARK, bookmark)
