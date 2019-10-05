@@ -101,9 +101,6 @@ class BookmarksParser {
 		if (false === $document->loadHTML($input, \LIBXML_PARSEHUGE)) {
 			throw new \Exception('The HTML value does not appear to be valid Netscape Bookmark File Format HTML.');
 		}
-		if (false === self::isValid($document->doctype->name)) {
-			throw new \Exception('The DOCTYPE does not appear to be a valid Netscape Bookmark File Format DOCTYPE.');
-		}
 		$this->xpath = new \DOMXPath($document);
 		$this->ignorePersonalToolbarFolder = $ignorePersonalToolbarFolder;
 		$this->includeFolderTags = $includeFolderTags;
