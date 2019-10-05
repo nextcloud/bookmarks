@@ -77,7 +77,7 @@ export default {
 	},
 	[actions.CREATE_BOOKMARK]({ commit, dispatch, state }, data) {
 		if (state.loading.bookmarks) return
-		commit(mutations.FETCH_START, 'createBookmark')
+		commit(mutations.FETCH_START, { type: 'createBookmark' })
 		return axios
 			.post(url('/bookmark'), {
 				url: data.url,
@@ -110,7 +110,7 @@ export default {
 			})
 	},
 	[actions.SAVE_BOOKMARK]({ commit, dispatch, state }, id) {
-		commit(mutations.FETCH_START, 'saveBookmark')
+		commit(mutations.FETCH_START, { type: 'saveBookmark' })
 		return axios
 			.put(url(`/bookmark/${id}`), this.getters.getBookmark(id))
 			.then(response => {
@@ -137,7 +137,7 @@ export default {
 		{ commit, dispatch, state },
 		{ bookmark, oldFolder, newFolder }
 	) {
-		commit(mutations.FETCH_START, 'moveBookmark')
+		commit(mutations.FETCH_START, { type: 'moveBookmark' })
 		try {
 			let response = await axios.post(
 				url(`/folder/${newFolder}/bookmarks/${bookmark}`)
@@ -252,7 +252,7 @@ export default {
 	},
 
 	[actions.RENAME_TAG]({ commit, dispatch, state }, { oldName, newName }) {
-		commit(mutations.FETCH_START, 'tag')
+		commit(mutations.FETCH_START, { type: 'tag' })
 		return axios
 			.put(url(`/tag/${oldName}`), {
 				name: newName
@@ -280,7 +280,7 @@ export default {
 	},
 	[actions.LOAD_TAGS]({ commit, dispatch, state }, link) {
 		if (state.loading.bookmarks) return
-		commit(mutations.FETCH_START, 'tags')
+		commit(mutations.FETCH_START, { type: 'tags' })
 		return axios
 			.get(url('/tag'), { params: { count: true } })
 			.then(response => {
@@ -323,7 +323,7 @@ export default {
 
 	[actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
 		if (state.loading.bookmarks) return
-		commit(mutations.FETCH_START, 'folders')
+		commit(mutations.FETCH_START, { type: 'folders' })
 		return axios
 			.get(url('/folder'), { params: {} })
 			.then(response => {
@@ -397,7 +397,7 @@ export default {
 	},
 	[actions.SAVE_FOLDER]({ commit, dispatch, state }, id) {
 		const folder = this.getters.getFolder(id)[0]
-		commit(mutations.FETCH_START, 'saveFolder')
+		commit(mutations.FETCH_START, { type: 'saveFolder' })
 		return axios
 			.put(url(`/folder/${id}`), {
 				parent_folder: folder.parent_folder,
@@ -425,7 +425,7 @@ export default {
 	},
 
 	async [actions.MOVE_SELECTION]({ commit, dispatch, state }, folderId) {
-		commit(mutations.FETCH_START, 'moveSelection')
+		commit(mutations.FETCH_START, { type: 'moveSelection' })
 		try {
 			for (const folder of state.selection.folders) {
 				if (folderId === folder.id) {
@@ -486,10 +486,15 @@ export default {
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FETCH_PAGE]({ dispatch, commit, state }) {
-		if (state.loading.bookmarks) return
 		if (state.fetchState.reachedEnd) return
-		commit(mutations.FETCH_START, 'bookmarks')
-		return axios
+		let canceled = false
+		commit(mutations.FETCH_START, {
+			type: 'bookmarks',
+			cancel() {
+				canceled = true
+			}
+		})
+		axios
 			.get(url('/bookmark'), {
 				params: {
 					limit: BATCH_SIZE,
@@ -499,6 +504,7 @@ export default {
 				}
 			})
 			.then(response => {
+				if (canceled) return
 				const {
 					data: { data, status }
 				} = response
@@ -519,6 +525,7 @@ export default {
 				throw err
 			})
 			.finally(() => {
+				if (canceled) return
 				commit(mutations.FETCH_END, 'bookmarks')
 			})
 	},

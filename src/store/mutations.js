@@ -114,8 +114,11 @@ export default {
 		Vue.set(state.fetchState, 'reachedEnd', false)
 		Vue.set(state.fetchState, 'query', query)
 	},
-	[mutations.FETCH_START](state, type) {
-		Vue.set(state.loading, type, true)
+	[mutations.FETCH_START](state, event) {
+		if (typeof state.loading[event.type] === 'function') {
+			state.loading[event.type]()
+		}
+		Vue.set(state.loading, event.type, event.cancel || true)
 	},
 	[mutations.FETCH_END](state, type) {
 		Vue.set(state.loading, type, false)
