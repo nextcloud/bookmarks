@@ -1,3 +1,21 @@
+## v2.2.0
+
+- NEW: Use routes history mode instead of hash URLs
+- FIX: Sort folders alphabetically
+- FIX: Allow canceling page fetches
+- FIX: Import
+- UI: Fixgrid view, descriptions in list view & bread crumbs
+
+## v2.1.1
+
+- FIX: Fix build script
+
+## v2.1.0
+
+- NEW: Rewrite UI
+- NEW: Allow limiting the number of bookmarks per user
+- NEW: Allow disabling web requests to bookmarked web pages
+
 ## v2.0.3
 
 - NEW: Properly specify dependencies in app manifest (allows conditional support for nc 15 again)

@@ -9,7 +9,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 
 Check out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients
 ]]></description>
-	<version>2.1.1</version>
+	<version>2.2.0</version>
 	<licence>agpl</licence>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
