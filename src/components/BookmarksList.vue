@@ -25,7 +25,7 @@
 			<p>Try changing your query or add some using the button on the left.</p>
 		</div>
 		<div v-if="loading" class="bookmarkslist__loading">
-			<span class="icon-loading" />
+			<figure class="icon-loading" />
 		</div>
 	</div>
 </template>
