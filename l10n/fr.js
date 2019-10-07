@@ -58,6 +58,9 @@ OC.L10N.register(
     "Enter bookmark url" : "Saisissez l'url du favori",
     "Failed to create bookmark" : "Echec de la création du favori",
     "Failed to save bookmark" : "Echec de la sauvegarde du favori",
+    "Failed to move bookmark" : "Impossible de déplacer le favori",
+    "Failed to delete bookmark" : "Impossible de supprimer le favori",
+    "Failed to create folder" : "Impossible de créer le dossier",
     "Bookmarks feed" : "Flux de suivi"
 },
 "nplurals=2; plural=(n > 1);");
