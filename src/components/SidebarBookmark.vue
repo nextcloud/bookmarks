@@ -73,7 +73,7 @@ export default {
 			const age = Date.now() - date
 			if (age < MAX_RELATIVE_DATE) {
 				const duration = humanizeDuration(age, {
-					language: OC.getLanguage(),
+					language: OC.getLanguage().split('-')[0],
 					units: ['d', 'h', 'm', 's'],
 					largest: 1
 				})
