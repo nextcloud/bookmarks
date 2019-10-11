@@ -26,6 +26,7 @@ export const actions = {
 	DELETE_FOLDER: 'DELETE_FOLDER',
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
+	DELETE_SELECTION: 'DELETE_SELECTION',
 
 	RELOAD_VIEW: 'RELOAD_VIEW',
 
@@ -449,6 +450,27 @@ export default {
 			throw err
 		} finally {
 			commit(mutations.FETCH_END, 'moveSelection')
+		}
+	},
+	async [actions.DELETE_SELECTION]({ commit, dispatch, state }) {
+		commit(mutations.FETCH_START, { type: 'deleteSelection' })
+		try {
+			for (const folder of state.selection.folders) {
+				await dispatch(actions.DELETE_FOLDER, folder.id)
+			}
+
+			for (const bookmark of state.selection.bookmarks) {
+				await dispatch(actions.DELETE_BOOKMARK, { id: bookmark.id })
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to delete parts of selection')
+			)
+			throw err
+		} finally {
+			commit(mutations.FETCH_END, 'deleteSelection')
 		}
 	},
 

@@ -33,7 +33,7 @@
 					@click="onAddFolder" />
 			</Actions>
 		</div>
-		<div class="breadcrumbs__viewmode">
+		<div class="breadcrumbs__controls">
 			<Actions>
 				<ActionButton
 					:icon="
@@ -45,6 +45,24 @@
 					{{ t('bookmarks', viewMode === 'list' ? 'Grid view' : 'List view') }}
 				</ActionButton>
 			</Actions>
+			<div v-if="selection.length" class="breadcrumbs__bulkediting">
+				{{
+					n(
+						'bookmarks',
+						'Selected %n bookmark',
+						'Selected %n bookmarks',
+						selection.length
+					)
+				}}
+				<Actions>
+					<ActionButton icon="icon-category-files" @click="onBulkMove">
+						{{ t('bookmarks', 'Move selection') }}
+					</ActionButton>
+					<ActionButton icon="icon-delete" @click="onBulkDelete">
+						{{ t('bookmarks', 'Delete selection') }}
+					</ActionButton>
+				</Actions>
+			</div>
 		</div>
 	</div>
 </template>
@@ -79,6 +97,9 @@ export default {
 		},
 		viewMode() {
 			return this.$store.state.viewMode
+		},
+		selection() {
+			return this.$store.state.selection.bookmarks
 		}
 	},
 	created() {},
@@ -106,6 +127,14 @@ export default {
 				key: 'viewMode',
 				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid'
 			})
+		},
+
+		async onBulkDelete() {
+			await this.$store.dispatch(actions.DELETE_SELECTION)
+			this.$store.commit(mutations.RESET_SELECTION)
+		},
+		onBulkMove() {
+			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		}
 	}
 }
@@ -141,7 +170,7 @@ export default {
 	display: inline-block;
 	height: 30px;
 	padding: 7px;
-  flex-shrink: 0;
+	flex-shrink: 0;
 }
 
 .breadcrumbs__path > *:not(.icon-breadcrumb) {
@@ -168,14 +197,14 @@ export default {
 	margin-left: 5px;
 }
 
-.breadcrumbs__viewmode {
+.breadcrumbs__controls {
 	flex: 2;
 	display: flex;
 	flex-direction: row-reverse;
 	padding: 0;
 }
 
-.breadcrumbs__viewmode > * {
+.breadcrumbs__controls > * {
 	min-width: 30px;
 }
 </style>

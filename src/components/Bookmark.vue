@@ -2,7 +2,7 @@
 	<div
 		:class="{
 			bookmark: true,
-			active: isOpen,
+			active: isOpen || selected,
 			'bookmark--gridview': viewMode === 'grid'
 		}"
 		:style="{
@@ -12,6 +12,11 @@
 					: undefined
 		}">
 		<template v-if="!renaming">
+			<div class="bookmark__checkbox">
+				<input v-model="selected" class="checkbox" type="checkbox"><label
+					:aria-label="t('bookmarks', 'Select bookmark')"
+					@click="clickSelect" />
+			</div>
 			<div class="bookmark__labels">
 				<a :href="url" target="_blank" class="bookmark__title">
 					<h3 :title="bookmark.title">
@@ -83,7 +88,7 @@ export default {
 		}
 	},
 	data() {
-		return { title: this.bookmark.title, renaming: false }
+		return { title: this.bookmark.title, renaming: false, selected: false }
 	},
 	computed: {
 		iconUrl() {
@@ -107,6 +112,15 @@ export default {
 		},
 		viewMode() {
 			return this.$store.state.viewMode
+		}
+	},
+	watch: {
+		selected(val, oldVal) {
+			if (val) {
+				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
+			} else {
+				this.$store.commit(mutations.REMOVE_SELECTION_BOOKMARK, this.bookmark)
+			}
 		}
 	},
 	created() {},
@@ -134,6 +148,9 @@ export default {
 			this.bookmark.title = this.title
 			await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id)
 			this.renaming = false
+		},
+		clickSelect() {
+			this.selected = !this.selected
 		}
 	}
 }
@@ -152,6 +169,10 @@ export default {
 .bookmark.active,
 .bookmark:hover {
 	background: var(--color-background-dark);
+}
+
+.bookmark__checkbox {
+	display: inline-block;
 }
 
 .bookmark__icon {
@@ -202,6 +223,10 @@ export default {
 	display: none !important;
 }
 
+.bookmark--gridview.active {
+	border-color: var(--color-primary-element);
+}
+
 .bookmark--gridview .bookmark__description {
 	flex: 0;
 }
@@ -210,6 +235,14 @@ export default {
 	display: inline-block !important;
 	position: relative;
 	top: 5px;
+}
+
+.bookmark--gridview .bookmark__checkbox {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	background: white;
+	border-radius: var(--border-radius);
 }
 
 .bookmark__actions {
