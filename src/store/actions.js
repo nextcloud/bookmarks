@@ -321,11 +321,17 @@ export default {
 	},
 
 	[actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
-		if (state.loading.bookmarks) return
-		commit(mutations.FETCH_START, { type: 'folders' })
+		let canceled = false
+		commit(mutations.FETCH_START, {
+			type: 'folders',
+			cancel: () => {
+				canceled = true
+			}
+		})
 		return axios
 			.get(url('/folder'), { params: {} })
 			.then(response => {
+				if (canceled) return
 				const {
 					data: { data, status }
 				} = response
@@ -550,10 +556,13 @@ export default {
 			})
 	},
 
-	[actions.SET_SETTING]({ commit, dispatch, state }, { key, value }) {
-		commit(mutations.SET_SETTING, key, value)
-		if (key === 'viewMode' && state.viewMode !== value) {
-			commit(mutations.SET_VIEW_MODE, value)
+	async [actions.SET_SETTING]({ commit, dispatch, state }, { key, value }) {
+		await commit(mutations.SET_SETTING, { key, value })
+		if (key === 'viewMode') {
+			await commit(mutations.SET_VIEW_MODE, value)
+		}
+		if (key === 'sorting') {
+			await commit(mutations.RESET_PAGE)
 		}
 		return axios
 			.post(url(`/settings/${key}`), {
@@ -571,13 +580,16 @@ export default {
 	[actions.LOAD_SETTING]({ commit, dispatch, state }, key) {
 		return axios
 			.get(url(`/settings/${key}`))
-			.then(response => {
+			.then(async response => {
 				const {
 					data: { [key]: value }
 				} = response
-				commit(mutations.SET_SETTING, { key, value })
-				if (key === 'viewMode' && state.viewMode !== value) {
-					commit(mutations.SET_VIEW_MODE, value)
+				await commit(mutations.SET_SETTING, { key, value })
+				if (key === 'viewMode') {
+					await commit(mutations.SET_VIEW_MODE, value)
+				}
+				if (key === 'sorting') {
+					await commit(mutations.RESET_PAGE)
 				}
 			})
 			.catch(err => {

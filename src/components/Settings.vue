@@ -138,7 +138,7 @@ export default {
 				key: 'sorting',
 				value: e.target.value
 			})
-			this.$router.push({ name: 'home' })
+			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
 		onChangeViewMode(e) {},
 		onRssClick(e) {

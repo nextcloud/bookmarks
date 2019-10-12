@@ -14,6 +14,7 @@ export const mutations = {
 	REMOVE_ALL_BOOKMARK: 'REMOVE_ALL_BOOKMARK',
 	SET_TAGS: 'SET_TAGS',
 	INCREMENT_PAGE: 'INCREMENT_PAGE',
+	RESET_PAGE: 'RESET_PAGE',
 	SET_QUERY: 'SET_QUERY',
 	SET_SORTBY: 'SET_SORTBY',
 	FETCH_START: 'FETCH_START',
@@ -107,6 +108,11 @@ export default {
 	[mutations.INCREMENT_PAGE](state) {
 		Vue.set(state.fetchState, 'page', state.fetchState.page + 1)
 	},
+	[mutations.RESET_PAGE](state) {
+		state.bookmarks = []
+		state.bookmarksById = {}
+		Vue.set(state.fetchState, 'page', 0)
+	},
 	[mutations.SET_QUERY](state, query) {
 		state.bookmarks = []
 		state.bookmarksById = {}
@@ -133,5 +139,5 @@ function sortFolders(folders) {
 	folders.forEach(folder => {
 		folder.children = sortFolders(folder.children)
 	})
-	return folders.sort((a, b) => a.title > b.title ? 1 : -1)
+	return folders.sort((a, b) => (a.title > b.title ? 1 : -1))
 }

@@ -18,7 +18,7 @@ import BookmarksList from './BookmarksList'
 import Breadcrumbs from './Breadcrumbs'
 import SidebarBookmark from './SidebarBookmark'
 import MoveDialog from './MoveDialog'
-import { actions } from '../store/'
+import { actions, mutations } from '../store/'
 
 export default {
 	name: 'ViewPrivate',
@@ -55,13 +55,17 @@ export default {
 		$route: 'onRoute'
 	},
 
-	created() {
-		this.reloadSettings()
-		this.reloadTags()
-		this.reloadFolders()
-		this.onRoute()
+	async created() {
 		document.addEventListener('scroll', this.onScroll)
 		this.search = new OCA.Search(this.onSearch, this.onResetSearch)
+		// set loading indicator
+		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
+		await Promise.all([
+			this.reloadSettings(),
+			this.reloadTags(),
+			this.reloadFolders()
+		])
+		this.onRoute()
 	},
 
 	methods: {
@@ -94,14 +98,14 @@ export default {
 			}
 		},
 
-		reloadTags() {
-			this.$store.dispatch(actions.LOAD_TAGS)
+		async reloadTags() {
+			return this.$store.dispatch(actions.LOAD_TAGS)
 		},
-		reloadFolders() {
-			this.$store.dispatch(actions.LOAD_FOLDERS)
+		async reloadFolders() {
+			return this.$store.dispatch(actions.LOAD_FOLDERS)
 		},
-		reloadSettings() {
-			this.$store.dispatch(actions.LOAD_SETTINGS)
+		async reloadSettings() {
+			return this.$store.dispatch(actions.LOAD_SETTINGS)
 		},
 
 		onSearch(search) {
