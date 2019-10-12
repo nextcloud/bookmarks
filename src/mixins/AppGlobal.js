@@ -3,8 +3,8 @@ export default {
 		t,
 		n
 	},
-	props: {
+	data: () => ({
 		OC,
 		OCA
-	}
+	})
 }
