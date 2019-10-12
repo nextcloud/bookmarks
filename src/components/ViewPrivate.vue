@@ -3,7 +3,7 @@
 		<Navigation />
 		<AppContent>
 			<Breadcrumbs />
-			<BookmarksList :loading="loading.bookmarks" :bookmarks="bookmarks" />
+			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
 		<SidebarBookmark />
 		<MoveDialog />
