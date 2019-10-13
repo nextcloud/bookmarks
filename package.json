@@ -24,7 +24,7 @@
 		"nextcloud-axios": "^0.2.1",
 		"nextcloud-router": "0.0.9",
 		"nextcloud-server": "^0.15.10",
-		"nextcloud-vue": "^0.12.3",
+		"nextcloud-vue": "^0.12.6",
 		"vue": "^2.6.10",
 		"vue-click-outside": "^1.0.7",
 		"vue-router": "^3.1.3",
