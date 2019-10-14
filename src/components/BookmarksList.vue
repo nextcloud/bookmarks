@@ -80,8 +80,6 @@ export default {
 <style>
 .bookmarkslist {
 	position: relative;
-	overflow-x: hidden;
-	overflow-y: visible;
 }
 .bookmarkslist
 	> *:first-child:not(.bookmarkslist__loading):not(.bookmarkslist__empty) {
