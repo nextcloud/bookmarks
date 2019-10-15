@@ -19,7 +19,7 @@ class FolderMapper extends QBMapper {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $id) : Bookmark {
+	public function find(int $id) : Folder {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('id', 'parent_folder', 'title', 'user_id')
@@ -95,6 +95,18 @@ class FolderMapper extends QBMapper {
 		return parent::insert($entity);
 	}
 
+	public function findByBookmark(int $bookmarkId) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*');
+
+		$qb
+			->from('bookmarks_folders', 'f')
+			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('b.bookmark_id', 'f.id'))
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
+			->andWhere($qb->expr()->eq('b.bookmark_id', $qb->createPositionalParamter($bookmarkId)));
+
+		return $this->findEntities($qb);
+	}
 
 	/**
 	 * @brief Lists bookmark folders' child folders (helper)
