@@ -3,7 +3,7 @@ namespace OCA\Bookmarks\Db;
 
 use OCP\AppFramework\Db\Entity;
 
-class Bookmark extends Entity {
+class Folder extends Entity {
 	protected $parentFolder;
 	protected $title;
 	protected $userId;

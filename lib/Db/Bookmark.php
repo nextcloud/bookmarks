@@ -14,6 +14,13 @@ class Bookmark extends Entity {
 	protected $clickcount;
 	protected $lastPreview;
 
+	public static function fromArray($props) {
+		$bookmark = new Bookmark();
+		foreach($props as $prop => $val) {
+			$bookmark->{$prop} = $val;
+		}
+		return $bookmark;
+	}
 
 	public function __construct() {
 		// add types in constructor

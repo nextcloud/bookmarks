@@ -1,12 +1,20 @@
 <?php
 namespace OCA\Bookmarks\Db;
 
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\Entity;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+/**
+ * Class BookmarkMapper
+ *
+ * @package OCA\Bookmarks\Db
+ */
 class BookmarkMapper extends QBMapper {
 
 	/** @var EventDispatcherInterface */
@@ -15,6 +23,13 @@ class BookmarkMapper extends QBMapper {
 	/** @var UrlNormalizer */
 	private $urlNormalizer;
 
+	/**
+	 * BookmarkMapper constructor.
+	 *
+	 * @param IDBConnection $db
+	 * @param EventDispatcherInterface $eventDispatcher
+	 * @param UrlNormalizer $urlNormalizer
+	 */
 	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer) {
 		parent::__construct($db, 'bookmarks');
 		$this->eventDispatcher = $eventDispatcher;
@@ -22,10 +37,15 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
+	 * Find a specific bookmark by Id
+	 *
+	 * @param int $userId
+	 * @param int $id
+	 * @return Entity
+	 * @throws DoesNotExistException if not found
+	 * @throws MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $userId, int $id) : Bookmark {
+	public function find(int $userId, int $id) : Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -37,10 +57,13 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
+	 * @param int $userId
+	 * @param string $url
+	 * @return Entity
+	 * @throws DoesNotExistException if not found
+	 * @throws MultipleObjectsReturnedException if more than one result
 	 */
-	public function findByUrl(int $userId, string $url) : Bookmark {
+	public function findByUrl(int $userId, string $url) : Entity {
 		$normalized = $this->urlNormalizer->normalize($url);
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -52,10 +75,21 @@ class BookmarkMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
+	/**
+	 * @param int $userId
+	 * @param array $filters
+	 * @param string $conjunction
+	 * @param bool $filterTagsOnly
+	 * @param string $sortBy
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array|Entity[]
+	 */
 	public function findAll(int $userId, array $filters, string $conjunction = 'and', bool $filterTagsOnly = false, string $sortBy='lastmodified', int $offset = 0, int $limit = 10) {
 		$tableAttributes = ['url', 'title', 'user_id', 'description',
 			'public', 'added', 'lastmodified', 'clickcount', 'last_preview'];
 
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 
 		if (!in_array($sortBy, $tableAttributes)) {
 			$sqlSortColumn = 'lastmodified';
@@ -75,7 +109,7 @@ class BookmarkMapper extends QBMapper {
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
 
-		$this->findBookmarksBuildFilter($qb, $filters, $filterTagOnly, $conjunction);
+		$this->findBookmarksBuildFilter($qb, $filters, $conjunction);
 
 		if ($sqlSortColumn === 'title') {
 			$qb->orderBy($qb->createFunction('UPPER(`title`)'), 'ASC');
@@ -96,10 +130,9 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param IQueryBuilder $qb
 	 * @param array $filters
-	 * @param bool $filterTagOnly
 	 * @param string $tagFilterConjunction
 	 */
-	private function findBookmarksBuildFilter(&$qb, $filters, $filterTagOnly, $tagFilterConjunction) {
+	private function findBookmarksBuildFilter(&$qb, $filters, $tagFilterConjunction) {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$connectWord = 'AND';
 		if ($tagFilterConjunction === 'or') {
@@ -141,6 +174,27 @@ class BookmarkMapper extends QBMapper {
 		$qb->having($filterExpression);
 	}
 
+	/**
+	 * @param string $tag
+	 * @return array|Entity[]
+	 */
+	public function findByTag(string $tag) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*');
+
+		$qb
+			->from('bookmarks', 'b')
+			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
+			->andWhere($qb->expr()->eq('t.tag', $qb->createPositionalParamter($tag)));
+
+		return $this->findEntities($qb);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return array|Entity[]
+	 */
 	public function findByFolder(int $folderId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*');
@@ -152,6 +206,10 @@ class BookmarkMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	/**
+	 * @param int $userId
+	 * @return array|Entity[]
+	 */
 	public function findByRootFolder(int $userId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
@@ -162,6 +220,11 @@ class BookmarkMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	/**
+	 * @param int $limit
+	 * @param int $stalePeriod
+	 * @return array|Entity[]
+	 */
 	public function findPendingPreviews(int $limit, int $stalePeriod) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*');
@@ -172,8 +235,12 @@ class BookmarkMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function delete(Bookmark $entity) {
-		parent::delete($entity);
+	/**
+	 * @param Bookmark $entity
+	 * @return Entity|void
+	 */
+	public function delete(Bookmark $entity) : Entity {
+		$returnedEntity = parent::delete($entity);
 
 		$id = $entity->getId();
 		$userId = $entity->getUserId();
@@ -194,22 +261,49 @@ class BookmarkMapper extends QBMapper {
 			'\OCA\Bookmarks::onBookmarkDelete',
 			new GenericEvent(null, ['id' => $id, 'userId' => $userId])
 		);
+
+		return $returnedEntity;
 	}
 
-	public function update(Bookmark $entity) {
+	/**
+	 * @param Bookmark $entity
+	 * @return Entity
+	 */
+	public function update(Bookmark $entity) : Entity {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 
-		parent::update($entity);
+		$newEntity = parent::update($entity);
 
 		// trigger event
 		$this->eventDispatcher->dispatch(
 			'\OCA\Bookmarks::onBookmarkUpdate',
 			new GenericEvent(null, ['id' => $entity->getId(), 'userId' => $entity->getUserId()])
 		);
+
+		return $newEntity;
 	}
 
-	public function insertOrUpdate(Bookmark $entity) {
+	/**
+	 * @param Bookmark $entity
+	 * @return Entity
+	 */
+	public function insert(Bookmark $entity) : Entity {
+		// normalize url
+		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+		$newEntity = parent::insert($entity);
+		$this->eventDispatcher->dispatch(
+			'\OCA\Bookmarks::onBookmarkCreate',
+			new GenericEvent(null, ['id' => $newEntity->getId(), 'userId' => $newEntity->getUserId()])
+		);
+		return $newEntity;
+	}
+
+	/**
+	 * @param Bookmark $entity
+	 * @return Entity
+	 */
+	public function insertOrUpdate(Bookmark $entity) : Entity {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		$newEntity = parent::insertOrUpdate($entity);
@@ -217,8 +311,14 @@ class BookmarkMapper extends QBMapper {
 			'\OCA\Bookmarks::onBookmarkCreate',
 			new GenericEvent(null, ['id' => $newEntity->getId(), 'userId' => $newEntity->getUserId()])
 		);
+		return $newEntity;
 	}
 
+	/**
+	 * @param Bookmark $entity
+	 * @param $fields
+	 * @return string
+	 */
 	public function hash(Bookmark $entity, $fields) {
 		$bookmark = [];
 		foreach ($fields as $field) {
@@ -230,6 +330,10 @@ class BookmarkMapper extends QBMapper {
 	}
 
 
+	/**
+	 * @param Bookmark $entity
+	 * @return Entity
+	 */
 	public function markPreviewCreated(Bookmark $entity) {
 		$entity->setLastPreview(time());
 		return $this->update($entity);
