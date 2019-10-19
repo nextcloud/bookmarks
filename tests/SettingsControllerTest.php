@@ -4,24 +4,32 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\Rest\SettingsController;
 use \OCP\IConfig;
-use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\JSONResponse;
+use OCP\IRequest;
 
 /**
  * Class Test_SettingsController
  *
  * @group DB
  */
-class Test_SettingsController extends TestCase {
+class SettingsControllerTest extends TestCase {
+	/**
+	 * @var string
+	 */
 	private $userId;
+	/**
+	 * @var string
+	 */
 	private $appName;
+	/**
+	 * @var IRequest
+	 */
 	private $request;
 	/** @var IConfig */
 	private $config;
 	/** @var SettingsController */
 	private $controller;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->userId = "tuser";
@@ -62,7 +70,7 @@ class Test_SettingsController extends TestCase {
 		$this->assertEquals('error', $data['status']);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->config->deleteUserValue($this->userId, $this->appName, 'sorting');
 	}
 }

@@ -9,8 +9,8 @@ use OC\BackgroundJob\JobList;
 /**
  * Class Test_BackgroundJob
  */
-class Test_BackgroundJob extends TestCase {
-	protected function setUp() {
+class BackgroundJobTest extends TestCase {
+	protected function setUp() :void {
 		parent::setUp();
 
 		$this->libBookmarks = \OC::$server->query(Bookmarks::class);
