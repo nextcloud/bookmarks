@@ -67,10 +67,10 @@ class TagMapperTest extends TestCase {
 		$this->assertContains('four', $allTags);
 
 		$allTagsWithCount = $this->tagMapper->findAllWithCount($this->userId);
-		$this->assertContains(['tag' => 'one', 'nbr' => 3], $allTags);
-		$this->assertContains(['tag' => 'two', 'nbr' => 2], $allTags);
-		$this->assertContains(['tag' => 'three', 'nbr' => 1], $allTags);
-		$this->assertContains(['tag' => 'four', 'nbr' => 1], $allTags);
+		$this->assertContains(['tag' => 'one', 'nbr' => 3], $allTagsWithCount);
+		$this->assertContains(['tag' => 'two', 'nbr' => 2], $allTagsWithCount);
+		$this->assertContains(['tag' => 'three', 'nbr' => 1], $allTagsWithCount);
+		$this->assertContains(['tag' => 'four', 'nbr' => 1], $allTagsWithCount);
 	}
 
 	/**
@@ -90,7 +90,7 @@ class TagMapperTest extends TestCase {
 
 	/**
 	 * @depends      testRemoveAllFrom
-	 * @dataProvider setOfBookmarksProvider
+	 * @dataProvider singleBookmarksProvider
 	 * @param array $tags
 	 * @param Bookmark $bookmark
 	 * @return void
