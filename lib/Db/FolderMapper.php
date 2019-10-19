@@ -1,9 +1,12 @@
 <?php
 namespace OCA\Bookmarks\Db;
 
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\AppFramework\Db\Entity;
 
 class FolderMapper extends QBMapper {
 
@@ -16,33 +19,35 @@ class FolderMapper extends QBMapper {
 	}
 
 	/**
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
+	 * @param int $id
+	 * @return Folder
+	 * @throws DoesNotExistException if not found
+	 * @throws MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $id) : Folder {
+	public function find(int $id) : Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select('id', 'parent_folder', 'title', 'user_id')
+			->select('*')
 			->from('bookmarks_folders')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 
 		return $this->findEntity($qb);
 	}
 
-	public function findByParentFolder(int $folderId) {
+	public function findByParentFolder(int $folderId)  {
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select('id', 'title', 'parent_folder')
+			->select('*')
 			->from('bookmarks_folders')
 			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
 			->orderBy('title', 'DESC');
 		return $this->findEntities($qb);
 	}
 
-	public function findByRootFolder(int $userId) {
+	public function findByRootFolder(int $userId)  {
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select('id', 'title', 'parent_folder')
+			->select('*')
 			->from('bookmarks_folders')
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
 			->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter(-1)))
@@ -50,16 +55,16 @@ class FolderMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function delete(Folder $entity) {
+	public function delete(Entity $entity) : Entity {
 		$childFolders = $this->findByParentFolder($entity->id);
 		foreach ($childFolders as $folder) {
 			$this->delete($folder);
 		}
-		$childBookmarks = $this->bookmarkMapper->findByFolder($entity->id)
+		$childBookmarks = $this->bookmarkMapper->findByFolder($entity->id);
 		foreach ($childBookmarks as $bookmark) {
 			$this->bookmarkMapper->delete($bookmark);
 		}
-		parent::delete($entity);
+		return parent::delete($entity);
 	}
 
 	public function deleteAll(int $userId) {
@@ -67,30 +72,29 @@ class FolderMapper extends QBMapper {
 		foreach ($childFolders as $folder) {
 			$this->delete($folder);
 		}
-		$childBookmarks = $this->bookmarkMapper->findByRootFolder($userId)
+		$childBookmarks = $this->bookmarkMapper->findByRootFolder($userId);
 		foreach ($childBookmarks as $bookmark) {
 			$this->bookmarkMapper->delete($bookmark);
 		}
-		parent::delete($entity);
 	}
 
-	public function update(Folder $entity) {
-		if ($entity->parentFolder !== -1) {
-			$this->find($entity->parentFolder)
+	public function update(Entity $entity) : Entity {
+		if ($entity->getParentFolder() !== -1) {
+			$this->find($entity->getParentFolder());
 		}
-		parent::insertOrUpdate($entity);
+		return parent::update($entity);
 	}
 
-	public function insertOrUpdate(Folder $entity) {
-		if ($entity->parentFolder !== -1) {
-			$this->find($entity->parentFolder)
+	public function insertOrUpdate(Entity $entity) : Entity {
+		if ($entity->getParentFolder() !== -1) {
+			$this->find($entity->getParentFolder());
 		}
-		$newEntity = parent::insertOrUpdate($entity);
+		return parent::insertOrUpdate($entity);
 	}
 
-	public function insert(Folder $entity) {
-		if ($entity->parentFolder !== -1) {
-			$this->find($entity->parentFolder)
+	public function insert(Entity $entity) : Entity {
+		if ($entity->getParentFolder() !== -1) {
+			$this->find($entity->getParentFolder());
 		}
 		return parent::insert($entity);
 	}
@@ -102,15 +106,14 @@ class FolderMapper extends QBMapper {
 		$qb
 			->from('bookmarks_folders', 'f')
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('b.bookmark_id', 'f.id'))
-			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->eq('b.bookmark_id', $qb->createPositionalParamter($bookmarkId)));
+			->where($qb->expr()->eq('b.bookmark_id', $qb->createPositionalParamter($bookmarkId)));
 
 		return $this->findEntities($qb);
 	}
 
 	/**
 	 * @brief Lists bookmark folders' child folders (helper)
-	 * @param int $root Root folder from which to return hierarchy, -1 for absolute root
+	 * @param $folderId
 	 * @param int $layers The amount of levels to return
 	 * @return array the children each in the format ["id" => int, "type" => 'bookmark' | 'folder' ]
 	 */
@@ -150,9 +153,53 @@ class FolderMapper extends QBMapper {
 		return $children;
 	}
 
+	/**
+	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param int $userId
+	 * @param int $layers The amount of levels to return
+	 * @return array the children each in the format ["id" => int, "type" => 'bookmark' | 'folder' ]
+	 */
+	public function getRootChildren(int $userId, $layers = 1) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('id', 'title', 'parent_folder', 'index')
+			->from('bookmarks_folders')
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
+			->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter(-1)))
+			->orderBy('index', 'ASC');
+		$childFolders = $qb->execute()->fetchAll();
+
+
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('bookmark_id', 'index')
+			->from('bookmarks_folders_bookmarks', 'f')
+			->innerJoin('f', 'bookmarks', 'b', $qb->expr()->eq('b.id', 'f.bookmark_id'))
+			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter(-1)))
+			->andWhere($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
+			->orderBy('index', 'ASC');
+		$childBookmarks = $qb->execute()->fetchAll();
+
+		$children = array_merge($childFolders, $childBookmarks);
+		array_multisort(array_column($children, 'index'), \SORT_ASC, $children);
+		$children = array_map(function ($child) use ($layers) {
+			return isset($child['bookmark_id'])
+				? ['type' =>  self::TYPE_BOOKMARK, 'id' => $child['bookmark_id']]
+				: ($layers === 1
+					? ['type' => self::TYPE_FOLDER, 'id' => $child['id']]
+					: [
+						'type' => self::TYPE_FOLDER,
+						'id' => $child['id'],
+						'children' => $this->getChildren($child['id'], $layers-1)
+					]);
+		}, $children);
+
+		return $children;
+	}
+
 	public function hashFolder(Folder $entity, $fields = ['title', 'url']) {
 		$children = $this->getChildren($entity->id);
-		$childHashes = array_map(function ($item) use ($userId, $fields) {
+		$childHashes = array_map(function ($item) use ($fields) {
 			switch ($item['type']) {
 				case self::TYPE_BOOKMARK:
 				  return $this->bookmarkMapper->hashBookmark($item['id'], $fields);
@@ -163,10 +210,93 @@ class FolderMapper extends QBMapper {
 			}
 		}, $children);
 		$folder = [];
-		if (isset($entity->title)) {
-			$folder['title'] = $entity->title;
+		if ($entity->getTitle() !== null) {
+			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;
 		return hash('sha256', json_encode($folder, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+	}
+
+	/**
+	 * @brief Add a bookmark to a set of folders
+	 * @param int $bookmarkId The bookmark reference
+	 * @param array $folders Set of folders ids to add the bookmark to
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function addToFolders(int $bookmarkId, array $folders) {
+		$bookmark = $this->bookmarkMapper->find($bookmarkId);
+		foreach ($folders as $folderId) {
+			// check if folder exists
+			if ($folderId !== -1 && $folderId !== '-1') {
+				$this->find($folderId);
+			}
+
+			// check if this folder<->bookmark mapping already exists
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->select('*')
+				->from('bookmarks_folders_bookmarks')
+				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)))
+				->andWhere($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId)));
+
+			if ($qb->execute()->fetch()) {
+				continue;
+			}
+
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->insert('bookmarks_folders_bookmarks')
+				->values([
+					'folder_id' => $qb->createNamedParameter($folderId),
+					'bookmark_id' => $qb->createNamedParameter($bookmarkId),
+					'index' => $folderId !== -1 ? count($this->getChildren($folderId)) : count($this->getRootChildren($bookmark->getUserId()))
+				]);
+			$qb->execute();
+		}
+	}
+
+	/**
+	 * @brief Remove a bookmark from a set of folders
+	 * @param int $bookmarkId The bookmark reference
+	 * @param array $folders Set of folders ids to add the bookmark to
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function removeFromFolders(int $bookmarkId, array $folders) {
+		$bm = $this->bookmarkMapper->find($bookmarkId);
+
+		$foldersLeft = count($this->findByBookmark($bookmarkId));
+
+		foreach ($folders as $folderId) {
+			// check if folder exists
+			if ($folderId !== -1 && $folderId !== '-1') {
+				$this->find($folderId);
+			}
+
+			// check if this folder<->bookmark mapping exists
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->select('*')
+				->from('bookmarks_folders_bookmarks')
+				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)))
+				->andWhere($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId)));
+
+			if (!$qb->execute()->fetch()) {
+				continue;
+			}
+
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->delete('bookmarks_folders_bookmarks')
+				->where($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId)))
+				->andwhere($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)));
+			$qb->execute();
+
+			$foldersLeft--;
+		}
+		if ($foldersLeft <= 0) {
+			$this->bookmarkMapper->delete($bm);
+		}
 	}
 }

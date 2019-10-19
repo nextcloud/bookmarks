@@ -5,10 +5,12 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 
-class TagMapper extends QBMapper {
+class TagMapper {
+
+	protected $db;
 
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'bookmarks_tags');
+		$this->db = $db;
 	}
 
 	public function findAllWithCount(int $userId) {
@@ -57,7 +59,7 @@ class TagMapper extends QBMapper {
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($tag)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
-			return $qb->execute();
+		return $qb->execute();
 	}
 
 	public function deleteAll(int $userId) {
@@ -66,7 +68,7 @@ class TagMapper extends QBMapper {
 			->delete('bookmarks_tags', 'tgs')
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
-			return $qb->execute();
+		return $qb->execute();
 	}
 
 	public function addTo($tags, int $bookmarkId) {
@@ -120,7 +122,7 @@ class TagMapper extends QBMapper {
 
 	/**
 	 * @brief Rename a tag
-	 * @param string $userId UserId
+	 * @param int $userId UserId
 	 * @param string $old Old Tag Name
 	 * @param string $new New Tag Name
 	 * @return boolean Success of operation

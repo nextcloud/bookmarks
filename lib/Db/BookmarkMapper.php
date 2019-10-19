@@ -39,19 +39,17 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * Find a specific bookmark by Id
 	 *
-	 * @param int $userId
 	 * @param int $id
 	 * @return Entity
 	 * @throws DoesNotExistException if not found
 	 * @throws MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $userId, int $id) : Entity {
+	public function find(int $id) : Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
 			->from('bookmarks')
-			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
-			->andWhere($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 
 		return $this->findEntity($qb);
 	}
@@ -93,6 +91,8 @@ class BookmarkMapper extends QBMapper {
 
 		if (!in_array($sortBy, $tableAttributes)) {
 			$sqlSortColumn = 'lastmodified';
+		}else{
+			$sqlSortColumn = $sortBy;
 		}
 
 		$qb = $this->db->getQueryBuilder();
@@ -155,13 +155,11 @@ class BookmarkMapper extends QBMapper {
 			} else {
 				$expr[] = $qb->expr()->iLike('tags', $qb->createPositionalParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
 			}
-			if (!$filterTagOnly) {
-				foreach ($otherColumns as $col) {
-					$expr[] = $qb->expr()->iLike(
-						$qb->createFunction($qb->getColumnName($col)),
-						$qb->createPositionalParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%')
-					);
-				}
+			foreach ($otherColumns as $col) {
+				$expr[] = $qb->expr()->iLike(
+					$qb->createFunction($qb->getColumnName($col)),
+					$qb->createPositionalParameter('%' . $this->db->escapeLikeParameter(strtolower($filter)) . '%')
+				);
 			}
 			$filterExpressions[] = call_user_func_array([$qb->expr(), 'orX'], $expr);
 			$i++;
@@ -175,10 +173,11 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @param int $userId
 	 * @param string $tag
 	 * @return array|Entity[]
 	 */
-	public function findByTag(string $tag) {
+	public function findByTag(int $userId, string $tag) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*');
 
@@ -215,7 +214,7 @@ class BookmarkMapper extends QBMapper {
 		$qb->select('*')
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter(-1)));
+			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter(-1)))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntities($qb);
 	}
