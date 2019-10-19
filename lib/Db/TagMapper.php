@@ -47,7 +47,7 @@ class TagMapper {
 
 		$qb
 			->from('bookmarks_tags', 't')
-			->where($qb->expr()->eq('t.bookmark_id', $qb->createPositionalParamter($bookmarkId)));
+			->where($qb->expr()->eq('t.bookmark_id', $qb->createPositionalParameter($bookmarkId)));
 
 		return $qb->fetchAll(\PDO::FETCH_COLUMN);
 	}
