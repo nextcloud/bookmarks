@@ -8,6 +8,7 @@ use OCA\Bookmarks\Db\Bookmark;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\User;
 
 
 class BookmarkMapperTest extends TestCase {
@@ -22,9 +23,10 @@ class BookmarkMapperTest extends TestCase {
 	 */
 	private $userId;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
+		$this->userId = User::getUser();
 	}
 
 	/**
@@ -35,8 +37,9 @@ class BookmarkMapperTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testInsertAndFind(Entity $bookmark) {
+		$bookmark->setUserId($this->userId);
 		$bookmark = $this->bookmarkMapper->insert($bookmark);
-		$foundEntity = $this->bookmarkMapper->find($bookmark->getUserId(), $bookmark->getId());
+		$foundEntity = $this->bookmarkMapper->find($bookmark->getId());
 		$this->assertSame($bookmark->getUrl(), $foundEntity->getUrl());
 		$this->assertSame($bookmark->getTitle(), $foundEntity->getTitle());
 		$this->assertSame($bookmark->getDescription(), $foundEntity->getDescription());
@@ -64,6 +67,23 @@ class BookmarkMapperTest extends TestCase {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
+	public function testUpdate(Entity $bookmark) {
+		$entity = $this->bookmarkMapper->findByUrl($bookmark->getUserId(), $bookmark->getUrl());
+		$entity->setTitle('foobar');
+		$this->bookmarkMapper->update($entity);
+		$foundEntity = $this->bookmarkMapper->find($entity->getId());
+		$this->assertSame($entity->title, $foundEntity->title);
+	}
+
+	/**
+	 * @depends testInsertAndFind
+	 * @depends testFindByUrl
+	 * @dataProvider singleBookmarks
+	 * @param Entity $bookmark
+	 * @return void
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
 	public function testDelete(Entity $bookmark) {
 		$foundEntity = $this->bookmarkMapper->findByUrl($bookmark->getUserId(), $bookmark->getUrl());
 		$this->bookmarkMapper->delete($foundEntity);
@@ -78,9 +98,10 @@ class BookmarkMapperTest extends TestCase {
 		return array_map(function($props) {
 			return Db\Bookmark::fromArray($props);
 		}, [
-			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine', 'userId' => $this->userId],
-			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud', 'userId' => $this->userId],
-			'Simple URL' => ['url' => 'https://php.net/', 'userId' => $this->userId],
+			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
+			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
+			'Simple URL' => ['url' => 'https://php.net/'],
+			'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/Ü'],
 		]);
 	}
 }
