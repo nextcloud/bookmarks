@@ -102,8 +102,8 @@ class TagMapperTest extends TestCase {
 	 */
 	public function setOfBookmarksProvider() {
 		return [
-			array_map(function ($props) {
-				return Db\Bookmark::fromArray($props);
+			array_map(function ($data) {
+				return [$data[0], Db\Bookmark::fromArray($data[1])];
 			}, [
 				[['one'],['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine']],
 				[['two'],['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud']],

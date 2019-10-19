@@ -121,7 +121,7 @@ class FolderMapperTest extends TestCase {
 	 */
 	public function singleBookmarksProvider() {
 		return array_map(function($props) {
-			return Db\Bookmark::fromArray($props);
+			return [Db\Bookmark::fromArray($props)];
 		}, [
 			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
 			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
