@@ -1,6 +1,7 @@
 <?php
 namespace OCA\Bookmarks\Db;
 
+use InvalidArgumentException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
@@ -49,7 +50,7 @@ class TagMapper {
 			->from('bookmarks_tags', 't')
 			->where($qb->expr()->eq('t.bookmark_id', $qb->createPositionalParameter($bookmarkId)));
 
-		return $qb->fetchAll(\PDO::FETCH_COLUMN);
+		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 	}
 
 	public function delete(int $userId, string $tag) {
