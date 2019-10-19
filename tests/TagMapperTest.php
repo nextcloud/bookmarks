@@ -8,6 +8,7 @@ use OCA\Bookmarks\Db\Bookmark;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\QueryException;
 use OCP\User;
 
 
@@ -29,10 +30,13 @@ class TagMapperTest extends TestCase {
 	private $userId;
 
 
+	/**
+	 * @throws QueryException
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
-		$this->tagMapper = \OC::$server->query(Db\TagkMapper::class);
+		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
 		$this->userId = User::getUser();
 	}
 
@@ -57,7 +61,7 @@ class TagMapperTest extends TestCase {
 		$this->assertContains('three', $allTags);
 		$this->assertContains('four', $allTags);
 
-		$allTagsWithCount = $this->tagMapper->findAllWithCount();
+		$allTagsWithCount = $this->tagMapper->findAllWithCount($this->userId);
 		$this->assertContains(['tag' => 'one', 'nbr' => 3], $allTags);
 		$this->assertContains(['tag' => 'two', 'nbr' => 2], $allTags);
 		$this->assertContains(['tag' => 'three', 'nbr' => 1], $allTags);

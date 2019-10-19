@@ -48,7 +48,7 @@ class FolderMapperTest extends TestCase {
 		$insertedFolder = $this->folderMapper->insert($folder);
 		$foundEntity = $this->folderMapper->find($insertedFolder->getId());
 		$this->assertSame($foundEntity->getTitle(), $foundEntity->getTitle());
-		$this->assertSame($foundEntity->getParentFolder(), $foundEntity->gettParentFolder());
+		$this->assertSame($foundEntity->getParentFolder(), $foundEntity->getParentFolder());
 		return $insertedFolder;
 	}
 
