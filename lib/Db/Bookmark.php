@@ -17,7 +17,7 @@ class Bookmark extends Entity {
 	public static function fromArray($props) {
 		$bookmark = new Bookmark();
 		foreach($props as $prop => $val) {
-			$bookmark->{'set'.$prop} = $val;
+			$bookmark->{$prop} = $val;
 		}
 		return $bookmark;
 	}
