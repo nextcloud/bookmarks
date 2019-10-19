@@ -82,13 +82,13 @@ class FolderMapperTest extends TestCase {
 	/**
 	 * @depends      testInsertAndFind
 	 * @dataProvider singleBookmarksProvider
-	 * @param Entity $folder
 	 * @param Bookmark $bookmark
+	 * @param Folder $folder
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function testAddBookmarks(Entity $folder, Bookmark $bookmark) {
+	public function testAddBookmarks(Bookmark $bookmark, Folder $folder) {
 		$insertedBookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
 		$this->folderMapper->addToFolders($insertedBookmark->getId(), [$folder->getId()]);
 		$bookmarks = $this->bookmarkMapper->findByFolder($folder->getId());
@@ -100,13 +100,13 @@ class FolderMapperTest extends TestCase {
 	/**
 	 * @depends      testInsertAndFind
 	 * @dataProvider singleBookmarksProvider
-	 * @param Entity $folder
 	 * @param Bookmark $bookmark
+	 * @param Folder $folder
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function testRemoveBookmarks(Entity $folder, Bookmark $bookmark) {
+	public function testRemoveBookmarks(Bookmark $bookmark, Folder $folder) {
 		$insertedBookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
 		$this->folderMapper->removeFromFolders($insertedBookmark->getId(), [$folder->getId()]);
 		$bookmarks = $this->bookmarkMapper->findByFolder($folder->getId());
