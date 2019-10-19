@@ -41,20 +41,25 @@ class TagMapperTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider setOfBookmarksProvider
-	 * @param array $bookmarks
+	 * @dataProvider singleBookmarksProvider
+	 * @param array $tags
+	 * @param Bookmark $bookmark
 	 */
-	public function testAddToAndFind(array $bookmarks) {
-		foreach($bookmarks as $bookmarkEntry) {
-			$bookmarkEntry[1]->setUserId($this->userId);
-			$bookmarkEntry[1] = $this->bookmarkMapper->insertOrUpdate($bookmarkEntry[1]);
-			$this->tagMapper->addTo($bookmarkEntry[0], $bookmarkEntry[1]->getId());
+	public function testAddToAndFind(array $tags, Bookmark $bookmark) {
+		$bookmark->setUserId($this->userId);
+		$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
+		$this->tagMapper->addTo($tags, $bookmark->getId());
 
-			$tags = $this->tagMapper->findByBookmark($bookmarkEntry[1]->getId());
-			foreach($bookmarkEntry[0] as $tag) {
-				$this->assertContains($tag, $tags);
-			}
+		$actualTags = $this->tagMapper->findByBookmark($bookmark->getId());
+		foreach($tags as $tag) {
+			$this->assertContains($tag, $actualTags);
 		}
+	}
+
+	/**
+	 * @depends testAddToAndFind
+	 */
+	public function testFindAll() {
 		$allTags = $this->tagMapper->findAll($this->userId);
 		$this->assertContains('one', $allTags);
 		$this->assertContains('two', $allTags);
@@ -70,14 +75,14 @@ class TagMapperTest extends TestCase {
 
 	/**
 	 * @depends      testAddToAndFind
-	 * @dataProvider setOfBookmarksProvider
-	 * @param array $bookmarks
-	 * @return void
+	 * @dataProvider singleBookmarksProvider
+	 * @param array $tags
+	 * @param Bookmark $bookmark
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function testRemoveAllFrom(array $bookmarks) {
-		$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $bookmarks[2]->getUrl);
+	public function testRemoveAllFrom(array $tags, Bookmark $bookmark) {
+		$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
 		$this->tagMapper->removeAllFrom($bookmark->getId());
 		$tags = $this->tagMapper->findByBookmark($bookmark->getId());
 		$this->assertEmpty($tags);
@@ -86,34 +91,33 @@ class TagMapperTest extends TestCase {
 	/**
 	 * @depends      testRemoveAllFrom
 	 * @dataProvider setOfBookmarksProvider
-	 * @param array $bookmarks
+	 * @param array $tags
+	 * @param Bookmark $bookmark
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function testSetOn(array $bookmarks) {
-		$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $bookmarks[3]->getUrl);
+	public function testSetOn(array $tags, Bookmark $bookmark) {
+		$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
 		$newTags = ['foo', 'bar'];
 		$this->tagMapper->setOn($newTags, $bookmark->getId());
-		$tags = $this->tagMapper->findByBookmark($bookmark->getId());
-		foreach($tags as $tag) {
-			$this->assertContains($tag, $newTags);
+		$actualTags = $this->tagMapper->findByBookmark($bookmark->getId());
+		foreach($newTags as $tag) {
+			$this->assertContains($tag, $actualTags);
 		}
 	}
 
 	/**
 	 * @return array
 	 */
-	public function setOfBookmarksProvider() {
-		return [
-			array_map(function ($data) {
-				return [$data[0], Db\Bookmark::fromArray($data[1])];
-			}, [
-				[['one'], ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine']],
-				[['two'], ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud']],
-				[['three', 'one'], ['url' => 'https://php.net/']],
-				[['two', 'four', 'one'], ['url' => 'https://de.wikipedia.org/wiki/%C3%9C']],
-			])
-		];
+	public function singleBookmarksProvider() {
+		return array_map(function ($data) {
+			return [$data[0], Db\Bookmark::fromArray($data[1])];
+		}, [
+			[['one'], ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine']],
+			[['two'], ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud']],
+			[['three', 'one'], ['url' => 'https://php.net/']],
+			[['two', 'four', 'one'], ['url' => 'https://de.wikipedia.org/wiki/%C3%9C']],
+		]);
 	}
 }
