@@ -109,10 +109,10 @@ class TagMapperTest extends TestCase {
 			array_map(function ($data) {
 				return [$data[0], Db\Bookmark::fromArray($data[1])];
 			}, [
-				[['one'],['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine']],
-				[['two'],['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud']],
-				[['three', 'one'],['url' => 'https://php.net/']],
-				[['two', 'four', 'one'],['url' => 'https://de.wikipedia.org/wiki/Ü']],
+				[['one'], ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine']],
+				[['two'], ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud']],
+				[['three', 'one'], ['url' => 'https://php.net/']],
+				[['two', 'four', 'one'], ['url' => 'https://de.wikipedia.org/wiki/%C3%9C']],
 			])
 		];
 	}

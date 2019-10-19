@@ -158,8 +158,8 @@ class FolderMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks_folders', 'f')
-			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('b.bookmark_id', 'f.id'))
-			->where($qb->expr()->eq('b.bookmark_id', $qb->createPositionalParamter($bookmarkId)));
+			->leftJoin('f', 'bookmarks_folders_bookmarks', 'b', $qb->expr()->eq('b.bookmark_id', 'f.id'))
+			->where($qb->expr()->eq('b.bookmark_id', $qb->createPositionalParameter($bookmarkId)));
 
 		return $this->findEntities($qb);
 	}

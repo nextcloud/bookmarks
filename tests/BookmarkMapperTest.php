@@ -41,8 +41,8 @@ class BookmarkMapperTest extends TestCase {
 		$bookmark = $this->bookmarkMapper->insert($bookmark);
 		$foundEntity = $this->bookmarkMapper->find($bookmark->getId());
 		$this->assertSame($bookmark->getUrl(), $foundEntity->getUrl());
-		$this->assertSame($bookmark->getTitle(), $foundEntity->getTitle());
-		$this->assertSame($bookmark->getDescription(), $foundEntity->getDescription());
+		$this->assertSame((string) $bookmark->getTitle(), (string) $foundEntity->getTitle());
+		$this->assertSame((string) $bookmark->getDescription(), (string) $foundEntity->getDescription());
 	}
 
 	/**
@@ -54,7 +54,7 @@ class BookmarkMapperTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testFindByUrl(Entity $bookmark) {
-		$foundEntity = $this->bookmarkMapper->findByUrl($bookmark->getUserId(), $bookmark->getUrl());
+		$foundEntity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
 		$this->assertSame($bookmark->getUrl(), $foundEntity->getUrl());
 	}
 
@@ -68,11 +68,11 @@ class BookmarkMapperTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testUpdate(Entity $bookmark) {
-		$entity = $this->bookmarkMapper->findByUrl($bookmark->getUserId(), $bookmark->getUrl());
+		$entity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
 		$entity->setTitle('foobar');
 		$this->bookmarkMapper->update($entity);
 		$foundEntity = $this->bookmarkMapper->find($entity->getId());
-		$this->assertSame($entity->title, $foundEntity->title);
+		$this->assertSame((string) $entity->getTitle(), (string) $foundEntity->getTitle());
 	}
 
 	/**
@@ -85,7 +85,7 @@ class BookmarkMapperTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testDelete(Entity $bookmark) {
-		$foundEntity = $this->bookmarkMapper->findByUrl($bookmark->getUserId(), $bookmark->getUrl());
+		$foundEntity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
 		$this->bookmarkMapper->delete($foundEntity);
 		$this->expectException(DoesNotExistException::class);
 		$this->bookmarkMapper->find($foundEntity->getId());
@@ -101,7 +101,7 @@ class BookmarkMapperTest extends TestCase {
 			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
 			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
 			'Simple URL' => ['url' => 'https://php.net/'],
-			'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/Ü'],
+			'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
 		]);
 	}
 }
