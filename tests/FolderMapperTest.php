@@ -5,6 +5,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Db\Folder;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -63,7 +64,7 @@ class FolderMapperTest extends TestCase {
 		$folder->setTitle('barbla');
 		$this->folderMapper->update($folder);
 		$foundEntity = $this->folderMapper->find($folder->getId());
-		$this->assertSame($folder->title, $foundEntity->getTitle());
+		$this->assertSame($folder->getTitle(), $foundEntity->getTitle());
 	}
 
 	/**
