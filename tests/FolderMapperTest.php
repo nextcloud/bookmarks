@@ -68,19 +68,6 @@ class FolderMapperTest extends TestCase {
 	}
 
 	/**
-	 * @depends testInsertAndFind
-	 * @param Entity $folder
-	 * @return void
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
-	 */
-	public function testDelete(Entity $folder) {
-		$this->folderMapper->delete($folder);
-		$this->expectException(DoesNotExistException::class);
-		$this->folderMapper->find($folder->getId());
-	}
-
-	/**
 	 * @depends      testInsertAndFind
 	 * @dataProvider singleBookmarksProvider
 	 * @param Bookmark $bookmark
@@ -116,6 +103,19 @@ class FolderMapperTest extends TestCase {
 		}, $bookmarks));
 	}
 
+	/**
+	 * @depends testInsertAndFind
+	 * @param Entity $folder
+	 * @return void
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function testDelete(Entity $folder) {
+		$this->folderMapper->delete($folder);
+		$this->expectException(DoesNotExistException::class);
+		$this->folderMapper->find($folder->getId());
+	}
+
 
 	/**
 	 * @return array
@@ -127,7 +127,7 @@ class FolderMapperTest extends TestCase {
 			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
 			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
 			'Simple URL' => ['url' => 'https://php.net/'],
-			'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/Ü'],
+			'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
 		]);
 	}
 }

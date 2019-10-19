@@ -66,7 +66,7 @@ class BookmarkMapper extends QBMapper {
 		$normalized = $this->urlNormalizer->normalize($url);
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select('id')
+			->select('*')
 			->from('bookmarks')
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('url', $qb->createNamedParameter($normalized)));
@@ -197,9 +197,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findByFolder(int $folderId) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('*');
-
-		$qb
+		$qb->select('id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount')
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter($folderId)));
@@ -212,7 +210,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findByRootFolder(int $userId) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('*')
+		$qb->select('id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount')
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter(-1)))
