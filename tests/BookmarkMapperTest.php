@@ -30,7 +30,7 @@ class BookmarkMapperTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider singleBookmarks
+	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
 	 * @throws DoesNotExistException
@@ -47,7 +47,7 @@ class BookmarkMapperTest extends TestCase {
 
 	/**
 	 * @depends testInsertAndFind
-	 * @dataProvider singleBookmarks
+	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
 	 * @throws DoesNotExistException
@@ -61,7 +61,7 @@ class BookmarkMapperTest extends TestCase {
 	/**
 	 * @depends testInsertAndFind
 	 * @depends testFindByUrl
-	 * @dataProvider singleBookmarks
+	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
 	 * @throws DoesNotExistException
@@ -78,7 +78,7 @@ class BookmarkMapperTest extends TestCase {
 	/**
 	 * @depends testInsertAndFind
 	 * @depends testFindByUrl
-	 * @dataProvider singleBookmarks
+	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
 	 * @throws DoesNotExistException

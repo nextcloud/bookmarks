@@ -81,7 +81,7 @@ class FolderMapperTest extends TestCase {
 
 	/**
 	 * @depends      testInsertAndFind
-	 * @dataProvider singleBookmarks
+	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $folder
 	 * @param Bookmark $bookmark
 	 * @return void
@@ -99,7 +99,7 @@ class FolderMapperTest extends TestCase {
 
 	/**
 	 * @depends      testInsertAndFind
-	 * @dataProvider singleBookmarks
+	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $folder
 	 * @param Bookmark $bookmark
 	 * @return void

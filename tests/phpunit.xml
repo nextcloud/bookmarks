@@ -7,7 +7,7 @@
 		 timeoutForLargeTests="900"
 >
 	<testsuite name='Bookmarks App Tests'>
-		<directory suffix='test.php'>.</directory>
+		<directory suffix='Test.php'>.</directory>
 	</testsuite>
 	<!-- filters for code coverage -->
 	<filter>

@@ -235,10 +235,10 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Bookmark $entity
+	 * @param Entity $entity
 	 * @return Entity|void
 	 */
-	public function delete(Bookmark $entity) : Entity {
+	public function delete(Entity $entity) : Entity {
 		$returnedEntity = parent::delete($entity);
 
 		$id = $entity->getId();
@@ -265,10 +265,10 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Bookmark $entity
+	 * @param Entity $entity
 	 * @return Entity
 	 */
-	public function update(Bookmark $entity) : Entity {
+	public function update(Entity $entity) : Entity {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 
@@ -284,10 +284,10 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Bookmark $entity
+	 * @param Entity $entity
 	 * @return Entity
 	 */
-	public function insert(Bookmark $entity) : Entity {
+	public function insert(Entity $entity) : Entity {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		$newEntity = parent::insert($entity);
@@ -299,10 +299,10 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Bookmark $entity
+	 * @param Entity $entity
 	 * @return Entity
 	 */
-	public function insertOrUpdate(Bookmark $entity) : Entity {
+	public function insertOrUpdate(Entity $entity) : Entity {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		$newEntity = parent::insertOrUpdate($entity);
@@ -314,11 +314,11 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Bookmark $entity
+	 * @param Entity $entity
 	 * @param $fields
 	 * @return string
 	 */
-	public function hash(Bookmark $entity, $fields) {
+	public function hash(Entity $entity, $fields) {
 		$bookmark = [];
 		foreach ($fields as $field) {
 			if (isset($entity->{$field})) {
@@ -330,10 +330,10 @@ class BookmarkMapper extends QBMapper {
 
 
 	/**
-	 * @param Bookmark $entity
+	 * @param Entity $entity
 	 * @return Entity
 	 */
-	public function markPreviewCreated(Bookmark $entity) {
+	public function markPreviewCreated(Entity $entity) {
 		$entity->setLastPreview(time());
 		return $this->update($entity);
 	}
