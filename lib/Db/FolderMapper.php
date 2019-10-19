@@ -8,11 +8,27 @@ use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\AppFramework\Db\Entity;
 
+/**
+ * Class FolderMapper
+ *
+ * @package OCA\Bookmarks\Db
+ */
 class FolderMapper extends QBMapper {
 
 	const TYPE_BOOKMARK = 'bookmark';
 	const TYPE_FOLDER = 'folder';
 
+	/**
+	 * @var BookmarkMapper
+	 */
+	protected $bookmarkMapper;
+
+	/**
+	 * FolderMapper constructor.
+	 *
+	 * @param IDBConnection $db
+	 * @param BookmarkMapper $bookmarkMapper
+	 */
 	public function __construct(IDBConnection $db, BookmarkMapper $bookmarkMapper) {
 		parent::__construct($db, 'bookmarks_folders');
 		$this->bookmarkMapper = $bookmarkMapper;
@@ -34,6 +50,10 @@ class FolderMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
+	/**
+	 * @param int $folderId
+	 * @return array|Entity[]
+	 */
 	public function findByParentFolder(int $folderId)  {
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -44,6 +64,10 @@ class FolderMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	/**
+	 * @param int $userId
+	 * @return array|Entity[]
+	 */
 	public function findByRootFolder(int $userId)  {
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -55,6 +79,10 @@ class FolderMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	/**
+	 * @param Entity $entity
+	 * @return Entity
+	 */
 	public function delete(Entity $entity) : Entity {
 		$childFolders = $this->findByParentFolder($entity->id);
 		foreach ($childFolders as $folder) {
@@ -67,6 +95,9 @@ class FolderMapper extends QBMapper {
 		return parent::delete($entity);
 	}
 
+	/**
+	 * @param int $userId
+	 */
 	public function deleteAll(int $userId) {
 		$childFolders = $this->findByRootFolder($userId);
 		foreach ($childFolders as $folder) {
@@ -78,6 +109,12 @@ class FolderMapper extends QBMapper {
 		}
 	}
 
+	/**
+	 * @param Entity $entity
+	 * @return Entity
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
 	public function update(Entity $entity) : Entity {
 		if ($entity->getParentFolder() !== -1) {
 			$this->find($entity->getParentFolder());
@@ -85,6 +122,12 @@ class FolderMapper extends QBMapper {
 		return parent::update($entity);
 	}
 
+	/**
+	 * @param Entity $entity
+	 * @return Entity
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
 	public function insertOrUpdate(Entity $entity) : Entity {
 		if ($entity->getParentFolder() !== -1) {
 			$this->find($entity->getParentFolder());
@@ -92,6 +135,12 @@ class FolderMapper extends QBMapper {
 		return parent::insertOrUpdate($entity);
 	}
 
+	/**
+	 * @param Entity $entity
+	 * @return Entity
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
 	public function insert(Entity $entity) : Entity {
 		if ($entity->getParentFolder() !== -1) {
 			$this->find($entity->getParentFolder());
@@ -99,6 +148,10 @@ class FolderMapper extends QBMapper {
 		return parent::insert($entity);
 	}
 
+	/**
+	 * @param int $bookmarkId
+	 * @return array|Entity[]
+	 */
 	public function findByBookmark(int $bookmarkId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*');
@@ -197,6 +250,11 @@ class FolderMapper extends QBMapper {
 		return $children;
 	}
 
+	/**
+	 * @param Folder $entity
+	 * @param array $fields
+	 * @return string
+	 */
 	public function hashFolder(Folder $entity, $fields = ['title', 'url']) {
 		$children = $this->getChildren($entity->id);
 		$childHashes = array_map(function ($item) use ($fields) {
