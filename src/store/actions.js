@@ -278,7 +278,6 @@ export default {
 			})
 	},
 	[actions.LOAD_TAGS]({ commit, dispatch, state }, link) {
-		if (state.loading.bookmarks) return
 		commit(mutations.FETCH_START, { type: 'tags' })
 		return axios
 			.get(url('/tag'), { params: { count: true } })
