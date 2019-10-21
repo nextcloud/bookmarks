@@ -7,7 +7,7 @@ source_dir=$(build_dir)/source
 sign_dir=$(build_dir)/sign
 package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
-version+=2.3.0
+version+=2.3.1
 
 all: dev-setup lint build-js-production test test-php
 

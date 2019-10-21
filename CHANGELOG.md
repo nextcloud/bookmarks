@@ -1,3 +1,7 @@
+## v2.3.1
+
+- FIX: Load tags on app init
+
 ## v2.3.0
 
  - NEW: UI: Implement bulk editing
