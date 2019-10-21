@@ -6,6 +6,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -17,6 +18,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\Bookmarks\Db
  */
 class BookmarkMapper extends QBMapper {
+
+	/** @var IConfig */
+	private $config;
 
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
@@ -31,10 +35,11 @@ class BookmarkMapper extends QBMapper {
 	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param UrlNormalizer $urlNormalizer
 	 */
-	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer) {
+	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config) {
 		parent::__construct($db, 'bookmarks');
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
+		$this->config = $config;
 	}
 
 	/**
@@ -78,13 +83,12 @@ class BookmarkMapper extends QBMapper {
 	 * @param int $userId
 	 * @param array $filters
 	 * @param string $conjunction
-	 * @param bool $filterTagsOnly
 	 * @param string $sortBy
 	 * @param int $offset
 	 * @param int $limit
 	 * @return array|Entity[]
 	 */
-	public function findAll(int $userId, array $filters, string $conjunction = 'and', bool $filterTagsOnly = false, string $sortBy='lastmodified', int $offset = 0, int $limit = 10) {
+	public function findAll(int $userId, array $filters, string $conjunction = 'and', string $sortBy='lastmodified', int $offset = 0, int $limit = 10) {
 		$tableAttributes = ['url', 'title', 'user_id', 'description',
 			'public', 'added', 'lastmodified', 'clickcount', 'last_preview'];
 
@@ -186,7 +190,28 @@ class BookmarkMapper extends QBMapper {
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->eq('t.tag', $qb->createPositionalParamter($tag)));
+			->andWhere($qb->expr()->eq('t.tag', $qb->createPositionalParameter($tag)));
+
+		return $this->findEntities($qb);
+	}
+
+	/**
+	 * @param int $userId
+	 * @param string $tag
+	 * @return array|Entity[]
+	 */
+	public function findByTags(int $userId, array $tags) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*');
+
+		$qb
+			->from('bookmarks', 'b')
+			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
+		foreach($tags as $tag) {
+			$qb->andWhere($qb->expr()->eq('t.tag', $qb->createPositionalParameter($tag)));
+		}
+		$qb->groupBy('b.id');
 
 		return $this->findEntities($qb);
 	}
@@ -285,10 +310,26 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param Entity $entity
 	 * @return Entity
+	 * @throws \Exception
 	 */
 	public function insert(Entity $entity) : Entity {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+
+		$exists = true;
+		try {
+			$this->findByUrl($entity->getUserId(), $entity->getUrl());
+		} catch (DoesNotExistException $e) {
+			$exists = false;
+		} catch (MultipleObjectsReturnedException $e) {
+			$exists = true;
+		}
+
+		if ($exists) {
+			// TODO: Create a separate Exception for this!
+			throw new \Exception('A bookmark with this URL already exists');
+		}
+
 		$newEntity = parent::insert($entity);
 		$this->eventDispatcher->dispatch(
 			'\OCA\Bookmarks::onBookmarkCreate',
@@ -300,10 +341,19 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param Entity $entity
 	 * @return Entity
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function insertOrUpdate(Entity $entity) : Entity {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+
+		try {
+			$existing = $this->findByUrl($entity->getUserId(), $entity->getUrl());
+			$entity->setId($existing->getId());
+		} catch (DoesNotExistException $e) {
+			// This bookmark doesn't already exist. That's ok.
+		}
+
 		$newEntity = parent::insertOrUpdate($entity);
 		$this->eventDispatcher->dispatch(
 			'\OCA\Bookmarks::onBookmarkCreate',
