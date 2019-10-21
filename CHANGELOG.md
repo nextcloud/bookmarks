@@ -1,3 +1,11 @@
+## v2.3.0
+
+ - NEW: UI: Implement bulk editing
+ - NEW: translations from transifex
+ - FIX: overflow on bookmarks list
+ - FIX: sorting
+ - FIX: Fix humanized duration: Use stem language only
+
 ## v2.2.0
 
 - NEW: Use routes history mode instead of hash URLs
