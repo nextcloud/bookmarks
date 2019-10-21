@@ -6,14 +6,31 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 
+/**
+ * Class TagMapper
+ *
+ * @package OCA\Bookmarks\Db
+ */
 class TagMapper {
 
+	/**
+	 * @var IDBConnection
+	 */
 	protected $db;
 
+	/**
+	 * TagMapper constructor.
+	 *
+	 * @param IDBConnection $db
+	 */
 	public function __construct(IDBConnection $db) {
 		$this->db = $db;
 	}
 
+	/**
+	 * @param int $userId
+	 * @return array
+	 */
 	public function findAllWithCount(int $userId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -30,6 +47,10 @@ class TagMapper {
 		return $tags;
 	}
 
+	/**
+	 * @param int $userId
+	 * @return array
+	 */
 	public function findAll(int $userId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -42,6 +63,10 @@ class TagMapper {
 		return $tags;
 	}
 
+	/**
+	 * @param int $bookmarkId
+	 * @return array
+	 */
 	public function findByBookmark(int $bookmarkId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('tag');
@@ -53,6 +78,11 @@ class TagMapper {
 		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 	}
 
+	/**
+	 * @param int $userId
+	 * @param string $tag
+	 * @return \Doctrine\DBAL\Driver\Statement|int
+	 */
 	public function delete(int $userId, string $tag) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -63,6 +93,10 @@ class TagMapper {
 		return $qb->execute();
 	}
 
+	/**
+	 * @param int $userId
+	 * @return \Doctrine\DBAL\Driver\Statement|int
+	 */
 	public function deleteAll(int $userId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -72,6 +106,10 @@ class TagMapper {
 		return $qb->execute();
 	}
 
+	/**
+	 * @param $tags
+	 * @param int $bookmarkId
+	 */
 	public function addTo($tags, int $bookmarkId) {
 		if (is_string($tags)) {
 			$tags = [$tags];
@@ -107,6 +145,9 @@ class TagMapper {
 		}
 	}
 
+	/**
+	 * @param int $bookmarkId
+	 */
 	public function removeAllFrom(int $bookmarkId) {
 		// Remove old tags
 		$qb = $this->db->getQueryBuilder();
@@ -116,6 +157,10 @@ class TagMapper {
 		$qb->execute();
 	}
 
+	/**
+	 * @param array $tags
+	 * @param int $bookmarkId
+	 */
 	public function setOn(array $tags, int $bookmarkId) {
 		$this->removeAllFrom($bookmarkId);
 		$this->addTo($tags, $bookmarkId);
