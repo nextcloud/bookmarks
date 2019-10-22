@@ -89,7 +89,7 @@ class BookmarkMapper extends QBMapper {
 	 * @return array|Entity[]
 	 */
 	public function findAll(int $userId, array $filters, string $conjunction = 'and', string $sortBy='lastmodified', int $offset = 0, int $limit = 10) {
-		$tableAttributes = ['url', 'title', 'user_id', 'description',
+		$tableAttributes = ['id', 'url', 'title', 'user_id', 'description',
 			'public', 'added', 'lastmodified', 'clickcount', 'last_preview'];
 
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
@@ -101,7 +101,8 @@ class BookmarkMapper extends QBMapper {
 		}
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('*');
+		$qb->select($tableAttributes);
+		$qb->groupBy($tableAttributes);
 
 		if ($dbType === 'pgsql') {
 			$qb->selectAlias($qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"), 'tags');
@@ -347,18 +348,21 @@ class BookmarkMapper extends QBMapper {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 
+		$exists = true;
 		try {
 			$existing = $this->findByUrl($entity->getUserId(), $entity->getUrl());
 			$entity->setId($existing->getId());
 		} catch (DoesNotExistException $e) {
 			// This bookmark doesn't already exist. That's ok.
+			$exists = false;
 		}
 
-		$newEntity = parent::insertOrUpdate($entity);
-		$this->eventDispatcher->dispatch(
-			'\OCA\Bookmarks::onBookmarkCreate',
-			new GenericEvent(null, ['id' => $newEntity->getId(), 'userId' => $newEntity->getUserId()])
-		);
+		if ($exists) {
+			$newEntity = parent::update($entity);
+		}else{
+			$newEntity = parent::insert($entity);
+		}
+
 		return $newEntity;
 	}
 
