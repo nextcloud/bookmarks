@@ -14,6 +14,8 @@ class Bookmark extends Entity {
 	protected $clickcount;
 	protected $lastPreview;
 
+	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount'];
+
 	public static function fromArray($props) {
 		$bookmark = new Bookmark();
 		foreach($props as $prop => $val) {

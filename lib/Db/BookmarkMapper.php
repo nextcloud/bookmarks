@@ -89,26 +89,17 @@ class BookmarkMapper extends QBMapper {
 	 * @return array|Entity[]
 	 */
 	public function findAll(int $userId, array $filters, string $conjunction = 'and', string $sortBy='lastmodified', int $offset = 0, int $limit = 10) {
-		$tableAttributes = ['id', 'url', 'title', 'user_id', 'description',
-			'public', 'added', 'lastmodified', 'clickcount', 'last_preview'];
-
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 
-		if (!in_array($sortBy, $tableAttributes)) {
+		if (!in_array($sortBy, Bookmark::$columns)) {
 			$sqlSortColumn = 'lastmodified';
 		}else{
 			$sqlSortColumn = $sortBy;
 		}
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->select($tableAttributes);
-		$qb->groupBy($tableAttributes);
-
-		if ($dbType === 'pgsql') {
-			$qb->selectAlias($qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"), 'tags');
-		} else {
-			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')'), 'tags');
-		}
+		$qb->select(Bookmark::$columns);
+		$qb->groupBy(Bookmark::$columns);
 
 		$qb
 			->from('bookmarks', 'b')
@@ -147,20 +138,17 @@ class BookmarkMapper extends QBMapper {
 		if (count($filters) === 0) {
 			return;
 		}
+		if ($dbType === 'pgsql') {
+			$tags = $qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')");
+		} else {
+			$tags = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
+		}
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
 		$i = 0;
 		foreach ($filters as $filter) {
 			$expr = [];
-			if ($dbType === 'pgsql') {
-				$expr[] = $qb->expr()->iLike(
-					// Postgres doesn't like select aliases in HAVING clauses, well f*** you too!
-					$qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')"),
-					$qb->createPositionalParameter('%'.$this->db->escapeLikeParameter($filter).'%')
-				);
-			} else {
-				$expr[] = $qb->expr()->iLike('tags', $qb->createPositionalParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
-			}
+			$expr[] = $qb->expr()->iLike($tags, $qb->createPositionalParameter('%'.$this->db->escapeLikeParameter($filter).'%'));
 			foreach ($otherColumns as $col) {
 				$expr[] = $qb->expr()->iLike(
 					$qb->createFunction($qb->getColumnName($col)),
@@ -185,7 +173,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findByTag(int $userId, string $tag) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('*');
+		$qb->select(Bookmark::$columns);
 
 		$qb
 			->from('bookmarks', 'b')
@@ -198,12 +186,12 @@ class BookmarkMapper extends QBMapper {
 
 	/**
 	 * @param int $userId
-	 * @param string $tag
+	 * @param array $tags
 	 * @return array|Entity[]
 	 */
 	public function findByTags(int $userId, array $tags) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('*');
+		$qb->select(Bookmark::$columns);
 
 		$qb
 			->from('bookmarks', 'b')
@@ -223,7 +211,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findByFolder(int $folderId) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount')
+		$qb->select(Bookmark::$columns)
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter($folderId)));
@@ -236,7 +224,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findByRootFolder(int $userId) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount')
+		$qb->select(Bookmark::$columns)
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter(-1)))
