@@ -44,6 +44,7 @@ class TagMapperTest extends TestCase {
 	 * @dataProvider singleBookmarksProvider
 	 * @param array $tags
 	 * @param Bookmark $bookmark
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testAddToAndFind(array $tags, Bookmark $bookmark) {
 		$bookmark->setUserId($this->userId);

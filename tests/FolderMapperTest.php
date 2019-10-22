@@ -77,6 +77,7 @@ class FolderMapperTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testAddBookmarks(Bookmark $bookmark, Folder $folder) {
+		$bookmark->setUserId($this->userId);
 		$insertedBookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
 		$this->folderMapper->addToFolders($insertedBookmark->getId(), [$folder->getId()]);
 		$bookmarks = $this->bookmarkMapper->findByFolder($folder->getId());
@@ -95,6 +96,7 @@ class FolderMapperTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testRemoveBookmarks(Bookmark $bookmark, Folder $folder) {
+		$bookmark->setUserId($this->userId);
 		$insertedBookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
 		$this->folderMapper->removeFromFolders($insertedBookmark->getId(), [$folder->getId()]);
 		$bookmarks = $this->bookmarkMapper->findByFolder($folder->getId());
