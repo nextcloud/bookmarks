@@ -36,6 +36,7 @@ class FindTest extends TestCase {
 
 	/**
 	 * @throws QueryException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	protected function setUp(): void {
 		parent::setUp();
