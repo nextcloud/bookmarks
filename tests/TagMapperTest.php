@@ -75,6 +75,25 @@ class TagMapperTest extends TestCase {
 	}
 
 	/**
+	 * @depends testAddToAndFind
+	 */
+	public function testRename() {
+		$this->tagMapper->renameTag($this->userId, 'four', 'one');
+		$allTags = $this->tagMapper->findAll($this->userId);
+		$this->assertContains('one', $allTags);
+		$this->assertContains('two', $allTags);
+		$this->assertContains('three', $allTags);
+		$this->assertNotContains('four', $allTags);
+
+		$allTagsWithCount = $this->tagMapper->findAllWithCount($this->userId);
+		$this->assertContains(['tag' => 'one', 'nbr' => 4], $allTagsWithCount);
+		$this->assertContains(['tag' => 'two', 'nbr' => 2], $allTagsWithCount);
+		$this->assertContains(['tag' => 'three', 'nbr' => 1], $allTagsWithCount);
+		$this->assertNotContains(['tag' => 'four', 'nbr' => 1], $allTagsWithCount);
+		$this->assertNotContains(['tag' => 'four', 'nbr' => 0], $allTagsWithCount);
+	}
+
+	/**
 	 * @depends      testAddToAndFind
 	 * @dataProvider singleBookmarksProvider
 	 * @param array $tags
