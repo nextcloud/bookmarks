@@ -2,7 +2,7 @@
 /*
  * (c) Pedro Rodrigues <relvas.rodrigues@gmail.com>
  */
-namespace OCA\Bookmarks;
+namespace OCA\Bookmarks\Service;
 
 /**
  * Bookmark parser

@@ -1,7 +1,9 @@
 <?php
 namespace OCA\Bookmarks\Db;
 
-use OCA\Bookmarks\UrlNormalizer;
+use OCA\Bookmarks\Exception\AlreadyExistsError;
+use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Service\UrlNormalizer;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -9,6 +11,7 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
+use Rowbot\URL\Exception\TypeError;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -291,10 +294,12 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param Entity $entity
 	 * @return Entity
+	 * @throws UrlParseError
 	 */
 	public function update(Entity $entity) : Entity {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+		$entity->setLastmodified(time());
 
 		$newEntity = parent::update($entity);
 
@@ -310,11 +315,14 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param Entity $entity
 	 * @return Entity
-	 * @throws \Exception
+	 * @throws AlreadyExistsError
+	 * @throws UrlParseError
 	 */
 	public function insert(Entity $entity) : Entity {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+		if ($entity->getAdded() === null) $entity->setAdded(time());
+		$entity->setLastmodified(time());
 
 		$exists = true;
 		try {
@@ -326,8 +334,7 @@ class BookmarkMapper extends QBMapper {
 		}
 
 		if ($exists) {
-			// TODO: Create a separate Exception for this!
-			throw new \Exception('A bookmark with this URL already exists');
+			throw new AlreadyExistsError('A bookmark with this URL already exists');
 		}
 
 		$newEntity = parent::insert($entity);
@@ -342,6 +349,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param Entity $entity
 	 * @return Entity
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
 	 */
 	public function insertOrUpdate(Entity $entity) : Entity {
 		// normalize url
@@ -374,19 +382,9 @@ class BookmarkMapper extends QBMapper {
 		$bookmark = [];
 		foreach ($fields as $field) {
 			if (isset($entity->{$field})) {
-				$bookmark[$field] = $entity->{$field};
+				$bookmark[$field] = $entity->{'get'.$field}();
 			}
 		}
 		return hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-	}
-
-
-	/**
-	 * @param Entity $entity
-	 * @return Entity
-	 */
-	public function markPreviewCreated(Entity $entity) {
-		$entity->setLastPreview(time());
-		return $this->update($entity);
 	}
 }

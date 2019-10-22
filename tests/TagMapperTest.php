@@ -5,6 +5,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Exception\UrlParseError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -45,6 +46,7 @@ class TagMapperTest extends TestCase {
 	 * @param array $tags
 	 * @param Bookmark $bookmark
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
 	 */
 	public function testAddToAndFind(array $tags, Bookmark $bookmark) {
 		$bookmark->setUserId($this->userId);
