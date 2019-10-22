@@ -1,8 +1,7 @@
 <?php
-namespace OCA\Bookmarks;
+namespace OCA\Bookmarks\Service;
 
 use Marcelklehr\LinkPreview\Client as LinkPreview;
-use Marcelklehr\LinkPreview\Exceptions\ConnectionErrorException;
 use OCP\ILogger;
 use OCP\IConfig;
 use OCP\Http\Client\IClientService;
@@ -48,8 +47,6 @@ class LinkExplorer {
 		}
 
 		$data = $preview->toArray();
-
-		$this->logger->debug('getImage for URL: '.$url.' '.var_export($data, true), ['app' => 'bookmarks']);
 
 		if (!isset($data)) {
 			return ['url' => $url];

@@ -38,18 +38,6 @@ class Bookmark extends Entity {
 		$this->addType('lastPreview', 'integer');
 	}
 
-	// todo
-	public function hashBookmark($userId, $bookmarkId, $fields) {
-		$bookmarkRecord = $this->findUniqueBookmark($bookmarkId, $userId);
-		$bookmark = [];
-		foreach ($fields as $field) {
-			if (isset($bookmarkRecord[$field])) {
-				$bookmark[$field] = $bookmarkRecord[$field];
-			}
-		}
-		return hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-	}
-
 	public function markPreviewCreated() {
 		$this->setLastPreview(time());
 	}
