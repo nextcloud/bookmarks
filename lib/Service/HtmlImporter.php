@@ -2,7 +2,6 @@
 
 namespace OCA\Bookmarks\Service;
 
-use OCA\Bookmarks\BookmarksParser;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
