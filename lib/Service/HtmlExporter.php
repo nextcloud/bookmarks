@@ -4,7 +4,6 @@
 namespace OCA\Bookmarks\Service;
 
 
-use OCA\Bookmarks\BookmarksParser;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\TagMapper;
@@ -34,9 +33,6 @@ class HtmlExporter {
 	 * @var TagMapper
 	 */
 	protected $tagMapper;
-
-	/** @var BookmarksParser */
-	private $bookmarksParser;
 
 	/**
 	 * ImportService constructor.
