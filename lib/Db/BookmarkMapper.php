@@ -242,7 +242,7 @@ class BookmarkMapper extends QBMapper {
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter(-1)))
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
+			->andWhere($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntities($qb);
 	}
 
