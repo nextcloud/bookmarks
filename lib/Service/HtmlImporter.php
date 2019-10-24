@@ -118,7 +118,7 @@ class HtmlImporter {
 		$folder->setTitle($folderParams['title']);
 		$folder->setParentFolder($parentId);
 		$folder = $this->folderMapper->insert($folder);
-		$newFolder = ['type' => 'folder', 'id' => $folder->getId(), 'title' => $folder['title'], 'children' => []];
+		$newFolder = ['type' => 'folder', 'id' => $folder->getId(), 'title' => $folderParams['title'], 'children' => []];
 		foreach ($folderParams['bookmarks'] as $bookmark) {
 			try {
 				$bm = $this->importBookmark($userId, $folder->getId(), $bookmark);
@@ -128,7 +128,7 @@ class HtmlImporter {
 			}
 			$newFolder['children'][] = ['type' => 'bookmark', 'id' => $bm->getId(), 'title' => $bookmark['title'], 'url' => $bookmark['href']];
 		}
-		foreach ($folder['children'] as $childFolder) {
+		foreach ($folderParams['children'] as $childFolder) {
 			$newFolder['children'][] = $this->importFolder($userId, $childFolder, $folder->getId(), $errors);
 		}
 		return $newFolder;
