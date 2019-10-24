@@ -10,6 +10,7 @@
 		"rowbot/url": "^2.0",
 		"ext-pdo": "*",
 		"ext-json": "*",
-		"ext-libxml": "*"
-	}
+		"ext-libxml": "*",
+		"ext-dom": "*"
+    }
 }

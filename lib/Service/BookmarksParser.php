@@ -80,17 +80,19 @@ class BookmarksParser {
 	public static function isValid($doctype) {
 		return self::DOCTYPE === $doctype;
 	}
+
 	/**
 	 * Parses a Netscape Bookmark File Format HTML string to a PHP value.
 	 *
-	 * @param string $input                       A Netscape Bookmark File Format HTML string
-	 * @param bool   $ignorePersonalToolbarFolder If we should ignore the personal toolbar bookmark folder
-	 * @param bool   $includeFolderTags           If we should include folter tags
-	 * @param bool   $useDateTimeObjects          If we should return \DateTime objects
+	 * @param string $input A Netscape Bookmark File Format HTML string
+	 * @param bool $ignorePersonalToolbarFolder If we should ignore the personal toolbar bookmark folder
+	 * @param bool $includeFolderTags If we should include folter tags
+	 * @param bool $useDateTimeObjects If we should return \DateTime objects
 	 *
 	 * @return mixed  A PHP value
 	 *
 	 * @throws ParseException If the HTML is not valid
+	 * @throws \Exception
 	 */
 	public function parse($input, $ignorePersonalToolbarFolder = true, $includeFolderTags = true, $useDateTimeObjects = true) {
 		$document = new \DOMDocument();
@@ -187,7 +189,7 @@ class BookmarksParser {
 		];
 		$bookmark = array_merge($bookmark, $this->getAttributes($node));
 		if ($this->includeFolderTags) {
-			$tags = $this->getCurrentFolderTags($this->currentFolder);
+			$tags = $this->getCurrentFolderTags();
 			if (!empty($tags)) {
 				$bookmark['tags'] = $tags;
 			}
@@ -208,11 +210,13 @@ class BookmarksParser {
 		$bookmark = $this->bookmarks[$count-1];
 		$bookmark['description'] = $node->textContent;
 	}
+
 	/**
 	 * Get attributes of a \DOMNode
 	 *
 	 * @param \DOMNode $node
 	 * @return array
+	 * @throws \Exception
 	 */
 	private function getAttributes(\DOMNode $node) {
 		$attributes = [];
