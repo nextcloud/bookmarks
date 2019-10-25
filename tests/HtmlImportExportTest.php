@@ -96,6 +96,7 @@ class HtmlImportExportTest  extends TestCase {
 			$f = new Db\Folder();
 			$f->setTitle($i);
 			$f->setParentFolder(-1);
+			$f->setUserId($this->userId);
 			$f = $this->folderMapper->insert($f);
 			$b = array_shift($bookmarks);
 			$b->setUserId($this->userId);
@@ -109,7 +110,7 @@ class HtmlImportExportTest  extends TestCase {
 		$this->assertCount(4, $rootFolders);
 		foreach($rootFolders as $rootFolder) {
 			foreach($this->bookmarkMapper->findByFolder($rootFolder['id']) as $bookmark) {
-				$this->assertStringContainsStringIgnoringCase($bookmark->getUrl(), $exported);
+				$this->assertContains($bookmark->getUrl(), $exported);
 			}
 		}
 	}
