@@ -120,12 +120,6 @@ class FolderMapperTest extends TestCase {
 		$this->folderMapper->find($folder->getId());
 	}
 
-	public function tearDown() : void {
-		$this->folderMapper->deleteAll($this->userId);
-		parent::tearDown();
-	}
-
-
 	/**
 	 * @return array
 	 */

@@ -134,11 +134,6 @@ class TagMapperTest extends TestCase {
 		}
 	}
 
-	public function tearDown() : void {
-		$this->folderMapper->deleteAll($this->userId);
-		parent::tearDown();
-	}
-
 	/**
 	 * @return array
 	 */
