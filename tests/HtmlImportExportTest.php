@@ -12,7 +12,7 @@ use OCP\AppFramework\QueryException;
 use OCP\User;
 
 
-class HtmlImporterTest  extends TestCase {
+class HtmlImportExportTest  extends TestCase {
 
 	/**
 	 * @var Db\BookmarkMapper
@@ -38,6 +38,10 @@ class HtmlImporterTest  extends TestCase {
 	 * @var Service\HtmlImporter
 	 */
 	protected $htmlImporter;
+	/**
+	 * @var \stdClass
+	 */
+	protected $htmlExporter;
 
 	/**
 	 * @throws QueryException
@@ -48,6 +52,7 @@ class HtmlImporterTest  extends TestCase {
 		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
 		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
 		$this->htmlImporter = \OC::$server->query(Service\HtmlImporter::class);
+		$this->htmlExporter = \OC::$server->query(Service\HtmlExporter::class);
 		$this->userId = User::getUser();
 		$this->folderMapper->deleteAll($this->userId);
 	}
@@ -75,9 +80,23 @@ class HtmlImporterTest  extends TestCase {
 		$this->assertSame('Title 0', $firstBookmark->getTitle());
 		$this->assertSame('http://url0.net/', $firstBookmark->getUrl());
 		$this->assertEquals(['tag0'], $this->tagMapper->findByBookmark($firstBookmark->getId()));
-		print('testImportFile passed!');
-		var_export(libxml_get_errors());
 	}
+
+	/**
+	 * @epends testImportFile
+	 */
+	public function testExport() {
+		$exported = $this->htmlExporter->exportFolder($this->userId, -1);
+
+		$rootFolders = $this->folderMapper->getRootChildren($this->userId);
+		$this->assertCount(5, $rootFolders);
+		foreach($rootFolders as $rootFolder) {
+			foreach($this->bookmarkMapper->findByFolder($rootFolder['id']) as $bookmark) {
+				$this->assertStringContainsStringIgnoringCase($bookmark->getUrl(), $exported);
+			}
+		}
+	}
+
 
 	public function importProvider() {
 		return [
