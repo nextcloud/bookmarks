@@ -54,6 +54,7 @@ class HtmlImportExportTest  extends TestCase {
 		$this->htmlImporter = \OC::$server->query(Service\HtmlImporter::class);
 		$this->htmlExporter = \OC::$server->query(Service\HtmlExporter::class);
 		$this->userId = User::getUser();
+		$this->folderMapper->deleteAll($this->userId);
 	}
 
 	/**
@@ -106,11 +107,6 @@ class HtmlImportExportTest  extends TestCase {
 				$this->assertStringContainsStringIgnoringCase($bookmark->getUrl(), $exported);
 			}
 		}
-	}
-
-	public function tearDown() : void {
-		$this->folderMapper->deleteAll($this->userId);
-		parent::tearDown();
 	}
 
 	public function importProvider() {
