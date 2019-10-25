@@ -5,6 +5,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
+use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Service;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -84,15 +85,19 @@ class HtmlImportExportTest  extends TestCase {
 
 	/**
 	 * @dataProvider exportProvider
+	 * @param $bookmarks
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
 	 */
-	public function testExport($bookmarks) {
+	public function testExport(...$bookmarks) {
 		// Set up database
-		for($i=0; $i < 5; $i++) {
+		for($i=0; $i < 4; $i++) {
 			$f = new Db\Folder();
 			$f->setTitle($i);
 			$f->setParentFolder(-1);
 			$f = $this->folderMapper->insert($f);
-			$b = array_pop($bookmarks);
+			$b = array_shift($bookmarks);
 			$b->setUserId($this->userId);
 			$b = $this->bookmarkMapper->insertOrUpdate($b);
 			$this->folderMapper->addToFolders($b->getId(), [$f->getId()]);
@@ -101,7 +106,7 @@ class HtmlImportExportTest  extends TestCase {
 		$exported = $this->htmlExporter->exportFolder($this->userId, -1);
 
 		$rootFolders = $this->folderMapper->getRootChildren($this->userId);
-		$this->assertCount(5, $rootFolders);
+		$this->assertCount(4, $rootFolders);
 		foreach($rootFolders as $rootFolder) {
 			foreach($this->bookmarkMapper->findByFolder($rootFolder['id']) as $bookmark) {
 				$this->assertStringContainsStringIgnoringCase($bookmark->getUrl(), $exported);
@@ -120,13 +125,13 @@ class HtmlImportExportTest  extends TestCase {
 	public function exportProvider() {
 		return [
 			array_map(function($props) {
-				return [Db\Bookmark::fromArray($props)];
+				return Db\Bookmark::fromArray($props);
 			}, [
-				'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
-				'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
-				'Simple URL' => ['url' => 'https://php.net/'],
-				'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
-				'Something else' => ['url' => 'https://github.com/nextcloud/bookmarks/projects/1'],
+				['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
+				['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
+				['url' => 'https://php.net/'],
+				['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
+				['url' => 'https://github.com/nextcloud/bookmarks/projects/1'],
 			])
 		];
 	}
