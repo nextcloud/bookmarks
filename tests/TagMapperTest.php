@@ -29,6 +29,10 @@ class TagMapperTest extends TestCase {
 	 * @var string
 	 */
 	private $userId;
+	/**
+	 * @var \stdClass
+	 */
+	protected $folderMapper;
 
 
 	/**
@@ -38,6 +42,7 @@ class TagMapperTest extends TestCase {
 		parent::setUp();
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
 		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
+		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
 		$this->userId = User::getUser();
 	}
 
@@ -127,6 +132,11 @@ class TagMapperTest extends TestCase {
 		foreach($newTags as $tag) {
 			$this->assertContains($tag, $actualTags);
 		}
+	}
+
+	public function tearDown() : void {
+		$this->folderMapper->deleteAll($this->userId);
+		parent::tearDown();
 	}
 
 	/**

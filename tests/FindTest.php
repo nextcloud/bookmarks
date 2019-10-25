@@ -5,6 +5,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Exception\UrlParseError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -37,6 +38,7 @@ class FindTest extends TestCase {
 	/**
 	 * @throws QueryException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -80,6 +82,11 @@ class FindTest extends TestCase {
 	public function testFindByTags() {
 		$bookmarks = $this->bookmarkMapper->findByTags($this->userId, ['one', 'three']);
 		$this->assertSame(1, count($bookmarks));
+	}
+
+	public function tearDown() : void {
+		$this->folderMapper->deleteAll($this->userId);
+		parent::tearDown();
 	}
 
 	/**
