@@ -6,6 +6,7 @@ namespace OCA\Bookmarks\Tests;
 use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\Folder;
+use OCA\Bookmarks\Exception\UrlParseError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -94,6 +95,7 @@ class FolderMapperTest extends TestCase {
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
 	 */
 	public function testRemoveBookmarks(Bookmark $bookmark, Folder $folder) {
 		$bookmark->setUserId($this->userId);
@@ -116,6 +118,11 @@ class FolderMapperTest extends TestCase {
 		$this->folderMapper->delete($folder);
 		$this->expectException(DoesNotExistException::class);
 		$this->folderMapper->find($folder->getId());
+	}
+
+	public function tearDown() : void {
+		$this->folderMapper->deleteAll($this->userId);
+		parent::tearDown();
 	}
 
 

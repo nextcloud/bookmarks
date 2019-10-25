@@ -54,7 +54,6 @@ class HtmlImportExportTest  extends TestCase {
 		$this->htmlImporter = \OC::$server->query(Service\HtmlImporter::class);
 		$this->htmlExporter = \OC::$server->query(Service\HtmlExporter::class);
 		$this->userId = User::getUser();
-		$this->folderMapper->deleteAll($this->userId);
 	}
 
 	/**
@@ -83,9 +82,21 @@ class HtmlImportExportTest  extends TestCase {
 	}
 
 	/**
-	 * @epends testImportFile
+	 * @dataProvider exportProvider
 	 */
-	public function testExport() {
+	public function testExport($bookmarks) {
+		// Set up database
+		for($i=0; $i < 5; $i++) {
+			$f = new Db\Folder();
+			$f->setTitle($i);
+			$f->setParentFolder(-1);
+			$f = $this->folderMapper->insert($f);
+			$b = array_pop($bookmarks);
+			$b->setUserId($this->userId);
+			$b = $this->bookmarkMapper->insertOrUpdate($b);
+			$this->folderMapper->addToFolders($b->getId(), [$f->getId()]);
+		}
+
 		$exported = $this->htmlExporter->exportFolder($this->userId, -1);
 
 		$rootFolders = $this->folderMapper->getRootChildren($this->userId);
@@ -97,12 +108,30 @@ class HtmlImportExportTest  extends TestCase {
 		}
 	}
 
+	public function tearDown() : void {
+		$this->folderMapper->deleteAll($this->userId);
+		parent::tearDown();
+	}
 
 	public function importProvider() {
 		return [
 			[
 				__DIR__.'/res/import.file'
 			]
+		];
+	}
+
+	public function exportProvider() {
+		return [
+			array_map(function($props) {
+				return [Db\Bookmark::fromArray($props)];
+			}, [
+				'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
+				'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
+				'Simple URL' => ['url' => 'https://php.net/'],
+				'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
+				'Something else' => ['url' => 'https://github.com/nextcloud/bookmarks/projects/1'],
+			])
 		];
 	}
 }
