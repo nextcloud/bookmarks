@@ -79,7 +79,7 @@ class HtmlExporter {
 			if ($folder->getUserId() !== $userId) {
 				throw new UnauthorizedAccessError();
 			}
-			$output = '<DT><h3>' . htmlspecialchars($folder['title']) . '</h3>' . "\n"
+			$output = '<DT><h3>' . htmlspecialchars($folder->getTitle()) . '</h3>' . "\n"
 				. '<DL><p>';
 		} else {
 			$output = '<H1>Bookmarks</h1>' . "\n"
@@ -105,7 +105,7 @@ class HtmlExporter {
 			$title = Util::sanitizeHTML($title);
 			$description = Util::sanitizeHTML($bookmark->getDescription());
 
-			$output .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '" ADD_DATE="' . $bookmark['added'] . '">' . $title . '</A>' . "\n";
+			$output .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '" ADD_DATE="' . $bookmark->getAdded() . '">' . $title . '</A>' . "\n";
 			if (strlen($description) > 0) {
 				$output .= '<DD>' . $description . '</DD>';
 			}
