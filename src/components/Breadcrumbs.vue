@@ -42,7 +42,7 @@
 							: 'icon-toggle-filelist'
 					"
 					@click="onToggleViewMode">
-					{{ t('bookmarks', viewMode === 'list' ? 'Grid view' : 'List view') }}
+					{{ viewMode === 'list' ? t('bookmarks', 'Grid view') : t('bookmarks', 'List view') }}
 				</ActionButton>
 			</Actions>
 			<div v-if="selection.length" class="breadcrumbs__bulkediting">
