@@ -2,7 +2,7 @@
 
 namespace OCA\Bookmarks\Controller\Rest;
 
-use \OCA\Bookmarks\Bookmarks;
+use \OCA\Bookmarks\Db;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OCP\AppFramework\ApiController;
@@ -11,13 +11,15 @@ use \OCP\IRequest;
 class TagsController extends ApiController {
 	private $userId;
 
-	/** @var Bookmarks */
-	private $bookmarks;
+	/**
+	 * @var Db\TagMapper
+	 */
+	private $tagMapper;
 
-	public function __construct($appName, IRequest $request, $userId, Bookmarks $bookmarks) {
+	public function __construct($appName, IRequest $request, $userId, DB\TagMapper $tagMapper) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
-		$this->bookmarks = $bookmarks;
+		$this->tagMapper = $tagMapper;
 	}
 
 	/**
@@ -33,7 +35,7 @@ class TagsController extends ApiController {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
-		$this->bookmarks->deleteTag($this->userId, $old_name);
+		$this->tagMapper->deleteTag($this->userId, $old_name);
 		return new JSONResponse(['status' => 'success']);
 	}
 
@@ -56,12 +58,13 @@ class TagsController extends ApiController {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
-		$this->bookmarks->renameTag($this->userId, $old_name, $new_name);
+		$this->tagMapper->renameTag($this->userId, $old_name, $new_name);
 		return new JSONResponse(['status' => 'success']);
 	}
 
 	/**
 	 * @param bool $count whether to add the count of bookmarks per tag
+	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
@@ -70,16 +73,11 @@ class TagsController extends ApiController {
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
-		$qtags = $this->bookmarks->findTags($this->userId, [], 0);
-		$tags = [];
-		foreach ($qtags as $tag) {
-			if ($count === true) {
-				$tags[] = ['name' => $tag['tag'], 'count' => $tag['nbr']];
-			} else {
-				$tags[] = $tag['tag'];
-			}
+		if ($count === true) {
+			$tags = $this->tagMapper->findAllWithCount($this->userId);
+		}else {
+			$tags = $this->tagMapper->findAll($this->userId);
 		}
-
 		return new JSONResponse($tags);
 	}
 }

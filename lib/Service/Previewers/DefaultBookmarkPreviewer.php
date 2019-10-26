@@ -17,17 +17,17 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-namespace OCA\Bookmarks\Previews;
+namespace OCA\Bookmarks\Service\Previewers;
 
-use OCA\Bookmarks\FileCache;
-use OCP\ICache;
+use OCA\Bookmarks\Contract\IBookmarkPreviewer;
+use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Service\FileCache;
 use OCP\ILogger;
-use OCP\IConfig;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IClient;
-use OCA\Bookmarks\LinkExplorer;
+use OCA\Bookmarks\Service\LinkExplorer;
 
-class DefaultPreviewService implements IPreviewService {
+class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	// Cache for 4 months
 	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
 	const CACHE_PREFIX = 'bookmarks.DefaultPreviewService';
@@ -46,20 +46,17 @@ class DefaultPreviewService implements IPreviewService {
 	/** @var ILogger */
 	private $logger;
 
-	/** @var IConfig */
-	private $config;
-
 	/**
-	 * @param CacheFactory $cacheFactory
+	 * @param FileCache $cache
 	 * @param LinkExplorer $linkExplorer
+	 * @param IClientService $clientService
+	 * @param ILogger $logger
 	 */
-	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger, IConfig $config) {
+	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
 		$this->cache = $cache;
 		$this->linkExplorer = $linkExplorer;
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
-		$this->config = $config;
-		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', true);
 	}
 
 	protected function buildKey($url) {
@@ -75,18 +72,15 @@ class DefaultPreviewService implements IPreviewService {
 	}
 
 	/**
-	 * @param string $url
-	 * @return string|null image data
+	 * @param $bookmark
+	 * @return array|null image data
 	 */
 	public function getImage($bookmark) {
-		if ($this->enabled === 'false') {
-			return null;
-		}
 		if (!isset($bookmark)) {
 			return null;
 		}
-		$site = $this->scrapeUrl($bookmark['url']);
-		$this->logger->debug('getImage for URL: '.$bookmark['url'].' '.var_export($site, true), ['app' => 'bookmarks']);
+		$site = $this->scrapeUrl($bookmark->getUrl());
+		$this->logger->debug('getImage for URL: '.$bookmark->getUrl().' '.var_export($site, true), ['app' => 'bookmarks']);
 		if (isset($site['image']['small'])) {
 			return $this->getOrFetchImageUrl($site['image']['small']);
 		}
@@ -145,7 +139,7 @@ class DefaultPreviewService implements IPreviewService {
 
 	/**
 	 * @param string $url
-	 * @return string|null fetched image data
+	 * @return array|null fetched image data
 	 */
 	private function fetchImage($url) {
 		try {

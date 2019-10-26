@@ -5,6 +5,7 @@ namespace OCA\Bookmarks\Tests;
 use OCA\Bookmarks\Controller\Rest\SettingsController;
 use \OCP\IConfig;
 use OCP\IRequest;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class Test_SettingsController
@@ -32,7 +33,22 @@ class SettingsControllerTest extends TestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->userId = "tuser";
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
+		$query->execute();
+
+		$this->userManager = \OC::$server->getUserManager();
+		$this->user = 'test';
+		if (!$this->userManager->userExists($this->user)) {
+			$this->userManager->createUser($this->user, 'password');
+		}
+		$this->userId = $this->userManager->get($this->user)->getUID();
+
 		$this->appName = "bookmarks";
 		$this->request = \OC::$server->getRequest();
 		$userManager = \OC::$server->getUserManager();

@@ -17,14 +17,15 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-namespace OCA\Bookmarks\Previews;
+namespace OCA\Bookmarks\Service\Previewers;
 
-use OCA\Bookmarks\FileCache;
+use OCA\Bookmarks\Contract\IBookmarkPreviewer;
+use OCA\Bookmarks\Service\FileCache;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\Http\Client\IClientService;
 
-class ScreenlyPreviewService implements IPreviewService {
+class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	// Cache for one month
 	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
 	const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
@@ -46,6 +47,14 @@ class ScreenlyPreviewService implements IPreviewService {
 	private $width = 800;
 
 	private $height = 800;
+	/**
+	 * @var string
+	 */
+	private $apiUrl;
+	/**
+	 * @var string
+	 */
+	private $enabled;
 
 	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
 		$this->config = $config;
@@ -62,8 +71,10 @@ class ScreenlyPreviewService implements IPreviewService {
 	}
 
 	/**
-	 * @param string $url
-	 * @return string|null image data
+	 * @param $bookmark
+	 * @return array|null image data
+	 * @throws \OCP\Files\NotFoundException
+	 * @throws \OCP\Files\NotPermittedException
 	 */
 	public function getImage($bookmark) {
 		if ($this->enabled === 'false') {
@@ -75,7 +86,7 @@ class ScreenlyPreviewService implements IPreviewService {
 		if ('' === $this->apiKey) {
 			return null;
 		}
-		$url = $bookmark['url'];
+		$url = $bookmark->getUrl();
 
 		$key = $this->buildKey($url);
 		// Try cache first

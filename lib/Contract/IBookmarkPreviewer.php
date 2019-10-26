@@ -1,8 +1,11 @@
 <?php
-namespace OCA\Bookmarks\Previews;
+namespace OCA\Bookmarks\Contract;
 
-interface IPreviewService {
+use OCA\Bookmarks\Db\Bookmark;
+
+interface IBookmarkPreviewer {
 	/**
+	 * @param Bookmark $bookmark
 	 * @return null|array ['contentType' => 'mimetype', 'data' => binary]
 	 */
 	public function getImage($bookmark);

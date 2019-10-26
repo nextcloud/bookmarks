@@ -11,6 +11,7 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
 use OCP\User;
+use PHPUnit\Framework\TestCase;
 
 
 class TagMapperTest extends TestCase {
@@ -37,13 +38,21 @@ class TagMapperTest extends TestCase {
 
 	/**
 	 * @throws QueryException
+	 * @throws \OC\DatabaseException
 	 */
 	protected function setUp(): void {
 		parent::setUp();
+
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
 		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
 		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
-		$this->userId = User::getUser();
+
+		$this->userManager = \OC::$server->getUserManager();
+		$this->user = 'test';
+		if (!$this->userManager->userExists($this->user)) {
+			$this->userManager->createUser($this->user, 'password');
+		}
+		$this->userId = $this->userManager->get($this->user)->getUID();
 	}
 
 	/**

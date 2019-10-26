@@ -28,10 +28,10 @@ class TagMapper {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param $userId
 	 * @return array
 	 */
-	public function findAllWithCount(int $userId) {
+	public function findAllWithCount($userId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('t.tag')
@@ -48,10 +48,10 @@ class TagMapper {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param $userId
 	 * @return array
 	 */
-	public function findAll(int $userId) {
+	public function findAll($userId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('t.tag')
@@ -79,11 +79,11 @@ class TagMapper {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param $userId
 	 * @param string $tag
 	 * @return \Doctrine\DBAL\Driver\Statement|int
 	 */
-	public function delete(int $userId, string $tag) {
+	public function delete($userId, string $tag) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->delete('bookmarks_tags', 'tgs')
@@ -94,7 +94,7 @@ class TagMapper {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param $userId
 	 * @return \Doctrine\DBAL\Driver\Statement|int
 	 */
 	public function deleteAll(int $userId) {
@@ -168,12 +168,12 @@ class TagMapper {
 
 	/**
 	 * @brief Rename a tag
-	 * @param int $userId UserId
+	 * @param $userId UserId
 	 * @param string $old Old Tag Name
 	 * @param string $new New Tag Name
 	 * @return boolean Success of operation
 	 */
-	public function renameTag(int $userId, string $old, string $new) {
+	public function renameTag($userId, string $old, string $new) {
 		// Remove about-to-be duplicated tags
 		$qb = $this->db->getQueryBuilder();
 		$qb

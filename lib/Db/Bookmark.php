@@ -14,7 +14,8 @@ class Bookmark extends Entity {
 	protected $clickcount;
 	protected $lastPreview;
 
-	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount'];
+	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'public', 'last_preview', 'user_id'];
+	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'public', 'lastPreview', 'userId'];
 
 	public static function fromArray($props) {
 		$bookmark = new Bookmark();
@@ -29,7 +30,7 @@ class Bookmark extends Entity {
 		$this->addType('id', 'integer');
 		$this->addType('url', 'string');
 		$this->addType('title', 'string');
-		$this->addType('userId', 'integer');
+		$this->addType('userId', 'string');
 		$this->addType('description', 'string');
 		$this->addType('public', 'boolean');
 		$this->addType('added', 'integer');
@@ -38,7 +39,19 @@ class Bookmark extends Entity {
 		$this->addType('lastPreview', 'integer');
 	}
 
+	public function toArray() : array {
+		$array = [];
+		foreach(self::$fields as $field) {
+			$array[$field] = $this->{$field};
+		}
+		return $array;
+	}
+
 	public function markPreviewCreated() {
 		$this->setLastPreview(time());
+	}
+
+	public function incrementClickcount() {
+		$this->setClickcount($this->clickcount+1);
 	}
 }

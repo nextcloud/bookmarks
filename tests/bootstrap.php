@@ -11,12 +11,23 @@ if (!class_exists('\PHPUnit\Framework\TestCase')) {
 }
 
 \OC_App::loadApp('bookmarks');
-require_once(__DIR__ . '/TestCase.php'); // stable9 compatibility
+//require_once(__DIR__ . '/TestCase.php'); // stable9 compatibility
 
 // OC >= 9.1 Tests?
 $dummyClass = \OC::$SERVERROOT . '/tests/lib/Util/User/Dummy.php';
 if(file_exists($dummyClass)) {
 	require_once($dummyClass);
 }
+
+
+$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
+$query->execute();
+$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
+$query->execute();
+$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
+$query->execute();
+$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
+$query->execute();
+
 
 OC_Hook::clear();

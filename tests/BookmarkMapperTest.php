@@ -9,6 +9,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\User;
+use PHPUnit\Framework\TestCase;
 
 
 class BookmarkMapperTest extends TestCase {
@@ -26,7 +27,13 @@ class BookmarkMapperTest extends TestCase {
 	protected function setUp() : void {
 		parent::setUp();
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
-		$this->userId = User::getUser();
+
+		$this->userManager = \OC::$server->getUserManager();
+		$this->user = 'test';
+		if (!$this->userManager->userExists($this->user)) {
+			$this->userManager->createUser($this->user, 'password');
+		}
+		$this->userId = $this->userManager->get($this->user)->getUID();
 	}
 
 	/**
@@ -35,6 +42,9 @@ class BookmarkMapperTest extends TestCase {
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UrlParseError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
 	 */
 	public function testInsertAndFind(Entity $bookmark) {
 		$bookmark->setUserId($this->userId);

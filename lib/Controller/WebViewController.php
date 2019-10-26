@@ -14,21 +14,13 @@ use OCP\AppFramework\Http\ContentSecurityPolicy;
 use \OCP\IRequest;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCP\AppFramework\Controller;
-use \OCA\Bookmarks\Bookmarks;
-use OCP\IURLGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class WebViewController extends Controller {
 
-	/** @var  string */
+	/** @var string */
 	private $userId;
-
-	/** @var IURLGenerator  */
-	private $urlgenerator;
-
-	/** @var Bookmarks */
-	private $bookmarks;
 
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
@@ -40,15 +32,11 @@ class WebViewController extends Controller {
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param $userId
-	 * @param IURLGenerator $urlgenerator
-	 * @param Bookmarks $bookmarks
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function __construct($appName, IRequest $request, $userId, IURLGenerator $urlgenerator, Bookmarks $bookmarks, EventDispatcherInterface $eventDispatcher) {
+	public function __construct($appName, IRequest $request, $userId, EventDispatcherInterface $eventDispatcher) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
-		$this->urlgenerator = $urlgenerator;
-		$this->bookmarks = $bookmarks;
 		$this->eventDispatcher = $eventDispatcher;
 	}
 

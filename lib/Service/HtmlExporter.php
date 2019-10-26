@@ -55,7 +55,7 @@ class HtmlExporter {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function exportFolder(int $userId, int $folderId = -1): string {
+	public function exportFolder($userId, int $folderId = -1): string {
 		$file = "<!DOCTYPE NETSCAPE-Bookmark-file-1>
 <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\">
 <TITLE>Bookmarks</TITLE>";
@@ -73,11 +73,11 @@ class HtmlExporter {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	protected function serializeFolder(int $userId, int $id): string {
+	protected function serializeFolder($userId, int $id): string {
 		if ($id !== -1) {
 			$folder = $this->folderMapper->find($id);
 			if ($folder->getUserId() !== $userId) {
-				throw new UnauthorizedAccessError();
+				throw new UnauthorizedAccessError('Insufficient permissions for folder '.$id);
 			}
 			$output = '<DT><h3>' . htmlspecialchars($folder->getTitle()) . '</h3>' . "\n"
 				. '<DL><p>';
