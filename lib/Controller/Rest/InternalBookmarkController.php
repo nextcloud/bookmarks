@@ -10,92 +10,55 @@
 
 namespace OCA\Bookmarks\Controller\Rest;
 
-use OCP\IDBConnection;
-use OCP\IL10N;
-use OCP\ILogger;
-use OCP\IUserSession;
+use OCA\Bookmarks\Db\FolderMapper;
+use OCP\AppFramework\Http\Reponse;
 use \OCP\IRequest;
-use \OCP\IURLGenerator;
 use \OCP\AppFramework\ApiController;
-use \OCP\AppFramework\Http\DataDisplayResponse;
-use \OCP\AppFramework\Http\NotFoundResponse;
-use \OCP\AppFramework\Http\RedirectResponse;
 use \OCP\AppFramework\Http\JSONResponse;
-use \OCP\AppFramework\Http;
-use \OC\User\Manager;
-use \OCA\Bookmarks\Bookmarks;
-use \OCA\Bookmarks\Previews\IPreviewService;
-use DateInterval;
-use DateTime;
-use OCP\AppFramework\Utility\ITimeFactory;
 
 class InternalBookmarkController extends ApiController {
+	/**
+	 * @var BookmarkController
+	 */
 	private $publicController;
 
 	private $userId;
-	private $libBookmarks;
-	private $previewService;
-	private $faviconService;
-	private $timeFactory;
+
+	/**
+	 * @var FolderMapper
+	 */
+	private $folderMapper;
 
 	public function __construct(
 		$appName,
 		IRequest $request,
 		$userId,
-		IDBConnection $db,
-		IL10N $l10n,
-		Bookmarks $bookmarks,
-		Manager $userManager,
-		IPreviewService $previewService,
-		IPreviewService $faviconService,
-		IPreviewService $screenshotService,
-		ITimeFactory $timeFactory,
-		ILogger $logger,
-		IUserSession $userSession,
-		IURLGenerator $url
+		BookmarkController $publicController,
+		FolderMapper $folderMapper
 	) {
 		parent::__construct($appName, $request);
-		$this->publicController = new BookmarkController(
-			$appName,
-			$request,
-			$userId,
-			$db,
-			$l10n,
-			$bookmarks,
-			$userManager,
-			$previewService,
-			$faviconService,
-			$screenshotService,
-			$timeFactory,
-			$logger,
-			$userSession,
-			$url
-		);
+		$this->publicController = $publicController;
 		$this->userId = $userId;
-		$this->libBookmarks = $bookmarks;
+		$this->folderMapper = $folderMapper;
 	}
 
 	/**
-	 * @param string $type
-	 * @param string $tag
 	 * @param int $page
-	 * @param string $sort
-	 * @param string user
-	 * @param array tags
-	 * @param string conjunction
-	 * @param string sortby
-	 * @param array search
-	 * @param int limit
-	 * @param bool untagged
+	 * @param null $user
+	 * @param array $tags
+	 * @param string $conjunction
+	 * @param string $sortby
+	 * @param array $search
+	 * @param int $limit
+	 * @param bool $untagged
+	 * @param null $folder
+	 * @param null $url
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
 	public function getBookmarks(
-		$type = "bookmark",
-		$tag = '', // legacy
 		$page = 0,
-		$sort = "bookmarks_sorting_recent", // legacy
 		$user = null,
 		$tags = [],
 		$conjunction = "or",
@@ -106,7 +69,7 @@ class InternalBookmarkController extends ApiController {
 		$folder = null,
 		$url = null
 	) {
-		return $this->publicController->getBookmarks($type, $tag, $page, $sort, $user, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url);
+		return $this->publicController->getBookmarks($page, $user, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url);
 	}
 
 	/**
@@ -126,6 +89,7 @@ class InternalBookmarkController extends ApiController {
 	 * @param string $title
 	 * @param bool $is_public
 	 * @param string $description
+	 * @param array $tags
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -142,23 +106,8 @@ class InternalBookmarkController extends ApiController {
 	 * @param bool $is_public Description
 	 * @param null $record_id
 	 * @param string $description
-	 * @return Http\TemplateResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function legacyEditBookmark($id = null, $url = "", $item = [], $title = "", $is_public = false, $record_id = null, $description = "") {
-		return $this->publicController->legacyEditBookmark($id, $url, $item, $title, $is_public, $record_id, $description);
-	}
-
-	/**
-	 * @param int $id
-	 * @param string $url
-	 * @param array $item
-	 * @param string $title
-	 * @param bool $is_public Description
-	 * @param null $record_id
-	 * @param string $description
 	 * @param array $tags
+	 * @param array $folders
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -173,34 +122,24 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function legacyDeleteBookmark($id = -1) {
-		return $this->legacyDeleteBookmark($id);
-	}
-
-	/**
-	 * @param int $id
-	 * @return \OCP\AppFramework\Http\JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
 	public function deleteBookmark($id = -1) {
 		return $this->publicController->deleteBookmark($id);
 	}
 
 	/**
-	 * @return \OCP\AppFramework\Http\JSONResponse
+	 * @return array
 	 *
 	 * @NoAdminRequired
 	 */
 	public function deleteAllBookmarks() {
-		$this->libBookmarks->deleteAllBookmarks($this->userId);
+		$this->folderMapper->deleteAll($this->userId);
 		return ['status' => 'success'];
 	}
 
 	/**
 	 *
 	 * @param string $url
-	 * @return \OCP\AppFramework\Http\JSONResponse
+	 * @return JSONResponse
 	 * @NoAdminRequired
 	 */
 	public function clickBookmark($url = "") {
@@ -209,7 +148,7 @@ class InternalBookmarkController extends ApiController {
 
 	/**
 	 *
-	 * @return \OCP\AppFramework\Http\JSONResponse
+	 * @return JSONResponse
 	 * @NoAdminRequired
 	 */
 	public function importBookmark() {
@@ -228,10 +167,11 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 *
 	 * @param int $id The id of the bookmark whose favicon shoudl be returned
-	 * @return \OCP\AppFramework\Http\Reponse
+	 * @return Reponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * @throws \Exception
 	 */
 	public function getBookmarkImage($id) {
 		return $this->publicController->getBookmarkImage($id);
@@ -240,10 +180,11 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 *
 	 * @param int $id The id of the bookmark whose image shoudl be returned
-	 * @return \OCP\AppFramework\Http\Reponse
+	 * @return Reponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * @throws \Exception
 	 */
 	public function getBookmarkFavicon($id) {
 		return $this->publicController->getBookmarkFavicon($id);

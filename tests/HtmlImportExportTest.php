@@ -11,6 +11,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
 use OCP\User;
+use PHPUnit\Framework\TestCase;
 
 
 class HtmlImportExportTest  extends TestCase {
@@ -49,12 +50,29 @@ class HtmlImportExportTest  extends TestCase {
 	 */
 	protected function setUp(): void {
 		parent::setUp();
+
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
+		$query->execute();
+
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
 		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
 		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
 		$this->htmlImporter = \OC::$server->query(Service\HtmlImporter::class);
 		$this->htmlExporter = \OC::$server->query(Service\HtmlExporter::class);
-		$this->userId = User::getUser();
+
+		$this->userManager = \OC::$server->getUserManager();
+		$this->user = 'test';
+		if (!$this->userManager->userExists($this->user)) {
+			$this->userManager->createUser($this->user, 'password');
+		}
+		$this->userId = $this->userManager->get($this->user)->getUID();
+
 		$this->folderMapper->deleteAll($this->userId);
 	}
 
@@ -85,10 +103,13 @@ class HtmlImportExportTest  extends TestCase {
 
 	/**
 	 * @dataProvider exportProvider
-	 * @param $bookmarks
+	 * @param array $bookmarks
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
 	 * @throws UrlParseError
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
 	 */
 	public function testExport(...$bookmarks) {
 		// Set up database

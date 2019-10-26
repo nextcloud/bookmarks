@@ -63,7 +63,7 @@ class HtmlImporter {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
 	 */
-	public function importFile(int $userId, string $file, int $rootFolder = -1) {
+	public function importFile($userId, string $file, int $rootFolder = -1) {
 		$content = file_get_contents($file);
 		return $this->import($userId, $content, $rootFolder);
 	}
@@ -78,7 +78,7 @@ class HtmlImporter {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
 	 */
-	public function import(int $userId, string $content, int $rootFolder = -1) {
+	public function import($userId, string $content, int $rootFolder = -1) {
 		$imported = [];
 		$errors = [];
 		if ($rootFolder !== -1) {
@@ -112,7 +112,7 @@ class HtmlImporter {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	private function importFolder(int $userId, array $folderParams, int $parentId, &$errors = []) {
+	private function importFolder($userId, array $folderParams, int $parentId, &$errors = []) {
 		$folder = new Folder();
 		$folder->setUserId($userId);
 		$folder->setTitle($folderParams['title']);
@@ -143,7 +143,7 @@ class HtmlImporter {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
 	 */
-	private function importBookmark(int $userId, int $folderId, array $bookmark) {
+	private function importBookmark($userId, int $folderId, array $bookmark) {
 		$bm = new Bookmark();
 		$bm->setUserId($userId);
 		$bm->setUrl($bookmark['href']);

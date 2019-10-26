@@ -18,31 +18,33 @@
  *
  */
 
-namespace OCA\Bookmarks\Previews;
+namespace OCA\Bookmarks\Service;
 
-use OCA\Bookmarks\FileCache;
+use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
 use OCP\ILogger;
-use OCP\IConfig;
 use OCP\Http\Client\IClientService;
-use OCA\Bookmarks\LinkExplorer;
 
-class FaviconPreviewService extends DefaultPreviewService {
+class FaviconPreviewer extends DefaultBookmarkPreviewer {
 	/**
-	 * @param ICacheFactory $cacheFactory
+	 * @param FileCache $cache
 	 * @param LinkExplorer $linkExplorer
+	 * @param IClientService $clientService
+	 * @param ILogger $logger
 	 */
-	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger, IConfig $config) {
-		parent::__construct($cache, $linkExplorer, $clientService, $logger, $config);
+	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
+		parent::__construct($cache, $linkExplorer, $clientService, $logger);
 	}
 
+	/**
+	 * @param Bookmark $bookmark
+	 * @return array|mixed|null
+	 */
 	public function getImage($bookmark) {
-		if ($this->enabled === 'false') {
-			return null;
-		}
 		if (!isset($bookmark)) {
 			return null;
 		}
-		$url = $bookmark['url'];
+		$url = $bookmark->getUrl();
 		$site = $this->scrapeUrl($url);
 
 		if (isset($site['favicon'])) {
@@ -52,7 +54,7 @@ class FaviconPreviewService extends DefaultPreviewService {
 			}
 		}
 
-		$url_parts = parse_url($bookmark['url']);
+		$url_parts = parse_url($bookmark->getUrl());
 
 		if (isset($url_parts['scheme'], $url_parts['host'])) {
 			return $this->getOrFetchImageUrl(

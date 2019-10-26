@@ -14,7 +14,11 @@ class Folder extends Entity {
 		// add types in constructor
 		$this->addType('parentFolder', 'integer');
 		$this->addType('title', 'string');
-		$this->addType('userId', 'integer');
+		$this->addType('userId', 'string');
 		$this->addType('index', 'integer');
+	}
+
+	public function toArray() {
+		return ['id' => $this->id, 'title' => $this->title, 'parent_folder' => $this->parentFolder];
 	}
 }

@@ -3,8 +3,10 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\BackgroundJobs\PreviewsJob;
-use OCA\Bookmarks\Bookmarks;
 use OC\BackgroundJob\JobList;
+use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Db\BookmarkMapper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class Test_BackgroundJob
@@ -13,19 +15,34 @@ class BackgroundJobTest extends TestCase {
 	protected function setUp() :void {
 		parent::setUp();
 
-		$this->libBookmarks = \OC::$server->query(Bookmarks::class);
+		$this->bookmarkMapper = \OC::$server->query(BookmarkMapper::class);
 		$this->previewsJob = \OC::$server->query(PreviewsJob::class);
 		$this->jobList = \OC::$server->query(JobList::class);
-		$this->userid = 'test';
+		$this->userId = 'test';
 
-		$this->libBookmarks->addBookmark($this->userid, "http://www.duckduckgo.com", "DuckDuckGo", [], "PrivateNoTag", false);
-		$this->libBookmarks->addBookmark($this->userid, "http://www.google.de", "Google", ["one"], "PrivateTwoTags", false);
-		$this->libBookmarks->addBookmark($this->userid, "http://www.heise.de", "Heise", ["one", "two"], "PrivatTag", false);
-		$this->libBookmarks->addBookmark($this->userid, "http://www.golem.de", "Golem", ["one"], "PublicNoTag", true);
-		$this->libBookmarks->addBookmark($this->userid, "http://9gag.com", "9gag", ["two", "three"], "PublicTag", true);
+		array_map(function($bm) {
+			$this->bookmarkMapper->insert($bm);
+		}, $this->singleBookmarksProvider());
 	}
 
+	/**
+	 * @doesNotPerformAssertions
+	 */
 	public function testPreviewsJob() {
 		$this->previewsJob->execute($this->jobList);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function singleBookmarksProvider() {
+		return array_map(function($props) {
+			return Bookmark::fromArray($props);
+		}, [
+			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
+			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
+			'Simple URL' => ['url' => 'https://php.net/'],
+			'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
+		]);
 	}
 }

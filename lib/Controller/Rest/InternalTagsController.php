@@ -10,9 +10,9 @@ use \OCP\IRequest;
 class InternalTagsController extends ApiController {
 	private $publicController;
 
-	public function __construct($appName, IRequest $request, $userId, Bookmarks $bookmarks) {
+	public function __construct($appName, $request, $userId, TagsController $publicController) {
 		parent::__construct($appName, $request);
-		$this->publicController = new TagsController($appName, $request, $userId, $bookmarks);
+		$this->publicController = $publicController;
 	}
 
 	/**
@@ -40,6 +40,7 @@ class InternalTagsController extends ApiController {
 	/**
 	 * @param bool $count whether to add the count of bookmarks per tag
 	 * @NoAdminRequired
+	 * @return JSONResponse
 	 */
 	public function fullTags($count) {
 		return $this->publicController->fullTags($count);

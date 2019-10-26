@@ -1,11 +1,11 @@
 <?php
 namespace OCA\Bookmarks\BackgroundJobs;
 
-use \OCA\Bookmarks\Previews\DefaultPreviewService;
-use \OCA\Bookmarks\Previews\FaviconPreviewService;
-use \OCA\Bookmarks\Previews\ScreenlyPreviewService;
-use \OCA\Bookmarks\Bookmarks;
+use OCA\Bookmarks\Db\BookmarkMapper;
+use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OC\BackgroundJob\TimedJob;
+use OCA\Bookmarks\Service\FaviconPreviewer;
+use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IUserManager;
@@ -15,17 +15,14 @@ class PreviewsJob extends TimedJob {
 		ITimeFactory $time,
 		IConfig $settings,
 		IUserManager $userManager,
-		Bookmarks $libBookmarks,
-		DefaultPreviewService $defaultPreviews,
-		FaviconPreviewService $faviconPreviews,
-		ScreenlyPreviewService $screenlyPreviews
+		BookmarkMapper $bookmarkMapper,
+		BookmarkPreviewer $bookmarkPreviewer,
+	    FaviconPreviewer $faviconPreviewer
 	) {
 		$this->settings = $settings;
 		$this->userManager = $userManager;
-		$this->libBookmarks = $libBookmarks;
-		$this->defaultPreviews = $defaultPreviews;
-		$this->faviconPreviews = $faviconPreviews;
-		$this->screenlyPreviews = $screenlyPreviews;
+		$this->bookmarkMapper = $bookmarkMapper;
+		$this->bookmarkPreviewer = $bookmarkPreviewer;
 
 		$this->setInterval(60);//*60*24); //run hourly
 	}
@@ -37,13 +34,12 @@ class PreviewsJob extends TimedJob {
 		) !== 'cron') {
 			return;
 		}
-		$bookmarks = $this->libBookmarks->findBookmarksNeedingPreview(100, DefaultPreviewService::CACHE_TTL);
+		$bookmarks = $this->bookmarkMapper->findPendingPreviews(100, DefaultBookmarkPreviewer::CACHE_TTL);
 		foreach ($bookmarks as $bookmark) {
-			if (null === $this->defaultPreviews->getImage($bookmark)) {
-				$this->screenlyPreviews->getImage($bookmark);
-			}
-			$this->faviconPreviews->getImage($bookmark);
-			$this->libBookmarks->markPreviewCreated($bookmark['id']);
+			$this->previewService->getImage($bookmark);
+			$this->faviconPreviewer->getImage($bookmark);
+			$bookmark->markPreviewCreated();
+			$this->bookmarkMapper->update($bookmark);
 		}
 	}
 }

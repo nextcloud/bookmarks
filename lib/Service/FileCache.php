@@ -24,9 +24,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\Bookmarks;
+namespace OCA\Bookmarks\Service;
 
 use OCP\Files\IAppData;
+use OCP\Files\NotFoundException;
+use OCP\Files\NotPermittedException;
 use OCP\ICache;
 
 class FileCache implements ICache {
@@ -37,7 +39,7 @@ class FileCache implements ICache {
 	public function __construct(IAppData $appData) {
 		try {
 			$this->storage = $appData->getFolder('cache');
-		} catch (\OCP\Files\NotFoundException $e) {
+		} catch (NotFoundException $e) {
 			$appData->newFolder('cache');
 			$this->storage = $appData->getFolder('cache');
 		}
@@ -46,7 +48,8 @@ class FileCache implements ICache {
 	/**
 	 * @param string $key
 	 * @return mixed|null
-	 * @throws \OC\ForbiddenException
+	 * @throws NotFoundException
+	 * @throws NotPermittedException
 	 */
 	public function get($key) {
 		$result = null;
@@ -55,11 +58,13 @@ class FileCache implements ICache {
 		}
 		return $result;
 	}
+
 	/**
 	 * Returns the size of the stored/cached data
 	 *
 	 * @param string $key
 	 * @return int
+	 * @throws NotFoundException
 	 */
 	public function size($key) {
 		$result = 0;
@@ -68,12 +73,14 @@ class FileCache implements ICache {
 		}
 		return $result;
 	}
+
 	/**
 	 * @param string $key
 	 * @param mixed $value
 	 * @param int $ttl
 	 * @return bool|mixed
-	 * @throws \OC\ForbiddenException
+	 * @throws NotFoundException
+	 * @throws NotPermittedException
 	 */
 	public function set($key, $value, $ttl = 0) {
 		$file = $this->storage->newFile($key);
@@ -83,7 +90,6 @@ class FileCache implements ICache {
 	/**
 	 * @param string $key
 	 * @return bool
-	 * @throws \OC\ForbiddenException
 	 */
 	public function hasKey($key) {
 		if ($this->storage->fileExists($key)) {
@@ -91,25 +97,30 @@ class FileCache implements ICache {
 		}
 		return false;
 	}
+
 	/**
 	 * @param string $key
 	 * @return bool|mixed
-	 * @throws \OC\ForbiddenException
+	 * @throws NotFoundException
+	 * @throws NotPermittedException
 	 */
 	public function remove($key) {
 		return $this->storage->getFile($key)->delete();
 	}
+
 	/**
 	 * @param string $prefix
-	 * @return bool
-	 * @throws \OC\ForbiddenException
+	 * @return void
+	 * @throws NotPermittedException
 	 */
 	public function clear($prefix = '') {
 		$this->storage->delete();
 	}
+
 	/**
 	 * Runs GC
-	 * @throws \OC\ForbiddenException
+	 *
+	 * @throws NotPermittedException
 	 */
 	public function gc() {
 		foreach ($this->storage->getDirectoryListing() as $file) {

@@ -14,9 +14,16 @@
 namespace OCA\Bookmarks\AppInfo;
 
 use OCA\Bookmarks\Bookmarks;
+use OCA\Bookmarks\Db\BookmarkMapper;
+use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Db\TagMapper;
 use OCA\Bookmarks\Previews\DefaultPreviewService;
-use OCA\Bookmarks\Previews\ScreenlyPreviewService;
 use OCA\Bookmarks\Previews\FaviconPreviewService;
+use OCA\Bookmarks\Previews\ScreenlyPreviewService;
+use OCA\Bookmarks\Service\BookmarkPreviewer;
+use OCA\Bookmarks\Service\FaviconPreviewer;
+use OCA\Bookmarks\Service\HtmlExporter;
+use OCA\Bookmarks\Service\HtmlImporter;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\Utility\ITimeFactory;
 use \OCP\IContainer;
@@ -66,17 +73,19 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,
-				$c->query('ServerContainer')->getDatabaseConnection(),
 				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
-				$c->query('ServerContainer')->query(Bookmarks::class),
+				$c->query('ServerContainer')->query(BookmarkMapper::class),
+				$c->query('ServerContainer')->query(TagMapper::class),
+				$c->query('ServerContainer')->query(FolderMapper::class),
 				$c->query('ServerContainer')->getUserManager(),
-				$c->query('ServerContainer')->query(DefaultPreviewService::class),
-				$c->query('ServerContainer')->query(FaviconPreviewService::class),
-				$c->query('ServerContainer')->query(ScreenlyPreviewService::class),
+				$c->query('ServerContainer')->query(BookmarkPreviewer::class),
+				$c->query('ServerContainer')->query(FaviconPreviewer::class),
 				$c->query('ServerContainer')->query(ITimeFactory::class),
 				$c->query('ServerContainer')->getLogger(),
 				$c->query('ServerContainer')->getUserSession(),
-				$c->query('ServerContainer')->query(IURLGenerator::class)
+				$c->query('ServerContainer')->query(IURLGenerator::class),
+				$c->query('ServerContainer')->query(HtmlImporter::class),
+				$c->query('ServerContainer')->query(HtmlExporter::class)
 			);
 		});
 
@@ -89,17 +98,7 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,
-				$c->query('ServerContainer')->getDatabaseConnection(),
-				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
-				$c->query('ServerContainer')->query(Bookmarks::class),
-				$c->query('ServerContainer')->getUserManager(),
-				$c->query('ServerContainer')->query(DefaultPreviewService::class),
-				$c->query('ServerContainer')->query(FaviconPreviewService::class),
-				$c->query('ServerContainer')->query(ScreenlyPreviewService::class),
-				$c->query('ServerContainer')->query(ITimeFactory::class),
-				$c->query('ServerContainer')->getLogger(),
-				$c->query('ServerContainer')->getUserSession(),
-				$c->query('ServerContainer')->query(IURLGenerator::class)
+				$c->query('ServerContainer')->query(BookmarkController::class)
 			);
 		});
 
@@ -111,7 +110,7 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,
-				$c->query('ServerContainer')->query(Bookmarks::class)
+				$c->query('ServerContainer')->query(TagMapper::class)
 			);
 		});
 
@@ -123,7 +122,7 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,
-				$c->query('ServerContainer')->query(Bookmarks::class)
+				$c->query('ServerContainer')->query(TagsController::class)
 			);
 		});
 
@@ -135,7 +134,8 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,
-				$c->query('ServerContainer')->query(Bookmarks::class)
+				$c->query('ServerContainer')->query(FolderMapper::class),
+				$c->query('ServerContainer')->query(BookmarkMapper::class)
 			);
 		});
 
@@ -147,21 +147,7 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,
-				$c->query('FoldersController'),
-				$c->query('ServerContainer')->getLogger()
-			);
-		});
-
-		$container->registerService('PublicController', function ($c) {
-			/** @var IContainer $c */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-			return new PublicController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('ServerContainer')->query(Bookmarks::class),
-				$c->query('ServerContainer')->getUserManager()
+				$c->query(FoldersController::class)
 			);
 		});
 

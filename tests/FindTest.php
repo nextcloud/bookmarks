@@ -11,6 +11,7 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
 use OCP\User;
+use PHPUnit\Framework\TestCase;
 
 
 class FindTest extends TestCase {
@@ -36,16 +37,35 @@ class FindTest extends TestCase {
 	private $userId;
 
 	/**
-	 * @throws QueryException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws QueryException
 	 * @throws UrlParseError
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws \OC\DatabaseException
 	 */
 	protected function setUp(): void {
 		parent::setUp();
+
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
+		$query->execute();
+
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
 		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
 		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
-		$this->userId = User::getUser();
+
+		$this->userManager = \OC::$server->getUserManager();
+		$this->user = 'test';
+		if (!$this->userManager->userExists($this->user)) {
+			$this->userManager->createUser($this->user, 'password');
+		}
+		$this->userId = $this->userManager->get($this->user)->getUID();
 
 		foreach($this->singleBookmarksProvider() as $bookmarkEntry) {
 			$bookmarkEntry[1]->setUserId($this->userId);

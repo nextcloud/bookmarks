@@ -11,6 +11,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\User;
+use PHPUnit\Framework\TestCase;
 
 
 class FolderMapperTest extends TestCase {
@@ -32,9 +33,16 @@ class FolderMapperTest extends TestCase {
 
 	protected function setUp() : void {
 		parent::setUp();
+
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
 		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
-		$this->userId = User::getUser();
+
+		$this->userManager = \OC::$server->getUserManager();
+		$this->user = 'test';
+		if (!$this->userManager->userExists($this->user)) {
+			$this->userManager->createUser($this->user, 'password');
+		}
+		$this->userId = $this->userManager->get($this->user)->getUID();
 	}
 
 	/**

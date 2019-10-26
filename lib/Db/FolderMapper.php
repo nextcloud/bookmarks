@@ -1,6 +1,9 @@
 <?php
+
 namespace OCA\Bookmarks\Db;
 
+use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
+use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -40,7 +43,7 @@ class FolderMapper extends QBMapper {
 	 * @throws DoesNotExistException if not found
 	 * @throws MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $id) : Entity {
+	public function find(int $id): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -51,10 +54,29 @@ class FolderMapper extends QBMapper {
 	}
 
 	/**
+	 * @param $userId
+	 * @param int $folderId
+	 * @return array|Entity[]
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 */
+	public function findByUserFolder($userId, int $folderId) {
+		if ($folderId !== -1) {
+			if ($this->find($folderId) !== $userId) {
+				throw new UnauthorizedAccessError();
+			}
+			return $this->findByParentFolder($folderId);
+		} else {
+			return $this->findByRootFolder($userId);
+		}
+	}
+
+	/**
 	 * @param int $folderId
 	 * @return array|Entity[]
 	 */
-	public function findByParentFolder(int $folderId)  {
+	public function findByParentFolder(int $folderId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -65,10 +87,10 @@ class FolderMapper extends QBMapper {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param $userId
 	 * @return array|Entity[]
 	 */
-	public function findByRootFolder(int $userId)  {
+	public function findByRootFolder($userId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -83,7 +105,7 @@ class FolderMapper extends QBMapper {
 	 * @param Entity $entity
 	 * @return Entity
 	 */
-	public function delete(Entity $entity) : Entity {
+	public function delete(Entity $entity): Entity {
 		$childFolders = $this->findByParentFolder($entity->id);
 		foreach ($childFolders as $folder) {
 			$this->delete($folder);
@@ -96,9 +118,9 @@ class FolderMapper extends QBMapper {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param $userId
 	 */
-	public function deleteAll(int $userId) {
+	public function deleteAll($userId) {
 		$childFolders = $this->findByRootFolder($userId);
 		foreach ($childFolders as $folder) {
 			$this->delete($folder);
@@ -115,7 +137,7 @@ class FolderMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function update(Entity $entity) : Entity {
+	public function update(Entity $entity): Entity {
 		if ($entity->getParentFolder() !== -1) {
 			$this->find($entity->getParentFolder());
 		}
@@ -128,7 +150,7 @@ class FolderMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function insertOrUpdate(Entity $entity) : Entity {
+	public function insertOrUpdate(Entity $entity): Entity {
 		if ($entity->getParentFolder() !== -1) {
 			$this->find($entity->getParentFolder());
 		}
@@ -141,7 +163,7 @@ class FolderMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function insert(Entity $entity) : Entity {
+	public function insert(Entity $entity): Entity {
 		if ($entity->getParentFolder() !== -1) {
 			$this->find($entity->getParentFolder());
 		}
@@ -166,11 +188,144 @@ class FolderMapper extends QBMapper {
 
 	/**
 	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param $userId
+	 * @param int $folderId
+	 * @param array $newChildrenOrder
+	 * @return void
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 * @throws ChildrenOrderValidationError
+	 */
+	public function setUserFolderChildren($userId, int $folderId, array $newChildrenOrder) {
+		if ($folderId !== -1) {
+			if ($this->find($folderId) !== $userId) {
+				throw new UnauthorizedAccessError();
+			}
+			$this->setChildren($folderId, $newChildrenOrder);
+			return;
+		} else {
+			$this->setRootChildren($userId, $newChildrenOrder);
+			return;
+		}
+	}
+
+	/**
+	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param $folderId
+	 * @param $newChildrenOrder
+	 * @return void
+	 * @throws ChildrenOrderValidationError
+	 */
+	public function setChildren(int $folderId, array $newChildrenOrder) {
+		$existingChildren = $this->getChildren($folderId);
+		foreach ($existingChildren as $child) {
+			if (!in_array($child, $newChildrenOrder)) {
+				throw new ChildrenOrderValidationError();
+			}
+			if (!isset($child['id'], $child['type'])) {
+				throw new ChildrenOrderValidationError();
+			}
+		}
+		if (count($newChildrenOrder) !== count($existingChildren)) {
+			throw new ChildrenOrderValidationError();
+		}
+		foreach ($newChildrenOrder as $i => $child) {
+			switch ($child['type']) {
+				case'bookmark':
+					$qb = $this->db->getQueryBuilder();
+					$qb
+						->update('bookmarks_folders_bookmarks')
+						->set('index', $qb->createPositionalParameter($i))
+						->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($child['id'])))
+						->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId)));
+					$qb->execute();
+					break;
+				case 'folder':
+					$qb = $this->db->getQueryBuilder();
+					$qb
+						->update('bookmarks_folders')
+						->set('index', $qb->createPositionalParameter($i))
+						->where($qb->expr()->eq('id', $qb->createPositionalParameter($child['id'])))
+						->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)));
+					$qb->execute();
+					break;
+			}
+		}
+	}
+
+	/**
+	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param $userId
+	 * @param array $newChildrenOrder
+	 * @return void
+	 * @throws ChildrenOrderValidationError
+	 */
+	public function setRootChildren($userId, array $newChildrenOrder) {
+		$existingChildren = $this->getRootChildren($userId);
+		foreach ($existingChildren as $child) {
+			if (!in_array($child, $newChildrenOrder)) {
+				throw new ChildrenOrderValidationError();
+			}
+			if (!isset($child['id'], $child['type'])) {
+				throw new ChildrenOrderValidationError();
+			}
+		}
+		if (count($newChildrenOrder) !== count($existingChildren)) {
+			throw new ChildrenOrderValidationError();
+		}
+		foreach ($newChildrenOrder as $i => $child) {
+			switch ($child['type']) {
+				case'bookmark':
+					$qb = $this->db->getQueryBuilder();
+					$qb
+						->update('bookmarks_folders_bookmarks')
+						->set('index', $qb->createPositionalParameter($i))
+						->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($child['id'])))
+						->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter(-1)));
+					$qb->execute();
+					break;
+				case 'folder':
+					$qb = $this->db->getQueryBuilder();
+					$qb
+						->update('bookmarks_folders')
+						->set('index', $qb->createPositionalParameter($i))
+						->where($qb->expr()->eq('id', $qb->createPositionalParameter($child['id'])))
+						->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter(-1)));
+					$qb->execute();
+					break;
+			}
+		}
+	}
+
+	/**
+	 * @brief Lists bookmark folders' child folders (helper)
+	 * @param $userId
+	 * @param int $folderId
+	 * @param int $layers
+	 * @return array
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 */
+	public function getUserFolderChildren($userId, int $folderId, int $layers) {
+		if ($folderId !== -1) {
+			if ($this->find($folderId) !== $userId) {
+				throw new UnauthorizedAccessError();
+			}
+			return $this->getChildren($folderId, $layers);
+		} else {
+			return $this->getRootChildren($userId, $layers);
+		}
+	}
+
+	/**
+	 * @brief Lists bookmark folders' child folders (helper)
 	 * @param $folderId
 	 * @param int $layers The amount of levels to return
 	 * @return array the children each in the format ["id" => int, "type" => 'bookmark' | 'folder' ]
 	 */
-	public function getChildren($folderId, $layers=1) {
+	public function getChildren($folderId, $layers = 1) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('id', 'title', 'parent_folder', 'index')
@@ -189,30 +344,17 @@ class FolderMapper extends QBMapper {
 			->orderBy('index', 'ASC');
 		$childBookmarks = $qb->execute()->fetchAll();
 
-		$children = array_merge($childFolders, $childBookmarks);
-		array_multisort(array_column($children, 'index'), \SORT_ASC, $children);
-		$children = array_map(function ($child) use ($layers) {
-			return isset($child['bookmark_id'])
-			  ? ['type' =>  self::TYPE_BOOKMARK, 'id' => $child['bookmark_id']]
-			  : ($layers === 1
-				  ? ['type' => self::TYPE_FOLDER, 'id' => $child['id']]
-					: [
-						 'type' => self::TYPE_FOLDER,
-					   'id' => $child['id'],
-						 'children' => $this->getChildren($child['id'], $layers-1)
-					 ]);
-		}, $children);
 
-		return $children;
+		return $this->_getChildren($childFolders, $childBookmarks, $layers);
 	}
 
 	/**
 	 * @brief Lists bookmark folders' child folders (helper)
-	 * @param int $userId
+	 * @param $userId
 	 * @param int $layers The amount of levels to return
 	 * @return array the children each in the format ["id" => int, "type" => 'bookmark' | 'folder' ]
 	 */
-	public function getRootChildren(int $userId, $layers = 1) {
+	public function getRootChildren($userId, $layers = 1) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('id', 'title', 'parent_folder', 'index')
@@ -233,38 +375,44 @@ class FolderMapper extends QBMapper {
 			->orderBy('index', 'ASC');
 		$childBookmarks = $qb->execute()->fetchAll();
 
+		return $this->_getChildren($childFolders, $childBookmarks, $layers);
+	}
+
+	private function _getChildren($childFolders, $childBookmarks, $layers): array {
 		$children = array_merge($childFolders, $childBookmarks);
 		array_multisort(array_column($children, 'index'), \SORT_ASC, $children);
 		$children = array_map(function ($child) use ($layers) {
 			return isset($child['bookmark_id'])
-				? ['type' =>  self::TYPE_BOOKMARK, 'id' => $child['bookmark_id']]
+				? ['type' => self::TYPE_BOOKMARK, 'id' => $child['bookmark_id']]
 				: ($layers === 1
 					? ['type' => self::TYPE_FOLDER, 'id' => $child['id']]
 					: [
 						'type' => self::TYPE_FOLDER,
 						'id' => $child['id'],
-						'children' => $this->getChildren($child['id'], $layers-1)
+						'children' => $this->getChildren($child['id'], $layers - 1),
 					]);
 		}, $children);
-
 		return $children;
 	}
 
 	/**
-	 * @param Folder $entity
+	 * @param int $folderId
 	 * @param array $fields
 	 * @return string
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
 	 */
-	public function hashFolder(Folder $entity, $fields = ['title', 'url']) {
-		$children = $this->getChildren($entity->id);
+	public function hashFolder(int $folderId, $fields = ['title', 'url']) {
+		$entity = $this->find($folderId);
+		$children = $this->getChildren($folderId);
 		$childHashes = array_map(function ($item) use ($fields) {
 			switch ($item['type']) {
 				case self::TYPE_BOOKMARK:
-				  return $this->bookmarkMapper->hashBookmark($item['id'], $fields);
+					return $this->bookmarkMapper->hashBookmark($item['id'], $fields);
 				case self::TYPE_FOLDER:
-				  return $this->hashFolder($item['id'], $fields);
-			  default:
-				  throw new UnexpectedValueException('Expected bookmark or folder, but not '.$item['type']);
+					return $this->hashFolder($item['id'], $fields);
+				default:
+					throw new UnexpectedValueException('Expected bookmark or folder, but not ' . $item['type']);
 			}
 		}, $children);
 		$folder = [];
@@ -276,18 +424,70 @@ class FolderMapper extends QBMapper {
 	}
 
 	/**
+	 * @param $userId
+	 * @param array $fields
+	 * @return string
+	 */
+	public function hashRootFolder($userId, $fields = ['title', 'url']) {
+		$children = $this->getRootChildren($userId);
+		$childHashes = array_map(function ($item) use ($fields) {
+			switch ($item['type']) {
+				case self::TYPE_BOOKMARK:
+					return $this->bookmarkMapper->hash($item['id'], $fields);
+				case self::TYPE_FOLDER:
+					return $this->hashFolder($item['id'], $fields);
+				default:
+					throw new UnexpectedValueException('Expected bookmark or folder, but not ' . $item['type']);
+			}
+		}, $children);
+		$folder = [];
+		$folder['children'] = $childHashes;
+		return hash('sha256', json_encode($folder, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+	}
+
+
+
+	/**
 	 * @brief Add a bookmark to a set of folders
 	 * @param int $bookmarkId The bookmark reference
 	 * @param array $folders Set of folders ids to add the bookmark to
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 */
+	public function setToFolders(int $bookmarkId, array $folders) {
+		if (0 === count($folders)) {
+			return;
+		}
+
+		$currentFolders = $this->findByBookmark($bookmarkId);
+
+		$this->addToFolders($bookmarkId, $folders);
+
+		$this->removeFromFolders($bookmarkId, array_map(function($f) {
+			return $f->getId();
+		}, array_filter($currentFolders, function($folder) use ($folders) {
+			return !in_array($folder->getId(), $folders);
+		})));
+	}
+
+	/**
+	 * @brief Add a bookmark to a set of folders
+	 * @param int $bookmarkId The bookmark reference
+	 * @param array $folders Set of folders ids to add the bookmark to
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
 	 */
 	public function addToFolders(int $bookmarkId, array $folders) {
 		$bookmark = $this->bookmarkMapper->find($bookmarkId);
 		foreach ($folders as $folderId) {
 			// check if folder exists
 			if ($folderId !== -1 && $folderId !== '-1') {
-				$this->find($folderId);
+				$folder = $this->find($folderId);
+				if ($folder->getUserId() !== $bookmark->getUserId()) {
+					throw new UnauthorizedAccessError('Can only add bookmarks to folders of the same user');
+				}
 			}
 
 			// check if this folder<->bookmark mapping already exists
@@ -308,7 +508,7 @@ class FolderMapper extends QBMapper {
 				->values([
 					'folder_id' => $qb->createNamedParameter($folderId),
 					'bookmark_id' => $qb->createNamedParameter($bookmarkId),
-					'index' => $folderId !== -1 ? count($this->getChildren($folderId)) : count($this->getRootChildren($bookmark->getUserId()))
+					'index' => $folderId !== -1 ? count($this->getChildren($folderId)) : count($this->getRootChildren($bookmark->getUserId())),
 				]);
 			$qb->execute();
 		}
@@ -319,7 +519,6 @@ class FolderMapper extends QBMapper {
 	 * @param int $bookmarkId The bookmark reference
 	 * @param array $folders Set of folders ids to add the bookmark to
 	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
 	 */
 	public function removeFromFolders(int $bookmarkId, array $folders) {
 		$bm = $this->bookmarkMapper->find($bookmarkId);
