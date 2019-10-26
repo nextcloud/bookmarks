@@ -47,8 +47,7 @@
 			</Actions>
 			<div v-if="selection.length" class="breadcrumbs__bulkediting">
 				{{
-					n(
-						'bookmarks',
+					n('bookmarks',
 						'Selected %n bookmark',
 						'Selected %n bookmarks',
 						selection.length

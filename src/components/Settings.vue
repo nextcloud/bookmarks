@@ -30,8 +30,7 @@
 		<label>{{ t('bookmarks', 'RSS Feed') }}
 			<input
 				v-tooltip="
-					t(
-						'bookmarks',
+					t('bookmarks',
 						'This is an RSS feed of the current result set with access restricted to you.'
 					)
 				"
@@ -43,8 +42,7 @@
 		<label>{{ t('bookmarks', 'Clear data') }}
 			<button
 				v-tooltip="
-					t(
-						'bookmarks',
+					t('bookmarks',
 						'Permanently remove all bookmarks from your account. There is no going back!'
 					)
 				"
@@ -58,8 +56,7 @@
 		<label>{{ t('bookmarks', 'Bookmarklet') }}
 			<a
 				v-tooltip="
-					t(
-						'bookmarks',
+					t('bookmarks',
 						'Drag this to your browser bookmarks and click it to quickly bookmark a webpage'
 					)
 				"
@@ -74,8 +71,7 @@
 
 		<p>
 			{{
-				t(
-					'bookmarks',
+				t('bookmarks',
 					'Also check out the collection of client apps that integrate with this app: '
 				)
 			}}
