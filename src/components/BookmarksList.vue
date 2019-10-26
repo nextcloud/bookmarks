@@ -21,8 +21,8 @@
 		<div
 			v-else-if="!loading && !folderChildren.length"
 			class="bookmarkslist__empty">
-			<h2>No bookmarks here</h2>
-			<p>Try changing your query or add some using the button on the left.</p>
+			<h2>{{ t('bookmarks', 'No bookmarks here') }}</h2>
+			<p>{{ t('bookmarks', 'Try changing your query or add some using the button on the left.') }}</p>
 		</div>
 		<div v-if="loading" class="bookmarkslist__loading">
 			<figure class="icon-loading" />
