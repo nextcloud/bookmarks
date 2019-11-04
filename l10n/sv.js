@@ -49,7 +49,7 @@ OC.L10N.register(
     "Bookmarklet" : "Bookmarklet",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Dra till webbläsarens bokmärken och klicka på den för att snabbt bokmärka en webbplats",
     "Add to {instanceName}" : "Lägg till {instanceName}",
-    "Also check out the collection of client apps that integrate with this app: " : "Kolla också in samlingen av klient-appar som integrerar med den här appen:",
+    "Also check out the collection of client apps that integrate with this app: " : "Kolla också in samlingen av klientappar som integrerar med den här appen: ",
     "Client apps" : "Klientappar",
     "Do you really want to delete all your bookmarks?" : "Vill du verkligen radera alla dina bokmärken?",
     "Creation date" : "Skapat datum",
