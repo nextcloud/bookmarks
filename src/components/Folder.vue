@@ -1,11 +1,10 @@
 <template>
-	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
+	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}" @click="onSelect">
 		<figure class="folder__icon icon-folder" />
 		<template v-if="!renaming">
 			<h3
 				class="folder__title"
-				:title="folder.title"
-				@click="onSelect">
+				:title="folder.title">
 				{{ folder.title }}
 			</h3>
 			<Actions class="folder__actions">
