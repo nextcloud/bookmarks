@@ -1,10 +1,11 @@
 <template>
-	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}" @click="onSelect">
-		<figure class="folder__icon icon-folder" />
+	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
+		<figure class="folder__icon icon-folder" @click="onSelect" />
 		<template v-if="!renaming">
 			<h3
 				class="folder__title"
-				:title="folder.title">
+				:title="folder.title"
+				@click="onSelect">
 				{{ folder.title }}
 			</h3>
 			<Actions class="folder__actions">
@@ -93,7 +94,6 @@ export default {
 	display: flex;
 	align-items: center;
 	position: relative;
-	cursor: pointer;
 }
 
 .folder:hover {
@@ -106,6 +106,7 @@ export default {
 	width: 20px;
 	background-size: cover;
 	margin: 15px;
+	cursor: pointer;
 }
 
 .folder--gridview .folder__icon {
@@ -123,6 +124,7 @@ export default {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+	cursor: pointer;
 	margin: 0;
 	padding: 15px 0;
 }
