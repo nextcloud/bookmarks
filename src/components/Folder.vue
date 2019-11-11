@@ -1,6 +1,6 @@
 <template>
 	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
-		<figure class="folder__icon icon-folder" />
+		<figure class="folder__icon icon-folder" @click="onSelect" />
 		<template v-if="!renaming">
 			<h3
 				class="folder__title"
@@ -106,6 +106,7 @@ export default {
 	width: 20px;
 	background-size: cover;
 	margin: 15px;
+	cursor: pointer;
 }
 
 .folder--gridview .folder__icon {
