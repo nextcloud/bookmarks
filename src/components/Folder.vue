@@ -93,6 +93,7 @@ export default {
 	display: flex;
 	align-items: center;
 	position: relative;
+	cursor: pointer;
 }
 
 .folder:hover {
@@ -122,7 +123,6 @@ export default {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	cursor: pointer;
 	margin: 0;
 	padding: 15px 0;
 }
