@@ -7,6 +7,7 @@ OC.L10N.register(
     "No file provided for import" : "Inga filer given för importering",
     "Unsupported file type for import" : "Ogiltig filtyp för import",
     "A Bookmark manager for Nextcloud" : "En bokmärkeshanterare för Nextcloud",
+    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Den här appen erbjuder ett webbgränssnitt för att samla och bokmärken till sajter som du värdesätter, Du kan bläddra bland och filtrera din bokmärken med taggar och mappar och med hjälp av den inbyggda sökfunktionen. För att du överallt, i den webbläsare eller mobil, skall komma åt dina bokmärken går det, via en inbyggd REST API,  att synka dem med 3-partsklienter.\n\nKolla in 3-partsklienter här: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Select bookmark" : "Välj bokmärke",
     "Details" : "Detaljer",
     "Rename" : "Byt namn",
