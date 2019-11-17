@@ -36,4 +36,16 @@ const BookmarksApp = (global['Bookmarks'] = new Vue({
 	render: h => h(App)
 }))
 
+navigator.serviceWorker.register(OC.generateUrl('/apps/bookmarks/service-worker.js'))
+	.then(() => {
+		console.error('serviceWorker registered')
+	})
+	.catch(er => console.error(er))
+
+window.caches.open('js').then(async cache => {
+	let url
+	url = OC.generateUrl('/custom_apps/bookmarks/js/bookmarks.main.js')
+	cache.put(url, await fetch(url))
+})
+
 export default BookmarksApp

@@ -13,6 +13,7 @@ namespace OCA\Bookmarks\Controller;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use \OCP\IRequest;
 use \OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\DownloadResponse;
 use \OCP\AppFramework\Controller;
 use \OCA\Bookmarks\Bookmarks;
 use OCP\IURLGenerator;
@@ -61,6 +62,7 @@ class WebViewController extends Controller {
 
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedFrameDomain("'self'");
+		$policy->addAllowedWorkerSrcDomain("'self'");
 		$policy->allowEvalScript(true);
 
 		$this->eventDispatcher->dispatch(
@@ -70,6 +72,15 @@ class WebViewController extends Controller {
 
 		$response = new TemplateResponse('bookmarks', 'main', $params);
 		$response->setContentSecurityPolicy($policy);
+		return $response;
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function serviceWorker() {
+		$response = new DownloadResponse(__DIR__.'/../../js/bookmarks.service-worker.js', 'application/javascript');
 		return $response;
 	}
 }
