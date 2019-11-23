@@ -11,7 +11,8 @@
 namespace OCA\Bookmarks\Controller\Rest;
 
 use OCA\Bookmarks\Db\FolderMapper;
-use OCP\AppFramework\Http\Reponse;
+use OCA\Bookmarks\Exception\UrlParseError;
+use OCP\AppFramework\Http\Response;
 use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
@@ -44,7 +45,6 @@ class InternalBookmarkController extends ApiController {
 
 	/**
 	 * @param int $page
-	 * @param null $user
 	 * @param array $tags
 	 * @param string $conjunction
 	 * @param string $sortby
@@ -55,11 +55,11 @@ class InternalBookmarkController extends ApiController {
 	 * @param null $url
 	 * @return JSONResponse
 	 *
+	 * @throws UrlParseError
 	 * @NoAdminRequired
 	 */
 	public function getBookmarks(
 		$page = 0,
-		$user = null,
 		$tags = [],
 		$conjunction = "or",
 		$sortby = "",
@@ -69,18 +69,17 @@ class InternalBookmarkController extends ApiController {
 		$folder = null,
 		$url = null
 	) {
-		return $this->publicController->getBookmarks($page, $user, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url);
+		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url);
 	}
 
 	/**
 	 * @param string $id
-	 * @param string $user
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getSingleBookmark($id, $user = null) {
-		return $this->publicController->getSingleBookmark($id, $user);
+	public function getSingleBookmark($id) {
+		return $this->publicController->getSingleBookmark($id);
 	}
 
 	/**
@@ -141,6 +140,7 @@ class InternalBookmarkController extends ApiController {
 	 * @param string $url
 	 * @return JSONResponse
 	 * @NoAdminRequired
+	 * @throws UrlParseError
 	 */
 	public function clickBookmark($url = "") {
 		return $this->publicController->clickBookmark($url);
@@ -167,7 +167,7 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 *
 	 * @param int $id The id of the bookmark whose favicon shoudl be returned
-	 * @return Reponse
+	 * @return Response
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -180,7 +180,7 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 *
 	 * @param int $id The id of the bookmark whose image shoudl be returned
-	 * @return Reponse
+	 * @return Response
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired

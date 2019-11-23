@@ -22,7 +22,6 @@ use OCA\Bookmarks\Service\HtmlImporter;
 use OCA\Bookmarks\Service\LinkExplorer;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use OCP\AppFramework\Http\Reponse;
 use OCP\IL10N;
 use OCP\ILogger;
 use \OCP\IRequest;
@@ -165,24 +164,13 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param string $id
-	 * @param string $user
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function getSingleBookmark($id, $user = null) {
-		if ($user === null) {
-			$user = $this->userId;
-			$publicOnly = false;
-		} else {
-			$publicOnly = true;
-			if ($this->userManager->userExists($user) === false) {
-				$error = "User could not be identified";
-				return new JSONResponse(['status' => 'error', 'data' => $error], Http::STATUS_BAD_REQUEST);
-			}
-		}
+	public function getSingleBookmark($id) {
 		try {
 			$bm = $this->bookmarkMapper->find($id);
 		} catch (DoesNotExistException $e) {
@@ -190,7 +178,7 @@ class BookmarkController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_BAD_REQUEST);
 		}
-		if ($publicOnly === true && $bm->getPublic() !== true) {
+		if ($bm->getUserId() !== $this->userId) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		return new JSONResponse(['item' => $this->_returnBookmarkAsArray($bm), 'status' => 'success']);
@@ -198,7 +186,6 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param int $page
-	 * @param string $user
 	 * @param array $tags
 	 * @param string $conjunction
 	 * @param string $sortby
@@ -209,15 +196,14 @@ class BookmarkController extends ApiController {
 	 * @param string $url
 	 * @return DataResponse
 	 *
+	 * @throws UrlParseError
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 * @PublicPage
-	 * @throws UrlParseError
 	 */
 	public function getBookmarks(
 		$page = 0,
-		$user = null,
 		$tags = null,
 		$conjunction = "or",
 		$sortby = "",
@@ -276,20 +262,9 @@ class BookmarkController extends ApiController {
 			}
 		}
 
-		if ($user === null) {
-			$user = $this->userId;
-			$publicOnly = false;
-		} else {
-			$publicOnly = true;
-			if ($this->userManager->userExists($user) === false) {
-				$error = "User could not be identified";
-				return new DataResponse(['status' => 'error', 'data' => $error]);
-			}
-		}
-
 		if ($url !== null) {
 			try {
-				$bookmark = $this->bookmarkMapper->findByUrl($user, $url);
+				$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $url);
 			} catch (DoesNotExistException $e) {
 				return new DataResponse(['data' => [], 'status' => 'success']);
 			} catch (MultipleObjectsReturnedException $e) {
@@ -335,23 +310,20 @@ class BookmarkController extends ApiController {
 		}
 
 		if ($folder) {
-			$result = $this->bookmarkMapper->findByUserFolder($folder, $sqlSortColumn, $offset, $limit);
+			$result = $this->bookmarkMapper->findByUserFolder($this->userId, $folder, $sqlSortColumn, $offset, $limit);
 		} else if ($untagged) {
-			$result = $this->bookmarkMapper->findUntagged($user, $sqlSortColumn, $offset, $limit);
+			$result = $this->bookmarkMapper->findUntagged($this->userId, $sqlSortColumn, $offset, $limit);
 		} else if ($tagsOnly && count($filterTag) > 0) {
-			$result = $this->bookmarkMapper->findByTags($user, $filterTag, $sqlSortColumn, $offset, $limit);
+			$result = $this->bookmarkMapper->findByTags($this->userId, $filterTag, $sqlSortColumn, $offset, $limit);
 		} else {
-			$result = $this->bookmarkMapper->findAll($user, $filterTag, $conjunction, $sqlSortColumn, $offset, $limit);
+			$result = $this->bookmarkMapper->findAll($this->userId, $filterTag, $conjunction, $sqlSortColumn, $offset, $limit);
 		}
 
 		return new DataResponse([
 			'data' => array_map(
 				function ($bm) {
 					return $this->_returnBookmarkAsArray($bm);
-				}, $publicOnly ?
-					array_filter($result, function ($bm) {
-						return $bm->getPublic() === true;
-					}) : $result
+				}, $result
 			),
 			'status' => 'success'
 		]);
@@ -360,17 +332,18 @@ class BookmarkController extends ApiController {
 	/**
 	 * @param string $url
 	 * @param string $title
-	 * @param bool $is_public
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
 	 * @return JSONResponse
 	 *
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function newBookmark($url = "", $title = null, $is_public = false, $description = "", $tags = [], $folders = []) {
+	public function newBookmark($url = "", $title = null, $description = "", $tags = [], $folders = []) {
 		if (isset($title)) {
 			$title = trim($title);
 		}
@@ -407,7 +380,6 @@ class BookmarkController extends ApiController {
 		$bookmark->setTitle($title);
 		$bookmark->setUrl($url);
 		$bookmark->setDescription($description);
-		$bookmark->setPublic($is_public);
 		$bookmark->setUserId($this->userId);
 
 		try {
@@ -436,8 +408,6 @@ class BookmarkController extends ApiController {
 	 * @param int $id
 	 * @param string $url
 	 * @param string $title
-	 * @param bool $is_public Description
-	 * @param int $record_id
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
@@ -447,11 +417,7 @@ class BookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function editBookmark($id = null, $url = null, $title = null, $is_public = null, $record_id = null, $description = null, $tags = null, $folders = null) {
-		if ($record_id !== null) {
-			$id = $record_id;
-		}
-
+	public function editBookmark($id = null, $url = null, $title = null, $description = null, $tags = null, $folders = null) {
 		try {
 			$bookmark = $this->bookmarkMapper->find($id);
 			if ($bookmark->getUserId() !== $this->userId) {
@@ -462,20 +428,11 @@ class BookmarkController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Multiple existing objects found']], Http::STATUS_BAD_REQUEST);
 		}
-		$newProps = [
-			'url' => $url,
-			'title' => $title,
-			'public' => $is_public,
-			'description' => $description,
-		];
 		if (isset($url)) {
 			$bookmark->setUrl($url);
 		}
 		if (isset($title)) {
 			$bookmark->setTitle($title);
-		}
-		if (isset($is_public)) {
-			$bookmark->setPublic($is_public); // TODO: Discrepancy between 'public' column and 'is_public' param, check docs
 		}
 		if (isset($description)) {
 			$bookmark->setDescription($description);
@@ -490,14 +447,16 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => ['Failed to parse URL']], Http::STATUS_BAD_REQUEST);
 		}
 
-		try {
-			$this->folderMapper->setToFolders($bookmark->getId(), $folders);
-		} catch (UnauthorizedAccessError $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Could not set some folders']], Http::STATUS_BAD_REQUEST);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Could not set some folders']], Http::STATUS_BAD_REQUEST);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Could not set some folders']], Http::STATUS_BAD_REQUEST);
+		if (isset($folders)) {
+			try {
+				$this->folderMapper->setToFolders($bookmark->getId(), $folders);
+			} catch (UnauthorizedAccessError $e) {
+				return new JSONResponse(['status' => 'error', 'data' => ['Could not set some folders']], Http::STATUS_BAD_REQUEST);
+			} catch (DoesNotExistException $e) {
+				return new JSONResponse(['status' => 'error', 'data' => ['Could not set some folders']], Http::STATUS_BAD_REQUEST);
+			} catch (MultipleObjectsReturnedException $e) {
+				return new JSONResponse(['status' => 'error', 'data' => ['Could not set some folders']], Http::STATUS_BAD_REQUEST);
+			}
 		}
 
 		return new JSONResponse(['item' => $this->_returnBookmarkAsArray($bookmark), 'status' => 'success']);
