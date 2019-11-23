@@ -7,10 +7,8 @@ use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
-use OCP\User;
 use PHPUnit\Framework\TestCase;
 
 
@@ -38,7 +36,6 @@ class TagMapperTest extends TestCase {
 
 	/**
 	 * @throws QueryException
-	 * @throws \OC\DatabaseException
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -61,6 +58,8 @@ class TagMapperTest extends TestCase {
 	 * @param Bookmark $bookmark
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
 	 */
 	public function testAddToAndFind(array $tags, Bookmark $bookmark) {
 		$bookmark->setUserId($this->userId);
@@ -116,6 +115,7 @@ class TagMapperTest extends TestCase {
 	 * @param Bookmark $bookmark
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
 	 */
 	public function testRemoveAllFrom(array $tags, Bookmark $bookmark) {
 		$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
@@ -132,6 +132,7 @@ class TagMapperTest extends TestCase {
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
 	 */
 	public function testSetOn(array $tags, Bookmark $bookmark) {
 		$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
