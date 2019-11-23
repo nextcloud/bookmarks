@@ -23,6 +23,7 @@ class PreviewsJob extends TimedJob {
 		$this->userManager = $userManager;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->bookmarkPreviewer = $bookmarkPreviewer;
+		$this->faviconPreviewer = $faviconPreviewer;
 
 		$this->setInterval(60);//*60*24); //run hourly
 	}
@@ -36,7 +37,7 @@ class PreviewsJob extends TimedJob {
 		}
 		$bookmarks = $this->bookmarkMapper->findPendingPreviews(100, DefaultBookmarkPreviewer::CACHE_TTL);
 		foreach ($bookmarks as $bookmark) {
-			$this->previewService->getImage($bookmark);
+			$this->bookmarkPreviewer->getImage($bookmark);
 			$this->faviconPreviewer->getImage($bookmark);
 			$bookmark->markPreviewCreated();
 			$this->bookmarkMapper->update($bookmark);
