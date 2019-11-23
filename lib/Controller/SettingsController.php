@@ -17,7 +17,7 @@
  *
  */
 
-namespace OCA\Bookmarks\Controller\Rest;
+namespace OCA\Bookmarks\Controller;
 
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
@@ -41,7 +41,7 @@ class SettingsController extends ApiController {
 	 */
 	public function __construct(
 		$appName,
-		IRequest $request,
+		$request,
 		$userId,
 		IConfig $config
 	) {

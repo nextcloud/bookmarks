@@ -2,8 +2,7 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use OCA\Bookmarks\Controller\Rest\BookmarkController;
-use OCA\Bookmarks\Bookmarks;
+use OCA\Bookmarks\Controller\BookmarkController;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\FolderMapper;
@@ -13,15 +12,9 @@ use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\FaviconPreviewer;
 use OCA\Bookmarks\Service\HtmlExporter;
 use OCA\Bookmarks\Service\HtmlImporter;
-use OCA\Bookmarks\UrlNormalizer;
 use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
-use \OCA\Bookmarks\Previews\IPreviewService;
-use OCA\Bookmarks\Previews\DefaultPreviewService;
-use OCA\Bookmarks\Previews\ScreenlyPreviewService;
-use OCA\Bookmarks\Previews\FaviconPreviewService;
 use OCP\AppFramework\Utility\ITimeFactory;
 use \OCP\IURLGenerator;
 use PHPUnit\Framework\TestCase;

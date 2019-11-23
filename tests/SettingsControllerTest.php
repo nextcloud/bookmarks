@@ -2,7 +2,7 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use OCA\Bookmarks\Controller\Rest\SettingsController;
+use OCA\Bookmarks\Controller\SettingsController;
 use \OCP\IConfig;
 use OCP\IRequest;
 use PHPUnit\Framework\TestCase;
@@ -59,9 +59,6 @@ class SettingsControllerTest extends TestCase {
 		$this->controller = new SettingsController("bookmarks", $this->request, $this->userId, $this->config);
 	}
 
-	/**
-	 * @covers \OCA\Bookmarks\Controller\Rest\SettingsController::getSorting
-	 */
 	public function testGetSorting() {
 		$this->config->setUserValue($this->userId, $this->appName, 'sorting', 'clickcount'); //case: user has a normal sorting option
 		$output = $this->controller->getSorting();
@@ -73,9 +70,6 @@ class SettingsControllerTest extends TestCase {
 		$this->assertEquals('lastmodified', $data['sorting']); //returns default
 	}
 
-	/**
-	 * @covers \OCA\Bookmarks\Controller\Rest\SettingsController::setSorting
-	 */
 	public function testSetSorting() {
 		$output = $this->controller->setSorting('added'); //case: set a normal sorting option
 		$data = $output->getData();

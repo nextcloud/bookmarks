@@ -8,15 +8,18 @@
  * @copyright Stefan Klemm 2014
  */
 
-namespace OCA\Bookmarks\Controller\Rest;
+namespace OCA\Bookmarks\Controller;
 
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
+use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\TagMapper;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Service\BookmarkPreviewer;
+use OCA\Bookmarks\Service\FaviconPreviewer;
 use OCA\Bookmarks\Service\HtmlExporter;
 use OCA\Bookmarks\Service\HtmlImporter;
 use OCA\Bookmarks\Service\LinkExplorer;
@@ -34,7 +37,7 @@ use \OCP\AppFramework\Http\DataDisplayResponse;
 use \OCP\AppFramework\Http\RedirectResponse;
 use \OCP\AppFramework\Http\NotFoundResponse;
 use \OCP\AppFramework\Http;
-use \OC\User\Manager;
+use OCP\IUserManager;
 use \OCP\IUserSession;
 use \OCA\Bookmarks\ExportResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -113,15 +116,15 @@ class BookmarkController extends ApiController {
 
 	public function __construct(
 		$appName,
-		IRequest $request,
+		$request,
 		$userId,
 		IL10N $l10n,
 		BookmarkMapper $bookmarkMapper,
 		TagMapper $tagMapper,
 		FolderMapper $folderMapper,
-		Manager $userManager,
-		IBookmarkPreviewer $bookmarkPreviewer,
-		IBookmarkPreviewer $faviconPreviewer,
+		IUserManager $userManager,
+		BookmarkPreviewer $bookmarkPreviewer,
+		FaviconPreviewer $faviconPreviewer,
 		ITimeFactory $timeFactory,
 		ILogger $logger,
 		IUserSession $userSession,
@@ -155,7 +158,7 @@ class BookmarkController extends ApiController {
 	 */
 	private function _returnBookmarkAsArray(Bookmark $bookmark): array {
 		$array = $bookmark->toArray();
-		$array['folders'] = array_map(function (Bookmark $folder) {
+		$array['folders'] = array_map(function (Folder $folder) {
 			return $folder->getId();
 		}, $this->folderMapper->findByBookmark($bookmark->getId()));
 		$array['folders'] = $this->tagMapper->findByBookmark($bookmark->getId());
@@ -391,6 +394,9 @@ class BookmarkController extends ApiController {
 		}
 
 		$this->tagMapper->setOn($tags, $bookmark->getId());
+		if (count($folders) === 0) {
+			$folders = [-1];
+		}
 		try {
 			$this->folderMapper->setToFolders($bookmark->getId(), $folders);
 		} catch (UnauthorizedAccessError $e) {

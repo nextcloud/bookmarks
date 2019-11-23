@@ -9,6 +9,8 @@ class Folder extends Entity {
 	protected $userId;
 	protected $index;
 
+	public static $columns = ['id', 'title', 'user_id'];
+
 
 	public function __construct() {
 		// add types in constructor
