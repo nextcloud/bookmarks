@@ -55,7 +55,7 @@ class BookmarkController extends ApiController {
 	private $l10n;
 
 	/**
-	 * @var Manager
+	 * @var IUserManager
 	 */
 	private $userManager;
 
@@ -273,9 +273,6 @@ class BookmarkController extends ApiController {
 			} catch (MultipleObjectsReturnedException $e) {
 				return new DataResponse(['data' => [], 'status' => 'success']);
 			}
-			if ($publicOnly && $bookmark->getPublic() !== true) {
-				return new DataResponse(['data' => [], 'status' => 'success']);
-			}
 			$bookmarks = [$this->_returnBookmarkAsArray($bookmark)];
 			return new DataResponse(['data' => $bookmarks, 'status' => 'success']);
 		}
@@ -312,7 +309,7 @@ class BookmarkController extends ApiController {
 			$sqlSortColumn = 'lastmodified';
 		}
 
-		if ($folder) {
+		if ($folder !== null) {
 			$result = $this->bookmarkMapper->findByUserFolder($this->userId, $folder, $sqlSortColumn, $offset, $limit);
 		} else if ($untagged) {
 			$result = $this->bookmarkMapper->findUntagged($this->userId, $sqlSortColumn, $offset, $limit);
@@ -361,7 +358,7 @@ class BookmarkController extends ApiController {
 				// if no allowed protocol is given, evaluate https and https
 				foreach (['https://', 'http://'] as $protocol) {
 					$testUrl = $protocol . $url;
-					$data = $this->linkExplorer->get($url);
+					$data = $this->linkExplorer->get($testUrl);
 					if (isset($data['basic']) && isset($data['basic']['title'])) {
 						break;
 					}

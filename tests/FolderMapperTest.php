@@ -10,7 +10,6 @@ use OCA\Bookmarks\Exception\UrlParseError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use OCP\User;
 use PHPUnit\Framework\TestCase;
 
 

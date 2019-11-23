@@ -4,13 +4,9 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
-use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Exception\UrlParseError;
-use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
-use OCP\User;
 use PHPUnit\Framework\TestCase;
 
 

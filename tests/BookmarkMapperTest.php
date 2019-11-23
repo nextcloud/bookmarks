@@ -4,11 +4,9 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
-use OCA\Bookmarks\Db\Bookmark;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use OCP\User;
 use PHPUnit\Framework\TestCase;
 
 
@@ -56,12 +54,13 @@ class BookmarkMapperTest extends TestCase {
 	}
 
 	/**
-	 * @depends testInsertAndFind
+	 * @depends      testInsertAndFind
 	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws \OCA\Bookmarks\Exception\UrlParseError
 	 */
 	public function testFindByUrl(Entity $bookmark) {
 		$foundEntity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
@@ -69,13 +68,14 @@ class BookmarkMapperTest extends TestCase {
 	}
 
 	/**
-	 * @depends testInsertAndFind
-	 * @depends testFindByUrl
+	 * @depends      testInsertAndFind
+	 * @depends      testFindByUrl
 	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws \OCA\Bookmarks\Exception\UrlParseError
 	 */
 	public function testUpdate(Entity $bookmark) {
 		$entity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
@@ -86,13 +86,14 @@ class BookmarkMapperTest extends TestCase {
 	}
 
 	/**
-	 * @depends testInsertAndFind
-	 * @depends testFindByUrl
+	 * @depends      testInsertAndFind
+	 * @depends      testFindByUrl
 	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws \OCA\Bookmarks\Exception\UrlParseError
 	 */
 	public function testDelete(Entity $bookmark) {
 		$foundEntity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());

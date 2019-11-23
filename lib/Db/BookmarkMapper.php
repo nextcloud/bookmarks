@@ -13,7 +13,6 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
-use Rowbot\URL\Exception\TypeError;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -179,7 +178,7 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param $userId
+	 * @param string $userId
 	 * @param string $tag
 	 * @param string $sortBy
 	 * @param int $offset
@@ -202,7 +201,7 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param $userId
+	 * @param string $userId
 	 * @param array $tags
 	 * @param string $sortBy
 	 * @param int $offset
