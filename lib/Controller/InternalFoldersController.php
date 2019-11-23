@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Bookmarks\Controller\Rest;
+namespace OCA\Bookmarks\Controller;
 
 use \OCA\Bookmarks\Bookmarks;
 use \OCP\AppFramework\Http\JSONResponse;
@@ -14,7 +14,7 @@ class InternalFoldersController extends ApiController {
 	/** @var FoldersController */
 	private $controller;
 
-	public function __construct($appName, IRequest $request, $userId, FoldersController $controller) {
+	public function __construct($appName, $request, $userId, FoldersController $controller) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->controller = $controller;

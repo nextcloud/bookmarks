@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Bookmarks\Controller\Rest;
+namespace OCA\Bookmarks\Controller;
 
 use \OCA\Bookmarks\Bookmarks;
 use \OCP\AppFramework\Http\JSONResponse;

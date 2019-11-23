@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Bookmarks\Controller\Rest;
+namespace OCA\Bookmarks\Controller;
 
 use \OCA\Bookmarks\Bookmarks;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -25,7 +25,7 @@ class FoldersController extends ApiController {
 	 */
 	private $bookmarkMapper;
 
-	public function __construct($appName, IRequest $request, $userId, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper) {
+	public function __construct($appName, $request, $userId, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->folderMapper = $folderMapper;

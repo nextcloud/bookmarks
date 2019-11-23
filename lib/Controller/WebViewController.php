@@ -34,7 +34,7 @@ class WebViewController extends Controller {
 	 * @param $userId
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function __construct($appName, IRequest $request, $userId, EventDispatcherInterface $eventDispatcher) {
+	public function __construct($appName, $request, $userId, EventDispatcherInterface $eventDispatcher) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->eventDispatcher = $eventDispatcher;

@@ -176,14 +176,29 @@ class FolderMapper extends QBMapper {
 	 */
 	public function findByBookmark(int $bookmarkId) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('*');
+		$qb->select(Folder::$columns);
 
 		$qb
 			->from('bookmarks_folders', 'f')
-			->leftJoin('f', 'bookmarks_folders_bookmarks', 'b', $qb->expr()->eq('b.bookmark_id', 'f.id'))
+			->leftJoin('f', 'bookmarks_folders_bookmarks', 'b', $qb->expr()->eq('b.folder_id', 'f.id'))
 			->where($qb->expr()->eq('b.bookmark_id', $qb->createPositionalParameter($bookmarkId)));
 
-		return $this->findEntities($qb);
+		$entities = $this->findEntities($qb);
+
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*');
+		$qb
+			->from('bookmarks_folders_bookmarks')
+			->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($bookmarkId)))
+		    ->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter(-1)));
+
+		if ($qb->execute()->fetch()) {
+			$root = new Folder();
+			$root->setId(-1);
+			array_push($entities, $root);
+		}
+
+		return $entities;
 	}
 
 	/**
@@ -519,6 +534,7 @@ class FolderMapper extends QBMapper {
 	 * @param int $bookmarkId The bookmark reference
 	 * @param array $folders Set of folders ids to add the bookmark to
 	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function removeFromFolders(int $bookmarkId, array $folders) {
 		$bm = $this->bookmarkMapper->find($bookmarkId);

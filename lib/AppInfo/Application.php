@@ -13,34 +13,27 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
-use OCA\Bookmarks\Bookmarks;
-use OCA\Bookmarks\Db\BookmarkMapper;
-use OCA\Bookmarks\Db\FolderMapper;
-use OCA\Bookmarks\Db\TagMapper;
-use OCA\Bookmarks\Previews\DefaultPreviewService;
-use OCA\Bookmarks\Previews\FaviconPreviewService;
-use OCA\Bookmarks\Previews\ScreenlyPreviewService;
-use OCA\Bookmarks\Service\BookmarkPreviewer;
-use OCA\Bookmarks\Service\FaviconPreviewer;
-use OCA\Bookmarks\Service\HtmlExporter;
-use OCA\Bookmarks\Service\HtmlImporter;
 use \OCP\AppFramework\App;
-use OCP\AppFramework\Utility\ITimeFactory;
 use \OCP\IContainer;
-use \OCA\Bookmarks\Controller\WebViewController;
-use OCA\Bookmarks\Controller\Rest\BookmarkController;
-use OCA\Bookmarks\Controller\Rest\InternalBookmarkController;
-use OCA\Bookmarks\Controller\Rest\TagsController;
-use OCA\Bookmarks\Controller\Rest\InternalTagsController;
-use OCA\Bookmarks\Controller\Rest\FoldersController;
-use OCA\Bookmarks\Controller\Rest\InternalFoldersController;
-use OCA\Bookmarks\Controller\Rest\PublicController;
-use OCA\Bookmarks\Controller\Rest\SettingsController;
 use OCP\IUser;
-use OCP\IURLGenerator;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
 		parent::__construct('bookmarks', $urlParams);
+
+		$container = $this->getContainer();
+
+		$container->registerService('UserId', function ($c) {
+			/** @var IUser|null $user */
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+			$uid = is_null($user) ? null : $user->getUID();
+
+			/** @var IContainer $c */
+			return $uid;
+		});
+
+		$container->registerService('request', function ($c) {
+			return $c->query('Request');
+		});
 	}
 }

@@ -8,7 +8,7 @@
  * @copyright Stefan Klemm 2014
  */
 
-namespace OCA\Bookmarks\Controller\Rest;
+namespace OCA\Bookmarks\Controller;
 
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Exception\UrlParseError;
@@ -32,7 +32,7 @@ class InternalBookmarkController extends ApiController {
 
 	public function __construct(
 		$appName,
-		IRequest $request,
+		$request,
 		$userId,
 		BookmarkController $publicController,
 		FolderMapper $folderMapper
@@ -84,17 +84,17 @@ class InternalBookmarkController extends ApiController {
 
 	/**
 	 * @param string $url
-	 * @param array $item
 	 * @param string $title
-	 * @param bool $is_public
 	 * @param string $description
 	 * @param array $tags
 	 * @return JSONResponse
 	 *
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $item = [], $title = null, $is_public = false, $description = "", $tags = []) {
-		return $this->publicController->newBookmark($url, $item, $title, $is_public, $description, $tags);
+	public function newBookmark($url = "", $title = null, $description = "", $tags = []) {
+		return $this->publicController->newBookmark($url, $title, $description, $tags);
 	}
 
 	/**
@@ -111,8 +111,8 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editBookmark($id = null, $url = null, $item = [], $title = null, $is_public = false, $record_id = null, $description = "", $tags = [], $folders = null) {
-		return $this->publicController->editBookmark($id, $url, $item, $title, $is_public, $record_id, $description, $tags, $folders);
+	public function editBookmark($id = null, $url = null, $title = null,  $description = "", $tags = [], $folders = null) {
+		return $this->publicController->editBookmark($id, $url, $title, $description, $tags, $folders);
 	}
 
 	/**

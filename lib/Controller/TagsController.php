@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Bookmarks\Controller\Rest;
+namespace OCA\Bookmarks\Controller;
 
 use \OCA\Bookmarks\Db;
 use \OCP\AppFramework\Http\JSONResponse;
@@ -16,7 +16,7 @@ class TagsController extends ApiController {
 	 */
 	private $tagMapper;
 
-	public function __construct($appName, IRequest $request, $userId, DB\TagMapper $tagMapper) {
+	public function __construct($appName, $request, $userId, DB\TagMapper $tagMapper) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->tagMapper = $tagMapper;
