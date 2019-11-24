@@ -2,8 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "ブックマーク",
-    "Not allowed to access folder to import into" : "インポート先フォルダへのアクセスが許可されていません",
-    "Failed to import one bookmark, because: " : "ブックマークのインポートに失敗しました。原因:",
     "No file provided for import" : "インポート用に提供されたファイルがありません",
     "Unsupported file type for import" : "インポートにサポートされていないファイルタイプ",
     "A Bookmark manager for Nextcloud" : "Nextcloud のブックマークマネージャー",

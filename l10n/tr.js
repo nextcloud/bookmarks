@@ -2,12 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Yer İmleri",
-    "Not allowed to access folder to import into" : "İçe aktarım yapılacak klasöre erişilemedi",
-    "Failed to import one bookmark, because: " : "Bir yer imi şu nedenle içe aktarılamadı:",
     "No file provided for import" : "İçe aktarılacak bir dosya seçilmemiş",
     "Unsupported file type for import" : "İçe aktarılacak dosya türü desteklenmiyor",
     "A Bookmark manager for Nextcloud" : "Nextcloud için yer imi yöneticisi",
-    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Web üzerinden kullanılabilen bu uygulama, sizin için önemli web sitelerinin yer imlerini derleyip düzenlemenizi sağlar. Etiketler ve klasörleri kullanarak yer imlerini gruplayabilir ve iç arama özelliği ile süzerek göz atabilirsiniz, Ayrıca bu yer imlerini, içerideki REST-API uygulaması üzerinden üçüncü tarafların geliştirdiği istemciler ile eşitleyebilir ve böylece yer imlerinize bilgisayarınızdaki ve telefonunuzdaki web tarayıcılarını kullanarak her yerden erişebilirsiniz.\n\nŞu listedeki üçüncü parti istemcileri kullanabilirsiniz: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Select bookmark" : "Yer imi seçin",
     "Details" : "Ayrıntılar",
     "Rename" : "Yeniden adlandır",

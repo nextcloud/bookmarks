@@ -2,12 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Legosignaro",
-    "Not allowed to access folder to import into" : "Ne permesita aliri la dosierujon, en kiu oni devas enmeti la datumojn",
-    "Failed to import one bookmark, because: " : "Malsukcesis enporti unu legosignon ĉar:",
     "No file provided for import" : "Neniu dosiero provizita por enporto",
     "Unsupported file type for import" : "Nesubtenita dosiertipo por enporto",
     "A Bookmark manager for Nextcloud" : "Mastrumilo de legosignoj por Nextcloud",
-    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Tiu aplikaĵo estas TTT-interfaco por kolekti kaj organizi legosignoj. Vi povas navigi kaj filtri viajn legosignojn per etikedoj, dosierujoj kaj ankaŭ uzo de serĉo. Plie, vi povas sinkronigi al eksteraj liverantoj per provizita „REST API“ — retumile kaj poŝtelefone.\n\nVidu liston de eksteraj klientoj ĉi tie: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Select bookmark" : "Elekti legosignon",
     "Details" : "Detaloj",
     "Rename" : "Alinomi",

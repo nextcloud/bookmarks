@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Σελιδοδείκτες",
-    "Failed to import one bookmark, because: " : "Αποτυχία εισαγωγής ενός σελιδοδείκτη, διότι: ",
     "No file provided for import" : "Δεν δόθηκε αρχείο για εισαγωγή",
     "Unsupported file type for import" : "Μη υποστηριζόμενος τύπος αρχείου",
     "A Bookmark manager for Nextcloud" : "Διαχειριστής σελιδοδεικτών του Nextcloud",

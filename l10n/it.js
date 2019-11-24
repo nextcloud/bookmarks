@@ -2,12 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Segnalibri",
-    "Not allowed to access folder to import into" : "Non è consentito accedere alla cartella per l'importazione",
-    "Failed to import one bookmark, because: " : "Importazione di un segnalibro non riuscita, motivo:",
     "No file provided for import" : "Nessun file fornito per l'importazione",
     "Unsupported file type for import" : "Tipo di file non supportato per l'importazione",
     "A Bookmark manager for Nextcloud" : "Un gestore di segnalibri per Nextcloud",
-    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Questa applicazione ti fornisce un'interfaccia web per raccogliere e organizzare i segnalibri per i siti importanti per te. Puoi navigare e filtrare i tuoi segnalibri utilizzando la funzionalità di ricerca integrata. Inoltre, per accedere ai tuoi segnalibri da qualsiasi luogo, consente di sincronizzare client di terze parti tramite un'API REST integrata -- nel tuo browser e nel tuo telefono.\n\nVerifica i client di terze parti elencati qui: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Select bookmark" : "Seleziona segnalibro",
     "Details" : "Dettagli",
     "Rename" : "Rinomina",

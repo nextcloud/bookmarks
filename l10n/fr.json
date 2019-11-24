@@ -1,11 +1,8 @@
 { "translations": {
     "Bookmarks" : "Favoris",
-    "Not allowed to access folder to import into" : "Non autorisé à accéder au dossier dans lequel importer",
-    "Failed to import one bookmark, because: " : "Échec lors de l\\'importation d'un favori. Raison: ",
     "No file provided for import" : "Aucun fichier à importer.",
     "Unsupported file type for import" : "Type de fichier non pris en charge",
     "A Bookmark manager for Nextcloud" : "Un gestionnaire de favoris pour Nextcloud",
-    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Cette app vous fournit une interface web pour rassembler et organiser les favoris de vos sites web préférés. Vous pouvez parcourir et filtrer vos favoris par dossiers ou tags et en utilisant la fonction de recherche intégrée. De plus, afin d'accéder à vos favoris n'importe ou, il vous permet de synchroniser des clients tiers depuis une API REST -- dans votre navigateur et sur votre téléphone\n\nConsultez la liste des clients disponibles ici: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Select bookmark" : "Sélectionner le favori",
     "Details" : "Propriétés",
     "Rename" : "Renommer",

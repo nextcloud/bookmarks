@@ -2,8 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Knjižne oznake",
-    "Not allowed to access folder to import into" : "Nije dopušten pristup mapi za uvoz",
-    "Failed to import one bookmark, because: " : "Uvoz knjižne oznake nije uspio jer: ",
     "No file provided for import" : "Nije navedena datoteka za uvoz",
     "Unsupported file type for import" : "Nepodržana vrsta datoteke za uvoz",
     "A Bookmark manager for Nextcloud" : "Upravitelj knjižnim oznakama za Nextcloud",

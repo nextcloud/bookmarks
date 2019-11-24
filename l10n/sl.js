@@ -2,12 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Zaznamki",
-    "Not allowed to access folder to import into" : "Dostop do mape za uvoz ni dovoljen",
-    "Failed to import one bookmark, because: " : "Uvoz izbranega zaznamka je spodletel:",
     "No file provided for import" : "Ni navedenih datotek za uvoz",
     "Unsupported file type for import" : "Nepodprta vrsta datoteke za uvoz",
     "A Bookmark manager for Nextcloud" : "Upravljalnik zaznamkov za Nextcloud",
-    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Program omogoča uporabo spletnega vmesnika za zbiranje in urejanje zaznamkov do spletnih strani. Te je mogoče prebrskati, filtrirati, označevati in urejati v mape, mogoče pa jih je tudi iskati po ključnih besedah. Za dostop do njih kjerkoli in kadarkoli, program omogoča tudi usklajevanje z različnimi odjemalci prek vmesnika REST API v brskalniku ali na pametni napravi.\n\nSeznam različnih odjemalcev je na voljo na https://github.com/nextcloud/bookmarks#third-party-clients",
     "Select bookmark" : "Izbor zaznamka",
     "Details" : "Podrobnosti",
     "Rename" : "Preimenuj",

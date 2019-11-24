@@ -2,12 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Bladwijzers",
-    "Not allowed to access folder to import into" : "Geen toegang tot map voor import",
-    "Failed to import one bookmark, because: " : "Bladwijzer importeren mislukt, want:",
     "No file provided for import" : "Geen bestand aangeboden om te importeren",
     "Unsupported file type for import" : "Bestandstype wordt niet ondersteund voor importeren",
     "A Bookmark manager for Nextcloud" : "Een bladwijzerbeheerder voor Nextcloud",
-    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Deze app biedt een web-interface voor het verzamelen en organiseren van bladwijzers naar websites die jij waardevol vindt. Je kunt door je bladwijzers bladeren en ze filteren m.b.v. tags en mappen en door de ingebouwde zoekfunctie. Bovendien kun je, om je bladwijzers altijd en overal in browsers en je smartphone te kunnen gebruiken, ze synchroniseren met derde partij clients via de ingebouwde REST API..\n\nBekijk de derde partij clients hier: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Select bookmark" : "Selecteer bladwijzer",
     "Details" : "Details",
     "Rename" : "Hernoemen",

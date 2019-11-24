@@ -2,8 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "書籤",
-    "Not allowed to access folder to import into" : "無法存取匯入的指定資料夾",
-    "Failed to import one bookmark, because: " : "無法匯入書籤，因為:",
     "No file provided for import" : "無匯入檔案",
     "Unsupported file type for import" : "匯入不支援的檔案格式",
     "A Bookmark manager for Nextcloud" : "Nextcloud上的書籤管理員",

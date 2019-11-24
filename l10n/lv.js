@@ -2,8 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Grāmatzīmes",
-    "Not allowed to access folder to import into" : "Nav atļauts piekļūt mapei, kurā importēt",
-    "Failed to import one bookmark, because: " : "Nevarēja importēt vienu grāmatzīmi, jo:",
     "No file provided for import" : "Nav norādīta importējamā datne",
     "Unsupported file type for import" : "Importam neatbalstīts datnes tips",
     "A Bookmark manager for Nextcloud" : "Nextcloud grāmatzīmju pārvaldnieks",

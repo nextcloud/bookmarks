@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Bokmerker",
-    "Failed to import one bookmark, because: " : "Klarte ikke importere et bokmerke, fordi:",
     "No file provided for import" : "Ingen fil valgt for import",
     "Unsupported file type for import" : "Usupportert filtype for import",
     "Details" : "Detaljer",

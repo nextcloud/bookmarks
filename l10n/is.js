@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Bókamerki",
-    "Failed to import one bookmark, because: " : "Mistókst að flytja inn bókamerki, vegna: ",
     "No file provided for import" : "Engin skrá valin til innflutnings",
     "Unsupported file type for import" : "Ekki er hægt að flytja inn þessa tegund af bókamerki",
     "A Bookmark manager for Nextcloud" : "Bókamerkjastjóri fyrir Nextcloud",

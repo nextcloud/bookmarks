@@ -2,12 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Záložky",
-    "Not allowed to access folder to import into" : "Prístup do priečinka na import bol zamietnutý",
-    "Failed to import one bookmark, because: " : "Nepodarilo sa importovať jednu záložku, pretože:",
     "No file provided for import" : "Nie je k dispozícii žiadny súbor na import",
     "Unsupported file type for import" : "Nepodporovaný typ súboru na import",
     "A Bookmark manager for Nextcloud" : "Manažér záložiek pre Nextcloud",
-    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Táto aplikácia vám poskytne webové rozhranie pre zhromažďovanie a organizovanie záložiek na miesta na webe, ktoré sú pre vás cenné. Záložky môžete prehľadávať a filtrovať pomocou značiek a priečinkov a pomocou vstavanej funkcie vyhľadávania. Navyše, aby ste mali prístup k svojim záložkám kdekoľvek, umožňuje vám tiež synchronizovať klientov tretích strán prostredníctvom zabudovaného rozhrania REST API - v prehľadávačoch a v telefóne.\n\nVyskúšajte klientov tretích strán uvedených tu: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Select bookmark" : "Vybrať záložku",
     "Details" : "Detaily",
     "Rename" : "Premenovať",

@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "סימניות",
-    "Failed to import one bookmark, because: " : "הייבוא של אחת מהסימניות נכשל, הסיבה:",
     "No file provided for import" : "לא סופק קובץ לייבוא",
     "Unsupported file type for import" : "סוג הקובץ לייבוא אינו נתמך",
     "A Bookmark manager for Nextcloud" : "מנהל סימניות ל־Nextcloud",

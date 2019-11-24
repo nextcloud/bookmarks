@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "북마크",
-    "Failed to import one bookmark, because: " : "북마크를 가져오는 데 실패했습니다. 이유:",
     "No file provided for import" : "가져올 파일을 지정하지 않았음",
     "Unsupported file type for import" : "지원하지 않는 가져오기 파일 형식",
     "A Bookmark manager for Nextcloud" : "Nextcloud 북마크 관리자",

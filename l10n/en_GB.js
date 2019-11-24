@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Bookmarks",
-    "Failed to import one bookmark, because: " : "Failed to import one bookmark, because: ",
     "No file provided for import" : "No file provided for import",
     "Unsupported file type for import" : "Unsupported file type for import",
     "A Bookmark manager for Nextcloud" : "A Bookmark manager for Nextcloud",

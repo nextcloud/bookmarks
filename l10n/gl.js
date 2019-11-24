@@ -2,12 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Marcadores",
-    "Not allowed to access folder to import into" : "Non está permitido o acceso ao cartafol para importar cara a el",
-    "Failed to import one bookmark, because: " : "Produciuse un erro ao importar un marcador por mor de:",
     "No file provided for import" : "Non forneceu ningún ficheiro para importar",
     "Unsupported file type for import" : "Tipo de ficheiro non admitido para importar",
     "A Bookmark manager for Nextcloud" : "Un administrador de marcadores para o Nextcloud",
-    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.\n\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients" : "Esta aplicación ofrécelle unha interface web para recoller e organizar marcadores para os sitios da web que lle son prezados. Pode navegar e filtrar os seus marcadores a través de etiquetas e cartafoles e mediante a función de busca incorporada. Ademais, para acceder aos seus favoritos en calquera lugar, tamén lle permite sincronizar clientes de terceiros mediante unha API REST integrada -- nos navegadores e no teléfono.\n\nConsulte os clientes de terceiros que figuran aquí: https://github.com/nextcloud/bookmarks#third-party-clients",
     "Select bookmark" : "Seleccionar marcador",
     "Details" : "Detalles",
     "Rename" : "Renomear",

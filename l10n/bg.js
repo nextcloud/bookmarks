@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Отметки",
-    "Failed to import one bookmark, because: " : "Неуспешно внасяне на една отметка защото:",
     "No file provided for import" : "Няма избран файл за внасяне",
     "Unsupported file type for import" : "Типът на файла за внасяне не се поддържа",
     "Details" : "Подробности",

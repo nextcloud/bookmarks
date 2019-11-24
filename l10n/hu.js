@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Könyvjelzők",
-    "Failed to import one bookmark, because: " : "Nem sikerült egy könyvjelző betöltése, mert:",
     "No file provided for import" : "Nincs fájl megadva importáláshoz",
     "Unsupported file type for import" : "Nem támogatott fájltípus az importáláshoz",
     "A Bookmark manager for Nextcloud" : "Könyvjelző kezelő Nextcloud-hoz",

@@ -2,7 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Kirjanmerkit",
-    "Failed to import one bookmark, because: " : "Yhden kirjanmerkin tuominen epäonnistui, syy:",
     "No file provided for import" : "Tuotavaa tiedostoa ei ole valittu",
     "Unsupported file type for import" : "Tiedoston tyyppi ei ole tuotavaa muotoa",
     "A Bookmark manager for Nextcloud" : "Kirjanmerkkien hallinta Nextcloudille",

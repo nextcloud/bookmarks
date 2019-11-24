@@ -2,8 +2,6 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Обележивач",
-    "Not allowed to access folder to import into" : "Није дозвољено да се приступа фасцикли у коју се увози",
-    "Failed to import one bookmark, because: " : "Неуспешан увоз обележивача, јер:",
     "No file provided for import" : "није дат фајл за увоз",
     "Unsupported file type for import" : "врста фајла за увоз није подржана",
     "A Bookmark manager for Nextcloud" : "Менаџер обележивача за Некстклауд",
