@@ -3,8 +3,9 @@ OC.L10N.register(
     {
     "Bookmarks" : "Lesezeichen",
     "No file provided for import" : "Keine Datei zum Importieren ausgewählt",
-    "Unsupported file type for import" : "Importieren von Dateien dieses Typs wird nicht unterstützt",
+    "Unsupported file type for import" : "Ein Import von Dateien dieses Typs wird nicht unterstützt",
     "A Bookmark manager for Nextcloud" : "Eine Lesezeichenverwaltung für Nextcloud",
+    "This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you.\nYou can browse and filter your bookmarks via tags and folders and by using the built-in search feature.\nAlso, in order to access your bookmarks anywhere, it also allows you to synchronize with third-party clients via a built-in REST API -- be it in your browsers or on your phone.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients\n\nRequirements:\n - PHP v7.1+\n - PHP extensions:\n   - gmp: *\n   - intl: *\n   - mbstring: *" : "Diese App bietet eine Webschnittstelle zum Sammeln und Organisieren von Lesezeichen für Webseiten die wichtig für Dich sind.\nDu kannst Deine Lesezeichen mittels Schlagworten und Ordnern sowie mithilfe der integrierten Suchfunktion ordnen und durchsuchen.\nDamit Du überall auf Deine Lesezeichen zugreifen kannst, kannst Du sie auch über eine integrierte REST-API mit Clients von Drittanbietern synchronisieren - sei es in Deinem Browser oder auf Deinem Smartphone.\nSchaue Dir auch die Liste der Drittanbieter-Clients an: https://github.com/nextcloud/bookmarks#third-party-clients\n\nVoraussetzungen:\n - PHP v7.1+\n - PHP-Erweiterungen:\n   - gmp: *\n   - intl: *\n   - mbstring: *",
     "Select bookmark" : "Lesezeichen wählen",
     "Details" : "Details",
     "Rename" : "Umbenennen",
