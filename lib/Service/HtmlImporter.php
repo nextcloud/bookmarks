@@ -62,6 +62,8 @@ class HtmlImporter {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
 	 */
 	public function importFile($userId, string $file, int $rootFolder = -1) {
 		$content = file_get_contents($file);
@@ -77,6 +79,8 @@ class HtmlImporter {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
 	 */
 	public function import($userId, string $content, int $rootFolder = -1) {
 		$imported = [];
@@ -111,6 +115,9 @@ class HtmlImporter {
 	 * @return array
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
 	 */
 	private function importFolder($userId, array $folderParams, int $parentId, &$errors = []) {
 		$folder = new Folder();
@@ -141,7 +148,10 @@ class HtmlImporter {
 	 * @return Bookmark|Entity
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
 	 * @throws UrlParseError
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
 	 */
 	private function importBookmark($userId, int $folderId, array $bookmark) {
 		$bm = new Bookmark();
