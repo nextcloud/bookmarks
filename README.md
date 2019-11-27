@@ -58,7 +58,7 @@ npm run build
 - [QOwnNotes](https://www.qownnotes.org/) - Plain-text file markdown note taking desktop application (no sync, just importing bookmarks)
 
 ### Other
-- [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
+- [uMarks](https://open-store.io/app/umarks.ernesst) - App for Ubuntu touch
 
 ## API
 
