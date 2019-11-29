@@ -33,7 +33,7 @@ class FolderMapper extends QBMapper {
 	 * @param BookmarkMapper $bookmarkMapper
 	 */
 	public function __construct(IDBConnection $db, BookmarkMapper $bookmarkMapper) {
-		parent::__construct($db, 'bookmarks_folders');
+		parent::__construct($db, 'bookmarks_folders', Folder::class);
 		$this->bookmarkMapper = $bookmarkMapper;
 	}
 

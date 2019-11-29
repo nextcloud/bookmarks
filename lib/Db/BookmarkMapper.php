@@ -44,7 +44,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param UrlNormalizer $urlNormalizer
 	 */
 	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config) {
-		parent::__construct($db, 'bookmarks');
+		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
 		$this->config = $config;
