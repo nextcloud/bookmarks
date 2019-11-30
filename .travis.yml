@@ -14,14 +14,26 @@ env:
     - PHP_COVERAGE=FALSE
   matrix:
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable17
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable16
     - DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable15
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
+    - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable17
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable16
     - DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable15
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable17
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable16
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable15
+
+jobs:
+  exclude:
+    - php: 7.1
+      env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
+    - php: 7.1
+      env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master PHP_COVERAGE=TRUE
+    - php: 7.1
+      env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=master
 
 matrix:
   fast_finish: true
