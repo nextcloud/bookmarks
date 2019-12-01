@@ -7,6 +7,7 @@ use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\TagMapper;
+use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\LinkExplorer;
 use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\FaviconPreviewer;
@@ -81,9 +82,11 @@ class BookmarkControllerTest extends TestCase {
 		$urlGenerator = \OC::$server->query(IURLGenerator::class);
 		$htmlImporter = \OC::$server->query(HtmlImporter::class);
 		$htmlExporter = \OC::$server->query(HtmlExporter::class);
+		$authorizer1 = \OC::$server->query(Authorizer::class);
+		$authorizer2 = \OC::$server->query(Authorizer::class);
 
-		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userId, $l, $this->bookmarkMapper, $this->tagMapper, $folderMapper, $this->userManager, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter);
-		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUserId, $l, $this->bookmarkMapper, $this->tagMapper, $folderMapper, $this->userManager, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter);
+		$this->controller = new BookmarkController("bookmarks", $this->request, $this->userId, $l, $this->bookmarkMapper, $this->tagMapper, $folderMapper, $this->userManager, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $authorizer1);
+		$this->publicController = new BookmarkController("bookmarks", $this->request, $this->otherUserId, $l, $this->bookmarkMapper, $this->tagMapper, $folderMapper, $this->userManager, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $authorizer2);
 	}
 
 	public function setupBookmarks() {

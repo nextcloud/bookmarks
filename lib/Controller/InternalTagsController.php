@@ -2,10 +2,8 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use \OCA\Bookmarks\Bookmarks;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\ApiController;
-use \OCP\IRequest;
 
 class InternalTagsController extends ApiController {
 	private $publicController;

@@ -6,7 +6,6 @@ use \OCA\Bookmarks\Db;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OCP\AppFramework\ApiController;
-use \OCP\IRequest;
 
 class TagsController extends ApiController {
 	private $userId;

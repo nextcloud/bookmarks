@@ -2,11 +2,8 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use \OCA\Bookmarks\Bookmarks;
 use \OCP\AppFramework\Http\JSONResponse;
-use \OCP\AppFramework\Http;
 use \OCP\AppFramework\ApiController;
-use \OCP\IRequest;
 
 class InternalFoldersController extends ApiController {
 	private $userId;

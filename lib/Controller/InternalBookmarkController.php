@@ -12,12 +12,14 @@ namespace OCA\Bookmarks\Controller;
 
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Traits\ControllerPermissions;
 use OCP\AppFramework\Http\Response;
-use \OCP\IRequest;
 use \OCP\AppFramework\ApiController;
 use \OCP\AppFramework\Http\JSONResponse;
 
 class InternalBookmarkController extends ApiController {
+	use ControllerPermissions;
+
 	/**
 	 * @var BookmarkController
 	 */
