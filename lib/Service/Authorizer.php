@@ -25,30 +25,46 @@ class Authorizer {
 	 */
 	private $bookmarkMapper;
 
+	/**
+	 * @var PublicFolderMapper
+	 */
+	private $publicMapper;
+
+	private $userId = null;
+	private $token = null;
+
 	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, PublicFolderMapper $publicMapper) {
 		$this->folderMapper = $folderMapper;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->publicMapper = $publicMapper;
 	}
 
-	public function setCredentials(string $userId, IRequest $request) {
-		if (isset($userId)) {
-			$this->setUserId($userId);
-		}else {
-			$auth = $request->getHeader('Authorization');
-			[$type, $token] = explode(' ', $auth);
-			if (strtolower($type) !== 'bearer') {
-				return;
-			}
-			$this->setToken($token);
+	/**
+	 * @param string $userId
+	 * @param IRequest $request
+	 */
+	public function setCredentials($userId, IRequest $request) {
+		$this->setUserId($userId);
+		$auth = $request->getHeader('Authorization');
+		if (strlen($auth) === 0) {
+			return;
 		}
+		[$type, $token] = explode(' ', $auth);
+		if (strtolower($type) !== 'bearer') {
+			return;
+		}
+		$this->setToken($token);
 	}
 
 	public function setToken(string $token) {
 		$this->token = $token;
 	}
 
-	public function setUserId(string $userId) {
+	public function getToken() {
+		return $this->token;
+	}
+
+	public function setUserId($userId) {
 		$this->userId = $userId;
 	}
 
@@ -74,8 +90,14 @@ class Authorizer {
 			} catch (MultipleObjectsReturnedException $e) {
 				return self::PERM_NONE;
 			}
-			if ($this->folderMapper->hasDescendantFolder($publicFolder->getFolderId(), $folderId)) {
-				return self::PERM_READ;
+			try {
+				if ($publicFolder->getFolderId() === $folderId || $this->folderMapper->hasDescendantFolder($publicFolder->getFolderId(), $folderId)) {
+					return self::PERM_READ;
+				}
+			} catch (DoesNotExistException $e) {
+				return self::PERM_NONE;
+			} catch (MultipleObjectsReturnedException $e) {
+				return self::PERM_NONE;
 			}
 		}
 		return self::PERM_NONE;
@@ -112,7 +134,9 @@ class Authorizer {
 
 	/**
 	 * Check permissions
+	 *
 	 * @param $perm
+	 * @param $perms
 	 * @return boolean
 	 */
 	public static function hasPermission($perm, $perms) {

@@ -35,8 +35,6 @@ class FoldersController extends ApiController {
 		$this->folderMapper = $folderMapper;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->authorizer = $authorizer;
-
-		$this->authorizer->setCredentials($this->userId, $this->request);
 	}
 
 	/**

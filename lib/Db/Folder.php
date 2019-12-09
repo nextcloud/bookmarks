@@ -9,7 +9,7 @@ class Folder extends Entity {
 	protected $userId;
 	protected $index;
 
-	public static $columns = ['id', 'title', 'user_id'];
+	public static $columns = ['id', 'title', 'user_id', 'parent_folder'];
 
 
 	public function __construct() {

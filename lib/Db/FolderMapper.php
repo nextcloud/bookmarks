@@ -102,6 +102,90 @@ class FolderMapper extends QBMapper {
 	}
 
 	/**
+	 * @param $folderId
+	 * @return array|Entity[]
+	 */
+	public function findByAncestorFolder($folderId) {
+		$descendants = [];
+		$newDescendants = $this->findByParentFolder($folderId);
+		do {
+			$newDescendants = array_flatten(array_map(function($descendant) {
+				return $this->findByParentFolder($descendant);
+			}, $newDescendants));
+			array_push($descendants, $newDescendants);
+		}while(count($newDescendants) > 0);
+		return $descendants;
+	}
+
+	/**
+	 * @param $folderId
+	 * @param $descendantFolderId
+	 * @return bool
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function hasDescendantFolder($folderId, $descendantFolderId) {
+		$descendant = $this->find($descendantFolderId);
+		do {
+			$descendant = $this->find($descendant->getParentFolder());
+		}while($descendant->getId() !== $folderId && $descendant->getParentFolder() !== -1);
+		return ($descendant->getId() === $folderId);
+	}
+
+	/**
+	 * @param int $bookmarkId
+	 * @return array|Entity[]
+	 */
+	public function findByBookmark(int $bookmarkId) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(Folder::$columns);
+
+		$qb
+			->from('bookmarks_folders', 'f')
+			->leftJoin('f', 'bookmarks_folders_bookmarks', 'b', $qb->expr()->eq('b.folder_id', 'f.id'))
+			->where($qb->expr()->eq('b.bookmark_id', $qb->createPositionalParameter($bookmarkId)));
+
+		$entities = $this->findEntities($qb);
+
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*');
+		$qb
+			->from('bookmarks_folders_bookmarks')
+			->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($bookmarkId)))
+			->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter(-1)));
+
+		if ($qb->execute()->fetch()) {
+			$root = new Folder();
+			$root->setId(-1);
+			array_push($entities, $root);
+		}
+
+		return $entities;
+	}
+
+	/**
+	 * @param $folderId
+	 * @param $descendantBookmarkId
+	 * @return bool
+	 */
+	public function hasDescendantBookmark($folderId, $descendantBookmarkId) {
+		$newAncestors = $this->findByBookmark($descendantBookmarkId);
+		do {
+			$newAncestors = array_map(function($ancestor) {
+				return $this->find($ancestor->getParentFolder());
+			}, array_filter($newAncestors, function($ancestor) {
+				return $ancestor->getParentFolder() !== -1 && $ancestor->getId() !== -1;
+			}));
+			foreach($newAncestors as $ancestor) {
+				if ($ancestor->getId() === $folderId) {
+					return true;
+				}
+			}
+		} while(count($newAncestors) > 0);
+		return false;
+	}
+
+	/**
 	 * @param Entity $entity
 	 * @return Entity
 	 */
@@ -168,37 +252,6 @@ class FolderMapper extends QBMapper {
 			$this->find($entity->getParentFolder());
 		}
 		return parent::insert($entity);
-	}
-
-	/**
-	 * @param int $bookmarkId
-	 * @return array|Entity[]
-	 */
-	public function findByBookmark(int $bookmarkId) {
-		$qb = $this->db->getQueryBuilder();
-		$qb->select(Folder::$columns);
-
-		$qb
-			->from('bookmarks_folders', 'f')
-			->leftJoin('f', 'bookmarks_folders_bookmarks', 'b', $qb->expr()->eq('b.folder_id', 'f.id'))
-			->where($qb->expr()->eq('b.bookmark_id', $qb->createPositionalParameter($bookmarkId)));
-
-		$entities = $this->findEntities($qb);
-
-		$qb = $this->db->getQueryBuilder();
-		$qb->select('*');
-		$qb
-			->from('bookmarks_folders_bookmarks')
-			->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($bookmarkId)))
-		    ->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter(-1)));
-
-		if ($qb->execute()->fetch()) {
-			$root = new Folder();
-			$root->setId(-1);
-			array_push($entities, $root);
-		}
-
-		return $entities;
 	}
 
 	/**

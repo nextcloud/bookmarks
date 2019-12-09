@@ -37,18 +37,33 @@ class BookmarkMapper extends QBMapper {
 	private $limit;
 
 	/**
+	 * @var PublicFolderMapper
+	 */
+	private $publicMapper;
+
+	/**
+	 * @var TagMapper
+	 */
+	private $tagMapper;
+
+
+	/**
 	 * BookmarkMapper constructor.
 	 *
 	 * @param IDBConnection $db
 	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param UrlNormalizer $urlNormalizer
+	 * @param IConfig $config
+	 * @param PublicFolderMapper $publicMapper
 	 */
-	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config) {
+	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
 		$this->config = $config;
 		$this->limit = intval($config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0));
+		$this->publicMapper = $publicMapper;
+		$this->tagMapper = $tagMapper;
 	}
 
 	/**
@@ -266,6 +281,79 @@ class BookmarkMapper extends QBMapper {
 		$this->_queryBuilderSortAndPaginate($qb, $sortBy, $offset, $limit);
 		return $this->findEntities($qb);
 	}
+
+	/**
+	 *
+	 * @param $token
+	 * @param array $filters
+	 * @param string $conjunction
+	 * @param string $sortBy
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array|Entity[]
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function findAllInPublicFolder($token, array $filters, string $conjunction = 'and', string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+		$publicFolder = $this->publicMapper->find($token);
+		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
+		// Really inefficient, but what can you do.
+		return array_filter($bookmarks, function ($bookmark) use ($filters, $conjunction) {
+			$tagsFound = $this->tagMapper->findByBookmark($bookmark->getId());
+			return array_reduce($filters, function ($isMatch, $filter) use ($bookmark, $tagsFound, $conjunction) {
+				$filter = strtolower($filter);
+				$res = in_array($filter, $tagsFound)
+					|| str_contains($filter, strtolower($bookmark->getTitle()))
+					|| str_contains($filter, strtolower($bookmark->getDescription()))
+					|| str_contains($filter, strtolower($bookmark->getUrl()));
+				return $conjunction === 'and' ? $res && $isMatch : $res || $isMatch;
+			}, $conjunction === 'and' ? true : false);
+		});
+	}
+
+	/**
+	 *
+	 * @param $token
+	 * @param array $tags
+	 * @param string $sortBy
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array|Entity[]
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function findByTagsInPublicFolder($token, array $tags = [], string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+		$publicFolder = $this->publicMapper->find($token);
+		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
+		// Really inefficient, but what can you do.
+		return array_filter($bookmarks, function ($bookmark) use ($tags) {
+			$tagsFound = $this->tagMapper->findByBookmark($bookmark->getId());
+			return array_reduce($tags, function ($isFound, $tag) use ($tagsFound) {
+				return in_array($tag, $tagsFound) && $isFound;
+			}, true);
+		});
+	}
+
+	/**
+	 *
+	 * @param $token
+	 * @param string $sortBy
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array|Entity[]
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function findUntaggedInPublicFolder($token, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+		$publicFolder = $this->publicMapper->find($token);
+		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
+		// Really inefficient, but what can you do.
+		return array_filter($bookmarks, function ($bookmark) {
+			$tags = $this->tagMapper->findByBookmark($bookmark->getId());
+			return count($tags) === 0;
+		});
+	}
+
 
 	/**
 	 * @param $userId

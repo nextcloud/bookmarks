@@ -162,8 +162,6 @@ class BookmarkController extends ApiController {
 		$this->htmlImporter = $htmlImporter;
 		$this->htmlExporter = $htmlExporter;
 		$this->authorizer = $authorizer;
-
-		$this->authorizer->setCredentials($this->userId, $this->request);
 	}
 
 	/**
@@ -267,7 +265,6 @@ class BookmarkController extends ApiController {
 			if ($method !== 'Basic') {
 				$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
 				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
-				return $res;
 			} else {
 				[$username, $password] = explode(':', base64_decode($credentials));
 				if (false === $this->userSession->login($username, $password)) {
@@ -328,12 +325,29 @@ class BookmarkController extends ApiController {
 				return new DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 			}
 			$result = $this->bookmarkMapper->findByFolder($folder, $sqlSortColumn, $offset, $limit);
-		} else if ($untagged) {
-			$result = $this->bookmarkMapper->findUntagged($this->userId, $sqlSortColumn, $offset, $limit);
-		} else if ($tagsOnly && count($filterTag) > 0) {
-			$result = $this->bookmarkMapper->findByTags($this->userId, $filterTag, $sqlSortColumn, $offset, $limit);
-		} else {
-			$result = $this->bookmarkMapper->findAll($this->userId, $filterTag, $conjunction, $sqlSortColumn, $offset, $limit);
+		} else if (isset($this->userId)) {
+			if ($untagged) {
+				$result = $this->bookmarkMapper->findUntagged($this->userId, $sqlSortColumn, $offset, $limit);
+			} else if ($tagsOnly && count($filterTag) > 0) {
+				$result = $this->bookmarkMapper->findByTags($this->userId, $filterTag, $sqlSortColumn, $offset, $limit);
+			} else {
+				$result = $this->bookmarkMapper->findAll($this->userId, $filterTag, $conjunction, $sqlSortColumn, $offset, $limit);
+			}
+		}else{
+			$this->authorizer->setCredentials($this->userId, $this->request);
+			try {
+				if ($untagged) {
+					$result = $this->bookmarkMapper->findUntaggedInPublicFolder($this->authorizer->getToken(), $sqlSortColumn, $offset, $limit);
+				} else if ($tagsOnly && count($filterTag) > 0) {
+					$result = $this->bookmarkMapper->findByTagsInPublicFolder($this->authorizer->getToken(), $filterTag, $sqlSortColumn, $offset, $limit);
+				} else {
+					$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $filterTag, $conjunction, $sqlSortColumn, $offset, $limit);
+				}
+			}catch(DoesNotExistException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
+			}catch(MultipleObjectsReturnedException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
+			}
 		}
 
 		return new DataResponse([

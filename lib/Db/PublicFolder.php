@@ -18,6 +18,9 @@ class PublicFolder extends Entity {
 		$this->addType('created_at', 'integer');
 	}
 
+	/*
+	 * Overridden because of param type
+	 */
 	public function setId(string $id) {
 		$this->id = $id;
 		$this->markFieldUpdated('id');
