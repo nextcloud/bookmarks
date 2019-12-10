@@ -1,10 +1,10 @@
 export default {
 	methods: {
 		t,
-		n
+		n,
 	},
 	data: () => ({
 		OC,
-		OCA
-	})
+		OCA,
+	}),
 }

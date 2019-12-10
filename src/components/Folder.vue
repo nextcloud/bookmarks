@@ -46,13 +46,13 @@ export default {
 	name: 'Folder',
 	components: {
 		Actions,
-		ActionButton
+		ActionButton,
 	},
 	props: {
 		folder: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return { renaming: false, title: this.folder.title }
@@ -60,7 +60,7 @@ export default {
 	computed: {
 		viewMode() {
 			return this.$store.state.viewMode
-		}
+		},
 	},
 	created() {},
 	methods: {
@@ -84,8 +84,8 @@ export default {
 			this.folder.title = this.title
 			this.$store.dispatch(actions.SAVE_FOLDER, this.folder.id)
 			this.renaming = false
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

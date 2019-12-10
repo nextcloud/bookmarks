@@ -1,3 +1,11 @@
+## v2.3.2
+
+- FIX webpack build
+- FIX: Create bookmarks in the current folder
+- FIX: Make folder icons clickable
+- FIX translations
+- NEW: translations
+
 ## v2.3.1
 
 - FIX: Load tags on app init

@@ -14,38 +14,38 @@ export default new Router({
 		{
 			path: '/',
 			name: 'home',
-			component: ViewPrivate
+			component: ViewPrivate,
 		},
 		{
 			path: '/recent',
 			name: 'recent',
-			component: ViewPrivate
+			component: ViewPrivate,
 		},
 		{
 			path: '/search/:search',
 			name: 'search',
-			component: ViewPrivate
+			component: ViewPrivate,
 		},
 		{
 			path: '/folder/:folder',
 			name: 'folder',
-			component: ViewPrivate
+			component: ViewPrivate,
 		},
 		{
 			path: '/tags/:tags',
 			name: 'tags',
-			component: ViewPrivate
+			component: ViewPrivate,
 		},
 		{
 			path: '/untagged',
 			name: 'untagged',
-			component: ViewPrivate
+			component: ViewPrivate,
 		},
 		{
 			path: '/bookmarklet',
 			name: 'bookmarklet',
 			component: ViewBookmarklet,
-			props: (route) => ({ url: route.query.url, title: route.query.title })
-		}
-	]
+			props: (route) => ({ url: route.query.url, title: route.query.title }),
+		},
+	],
 })

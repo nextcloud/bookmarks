@@ -42,17 +42,17 @@ export default {
 		Bookmark,
 		Folder,
 		CreateBookmark,
-		CreateFolder
+		CreateFolder,
 	},
 	props: {
 		bookmarks: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		loading: {
 			type: Boolean,
-			required: true
-		}
+			required: true,
+		},
 	},
 	computed: {
 		folderChildren() {
@@ -73,8 +73,8 @@ export default {
 		},
 		viewMode() {
 			return this.$store.state.viewMode
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

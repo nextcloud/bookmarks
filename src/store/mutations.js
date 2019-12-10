@@ -24,7 +24,7 @@ export const mutations = {
 	SET_FOLDERS: 'SET_FOLDERS',
 	SET_SIDEBAR: 'SET_SIDEBAR',
 	SET_SETTING: 'SET_SETTING',
-	SET_VIEW_MODE: 'SET_VIEW_MODE'
+	SET_VIEW_MODE: 'SET_VIEW_MODE',
 }
 export default {
 	[mutations.SET_VIEW_MODE](state, viewMode) {
@@ -132,7 +132,7 @@ export default {
 
 	[mutations.REACHED_END](state) {
 		Vue.set(state.fetchState, 'reachedEnd', true)
-	}
+	},
 }
 
 function sortFolders(folders) {
