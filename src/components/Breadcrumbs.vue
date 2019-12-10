@@ -77,7 +77,7 @@ export default {
 	props: {},
 	data() {
 		return {
-			url: ''
+			url: '',
 		}
 	},
 	computed: {
@@ -99,7 +99,7 @@ export default {
 		},
 		selection() {
 			return this.$store.state.selection.bookmarks
-		}
+		},
 	},
 	created() {},
 	methods: {
@@ -124,7 +124,7 @@ export default {
 		onToggleViewMode() {
 			this.$store.dispatch(actions.SET_SETTING, {
 				key: 'viewMode',
-				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid'
+				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid',
 			})
 		},
 
@@ -134,8 +134,8 @@ export default {
 		},
 		onBulkMove() {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

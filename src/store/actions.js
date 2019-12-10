@@ -40,7 +40,7 @@ export const actions = {
 
 	SET_SETTING: 'SET_SETTING',
 	LOAD_SETTING: 'LOAD_SETTING',
-	LOAD_SETTINGS: 'SLOAD_SETTINGS'
+	LOAD_SETTINGS: 'SLOAD_SETTINGS',
 }
 
 export default {
@@ -55,11 +55,11 @@ export default {
 		try {
 			const response = await axios.get(url('/bookmark'), {
 				params: {
-					url: link
-				}
+					url: link,
+				},
 			})
 			const {
-				data: { data: bookmarks, status }
+				data: { data: bookmarks, status },
 			} = response
 			if (status !== 'success') {
 				throw new Error(response.data)
@@ -85,11 +85,11 @@ export default {
 				title: data.title,
 				description: data.description,
 				folders: data.folders,
-				tags: data.tags
+				tags: data.tags,
 			})
 			.then(response => {
 				const {
-					data: { item: bookmark, status }
+					data: { item: bookmark, status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data.data.join('\n'))
@@ -116,7 +116,7 @@ export default {
 			.put(url(`/bookmark/${id}`), this.getters.getBookmark(id))
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -140,13 +140,13 @@ export default {
 	) {
 		commit(mutations.FETCH_START, { type: 'moveBookmark' })
 		try {
-			let response = await axios.post(
+			const response = await axios.post(
 				url(`/folder/${newFolder}/bookmarks/${bookmark}`)
 			)
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
-			let response2 = await axios.delete(
+			const response2 = await axios.delete(
 				url(`/folder/${oldFolder}/bookmarks/${bookmark}`)
 			)
 			if (response2.data.status !== 'success') {
@@ -202,7 +202,7 @@ export default {
 		}
 	},
 	[actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, file) {
-		var data = new FormData()
+		const data = new FormData()
 		data.append('bm_import', file)
 		return axios
 			.post(url(`/bookmark/import`), data)
@@ -233,7 +233,7 @@ export default {
 			.delete(url(`/bookmark`))
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -254,11 +254,11 @@ export default {
 		commit(mutations.FETCH_START, { type: 'tag' })
 		return axios
 			.put(url(`/tag/${oldName}`), {
-				name: newName
+				name: newName,
 			})
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -302,7 +302,7 @@ export default {
 			.delete(url(`/tag/${tag}`))
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -325,14 +325,14 @@ export default {
 			type: 'folders',
 			cancel: () => {
 				canceled = true
-			}
+			},
 		})
 		return axios
 			.get(url('/folder'), { params: {} })
 			.then(response => {
 				if (canceled) return
 				const {
-					data: { data, status }
+					data: { data, status },
 				} = response
 				if (status !== 'success') throw new Error(data)
 				const folders = data
@@ -355,7 +355,7 @@ export default {
 			.delete(url(`/folder/${id}`))
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -378,11 +378,11 @@ export default {
 		return axios
 			.post(url(`/folder`), {
 				parent_folder: parentFolder,
-				title
+				title,
 			})
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -405,11 +405,11 @@ export default {
 		return axios
 			.put(url(`/folder/${id}`), {
 				parent_folder: folder.parent_folder,
-				title: folder.title
+				title: folder.title,
 			})
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -443,7 +443,7 @@ export default {
 				await dispatch(actions.MOVE_BOOKMARK, {
 					oldFolder: bookmark.folders[bookmark.folders.length - 1], // FIXME This is veeeery ugly and will cause issues. Inevitably.
 					newFolder: folderId,
-					bookmark: bookmark.id
+					bookmark: bookmark.id,
 				})
 			}
 		} catch (err) {
@@ -517,7 +517,7 @@ export default {
 			type: 'bookmarks',
 			cancel() {
 				canceled = true
-			}
+			},
 		})
 		axios
 			.get(url('/bookmark'), {
@@ -525,13 +525,13 @@ export default {
 					limit: BATCH_SIZE,
 					page: state.fetchState.page,
 					sortby: state.settings.sorting,
-					...state.fetchState.query
-				}
+					...state.fetchState.query,
+				},
 			})
 			.then(response => {
 				if (canceled) return
 				const {
-					data: { data, status }
+					data: { data, status },
 				} = response
 				if (status !== 'success') throw new Error(data)
 				const bookmarks = data
@@ -565,7 +565,7 @@ export default {
 		}
 		return axios
 			.post(url(`/settings/${key}`), {
-				[key]: value
+				[key]: value,
 			})
 			.catch(err => {
 				console.error(err)
@@ -581,7 +581,7 @@ export default {
 			.get(url(`/settings/${key}`))
 			.then(async response => {
 				const {
-					data: { [key]: value }
+					data: { [key]: value },
 				} = response
 				await commit(mutations.SET_SETTING, { key, value })
 				if (key === 'viewMode') {
@@ -604,7 +604,7 @@ export default {
 		return Promise.all(
 			['sorting', 'viewMode'].map(key => dispatch(actions.LOAD_SETTING, key))
 		)
-	}
+	},
 }
 
 function url(url) {

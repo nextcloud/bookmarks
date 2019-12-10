@@ -30,19 +30,19 @@ export default {
 	props: {
 		folder: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		showChildrenDefault: {
 			type: Boolean,
-			default: false
-		}
+			default: false,
+		},
 	},
 	data() {
 		return { showChildren: false }
 	},
 	mounted() {
 		this.showChildren = this.showChildrenDefault
-	}
+	},
 }
 </script>
 <style>

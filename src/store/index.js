@@ -16,7 +16,7 @@ export default new Store({
 		fetchState: {
 			page: 0,
 			query: {},
-			reachedEnd: false
+			reachedEnd: false,
 		},
 		loading: {
 			tags: false,
@@ -25,12 +25,12 @@ export default new Store({
 			createBookmark: false,
 			saveBookmark: false,
 			createFolder: false,
-			saveFolder: false
+			saveFolder: false,
 		},
 		error: null,
 		settings: {
 			viewMode: 'list',
-			sorting: 'lastmodified'
+			sorting: 'lastmodified',
 		},
 		bookmarks: [],
 		bookmarksById: {},
@@ -39,13 +39,13 @@ export default new Store({
 		foldersById: {},
 		selection: {
 			folders: [],
-			bookmarks: []
+			bookmarks: [],
 		},
 		displayNewBookmark: false,
 		displayNewFolder: false,
 		displayMoveDialog: false,
 		sidebar: null,
-		viewMode: 'list'
+		viewMode: 'list',
 	},
 
 	getters: {
@@ -57,18 +57,18 @@ export default new Store({
 				return [{ id: '-1', children: state.folders }]
 			}
 			return findFolder(id, state.folders)
-		}
-	}
+		},
+	},
 })
 
 function findFolder(id, children) {
 	if (!children || !children.length) return []
-	let folders = children.filter(folder => Number(folder.id) === Number(id))
+	const folders = children.filter(folder => Number(folder.id) === Number(id))
 	if (folders.length) {
 		return folders
 	} else {
-		for (let child of children) {
-			let folders = findFolder(id, child.children)
+		for (const child of children) {
+			const folders = findFolder(id, child.children)
 			if (folders.length) {
 				folders.push(child)
 				return folders

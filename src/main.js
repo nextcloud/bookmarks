@@ -33,7 +33,7 @@ const BookmarksApp = (global['Bookmarks'] = new Vue({
 	el: '#content',
 	store,
 	router,
-	render: h => h(App)
+	render: h => h(App),
 }))
 
 export default BookmarksApp

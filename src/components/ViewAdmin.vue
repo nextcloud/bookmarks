@@ -83,7 +83,7 @@ const SETTINGS = [
 	'previews.screenly.url',
 	'previews.screenly.token',
 	'privacy.enableScraping',
-	'performance.maxBookmarksperAccount'
+	'performance.maxBookmarksperAccount',
 ]
 
 export default {
@@ -94,7 +94,7 @@ export default {
 			loading: false,
 			success: false,
 			error: '',
-			timeout: null
+			timeout: null,
 		}
 	},
 
@@ -103,7 +103,7 @@ export default {
 		error(error) {
 			if (!error) return
 			OC.Notification.showTemporary(error)
-		}
+		},
 	},
 
 	async created() {
@@ -145,7 +145,7 @@ export default {
 				await new Promise((resolve, reject) =>
 					OCP.AppConfig.setValue('bookmarks', setting, value, {
 						success: resolve,
-						error: reject
+						error: reject,
 					})
 				)
 			} catch (e) {
@@ -159,7 +159,7 @@ export default {
 				const resDocument = await new Promise((resolve, reject) =>
 					OCP.AppConfig.getValue('bookmarks', setting, null, {
 						success: resolve,
-						error: reject
+						error: reject,
 					})
 				)
 				if (resDocument.querySelector('status').textContent !== 'ok') {
@@ -173,8 +173,8 @@ export default {
 				this.error = this.t('bookmarks', 'Failed to load settings')
 				throw e
 			}
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

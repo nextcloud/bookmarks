@@ -12,8 +12,8 @@ export default {
 	props: {
 		tags: {
 			type: Array,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {}
@@ -22,8 +22,8 @@ export default {
 	methods: {
 		submit() {
 			this.$emit('create-bookmark', this.url)
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

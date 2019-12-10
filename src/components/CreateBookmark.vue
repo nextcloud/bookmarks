@@ -28,13 +28,13 @@ export default {
 	components: { Actions, ActionButton },
 	data() {
 		return {
-			url: ''
+			url: '',
 		}
 	},
 	computed: {
 		creating() {
 			return this.$store.state.loading.createBookmark
-		}
+		},
 	},
 	mounted() {
 		this.$refs['input'].focus()
@@ -43,10 +43,10 @@ export default {
 		submit() {
 			this.$store.dispatch(actions.CREATE_BOOKMARK, {
 				url: this.url,
-				...(this.$route.name === 'folder' && { folders: [this.$route.params.folder] })
+				...(this.$route.name === 'folder' && { folders: [this.$route.params.folder] }),
 			})
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

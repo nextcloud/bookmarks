@@ -21,7 +21,7 @@ export default {
 	name: 'MoveDialog',
 	components: {
 		Modal,
-		TreeFolder
+		TreeFolder,
 	},
 	computed: {
 		showModal() {
@@ -55,7 +55,7 @@ export default {
 					this.selection.bookmarks.length
 				)
 			}
-		}
+		},
 	},
 	created() {},
 	methods: {
@@ -76,10 +76,10 @@ export default {
 				)
 				.map(child => ({
 					...child,
-					children: this.filterFolders(child.children)
+					children: this.filterFolders(child.children),
 				}))
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

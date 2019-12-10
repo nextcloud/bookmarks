@@ -31,7 +31,7 @@ Vue.directive('tooltip', Tooltip)
 const BookmarksApp = (global['Bookmarks'] = new Vue({
 	el: '#bookmarks',
 	store,
-	render: h => h(App)
+	render: h => h(App),
 }))
 
 export default BookmarksApp

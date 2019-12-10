@@ -27,11 +27,11 @@ export default {
 		AppNavigationNew,
 		AppNavigationItem,
 		AppNavigationSettings,
-		Settings
+		Settings,
 	},
 	data() {
 		return {
-			editingTag: false
+			editingTag: false,
 		}
 	},
 	computed: {
@@ -43,7 +43,7 @@ export default {
 				text: tag.name,
 				edit: {
 					action: e => this.onRenameTag(tag.name, e.target.elements[0].value),
-					reset: () => this.setEditingTag(tag.name, false)
+					reset: () => this.setEditingTag(tag.name, false),
 				},
 				utils: {
 					counter: tag.count,
@@ -51,15 +51,15 @@ export default {
 						{
 							icon: 'icon-rename',
 							text: 'Rename',
-							action: () => this.setEditingTag(tag.name, true)
+							action: () => this.setEditingTag(tag.name, true),
 						},
 						{
 							icon: 'icon-delete',
 							text: 'Delete',
-							action: () => this.onDeleteTag(tag.name)
-						}
-					]
-				}
+							action: () => this.onDeleteTag(tag.name),
+						},
+					],
+				},
 			}))
 		},
 
@@ -68,21 +68,21 @@ export default {
 				{
 					router: { name: 'home' },
 					icon: 'icon-home',
-					text: this.t('bookmarks', 'All Bookmarks')
+					text: this.t('bookmarks', 'All Bookmarks'),
 				},
 				{
 					router: { name: 'recent' },
 					icon: 'icon-category-monitoring',
-					text: this.t('bookmarks', 'Recent Bookmarks')
+					text: this.t('bookmarks', 'Recent Bookmarks'),
 				},
 				{
 					router: { name: 'untagged' },
 					icon: 'icon-category-disabled',
-					text: this.t('bookmarks', 'Untagged')
+					text: this.t('bookmarks', 'Untagged'),
 				},
-				...this.tagMenu
+				...this.tagMenu,
 			]
-		}
+		},
 	},
 
 	created() {},
@@ -109,7 +109,7 @@ export default {
 			} else {
 				this.editingTag = false
 			}
-		}
-	}
+		},
+	},
 }
 </script>
