@@ -1,3 +1,7 @@
+## v2.3.3
+
+- FIX: Create bookmarks in the current folder
+
 ## v2.3.2
 
 - FIX webpack build
