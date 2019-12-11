@@ -183,7 +183,7 @@ class BookmarkController extends ApiController {
 
 		if (!$this->userId) {
 			if ($this->request->getHeader('Authorization')) {
-				list($method, $credentials) = explode(' ', $this->request->getHeader('Authorization'));
+				[$method, $credentials] = explode(' ', $this->request->getHeader('Authorization'));
 			} else {
 				$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
 				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
@@ -194,7 +194,7 @@ class BookmarkController extends ApiController {
 				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
 				return $res;
 			} else {
-				list($username, $password) = explode(':', base64_decode($credentials));
+				[$username, $password] = explode(':', base64_decode($credentials));
 				if (false === $this->userSession->login($username, $password)) {
 					$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
 					$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
@@ -285,18 +285,20 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @param string $url
+     * @param string $url
 	 * @param array $item
 	 * @param string $title
 	 * @param bool $is_public
 	 * @param string $description
+	 * @param array $tags
+	 * @param array $folders
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function newBookmark($url = "", $item = [], $title = null, $is_public = false, $description = "", $tags = [], $folders = null) {
+	public function newBookmark($url = "", $item = [], $title = null, $is_public = false, $description = "", $tags = [], $folders = []) {
 		if (isset($title)) {
 			$title = trim($title);
 		}

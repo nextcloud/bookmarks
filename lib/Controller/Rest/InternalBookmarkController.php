@@ -126,12 +126,14 @@ class InternalBookmarkController extends ApiController {
 	 * @param string $title
 	 * @param bool $is_public
 	 * @param string $description
+	 * @param array $tags
+	 * @param array $folders
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $item = [], $title = null, $is_public = false, $description = "", $tags = []) {
-		return $this->publicController->newBookmark($url, $item, $title, $is_public, $description, $tags);
+	public function newBookmark($url = "", $item = [], $title = null, $is_public = false, $description = "", $tags = [], $folders = []) {
+		return $this->publicController->newBookmark($url, $item, $title, $is_public, $description, $tags, $folders);
 	}
 
 	/**
