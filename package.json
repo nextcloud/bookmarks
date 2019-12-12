@@ -20,6 +20,7 @@
 	},
 	"homepage": "https://github.com/nextcloud/bookmarks#readme",
 	"dependencies": {
+		"@babel/polyfill": "^7.7.0",
 		"humanize-duration": "^3.21.0",
 		"nextcloud-axios": "^0.2.1",
 		"nextcloud-router": "0.0.9",
