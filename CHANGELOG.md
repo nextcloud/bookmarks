@@ -1,3 +1,8 @@
+## v2.3.4
+
+- FIX Bookmark creation outside folders
+- FIX browser compatibility
+
 ## v2.3.3
 
 - FIX: Create bookmarks in the current folder
