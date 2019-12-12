@@ -84,7 +84,7 @@ export default {
 				url: data.url,
 				title: data.title,
 				description: data.description,
-				folders: data.folders.map(parseInt),
+				folders: data.folders && data.folders.map(parseInt),
 				tags: data.tags,
 			})
 			.then(response => {
