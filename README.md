@@ -4,7 +4,10 @@
 
 > Bookmarks app for Nextcloud
 
-This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.
+This app provides you with a web interface for collecting and organizing bookmarks to the places on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.
+
+## Community
+Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in #nextcloud on freenode.net (IRC)!
 
 ## Install
 
@@ -81,7 +84,7 @@ If you'd like to support the creation and maintenance of this software, consider
 
 ## Contribute
 
-We always welcome contributions and happily accept pull requests.
+We always welcome contributions. Have an issue or an idea for a feature? Let us know. Additionally, we happily accept pull requests.
 
 In order to make the process run more smoothly, you can make sure of the following things:
 
