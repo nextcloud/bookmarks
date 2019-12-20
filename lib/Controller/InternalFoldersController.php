@@ -2,6 +2,8 @@
 
 namespace OCA\Bookmarks\Controller;
 
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http\DataResponse;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\ApiController;
 
@@ -112,12 +114,39 @@ class InternalFoldersController extends ApiController {
 
 	/**
 	 * @param int $root the id of the root folder whose descendants to return
-	 * @param int $layers the number of layers of hierarchy too return
+	 * @param int $layers the number of layers of hierarchy to return
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
 	public function getFolders($root = -1, $layers = 0) {
 		return $this->controller->getFolders($root, $layers);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function getFolderPublicToken($folderId) {
+		return $this->controller->getFolderPublicToken($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function createFolderPublicToken($folderId) {
+		return $this->controller->createFolderPublicToken($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function deleteFolderPublicToken($folderId) {
+		return $this->controller->deleteFolderPublicToken($folderId);
 	}
 }

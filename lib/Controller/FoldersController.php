@@ -5,6 +5,8 @@ namespace OCA\Bookmarks\Controller;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Db\PublicFolder;
+use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -19,6 +21,9 @@ class FoldersController extends ApiController {
 	/** @var FolderMapper */
 	private $folderMapper;
 
+	/** @var PublicFolderMapper */
+	private $publicFolderMapper;
+
 	/**
 	 * @var BookmarkMapper
 	 */
@@ -29,11 +34,12 @@ class FoldersController extends ApiController {
 	 */
 	private $authorizer;
 
-	public function __construct($appName, $request, $userId, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, Authorizer $authorizer) {
+	public function __construct($appName, $request, $userId, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, PublicFolderMapper $publicFolderMapper, Authorizer $authorizer) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->folderMapper = $folderMapper;
 		$this->bookmarkMapper = $bookmarkMapper;
+		$this->publicFolderMapper = $publicFolderMapper;
 		$this->authorizer = $authorizer;
 	}
 
@@ -243,7 +249,7 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_BAD_REQUEST);
-		}catch(UnauthorizedAccessError $e) {
+		} catch (UnauthorizedAccessError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		return new JSONResponse(['status' => 'success', 'data' => $children]);
@@ -324,10 +330,77 @@ class FoldersController extends ApiController {
 				$array = $folder->toArray();
 				if ($layers - 1 >= 0) {
 					$array['children'] = $this->_getFolders($folder->getId(), $layers - 1);
-					}
+				}
 				return $array;
 			}, $this->folderMapper->findByRootFolder($this->userId));
 		}
 		return $folders;
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function getFolderPublicToken($folderId) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+		try {
+			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
+		} catch (DoesNotExistException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+		return new Http\DataResponse(['status' => 'success', 'item' => $publicFolder->getId()]);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function createFolderPublicToken($folderId) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+		try {
+			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
+		} catch (DoesNotExistException $e) {
+			$publicFolder = new PublicFolder();
+			$publicFolder->setFolderId($folderId);
+			$this->publicFolderMapper->insert($publicFolder);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_BAD_REQUEST);
+		}
+		return new Http\DataResponse(['status' => 'success', 'item' => $publicFolder->getId()]);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function deleteFolderPublicToken($folderId) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+		try {
+			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
+		} catch (DoesNotExistException $e) {
+			return new Http\DataResponse(['status' => 'success']);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_BAD_REQUEST);
+		}
+		$this->publicFolderMapper->delete($publicFolder);
+		return new Http\DataResponse(['status' => 'success', 'item' => $publicFolder->getId()]);
 	}
 }
