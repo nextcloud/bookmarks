@@ -1,0 +1,18 @@
+{ "translations": {
+    "Details" : "Detallar",
+    "Rename" : "Adı dəyiş",
+    "Move" : "Move",
+    "Delete" : "Sil",
+    "Save" : "Saxla",
+    "New folder" : "Yeni qovluq",
+    "Create" : "Yarat",
+    "Import" : "Əlavə et",
+    "Export" : "Çıxarış",
+    "Tags" : "Işarələr",
+    "Notes" : "Qeydlər",
+    "Sharing" : "Paylaşılır",
+    "Select" : "Select",
+    "Title" : "Başlıq",
+    "Link" : "Link"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

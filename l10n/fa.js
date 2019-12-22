@@ -1,0 +1,25 @@
+OC.L10N.register(
+    "bookmarks",
+    {
+    "Details" : "جزئیات",
+    "Rename" : "تغییرنام",
+    "Move" : "انتقال",
+    "Delete" : "حذف",
+    "Save" : "ذخیره",
+    "New folder" : "پوشه جدید",
+    "Grid view" : "نمایش گرید",
+    "List view" : "نمایش لیست",
+    "Create" : "ایجاد کردن",
+    "Root folder" : "پوشهٔ ریشه",
+    "Import" : "وارد کردن",
+    "Export" : "گرفتن خروجی",
+    "Recently added" : "اخیرا اضافه شده ",
+    "Tags" : "برچسب‌ها",
+    "Notes" : "یادداشت ها",
+    "Sharing" : "اشتراک گذاری",
+    "Select" : "انتخاب",
+    "Privacy" : "حریم خصوصی",
+    "Title" : "عنوان",
+    "Link" : "Link"
+},
+"nplurals=2; plural=(n > 1);");

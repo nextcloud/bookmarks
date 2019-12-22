@@ -1,0 +1,25 @@
+OC.L10N.register(
+    "bookmarks",
+    {
+    "Details" : "Detalles",
+    "Rename" : "Renomar",
+    "Move" : "Mover",
+    "Delete" : "Desaniciar",
+    "Save" : "Guardar",
+    "New folder" : "Carpeta nueva",
+    "Grid view" : "Vista de rexella",
+    "List view" : "Vista de llista",
+    "Create" : "Crear",
+    "Import" : "Importar",
+    "Export" : "Esportar",
+    "Recently added" : "Amestao apocayá",
+    "Alphabetically" : "Alfabéticamente",
+    "Clear data" : "Llimpiar datos",
+    "Tags" : "Etiquetes",
+    "Notes" : "Notes",
+    "Sharing" : "Compartiendo",
+    "Select" : "Esbillar",
+    "Title" : "Títulu",
+    "Link" : "Link"
+},
+"nplurals=2; plural=(n != 1);");

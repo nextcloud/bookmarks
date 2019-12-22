@@ -53,6 +53,7 @@ OC.L10N.register(
     "Tags" : "Метки",
     "Select tags are create new ones" : "Выберите тэги или создайте новые",
     "Notes" : "Заметки",
+    "Sharing" : "Общий доступ",
     "{time} ago" : "{time} назад",
     "Select" : "Пометить",
     "Previews" : "Предварительный просмотр",
