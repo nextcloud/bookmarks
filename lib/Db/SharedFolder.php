@@ -7,9 +7,10 @@ class SharedFolder extends Entity {
 	protected $shareId;
 	protected $parentFolder;
 	protected $userId;
+	protected $title;
 	protected $index;
 
-	public static $columns = ['id', 'share_id', 'parent_folder', 'user_id'];
+	public static $columns = ['id', 'share_id', 'parent_folder', 'user_id', 'title'];
 
 	public function __construct() {
 		// add types in constructor
@@ -18,6 +19,7 @@ class SharedFolder extends Entity {
 		$this->addType('parentFolder', 'integer');
 		$this->addType('userId', 'string');
 		$this->addType('index', 'integer');
+		$this->addType('title', 'string');
 	}
 
 	public function toArray() {
