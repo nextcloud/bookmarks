@@ -64,6 +64,7 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			$table->addColumn('id', 'bigint', [
 				'notnull' => true,
 				'length' => 64,
+				'autoincrement' => true,
 			]);
 			$table->addColumn('folder_id', 'bigint', [
 				'notnull' => true,
@@ -109,6 +110,7 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			$table->addColumn('id', 'bigint', [
 				'notnull' => true,
 				'length' => 64,
+				'autoincrement' => true,
 			]);
 			$table->addColumn('share_id', 'bigint', [
 				'notnull' => true,
@@ -128,6 +130,7 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 				'notnull' => true,
 				'length' => 10,
 			]);
+			$table->setPrimaryKey(['id']);
 			$table->addIndex(['parent_folder'], 'bookmarks_part_parent');
 			$table->addIndex(['user_id'], 'bookmarks_part');
 			$table->addIndex(['parent_folder', 'index'], 'bookmarks_part_idx');
