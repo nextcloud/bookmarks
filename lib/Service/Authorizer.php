@@ -1,9 +1,11 @@
 <?php
+
 namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolderMapper;
+use OCA\Bookmarks\Db\ShareMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IRequest;
@@ -26,6 +28,12 @@ class Authorizer {
 	private $bookmarkMapper;
 
 	/**
+	 * @var ShareMapper
+	 */
+	private $shareMapper;
+
+
+	/**
 	 * @var PublicFolderMapper
 	 */
 	private $publicMapper;
@@ -33,10 +41,11 @@ class Authorizer {
 	private $userId = null;
 	private $token = null;
 
-	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, PublicFolderMapper $publicMapper) {
+	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, PublicFolderMapper $publicMapper, ShareMapper $shareMapper) {
 		$this->folderMapper = $folderMapper;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->publicMapper = $publicMapper;
+		$this->shareMapper = $shareMapper;
 	}
 
 	/**
@@ -71,6 +80,9 @@ class Authorizer {
 	public function getPermissionsForFolder($folderId, $userId, $request) {
 		$this->setCredentials($userId, $request);
 		if (isset($this->userId)) {
+			if (((int)$folderId) === -1) {
+				return self::PERM_ALL;
+			}
 			try {
 				$folder = $this->folderMapper->find($folderId);
 			} catch (DoesNotExistException $e) {
@@ -80,6 +92,13 @@ class Authorizer {
 			}
 			if ($folder->getUserId() === $this->userId) {
 				return self::PERM_ALL;
+			} else {
+				$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $this->userId);
+				foreach($shares as $share) {
+					if ($share->getFolderId() === $folderId || $this->folderMapper->hasDescendantFolder($share->getFolderId(), $folderId)) {
+						return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
+					}
+				}
 			}
 		}
 		if (isset($this->token)) {
@@ -115,6 +134,14 @@ class Authorizer {
 			}
 			if ($bookmark->getUserId() === $this->userId) {
 				return self::PERM_ALL;
+			} else {
+				$shares = $this->shareMapper->findByOwnerAndUser($bookmark->getUserId(), $userId);
+				foreach ($shares as $share) {
+					if ($this->folderMapper->hasDescendantBookmark($share->getFolderId(), $bookmarkId)) {
+						return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
+					}
+				}
+				return self::PERM_NONE;
 			}
 		}
 		if (isset($this->token)) {
@@ -132,6 +159,17 @@ class Authorizer {
 		return self::PERM_NONE;
 	}
 
+	protected function getMaskFromFlags($canWrite, $canShare) {
+		$perms = self::PERM_READ;
+		if ($canWrite) {
+			$perms |= self::PERM_EDIT;
+		}
+		if ($canShare) {
+			$perms |= self::PERM_RESHARE;
+		}
+		return $perms;
+	}
+
 	/**
 	 * Check permissions
 	 *
@@ -140,6 +178,6 @@ class Authorizer {
 	 * @return boolean
 	 */
 	public static function hasPermission($perm, $perms) {
-		return (boolean) ($perms & $perm);
+		return (boolean)($perms & $perm);
 	}
 }
