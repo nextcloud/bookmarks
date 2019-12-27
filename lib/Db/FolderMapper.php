@@ -601,7 +601,7 @@ class FolderMapper extends QBMapper {
 			}
 			return $array;
 		}, $this->findByParentFolder($root));
-		array_push($folders, ...array_map(function (Share $folder) use ($layers) {
+		$shares = array_map(function (Share $folder) use ($layers) {
 			$share = $this->shareMapper->find($folder->getShareId());
 			$array = $folder->toArray();
 			$array['id'] = $share->getFolderId();
@@ -609,7 +609,10 @@ class FolderMapper extends QBMapper {
 				$array['children'] = $this->getSubFolders($share->getFolderId(), $layers - 1);
 			}
 			return $array;
-		}, $this->sharedFolderMapper->findByParentFolder($root)));
+		}, $this->sharedFolderMapper->findByParentFolder($root));
+		if (count($shares) > 0) {
+			array_push($folders, ...$shares);
+		}
 		return $folders;
 	}
 
