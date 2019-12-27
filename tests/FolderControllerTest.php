@@ -189,6 +189,7 @@ class FolderControllerTest extends TestCase {
 
 		$this->sharedFolder = new SharedFolder();
 		$this->sharedFolder->setShareId($this->share->getId());
+		$this->sharedFolder->setTitle('foo');
 		$this->sharedFolder->setParentFolder(-1);
 		$this->sharedFolder->setUserId($this->otherUser);
 		$this->sharedFolderMapper->insert($this->sharedFolder);
