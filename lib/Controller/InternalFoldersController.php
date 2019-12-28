@@ -2,10 +2,9 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
-use \OCP\AppFramework\Http\JSONResponse;
-use \OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http\JSONResponse;
 
 class InternalFoldersController extends ApiController {
 	private $userId;
@@ -92,7 +91,7 @@ class InternalFoldersController extends ApiController {
 	/**
 	 * @param int $folderId
 	 * @param string $title
-	 * @param int $parent
+	 * @param null $parent_folder
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -108,7 +107,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function hashFolder($folderId, $fields=['title', 'url']) {
+	public function hashFolder($folderId, $fields = ['title', 'url']) {
 		return $this->controller->hashFolder($folderId, $fields);
 	}
 

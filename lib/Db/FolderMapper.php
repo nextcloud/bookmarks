@@ -5,10 +5,10 @@ namespace OCA\Bookmarks\Db;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use OCP\IDBConnection;
-use OCP\AppFramework\Db\QBMapper;
 use OCP\AppFramework\Db\Entity;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\IDBConnection;
 use UnexpectedValueException;
 
 /**
@@ -275,8 +275,6 @@ class FolderMapper extends QBMapper {
 	 * @param int $folderId
 	 * @param array $newChildrenOrder
 	 * @return void
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
 	 * @throws ChildrenOrderValidationError
 	 */
 	public function setUserFolderChildren($userId, int $folderId, array $newChildrenOrder) {
@@ -519,11 +517,11 @@ class FolderMapper extends QBMapper {
 		$children = array_map(function ($child) use ($layers) {
 			if (isset($child['bookmark_id'])) {
 				return ['type' => self::TYPE_BOOKMARK, 'id' => $child['bookmark_id']];
-			}else {
+			} else {
 				$id = isset($child['id']) ? $child['id'] : $child['folder_id'];
-				if($layers === 1) {
+				if ($layers === 1) {
 					return ['type' => self::TYPE_FOLDER, 'id' => $id];
-				}else {
+				} else {
 					return [
 						'type' => self::TYPE_FOLDER,
 						'id' => $id,
@@ -558,8 +556,8 @@ class FolderMapper extends QBMapper {
 		}, $children);
 		$folder = [];
 		if ($entity->getUserId() !== $userId) {
-			$folder['title'] =  $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId)->getTitle();
-		}else if ($entity->getTitle() !== null) {
+			$folder['title'] = $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId)->getTitle();
+		} else if ($entity->getTitle() !== null) {
 			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;

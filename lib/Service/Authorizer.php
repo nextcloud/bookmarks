@@ -77,6 +77,13 @@ class Authorizer {
 		$this->userId = $userId;
 	}
 
+	/** @noinspection PhpUndefinedMethodInspection
+	 * @noinspection PhpUndefinedMethodInspection
+	 * @noinspection PhpUndefinedMethodInspection
+	 * @noinspection PhpUndefinedMethodInspection
+	 * @noinspection PhpUndefinedMethodInspection
+	 * @noinspection PhpUndefinedMethodInspection
+	 */
 	public function getPermissionsForFolder($folderId, $userId, $request) {
 		$this->setCredentials($userId, $request);
 		if (isset($this->userId)) {
@@ -94,7 +101,7 @@ class Authorizer {
 				return self::PERM_ALL;
 			} else {
 				$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $this->userId);
-				foreach($shares as $share) {
+				foreach ($shares as $share) {
 					if ($share->getFolderId() === $folderId || $this->folderMapper->hasDescendantFolder($share->getFolderId(), $folderId)) {
 						return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
 					}
@@ -122,6 +129,11 @@ class Authorizer {
 		return self::PERM_NONE;
 	}
 
+	/** @noinspection PhpUndefinedMethodInspection
+	 * @noinspection PhpUndefinedMethodInspection
+	 * @noinspection PhpUndefinedMethodInspection
+	 * @noinspection PhpUndefinedMethodInspection
+	 */
 	public function getPermissionsForBookmark($bookmarkId, $userId, $request) {
 		$this->setCredentials($userId, $request);
 		if (isset($this->userId)) {

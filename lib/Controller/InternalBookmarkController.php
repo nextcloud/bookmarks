@@ -11,14 +11,14 @@
 namespace OCA\Bookmarks\Controller;
 
 use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
-use OCA\Bookmarks\Traits\ControllerPermissions;
+use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
-use \OCP\AppFramework\ApiController;
-use \OCP\AppFramework\Http\JSONResponse;
 
 class InternalBookmarkController extends ApiController {
-	use ControllerPermissions;
 
 	/**
 	 * @var BookmarkController
@@ -55,7 +55,7 @@ class InternalBookmarkController extends ApiController {
 	 * @param bool $untagged
 	 * @param null $folder
 	 * @param null $url
-	 * @return JSONResponse
+	 * @return \OCP\AppFramework\Http\DataResponse
 	 *
 	 * @throws UrlParseError
 	 * @NoAdminRequired
@@ -91,8 +91,8 @@ class InternalBookmarkController extends ApiController {
 	 * @param array $tags
 	 * @return JSONResponse
 	 *
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
 	 * @NoAdminRequired
 	 */
 	public function newBookmark($url = "", $title = null, $description = "", $tags = []) {
@@ -102,10 +102,7 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 * @param int $id
 	 * @param string $url
-	 * @param array $item
 	 * @param string $title
-	 * @param bool $is_public Description
-	 * @param null $record_id
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
@@ -113,7 +110,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editBookmark($id = null, $url = null, $title = null,  $description = "", $tags = [], $folders = null) {
+	public function editBookmark($id = null, $url = null, $title = null, $description = "", $tags = [], $folders = null) {
 		return $this->publicController->editBookmark($id, $url, $title, $description, $tags, $folders);
 	}
 
@@ -159,7 +156,7 @@ class InternalBookmarkController extends ApiController {
 
 	/**
 	 *
-	 * @return \OCP\AppFramework\Http\Response
+	 * @return Response
 	 * @NoAdminRequired
 	 */
 	public function exportBookmark() {

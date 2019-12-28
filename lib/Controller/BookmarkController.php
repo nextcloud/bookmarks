@@ -10,6 +10,8 @@
 
 namespace OCA\Bookmarks\Controller;
 
+use DateInterval;
+use DateTime;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -20,31 +22,29 @@ use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCA\Bookmarks\ExportResponse;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\FaviconPreviewer;
 use OCA\Bookmarks\Service\HtmlExporter;
 use OCA\Bookmarks\Service\HtmlImporter;
 use OCA\Bookmarks\Service\LinkExplorer;
+use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataDisplayResponse;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\AppFramework\Http\NotFoundResponse;
+use OCP\AppFramework\Http\RedirectResponse;
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
 use OCP\ILogger;
-use \OCP\IURLGenerator;
-use \OCP\AppFramework\ApiController;
-use \OCP\AppFramework\Http\JSONResponse;
-use \OCP\AppFramework\Http\DataResponse;
-use \OCP\AppFramework\Http\TemplateResponse;
-use \OCP\AppFramework\Http\DataDisplayResponse;
-use \OCP\AppFramework\Http\RedirectResponse;
-use \OCP\AppFramework\Http\NotFoundResponse;
-use \OCP\AppFramework\Http;
+use OCP\IURLGenerator;
 use OCP\IUserManager;
-use \OCP\IUserSession;
-use \OCA\Bookmarks\ExportResponse;
-use OCP\AppFramework\Utility\ITimeFactory;
-use DateTime;
-use DateInterval;
+use OCP\IUserSession;
 
 class BookmarkController extends ApiController {
 	const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
@@ -335,7 +335,7 @@ class BookmarkController extends ApiController {
 			} else {
 				$result = $this->bookmarkMapper->findAll($this->userId, $filterTag, $conjunction, $sqlSortColumn, $offset, $limit);
 			}
-		}else{
+		} else {
 			$this->authorizer->setCredentials($this->userId, $this->request);
 			try {
 				if ($untagged) {
@@ -345,9 +345,9 @@ class BookmarkController extends ApiController {
 				} else {
 					$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $filterTag, $conjunction, $sqlSortColumn, $offset, $limit);
 				}
-			}catch(DoesNotExistException $e) {
+			} catch (DoesNotExistException $e) {
 				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
-			}catch(MultipleObjectsReturnedException $e) {
+			} catch (MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
 			}
 		}
@@ -358,7 +358,7 @@ class BookmarkController extends ApiController {
 					return $this->_returnBookmarkAsArray($bm);
 				}, $result
 			),
-			'status' => 'success'
+			'status' => 'success',
 		]);
 	}
 
@@ -370,15 +370,15 @@ class BookmarkController extends ApiController {
 	 * @param array $folders
 	 * @return JSONResponse
 	 *
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
 	public function newBookmark($url = "", $title = null, $description = "", $tags = [], $folders = []) {
 		$permissions = Authorizer::PERM_ALL;
-		foreach($folders as $folder) {
+		foreach ($folders as $folder) {
 			$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->userId, $this->request);
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions)) {
@@ -443,8 +443,8 @@ class BookmarkController extends ApiController {
 			} catch (MultipleObjectsReturnedException $e) {
 				return new JSONResponse(['status' => 'error', 'data' => ['Could not set some folders']], Http::STATUS_BAD_REQUEST);
 			}
-		}else{
-			foreach($folders as $folderId) {
+		} else {
+			foreach ($folders as $folderId) {
 				try {
 					$folder = $this->folderMapper->find($folderId);
 				} catch (DoesNotExistException $e) {
@@ -523,7 +523,7 @@ class BookmarkController extends ApiController {
 				return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 			}
 			$this->bookmarkMapper->delete($bookmark);
-			foreach($folders as $folderId) {
+			foreach ($folders as $folderId) {
 				try {
 					$folder = $this->folderMapper->find($folderId);
 				} catch (DoesNotExistException $e) {
@@ -718,8 +718,8 @@ class BookmarkController extends ApiController {
 	 * @param int $folder The id of the folder to import into
 	 * @return JSONResponse
 	 *
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS

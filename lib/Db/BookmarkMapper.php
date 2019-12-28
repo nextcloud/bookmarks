@@ -9,10 +9,10 @@ use OCA\Bookmarks\Service\UrlNormalizer;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\QBMapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -55,6 +55,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param UrlNormalizer $urlNormalizer
 	 * @param IConfig $config
 	 * @param PublicFolderMapper $publicMapper
+	 * @param TagMapper $tagMapper
 	 */
 	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
@@ -115,9 +116,9 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findAll($userId, array $filters, string $conjunction = 'and', string $sortBy = 'lastmodified', int $offset = 0, int $limit = -1) {
 		$qb = $this->db->getQueryBuilder();
-		$bookmark_cols = array_map(function($c) {
-			return 'b.'.$c;
-		},Bookmark::$columns);
+		$bookmark_cols = array_map(function ($c) {
+			return 'b.' . $c;
+		}, Bookmark::$columns);
 
 		$qb->select($bookmark_cols);
 		$qb->groupBy($bookmark_cols);
@@ -306,12 +307,16 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findAllInPublicFolder($token, array $filters, string $conjunction = 'and', string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
 		$publicFolder = $this->publicMapper->find($token);
+
 		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
 		// Really inefficient, but what can you do.
 		return array_filter($bookmarks, function ($bookmark) use ($filters, $conjunction) {
+
 			$tagsFound = $this->tagMapper->findByBookmark($bookmark->getId());
 			return array_reduce($filters, function ($isMatch, $filter) use ($bookmark, $tagsFound, $conjunction) {
 				$filter = strtolower($filter);
+
+
 				$res = in_array($filter, $tagsFound)
 					|| str_contains($filter, strtolower($bookmark->getTitle()))
 					|| str_contains($filter, strtolower($bookmark->getDescription()))
@@ -334,9 +339,11 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findByTagsInPublicFolder($token, array $tags = [], string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
 		$publicFolder = $this->publicMapper->find($token);
+
 		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
 		// Really inefficient, but what can you do.
 		return array_filter($bookmarks, function ($bookmark) use ($tags) {
+
 			$tagsFound = $this->tagMapper->findByBookmark($bookmark->getId());
 			return array_reduce($tags, function ($isFound, $tag) use ($tagsFound) {
 				return in_array($tag, $tagsFound) && $isFound;
@@ -356,9 +363,11 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findUntaggedInPublicFolder($token, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
 		$publicFolder = $this->publicMapper->find($token);
+
 		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
 		// Really inefficient, but what can you do.
 		return array_filter($bookmarks, function ($bookmark) {
+
 			$tags = $this->tagMapper->findByBookmark($bookmark->getId());
 			return count($tags) === 0;
 		});
@@ -368,6 +377,9 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param $userId
 	 * @param int $folderId
+	 * @param string $sortBy
+	 * @param int $offset
+	 * @param int $limit
 	 * @return array|Entity[]
 	 */
 	public function findByUserFolder($userId, int $folderId, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
@@ -465,7 +477,10 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function update(Entity $entity): Entity {
 		// normalize url
+
+
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+
 		$entity->setLastmodified(time());
 
 		$newEntity = parent::update($entity);
@@ -493,15 +508,23 @@ class BookmarkMapper extends QBMapper {
 		}
 
 		// normalize url
+
+
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+
 		if ($entity->getAdded() === null) $entity->setAdded(time());
+
 		$entity->setLastmodified(time());
+
 		$entity->setAdded(time());
+
 		$entity->setLastPreview(0);
+
 		$entity->setClickcount(0);
 
 		$exists = true;
 		try {
+
 			$this->findByUrl($entity->getUserId(), $entity->getUrl());
 		} catch (DoesNotExistException $e) {
 			$exists = false;
@@ -533,9 +556,12 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function insertOrUpdate(Entity $entity): Entity {
 		// normalize url
+
+
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		$exists = true;
 		try {
+
 			$existing = $this->findByUrl($entity->getUserId(), $entity->getUrl());
 			$entity->setId($existing->getId());
 		} catch (DoesNotExistException $e) {

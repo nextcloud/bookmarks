@@ -1,13 +1,12 @@
 <?php
+
 namespace OCA\Bookmarks\Db;
 
-use InvalidArgumentException;
+use Exception;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
-use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use OCP\DB\QueryBuilder\IQueryBuilder;
-use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\IDBConnection;
 
 /**
  * Class PublicFolderMapper
@@ -34,7 +33,7 @@ class PublicFolderMapper extends QBMapper {
 	/**
 	 * @param string $id
 	 * @return Entity
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws DoesNotExistException
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
 	 */
 	public function find(string $id) {
@@ -50,7 +49,7 @@ class PublicFolderMapper extends QBMapper {
 	/**
 	 * @param int $folderId
 	 * @return Entity
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws DoesNotExistException
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
 	 */
 	public function findByFolder(int $folderId) {
@@ -81,15 +80,15 @@ class PublicFolderMapper extends QBMapper {
 	 * @param Entity $publicFolder
 	 * @return Entity
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function insert(Entity $publicFolder) : Entity {
-		try{
-			while(true) {
+	public function insert(Entity $publicFolder): Entity {
+		try {
+			while (true) {
 				$publicFolder->setId(self::randomString(32));
 				$this->find($publicFolder->getId());
 			}
-		} catch(DoesNotExistException $e) {
+		} catch (DoesNotExistException $e) {
 			return parent::insert($publicFolder);
 		}
 	}
@@ -99,10 +98,10 @@ class PublicFolderMapper extends QBMapper {
 	 * @return Entity
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
 	 */
-	public function insertOrUpdate(Entity $publicFolder) : Entity {
-		try{
+	public function insertOrUpdate(Entity $publicFolder): Entity {
+		try {
 			$this->find($publicFolder->getId());
-		} catch(DoesNotExistException $e) {
+		} catch (DoesNotExistException $e) {
 			return $this->insert($publicFolder);
 		}
 		$this->update($publicFolder);
@@ -123,19 +122,19 @@ class PublicFolderMapper extends QBMapper {
 	 *                         to select from
 	 * @return string
 	 * @throws \RangeException
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function randomString(
 		int $length = 64,
 		string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	) : string {
+	): string {
 		if ($length < 1) {
 			throw new \RangeException("Length must be a positive integer");
 		}
 		$pieces = [];
 		$max = mb_strlen($keyspace, '8bit') - 1;
 		for ($i = 0; $i < $length; ++$i) {
-			$pieces []= $keyspace[random_int(0, $max)];
+			$pieces [] = $keyspace[random_int(0, $max)];
 		}
 		return implode('', $pieces);
 	}

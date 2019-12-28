@@ -1,10 +1,9 @@
 <?php
+
 namespace OCA\Bookmarks\Db;
 
 use InvalidArgumentException;
-use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\QBMapper;
 
 /**
  * Class TagMapper
@@ -43,8 +42,7 @@ class TagMapper {
 			->groupBy('t.tag')
 			->orderBy('nbr', 'DESC');
 
-		$tags = $qb->execute()->fetchAll();
-		return $tags;
+		return $qb->execute()->fetchAll();
 	}
 
 	/**
@@ -59,8 +57,7 @@ class TagMapper {
 			->innerJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.bookmark_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)))
 			->groupBy('t.tag');
-		$tags = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
-		return $tags;
+		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 	}
 
 	/**
@@ -113,10 +110,10 @@ class TagMapper {
 	public function addTo($tags, int $bookmarkId) {
 		if (is_string($tags)) {
 			$tags = [$tags];
-		}else if (!is_array($tags)) {
+		} else if (!is_array($tags)) {
 			throw new InvalidArgumentException('$tag must be string or array of strings');
 		}
-		foreach($tags as $tag) {
+		foreach ($tags as $tag) {
 			$tag = trim($tag);
 			if (empty($tag)) {
 				//avoid saving white spaces
@@ -139,7 +136,7 @@ class TagMapper {
 				->insert('bookmarks_tags')
 				->values([
 					'tag' => $qb->createNamedParameter($tag),
-					'bookmark_id' => $qb->createNamedParameter($bookmarkId)
+					'bookmark_id' => $qb->createNamedParameter($bookmarkId),
 				]);
 			$qb->execute();
 		}

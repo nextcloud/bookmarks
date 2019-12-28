@@ -1,10 +1,11 @@
 <?php
+
 namespace OCA\Bookmarks\Migration;
 
 use OCP\DB\ISchemaWrapper;
-use OCP\Migration\SimpleMigrationStep;
-use OCP\Migration\IOutput;
 use OCP\IDBConnection;
+use OCP\Migration\IOutput;
+use OCP\Migration\SimpleMigrationStep;
 
 /**
  * Auto-generated migration step: Please modify to your needs!
@@ -92,11 +93,11 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			]);
 			$table->addColumn('can_write', 'boolean', [
 				'notnull' => true,
-				'default' => false
+				'default' => false,
 			]);
 			$table->addColumn('can_share', 'boolean', [
 				'notnull' => true,
-				'default' => false
+				'default' => false,
 			]);
 			$table->setPrimaryKey(['id']);
 			$table->addIndex(['created_at'], 'bookmarks_shared_created_at');
@@ -117,10 +118,10 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 				'length' => 64,
 			]);
 			$table->addColumn('user_id', 'string', [
-				'notnull' => true
+				'notnull' => true,
 			]);
 			$table->addColumn('title', 'string', [
-				'notnull' => true
+				'notnull' => true,
 			]);
 			$table->addColumn('parent_folder', 'bigint', [
 				'notnull' => true,

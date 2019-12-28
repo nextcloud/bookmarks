@@ -11,13 +11,12 @@ use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
-use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCA\Bookmarks\Service\Authorizer;
+use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use \OCP\AppFramework\Http\JSONResponse;
-use \OCP\AppFramework\Http;
-use \OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\JSONResponse;
 
 class FoldersController extends ApiController {
 	private $userId;
@@ -111,7 +110,7 @@ class FoldersController extends ApiController {
 			} catch (MultipleObjectsReturnedException $e) {
 				return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder share'], Http::STATUS_BAD_REQUEST);
 			}
-			if(is_null($share)) {
+			if (is_null($share)) {
 				return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder share'], Http::STATUS_BAD_REQUEST);
 			}
 			if ($share->getFolderId() === $folder->getId()) {
@@ -148,8 +147,6 @@ class FoldersController extends ApiController {
 		}
 		try {
 			$this->folderMapper->addToFolders($bookmarkId, [$folderId]);
-		} catch (UnauthorizedAccessError $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
@@ -236,7 +233,7 @@ class FoldersController extends ApiController {
 	 */
 	private function findShare($folder) {
 		$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $this->userId);
-		foreach($shares as $share) {
+		foreach ($shares as $share) {
 			if ($share->getFolderId() === $folder->getId() || $this->folderMapper->hasDescendantFolder($share->getFolderId(), $folder->getId())) {
 				return $share;
 			}
@@ -368,8 +365,6 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'success']);
 		} catch (ChildrenOrderValidationError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'invalid children order'], Http::STATUS_BAD_REQUEST);
-		} catch (UnauthorizedAccessError $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_BAD_REQUEST);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
@@ -424,6 +419,7 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function createFolderPublicToken($folderId) {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {

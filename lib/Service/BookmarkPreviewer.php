@@ -69,7 +69,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 		}
 
 		$previewers = [$this->screeenlyPreviewer, $this->defaultPreviewer];
-		foreach($previewers as $previewer) {
+		foreach ($previewers as $previewer) {
 			$image = $previewer->getImage($bookmark);
 			if (isset($image)) {
 				return $image;

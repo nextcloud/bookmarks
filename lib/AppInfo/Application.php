@@ -3,6 +3,7 @@
 /**
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
+ *
  * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Stefan Klemm <mail@stefan-klemm.de>
@@ -13,8 +14,8 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
-use \OCP\AppFramework\App;
-use \OCP\IContainer;
+use OCP\AppFramework\App;
+use OCP\IContainer;
 use OCP\IUser;
 
 class Application extends App {
@@ -26,10 +27,8 @@ class Application extends App {
 		$container->registerService('UserId', function ($c) {
 			/** @var IUser|null $user */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-
 			/** @var IContainer $c */
-			return $uid;
+			return is_null($user) ? null : $user->getUID();
 		});
 
 		$container->registerService('request', function ($c) {

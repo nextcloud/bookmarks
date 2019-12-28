@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Contract;
 
 use OCA\Bookmarks\Db\Bookmark;

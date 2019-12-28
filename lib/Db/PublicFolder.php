@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Db;
 
 use OCP\AppFramework\Db\Entity;

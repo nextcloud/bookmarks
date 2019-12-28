@@ -7,8 +7,10 @@ use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\TagMapper;
+use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -62,8 +64,8 @@ class HtmlImporter {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
 	 */
 	public function importFile($userId, string $file, int $rootFolder = -1) {
 		$content = file_get_contents($file);
@@ -79,8 +81,8 @@ class HtmlImporter {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
 	 */
 	public function import($userId, string $content, int $rootFolder = -1) {
 		$imported = [];
@@ -88,7 +90,7 @@ class HtmlImporter {
 		if ($rootFolder !== -1) {
 			$folder = $this->folderMapper->find($rootFolder);
 			if ($folder->getUserId() !== $userId) {
-				throw new UnauthorizedAccessError('Not allowed to access folder '.$rootFolder);
+				throw new UnauthorizedAccessError('Not allowed to access folder ' . $rootFolder);
 			}
 		}
 		$this->bookmarksParser->parse($content, false);
@@ -99,7 +101,7 @@ class HtmlImporter {
 			try {
 				$bm = $this->importBookmark($userId, $rootFolder, $bookmark);
 			} catch (UrlParseError $e) {
-				$errors[] = 'Failed to parse URL: '.$bookmark['href'];
+				$errors[] = 'Failed to parse URL: ' . $bookmark['href'];
 				continue;
 			}
 			$imported[] = ['type' => 'bookmark', 'id' => $bm->getId(), 'title' => $bookmark['title'], 'url' => $bookmark['href']];
@@ -116,8 +118,8 @@ class HtmlImporter {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
 	 */
 	private function importFolder($userId, array $folderParams, int $parentId, &$errors = []) {
 		$folder = new Folder();
@@ -130,7 +132,7 @@ class HtmlImporter {
 			try {
 				$bm = $this->importBookmark($userId, $folder->getId(), $bookmark);
 			} catch (UrlParseError $e) {
-				$errors[] = 'Failed to parse URL: '.$bookmark['href'];
+				$errors[] = 'Failed to parse URL: ' . $bookmark['href'];
 				continue;
 			}
 			$newFolder['children'][] = ['type' => 'bookmark', 'id' => $bm->getId(), 'title' => $bookmark['title'], 'url' => $bookmark['href']];
@@ -148,10 +150,9 @@ class HtmlImporter {
 	 * @return Bookmark|Entity
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws UnauthorizedAccessError
 	 * @throws UrlParseError
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
 	 */
 	private function importBookmark($userId, int $folderId, array $bookmark) {
 		$bm = new Bookmark();

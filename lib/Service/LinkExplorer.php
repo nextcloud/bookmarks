@@ -1,12 +1,13 @@
 <?php
+
 namespace OCA\Bookmarks\Service;
 
 use Marcelklehr\LinkPreview\Client as LinkPreview;
-use OCP\ILogger;
-use OCP\IConfig;
-use OCP\Http\Client\IClientService;
-use OCA\Bookmarks\Http\RequestFactory;
 use OCA\Bookmarks\Http\Client;
+use OCA\Bookmarks\Http\RequestFactory;
+use OCP\Http\Client\IClientService;
+use OCP\IConfig;
+use OCP\ILogger;
 use phpUri;
 
 class LinkExplorer {
@@ -52,7 +53,7 @@ class LinkExplorer {
 			return ['url' => $url];
 		}
 
-		$data['url'] = (string) $preview->getUrl();
+		$data['url'] = (string)$preview->getUrl();
 		if (isset($data['image'])) {
 			if (isset($data['image']['small'])) {
 				$data['image']['small'] = phpUri::parse($data['url'])->join($data['image']['small']);

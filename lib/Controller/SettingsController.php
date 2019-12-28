@@ -19,11 +19,11 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use \OCP\AppFramework\ApiController;
-use \OCP\AppFramework\Http\JSONResponse;
-use \OCP\AppFramework\Http;
-use \OCP\IConfig;
-use \OCP\IRequest;
+use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\IConfig;
+use OCP\IRequest;
 
 class SettingsController extends ApiController {
 
@@ -81,7 +81,7 @@ class SettingsController extends ApiController {
 	 * @NoAdminRequired
 	 */
 	public function setSorting($sorting = "") {
-		$legalArguments = ['title','added','clickcount','lastmodified'];
+		$legalArguments = ['title', 'added', 'clickcount', 'lastmodified'];
 		if (!in_array($sorting, $legalArguments)) {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
 		}
@@ -124,7 +124,7 @@ class SettingsController extends ApiController {
 	/**
 	 * set sorting option config value
 	 *
-	 * @param string $sorting
+	 * @param string $viewMode
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
