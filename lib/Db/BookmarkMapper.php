@@ -115,13 +115,23 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findAll($userId, array $filters, string $conjunction = 'and', string $sortBy = 'lastmodified', int $offset = 0, int $limit = -1) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(Bookmark::$columns);
-		$qb->groupBy(Bookmark::$columns);
+		$bookmark_cols = array_map(function($c) {
+			return 'b.'.$c;
+		},Bookmark::$columns);
 
+		$qb->select($bookmark_cols);
+		$qb->groupBy($bookmark_cols);
+
+		// Finds bookmarks in 2-levels nested shares only
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
+			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
+			->leftJoin('f', 'bookmarks_shares', 's', $qb->expr()->eq('f.folder_id', 's.folder_id'))
+			->leftJoin('s', 'bookmarks_shared', 'p', $qb->expr()->eq('s.id', 'p.share_id'))
+			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
+			->orWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
+
 
 		$this->_findBookmarksBuildFilter($qb, $filters, $conjunction);
 		$this->_queryBuilderSortAndPaginate($qb, $sortBy, $offset, $limit);

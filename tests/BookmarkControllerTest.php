@@ -10,6 +10,10 @@ use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
+use OCA\Bookmarks\Db\Share;
+use OCA\Bookmarks\Db\SharedFolder;
+use OCA\Bookmarks\Db\SharedFolderMapper;
+use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TagMapper;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\LinkExplorer;
@@ -112,6 +116,8 @@ class BookmarkControllerTest extends TestCase {
 		$this->tagMapper = \OC::$server->query(TagMapper::class);
 		$this->folderMapper = \OC::$server->query(FolderMapper::class);
 		$this->publicFolderMapper = \OC::$server->query(PublicFolderMapper::class);
+		$this->shareMapper = \OC::$server->query(ShareMapper::class);
+		$this->sharedFolderMapper = \OC::$server->query(SharedFolderMapper::class);
 
 		$bookmarkPreviewer = \OC::$server->query(BookmarkPreviewer::class);
 		$faviconPreviewer= \OC::$server->query(FaviconPreviewer::class);
@@ -152,19 +158,22 @@ class BookmarkControllerTest extends TestCase {
 		$this->tagMapper->addTo(['four'], $bookmark2->getId());
 		$this->bookmark1Id = $bookmark1->getId();
 		$this->bookmark2Id = $bookmark2->getId();
-
-		// Finish up publicRequest stub
-		$this->publicRequest->method('getHeader')
-			->willReturn('');
 	}
 
 	public function setupBookmarksWithPublicFolder() {
+		$this->setupBookmarks();
+
 		$this->folder1 = new Folder();
 		$this->folder1->setTitle('foo');
 		$this->folder1->setParentFolder(-1);
 		$this->folder1->setUserId($this->userId);
 		$this->folderMapper->insert($this->folder1);
 
+		$this->folder2 = new Folder();
+		$this->folder2->setTitle('bar');
+		$this->folder2->setParentFolder($this->folder1->getId());
+		$this->folder2->setUserId($this->userId);
+		$this->folderMapper->insert($this->folder2);
 
 		$this->publicFolder = new PublicFolder();
 		$this->publicFolder->setFolderId($this->folder1->getId());
@@ -174,34 +183,28 @@ class BookmarkControllerTest extends TestCase {
 		$this->publicRequest->method('getHeader')
 			->willReturn('Bearer '.$this->publicFolder->getId());
 
-		$this->folder2 = new Folder();
-		$this->folder2->setTitle('bar');
-		$this->folder2->setParentFolder($this->folder1->getId());
-		$this->folder2->setUserId($this->userId);
-		$this->folderMapper->insert($this->folder2);
+		$this->folderMapper->addToFolders($this->bookmark1Id, [$this->folder1->getId()]);
+		$this->folderMapper->addToFolders($this->bookmark2Id, [$this->folder2->getId()]);
+	}
 
-		$bookmark1 = Bookmark::fromArray([
-			'userId' => $this->userId,
-			'url' => "https://www.golem.de",
-			'title' => "Golem",
-			'description' => "PublicNoTag"
-		]);
-		$bookmark1 = $this->bookmarkMapper->insertOrUpdate($bookmark1);
-		$this->tagMapper->addTo(['four'], $bookmark1->getId());
-		$this->folderMapper->addToFolders($bookmark1->getId(), [$this->folder2->getId()]);
+	public function setupBookmarksWithSharedFolder() {
+		$this->setupBookmarksWithPublicFolder();
+		$this->share = new Share();
+		$this->share->setFolderId($this->folder1->getId());
+		$this->share->setOwner($this->userId);
+		$this->share->setParticipant($this->otherUserId);
+		$this->share->setType(ShareMapper::TYPE_USER);
+		$this->share->setCanWrite(true);
+		$this->share->setCanShare(false);
+		$this->shareMapper->insert($this->share);
 
-		$bookmark2 = Bookmark::fromArray([
-			'userId' => $this->userId,
-			'url' => "https://9gag.com",
-			'title' => "9gag",
-			'description' => "PublicTag"
-		]);
-		$bookmark2 = $this->bookmarkMapper->insertOrUpdate($bookmark2);
-		$this->tagMapper->addTo(['four'], $bookmark2->getId());
-		$this->folderMapper->addToFolders($bookmark2->getId(), [$this->folder2->getId()]);
-
-		$this->bookmark1Id = $bookmark1->getId();
-		$this->bookmark2Id = $bookmark2->getId();
+		$this->sharedFolder = new SharedFolder();
+		$this->sharedFolder->setShareId($this->share->getId());
+		$this->sharedFolder->setTitle('foo');
+		$this->sharedFolder->setParentFolder(-1);
+		$this->sharedFolder->setUserId($this->otherUser);
+		$this->sharedFolder->setIndex(0);
+		$this->sharedFolderMapper->insert($this->sharedFolder);
 	}
 
 	public function testRead() {
@@ -338,7 +341,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->setupBookmarksWithPublicFolder();
 		$output = $this->publicController->getBookmarks(-1, null,"or", "", [],10,false, $this->folder2->getId());
 		$data = $output->getData();
-		$this->assertEquals(2, count($data['data']));
+		$this->assertEquals(1, count($data['data'])); // TODO: 1-level search Limit!
 	}
 
 	public function testPublicCreateFail() {
@@ -364,10 +367,100 @@ class BookmarkControllerTest extends TestCase {
 		$this->assertEquals('error', $res->getData()['status']);
 	}
 
+	public function testReadShared() {
+		$this->cleanDB();
+		$this->setupBookmarksWithSharedFolder();
+		$output = $this->otherController->getSingleBookmark($this->bookmark2Id);
+		$data = $output->getData();
+		$this->assertEquals('success', $data['status']);
+		$this->assertEquals("https://9gag.com/", $data['item']['url']);
+	}
+
+	public function testQueryShared() {
+		$this->cleanDB();
+		$this->setupBookmarksWithSharedFolder();
+		$output = $this->otherController->getBookmarks();
+		$data = $output->getData();
+		$this->assertEquals(1, count($data['data'])); // TODO: 1 level search Limit
+	}
+
+	public function testCreateShared() {
+		$this->cleanDB();
+		$this->setupBookmarksWithSharedFolder();
+		$res = $this->otherController->newBookmark("https://www.heise.de", 'Heise', "Private", ["four"],[$this->folder1->getId()]);
+		$this->assertEquals('success', $res->getData()['status']);
+
+		// the bookmark should exist
+		$this->bookmarkMapper->findByUrl($this->userId, "https://www.heise.de");
+
+		// user should see this bookmark
+		$output = $this->controller->getBookmarks();
+		$data = $output->getData();
+		$this->assertEquals(3, count($data['data']));
+
+		// others should see this bookmark
+		$output = $this->otherController->getBookmarks();
+		$data = $output->getData();
+		$this->assertEquals(2, count($data['data'])); // TODO: 1 level search limit
+	}
+
+	public function testEditBookmarkShared() {
+		$this->cleanDB();
+		$this->setupBookmarksWithSharedFolder();
+		$res = $this->controller->newBookmark("https://www.heise.de", 'Heise', "PublicNoTag", ["four"],[$this->folder1->getId()]);
+		$this->assertEquals('success', $res->getData()['status']);
+		$id = $res->getData()['item']['id'];
+
+		$res = $this->otherController->editBookmark($id, 'https://www.heise.de', '');
+		$this->assertEquals('success', $res->getData()['status']);
+
+		$bookmark = $this->bookmarkMapper->find($id);
+		$this->assertEquals("https://www.heise.de/", $bookmark->getUrl()); // normalized URL
+		$this->assertEquals("", $bookmark->getTitle());
+	}
+
+	public function testDeleteBookmarkShared() {
+		$this->cleanDB();
+		$this->setupBookmarksWithSharedFolder();
+		$res = $this->controller->newBookmark("https://www.google.com", 'Google', "PrivateTag", ["one", 'two'], [$this->folder1->getId()]);
+		$this->assertEquals('success', $res->getData()['status']);
+		$id = $res->getData()['item']['id'];
+
+		$res = $this->otherController->deleteBookmark($id);
+		$this->assertEquals('success', $res->getData()['status']);
+
+		$exception = null;
+		try {
+			$this->bookmarkMapper->findByUrl($this->userId, "https://www.google.com");
+		}catch(\Exception $e){
+			$exception = $e;
+		}
+		$this->assertInstanceOf(DoesNotExistException::class, $exception, 'Expected bookmark not to exist and throw');
+	}
+
+	public function testClickSharedFail() {
+		$this->cleanDB();
+		$this->setupBookmarksWithSharedFolder();
+
+		$r = $this->otherController->clickBookmark('https://www.golem.de');
+		$this->assertInstanceOf(JSONResponse::class, $r);
+		$this->assertNotSame(Http::STATUS_OK, $r->getStatus());
+	}
+
 	public function cleanDB() {
 		$query1 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
 		$query1->execute();
 		$query2 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
 		$query2->execute();
+		$query3 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
+		$query3->execute();
+		$query4 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
+		$query4->execute();
+		$query5 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_public');
+		$query5->execute();
+		$query6 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_shared');
+		$query6->execute();
+		$query7 = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_shares');
+		$query7->execute();
 	}
 }

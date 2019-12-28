@@ -186,16 +186,16 @@ class FolderMapper extends QBMapper {
 	public function hasDescendantBookmark($folderId, $descendantBookmarkId) {
 		$newAncestors = $this->findByBookmark($descendantBookmarkId);
 		do {
-			$newAncestors = array_map(function ($ancestor) {
-				return $this->find($ancestor->getParentFolder());
-			}, array_filter($newAncestors, function ($ancestor) {
-				return $ancestor->getParentFolder() !== -1 && $ancestor->getId() !== -1;
-			}));
 			foreach ($newAncestors as $ancestor) {
 				if ($ancestor->getId() === $folderId) {
 					return true;
 				}
 			}
+			$newAncestors = array_map(function ($ancestor) {
+				return $this->find($ancestor->getParentFolder());
+			}, array_filter($newAncestors, function ($ancestor) {
+				return $ancestor->getParentFolder() !== -1 && $ancestor->getId() !== -1;
+			}));
 		} while (count($newAncestors) > 0);
 		return false;
 	}
@@ -623,7 +623,6 @@ class FolderMapper extends QBMapper {
 	 * @param array $folders Set of folders ids to add the bookmark to
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws UnauthorizedAccessError
 	 */
 	public function setToFolders(int $bookmarkId, array $folders) {
 		if (0 === count($folders)) {
@@ -647,7 +646,6 @@ class FolderMapper extends QBMapper {
 	 * @param array $folders Set of folders ids to add the bookmark to
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws UnauthorizedAccessError
 	 */
 	public function addToFolders(int $bookmarkId, array $folders) {
 		$bookmark = $this->bookmarkMapper->find($bookmarkId);
@@ -655,9 +653,6 @@ class FolderMapper extends QBMapper {
 			// check if folder exists
 			if ($folderId !== -1 && $folderId !== '-1') {
 				$folder = $this->find($folderId);
-				if ($folder->getUserId() !== $bookmark->getUserId()) {
-					throw new UnauthorizedAccessError('Can only add bookmarks to folders of the same user');
-				}
 			}
 
 			// check if this folder<->bookmark mapping already exists
