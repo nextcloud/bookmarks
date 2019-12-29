@@ -297,6 +297,19 @@ class FoldersController extends ApiController {
 		}
 		if (isset($title)) $folder->setTitle($title);
 		if (isset($parent_folder)) $folder->setParentFolder($parent_folder);
+		if ($parent_folder === -1 && $folder->getUserId() !== $this->userId) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Cannot move folders between different roots'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+		try {
+			$parentFolder = $this->folderMapper->find($folderId);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not find parent folder'], Http::STATUS_BAD_REQUEST);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_BAD_REQUEST);
+		}
+		if ($folder->getUserId() !== $parentFolder->getUserId()) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Cannot move folders between different user roots'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
 		try {
 			$folder = $this->folderMapper->update($folder);
 		} catch (DoesNotExistException $e) {

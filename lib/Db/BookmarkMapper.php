@@ -549,10 +549,10 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param Entity $entity
 	 * @return Entity
-	 * @throws AlreadyExistsError
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
+	 * @throws AlreadyExistsError
 	 */
 	public function insertOrUpdate(Entity $entity): Entity {
 		// normalize url
@@ -561,7 +561,6 @@ class BookmarkMapper extends QBMapper {
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		$exists = true;
 		try {
-
 			$existing = $this->findByUrl($entity->getUserId(), $entity->getUrl());
 			$entity->setId($existing->getId());
 		} catch (DoesNotExistException $e) {
