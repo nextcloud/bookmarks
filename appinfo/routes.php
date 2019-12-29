@@ -61,6 +61,11 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'internal_folders#get_folder_public_token', 'url' => '/folder/{folderId}/publictoken', 'verb' => 'GET'],
 	['name' => 'internal_folders#create_folder_public_token', 'url' => '/folder/{folderId}/publictoken', 'verb' => 'POST'],
 	['name' => 'internal_folders#delete_folder_public_token', 'url' => '/folder/{folderId}/publictoken', 'verb' => 'DELETE'],
+	['name' => 'internal_folders#get_shares', 'url' => '/folder/{folderId}/shares', 'verb' => 'GET'],
+	['name' => 'internal_folders#create_share', 'url' => '/folder/{folderId}/shares', 'verb' => 'POST'],
+	['name' => 'internal_folders#get_share', 'url' => '/share/{shareId}', 'verb' => 'GET'],
+	['name' => 'internal_folders#edit_share', 'url' => '/folder/share/{shareId}', 'verb' => 'PUT'],
+	['name' => 'internal_folders#delete_share', 'url' => '/folder/share/{shareId}', 'verb' => 'DELETE'],
 
 	// Public REST API
 	['name' => 'bookmark#get_bookmarks', 'url' => '/public/rest/v2/bookmark', 'verb' => 'GET'],
@@ -92,6 +97,11 @@ $application->registerRoutes($this, ['routes' => [
 	['name' => 'folders#get_folder_public_token', 'url' => '/public/rest/v2/folder/{folderId}/publictoken', 'verb' => 'GET'],
 	['name' => 'folders#create_folder_public_token', 'url' => '/public/rest/v2/folder/{folderId}/publictoken', 'verb' => 'POST'],
 	['name' => 'folders#delete_folder_public_token', 'url' => '/public/rest/v2/folder/{folderId}/publictoken', 'verb' => 'DELETE'],
+	['name' => 'folders#get_shares', 'url' => '/public/rest/v2/folder/{folderId}/shares', 'verb' => 'GET'],
+	['name' => 'folders#create_share', 'url' => '/public/rest/v2/folder/{folderId}/shares', 'verb' => 'POST'],
+	['name' => 'folders#get_share', 'url' => '/public/rest/v2/share/{shareId}', 'verb' => 'GET'],
+	['name' => 'folders#edit_share', 'url' => '/public/rest/v2/share/{shareId}', 'verb' => 'PUT'],
+	['name' => 'folders#delete_share', 'url' => '/public/rest/v2/share/{shareId}', 'verb' => 'DELETE'],
 
 	//Settings
 	['name' => 'settings#set_sorting', 'url' => '/settings/sorting', 'verb' => 'POST'],
