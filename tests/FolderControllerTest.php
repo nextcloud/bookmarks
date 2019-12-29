@@ -26,8 +26,10 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\IGroupManager;
 use OCP\IRequest;
 use \OCP\IURLGenerator;
+use OCP\IUserManager;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -76,6 +78,11 @@ class FolderControllerTest extends TestCase {
 	 */
 	private $publicFolderMapper;
 
+	/**
+	 * @var IGroupManager
+	 */
+	private $groupManager;
+
 	private $bookmark1Id;
 	private $bookmark2Id;
 
@@ -119,15 +126,22 @@ class FolderControllerTest extends TestCase {
 		$this->publicFolderMapper = \OC::$server->query(PublicFolderMapper::class);
 		$this->shareMapper = \OC::$server->query(ShareMapper::class);
 		$this->sharedFolderMapper = \OC::$server->query(SharedFolderMapper::class);
+		$this->groupManager = \OC::$server->query(IGroupManager::class);
+
+		/** @var IUserManager */
+		$userManager = \OC::$server->query(IUserManager::class);
+
+		$this->group = $this->groupManager->createGroup('foobar');
+		$this->group->addUser($userManager->get($this->otherUser));
 
 		$authorizer1 = \OC::$server->query(Authorizer::class);
 		$authorizer2 = \OC::$server->query(Authorizer::class);
 		$authorizer3 = \OC::$server->query(Authorizer::class);
 
-		$this->controller = new FoldersController('bookmarks', $this->request, $this->userId, $this->folderMapper, $this->bookmarkMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $authorizer1);
-		$this->otherController = new FoldersController('bookmarks', $this->request, $this->otherUserId, $this->folderMapper, $this->bookmarkMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $authorizer2);
-		$this->public = new FoldersController('bookmarks', $this->publicRequest, null, $this->folderMapper, $this->bookmarkMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $authorizer3);
-		$this->noauth = new FoldersController('bookmarks', $this->request, null, $this->folderMapper, $this->bookmarkMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $authorizer3);
+		$this->controller = new FoldersController('bookmarks', $this->request, $this->userId, $this->folderMapper, $this->bookmarkMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $authorizer1, $this->groupManager);
+		$this->otherController = new FoldersController('bookmarks', $this->request, $this->otherUserId, $this->folderMapper, $this->bookmarkMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $authorizer2, $this->groupManager);
+		$this->public = new FoldersController('bookmarks', $this->publicRequest, null, $this->folderMapper, $this->bookmarkMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $authorizer3, $this->groupManager);
+		$this->noauth = new FoldersController('bookmarks', $this->request, null, $this->folderMapper, $this->bookmarkMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $authorizer3, $this->groupManager);
 	}
 
 	public function setupBookmarks() {
@@ -564,6 +578,160 @@ class FolderControllerTest extends TestCase {
 		$this->assertCount(1, $data['data']);
 		$this->assertEquals('bar', $data['data'][0]['title']);
 		$this->assertCount(0, $data['data'][0]['children']);
+	}
+
+	/**
+	 * @param $participant
+	 * @param $type
+	 * @param $canWrite
+	 * @param $canShare
+	 * @dataProvider shareDataProvider
+	 */
+	public function testCreateShare($participant, $type, $canWrite, $canShare) {
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+	}
+
+	/**
+	 * @param $participant
+	 * @param $type
+	 * @param $canWrite
+	 * @param $canShare
+	 * @dataProvider shareDataProvider
+	 * @depends testCreateShare
+	 */
+	public function testGetShare($participant, $type, $canWrite, $canShare) {
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+		$res = $this->controller->getShare($data['item']['id']);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+		$res = $this->otherController->getShare($data['item']['id']);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+	}
+
+	/**
+	 * @param $participant
+	 * @param $type
+	 * @param $canWrite
+	 * @param $canShare
+	 * @dataProvider shareDataProvider
+	 * @depends testCreateShare
+	 */
+	public function testGetShares($participant, $type, $canWrite, $canShare) {
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+		$shareId = $data['item']['id'];
+		$res = $this->controller->getShares($this->folder1->getId());
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+		$this->assertEquals($shareId, $data['data'][0]['id']);
+
+		$res = $this->otherController->getShares($this->folder1->getId());
+		$data = $res->getData();
+		if ($canShare) {
+			$this->assertEquals('success', $data['status']);
+			$this->assertEquals($shareId, $data['data'][0]['id']);
+		}else{
+			$this->assertEquals('error', $data['status']);
+		}
+	}
+
+	/**
+	 * @param $participant
+	 * @param $type
+	 * @param $canWrite
+	 * @param $canShare
+	 * @dataProvider shareDataProvider
+	 * @depends testCreateShare
+	 */
+	public function testEditShare($participant, $type, $canWrite, $canShare) {
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+		$shareId = $data['item']['id'];
+
+		$res = $this->otherController->editShare($shareId, false, false);
+		$data = $res->getData();
+		if ($canShare) {
+			$this->assertEquals('success', $data['status']);
+		}else{
+			$this->assertEquals('error', $data['status']);
+		}
+
+		$res = $this->controller->editShare($shareId, false, false);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+	}
+
+	/**
+	 * @param $participant
+	 * @param $type
+	 * @param $canWrite
+	 * @param $canShare
+	 * @dataProvider shareDataProvider
+	 * @depends testCreateShare
+	 */
+	public function testDeleteShareOwner($participant, $type, $canWrite, $canShare) {
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+		$shareId = $data['item']['id'];
+
+		$res = $this->controller->deleteShare($shareId);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+	}
+
+	/**
+	 * @param $participant
+	 * @param $type
+	 * @param $canWrite
+	 * @param $canShare
+	 * @dataProvider shareDataProvider
+	 * @depends testCreateShare
+	 */
+	public function testDeleteShareSharee($participant, $type, $canWrite, $canShare) {
+		$this->cleanDB();
+		$this->setupBookmarks();
+		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
+		$data = $res->getData();
+		$this->assertEquals('success', $data['status']);
+		$shareId = $data['item']['id'];
+
+		$res = $this->otherController->deleteShare($shareId);
+		$data = $res->getData();
+		if ($canShare) {
+			$this->assertEquals('success', $data['status']);
+		}else{
+			$this->assertEquals('error', $data['status']);
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	function shareDataProvider() {
+		return [
+			['otheruser', ShareMapper::TYPE_USER, true, false],
+			['otheruser', ShareMapper::TYPE_USER, true, true],
+			['foobar', ShareMapper::TYPE_GROUP, true, false],
+			['foobar', ShareMapper::TYPE_GROUP, true, true],
+		];
 	}
 
 	public function cleanDB() {

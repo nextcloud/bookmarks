@@ -31,6 +31,18 @@ class SharedFolderMapper extends QBMapper {
 	}
 
 	/**
+	 * @param int $shareId
+	 * @return Entity[]
+	 */
+	public function findByShare(int $shareId) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(SharedFolder::$columns)
+			->from('bookmarks_shared')
+			->where($qb->expr()->eq('share_id', $qb->createPositionalParameter($shareId)));
+		return $this->findEntities($qb);
+	}
+
+	/**
 	 * @param int $folderId
 	 * @return Entity[]
 	 */

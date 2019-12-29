@@ -148,4 +148,46 @@ class InternalFoldersController extends ApiController {
 	public function deleteFolderPublicToken($folderId) {
 		return $this->controller->deleteFolderPublicToken($folderId);
 	}
+
+	/**
+	 * @param int $folderId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function getShares($folderId) {
+		return $this->controller->getShares($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param $participant
+	 * @param $type
+	 * @param bool $canWrite
+	 * @param bool $canShare
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function createShare($folderId, $participant, $type, $canWrite = false, $canShare = false) {
+		return $this->controller->createShare($folderId, $participant, $type, $canWrite, $canShare);
+	}
+
+	/**
+	 * @param $shareId
+	 * @param bool $canWrite
+	 * @param bool $canShare
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function editShare($shareId, $canWrite = false, $canShare = false) {
+		return $this->editShare($shareId, $canWrite, $canShare);
+	}
+
+	/**
+	 * @param int $shareId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function deleteShare($shareId) {
+		return $this->deleteShare($shareId);
+	}
 }

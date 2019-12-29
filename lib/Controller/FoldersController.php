@@ -8,15 +8,18 @@ use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Db\Share;
+use OCA\Bookmarks\Db\SharedFolder;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Service\Authorizer;
+use OCP\IGroup;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IGroupManager;
 
 class FoldersController extends ApiController {
 	private $userId;
@@ -43,7 +46,12 @@ class FoldersController extends ApiController {
 	 */
 	private $authorizer;
 
-	public function __construct($appName, $request, $userId, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, Authorizer $authorizer) {
+	/**
+	 * @var IGroupManager
+	 */
+	private $groupManager;
+
+	public function __construct($appName, $request, $userId, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, Authorizer $authorizer, IGroupManager $groupManager) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->folderMapper = $folderMapper;
@@ -52,6 +60,7 @@ class FoldersController extends ApiController {
 		$this->sharedFolderMapper = $sharedFolderMapper;
 		$this->shareMapper = $shareMapper;
 		$this->authorizer = $authorizer;
+		$this->groupManager = $groupManager;
 	}
 
 	/**
@@ -448,14 +457,162 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
-		try {
-			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
-		} catch (DoesNotExistException $e) {
-			return new Http\DataResponse(['status' => 'success']);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_BAD_REQUEST);
-		}
+		$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 		$this->publicFolderMapper->delete($publicFolder);
 		return new Http\DataResponse(['status' => 'success', 'item' => $publicFolder->getId()]);
+	}
+
+	/**
+	 * @param $shareId
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function getShare($shareId) {
+		try {
+			$share = $this->shareMapper->find($shareId);
+		} catch (DoesNotExistException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->userId, $this->request))) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function getShares($folderId) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		$shares = $this->shareMapper->findByFolder($folderId);
+		return new Http\DataResponse(['status' => 'success', 'data' => array_map(function(Share $share) {
+			return $share->toArray();
+		}, $shares)]);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param $participant
+	 * @param $type
+	 * @param bool $canWrite
+	 * @param bool $canShare
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function createShare($folderId, $participant, $type, $canWrite = false, $canShare = false) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		try {
+			$folder = $this->folderMapper->find($folderId);
+		} catch (DoesNotExistException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+
+		$share = new Share();
+		$share->setFolderId($folderId);
+		$share->setOwner($folder->getUserId());
+		$share->setParticipant($participant);
+		if ($type !== ShareMapper::TYPE_USER && $type !== ShareMapper::TYPE_GROUP) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Invalid share type'], Http::STATUS_BAD_REQUEST);
+		}
+		$share->setType($type);
+		$share->setCanWrite($canWrite);
+		$share->setCanShare($canShare);
+		$this->shareMapper->insert($share);
+
+		if ($type === ShareMapper::TYPE_USER) {
+			$this->_addSharedFolder($share, $folder, $participant);
+		}else if ($type === ShareMapper::TYPE_GROUP){
+			$group = $this->groupManager->get($participant);
+			$users = $group->getUsers();
+			foreach($users as $user) {
+				$this->_addSharedFolder($share, $folder, $user->getUID());
+			}
+		}
+		return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
+	}
+
+	/**
+	 * @param Share $share
+	 * @param Folder $folder
+	 * @param string $userId
+	 */
+	private function _addSharedFolder(Share $share, Folder $folder, string $userId) {
+		$sharedFolder = new SharedFolder();
+		$sharedFolder->setShareId($share->getId());
+		$sharedFolder->setTitle($folder->getTitle());
+		$sharedFolder->setParentFolder(-1);
+		$sharedFolder->setUserId($userId);
+		$sharedFolder->setIndex(0);
+		$this->sharedFolderMapper->insert($sharedFolder);
+	}
+
+	/**
+	 * @param $shareId
+	 * @param bool $canWrite
+	 * @param bool $canShare
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function editShare($shareId, $canWrite = false, $canShare = false) {
+		try {
+			$share = $this->shareMapper->find($shareId);
+		} catch (DoesNotExistException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->userId, $this->request))) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+
+		$share->setCanWrite($canWrite);
+		$share->setCanShare($canShare);
+		$this->shareMapper->update($share);
+
+		return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
+	}
+
+	/**
+	 * @param int $shareId
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 */
+	public function deleteShare($shareId) {
+		try {
+			$share = $this->shareMapper->find($shareId);
+		} catch (DoesNotExistException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->userId, $this->request))) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);
+		foreach($sharedFolders as $sharedFolder) {
+			$this->sharedFolderMapper->delete($sharedFolder);
+		}
+		$this->shareMapper->delete($share);
+		return new Http\DataResponse(['status' => 'success']);
 	}
 }
