@@ -510,41 +510,52 @@ class BookmarkController extends ApiController {
 				$bookmark->setDescription($description);
 			}
 
-			$isOwnBookmark = true;
 			if (isset($folders)) {
+				$foreignFolders = array_filter($folders, function($folderId) use ($bookmark){
+					try {
+						$folder = $this->folderMapper->find($folderId);
+						return ($bookmark->getUserId() !== $folder->getUserId());
+					} catch (DoesNotExistException $e) {
+						return false;
+					} catch (MultipleObjectsReturnedException $e) {
+						return false;
+					}
+				});
+				$ownFolders = array_filter($folders, function($folderId) use ($bookmark){
+					try {
+						$folder = $this->folderMapper->find($folderId);
+						return ($bookmark->getUserId() === $folder->getUserId());
+					} catch (DoesNotExistException $e) {
+						return false;
+					} catch (MultipleObjectsReturnedException $e) {
+						return false;
+					}
+				});
+
 				$permissions = Authorizer::PERM_ALL;
-				foreach ($folders as $folder) {
+				foreach ($foreignFolders as $folder) {
 					$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->userId, $this->request);
 				}
 				if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions)) {
 					return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 				}
-				$this->bookmarkMapper->delete($bookmark);
-				$isOwnBookmark = false;
-				foreach ($folders as $folderId) {
-					try {
-						$folder = $this->folderMapper->find($folderId);
-					} catch (DoesNotExistException $e) {
-						continue;
-					} catch (MultipleObjectsReturnedException $e) {
-						continue;
-					}
-					if ($bookmark->getUserId() !== $folder->getUserId()) {
+				foreach ($foreignFolders as $folderId) {
+					$folder = $this->folderMapper->find($folderId);
 						$bookmark->setUserId($folder->getUserId());
 						$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $bookmark->getUserId(), isset($tags) ? $tags : [], [$folder->getId()]);
-					} else {
-						$this->folderMapper->addToFolders($bookmark->getId(), [$folderId]);
-						$isOwnBookmark = true;
-					}
+				}
+
+				$this->folderMapper->addToFolders($bookmark->getId(), $ownFolders);
+				if (count($ownFolders) === 0) {
+					$this->bookmarkMapper->delete($bookmark);
+					return new JSONResponse(['item' => $this->_returnBookmarkAsArray($bookmark), 'status' => 'success']);
 				}
 			}
 
-			if ($isOwnBookmark) {
-				if (is_array($tags)) {
-					$this->tagMapper->setOn($tags, $bookmark->getId());
-				}
-				$bookmark = $this->bookmarkMapper->update($bookmark);
+			if (is_array($tags)) {
+				$this->tagMapper->setOn($tags, $bookmark->getId());
 			}
+			$bookmark = $this->bookmarkMapper->update($bookmark);
 		} catch (AlreadyExistsError $e) {
 			// This is really unlikely, as we make sure to use the existing one if it already exists
 			return new JSONResponse(['status' => 'error', 'data' => 'Bookmark already exists'], Http::STATUS_BAD_REQUEST);
