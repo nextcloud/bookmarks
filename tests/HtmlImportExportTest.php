@@ -130,7 +130,7 @@ class HtmlImportExportTest  extends TestCase {
 		$this->assertCount(4, $rootFolders);
 		foreach($rootFolders as $rootFolder) {
 			foreach($this->bookmarkMapper->findByFolder($rootFolder['id']) as $bookmark) {
-				$this->assertStringContainsString($bookmark->getUrl(), $exported);
+				$this->assertContains($bookmark->getUrl(), $exported);
 			}
 		}
 	}

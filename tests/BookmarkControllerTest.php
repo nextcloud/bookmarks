@@ -99,7 +99,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->otherUser = 'otheruser';
 		$this->request = \OC::$server->getRequest();
 
-		$this->publicRequest = $this->createStub(IRequest::class);
+		$this->publicRequest = $this->createMock(IRequest::class);
 
 		$this->userManager = \OC::$server->getUserManager();
 		if (!$this->userManager->userExists($this->user)) {
