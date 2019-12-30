@@ -751,7 +751,7 @@ class BookmarkController extends ApiController {
 
 		return new JSONResponse([
 			'status' => 'success',
-			'data' => $result['children'],
+			'data' => $result['imported'],
 		]);
 	}
 
