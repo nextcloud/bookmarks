@@ -516,15 +516,15 @@ class FolderMapper extends QBMapper {
 		array_multisort(array_column($children, 'index'), \SORT_ASC, $children);
 		$children = array_map(function ($child) use ($layers) {
 			if (isset($child['bookmark_id'])) {
-				return ['type' => self::TYPE_BOOKMARK, 'id' => $child['bookmark_id']];
+				return ['type' => self::TYPE_BOOKMARK, 'id' => (int) $child['bookmark_id']];
 			} else {
 				$id = isset($child['id']) ? $child['id'] : $child['folder_id'];
 				if ($layers === 1) {
-					return ['type' => self::TYPE_FOLDER, 'id' => $id];
+					return ['type' => self::TYPE_FOLDER, 'id' => (int) $id];
 				} else {
 					return [
 						'type' => self::TYPE_FOLDER,
-						'id' => $id,
+						'id' => (int) $id,
 						'children' => $this->getChildren($id, $layers - 1),
 					];
 				}
