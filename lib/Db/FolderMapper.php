@@ -547,7 +547,7 @@ class FolderMapper extends QBMapper {
 		$childHashes = array_map(function ($item) use ($fields, $entity) {
 			switch ($item['type']) {
 				case self::TYPE_BOOKMARK:
-					return $this->bookmarkMapper->hashBookmark($item['id'], $fields);
+					return $this->bookmarkMapper->hash($item['id'], $fields);
 				case self::TYPE_FOLDER:
 					return $this->hashFolder($entity->getUserId(), $item['id'], $fields);
 				default:
