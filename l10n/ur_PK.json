@@ -1,0 +1,11 @@
+{ "translations": {
+    "Rename" : "Rename",
+    "Move" : "Move",
+    "Delete" : "حذف کریں",
+    "Save" : "حفظ",
+    "Notes" : "Notes",
+    "Select" : "Select",
+    "Title" : "عنوان",
+    "Link" : "Link"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

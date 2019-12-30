@@ -54,6 +54,7 @@ OC.L10N.register(
     "{time} ago" : "{time} πριν",
     "Select" : "Επιλογή",
     "Previews" : "Προεπισκοπήσεις",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Προκειμένου να προβάλλονται πραγματικά στιγμιότυπα οθόνης των ιστότοπων με σελιδοδείκτες, οι Σελιδοδείκτες μπορούν να χρησιμοποιήσουν μια υπηρεσία τρίτου μέρους για τη δημιουργία αυτών.",
     "Screeenly" : "Screeenly",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Κλειδί Screeenly API",

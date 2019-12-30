@@ -1,0 +1,21 @@
+{ "translations": {
+    "Details" : "Thông tin",
+    "Rename" : "Đổi tên",
+    "Move" : "Dịch chuyển",
+    "Delete" : "Xóa",
+    "Save" : "Lưu",
+    "New folder" : "Tạo thư mục",
+    "Create" : "Tạo mới",
+    "Import" : "Nhập vào",
+    "Export" : "Xuất ra",
+    "Recently added" : "Mới thêm",
+    "Clear data" : "Xóa dữ liệu",
+    "Tags" : "Thẻ",
+    "Notes" : "Ghi chép",
+    "Sharing" : "Đang chia sẽ",
+    "Select" : "Select",
+    "Privacy" : "Riêng tư",
+    "Title" : "Tên",
+    "Link" : "Liên kết"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

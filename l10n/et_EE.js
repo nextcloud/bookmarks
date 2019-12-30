@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "bookmarks",
+    {
+    "Details" : "Üksikasjad",
+    "Rename" : "Nimeta ümber",
+    "Move" : "Liiguta",
+    "Delete" : "Kustuta",
+    "Save" : "Salvesta",
+    "New folder" : "Uus kaust",
+    "Grid view" : "Ruudustikvaade",
+    "List view" : "Nimekirjavaade",
+    "Create" : "Loo",
+    "Import" : "Impordi",
+    "Export" : "Ekspordi",
+    "Recently added" : "Viimati lisatud",
+    "Alphabetically" : "Tähestikujärjekorras",
+    "Last modified" : "Viimati muudetud",
+    "Clear data" : "Tühjenda andmed",
+    "Tags" : "Sildid",
+    "Notes" : "Märkmed",
+    "Sharing" : "Jagamine",
+    "Select" : "Vali",
+    "Privacy" : "Privaatsus",
+    "Title" : "Pealkiri",
+    "Link" : "Link"
+},
+"nplurals=2; plural=(n != 1);");

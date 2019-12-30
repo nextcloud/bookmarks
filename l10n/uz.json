@@ -1,0 +1,10 @@
+{ "translations": {
+    "Rename" : "Nomni o'zgartiring",
+    "Move" : "Ko'chiring",
+    "Delete" : "O'chir",
+    "Save" : "Saqlash",
+    "Tags" : "Teglar",
+    "Notes" : "Eslatmalar",
+    "Link" : "Ulanish"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

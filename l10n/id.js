@@ -1,0 +1,26 @@
+OC.L10N.register(
+    "bookmarks",
+    {
+    "Details" : "Detil",
+    "Rename" : "Ubah nama",
+    "Move" : "Pindah",
+    "Delete" : "Hapus",
+    "Save" : "Simpan",
+    "New folder" : "Folder baru",
+    "Grid view" : "Tampilan kotak",
+    "List view" : "Tampilan lis",
+    "Create" : "Buat",
+    "Import" : "Impor",
+    "Export" : "Ekspor",
+    "Recently added" : "Baru ditambah",
+    "Last modified" : "Terakhir diubah",
+    "Clear data" : "Bersihkan data",
+    "Tags" : "Tag",
+    "Notes" : "Catatan",
+    "Sharing" : "Berbagi",
+    "Select" : "Pilih",
+    "Privacy" : "Privasi",
+    "Title" : "Judul",
+    "Link" : "Tautan"
+},
+"nplurals=1; plural=0;");
