@@ -104,7 +104,7 @@ export default {
 						+ new URLSearchParams(
 							Object.assign({}, this.$store.state.fetchState.query, {
 								format: 'rss',
-								page: -1
+								page: -1,
 							})
 						).toString()
 				)
@@ -115,7 +115,7 @@ export default {
 		},
 		sorting() {
 			return this.$store.state.settings.sorting
-		}
+		},
 	},
 	methods: {
 		onImportOpen(e) {
@@ -132,7 +132,7 @@ export default {
 		async onChangeSorting(e) {
 			await this.$store.dispatch(actions.SET_SETTING, {
 				key: 'sorting',
-				value: e.target.value
+				value: e.target.value,
 			})
 			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
@@ -152,8 +152,8 @@ export default {
 			}
 			await this.$store.dispatch(actions.DELETE_BOOKMARKS)
 			this.$router.push({ name: 'home' })
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

@@ -77,7 +77,7 @@ class HtmlExporter {
 		if ($id !== -1) {
 			$folder = $this->folderMapper->find($id);
 			if ($folder->getUserId() !== $userId) {
-				throw new UnauthorizedAccessError('Insufficient permissions for folder '.$id);
+				throw new UnauthorizedAccessError('Insufficient permissions for folder ' . $id);
 			}
 			$output = '<DT><h3>' . htmlspecialchars($folder->getTitle()) . '</h3>' . "\n"
 				. '<DL><p>';

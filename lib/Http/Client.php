@@ -2,12 +2,12 @@
 
 namespace OCA\Bookmarks\Http;
 
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Psr7\Response;
 use OCP\Http\Client\IClient;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7;
 
 class Client implements ClientInterface {
 	protected $nextcloudClient;
@@ -28,15 +28,17 @@ class Client implements ClientInterface {
 	 * object that is actually sent. For example, the Request object that is returned by an exception MAY
 	 * be a different object than the one passed to sendRequest, so comparison by reference (===) is not possible.
 	 *
-	 * {@link https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-7-http-message-meta.md#why-value-objects}
+	 * {@link
+	 * https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-7-http-message-meta.md#why-value-objects}
 	 *
 	 * @param RequestInterface $request
 	 *
 	 * @return ResponseInterface
 	 *
 	 * @throws \Psr\Http\Client\ClientException If an error happens while processing the request.
+	 * @throws \Exception
 	 */
-	public function sendRequest(RequestInterface $request) : ResponseInterface {
+	public function sendRequest(RequestInterface $request): ResponseInterface {
 		if ($request->getMethod() === 'GET' || $request->getMethod() === 'OPTIONS') {
 			$ncRes = $this->nextcloudClient->{strtolower($request->getMethod())}($request->getUri(), ['timeout' => 10]);
 			$res = new Response();
@@ -46,8 +48,8 @@ class Client implements ClientInterface {
 			}
 
 			return $res
-			->withStatus($ncRes->getStatusCode())
-			->withBody(Psr7\stream_for($ncRes->getBody()));
+				->withStatus($ncRes->getStatusCode())
+				->withBody(Psr7\stream_for($ncRes->getBody()));
 		} else {
 			throw new \Exception('Can only send GET or OPTIONS requests'); // XXX: How should Streams be sent using nextcloud?
 		}

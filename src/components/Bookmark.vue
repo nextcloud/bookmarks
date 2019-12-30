@@ -79,13 +79,13 @@ export default {
 	components: {
 		Actions,
 		ActionButton,
-		TagLine
+		TagLine,
 	},
 	props: {
 		bookmark: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return { title: this.bookmark.title, renaming: false, selected: false }
@@ -112,7 +112,7 @@ export default {
 		},
 		viewMode() {
 			return this.$store.state.viewMode
-		}
+		},
 	},
 	watch: {
 		selected(val, oldVal) {
@@ -121,14 +121,14 @@ export default {
 			} else {
 				this.$store.commit(mutations.REMOVE_SELECTION_BOOKMARK, this.bookmark)
 			}
-		}
+		},
 	},
 	created() {},
 	methods: {
 		onDelete() {
 			this.$store.dispatch(actions.DELETE_BOOKMARK, {
 				id: this.bookmark.id,
-				folder: this.$store.state.fetchState.query.folder
+				folder: this.$store.state.fetchState.query.folder,
 			})
 		},
 		onDetails() {
@@ -151,8 +151,8 @@ export default {
 		},
 		clickSelect() {
 			this.selected = !this.selected
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

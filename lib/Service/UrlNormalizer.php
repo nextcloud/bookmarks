@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\Exception\UrlParseError;

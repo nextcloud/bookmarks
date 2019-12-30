@@ -1,10 +1,11 @@
 <?php
+
 namespace OCA\Bookmarks\Migration;
 
 use OCP\DB\ISchemaWrapper;
-use OCP\Migration\SimpleMigrationStep;
-use OCP\Migration\IOutput;
 use OCP\IDBConnection;
+use OCP\Migration\IOutput;
+use OCP\Migration\SimpleMigrationStep;
 
 /**
  * Auto-generated migration step: Please modify to your needs!
@@ -37,13 +38,13 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 		$table->addColumn('index', 'bigint', [
 			'notnull' => true,
 			'length' => 64,
-			'default' => 0
+			'default' => 0,
 		]);
 		$table = $schema->getTable('bookmarks_folders_bookmarks');
 		$table->addColumn('index', 'bigint', [
 			'notnull' => true,
 			'length' => 64,
-			'default' => 0
+			'default' => 0,
 		]);
 		return $schema;
 	}
@@ -61,24 +62,24 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 		foreach ($folders as $folder) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
-			->select('id', 'title', 'parent_folder')
-			->from('bookmarks_folders')
-			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folder)))
-			->orderBy('title', 'DESC');
+				->select('id', 'title', 'parent_folder')
+				->from('bookmarks_folders')
+				->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folder)))
+				->orderBy('title', 'DESC');
 			$childFolders = $qb->execute()->fetchAll();
 
 			$qb = $this->db->getQueryBuilder();
 			$qb
-			->select('bookmark_id')
-			->from('bookmarks_folders_bookmarks')
-			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder)));
+				->select('bookmark_id')
+				->from('bookmarks_folders_bookmarks')
+				->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder)));
 			$childBookmarks = $qb->execute()->fetchAll();
 
 			$children = array_merge($childFolders, $childBookmarks);
 			$children = array_map(function ($child) {
 				return $child['bookmark_id'] ?
-			  ['type' =>  'bookmark', 'id' => $child['bookmark_id']]
-			: ['type' => 'folder', 'id' => $child['id']];
+					['type' => 'bookmark', 'id' => $child['bookmark_id']]
+					: ['type' => 'folder', 'id' => $child['id']];
 			}, $children);
 			if (count($children) > 0) {
 				continue;

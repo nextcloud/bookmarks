@@ -24,6 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OCA\Bookmarks\Service;
 
 use OCP\Files\IAppData;
@@ -32,7 +33,7 @@ use OCP\Files\NotPermittedException;
 use OCP\ICache;
 
 class FileCache implements ICache {
-	const TIMEOUT = 60*60*24*30*2; // two months
+	const TIMEOUT = 60 * 60 * 24 * 30 * 2; // two months
 
 	protected $storage;
 
@@ -87,6 +88,7 @@ class FileCache implements ICache {
 		$file->putContent($value);
 		return true;
 	}
+
 	/**
 	 * @param string $key
 	 * @return bool

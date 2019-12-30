@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Settings;
 
 use OCP\IL10N;

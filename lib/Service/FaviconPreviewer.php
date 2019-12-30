@@ -22,8 +22,8 @@ namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
-use OCP\ILogger;
 use OCP\Http\Client\IClientService;
+use OCP\ILogger;
 
 class FaviconPreviewer extends DefaultBookmarkPreviewer {
 	/**

@@ -53,7 +53,7 @@ export default {
 	components: { AppSidebar, AppSidebarTab, Multiselect },
 	data() {
 		return {
-			description: ''
+			description: '',
 		}
 	},
 	computed: {
@@ -75,7 +75,7 @@ export default {
 				const duration = humanizeDuration(age, {
 					language: OC.getLanguage().split('-')[0],
 					units: ['d', 'h', 'm', 's'],
-					largest: 1
+					largest: 1,
 				})
 				return this.t('bookmarks', '{time} ago', { time: duration })
 			} else {
@@ -87,12 +87,12 @@ export default {
 		},
 		allTags() {
 			return this.$store.state.tags.map(tag => tag.name)
-		}
+		},
 	},
 	watch: {
 		bookmark(newBookmark) {
 			this.description = newBookmark.description
-		}
+		},
 	},
 	created() {},
 	methods: {
@@ -117,8 +117,8 @@ export default {
 				await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id)
 				await this.$store.dispatch(actions.LOAD_TAGS)
 			}, 1000)
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

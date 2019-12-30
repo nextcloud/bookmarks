@@ -2,11 +2,9 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use \OCA\Bookmarks\Bookmarks;
-use \OCP\AppFramework\Http\JSONResponse;
-use \OCP\AppFramework\Http;
-use \OCP\AppFramework\ApiController;
-use \OCP\IRequest;
+use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\JSONResponse;
 
 class InternalFoldersController extends ApiController {
 	private $userId;
@@ -93,7 +91,7 @@ class InternalFoldersController extends ApiController {
 	/**
 	 * @param int $folderId
 	 * @param string $title
-	 * @param int $parent
+	 * @param null $parent_folder
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -109,18 +107,87 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function hashFolder($folderId, $fields=['title', 'url']) {
+	public function hashFolder($folderId, $fields = ['title', 'url']) {
 		return $this->controller->hashFolder($folderId, $fields);
 	}
 
 	/**
 	 * @param int $root the id of the root folder whose descendants to return
-	 * @param int $layers the number of layers of hierarchy too return
+	 * @param int $layers the number of layers of hierarchy to return
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
 	public function getFolders($root = -1, $layers = 0) {
 		return $this->controller->getFolders($root, $layers);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function getFolderPublicToken($folderId) {
+		return $this->controller->getFolderPublicToken($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function createFolderPublicToken($folderId) {
+		return $this->controller->createFolderPublicToken($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function deleteFolderPublicToken($folderId) {
+		return $this->controller->deleteFolderPublicToken($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function getShares($folderId) {
+		return $this->controller->getShares($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param $participant
+	 * @param $type
+	 * @param bool $canWrite
+	 * @param bool $canShare
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function createShare($folderId, $participant, $type, $canWrite = false, $canShare = false) {
+		return $this->controller->createShare($folderId, $participant, $type, $canWrite, $canShare);
+	}
+
+	/**
+	 * @param $shareId
+	 * @param bool $canWrite
+	 * @param bool $canShare
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function editShare($shareId, $canWrite = false, $canShare = false) {
+		return $this->editShare($shareId, $canWrite, $canShare);
+	}
+
+	/**
+	 * @param int $shareId
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 */
+	public function deleteShare($shareId) {
+		return $this->deleteShare($shareId);
 	}
 }

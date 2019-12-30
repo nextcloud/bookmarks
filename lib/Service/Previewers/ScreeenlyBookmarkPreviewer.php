@@ -17,13 +17,16 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OCA\Bookmarks\Service\Previewers;
 
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Service\FileCache;
+use OCP\Files\NotFoundException;
+use OCP\Files\NotPermittedException;
+use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\ILogger;
-use OCP\Http\Client\IClientService;
 
 class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	// Cache for one month
@@ -67,14 +70,14 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	}
 
 	private function buildKey($url) {
-		return self::CACHE_PREFIX.'-'.md5($url);
+		return self::CACHE_PREFIX . '-' . md5($url);
 	}
 
 	/**
 	 * @param $bookmark
 	 * @return array|null image data
-	 * @throws \OCP\Files\NotFoundException
-	 * @throws \OCP\Files\NotPermittedException
+	 * @throws NotFoundException
+	 * @throws NotPermittedException
 	 */
 	public function getImage($bookmark) {
 		if ($this->enabled === 'false') {
@@ -97,7 +100,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 			}
 			return [
 				'contentType' => $image['contentType'],
-				'data' => base64_decode($image['data'])
+				'data' => base64_decode($image['data']),
 			];
 		}
 
@@ -113,7 +116,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 		// Store in cache for next time
 		$json = json_encode([
 			'contentType' => $image['contentType'],
-			'data' => base64_encode($image['data'])
+			'data' => base64_encode($image['data']),
 		]);
 		$this->cache->set($key, $json, self::CACHE_TTL);
 
@@ -123,13 +126,13 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	public function fetchScreenshot($url) {
 		try {
 			$response = $this->client->post($this->apiUrl, ['body' => [
-					'key'    => $this->apiKey,
-					'url'    => $url,
-					'width'  => $this->width,
-					'height' => $this->height
-				],
-				'timeout' => self::HTTP_TIMEOUT
-		  ]);
+				'key' => $this->apiKey,
+				'url' => $url,
+				'width' => $this->width,
+				'height' => $this->height,
+			],
+				'timeout' => self::HTTP_TIMEOUT,
+			]);
 			$body = json_decode($response->getBody(), true);
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ['app' => 'bookmarks']);
@@ -143,7 +146,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 
 		return [
 			'contentType' => 'image/jpeg',
-			'data' => base64_decode($body['base64_raw'])
+			'data' => base64_decode($body['base64_raw']),
 		];
 	}
 }

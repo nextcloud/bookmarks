@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Db;
 
 use OCP\AppFramework\Db\Entity;
@@ -19,8 +20,8 @@ class Bookmark extends Entity {
 
 	public static function fromArray($props) {
 		$bookmark = new Bookmark();
-		foreach($props as $prop => $val) {
-			$bookmark->{'set'.$prop}($val);
+		foreach ($props as $prop => $val) {
+			$bookmark->{'set' . $prop}($val);
 		}
 		return $bookmark;
 	}
@@ -38,9 +39,9 @@ class Bookmark extends Entity {
 		$this->addType('lastPreview', 'integer');
 	}
 
-	public function toArray() : array {
+	public function toArray(): array {
 		$array = [];
-		foreach(self::$fields as $field) {
+		foreach (self::$fields as $field) {
 			$array[$field] = $this->{$field};
 		}
 		return $array;
@@ -51,6 +52,6 @@ class Bookmark extends Entity {
 	}
 
 	public function incrementClickcount() {
-		$this->setClickcount($this->clickcount+1);
+		$this->setClickcount($this->clickcount + 1);
 	}
 }

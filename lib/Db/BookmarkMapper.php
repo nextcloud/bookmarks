@@ -9,10 +9,10 @@ use OCA\Bookmarks\Service\UrlNormalizer;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\QBMapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -37,18 +37,34 @@ class BookmarkMapper extends QBMapper {
 	private $limit;
 
 	/**
+	 * @var PublicFolderMapper
+	 */
+	private $publicMapper;
+
+	/**
+	 * @var TagMapper
+	 */
+	private $tagMapper;
+
+
+	/**
 	 * BookmarkMapper constructor.
 	 *
 	 * @param IDBConnection $db
 	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param UrlNormalizer $urlNormalizer
+	 * @param IConfig $config
+	 * @param PublicFolderMapper $publicMapper
+	 * @param TagMapper $tagMapper
 	 */
-	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config) {
-		parent::__construct($db, 'bookmarks');
+	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper) {
+		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
 		$this->config = $config;
 		$this->limit = intval($config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0));
+		$this->publicMapper = $publicMapper;
+		$this->tagMapper = $tagMapper;
 	}
 
 	/**
@@ -100,13 +116,23 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findAll($userId, array $filters, string $conjunction = 'and', string $sortBy = 'lastmodified', int $offset = 0, int $limit = -1) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(Bookmark::$columns);
-		$qb->groupBy(Bookmark::$columns);
+		$bookmark_cols = array_map(function ($c) {
+			return 'b.' . $c;
+		}, Bookmark::$columns);
 
+		$qb->select($bookmark_cols);
+		$qb->groupBy($bookmark_cols);
+
+		// Finds bookmarks in 2-levels nested shares only
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
+			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
+			->leftJoin('f', 'bookmarks_shares', 's', $qb->expr()->eq('f.folder_id', 's.folder_id'))
+			->leftJoin('s', 'bookmarks_shared', 'p', $qb->expr()->eq('s.id', 'p.share_id'))
+			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
+			->orWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
+
 
 		$this->_findBookmarksBuildFilter($qb, $filters, $conjunction);
 		$this->_queryBuilderSortAndPaginate($qb, $sortBy, $offset, $limit);
@@ -268,8 +294,92 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 *
+	 * @param $token
+	 * @param array $filters
+	 * @param string $conjunction
+	 * @param string $sortBy
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array|Entity[]
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function findAllInPublicFolder($token, array $filters, string $conjunction = 'and', string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+		$publicFolder = $this->publicMapper->find($token);
+
+		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
+		// Really inefficient, but what can you do.
+		return array_filter($bookmarks, function ($bookmark) use ($filters, $conjunction) {
+
+			$tagsFound = $this->tagMapper->findByBookmark($bookmark->getId());
+			return array_reduce($filters, function ($isMatch, $filter) use ($bookmark, $tagsFound, $conjunction) {
+				$filter = strtolower($filter);
+
+
+				$res = in_array($filter, $tagsFound)
+					|| str_contains($filter, strtolower($bookmark->getTitle()))
+					|| str_contains($filter, strtolower($bookmark->getDescription()))
+					|| str_contains($filter, strtolower($bookmark->getUrl()));
+				return $conjunction === 'and' ? $res && $isMatch : $res || $isMatch;
+			}, $conjunction === 'and' ? true : false);
+		});
+	}
+
+	/**
+	 *
+	 * @param $token
+	 * @param array $tags
+	 * @param string $sortBy
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array|Entity[]
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function findByTagsInPublicFolder($token, array $tags = [], string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+		$publicFolder = $this->publicMapper->find($token);
+
+		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
+		// Really inefficient, but what can you do.
+		return array_filter($bookmarks, function ($bookmark) use ($tags) {
+
+			$tagsFound = $this->tagMapper->findByBookmark($bookmark->getId());
+			return array_reduce($tags, function ($isFound, $tag) use ($tagsFound) {
+				return in_array($tag, $tagsFound) && $isFound;
+			}, true);
+		});
+	}
+
+	/**
+	 *
+	 * @param $token
+	 * @param string $sortBy
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array|Entity[]
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function findUntaggedInPublicFolder($token, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+		$publicFolder = $this->publicMapper->find($token);
+
+		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
+		// Really inefficient, but what can you do.
+		return array_filter($bookmarks, function ($bookmark) {
+
+			$tags = $this->tagMapper->findByBookmark($bookmark->getId());
+			return count($tags) === 0;
+		});
+	}
+
+
+	/**
 	 * @param $userId
 	 * @param int $folderId
+	 * @param string $sortBy
+	 * @param int $offset
+	 * @param int $limit
 	 * @return array|Entity[]
 	 */
 	public function findByUserFolder($userId, int $folderId, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
@@ -367,7 +477,10 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function update(Entity $entity): Entity {
 		// normalize url
+
+
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+
 		$entity->setLastmodified(time());
 
 		$newEntity = parent::update($entity);
@@ -395,15 +508,23 @@ class BookmarkMapper extends QBMapper {
 		}
 
 		// normalize url
+
+
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+
 		if ($entity->getAdded() === null) $entity->setAdded(time());
+
 		$entity->setLastmodified(time());
+
 		$entity->setAdded(time());
+
 		$entity->setLastPreview(0);
+
 		$entity->setClickcount(0);
 
 		$exists = true;
 		try {
+
 			$this->findByUrl($entity->getUserId(), $entity->getUrl());
 		} catch (DoesNotExistException $e) {
 			$exists = false;
@@ -428,13 +549,15 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param Entity $entity
 	 * @return Entity
-	 * @throws AlreadyExistsError
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
+	 * @throws AlreadyExistsError
 	 */
 	public function insertOrUpdate(Entity $entity): Entity {
 		// normalize url
+
+
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		$exists = true;
 		try {

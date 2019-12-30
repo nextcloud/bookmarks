@@ -1,75 +1,120 @@
-## v2.3.1
+# Changelog
+All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## [2.3.4] - 2019-12-12
+
+### Changed
+- Fix Bookmark creation outside folders
+- Fix browser compatibility
+
+## [2.3.3]
+
+### Changed
+- Fix Creating bookmarks in the current folder
+
+## [2.3.2]
+
+### Changed
+- Fix webpack build
+- Fix Creating bookmarks in the current folder
+- Fix Make folder icons clickable
+- Fix translations
+
+## [2.3.1]
+
+### Changed
 - FIX: Load tags on app init
 
-## v2.3.0
+## [2.3.0]
 
- - NEW: UI: Implement bulk editing
- - NEW: translations from transifex
- - FIX: overflow on bookmarks list
- - FIX: sorting
- - FIX: Fix humanized duration: Use stem language only
+### Added
+ - UI: Implement bulk editing
+ - translations from transifex
+ 
+### Changed
+ - Fix overflow on bookmarks list
+ - Fix sorting
+ - Fix humanized duration: Use stem language only
 
-## v2.2.0
+## [2.2.0]
 
-- NEW: Use routes history mode instead of hash URLs
-- FIX: Sort folders alphabetically
-- FIX: Allow canceling page fetches
-- FIX: Import
-- UI: Fixgrid view, descriptions in list view & bread crumbs
+### Added
+- Use routes history mode instead of hash URLs
 
-## v2.1.1
+### Changed
+- Fix Sorting folders alphabetically
+- Fix Allow canceling page fetches
+- Fix Import
+- Fix grid view, descriptions in list view & bread crumbs
 
-- FIX: Fix build script
+## [2.1.1]
 
-## v2.1.0
+### Changed
+- Fix build script
 
-- NEW: Rewrite UI
-- NEW: Allow limiting the number of bookmarks per user
-- NEW: Allow disabling web requests to bookmarked web pages
+## [v2.1.0]
 
-## v2.0.3
+### Added
 
+- Rewrite UI
+- Allow limiting the number of bookmarks per user
+- Allow disabling web requests to bookmarked web pages
+
+## [v2.0.3]
+
+### Changed
 - NEW: Properly specify dependencies in app manifest (allows conditional support for nc 15 again)
 
 Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl and mbstring php extensions installed
 
-## v2.0.2
+## [2.0.2]
 
-- NEW: Drop support for nextcloud 15
+### Changed
+- Drop support for nextcloud 15
 
-## v2.0.1
+## [2.0.1]
 
+### Changed
 - fix composer lock file
 
-## v2.0.0
+## [2.0.0]
 
-- NEW: gmp, intl, mbstring are now required
-- NEW: Drop support for nextcloud 14 and php 7.0
-- FIX: Switch URL normalizer to adhere strictly to WHATWG URL spec
+### Changed
+- gmp, intl, mbstring are now required
+- Drop support for nextcloud 14 and php 7.0
+- Switch URL normalizer to adhere strictly to WHATWG URL spec
 
-## v1.1.2
+## [1.1.2]
+
+### Changed
 
 - Revert breaking changes of v1.0.8
 
-## v1.1.1
+## [1.1.1]
 
-- FIX import from web UI
+### Changed
+- Fix import from web UI
 
-## v1.1.0
+## [1.1.0]
 
-- NEW translations
+### Added
 - NEW: API endpoint to import into a specific folder
 
-## v1.0.8
+## [1.0.8]
 
-- NEW: gmp, intl, mbstring are now required
-- NEW translations
+### Changed
+- gmp, intl, mbstring are now required
 - FIX: Switch URL normalizer to adhere strictly to WHATWG URL spec
 - FIX: Update dependencies
 - FIX: Run previews job in small batches instead of all at once
 
-## v1.0.6
+## [1.0.6]
+
+### Changed
 
 - FIX: Set timeout for submitting tags
 - NEW: Create favicon
@@ -80,3 +125,23 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX: Remove background colors
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
+
+
+
+[2.3.4]: https://github.com/nextcloud/bookmarks/compare/v2.3.3...v2.3.4
+[2.3.3]: https://github.com/nextcloud/bookmarks/compare/v2.3.2...v2.3.3
+[2.3.2]: https://github.com/nextcloud/bookmarks/compare/v2.3.1...v2.3.2
+[2.3.1]: https://github.com/nextcloud/bookmarks/compare/v2.3.0...v2.3.1
+[2.3.0]: https://github.com/nextcloud/bookmarks/compare/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/nextcloud/bookmarks/compare/v2.1.1...v2.2.0
+[2.1.1]: https://github.com/nextcloud/bookmarks/compare/v2.1.0...v2.1.1
+[2.1.0]: https://github.com/nextcloud/bookmarks/compare/v2.0.3...v2.1.0
+[2.0.3]: https://github.com/nextcloud/bookmarks/compare/v2.0.2...v2.0.3
+[2.0.2]: https://github.com/nextcloud/bookmarks/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/nextcloud/bookmarks/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/nextcloud/bookmarks/compare/v1.1.2...v2.0.0
+[1.1.2]: https://github.com/nextcloud/bookmarks/compare/v1.1.1...v1.1.2
+[1.1.1]: https://github.com/nextcloud/bookmarks/compare/v1.1.0...v1.1.1
+[1.1.0]: https://github.com/nextcloud/bookmarks/compare/v1.0.8...v1.1.0
+[1.0.8]: https://github.com/nextcloud/bookmarks/compare/v1.0.6...v1.0.8
+[1.0.6]: https://github.com/nextcloud/bookmarks/compare/v1.0.5...v1.0.6

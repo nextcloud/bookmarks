@@ -17,15 +17,15 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OCA\Bookmarks\Service\Previewers;
 
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
-use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Service\FileCache;
-use OCP\ILogger;
-use OCP\Http\Client\IClientService;
-use OCP\Http\Client\IClient;
 use OCA\Bookmarks\Service\LinkExplorer;
+use OCP\Http\Client\IClient;
+use OCP\Http\Client\IClientService;
+use OCP\ILogger;
 
 class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	// Cache for 4 months
@@ -60,15 +60,15 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	}
 
 	protected function buildKey($url) {
-		return self::CACHE_PREFIX.'-'.md5($url);
+		return self::CACHE_PREFIX . '-' . md5($url);
 	}
 
 	private function buildScrapeKey($url) {
-		return $this->buildKey('meta-'.$url);
+		return $this->buildKey('meta-' . $url);
 	}
 
 	private function buildImageKey($url) {
-		return $this->buildKey('image-'.$url);
+		return $this->buildKey('image-' . $url);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 			return null;
 		}
 		$site = $this->scrapeUrl($bookmark->getUrl());
-		$this->logger->debug('getImage for URL: '.$bookmark->getUrl().' '.var_export($site, true), ['app' => 'bookmarks']);
+		$this->logger->debug('getImage for URL: ' . $bookmark->getUrl() . ' ' . var_export($site, true), ['app' => 'bookmarks']);
 		if (isset($site['image']['small'])) {
 			return $this->getOrFetchImageUrl($site['image']['small']);
 		}
@@ -114,7 +114,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 			}
 			return [
 				'contentType' => $image['contentType'],
-				'data' => base64_decode($image['data'])
+				'data' => base64_decode($image['data']),
 			];
 		}
 
@@ -130,7 +130,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 		// Store in cache for next time
 		$json = json_encode([
 			'contentType' => $image['contentType'],
-			'data' => base64_encode($image['data'])
+			'data' => base64_encode($image['data']),
 		]);
 		$this->cache->set($key, $json, self::CACHE_TTL);
 
@@ -163,7 +163,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 
 		return [
 			'contentType' => $contentType,
-			'data' => $body
+			'data' => $body,
 		];
 	}
 }

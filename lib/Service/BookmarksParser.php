@@ -2,6 +2,7 @@
 /*
  * (c) Pedro Rodrigues <relvas.rodrigues@gmail.com>
  */
+
 namespace OCA\Bookmarks\Service;
 
 /**
@@ -62,6 +63,7 @@ class BookmarksParser {
 	 * @var bool
 	 */
 	private $includeFolderTags = true;
+
 	/**
 	 * Constructor
 	 *
@@ -70,6 +72,7 @@ class BookmarksParser {
 	public function __construct($useInternalErrors = true) {
 		libxml_use_internal_errors($useInternalErrors);
 	}
+
 	/**
 	 * Check if doctype file is valid for parsing
 	 *
@@ -115,6 +118,7 @@ class BookmarksParser {
 		$this->traverse();
 		return empty($this->bookmarks) ? null : $this->bookmarks;
 	}
+
 	/**
 	 * Traverses a DOMNode
 	 *
@@ -150,16 +154,18 @@ class BookmarksParser {
 			}
 		}
 	}
+
 	/**
 	 * Add a folder from a \DOMNode
 	 *
 	 * @param \DOMNode $node
+	 * @throws \Exception
 	 */
 	private function addFolder(\DOMNode $node) {
 		$folder = [
 			'title' => $node->textContent,
 			'children' => [],
-			'bookmarks' => []
+			'bookmarks' => [],
 		];
 		$folder = array_merge($folder, $this->getAttributes($node));
 		if (isset($folder['personal_toolbar_folder']) && $this->ignorePersonalToolbarFolder) {
@@ -169,6 +175,7 @@ class BookmarksParser {
 		$this->folderDepth[] =& $folder;
 		$this->currentFolder =& $folder;
 	}
+
 	/**
 	 * Close current folder
 	 */
@@ -176,16 +183,18 @@ class BookmarksParser {
 		array_pop($this->folderDepth);
 		$this->currentFolder =& $this->folderDepth[count($this->folderDepth) - 1];
 	}
+
 	/**
 	 * Add a bookmark from a \DOMNode
 	 *
 	 * @param \DOMNode $node
+	 * @throws \Exception
 	 */
 	private function addBookmark(\DOMNode $node) {
 		$bookmark = [
 			'title' => $node->textContent,
 			'description' => '',
-			'tags' => []
+			'tags' => [],
 		];
 		$bookmark = array_merge($bookmark, $this->getAttributes($node));
 		if ($this->includeFolderTags) {
@@ -197,6 +206,7 @@ class BookmarksParser {
 		$this->currentFolder['bookmarks'][] =& $bookmark;
 		$this->bookmarks[] = $bookmark;
 	}
+
 	/**
 	 * Add a bookmark from a \DOMNode
 	 *
@@ -207,7 +217,7 @@ class BookmarksParser {
 		if ($count === 0) {
 			return;
 		}
-		$bookmark = $this->bookmarks[$count-1];
+		$bookmark = $this->bookmarks[$count - 1];
 		$bookmark['description'] = $node->textContent;
 	}
 
@@ -246,6 +256,7 @@ class BookmarksParser {
 		}
 		return $attributes;
 	}
+
 	/**
 	 * Get current folder tags
 	 *

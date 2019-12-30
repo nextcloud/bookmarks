@@ -29,11 +29,11 @@ export default {
 		Breadcrumbs,
 		BookmarksList,
 		SidebarBookmark,
-		MoveDialog
+		MoveDialog,
 	},
 	data: function() {
 		return {
-			newBookmark: false
+			newBookmark: false,
 		}
 	},
 	computed: {
@@ -48,11 +48,11 @@ export default {
 		},
 		loading() {
 			return this.$store.state.loading
-		}
+		},
 	},
 
 	watch: {
-		$route: 'onRoute'
+		$route: 'onRoute',
 	},
 
 	async created() {
@@ -63,7 +63,7 @@ export default {
 		await Promise.all([
 			this.reloadSettings(),
 			this.reloadTags(),
-			this.reloadFolders()
+			this.reloadFolders(),
 		])
 		this.onRoute()
 	},
@@ -123,8 +123,8 @@ export default {
 			) {
 				this.$store.dispatch(actions.FETCH_PAGE)
 			}
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

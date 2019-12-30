@@ -1,10 +1,11 @@
 <?php
+
 namespace OCA\Bookmarks\Migration;
 
 use OCP\DB\ISchemaWrapper;
-use OCP\Migration\SimpleMigrationStep;
-use OCP\Migration\IOutput;
 use OCP\IDBConnection;
+use OCP\Migration\IOutput;
+use OCP\Migration\SimpleMigrationStep;
 
 /**
  * Auto-generated migration step: Please modify to your needs!
@@ -151,10 +152,10 @@ class Version000014000Date20181002094721 extends SimpleMigrationStep {
 		foreach ($bookmarks as $i => $bookmark) {
 			$query = $this->db->getQueryBuilder();
 			$query->select('bookmark_id')
-			->from('bookmarks_folders_bookmarks')
-			->where(
-				$query->expr()->eq('bookmark_id', $query->createPositionalParameter($bookmark['id']))
-			);
+				->from('bookmarks_folders_bookmarks')
+				->where(
+					$query->expr()->eq('bookmark_id', $query->createPositionalParameter($bookmark['id']))
+				);
 			if (count($query->execute()->fetchAll()) > 0) {
 				continue;
 			}
@@ -163,7 +164,7 @@ class Version000014000Date20181002094721 extends SimpleMigrationStep {
 				->insert('bookmarks_folders_bookmarks')
 				->values([
 					'folder_id' => $query->createNamedParameter(-1),
-					'bookmark_id' => $query->createNamedParameter($bookmark['id'])
+					'bookmark_id' => $query->createNamedParameter($bookmark['id']),
 				]);
 			$query->execute();
 		}

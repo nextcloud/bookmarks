@@ -46,17 +46,17 @@ export default {
 	name: 'ViewBookmarklet',
 	components: {
 		Content,
-		Multiselect
+		Multiselect,
 	},
 	props: {
 		title: {
 			type: String,
-			default: ''
+			default: '',
 		},
 		url: {
 			type: String,
-			default: ''
-		}
+			default: '',
+		},
 	},
 	data: function() {
 		return {
@@ -64,9 +64,9 @@ export default {
 				title: this.title,
 				url: this.url,
 				tags: [],
-				description: ''
+				description: '',
 			},
-			exists: false
+			exists: false,
 		}
 	},
 	computed: {
@@ -75,7 +75,7 @@ export default {
 		},
 		folders() {
 			return this.$store.state.folders
-		}
+		},
 	},
 
 	created() {
@@ -122,8 +122,8 @@ export default {
 				await this.$store.dispatch(actions.CREATE_BOOKMARK, this.bookmark)
 			}
 			window.close()
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

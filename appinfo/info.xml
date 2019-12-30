@@ -17,7 +17,7 @@ Requirements:
    - intl: *
    - mbstring: *
 ]]></description>
-	<version>2.3.1</version>
+	<version>2.3.4</version>
 	<licence>agpl</licence>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
@@ -33,7 +33,7 @@ Requirements:
 		<lib>gmp</lib>
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="15" max-version="18" />
+		<nextcloud min-version="16" max-version="18" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\PreviewsJob</job>

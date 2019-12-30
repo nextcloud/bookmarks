@@ -2,11 +2,10 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use \OCA\Bookmarks\Db;
-use \OCP\AppFramework\Http\JSONResponse;
-use \OCP\AppFramework\Http;
-use \OCP\AppFramework\ApiController;
-use \OCP\IRequest;
+use OCA\Bookmarks\Db;
+use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\JSONResponse;
 
 class TagsController extends ApiController {
 	private $userId;
@@ -69,13 +68,13 @@ class TagsController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function fullTags($count=false) {
+	public function fullTags($count = false) {
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
 		if ($count === true) {
 			$tags = $this->tagMapper->findAllWithCount($this->userId);
-		}else {
+		} else {
 			$tags = $this->tagMapper->findAll($this->userId);
 		}
 		return new JSONResponse($tags);

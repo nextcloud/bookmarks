@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Settings;
 
 use OCP\AppFramework\Http\TemplateResponse;
@@ -20,9 +21,9 @@ class AdminSettings implements ISettings {
 	 * @param IL10N $l
 	 */
 	public function __construct(
-		  IConfig $config,
-		  IL10N $l
-		) {
+		IConfig $config,
+		IL10N $l
+	) {
 		$this->config = $config;
 		$this->l = $l;
 	}
@@ -32,8 +33,8 @@ class AdminSettings implements ISettings {
 	 */
 	public function getForm() {
 		$parameters = [
-		  'previews.screenly.url' => $this->config->getAppValue('bookmarks', 'previews.screenly.url', 'https://secure.screeenly.com/api/v1/fullsize'),
-			'previews.screenly.token' => $this->config->getAppValue('bookmarks', 'previews.screenly.token', '')
+			'previews.screenly.url' => $this->config->getAppValue('bookmarks', 'previews.screenly.url', 'https://secure.screeenly.com/api/v1/fullsize'),
+			'previews.screenly.token' => $this->config->getAppValue('bookmarks', 'previews.screenly.token', ''),
 		];
 
 		return new TemplateResponse('bookmarks', 'admin', $parameters);
