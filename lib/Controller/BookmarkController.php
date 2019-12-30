@@ -175,7 +175,7 @@ class BookmarkController extends ApiController {
 		$array['folders'] = array_map(function (Folder $folder) {
 			return $folder->getId();
 		}, $this->folderMapper->findByBookmark($bookmark->getId()));
-		$array['folders'] = $this->tagMapper->findByBookmark($bookmark->getId());
+		$array['tags'] = $this->tagMapper->findByBookmark($bookmark->getId());
 		return $array;
 	}
 
