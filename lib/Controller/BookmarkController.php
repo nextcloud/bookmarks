@@ -545,7 +545,7 @@ class BookmarkController extends ApiController {
 						$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $bookmark->getUserId(), isset($tags) ? $tags : [], [$folder->getId()]);
 				}
 
-				$this->folderMapper->addToFolders($bookmark->getId(), $ownFolders);
+				$this->folderMapper->setToFolders($bookmark->getId(), $ownFolders);
 				if (count($ownFolders) === 0) {
 					$this->bookmarkMapper->delete($bookmark);
 					return new JSONResponse(['item' => $this->_returnBookmarkAsArray($bookmark), 'status' => 'success']);
