@@ -422,7 +422,7 @@ class BookmarkController extends ApiController {
 				$bookmark = $this->_addBookmark($title, $url, $description, $this->userId, $tags, [-1]);
 			} else {
 				foreach ($folders as $folderId) {
-					if ($folderId === -1) {
+					if (((int)$folderId) === -1) {
 						$bookmark = $this->_addBookmark($title, $url, $description, $this->userId, $tags, [-1]);
 					}
 					try {
