@@ -8,6 +8,8 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\ICache;
+use OCP\ICacheFactory;
 use OCP\IDBConnection;
 use UnexpectedValueException;
 
@@ -38,18 +40,25 @@ class FolderMapper extends QBMapper {
 	protected $shareMapper;
 
 	/**
+	 * @var ICache
+	 */
+	protected $cache;
+
+	/**
 	 * FolderMapper constructor.
 	 *
 	 * @param IDBConnection $db
 	 * @param BookmarkMapper $bookmarkMapper
 	 * @param ShareMapper $shareMapper
 	 * @param SharedFolderMapper $sharedFolderMapper
+	 * @param ICacheFactory $cacheFactory
 	 */
-	public function __construct(IDBConnection $db, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper) {
+	public function __construct(IDBConnection $db, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, ICacheFactory $cacheFactory) {
 		parent::__construct($db, 'bookmarks_folders', Folder::class);
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->shareMapper = $shareMapper;
 		$this->sharedFolderMapper = $sharedFolderMapper;
+		$this->cache = $cacheFactory->createLocal('bookmarks:hashes');
 	}
 
 	/**
@@ -534,6 +543,48 @@ class FolderMapper extends QBMapper {
 	}
 
 	/**
+	 * @param $userId
+	 * @param $folderId
+	 * @return string
+	 */
+	private function getCacheKey(string $userId, int $folderId) {
+		return 'folder:' . $userId . ',' . $folderId;
+	}
+
+	/**
+	 * @param string $userId
+	 * @param int $folderId
+	 */
+	public function invalidateCache(string $userId, int $folderId) {
+		$key = $this->getCacheKey($userId, $folderId);
+		$this->cache->remove($key);
+		if ($folderId === -1) {
+			return;
+		}
+
+		// Invalidate parent
+		try {
+			$folder = $this->find($folderId);
+			$this->invalidateCache($userId, $folder->getParentFolder());
+		} catch (DoesNotExistException $e) {
+			return;
+		} catch (MultipleObjectsReturnedException $e) {
+			return;
+		}
+
+		if ($folder->getUserId() !== $userId) {
+			return;
+		}
+
+		// invalidate shared folders
+		$sharedFolders = $this->sharedFolderMapper->findByFolder($folderId);
+		foreach($sharedFolders as $sharedFolder) {
+			$this->invalidateCache($sharedFolder->getUserId(), $folderId);
+		}
+
+	}
+
+	/**
 	 * @param int $folderId
 	 * @param array $fields
 	 * @param string $userId
@@ -542,6 +593,16 @@ class FolderMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function hashFolder(string $userId, int $folderId, $fields = ['title', 'url']) {
+		$key = $this->getCacheKey($userId, $folderId);
+		$hash = $this->cache->get($key);
+		$selector = implode(',', $fields);
+		if (isset($hash) && isset($hash[$selector])) {
+			return $hash[$selector];
+		}
+		if (!isset($hash)) {
+			$hash = [];
+		}
+
 		$entity = $this->find($folderId);
 		$children = $this->getChildren($folderId);
 		$childHashes = array_map(function ($item) use ($fields, $entity) {
@@ -561,7 +622,10 @@ class FolderMapper extends QBMapper {
 			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;
-		return hash('sha256', json_encode($folder, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$hash[$selector] = hash('sha256', json_encode($folder, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+		$this->cache->set($key, $hash, 60*60*24);
+		return $hash[$selector];
 	}
 
 	/**
@@ -570,6 +634,16 @@ class FolderMapper extends QBMapper {
 	 * @return string
 	 */
 	public function hashRootFolder($userId, $fields = ['title', 'url']) {
+		$key = $this->getCacheKey($userId, -1);
+		$hash = $this->cache->get($key);
+		$selector = implode(',', $fields);
+		if (isset($hash) && isset($hash[$selector])) {
+			return $hash[$selector];
+		}
+		if (!isset($hash)) {
+			$hash = [];
+		}
+
 		$children = $this->getRootChildren($userId);
 		$childHashes = array_map(function ($item) use ($fields, $userId) {
 			switch ($item['type']) {
@@ -583,7 +657,9 @@ class FolderMapper extends QBMapper {
 		}, $children);
 		$folder = [];
 		$folder['children'] = $childHashes;
-		return hash('sha256', json_encode($folder, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$hash[$selector] = hash('sha256', json_encode($folder, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$this->cache->set($key, $hash, 60*60*24);
+		return $hash[$selector];
 	}
 
 	/**

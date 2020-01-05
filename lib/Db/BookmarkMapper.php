@@ -11,6 +11,8 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\ICache;
+use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -46,6 +48,11 @@ class BookmarkMapper extends QBMapper {
 	 */
 	private $tagMapper;
 
+	/**
+	 * @var ICache
+	 */
+	private $cache;
+
 
 	/**
 	 * BookmarkMapper constructor.
@@ -56,8 +63,9 @@ class BookmarkMapper extends QBMapper {
 	 * @param IConfig $config
 	 * @param PublicFolderMapper $publicMapper
 	 * @param TagMapper $tagMapper
+	 * @param ICacheFactory $cacheFactory
 	 */
-	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper) {
+	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper, ICacheFactory $cacheFactory) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
@@ -65,6 +73,7 @@ class BookmarkMapper extends QBMapper {
 		$this->limit = intval($config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0));
 		$this->publicMapper = $publicMapper;
 		$this->tagMapper = $tagMapper;
+		$this->cache = $cacheFactory->createLocal('bookmarks:hashes');
 	}
 
 	/**
@@ -579,12 +588,22 @@ class BookmarkMapper extends QBMapper {
 
 	/**
 	 * @param int $bookmarkId
-	 * @param $fields
+	 * @param array $fields
 	 * @return string
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function hash(int $bookmarkId, $fields) {
+	public function hash(int $bookmarkId, array $fields) {
+		$key = $this->getCacheKey($bookmarkId);
+		$hash = $this->cache->get($key);
+		$selector = implode(',', $fields);
+		if (isset($hash) && isset($hash[$selector])) {
+			return $hash[$selector];
+		}
+		if (!isset($hash)) {
+			$hash = [];
+		}
+
 		$entity = $this->find($bookmarkId);
 		$bookmark = [];
 		foreach ($fields as $field) {
@@ -592,6 +611,24 @@ class BookmarkMapper extends QBMapper {
 				$bookmark[$field] = $entity->{'get' . $field}();
 			}
 		}
-		return hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$this->cache->set($key, $hash, 60*60*24);
+		return $hash[$selector];
+	}
+
+	/**
+	 * @param int $bookmarkId
+	 * @return string
+	 */
+	private function getCacheKey(int $bookmarkId) {
+		return 'bm:' . $bookmarkId;
+	}
+
+	/**
+	 * @param int $bookmarkId
+	 */
+	public function invalidateCache(int $bookmarkId) {
+		$key = $this->getCacheKey($bookmarkId);
+		$this->cache->remove($key);
 	}
 }

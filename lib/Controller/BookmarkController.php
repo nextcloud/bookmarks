@@ -370,8 +370,6 @@ class BookmarkController extends ApiController {
 	 * @param array $folders
 	 * @return JSONResponse
 	 *
-	 * @throws AlreadyExistsError
-	 * @throws UserLimitExceededError
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
@@ -473,7 +471,17 @@ class BookmarkController extends ApiController {
 		$bookmark->setUserId($userId);
 		$this->bookmarkMapper->insertOrUpdate($bookmark);
 		$this->tagMapper->setOn($tags, $bookmark->getId());
+
+		$prevFolders = $this->folderMapper->findByBookmark($bookmark->getId());
+		foreach($prevFolders as $folderId) {
+			$this->folderMapper->invalidateCache($userId, $folderId);
+		}
+
 		$this->folderMapper->setToFolders($bookmark->getId(), $folders);
+		$this->bookmarkMapper->invalidateCache($bookmark->getId());
+		foreach($folders as $folderId) {
+			$this->folderMapper->invalidateCache($userId, $folderId);
+		}
 		return $bookmark;
 	}
 
@@ -513,6 +521,12 @@ class BookmarkController extends ApiController {
 				$bookmark->setDescription($description);
 			}
 
+			// invalidate cached folders
+			$prevFolders = $this->folderMapper->findByBookmark($bookmark->getId());
+			foreach($prevFolders as $folder) {
+				$this->folderMapper->invalidateCache($this->userId, $folder->getId());
+			}
+
 			if (isset($folders)) {
 				$foreignFolders = array_filter($folders, function($folderId) use ($bookmark){
 					try {
@@ -548,7 +562,11 @@ class BookmarkController extends ApiController {
 						$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $bookmark->getUserId(), isset($tags) ? $tags : [], [$folder->getId()]);
 				}
 
+				// invalidate cached folders
 				$this->folderMapper->setToFolders($bookmark->getId(), $ownFolders);
+				foreach($ownFolders as $folderId) {
+					$this->folderMapper->invalidateCache($this->userId, $folderId);
+				}
 				if (count($ownFolders) === 0) {
 					$this->bookmarkMapper->delete($bookmark);
 					return new JSONResponse(['item' => $this->_returnBookmarkAsArray($bookmark), 'status' => 'success']);
@@ -595,6 +613,13 @@ class BookmarkController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_BAD_REQUEST);
 		}
+
+		// invalidate cached folders
+		$prevFolders = $this->folderMapper->findByBookmark($bookmark->getId());
+		foreach($prevFolders as $folder) {
+			$this->folderMapper->invalidateCache($this->userId, $folder->getId());
+		}
+
 		$this->bookmarkMapper->delete($bookmark);
 		return new JSONResponse(['status' => 'success']);
 	}

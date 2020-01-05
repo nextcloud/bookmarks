@@ -51,7 +51,7 @@ class SharedFolderMapper extends QBMapper {
 		$qb->select(array_map(function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
-			->from('bookmarks_shared')
+			->from('bookmarks_shared', 'p')
 			->leftJoin('p', 'bookmarks_shares', 's', 'p.share_id = s.id')
 			->where($qb->expr()->eq('s.folder_id', $qb->createPositionalParameter($folderId)));
 		return $this->findEntities($qb);

@@ -87,6 +87,7 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple parent folders found'], Http::STATUS_BAD_REQUEST);
 		}
+		$this->folderMapper->invalidateCache($this->userId, $parent_folder);
 
 		return new JSONResponse(['status' => 'success', 'item' => $folder->toArray()]);
 	}
@@ -161,6 +162,7 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_BAD_REQUEST);
 		}
+		$this->folderMapper->invalidateCache($this->userId, $folderId);
 
 		return new JSONResponse(['status' => 'success']);
 	}
@@ -186,6 +188,8 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_BAD_REQUEST);
 		}
+		$this->folderMapper->invalidateCache($this->userId, $folderId);
+
 		return new JSONResponse(['status' => 'success']);
 	}
 
@@ -220,7 +224,7 @@ class FoldersController extends ApiController {
 					// Can't delete the actual folder, so we'll delete our share :shrug:
 					$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($share->getFolderId(), $this->userId);
 					$this->sharedFolderMapper->delete($sharedFolder);
-					$this->shareMapper->delete($share);
+					$this->folderMapper->invalidateCache($this->userId, $sharedFolder->getParentFolder());
 					return new JSONResponse(['status' => 'success']);
 				}
 				// Otherwise we're good to go.
@@ -231,6 +235,7 @@ class FoldersController extends ApiController {
 			}
 		}
 		$this->folderMapper->delete($folder);
+		$this->folderMapper->invalidateCache($this->userId, $folder->getParentFolder());
 		return new JSONResponse(['status' => 'success']);
 	}
 
@@ -282,7 +287,9 @@ class FoldersController extends ApiController {
 					// We cannot alter the shared folder directly, instead we have to edit our instance of the share
 					$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folderId, $this->userId);
 					if (isset($title)) $sharedFolder->setTitle($title);
+					$this->folderMapper->invalidateCache($this->userId, $sharedFolder->getParentFolder());
 					if (isset($parent_folder)) $sharedFolder->setParentFolder($parent_folder);
+					$this->folderMapper->invalidateCache($this->userId, $sharedFolder->getParentFolder());
 					$this->sharedFolderMapper->update($sharedFolder);
 					$folder = $sharedFolder->toArray();
 					$folder['id'] = $folderId;
@@ -296,7 +303,9 @@ class FoldersController extends ApiController {
 			}
 		}
 		if (isset($title)) $folder->setTitle($title);
+		$this->folderMapper->invalidateCache($this->userId, $folder->getParentFolder());
 		if (isset($parent_folder)) $folder->setParentFolder($parent_folder);
+		$this->folderMapper->invalidateCache($this->userId, $folder->getParentFolder());
 		if ($parent_folder === -1 && $folder->getUserId() !== $this->userId) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Cannot move folders between different roots'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
@@ -384,13 +393,10 @@ class FoldersController extends ApiController {
 		}
 		try {
 			$this->folderMapper->setUserFolderChildren($this->userId, $folderId, $data);
+			$this->folderMapper->invalidateCache($this->userId, $folderId);
 			return new JSONResponse(['status' => 'success']);
 		} catch (ChildrenOrderValidationError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'invalid children order'], Http::STATUS_BAD_REQUEST);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 	}
 
@@ -573,6 +579,7 @@ class FoldersController extends ApiController {
 		$sharedFolder->setUserId($userId);
 		$sharedFolder->setIndex(0);
 		$this->sharedFolderMapper->insert($sharedFolder);
+		$this->folderMapper->invalidateCache($userId, -1);
 	}
 
 	/**
@@ -621,6 +628,7 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->userId, $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
+		$this->folderMapper->invalidateCache($share->getOwner(), $share->getFolderId());
 		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);
 		foreach($sharedFolders as $sharedFolder) {
 			$this->sharedFolderMapper->delete($sharedFolder);
