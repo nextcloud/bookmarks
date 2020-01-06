@@ -28,6 +28,7 @@ OC.L10N.register(
     "Tags" : "Етикети",
     "Notes" : "Бележки",
     "Sharing" : "Споделяне",
+    "{time} ago" : "преди {time}",
     "Select" : "Маркирай",
     "Privacy" : "Защита на лични данни",
     "Add a bookmark" : "Добави отметка",
