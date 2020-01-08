@@ -32,7 +32,7 @@ Install this app in the app store of your nextcloud instance (you must have admi
 - [git](https://git-scm.org/)
 - [Node.js and npm](https://nodejs.org/)
 - [php](https://php.net/)
-- [composer](https://getcompoert.org/)
+- [composer](https://getcomposer.org/)
 
 #### Setup
 
