@@ -134,8 +134,19 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			$table->setPrimaryKey(['id']);
 			$table->addIndex(['parent_folder'], 'bookmarks_part_parent');
 			$table->addIndex(['user_id'], 'bookmarks_part');
+			$table->addIndex(['share_id'], 'bookmarks_part_id');
+			$table->addIndex(['share_id', 'user_id'], 'bookmarks_part_id_user');
 			$table->addIndex(['parent_folder', 'index'], 'bookmarks_part_idx');
 		}
+		$table = $schema->getTable('bookmarks_folders_bookmarks');
+		$table->addIndex(['folder_id']);
+		$table->addIndex(['folder_id', 'index']);
+		$table = $schema->getTable('bookmarks');
+		$table->addIndex(['lastmodified']);
+		$table = $schema->getTable('bookmarks_folders');
+		$table->addIndex(['parent_folder']);
+		$table->addIndex(['parent_folder', 'index']);
+		$table->addIndex(['parent_folder', 'user_id']);
 		return $schema;
 	}
 
