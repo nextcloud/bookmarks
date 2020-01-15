@@ -37,7 +37,7 @@ OC.L10N.register(
     "Export" : "导出",
     "Sorting" : "正在排序",
     "Recently added" : "最近添加",
-    "Alphabetically" : "字母顺序",
+    "Alphabetically" : "按字母顺序",
     "Most visited" : "访问最多",
     "Last modified" : "上一次更改",
     "RSS Feed" : "RSS ",
