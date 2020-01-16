@@ -38,8 +38,8 @@
     "Alphabetically" : "按字母顺序",
     "Most visited" : "访问最多",
     "Last modified" : "上一次更改",
-    "RSS Feed" : "RSS ",
-    "This is an RSS feed of the current result set with access restricted to you." : "这是当前结果集的RSS订阅，限制为只有您能访问。",
+    "RSS Feed" : "RSS 订阅源",
+    "This is an RSS feed of the current result set with access restricted to you." : "这是当前 RSS 订阅源的结果集，限制为只有您能访问。",
     "Clear data" : "清除数据",
     "Permanently remove all bookmarks from your account. There is no going back!" : "永久删除您账号中的所有书签。此操作无法恢复！",
     "Delete all bookmarks" : "删除所有书签",
@@ -89,6 +89,6 @@
     "Failed to fetch bookmarks." : "无法获取书签",
     "Failed to change setting" : "无法修改设置",
     "Failed to load setting " : "无法加载设置",
-    "Bookmarks feed" : "书签 Feed"
+    "Bookmarks feed" : "书签订阅源"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
