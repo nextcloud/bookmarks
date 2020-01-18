@@ -11,6 +11,7 @@ OC.L10N.register(
     "List view" : "Sąrašo rodinys",
     "Create" : "Sukurti",
     "Root folder" : "Šakninis aplankas",
+    "_Moving %n folder_::_Moving %n folders_" : ["Perkeliamas %n aplankas","Perkeliami %n aplankai","Perkeliama %n aplankų","Perkeliamas %n aplankas"],
     "Import" : "Importuoti",
     "Export" : "Eksportuoti",
     "Recently added" : "Paskiausiai pridėti",
