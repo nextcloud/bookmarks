@@ -143,7 +143,6 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 		$table->addIndex(['folder_id', 'index'], 'bookmarks_fb_fid_idx');
 		$table = $schema->getTable('bookmarks');
 		$table->addIndex(['lastmodified'], 'bookmarks_modified');
-		$table->addIndex(['url'], 'bookmarks_url');
 		$table = $schema->getTable('bookmarks_folders');
 		$table->addIndex(['parent_folder'], 'bookmarks_parentf');
 		$table->addIndex(['parent_folder', 'index'], 'bookmarks_parentf_idx');
