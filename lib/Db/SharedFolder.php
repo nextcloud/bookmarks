@@ -24,6 +24,6 @@ class SharedFolder extends Entity {
 	}
 
 	public function toArray() {
-		return ['title' => $this->title, 'parent_folder' => $this->parentFolder];
+		return ['title' => $this->title, 'parent_folder' => $this->parentFolder, 'userId' => $this->userId, 'shareId' => $this->shareId];
 	}
 }

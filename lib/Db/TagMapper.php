@@ -113,21 +113,17 @@ class TagMapper {
 		} else if (!is_array($tags)) {
 			throw new InvalidArgumentException('$tag must be string or array of strings');
 		}
+		if(count($tags) === 0) {
+			return;
+		}
+		$currentTags = $this->findByBookmark($bookmarkId);
+		$tags = array_filter($tags, function($tag) use($currentTags) {
+			return !in_array($tag, $currentTags);
+		});
 		foreach ($tags as $tag) {
 			$tag = trim($tag);
 			if (empty($tag)) {
 				//avoid saving white spaces
-				continue;
-			}
-
-			// check if tag for this bookmark exists
-			$qb = $this->db->getQueryBuilder();
-			$qb
-				->select('*')
-				->from('bookmarks_tags')
-				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)))
-				->andWhere($qb->expr()->eq('tag', $qb->createNamedParameter($tag)));
-			if ($qb->execute()->fetch()) {
 				continue;
 			}
 
