@@ -35,7 +35,7 @@ OC.L10N.register(
     "Untagged" : "Neoštítkováno",
     "Import" : "Importovat",
     "Export" : "Export",
-    "Sorting" : "Třídění",
+    "Sorting" : "Řazení",
     "Recently added" : "Nedávno přidáno",
     "Alphabetically" : "Abecedně",
     "Most visited" : "Nejnavštěvovanější",
