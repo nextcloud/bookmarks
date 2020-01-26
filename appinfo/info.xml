@@ -33,7 +33,7 @@ Requirements:
 		<lib>gmp</lib>
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="16" max-version="18" />
+		<nextcloud min-version="16" max-version="19" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\PreviewsJob</job>
