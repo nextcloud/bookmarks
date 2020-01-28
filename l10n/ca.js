@@ -25,6 +25,7 @@ OC.L10N.register(
     "Create" : "Crea",
     "Enter folder title" : "Escriviu el títol de la carpeta",
     "Root folder" : "Carpeta d'arrel",
+    "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Movent %n preferit","Movent %n preferits"],
     "New Bookmark" : "Adreces d'interès nova",
     "All Bookmarks" : "Totes les adreces d'interès",
     "Recent Bookmarks" : "Adreces d'interès recents",
