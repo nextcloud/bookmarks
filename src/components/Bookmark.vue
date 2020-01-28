@@ -8,7 +8,7 @@
 		:style="{
 			background:
 				viewMode === 'grid'
-					? `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
+					? `linear-gradient(0deg, var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
 					: undefined
 		}">
 		<template v-if="!renaming">
