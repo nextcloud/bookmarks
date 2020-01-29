@@ -37,26 +37,26 @@ export default {
 	computed: {
 		tagMenu() {
 			return this.$store.state.tags.map(tag => ({
-				router: { name: 'tags', params: { tags: tag.name } },
+				router: { name: 'tags', params: { tags: tag.tag } },
 				icon: 'icon-tag',
-				classes: this.editingTag === tag.name ? ['editing'] : [],
-				text: tag.name,
+				classes: this.editingTag === tag.tag ? ['editing'] : [],
+				text: tag.tag,
 				edit: {
-					action: e => this.onRenameTag(tag.name, e.target.elements[0].value),
-					reset: () => this.setEditingTag(tag.name, false),
+					action: e => this.onRenameTag(tag.tag, e.target.elements[0].value),
+					reset: () => this.setEditingTag(tag.tag, false),
 				},
 				utils: {
-					counter: tag.count,
+					counter: tag.nbr,
 					actions: [
 						{
 							icon: 'icon-rename',
 							text: 'Rename',
-							action: () => this.setEditingTag(tag.name, true),
+							action: () => this.setEditingTag(tag.tag, true),
 						},
 						{
 							icon: 'icon-delete',
 							text: 'Delete',
-							action: () => this.onDeleteTag(tag.name),
+							action: () => this.onDeleteTag(tag.tag),
 						},
 					],
 				},
