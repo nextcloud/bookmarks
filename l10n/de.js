@@ -62,7 +62,7 @@ OC.L10N.register(
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Um Screenshots Deiner mit Lesezeichen versehenen Websites anzuzeigen, können Lesezeichen mithilfe eines Drittanbieter-Dienstes erstellt werden.",
     "Screeenly" : "Screeenly",
     "You can either sign up for free at screeenly.com or setup your own server." : "Du kannst Dich entweder kostenlos bei screeenly.com anmelden oder Deinen eigenen Server einrichten.",
-    "Screeenly API URL" : "Screeenly API URL",
+    "Screeenly API URL" : "Screeenly-API-URL",
     "Screeenly API key" : "Screeenly API Key",
     "Privacy" : "Datenschutz",
     "Bookmarks will try to access web pages that you add to automatically add information about them." : "Lesezeichen versucht, auf die von Dir hinzugefügten Webseiten zuzugreifen, um automatisch Informationen über die Seiten hinzuzufügen.",
