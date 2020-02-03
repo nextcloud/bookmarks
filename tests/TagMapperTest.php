@@ -83,10 +83,10 @@ class TagMapperTest extends TestCase {
 		$this->assertContains('four', $allTags);
 
 		$allTagsWithCount = $this->tagMapper->findAllWithCount($this->userId);
-		$this->assertContains(['tag' => 'one', 'nbr' => 3], $allTagsWithCount);
-		$this->assertContains(['tag' => 'two', 'nbr' => 2], $allTagsWithCount);
-		$this->assertContains(['tag' => 'three', 'nbr' => 1], $allTagsWithCount);
-		$this->assertContains(['tag' => 'four', 'nbr' => 1], $allTagsWithCount);
+		$this->assertContains(['name' => 'one', 'count' => 3], $allTagsWithCount);
+		$this->assertContains(['name' => 'two', 'count' => 2], $allTagsWithCount);
+		$this->assertContains(['name' => 'three', 'count' => 1], $allTagsWithCount);
+		$this->assertContains(['name' => 'four', 'count' => 1], $allTagsWithCount);
 	}
 
 	/**
