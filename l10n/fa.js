@@ -66,7 +66,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "این URL از قبل نشانک گذاری شده است! دوباره نشانک گذاری شود؟",
     "Title" : "عنوان",
     "Link" : "Link",
-    "Enter bookmark url" : "آدرس نشانه را وارد کنید",
     "Failed to find existing bookmark" : "یافتن نشانک موجود انجام نشد",
     "Failed to create bookmark" : "ایجاد نشانک انجام نشد",
     "Failed to save bookmark" : "ذخیره نشانک انجام نشد",

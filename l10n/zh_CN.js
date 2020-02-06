@@ -76,7 +76,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "此链接已加入书签！是否覆盖？",
     "Title" : "标题",
     "Link" : "链接",
-    "Enter bookmark url" : "输入书签url",
     "Failed to find existing bookmark" : "无法找到已有书签",
     "Failed to create bookmark" : "无法创建书签",
     "Failed to save bookmark" : "无法保存书签",

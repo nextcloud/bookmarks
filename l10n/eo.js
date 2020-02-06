@@ -76,7 +76,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Tiu adreso jam ekzistas en viaj legosignoj! Anstataŭigi ĝin?",
     "Title" : "Titolo",
     "Link" : "Ligilo",
-    "Enter bookmark url" : "Entajpu retadreson de la legosigno",
     "Failed to find existing bookmark" : "Trovo de jam ekzistanta legosigno malsukcesis",
     "Failed to create bookmark" : "Kreo de legosigno malsukcesis",
     "Failed to save bookmark" : "Konservo de legosigno malsukcesis",

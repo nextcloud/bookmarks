@@ -76,7 +76,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Овај УРЛ је већ убачен! Пребрисати?",
     "Title" : "Наслов",
     "Link" : "Веза",
-    "Enter bookmark url" : "Унеси адресу за бележење",
     "Failed to find existing bookmark" : "Неспешно тражење постојећег обележивача",
     "Failed to create bookmark" : "Грешка при креирању обележивача",
     "Failed to save bookmark" : "Грешка при чувању обележивача",

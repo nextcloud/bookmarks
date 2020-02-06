@@ -76,7 +76,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "URL hau dagoeneko gogokoenetan dago. Gainidatzi nahi duzu?",
     "Title" : "Izenburua",
     "Link" : "Esteka",
-    "Enter bookmark url" : "Sartu gogokoaren URLa.",
     "Failed to find existing bookmark" : "Huts egin du egon badagoen laster-markaren bilaketa",
     "Failed to create bookmark" : "Huts egin du laster-marka sortzerakoan",
     "Failed to save bookmark" : "Huts egin du laster-marka gordetzerakoan",

@@ -76,7 +76,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Questo URL è già un segnalibro! Vuoi sovrascriverlo?",
     "Title" : "Titolo",
     "Link" : "Collegamento",
-    "Enter bookmark url" : "Digita URL del segnalibro",
     "Failed to find existing bookmark" : "Recupero segnalibri esistenti non riuscito",
     "Failed to create bookmark" : "Creazione segnalibro non riuscita",
     "Failed to save bookmark" : "Salvataggio segnalibro non riuscito",

@@ -61,7 +61,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Táto webová adresa sa už v záložkách nachádza. Chcete ju prepísať?",
     "Title" : "Názov",
     "Link" : "Odkaz",
-    "Enter bookmark url" : "Zadať URL záložky",
     "Failed to find existing bookmark" : "Nepodarilo sa nájsť existujúcu záložku",
     "Failed to create bookmark" : "Nepodarilo sa vytvoriť záložku",
     "Failed to save bookmark" : "Nepodarilo sa uložiť záložku",

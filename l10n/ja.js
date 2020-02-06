@@ -76,7 +76,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "このURLはすでにブックマークされています! 上書きしますか?",
     "Title" : "タイトル",
     "Link" : "リンク",
-    "Enter bookmark url" : "ブックマークのURLを入力",
     "Failed to find existing bookmark" : "ブックマークの検索に失敗しました",
     "Failed to create bookmark" : "ブックマークの作成に失敗しました",
     "Failed to save bookmark" : "ブックマークの保存に失敗しました",

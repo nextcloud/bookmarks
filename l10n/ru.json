@@ -72,7 +72,6 @@
     "This URL is already bookmarked! Overwrite?" : "Эта ссылка уже в закладках! Перезаписать?",
     "Title" : "Название",
     "Link" : "Ссылка",
-    "Enter bookmark url" : "Введите url закладки",
     "Failed to find existing bookmark" : "Не удалось найти существующую закладку",
     "Failed to create bookmark" : "Не удалось создать закладку",
     "Failed to save bookmark" : "Не удалось сохранить закладку",

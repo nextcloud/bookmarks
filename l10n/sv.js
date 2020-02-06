@@ -76,7 +76,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Den här webbadressen är redan bokmärkt! Skriva över?",
     "Title" : "Titel",
     "Link" : "Länk",
-    "Enter bookmark url" : "Ange bokmärkets webbadress",
     "Failed to find existing bookmark" : "Kunde inte hitta befintligt bokmärke",
     "Failed to create bookmark" : "Kunde inte skapa bokmärke",
     "Failed to save bookmark" : "Kunde inte spara bokmärke",

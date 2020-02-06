@@ -76,7 +76,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Este URL xa existe como marcador! Sobrescribilo?",
     "Title" : "Título",
     "Link" : "Ligazón",
-    "Enter bookmark url" : "Introduza o URL do marcador",
     "Failed to find existing bookmark" : "Produciuse un fallo ao buscar un marcador existente",
     "Failed to create bookmark" : "Produciuse un fallo ao crear o marcador",
     "Failed to save bookmark" : "Produciuse un fallo ao gardar o marcador",
