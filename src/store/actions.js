@@ -207,16 +207,12 @@ export default {
 		return axios
 			.post(url(`/bookmark/import`), data)
 			.then(response => {
-				if (!response.ok) {
+				if (!response.data || !response.data.status === 'success') {
 					if (response.status === 413) {
 						throw new Error('Selected file is too large')
 					}
-					throw new Error(response.data.data.join('\n'))
-				} else {
-					const status = response.data.status
-					if (status !== 'success') {
-						throw new Error(response.data)
-					}
+					throw new Error(response.data)
+					console.error('Failed to import bookmarks', response)
 				}
 			})
 			.catch(err => {
