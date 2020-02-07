@@ -20,6 +20,7 @@ OC.L10N.register(
     "Sharing" : "Споделување",
     "Select" : "Select",
     "Privacy" : "Приватност",
+    "Failed to save settings" : "Неуспешно зачувување на параметрите",
     "Title" : "Наслов",
     "Link" : "Линк"
 },

@@ -76,6 +76,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Diese URL ist bereits als Lesezeichen gespeichert! Überschreiben?",
     "Title" : "Titel",
     "Link" : "Link",
+    "Enter bookmark URL" : "Lesezeichen-URL eingeben",
     "Failed to find existing bookmark" : "Existierendes Lesezeichen konnte nicht gefunden werden",
     "Failed to create bookmark" : "Lesezeichen konnte nicht erstellt werden",
     "Failed to save bookmark" : "Lesezeichen konnte nicht gespeichert werden",
