@@ -76,6 +76,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Bu adres zaten yer imlerine eklenmiş! Üzerine yazılsın mı?",
     "Title" : "Başlık",
     "Link" : "Bağlantı",
+    "Enter bookmark URL" : "Yer imi adresini yazın",
     "Failed to find existing bookmark" : "Var olan yer imi bulunamadı",
     "Failed to create bookmark" : "Yer imi eklenemedi",
     "Failed to save bookmark" : "Yer imi kaydedilemedi",
