@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94c541b6d9f09d1db36181f686895dc4",
+    "content-hash": "68da6bb58e184563fcefc3eb918fee95",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -563,34 +563,29 @@
         },
         {
             "name": "rowbot/url",
-            "version": "2.0.3",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/URL-Parser.git",
-                "reference": "3e9f479cd8ffa42e4d66cc6ee40bd99f4a536685"
+                "reference": "1473c276fa3e900c5f3a63e15d1367bde8e7c3f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/3e9f479cd8ffa42e4d66cc6ee40bd99f4a536685",
-                "reference": "3e9f479cd8ffa42e4d66cc6ee40bd99f4a536685",
+                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/1473c276fa3e900c5f3a63e15d1367bde8e7c3f2",
+                "reference": "1473c276fa3e900c5f3a63e15d1367bde8e7c3f2",
                 "shasum": ""
             },
             "require": {
                 "ext-gmp": "*",
                 "ext-intl": "*",
                 "ext-mbstring": "*",
+                "lib-icu": ">=4.6",
                 "php": ">=7.1"
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3",
-                "php-coveralls/php-coveralls": "^2.1",
-                "phpstan/phpstan": "^0.10.1",
-                "phpstan/phpstan-deprecation-rules": "^0.10.0",
-                "phpstan/phpstan-phpunit": "^0.10.0",
-                "phpstan/phpstan-strict-rules": "^0.10.0",
-                "phpunit/phpunit": "^7.0",
-                "squizlabs/php_codesniffer": "3.*",
-                "symfony/cache": "^4.1"
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+                "symfony/cache": "^4.1 || ^5.0"
             },
             "type": "library",
             "autoload": {
@@ -605,8 +600,8 @@
             "authors": [
                 {
                     "name": "Trevor Rowbotham",
-                    "role": "Developer",
-                    "homepage": "http://trowbotham.com"
+                    "homepage": "http://trowbotham.com",
+                    "role": "Developer"
                 }
             ],
             "description": "A WHATWG URL spec compliant URL parser for working with URLs and their query strings.",
@@ -619,7 +614,7 @@
                 "url-parser",
                 "url-parsing"
             ],
-            "time": "2019-08-11T20:03:32+00:00"
+            "time": "2020-02-10T05:45:19+00:00"
         },
         {
             "name": "symfony/css-selector",
