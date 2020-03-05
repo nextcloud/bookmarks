@@ -34,7 +34,7 @@ class SharedFolderMapper extends QBMapper {
 	 * @param int $shareId
 	 * @return Entity[]
 	 */
-	public function findByShare(int $shareId) {
+	public function findByShare(int $shareId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(SharedFolder::$columns)
 			->from('bookmarks_shared')
@@ -46,9 +46,9 @@ class SharedFolderMapper extends QBMapper {
 	 * @param int $folderId
 	 * @return Entity[]
 	 */
-	public function findByFolder(int $folderId) {
+	public function findByFolder(int $folderId): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(function ($c) {
+		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared', 'p')
@@ -61,11 +61,12 @@ class SharedFolderMapper extends QBMapper {
 	 * @param int $folderId
 	 * @return Entity[]
 	 */
-	public function findByParentFolder(int $folderId) {
+	public function findByParentFolder(int $folderId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(SharedFolder::$columns)
 			->from('bookmarks_shared')
-			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)));
+			->join('p', 'bookmarks_tree', 't', $qb->expr()->eq('t.parent_folder', 'p.id'))
+			->where($qb->expr()->eq('t.id', $qb->createPositionalParameter($folderId)));
 		return $this->findEntities($qb);
 	}
 
@@ -73,9 +74,9 @@ class SharedFolderMapper extends QBMapper {
 	 * @param string $userId
 	 * @return array|Entity[]
 	 */
-	public function findByOwner(string $userId) {
+	public function findByOwner(string $userId): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(function ($c) {
+		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared', 'p')
@@ -89,7 +90,7 @@ class SharedFolderMapper extends QBMapper {
 	 * @param string $participant
 	 * @return array|Entity[]
 	 */
-	public function findByParticipant(int $type, string $participant) {
+	public function findByParticipant(int $type, string $participant): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(function ($c) {
 			return 'p.' . $c;
@@ -109,9 +110,9 @@ class SharedFolderMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByFolderAndParticipant(int $folderId, int $type, string $participant) {
+	public function findByFolderAndParticipant(int $folderId, int $type, string $participant): Entity {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(function ($c) {
+		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared', 'p')
@@ -129,9 +130,9 @@ class SharedFolderMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByFolderAndUser(int $folderId, string $userId) {
+	public function findByFolderAndUser(int $folderId, string $userId): Entity {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(function ($c) {
+		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared', 'p')
@@ -146,9 +147,9 @@ class SharedFolderMapper extends QBMapper {
 	 * @param string $userId
 	 * @return Entity[]
 	 */
-	public function findByOwnerAndUser(string $owner, string $userId) {
+	public function findByOwnerAndUser(string $owner, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
-		$$qb->select(array_map(function ($c) {
+		$$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared', 'p')

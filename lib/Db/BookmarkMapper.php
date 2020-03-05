@@ -2,21 +2,23 @@
 
 namespace OCA\Bookmarks\Db;
 
+use GuzzleHttp\Query;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCA\Bookmarks\QueryParameters;
 use OCA\Bookmarks\Service\UrlNormalizer;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\EventDispatcher\Event;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\IDBConnection;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\EventDispatcher\IEventDispatcher;
 
 /**
  * Class BookmarkMapper
@@ -28,7 +30,7 @@ class BookmarkMapper extends QBMapper {
 	/** @var IConfig */
 	private $config;
 
-	/** @var EventDispatcherInterface */
+	/** @var IEventDispatcher */
 	private $eventDispatcher;
 
 	/** @var UrlNormalizer */
@@ -58,19 +60,19 @@ class BookmarkMapper extends QBMapper {
 	 * BookmarkMapper constructor.
 	 *
 	 * @param IDBConnection $db
-	 * @param EventDispatcherInterface $eventDispatcher
+	 * @param IEventDispatcher $eventDispatcher
 	 * @param UrlNormalizer $urlNormalizer
 	 * @param IConfig $config
 	 * @param PublicFolderMapper $publicMapper
 	 * @param TagMapper $tagMapper
 	 * @param ICacheFactory $cacheFactory
 	 */
-	public function __construct(IDBConnection $db, EventDispatcherInterface $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper, ICacheFactory $cacheFactory) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper, ICacheFactory $cacheFactory) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
 		$this->config = $config;
-		$this->limit = intval($config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0));
+		$this->limit = (int)$config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
 		$this->publicMapper = $publicMapper;
 		$this->tagMapper = $tagMapper;
 		$this->cache = $cacheFactory->createLocal('bookmarks:hashes');
@@ -117,15 +119,12 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param $userId
 	 * @param array $filters
-	 * @param string $conjunction
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
+	 * @param QueryParameters $params
 	 * @return array|Entity[]
 	 */
-	public function findAll($userId, array $filters, string $conjunction = 'and', string $sortBy = 'lastmodified', int $offset = 0, int $limit = -1) {
+	public function findAll($userId, array $filters, QueryParameters $params): array {
 		$qb = $this->db->getQueryBuilder();
-		$bookmark_cols = array_map(function ($c) {
+		$bookmark_cols = array_map(static function ($c) {
 			return 'b.' . $c;
 		}, Bookmark::$columns);
 
@@ -143,18 +142,33 @@ class BookmarkMapper extends QBMapper {
 			->orWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
 
 
-		$this->_findBookmarksBuildFilter($qb, $filters, $conjunction);
-		$this->_queryBuilderSortAndPaginate($qb, $sortBy, $offset, $limit);
+		$this->_findBookmarksBuildFilter($qb, $filters, $params);
+		$this->_queryBuilderSortAndPaginate($qb, $params);
 
 		return $this->findEntities($qb);
 	}
 
-	private function _queryBuilderSortAndPaginate(IQueryBuilder $qb, string $sortBy = 'lastmodified', int $offset = 0, int $limit = -1) {
-		if (!in_array($sortBy, Bookmark::$columns)) {
-			$sqlSortColumn = 'lastmodified';
-		} else {
-			$sqlSortColumn = $sortBy;
-		}
+	/**
+	 * @param $userId
+	 * @return int
+	 */
+	public function countAll($userId): int {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select($qb->func()->count('b.id'));
+
+		// Finds bookmarks in 2-levels nested shares only
+		$qb
+			->from('bookmarks', 'b')
+			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
+
+		$count = $qb->execute()->fetch(\PDO::FETCH_COLUMN)[0];
+
+		return (int) $count;
+	}
+
+	private function _queryBuilderSortAndPaginate(IQueryBuilder $qb, QueryParameters $params): void {
+		$sqlSortColumn = $params->getSortBy('lastmodified', Bookmark::$columns);
 
 		if ($sqlSortColumn === 'title') {
 			$qb->orderBy($qb->createFunction('UPPER(`title`)'), 'ASC');
@@ -162,36 +176,35 @@ class BookmarkMapper extends QBMapper {
 			$qb->orderBy($sqlSortColumn, 'DESC');
 		}
 
-		if ($limit !== -1) {
-			$qb->setMaxResults($limit);
+		if ($params->getLimit() !== -1) {
+			$qb->setMaxResults($params->getLimit());
 		}
-		if ($offset !== 0) {
-			$qb->setFirstResult($offset);
+		if ($params->getOffset() !== 0) {
+			$qb->setFirstResult($params->getOffset());
 		}
 	}
 
 	/**
 	 * @param IQueryBuilder $qb
 	 * @param array $filters
-	 * @param string $tagFilterConjunction
+	 * @param QueryParameters $params
 	 */
-	private function _findBookmarksBuildFilter(&$qb, $filters, $tagFilterConjunction) {
+	private function _findBookmarksBuildFilter(&$qb, $filters, QueryParameters $params): void {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$connectWord = 'AND';
-		if ($tagFilterConjunction === 'or') {
+		if ($params->getConjunction() === 'or') {
 			$connectWord = 'OR';
 		}
 		if (count($filters) === 0) {
 			return;
 		}
 		if ($dbType === 'pgsql') {
-			$tags = $qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')");
+			$tags = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
 		} else {
 			$tags = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
 		}
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
-		$i = 0;
 		foreach ($filters as $filter) {
 			$expr = [];
 			$expr[] = $qb->expr()->iLike($tags, $qb->createPositionalParameter('%' . $this->db->escapeLikeParameter($filter) . '%'));
@@ -202,7 +215,6 @@ class BookmarkMapper extends QBMapper {
 				);
 			}
 			$filterExpressions[] = call_user_func_array([$qb->expr(), 'orX'], $expr);
-			$i++;
 		}
 		if ($connectWord === 'AND') {
 			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $filterExpressions);
@@ -215,12 +227,10 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param string $userId
 	 * @param string $tag
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
+	 * @param QueryParameters $params
 	 * @return array|Entity[]
 	 */
-	public function findByTag($userId, string $tag, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+	public function findByTag($userId, string $tag, QueryParameters $params): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Bookmark::$columns);
 
@@ -230,21 +240,12 @@ class BookmarkMapper extends QBMapper {
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
 			->andWhere($qb->expr()->eq('t.tag', $qb->createPositionalParameter($tag)));
 
-		$this->_queryBuilderSortAndPaginate($qb, $sortBy, $offset, $limit);
+		$this->_queryBuilderSortAndPaginate($qb, $params);
 
 		return $this->findEntities($qb);
 	}
 
-	/**
-	 * @param string $userId
-	 * @param array $tags
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
-	 * @return array|Entity[]
-	 */
-	public function findByTags($userId, array $tags, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+	private function _findByTags($userId): IQueryBuilder {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Bookmark::$columns);
 
@@ -253,8 +254,21 @@ class BookmarkMapper extends QBMapper {
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
 
+		return $qb;
+	}
+
+	/**
+	 * @param string $userId
+	 * @param array $tags
+	 * @param QueryParameters $params
+	 * @return array|Entity[]
+	 */
+	public function findByTags($userId, array $tags, QueryParameters $params): array {
+		$qb = $this->_findByTags($userId);
+
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		if ($dbType === 'pgsql') {
-			$tagsCol = $qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')");
+			$tagsCol = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
 		} else {
 			$tagsCol = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
 		}
@@ -267,38 +281,30 @@ class BookmarkMapper extends QBMapper {
 		$qb->groupBy(...Bookmark::$columns);
 		$qb->having($filterExpression);
 
-		$this->_queryBuilderSortAndPaginate($qb, $sortBy, $offset, $limit);
+		$this->_queryBuilderSortAndPaginate($qb, $params);
 
 		return $this->findEntities($qb);
 	}
 
 	/**
 	 * @param $userId
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
+	 * @param QueryParameters $params
 	 * @return array|Entity[]
 	 */
-	public function findUntagged($userId, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+	public function findUntagged($userId, QueryParameters $params): array {
+		$qb = $this->_findByTags($userId);
+
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-		$qb = $this->db->getQueryBuilder();
-		$qb->select(Bookmark::$columns);
-
-		$qb
-			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
-
 		if ($dbType === 'pgsql') {
-			$tagsCol = $qb->createFunction("array_to_string(array_agg(" . $qb->getColumnName('t.tag') . "), ',')");
+			$tagsCol = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
 		} else {
 			$tagsCol = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
 		}
 
 		$qb->groupBy(...Bookmark::$columns);
-		$qb->having($qb->expr()->eql($tagsCol, $qb->createPositionalParameter('')));
+		$qb->having($qb->expr()->eq($tagsCol, $qb->createPositionalParameter('')));
 
-		$this->_queryBuilderSortAndPaginate($qb, $sortBy, $offset, $limit);
+		$this->_queryBuilderSortAndPaginate($qb, $params);
 		return $this->findEntities($qb);
 	}
 
@@ -306,32 +312,27 @@ class BookmarkMapper extends QBMapper {
 	 *
 	 * @param $token
 	 * @param array $filters
-	 * @param string $conjunction
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
+	 * @param QueryParameters $params
 	 * @return array|Entity[]
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findAllInPublicFolder($token, array $filters, string $conjunction = 'and', string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+	public function findAllInPublicFolder($token, array $filters, QueryParameters $params): array {
 		$publicFolder = $this->publicMapper->find($token);
 
-		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
+		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $params);
 		// Really inefficient, but what can you do.
-		return array_filter($bookmarks, function ($bookmark) use ($filters, $conjunction) {
-
+		return array_filter($bookmarks, function (Bookmark $bookmark) use ($filters, $params) {
 			$tagsFound = $this->tagMapper->findByBookmark($bookmark->getId());
-			return array_reduce($filters, function ($isMatch, $filter) use ($bookmark, $tagsFound, $conjunction) {
+			return array_reduce($filters, static function ($isMatch, $filter) use ($bookmark, $tagsFound, $params) {
 				$filter = strtolower($filter);
 
-
-				$res = in_array($filter, $tagsFound)
+				$res = in_array($filter, $tagsFound, true)
 					|| str_contains($filter, strtolower($bookmark->getTitle()))
 					|| str_contains($filter, strtolower($bookmark->getDescription()))
 					|| str_contains($filter, strtolower($bookmark->getUrl()));
-				return $conjunction === 'and' ? $res && $isMatch : $res || $isMatch;
-			}, $conjunction === 'and' ? true : false);
+				return $params->getConjunction() === 'and' ? $res && $isMatch : $res || $isMatch;
+			}, $params->getConjunction() === 'and');
 		});
 	}
 
@@ -339,23 +340,20 @@ class BookmarkMapper extends QBMapper {
 	 *
 	 * @param $token
 	 * @param array $tags
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
+	 * @param QueryParameters $params
 	 * @return array|Entity[]
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByTagsInPublicFolder($token, array $tags = [], string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+	public function findByTagsInPublicFolder($token, array $tags, QueryParameters $params): array {
 		$publicFolder = $this->publicMapper->find($token);
 
-		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
+		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $params);
 		// Really inefficient, but what can you do.
-		return array_filter($bookmarks, function ($bookmark) use ($tags) {
-
+		return array_filter($bookmarks, function (Bookmark $bookmark) use ($tags) {
 			$tagsFound = $this->tagMapper->findByBookmark($bookmark->getId());
-			return array_reduce($tags, function ($isFound, $tag) use ($tagsFound) {
-				return in_array($tag, $tagsFound) && $isFound;
+			return array_reduce($tags, static function ($isFound, $tag) use ($tagsFound) {
+				return in_array($tag, $tagsFound, true) && $isFound;
 			}, true);
 		});
 	}
@@ -363,20 +361,17 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 *
 	 * @param $token
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
+	 * @param QueryParameters $params
 	 * @return array|Entity[]
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findUntaggedInPublicFolder($token, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+	public function findUntaggedInPublicFolder($token, QueryParameters $params): array {
 		$publicFolder = $this->publicMapper->find($token);
 
-		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $sortBy, $offset, $limit);
+		$bookmarks = $this->findByFolder($publicFolder->getFolderId(), $params);
 		// Really inefficient, but what can you do.
-		return array_filter($bookmarks, function ($bookmark) {
-
+		return array_filter($bookmarks, function (Bookmark $bookmark) {
 			$tags = $this->tagMapper->findByBookmark($bookmark->getId());
 			return count($tags) === 0;
 		});
@@ -384,53 +379,17 @@ class BookmarkMapper extends QBMapper {
 
 
 	/**
-	 * @param $userId
 	 * @param int $folderId
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
+	 * @param QueryParameters $params
 	 * @return array|Entity[]
 	 */
-	public function findByUserFolder($userId, int $folderId, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
-		if ($folderId !== -1) {
-			return $this->findByFolder($folderId, $sortBy, $offset, $limit);
-		} else {
-			return $this->findByRootFolder($userId, $sortBy, $offset, $limit);
-		}
-	}
-
-	/**
-	 * @param int $folderId
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
-	 * @return array|Entity[]
-	 */
-	public function findByFolder(int $folderId, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
+	public function findByFolder(int $folderId, QueryParameters $params): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Bookmark::$columns)
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter($folderId)));
-		$this->_queryBuilderSortAndPaginate($qb, $sortBy, $offset, $limit);
-		return $this->findEntities($qb);
-	}
-
-	/**
-	 * @param $userId
-	 * @param string $sortBy
-	 * @param int $offset
-	 * @param int $limit
-	 * @return array|Entity[]
-	 */
-	public function findByRootFolder($userId, string $sortBy = 'lastmodified', int $offset = 0, int $limit = 10) {
-		$qb = $this->db->getQueryBuilder();
-		$qb->select(Bookmark::$columns)
-			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter(-1)))
-			->andWhere($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
-		$this->_queryBuilderSortAndPaginate($qb, $sortBy, $offset, $limit);
+		$this->_queryBuilderSortAndPaginate($qb, $params);
 		return $this->findEntities($qb);
 	}
 
@@ -439,7 +398,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param int $stalePeriod
 	 * @return array|Entity[]
 	 */
-	public function findPendingPreviews(int $limit, int $stalePeriod) {
+	public function findPendingPreviews(int $limit, int $stalePeriod): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*');
 		$qb->from('bookmarks', 'b');
@@ -457,7 +416,6 @@ class BookmarkMapper extends QBMapper {
 		$returnedEntity = parent::delete($entity);
 
 		$id = $entity->getId();
-		$userId = $entity->getUserId();
 
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -473,8 +431,10 @@ class BookmarkMapper extends QBMapper {
 
 		$this->eventDispatcher->dispatch(
 			'\OCA\Bookmarks::onBookmarkDelete',
-			new GenericEvent(null, ['id' => $id, 'userId' => $userId])
+			new Event($entity)
 		);
+
+		$this->invalidateCache($entity->getId());
 
 		return $returnedEntity;
 	}
@@ -486,10 +446,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function update(Entity $entity): Entity {
 		// normalize url
-
-
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
-
 		$entity->setLastmodified(time());
 
 		$newEntity = parent::update($entity);
@@ -497,8 +454,10 @@ class BookmarkMapper extends QBMapper {
 		// trigger event
 		$this->eventDispatcher->dispatch(
 			'\OCA\Bookmarks::onBookmarkUpdate',
-			new GenericEvent(null, ['id' => $entity->getId(), 'userId' => $entity->getUserId()])
+			new Event($entity)
 		);
+
+		$this->invalidateCache($entity->getId());
 
 		return $newEntity;
 	}
@@ -512,23 +471,19 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function insert(Entity $entity): Entity {
 		// Enforce user limit
-		if ($this->limit > 0 && $this->limit <= count($this->findAll($entity->getUserId(), []))) {
-			throw new UserLimitExceededError();
+		if ($this->limit > 0 && $this->limit <= $this->countAll($entity->getUserId())) {
+			throw new UserLimitExceededError('Exceeded user limit of ' . $this->limit . ' bookmarks');
 		}
 
 		// normalize url
-
-
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 
-		if ($entity->getAdded() === null) $entity->setAdded(time());
-
+		if ($entity->getAdded() === null) {
+			$entity->setAdded(time());
+		}
 		$entity->setLastmodified(time());
-
 		$entity->setAdded(time());
-
 		$entity->setLastPreview(0);
-
 		$entity->setClickcount(0);
 
 		$exists = true;
@@ -547,10 +502,10 @@ class BookmarkMapper extends QBMapper {
 
 		parent::insert($entity);
 
-
+		$this->invalidateCache($entity->getId());
 		$this->eventDispatcher->dispatch(
 			'\OCA\Bookmarks::onBookmarkCreate',
-			new GenericEvent(null, ['id' => $entity->getId(), 'userId' => $entity->getUserId()])
+			new Event($entity->getId())
 		);
 		return $entity;
 	}
@@ -589,11 +544,11 @@ class BookmarkMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function hash(int $bookmarkId, array $fields) {
+	public function hash(int $bookmarkId, array $fields): string {
 		$key = $this->getCacheKey($bookmarkId);
 		$hash = $this->cache->get($key);
 		$selector = implode(',', $fields);
-		if (isset($hash) && isset($hash[$selector])) {
+		if (isset($hash[$selector])) {
 			return $hash[$selector];
 		}
 		if (!isset($hash)) {
@@ -608,7 +563,7 @@ class BookmarkMapper extends QBMapper {
 			}
 		}
 		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-		$this->cache->set($key, $hash, 60*60*24);
+		$this->cache->set($key, $hash, 60 * 60 * 24);
 		return $hash[$selector];
 	}
 
@@ -616,14 +571,14 @@ class BookmarkMapper extends QBMapper {
 	 * @param int $bookmarkId
 	 * @return string
 	 */
-	private function getCacheKey(int $bookmarkId) {
+	private function getCacheKey(int $bookmarkId): string {
 		return 'bm:' . $bookmarkId;
 	}
 
 	/**
 	 * @param int $bookmarkId
 	 */
-	public function invalidateCache(int $bookmarkId) {
+	public function invalidateCache(int $bookmarkId): void {
 		$key = $this->getCacheKey($bookmarkId);
 		$this->cache->remove($key);
 	}

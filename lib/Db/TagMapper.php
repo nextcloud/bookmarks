@@ -2,6 +2,7 @@
 
 namespace OCA\Bookmarks\Db;
 
+use Doctrine\DBAL\Driver\Statement;
 use InvalidArgumentException;
 use OCP\IDBConnection;
 
@@ -30,7 +31,7 @@ class TagMapper {
 	 * @param $userId
 	 * @return array
 	 */
-	public function findAllWithCount($userId) {
+	public function findAllWithCount($userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('t.tag')
@@ -49,7 +50,7 @@ class TagMapper {
 	 * @param $userId
 	 * @return array
 	 */
-	public function findAll($userId) {
+	public function findAll($userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('t.tag')
@@ -64,7 +65,7 @@ class TagMapper {
 	 * @param int $bookmarkId
 	 * @return array
 	 */
-	public function findByBookmark(int $bookmarkId) {
+	public function findByBookmark(int $bookmarkId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('tag');
 
@@ -78,7 +79,7 @@ class TagMapper {
 	/**
 	 * @param $userId
 	 * @param string $tag
-	 * @return \Doctrine\DBAL\Driver\Statement|int
+	 * @return Statement|int
 	 */
 	public function delete($userId, string $tag) {
 		$qb = $this->db->getQueryBuilder();
@@ -92,7 +93,7 @@ class TagMapper {
 
 	/**
 	 * @param $userId
-	 * @return \Doctrine\DBAL\Driver\Statement|int
+	 * @return Statement|int
 	 */
 	public function deleteAll(int $userId) {
 		$qb = $this->db->getQueryBuilder();
@@ -107,7 +108,7 @@ class TagMapper {
 	 * @param $tags
 	 * @param int $bookmarkId
 	 */
-	public function addTo($tags, int $bookmarkId) {
+	public function addTo($tags, int $bookmarkId): void {
 		if (is_string($tags)) {
 			$tags = [$tags];
 		} else if (!is_array($tags)) {
@@ -141,7 +142,7 @@ class TagMapper {
 	/**
 	 * @param int $bookmarkId
 	 */
-	public function removeAllFrom(int $bookmarkId) {
+	public function removeAllFrom(int $bookmarkId): void {
 		// Remove old tags
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -154,7 +155,7 @@ class TagMapper {
 	 * @param array $tags
 	 * @param int $bookmarkId
 	 */
-	public function setOn(array $tags, int $bookmarkId) {
+	public function setOn(array $tags, int $bookmarkId): void {
 		$this->removeAllFrom($bookmarkId);
 		$this->addTo($tags, $bookmarkId);
 	}
@@ -164,9 +165,8 @@ class TagMapper {
 	 * @param $userId UserId
 	 * @param string $old Old Tag Name
 	 * @param string $new New Tag Name
-	 * @return boolean Success of operation
 	 */
-	public function renameTag($userId, string $old, string $new) {
+	public function renameTag($userId, string $old, string $new): void {
 		// Remove about-to-be duplicated tags
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -205,6 +205,5 @@ class TagMapper {
 				->andWhere($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $bookmarks)));
 			$qb->execute();
 		}
-		return true;
 	}
 }

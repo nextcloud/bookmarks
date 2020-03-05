@@ -14,7 +14,9 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
+use OCA\Bookmarks\Db\FolderMapper;
 use OCP\AppFramework\App;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IContainer;
 use OCP\IUser;
 
@@ -34,5 +36,10 @@ class Application extends App {
 		$container->registerService('request', function ($c) {
 			return $c->query('Request');
 		});
+
+		$dispatcher = $this->getContainer()->query(IEventDispatcher::class);
+		$dispatcher->addServiceListener('\OCA\Bookmarks::onBookmarkDelete', FolderMapper::class);
+		$dispatcher->addServiceListener('\OCA\Bookmarks::onBookmarkUpdate', FolderMapper::class);
+		$dispatcher->addServiceListener('\OCA\Bookmarks::onBookmarkCreate', FolderMapper::class);
 	}
 }

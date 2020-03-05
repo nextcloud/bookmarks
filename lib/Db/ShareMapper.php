@@ -39,7 +39,7 @@ class ShareMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function find(int $shareId) {
+	public function find(int $shareId): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Share::$columns)
 			->from('bookmarks_shares')
