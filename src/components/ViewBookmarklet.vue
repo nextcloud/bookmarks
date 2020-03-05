@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import Content from 'nextcloud-vue/dist/Components/Content'
-import Multiselect from 'nextcloud-vue/dist/Components/Multiselect'
+import Content from '@nextcloud/vue/dist/Components/Content'
+import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import { actions } from '../store/'
 
 export default {

@@ -6,13 +6,14 @@
 			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
 		<SidebarBookmark />
+		<SidebarFolder />
 		<MoveDialog />
 	</Content>
 </template>
 
 <script>
-import Content from 'nextcloud-vue/dist/Components/Content'
-import AppContent from 'nextcloud-vue/dist/Components/AppContent'
+import Content from '@nextcloud/vue/dist/Components/Content'
+import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import Navigation from './Navigation'
 import BookmarksList from './BookmarksList'
 import Breadcrumbs from './Breadcrumbs'
@@ -29,6 +30,7 @@ export default {
 		Breadcrumbs,
 		BookmarksList,
 		SidebarBookmark,
+		SidebarFolder,
 		MoveDialog,
 	},
 	data: function() {

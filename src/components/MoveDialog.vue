@@ -13,7 +13,7 @@
 	</Modal>
 </template>
 <script>
-import Modal from 'nextcloud-vue/dist/Components/Modal'
+import Modal from '@nextcloud/vue/dist/Components/Modal'
 import { actions, mutations } from '../store/'
 import TreeFolder from './TreeFolder'
 

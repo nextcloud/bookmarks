@@ -8,7 +8,7 @@
 		:style="{
 			background:
 				viewMode === 'grid'
-					? `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
+					? `linear-gradient(0deg, var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
 					: undefined
 		}">
 		<template v-if="!renaming">
@@ -68,8 +68,8 @@
 </template>
 <script>
 import Vue from 'vue'
-import Actions from 'nextcloud-vue/dist/Components/Actions'
-import ActionButton from 'nextcloud-vue/dist/Components/ActionButton'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import { generateUrl } from 'nextcloud-router'
 import { actions, mutations } from '../store/'
 import TagLine from './TagLine'

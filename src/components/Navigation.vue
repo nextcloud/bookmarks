@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import AppNavigation from 'nextcloud-vue/dist/Components/AppNavigation'
-import AppNavigationNew from 'nextcloud-vue/dist/Components/AppNavigationNew'
-import AppNavigationItem from 'nextcloud-vue/dist/Components/AppNavigationItem'
-import AppNavigationSettings from 'nextcloud-vue/dist/Components/AppNavigationSettings'
+import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
+import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
+import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
+import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
 import Settings from './Settings'
 import { actions, mutations } from '../store/'
 
