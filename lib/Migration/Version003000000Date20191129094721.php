@@ -35,6 +35,41 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options) {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
+		if (!$schema->hasTable('bookmarks_root_folders')) {
+			$table = $schema->createTable('bookmarks_root_folders');
+			$table->addColumn('user_id', 'string', [
+				'notnull' => true,
+				'length' => 64,
+			]);
+			$table->addColumn('folder_id', 'bigint', [
+				'notnull' => true,
+				'length' => 64
+			]);
+			$table->setPrimaryKey(['user_id', 'folder_id']);
+			$table->addIndex(['folder_id'], 'bookmarks_root_folder');
+			$table->addIndex(['user_id'], 'bookmarks_user_root');
+		}
+		if (!$schema->hasTable('bookmarks_tree')) {
+			$table = $schema->createTable('bookmarks_tree');
+			$table->addColumn('type', 'string', [
+				'notnull' => true,
+				'length' => 20
+			]);
+			$table->addColumn('id', 'bigint', [
+				'notnull' => true,
+				'length' => 64
+			]);
+			$table->addColumn('parent_folder', 'bigint', [
+				'notnull' => true,
+				'length' => 64,
+			]);
+			$table->addColumn('index', 'smallint', [
+				'notnull' => true,
+			]);
+			$table->setPrimaryKey(['id', 'type']);
+			$table->addIndex(['parent_folder'], 'bookmarks_tree_parent');
+			$table->addIndex(['parent_folder', 'index'], 'bookmarks_tree_parent');
+		}
 		if (!$schema->hasTable('bookmarks_folders_public')) {
 			$table = $schema->createTable('bookmarks_folders_public');
 			$table->addColumn('id', 'string', [
@@ -105,14 +140,8 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			$table->addIndex(['owner'], 'bookmarks_shared_owner');
 			$table->addIndex(['participant', 'type'], 'bookmarks_share_part');
 		}
-
 		if (!$schema->hasTable('bookmarks_shared')) {
 			$table = $schema->createTable('bookmarks_shared');
-			$table->addColumn('id', 'bigint', [
-				'notnull' => true,
-				'length' => 64,
-				'autoincrement' => true,
-			]);
 			$table->addColumn('share_id', 'bigint', [
 				'notnull' => true,
 				'length' => 64,
@@ -123,30 +152,13 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			$table->addColumn('title', 'string', [
 				'notnull' => true,
 			]);
-			$table->addColumn('parent_folder', 'bigint', [
-				'notnull' => true,
-				'length' => 64,
-			]);
-			$table->addColumn('index', 'bigint', [
-				'notnull' => true,
-				'length' => 10,
-			]);
-			$table->setPrimaryKey(['id']);
-			$table->addIndex(['parent_folder'], 'bookmarks_part_parent');
-			$table->addIndex(['user_id'], 'bookmarks_part');
-			$table->addIndex(['share_id'], 'bookmarks_part_id');
-			$table->addIndex(['share_id', 'user_id'], 'bookmarks_part_id_user');
-			$table->addIndex(['parent_folder', 'index'], 'bookmarks_part_idx');
+			$table->setPrimaryKey(['share_id', 'user_id']);
 		}
-		$table = $schema->getTable('bookmarks_folders_bookmarks');
-		$table->addIndex(['folder_id'], 'bookmarks_fb_fid');
-		$table->addIndex(['folder_id', 'index'], 'bookmarks_fb_fid_idx');
+		$schema->dropTable('bookmarks_folders_bookmarks');
 		$table = $schema->getTable('bookmarks');
 		$table->addIndex(['lastmodified'], 'bookmarks_modified');
 		$table = $schema->getTable('bookmarks_folders');
-		$table->addIndex(['parent_folder'], 'bookmarks_parentf');
-		$table->addIndex(['parent_folder', 'index'], 'bookmarks_parentf_idx');
-		$table->addIndex(['parent_folder', 'user_id'], 'bookmarks_parentf_user');
+		$table->dropColumn('parent_folder');
 		return $schema;
 	}
 

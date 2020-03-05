@@ -4,6 +4,18 @@ namespace OCA\Bookmarks\Db;
 
 use OCP\AppFramework\Db\Entity;
 
+/**
+ * Class PublicFolder
+ *
+ * @package OCA\Bookmarks\Db
+ *
+ * @method getFolderId()
+ * @method setFolderId(int $folderId)
+ * @method getDescription
+ * @method setDescription(string $description)
+ * @method getCreatedAt
+ * @method setCreatedAt(int $createdAt)
+ */
 class PublicFolder extends Entity {
 	protected $folderId;
 	protected $description;
@@ -22,7 +34,7 @@ class PublicFolder extends Entity {
 	/*
 	 * Overridden because of param type
 	 */
-	public function setId(string $id) {
+	public function setId(string $id): void {
 		$this->id = $id;
 		$this->markFieldUpdated('id');
 	}

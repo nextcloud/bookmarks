@@ -4,6 +4,27 @@ namespace OCA\Bookmarks\Db;
 
 use OCP\AppFramework\Db\Entity;
 
+/**
+ * Class Bookmark
+ *
+ * @package OCA\Bookmarks\Db
+ * @method getUrl
+ * @method setUrl(string $url)
+ * @method getTitle
+ * @method setTitle(string $title)
+ * @method getDescription
+ * @method setDescription(string $description)
+ * @method getLastmodified
+ * @method setLastmodified(int $lastmodified)
+ * @method getAdded
+ * @method setAdded(int $added)
+ * @method getClickcount
+ * @method setClickcount(int $count)
+ * @method getLastPreview
+ * @method setLastPreview(int $lastpreview)
+ * @method getUserId
+ * @method setUserId(string $userId)
+ */
 class Bookmark extends Entity {
 	protected $url;
 	protected $title;

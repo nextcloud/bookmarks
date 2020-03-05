@@ -4,6 +4,26 @@ namespace OCA\Bookmarks\Db;
 
 use OCP\AppFramework\Db\Entity;
 
+/**
+ * Class Share
+ *
+ * @package OCA\Bookmarks\Db
+ *
+ * @method getFolderId
+ * @method setFolderId(int $folderId)
+ * @method getOwner
+ * @method setOwner(string $owner)
+ * @method getParticipant
+ * @method setParticipant(string $participant)
+ * @method getType
+ * @method setType(string $type)
+ * @method getCanWrite
+ * @method setCanWrite(bool $canWrite)
+ * @method getCanShare
+ * @method setCanShare(bool $canShare)
+ * @method getCreatedAt
+ * @method setCreatedAt(int $createdAt)
+ */
 class Share extends Entity {
 	protected $folderId;
 	protected $owner;
