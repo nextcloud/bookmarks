@@ -12,6 +12,7 @@ OC.L10N.register(
     "Delete" : "Poista",
     "Enter bookmark title" : "Anna nimi kirjanmerkille",
     "Save" : "Tallenna",
+    "No bookmarks here" : "Ei kirjanmerkkejä täällä",
     "Select one or more tags" : "Valitse yksi tai useampi tunniste",
     "New folder" : "Uusi kansio",
     "Grid view" : "Ruudukkonäkymä",
