@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class Test_SettingsController
  *
- * @group DB
+ * @group Controller
  */
 class SettingsControllerTest extends TestCase {
 	/**

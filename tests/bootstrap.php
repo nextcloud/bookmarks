@@ -20,14 +20,4 @@ if(file_exists($dummyClass)) {
 }
 
 
-$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
-$query->execute();
-$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
-$query->execute();
-$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
-$query->execute();
-$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
-$query->execute();
-
-
 OC_Hook::clear();

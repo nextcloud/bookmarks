@@ -4,10 +4,12 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
+use OCA\Bookmarks\Exception\AlreadyExistsError;
+use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use PHPUnit\Framework\TestCase;
 
 
 class BookmarkMapperTest extends TestCase {
@@ -21,9 +23,19 @@ class BookmarkMapperTest extends TestCase {
 	 * @var string
 	 */
 	private $userId;
+	/**
+	 * @var \OC\User\Manager
+	 */
+	private $userManager;
+	/**
+	 * @var string
+	 */
+	private $user;
 
 	protected function setUp() : void {
 		parent::setUp();
+		$this->cleanUp();
+
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
 
 		$this->userManager = \OC::$server->getUserManager();
@@ -40,9 +52,9 @@ class BookmarkMapperTest extends TestCase {
 	 * @return void
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UrlParseError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws AlreadyExistsError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
 	 */
 	public function testInsertAndFind(Entity $bookmark) {
 		$bookmark->setUserId($this->userId);
@@ -58,11 +70,16 @@ class BookmarkMapperTest extends TestCase {
 	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
+	 * @throws AlreadyExistsError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws \OCA\Bookmarks\Exception\UrlParseError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
 	 */
 	public function testFindByUrl(Entity $bookmark) {
+		$bookmark->setUserId($this->userId);
+		$bookmark = $this->bookmarkMapper->insert($bookmark);
+
 		$foundEntity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
 		$this->assertSame($bookmark->getUrl(), $foundEntity->getUrl());
 	}
@@ -73,11 +90,16 @@ class BookmarkMapperTest extends TestCase {
 	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
+	 * @throws AlreadyExistsError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws \OCA\Bookmarks\Exception\UrlParseError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
 	 */
 	public function testUpdate(Entity $bookmark) {
+		$bookmark->setUserId($this->userId);
+		$bookmark = $this->bookmarkMapper->insert($bookmark);
+
 		$entity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
 		$entity->setTitle('foobar');
 		$this->bookmarkMapper->update($entity);
@@ -91,11 +113,16 @@ class BookmarkMapperTest extends TestCase {
 	 * @dataProvider singleBookmarksProvider
 	 * @param Entity $bookmark
 	 * @return void
+	 * @throws AlreadyExistsError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws \OCA\Bookmarks\Exception\UrlParseError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
 	 */
 	public function testDelete(Entity $bookmark) {
+		$bookmark->setUserId($this->userId);
+		$bookmark = $this->bookmarkMapper->insert($bookmark);
+
 		$foundEntity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
 		$this->bookmarkMapper->delete($foundEntity);
 		$this->expectException(DoesNotExistException::class);
@@ -105,8 +132,8 @@ class BookmarkMapperTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	public function singleBookmarksProvider() {
-		return array_map(function($props) {
+	public function singleBookmarksProvider(): array {
+		return array_map(static function($props) {
 			return [Db\Bookmark::fromArray($props)];
 		}, [
 			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],

@@ -2,10 +2,12 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
+use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
-use PHPUnit\Framework\TestCase;
 
 
 class FindTest extends TestCase {
@@ -29,26 +31,25 @@ class FindTest extends TestCase {
 	 * @var string
 	 */
 	private $userId;
+	/**
+	 * @var \OC\User\Manager
+	 */
+	private $userManager;
+	/**
+	 * @var string
+	 */
+	private $user;
 
 	/**
 	 * @throws MultipleObjectsReturnedException
 	 * @throws QueryException
 	 * @throws UrlParseError
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
-	 * @throws \OC\DatabaseException
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
 	 */
 	protected function setUp(): void {
 		parent::setUp();
-
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
-		$query->execute();
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
-		$query->execute();
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
-		$query->execute();
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
-		$query->execute();
+		$this->cleanUp();
 
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
 		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
@@ -69,33 +70,34 @@ class FindTest extends TestCase {
 	}
 
 	public function testFindAll() {
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ["wikipedia"]);
-		$this->assertSame(1, count($bookmarks));
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia'], new QueryParameters());
+		$this->assertCount(1, $bookmarks);
 	}
 
 
 	public function testFindAllWithAnd() {
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia', 'nextcloud']);
-		$this->assertSame(0, count($bookmarks));
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia', 'nextcloud'], new QueryParameters());
+		$this->assertCount(0, $bookmarks);
 
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['.com']);
-		$this->assertSame(2, count($bookmarks));
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['.com'], new QueryParameters());
+		$this->assertCount(2, $bookmarks);
 	}
 
 
 	public function testFindAllWithOr() {
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia', 'nextcloud'], 'or');
-		$this->assertSame(2, count($bookmarks));
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia', 'nextcloud'], $params->setConjunction(QueryParameters::CONJ_OR));
+		$this->assertCount(2, $bookmarks);
 	}
 
 	public function testFindByTag() {
-		$bookmarks = $this->bookmarkMapper->findByTag($this->userId, 'one');
-		$this->assertSame(3, count($bookmarks));
+		$bookmarks = $this->bookmarkMapper->findByTag($this->userId, 'one', new QueryParameters());
+		$this->assertCount(3, $bookmarks);
 	}
 
 	public function testFindByTags() {
-		$bookmarks = $this->bookmarkMapper->findByTags($this->userId, ['one', 'three']);
-		$this->assertSame(1, count($bookmarks));
+		$bookmarks = $this->bookmarkMapper->findByTags($this->userId, ['one', 'three'], new QueryParameters());
+		$this->assertCount(1, $bookmarks);
 	}
 
 	/**

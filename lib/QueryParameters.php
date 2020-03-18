@@ -51,10 +51,10 @@ class QueryParameters {
 	 * @return string
 	 */
 	public function getSortBy(string $default = null, array $columns = null): string {
-		if (isset($columns) && !in_array($columns, $this->sortBy, true)) {
+		if (isset($default) && !isset($this->sortBy)) {
 			return $default;
 		}
-		if (isset($default) && !isset($this->sortBy)) {
+		if (isset($columns) && !in_array($this->sortBy, $columns, true)) {
 			return $default;
 		}
 		return $this->sortBy;

@@ -32,7 +32,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class Test_BookmarkController
  *
- * @group DB
+ * @group Controller
  */
 class BookmarkControllerTest extends TestCase {
 	private $userId;

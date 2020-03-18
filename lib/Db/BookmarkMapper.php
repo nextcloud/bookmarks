@@ -69,7 +69,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param TagMapper $tagMapper
 	 * @param ICacheFactory $cacheFactory
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper, ICacheFactory $cacheFactory) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
@@ -77,8 +77,8 @@ class BookmarkMapper extends QBMapper {
 		$this->limit = (int)$config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
 		$this->publicMapper = $publicMapper;
 		$this->tagMapper = $tagMapper;
-		$this->cache = $cacheFactory->createLocal('bookmarks:hashes');
 	}
+
 
 	/**
 	 * Find a specific bookmark by Id
@@ -133,13 +133,12 @@ class BookmarkMapper extends QBMapper {
 		$qb->select($bookmark_cols);
 		$qb->groupBy($bookmark_cols);
 
-		// Finds bookmarks in 2-levels nested shares only
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
-			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
-			->leftJoin('f', 'bookmarks_shares', 's', $qb->expr()->eq('f.folder_id', 's.folder_id'))
-			->leftJoin('s', 'bookmarks_shared', 'p', $qb->expr()->eq('s.id', 'p.share_id'))
+			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('tr.id', 'b.id'))
+			->leftJoin('tr', 'bookmarks_shares', 's', $qb->expr()->eq('tr.parent_folder', 's.folder_id'))
+			->leftJoin('s', 'bookmarks_shared_folders', 'p', $qb->expr()->eq('s.id', 'p.share_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
 			->orWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
 
@@ -379,22 +378,6 @@ class BookmarkMapper extends QBMapper {
 		});
 	}
 
-
-	/**
-	 * @param int $folderId
-	 * @param QueryParameters $params
-	 * @return array|Entity[]
-	 */
-	public function findByFolder(int $folderId, QueryParameters $params): array {
-		$qb = $this->db->getQueryBuilder();
-		$qb->select(Bookmark::$columns)
-			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_folders_bookmarks', 'f', $qb->expr()->eq('f.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('f.folder_id', $qb->createPositionalParameter($folderId)));
-		$this->_queryBuilderSortAndPaginate($qb, $params);
-		return $this->findEntities($qb);
-	}
-
 	/**
 	 * @param int $limit
 	 * @param int $stalePeriod
@@ -432,13 +415,6 @@ class BookmarkMapper extends QBMapper {
 			->delete('bookmarks_tags')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
 		$qb->execute();
-
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->delete('bookmarks_folders_bookmarks')
-			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
-		$qb->execute();
-
 
 		return $returnedEntity;
 	}
