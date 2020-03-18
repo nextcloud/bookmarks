@@ -14,7 +14,11 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
-use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Events\Create;
+use OCA\Bookmarks\Events\Delete;
+use OCA\Bookmarks\Events\Move;
+use OCA\Bookmarks\Events\Update;
+use OCA\Bookmarks\Service\HashManager;
 use OCP\AppFramework\App;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IContainer;
@@ -26,20 +30,21 @@ class Application extends App {
 
 		$container = $this->getContainer();
 
-		$container->registerService('UserId', function ($c) {
+		$container->registerService('UserId', static function ($c) {
 			/** @var IUser|null $user */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			/** @var IContainer $c */
 			return is_null($user) ? null : $user->getUID();
 		});
 
-		$container->registerService('request', function ($c) {
+		$container->registerService('request', static function ($c) {
 			return $c->query('Request');
 		});
 
 		$dispatcher = $this->getContainer()->query(IEventDispatcher::class);
-		$dispatcher->addServiceListener('\OCA\Bookmarks::onBookmarkDelete', FolderMapper::class);
-		$dispatcher->addServiceListener('\OCA\Bookmarks::onBookmarkUpdate', FolderMapper::class);
-		$dispatcher->addServiceListener('\OCA\Bookmarks::onBookmarkCreate', FolderMapper::class);
+		$dispatcher->addServiceListener(Create::class, HashManager::class);
+		$dispatcher->addServiceListener(Update::class, HashManager::class);
+		$dispatcher->addServiceListener(Delete::class, HashManager::class);
+		$dispatcher->addServiceListener(Move::class, HashManager::class);
 	}
 }

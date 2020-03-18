@@ -140,8 +140,8 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			$table->addIndex(['owner'], 'bookmarks_shared_owner');
 			$table->addIndex(['participant', 'type'], 'bookmarks_share_part');
 		}
-		if (!$schema->hasTable('bookmarks_shared')) {
-			$table = $schema->createTable('bookmarks_shared');
+		if (!$schema->hasTable('bookmarks_shared_folders')) {
+			$table = $schema->createTable('bookmarks_shared_folders');
 			$table->addColumn('share_id', 'bigint', [
 				'notnull' => true,
 				'length' => 64,

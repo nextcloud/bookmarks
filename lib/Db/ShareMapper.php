@@ -51,7 +51,7 @@ class ShareMapper extends QBMapper {
 	 * @param int $folderId
 	 * @return Entity[]
 	 */
-	public function findByFolder(int $folderId) {
+	public function findByFolder(int $folderId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Share::$columns)
 			->from('bookmarks_shares')
@@ -63,7 +63,7 @@ class ShareMapper extends QBMapper {
 	 * @param string $userId
 	 * @return array|Entity[]
 	 */
-	public function findByOwner(string $userId) {
+	public function findByOwner(string $userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Share::$columns)
 			->from('bookmarks_shares')
@@ -76,7 +76,7 @@ class ShareMapper extends QBMapper {
 	 * @param string $participant
 	 * @return array|Entity[]
 	 */
-	public function findByParticipant(int $type, string $participant) {
+	public function findByParticipant(int $type, string $participant): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Share::$columns)
 			->from('bookmarks_shares')
@@ -93,7 +93,7 @@ class ShareMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByFolderAndParticipant(int $folderId, int $type, string $participant) {
+	public function findByFolderAndParticipant(int $folderId, int $type, string $participant): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(function ($c) {
 			return 's.' . $c;
@@ -112,7 +112,7 @@ class ShareMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByFolderAndUser(int $folderId, string $userId) {
+	public function findByFolderAndUser(int $folderId, string $userId): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(function ($c) {
 			return 's.' . $c;
@@ -129,7 +129,7 @@ class ShareMapper extends QBMapper {
 	 * @param string $userId
 	 * @return Entity[]
 	 */
-	public function findByOwnerAndUser(string $owner, string $userId) {
+	public function findByOwnerAndUser(string $owner, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(function ($c) {
 			return 's.' . $c;

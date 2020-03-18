@@ -3,6 +3,9 @@
 namespace OCA\Bookmarks\Db;
 
 use GuzzleHttp\Query;
+use OCA\Bookmarks\Events\Create;
+use OCA\Bookmarks\Events\Delete;
+use OCA\Bookmarks\Events\Update;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
@@ -13,7 +16,6 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use OCP\EventDispatcher\Event;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use OCP\IConfig;
@@ -413,6 +415,14 @@ class BookmarkMapper extends QBMapper {
 	 * @return Entity|void
 	 */
 	public function delete(Entity $entity): Entity {
+		$this->eventDispatcher->dispatch(
+			Delete::class,
+			new Delete($entity, [
+				'id' => $entity->getId(),
+				'type' => TreeMapper::TYPE_BOOKMARK,
+			])
+		);
+
 		$returnedEntity = parent::delete($entity);
 
 		$id = $entity->getId();
@@ -429,12 +439,6 @@ class BookmarkMapper extends QBMapper {
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
 		$qb->execute();
 
-		$this->eventDispatcher->dispatch(
-			'\OCA\Bookmarks::onBookmarkDelete',
-			new Event($entity)
-		);
-
-		$this->invalidateCache($entity->getId());
 
 		return $returnedEntity;
 	}
@@ -453,11 +457,12 @@ class BookmarkMapper extends QBMapper {
 
 		// trigger event
 		$this->eventDispatcher->dispatch(
-			'\OCA\Bookmarks::onBookmarkUpdate',
-			new Event($entity)
+			Update::class,
+			new Update($entity, [
+				'id' => $entity->getId(),
+				'type' => TreeMapper::TYPE_BOOKMARK,
+			])
 		);
-
-		$this->invalidateCache($entity->getId());
 
 		return $newEntity;
 	}
@@ -502,10 +507,11 @@ class BookmarkMapper extends QBMapper {
 
 		parent::insert($entity);
 
-		$this->invalidateCache($entity->getId());
-		$this->eventDispatcher->dispatch(
-			'\OCA\Bookmarks::onBookmarkCreate',
-			new Event($entity->getId())
+		$this->eventDispatcher->dispatch(Create::class,
+			new Create($entity->getId(), [
+				'id' => $entity->getId(),
+				'type' => TreeMapper::TYPE_BOOKMARK,
+			])
 		);
 		return $entity;
 	}
@@ -537,49 +543,4 @@ class BookmarkMapper extends QBMapper {
 		return $newEntity;
 	}
 
-	/**
-	 * @param int $bookmarkId
-	 * @param array $fields
-	 * @return string
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
-	 */
-	public function hash(int $bookmarkId, array $fields): string {
-		$key = $this->getCacheKey($bookmarkId);
-		$hash = $this->cache->get($key);
-		$selector = implode(',', $fields);
-		if (isset($hash[$selector])) {
-			return $hash[$selector];
-		}
-		if (!isset($hash)) {
-			$hash = [];
-		}
-
-		$entity = $this->find($bookmarkId);
-		$bookmark = [];
-		foreach ($fields as $field) {
-			if (isset($entity->{$field})) {
-				$bookmark[$field] = $entity->{'get' . $field}();
-			}
-		}
-		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-		$this->cache->set($key, $hash, 60 * 60 * 24);
-		return $hash[$selector];
-	}
-
-	/**
-	 * @param int $bookmarkId
-	 * @return string
-	 */
-	private function getCacheKey(int $bookmarkId): string {
-		return 'bm:' . $bookmarkId;
-	}
-
-	/**
-	 * @param int $bookmarkId
-	 */
-	public function invalidateCache(int $bookmarkId): void {
-		$key = $this->getCacheKey($bookmarkId);
-		$this->cache->remove($key);
-	}
 }

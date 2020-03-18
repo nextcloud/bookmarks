@@ -18,7 +18,6 @@ use OCP\AppFramework\Db\Entity;
  */
 class SharedFolder extends Entity {
 	protected $shareId;
-	protected $parentFolder;
 	protected $userId;
 	protected $title;
 	protected $index;
