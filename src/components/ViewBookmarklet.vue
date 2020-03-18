@@ -9,7 +9,7 @@
 				<input v-model="bookmark.title" type="text" :placeholder="t('bookmarks', 'Enter bookmark title')">
 			</label>
 			<label>{{ t('bookmarks', 'Link') }}
-				<input v-model="bookmark.url" type="text" :placeholder="t('bookmarks', 'Enter bookmark url')">
+				<input v-model="bookmark.url" type="text" :placeholder="t('bookmarks', 'Enter bookmark URL')">
 			</label>
 			<label><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}
 				<Multiselect

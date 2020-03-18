@@ -34,14 +34,14 @@ class TagMapper {
 	public function findAllWithCount($userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select('t.tag')
-			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'nbr')
+			->select('t.tag AS name')
+			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'count')
 			->from('bookmarks_tags', 't')
 			->innerJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.bookmark_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)));
 		$qb
 			->groupBy('t.tag')
-			->orderBy('nbr', 'DESC');
+			->orderBy('count', 'DESC');
 
 		return $qb->execute()->fetchAll();
 	}

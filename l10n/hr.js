@@ -76,7 +76,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Ovaj URL je već označen! Prepiši?",
     "Title" : "Naslov",
     "Link" : "Poveznica",
-    "Enter bookmark url" : "Unesite URL knjižne oznake",
     "Failed to find existing bookmark" : "Knjižna oznaka nije pronađena",
     "Failed to create bookmark" : "Stvaranje knjižne oznake nije uspjelo",
     "Failed to save bookmark" : "Spremanje knjižne oznake nije uspjelo",

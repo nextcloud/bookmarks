@@ -76,7 +76,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Cette URL est déjà dans les favoris ! Remplacer ?",
     "Title" : "Titre",
     "Link" : "Lien",
-    "Enter bookmark url" : "Saisissez l'url du favori",
+    "Enter bookmark URL" : "Saisissez l'url du favori",
     "Failed to find existing bookmark" : "Impossible de trouver un signet existant",
     "Failed to create bookmark" : "Echec de la création du favori",
     "Failed to save bookmark" : "Echec de la sauvegarde du favori",

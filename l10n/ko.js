@@ -14,6 +14,7 @@ OC.L10N.register(
     "Grid view" : "바둑판식 보기",
     "List view" : "목록 보기",
     "Create" : "생성",
+    "Root folder" : "루트 폴더",
     "Import" : "가져오기",
     "Export" : "내보내기",
     "Recently added" : "최근에 추가됨",

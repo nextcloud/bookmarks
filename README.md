@@ -60,6 +60,9 @@ npm run build
 - [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) A MacOS client
 - [QOwnNotes](https://www.qownnotes.org/) - Plain-text file markdown note taking desktop application (no sync, just importing bookmarks)
 
+### iOS
+- [Nextbookmark](https://gitlab.com/altepizza/nextbookmark) - A minimal client for iOS
+
 ### Other
 - [uMarks](https://open-store.io/app/umarks.ernesst) - App for Ubuntu touch
 

@@ -61,7 +61,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Ta naslov URL je že dodan med zaznamke. Ali ga želite prepisati?",
     "Title" : "Naslov",
     "Link" : "Povezava",
-    "Enter bookmark url" : "Naslov URL zaznamka",
+    "Enter bookmark URL" : "Naslov URL zaznamka",
     "Failed to find existing bookmark" : "Dostop do obstoječega zaznamka je spodletel",
     "Failed to create bookmark" : "Ustvarjanje zaznamka je spodletelo",
     "Failed to save bookmark" : "Shranjevanje zaznamka je spodletelo",
