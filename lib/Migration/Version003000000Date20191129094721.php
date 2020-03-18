@@ -68,7 +68,7 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			]);
 			$table->setPrimaryKey(['id', 'type']);
 			$table->addIndex(['parent_folder'], 'bookmarks_tree_parent');
-			$table->addIndex(['parent_folder', 'index'], 'bookmarks_tree_parent');
+			$table->addIndex(['parent_folder', 'index'], 'bookmarks_tree_parent_i');
 		}
 		if (!$schema->hasTable('bookmarks_folders_public')) {
 			$table = $schema->createTable('bookmarks_folders_public');
@@ -152,7 +152,7 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			$table->addColumn('title', 'string', [
 				'notnull' => true,
 			]);
-			$table->setPrimaryKey(['share_id', 'user_id']);
+			$table->setPrimaryKey(['share_id', 'user_id'], 'bookmarks_sharedf_primry');
 		}
 		$schema->dropTable('bookmarks_folders_bookmarks');
 		$table = $schema->getTable('bookmarks');
