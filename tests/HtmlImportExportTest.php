@@ -4,16 +4,18 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
+use OCA\Bookmarks\Exception\AlreadyExistsError;
+use OCA\Bookmarks\Exception\HtmlParseError;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
-use PHPUnit\Framework\TestCase;
 
 
-class HtmlImportExportTest  extends TestCase {
+class HtmlImportExportTest extends TestCase {
 
 	/**
 	 * @var Db\BookmarkMapper
@@ -43,25 +45,30 @@ class HtmlImportExportTest  extends TestCase {
 	 * @var \stdClass
 	 */
 	protected $htmlExporter;
+	/**
+	 * @var \OC\User\Manager
+	 */
+	private $userManager;
+	/**
+	 * @var string
+	 */
+	private $user;
+	/**
+	 * @var Db\TreeMapper
+	 */
+	private $treeMapper;
 
 	/**
 	 * @throws QueryException
 	 */
 	protected function setUp(): void {
 		parent::setUp();
-
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
-		$query->execute();
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
-		$query->execute();
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
-		$query->execute();
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
-		$query->execute();
+		$this->cleanUp();
 
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
 		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
 		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
+		$this->treeMapper = \OC::$server->query(Db\TreeMapper::class);
 		$this->htmlImporter = \OC::$server->query(Service\HtmlImporter::class);
 		$this->htmlExporter = \OC::$server->query(Service\HtmlExporter::class);
 
@@ -71,33 +78,40 @@ class HtmlImportExportTest  extends TestCase {
 			$this->userManager->createUser($this->user, 'password');
 		}
 		$this->userId = $this->userManager->get($this->user)->getUID();
-
-		$this->folderMapper->deleteAll($this->userId);
 	}
 
 	/**
 	 * @dataProvider importProvider
 	 * @param string $file
-	 * @throws UnauthorizedAccessError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
+	 * @throws HtmlParseError
 	 */
-	public function testImportFile(string $file) {
+	public function testImportFile(string $file): void {
 		$result = $this->htmlImporter->importFile($this->userId, $file);
 
-		$imported = $this->folderMapper->getRootChildren($this->userId);
+		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
+		$imported = $this->treeMapper->getChildrenOrder($rootFolder->getId());
 		$this->assertCount(5, $imported);
 
-		$this->assertCount(2, $this->bookmarkMapper->findByFolder($result['imported'][0]['id']));
-		$this->assertCount(2, $this->bookmarkMapper->findByFolder($result['imported'][1]['id']));
-		$this->assertCount(2, $this->bookmarkMapper->findByFolder($result['imported'][2]['id']));
-		$this->assertCount(2, $this->bookmarkMapper->findByFolder($result['imported'][3]['id']));
-		$this->assertCount(2, $this->bookmarkMapper->findByFolder($result['imported'][4]['id']));
+		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][0]['id']));
+		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][1]['id']));
+		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][2]['id']));
+		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][3]['id']));
+		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][4]['id']));
 
+		/**
+		 * @var $firstBookmark Db\Bookmark
+		 */
 		$firstBookmark = $this->bookmarkMapper->find($result['imported'][0]['children'][0]['id']);
 		$this->assertSame('Title 0', $firstBookmark->getTitle());
 		$this->assertSame('http://url0.net/', $firstBookmark->getUrl());
+		$this->assertSame('This is a description.', $firstBookmark->getDescription());
 		$this->assertEquals(['tag0'], $this->tagMapper->findByBookmark($firstBookmark->getId()));
+		$this->assertEquals(1231231234, $firstBookmark->getAdded());
 	}
 
 	/**
@@ -105,47 +119,51 @@ class HtmlImportExportTest  extends TestCase {
 	 * @param array $bookmarks
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws UnauthorizedAccessError
 	 * @throws UrlParseError
-	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
-	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
 	 */
-	public function testExport(...$bookmarks) {
+	public function testExport(...$bookmarks): void {
+		$rootFolder = new Db\Folder();
+		$rootFolder->setTitle('Root');
+		$rootFolder->setUserId($this->userId);
+		$rootFolder = $this->folderMapper->insert($rootFolder);
+
 		// Set up database
-		for($i=0; $i < 4; $i++) {
+		for ($i = 0; $i < 4; $i++) {
 			$f = new Db\Folder();
 			$f->setTitle($i);
-			$f->setParentFolder(-1);
 			$f->setUserId($this->userId);
 			$f = $this->folderMapper->insert($f);
+			$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $f->getId(), $rootFolder->getId());
 			$b = array_shift($bookmarks);
 			$b->setUserId($this->userId);
 			$b = $this->bookmarkMapper->insertOrUpdate($b);
-			$this->folderMapper->addToFolders($b->getId(), [$f->getId()]);
+			$this->treeMapper->addToFolders(Db\TreeMapper::TYPE_BOOKMARK, $b->getId(), [$f->getId()]);
 		}
 
-		$exported = $this->htmlExporter->exportFolder($this->userId, -1);
+		$exported = $this->htmlExporter->exportFolder($this->userId, $rootFolder->getId());
 
-		$rootFolders = $this->folderMapper->getRootChildren($this->userId);
+		$rootFolders = $this->treeMapper->findChildren(Db\TreeMapper::TYPE_FOLDER, $rootFolder->getId());
 		$this->assertCount(4, $rootFolders);
-		foreach($rootFolders as $rootFolder) {
-			foreach($this->bookmarkMapper->findByFolder($rootFolder['id']) as $bookmark) {
-				$this->assertContains($bookmark->getUrl(), $exported);
+		foreach ($rootFolders as $rootFolder) {
+			foreach ($this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $rootFolder->getId()) as $bookmark) {
+				$this->assertStringContainsString($bookmark->getUrl(), $exported);
 			}
 		}
 	}
 
-	public function importProvider() {
+	public function importProvider(): array {
 		return [
 			[
-				__DIR__.'/res/import.file'
-			]
+				__DIR__ . '/res/import.file',
+			],
 		];
 	}
 
-	public function exportProvider() {
+	public function exportProvider(): array {
 		return [
-			array_map(function($props) {
+			array_map(function ($props) {
 				return Db\Bookmark::fromArray($props);
 			}, [
 				['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
@@ -153,7 +171,7 @@ class HtmlImportExportTest  extends TestCase {
 				['url' => 'https://php.net/'],
 				['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
 				['url' => 'https://github.com/nextcloud/bookmarks/projects/1'],
-			])
+			]),
 		];
 	}
 }

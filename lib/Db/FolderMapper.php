@@ -3,7 +3,6 @@
 namespace OCA\Bookmarks\Db;
 
 use OCA\Bookmarks\Events\Create;
-use OCA\Bookmarks\Events\Delete;
 use OCA\Bookmarks\Events\Update;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
@@ -76,17 +75,35 @@ class FolderMapper extends QBMapper {
 	/**
 	 * @param $userId
 	 * @return Entity
-	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function findRootFolder($userId): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select(Folder::$columns)
+			->select(array_map(static function ($col) {
+				return 'f.' . $col;
+			}, Folder::$columns))
 			->from('bookmarks_folders', 'f')
-			->join('f', 'bookmarks_root_folders', 't', $qb->expr()->eq('id', 'folder_id'))
-			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
-		return $this->findEntity($qb);
+			->join('f', 'bookmarks_root_folders', 'r', $qb->expr()->eq('id', 'folder_id'))
+			->where($qb->expr()->eq('r.user_id', $qb->createNamedParameter($userId)));
+		try {
+			$rootFolder = $this->findEntity($qb);
+		} catch (DoesNotExistException $e) {
+			$rootFolder = new Folder();
+			$rootFolder->setUserId($userId);
+			$rootFolder->setTitle('');
+			$this->insert($rootFolder);
+
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->insert('bookmarks_root_folders')
+				->values([
+					'user_id' => $qb->createPositionalParameter($userId),
+					'folder_id' => $qb->createPositionalParameter($rootFolder->getId()),
+				])
+				->execute();
+		}
+		return $rootFolder;
 	}
 
 

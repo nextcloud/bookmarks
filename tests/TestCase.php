@@ -36,6 +36,8 @@ class TestCase extends Framework\TestCase {
 		$query->execute();
 		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
 		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_root_folders');
+		$query->execute();
 		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_public');
 		$query->execute();
 		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tree');

@@ -2,6 +2,6 @@
 
 namespace OCA\Bookmarks\Exception;
 
-class UrlParseError extends Exception {
+class HtmlParseError extends Exception {
 
 }

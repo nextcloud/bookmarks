@@ -7,6 +7,7 @@ namespace OCA\Bookmarks\Service;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\TagMapper;
+use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -33,6 +34,10 @@ class HtmlExporter {
 	 * @var TagMapper
 	 */
 	protected $tagMapper;
+	/**
+	 * @var TreeMapper
+	 */
+	private $treeMapper;
 
 	/**
 	 * ImportService constructor.
@@ -41,10 +46,11 @@ class HtmlExporter {
 	 * @param FolderMapper $folderMapper
 	 * @param TagMapper $tagMapper
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->folderMapper = $folderMapper;
 		$this->tagMapper = $tagMapper;
+		$this->treeMapper = $treeMapper;
 	}
 
 	/**
@@ -56,9 +62,9 @@ class HtmlExporter {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function exportFolder($userId, int $folderId = -1): string {
-		$file = "<!DOCTYPE NETSCAPE-Bookmark-file-1>
-<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\">
-<TITLE>Bookmarks</TITLE>";
+		$file = '<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Bookmarks</TITLE>';
 
 		$file .= $this->serializeFolder($userId, $folderId);
 
@@ -86,7 +92,7 @@ class HtmlExporter {
 				. '<DL><p>';
 		}
 
-		$childBookmarks = $id !== -1 ? $this->bookmarkMapper->findByFolder($id) : $this->bookmarkMapper->findByRootFolder($userId);
+		$childBookmarks = $this->treeMapper->findChildren(TreeMapper::TYPE_BOOKMARK, $id);
 		foreach ($childBookmarks as $bookmark) {
 			// discards records with no URL. This should not happen but
 			// a database could have old entries
@@ -106,13 +112,13 @@ class HtmlExporter {
 			$description = Util::sanitizeHTML($bookmark->getDescription());
 
 			$output .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '" ADD_DATE="' . $bookmark->getAdded() . '">' . $title . '</A>' . "\n";
-			if (strlen($description) > 0) {
+			if ($description !== '') {
 				$output .= '<DD>' . $description . '</DD>';
 			}
 			$output .= "\n";
 		}
 
-		$childFolders = $this->folderMapper->findByParentFolder($id);
+		$childFolders = $this->treeMapper->findChildren(TreeMapper::TYPE_FOLDER, $id);
 		foreach ($childFolders as $childFolder) {
 			$output .= $this->serializeFolder($userId, $childFolder->getId());
 		}

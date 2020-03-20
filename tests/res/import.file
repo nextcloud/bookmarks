@@ -1,6 +1,7 @@
 <DT><h3>0</h3>
 <DL>
-  <DT><A HREF="http://url0.net/" TAGS="tag0">Title 0</A>
+  <DT><A HREF="http://url0.net/" TAGS="tag0" ADD_DATE="1231231234">Title 0</A>
+  <DD>This is a description.</DD>
   <DT><A HREF="http://url1.net/" TAGS="tag1">Title 1</A>
 </DL>
 <DT><h3>3</h3>

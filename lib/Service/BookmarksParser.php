@@ -5,6 +5,8 @@
 
 namespace OCA\Bookmarks\Service;
 
+use OCA\Bookmarks\Exception\HtmlParseError;
+
 /**
  * Bookmark parser
  *
@@ -94,17 +96,16 @@ class BookmarksParser {
 	 *
 	 * @return mixed  A PHP value
 	 *
-	 * @throws ParseException If the HTML is not valid
-	 * @throws \Exception
+	 * @throws HtmlParseError
 	 */
 	public function parse($input, $ignorePersonalToolbarFolder = true, $includeFolderTags = true, $useDateTimeObjects = true) {
 		$document = new \DOMDocument();
 		$document->preserveWhiteSpace = false;
 		if (empty($input)) {
-			throw new \Exception("The input shouldn't be empty");
+			throw new HtmlParseError("The input shouldn't be empty");
 		}
 		if (false === $document->loadHTML($input, \LIBXML_PARSEHUGE)) {
-			throw new \Exception('The HTML value does not appear to be valid Netscape Bookmark File Format HTML.');
+			throw new HtmlParseError('The HTML value does not appear to be valid Netscape Bookmark File Format HTML.');
 		}
 		$this->xpath = new \DOMXPath($document);
 		$this->ignorePersonalToolbarFolder = $ignorePersonalToolbarFolder;
@@ -127,7 +128,10 @@ class BookmarksParser {
 	private function traverse(\DOMNode $node = null) {
 		$query = './*';
 		$entries = $this->xpath->query($query, $node ?: null);
-		foreach ($entries as $entry) {
+		if (!$entries) return;
+		for ($i = 0; $i < $entries->length; $i++) {
+			$entry = $entries->item($i);
+			if ($entry === null) continue;
 			switch ($entry->nodeName) {
 				case 'dl':
 					$this->traverse($entry);
@@ -159,9 +163,8 @@ class BookmarksParser {
 	 * Add a folder from a \DOMNode
 	 *
 	 * @param \DOMNode $node
-	 * @throws \Exception
 	 */
-	private function addFolder(\DOMNode $node) {
+	private function addFolder(\DOMNode $node): void {
 		$folder = [
 			'title' => $node->textContent,
 			'children' => [],
@@ -179,7 +182,7 @@ class BookmarksParser {
 	/**
 	 * Close current folder
 	 */
-	private function closeFolder() {
+	private function closeFolder(): void {
 		array_pop($this->folderDepth);
 		$this->currentFolder =& $this->folderDepth[count($this->folderDepth) - 1];
 	}
@@ -188,9 +191,8 @@ class BookmarksParser {
 	 * Add a bookmark from a \DOMNode
 	 *
 	 * @param \DOMNode $node
-	 * @throws \Exception
 	 */
-	private function addBookmark(\DOMNode $node) {
+	private function addBookmark(\DOMNode $node): void {
 		$bookmark = [
 			'title' => $node->textContent,
 			'description' => '',
@@ -204,7 +206,7 @@ class BookmarksParser {
 			}
 		}
 		$this->currentFolder['bookmarks'][] =& $bookmark;
-		$this->bookmarks[] = $bookmark;
+		$this->bookmarks[] =& $bookmark;
 	}
 
 	/**
@@ -212,12 +214,12 @@ class BookmarksParser {
 	 *
 	 * @param \DOMNode $node
 	 */
-	private function addDescription(\DOMNode $node) {
+	private function addDescription(\DOMNode $node): void {
 		$count = count($this->bookmarks);
 		if ($count === 0) {
 			return;
 		}
-		$bookmark = $this->bookmarks[$count - 1];
+		$bookmark =& $this->bookmarks[$count - 1];
 		$bookmark['description'] = $node->textContent;
 	}
 
@@ -226,29 +228,29 @@ class BookmarksParser {
 	 *
 	 * @param \DOMNode $node
 	 * @return array
-	 * @throws \Exception
 	 */
-	private function getAttributes(\DOMNode $node) {
+	private function getAttributes(\DOMNode $node): array {
 		$attributes = [];
 		$length = $node->attributes->length;
 		for ($i = 0; $i < $length; ++$i) {
-			$attributes[strtolower($node->attributes->item($i)->name)] = $node->attributes->item($i)->value;
+			$item = $node->attributes->item($i);
+			if ($item === null) continue;
+			$attributes[strtolower($item->nodeName)] = $item->nodeValue;
+		}
+		$lastModified = null;
+		if (isset($attributes['time_added'])) {
+			$attributes['add_date'] = $attributes['time_added'];
 		}
 		if ($this->useDateTimeObjects) {
 			if (isset($attributes['add_date'])) {
-				$addDate = new \DateTime();
-				$addDate->setTimestamp($attributes['add_date']);
-				$attributes['add_date'] = $addDate;
-			}
-			if (isset($attributes['time_added'])) {
-				$addDate = new \DateTime();
-				$addDate->setTimestamp($attributes['add_date']);
-				$attributes['add_date'] = $addDate;
+				$added = new \DateTime();
+				$added->setTimestamp((int)$attributes['add_date']);
+				$attributes['add_date'] = $added;
 			}
 			if (isset($attributes['last_modified'])) {
-				$lastModified = new \DateTime();
-				$lastModified->setTimestamp($attributes['last_modified']);
-				$attributes['last_modified'] = $lastModified;
+				$modified = new \DateTime();
+				$modified->setTimestamp((int)$attributes['last_modified']);
+				$attributes['last_modified'] = $modified;
 			}
 		}
 		if (isset($attributes['tags'])) {
@@ -262,7 +264,7 @@ class BookmarksParser {
 	 *
 	 * @return array
 	 */
-	private function getCurrentFolderTags() {
+	private function getCurrentFolderTags(): array {
 		$tags = [];
 		array_walk_recursive($this->currentFolder, function ($tag, $key) use (&$tags) {
 			if ('name' === $key) {

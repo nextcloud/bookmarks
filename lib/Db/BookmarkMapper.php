@@ -2,7 +2,6 @@
 
 namespace OCA\Bookmarks\Db;
 
-use GuzzleHttp\Query;
 use OCA\Bookmarks\Events\Create;
 use OCA\Bookmarks\Events\Delete;
 use OCA\Bookmarks\Events\Update;
@@ -16,11 +15,11 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\IDBConnection;
-use OCP\EventDispatcher\IEventDispatcher;
 
 /**
  * Class BookmarkMapper
@@ -463,7 +462,6 @@ class BookmarkMapper extends QBMapper {
 			$entity->setAdded(time());
 		}
 		$entity->setLastmodified(time());
-		$entity->setAdded(time());
 		$entity->setLastPreview(0);
 		$entity->setClickcount(0);
 

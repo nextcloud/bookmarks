@@ -159,6 +159,7 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 		$table->addIndex(['lastmodified'], 'bookmarks_modified');
 		$table = $schema->getTable('bookmarks_folders');
 		$table->dropColumn('parent_folder');
+		$table->dropColumn('index');
 		return $schema;
 	}
 
