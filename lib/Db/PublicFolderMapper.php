@@ -36,7 +36,7 @@ class PublicFolderMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
 	 */
-	public function find(string $id) {
+	public function find(string $id): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -52,7 +52,7 @@ class PublicFolderMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
 	 */
-	public function findByFolder(int $folderId) {
+	public function findByFolder(int $folderId): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -66,7 +66,7 @@ class PublicFolderMapper extends QBMapper {
 	 * @param int $createdAt
 	 * @return array|Entity[]
 	 */
-	public function findAllCreatedBefore(int $createdAt) {
+	public function findAllCreatedBefore(int $createdAt): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -129,7 +129,7 @@ class PublicFolderMapper extends QBMapper {
 		string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	): string {
 		if ($length < 1) {
-			throw new \RangeException("Length must be a positive integer");
+			throw new \RangeException('Length must be a positive integer');
 		}
 		$pieces = [];
 		$max = mb_strlen($keyspace, '8bit') - 1;
