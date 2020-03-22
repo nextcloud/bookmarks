@@ -10,12 +10,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 
 class FolderMapperTest extends TestCase {
-
-	/**
-	 * @var Db\BookmarkMapper
-	 */
-	private $bookmarkMapper;
-
 	/**
 	 * @var Db\FolderMapper
 	 */

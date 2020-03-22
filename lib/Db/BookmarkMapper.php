@@ -16,8 +16,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\IEventDispatcher;
-use OCP\ICache;
-use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\IDBConnection;
 
@@ -52,12 +50,6 @@ class BookmarkMapper extends QBMapper {
 	private $tagMapper;
 
 	/**
-	 * @var ICache
-	 */
-	private $cache;
-
-
-	/**
 	 * BookmarkMapper constructor.
 	 *
 	 * @param IDBConnection $db
@@ -66,7 +58,6 @@ class BookmarkMapper extends QBMapper {
 	 * @param IConfig $config
 	 * @param PublicFolderMapper $publicMapper
 	 * @param TagMapper $tagMapper
-	 * @param ICacheFactory $cacheFactory
 	 */
 	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
@@ -222,6 +213,27 @@ class BookmarkMapper extends QBMapper {
 			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
 		}
 		$qb->having($filterExpression);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param QueryParameters $params
+	 * @return array|Entity[]
+	 */
+	public function findByFolder(int $folderId, QueryParameters $params): array {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(array_map(static function ($col) {
+			return 'b.' . $col;
+		}, Bookmark::$columns));
+
+		$qb
+			->from('bookmarks', 'b')
+			->leftJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)));
+
+		$this->_queryBuilderSortAndPaginate($qb, $params);
+
+		return $this->findEntities($qb);
 	}
 
 	/**

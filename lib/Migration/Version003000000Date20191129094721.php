@@ -135,13 +135,18 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 				'default' => false,
 			]);
 			$table->setPrimaryKey(['id']);
-			$table->addIndex(['created_at'], 'bookmarks_shared_created_at');
-			$table->addIndex(['folder_id'], 'bookmarks_shared_folder_id');
-			$table->addIndex(['owner'], 'bookmarks_shared_owner');
+			$table->addIndex(['created_at'], 'bookmarks_share_created_at');
+			$table->addIndex(['folder_id'], 'bookmarks_share_folder_id');
+			$table->addIndex(['owner'], 'bookmarks_share_owner');
 			$table->addIndex(['participant', 'type'], 'bookmarks_share_part');
 		}
 		if (!$schema->hasTable('bookmarks_shared_folders')) {
 			$table = $schema->createTable('bookmarks_shared_folders');
+			$table->addColumn('id', 'bigint', [
+				'notnull' => true,
+				'length' => 64,
+				'autoincrement' => true,
+			]);
 			$table->addColumn('share_id', 'bigint', [
 				'notnull' => true,
 				'length' => 64,
@@ -152,7 +157,9 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			$table->addColumn('title', 'string', [
 				'notnull' => true,
 			]);
-			$table->setPrimaryKey(['share_id', 'user_id'], 'bookmarks_sharedf_primry');
+			$table->setPrimaryKey(['id'], 'bookmarks_shared_id');
+			$table->addIndex(['user_id'], 'bookmarks_shared_user');
+			$table->addIndex(['share_id'], 'bookmarks_shared_share');
 		}
 		$schema->dropTable('bookmarks_folders_bookmarks');
 		$table = $schema->getTable('bookmarks');

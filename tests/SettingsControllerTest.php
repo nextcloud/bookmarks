@@ -3,9 +3,8 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Controller\SettingsController;
-use \OCP\IConfig;
+use OCP\IConfig;
 use OCP\IRequest;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class Test_SettingsController
@@ -29,18 +28,18 @@ class SettingsControllerTest extends TestCase {
 	private $config;
 	/** @var SettingsController */
 	private $controller;
+	/**
+	 * @var \OC\User\Manager
+	 */
+	private $userManager;
+	/**
+	 * @var string
+	 */
+	private $user;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
-
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
-		$query->execute();
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
-		$query->execute();
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
-		$query->execute();
-		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_bookmarks');
-		$query->execute();
+		$this->cleanUp();
 
 		$this->userManager = \OC::$server->getUserManager();
 		$this->user = 'test';
@@ -49,17 +48,20 @@ class SettingsControllerTest extends TestCase {
 		}
 		$this->userId = $this->userManager->get($this->user)->getUID();
 
-		$this->appName = "bookmarks";
+		$this->appName = 'bookmarks';
 		$this->request = \OC::$server->getRequest();
 		$userManager = \OC::$server->getUserManager();
 		if (!$userManager->userExists($this->userId)) {
 			$userManager->createUser($this->userId, 'password');
 		}
 		$this->config = \OC::$server->getConfig();
-		$this->controller = new SettingsController("bookmarks", $this->request, $this->userId, $this->config);
+		$this->controller = new SettingsController('bookmarks', $this->request, $this->userId, $this->config);
 	}
 
-	public function testGetSorting() {
+	/**
+	 * @throws \OCP\PreConditionNotMetException
+	 */
+	public function testGetSorting(): void {
 		$this->config->setUserValue($this->userId, $this->appName, 'sorting', 'clickcount'); //case: user has a normal sorting option
 		$output = $this->controller->getSorting();
 		$data = $output->getData();
@@ -70,7 +72,10 @@ class SettingsControllerTest extends TestCase {
 		$this->assertEquals('lastmodified', $data['sorting']); //returns default
 	}
 
-	public function testSetSorting() {
+	/**
+	 *
+	 */
+	public function testSetSorting(): void {
 		$output = $this->controller->setSorting('added'); //case: set a normal sorting option
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status']);
@@ -80,7 +85,7 @@ class SettingsControllerTest extends TestCase {
 		$this->assertEquals('error', $data['status']);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->config->deleteUserValue($this->userId, $this->appName, 'sorting');
 	}
 }

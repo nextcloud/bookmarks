@@ -95,7 +95,7 @@ class ShareMapper extends QBMapper {
 	 */
 	public function findByFolderAndParticipant(int $folderId, int $type, string $participant): Entity {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(function ($c) {
+		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;
 		}, Share::$columns))
 			->from('bookmarks_shares')
@@ -114,11 +114,11 @@ class ShareMapper extends QBMapper {
 	 */
 	public function findByFolderAndUser(int $folderId, string $userId): Entity {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(function ($c) {
+		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;
 		}, Share::$columns))
 			->from('bookmarks_shares', 's')
-			->leftJoin('s', 'bookmarks_shared', 'p', 's.id = p.share_id')
+			->leftJoin('s', 'bookmarks_shared_folders', 'p', 's.id = p.share_id')
 			->where($qb->expr()->eq('s.folder_id', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntity($qb);
@@ -131,11 +131,11 @@ class ShareMapper extends QBMapper {
 	 */
 	public function findByOwnerAndUser(string $owner, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(function ($c) {
+		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;
 		}, Share::$columns))
 			->from('bookmarks_shares', 's')
-			->leftJoin('s', 'bookmarks_shared', 'p', 's.id = p.share_id')
+			->leftJoin('s', 'bookmarks_shared_folders', 'p', 's.id = p.share_id')
 			->where($qb->expr()->eq('s.owner', $qb->createPositionalParameter($owner)))
 			->andWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntities($qb);

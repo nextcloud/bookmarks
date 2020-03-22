@@ -17,9 +17,14 @@ use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Db\PublicFolder;
+use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Db\TagMapper;
+use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
+use OCA\Bookmarks\Exception\HtmlParseError;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
+use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\ExportResponse;
@@ -126,6 +131,16 @@ class BookmarkController extends ApiController {
 	 * @var Authorizer
 	 */
 	private $authorizer;
+	/**
+	 * @var TreeMapper
+	 */
+	private $treeMapper;
+
+	/**
+	 * @var PublicFolderMapper
+	 */
+	private $publicFolderMapper;
+	private $rootFolderId;
 
 	public function __construct(
 		$appName,
@@ -135,6 +150,8 @@ class BookmarkController extends ApiController {
 		BookmarkMapper $bookmarkMapper,
 		TagMapper $tagMapper,
 		FolderMapper $folderMapper,
+		TreeMapper $treeMapper,
+		PublicFolderMapper $publicFolderMapper,
 		BookmarkPreviewer $bookmarkPreviewer,
 		FaviconPreviewer $faviconPreviewer,
 		ITimeFactory $timeFactory,
@@ -153,6 +170,8 @@ class BookmarkController extends ApiController {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->tagMapper = $tagMapper;
 		$this->folderMapper = $folderMapper;
+		$this->treeMapper = $treeMapper;
+		$this->publicFolderMapper = $publicFolderMapper;
 		$this->bookmarkPreviewer = $bookmarkPreviewer;
 		$this->faviconPreviewer = $faviconPreviewer;
 		$this->timeFactory = $timeFactory;
@@ -171,11 +190,59 @@ class BookmarkController extends ApiController {
 	 */
 	private function _returnBookmarkAsArray(Bookmark $bookmark): array {
 		$array = $bookmark->toArray();
-		$array['folders'] = array_map(static function (Folder $folder) {
-			return $folder->getId();
-		}, $this->folderMapper->findParentsOfBookmark($bookmark->getId()));
+		$array['folders'] = array_map(function (Folder $folder) {
+			return $this->toExternalFolderId($folder->getId());
+		}, $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId()));
 		$array['tags'] = $this->tagMapper->findByBookmark($bookmark->getId());
 		return $array;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	private function _getRootFolderId(): int {
+		if ($this->rootFolderId !== null) {
+			return $this->rootFolderId;
+		}
+		try {
+			if ($this->userId !== null) {
+				$this->rootFolderId = $this->folderMapper->findRootFolder($this->userId)->getId();
+			}
+			if ($this->authorizer->getToken() !== null) {
+				/**
+				 * @var $publicFolder PublicFolder
+				 */
+				$publicFolder = $this->publicFolderMapper->find($this->authorizer->getToken());
+				$this->rootFolderId = $publicFolder->getFolderId();
+			}
+		} catch (DoesNotExistException $e) {
+			// noop
+		} catch (MultipleObjectsReturnedException $e) {
+			// noop
+		}
+		return $this->rootFolderId;
+	}
+
+	/**
+	 * @param int $external
+	 * @return int
+	 */
+	private function toInternalFolderId(int $external): int {
+		if ($external === -1) {
+			return $this->_getRootFolderId();
+		}
+		return $external;
+	}
+
+	/**
+	 * @param int $internal
+	 * @return int
+	 */
+	private function toExternalFolderId(int $internal): int {
+		if ($internal === $this->_getRootFolderId()) {
+			return -1;
+		}
+		return $internal;
 	}
 
 	/**
@@ -191,6 +258,9 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_NOT_FOUND);
 		}
 		try {
+			/**
+			 * @var $bm Bookmark
+			 */
 			$bm = $this->bookmarkMapper->find($id);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_NOT_FOUND);
@@ -279,6 +349,9 @@ class BookmarkController extends ApiController {
 
 		if ($url !== null) {
 			try {
+				/**
+				 * @var $bookmark Bookmark
+				 */
 				$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $url);
 			} catch (DoesNotExistException $e) {
 				return new DataResponse(['data' => [], 'status' => 'success']);
@@ -321,6 +394,7 @@ class BookmarkController extends ApiController {
 			if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->userId, $this->request))) {
 				return new DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 			}
+			$folder = $this->toInternalFolderId($folder);
 			$result = $this->bookmarkMapper->findByFolder($folder, $params);
 		} else if (isset($this->userId)) {
 			if ($untagged) {
@@ -411,9 +485,8 @@ class BookmarkController extends ApiController {
 		}
 
 		try {
-			$rootFolder = $this->folderMapper->findRootFolder($this->userId);
-			$folders = array_map(static function ($folderId) use ($rootFolder) {
-				return ((int)$folderId) === -1 ? $rootFolder->getId() : $folderId;
+			$folders = array_map(function ($folderId) {
+				return $this->toInternalFolderId((int)$folderId);
 			}, $folders);
 			$created = false;
 			foreach ($folders as $folderId) {
@@ -427,8 +500,8 @@ class BookmarkController extends ApiController {
 				$bookmark = $this->_addBookmark($title, $url, $description, $folder->getUserId(), $tags, [$folder->getId()]);
 				$created = true;
 			}
-			if (!$created || count($folders) === -1) {
-				$bookmark = $this->_addBookmark($title, $url, $description, $this->userId, $tags, [$rootFolder->getId()]);
+			if (!$created) {
+				$bookmark = $this->_addBookmark($title, $url, $description, $this->userId, $tags, [$this->_getRootFolderId()]);
 			}
 		} catch (AlreadyExistsError $e) {
 			// This is really unlikely, as we make sure to use the existing one if it already exists
@@ -440,6 +513,8 @@ class BookmarkController extends ApiController {
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not add bookmark'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Internal server error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (UnsupportedOperation $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Internal server error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
@@ -459,6 +534,7 @@ class BookmarkController extends ApiController {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
+	 * @throws \OCA\Bookmarks\Exception\UnsupportedOperation
 	 */
 	private function _addBookmark($title, $url, $description, $userId, $tags, $folders): Bookmark {
 		$bookmark = new Bookmark();
@@ -469,16 +545,7 @@ class BookmarkController extends ApiController {
 		$this->bookmarkMapper->insertOrUpdate($bookmark);
 		$this->tagMapper->setOn($tags, $bookmark->getId());
 
-		$prevFolders = $this->folderMapper->findParentsOfBookmark($bookmark->getId());
-		foreach ($prevFolders as $folderId) {
-			$this->folderMapper->invalidateCache($userId, $folderId);
-		}
-
-		$this->folderMapper->setToFolders($bookmark->getId(), $folders);
-		$this->bookmarkMapper->invalidateCache($bookmark->getId());
-		foreach ($folders as $folderId) {
-			$this->folderMapper->invalidateCache($userId, $folderId);
-		}
+		$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folders);
 		return $bookmark;
 	}
 
@@ -500,6 +567,9 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
+			/**
+			 * @var $bookmark Bookmark
+			 */
 			$bookmark = $this->bookmarkMapper->find($id);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
@@ -518,13 +588,10 @@ class BookmarkController extends ApiController {
 				$bookmark->setDescription($description);
 			}
 
-			// invalidate cached folders
-			$prevFolders = $this->folderMapper->findParentsOfBookmark($bookmark->getId());
-			foreach ($prevFolders as $folder) {
-				$this->folderMapper->invalidateCache($this->userId, $folder->getId());
-			}
-
 			if (isset($folders)) {
+				$folders = array_map(function ($folderId) {
+					return $this->toInternalFolderId((int)$folderId);
+				}, $folders);
 				$foreignFolders = array_filter($folders, function ($folderId) use ($bookmark) {
 					try {
 						$folder = $this->folderMapper->find($folderId);
@@ -560,10 +627,7 @@ class BookmarkController extends ApiController {
 				}
 
 				// invalidate cached folders
-				$this->folderMapper->setToFolders($bookmark->getId(), $ownFolders);
-				foreach ($ownFolders as $folderId) {
-					$this->folderMapper->invalidateCache($this->userId, $folderId);
-				}
+				$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $ownFolders);
 				if (count($ownFolders) === 0) {
 					$this->bookmarkMapper->delete($bookmark);
 					return new JSONResponse(['item' => $this->_returnBookmarkAsArray($bookmark), 'status' => 'success']);
@@ -585,6 +649,8 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not add bookmark'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Internal server error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not add bookmark'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
 		return new JSONResponse(['item' => $this->_returnBookmarkAsArray($bookmark), 'status' => 'success']);
@@ -609,12 +675,6 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'success']);
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_BAD_REQUEST);
-		}
-
-		// invalidate cached folders
-		$prevFolders = $this->folderMapper->findParentsOfBookmark($bookmark->getId());
-		foreach ($prevFolders as $folder) {
-			$this->folderMapper->invalidateCache($this->userId, $folder->getId());
 		}
 
 		$this->bookmarkMapper->delete($bookmark);
@@ -663,6 +723,9 @@ class BookmarkController extends ApiController {
 			return new NotFoundResponse();
 		}
 		try {
+			/**
+			 * @var $bookmark Bookmark
+			 */
 			$bookmark = $this->bookmarkMapper->find($id);
 			if ($bookmark->getUserId() !== $this->userId) {
 				return new NotFoundResponse();
@@ -696,6 +759,9 @@ class BookmarkController extends ApiController {
 			return new NotFoundResponse();
 		}
 		try {
+			/**
+			 * @var $bookmark Bookmark
+			 */
 			$bookmark = $this->bookmarkMapper->find($id);
 		} catch (DoesNotExistException $e) {
 			return new NotFoundResponse();
@@ -743,7 +809,7 @@ class BookmarkController extends ApiController {
 	 */
 	public function importBookmark($folder = -1): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folder, $this->userId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']]);
+			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
 		}
 
 		$full_input = $this->request->getUploadedFile('bm_import');
@@ -763,11 +829,15 @@ class BookmarkController extends ApiController {
 		try {
 			$result = $this->htmlImporter->importFile($this->userId, $file, $folder);
 		} catch (UnauthorizedAccessError $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized access']);
+			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized access'], Http::STATUS_FORBIDDEN);
 		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Folder not found']);
+			return new JSONResponse(['status' => 'error', 'data' => 'Folder not found'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found']);
+			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (HtmlParseError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Parse error: Invalid HTML'], Http::STATUS_BAD_REQUEST);
+		} catch (UserLimitExceededError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not import all bookmarks: User limit Exceeded'], Http::STATUS_BAD_REQUEST);
 		}
 		if (count($result['errors']) !== 0) {
 			$this->logger->warning(var_export($result['errors'], true), ['app' => 'bookmarks']);
