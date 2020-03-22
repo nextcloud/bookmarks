@@ -2,8 +2,8 @@
 
 namespace OCA\Bookmarks\Db;
 
-use OCA\Bookmarks\Events\Create;
-use OCA\Bookmarks\Events\Update;
+use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\UpdateEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -112,11 +112,9 @@ class FolderMapper extends QBMapper {
 	 * @return Entity
 	 */
 	public function update(Entity $entity): Entity {
-		$this->eventDispatcher->dispatch(Update::class, new Update($entity, [
-			'id' => $entity->getId(),
-			'type' => TreeMapper::TYPE_FOLDER,
-		]));
-		return parent::update($entity);
+		parent::update($entity);
+		$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(TreeMapper::TYPE_FOLDER, $entity->getId()));
+		return $entity;
 	}
 
 	/**
@@ -125,10 +123,7 @@ class FolderMapper extends QBMapper {
 	 */
 	public function insert(Entity $entity): Entity {
 		parent::insert($entity);
-		$this->eventDispatcher->dispatch(Create::class, new Create($entity, [
-			'id' => $entity->getId(),
-			'type' => TreeMapper::TYPE_FOLDER,
-		]));
+		$this->eventDispatcher->dispatch(CreateEvent::class, new CreateEvent(TreeMapper::TYPE_FOLDER, $entity->getId()));
 		return $entity;
 	}
 }

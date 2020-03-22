@@ -7,9 +7,10 @@ use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Events\ChangeEvent;
+use OCA\Bookmarks\Events\MoveEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use OCP\EventDispatcher\Event;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use UnexpectedValueException;
@@ -176,16 +177,24 @@ class HashManager {
 	/**
 	 * Handle events
 	 *
-	 * @param Event $event
+	 * @param ChangeEvent $event
 	 */
-	public function handle(Event $event): void {
-		switch($event->getArgument('type')) {
+	public function handle(ChangeEvent $event): void {
+		switch ($event->getType()) {
 			case TreeMapper::TYPE_FOLDER:
-				$this->invalidateFolder($event->getArgument('id'));
+				$this->invalidateFolder($event->getId());
 				break;
 			case TreeMapper::TYPE_BOOKMARK:
-				$this->invalidateBookmark($event->getArgument('id'));
+				$this->invalidateBookmark($event->getId());
 				break;
+		}
+		if ($event instanceof MoveEvent) {
+			if ($event->getNewParent() !== null) {
+				$this->invalidateFolder($event->getNewParent());
+			}
+			if ($event->getOldParent() !== null) {
+				$this->invalidateFolder($event->getOldParent());
+			}
 		}
 	}
 }

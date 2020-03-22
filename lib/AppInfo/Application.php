@@ -14,10 +14,10 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
-use OCA\Bookmarks\Events\Create;
-use OCA\Bookmarks\Events\Delete;
-use OCA\Bookmarks\Events\Move;
-use OCA\Bookmarks\Events\Update;
+use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\MoveEvent;
+use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Service\HashManager;
 use OCP\AppFramework\App;
 use OCP\EventDispatcher\IEventDispatcher;
@@ -42,9 +42,9 @@ class Application extends App {
 		});
 
 		$dispatcher = $this->getContainer()->query(IEventDispatcher::class);
-		$dispatcher->addServiceListener(Create::class, HashManager::class);
-		$dispatcher->addServiceListener(Update::class, HashManager::class);
-		$dispatcher->addServiceListener(Delete::class, HashManager::class);
-		$dispatcher->addServiceListener(Move::class, HashManager::class);
+		$dispatcher->addServiceListener(CreateEvent::class, HashManager::class);
+		$dispatcher->addServiceListener(UpdateEvent::class, HashManager::class);
+		$dispatcher->addServiceListener(BeforeDeleteEvent::class, HashManager::class);
+		$dispatcher->addServiceListener(MoveEvent::class, HashManager::class);
 	}
 }

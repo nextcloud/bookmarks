@@ -2,9 +2,9 @@
 
 namespace OCA\Bookmarks\Db;
 
-use OCA\Bookmarks\Events\Create;
-use OCA\Bookmarks\Events\Delete;
-use OCA\Bookmarks\Events\Update;
+use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
@@ -155,7 +155,7 @@ class BookmarkMapper extends QBMapper {
 
 		$count = $qb->execute()->fetch(\PDO::FETCH_COLUMN)[0];
 
-		return (int) $count;
+		return (int)$count;
 	}
 
 	private function _queryBuilderSortAndPaginate(IQueryBuilder $qb, QueryParameters $params): void {
@@ -410,11 +410,8 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function delete(Entity $entity): Entity {
 		$this->eventDispatcher->dispatch(
-			Delete::class,
-			new Delete($entity, [
-				'id' => $entity->getId(),
-				'type' => TreeMapper::TYPE_BOOKMARK,
-			])
+			BeforeDeleteEvent::class,
+			new BeforeDeleteEvent(TreeMapper::TYPE_BOOKMARK, $entity->getId())
 		);
 
 		$returnedEntity = parent::delete($entity);
@@ -444,11 +441,8 @@ class BookmarkMapper extends QBMapper {
 
 		// trigger event
 		$this->eventDispatcher->dispatch(
-			Update::class,
-			new Update($entity, [
-				'id' => $entity->getId(),
-				'type' => TreeMapper::TYPE_BOOKMARK,
-			])
+			UpdateEvent::class,
+			new UpdateEvent(TreeMapper::TYPE_BOOKMARK, $entity->getId())
 		);
 
 		return $newEntity;
@@ -493,11 +487,8 @@ class BookmarkMapper extends QBMapper {
 
 		parent::insert($entity);
 
-		$this->eventDispatcher->dispatch(Create::class,
-			new Create($entity->getId(), [
-				'id' => $entity->getId(),
-				'type' => TreeMapper::TYPE_BOOKMARK,
-			])
+		$this->eventDispatcher->dispatch(CreateEvent::class,
+			new CreateEvent(TreeMapper::TYPE_BOOKMARK, $entity->getId())
 		);
 		return $entity;
 	}

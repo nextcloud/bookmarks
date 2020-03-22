@@ -2,9 +2,9 @@
 
 namespace OCA\Bookmarks\Db;
 
-use OCA\Bookmarks\Events\Delete;
-use OCA\Bookmarks\Events\Move;
-use OCA\Bookmarks\Events\Update;
+use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\MoveEvent;
+use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -249,10 +249,7 @@ class TreeMapper extends QBMapper {
 	 * @throws UnsupportedOperation
 	 */
 	public function deleteEntry(string $type, int $id, int $folderId = null): void {
-		$this->eventDispatcher->dispatch(Delete::class, new Delete(null, [
-			'id' => $id,
-			'type' => $type,
-		]));
+		$this->eventDispatcher->dispatch(BeforeDeleteEvent::class, new BeforeDeleteEvent($type, $id));
 
 		if ($type === self::TYPE_FOLDER) {
 			$this->remove($type, $id);
@@ -345,12 +342,12 @@ class TreeMapper extends QBMapper {
 			$qb->execute();
 		}
 
-		$this->eventDispatcher->dispatch(Move::class, new Move(null, [
-			'type' => $type,
-			'id' => $itemId,
-			'newParent' => $newParentFolderId,
-			'oldParent' => $currentParent ? $currentParent->getId() : null,
-		]));
+		$this->eventDispatcher->dispatch(MoveEvent::class, new MoveEvent(
+			$type,
+			$itemId,
+			$currentParent ? $currentParent->getId() : null,
+			$newParentFolderId
+		));
 	}
 
 
@@ -410,11 +407,7 @@ class TreeMapper extends QBMapper {
 				]);
 			$qb->execute();
 
-			$this->eventDispatcher->dispatch(Move::class, new Move(null, [
-				'type' => $type,
-				'id' => $itemId,
-				'newParent' => $folderId,
-			]));
+			$this->eventDispatcher->dispatch(MoveEvent::class, new MoveEvent($type, $itemId, null, $folderId));
 		}
 	}
 
@@ -442,11 +435,7 @@ class TreeMapper extends QBMapper {
 				->andWhere($qb->expr()->eq('t.type', $type));
 			$qb->execute();
 
-			$this->eventDispatcher->dispatch(Move::class, new Move(null, [
-				'type' => $type,
-				'id' => $itemId,
-				'oldParent' => $folderId,
-			]));
+			$this->eventDispatcher->dispatch(MoveEvent::class, new MoveEvent($type, $itemId, $folderId));
 
 			$foldersLeft--;
 		}
@@ -513,10 +502,7 @@ class TreeMapper extends QBMapper {
 			$qb->execute();
 		}
 
-		$this->eventDispatcher->dispatch(Update::class, new Update(null, [
-			'id' => $folderId,
-			'type' => self::TYPE_FOLDER,
-		]));
+		$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(self::TYPE_FOLDER, $folderId));
 	}
 
 	/**
