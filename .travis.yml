@@ -23,6 +23,15 @@ env:
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable18
     - DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable17
 
+jobs:
+  exclude:
+    - php: 7.4
+      env: DB=sqlite SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable17
+    - php: 7.4
+      env: DB=mysql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable17
+    - php: 7.4
+      env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable17
+
 matrix:
   fast_finish: true
 
