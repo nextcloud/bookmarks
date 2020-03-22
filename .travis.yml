@@ -32,9 +32,6 @@ jobs:
     - php: 7.4
       env: DB=pgsql SERVER=nextcloud/travis_ci/master SERVER_BRANCH=stable17
 
-matrix:
-  fast_finish: true
-
 branches:
   only:
     - master
