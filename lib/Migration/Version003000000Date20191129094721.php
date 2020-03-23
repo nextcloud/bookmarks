@@ -57,7 +57,7 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			]);
 			$table->addColumn('id', 'bigint', [
 				'notnull' => true,
-				'length' => 64
+				'length' => 64,
 			]);
 			$table->addColumn('parent_folder', 'bigint', [
 				'notnull' => true,
@@ -66,7 +66,7 @@ class Version003000000Date20191129094721 extends SimpleMigrationStep {
 			$table->addColumn('index', 'smallint', [
 				'notnull' => true,
 			]);
-			$table->setPrimaryKey(['id', 'type']);
+			$table->setPrimaryKey(['id', 'type', 'parent_folder'], 'bookmarks_tree_pk');
 			$table->addIndex(['parent_folder'], 'bookmarks_tree_parent');
 			$table->addIndex(['parent_folder', 'index'], 'bookmarks_tree_parent_i');
 		}
