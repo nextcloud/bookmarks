@@ -14,6 +14,7 @@ use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Service\Authorizer;
+use OCA\Bookmarks\Service\HashManager;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -55,6 +56,10 @@ class FoldersController extends ApiController {
 	 * @var int|null
 	 */
 	private $rootFolderId = null;
+	/**
+	 * @var HashManager
+	 */
+	private $hashManager;
 
 	/**
 	 * FoldersController constructor.
@@ -69,8 +74,9 @@ class FoldersController extends ApiController {
 	 * @param TreeMapper $treeMapper
 	 * @param Authorizer $authorizer
 	 * @param IGroupManager $groupManager
+	 * @param HashManager $hashManager
 	 */
-	public function __construct($appName, $request, $userId, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, IGroupManager $groupManager) {
+	public function __construct($appName, $request, $userId, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, IGroupManager $groupManager, HashManager $hashManager) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->folderMapper = $folderMapper;
@@ -80,6 +86,7 @@ class FoldersController extends ApiController {
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
 		$this->groupManager = $groupManager;
+		$this->hashManager = $hashManager;
 	}
 
 	/**
@@ -151,8 +158,6 @@ class FoldersController extends ApiController {
 			$folder = $this->folderMapper->insert($folder);
 			$parent_folder = $this->toInternalFolderId($parent_folder);
 			$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parent_folder);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Parent folder does not exist'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple parent folders found'], Http::STATUS_BAD_REQUEST);
 		} catch (UnsupportedOperation $e) {
@@ -229,13 +234,7 @@ class FoldersController extends ApiController {
 		if (!isset($folder['parent_folder'])) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find parent folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
-		try {
-			$folder['parent_folder'] = $this->toExternalFolderId($folder['parent_folder']);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find parent folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find parent folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
-		}
+		$folder['parent_folder'] = $this->toExternalFolderId($folder['parent_folder']);
 		return new JSONResponse(['status' => 'success', 'item' => $folder]);
 	}
 
@@ -253,13 +252,7 @@ class FoldersController extends ApiController {
 			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->userId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
-		try {
-			$folderId = $this->toInternalFolderId($folderId);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
-		}
+		$folderId = $this->toInternalFolderId($folderId);
 		try {
 			$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
 		} catch (UnsupportedOperation $e) {
@@ -441,10 +434,8 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
-			if (((int)$folderId) === -1) {
-				$folderId = $this->folderMapper->findRootFolder($this->userId)->getId();
-			}
-			$hash = $this->folderMapper->hashFolder($this->userId, $folderId, $fields);
+			$folderId = $this->toInternalFolderId($folderId);
+			$hash = $this->hashManager->hashFolder($this->userId, $folderId, $fields);
 			return new JSONResponse(['status' => 'success', 'data' => $hash]);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
@@ -467,13 +458,7 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
-		try {
-			$folderId = $this->toInternalFolderId($folderId);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
-		}
+		$folderId = $this->toInternalFolderId($folderId);
 		$children = $this->treeMapper->getChildrenOrder($folderId, $layers);
 		return new JSONResponse(['status' => 'success', 'data' => $children]);
 	}
