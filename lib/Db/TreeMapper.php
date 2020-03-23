@@ -252,11 +252,6 @@ class TreeMapper extends QBMapper {
 		$this->eventDispatcher->dispatch(BeforeDeleteEvent::class, new BeforeDeleteEvent($type, $id));
 
 		if ($type === self::TYPE_FOLDER) {
-			$this->remove($type, $id);
-
-			$folder = $this->folderMapper->find($id);
-			$this->folderMapper->delete($folder);
-
 			$childFolders = $this->findChildren(self::TYPE_FOLDER, $id);
 			foreach ($childFolders as $childFolder) {
 				$this->deleteEntry(self::TYPE_FOLDER, $childFolder->getId());
@@ -271,6 +266,11 @@ class TreeMapper extends QBMapper {
 			foreach ($childShares as $share) {
 				$this->deleteEntry(self::TYPE_SHARE, $share->getId(), $id);
 			}
+
+			$this->remove($type, $id);
+
+			$folder = $this->folderMapper->find($id);
+			$this->folderMapper->delete($folder);
 		}
 
 		if ($type === self::TYPE_SHARE) {
@@ -282,7 +282,6 @@ class TreeMapper extends QBMapper {
 
 		if ($type === self::TYPE_BOOKMARK) {
 			$this->removeFromFolders(self::TYPE_BOOKMARK, $id, [$folderId]);
-			return;
 		}
 	}
 
@@ -432,7 +431,7 @@ class TreeMapper extends QBMapper {
 				->delete('bookmarks_tree')
 				->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
 				->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($itemId)))
-				->andWhere($qb->expr()->eq('t.type', $type));
+				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
 			$qb->execute();
 
 			$this->eventDispatcher->dispatch(MoveEvent::class, new MoveEvent($type, $itemId, $folderId));
@@ -551,8 +550,6 @@ class TreeMapper extends QBMapper {
 	 * @param $folderId
 	 * @param int $layers
 	 * @return array
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
 	 */
 	public function getSubFolders($folderId, $layers = 0): array {
 		$folders = array_map(function (Folder $folder) use ($layers) {

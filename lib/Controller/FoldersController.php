@@ -334,7 +334,15 @@ class FoldersController extends ApiController {
 				return new JSONResponse(['status' => 'error', 'data' => 'Could not find shared folder'], Http::STATUS_BAD_REQUEST);
 			}
 		}
-		$this->folderMapper->delete($folder);
+		try {
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not find item to delete'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
 		return new JSONResponse(['status' => 'success']);
 	}
 
@@ -454,7 +462,7 @@ class FoldersController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function getFolderChildrenOrder($folderId, $layers = 1): JSONResponse {
+	public function getFolderChildrenOrder($folderId, $layers = 0): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
@@ -498,14 +506,8 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->userId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
-		try {
-			$root = $this->toInternalFolderId($root);
-			$res = new JSONResponse(['status' => 'success', 'data' => $this->treeMapper->getSubFolders($root, $layers)]);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		}
+		$root = $this->toInternalFolderId($root);
+		$res = new JSONResponse(['status' => 'success', 'data' => $this->treeMapper->getSubFolders($root, $layers)]);
 		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
 		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
 		return $res;
