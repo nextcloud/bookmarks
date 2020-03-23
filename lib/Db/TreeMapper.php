@@ -315,8 +315,6 @@ class TreeMapper extends QBMapper {
 
 			// Item currently has a parent => move.
 
-			$this->remove($type, $itemId);
-
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->update('bookmarks_tree')

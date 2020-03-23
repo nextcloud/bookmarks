@@ -374,10 +374,10 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
+		if ($parent_folder !== null) {
+			$parent_folder = $this->toInternalFolderId($parent_folder);
+		}
 		try {
-			if ($parent_folder !== null) {
-				$parent_folder = $this->toInternalFolderId($parent_folder);
-			}
 			/**
 			 * @var $folder Folder
 			 */
