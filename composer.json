@@ -1,16 +1,16 @@
 {
 	"require": {
-		"marcelklehr/link-preview": "^3",
-		"guzzlehttp/psr7": "^1",
 		"doctrine/inflector": "1.1.*",
-		"pguardiario/phpuri": "1.0.*",
-		"psr/http-message": "^1.0",
-		"psr/http-factory": "^1.0",
-		"psr/http-client": "^0.2.0",
-		"rowbot/url": "^2.0",
-		"ext-pdo": "*",
+		"ext-dom": "*",
 		"ext-json": "*",
 		"ext-libxml": "*",
-		"ext-dom": "*"
-    }
+		"ext-pdo": "*",
+		"guzzlehttp/psr7": "^1",
+		"marcelklehr/link-preview": "^3",
+		"pguardiario/phpuri": "1.0.*",
+		"psr/http-client": "^0.2.0",
+		"psr/http-factory": "^1.0",
+		"psr/http-message": "^1.0",
+		"rowbot/url": "^2.0"
+	}
 }

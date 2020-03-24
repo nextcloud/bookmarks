@@ -379,6 +379,7 @@ class BookmarkController extends ApiController {
 		$params->setConjunction($conjunction);
 
 		$params->setOffset($page * $limit);
+		$params->setLimit($limit);
 		if ($page === -1) {
 			$params->setLimit(-1);
 			$params->setOffset(0);
@@ -674,10 +675,18 @@ class BookmarkController extends ApiController {
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'success']);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
-		$this->bookmarkMapper->delete($bookmark);
+		try {
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId());
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'success']);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
 		return new JSONResponse(['status' => 'success']);
 	}
 
