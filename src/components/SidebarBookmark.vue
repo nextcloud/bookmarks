@@ -39,24 +39,24 @@
 	</AppSidebar>
 </template>
 <script>
-import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
-import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import { generateUrl } from 'nextcloud-router'
-import humanizeDuration from 'humanize-duration'
-import { actions, mutations } from '../store/'
+	import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
+	import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
+	import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+	import { generateUrl } from '@nextcloud/router'
+	import humanizeDuration from 'humanize-duration'
+	import { actions, mutations } from '../store/'
 
-const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
+	const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
-export default {
-	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect },
-	data() {
-		return {
-			description: '',
-		}
-	},
-	computed: {
+	export default {
+		name: 'SidebarBookmark',
+		components: { AppSidebar, AppSidebarTab, Multiselect },
+		data() {
+			return {
+				description: '',
+			}
+		},
+		computed: {
 		isActive() {
 			if (!this.$store.state.sidebar) return false
 			return this.$store.state.sidebar.type === 'bookmark'

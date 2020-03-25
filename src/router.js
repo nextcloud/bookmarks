@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import ViewPrivate from './components/ViewPrivate'
 import ViewBookmarklet from './components/ViewBookmarklet'
-import { generateUrl } from 'nextcloud-router'
+import { generateUrl } from '@nextcloud/router'
 
 Vue.use(Router)
 

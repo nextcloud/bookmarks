@@ -1,5 +1,5 @@
-import axios from 'nextcloud-axios'
-import { generateUrl } from 'nextcloud-router'
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
 import AppGlobal from '../mixins/AppGlobal'
 import { mutations } from './mutations'
 
@@ -211,8 +211,8 @@ export default {
 					if (response.status === 413) {
 						throw new Error('Selected file is too large')
 					}
-					throw new Error(response.data)
 					console.error('Failed to import bookmarks', response)
+					throw new Error(response.data)
 				}
 			})
 			.catch(err => {

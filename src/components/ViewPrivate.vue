@@ -12,26 +12,27 @@
 </template>
 
 <script>
-import Content from '@nextcloud/vue/dist/Components/Content'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import Navigation from './Navigation'
-import BookmarksList from './BookmarksList'
-import Breadcrumbs from './Breadcrumbs'
-import SidebarBookmark from './SidebarBookmark'
-import MoveDialog from './MoveDialog'
-import { actions, mutations } from '../store/'
+	import Content from '@nextcloud/vue/dist/Components/Content'
+	import AppContent from '@nextcloud/vue/dist/Components/AppContent'
+	import Navigation from './Navigation'
+	import BookmarksList from './BookmarksList'
+	import Breadcrumbs from './Breadcrumbs'
+	import SidebarBookmark from './SidebarBookmark'
+	import SidebarFolder from './SidebarFolder'
+	import MoveDialog from './MoveDialog'
+	import { actions, mutations } from '../store/'
 
-export default {
-	name: 'ViewPrivate',
-	components: {
-		Navigation,
-		Content,
-		AppContent,
-		Breadcrumbs,
-		BookmarksList,
-		SidebarBookmark,
-		SidebarFolder,
-		MoveDialog,
+	export default {
+		name: 'ViewPrivate',
+		components: {
+			Navigation,
+			Content,
+			AppContent,
+			Breadcrumbs,
+			BookmarksList,
+			SidebarBookmark,
+			SidebarFolder,
+			MoveDialog,
 	},
 	data: function() {
 		return {
