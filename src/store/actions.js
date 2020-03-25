@@ -259,6 +259,7 @@ export default {
 				if (status !== 'success') {
 					throw new Error(response.data)
 				}
+				commit(mutations.RENAME_TAG, { oldName, newName })
 				return dispatch(actions.LOAD_TAGS)
 			})
 			.catch(err => {

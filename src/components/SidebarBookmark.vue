@@ -48,15 +48,15 @@
 
 	const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
-	export default {
-		name: 'SidebarBookmark',
-		components: { AppSidebar, AppSidebarTab, Multiselect },
-		data() {
-			return {
-				description: '',
-			}
-		},
-		computed: {
+export default {
+	name: 'SidebarBookmark',
+	components: { AppSidebar, AppSidebarTab, Multiselect },
+	data() {
+		return {
+			description: '',
+		}
+	},
+	computed: {
 		isActive() {
 			if (!this.$store.state.sidebar) return false
 			return this.$store.state.sidebar.type === 'bookmark'
@@ -91,6 +91,7 @@
 	},
 	watch: {
 		bookmark(newBookmark) {
+			if (!this.isActive) return
 			this.description = newBookmark.description
 		},
 	},

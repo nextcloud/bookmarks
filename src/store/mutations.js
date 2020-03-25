@@ -11,8 +11,9 @@ export const mutations = {
 	ADD_SELECTION_FOLDER: 'ADD_SELECTION_FOLDER',
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
-	REMOVE_ALL_BOOKMARK: 'REMOVE_ALL_BOOKMARK',
+	REMOVE_ALL_BOOKMARKS: 'REMOVE_ALL_BOOKMARKS',
 	SET_TAGS: 'SET_TAGS',
+	RENAME_TAG: 'RENAME_TAG',
 	INCREMENT_PAGE: 'INCREMENT_PAGE',
 	RESET_PAGE: 'RESET_PAGE',
 	SET_QUERY: 'SET_QUERY',
@@ -41,6 +42,14 @@ export default {
 	},
 	[mutations.SET_TAGS](state, tags) {
 		state.tags = tags
+	},
+	[mutations.RENAME_TAG](state, { oldName, newName }) {
+		state.bookmarks.forEach((bookmark) => {
+			Vue.set(bookmark, 'tags', bookmark.tags.map((tag) => {
+				if (tag === oldName) return newName
+				return tag
+			}))
+		})
 	},
 	[mutations.DISPLAY_NEW_BOOKMARK](state, display) {
 		state.displayNewBookmark = display

@@ -6,110 +6,96 @@
 			button-class="icon-add"
 			@click="onNewBookmark" />
 		<ul>
-			<AppNavigationItem v-for="item in menu" :key="item.text" :item="item" />
+			<AppNavigationItem key="menu-home"
+							   :to="{ name: 'home' }"
+							   icon="icon-home"
+							   :title="t('bookmarks', 'All Bookmarks')"/>
+			<AppNavigationItem key="menu-recent"
+							   :to="{ name: 'recent' }"
+							   icon="icon-category-monitoring"
+							   :title="t('bookmarks', 'Recent Bookmarks')"/>
+			<AppNavigationItem key="menu-untagged"
+							   :to="{ name: 'untagged' }"
+							   icon="icon-category-disabled"
+							   :title="t('bookmarks', 'Untagged')"/>
+			<AppNavigationSpacer/>
+			<AppNavigationItem v-for="tag in tags"
+							   :key="'tag-'+tag.name"
+							   icon="icon-tag"
+							   :to="tag.route"
+							   :force-menu="true"
+							   :edit-label="t('bookmarks', 'Rename')"
+							   :editable="true"
+							   :title="tag.name"
+							   @update:title="onRenameTag(tag.name, $event)">
+				<AppNavigationCounter slot="counter">
+					{{ tag.count }}
+				</AppNavigationCounter>
+				<template slot="actions">
+					<ActionButton icon="icon-delete" @click="onDeleteTag(tag.name)">
+						{{ t('bookmarks', 'Delete') }}
+					</ActionButton>
+				</template>
+			</AppNavigationItem>
 		</ul>
-		<AppNavigationSettings><Settings /></AppNavigationSettings>
+		<AppNavigationSettings>
+			<Settings/>
+		</AppNavigationSettings>
 	</AppNavigation>
 </template>
 
 <script>
-import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
-import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
-import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
-import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
-import Settings from './Settings'
-import { actions, mutations } from '../store/'
+	import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
+	import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
+	import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
+	import AppNavigationCounter from '@nextcloud/vue/dist/Components/AppNavigationCounter'
+	import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
+	import AppNavigationSpacer from '@nextcloud/vue/dist/Components/AppNavigationSpacer'
+	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+	import Settings from './Settings'
+	import { actions, mutations } from '../store/'
 
-export default {
-	name: 'Navigation',
-	components: {
-		AppNavigation,
-		AppNavigationNew,
-		AppNavigationItem,
-		AppNavigationSettings,
-		Settings,
-	},
+	export default {
+		name: 'Navigation',
+		components: {
+			AppNavigation,
+			AppNavigationNew,
+			AppNavigationItem,
+			AppNavigationCounter,
+			AppNavigationSettings,
+			AppNavigationSpacer,
+			ActionButton,
+			Settings,
+		},
 	data() {
-		return {
-			editingTag: false,
-		}
+		return {}
 	},
-	computed: {
-		tagMenu() {
-			return this.$store.state.tags.map(tag => ({
-				router: { name: 'tags', params: { tags: tag.name } },
-				icon: 'icon-tag',
-				classes: this.editingTag === tag.name ? ['editing'] : [],
-				text: tag.name,
-				edit: {
-					action: e => this.onRenameTag(tag.name, e.target.elements[0].value),
-					reset: () => this.setEditingTag(tag.name, false),
-				},
-				utils: {
-					counter: tag.count,
-					actions: [
-						{
-							icon: 'icon-rename',
-							text: 'Rename',
-							action: () => this.setEditingTag(tag.name, true),
-						},
-						{
-							icon: 'icon-delete',
-							text: 'Delete',
-							action: () => this.onDeleteTag(tag.name),
-						},
-					],
-				},
-			}))
+		computed: {
+			tags() {
+				return this.$store.state.tags.map(tag => ({
+					route: { name: 'tags', params: { tags: tag.name } },
+					name: tag.name,
+					count: tag.count,
+				}))
+			},
 		},
 
-		menu() {
-			return [
-				{
-					router: { name: 'home' },
-					icon: 'icon-home',
-					text: this.t('bookmarks', 'All Bookmarks'),
-				},
-				{
-					router: { name: 'recent' },
-					icon: 'icon-category-monitoring',
-					text: this.t('bookmarks', 'Recent Bookmarks'),
-				},
-				{
-					router: { name: 'untagged' },
-					icon: 'icon-category-disabled',
-					text: this.t('bookmarks', 'Untagged'),
-				},
-				...this.tagMenu,
-			]
+		created() {
 		},
-	},
 
-	created() {},
-
-	methods: {
-		onNewBookmark() {
-			this.$store.commit(
-				mutations.DISPLAY_NEW_BOOKMARK,
-				!this.$store.state.displayNewBookmark
-			)
+		methods: {
+			onNewBookmark() {
+				this.$store.commit(
+						mutations.DISPLAY_NEW_BOOKMARK,
+						!this.$store.state.displayNewBookmark
+				)
+			},
+			onDeleteTag(tag) {
+				this.$store.dispatch(actions.DELETE_TAG, tag)
+			},
+			onRenameTag(oldName, newName) {
+				this.$store.dispatch(actions.RENAME_TAG, { oldName, newName })
+			},
 		},
-		onDeleteTag(tag) {
-			this.$store.dispatch(actions.DELETE_TAG, tag)
-		},
-		onRenameTag(e, newName) {
-			if (!this.editingTag) return
-			const oldName = this.editingTag
-			this.editingTag = false
-			this.$store.dispatch(actions.RENAME_TAG, { oldName, newName })
-		},
-		setEditingTag(tag, set) {
-			if (set) {
-				this.editingTag = tag
-			} else {
-				this.editingTag = false
-			}
-		},
-	},
 }
 </script>
