@@ -75,6 +75,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Þessi slóð er þegar bókamerkt! Skrifa yfir?",
     "Title" : "Titill",
     "Link" : "Tengill",
+    "Enter bookmark URL" : "Settu inn slóð á bókamerki",
     "Failed to find existing bookmark" : "Mistókst að finna fyrirliggjandi bókamerki",
     "Failed to create bookmark" : "Mistókst að búa til bókamerki",
     "Failed to save bookmark" : "Mistókst að vista bókamerki",
