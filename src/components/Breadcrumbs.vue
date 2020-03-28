@@ -1,9 +1,9 @@
 <template>
-	<div class="breadcrumbs">
+	<div :class="['breadcrumbs', isPublic && 'wide']">
 		<div class="breadcrumbs__path">
-			<a class="icon-home" @click="onSelectHome" />
+			<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
 			<span class="icon-breadcrumb" />
-			<template v-if="$route.name === 'folder'">
+			<template v-if="$route.name === routes.FOLDER">
 				<template v-for="folder in folderPath">
 					<a
 						:key="'a' + folder.id"
@@ -12,7 +12,7 @@
 					<span :key="'b' + folder.id" class="icon-breadcrumb" />
 				</template>
 			</template>
-			<template v-if="$route.name === 'tags'">
+			<template v-if="$route.name === routes.TAGS">
 				<span class="icon-tag" />
 				<Multiselect
 					class="breadcrumbs__tags"
@@ -26,7 +26,7 @@
 			</template>
 			<Actions>
 				<ActionButton
-					v-if="$route.name === 'folder' || $route.name === 'home'"
+					v-if="($route.name === routes.FOLDER || $route.name === routes.HOME) && !isPublic"
 					v-tooltip="t('bookmarks', 'New folder')"
 					icon="icon-add"
 					class="breadcrumbs__AddFolder"
@@ -66,22 +66,22 @@
 	</div>
 </template>
 <script>
-	import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-	import Actions from '@nextcloud/vue/dist/Components/Actions'
-	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-	import { actions, mutations } from '../store/'
+import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { actions, mutations } from '../store/'
 
-	export default {
-		name: 'Breadcrumbs',
-		components: { Multiselect, Actions, ActionButton },
-		props: {},
-		data() {
-			return {
-				url: '',
-			}
-		},
-		computed: {
-			allTags() {
+export default {
+	name: 'Breadcrumbs',
+	components: { Multiselect, Actions, ActionButton },
+	props: {},
+	data() {
+		return {
+			url: '',
+		}
+	},
+	computed: {
+		allTags() {
 			return this.$store.state.tags.map(tag => tag.name)
 		},
 		tags() {
@@ -104,14 +104,14 @@
 	created() {},
 	methods: {
 		onSelectHome() {
-			this.$router.push({ name: 'home' })
+			this.$router.push({ name: this.routes.HOME })
 		},
 		onTagsChange(tags) {
-			this.$router.push({ name: 'tags', params: { tags: tags.join(',') } })
+			this.$router.push({ name: this.routes.TAGS, params: { tags: tags.join(',') } })
 		},
 
 		onSelectFolder(folder) {
-			this.$router.push({ name: 'folder', params: { folder } })
+			this.$router.push({ name: this.routes.FOLDER, params: { folder } })
 		},
 
 		onAddFolder() {
@@ -154,6 +154,10 @@
 		padding-left: 52px;
 		left: 0;
 	}
+}
+.breadcrumbs.wide {
+	padding: 2px 8px;
+	left: 0;
 }
 
 .breadcrumbs + * {

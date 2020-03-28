@@ -10,20 +10,42 @@
 
 namespace OCA\Bookmarks\Controller;
 
+use OCA\Bookmarks\Db\Folder;
+use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Db\PublicFolder;
+use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\ContentSecurityPolicy;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http\Template\PublicTemplateResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\IL10N;
 use OCP\IRequest;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\IUserManager;
 
 class WebViewController extends Controller {
 
 	/** @var string */
 	private $userId;
 
-	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
+	/**
+	 * @var IL10N
+	 */
+	private $l;
+
+	/**
+	 * @var PublicFolderMapper
+	 */
+	private $publicFolderMapper;
+
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
+	/**
+	 * @var FolderMapper
+	 */
+	private $folderMapper;
 
 
 	/**
@@ -32,12 +54,18 @@ class WebViewController extends Controller {
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param $userId
-	 * @param EventDispatcherInterface $eventDispatcher
+	 * @param IL10N $l
+	 * @param PublicFolderMapper $publicFolderMapper
+	 * @param IUserManager $userManager
+	 * @param FolderMapper $folderMapper
 	 */
-	public function __construct($appName, $request, $userId, EventDispatcherInterface $eventDispatcher) {
+	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, \OCA\Bookmarks\Db\FolderMapper $folderMapper) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
-		$this->eventDispatcher = $eventDispatcher;
+		$this->l = $l;
+		$this->publicFolderMapper = $publicFolderMapper;
+		$this->userManager = $userManager;
+		$this->folderMapper = $folderMapper;
 	}
 
 	/**
@@ -45,19 +73,44 @@ class WebViewController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		$params = ['user' => $this->userId];
+		return new TemplateResponse($this->appName, 'main', []);
+	}
 
-		$policy = new ContentSecurityPolicy();
-		$policy->addAllowedFrameDomain("'self'");
-		$policy->allowEvalScript(true);
+	/**
+	 * @param string $token
+	 * @return TemplateResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 */
+	public function link(string $token) {
+		$title = 'No title found';
+		$userName = 'Unknown';
+		try {
+			/**
+			 * @var $publicFolder PublicFolder
+			 */
+			$publicFolder = $this->publicFolderMapper->find($token);
+			/**
+			 * @var $folder Folder
+			 */
+			$folder = $this->folderMapper->find($publicFolder->getFolderId());
+			$title = $folder->getTitle();
+			$user = $this->userManager->get($folder->getUserId());
+			if ($user !== null) {
+				$userName = $user->getDisplayName();
+			}
+		} catch (DoesNotExistException $e) {
+			// noop
+		} catch (MultipleObjectsReturnedException $e) {
+			// noop
+		}
 
-		$this->eventDispatcher->dispatch(
-			'\OCA\Bookmarks::loadAdditionalScripts',
-			new GenericEvent(null, [])
-		);
-
-		$response = new TemplateResponse('bookmarks', 'main', $params);
-		$response->setContentSecurityPolicy($policy);
-		return $response;
+		$res = new PublicTemplateResponse($this->appName, 'main', []);
+		$res->setHeaderTitle($title);
+		$res->setHeaderDetails($this->l->t('Bookmarks shared by %s', [$userName]));
+		$res->setFooterVisible(false);
+		return $res;
 	}
 }

@@ -8,7 +8,10 @@
 				@click="onSelect">
 				{{ folder.title }}
 			</h3>
-			<Actions class="folder__actions">
+			<Actions v-if="!isPublic" class="folder__actions">
+				<ActionButton icon="icon-info" @click="onDetails">
+					{{ t('bookmarks', 'Details') }}
+				</ActionButton>
 				<ActionButton icon="icon-rename" @click="onRename">
 					{{ t('bookmarks', 'Rename') }}
 				</ActionButton>
@@ -38,6 +41,7 @@
 </template>
 <script>
 import Vue from 'vue'
+import { getCurrentUser } from '@nextcloud/auth'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import { actions, mutations } from '../store/'
@@ -61,9 +65,18 @@ export default {
 		viewMode() {
 			return this.$store.state.viewMode
 		},
+		currentUser() {
+			return getCurrentUser()
+		},
+		isShared() {
+			return this.folder.userId !== this.currentUser
+		},
 	},
 	created() {},
 	methods: {
+		onDetails() {
+			this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
+		},
 		onDelete() {
 			this.$store.dispatch(actions.DELETE_FOLDER, this.folder.id)
 		},
@@ -73,7 +86,7 @@ export default {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
 		onSelect() {
-			this.$router.push({ name: 'folder', params: { folder: this.folder.id } })
+			this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
 		},
 		async onRename() {
 			this.renaming = true

@@ -47,6 +47,5 @@ export default {
 
 .tagline__tag:hover {
 	background-color: var(--color-background-dark);
-	cursor: pointer;
 }
 </style>

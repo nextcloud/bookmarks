@@ -6,7 +6,7 @@
 		}">
 		<CreateBookmark v-if="newBookmark" />
 		<CreateFolder v-if="newFolder" />
-		<template v-if="$route.name === 'folder' || $route.name === 'home'">
+		<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
 			<Folder
 				v-for="folder in folderChildren"
 				:key="'f' + folder.id"
@@ -56,7 +56,7 @@ export default {
 	},
 	computed: {
 		folderChildren() {
-			if (this.$route.name !== 'home' && this.$route.name !== 'folder') {
+			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []
 			}
 			const folderId = this.$route.params.folder || '-1'

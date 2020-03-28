@@ -12,7 +12,7 @@
 					: undefined
 		}">
 		<template v-if="!renaming">
-			<div class="bookmark__checkbox">
+			<div v-if="!isPublic" class="bookmark__checkbox">
 				<input v-model="selected" class="checkbox" type="checkbox"><label
 					:aria-label="t('bookmarks', 'Select bookmark')"
 					@click="clickSelect" />
@@ -33,7 +33,7 @@
 					{{ bookmark.description }}</span>
 			</div>
 			<TagLine :tags="bookmark.tags" />
-			<Actions class="bookmark__actions">
+			<Actions v-if="!isPublic" class="bookmark__actions">
 				<ActionButton icon="icon-info" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
 				</ActionButton>
@@ -67,39 +67,42 @@
 	</div>
 </template>
 <script>
-	import Vue from 'vue'
-	import Actions from '@nextcloud/vue/dist/Components/Actions'
-	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-	import { generateUrl } from '@nextcloud/router'
-	import { actions, mutations } from '../store/'
-	import TagLine from './TagLine'
+import Vue from 'vue'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { generateUrl } from '@nextcloud/router'
+import { actions, mutations } from '../store/'
+import TagLine from './TagLine'
 
-	export default {
-		name: 'Bookmark',
-		components: {
-			Actions,
-			ActionButton,
-			TagLine,
-		},
-		props: {
-			bookmark: {
-				type: Object,
-				required: true,
+export default {
+	name: 'Bookmark',
+	components: {
+		Actions,
+		ActionButton,
+		TagLine,
+	},
+	props: {
+		bookmark: {
+			type: Object,
+			required: true,
 		},
 	},
 	data() {
 		return { title: this.bookmark.title, renaming: false, selected: false }
 	},
 	computed: {
+		apiUrl() {
+			if (this.isPublic) {
+				return generateUrl('/apps/bookmarks/public/rest/v2')
+			}
+			return generateUrl('/apps/bookmarks')
+		},
 		iconUrl() {
-			return generateUrl(
-				'/apps/bookmarks/bookmark/' + this.bookmark.id + '/favicon'
-			)
+			return this.apiUrl + '/bookmark/' + this.bookmark.id + '/favicon?token=' + this.$store.state.authToken
 		},
 		imageUrl() {
-			return generateUrl(
-				'/apps/bookmarks/bookmark/' + this.bookmark.id + '/image'
-			)
+			return this.apiUrl + '/bookmark/' + this.bookmark.id + '/image?token=' + this.$store.state.authToken
+
 		},
 		url() {
 			return this.bookmark.url
