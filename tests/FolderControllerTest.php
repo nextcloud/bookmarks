@@ -260,7 +260,7 @@ class FolderControllerTest extends TestCase {
 		$this->share->setFolderId($this->folder1->getId());
 		$this->share->setOwner($this->userId);
 		$this->share->setParticipant($this->otherUser);
-		$this->share->setType(ShareMapper::TYPE_USER);
+		$this->share->setType(\OCP\Share\IShare::TYPE_USER);
 		$this->share->setCanWrite(true);
 		$this->share->setCanShare(false);
 		$this->shareMapper->insert($this->share);
@@ -1015,10 +1015,10 @@ class FolderControllerTest extends TestCase {
 	 */
 	public function shareDataProvider(): array {
 		return [
-			['otheruser', ShareMapper::TYPE_USER, true, false],
-			['otheruser', ShareMapper::TYPE_USER, true, true],
-			['foobar', ShareMapper::TYPE_GROUP, true, false],
-			['foobar', ShareMapper::TYPE_GROUP, true, true],
+			['otheruser', \OCP\Share\IShare::TYPE_USER, true, false],
+			['otheruser', \OCP\Share\IShare::TYPE_USER, true, true],
+			['foobar', \OCP\Share\IShare::TYPE_GROUP, true, false],
+			['foobar', \OCP\Share\IShare::TYPE_GROUP, true, true],
 		];
 	}
 }

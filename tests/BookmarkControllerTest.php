@@ -258,7 +258,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->share->setFolderId($this->folder1->getId());
 		$this->share->setOwner($this->userId);
 		$this->share->setParticipant($this->otherUserId);
-		$this->share->setType(ShareMapper::TYPE_USER);
+		$this->share->setType(\OCP\Share\IShare::TYPE_USER);
 		$this->share->setCanWrite(true);
 		$this->share->setCanShare(false);
 		$this->shareMapper->insert($this->share);
