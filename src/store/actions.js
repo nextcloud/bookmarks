@@ -44,6 +44,10 @@ export const actions = {
 	LOAD_SETTINGS: 'SLOAD_SETTINGS',
 
 	LOAD_SHARES_OF_FOLDER: 'LOAD_SHARES_OF_FOLDER',
+	CREATE_SHARE: 'CREATE_SHARE',
+	EDIT_SHARE: 'EDIT_SHARE',
+	DELETE_SHARE: 'DELETE_SHARE',
+
 	LOAD_PUBLIC_LINK: 'LOAD_PUBLIC_LINK',
 	CREATE_PUBLIC_LINK: 'CREATE_PUBLIC_LINK',
 	DELETE_PUBLIC_LINK: 'DELETE_PUBLIC_LINK',
@@ -637,6 +641,71 @@ export default {
 				throw err
 			})
 	},
+	[actions.CREATE_SHARE]({ commit, dispatch, state }, { folderId, type, participant }) {
+		return axios
+			.post(url(state, `/folder/${folderId}/shares`), {
+				folderId,
+				participant,
+				type,
+			})
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.ADD_SHARE, item)
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to create share for folder ' + folderId)
+				)
+				throw err
+			})
+	},
+	[actions.EDIT_SHARE]({ commit, dispatch, state }, { shareId, canWrite, canShare }) {
+		return axios
+			.put(url(state, `/share/${shareId}`), {
+				canWrite,
+				canShare,
+			})
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.ADD_SHARE, item)
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to update share ' + shareId)
+				)
+				throw err
+			})
+	},
+	[actions.DELETE_SHARE]({ commit, dispatch, state }, shareId) {
+		return axios
+			.delete(url(state, `/share/${shareId}`))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.REMOVE_SHARE, shareId)
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to delete share' + shareId)
+				)
+				throw err
+			})
+	},
+
 	[actions.LOAD_PUBLIC_LINK]({ commit, dispatch, state }, folderId) {
 		return axios
 			.get(url(state, `/folder/${folderId}/publictoken`), {

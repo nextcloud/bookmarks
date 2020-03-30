@@ -23,27 +23,27 @@
 						<figure
 							class="bookmark__icon"
 							:style="{ backgroundImage: 'url(' + iconUrl + ')' }" />
-						{{ bookmark.title }}
-					</h3>
-				</a>
-				<span
-					v-if="bookmark.description"
-					v-tooltip="bookmark.description"
-					class="bookmark__description"><figure class="icon-file" />
+                        {{ bookmark.title }}
+                    </h3>
+                </a>
+                <span
+                        v-if="bookmark.description"
+                        v-tooltip="bookmark.description"
+                        class="bookmark__description"><figure class="icon-file"/>
 					{{ bookmark.description }}</span>
-			</div>
-			<TagLine :tags="bookmark.tags" />
-			<Actions v-if="!isPublic" class="bookmark__actions">
-				<ActionButton icon="icon-info" @click="onDetails">
-					{{ t('bookmarks', 'Details') }}
-				</ActionButton>
-				<ActionButton icon="icon-rename" @click="onRename">
-					{{ t('bookmarks', 'Rename') }}
-				</ActionButton>
-				<ActionButton icon="icon-category-files" @click="onMove">
-					{{ t('bookmarks', 'Move') }}
-				</ActionButton>
-				<ActionButton icon="icon-delete" @click="onDelete">
+            </div>
+            <TagLine :tags="bookmark.tags"/>
+            <Actions v-if="isEditable" class="bookmark__actions">
+                <ActionButton icon="icon-info" @click="onDetails">
+                    {{ t('bookmarks', 'Details') }}
+                </ActionButton>
+                <ActionButton icon="icon-rename" @click="onRename">
+                    {{ t('bookmarks', 'Rename') }}
+                </ActionButton>
+                <ActionButton icon="icon-category-files" @click="onMove">
+                    {{ t('bookmarks', 'Move') }}
+                </ActionButton>
+                <ActionButton icon="icon-delete" @click="onDelete">
 					{{ t('bookmarks', 'Delete') }}
 				</ActionButton>
 			</Actions>
@@ -67,24 +67,25 @@
 	</div>
 </template>
 <script>
-import Vue from 'vue'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import { generateUrl } from '@nextcloud/router'
-import { actions, mutations } from '../store/'
-import TagLine from './TagLine'
+	import Vue from 'vue'
+	import Actions from '@nextcloud/vue/dist/Components/Actions'
+	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+	import { getCurrentUser } from '@nextcloud/auth'
+	import { generateUrl } from '@nextcloud/router'
+	import { actions, mutations } from '../store/'
+	import TagLine from './TagLine'
 
-export default {
-	name: 'Bookmark',
-	components: {
-		Actions,
-		ActionButton,
-		TagLine,
-	},
-	props: {
-		bookmark: {
-			type: Object,
-			required: true,
+	export default {
+		name: 'Bookmark',
+		components: {
+			Actions,
+			ActionButton,
+			TagLine,
+		},
+		props: {
+			bookmark: {
+				type: Object,
+				required: true,
 		},
 	},
 	data() {
@@ -109,12 +110,15 @@ export default {
 		},
 		isOpen() {
 			return this.$store.state.sidebar
-				&& this.$store.state.sidebar.type === 'bookmark'
+			&& this.$store.state.sidebar.type === 'bookmark'
 				? this.$store.state.sidebar.id === this.bookmark.id
 				: false
 		},
 		viewMode() {
 			return this.$store.state.viewMode
+		},
+		isEditable() {
+			return !this.isPublic && this.bookmark.userId === getCurrentUser().uid
 		},
 	},
 	watch: {

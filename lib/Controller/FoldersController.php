@@ -654,7 +654,7 @@ class FoldersController extends ApiController {
 	/**
 	 * @param int $folderId
 	 * @param $participant
-	 * @param $type
+	 * @param int $type
 	 * @param bool $canWrite
 	 * @param bool $canShare
 	 * @return Http\DataResponse
@@ -663,7 +663,7 @@ class FoldersController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function createShare($folderId, $participant, $type, $canWrite = false, $canShare = false): DataResponse {
+	public function createShare($folderId, $participant, int $type, $canWrite = false, $canShare = false): DataResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
@@ -682,7 +682,7 @@ class FoldersController extends ApiController {
 		$share->setFolderId($folderId);
 		$share->setOwner($folder->getUserId());
 		$share->setParticipant($participant);
-		if ($type !== ShareMapper::TYPE_USER && $type !== ShareMapper::TYPE_GROUP) {
+		if ($type !== \OCP\Share\IShare::TYPE_USER && $type !== \OCP\Share\IShare::TYPE_GROUP) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Invalid share type'], Http::STATUS_BAD_REQUEST);
 		}
 		$share->setType($type);
@@ -691,9 +691,9 @@ class FoldersController extends ApiController {
 		$this->shareMapper->insert($share);
 
 		try {
-			if ($type === ShareMapper::TYPE_USER) {
+			if ($type === \OCP\Share\IShare::TYPE_USER) {
 				$this->_addSharedFolder($share, $folder, $participant);
-			} else if ($type === ShareMapper::TYPE_GROUP) {
+			} else if ($type === \OCP\Share\IShare::TYPE_GROUP) {
 				$group = $this->groupManager->get($participant);
 				$users = $group->getUsers();
 				foreach ($users as $user) {
@@ -720,8 +720,9 @@ class FoldersController extends ApiController {
 		$sharedFolder->setShareId($share->getId());
 		$sharedFolder->setTitle($folder->getTitle());
 		$sharedFolder->setUserId($userId);
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$this->sharedFolderMapper->insert($sharedFolder);
-		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $share->getId(), $folder->getId());
+		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $rootFolder->getId());
 	}
 
 	/**

@@ -38,7 +38,6 @@ export default new Store({
 		},
 		bookmarks: [],
 		bookmarksById: {},
-		shares: [],
 		sharesById: {},
 		tags: [],
 		folders: [],
@@ -66,7 +65,7 @@ export default new Store({
 			return findFolder(id, state.folders)
 		},
 		getSharesOfFolder: state => folderId => {
-			return state.shares.filter(share => share.folderId === folderId)
+			return Object.values(state.sharesById).filter(share => share.folderId === folderId)
 		},
 		getTokenOfFolder: state => folderId => {
 			return state.tokensByFolder[folderId]

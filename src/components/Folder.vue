@@ -1,24 +1,25 @@
 <template>
 	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
-		<figure class="folder__icon icon-folder" @click="onSelect" />
-		<template v-if="!renaming">
-			<h3
-				class="folder__title"
-				:title="folder.title"
-				@click="onSelect">
-				{{ folder.title }}
-			</h3>
-			<Actions v-if="!isPublic" class="folder__actions">
-				<ActionButton icon="icon-info" @click="onDetails">
-					{{ t('bookmarks', 'Details') }}
-				</ActionButton>
-				<ActionButton icon="icon-rename" @click="onRename">
-					{{ t('bookmarks', 'Rename') }}
-				</ActionButton>
-				<ActionButton icon="icon-category-files" @click="onMove">
-					{{ t('bookmarks', 'Move') }}
-				</ActionButton>
-				<ActionButton icon="icon-delete" @click="onDelete">
+        <figure :class="['folder__icon', isShared && 'shared']" @click="onSelect"/>
+        <template v-if="!renaming">
+            <h3
+                    class="folder__title"
+                    :title="folder.title"
+                    @click="onSelect">
+                {{ folder.title }}
+            </h3>
+            <UserBubble v-if="isShared" class="folder__owner" :user="folder.userId"/>
+            <Actions v-if="isEditable" class="folder__actions">
+                <ActionButton icon="icon-info" @click="onDetails">
+                    {{ t('bookmarks', 'Details') }}
+                </ActionButton>
+                <ActionButton icon="icon-rename" @click="onRename">
+                    {{ t('bookmarks', 'Rename') }}
+                </ActionButton>
+                <ActionButton icon="icon-category-files" @click="onMove">
+                    {{ t('bookmarks', 'Move') }}
+                </ActionButton>
+                <ActionButton icon="icon-delete" @click="onDelete">
 					{{ t('bookmarks', 'Delete') }}
 				</ActionButton>
 			</Actions>
@@ -40,22 +41,24 @@
 	</div>
 </template>
 <script>
-import Vue from 'vue'
-import { getCurrentUser } from '@nextcloud/auth'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import { actions, mutations } from '../store/'
+	import Vue from 'vue'
+	import { getCurrentUser } from '@nextcloud/auth'
+	import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
+	import Actions from '@nextcloud/vue/dist/Components/Actions'
+	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+	import { actions, mutations } from '../store/'
 
-export default {
-	name: 'Folder',
-	components: {
-		Actions,
-		ActionButton,
-	},
-	props: {
-		folder: {
-			type: Object,
-			required: true,
+	export default {
+		name: 'Folder',
+		components: {
+			Actions,
+			ActionButton,
+			UserBubble,
+		},
+		props: {
+			folder: {
+				type: Object,
+				required: true,
 		},
 	},
 	data() {
@@ -66,10 +69,13 @@ export default {
 			return this.$store.state.viewMode
 		},
 		currentUser() {
-			return getCurrentUser()
+			return getCurrentUser().uid
 		},
 		isShared() {
-			return this.folder.userId !== this.currentUser
+			return this.folder.userId !== getCurrentUser().uid
+		},
+		isEditable() {
+			return !this.isPublic && !this.isShared
 		},
 	},
 	created() {},
@@ -114,47 +120,59 @@ export default {
 }
 
 .folder__icon {
-	flex: 0;
-	height: 20px;
-	width: 20px;
-	background-size: cover;
-	margin: 15px;
-	cursor: pointer;
+    flex: 0;
+    height: 20px;
+    width: 20px;
+    background-size: cover;
+    margin: 15px;
+    cursor: pointer;
+    background-image: url('/svg/core/filetypes/folder?color=0082c9');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.folder__icon.shared {
+    background-image: url('/svg/core/actions/share?color=ffffff'), url('/svg/core/filetypes/folder?color=0082c9');
+    background-size: 30px, cover !important;
 }
 
 .folder--gridview .folder__icon {
-	height: 70px;
-	width: 70px;
-	background-size: cover;
-	position: absolute;
-	top: 20%;
-	left: calc(45% - 35px);
+    height: 70px;
+    width: 70px;
+    background-size: cover;
+    position: absolute;
+    top: 20%;
+    left: calc(45% - 35px);
 }
 
 .folder__title {
 	display: flex;
 	flex: 1;
 	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	cursor: pointer;
-	margin: 0;
-	padding: 15px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 0;
+    padding: 15px 0;
 }
 
 .folder--gridview .folder__title {
-	margin-left: 15px;
+    margin-left: 15px;
+}
+
+.folder--gridview .folder__owner {
+    margin-bottom: 7px;
 }
 
 .folder__actions {
-	flex: 0;
+    flex: 0;
 }
 
 .folder__title input {
-	width: 100%;
-	border-top: none;
-	border-left: none;
-	border-right: none;
+    width: 100%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 .folder__title button {

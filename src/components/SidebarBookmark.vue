@@ -17,46 +17,48 @@
 			<div>
 				<h3><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}</h3>
 				<Multiselect
-					class="sidebar__tags"
-					:value="tags"
-					:auto-limit="false"
-					:limit="7"
-					:options="allTags"
-					:multiple="true"
-					:taggable="true"
-					:placeholder="t('bookmarks', 'Select tags are create new ones')"
-					@input="onTagsChange"
-					@tag="onAddTag" />
+                        class="sidebar__tags"
+                        :value="tags"
+                        :auto-limit="false"
+                        :limit="7"
+                        :options="allTags"
+                        :multiple="true"
+                        :taggable="true"
+                        :placeholder="t('bookmarks', 'Select tags are create new ones')"
+                        :disabled="!isEditable"
+                        @input="onTagsChange"
+                        @tag="onAddTag"/>
 			</div>
-			<div>
-				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-				<div class="sidebar__notes" contenteditable @input="onNotesChange">
-					{{ description }}
-				</div>
-			</div>
+            <div>
+                <h3><span class="icon-edit"/> {{ t('bookmarks', 'Notes') }}</h3>
+                <div class="sidebar__notes" :contenteditable="isEditable" @input="onNotesChange">
+                    {{ description }}
+                </div>
+            </div>
 		</AppSidebarTab>
 		<!--<AppSidebarTab :name="t('bookmarks', 'Sharing')" icon="icon-sharing" />-->
 	</AppSidebar>
 </template>
 <script>
-import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
-import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import { generateUrl } from '@nextcloud/router'
-import humanizeDuration from 'humanize-duration'
-import { actions, mutations } from '../store/'
+	import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
+	import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
+	import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+	import { getCurrentUser } from '@nextcloud/auth'
+	import { generateUrl } from '@nextcloud/router'
+	import humanizeDuration from 'humanize-duration'
+	import { actions, mutations } from '../store/'
 
-const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
+	const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
-export default {
-	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect },
-	data() {
-		return {
-			description: '',
-		}
-	},
-	computed: {
+	export default {
+		name: 'SidebarBookmark',
+		components: { AppSidebar, AppSidebarTab, Multiselect },
+		data() {
+			return {
+				description: '',
+			}
+		},
+		computed: {
 		isActive() {
 			if (!this.$store.state.sidebar) return false
 			return this.$store.state.sidebar.type === 'bookmark'
@@ -82,13 +84,16 @@ export default {
 				return date.toLocaleDateString()
 			}
 		},
-		tags() {
-			return this.bookmark.tags
+			tags() {
+				return this.bookmark.tags
+			},
+			allTags() {
+				return this.$store.state.tags.map(tag => tag.name)
+			},
+			isEditable() {
+				return this.bookmark.userId === getCurrentUser().uid
+			},
 		},
-		allTags() {
-			return this.$store.state.tags.map(tag => tag.name)
-		},
-	},
 	watch: {
 		bookmark(newBookmark) {
 			if (!this.isActive) return

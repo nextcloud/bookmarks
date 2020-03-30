@@ -179,7 +179,7 @@ class InternalFoldersController extends ApiController {
 	 * @NoAdminRequired
 	 */
 	public function editShare($shareId, $canWrite = false, $canShare = false) {
-		return $this->editShare($shareId, $canWrite, $canShare);
+		return $this->controller->editShare($shareId, $canWrite, $canShare);
 	}
 
 	/**
@@ -188,6 +188,6 @@ class InternalFoldersController extends ApiController {
 	 * @NoAdminRequired
 	 */
 	public function deleteShare($shareId) {
-		return $this->deleteShare($shareId);
+		return $this->controller->deleteShare($shareId);
 	}
 }

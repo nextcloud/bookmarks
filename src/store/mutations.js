@@ -164,21 +164,13 @@ export default {
 	},
 
 	[mutations.ADD_SHARE](state, share) {
-		if (state.sharesById[share.id]) {
-			return
-		}
 		Vue.set(state.sharesById, share.id, share)
-		state.shares.push(share)
 	},
 	[mutations.REMOVE_SHARE](state, id) {
 		if (!state.sharesById[id]) {
 			return
 		}
 		Vue.delete(state.sharesById, id)
-		const index = state.shares.findIndex(share => share.id === id)
-		if (index !== -1) {
-			state.shares.splice(index, 1)
-		}
 	},
 
 	[mutations.ADD_PUBLIC_TOKEN](state, { folderId, token }) {

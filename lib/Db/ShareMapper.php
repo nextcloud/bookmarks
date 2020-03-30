@@ -15,9 +15,6 @@ use OCP\IDBConnection;
  */
 class ShareMapper extends QBMapper {
 
-	public const TYPE_USER = 1;
-	public const TYPE_GROUP = 2;
-
 	/**
 	 * @var IDBConnection
 	 */
