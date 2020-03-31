@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpunit bootstrap="bootstrap.php"
 		 verbose="true"
+         colors="true"
 		 timeoutForSmallTests="900"
 		 timeoutForMediumTests="900"
-		 timeoutForLargeTests="900"
->
-	<testsuite name='Bookmarks App Tests'>
-		<directory suffix='Test.php'>.</directory>
+		 timeoutForLargeTests="900">
+	<testsuite name='Bookmarks app tests'>
+        <directory suffix='Test.php'>.</directory>
 	</testsuite>
-</phpunit>
 
+	<!-- filters for code coverage -->
+	<filter>
+		<whitelist>
+			<directory suffix=".php">../</directory>
+			<exclude>
+				<directory suffix=".php">../l10n</directory>
+				<directory suffix=".php">../templates</directory>
+				<directory suffix=".php">../tests</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+</phpunit>
