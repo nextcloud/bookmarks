@@ -4,8 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e79376d380599b696ce0115c739c1e48",
+    "content-hash": "3449151dc284ceb10eea0835d5b732f6",
     "packages": [
+        {
+            "name": "brick/math",
+            "version": "0.8.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brick/math.git",
+                "reference": "6f7a46b5c3d487b277f38fbd17df57d348cace8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brick/math/zipball/6f7a46b5c3d487b277f38fbd17df57d348cace8a",
+                "reference": "6f7a46b5c3d487b277f38fbd17df57d348cace8a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "2.*",
+                "phpunit/phpunit": "7.*",
+                "vimeo/psalm": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\Math\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Arbitrary-precision arithmetic library",
+            "keywords": [
+                "Arbitrary-precision",
+                "BigInteger",
+                "BigRational",
+                "arithmetic",
+                "bigdecimal",
+                "bignum",
+                "brick",
+                "math"
+            ],
+            "time": "2020-02-17T13:57:43+00:00"
+        },
         {
             "name": "doctrine/inflector",
             "version": "v1.1.0",
@@ -563,34 +608,29 @@
         },
         {
             "name": "rowbot/url",
-            "version": "2.0.3",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/URL-Parser.git",
-                "reference": "3e9f479cd8ffa42e4d66cc6ee40bd99f4a536685"
+                "reference": "4c2e6d1c4efe47f42f62da034e6eaa8d719444cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/3e9f479cd8ffa42e4d66cc6ee40bd99f4a536685",
-                "reference": "3e9f479cd8ffa42e4d66cc6ee40bd99f4a536685",
+                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/4c2e6d1c4efe47f42f62da034e6eaa8d719444cd",
+                "reference": "4c2e6d1c4efe47f42f62da034e6eaa8d719444cd",
                 "shasum": ""
             },
             "require": {
-                "ext-gmp": "*",
+                "brick/math": "^0.8.13",
                 "ext-intl": "*",
                 "ext-mbstring": "*",
+                "lib-icu": ">=4.6",
                 "php": ">=7.1"
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3",
-                "php-coveralls/php-coveralls": "^2.1",
-                "phpstan/phpstan": "^0.10.1",
-                "phpstan/phpstan-deprecation-rules": "^0.10.0",
-                "phpstan/phpstan-phpunit": "^0.10.0",
-                "phpstan/phpstan-strict-rules": "^0.10.0",
-                "phpunit/phpunit": "^7.0",
-                "squizlabs/php_codesniffer": "3.*",
-                "symfony/cache": "^4.1"
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+                "symfony/cache": "^4.1 || ^5.0"
             },
             "type": "library",
             "autoload": {
@@ -605,8 +645,8 @@
             "authors": [
                 {
                     "name": "Trevor Rowbotham",
-                    "role": "Developer",
-                    "homepage": "http://trowbotham.com"
+                    "homepage": "http://trowbotham.com",
+                    "role": "Developer"
                 }
             ],
             "description": "A WHATWG URL spec compliant URL parser for working with URLs and their query strings.",
@@ -619,7 +659,7 @@
                 "url-parser",
                 "url-parsing"
             ],
-            "time": "2019-08-11T20:03:32+00:00"
+            "time": "2020-02-29T21:31:27+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -672,20 +712,6 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-16T08:31:04+00:00"
         },
         {
@@ -743,20 +769,6 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-16T08:31:04+00:00"
         },
         {
@@ -814,20 +826,6 @@
                 "ctype",
                 "polyfill",
                 "portable"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -887,20 +885,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-03-09T19:04:49+00:00"
         }
@@ -2328,6 +2312,5 @@
         "ext-libxml": "*",
         "ext-pdo": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
