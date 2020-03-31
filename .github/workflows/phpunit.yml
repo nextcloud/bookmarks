@@ -37,6 +37,7 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+
       - name: Checkout app
         uses: actions/checkout@v2
         with:
@@ -48,7 +49,6 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit
           extensions: mbstring, iconv, fileinfo, intl, sqlite, pdo_sqlite
-          coverage: none
 
       - name: Set up PHPUnit
         working-directory: apps/${{ env.APP_NAME }}
@@ -63,9 +63,9 @@ jobs:
           ./occ app:enable ${{ env.APP_NAME }}
           php -S localhost:8080 &
 
-      - name: PHPUnit
+      - name: PHPUnit & coverage
         working-directory: apps/${{ env.APP_NAME }}
-        run: ./vendor/phpunit/phpunit/phpunit -c tests/phpunit.xml
+        run: ./vendor/phpunit/phpunit/phpunit --coverage-clover coverage.xml -c tests/phpunit.xml
 
       - name: Upload coverage
         working-directory: apps/${{ env.APP_NAME }}
@@ -108,6 +108,7 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+
       - name: Checkout app
         uses: actions/checkout@v2
         with:
@@ -175,6 +176,7 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+
       - name: Checkout app
         uses: actions/checkout@v2
         with:
