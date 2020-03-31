@@ -16,7 +16,7 @@ Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in #n
 
 ### Requirements
 
-- php v7.2
+- php 7.2 and above
 
 PHP extensions:
 
