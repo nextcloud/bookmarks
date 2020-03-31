@@ -63,21 +63,21 @@
 	</AppSidebar>
 </template>
 <script>
-	import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
-	import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
-	import Avatar from '@nextcloud/vue/dist/Components/Avatar'
-	import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-	import Actions from '@nextcloud/vue/dist/Components/Actions'
-	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-	import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
-	import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
-	import { getCurrentUser } from '@nextcloud/auth'
-	import { generateUrl } from '@nextcloud/router'
-	import axios from '@nextcloud/axios'
-	import copy from 'copy-text-to-clipboard'
-	import { actions, mutations } from '../store/'
+import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
+import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
+import Avatar from '@nextcloud/vue/dist/Components/Avatar'
+import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
+import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
+import { getCurrentUser } from '@nextcloud/auth'
+import { generateUrl } from '@nextcloud/router'
+import axios from '@nextcloud/axios'
+import copy from 'copy-text-to-clipboard'
+import { actions, mutations } from '../store/'
 
-	export default {
+export default {
 	name: 'SidebarFolder',
 	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble },
 	data() {

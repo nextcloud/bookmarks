@@ -31,13 +31,13 @@
 </template>
 
 <script>
-	import Bookmark from './Bookmark'
-	import Folder from './Folder'
-	import CreateBookmark from './CreateBookmark'
-	import CreateFolder from './CreateFolder'
-	import { actions } from '../store'
+import Bookmark from './Bookmark'
+import Folder from './Folder'
+import CreateBookmark from './CreateBookmark'
+import CreateFolder from './CreateFolder'
+import { actions } from '../store'
 
-	export default {
+export default {
 	name: 'BookmarksList',
 	components: {
 		Bookmark,
