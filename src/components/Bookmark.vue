@@ -67,24 +67,24 @@
 	</div>
 </template>
 <script>
-	import Vue from 'vue'
-	import Actions from '@nextcloud/vue/dist/Components/Actions'
-	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-	import { generateUrl } from '@nextcloud/router'
-	import { actions, mutations } from '../store/'
-	import TagLine from './TagLine'
+import Vue from 'vue'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { generateUrl } from '@nextcloud/router'
+import { actions, mutations } from '../store/'
+import TagLine from './TagLine'
 
-	export default {
-		name: 'Bookmark',
-		components: {
-			Actions,
-			ActionButton,
-			TagLine,
-		},
-		props: {
-			bookmark: {
-				type: Object,
-				required: true,
+export default {
+	name: 'Bookmark',
+	components: {
+		Actions,
+		ActionButton,
+		TagLine,
+	},
+	props: {
+		bookmark: {
+			type: Object,
+			required: true,
 		},
 	},
 	data() {

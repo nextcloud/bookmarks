@@ -66,22 +66,22 @@
 	</div>
 </template>
 <script>
-	import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-	import Actions from '@nextcloud/vue/dist/Components/Actions'
-	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-	import { actions, mutations } from '../store/'
+import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { actions, mutations } from '../store/'
 
-	export default {
-		name: 'Breadcrumbs',
-		components: { Multiselect, Actions, ActionButton },
-		props: {},
-		data() {
-			return {
-				url: '',
-			}
-		},
-		computed: {
-			allTags() {
+export default {
+	name: 'Breadcrumbs',
+	components: { Multiselect, Actions, ActionButton },
+	props: {},
+	data() {
+		return {
+			url: '',
+		}
+	},
+	computed: {
+		allTags() {
 			return this.$store.state.tags.map(tag => tag.name)
 		},
 		tags() {

@@ -12,5 +12,15 @@
 		"psr/http-factory": "^1.0",
 		"psr/http-message": "^1.0",
 		"rowbot/url": "^2.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^7.5"
+	},
+	"config": {
+		"optimize-autoloader": true,
+		"classmap-authoritative": true
+	},
+	"scripts": {
+		"lint": "find . -name \\*.php -not -path './vendor/*' -exec php -l \"{}\" \\;"
 	}
 }
