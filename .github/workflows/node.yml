@@ -1,0 +1,30 @@
+name: Node
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - stable*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-versions: [12.x]
+
+    name: node${{ matrix.node-versions }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up node ${{ matrix.node-versions }}
+        uses: actions/setup-node@v1
+        with:
+          node-versions: ${{ matrix.node-versions }}
+
+      - name: Install dependencies & build
+        run: |
+          npm ci
+          npm run build --if-present

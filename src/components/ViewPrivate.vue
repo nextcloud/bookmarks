@@ -6,7 +6,7 @@
 			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
 		<SidebarBookmark />
-		<SidebarFolder />
+		<!-- <SidebarFolder /> -->
 		<MoveDialog />
 	</Content>
 </template>

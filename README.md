@@ -1,4 +1,7 @@
 # Nextcloud Bookmarks
+![Downloads](https://img.shields.io/github/downloads/nextcloud/bookmarks/total.svg?style=flat-square)
+[![Code coverage](https://img.shields.io/codecov/c/github/nextcloud/bookmarks.svg?style=flat-square)](https://codecov.io/gh/nextcloud/bookmarks/)
+[![Dependabot status](https://img.shields.io/badge/Dependabot-enabled-brightgreen.svg?longCache=true&style=flat-square&logo=dependabot)](https://dependabot.com)
 
 ![](https://github.com/nextcloud/bookmarks/raw/master/screenshots/Bookmarks.png)
 
@@ -13,7 +16,7 @@ Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in #n
 
 ### Requirements
 
-- php v7.1+
+- php 7.2 and above
 
 PHP extensions:
 

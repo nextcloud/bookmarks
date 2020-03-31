@@ -13,7 +13,7 @@ OC.L10N.register(
     "Delete" : "Usuń",
     "Enter bookmark title" : "Wpisz tytuł zakładki",
     "Save" : "Zapisz",
-    "No bookmarks here" : "Nie ma tu zakładek",
+    "No bookmarks here" : "Brak zakładek",
     "Try changing your query or add some using the button on the left." : "Spróbuj zmienić zapytanie lub dodaj je, używając przycisku po lewej stronie.",
     "Select one or more tags" : "Wybierz jedną lub więcej etykiet",
     "New folder" : "Nowy folder",
