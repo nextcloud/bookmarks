@@ -76,6 +76,23 @@ export default new Store({
 			}
 			return privateRoutes
 		},
+		getPermissionsForFolder: (state, getters) => folderId => {
+			const path = getters.getFolder(folderId)
+			for (let i = 0; i < path.length; i++) {
+				const shares = getters.getSharesOfFolder(path[i].id)
+				if (shares.length) {
+					return shares[0]
+				}
+			}
+			return {}
+		},
+		getPermissionsForBookmark: (state, getters) => bookmarkId => {
+			const bookmark = getters.getBookmark(bookmarkId)
+			if (!bookmark) {
+				return {}
+			}
+			return getters.getPermissionsForFolder(bookmark.folders[0])
+		},
 	},
 })
 

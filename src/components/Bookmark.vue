@@ -12,7 +12,7 @@
 					: undefined
 		}">
 		<template v-if="!renaming">
-			<div v-if="!isPublic" class="bookmark__checkbox">
+			<div v-if="isEditable" class="bookmark__checkbox">
 				<input v-model="selected" class="checkbox" type="checkbox"><label
 					:aria-label="t('bookmarks', 'Select bookmark')"
 					@click="clickSelect" />
@@ -117,8 +117,15 @@
 		viewMode() {
 			return this.$store.state.viewMode
 		},
+		isOwner() {
+			const currentUser = getCurrentUser()
+			return currentUser && this.bookmark.userId === currentUser.uid
+		},
+		permissions() {
+			return this.$store.getters.getPermissionsForBookmark(this.bookmark.id)
+		},
 		isEditable() {
-			return !this.isPublic && this.bookmark.userId === getCurrentUser().uid
+			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
 	},
 	watch: {

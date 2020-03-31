@@ -8,7 +8,7 @@
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
 			<UserBubble :user="folder.userId" :display-name="folder.userId" />
 		</AppSidebarTab>
-		<AppSidebarTab v-if="!isShared" :name="t('bookmarks', 'Sharing')" icon="icon-shared">
+		<AppSidebarTab v-if="isSharable" :name="t('bookmarks', 'Sharing')" icon="icon-shared">
 			<div class="participant-select">
 				<Multiselect v-model="participant"
 					label="displayName"
@@ -96,15 +96,27 @@
 			if (!this.isActive) return
 			const folders = this.$store.getters.getFolder(this.$store.state.sidebar.id)
 			const folder = folders[0]
-			if (folder.owner === getCurrentUser()) {
+			if (folder.userId === getCurrentUser()) {
 				this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folder.id)
 				this.$store.dispatch(actions.LOAD_PUBLIC_LINK, folder.id)
 			}
 			return folder
 		},
-		isShared() {
+		isOwner() {
 			if (!this.folder) return
-			return this.folder.userId !== getCurrentUser().uid
+			const currentUser = getCurrentUser()
+			return currentUser && this.folder.userId === currentUser.uid
+		},
+		permissions() {
+			return this.$store.getters.getPermissionsForFolder(this.folder.id)
+		},
+		isSharable() {
+			if (!this.folder) return
+			return this.isOwner || (!this.isOwner && this.permissions.canShare)
+		},
+		isEditable() {
+			if (!this.folder) return
+			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
 		shares() {
 			if (!this.folder) return

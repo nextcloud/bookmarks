@@ -31,12 +31,13 @@
 </template>
 
 <script>
-import Bookmark from './Bookmark'
-import Folder from './Folder'
-import CreateBookmark from './CreateBookmark'
-import CreateFolder from './CreateFolder'
+	import Bookmark from './Bookmark'
+	import Folder from './Folder'
+	import CreateBookmark from './CreateBookmark'
+	import CreateFolder from './CreateFolder'
+	import { actions } from '../store'
 
-export default {
+	export default {
 	name: 'BookmarksList',
 	components: {
 		Bookmark,
@@ -63,6 +64,7 @@ export default {
 			if (!folderId) return []
 			const folder = this.$store.getters.getFolder(folderId)[0]
 			if (!folder) return []
+			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
 			return folder.children
 		},
 		newBookmark() {

@@ -1,6 +1,6 @@
 <template>
 	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
-		<figure :class="['folder__icon', isShared && 'shared']" @click="onSelect" />
+		<figure :class="['folder__icon', !isOwner && !isPublic && 'shared']" @click="onSelect" />
 		<template v-if="!renaming">
 			<h3
 				class="folder__title"
@@ -8,7 +8,7 @@
 				@click="onSelect">
 				{{ folder.title }}
 			</h3>
-			<UserBubble v-if="isShared" class="folder__owner" :user="folder.userId" />
+			<UserBubble v-if="!isOwner && !isPublic" class="folder__owner" :user="folder.userId" />
 			<Actions v-if="isEditable" class="folder__actions">
 				<ActionButton icon="icon-info" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
@@ -71,14 +71,20 @@
 		currentUser() {
 			return getCurrentUser().uid
 		},
-		isShared() {
-			return this.folder.userId !== getCurrentUser().uid
+		isOwner() {
+			const currentUser = getCurrentUser()
+			return currentUser && this.folder.userId === currentUser.uid
+		},
+		permissions() {
+			return this.$store.getters.getPermissionsForFolder(this.folder.id)
 		},
 		isEditable() {
-			return !this.isPublic && !this.isShared
+			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
 	},
-	created() {},
+	created() {
+		this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
+	},
 	methods: {
 		onDetails() {
 			this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
@@ -108,74 +114,74 @@
 }
 </script>
 <style>
-.folder {
-	border-bottom: 1px solid var(--color-border);
-	display: flex;
-	align-items: center;
-	position: relative;
-}
+    .folder {
+        border-bottom: 1px solid var(--color-border);
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
 
-.folder:hover {
-	background: var(--color-background-dark);
-}
+    .folder:hover {
+        background: var(--color-background-dark);
+    }
 
-.folder__icon {
-	flex: 0;
-	height: 20px;
-	width: 20px;
-	background-size: cover;
-	margin: 15px;
-	cursor: pointer;
-	background-image: url('/svg/core/filetypes/folder?color=0082c9');
-	background-repeat: no-repeat;
-	background-position: center;
-}
+    .folder__icon {
+        flex: 0;
+        height: 20px;
+        width: 20px;
+        background-size: cover;
+        margin: 15px;
+        cursor: pointer;
+        background-image: url('/svg/core/filetypes/folder?color=0082c9');
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 
-.folder__icon.shared {
-	background-image: url('/svg/core/actions/share?color=ffffff'), url('/svg/core/filetypes/folder?color=0082c9');
-	background-size: 30px, cover !important;
-}
+    .folder__icon.shared {
+        background-image: url('/svg/core/actions/share?color=ffffff'), url('/svg/core/filetypes/folder?color=0082c9');
+        background-size: 30px, cover !important;
+    }
 
-.folder--gridview .folder__icon {
-	height: 70px;
-	width: 70px;
-	background-size: cover;
-	position: absolute;
-	top: 20%;
-	left: calc(45% - 35px);
-}
+    .folder--gridview .folder__icon {
+        height: 70px;
+        width: 70px;
+        background-size: cover;
+        position: absolute;
+        top: 20%;
+        left: calc(45% - 35px);
+    }
 
-.folder__title {
-	display: flex;
-	flex: 1;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	cursor: pointer;
-	margin: 0;
-	padding: 15px 0;
-}
+    .folder__title {
+        display: flex;
+        flex: 1;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        margin: 0;
+        padding: 15px 0;
+    }
 
-.folder--gridview .folder__title {
-	margin-left: 15px;
-}
+    .folder--gridview .folder__title {
+        margin-left: 15px;
+    }
 
-.folder--gridview .folder__owner {
-	margin-bottom: 7px;
-}
+    .folder--gridview .folder__owner {
+        margin-bottom: 7px;
+    }
 
-.folder__actions {
-	flex: 0;
-}
+    .folder__actions {
+        flex: 0;
+    }
 
-.folder__title input {
-	width: 100%;
-	border-top: none;
-	border-left: none;
-	border-right: none;
-}
+    .folder__title input {
+        width: 100%;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
 
-.folder__title button {
-	height: 20px;
-}
+    .folder__title button {
+        height: 20px;
+    }
 </style>

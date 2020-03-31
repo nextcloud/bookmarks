@@ -90,8 +90,16 @@ export default {
 		allTags() {
 			return this.$store.state.tags.map(tag => tag.name)
 		},
+		isOwner() {
+			const currentUser = getCurrentUser()
+			return currentUser && this.bookmark.userId === currentUser.uid
+		},
+		permissions() {
+			return this.$store.getters.getPermissionsForBookmark(this.bookmark.id)
+
+		},
 		isEditable() {
-			return this.bookmark.userId === getCurrentUser().uid
+			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
 	},
 	watch: {

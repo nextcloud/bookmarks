@@ -635,20 +635,32 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 */
 	public function getShares($folderId): DataResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		$permissions = $this->authorizer->getPermissionsForFolder($folderId, $this->request);
+		if (Authorizer::hasPermission(Authorizer::PERM_RESHARE, $permissions)) {
+			try {
+				$this->folderMapper->find($folderId);
+			} catch (MultipleObjectsReturnedException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			} catch (DoesNotExistException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			}
+			$shares = $this->shareMapper->findByFolder($folderId);
+			return new Http\DataResponse(['status' => 'success', 'data' => array_map(static function (Share $share) {
+				return $share->toArray();
+			}, $shares)]);
 		}
-		try {
-			$this->folderMapper->find($folderId);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		} catch (DoesNotExistException $e) {
-			return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
+			try {
+				$this->folderMapper->find($folderId);
+				$share = $this->shareMapper->findByDescendantFolderAndUser($folderId, $this->authorizer->getUserId());
+			} catch (MultipleObjectsReturnedException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			} catch (DoesNotExistException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			}
+			return new Http\DataResponse(['status' => 'success', 'data' => [$share->toArray()]]);
 		}
-		$shares = $this->shareMapper->findByFolder($folderId);
-		return new Http\DataResponse(['status' => 'success', 'data' => array_map(static function (Share $share) {
-			return $share->toArray();
-		}, $shares)]);
+		return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 	}
 
 	/**
