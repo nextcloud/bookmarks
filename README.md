@@ -1,4 +1,7 @@
 # Nextcloud Bookmarks
+![Downloads](https://img.shields.io/github/downloads/nextcloud/bookmarks/total.svg?style=flat-square)
+[![Code coverage](https://img.shields.io/codecov/c/github/nextcloud/bookmarks.svg?style=flat-square)](https://codecov.io/gh/nextcloud/bookmarks/)
+[![Dependabot status](https://img.shields.io/badge/Dependabot-enabled-brightgreen.svg?longCache=true&style=flat-square&logo=dependabot)](https://dependabot.com)
 
 ![](https://github.com/nextcloud/bookmarks/raw/master/screenshots/Bookmarks.png)
 
