@@ -82,21 +82,21 @@
 	</div>
 </template>
 <script>
-	import { generateUrl } from '@nextcloud/router'
-	import { actions } from '../store/'
-	import { getRequestToken } from '@nextcloud/auth'
+import { generateUrl } from '@nextcloud/router'
+import { actions } from '../store/'
+import { getRequestToken } from '@nextcloud/auth'
 
-	export default {
-		name: 'Settings',
-		components: {},
-		computed: {
-			oc_defaults() {
-				return window.oc_defaults
-			},
-			bookmarklet() {
-				const bookmarkletUrl
+export default {
+	name: 'Settings',
+	components: {},
+	computed: {
+		oc_defaults() {
+			return window.oc_defaults
+		},
+		bookmarklet() {
+			const bookmarkletUrl
 						= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
-				return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=500px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
+			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=500px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
 		rssURL() {
 			return (
