@@ -12,18 +12,17 @@
 </template>
 
 <script>
-import Content from '@nextcloud/vue/dist/Components/Content'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import Navigation from './Navigation'
-import BookmarksList from './BookmarksList'
-import Breadcrumbs from './Breadcrumbs'
-import SidebarBookmark from './SidebarBookmark'
-import SidebarFolder from './SidebarFolder'
-import MoveDialog from './MoveDialog'
-import { privateRoutes } from '../router'
-import { actions, mutations } from '../store/'
+	import Content from '@nextcloud/vue/dist/Components/Content'
+	import AppContent from '@nextcloud/vue/dist/Components/AppContent'
+	import Navigation from './Navigation'
+	import BookmarksList from './BookmarksList'
+	import Breadcrumbs from './Breadcrumbs'
+	import SidebarBookmark from './SidebarBookmark'
+	import MoveDialog from './MoveDialog'
+	import { privateRoutes } from '../router'
+	import { actions, mutations } from '../store/'
 
-export default {
+	export default {
 	name: 'ViewPrivate',
 	components: {
 		Navigation,
@@ -32,7 +31,6 @@ export default {
 		Breadcrumbs,
 		BookmarksList,
 		SidebarBookmark,
-		SidebarFolder,
 		MoveDialog,
 	},
 	data: function() {
