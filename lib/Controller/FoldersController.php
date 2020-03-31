@@ -652,7 +652,8 @@ class FoldersController extends ApiController {
 		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
 			try {
 				$this->folderMapper->find($folderId);
-				$share = $this->shareMapper->findByDescendantFolderAndUser($folderId, $this->authorizer->getUserId());
+				// TODO: $share = $this->shareMapper->findByDescendantFolderAndUser($folderId, $this->authorizer->getUserId());
+				$share = $this->shareMapper->findByFolderAndUser($folderId, $this->authorizer->getUserId());
 			} catch (MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 			} catch (DoesNotExistException $e) {
