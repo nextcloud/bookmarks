@@ -160,12 +160,14 @@ export default {
 				this.participantSearchResults = []
 				return
 			}
-			this.participantSearchResults = data.users.map(result => ({
+			const users = data.exact.users.concat(data.users)
+			const groups = data.exact.groups.concat(data.groups)
+			this.participantSearchResults = users.map(result => ({
 				user: result.value.shareWith,
 				displayName: result.label,
 				icon: 'icon-user',
 				isNoUser: false,
-			})).concat(data.groups.map(result => ({
+			})).concat(groups.map(result => ({
 				user: result.value.shareWith,
 				displayName: result.label,
 				icon: 'icon-group',
