@@ -637,10 +637,7 @@ export default {
 			})
 			.catch(err => {
 				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to load shares of folder ' + folderId)
-				)
+				// Don't set a notification as this is expected to happen for subfolders of shares that we don't have a RESHAR permission for
 				throw err
 			})
 	},
