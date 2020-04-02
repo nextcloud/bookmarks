@@ -52,7 +52,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 		$this->screeenlyPreviewer = $screeenlyPreviewer;
 		$this->defaultPreviewer = $defaultPreviewer;
 
-		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', true);
+		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', false);
 	}
 
 	/**
