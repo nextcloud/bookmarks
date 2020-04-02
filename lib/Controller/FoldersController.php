@@ -640,9 +640,9 @@ class FoldersController extends ApiController {
 			try {
 				$this->folderMapper->find($folderId);
 			} catch (MultipleObjectsReturnedException $e) {
-				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERRO);
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
 			} catch (DoesNotExistException $e) {
-				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], RHttp::STATUS_BAD_REQUEST);
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 			}
 			$shares = $this->shareMapper->findByFolder($folderId);
 			return new Http\DataResponse(['status' => 'success', 'data' => array_map(static function (Share $share) {
