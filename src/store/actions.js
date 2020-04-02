@@ -620,6 +620,9 @@ export default {
 	},
 
 	[actions.LOAD_SHARES_OF_FOLDER]({ commit, dispatch, state }, folderId) {
+		if (folderId === -1 || folderId === '-1') {
+			return Promise.resolve()
+		}
 		return axios
 			.get(url(state, `/folder/${folderId}/shares`))
 			.then(async response => {
