@@ -24,13 +24,22 @@
 					:placeholder="t('bookmarks', 'Select one or more tags')"
 					@input="onTagsChange" />
 			</template>
-			<Actions>
+			<Actions
+				v-if="($route.name === routes.FOLDER || $route.name === routes.HOME) && !isPublic"
+				class="breadcrumbs__AddFolder"
+				icon="icon-add">
 				<ActionButton
-					v-if="($route.name === routes.FOLDER || $route.name === routes.HOME) && !isPublic"
-					v-tooltip="t('bookmarks', 'New folder')"
-					icon="icon-add"
-					class="breadcrumbs__AddFolder"
-					@click="onAddFolder" />
+					icon="icon-link"
+					@click="onAddBookmark">
+					{{
+						t('bookmarks', 'New bookmark')
+					}}
+				</ActionButton>
+				<ActionButton
+					icon="icon-folder"
+					@click="onAddFolder">
+					{{ t('bookmarks', 'New folder') }}
+				</ActionButton>
 			</Actions>
 		</div>
 		<div class="breadcrumbs__controls">
@@ -120,6 +129,12 @@ export default {
 				!this.$store.state.displayNewFolder
 			)
 		},
+		onAddBookmark() {
+			this.$store.commit(
+				mutations.DISPLAY_NEW_BOOKMARK,
+				!this.$store.state.displayNewBookmark
+			)
+		},
 
 		onToggleViewMode() {
 			this.$store.dispatch(actions.SET_SETTING, {
@@ -199,6 +214,8 @@ export default {
 
 .breadcrumbs__AddFolder {
 	margin-left: 5px;
+	padding: 0;
+	margin-top: -10px;
 }
 
 .breadcrumbs__controls {
