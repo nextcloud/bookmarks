@@ -4,11 +4,14 @@
 		class="sidebar"
 		:title="folder.title"
 		@close="onClose">
-		<AppSidebarTab :name="t('bookmarks', 'Details')" icon="icon-info">
+		<AppSidebarTab id="folder-details" :name="t('bookmarks', 'Details')" icon="icon-info">
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
 			<UserBubble :user="folder.userId" :display-name="folder.userId" />
 		</AppSidebarTab>
-		<AppSidebarTab v-if="isSharable" :name="t('bookmarks', 'Sharing')" icon="icon-shared">
+		<AppSidebarTab v-if="isSharable"
+			id="folder-sharing"
+			:name="t('bookmarks', 'Sharing')"
+			icon="icon-shared">
 			<div class="participant-select">
 				<Multiselect v-model="participant"
 					label="displayName"

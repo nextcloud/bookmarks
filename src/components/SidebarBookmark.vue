@@ -6,7 +6,7 @@
 		:subtitle="bookmark.url"
 		:background="background"
 		@close="onClose">
-		<AppSidebarTab :name="t('bookmarks', 'Details')" icon="icon-info">
+		<AppSidebarTab id="bookmark-details" :name="t('bookmarks', 'Details')" icon="icon-info">
 			<div>
 				<h3>
 					<span class="icon-calendar-dark" />
