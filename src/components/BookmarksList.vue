@@ -64,7 +64,7 @@ export default {
 			if (!folderId) return []
 			const folder = this.$store.getters.getFolder(folderId)[0]
 			if (!folder) return []
-			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
+			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folder.id)
 			return folder.children
 		},
 		newBookmark() {
