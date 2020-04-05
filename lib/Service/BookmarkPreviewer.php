@@ -21,6 +21,7 @@
 namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
+use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreeenlyBookmarkPreviewer;
@@ -57,9 +58,9 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 
 	/**
 	 * @param Bookmark $bookmark
-	 * @return array|null
+	 * @return IImage
 	 */
-	public function getImage($bookmark) {
+	public function getImage($bookmark): ?IImage {
 		if ($this->enabled === 'false') {
 			return null;
 		}

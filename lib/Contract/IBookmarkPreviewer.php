@@ -7,7 +7,7 @@ use OCA\Bookmarks\Db\Bookmark;
 interface IBookmarkPreviewer {
 	/**
 	 * @param Bookmark $bookmark
-	 * @return null|array ['contentType' => 'mimetype', 'data' => binary]
+	 * @return IImage|null
 	 */
-	public function getImage($bookmark);
+	public function getImage($bookmark): ?IImage;
 }

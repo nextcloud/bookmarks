@@ -20,27 +20,20 @@
 
 namespace OCA\Bookmarks\Service;
 
+use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
-use OCP\Http\Client\IClientService;
-use OCP\ILogger;
+use OCP\Files\NotFoundException;
+use OCP\Files\NotPermittedException;
 
 class FaviconPreviewer extends DefaultBookmarkPreviewer {
 	/**
-	 * @param FileCache $cache
-	 * @param LinkExplorer $linkExplorer
-	 * @param IClientService $clientService
-	 * @param ILogger $logger
-	 */
-	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
-		parent::__construct($cache, $linkExplorer, $clientService, $logger);
-	}
-
-	/**
 	 * @param Bookmark $bookmark
-	 * @return array|mixed|null
+	 * @return IImage|null
+	 * @throws NotFoundException
+	 * @throws NotPermittedException
 	 */
-	public function getImage($bookmark) {
+	public function getImage($bookmark): ?IImage {
 		if (!isset($bookmark)) {
 			return null;
 		}
@@ -49,7 +42,7 @@ class FaviconPreviewer extends DefaultBookmarkPreviewer {
 
 		if (isset($site['favicon'])) {
 			$image = $this->getOrFetchImageUrl($site['favicon']);
-			if (!is_null($image)) {
+			if ($image !== null) {
 				return $image;
 			}
 		}

@@ -21,6 +21,9 @@
 namespace OCA\Bookmarks\Service\Previewers;
 
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
+use OCA\Bookmarks\Contract\IImage;
+use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\FileCache;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
@@ -74,8 +77,8 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	}
 
 	/**
-	 * @param $bookmark
-	 * @return array|null image data
+	 * @param Bookmark $bookmark
+	 * @return IImage|null
 	 * @throws NotFoundException
 	 * @throws NotPermittedException
 	 */
@@ -94,36 +97,31 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 		$key = $this->buildKey($url);
 		// Try cache first
 		if ($image = $this->cache->get($key)) {
-			$image = json_decode($image, true);
-			if (is_null($image)) {
+			if ($image === 'null') {
 				return null;
 			}
-			return [
-				'contentType' => $image['contentType'],
-				'data' => base64_decode($image['data']),
-			];
+			return Image::deserialize($image);
 		}
 
 		// Fetch image from remote server
-		$image = $this->fetchScreenshot($url);
+		$image = $this->getImage($url);
 
-		if (is_null($image)) {
-			$json = json_encode(null);
-			$this->cache->set($key, $json, self::CACHE_TTL);
+		if ($image === null) {
+			$this->cache->set($key, 'null', self::CACHE_TTL);
 			return null;
 		}
 
 		// Store in cache for next time
-		$json = json_encode([
-			'contentType' => $image['contentType'],
-			'data' => base64_encode($image['data']),
-		]);
-		$this->cache->set($key, $json, self::CACHE_TTL);
+		$this->cache->set($key, $image->serialize(), self::CACHE_TTL);
 
 		return $image;
 	}
 
-	public function fetchScreenshot($url) {
+	/**
+	 * @param $url
+	 * @return Image|null
+	 */
+	public function fetchImage($url): ?Image {
 		try {
 			$response = $this->client->post($this->apiUrl, ['body' => [
 				'key' => $this->apiKey,
@@ -144,9 +142,6 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 			return null;
 		}
 
-		return [
-			'contentType' => 'image/jpeg',
-			'data' => base64_decode($body['base64_raw']),
-		];
+		return new Image('image/jpeg', base64_decode($body['base64_raw']));
 	}
 }

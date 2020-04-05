@@ -21,11 +21,9 @@ use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service\Authorizer;
-use OCA\Bookmarks\Service\BookmarkPreviewer;
-use OCA\Bookmarks\Service\FaviconPreviewer;
+use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\HtmlExporter;
 use OCA\Bookmarks\Service\HtmlImporter;
-use OCA\Bookmarks\Service\LinkExplorer;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
@@ -135,6 +133,10 @@ class BookmarkControllerTest extends TestCase {
 	 * @var Authorizer
 	 */
 	private $authorizer;
+	/**
+	 * @var BookmarkService
+	 */
+	private $bookmarks;
 
 	/**
 	 * @throws \OCP\AppFramework\QueryException
@@ -160,6 +162,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->otherUserId = $this->userManager->get($this->otherUser)->getUID();
 
 		$l = OC::$server->getL10N('bookmarks');
+		$this->bookmarks = OC::$server->query(BookmarkService::class);
 		$this->bookmarkMapper = OC::$server->query(BookmarkMapper::class);
 		$this->tagMapper = OC::$server->query(TagMapper::class);
 		$this->folderMapper = OC::$server->query(FolderMapper::class);
@@ -168,21 +171,17 @@ class BookmarkControllerTest extends TestCase {
 		$this->shareMapper = OC::$server->query(ShareMapper::class);
 		$this->sharedFolderMapper = OC::$server->query(SharedFolderMapper::class);
 
-		$bookmarkPreviewer = OC::$server->query(BookmarkPreviewer::class);
-		$faviconPreviewer = OC::$server->query(FaviconPreviewer::class);
 		$timeFactory = OC::$server->query(ITimeFactory::class);
 		$logger = OC::$server->getLogger();
-		$userSession = OC::$server->getUserSession();
-		$linkExplorer = OC::$server->query(LinkExplorer::class);
 		$urlGenerator = OC::$server->query(IURLGenerator::class);
 		$htmlImporter = OC::$server->query(HtmlImporter::class);
 		$htmlExporter = OC::$server->query(HtmlExporter::class);
 		$this->authorizer = OC::$server->query(Authorizer::class);
 
-		$this->controller = new BookmarkController('bookmarks', $this->request, $this->userId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer);
-		$this->otherController = new BookmarkController('bookmarks', $this->request, $this->otherUserId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer);
+		$this->controller = new BookmarkController('bookmarks', $this->request, $this->userId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer, $this->bookmarks);
+		$this->otherController = new BookmarkController('bookmarks', $this->request, $this->otherUserId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer, $this->bookmarks);
 
-		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest, null, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer);
+		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest, null, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer, $this->bookmarks);
 	}
 
 	/**
