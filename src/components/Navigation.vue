@@ -1,21 +1,22 @@
 <template>
 	<AppNavigation>
 		<AppNavigationNew
+			v-if="!isPublic"
 			:text="t('bookmarks', 'New Bookmark')"
 			:disabled="false"
 			button-class="icon-add"
 			@click="onNewBookmark" />
 		<ul>
 			<AppNavigationItem key="menu-home"
-				:to="{ name: 'home' }"
+				:to="{ name: routes.HOME }"
 				icon="icon-home"
 				:title="t('bookmarks', 'All Bookmarks')" />
 			<AppNavigationItem key="menu-recent"
-				:to="{ name: 'recent' }"
+				:to="{ name: routes.RECENT }"
 				icon="icon-category-monitoring"
 				:title="t('bookmarks', 'Recent Bookmarks')" />
 			<AppNavigationItem key="menu-untagged"
-				:to="{ name: 'untagged' }"
+				:to="{ name: routes.UNTAGGED }"
 				icon="icon-category-disabled"
 				:title="t('bookmarks', 'Untagged')" />
 			<AppNavigationSpacer />
@@ -25,20 +26,20 @@
 				:to="tag.route"
 				:force-menu="true"
 				:edit-label="t('bookmarks', 'Rename')"
-				:editable="true"
+				:editable="!isPublic"
 				:title="tag.name"
 				@update:title="onRenameTag(tag.name, $event)">
 				<AppNavigationCounter slot="counter">
 					{{ tag.count }}
 				</AppNavigationCounter>
-				<template slot="actions">
+				<template v-if="!isPublic" slot="actions">
 					<ActionButton icon="icon-delete" @click="onDeleteTag(tag.name)">
 						{{ t('bookmarks', 'Delete') }}
 					</ActionButton>
 				</template>
 			</AppNavigationItem>
 		</ul>
-		<AppNavigationSettings>
+		<AppNavigationSettings v-if="!isPublic">
 			<Settings />
 		</AppNavigationSettings>
 	</AppNavigation>
@@ -73,7 +74,7 @@ export default {
 	computed: {
 		tags() {
 			return this.$store.state.tags.map(tag => ({
-				route: { name: 'tags', params: { tags: tag.name } },
+				route: { name: this.routes.TAGS, params: { tags: tag.name } },
 				name: tag.name,
 				count: tag.count,
 			}))

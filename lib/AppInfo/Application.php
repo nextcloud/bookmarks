@@ -34,7 +34,7 @@ class Application extends App {
 			/** @var IUser|null $user */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			/** @var IContainer $c */
-			return is_null($user) ? null : $user->getUID();
+			return $user === null ? null : $user->getUID();
 		});
 
 		$container->registerService('request', static function ($c) {

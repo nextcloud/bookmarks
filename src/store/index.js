@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
 import Mutations from './mutations'
 import Actions from './actions'
+import { privateRoutes, publicRoutes } from '../router'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,8 @@ export default new Store({
 	mutations: Mutations,
 	actions: Actions,
 	state: {
+		public: false,
+		authToken: null,
 		fetchState: {
 			page: 0,
 			query: {},
@@ -28,15 +31,18 @@ export default new Store({
 			saveFolder: false,
 		},
 		error: null,
+		notification: null,
 		settings: {
 			viewMode: 'list',
 			sorting: 'lastmodified',
 		},
 		bookmarks: [],
 		bookmarksById: {},
+		sharesById: {},
 		tags: [],
 		folders: [],
 		foldersById: {},
+		tokensByFolder: {},
 		selection: {
 			folders: [],
 			bookmarks: [],
@@ -57,6 +63,35 @@ export default new Store({
 				return [{ id: '-1', children: state.folders }]
 			}
 			return findFolder(id, state.folders)
+		},
+		getSharesOfFolder: state => folderId => {
+			return Object.values(state.sharesById).filter(share => share.folderId === folderId)
+		},
+		getTokenOfFolder: state => folderId => {
+			return state.tokensByFolder[folderId]
+		},
+		getRoutes: state => () => {
+			if (state.public) {
+				return publicRoutes
+			}
+			return privateRoutes
+		},
+		getPermissionsForFolder: (state, getters) => folderId => {
+			const path = getters.getFolder(folderId)
+			for (let i = 0; i < path.length; i++) {
+				const shares = getters.getSharesOfFolder(path[i].id)
+				if (shares.length) {
+					return shares[0]
+				}
+			}
+			return {}
+		},
+		getPermissionsForBookmark: (state, getters) => bookmarkId => {
+			const bookmark = getters.getBookmark(bookmarkId)
+			if (!bookmark) {
+				return {}
+			}
+			return getters.getPermissionsForFolder(bookmark.folders[0])
 		},
 	},
 })

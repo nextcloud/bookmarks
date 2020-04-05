@@ -24,6 +24,7 @@ export const actions = {
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
+	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
 	DELETE_SELECTION: 'DELETE_SELECTION',
@@ -41,6 +42,15 @@ export const actions = {
 	SET_SETTING: 'SET_SETTING',
 	LOAD_SETTING: 'LOAD_SETTING',
 	LOAD_SETTINGS: 'SLOAD_SETTINGS',
+
+	LOAD_SHARES_OF_FOLDER: 'LOAD_SHARES_OF_FOLDER',
+	CREATE_SHARE: 'CREATE_SHARE',
+	EDIT_SHARE: 'EDIT_SHARE',
+	DELETE_SHARE: 'DELETE_SHARE',
+
+	LOAD_PUBLIC_LINK: 'LOAD_PUBLIC_LINK',
+	CREATE_PUBLIC_LINK: 'CREATE_PUBLIC_LINK',
+	DELETE_PUBLIC_LINK: 'DELETE_PUBLIC_LINK',
 }
 
 export default {
@@ -53,7 +63,7 @@ export default {
 	async [actions.FIND_BOOKMARK]({ commit, dispatch, state }, link) {
 		if (state.loading.bookmarks) return
 		try {
-			const response = await axios.get(url('/bookmark'), {
+			const response = await axios.get(url(state, '/bookmark'), {
 				params: {
 					url: link,
 				},
@@ -80,7 +90,7 @@ export default {
 		if (state.loading.bookmarks) return
 		commit(mutations.FETCH_START, { type: 'createBookmark' })
 		return axios
-			.post(url('/bookmark'), {
+			.post(url(state, '/bookmark'), {
 				url: data.url,
 				title: data.title,
 				description: data.description,
@@ -113,7 +123,7 @@ export default {
 	[actions.SAVE_BOOKMARK]({ commit, dispatch, state }, id) {
 		commit(mutations.FETCH_START, { type: 'saveBookmark' })
 		return axios
-			.put(url(`/bookmark/${id}`), this.getters.getBookmark(id))
+			.put(url(state, `/bookmark/${id}`), this.getters.getBookmark(id))
 			.then(response => {
 				const {
 					data: { status },
@@ -141,13 +151,13 @@ export default {
 		commit(mutations.FETCH_START, { type: 'moveBookmark' })
 		try {
 			const response = await axios.post(
-				url(`/folder/${newFolder}/bookmarks/${bookmark}`)
+				url(state, `/folder/${newFolder}/bookmarks/${bookmark}`)
 			)
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
 			const response2 = await axios.delete(
-				url(`/folder/${oldFolder}/bookmarks/${bookmark}`)
+				url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`)
 			)
 			if (response2.data.status !== 'success') {
 				throw new Error(response2.data)
@@ -170,7 +180,7 @@ export default {
 		if (folder) {
 			try {
 				const response = await axios.delete(
-					url(`/folder/${folder}/bookmarks/${id}`)
+					url(state, `/folder/${folder}/bookmarks/${id}`)
 				)
 				if (response.data.status !== 'success') {
 					throw new Error(response.data)
@@ -187,7 +197,7 @@ export default {
 			return
 		}
 		try {
-			const response = await axios.delete(url(`/bookmark/${id}`))
+			const response = await axios.delete(url(state, `/bookmark/${id}`))
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
@@ -205,7 +215,7 @@ export default {
 		const data = new FormData()
 		data.append('bm_import', file)
 		return axios
-			.post(url(`/bookmark/import`), data)
+			.post(url(state, `/bookmark/import`), data)
 			.then(response => {
 				if (!response.data || !response.data.status === 'success') {
 					if (response.status === 413) {
@@ -226,7 +236,7 @@ export default {
 	},
 	[actions.DELETE_BOOKMARKS]({ commit, dispatch, state }) {
 		return axios
-			.delete(url(`/bookmark`))
+			.delete(url(state, `/bookmark`))
 			.then(response => {
 				const {
 					data: { status },
@@ -249,7 +259,7 @@ export default {
 	[actions.RENAME_TAG]({ commit, dispatch, state }, { oldName, newName }) {
 		commit(mutations.FETCH_START, { type: 'tag' })
 		return axios
-			.put(url(`/tag/${oldName}`), {
+			.put(url(state, `/tag/${oldName}`), {
 				name: newName,
 			})
 			.then(response => {
@@ -277,7 +287,7 @@ export default {
 	[actions.LOAD_TAGS]({ commit, dispatch, state }, link) {
 		commit(mutations.FETCH_START, { type: 'tags' })
 		return axios
-			.get(url('/tag'), { params: { count: true } })
+			.get(url(state, '/tag'), { params: { count: true } })
 			.then(response => {
 				const { data: tags } = response
 				return commit(mutations.SET_TAGS, tags)
@@ -296,7 +306,7 @@ export default {
 	},
 	[actions.DELETE_TAG]({ commit, dispatch, state }, tag) {
 		return axios
-			.delete(url(`/tag/${tag}`))
+			.delete(url(state, `/tag/${tag}`))
 			.then(response => {
 				const {
 					data: { status },
@@ -325,7 +335,7 @@ export default {
 			},
 		})
 		return axios
-			.get(url('/folder'), { params: {} })
+			.get(url(state, '/folder'), { params: {} })
 			.then(response => {
 				if (canceled) return
 				const {
@@ -349,7 +359,7 @@ export default {
 	},
 	[actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
 		return axios
-			.delete(url(`/folder/${id}`))
+			.delete(url(state, `/folder/${id}`))
 			.then(response => {
 				const {
 					data: { status },
@@ -373,7 +383,7 @@ export default {
 		{ parentFolder, title }
 	) {
 		return axios
-			.post(url(`/folder`), {
+			.post(url(state, `/folder`), {
 				parent_folder: parentFolder,
 				title,
 			})
@@ -400,7 +410,7 @@ export default {
 		const folder = this.getters.getFolder(id)[0]
 		commit(mutations.FETCH_START, { type: 'saveFolder' })
 		return axios
-			.put(url(`/folder/${id}`), {
+			.put(url(state, `/folder/${id}`), {
 				parent_folder: folder.parent_folder,
 				title: folder.title,
 			})
@@ -423,6 +433,9 @@ export default {
 			.finally(() => {
 				commit(mutations.FETCH_END, 'saveFolder')
 			})
+	},
+	[actions.OPEN_FOLDER_DETAILS]({ commit }, id) {
+		commit(mutations.SET_SIDEBAR, { type: 'folder', id })
 	},
 
 	async [actions.MOVE_SELECTION]({ commit, dispatch, state }, folderId) {
@@ -517,7 +530,7 @@ export default {
 			},
 		})
 		axios
-			.get(url('/bookmark'), {
+			.get(url(state, '/bookmark'), {
 				params: {
 					limit: BATCH_SIZE,
 					page: state.fetchState.page,
@@ -560,8 +573,11 @@ export default {
 		if (key === 'sorting') {
 			await commit(mutations.RESET_PAGE)
 		}
+		if (state.public) {
+			return
+		}
 		return axios
-			.post(url(`/settings/${key}`), {
+			.post(url(state, `/settings/${key}`), {
 				[key]: value,
 			})
 			.catch(err => {
@@ -575,7 +591,7 @@ export default {
 	},
 	[actions.LOAD_SETTING]({ commit, dispatch, state }, key) {
 		return axios
-			.get(url(`/settings/${key}`))
+			.get(url(state, `/settings/${key}`))
 			.then(async response => {
 				const {
 					data: { [key]: value },
@@ -602,9 +618,165 @@ export default {
 			['sorting', 'viewMode'].map(key => dispatch(actions.LOAD_SETTING, key))
 		)
 	},
+
+	[actions.LOAD_SHARES_OF_FOLDER]({ commit, dispatch, state }, folderId) {
+		if (folderId === -1 || folderId === '-1') {
+			return Promise.resolve()
+		}
+		return axios
+			.get(url(state, `/folder/${folderId}/shares`))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				const shares = data
+				for (const share of shares) {
+					await commit(mutations.ADD_SHARE, share)
+				}
+			})
+			.catch(err => {
+				console.error(err)
+				// Don't set a notification as this is expected to happen for subfolders of shares that we don't have a RESHAR permission for
+				throw err
+			})
+	},
+	[actions.CREATE_SHARE]({ commit, dispatch, state }, { folderId, type, participant }) {
+		return axios
+			.post(url(state, `/folder/${folderId}/shares`), {
+				folderId,
+				participant,
+				type,
+			})
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.ADD_SHARE, item)
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to create share for folder ' + folderId)
+				)
+				throw err
+			})
+	},
+	[actions.EDIT_SHARE]({ commit, dispatch, state }, { shareId, canWrite, canShare }) {
+		return axios
+			.put(url(state, `/share/${shareId}`), {
+				canWrite,
+				canShare,
+			})
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.ADD_SHARE, item)
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to update share ' + shareId)
+				)
+				throw err
+			})
+	},
+	[actions.DELETE_SHARE]({ commit, dispatch, state }, shareId) {
+		return axios
+			.delete(url(state, `/share/${shareId}`))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.REMOVE_SHARE, shareId)
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to delete share' + shareId)
+				)
+				throw err
+			})
+	},
+
+	[actions.LOAD_PUBLIC_LINK]({ commit, dispatch, state }, folderId) {
+		return axios
+			.get(url(state, `/folder/${folderId}/publictoken`), {
+				validateStatus: (status) => status === 404 || status === 200,
+			})
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (response.status === 404) {
+					return
+				}
+				if (status !== 'success') throw new Error(data)
+				const token = item
+				await commit(mutations.ADD_PUBLIC_TOKEN, { folderId, token })
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to load public link of folder ' + folderId)
+				)
+				throw err
+			})
+	},
+	[actions.CREATE_PUBLIC_LINK]({ commit, dispatch, state }, folderId) {
+		return axios
+			.post(url(state, `/folder/${folderId}/publictoken`))
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				const token = item
+				await commit(mutations.ADD_PUBLIC_TOKEN, { folderId, token })
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to create public link for folder ' + folderId)
+				)
+				throw err
+			})
+	},
+	[actions.DELETE_PUBLIC_LINK]({ commit, dispatch, state }, folderId) {
+		return axios
+			.delete(url(state, `/folder/${folderId}/publictoken`))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.REMOVE_PUBLIC_TOKEN, { folderId })
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to delete public link for folder ' + folderId)
+				)
+				throw err
+			})
+	},
 }
 
-function url(url) {
-	url = `/apps/bookmarks${url}`
+function url(state, url) {
+	if (state.public) {
+		url = `/apps/bookmarks/public/rest/v2${url}`
+	} else {
+		url = `/apps/bookmarks${url}`
+	}
 	return generateUrl(url)
 }

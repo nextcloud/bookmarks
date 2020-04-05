@@ -43,7 +43,7 @@ export default {
 		submit() {
 			this.$store.dispatch(actions.CREATE_BOOKMARK, {
 				url: this.url,
-				...(this.$route.name === 'folder' && { folders: [this.$route.params.folder] }),
+				...(this.$route.name === this.$store.getters.getRoutes().FOLDER && { folders: [this.$route.params.folder] }),
 			})
 		},
 	},

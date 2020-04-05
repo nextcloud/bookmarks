@@ -7,4 +7,12 @@ export default {
 		OC,
 		OCA,
 	}),
+	computed: {
+		routes() {
+			return this.$store.getters.getRoutes()
+		},
+		isPublic() {
+			return this.$store.state.public
+		},
+	},
 }

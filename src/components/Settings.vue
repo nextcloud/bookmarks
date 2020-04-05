@@ -153,7 +153,7 @@ export default {
 				return
 			}
 			await this.$store.dispatch(actions.DELETE_BOOKMARKS)
-			this.$router.push({ name: 'home' })
+			this.$router.push({ name: this.routes.HOME })
 		},
 	},
 }

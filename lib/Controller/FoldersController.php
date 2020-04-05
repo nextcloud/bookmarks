@@ -87,6 +87,10 @@ class FoldersController extends ApiController {
 		$this->authorizer = $authorizer;
 		$this->groupManager = $groupManager;
 		$this->hashManager = $hashManager;
+
+		if ($userId !== null) {
+			$this->authorizer->setUserId($userId);
+		}
 	}
 
 	/**
@@ -145,9 +149,10 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function addFolder($title = '', $parent_folder = -1): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($parent_folder, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($parent_folder, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		$folder = new Folder();
@@ -174,9 +179,10 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function getFolder($folderId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
@@ -246,10 +252,11 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function addToFolder($folderId, $bookmarkId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request)) &&
-			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
+			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		$folderId = $this->toInternalFolderId($folderId);
@@ -270,10 +277,11 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function removeFromFolder($folderId, $bookmarkId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request)) &&
-			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($bookmarkId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
+			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($bookmarkId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
@@ -298,9 +306,10 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function deleteFolder($folderId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
@@ -369,9 +378,10 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PupblicPage
 	 */
 	public function editFolder($folderId, $title = null, $parent_folder = null): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		if ($parent_folder !== null) {
@@ -436,9 +446,10 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function hashFolder($folderId, $fields = ['title', 'url']): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
@@ -461,9 +472,10 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function getFolderChildrenOrder($folderId, $layers = 0): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		$folderId = $this->toInternalFolderId($folderId);
@@ -479,9 +491,10 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function setFolderChildrenOrder($folderId, $data = []): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		$folderId = $this->toInternalFolderId($folderId);
@@ -500,10 +513,11 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 * @return JSONResponse
 	 */
 	public function getFolders($root = -1, $layers = 0): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		$root = $this->toInternalFolderId($root);
@@ -519,17 +533,18 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function getFolderPublicToken($folderId): DataResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
 			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 		} catch (DoesNotExistException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_NOT_FOUND);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Multiple objects returned'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		return new Http\DataResponse(['status' => 'success', 'item' => $publicFolder->getId()]);
 	}
@@ -540,10 +555,11 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function createFolderPublicToken($folderId): DataResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
@@ -571,9 +587,10 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function deleteFolderPublicToken($folderId): DataResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
@@ -581,7 +598,7 @@ class FoldersController extends ApiController {
 		} catch (DoesNotExistException $e) {
 			return new Http\DataResponse(['status' => 'success']);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'success']);
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_BAD_REQUEST);
 		}
 		$this->publicFolderMapper->delete($publicFolder);
 		return new Http\DataResponse(['status' => 'success']);
@@ -593,6 +610,7 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function getShare($shareId): DataResponse {
 		try {
@@ -602,7 +620,7 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
@@ -614,37 +632,52 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function getShares($folderId): DataResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		$permissions = $this->authorizer->getPermissionsForFolder($folderId, $this->request);
+		if (Authorizer::hasPermission(Authorizer::PERM_RESHARE, $permissions)) {
+			try {
+				$this->folderMapper->find($folderId);
+			} catch (MultipleObjectsReturnedException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			} catch (DoesNotExistException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			}
+			$shares = $this->shareMapper->findByFolder($folderId);
+			return new Http\DataResponse(['status' => 'success', 'data' => array_map(static function (Share $share) {
+				return $share->toArray();
+			}, $shares)]);
 		}
-		try {
-			$this->folderMapper->find($folderId);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		} catch (DoesNotExistException $e) {
-			return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
+			try {
+				$this->folderMapper->find($folderId);
+				// TODO: $share = $this->shareMapper->findByDescendantFolderAndUser($folderId, $this->authorizer->getUserId());
+				$share = $this->shareMapper->findByFolderAndUser($folderId, $this->authorizer->getUserId());
+			} catch (MultipleObjectsReturnedException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			} catch (DoesNotExistException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			}
+			return new Http\DataResponse(['status' => 'success', 'data' => [$share->toArray()]]);
 		}
-		$shares = $this->shareMapper->findByFolder($folderId);
-		return new Http\DataResponse(['status' => 'success', 'data' => array_map(static function (Share $share) {
-			return $share->toArray();
-		}, $shares)]);
+		return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 	}
 
 	/**
 	 * @param int $folderId
 	 * @param $participant
-	 * @param $type
+	 * @param int $type
 	 * @param bool $canWrite
 	 * @param bool $canShare
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
-	public function createShare($folderId, $participant, $type, $canWrite = false, $canShare = false): DataResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->userId, $this->request))) {
+	public function createShare($folderId, $participant, int $type, $canWrite = false, $canShare = false): DataResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
@@ -662,7 +695,7 @@ class FoldersController extends ApiController {
 		$share->setFolderId($folderId);
 		$share->setOwner($folder->getUserId());
 		$share->setParticipant($participant);
-		if ($type !== ShareMapper::TYPE_USER && $type !== ShareMapper::TYPE_GROUP) {
+		if ($type !== \OCP\Share\IShare::TYPE_USER && $type !== \OCP\Share\IShare::TYPE_GROUP) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Invalid share type'], Http::STATUS_BAD_REQUEST);
 		}
 		$share->setType($type);
@@ -671,9 +704,9 @@ class FoldersController extends ApiController {
 		$this->shareMapper->insert($share);
 
 		try {
-			if ($type === ShareMapper::TYPE_USER) {
+			if ($type === \OCP\Share\IShare::TYPE_USER) {
 				$this->_addSharedFolder($share, $folder, $participant);
-			} else if ($type === ShareMapper::TYPE_GROUP) {
+			} else if ($type === \OCP\Share\IShare::TYPE_GROUP) {
 				$group = $this->groupManager->get($participant);
 				$users = $group->getUsers();
 				foreach ($users as $user) {
@@ -700,8 +733,9 @@ class FoldersController extends ApiController {
 		$sharedFolder->setShareId($share->getId());
 		$sharedFolder->setTitle($folder->getTitle());
 		$sharedFolder->setUserId($userId);
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$this->sharedFolderMapper->insert($sharedFolder);
-		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $share->getId(), $folder->getId());
+		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $rootFolder->getId());
 	}
 
 	/**
@@ -712,6 +746,7 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function editShare($shareId, $canWrite = false, $canShare = false): Http\DataResponse {
 		try {
@@ -721,7 +756,7 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -738,6 +773,7 @@ class FoldersController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function deleteShare($shareId): DataResponse {
 		try {
@@ -747,7 +783,7 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);

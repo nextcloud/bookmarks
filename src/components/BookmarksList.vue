@@ -6,7 +6,7 @@
 		}">
 		<CreateBookmark v-if="newBookmark" />
 		<CreateFolder v-if="newFolder" />
-		<template v-if="$route.name === 'folder' || $route.name === 'home'">
+		<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
 			<Folder
 				v-for="folder in folderChildren"
 				:key="'f' + folder.id"
@@ -35,6 +35,7 @@ import Bookmark from './Bookmark'
 import Folder from './Folder'
 import CreateBookmark from './CreateBookmark'
 import CreateFolder from './CreateFolder'
+import { actions } from '../store'
 
 export default {
 	name: 'BookmarksList',
@@ -56,13 +57,14 @@ export default {
 	},
 	computed: {
 		folderChildren() {
-			if (this.$route.name !== 'home' && this.$route.name !== 'folder') {
+			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []
 			}
 			const folderId = this.$route.params.folder || '-1'
 			if (!folderId) return []
 			const folder = this.$store.getters.getFolder(folderId)[0]
 			if (!folder) return []
+			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folder.id)
 			return folder.children
 		},
 		newBookmark() {

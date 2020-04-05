@@ -6,7 +6,7 @@
 		:subtitle="bookmark.url"
 		:background="background"
 		@close="onClose">
-		<AppSidebarTab :name="t('bookmarks', 'Details')" icon="icon-info">
+		<AppSidebarTab id="bookmark-details" :name="t('bookmarks', 'Details')" icon="icon-info">
 			<div>
 				<h3>
 					<span class="icon-calendar-dark" />
@@ -25,12 +25,13 @@
 					:multiple="true"
 					:taggable="true"
 					:placeholder="t('bookmarks', 'Select tags are create new ones')"
+					:disabled="!isEditable"
 					@input="onTagsChange"
 					@tag="onAddTag" />
 			</div>
 			<div>
 				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-				<div class="sidebar__notes" contenteditable @input="onNotesChange">
+				<div class="sidebar__notes" :contenteditable="isEditable" @input="onNotesChange">
 					{{ description }}
 				</div>
 			</div>
@@ -42,6 +43,7 @@
 import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
 import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
 import { actions, mutations } from '../store/'
@@ -87,6 +89,17 @@ export default {
 		},
 		allTags() {
 			return this.$store.state.tags.map(tag => tag.name)
+		},
+		isOwner() {
+			const currentUser = getCurrentUser()
+			return currentUser && this.bookmark.userId === currentUser.uid
+		},
+		permissions() {
+			return this.$store.getters.getPermissionsForBookmark(this.bookmark.id)
+
+		},
+		isEditable() {
+			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
 	},
 	watch: {

@@ -1,39 +1,26 @@
 <template>
 	<Content app-name="bookmarks">
-		<Navigation />
 		<AppContent>
 			<Breadcrumbs />
 			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
-		<SidebarBookmark />
-		<SidebarFolder />
-		<MoveDialog />
 	</Content>
 </template>
 
 <script>
 import Content from '@nextcloud/vue/dist/Components/Content'
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import Navigation from './Navigation'
 import BookmarksList from './BookmarksList'
 import Breadcrumbs from './Breadcrumbs'
-import SidebarBookmark from './SidebarBookmark'
-import SidebarFolder from './SidebarFolder'
-import MoveDialog from './MoveDialog'
-import { privateRoutes } from '../router'
 import { actions, mutations } from '../store/'
 
 export default {
-	name: 'ViewPrivate',
+	name: 'ViewPublic',
 	components: {
-		Navigation,
 		Content,
 		AppContent,
 		Breadcrumbs,
 		BookmarksList,
-		SidebarBookmark,
-		SidebarFolder,
-		MoveDialog,
 	},
 	data: function() {
 		return {
@@ -61,12 +48,12 @@ export default {
 
 	async created() {
 		document.addEventListener('scroll', this.onScroll)
-		this.search = new OCA.Search(this.onSearch, this.onResetSearch)
+		// this.search = new OCA.Search(this.onSearch, this.onResetSearch)
+		this.$store.commit(mutations.SET_AUTH_TOKEN, this.$route.params.token)
 		// set loading indicator
 		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
 		await Promise.all([
-			this.reloadSettings(),
-			this.reloadTags(),
+			// this.reloadTags(),
 			this.reloadFolders(),
 		])
 		this.onRoute()
@@ -76,27 +63,21 @@ export default {
 		async onRoute() {
 			const route = this.$route
 			switch (route.name) {
-			case privateRoutes.HOME:
-				this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1')
-				break
-			case privateRoutes.RECENT:
-				this.$store.dispatch(actions.FILTER_BY_RECENT)
-				break
-			case privateRoutes.UNTAGGED:
-				this.$store.dispatch(actions.FILTER_BY_UNTAGGED)
-				break
-			case privateRoutes.FOLDER:
-				this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder)
-				break
-			case privateRoutes.TAGS:
-				this.$store.dispatch(
+			case this.routes.HOME:
+				return this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1')
+			case this.routes.RECENT:
+				return this.$store.dispatch(actions.FILTER_BY_RECENT)
+			case this.routes.UNTAGGED:
+				return this.$store.dispatch(actions.FILTER_BY_UNTAGGED)
+			case this.routes.FOLDER:
+				return this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder)
+			case this.routes.TAGS:
+				return this.$store.dispatch(
 					actions.FILTER_BY_TAGS,
 					route.params.tags.split(',')
 				)
-				break
-			case privateRoutes.SEARCH:
-				this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search)
-				break
+			case this.routes.SEARCH:
+				return this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search)
 			default:
 				throw new Error('Nothing here. Move along.')
 			}
@@ -108,16 +89,13 @@ export default {
 		async reloadFolders() {
 			return this.$store.dispatch(actions.LOAD_FOLDERS)
 		},
-		async reloadSettings() {
-			return this.$store.dispatch(actions.LOAD_SETTINGS)
-		},
 
 		onSearch(search) {
-			this.$router.push({ name: privateRoutes.SEARCH, params: { search } })
+			this.$router.push({ name: this.routes.SEARCH, params: { search } })
 		},
 
 		onResetSearch() {
-			this.$router.push({ name: privateRoutes.HOME })
+			this.$router.push({ name: this.routes.HOME })
 		},
 
 		onScroll() {
@@ -132,13 +110,7 @@ export default {
 }
 </script>
 <style>
-#app-content {
-	max-width: calc(100vw - 300px);
-}
-
-@media only screen and (max-width: 768px) {
 	#app-content {
 		max-width: 100%;
 	}
-}
 </style>

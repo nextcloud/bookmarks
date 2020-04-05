@@ -321,7 +321,7 @@ class TreeMapper extends QBMapper {
 				->set('parent_folder', $qb->createPositionalParameter($newParentFolderId, IQueryBuilder::PARAM_INT))
 				->set('index', $qb->createPositionalParameter($this->countChildren($newParentFolderId)))
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($itemId, IQueryBuilder::PARAM_INT)))
-				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter(self::TYPE_FOLDER)));
+				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
 			$qb->execute();
 		} catch (DoesNotExistException $e) {
 			// Item currently has no parent => insert into tree.
@@ -333,7 +333,7 @@ class TreeMapper extends QBMapper {
 				->values([
 					'id' => $qb->createPositionalParameter($itemId),
 					'parent_folder' => $qb->createPositionalParameter($newParentFolderId, IQueryBuilder::PARAM_INT),
-					'type' => $qb->createPositionalParameter(self::TYPE_FOLDER),
+					'type' => $qb->createPositionalParameter($type),
 					'index' => $qb->createPositionalParameter($this->countChildren($newParentFolderId)),
 				]);
 			$qb->execute();

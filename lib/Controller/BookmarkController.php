@@ -182,6 +182,10 @@ class BookmarkController extends ApiController {
 		$this->htmlImporter = $htmlImporter;
 		$this->htmlExporter = $htmlExporter;
 		$this->authorizer = $authorizer;
+
+		if ($this->userId !== null) {
+			$this->authorizer->setUserId($this->userId);
+		}
 	}
 
 	/**
@@ -252,9 +256,10 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function getSingleBookmark($id): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_NOT_FOUND);
 		}
 		try {
@@ -324,27 +329,11 @@ class BookmarkController extends ApiController {
 			return $response;
 		});
 
-		// Try to authenticate user ourselves
-		if (!$this->userId) {
-			if ($this->request->getHeader('Authorization')) {
-				[$method, $credentials] = explode(' ', $this->request->getHeader('Authorization'));
-			} else {
-				$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
-				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
-				return $res;
-			}
-			if ($method !== 'Basic') {
-				$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
-				$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
-			} else {
-				[$username, $password] = explode(':', base64_decode($credentials));
-				if (false === $this->userSession->login($username, $password)) {
-					$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
-					$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
-					return $res;
-				}
-				$this->userId = $this->userSession->getUser()->getUID();
-			}
+		$this->authorizer->setCredentials($this->request);
+		if ($this->authorizer->getUserId() === null && $this->authorizer->getToken() === null) {
+			$res = new DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_UNAUTHORIZED);
+			$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
+			return $res;
 		}
 
 		if ($url !== null) {
@@ -392,21 +381,20 @@ class BookmarkController extends ApiController {
 		}
 
 		if ($folder !== null) {
-			if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->userId, $this->request))) {
+			if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
 				return new DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 			}
 			$folder = $this->toInternalFolderId($folder);
 			$result = $this->bookmarkMapper->findByFolder($folder, $params);
-		} else if (isset($this->userId)) {
+		} else if ($this->authorizer->getUserId() !== null) {
 			if ($untagged) {
-				$result = $this->bookmarkMapper->findUntagged($this->userId, $params);
+				$result = $this->bookmarkMapper->findUntagged($this->authorizer->getUserId(), $params);
 			} else if ($tagsOnly && count($filterTag) > 0) {
-				$result = $this->bookmarkMapper->findByTags($this->userId, $filterTag, $params);
+				$result = $this->bookmarkMapper->findByTags($this->authorizer->getUserId(), $filterTag, $params);
 			} else {
-				$result = $this->bookmarkMapper->findAll($this->userId, $filterTag, $params);
+				$result = $this->bookmarkMapper->findAll($this->authorizer->getUserId(), $filterTag, $params);
 			}
 		} else {
-			$this->authorizer->setCredentials($this->userId, $this->request);
 			try {
 				if ($untagged) {
 					$result = $this->bookmarkMapper->findUntaggedInPublicFolder($this->authorizer->getToken(), $params);
@@ -443,11 +431,12 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function newBookmark($url = '', $title = null, $description = '', $tags = [], $folders = []): JSONResponse {
 		$permissions = Authorizer::PERM_ALL;
 		foreach ($folders as $folder) {
-			$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->userId, $this->request);
+			$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->request);
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions)) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
@@ -562,9 +551,10 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function editBookmark($id = null, $url = null, $title = null, $description = null, $tags = null, $folders = null): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
@@ -616,7 +606,7 @@ class BookmarkController extends ApiController {
 
 				$permissions = Authorizer::PERM_ALL;
 				foreach ($foreignFolders as $folder) {
-					$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->userId, $this->request);
+					$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->request);
 				}
 				if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions)) {
 					return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
@@ -664,9 +654,10 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function deleteBookmark($id): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -696,7 +687,9 @@ class BookmarkController extends ApiController {
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
-	 * @throws UrlParseError
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
 	 */
 	public function clickBookmark($url = ''): JSONResponse {
 		try {
@@ -705,6 +698,8 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_BAD_REQUEST);
+		} catch (UrlParseError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 		}
 
 		$bookmark->incrementClickcount();
@@ -724,11 +719,11 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 * @return DataDisplayResponse|NotFoundResponse
-	 * @throws \Exception
 	 */
 	public function getBookmarkImage($id) {
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			return new NotFoundResponse();
 		}
 		try {
@@ -736,9 +731,6 @@ class BookmarkController extends ApiController {
 			 * @var $bookmark Bookmark
 			 */
 			$bookmark = $this->bookmarkMapper->find($id);
-			if ($bookmark->getUserId() !== $this->userId) {
-				return new NotFoundResponse();
-			}
 		} catch (DoesNotExistException $e) {
 			return new NotFoundResponse();
 		} catch (MultipleObjectsReturnedException $e) {
@@ -760,11 +752,11 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 * @return DataDisplayResponse|NotFoundResponse|RedirectResponse
-	 * @throws \Exception
 	 */
 	public function getBookmarkFavicon($id) {
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			return new NotFoundResponse();
 		}
 		try {
@@ -788,7 +780,6 @@ class BookmarkController extends ApiController {
 	/**
 	 * @param $image
 	 * @return DataDisplayResponse
-	 * @throws \Exception
 	 */
 	public function doImageResponse($image): DataDisplayResponse {
 		$response = new DataDisplayResponse($image['data']);
@@ -815,9 +806,10 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
+	 * @PublicPage
 	 */
 	public function importBookmark($folder = -1): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folder, $this->userId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
 		}
 
@@ -868,7 +860,7 @@ class BookmarkController extends ApiController {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
-	 * @throws \OC\HintException
+	 * @PublicPage
 	 */
 	public function exportBookmark() {
 		try {

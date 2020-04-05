@@ -143,9 +143,13 @@ class FolderControllerTest extends TestCase {
 	 */
 	private $sharedFolder;
 	/**
-	 * @var \stdClass
+	 * @var HashManager
 	 */
 	private $hashManager;
+	/**
+	 * @var Authorizer
+	 */
+	private $authorizer;
 
 	/**
 	 * @throws \OCP\AppFramework\QueryException
@@ -185,14 +189,12 @@ class FolderControllerTest extends TestCase {
 		$this->group = $this->groupManager->createGroup('foobar');
 		$this->group->addUser($userManager->get($this->otherUser));
 
-		$authorizer1 = OC::$server->query(Authorizer::class);
-		$authorizer2 = OC::$server->query(Authorizer::class);
-		$authorizer3 = OC::$server->query(Authorizer::class);
+		$this->authorizer = OC::$server->query(Authorizer::class);
 
-		$this->controller = new FoldersController('bookmarks', $this->request, $this->userId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $authorizer1, $this->groupManager, $this->hashManager);
-		$this->otherController = new FoldersController('bookmarks', $this->request, $this->otherUserId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $authorizer2, $this->groupManager, $this->hashManager);
-		$this->public = new FoldersController('bookmarks', $this->publicRequest, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $authorizer3, $this->groupManager, $this->hashManager);
-		$this->noauth = new FoldersController('bookmarks', $this->request, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $authorizer3, $this->groupManager, $this->hashManager);
+		$this->controller = new FoldersController('bookmarks', $this->request, $this->userId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->groupManager, $this->hashManager);
+		$this->otherController = new FoldersController('bookmarks', $this->request, $this->otherUserId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->groupManager, $this->hashManager);
+		$this->public = new FoldersController('bookmarks', $this->publicRequest, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->groupManager, $this->hashManager);
+		$this->noauth = new FoldersController('bookmarks', $this->request, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->groupManager, $this->hashManager);
 	}
 
 	/**
@@ -260,7 +262,7 @@ class FolderControllerTest extends TestCase {
 		$this->share->setFolderId($this->folder1->getId());
 		$this->share->setOwner($this->userId);
 		$this->share->setParticipant($this->otherUser);
-		$this->share->setType(ShareMapper::TYPE_USER);
+		$this->share->setType(\OCP\Share\IShare::TYPE_USER);
 		$this->share->setCanWrite(true);
 		$this->share->setCanShare(false);
 		$this->shareMapper->insert($this->share);
@@ -283,6 +285,7 @@ class FolderControllerTest extends TestCase {
 	public function testRead(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -299,6 +302,7 @@ class FolderControllerTest extends TestCase {
 	public function testCreate(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->addFolder('foo', $this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -318,6 +322,7 @@ class FolderControllerTest extends TestCase {
 	public function testEdit(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->editFolder($this->folder1->getId(), 'blabla');
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -337,6 +342,7 @@ class FolderControllerTest extends TestCase {
 	public function testDelete(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->deleteFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -354,6 +360,7 @@ class FolderControllerTest extends TestCase {
 	public function testGetFullHierarchy(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		// Using -1 here because this is the controller
 		$output = $this->controller->getFolderChildrenOrder(-1, -1);
 		$data = $output->getData();
@@ -376,6 +383,7 @@ class FolderControllerTest extends TestCase {
 	public function testSetFullHierarchy(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->setFolderChildrenOrder($this->folder1->getId(), [
 			['type' => 'bookmark', 'id' => $this->bookmark1Id],
 			['type' => 'folder', 'id' => $this->folder2->getId()],
@@ -402,6 +410,7 @@ class FolderControllerTest extends TestCase {
 	public function testGetFolderHierarchy(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getFolders(-1, -1);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -423,6 +432,8 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
+		$this->authorizer->setToken(null);
 		$output = $this->noauth->getFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
@@ -438,6 +449,8 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
+		$this->authorizer->setToken(null);
 		$output = $this->noauth->addFolder('bla', $this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
@@ -454,9 +467,12 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
+		$this->authorizer->setToken(null);
 		$output = $this->noauth->editFolder($this->folder2->getId(), 'blabla');
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getFolder($this->folder2->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -474,9 +490,12 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
+		$this->authorizer->setToken(null);
 		$output = $this->noauth->deleteFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true)); // nothing changed
@@ -491,6 +510,8 @@ class FolderControllerTest extends TestCase {
 	public function testGetFullHierarchyNoauthFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId(null);
+		$this->authorizer->setToken(null);
 		$output = $this->noauth->getFolderChildrenOrder($this->folder1->getId(), -1);
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
@@ -505,6 +526,8 @@ class FolderControllerTest extends TestCase {
 	public function testSetFullHierarchyNoauthFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId(null);
+		$this->authorizer->setToken(null);
 		$output = $this->noauth->setFolderChildrenOrder($this->folder1->getId(), [
 			['type' => 'noauth', 'id' => $this->bookmark1Id],
 			['type' => 'folder', 'id' => $this->folder2->getId()],
@@ -512,6 +535,7 @@ class FolderControllerTest extends TestCase {
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
 
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getFolderChildrenOrder(-1, -1);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -533,6 +557,8 @@ class FolderControllerTest extends TestCase {
 	public function testGetFolderHierarchyNoauth(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId(null);
+		$this->authorizer->setToken(null);
 		$output = $this->noauth->getFolders($this->folder1->getId(), -1);
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
@@ -660,6 +686,8 @@ class FolderControllerTest extends TestCase {
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
 
+		$this->authorizer->setUserId($this->userId);
+		$this->authorizer->setToken(null);
 		$output = $this->controller->getFolderChildrenOrder(-1, -1);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -700,6 +728,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -716,6 +745,7 @@ class FolderControllerTest extends TestCase {
 	public function testReadSharedFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
@@ -732,6 +762,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->addFolder('bla', $this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -751,6 +782,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->editFolder($this->folder2->getId(), 'blabla');
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -771,6 +803,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->deleteFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -789,6 +822,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getFolderChildrenOrder($this->folder1->getId(), -1);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -809,12 +843,14 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->setFolderChildrenOrder($this->folder1->getId(), [
 			['type' => 'bookmark', 'id' => $this->bookmark1Id],
 			['type' => 'folder', 'id' => $this->folder2->getId()],
 		]);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getFolderChildrenOrder(-1, -1);
 		$data = $output->getData();
 		$this->assertCount(1, $data['data']);
@@ -836,6 +872,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getFolders($this->folder1->getId(), -1);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -858,6 +895,7 @@ class FolderControllerTest extends TestCase {
 	public function testCreateShare($participant, $type, $canWrite, $canShare): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserid($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -878,12 +916,14 @@ class FolderControllerTest extends TestCase {
 	public function testGetShare($participant, $type, $canWrite, $canShare): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$res = $this->controller->getShare($data['item']['id']);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
+		$this->authorizer->setUserId($this->otherUserId);
 		$res = $this->otherController->getShare($data['item']['id']);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -901,48 +941,16 @@ class FolderControllerTest extends TestCase {
 	 * @dataProvider shareDataProvider
 	 * @depends      testCreateShare
 	 */
-	public function testGetShares($participant, $type, $canWrite, $canShare): void {
-		$this->cleanUp();
-		$this->setupBookmarks();
-		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
-		$data = $res->getData();
-		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$shareId = $data['item']['id'];
-		$res = $this->controller->getShares($this->folder1->getId());
-		$data = $res->getData();
-		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertEquals($shareId, $data['data'][0]['id']);
-
-		$res = $this->otherController->getShares($this->folder1->getId());
-		$data = $res->getData();
-		if ($canShare) {
-			$this->assertEquals('success', $data['status'], var_export($data, true));
-			$this->assertEquals($shareId, $data['data'][0]['id']);
-		} else {
-			$this->assertEquals('error', $data['status'], var_export($data, true));
-		}
-	}
-
-	/**
-	 * @param $participant
-	 * @param $type
-	 * @param $canWrite
-	 * @param $canShare
-	 * @throws AlreadyExistsError
-	 * @throws UrlParseError
-	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
-	 * @dataProvider shareDataProvider
-	 * @depends      testCreateShare
-	 */
 	public function testEditShare($participant, $type, $canWrite, $canShare): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$shareId = $data['item']['id'];
 
+		$this->authorizer->setUserId($this->otherUserId);
 		$res = $this->otherController->editShare($shareId, false, false);
 		$data = $res->getData();
 		if ($canShare) {
@@ -951,6 +959,7 @@ class FolderControllerTest extends TestCase {
 			$this->assertEquals('error', $data['status'], var_export($data, true));
 		}
 
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->editShare($shareId, false, false);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -971,11 +980,13 @@ class FolderControllerTest extends TestCase {
 	public function testDeleteShareOwner($participant, $type, $canWrite, $canShare): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$shareId = $data['item']['id'];
 
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->deleteShare($shareId);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -996,11 +1007,13 @@ class FolderControllerTest extends TestCase {
 	public function testDeleteShareSharee($participant, $type, $canWrite, $canShare): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$shareId = $data['item']['id'];
 
+		$this->authorizer->setUserId($this->otherUserId);
 		$res = $this->otherController->deleteShare($shareId);
 		$data = $res->getData();
 		if ($canShare) {
@@ -1015,10 +1028,10 @@ class FolderControllerTest extends TestCase {
 	 */
 	public function shareDataProvider(): array {
 		return [
-			['otheruser', ShareMapper::TYPE_USER, true, false],
-			['otheruser', ShareMapper::TYPE_USER, true, true],
-			['foobar', ShareMapper::TYPE_GROUP, true, false],
-			['foobar', ShareMapper::TYPE_GROUP, true, true],
+			['otheruser', \OCP\Share\IShare::TYPE_USER, true, false],
+			['otheruser', \OCP\Share\IShare::TYPE_USER, true, true],
+			['foobar', \OCP\Share\IShare::TYPE_GROUP, true, false],
+			['foobar', \OCP\Share\IShare::TYPE_GROUP, true, true],
 		];
 	}
 }

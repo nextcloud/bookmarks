@@ -108,11 +108,11 @@ class BookmarkControllerTest extends TestCase {
 	 */
 	private $otherUserId;
 	/**
-	 * @var \stdClass
+	 * @var ShareMapper
 	 */
 	private $shareMapper;
 	/**
-	 * @var \stdClass
+	 * @var SharedFolderMapper
 	 */
 	private $sharedFolderMapper;
 	/**
@@ -131,6 +131,10 @@ class BookmarkControllerTest extends TestCase {
 	 * @var Share
 	 */
 	private $share;
+	/**
+	 * @var Authorizer
+	 */
+	private $authorizer;
 
 	/**
 	 * @throws \OCP\AppFramework\QueryException
@@ -141,6 +145,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->user = 'test';
 		$this->otherUser = 'otheruser';
 		$this->request = OC::$server->getRequest();
+		$this->otherRequest = OC::$server->getRequest();
 
 		$this->publicRequest = $this->createMock(IRequest::class);
 
@@ -172,14 +177,12 @@ class BookmarkControllerTest extends TestCase {
 		$urlGenerator = OC::$server->query(IURLGenerator::class);
 		$htmlImporter = OC::$server->query(HtmlImporter::class);
 		$htmlExporter = OC::$server->query(HtmlExporter::class);
-		$authorizer1 = OC::$server->query(Authorizer::class);
-		$authorizer2 = OC::$server->query(Authorizer::class);
-		$authorizer3 = OC::$server->query(Authorizer::class);
+		$this->authorizer = OC::$server->query(Authorizer::class);
 
-		$this->controller = new BookmarkController('bookmarks', $this->request, $this->userId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $authorizer1);
-		$this->otherController = new BookmarkController('bookmarks', $this->request, $this->otherUserId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $authorizer2);
+		$this->controller = new BookmarkController('bookmarks', $this->request, $this->userId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer);
+		$this->otherController = new BookmarkController('bookmarks', $this->request, $this->otherUserId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer);
 
-		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest, null, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $authorizer3);
+		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest, null, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $bookmarkPreviewer, $faviconPreviewer, $timeFactory, $logger, $userSession, $linkExplorer, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer);
 	}
 
 	/**
@@ -258,7 +261,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->share->setFolderId($this->folder1->getId());
 		$this->share->setOwner($this->userId);
 		$this->share->setParticipant($this->otherUserId);
-		$this->share->setType(ShareMapper::TYPE_USER);
+		$this->share->setType(\OCP\Share\IShare::TYPE_USER);
 		$this->share->setCanWrite(true);
 		$this->share->setCanShare(false);
 		$this->shareMapper->insert($this->share);
@@ -282,9 +285,10 @@ class BookmarkControllerTest extends TestCase {
 	public function testRead(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getSingleBookmark($this->bookmark2Id);
 		$data = $output->getData();
-		$this->assertEquals('success', $data['status']);
+		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$this->assertEquals("https://9gag.com/", $data['item']['url']);
 	}
 
@@ -297,9 +301,10 @@ class BookmarkControllerTest extends TestCase {
 	public function testReadFailure(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getSingleBookmark($this->bookmark1Id);
 		$data = $output->getData();
-		$this->assertEquals('error', $data['status']);
+		$this->assertEquals('error', $data['status'], var_export($data, true));
 	}
 
 	/**
@@ -311,9 +316,10 @@ class BookmarkControllerTest extends TestCase {
 	public function testPublicReadFailure(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId(null);
 		$output = $this->publicController->getSingleBookmark($this->bookmark1Id);
 		$data = $output->getData();
-		$this->assertEquals('error', $data['status']);
+		$this->assertEquals('error', $data['status'], var_export($data, true));
 	}
 
 	/**
@@ -325,9 +331,10 @@ class BookmarkControllerTest extends TestCase {
 	public function testReadNotFound(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getSingleBookmark(987);
 		$data = $output->getData();
-		$this->assertSame('error', $data['status']);
+		$this->assertSame('error', $data['status'], var_export($data, true));
 		$this->assertSame(404, $output->getStatus());
 	}
 
@@ -340,6 +347,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testPrivateQuery(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getBookmarks();
 		$data = $output->getData();
 		$this->assertCount(2, $data['data']);
@@ -355,6 +363,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testCreate(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->newBookmark('https://www.heise.de', 'Heise', 'Private', ['four']);
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 
@@ -367,6 +376,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->assertCount(3, $data['data']);
 
 		// others should not see this bookmark
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getBookmarks(-1);
 		$data = $output->getData();
 		$this->assertCount(0, $data['data']);
@@ -382,6 +392,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testEditBookmark(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->newBookmark('https://www.heise.de', 'Heise', 'PublicNoTag', ['four']);
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 		$id = $res->getData()['item']['id'];
@@ -402,6 +413,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testDeleteBookmark(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->newBookmark('https://www.google.com', 'Google', 'PrivateTag', ['one', 'two']);
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 		$id = $res->getData()['item']['id'];
@@ -425,6 +437,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testClick(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 
 		$r = $this->controller->clickBookmark('https://www.golem.de');
 		$this->assertSame(Http::STATUS_OK, $r->getStatus());
@@ -439,6 +452,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testClickFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId(null);
 
 		$r = $this->publicController->clickBookmark('https://www.golem.de');
 		$this->assertNotSame(Http::STATUS_OK, $r->getStatus());
@@ -455,6 +469,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testPublicRead(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithPublicFolder();
+		$this->authorizer->setUserId(null);
 		$res = $this->publicController->getSingleBookmark($this->bookmark2Id);
 		$data = $res->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -472,6 +487,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testPublicReadNotFound(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithPublicFolder();
+		$this->authorizer->setUserId(null);
 		$output = $this->publicController->getSingleBookmark(987);
 		$data = $output->getData();
 		$this->assertSame('error', $data['status'], var_export($data, true));
@@ -489,6 +505,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testPublicQuery(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithPublicFolder();
+		$this->authorizer->setUserId(null);
 		$output = $this->publicController->getBookmarks(-1, null, 'or', '', [], 10, false, $this->folder2->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -506,6 +523,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testPublicCreateFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithPublicFolder();
+		$this->authorizer->setUserId(null);
 		$res = $this->publicController->newBookmark('https://www.heise.de', 'Heise', 'Private', ['four'], [$this->folder2->getId()]);
 		$this->assertEquals('error', $res->getData()['status'], var_export($res->getData(), true));
 	}
@@ -521,6 +539,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testPublicEditBookmarkFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithPublicFolder();
+		$this->authorizer->setUserId(null);
 
 		$res = $this->publicController->editBookmark($this->bookmark1Id, 'https://www.heise.de', '');
 		$this->assertEquals('error', $res->getData()['status'], var_export($res->getData(), true));
@@ -537,6 +556,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testPublicDeleteBookmarkFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithPublicFolder();
+		$this->authorizer->setUserId(null);
 
 		$res = $this->publicController->deleteBookmark($this->bookmark1Id);
 		$this->assertEquals('error', $res->getData()['status'], var_export($res->getData(), true));
@@ -553,9 +573,10 @@ class BookmarkControllerTest extends TestCase {
 	public function testReadShared(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getSingleBookmark($this->bookmark2Id);
 		$data = $output->getData();
-		$this->assertEquals('success', $data['status']);
+		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$this->assertEquals('https://9gag.com/', $data['item']['url']);
 	}
 
@@ -570,6 +591,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testQueryShared(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getBookmarks();
 		$data = $output->getData();
 		$this->assertCount(1, $data['data']); // TODO: 1 level search Limit
@@ -586,6 +608,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testCreateShared(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 		$res = $this->otherController->newBookmark('https://www.heise.de', 'Heise', 'Private', ['four'], [$this->folder1->getId()]);
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 
@@ -593,11 +616,13 @@ class BookmarkControllerTest extends TestCase {
 		$this->bookmarkMapper->findByUrl($this->userId, 'https://www.heise.de');
 
 		// user should see this bookmark
+		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getBookmarks();
 		$data = $output->getData();
 		$this->assertCount(3, $data['data']);
 
 		// others should see this bookmark
+		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getBookmarks();
 		$data = $output->getData();
 		$this->assertCount(2, $data['data']); // TODO: 1 level search limit
@@ -614,10 +639,12 @@ class BookmarkControllerTest extends TestCase {
 	public function testEditBookmarkShared(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithSharedFolder();
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->newBookmark('https://www.heise.de', 'Heise', 'PublicNoTag', ['four'], [$this->folder1->getId()]);
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 		$id = $res->getData()['item']['id'];
 
+		$this->authorizer->setUserId($this->otherUserId);
 		$res = $this->otherController->editBookmark($id, 'https://www.heise.de', '');
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 
@@ -637,10 +664,12 @@ class BookmarkControllerTest extends TestCase {
 	public function testDeleteBookmarkShared(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithSharedFolder();
+		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->newBookmark('https://www.google.com', 'Google', 'PrivateTag', ['one', 'two'], [$this->folder1->getId()]);
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 		$id = $res->getData()['item']['id'];
 
+		$this->authorizer->setUserId($this->otherUserId);
 		$res = $this->otherController->deleteBookmark($id);
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 
@@ -664,6 +693,7 @@ class BookmarkControllerTest extends TestCase {
 	public function testClickSharedFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
 
 		$r = $this->otherController->clickBookmark('https://www.golem.de');
 		$this->assertNotSame(Http::STATUS_OK, $r->getStatus());

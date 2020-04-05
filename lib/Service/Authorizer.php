@@ -10,6 +10,7 @@ use OCA\Bookmarks\Db\TreeMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IRequest;
+use OCP\IUserSession;
 
 class Authorizer {
 	public const PERM_NONE = 0;
@@ -46,33 +47,48 @@ class Authorizer {
 	 * @var TreeMapper
 	 */
 	private $treeMapper;
+	/**
+	 * @var IUserSession
+	 */
+	private $userSession;
 
-	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, PublicFolderMapper $publicMapper, ShareMapper $shareMapper, TreeMapper $treeMapper) {
+	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, PublicFolderMapper $publicMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, IUserSession $userSession) {
 		$this->folderMapper = $folderMapper;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->publicMapper = $publicMapper;
 		$this->shareMapper = $shareMapper;
 		$this->treeMapper = $treeMapper;
+		$this->userSession = $userSession;
 	}
 
 	/**
-	 * @param string $userId
 	 * @param IRequest $request
 	 */
-	public function setCredentials($userId, IRequest $request): void {
-		$this->setUserId($userId);
+	public function setCredentials(IRequest $request): void {
+		$queryParam = $request->getParam('token');
+		if ($queryParam !== null) {
+			$this->setToken($queryParam);
+			return;
+		}
+
 		$auth = $request->getHeader('Authorization');
-		if ($auth === '') {
+		if ($auth === null || $auth === '') {
 			return;
 		}
-		[$type, $token] = explode(' ', $auth);
-		if (strtolower($type) !== 'bearer') {
-			return;
+		[$type, $credentials] = explode(' ', $auth);
+		if (strtolower($type) === 'basic') {
+			[$username, $password] = explode(':', base64_decode($credentials));
+			if (false === $this->userSession->login($username, $password)) {
+				return;
+			}
+			$this->setUserId($this->userSession->getUser()->getUID());
 		}
-		$this->setToken($token);
+		if (strtolower($type) === 'bearer') {
+			$this->setToken($credentials);
+		}
 	}
 
-	public function setToken(string $token): void {
+	public function setToken($token): void {
 		$this->token = $token;
 	}
 
@@ -88,13 +104,19 @@ class Authorizer {
 	}
 
 	/**
-	 * @param $folderId
-	 * @param $userId
+	 * @return null|string
+	 */
+	public function getUserId(): ?string {
+		return $this->userId;
+	}
+
+	/**
+	 * @param int $folderId
 	 * @param $request
 	 * @return int
 	 */
-	public function getPermissionsForFolder(int $folderId, $userId, $request): int {
-		$this->setCredentials($userId, $request);
+	public function getPermissionsForFolder(int $folderId, $request): int {
+		$this->setCredentials($request);
 		if (isset($this->userId)) {
 			if ($folderId === -1) {
 				return self::PERM_ALL;
@@ -125,6 +147,9 @@ class Authorizer {
 			} catch (MultipleObjectsReturnedException $e) {
 				return self::PERM_NONE;
 			}
+			if ($folderId === -1) {
+				return self::PERM_READ;
+			}
 			if ($publicFolder->getFolderId() === $folderId || $this->treeMapper->hasDescendant($publicFolder->getFolderId(), TreeMapper::TYPE_FOLDER, $folderId)) {
 				return self::PERM_READ;
 			}
@@ -133,13 +158,12 @@ class Authorizer {
 	}
 
 	/**
-	 * @param $bookmarkId
-	 * @param $userId
+	 * @param int $bookmarkId
 	 * @param $request
 	 * @return int
 	 */
-	public function getPermissionsForBookmark(int $bookmarkId, $userId, $request): int {
-		$this->setCredentials($userId, $request);
+	public function getPermissionsForBookmark(int $bookmarkId, $request): int {
+		$this->setCredentials($request);
 		if (isset($this->userId)) {
 			try {
 				$bookmark = $this->bookmarkMapper->find($bookmarkId);
@@ -152,7 +176,7 @@ class Authorizer {
 				return self::PERM_ALL;
 			}
 
-			$shares = $this->shareMapper->findByOwnerAndUser($bookmark->getUserId(), $userId);
+			$shares = $this->shareMapper->findByOwnerAndUser($bookmark->getUserId(), $this->userId);
 			foreach ($shares as $share) {
 				if ($this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_BOOKMARK, $bookmarkId)) {
 					return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
