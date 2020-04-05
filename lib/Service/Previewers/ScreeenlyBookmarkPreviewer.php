@@ -82,7 +82,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @throws NotFoundException
 	 * @throws NotPermittedException
 	 */
-	public function getImage($bookmark) {
+	public function getImage($bookmark): ?IImage {
 		if ($this->enabled === 'false') {
 			return null;
 		}

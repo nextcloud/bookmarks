@@ -6,6 +6,7 @@ namespace OCA\Bookmarks\Service;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
+use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
@@ -110,11 +111,14 @@ class BookmarkService {
 
 		foreach ($folders as $folderId) {
 			try {
+				/**
+				 * @var $folder Folder
+				 */
 				$folder = $this->folderMapper->find($folderId);
 			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 				continue;
 			}
-			$bookmark = $this->_addBookmark($title, $url, $description, $userId, $tags, [$folder->getId()]);
+			$bookmark = $this->_addBookmark($title, $url, $description, $folder->getUserId(), $tags, [$folder->getId()]);
 		}
 		if (isset($bookmark)) {
 			return $bookmark;
