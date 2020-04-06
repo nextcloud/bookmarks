@@ -178,7 +178,7 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function findParentOf(string $type, int $itemId): Entity {
-		$qb = $this->selectFromType($type);
+		$qb = $this->selectFromType(self::TYPE_FOLDER);
 		$qb
 			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.parent_folder', 'i.id'))
 			->where($qb->expr()->eq('t.id', $qb->createPositionalParameter($itemId)))

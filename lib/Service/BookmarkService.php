@@ -7,6 +7,8 @@ use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
+use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Db\TagMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
@@ -33,11 +35,11 @@ class BookmarkService {
 	 */
 	private $linkExplorer;
 	/**
-	 * @var \OCA\Bookmarks\Db\FolderMapper
+	 * @var FolderMapper
 	 */
 	private $folderMapper;
 	/**
-	 * @var \OCA\Bookmarks\Db\TagMapper
+	 * @var TagMapper
 	 */
 	private $tagMapper;
 	/**
@@ -53,15 +55,15 @@ class BookmarkService {
 	 * BookmarksService constructor.
 	 *
 	 * @param BookmarkMapper $bookmarkMapper
-	 * @param \OCA\Bookmarks\Db\FolderMapper $folderMapper
-	 * @param \OCA\Bookmarks\Db\TagMapper $tagMapper
+	 * @param FolderMapper $folderMapper
+	 * @param TagMapper $tagMapper
 	 * @param TreeMapper $treeMapper
 	 * @param Authorizer $authorizer
 	 * @param LinkExplorer $linkExplorer
 	 * @param BookmarkPreviewer $bookmarkPreviewer
 	 * @param FaviconPreviewer $faviconPreviewer
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, \OCA\Bookmarks\Service\BookmarkPreviewer $bookmarkPreviewer, \OCA\Bookmarks\Service\FaviconPreviewer $faviconPreviewer) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;

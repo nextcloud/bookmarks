@@ -21,7 +21,10 @@ use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service\Authorizer;
+use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\HashManager;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\QueryException;
 use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserManager;
@@ -150,9 +153,13 @@ class FolderControllerTest extends TestCase {
 	 * @var Authorizer
 	 */
 	private $authorizer;
+	/**
+	 * @var FolderService
+	 */
+	private $folders;
 
 	/**
-	 * @throws \OCP\AppFramework\QueryException
+	 * @throws QueryException
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -180,8 +187,9 @@ class FolderControllerTest extends TestCase {
 		$this->publicFolderMapper = OC::$server->query(PublicFolderMapper::class);
 		$this->shareMapper = OC::$server->query(ShareMapper::class);
 		$this->sharedFolderMapper = OC::$server->query(SharedFolderMapper::class);
-		$this->groupManager = OC::$server->query(IGroupManager::class);
 		$this->hashManager = OC::$server->query(HashManager::class);
+		$this->folders = OC::$server->query(FolderService::class);
+		$this->groupManager = OC::$server->query(IGroupManager::class);
 
 		/** @var IUserManager */
 		$userManager = OC::$server->query(IUserManager::class);
@@ -191,17 +199,17 @@ class FolderControllerTest extends TestCase {
 
 		$this->authorizer = OC::$server->query(Authorizer::class);
 
-		$this->controller = new FoldersController('bookmarks', $this->request, $this->userId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->groupManager, $this->hashManager);
-		$this->otherController = new FoldersController('bookmarks', $this->request, $this->otherUserId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->groupManager, $this->hashManager);
-		$this->public = new FoldersController('bookmarks', $this->publicRequest, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->groupManager, $this->hashManager);
-		$this->noauth = new FoldersController('bookmarks', $this->request, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->groupManager, $this->hashManager);
+		$this->controller = new FoldersController('bookmarks', $this->request, $this->userId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
+		$this->otherController = new FoldersController('bookmarks', $this->request, $this->otherUserId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
+		$this->public = new FoldersController('bookmarks', $this->publicRequest, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
+		$this->noauth = new FoldersController('bookmarks', $this->request, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
 	}
 
 	/**
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function setupBookmarks() {
 		$this->folder1 = new Folder();
@@ -242,7 +250,7 @@ class FolderControllerTest extends TestCase {
 	}
 
 	/**
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function setupPublicFolder(): void {
 		$this->publicFolder = new PublicFolder();
@@ -255,7 +263,7 @@ class FolderControllerTest extends TestCase {
 	}
 
 	/**
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function setupSharedFolder() {
 		$this->share = new Share();
@@ -270,9 +278,9 @@ class FolderControllerTest extends TestCase {
 		$this->sharedFolder = new SharedFolder();
 		$this->sharedFolder->setShareId($this->share->getId());
 		$this->sharedFolder->setTitle('foo');
-		$this->sharedFolder->setUserId($this->otherUser);
+		$this->sharedFolder->setUserId($this->otherUserId);
 		$this->sharedFolderMapper->insert($this->sharedFolder);
-		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $this->share->getId(), $this->folderMapper->findRootFolder($this->otherUser)->getId());
+		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $this->sharedFolder->getId(), $this->folderMapper->findRootFolder($this->otherUserId)->getId());
 	}
 
 	/**
@@ -280,7 +288,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testRead(): void {
 		$this->cleanUp();
@@ -297,7 +305,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testCreate(): void {
 		$this->cleanUp();
@@ -317,7 +325,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testEdit(): void {
 		$this->cleanUp();
@@ -337,7 +345,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testDelete(): void {
 		$this->cleanUp();
@@ -355,7 +363,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFullHierarchy(): void {
 		$this->cleanUp();
@@ -378,7 +386,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testSetFullHierarchy(): void {
 		$this->cleanUp();
@@ -405,7 +413,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFolderHierarchy(): void {
 		$this->cleanUp();
@@ -426,7 +434,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testReadNoauthFail(): void {
 		$this->cleanUp();
@@ -443,7 +451,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testCreateNoauthFail(): void {
 		$this->cleanUp();
@@ -461,7 +469,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testEditNoauthFail(): void {
 		$this->cleanUp();
@@ -484,7 +492,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testDeleteNoauthFail(): void {
 		$this->cleanUp();
@@ -505,7 +513,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFullHierarchyNoauthFail(): void {
 		$this->cleanUp();
@@ -521,7 +529,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testSetFullHierarchyNoauthFail(): void {
 		$this->cleanUp();
@@ -552,7 +560,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFolderHierarchyNoauth(): void {
 		$this->cleanUp();
@@ -569,7 +577,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testReadPublic(): void {
 		$this->cleanUp();
@@ -586,7 +594,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testReadPublicFail(): void {
 		$this->cleanUp();
@@ -600,7 +608,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testCreatePublicFail(): void {
 		$this->cleanUp();
@@ -616,7 +624,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testEditPublicFail(): void {
 		$this->cleanUp();
@@ -636,7 +644,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testDeletePublicFail(): void {
 		$this->cleanUp();
@@ -654,7 +662,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFullHierarchyPublic(): void {
 		$this->cleanUp();
@@ -674,7 +682,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testSetFullHierarchyPublicFail(): void {
 		$this->cleanUp();
@@ -704,7 +712,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFolderHierarchyPublic(): void {
 		$this->cleanUp();
@@ -722,7 +730,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testReadShared(): void {
 		$this->cleanUp();
@@ -740,7 +748,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testReadSharedFail(): void {
 		$this->cleanUp();
@@ -756,7 +764,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testCreateShared(): void {
 		$this->cleanUp();
@@ -776,7 +784,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testEditShared(): void {
 		$this->cleanUp();
@@ -797,7 +805,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testDeleteShared(): void {
 		$this->cleanUp();
@@ -816,7 +824,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFullHierarchyShared(): void {
 		$this->cleanUp();
@@ -837,7 +845,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testSetFullHierarchyShared(): void {
 		$this->cleanUp();
@@ -866,7 +874,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFolderHierarchyShared(): void {
 		$this->cleanUp();
@@ -889,7 +897,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 * @dataProvider shareDataProvider
 	 */
 	public function testCreateShare($participant, $type, $canWrite, $canShare): void {
@@ -909,7 +917,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 * @dataProvider shareDataProvider
 	 * @depends      testCreateShare
 	 */
@@ -937,7 +945,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 * @dataProvider shareDataProvider
 	 * @depends      testCreateShare
 	 */
@@ -973,7 +981,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 * @dataProvider shareDataProvider
 	 * @depends      testCreateShare
 	 */
@@ -1000,7 +1008,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 * @dataProvider shareDataProvider
 	 * @depends      testCreateShare
 	 */
