@@ -700,7 +700,7 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to delete share' + shareId)
+					AppGlobal.methods.t('bookmarks', 'Failed to delete share ' + shareId)
 				)
 				throw err
 			})
