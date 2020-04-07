@@ -86,16 +86,16 @@
 			bookmark: {
 				type: Object,
 				required: true,
+			},
 		},
-	},
-	data() {
-		return { title: this.bookmark.title, renaming: false, selected: false }
-	},
-	computed: {
-		apiUrl() {
-			if (this.isPublic) {
-				return generateUrl('/apps/bookmarks/public/rest/v2')
-			}
+		data() {
+			return { title: this.bookmark.title, renaming: false, selected: false }
+		},
+		computed: {
+			apiUrl() {
+				if (this.isPublic) {
+					return generateUrl('/apps/bookmarks/public/rest/v2')
+				}
 			return generateUrl('/apps/bookmarks')
 		},
 		iconUrl() {

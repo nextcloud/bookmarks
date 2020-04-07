@@ -61,7 +61,7 @@ class HtmlExporter {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function exportFolder($userId, int $folderId = -1): string {
+	public function exportFolder($userId, int $folderId): string {
 		$file = '<!DOCTYPE NETSCAPE-Bookmark-file-1>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 <TITLE>Bookmarks</TITLE>';
@@ -74,23 +74,16 @@ class HtmlExporter {
 	/**
 	 * @param int $userId
 	 * @param int $id
+	 * @param bool $recurse
 	 * @return string
-	 * @throws UnauthorizedAccessError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
 	 */
 	protected function serializeFolder($userId, int $id): string {
-		if ($id !== -1) {
-			$folder = $this->folderMapper->find($id);
-			if ($folder->getUserId() !== $userId) {
-				throw new UnauthorizedAccessError('Insufficient permissions for folder ' . $id);
-			}
-			$output = '<DT><h3>' . htmlspecialchars($folder->getTitle()) . '</h3>' . "\n"
-				. '<DL><p>';
-		} else {
-			$output = '<H1>Bookmarks</h1>' . "\n"
-				. '<DL><p>';
-		}
+		$folder = $this->folderMapper->find($id);
+		$output = '<DT><h3>' . htmlspecialchars($folder->getTitle()) . '</h3>' . "\n"
+			. '<DL><p>';
 
 		$childBookmarks = $this->treeMapper->findChildren(TreeMapper::TYPE_BOOKMARK, $id);
 		foreach ($childBookmarks as $bookmark) {

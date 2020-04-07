@@ -659,6 +659,8 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => $result['errors']]);
 		}
 
+		$folder = $this->toInternalFolderId($folder);
+
 		try {
 			$result = $this->htmlImporter->importFile($this->userId, $file, $folder);
 		} catch (UnauthorizedAccessError $e) {
@@ -690,7 +692,7 @@ class BookmarkController extends ApiController {
 	 */
 	public function exportBookmark() {
 		try {
-			$data = $this->htmlExporter->exportFolder($this->userId, -1);
+			$data = $this->htmlExporter->exportFolder($this->userId, $this->_getRootFolderId());
 		} catch (UnauthorizedAccessError $e) {
 			// Will probably never happen
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized access']);
