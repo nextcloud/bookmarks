@@ -9,6 +9,24 @@
 		<AppSidebarTab id="bookmark-details" :name="t('bookmarks', 'Details')" icon="icon-info">
 			<div>
 				<h3>
+					<span class="icon-link" />
+					{{ t('bookmarks', 'URL') }}
+				</h3>
+				<div v-if="!editingUrl" class="bookmark-details__line">
+					<span class="bookmark-details__url">{{ bookmark.url }}</span>
+					<Actions class="bookmark-details__action">
+						<ActionButton icon="icon-rename" @click="editingUrl = true" />
+					</Actions>
+				</div>
+				<div v-else class="bookmark-details__line">
+					<input v-model="bookmark.url" class="bookmark-details__url">
+					<Actions class="bookmark-details__action">
+						<ActionButton icon="icon-confirm" @click="onEditUrl" />
+					</Actions>
+				</div>
+			</div>
+			<div>
+				<h3>
 					<span class="icon-calendar-dark" />
 					{{ t('bookmarks', 'Creation date') }}
 				</h3>
@@ -43,6 +61,8 @@
 import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
 import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
@@ -52,10 +72,12 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect },
+	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton },
 	data() {
 		return {
-			description: '',
+			descripting: '',
+			url: '',
+			editingUrl: false,
 		}
 	},
 	computed: {
@@ -125,6 +147,10 @@ export default {
 			this.bookmark.tags.push(tag)
 			this.scheduleSave()
 		},
+		onEditUrl() {
+			this.editingUrl = false
+			this.scheduleSave()
+		},
 		scheduleSave() {
 			if (this.changeTimeout) clearTimeout(this.changeTimeout)
 			this.changeTimeout = setTimeout(async() => {
@@ -150,5 +176,18 @@ export default {
 .sidebar__notes {
 	min-height: 200px !important;
 	width: auto !important;
+}
+
+.bookmark-details__line {
+	display: flex;
+}
+
+.bookmark-details__url {
+	flex-grow: 1;
+	padding: 8px 0;
+}
+
+.bookmark-details__action {
+	flex-grow: 0;
 }
 </style>
