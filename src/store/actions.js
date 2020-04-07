@@ -608,7 +608,7 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to load setting ' + key)
+					AppGlobal.methods.t('bookmarks', 'Failed to load setting {key}', { key })
 				)
 				throw err
 			})
@@ -659,7 +659,7 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create share for folder ' + folderId)
+					AppGlobal.methods.t('bookmarks', 'Failed to create share for folder {folderId}', { folderId })
 				)
 				throw err
 			})
@@ -681,7 +681,7 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to update share ' + shareId)
+					AppGlobal.methods.t('bookmarks', 'Failed to update share {shareId}', { shareId })
 				)
 				throw err
 			})
@@ -700,7 +700,7 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to delete share' + shareId)
+					AppGlobal.methods.t('bookmarks', 'Failed to delete share {shareId}', { shareId })
 				)
 				throw err
 			})
@@ -726,7 +726,7 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to load public link of folder ' + folderId)
+					AppGlobal.methods.t('bookmarks', 'Failed to load public link of folder {folderId}', { folderId })
 				)
 				throw err
 			})
@@ -746,7 +746,7 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create public link for folder ' + folderId)
+					AppGlobal.methods.t('bookmarks', 'Failed to create public link for folder {folderId}', { folderId })
 				)
 				throw err
 			})
@@ -765,7 +765,7 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to delete public link for folder ' + folderId)
+					AppGlobal.methods.t('bookmarks', 'Failed to delete public link for folder {folderId}', { folderId })
 				)
 				throw err
 			})
