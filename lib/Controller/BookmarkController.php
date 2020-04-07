@@ -12,7 +12,6 @@ namespace OCA\Bookmarks\Controller;
 
 use DateInterval;
 use DateTime;
-use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -33,7 +32,6 @@ use OCA\Bookmarks\QueryParameters;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\HtmlExporter;
 use OCA\Bookmarks\Service\HtmlImporter;
-use OCA\Bookmarks\Service\LinkExplorer;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -91,21 +89,6 @@ class BookmarkController extends ApiController {
 	 * @var FolderMapper
 	 */
 	private $folderMapper;
-
-	/**
-	 * @var LinkExplorer
-	 */
-	private $linkExplorer;
-
-	/**
-	 * @var IBookmarkPreviewer
-	 */
-	private $bookmarkPreviewer;
-
-	/**
-	 * @var IBookmarkPreviewer
-	 */
-	private $faviconPreviewer;
 
 	/**
 	 * @var ITimeFactory

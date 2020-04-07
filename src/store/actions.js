@@ -284,7 +284,7 @@ export default {
 				commit(mutations.FETCH_END, 'tag')
 			})
 	},
-	[actions.LOAD_TAGS]({ commit, dispatch, state }, link) {
+	[actions.LOAD_TAGS]({ commit, dispatch, state }) {
 		commit(mutations.FETCH_START, { type: 'tags' })
 		return axios
 			.get(url(state, '/tag'), { params: { count: true } })
