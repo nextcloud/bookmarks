@@ -254,11 +254,11 @@ class BookmarkService {
 
 	/**
 	 * @param $id
-	 * @return IImage
+	 * @return IImage|null
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function getImage($id): IImage {
+	public function getImage($id): ?IImage {
 		/**
 		 * @var $bookmark Bookmark
 		 */
@@ -268,13 +268,13 @@ class BookmarkService {
 
 	/**
 	 * @param $id
-	 * @return IImage
+	 * @return IImage|null
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws \OCP\Files\NotFoundException
 	 * @throws \OCP\Files\NotPermittedException
 	 */
-	public function getFavicon($id): IImage {
+	public function getFavicon($id): ?IImage {
 		/**
 		 * @var $bookmark Bookmark
 		 */

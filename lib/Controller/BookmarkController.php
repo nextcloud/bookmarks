@@ -597,7 +597,7 @@ class BookmarkController extends ApiController {
 		}
 		try {
 			$image = $this->bookmarks->getFavicon($id);
-			if (!isset($image)) {
+			if ($image === null) {
 				// Return a placeholder
 				return new RedirectResponse($this->url->getAbsoluteURL('/svg/core/places/link?color=666666'));
 			}
@@ -612,7 +612,7 @@ class BookmarkController extends ApiController {
 	 * @return DataDisplayResponse
 	 * @throws \Exception
 	 */
-	public function doImageResponse(IImage $image): Response {
+	public function doImageResponse(?IImage $image): Response {
 		if ($image === null) {
 			return new NotFoundResponse();
 		}

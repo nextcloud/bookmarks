@@ -104,7 +104,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 		}
 
 		// Fetch image from remote server
-		$image = $this->getImage($url);
+		$image = $this->fetchImage($url);
 
 		if ($image === null) {
 			$this->cache->set($key, 'null', self::CACHE_TTL);
