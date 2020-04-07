@@ -586,4 +586,68 @@ class TreeMapper extends QBMapper {
 			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)));
 		return $qb->execute()->fetch(\PDO::FETCH_COLUMN);
 	}
+
+	public function getChildren(int $folderId, int $layers = 0) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select(array_merge(['index', 't.type'], array_map(static function ($col) {
+				return 'b.' . $col;
+			}, Bookmark::$columns)))
+			->from('bookmarks', 'b')
+			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
+			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
+			->orderBy('t.index', 'ASC');
+		$childBookmarks = $qb->execute()->fetchAll();
+
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('f.id', 'title', 'user_id', 'index', 't.type')
+			->from('bookmarks_folders', 'f')
+			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
+			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_FOLDER)))
+			->orderBy('t.index', 'ASC');
+		$childFolders = $qb->execute()->fetchAll();
+
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('folder_id', 'f.title', 'user_id', 'index', 't.type')
+			->from('bookmarks_shares', 's')
+			->innerJoin('s', 'bookmarks_shared_folders', 'f', $qb->expr()->eq('f.share_id', 's.id'))
+			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
+			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_SHARE)))
+			->orderBy('t.index', 'ASC');
+		$childShares = $qb->execute()->fetchAll();
+
+		$children = array_merge($childBookmarks, $childFolders, $childShares);
+		$indices = array_column($children, 'index');
+		array_multisort($indices, $children);
+
+		$bookmark = new Bookmark();
+
+		$children = array_map(function ($child) use ($layers, $bookmark) {
+			$item = ['type' => $child['type'], 'id' => (int)$child['id'], 'title' => $child['title'], 'userId' => $child['user_id']];
+
+			if ($item['type'] === self::TYPE_SHARE) {
+				$item['type'] = self::TYPE_FOLDER;
+				$item['id'] = (int)$child['folder_id'];
+			}
+
+			if ($item['type'] === self::TYPE_BOOKMARK) {
+				foreach (Bookmark::$columns as $col) {
+					$item[$bookmark->columnToProperty($col)] = $child[$col];
+				}
+			}
+
+			if ($item['type'] === self::TYPE_FOLDER && $layers !== 0) {
+				$item['children'] = $this->getChildren($item['id'], $layers - 1);
+			}
+
+			return $item;
+		}, $children);
+
+		return $children;
+	}
 }

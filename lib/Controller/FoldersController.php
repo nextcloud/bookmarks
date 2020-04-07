@@ -359,6 +359,24 @@ class FoldersController extends ApiController {
 		}
 	}
 
+	/**
+	 * @param int $folderId
+	 * @param int $layers
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function getFolderChildren($folderId, $layers = 0): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		$folderId = $this->toInternalFolderId($folderId);
+		$children = $this->treeMapper->getChildren($folderId, $layers);
+		return new JSONResponse(['status' => 'success', 'data' => $children]);
+	}
 
 	/**
 	 * @param int $folderId
