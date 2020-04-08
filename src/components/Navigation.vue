@@ -11,7 +11,7 @@
 				:to="{ name: routes.HOME }"
 				icon="icon-home"
 				:title="t('bookmarks', 'All Bookmarks')">
-			<AppNavigationCounter>{{allBookmarksCount}}</AppNavigationCounter>
+				<AppNavigationCounter>{{ allBookmarksCount }}</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationItem key="menu-recent"
 				:to="{ name: routes.RECENT }"
@@ -54,18 +54,18 @@
 </template>
 
 <script>
-import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
-import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
-import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
-import AppNavigationCounter from '@nextcloud/vue/dist/Components/AppNavigationCounter'
-import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
-import AppNavigationSpacer from '@nextcloud/vue/dist/Components/AppNavigationSpacer'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ProgressBar from 'vue-simple-progress'
-import Settings from './Settings'
-import { actions, mutations } from '../store/'
+	import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
+	import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
+	import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
+	import AppNavigationCounter from '@nextcloud/vue/dist/Components/AppNavigationCounter'
+	import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
+	import AppNavigationSpacer from '@nextcloud/vue/dist/Components/AppNavigationSpacer'
+	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+	import ProgressBar from 'vue-simple-progress'
+	import Settings from './Settings'
+	import { actions, mutations } from '../store/'
 
-export default {
+	export default {
 	name: 'Navigation',
 	components: {
 		AppNavigation,
