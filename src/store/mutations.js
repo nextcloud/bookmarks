@@ -92,6 +92,9 @@ export default {
 		state.selection = { folders: [], bookmarks: [] }
 	},
 	[mutations.ADD_SELECTION_BOOKMARK](state, item) {
+		if (state.selection.bookmarks.find(b => item.id === b.id)) {
+			return
+		}
 		state.selection.bookmarks.push(item)
 	},
 	[mutations.REMOVE_SELECTION_BOOKMARK](state, item) {

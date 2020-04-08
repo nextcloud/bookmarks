@@ -67,15 +67,15 @@
 	</div>
 </template>
 <script>
-import Vue from 'vue'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import { getCurrentUser } from '@nextcloud/auth'
-import { generateUrl } from '@nextcloud/router'
-import { actions, mutations } from '../store/'
-import TagLine from './TagLine'
+	import Vue from 'vue'
+	import Actions from '@nextcloud/vue/dist/Components/Actions'
+	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+	import { getCurrentUser } from '@nextcloud/auth'
+	import { generateUrl } from '@nextcloud/router'
+	import { actions, mutations } from '../store/'
+	import TagLine from './TagLine'
 
-export default {
+	export default {
 	name: 'Bookmark',
 	components: {
 		Actions,
@@ -89,7 +89,10 @@ export default {
 		},
 	},
 	data() {
-		return { title: this.bookmark.title, renaming: false, selected: false }
+		return {
+			title: this.bookmark.title,
+			renaming: false,
+		}
 	},
 	computed: {
 		apiUrl() {
@@ -127,14 +130,11 @@ export default {
 		isEditable() {
 			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
-	},
-	watch: {
-		selected(val, oldVal) {
-			if (val) {
-				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
-			} else {
-				this.$store.commit(mutations.REMOVE_SELECTION_BOOKMARK, this.bookmark)
-			}
+		selectedBookmarks() {
+			return this.$store.state.selection.bookmarks
+		},
+		selected() {
+			return this.selectedBookmarks.map(b => b.id).includes(this.bookmark.id)
 		},
 	},
 	created() {},
@@ -164,7 +164,11 @@ export default {
 			this.renaming = false
 		},
 		clickSelect() {
-			this.selected = !this.selected
+			if (!this.selected) {
+				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
+			} else {
+				this.$store.commit(mutations.REMOVE_SELECTION_BOOKMARK, this.bookmark)
+			}
 		},
 	},
 }
