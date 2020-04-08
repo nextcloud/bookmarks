@@ -53,8 +53,8 @@ class InternalBookmarkController extends ApiController {
 	 * @param array $search
 	 * @param int $limit
 	 * @param bool $untagged
-	 * @param null $folder
-	 * @param null $url
+	 * @param int $folder
+	 * @param string $url
 	 * @return \OCP\AppFramework\Http\DataResponse
 	 *
 	 * @throws UrlParseError
