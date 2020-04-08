@@ -19,7 +19,7 @@ Folder model
 
 
 Get full hierarchy
-=============
+==================
 
 .. get:: /public/rest/v2/folder
 
@@ -321,6 +321,8 @@ Remove bookmark from folder
 
    :>json string status: ``success`` or ``error``
 
+   If this is the only folder this bookmark resides in, the bookmark will be deleted entirely.
+
    **Example:**
 
    .. sourcecode:: http
@@ -423,4 +425,153 @@ Set folder's content order
 
       {
         "status": "success"
+      }
+
+Get folder's contents
+=====================
+
+.. get:: /public/rest/v2/folder/(int:folder_id)/children
+
+   :synopsis: Retrieve all of a folder's contents (with varying depth)
+
+   .. versionadded:: 3.0.0
+
+   :query int layers: How many layers of descendants to return at max. By default only immediate children are returned.
+
+   :>json string status: ``success`` or ``error``
+   :>json array data: An ordered list of child items
+
+   :>jsonarr string type: Either ``folder`` or ``bookmark``
+   :>jsonarr string id: The id of the bookmark or folder
+
+   If the type of the item is ``folder``
+
+   :>jsonarr string title: The title of the folder
+   :>jsonarr string userId: The owner of the folder
+   :>jsonarr array children: The children of the folder. This is only set, when the number of layers to return includes this folder.
+
+   If the type of the item is ``bookmark``
+
+   :>jsonarr string url: The URL of the bookmark
+   :>jsonarr string title: The title of the bookmark
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      GET /index.php/apps/bookmarks/public/rest/v2/folder/5/children HTTP/1.1
+      Host: example.com
+      Accept: application/json
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "success",
+        "data": [
+          {"type": "folder", "id": "17", "title": "foo", "userId": "admin"},
+          {"type": "bookmark", "id": "204", "title": "Nextcloud", "url": "https://nextcloud.com/"},
+          {"type": "bookmark", "id": "204", "title": "Google", "url": "https://google.com/"},
+        ]
+      }
+
+
+Get public token
+================
+
+.. get:: /public/rest/v2/folder/(int:folder_id)/publictoken
+
+   :synopsis: Retrieve the public token of a folder that has been shared via a public link
+
+   .. versionadded:: 3.0.0
+
+   :>json string status: ``success`` or ``error``
+   :>json string item: The public token
+
+   To use the token either make API requests with it (see :ref:`authentication`). Or point your browser to ``https://yournextcloud.com/index.php/apps/bookmarks/public/{token}``
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      GET /index.php/apps/bookmarks/public/rest/v2/folder/5/publictoken HTTP/1.1
+      Host: example.com
+      Accept: application/json
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "success",
+        "item": "dk3J8Qm"
+      }
+
+Get public token
+================
+
+.. post:: /public/rest/v2/folder/(int:folder_id)/publictoken
+
+   :synopsis: Create a public link for a folder
+
+   .. versionadded:: 3.0.0
+
+   :>json string status: ``success`` or ``error``
+   :>json string item: The token that can be used to access the folder publicly.
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      POST /index.php/apps/bookmarks/public/rest/v2/folder/5/publictoken HTTP/1.1
+      Host: example.com
+      Accept: application/json
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "success",
+        "item": "dk3J8Qm"
+      }
+
+Delete public token
+===================
+
+.. delete:: /public/rest/v2/folder/(int:folder_id)/publictoken
+
+   :synopsis: Remove the public link for a folder
+
+   .. versionadded:: 3.0.0
+
+   :>json string status: ``success`` or ``error``
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      POST /index.php/apps/bookmarks/public/rest/v2/folder/5/publictoken HTTP/1.1
+      Host: example.com
+      Accept: application/json
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "success",
       }

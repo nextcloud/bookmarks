@@ -20,7 +20,6 @@ Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in #n
 
 PHP extensions:
 
-- gmp: \*
 - intl: \*
 - mbstring: \*
 
