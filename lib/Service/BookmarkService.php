@@ -111,21 +111,30 @@ class BookmarkService {
 		$title = trim($title);
 		$description = $description ?? $data['basic']['description'] ?? '';
 
-		foreach ($folders as $folderId) {
-			try {
-				/**
-				 * @var $folder Folder
-				 */
-				$folder = $this->folderMapper->find($folderId);
-			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
-				continue;
-			}
+		$bookmark = null;
+
+		$ownFolders = array_filter($folders, function ($folderId) use ($userId) {
+			/**
+			 * @var $folder Folder
+			 */
+			$folder = $this->folderMapper->find($folderId);
+			return $folder->getUserId() === $userId;
+		});
+		$foreignFolders = array_diff($folders, $ownFolders);
+		foreach ($foreignFolders as $folderId) {
+			/**
+			 * @var $folder Folder
+			 */
+			$folder = $this->folderMapper->find($folderId);
 			$bookmark = $this->_addBookmark($title, $url, $description, $folder->getUserId(), $tags, [$folder->getId()]);
 		}
-		if (isset($bookmark)) {
-			return $bookmark;
+		if (!empty($ownFolders)) {
+			$bookmark = $this->_addBookmark($title, $url, $description, $userId, $tags, $ownFolders);
 		}
-		return $this->_addBookmark($title, $url, $description, $userId, $tags, [$this->folderMapper->findRootFolder($userId)->getId()]);
+		if ($bookmark === null) {
+			return $this->_addBookmark($title, $url, $description, $userId, $tags, [$this->folderMapper->findRootFolder($userId)->getId()]);
+		}
+		return $bookmark;
 	}
 
 	/**
@@ -152,7 +161,7 @@ class BookmarkService {
 		$this->bookmarkMapper->insertOrUpdate($bookmark);
 		$this->tagMapper->setOn($tags, $bookmark->getId());
 
-		$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folders);
+		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folders);
 		return $bookmark;
 	}
 

@@ -95,8 +95,8 @@ class InternalBookmarkController extends ApiController {
 	 * @throws UserLimitExceededError
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $title = null, $description = "", $tags = []) {
-		return $this->publicController->newBookmark($url, $title, $description, $tags);
+	public function newBookmark($url = "", $title = null, $description = "", $tags = [], $folders = []) {
+		return $this->publicController->newBookmark($url, $title, $description, $tags, $folders);
 	}
 
 	/**
