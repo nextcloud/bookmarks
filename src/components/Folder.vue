@@ -41,14 +41,14 @@
 	</div>
 </template>
 <script>
-	import Vue from 'vue'
-	import { getCurrentUser } from '@nextcloud/auth'
-	import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
-	import Actions from '@nextcloud/vue/dist/Components/Actions'
-	import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-	import { actions, mutations } from '../store/'
+import Vue from 'vue'
+import { getCurrentUser } from '@nextcloud/auth'
+import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { actions, mutations } from '../store/'
 
-	export default {
+export default {
 	name: 'Folder',
 	components: {
 		Actions,
