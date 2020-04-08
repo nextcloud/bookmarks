@@ -11,7 +11,9 @@
 				:to="{ name: routes.HOME }"
 				icon="icon-home"
 				:title="t('bookmarks', 'All Bookmarks')">
-				<AppNavigationCounter>{{ allBookmarksCount }}</AppNavigationCounter>
+				<AppNavigationCounter slot="counter">
+					{{ allBookmarksCount }}
+				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationItem key="menu-recent"
 				:to="{ name: routes.RECENT }"
