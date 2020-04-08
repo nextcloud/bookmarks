@@ -42,4 +42,9 @@ Requirements:
 		<admin>OCA\Bookmarks\Settings\AdminSettings</admin>
 		<admin-section>OCA\Bookmarks\Settings\AdminSection</admin-section>
 	</settings>
+	<repair-steps>
+		<uninstall>
+			<step>OCA\Bookmarks\Migration\UninstallRepairStep</step>
+		</uninstall>
+	</repair-steps>
 </info>
