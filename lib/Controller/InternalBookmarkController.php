@@ -188,4 +188,16 @@ class InternalBookmarkController extends ApiController {
 	public function getBookmarkFavicon($id) {
 		return $this->publicController->getBookmarkFavicon($id);
 	}
+
+	/**
+	 *
+	 * @param int $folder
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function countBookmarks(int $folder): JSONResponse {
+		return $this->publicController->countBookmarks($folder);
+	}
 }

@@ -587,6 +587,36 @@ class TreeMapper extends QBMapper {
 		return $qb->execute()->fetch(\PDO::FETCH_COLUMN);
 	}
 
+	/**
+	 * @brief Count the descendant bookmarks in the given folder
+	 * @param int $folderId
+	 * @return int
+	 */
+	public function countBookmarksInFolder(int $folderId) : int {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select($qb->func()->count('b.id'))
+			->from('bookmarks', 'b')
+			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
+			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)));
+		$countChildren = $qb->execute()->fetch(\PDO::FETCH_COLUMN);
+
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('f.id')
+			->from('bookmarks_folders', 'f')
+			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
+			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_FOLDER)));
+		$childFolders = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+
+		foreach($childFolders as $subFolderId) {
+			$countChildren += $this->countBookmarksInFolder($subFolderId);
+		}
+		return $countChildren;
+	}
+
 	public function getChildren(int $folderId, int $layers = 0) {
 		$qb = $this->db->getQueryBuilder();
 		$qb

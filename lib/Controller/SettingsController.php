@@ -147,4 +147,16 @@ class SettingsController extends ApiController {
 
 		return new JSONResponse(['status' => 'success'], Http::STATUS_OK);
 	}
+
+	/**
+	 * get per-user bookmarks limit
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function getLimit() {
+		$limit = (int)$this->config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
+		return new JSONResponse(['limit' => $limit], Http::STATUS_OK);
+	}
 }

@@ -7,6 +7,7 @@ const BATCH_SIZE = 42
 
 export const actions = {
 	ADD_ALL_BOOKMARKS: 'ADD_ALL_BOOKMARKS',
+	COUNT_BOOKMARKS: 'COUNT_BOOKMARKS',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
@@ -60,6 +61,26 @@ export default {
 		}
 	},
 
+	async [actions.COUNT_BOOKMARKS]({ commit, dispatch, state }, folderId) {
+		try {
+			const response = await axios.get(url(state, `/folder/${folderId}/count`)
+			)
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_BOOKMARK_COUNT, { folderId, count })
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to count bookmarks')
+			)
+			throw err
+		}
+	},
 	async [actions.FIND_BOOKMARK]({ commit, dispatch, state }, link) {
 		if (state.loading.bookmarks) return
 		try {
@@ -106,6 +127,7 @@ export default {
 				}
 				commit(mutations.DISPLAY_NEW_BOOKMARK, false)
 				commit(mutations.ADD_BOOKMARK, bookmark)
+				commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: state.countsByFolder[-1] + 1 })
 				return dispatch(actions.OPEN_BOOKMARK, bookmark.id)
 			})
 			.catch(err => {
@@ -186,6 +208,7 @@ export default {
 					throw new Error(response.data)
 				}
 				commit(mutations.REMOVE_BOOKMARK, id)
+				commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: Math.max(0, state.countsByFolder[-1] - 1) })
 			} catch (err) {
 				console.error(err)
 				commit(
@@ -244,6 +267,7 @@ export default {
 				if (status !== 'success') {
 					throw new Error(response.data)
 				}
+				dispatch(actions.COUNT_BOOKMARKS, -1)
 				return dispatch(actions.LOAD_FOLDERS)
 			})
 			.catch(err => {
@@ -597,11 +621,13 @@ export default {
 					data: { [key]: value },
 				} = response
 				await commit(mutations.SET_SETTING, { key, value })
-				if (key === 'viewMode') {
+				switch (key) {
+				case 'viewMode':
 					await commit(mutations.SET_VIEW_MODE, value)
-				}
-				if (key === 'sorting') {
+					break
+				case 'sorting':
 					await commit(mutations.RESET_PAGE)
+					break
 				}
 			})
 			.catch(err => {
@@ -615,7 +641,7 @@ export default {
 	},
 	[actions.LOAD_SETTINGS]({ commit, dispatch, state }) {
 		return Promise.all(
-			['sorting', 'viewMode'].map(key => dispatch(actions.LOAD_SETTING, key))
+			['sorting', 'viewMode', 'limit'].map(key => dispatch(actions.LOAD_SETTING, key))
 		)
 	},
 

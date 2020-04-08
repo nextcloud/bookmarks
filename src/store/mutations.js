@@ -14,6 +14,7 @@ export const mutations = {
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
 	REMOVE_ALL_BOOKMARKS: 'REMOVE_ALL_BOOKMARKS',
+	SET_BOOKMARK_COUNT: 'SET_BOOKMARK_COUNT',
 	SET_TAGS: 'SET_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
 	INCREMENT_PAGE: 'INCREMENT_PAGE',
@@ -128,6 +129,9 @@ export default {
 	[mutations.REMOVE_ALL_BOOKMARKS](state) {
 		state.bookmarks = []
 		state.bookmarksById = {}
+	},
+	[mutations.SET_BOOKMARK_COUNT](state, { folderId, count }) {
+		Vue.set(state.countsByFolder, folderId, count)
 	},
 
 	[mutations.SET_SIDEBAR](state, sidebar) {

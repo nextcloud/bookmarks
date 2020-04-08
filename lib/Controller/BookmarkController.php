@@ -672,6 +672,10 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @return ExportResponse|JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
 	 */
 	public function exportBookmark() {
 		try {
@@ -688,4 +692,27 @@ class BookmarkController extends ApiController {
 		return new ExportResponse($data);
 	}
 
+
+	/**
+	 * @param int $folder
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function countBookmarks(int $folder): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
+		}
+
+		if ($folder === -1 && $this->authorizer->getUserId() !== null) {
+			$count = $this->bookmarkMapper->countBookmarksOfUser($this->authorizer->getUserId());
+			return new JSONResponse(['status' => 'success', 'item' => $count]);
+		}
+
+		$folder = $this->toInternalFolderId($folder);
+		$count = $this->treeMapper->countBookmarksInFolder($this->toInternalFolderId($folder));
+		return new JSONResponse(['status' => 'success', 'item' => $count]);
+	}
 }

@@ -39,6 +39,7 @@ return [
 		['name' => 'internal_bookmark#delete_all_bookmarks', 'url' => '/bookmark', 'verb' => 'DELETE'],
 		['name' => 'internal_bookmark#get_bookmark_image', 'url' => '/bookmark/{id}/image', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#get_bookmark_favicon', 'url' => '/bookmark/{id}/favicon', 'verb' => 'GET'],
+		['name' => 'internal_bookmark#count_bookmarks', 'url' => '/folder/{folder}/count', 'verb' => 'GET'],
 		['name' => 'internal_tags#full_tags', 'url' => '/tag', 'verb' => 'GET'],
 		['name' => 'internal_tags#rename_tag', 'url' => '/tag', 'verb' => 'POST'],
 		['name' => 'internal_tags#delete_tag', 'url' => '/tag', 'verb' => 'DELETE'],
@@ -107,6 +108,7 @@ return [
 		['name' => 'settings#get_sorting', 'url' => '/settings/sorting', 'verb' => 'GET'],
 		['name' => 'settings#set_view_mode', 'url' => '/settings/viewMode', 'verb' => 'POST'],
 		['name' => 'settings#get_view_mode', 'url' => '/settings/viewMode', 'verb' => 'GET'],
+		['name' => 'settings#get_limit', 'url' => '/settings/limit', 'verb' => 'GET'],
 
 		# public link web view
 		['name' => 'web_view#link', 'url' => '/public/{token}', 'verb' => 'GET'],

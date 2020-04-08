@@ -68,6 +68,7 @@ export default {
 			this.reloadSettings(),
 			this.reloadTags(),
 			this.reloadFolders(),
+			this.reloadCount(),
 		])
 		this.onRoute()
 	},
@@ -110,6 +111,9 @@ export default {
 		},
 		async reloadSettings() {
 			return this.$store.dispatch(actions.LOAD_SETTINGS)
+		},
+		async reloadCount() {
+			return this.$store.dispatch(actions.COUNT_BOOKMARKS, -1)
 		},
 
 		onSearch(search) {

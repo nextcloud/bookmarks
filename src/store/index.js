@@ -35,6 +35,7 @@ export default new Store({
 		settings: {
 			viewMode: 'list',
 			sorting: 'lastmodified',
+			limit: 0,
 		},
 		bookmarks: [],
 		bookmarksById: {},
@@ -43,6 +44,7 @@ export default new Store({
 		folders: [],
 		foldersById: {},
 		tokensByFolder: {},
+		countsByFolder: {},
 		selection: {
 			folders: [],
 			bookmarks: [],

@@ -10,7 +10,9 @@
 			<AppNavigationItem key="menu-home"
 				:to="{ name: routes.HOME }"
 				icon="icon-home"
-				:title="t('bookmarks', 'All Bookmarks')" />
+				:title="t('bookmarks', 'All Bookmarks')">
+			<AppNavigationCounter>{{allBookmarksCount}}</AppNavigationCounter>
+			</AppNavigationItem>
 			<AppNavigationItem key="menu-recent"
 				:to="{ name: routes.RECENT }"
 				icon="icon-category-monitoring"
@@ -38,6 +40,12 @@
 					</ActionButton>
 				</template>
 			</AppNavigationItem>
+			<template v-if="Number(allBookmarksCount) > 0">
+				<AppNavigationSpacer />
+				<AppNavigationItem :pinned="true" icon="icon-quota" :title="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
+					<ProgressBar :val="allBookmarksCount" :max="bookmarksLimit" />
+				</AppNavigationItem>
+			</template>
 		</ul>
 		<AppNavigationSettings v-if="!isPublic">
 			<Settings />
@@ -53,6 +61,7 @@ import AppNavigationCounter from '@nextcloud/vue/dist/Components/AppNavigationCo
 import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
 import AppNavigationSpacer from '@nextcloud/vue/dist/Components/AppNavigationSpacer'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
 import { actions, mutations } from '../store/'
 
@@ -67,6 +76,7 @@ export default {
 		AppNavigationSpacer,
 		ActionButton,
 		Settings,
+		ProgressBar,
 	},
 	data() {
 		return {}
@@ -78,6 +88,12 @@ export default {
 				name: tag.name,
 				count: tag.count,
 			}))
+		},
+		allBookmarksCount() {
+			return this.$store.state.countsByFolder[-1]
+		},
+		bookmarksLimit() {
+			return this.$store.state.settings.limit
 		},
 	},
 
