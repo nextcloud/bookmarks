@@ -580,10 +580,12 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 */
 	public function createShare($folderId, $participant, int $type, $canWrite = false, $canShare = false): DataResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
+		$permissions = $this->authorizer->getPermissionsForFolder($folderId, $this->request);
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $permissions)) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
+			$canWrite = $canWrite && Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions);
 			$share = $this->folders->createShare($folderId, $participant, $type, $canWrite, $canShare);
 			return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
 		} catch (DoesNotExistException $e) {
@@ -613,10 +615,12 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
-		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request))) {
+		$permissions = $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request);
+		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $permissions)) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 
+		$canWrite = $canWrite && Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions);
 		$share->setCanWrite($canWrite);
 		$share->setCanShare($canShare);
 		$this->shareMapper->update($share);
