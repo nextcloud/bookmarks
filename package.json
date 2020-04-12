@@ -21,7 +21,7 @@
 	"homepage": "https://github.com/nextcloud/bookmarks#readme",
 	"dependencies": {
 		"@babel/polyfill": "^7.7.0",
-		"@nextcloud/auth": "^1.2.2",
+		"@nextcloud/auth": "^1.2.3",
 		"@nextcloud/axios": "^1.3.2",
 		"@nextcloud/dialogs": "^1.2.2",
 		"@nextcloud/router": "^1.0.2",
