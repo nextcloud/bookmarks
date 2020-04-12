@@ -26,7 +26,7 @@
 		"@nextcloud/dialogs": "^1.2.2",
 		"@nextcloud/router": "^1.0.2",
 		"@nextcloud/vue": "^1.2.3",
-		"copy-text-to-clipboard": "^2.1.1",
+		"copy-text-to-clipboard": "^2.2.0",
 		"humanize-duration": "^3.21.0",
 		"vue": "^2.6.11",
 		"vue-click-outside": "^1.0.7",
