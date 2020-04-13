@@ -454,6 +454,8 @@ Get folder's contents
 
    :>jsonarr string url: The URL of the bookmark
    :>jsonarr string title: The title of the bookmark
+   :>jsonarr string description: Description of the bookmark
+   :>jsonarr array tags: Tags of the bookmark
 
    **Example:**
 

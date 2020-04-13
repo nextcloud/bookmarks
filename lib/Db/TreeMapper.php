@@ -14,6 +14,7 @@ use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\ICache;
+use OCP\IConfig;
 use OCP\IDBConnection;
 
 
@@ -68,6 +69,14 @@ class TreeMapper extends QBMapper {
 	 * @var SharedFolderMapper
 	 */
 	private $sharedFolderMapper;
+	/**
+	 * @var TagMapper
+	 */
+	private $tagMapper;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
 
 	/**
 	 * FolderMapper constructor.
@@ -77,8 +86,11 @@ class TreeMapper extends QBMapper {
 	 * @param FolderMapper $folderMapper
 	 * @param BookmarkMapper $bookmarkMapper
 	 * @param ShareMapper $shareMapper
+	 * @param SharedFolderMapper $sharedFolderMapper
+	 * @param TagMapper $tagMapper
+	 * @param IConfig $config
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, TagMapper $tagMapper, IConfig $config) {
 		parent::__construct($db, 'bookmarks_tree');
 		$this->eventDispatcher = $eventDispatcher;
 		$this->folderMapper = $folderMapper;
@@ -91,6 +103,8 @@ class TreeMapper extends QBMapper {
 			self::TYPE_FOLDER => Folder::$columns,
 			self::TYPE_BOOKMARK => Bookmark::$columns,
 		];
+		$this->tagMapper = $tagMapper;
+		$this->config = $config;
 	}
 
 	/**
@@ -592,7 +606,7 @@ class TreeMapper extends QBMapper {
 	 * @param int $folderId
 	 * @return int
 	 */
-	public function countBookmarksInFolder(int $folderId) : int {
+	public function countBookmarksInFolder(int $folderId): int {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select($qb->func()->count('b.id'))
@@ -611,23 +625,32 @@ class TreeMapper extends QBMapper {
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_FOLDER)));
 		$childFolders = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 
-		foreach($childFolders as $subFolderId) {
+		foreach ($childFolders as $subFolderId) {
 			$countChildren += $this->countBookmarksInFolder($subFolderId);
 		}
 		return $countChildren;
 	}
 
 	public function getChildren(int $folderId, int $layers = 0) {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$qb = $this->db->getQueryBuilder();
+		$cols = array_merge(['index', 't.type'], array_map(static function ($col) {
+			return 'b.' . $col;
+		}, Bookmark::$columns));
 		$qb
-			->select(array_merge(['index', 't.type'], array_map(static function ($col) {
-				return 'b.' . $col;
-			}, Bookmark::$columns)))
+			->select($cols)
 			->from('bookmarks', 'b')
 			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
+			->innerJoin('b', 'bookmarks_tags', 'tg', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
-			->orderBy('t.index', 'ASC');
+			->orderBy('t.index', 'ASC')
+			->groupBy($cols);
+		if ($dbType === 'pgsql') {
+			$qb->selectAlias($qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tg.tag') . "), ',')"), 'tags');
+		} else {
+			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('tg.tag') . ')'), 'tags');
+		}
 		$childBookmarks = $qb->execute()->fetchAll();
 
 		$qb = $this->db->getQueryBuilder();
@@ -667,6 +690,7 @@ class TreeMapper extends QBMapper {
 
 			if ($item['type'] === self::TYPE_BOOKMARK) {
 				foreach (Bookmark::$columns as $col) {
+					$item['tags'] = $item['tags'] === '' ? [] : explode(',', $item['tags']);
 					$item[$bookmark->columnToProperty($col)] = $child[$col];
 				}
 			}
