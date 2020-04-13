@@ -632,7 +632,6 @@ class TreeMapper extends QBMapper {
 	}
 
 	public function getChildren(int $folderId, int $layers = 0) {
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$qb = $this->db->getQueryBuilder();
 		$cols = array_merge(['index', 't.type'], array_map(static function ($col) {
 			return 'b.' . $col;
@@ -641,16 +640,9 @@ class TreeMapper extends QBMapper {
 			->select($cols)
 			->from('bookmarks', 'b')
 			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
-			->innerJoin('b', 'bookmarks_tags', 'tg', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
-			->orderBy('t.index', 'ASC')
-			->groupBy($cols);
-		if ($dbType === 'pgsql') {
-			$qb->selectAlias($qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tg.tag') . "), ',')"), 'tags');
-		} else {
-			$qb->selectAlias($qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('tg.tag') . ')'), 'tags');
-		}
+			->orderBy('t.index', 'ASC');
 		$childBookmarks = $qb->execute()->fetchAll();
 
 		$qb = $this->db->getQueryBuilder();
@@ -690,7 +682,6 @@ class TreeMapper extends QBMapper {
 
 			if ($item['type'] === self::TYPE_BOOKMARK) {
 				foreach (Bookmark::$columns as $col) {
-					$item['tags'] = $item['tags'] === '' ? [] : explode(',', $item['tags']);
 					$item[$bookmark->columnToProperty($col)] = $child[$col];
 				}
 			}
