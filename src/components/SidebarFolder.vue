@@ -155,7 +155,7 @@ export default {
 		},
 		async onParticipantSearch(searchTerm) {
 			this.isSearching = true
-			const { data: { ocs: { data, meta } } } = await axios.get(`/ocs/v1.php/apps/files_sharing/api/v1/sharees?format=json&itemType=folder&search=${searchTerm}&lookup=false&perPage=200&shareType[]=0&shareType[]=1`)
+			const { data: { ocs: { data, meta } } } = await axios.get(generateUrl(`/ocs/v1.php/apps/files_sharing/api/v1/sharees?format=json&itemType=folder&search=${searchTerm}&lookup=false&perPage=200&shareType[]=0&shareType[]=1`))
 			if (meta.status !== 'ok') {
 				this.participantSearchResults = []
 				return
