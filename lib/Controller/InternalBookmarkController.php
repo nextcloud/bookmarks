@@ -11,10 +11,17 @@
 namespace OCA\Bookmarks\Controller;
 
 use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
+use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCA\Bookmarks\Service\BookmarkService;
 use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
 
@@ -28,21 +35,17 @@ class InternalBookmarkController extends ApiController {
 	private $userId;
 
 	/**
-	 * @var FolderMapper
+	 * @var BookmarkService
 	 */
-	private $folderMapper;
+	private $bookmarks;
 
 	public function __construct(
-		$appName,
-		$request,
-		$userId,
-		BookmarkController $publicController,
-		FolderMapper $folderMapper
+		$appName, $request, $userId, BookmarkController $publicController, BookmarkService $bookmarks
 	) {
 		parent::__construct($appName, $request);
 		$this->publicController = $publicController;
 		$this->userId = $userId;
-		$this->folderMapper = $folderMapper;
+		$this->bookmarks = $bookmarks;
 	}
 
 	/**
@@ -55,7 +58,7 @@ class InternalBookmarkController extends ApiController {
 	 * @param bool $untagged
 	 * @param int $folder
 	 * @param string $url
-	 * @return \OCP\AppFramework\Http\DataResponse
+	 * @return DataResponse
 	 *
 	 * @throws UrlParseError
 	 * @NoAdminRequired
@@ -125,13 +128,17 @@ class InternalBookmarkController extends ApiController {
 	}
 
 	/**
-	 * @return array
+	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
 	 */
 	public function deleteAllBookmarks() {
-		$this->folderMapper->deleteAll($this->userId);
-		return ['status' => 'success'];
+		try {
+			$this->bookmarks->deleteAll($this->userId);
+		} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException $e) {
+			return new DataResponse(['status' => 'error', 'data' => ['Internal server error']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+		return new DataResponse(['status' => 'success']);
 	}
 
 	/**
