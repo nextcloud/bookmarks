@@ -42,7 +42,7 @@
 					</ActionButton>
 				</template>
 			</AppNavigationItem>
-			<template v-if="Number(allBookmarksCount) > 0">
+			<template v-if="Number(bookmarksLimit) > 0">
 				<AppNavigationSpacer />
 				<AppNavigationItem :pinned="true" icon="icon-quota" :title="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
 					<ProgressBar :val="allBookmarksCount" :max="bookmarksLimit" />
