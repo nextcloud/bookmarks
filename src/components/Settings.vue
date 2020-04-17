@@ -5,7 +5,7 @@
 			size="5"
 			@change="onImportSubmit">
 		<button @click="onImportOpen">
-			<span class="icon-upload" />{{ t('bookmarks', 'Import') }}
+			<span :class="{'icon-upload': !importing, 'icon-loading-small': importing}" />{{ t('bookmarks', 'Import') }}
 		</button>
 		<button @click="onExport">
 			<span class="icon-download" /> {{ t('bookmarks', 'Export') }}
@@ -89,6 +89,11 @@ import { getRequestToken } from '@nextcloud/auth'
 export default {
 	name: 'Settings',
 	components: {},
+	data() {
+		return {
+			importing: false,
+		}
+	},
 	computed: {
 		oc_defaults() {
 			return window.oc_defaults
@@ -123,8 +128,14 @@ export default {
 		onImportOpen(e) {
 			e.target.previousElementSibling.click()
 		},
-		onImportSubmit(e) {
-			this.$store.dispatch(actions.IMPORT_BOOKMARKS, e.target.files[0])
+		async onImportSubmit(e) {
+			this.importing = true
+			try {
+				await this.$store.dispatch(actions.IMPORT_BOOKMARKS, e.target.files[0])
+				this.$router.push({ name: this.routes.HOME })
+			} finally {
+				this.importing = false
+			}
 		},
 		onExport() {
 			window.location
@@ -153,7 +164,7 @@ export default {
 				return
 			}
 			await this.$store.dispatch(actions.DELETE_BOOKMARKS)
-			this.$router.push({ name: this.routes.HOME })
+			await this.$router.push({ name: this.routes.HOME })
 		},
 	},
 }
