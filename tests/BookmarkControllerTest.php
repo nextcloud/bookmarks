@@ -22,6 +22,7 @@ use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
+use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\HtmlExporter;
 use OCA\Bookmarks\Service\HtmlImporter;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -137,6 +138,10 @@ class BookmarkControllerTest extends TestCase {
 	 * @var BookmarkService
 	 */
 	private $bookmarks;
+	/**
+	 * @var FolderService
+	 */
+	private $folders;
 
 	/**
 	 * @throws \OCP\AppFramework\QueryException
@@ -174,14 +179,14 @@ class BookmarkControllerTest extends TestCase {
 		$timeFactory = OC::$server->query(ITimeFactory::class);
 		$logger = OC::$server->getLogger();
 		$urlGenerator = OC::$server->query(IURLGenerator::class);
-		$htmlImporter = OC::$server->query(HtmlImporter::class);
 		$htmlExporter = OC::$server->query(HtmlExporter::class);
 		$this->authorizer = OC::$server->query(Authorizer::class);
+		$this->folders = OC::$server->query(FolderService::class);
 
-		$this->controller = new BookmarkController('bookmarks', $this->request, $this->userId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer, $this->bookmarks);
-		$this->otherController = new BookmarkController('bookmarks', $this->request, $this->otherUserId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer, $this->bookmarks);
+		$this->controller = new BookmarkController('bookmarks', $this->request, $this->userId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
+		$this->otherController = new BookmarkController('bookmarks', $this->request, $this->otherUserId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
 
-		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest, null, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlImporter, $htmlExporter, $this->authorizer, $this->bookmarks);
+		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest, null, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
 	}
 
 	/**
