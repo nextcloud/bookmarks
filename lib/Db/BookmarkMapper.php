@@ -314,7 +314,8 @@ class BookmarkMapper extends QBMapper {
 		}
 
 		$qb->groupBy(...Bookmark::$columns);
-		$qb->having($qb->expr()->eq($tagsCol, $qb->createPositionalParameter('')));
+		$qb->having($qb->expr()->eq($tagsCol, $qb->createPositionalParameter('', IQueryBuilder::PARAM_STR)));
+		$qb->orHaving($qb->expr()->isNull($tagsCol));
 
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 		return $this->findEntities($qb);
