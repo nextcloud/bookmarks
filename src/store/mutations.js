@@ -148,6 +148,7 @@ export default {
 		state.bookmarks = []
 		state.bookmarksById = {}
 		Vue.set(state.fetchState, 'page', 0)
+		Vue.set(state.fetchState, 'reachedEnd', false)
 	},
 	[mutations.SET_QUERY](state, query) {
 		state.bookmarks = []

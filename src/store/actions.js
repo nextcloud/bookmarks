@@ -249,9 +249,7 @@ export default {
 				}
 				commit(mutations.SET_NOTIFICATION, AppGlobal.methods.t('bookmarks', 'Import successful'))
 				dispatch(actions.COUNT_BOOKMARKS, -1)
-				dispatch(actions.FILTER_BY_FOLDER, '-1')
-				dispatch(actions.LOAD_TAGS)
-				return dispatch(actions.LOAD_FOLDERS)
+				return dispatch(actions.RELOAD_VIEW)
 			})
 			.catch(err => {
 				console.error(err)
@@ -273,9 +271,7 @@ export default {
 					throw new Error(response.data)
 				}
 				dispatch(actions.COUNT_BOOKMARKS, -1)
-				dispatch(actions.FILTER_BY_FOLDER, '-1')
-				dispatch(actions.LOAD_TAGS)
-				return dispatch(actions.LOAD_FOLDERS)
+				return dispatch(actions.RELOAD_VIEW)
 			})
 			.catch(err => {
 				console.error(err)
