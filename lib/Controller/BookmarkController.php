@@ -30,6 +30,8 @@ use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\ExportResponse;
 use OCA\Bookmarks\QueryParameters;
 use OCA\Bookmarks\Service\Authorizer;
+use OCA\Bookmarks\Service\BookmarkService;
+use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\HtmlExporter;
 use OCA\Bookmarks\Service\HtmlImporter;
 use OCP\AppFramework\ApiController;
@@ -101,11 +103,6 @@ class BookmarkController extends ApiController {
 	private $url;
 
 	/**
-	 * @var HtmlImporter
-	 */
-	private $htmlImporter;
-
-	/**
 	 * @var HtmlExporter
 	 */
 	private $htmlExporter;
@@ -125,12 +122,16 @@ class BookmarkController extends ApiController {
 	private $publicFolderMapper;
 	private $rootFolderId;
 	/**
-	 * @var \OCA\Bookmarks\Service\BookmarkService
+	 * @var BookmarkService
 	 */
 	private $bookmarks;
+	/**
+	 * @var FolderService
+	 */
+	private $folders;
 
 	public function __construct(
-		$appName, $request, $userId, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, ILogger $logger, IURLGenerator $url, HtmlImporter $htmlImporter, HtmlExporter $htmlExporter, Authorizer $authorizer, \OCA\Bookmarks\Service\BookmarkService $bookmarks
+		$appName, $request, $userId, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, ILogger $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders
 	) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
@@ -144,7 +145,6 @@ class BookmarkController extends ApiController {
 		$this->timeFactory = $timeFactory;
 		$this->logger = $logger;
 		$this->url = $url;
-		$this->htmlImporter = $htmlImporter;
 		$this->htmlExporter = $htmlExporter;
 		$this->authorizer = $authorizer;
 
@@ -152,6 +152,7 @@ class BookmarkController extends ApiController {
 			$this->authorizer->setUserId($this->userId);
 		}
 		$this->bookmarks = $bookmarks;
+		$this->folders = $folders;
 	}
 
 	/**
@@ -623,8 +624,8 @@ class BookmarkController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function importBookmark($folder = -1): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
+	public function importBookmark($folder = null): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folder ?? -1, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
 		}
 
@@ -642,10 +643,12 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => $result['errors']]);
 		}
 
-		$folder = $this->toInternalFolderId($folder);
+		if ($folder !== null) {
+			$folder = $this->toInternalFolderId($folder);
+		}
 
 		try {
-			$result = $this->htmlImporter->importFile($this->userId, $file, $folder);
+			$result = $this->folders->importFile($this->userId, $file, $folder);
 		} catch (UnauthorizedAccessError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized access'], Http::STATUS_FORBIDDEN);
 		} catch (DoesNotExistException $e) {
@@ -658,6 +661,8 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not import all bookmarks: User limit Exceeded'], Http::STATUS_BAD_REQUEST);
 		} catch (AlreadyExistsError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not import all bookmarks: Already exists'], Http::STATUS_BAD_REQUEST);
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Internal server error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		if (count($result['errors']) !== 0) {
 			$this->logger->warning(var_export($result['errors'], true), ['app' => 'bookmarks']);

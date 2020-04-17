@@ -7,14 +7,21 @@ namespace OCA\Bookmarks\Service;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
+use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolder;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Exception\AlreadyExistsError;
+use OCA\Bookmarks\Exception\HtmlParseError;
+use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
+use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\IGroupManager;
+use OCP\IL10N;
 use OCP\Share\IShare;
 
 class FolderService {
@@ -35,13 +42,21 @@ class FolderService {
 	 */
 	private $sharedFolderMapper;
 	/**
-	 * @var \OCA\Bookmarks\Db\PublicFolderMapper
+	 * @var PublicFolderMapper
 	 */
 	private $publicFolderMapper;
 	/**
-	 * @var \OCP\IGroupManager
+	 * @var IGroupManager
 	 */
 	private $groupManager;
+	/**
+	 * @var HtmlImporter
+	 */
+	private $htmlImporter;
+	/**
+	 * @var IL10N
+	 */
+	private $l10n;
 
 	/**
 	 * FolderService constructor.
@@ -50,16 +65,20 @@ class FolderService {
 	 * @param TreeMapper $treeMapper
 	 * @param ShareMapper $shareMapper
 	 * @param SharedFolderMapper $sharedFolderMapper
-	 * @param \OCA\Bookmarks\Db\PublicFolderMapper $publicFolderMapper
-	 * @param \OCP\IGroupManager $groupManager
+	 * @param PublicFolderMapper $publicFolderMapper
+	 * @param IGroupManager $groupManager
+	 * @param HtmlImporter $htmlImporter
+	 * @param IL10N $l10n
 	 */
-	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, \OCA\Bookmarks\Db\PublicFolderMapper $publicFolderMapper, \OCP\IGroupManager $groupManager) {
+	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, \OCA\Bookmarks\Service\HtmlImporter $htmlImporter, IL10N $l10n) {
 		$this->folderMapper = $folderMapper;
 		$this->treeMapper = $treeMapper;
 		$this->shareMapper = $shareMapper;
 		$this->sharedFolderMapper = $sharedFolderMapper;
 		$this->publicFolderMapper = $publicFolderMapper;
 		$this->groupManager = $groupManager;
+		$this->htmlImporter = $htmlImporter;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -85,7 +104,10 @@ class FolderService {
 		return $folder;
 	}
 
-	public function findShareByDescendantAndUser(Folder $folder, $userId): Share {
+	public function findShareByDescendantAndUser(Folder $folder, $userId): ?Share {
+		/**
+		 * @var $shares Share[]
+		 */
 		$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $userId);
 		foreach ($shares as $share) {
 			if ($share->getFolderId() === $folder->getId() || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $folder->getId())) {
@@ -291,5 +313,28 @@ class FolderService {
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$this->sharedFolderMapper->insert($sharedFolder);
 		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $rootFolder->getId());
+	}
+
+	/**
+	 * @param string $userId
+	 * @param $file
+	 * @param null $folder
+	 * @return array
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws AlreadyExistsError
+	 * @throws HtmlParseError
+	 * @throws UnauthorizedAccessError
+	 * @throws UserLimitExceededError
+	 */
+	public function importFile(string $userId, $file, $folder = null): array {
+		$importFolderId = $folder;
+		if ($folder === null) {
+			$rootFolder = $this->folderMapper->findRootFolder($userId);
+			$newFolder = $this->create($this->l10n->t('Imported bookmarks'), $rootFolder->getId());
+			$importFolderId = $newFolder->getId();
+		}
+		return $this->htmlImporter->importFile($userId, $file, $importFolderId);
 	}
 }
