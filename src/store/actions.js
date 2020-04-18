@@ -528,7 +528,7 @@ export default {
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_RECENT]({ dispatch, commit }, search) {
-		commit(mutations.SET_QUERY, { sortby: 'lastmodified' })
+		commit(mutations.SET_QUERY, { sortby: 'added' })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_SEARCH]({ dispatch, commit }, search) {
