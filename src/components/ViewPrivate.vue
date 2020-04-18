@@ -138,6 +138,7 @@ export default {
 <style>
 #app-content {
 	max-width: calc(100vw - 300px);
+	min-width: 0;
 }
 
 @media only screen and (max-width: 768px) {
