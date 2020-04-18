@@ -48,7 +48,7 @@
 				"
 				class="clear-data"
 				@click="onClearData">
-				<span class="icon-delete" />
+				<span :class="{'icon-delete': !deleting, 'icon-loading-small': deleting}" />
 				{{ t('bookmarks', 'Delete all bookmarks') }}
 			</button>
 		</label>
@@ -92,6 +92,7 @@ export default {
 	data() {
 		return {
 			importing: false,
+			deleting: false,
 		}
 	},
 	computed: {
@@ -163,8 +164,10 @@ export default {
 			) {
 				return
 			}
+			this.deleting = true
 			await this.$store.dispatch(actions.DELETE_BOOKMARKS)
 			await this.$router.push({ name: this.routes.HOME })
+			this.deleting = false
 		},
 	},
 }
