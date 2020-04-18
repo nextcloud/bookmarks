@@ -138,6 +138,10 @@ export default {
 	watch: {
 	},
 
+	mounted() {
+		this.onParticipantSearch('')
+	},
+
 	methods: {
 		onClose() {
 			this.$store.commit(mutations.SET_SIDEBAR, null)
