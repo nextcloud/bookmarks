@@ -240,12 +240,12 @@ export default {
 		return axios
 			.post(url(state, `/bookmark/import`), data)
 			.then(response => {
-				if (!response.data || !response.data.status === 'success') {
+				if (!response.data || response.data.status !== 'success') {
 					if (response.status === 413) {
 						throw new Error('Selected file is too large')
 					}
 					console.error('Failed to import bookmarks', response)
-					throw new Error(response.data)
+					throw new Error(Array.isArray(response.data.data) ? response.data.data.join('. ') : response.data.data)
 				}
 				commit(mutations.SET_NOTIFICATION, AppGlobal.methods.t('bookmarks', 'Import successful'))
 				dispatch(actions.COUNT_BOOKMARKS, -1)
@@ -255,7 +255,7 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', err.message)
+					err.message
 				)
 				throw err
 			})
