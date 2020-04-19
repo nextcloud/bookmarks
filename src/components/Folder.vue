@@ -164,8 +164,8 @@ export default {
 }
 
 .folder__icon.shared {
-	background-image: url('/svg/core/actions/share?color=ffffff'), url('/svg/core/filetypes/folder?color=0082c9');
-	background-size: 9px, cover !important;
+	background-image: var(--icon-share-fff), url('/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
+	background-size: 9px, cover, cover !important;
 }
 
 .folder--gridview .folder__icon.shared {
