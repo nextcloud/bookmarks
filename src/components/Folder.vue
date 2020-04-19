@@ -154,7 +154,7 @@ export default {
 	background-size: cover;
 	margin: 15px;
 	cursor: pointer;
-	background-image: url('/svg/core/filetypes/folder?color=0082c9');
+	background-image: url('/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
 	background-repeat: no-repeat;
 	background-position: center;
 }
