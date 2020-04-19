@@ -753,11 +753,7 @@ export default {
 			})
 			.catch(err => {
 				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to load public link of folder {folderId}', { folderId })
-				)
-				throw err
+				// Not sending a notification because we might just not have enough permissions to see this
 			})
 	},
 	[actions.CREATE_PUBLIC_LINK]({ commit, dispatch, state }, folderId) {

@@ -1,6 +1,6 @@
 <template>
 	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
-		<figure :class="{'folder__icon': true, 'shared': !isOwner && !isPublic }" @click="onSelect" />
+		<figure :class="{'folder__icon': true, 'shared': !isOwner && !isPublic || isSharedPublicly || isShared }" @click="onSelect" />
 		<template v-if="!renaming">
 			<h3
 				class="folder__title"
@@ -8,7 +8,18 @@
 				@click="onSelect">
 				{{ folder.title }}
 			</h3>
-			<UserBubble v-if="!isOwner && !isPublic" class="folder__owner" :user="folder.userId" />
+
+			<div class="folder__tags">
+				<div v-if="!isOwner && !isPublic" class="folder__tag">
+					{{ t('bookmarks', 'Shared by {user}', {user: folder.userId}) }}
+				</div>
+				<div v-if="isOwner && isShared" class="folder__tag">
+					{{ t('bookmarks','Shared privately') }}
+				</div>
+				<div v-if="isSharedPublicly" class="folder__tag">
+					{{ t('bookmarks', 'Public') }}
+				</div>
+			</div>
 			<Actions v-if="isEditable" class="folder__actions">
 				<ActionButton icon="icon-info" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
@@ -47,10 +58,12 @@ import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import { actions, mutations } from '../store/'
+import TagLine from './TagLine'
 
 export default {
 	name: 'Folder',
 	components: {
+		TagLine,
 		Actions,
 		ActionButton,
 		UserBubble,
@@ -81,9 +94,22 @@ export default {
 		isEditable() {
 			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
+		shares() {
+			return this.$store.getters.getSharesOfFolder(this.folder.id)
+		},
+		publicToken() {
+			return this.$store.getters.getTokenOfFolder(this.folder.id)
+		},
+		isShared() {
+			return Boolean(this.shares.length)
+		},
+		isSharedPublicly() {
+			return Boolean(this.publicToken)
+		},
 	},
 	created() {
 		this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
+		this.$store.dispatch(actions.LOAD_PUBLIC_LINK, this.folder.id)
 	},
 	methods: {
 		onDetails() {
@@ -169,8 +195,29 @@ export default {
 	margin-left: 15px;
 }
 
-.folder--gridview .folder__owner {
-	margin-bottom: 7px;
+.folder__tags {
+	font-size: 12px;
+	height: 24px;
+	line-height: 1;
+	overflow: hidden;
+	display: inline-block;
+	margin: 0 15px;
+}
+
+.folder--gridview .folder__tags {
+	position: absolute;
+	bottom: 47px;
+	left: 10px;
+	margin: 0;
+}
+
+.folder__tag {
+	display: inline-block;
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-pill);
+	padding: 5px 10px;
+	margin-right: 3px;
+	background-color: var(--color-primary-light);
 }
 
 .folder__actions {
