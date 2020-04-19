@@ -20,9 +20,6 @@ export default {
 	},
 	created() {},
 	methods: {
-		submit() {
-			this.$emit('create-bookmark', this.url)
-		},
 	},
 }
 </script>
