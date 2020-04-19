@@ -53,9 +53,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 
 class BookmarkController extends ApiController {
-	const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
-
-	private $userId;
+	private const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
 
 	/**
 	 * @var IL10N
@@ -63,19 +61,9 @@ class BookmarkController extends ApiController {
 	private $l10n;
 
 	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
-
-	/**
 	 * @var ILogger
 	 */
 	private $logger;
-
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
 
 	/**
 	 * @var BookmarkMapper
@@ -120,7 +108,9 @@ class BookmarkController extends ApiController {
 	 * @var PublicFolderMapper
 	 */
 	private $publicFolderMapper;
+
 	private $rootFolderId;
+
 	/**
 	 * @var BookmarkService
 	 */
@@ -131,10 +121,9 @@ class BookmarkController extends ApiController {
 	private $folders;
 
 	public function __construct(
-		$appName, $request, $userId, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, ILogger $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders
+		$appName, $request, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, ILogger $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders
 	) {
 		parent::__construct($appName, $request);
-		$this->userId = $userId;
 		$this->request = $request;
 		$this->l10n = $l10n;
 		$this->bookmarkMapper = $bookmarkMapper;
@@ -147,10 +136,6 @@ class BookmarkController extends ApiController {
 		$this->url = $url;
 		$this->htmlExporter = $htmlExporter;
 		$this->authorizer = $authorizer;
-
-		if ($this->userId !== null) {
-			$this->authorizer->setUserId($this->userId);
-		}
 		$this->bookmarks = $bookmarks;
 		$this->folders = $folders;
 	}
@@ -176,8 +161,8 @@ class BookmarkController extends ApiController {
 			return $this->rootFolderId;
 		}
 		try {
-			if ($this->userId !== null) {
-				$this->rootFolderId = $this->folderMapper->findRootFolder($this->userId)->getId();
+			if ($this->authorizer->getUserId() !== null) {
+				$this->rootFolderId = $this->folderMapper->findRootFolder($this->authorizer->getUserId())->getId();
 			}
 			if ($this->authorizer->getToken() !== null) {
 				/**

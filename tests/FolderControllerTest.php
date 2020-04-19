@@ -199,10 +199,10 @@ class FolderControllerTest extends TestCase {
 
 		$this->authorizer = OC::$server->query(Authorizer::class);
 
-		$this->controller = new FoldersController('bookmarks', $this->request, $this->userId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
-		$this->otherController = new FoldersController('bookmarks', $this->request, $this->otherUserId, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
-		$this->public = new FoldersController('bookmarks', $this->publicRequest, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
-		$this->noauth = new FoldersController('bookmarks', $this->request, null, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
+		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
+		$this->otherController = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
+		$this->public = new FoldersController('bookmarks', $this->publicRequest, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
+		$this->noauth = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
 	}
 
 	/**

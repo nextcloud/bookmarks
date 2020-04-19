@@ -12,10 +12,13 @@ class InternalFoldersController extends ApiController {
 	/** @var FoldersController */
 	private $controller;
 
-	public function __construct($appName, $request, $userId, FoldersController $controller) {
+	public function __construct($appName, $request, $userId, FoldersController $controller, \OCA\Bookmarks\Service\Authorizer $authorizer) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->controller = $controller;
+		if ($userId !== null) {
+			$authorizer->setUserId($userId);
+		}
 	}
 
 	/**

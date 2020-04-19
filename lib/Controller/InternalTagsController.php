@@ -8,7 +8,7 @@ use OCP\AppFramework\Http\JSONResponse;
 class InternalTagsController extends ApiController {
 	private $publicController;
 
-	public function __construct($appName, $request, $userId, TagsController $publicController) {
+	public function __construct($appName, $request, TagsController $publicController) {
 		parent::__construct($appName, $request);
 		$this->publicController = $publicController;
 	}

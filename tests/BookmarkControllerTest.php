@@ -183,10 +183,10 @@ class BookmarkControllerTest extends TestCase {
 		$this->authorizer = OC::$server->query(Authorizer::class);
 		$this->folders = OC::$server->query(FolderService::class);
 
-		$this->controller = new BookmarkController('bookmarks', $this->request, $this->userId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
-		$this->otherController = new BookmarkController('bookmarks', $this->request, $this->otherUserId, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
+		$this->controller = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
+		$this->otherController = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
 
-		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest, null, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
+		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest,  $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
 	}
 
 	/**

@@ -16,6 +16,7 @@ use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -40,12 +41,15 @@ class InternalBookmarkController extends ApiController {
 	private $bookmarks;
 
 	public function __construct(
-		$appName, $request, $userId, BookmarkController $publicController, BookmarkService $bookmarks
+		$appName, $request, $userId, BookmarkController $publicController, BookmarkService $bookmarks, Authorizer $authorizer
 	) {
 		parent::__construct($appName, $request);
 		$this->publicController = $publicController;
 		$this->userId = $userId;
 		$this->bookmarks = $bookmarks;
+		if ($this->userId !== null) {
+			$authorizer->setUserId($this->userId);
+		}
 	}
 
 	/**

@@ -66,7 +66,6 @@ class FoldersController extends ApiController {
 	 *
 	 * @param $appName
 	 * @param $request
-	 * @param $userId
 	 * @param FolderMapper $folderMapper
 	 * @param PublicFolderMapper $publicFolderMapper
 	 * @param SharedFolderMapper $sharedFolderMapper
@@ -76,9 +75,8 @@ class FoldersController extends ApiController {
 	 * @param HashManager $hashManager
 	 * @param FolderService $folders
 	 */
-	public function __construct($appName, $request, $userId, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, HashManager $hashManager, FolderService $folders) {
+	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, HashManager $hashManager, FolderService $folders) {
 		parent::__construct($appName, $request);
-		$this->userId = $userId;
 		$this->folderMapper = $folderMapper;
 		$this->publicFolderMapper = $publicFolderMapper;
 		$this->sharedFolderMapper = $sharedFolderMapper;
@@ -86,23 +84,19 @@ class FoldersController extends ApiController {
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
 		$this->hashManager = $hashManager;
-
-		if ($userId !== null) {
-			$this->authorizer->setUserId($userId);
-		}
 		$this->folders = $folders;
 	}
 
 	/**
 	 * @return int|null
 	 */
-	private function _getRootFolderId(): int {
+	private function _getRootFolderId(): ?int {
 		if ($this->rootFolderId !== null) {
 			return $this->rootFolderId;
 		}
 		try {
-			if ($this->userId !== null) {
-				$this->rootFolderId = $this->folderMapper->findRootFolder($this->userId)->getId();
+			if ($this->authorizer->getUserId() !== null) {
+				$this->rootFolderId = $this->folderMapper->findRootFolder($this->authorizer->getUserId())->getId();
 			}
 			if ($this->authorizer->getToken() !== null) {
 				/**
@@ -121,9 +115,9 @@ class FoldersController extends ApiController {
 
 	/**
 	 * @param int $external
-	 * @return int
+	 * @return int|null
 	 */
-	private function toInternalFolderId(int $external): int {
+	private function toInternalFolderId(int $external): ?int {
 		if ($external === -1) {
 			return $this->_getRootFolderId();
 		}
@@ -132,9 +126,9 @@ class FoldersController extends ApiController {
 
 	/**
 	 * @param int $internal
-	 * @return int
+	 * @return int|null
 	 */
-	private function toExternalFolderId(int $internal): int {
+	private function toExternalFolderId(int $internal): ?int {
 		if ($internal === $this->_getRootFolderId()) {
 			return -1;
 		}
