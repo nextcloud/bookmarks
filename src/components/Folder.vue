@@ -63,10 +63,8 @@ import TagLine from './TagLine'
 export default {
 	name: 'Folder',
 	components: {
-		TagLine,
 		Actions,
 		ActionButton,
-		UserBubble,
 	},
 	props: {
 		folder: {
