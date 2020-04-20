@@ -104,6 +104,11 @@ class FolderService {
 		return $folder;
 	}
 
+	/**
+	 * @param Folder $folder
+	 * @param $userId
+	 * @return Share|null
+	 */
 	public function findShareByDescendantAndUser(Folder $folder, $userId): ?Share {
 		/**
 		 * @var $shares Share[]

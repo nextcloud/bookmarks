@@ -238,6 +238,43 @@ class BookmarkService {
 	}
 
 	/**
+	 * @param $folderId
+	 * @param $bookmarkId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	public function removeFromFolder($folderId, $bookmarkId) {
+		$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
+	}
+
+	/**
+	 * @param $folderId
+	 * @param $bookmarkId
+	 * @throws AlreadyExistsError
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
+	 */
+	public function addToFolder($folderId, $bookmarkId) {
+		/**
+		 * @var $folder Folder
+		 */
+		$folder = $this->folderMapper->find($folderId);
+		/**
+		 * @var $bookmark Bookmark
+		 */
+		$bookmark = $this->bookmarkMapper->find($bookmarkId);
+		if ($folder->getUserId() === $bookmark->getUserId()) {
+			$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
+		}else{
+			$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $folder->getUserId(), [], [$folder->getId()]);
+		}
+	}
+
+	/**
 	 * @param $id
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException

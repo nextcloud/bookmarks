@@ -14,6 +14,7 @@ use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Service\Authorizer;
+use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\HashManager;
 use OCP\AppFramework\ApiController;
@@ -60,6 +61,10 @@ class FoldersController extends ApiController {
 	 * @var FolderService
 	 */
 	private $folders;
+	/**
+	 * @var BookmarkService
+	 */
+	private $bookmarks;
 
 	/**
 	 * FoldersController constructor.
@@ -74,8 +79,9 @@ class FoldersController extends ApiController {
 	 * @param Authorizer $authorizer
 	 * @param HashManager $hashManager
 	 * @param FolderService $folders
+	 * @param BookmarkService $bookmarks
 	 */
-	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, HashManager $hashManager, FolderService $folders) {
+	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, HashManager $hashManager, FolderService $folders, BookmarkService $bookmarks) {
 		parent::__construct($appName, $request);
 		$this->folderMapper = $folderMapper;
 		$this->publicFolderMapper = $publicFolderMapper;
@@ -85,6 +91,7 @@ class FoldersController extends ApiController {
 		$this->authorizer = $authorizer;
 		$this->hashManager = $hashManager;
 		$this->folders = $folders;
+		$this->bookmarks = $bookmarks;
 	}
 
 	/**
@@ -233,7 +240,7 @@ class FoldersController extends ApiController {
 		}
 		$folderId = $this->toInternalFolderId($folderId);
 		try {
-			$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
+			$this->bookmarks->addToFolder($folderId, $bookmarkId);
 		} catch (UnsupportedOperation $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_BAD_REQUEST);
 		}
@@ -258,7 +265,7 @@ class FoldersController extends ApiController {
 		}
 		try {
 			$folderId = $this->toInternalFolderId($folderId);
-			$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
+			$this->bookmarks->removeFromFolder($folderId, $bookmarkId);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {

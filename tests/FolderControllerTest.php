@@ -21,6 +21,7 @@ use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service\Authorizer;
+use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\HashManager;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -157,6 +158,11 @@ class FolderControllerTest extends TestCase {
 	 * @var FolderService
 	 */
 	private $folders;
+	/**
+	 * @var BookmarkService
+	 */
+	private $bookmarks;
+
 
 	/**
 	 * @throws QueryException
@@ -189,6 +195,7 @@ class FolderControllerTest extends TestCase {
 		$this->sharedFolderMapper = OC::$server->query(SharedFolderMapper::class);
 		$this->hashManager = OC::$server->query(HashManager::class);
 		$this->folders = OC::$server->query(FolderService::class);
+		$this->bookmarks = OC::$server->query(BookmarkService::class);
 		$this->groupManager = OC::$server->query(IGroupManager::class);
 
 		/** @var IUserManager */
@@ -199,10 +206,10 @@ class FolderControllerTest extends TestCase {
 
 		$this->authorizer = OC::$server->query(Authorizer::class);
 
-		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
-		$this->otherController = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
-		$this->public = new FoldersController('bookmarks', $this->publicRequest, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
-		$this->noauth = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders);
+		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks);
+		$this->otherController = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks);
+		$this->public = new FoldersController('bookmarks', $this->publicRequest, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks);
+		$this->noauth = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks);
 	}
 
 	/**
