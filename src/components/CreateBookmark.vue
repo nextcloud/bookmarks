@@ -17,12 +17,19 @@
 				{{ t('bookmarks', 'Create') }}
 			</ActionButton>
 		</Actions>
+		<Actions>
+			<ActionButton
+				icon="icon-close"
+				@click="cancel">
+				{{ t('bookmarks', 'Cancel') }}
+			</ActionButton>
+		</Actions>
 	</div>
 </template>
 <script>
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import { actions } from '../store/'
+import { actions, mutations } from '../store/'
 export default {
 	name: 'CreateBookmark',
 	components: { Actions, ActionButton },
@@ -45,6 +52,12 @@ export default {
 				url: this.url,
 				...(this.$route.name === this.$store.getters.getRoutes().FOLDER && { folders: [this.$route.params.folder] }),
 			})
+		},
+		cancel() {
+			this.$store.commit(
+				mutations.DISPLAY_NEW_BOOKMARK,
+				false
+			)
 		},
 	},
 }
