@@ -25,7 +25,7 @@
 					@search-change="onParticipantSearch" />
 			</div>
 			<div class="share">
-				<figure class="icon-public share__avatar" />
+				<figure :class="{'icon-public': true, 'share__avatar': true, active: publicLink }" />
 				<h3 class="share__title">
 					{{ t('bookmarks', 'Share link') }}
 				</h3>
@@ -221,6 +221,11 @@ export default {
 		flex-grow: 0;
 		height: 44px;
 		width: 44px;
+	}
+
+	.share__avatar.active {
+		background-color: var(--color-primary-light);
+		border-radius: 44px;
 	}
 
 	.share__title {
