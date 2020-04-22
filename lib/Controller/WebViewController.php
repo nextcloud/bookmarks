@@ -17,6 +17,8 @@ use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http\NotFoundResponse;
+use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IL10N;
@@ -78,7 +80,7 @@ class WebViewController extends Controller {
 
 	/**
 	 * @param string $token
-	 * @return TemplateResponse
+	 * @return Response
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -102,9 +104,9 @@ class WebViewController extends Controller {
 				$userName = $user->getDisplayName();
 			}
 		} catch (DoesNotExistException $e) {
-			// noop
+			return new NotFoundResponse();
 		} catch (MultipleObjectsReturnedException $e) {
-			// noop
+			return new NotFoundResponse();
 		}
 
 		$res = new PublicTemplateResponse($this->appName, 'main', []);
