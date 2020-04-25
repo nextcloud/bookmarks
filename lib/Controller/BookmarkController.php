@@ -633,7 +633,7 @@ class BookmarkController extends ApiController {
 		}
 
 		try {
-			$result = $this->folders->importFile($this->userId, $file, $folder);
+			$result = $this->folders->importFile($this->authorizer->getUserId(), $file, $folder);
 		} catch (UnauthorizedAccessError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized access'], Http::STATUS_FORBIDDEN);
 		} catch (DoesNotExistException $e) {
@@ -669,7 +669,7 @@ class BookmarkController extends ApiController {
 	 */
 	public function exportBookmark() {
 		try {
-			$data = $this->htmlExporter->exportFolder($this->userId, $this->_getRootFolderId());
+			$data = $this->htmlExporter->exportFolder($this->authorizer->getUserId(), $this->_getRootFolderId());
 		} catch (UnauthorizedAccessError $e) {
 			// Will probably never happen
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized access']);
