@@ -5,7 +5,12 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "Delete",
     "Save" : "Save",
+    "Cancel" : "Cancel",
+    "URL" : "Url",
     "Notes" : "Notes",
+    "Owner" : "Owner",
+    "Share link" : "Share link",
+    "Allow editing" : "Дазволіць рэдагаванне",
     "Select" : "Select",
     "Title" : "Title",
     "Link" : "Link"
