@@ -7,34 +7,34 @@ const appName = packageJson.name
 module.exports = {
 	entry: {
 		main: path.join(__dirname, 'src', 'main.js'),
-		admin: path.join(__dirname, 'src', 'admin.js')
+		admin: path.join(__dirname, 'src', 'admin.js'),
 	},
 	output: {
 		path: path.resolve(__dirname, './js'),
 		publicPath: '/js/',
 		filename: `${appName}.[name].js`,
-		chunkFilename: 'chunks/[name]-[hash].js'
+		chunkFilename: 'chunks/[name]-[hash].js',
 	},
 	module: {
 		rules: [
 			{
 				test: /\.css$/,
-				use: ['vue-style-loader', 'css-loader']
+				use: ['vue-style-loader', 'css-loader'],
 			},
 			{
 				test: /\.scss$/,
-				use: ['vue-style-loader', 'css-loader', 'sass-loader']
+				use: ['vue-style-loader', 'css-loader', 'sass-loader'],
 			},
 			{
 				test: /\.(js|vue)$/,
 				use: 'eslint-loader',
 				exclude: /node_modules/,
-				enforce: 'pre'
+				enforce: 'pre',
 			},
 			{
 				test: /\.vue$/,
 				loader: 'vue-loader',
-				exclude: /node_modules/
+				exclude: /node_modules/,
 			},
 			{
 				test: /\.js$/,
@@ -43,19 +43,19 @@ module.exports = {
 					loader: 'babel-loader',
 					options: {
 						presets: [['@babel/preset-env', {
-      targets: '> 0.25%, not dead',
-      useBuiltIns: "usage",
-    }]]
-					}
-				}
-			}
-		]
+							targets: '> 0.25%, not dead',
+							useBuiltIns: 'usage',
+						}]],
+					},
+				},
+			},
+		],
 	},
 	plugins: [
 		new VueLoaderPlugin(),
-		new StyleLintPlugin()
+		new StyleLintPlugin(),
 	],
 	resolve: {
-		extensions: ['*', '.js', '.vue']
-	}
+		extensions: ['*', '.js', '.vue'],
+	},
 }
