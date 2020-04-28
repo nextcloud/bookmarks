@@ -170,6 +170,9 @@ export default {
 		{ commit, dispatch, state },
 		{ bookmark, oldFolder, newFolder }
 	) {
+		if (oldFolder === newFolder) {
+			return
+		}
 		commit(mutations.FETCH_START, { type: 'moveBookmark' })
 		try {
 			const response = await axios.post(
