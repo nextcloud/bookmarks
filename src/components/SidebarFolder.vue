@@ -75,7 +75,7 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
 import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
 import { getCurrentUser } from '@nextcloud/auth'
-import { generateUrl } from '@nextcloud/router'
+import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import copy from 'copy-text-to-clipboard'
 import { actions, mutations } from '../store/'
@@ -158,7 +158,7 @@ export default {
 				return
 			}
 			this.isSearching = true
-			const { data: { ocs: { data, meta } } } = await axios.get(generateUrl(`/ocs/v1.php/apps/files_sharing/api/v1/sharees?format=json&itemType=folder&search=${searchTerm}&lookup=false&perPage=200&shareType[]=0&shareType[]=1`))
+			const { data: { ocs: { data, meta } } } = await axios.get(generateOcsUrl('apps/files_sharing/api/v1', 1) + `sharees?format=json&itemType=folder&search=${searchTerm}&lookup=false&perPage=200&shareType[]=0&shareType[]=1`)
 			if (meta.status !== 'ok') {
 				this.participantSearchResults = []
 				return
