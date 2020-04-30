@@ -293,7 +293,7 @@ class BookmarkController extends ApiController {
 				/**
 				 * @var $bookmark Bookmark
 				 */
-				$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $url);
+				$bookmark = $this->bookmarkMapper->findByUrl($this->authorizer->getUserId(), $url);
 			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 				return new DataResponse(['data' => [], 'status' => 'success']);
 			}

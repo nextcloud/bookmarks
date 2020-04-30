@@ -351,7 +351,7 @@ class FoldersController extends ApiController {
 		}
 		try {
 			$folderId = $this->toInternalFolderId($folderId);
-			$hash = $this->hashManager->hashFolder($this->userId, $folderId, $fields);
+			$hash = $this->hashManager->hashFolder($this->authorizer->userId(), $folderId, $fields);
 			return new JSONResponse(['status' => 'success', 'data' => $hash]);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
