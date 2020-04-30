@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2020-04-30
+
+### Changed
+ - UI: Selection: Implement "select all" and "cancel selection"
+ - Better document how the screeenly api url looks like
+ - Move UI: Automatically open current folder
+ - Implement bookmark counting endpoints and UI indicators
+ - Fix bookmark creation: Assign folders correctly
+ - Drop tables on uninstall
+ - Fix import and export
+ - Allow editing URLs
+ - Implement a full children endpoint
+ - Breadcrumbs: -AddBookmark button +Add Folder/Bookmark dropdown
+ - Don't enable scraping by default
+ - Drop libgmp dependency
+ - Major backend refactoring
+
+### Added
+ - Implement hash caching
+ - Implement private sharing and public links of folders
+
 
 ## [2.3.4] - 2019-12-12
 
@@ -127,7 +148,7 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX: Speed up findBookmarks SQL query
 
 
-
+[2.3.4]: https://github.com/nextcloud/bookmarks/compare/v2.3.4...v3.0.0
 [2.3.4]: https://github.com/nextcloud/bookmarks/compare/v2.3.3...v2.3.4
 [2.3.3]: https://github.com/nextcloud/bookmarks/compare/v2.3.2...v2.3.3
 [2.3.2]: https://github.com/nextcloud/bookmarks/compare/v2.3.1...v2.3.2
