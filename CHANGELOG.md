@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [3.0.5] - 2020-04-30
+
+## Changed
+ - Fix: Remove uninstall repair step which would also run on disabling the app
+- Fix bookmarklet
+
 ## [3.0.4] - 2020-04-30
 
 ## Changed
@@ -169,6 +175,8 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX: Speed up findBookmarks SQL query
 
 
+
+[3.0.5]: https://github.com/nextcloud/bookmarks/compare/v3.0.4...v3.0.5
 [3.0.4]: https://github.com/nextcloud/bookmarks/compare/v3.0.3...v3.0.4
 [3.0.3]: https://github.com/nextcloud/bookmarks/compare/v3.0.2...v3.0.3
 [3.0.2]: https://github.com/nextcloud/bookmarks/compare/v3.0.1...v3.0.2
