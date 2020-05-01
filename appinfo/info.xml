@@ -42,9 +42,6 @@ Requirements:
 		<admin-section>OCA\Bookmarks\Settings\AdminSection</admin-section>
 	</settings>
 	<repair-steps>
-		<uninstall>
-			<step>OCA\Bookmarks\Migration\UninstallRepairStep</step>
-		</uninstall>
 		<post-migration>
 			<step>OCA\Bookmarks\Migration\OrphanedSharesRepairStep</step>
 		</post-migration>
