@@ -17,7 +17,7 @@ Requirements:
    - mbstring: *
  - Nextcloud v17+
 ]]></description>
-	<version>3.0.3</version>
+	<version>3.0.4</version>
 	<licence>agpl</licence>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
@@ -45,5 +45,8 @@ Requirements:
 		<uninstall>
 			<step>OCA\Bookmarks\Migration\UninstallRepairStep</step>
 		</uninstall>
+		<post-migration>
+			<step>OCA\Bookmarks\Migration\OrphanedSharesRepairStep</step>
+		</post-migration>
 	</repair-steps>
 </info>
