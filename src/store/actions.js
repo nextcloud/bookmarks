@@ -107,64 +107,59 @@ export default {
 			throw err
 		}
 	},
-	[actions.CREATE_BOOKMARK]({ commit, dispatch, state }, data) {
+	async [actions.CREATE_BOOKMARK]({ commit, dispatch, state }, data) {
 		if (state.loading.bookmarks) return
 		commit(mutations.FETCH_START, { type: 'createBookmark' })
-		return axios
-			.post(url(state, '/bookmark'), {
+		try {
+			const response = await axios.post(url(state, '/bookmark'), {
 				url: data.url,
 				title: data.title,
 				description: data.description,
 				folders: data.folders && data.folders.map(parseInt),
 				tags: data.tags,
 			})
-			.then(response => {
-				const {
-					data: { item: bookmark, status },
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data.data.join('\n'))
-				}
-				commit(mutations.DISPLAY_NEW_BOOKMARK, false)
-				commit(mutations.ADD_BOOKMARK, bookmark)
-				commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: state.countsByFolder[-1] + 1 })
-				return dispatch(actions.OPEN_BOOKMARK, bookmark.id)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
-				)
-				throw err
-			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'createBookmark')
-			})
+			const {
+				data: { item: bookmark, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data.data.join('\n'))
+			}
+			commit(mutations.DISPLAY_NEW_BOOKMARK, false)
+			commit(mutations.ADD_BOOKMARK, bookmark)
+			commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: state.countsByFolder[-1] + 1 })
+			commit(mutations.FETCH_END, 'createBookmark')
+			return dispatch(actions.OPEN_BOOKMARK, bookmark.id)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'createBookmark')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
+			)
+			throw err
+		}
+
 	},
-	[actions.SAVE_BOOKMARK]({ commit, dispatch, state }, id) {
+	async [actions.SAVE_BOOKMARK]({ commit, dispatch, state }, id) {
 		commit(mutations.FETCH_START, { type: 'saveBookmark' })
-		return axios
-			.put(url(state, `/bookmark/${id}`), this.getters.getBookmark(id))
-			.then(response => {
-				const {
-					data: { status },
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to save bookmark')
-				)
-				throw err
-			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'saveBookmark')
-			})
+		try {
+			const response = await axios.put(url(state, `/bookmark/${id}`), this.getters.getBookmark(id))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.FETCH_END, 'saveBookmark')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'saveBookmark')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to save bookmark')
+			)
+			throw err
+		}
 	},
 	async [actions.MOVE_BOOKMARK](
 		{ commit, dispatch, state },
