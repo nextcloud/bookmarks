@@ -648,12 +648,8 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request))) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
-		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);
 		try {
-			foreach ($sharedFolders as $sharedFolder) {
-				$this->sharedFolderMapper->delete($sharedFolder);
-				$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
-			}
+			$this->folders->deleteShare($shareId);
 		} catch (UnsupportedOperation $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (DoesNotExistException $e) {
@@ -661,7 +657,6 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
-		$this->shareMapper->delete($share);
 		return new Http\DataResponse(['status' => 'success']);
 	}
 }

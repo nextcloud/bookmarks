@@ -166,6 +166,14 @@ class FolderService {
 
 		if ($userId === null || $userId === $folder->getUserId()) {
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+			$shares = $this->shareMapper->findByFolder($folderId);
+			foreach ($shares as $share) {
+				$this->deleteShare($share->getId());
+			}
+			$publicFolders = $this->publicFolderMapper->findByFolder($folderId);
+			foreach ($publicFolders as $publicFolder) {
+				$this->publicFolderMapper->delete($publicFolder);
+			}
 			return;
 		}
 
@@ -318,6 +326,22 @@ class FolderService {
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$this->sharedFolderMapper->insert($sharedFolder);
 		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $rootFolder->getId());
+	}
+
+	/**
+	 * @param $shareId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	public function deleteShare($shareId) {
+		$share = $this->shareMapper->find($shareId);
+		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);
+		foreach ($sharedFolders as $sharedFolder) {
+			$this->sharedFolderMapper->delete($sharedFolder);
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+		}
+		$this->shareMapper->delete($share);
 	}
 
 	/**
