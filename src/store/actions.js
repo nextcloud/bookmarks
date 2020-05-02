@@ -182,15 +182,15 @@ export default {
 			if (response2.data.status !== 'success') {
 				throw new Error(response2.data)
 			}
+			commit(mutations.FETCH_END, 'moveBookmark')
 		} catch (err) {
 			console.error(err)
+			commit(mutations.FETCH_END, 'moveBookmark')
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to move bookmark')
 			)
 			throw err
-		} finally {
-			commit(mutations.FETCH_END, 'moveBookmark')
 		}
 	},
 	[actions.OPEN_BOOKMARK]({ commit }, id) {
@@ -283,31 +283,29 @@ export default {
 
 	[actions.RENAME_TAG]({ commit, dispatch, state }, { oldName, newName }) {
 		commit(mutations.FETCH_START, { type: 'tag' })
-		return axios
-			.put(url(state, `/tag/${oldName}`), {
-				name: newName,
-			})
-			.then(response => {
-				const {
-					data: { status },
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-				commit(mutations.RENAME_TAG, { oldName, newName })
-				return dispatch(actions.LOAD_TAGS)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
-				)
-				throw err
-			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'tag')
-			})
+		try {
+			const response = axios
+				.put(url(state, `/tag/${oldName}`), {
+					name: newName,
+				})
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.RENAME_TAG, { oldName, newName })
+			commit(mutations.FETCH_END, 'tag')
+			return dispatch(actions.LOAD_TAGS)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'tag')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
+			)
+			throw err
+		}
 	},
 	[actions.LOAD_TAGS]({ commit, dispatch, state }) {
 		commit(mutations.FETCH_START, { type: 'tags' })
@@ -315,18 +313,17 @@ export default {
 			.get(url(state, '/tag'), { params: { count: true } })
 			.then(response => {
 				const { data: tags } = response
+				commit(mutations.FETCH_END, 'tags')
 				return commit(mutations.SET_TAGS, tags)
 			})
 			.catch(err => {
 				console.error(err)
+				commit(mutations.FETCH_END, 'tags')
 				commit(
 					mutations.SET_ERROR,
 					AppGlobal.methods.t('bookmarks', 'Failed to load tags')
 				)
 				throw err
-			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'tags')
 			})
 	},
 	[actions.DELETE_TAG]({ commit, dispatch, state }, tag) {
@@ -368,18 +365,17 @@ export default {
 				} = response
 				if (status !== 'success') throw new Error(data)
 				const folders = data
+				commit(mutations.FETCH_END, 'folders')
 				return commit(mutations.SET_FOLDERS, folders)
 			})
 			.catch(err => {
 				console.error(err)
+				commit(mutations.FETCH_END, 'folders')
 				commit(
 					mutations.SET_ERROR,
 					AppGlobal.methods.t('bookmarks', 'Failed to load folders')
 				)
 				throw err
-			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'folders')
 			})
 	},
 	[actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
@@ -446,17 +442,16 @@ export default {
 				if (status !== 'success') {
 					throw new Error(response.data)
 				}
+				commit(mutations.FETCH_END, 'saveFolder')
 			})
 			.catch(err => {
 				console.error(err)
+				commit(mutations.FETCH_END, 'saveFolder')
 				commit(
 					mutations.SET_ERROR,
 					AppGlobal.methods.t('bookmarks', 'Failed to create folder')
 				)
 				throw err
-			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'saveFolder')
 			})
 	},
 	[actions.OPEN_FOLDER_DETAILS]({ commit }, id) {
@@ -481,15 +476,15 @@ export default {
 					bookmark: bookmark.id,
 				})
 			}
+			commit(mutations.FETCH_END, 'moveSelection')
 		} catch (err) {
 			console.error(err)
+			commit(mutations.FETCH_END, 'moveSelection')
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to move parts of selection')
 			)
 			throw err
-		} finally {
-			commit(mutations.FETCH_END, 'moveSelection')
 		}
 	},
 	async [actions.DELETE_SELECTION]({ commit, dispatch, state }) {
@@ -502,15 +497,15 @@ export default {
 			for (const bookmark of state.selection.bookmarks) {
 				await dispatch(actions.DELETE_BOOKMARK, { id: bookmark.id })
 			}
+			commit(mutations.FETCH_END, 'deleteSelection')
 		} catch (err) {
 			console.error(err)
+			commit(mutations.FETCH_END, 'deleteSelection')
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete parts of selection')
 			)
 			throw err
-		} finally {
-			commit(mutations.FETCH_END, 'deleteSelection')
 		}
 	},
 
@@ -574,19 +569,17 @@ export default {
 				if (bookmarks.length < BATCH_SIZE) {
 					commit(mutations.REACHED_END)
 				}
+				commit(mutations.FETCH_END, 'bookmarks')
 				return dispatch(actions.ADD_ALL_BOOKMARKS, bookmarks)
 			})
 			.catch(err => {
 				console.error(err)
+				commit(mutations.FETCH_END, 'bookmarks')
 				commit(
 					mutations.SET_ERROR,
 					AppGlobal.t('bookmarks', 'Failed to fetch bookmarks.')
 				)
 				throw err
-			})
-			.finally(() => {
-				if (canceled) return
-				commit(mutations.FETCH_END, 'bookmarks')
 			})
 	},
 
