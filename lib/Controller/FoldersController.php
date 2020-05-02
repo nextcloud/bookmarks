@@ -152,8 +152,7 @@ class FoldersController extends ApiController {
 		if ($folder instanceof Folder) {
 			$returnFolder = $folder->toArray();
 			$parent = $this->treeMapper->findParentOf(TreeMapper::TYPE_FOLDER, $folder->getId());
-			$returnFolder['parent_folder'] = $parent->getId();
-			$returnFolder['parent_folder'] = $this->toExternalFolderId($returnFolder['parent_folder']);
+			$returnFolder['parent_folder'] = $this->toExternalFolderId($parent->getId());
 			return $returnFolder;
 		}
 		if ($folder instanceof SharedFolder) {
@@ -435,8 +434,14 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
-		$root = $this->toInternalFolderId($root);
-		$res = new JSONResponse(['status' => 'success', 'data' => $this->treeMapper->getSubFolders($root, $layers)]);
+		$internalRoot = $this->toInternalFolderId($root);
+		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers);
+		if ($root === -1 || $root === '-1') {
+			foreach($folders as $folder) {
+				$folder['parent_id'] = -1;
+			}
+		}
+		$res = new JSONResponse(['status' => 'success', 'data' => $folders]);
 		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
 		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
 		return $res;

@@ -564,18 +564,20 @@ class TreeMapper extends QBMapper {
 	 * @return array
 	 */
 	public function getSubFolders($folderId, $layers = 0): array {
-		$folders = array_map(function (Folder $folder) use ($layers) {
+		$folders = array_map(function (Folder $folder) use ($layers, $folderId) {
 			$array = $folder->toArray();
+			$array['parent_folder'] = $folderId;
 			if ($layers - 1 !== 0) {
 				$array['children'] = $this->getSubFolders($folder->getId(), $layers - 1);
 			}
 			return $array;
 		}, $this->findChildren(self::TYPE_FOLDER, $folderId));
-		$shares = array_map(function (SharedFolder $sharedFolder) use ($layers) {
+		$shares = array_map(function (SharedFolder $sharedFolder) use ($layers, $folderId) {
 			$share = $this->shareMapper->find($sharedFolder->getShareId());
 			$array = $sharedFolder->toArray();
 			$array['id'] = $share->getFolderId();
 			$array['userId'] = $share->getOwner();
+			$array['parent_folder'] = $folderId;
 			if ($layers - 1 !== 0) {
 				$array['children'] = $this->getSubFolders($share->getFolderId(), $layers - 1);
 			}
