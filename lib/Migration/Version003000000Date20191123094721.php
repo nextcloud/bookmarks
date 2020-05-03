@@ -175,53 +175,85 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 		$qb = $this->db->getQueryBuilder();
 		$qb->selectDistinct('user_id')->from('bookmarks');
 		$usersQuery = $qb->execute();
-		while ($user = $usersQuery->fetch()) {
-			// Create root folders
+		while ($user = $usersQuery->fetchColumn()) {
 			$qb = $this->db->getQueryBuilder();
-			$qb->insert('bookmarks_folders')->values([
-				'title' => $qb->createPositionalParameter(''),
-				'user_id' => $qb->createPositionalParameter($user['user_id']),
-			]);
-			$qb->execute();
-			$qb = $this->db->getQueryBuilder();
-			$rootFolderId = $this->db->lastInsertId();
-			$qb->insert('bookmarks_root_folders')->values([
-				'folder_id' => $qb->createPositionalParameter($rootFolderId),
-				'user_id' => $qb->createPositionalParameter($user['user_id']),
-			]);
-			$qb->execute();
+			$rootFolderId = $qb->select('folder_id')
+				->from('bookmarks_root_folders')
+				->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($user)))
+				->execute()
+				->fetchColumn();
+			if ($rootFolderId === false) {
+				// Create root folders
+				$qb = $this->db->getQueryBuilder();
+				$qb->insert('bookmarks_folders')->values([
+					'title' => $qb->createPositionalParameter(''),
+					'user_id' => $qb->createPositionalParameter($user),
+				]);
+				$qb->execute();
+				$qb = $this->db->getQueryBuilder();
+				$rootFolderId = $this->db->lastInsertId();
+				$qb->insert('bookmarks_root_folders')->values([
+					'folder_id' => $qb->createPositionalParameter($rootFolderId),
+					'user_id' => $qb->createPositionalParameter($user),
+				]);
+				$qb->execute();
+			}
 
 			$qb = $this->db->getQueryBuilder();
 			$qb->select('id', 'parent_folder', 'index')
 				->from('bookmarks_folders')
-				->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($user['user_id'])));
+				->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($user)));
 			$foldersQuery = $qb->execute();
 			while ($folder = $foldersQuery->fetch()) {
-				if ($folder['id'] === $rootFolderId) {
+				if ((string)$folder['id'] === (string)$rootFolderId || $folder['parent_folder'] === null) {
 					continue;
 				}
 				$qb = $this->db->getQueryBuilder();
-				$qb->insert('bookmarks_tree')->values([
-					'id' => $qb->createPositionalParameter($folder['id']),
-					'type' => $qb->createPositionalParameter('folder'),
-					'parent_folder' => $qb->createPositionalParameter(($folder['parent_folder'] === '-1' || $folder['parent_folder'] === -1) ? $rootFolderId : $folder['parent_folder']),
-					'index' => $qb->createPositionalParameter($folder['index']),
-				])->execute();
+				$folderId = $qb->select('id')
+					->from('bookmarks_tree')
+					->where(
+						$qb->expr()->eq('id', $qb->createPositionalParameter($folder['id'])),
+						$qb->expr()->eq('type', $qb->createPositionalParameter('folder'))
+					)
+					->execute()
+					->fetchColumn();
+				if ($folderId === false) {
+					$qb = $this->db->getQueryBuilder();
+					$qb->insert('bookmarks_tree')
+						->values([
+							'id' => $qb->createPositionalParameter($folder['id']),
+							'type' => $qb->createPositionalParameter('folder'),
+							'parent_folder' => $qb->createPositionalParameter(($folder['parent_folder'] === '-1' || $folder['parent_folder'] === -1) ? $rootFolderId : $folder['parent_folder']),
+							'index' => $qb->createPositionalParameter($folder['index']),
+						])->execute();
+				}
 			}
 			$qb = $this->db->getQueryBuilder();
-			$qb->select('bookmark_id', 'folder_id', 'index')
+			$qb->select('f.bookmark_id', 'f.folder_id', 'f.index')
 				->from('bookmarks_folders_bookmarks', 'f')
-				->join('f', 'bookmarks', 'b', $qb->expr()->eq('b.id', 'bookmark_id'))
-				->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($user['user_id'])));
+				->leftJoin('f', 'bookmarks', 'b', $qb->expr()->eq('b.id', 'f.bookmark_id'))
+				->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($user)));
 			$bookmarksQuery = $qb->execute();
 			while ($bookmark = $bookmarksQuery->fetch()) {
 				$qb = $this->db->getQueryBuilder();
-				$qb->insert('bookmarks_tree')->values([
-					'id' => $qb->createPositionalParameter($bookmark['bookmark_id']),
-					'type' => $qb->createPositionalParameter('bookmark'),
-					'parent_folder' => $qb->createPositionalParameter(($bookmark['folder_id'] === '-1' || $bookmark['folder_id'] === -1) ? $rootFolderId : $bookmark['folder_id']),
-					'index' => $qb->createPositionalParameter($bookmark['index']),
-				])->execute();
+				$bookmarkId = $qb->select('id')
+					->from('bookmarks_tree')
+					->where(
+						$qb->expr()->eq('id', $qb->createPositionalParameter($bookmark['bookmark_id'])),
+						$qb->expr()->eq('type', $qb->createPositionalParameter('bookmark')),
+						$qb->expr()->eq('parent_folder', $qb->createPositionalParameter($bookmark['folder_id']))
+					)
+					->execute()
+					->fetchColumn();
+				if ($bookmarkId === false) {
+					$qb = $this->db->getQueryBuilder();
+					$qb->insert('bookmarks_tree')->values([
+						'id' => $qb->createPositionalParameter($bookmark['bookmark_id']),
+						'type' => $qb->createPositionalParameter('bookmark'),
+						'parent_folder' => $qb->createPositionalParameter(($bookmark['folder_id'] === '-1' || $bookmark['folder_id'] === -1) ? $rootFolderId : $bookmark['folder_id']),
+						'index' => $qb->createPositionalParameter($bookmark['index']),
+					])->execute();
+				}
 			}
 		}
 	}
