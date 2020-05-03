@@ -229,7 +229,8 @@ class BookmarkMapper extends QBMapper {
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)));
+			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
 
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 
