@@ -1,6 +1,6 @@
 {
 	"name": "bookmarks",
-	"version": "3.0.6",
+	"version": "3.0.7",
 	"main": "js/index.js",
 	"scripts": {
 		"dev": "webpack --config webpack.dev.js",
