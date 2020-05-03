@@ -398,11 +398,11 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function newBookmark($url = '', $title = null, $description = '', $tags = [], $folders = []): JSONResponse {
-		$permissions = $this->authorizer->getPermissionsForFolder($this->_getRootFolderId(), $this->request);
+		$permissions = Authorizer::PERM_ALL;
 		foreach ($folders as $folder) {
 			$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->request);
 		}
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions)) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions) || $this->authorizer->getUserId() === null) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 
