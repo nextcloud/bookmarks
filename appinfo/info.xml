@@ -44,6 +44,8 @@ Requirements:
 	<repair-steps>
 		<post-migration>
 			<step>OCA\Bookmarks\Migration\OrphanedSharesRepairStep</step>
+			<step>OCA\Bookmarks\Migration\OrphanedTreeItemsRepairStep</step>
+			<step>OCA\Bookmarks\Migration\SuperfluousSharedFoldersRepairStep</step>
 		</post-migration>
 	</repair-steps>
 </info>

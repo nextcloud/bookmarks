@@ -297,6 +297,9 @@ class FolderService {
 		$this->shareMapper->insert($share);
 
 		if ($type === IShare::TYPE_USER) {
+			if ($participant === $folder->getUserId()) {
+				throw new UnsupportedOperation('Cannot share with oneself');
+			}
 			$this->_addSharedFolder($share, $folder, $participant);
 		} else if ($type === IShare::TYPE_GROUP) {
 			$group = $this->groupManager->get($participant);
@@ -305,6 +308,18 @@ class FolderService {
 			}
 			$users = $group->getUsers();
 			foreach ($users as $user) {
+				// If I'm part of the group, don't add it twice
+				if ($user->getUID() === $folder->getUserId()) {
+					continue;
+				}
+				// If this folder is already shared with the user, don't add it twice.
+				try {
+					$this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $user->getUID());
+					continue;
+				}catch (DoesNotExistException $e) {
+					// do nothing
+				}
+
 				$this->_addSharedFolder($share, $folder, $user->getUID());
 			}
 		}
