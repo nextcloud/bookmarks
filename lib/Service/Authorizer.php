@@ -86,6 +86,12 @@ class Authorizer {
 		if (strtolower($type) === 'bearer') {
 			$this->setToken($credentials);
 		}
+		if (isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+			if (false === $this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+				return;
+			}
+			$this->setUserId($this->userSession->getUser()->getUID());
+		}
 	}
 
 	public function setToken($token): void {
