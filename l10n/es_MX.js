@@ -31,6 +31,7 @@ OC.L10N.register(
     "Share link" : "Compartir liga",
     "Copy link" : "Copiar liga",
     "Allow editing" : "Permitir edición",
+    "Link copied" : "Vinculo copiado",
     "Select" : "Seleccionar",
     "Privacy" : "Privacidad",
     "Add a bookmark" : "Agregar un marcador",
