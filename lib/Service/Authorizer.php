@@ -76,13 +76,7 @@ class Authorizer {
 			return;
 		}
 		[$type, $credentials] = explode(' ', $auth);
-		if (strtolower($type) === 'basic') {
-			[$username, $password] = explode(':', base64_decode($credentials));
-			if (false === $this->userSession->login($username, $password)) {
-				return;
-			}
-			$this->setUserId($this->userSession->getUser()->getUID());
-		}
+
 		if (strtolower($type) === 'bearer') {
 			$this->setToken($credentials);
 		}
@@ -91,6 +85,13 @@ class Authorizer {
 				return;
 			}
 			$this->setUserId($this->userSession->getUser()->getUID());
+		} elseif (strtolower($type) === 'basic') {
+			[$username, $password] = explode(':', base64_decode($credentials));
+			if (false === $this->userSession->login($username, $password)) {
+				return;
+			}
+			$this->setUserId($this->userSession->getUser()->getUID());
+
 		}
 	}
 
