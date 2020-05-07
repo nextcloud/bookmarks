@@ -280,9 +280,12 @@ class BookmarkService {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function delete($id) {
+	public function delete($id): void {
 		$bookmark = $this->bookmarkMapper->find($id);
-		$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId());
+		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id);
+		foreach ($parents as $parent) {
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $parent->getId());
+		}
 	}
 
 	/**
