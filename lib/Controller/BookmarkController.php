@@ -669,6 +669,7 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function exportBookmark() {
+		$this->authorizer->setCredentials($this->request);
 		try {
 			$data = $this->htmlExporter->exportFolder($this->authorizer->getUserId(), $this->_getRootFolderId());
 		} catch (UnauthorizedAccessError $e) {
