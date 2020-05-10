@@ -1,6 +1,6 @@
 {
 	"require": {
-		"doctrine/inflector": "1.3.*",
+		"doctrine/inflector": "1.4.*",
 		"ext-dom": "*",
 		"ext-json": "*",
 		"ext-libxml": "*",
