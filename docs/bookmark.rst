@@ -281,3 +281,31 @@ Get a favicon
       Content-Type: image/png
 
       ... binary data ...
+
+Export all bookmarks
+====================
+
+.. get:: /public/rest/v2/bookmark/export
+
+   :synopsis: Export all bookmarks of the current user in a HTML file.
+
+   .. versionadded:: 0.11.0
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      GET /index.php/apps/bookmarks/public/rest/v2/bookmark/export HTTP/1.1
+      Host: example.com
+
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: text/html
+
+      <html>
+      ...
+
