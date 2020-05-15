@@ -162,9 +162,9 @@ class BookmarkMapper extends QBMapper {
 		$sqlSortColumn = $params->getSortBy('lastmodified', Bookmark::$columns);
 
 		if ($sqlSortColumn === 'title') {
-			$qb->orderBy($qb->createFunction('UPPER(`title`)'), 'ASC');
+			$qb->orderBy($qb->createFunction('UPPER(`b`.`title`)'), 'ASC');
 		} else {
-			$qb->orderBy($sqlSortColumn, 'DESC');
+			$qb->orderBy('b.'.$sqlSortColumn, 'DESC');
 		}
 
 		if ($params->getLimit() !== -1) {
