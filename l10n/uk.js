@@ -32,6 +32,7 @@ OC.L10N.register(
     "Link copied" : "Посилання скопійовано",
     "Select" : "Вибрати",
     "Privacy" : "Конфіденційність",
+    "Failed to save settings" : "Неможливо зберегти налаштування",
     "Add a bookmark" : "Додати закладку",
     "This URL is already bookmarked! Overwrite?" : "Цей URL вже є в закладках! Перезаписати?",
     "Title" : "Назва",
