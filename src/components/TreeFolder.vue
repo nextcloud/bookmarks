@@ -21,8 +21,8 @@
 	</div>
 </template>
 <script>
-import Actions from 'nextcloud-vue/dist/Components/Actions'
-import ActionButton from 'nextcloud-vue/dist/Components/ActionButton'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
 export default {
 	name: 'TreeFolder',
@@ -40,8 +40,19 @@ export default {
 	data() {
 		return { showChildren: false }
 	},
+	computed: {
+		openFolders() {
+			if (!this.$route.params.folder) {
+				return []
+			}
+			return this.$store.getters.getFolder(this.$route.params.folder).map(f => f.id)
+		},
+		isActiveFolder() {
+			return this.openFolders.includes(this.folder.id)
+		},
+	},
 	mounted() {
-		this.showChildren = this.showChildrenDefault
+		this.showChildren = this.showChildrenDefault || this.isActiveFolder
 	},
 }
 </script>

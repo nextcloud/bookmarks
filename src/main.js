@@ -20,7 +20,7 @@
  *
  */
 import Vue from 'vue'
-import Tooltip from 'nextcloud-vue/dist/Directives/Tooltip'
+import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
 import App from './App'
 import router from './router'
 import store from './store/'

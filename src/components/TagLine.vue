@@ -20,9 +20,6 @@ export default {
 	},
 	created() {},
 	methods: {
-		submit() {
-			this.$emit('create-bookmark', this.url)
-		},
 	},
 }
 </script>
@@ -47,6 +44,5 @@ export default {
 
 .tagline__tag:hover {
 	background-color: var(--color-background-dark);
-	cursor: pointer;
 }
 </style>

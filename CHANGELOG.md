@@ -1,8 +1,106 @@
+## [3.0.12] - 2020-05-08
 # Changelog
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## [3.0.13] - 2020-05-11
+
+## Changed
+- Fix export
+- Really drop libgmp dependency
+
+## Changed
+ - Fix bookmark deletion
+ - Fix v3 migration: Correctly account for duplicates in the root folder
+
+## [3.0.11] - 2020-05-07
+
+## Changed
+ - Fix Auth error for users of certain setups
+
+
+## [3.0.10] - 2020-05-05
+
+## Changed
+ - Fix Auth error when creating bookmarks without selecting a folder
+
+
+## [3.0.9] - 2020-05-05
+
+## Changed
+ - Change column type for tree index to allow **alot** of bookmarks.
+
+## [3.0.8] - 2020-05-04
+
+## Changed
+ - Fix Authorization for newBookmark API endpoint
+ - Try to fix Authentication for some setups
+ - Remove orphaned items from bookmarks tree
+ - Remove superfluous shared folders from bookmarks tree
+ - Fix share creation to avoid sharing a folder with oneself
+
+## [3.0.7] - 2020-05-03
+
+## Changed
+ - Fix delete-all-bookmarks API endpoint
+
+## [3.0.6] - 2020-05-03
+
+## Changed
+ - Fix bookmarks by folders API endpoint
+ - Fix v3 db migration to account for db inconsistencies
+ - Fix client-side usage of 'finally'
+ - Fix getFolders API endpoint
+
+## [3.0.5] - 2020-04-30
+
+## Changed
+ - Fix: Remove uninstall repair step which would also run on disabling the app
+- Fix bookmarklet
+
+## [3.0.4] - 2020-04-30
+
+## Changed
+ - Fix: Delete shares when deleting a shared folder
+ 
+## [3.0.3] - 2020-04-30
+
+## Changed
+ - Fix hash endpoint
+
+## [3.0.2] - 2020-04-30
+
+## Changed
+ - Fix sharee search for installations without mod_rewrite
+
+## [3.0.1] - 2020-04-30
+
+## Changed
+ - Fix hash endpoint
+
+## [3.0.0] - 2020-04-30
+
+### Changed
+ - UI: Selection: Implement "select all" and "cancel selection"
+ - Better document how the screeenly api url looks like
+ - Move UI: Automatically open current folder
+ - Implement bookmark counting endpoints and UI indicators
+ - Fix bookmark creation: Assign folders correctly
+ - Drop tables on uninstall
+ - Fix import and export
+ - Allow editing URLs
+ - Implement a full children endpoint
+ - Breadcrumbs: -AddBookmark button +Add Folder/Bookmark dropdown
+ - Don't enable scraping by default
+ - Drop libgmp dependency
+ - Major backend refactoring
+
+### Added
+ - Implement hash caching
+ - Implement private sharing and public links of folders
 
 
 ## [2.3.4] - 2019-12-12
@@ -29,92 +127,74 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - FIX: Load tags on app init
 
-## [2.3.0]
+## v2.3.0
 
-### Added
- - UI: Implement bulk editing
- - translations from transifex
- 
-### Changed
- - Fix overflow on bookmarks list
- - Fix sorting
- - Fix humanized duration: Use stem language only
+ - NEW: UI: Implement bulk editing
+ - NEW: translations from transifex
+ - FIX: overflow on bookmarks list
+ - FIX: sorting
+ - FIX: Fix humanized duration: Use stem language only
 
-## [2.2.0]
+## v2.2.0
 
-### Added
-- Use routes history mode instead of hash URLs
+- NEW: Use routes history mode instead of hash URLs
+- FIX: Sort folders alphabetically
+- FIX: Allow canceling page fetches
+- FIX: Import
+- UI: Fixgrid view, descriptions in list view & bread crumbs
 
-### Changed
-- Fix Sorting folders alphabetically
-- Fix Allow canceling page fetches
-- Fix Import
-- Fix grid view, descriptions in list view & bread crumbs
+## v2.1.1
 
-## [2.1.1]
+- FIX: Fix build script
 
-### Changed
-- Fix build script
+## v2.1.0
 
-## [v2.1.0]
+- NEW: Rewrite UI
+- NEW: Allow limiting the number of bookmarks per user
+- NEW: Allow disabling web requests to bookmarked web pages
 
-### Added
+## v2.0.3
 
-- Rewrite UI
-- Allow limiting the number of bookmarks per user
-- Allow disabling web requests to bookmarked web pages
-
-## [v2.0.3]
-
-### Changed
 - NEW: Properly specify dependencies in app manifest (allows conditional support for nc 15 again)
 
 Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl and mbstring php extensions installed
 
-## [2.0.2]
+## v2.0.2
 
-### Changed
-- Drop support for nextcloud 15
+- NEW: Drop support for nextcloud 15
 
-## [2.0.1]
+## v2.0.1
 
-### Changed
 - fix composer lock file
 
-## [2.0.0]
+## v2.0.0
 
-### Changed
-- gmp, intl, mbstring are now required
-- Drop support for nextcloud 14 and php 7.0
-- Switch URL normalizer to adhere strictly to WHATWG URL spec
+- NEW: gmp, intl, mbstring are now required
+- NEW: Drop support for nextcloud 14 and php 7.0
+- FIX: Switch URL normalizer to adhere strictly to WHATWG URL spec
 
-## [1.1.2]
-
-### Changed
+## v1.1.2
 
 - Revert breaking changes of v1.0.8
 
-## [1.1.1]
+## v1.1.1
 
-### Changed
-- Fix import from web UI
+- FIX import from web UI
 
-## [1.1.0]
+## v1.1.0
 
-### Added
+- NEW translations
 - NEW: API endpoint to import into a specific folder
 
-## [1.0.8]
+## v1.0.8
 
-### Changed
-- gmp, intl, mbstring are now required
+- NEW: gmp, intl, mbstring are now required
+- NEW translations
 - FIX: Switch URL normalizer to adhere strictly to WHATWG URL spec
 - FIX: Update dependencies
 - FIX: Run previews job in small batches instead of all at once
 
-## [1.0.6]
-
-### Changed
+## v1.0.6
 
 - FIX: Set timeout for submitting tags
 - NEW: Create favicon
@@ -127,7 +207,20 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX: Speed up findBookmarks SQL query
 
 
-
+[3.0.13]: https://github.com/nextcloud/bookmarks/compare/v3.0.12...v3.0.13
+[3.0.12]: https://github.com/nextcloud/bookmarks/compare/v3.0.11...v3.0.12
+[3.0.11]: https://github.com/nextcloud/bookmarks/compare/v3.0.10...v3.0.11
+[3.0.10]: https://github.com/nextcloud/bookmarks/compare/v3.0.9...v3.0.10
+[3.0.9]: https://github.com/nextcloud/bookmarks/compare/v3.0.8...v3.0.9
+[3.0.8]: https://github.com/nextcloud/bookmarks/compare/v3.0.7...v3.0.8
+[3.0.7]: https://github.com/nextcloud/bookmarks/compare/v3.0.6...v3.0.7
+[3.0.6]: https://github.com/nextcloud/bookmarks/compare/v3.0.5...v3.0.6
+[3.0.5]: https://github.com/nextcloud/bookmarks/compare/v3.0.4...v3.0.5
+[3.0.4]: https://github.com/nextcloud/bookmarks/compare/v3.0.3...v3.0.4
+[3.0.3]: https://github.com/nextcloud/bookmarks/compare/v3.0.2...v3.0.3
+[3.0.2]: https://github.com/nextcloud/bookmarks/compare/v3.0.1...v3.0.2
+[3.0.1]: https://github.com/nextcloud/bookmarks/compare/v3.0.0...v3.0.1
+[3.0.0]: https://github.com/nextcloud/bookmarks/compare/v2.3.4...v3.0.0
 [2.3.4]: https://github.com/nextcloud/bookmarks/compare/v2.3.3...v2.3.4
 [2.3.3]: https://github.com/nextcloud/bookmarks/compare/v2.3.2...v2.3.3
 [2.3.2]: https://github.com/nextcloud/bookmarks/compare/v2.3.1...v2.3.2

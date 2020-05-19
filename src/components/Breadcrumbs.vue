@@ -1,9 +1,9 @@
 <template>
-	<div class="breadcrumbs">
+	<div :class="['breadcrumbs', isPublic && 'wide']">
 		<div class="breadcrumbs__path">
-			<a class="icon-home" @click="onSelectHome" />
+			<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
 			<span class="icon-breadcrumb" />
-			<template v-if="$route.name === 'folder'">
+			<template v-if="$route.name === routes.FOLDER">
 				<template v-for="folder in folderPath">
 					<a
 						:key="'a' + folder.id"
@@ -12,7 +12,7 @@
 					<span :key="'b' + folder.id" class="icon-breadcrumb" />
 				</template>
 			</template>
-			<template v-if="$route.name === 'tags'">
+			<template v-if="$route.name === routes.TAGS">
 				<span class="icon-tag" />
 				<Multiselect
 					class="breadcrumbs__tags"
@@ -24,13 +24,22 @@
 					:placeholder="t('bookmarks', 'Select one or more tags')"
 					@input="onTagsChange" />
 			</template>
-			<Actions>
+			<Actions
+				v-if="($route.name === routes.FOLDER || $route.name === routes.HOME) && !isPublic"
+				class="breadcrumbs__AddFolder"
+				icon="icon-add">
 				<ActionButton
-					v-if="$route.name === 'folder' || $route.name === 'home'"
-					v-tooltip="t('bookmarks', 'New folder')"
-					icon="icon-add"
-					class="breadcrumbs__AddFolder"
-					@click="onAddFolder" />
+					icon="icon-link"
+					@click="onAddBookmark">
+					{{
+						t('bookmarks', 'New bookmark')
+					}}
+				</ActionButton>
+				<ActionButton
+					icon="icon-folder"
+					@click="onAddFolder">
+					{{ t('bookmarks', 'New folder') }}
+				</ActionButton>
 			</Actions>
 		</div>
 		<div class="breadcrumbs__controls">
@@ -60,16 +69,22 @@
 					<ActionButton icon="icon-delete" @click="onBulkDelete">
 						{{ t('bookmarks', 'Delete selection') }}
 					</ActionButton>
+					<ActionButton icon="icon-checkmark" @click="onSelectVisible">
+						{{ t('bookmarks', 'Select all visible') }}
+					</ActionButton>
+					<ActionButton icon="icon-close" @click="onCancelSelection">
+						{{ t('bookmarks', 'Cancel selection') }}
+					</ActionButton>
 				</Actions>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-import Multiselect from 'nextcloud-vue/dist/Components/Multiselect'
-import Actions from 'nextcloud-vue/dist/Components/Actions'
-import ActionButton from 'nextcloud-vue/dist/Components/ActionButton'
-import { mutations, actions } from '../store/'
+import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { actions, mutations } from '../store/'
 
 export default {
 	name: 'Breadcrumbs',
@@ -104,20 +119,26 @@ export default {
 	created() {},
 	methods: {
 		onSelectHome() {
-			this.$router.push({ name: 'home' })
+			this.$router.push({ name: this.routes.HOME })
 		},
 		onTagsChange(tags) {
-			this.$router.push({ name: 'tags', params: { tags: tags.join(',') } })
+			this.$router.push({ name: this.routes.TAGS, params: { tags: tags.join(',') } })
 		},
 
 		onSelectFolder(folder) {
-			this.$router.push({ name: 'folder', params: { folder } })
+			this.$router.push({ name: this.routes.FOLDER, params: { folder } })
 		},
 
 		onAddFolder() {
 			this.$store.commit(
 				mutations.DISPLAY_NEW_FOLDER,
 				!this.$store.state.displayNewFolder
+			)
+		},
+		onAddBookmark() {
+			this.$store.commit(
+				mutations.DISPLAY_NEW_BOOKMARK,
+				!this.$store.state.displayNewBookmark
 			)
 		},
 
@@ -135,6 +156,14 @@ export default {
 		onBulkMove() {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
+		onCancelSelection() {
+			this.$store.commit(mutations.RESET_SELECTION)
+		},
+		onSelectVisible() {
+			this.$store.state.bookmarks.forEach(bookmark => {
+				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, bookmark)
+			})
+		},
 	},
 }
 </script>
@@ -148,11 +177,16 @@ export default {
 	right: 0;
 	left: 300px;
 }
-@media only screen and (max-width: 768px) {
+
+@media only screen and (max-width: 1024px) {
 	.breadcrumbs {
 		padding-left: 52px;
 		left: 0;
 	}
+}
+.breadcrumbs.wide {
+	padding: 2px 8px;
+	left: 0;
 }
 
 .breadcrumbs + * {
@@ -194,6 +228,8 @@ export default {
 
 .breadcrumbs__AddFolder {
 	margin-left: 5px;
+	padding: 0;
+	margin-top: -10px;
 }
 
 .breadcrumbs__controls {

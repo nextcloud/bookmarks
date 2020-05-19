@@ -1,0 +1,25 @@
+OC.L10N.register(
+    "bookmarks",
+    {
+    "Details" : "Detalhs",
+    "Rename" : "Renomenar",
+    "Move" : "Move",
+    "Delete" : "Suprimir",
+    "Save" : "Salvar",
+    "New folder" : "Novèl dorsièr",
+    "Create" : "Crear",
+    "Cancel" : "Anullar",
+    "Import" : "Importar",
+    "Export" : "Exportar",
+    "URL" : "URL",
+    "Notes" : "Nòtas",
+    "Sharing" : "Partiment",
+    "Owner" : "Owner",
+    "Share link" : "Partejar lo ligam",
+    "Copy link" : "Copiar lo ligam",
+    "Allow editing" : "Permetre la modificacion",
+    "Select" : "Select",
+    "Title" : "Títol",
+    "Link" : "Ligam"
+},
+"nplurals=2; plural=(n > 1);");

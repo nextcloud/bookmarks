@@ -23,6 +23,7 @@
 				<input
 					v-model="settings['previews.screenly.url']"
 					type="text"
+					placeholder="https://screeenly.example.com/api/v1/fullsize"
 					@input="onChange"></label>
 		</p>
 		<p>

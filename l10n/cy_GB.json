@@ -1,0 +1,26 @@
+{ "translations": {
+    "Details" : "Manylion",
+    "Rename" : "Ailenwi",
+    "Move" : "Symud",
+    "Delete" : "Dileu",
+    "Save" : "Cadw",
+    "New folder" : "Ffolder newydd",
+    "Grid view" : "Golwg grid",
+    "List view" : "Golwg rhestr",
+    "Create" : "Creu",
+    "Cancel" : "Diddymu",
+    "Import" : "Mewnforio",
+    "Export" : "Allforio",
+    "Recently added" : "Ychwanegwyd yn ddiweddar",
+    "Last modified" : "Newidiwyd diwethaf",
+    "URL" : "URL",
+    "Tags" : "Tagiau",
+    "Notes" : "Nodiadau",
+    "Owner" : "Owner",
+    "Share link" : "Rhannu dolen",
+    "Copy link" : "Copïo dolen",
+    "Select" : "Select",
+    "Title" : "Teitl",
+    "Link" : "Dolen"
+},"pluralForm" :"nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;"
+}

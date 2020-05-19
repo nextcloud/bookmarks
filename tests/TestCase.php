@@ -24,13 +24,27 @@
 
 namespace OCA\Bookmarks\Tests;
 
+use PHPUnit\Framework;
 
-class TestCase extends \Test\TestCase {
-	protected function fetchMock($className) {
-		if(is_callable([$this, 'createMock'])) {
-			return $this->createMock($className);
-		} else {
-			return $this->getMock($className);
-		}
+
+class TestCase extends Framework\TestCase {
+	protected function cleanUp(): void {
+		parent::setUp();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tags');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_root_folders');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_folders_public');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_tree');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_shares');
+		$query->execute();
+		$query = \OC_DB::prepare('DELETE FROM *PREFIX*bookmarks_shared_folders');
+		$query->execute();
 	}
 }

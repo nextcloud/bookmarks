@@ -1,6 +1,6 @@
 <template>
 	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
-		<figure class="folder__icon icon-folder" @click="onSelect" />
+		<figure :class="{'folder__icon': true, 'shared': !isOwner && !isPublic || isSharedPublicly || isShared }" @click="onSelect" />
 		<template v-if="!renaming">
 			<h3
 				class="folder__title"
@@ -8,7 +8,22 @@
 				@click="onSelect">
 				{{ folder.title }}
 			</h3>
-			<Actions class="folder__actions">
+
+			<div class="folder__tags">
+				<div v-if="!isOwner && !isPublic" class="folder__tag">
+					{{ t('bookmarks', 'Shared by {user}', {user: folder.userId}) }}
+				</div>
+				<div v-if="isOwner && isShared" class="folder__tag">
+					{{ t('bookmarks','Shared privately') }}
+				</div>
+				<div v-if="isSharedPublicly" class="folder__tag">
+					{{ t('bookmarks', 'Public') }}
+				</div>
+			</div>
+			<Actions v-if="isEditable" class="folder__actions">
+				<ActionButton icon="icon-info" @click="onDetails">
+					{{ t('bookmarks', 'Details') }}
+				</ActionButton>
 				<ActionButton icon="icon-rename" @click="onRename">
 					{{ t('bookmarks', 'Rename') }}
 				</ActionButton>
@@ -38,8 +53,9 @@
 </template>
 <script>
 import Vue from 'vue'
-import Actions from 'nextcloud-vue/dist/Components/Actions'
-import ActionButton from 'nextcloud-vue/dist/Components/ActionButton'
+import { getCurrentUser } from '@nextcloud/auth'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import { actions, mutations } from '../store/'
 
 export default {
@@ -61,9 +77,40 @@ export default {
 		viewMode() {
 			return this.$store.state.viewMode
 		},
+		currentUser() {
+			return getCurrentUser().uid
+		},
+		isOwner() {
+			const currentUser = getCurrentUser()
+			return currentUser && this.folder.userId === currentUser.uid
+		},
+		permissions() {
+			return this.$store.getters.getPermissionsForFolder(this.folder.id)
+		},
+		isEditable() {
+			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
+		},
+		shares() {
+			return this.$store.getters.getSharesOfFolder(this.folder.id)
+		},
+		publicToken() {
+			return this.$store.getters.getTokenOfFolder(this.folder.id)
+		},
+		isShared() {
+			return Boolean(this.shares.length)
+		},
+		isSharedPublicly() {
+			return Boolean(this.publicToken)
+		},
 	},
-	created() {},
+	created() {
+		this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
+		this.$store.dispatch(actions.LOAD_PUBLIC_LINK, this.folder.id)
+	},
 	methods: {
+		onDetails() {
+			this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
+		},
 		onDelete() {
 			this.$store.dispatch(actions.DELETE_FOLDER, this.folder.id)
 		},
@@ -73,7 +120,7 @@ export default {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
 		onSelect() {
-			this.$router.push({ name: 'folder', params: { folder: this.folder.id } })
+			this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
 		},
 		async onRename() {
 			this.renaming = true
@@ -101,12 +148,24 @@ export default {
 }
 
 .folder__icon {
-	flex: 0;
+	flex-grow: 0;
 	height: 20px;
 	width: 20px;
 	background-size: cover;
 	margin: 15px;
 	cursor: pointer;
+	background-image: url('/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.folder__icon.shared {
+	background-image: var(--icon-share-fff), url('/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
+	background-size: 9px, cover, cover !important;
+}
+
+.folder--gridview .folder__icon.shared {
+	background-size: 30px, cover !important;
 }
 
 .folder--gridview .folder__icon {
@@ -119,7 +178,6 @@ export default {
 }
 
 .folder__title {
-	display: flex;
 	flex: 1;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -131,6 +189,31 @@ export default {
 
 .folder--gridview .folder__title {
 	margin-left: 15px;
+}
+
+.folder__tags {
+	font-size: 12px;
+	height: 24px;
+	line-height: 1;
+	overflow: hidden;
+	display: inline-block;
+	margin: 0 15px;
+}
+
+.folder--gridview .folder__tags {
+	position: absolute;
+	bottom: 47px;
+	left: 10px;
+	margin: 0;
+}
+
+.folder__tag {
+	display: inline-block;
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-pill);
+	padding: 5px 10px;
+	margin-right: 3px;
+	background-color: var(--color-primary-light);
 }
 
 .folder__actions {

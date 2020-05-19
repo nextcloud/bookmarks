@@ -8,11 +8,11 @@
 		:style="{
 			background:
 				viewMode === 'grid'
-					? `linear-gradient(0deg,	var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
+					? `linear-gradient(0deg, var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
 					: undefined
 		}">
 		<template v-if="!renaming">
-			<div class="bookmark__checkbox">
+			<div v-if="isEditable" class="bookmark__checkbox">
 				<input v-model="selected" class="checkbox" type="checkbox"><label
 					:aria-label="t('bookmarks', 'Select bookmark')"
 					@click="clickSelect" />
@@ -33,7 +33,7 @@
 					{{ bookmark.description }}</span>
 			</div>
 			<TagLine :tags="bookmark.tags" />
-			<Actions class="bookmark__actions">
+			<Actions v-if="isEditable" class="bookmark__actions">
 				<ActionButton icon="icon-info" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
 				</ActionButton>
@@ -68,9 +68,10 @@
 </template>
 <script>
 import Vue from 'vue'
-import Actions from 'nextcloud-vue/dist/Components/Actions'
-import ActionButton from 'nextcloud-vue/dist/Components/ActionButton'
-import { generateUrl } from 'nextcloud-router'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { getCurrentUser } from '@nextcloud/auth'
+import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/'
 import TagLine from './TagLine'
 
@@ -88,18 +89,24 @@ export default {
 		},
 	},
 	data() {
-		return { title: this.bookmark.title, renaming: false, selected: false }
+		return {
+			title: this.bookmark.title,
+			renaming: false,
+		}
 	},
 	computed: {
+		apiUrl() {
+			if (this.isPublic) {
+				return generateUrl('/apps/bookmarks/public/rest/v2')
+			}
+			return generateUrl('/apps/bookmarks')
+		},
 		iconUrl() {
-			return generateUrl(
-				'/apps/bookmarks/bookmark/' + this.bookmark.id + '/favicon'
-			)
+			return this.apiUrl + '/bookmark/' + this.bookmark.id + '/favicon' + (this.$store.state.public ? '?token=' + this.$store.state.authToken : '')
 		},
 		imageUrl() {
-			return generateUrl(
-				'/apps/bookmarks/bookmark/' + this.bookmark.id + '/image'
-			)
+			return this.apiUrl + '/bookmark/' + this.bookmark.id + '/image' + (this.$store.state.public ? '?token=' + this.$store.state.authToken : '')
+
 		},
 		url() {
 			return this.bookmark.url
@@ -113,14 +120,21 @@ export default {
 		viewMode() {
 			return this.$store.state.viewMode
 		},
-	},
-	watch: {
-		selected(val, oldVal) {
-			if (val) {
-				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
-			} else {
-				this.$store.commit(mutations.REMOVE_SELECTION_BOOKMARK, this.bookmark)
-			}
+		isOwner() {
+			const currentUser = getCurrentUser()
+			return currentUser && this.bookmark.userId === currentUser.uid
+		},
+		permissions() {
+			return this.$store.getters.getPermissionsForBookmark(this.bookmark.id)
+		},
+		isEditable() {
+			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
+		},
+		selectedBookmarks() {
+			return this.$store.state.selection.bookmarks
+		},
+		selected() {
+			return this.selectedBookmarks.map(b => b.id).includes(this.bookmark.id)
 		},
 	},
 	created() {},
@@ -150,7 +164,11 @@ export default {
 			this.renaming = false
 		},
 		clickSelect() {
-			this.selected = !this.selected
+			if (!this.selected) {
+				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
+			} else {
+				this.$store.commit(mutations.REMOVE_SELECTION_BOOKMARK, this.bookmark)
+			}
 		},
 	},
 }

@@ -1,0 +1,28 @@
+OC.L10N.register(
+    "bookmarks",
+    {
+    "Details" : "Detalios",
+    "Rename" : "Renominar",
+    "Move" : "Mover",
+    "Delete" : "Deler",
+    "Save" : "Salveguardar",
+    "New folder" : "Nove dossier",
+    "Create" : "Crear",
+    "Cancel" : "Cancellar",
+    "Public" : "Public",
+    "Import" : "Importar",
+    "Export" : "Exportar",
+    "Alphabetically" : "Alphabeticamente",
+    "URL" : "URL",
+    "Tags" : "Etiquettas",
+    "Notes" : "Notas",
+    "Sharing" : "Compartente",
+    "Owner" : "Owner",
+    "Share link" : "Compartir ligamine",
+    "Copy link" : "Copiar ligamine",
+    "Allow editing" : "Permitter modificar",
+    "Select" : "Selectionar",
+    "Title" : "Titulo",
+    "Link" : "Ligamine"
+},
+"nplurals=2; plural=(n != 1);");
