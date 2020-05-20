@@ -165,7 +165,7 @@ export default {
 		{ commit, dispatch, state },
 		{ bookmark, oldFolder, newFolder }
 	) {
-		if (oldFolder === newFolder) {
+		if (Number(oldFolder) === Number(newFolder)) {
 			return
 		}
 		commit(mutations.FETCH_START, { type: 'moveBookmark' })

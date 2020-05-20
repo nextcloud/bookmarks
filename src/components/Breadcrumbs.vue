@@ -54,13 +54,9 @@
 					{{ viewMode === 'list' ? t('bookmarks', 'Grid view') : t('bookmarks', 'List view') }}
 				</ActionButton>
 			</Actions>
-			<div v-if="selection.length" class="breadcrumbs__bulkediting">
+			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
 				{{
-					n('bookmarks',
-						'Selected %n bookmark',
-						'Selected %n bookmarks',
-						selection.length
-					)
+					selectionDescription
 				}}
 				<Actions>
 					<ActionButton icon="icon-category-files" @click="onBulkMove">
@@ -112,8 +108,31 @@ export default {
 		viewMode() {
 			return this.$store.state.viewMode
 		},
-		selection() {
-			return this.$store.state.selection.bookmarks
+		hasSelection() {
+			return this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length
+		},
+		selectionDescription() {
+			if (this.$store.state.selection.bookmarks.length !== 0 && this.$store.state.selection.folders.length !== 0) {
+				return this.t('bookmarks',
+					'Selected {folders} folders and {bookmarks} bookmarks',
+					{ folders: this.$store.state.selection.folders.length, bookmarks: this.$store.state.selection.bookmarks.length }
+				)
+			}
+			if (this.$store.state.selection.bookmarks.length !== 0) {
+				return this.n('bookmarks',
+					'Selected %n bookmark',
+					'Selected %n bookmarks',
+					this.$store.state.selection.bookmarks.length
+				)
+			}
+			if (this.$store.state.selection.folders.length !== 0) {
+				return this.n('bookmarks',
+					'Selected %n folder',
+					'Selected %n folders',
+					this.$store.state.selection.folders.length
+				)
+			}
+			return ''
 		},
 	},
 	created() {},

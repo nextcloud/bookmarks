@@ -1,5 +1,10 @@
 <template>
-	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid'}">
+	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected,}">
+		<div v-if="isEditable" class="folder__checkbox">
+			<input v-model="selected" class="checkbox" type="checkbox"><label
+				:aria-label="t('bookmarks', 'Select folder')"
+				@click="clickSelect" />
+		</div>
 		<figure :class="{'folder__icon': true, 'shared': !isOwner && !isPublic || isSharedPublicly || isShared }" @click="onSelect" />
 		<template v-if="!renaming">
 			<h3
@@ -102,6 +107,12 @@ export default {
 		isSharedPublicly() {
 			return Boolean(this.publicToken)
 		},
+		selectedFolders() {
+			return this.$store.state.selection.folders
+		},
+		selected() {
+			return this.selectedFolders.map(f => f.id).includes(this.folder.id)
+		},
 	},
 	created() {
 		this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
@@ -132,6 +143,13 @@ export default {
 			this.$store.dispatch(actions.SAVE_FOLDER, this.folder.id)
 			this.renaming = false
 		},
+		clickSelect() {
+			if (!this.selected) {
+				this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
+			} else {
+				this.$store.commit(mutations.REMOVE_SELECTION_FOLDER, this.folder)
+			}
+		},
 	},
 }
 </script>
@@ -143,8 +161,25 @@ export default {
 	position: relative;
 }
 
+.folder.active,
 .folder:hover {
 	background: var(--color-background-dark);
+}
+
+.folder--gridview.active {
+	border-color: var(--color-primary-element);
+}
+
+.folder__checkbox {
+	display: inline-block;
+}
+
+.folder--gridview .folder__checkbox {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	background: white;
+	border-radius: var(--border-radius);
 }
 
 .folder__icon {
