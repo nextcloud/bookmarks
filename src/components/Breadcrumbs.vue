@@ -150,7 +150,7 @@ export default {
 		},
 
 		async onBulkDelete() {
-			await this.$store.dispatch(actions.DELETE_SELECTION)
+			await this.$store.dispatch(actions.DELETE_SELECTION, { folder: this.$route.params.folder })
 			this.$store.commit(mutations.RESET_SELECTION)
 		},
 		onBulkMove() {
