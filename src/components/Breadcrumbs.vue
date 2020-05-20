@@ -65,6 +65,10 @@
 					<ActionButton icon="icon-delete" @click="onBulkDelete">
 						{{ t('bookmarks', 'Delete selection') }}
 					</ActionButton>
+					<ActionButton icon="icon-external" @click="onBulkOpen">
+						{{ t('bookmarks', 'Open all selected') }}
+					</ActionButton>
+					<ActionSeparator />
 					<ActionButton icon="icon-checkmark" @click="onSelectVisible">
 						{{ t('bookmarks', 'Select all visible') }}
 					</ActionButton>
@@ -80,11 +84,12 @@
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import { actions, mutations } from '../store/'
 
 export default {
 	name: 'Breadcrumbs',
-	components: { Multiselect, Actions, ActionButton },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator },
 	props: {},
 	data() {
 		return {
@@ -168,6 +173,12 @@ export default {
 			})
 		},
 
+		async onBulkOpen() {
+			for (const { url } of this.$store.state.selection.bookmarks) {
+				window.open(url)
+				await new Promise(resolve => setTimeout(resolve, 200))
+			}
+		},
 		async onBulkDelete() {
 			await this.$store.dispatch(actions.DELETE_SELECTION, { folder: this.$route.params.folder })
 			this.$store.commit(mutations.RESET_SELECTION)
