@@ -232,11 +232,11 @@ export default {
 			throw err
 		}
 	},
-	[actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, file) {
+	[actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, { file, folder }) {
 		const data = new FormData()
 		data.append('bm_import', file)
 		return axios
-			.post(url(state, `/bookmark/import`), data)
+			.post(url(state, `/folder/${folder || -1}/import`), data)
 			.then(response => {
 				if (!response.data || response.data.status !== 'success') {
 					if (response.status === 413) {

@@ -631,6 +631,8 @@ class BookmarkController extends ApiController {
 
 		if ($folder !== null) {
 			$folder = $this->toInternalFolderId($folder);
+		}else{
+			$folder = $this->_getRootFolderId();
 		}
 
 		try {

@@ -372,13 +372,8 @@ class FolderService {
 	 * @throws UnauthorizedAccessError
 	 * @throws UserLimitExceededError
 	 */
-	public function importFile(string $userId, $file, $folder = null): array {
+	public function importFile(string $userId, $file, $folder): array {
 		$importFolderId = $folder;
-		if ($folder === null) {
-			$rootFolder = $this->folderMapper->findRootFolder($userId);
-			$newFolder = $this->create($this->l10n->t('Imported bookmarks'), $rootFolder->getId());
-			$importFolderId = $newFolder->getId();
-		}
 		return $this->htmlImporter->importFile($userId, $file, $importFolderId);
 	}
 }
