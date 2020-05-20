@@ -487,7 +487,7 @@ export default {
 			throw err
 		}
 	},
-	async [actions.DELETE_SELECTION]({ commit, dispatch, state }) {
+	async [actions.DELETE_SELECTION]({ commit, dispatch, state }, { folder }) {
 		commit(mutations.FETCH_START, { type: 'deleteSelection' })
 		try {
 			for (const folder of state.selection.folders) {
@@ -495,7 +495,7 @@ export default {
 			}
 
 			for (const bookmark of state.selection.bookmarks) {
-				await dispatch(actions.DELETE_BOOKMARK, { id: bookmark.id })
+				await dispatch(actions.DELETE_BOOKMARK, { id: bookmark.id, folder })
 			}
 			commit(mutations.FETCH_END, 'deleteSelection')
 		} catch (err) {
