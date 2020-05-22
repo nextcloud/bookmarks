@@ -58,6 +58,7 @@ OC.L10N.register(
     "Owner" : "Savininkas",
     "Share link" : "Bendrinimo nuoroda",
     "Copy link" : "Kopijuoti nuorodą",
+    "Delete link" : "Ištrinti nuorodą",
     "Create public link" : "Sukurti viešąją nuorodą",
     "Allow editing" : "Leisti redaguoti",
     "Remove share" : "Šalinti viešinį",
@@ -86,6 +87,7 @@ OC.L10N.register(
     "Failed to save bookmark" : "Nepavyko įrašyti adresyno įrašo",
     "Failed to move bookmark" : "Nepavyko perkelti adresyno įrašo",
     "Failed to delete bookmark" : "Nepavyko ištrinti adresyno įrašo",
+    "Import successful" : "Importavimas pavyko",
     "Failed to load tags" : "Nepavyko įkelti žymių",
     "Failed to load folders" : "Nepavyko įkelti aplankų",
     "Failed to delete folder" : "Nepavyko ištrinti aplanko",
@@ -94,6 +96,9 @@ OC.L10N.register(
     "Failed to delete parts of selection" : "Nepavyko ištrinti tam tikros žymėjimo dalies",
     "Failed to fetch bookmarks." : "Nepavyko gauti adresyno įrašų.",
     "Failed to change setting" : "Nepavyko pakeisti nustatymo",
+    "Failed to load setting {key}" : "Nepavyko įkelti nustatymo {key}",
+    "Failed to update share {shareId}" : "Nepavyko atnaujinti viešinio {shareId}",
+    "Failed to delete share {shareId}" : "Nepavyko ištrinti viešinio {shareId}",
     "Bookmarks feed" : "Adresyno įrašų kanalas"
 },
 "nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);");
