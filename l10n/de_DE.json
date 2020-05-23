@@ -25,7 +25,7 @@
     "Open all selected" : "Alle ausgewählten öffnen",
     "Select all visible" : "Alle sichtbaren auswählen",
     "Cancel selection" : "Auswahl abbrechen",
-    "Selected {folders} folders and {bookmarks} bookmarks" : "{folders}-Ordner und {bookmarks} Lesezeichen gewählt",
+    "Selected {folders} folders and {bookmarks} bookmarks" : "{folders} Ordner und {bookmarks} Lesezeichen ausgewählt",
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["%n Lesezeichen ausgewählt","%n Lesezeichen ausgewählt"],
     "_Selected %n folder_::_Selected %n folders_" : ["%n Ordner gewählt","%n Ordner gewählt"],
     "Enter a link" : "Link eingeben",
