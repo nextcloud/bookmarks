@@ -2,7 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Σελιδοδείκτες",
-    "No file provided for import" : "Δεν δόθηκε αρχείο για εισαγωγή",
+    "No file provided for import" : "Κανένα αρχείο για εισαγωγή",
     "Unsupported file type for import" : "Μη υποστηριζόμενος τύπος αρχείου",
     "Bookmarks shared by %s" : "Σελιδοδείκτες σε κοινή χρήση από %s",
     "Imported bookmarks" : "Εισαχθέντες σελιδοδείκτες",
