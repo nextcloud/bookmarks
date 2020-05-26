@@ -81,7 +81,7 @@ class BookmarkMapper extends QBMapper {
 	public function find(int $id): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select('*')
+			->select(Bookmark::$columns)
 			->from('bookmarks')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 
@@ -128,9 +128,10 @@ class BookmarkMapper extends QBMapper {
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('tr.id', 'b.id'))
 			->leftJoin('tr', 'bookmarks_shares', 's', $qb->expr()->eq('tr.parent_folder', 's.folder_id'))
-			->leftJoin('s', 'bookmarks_shared_folders', 'p', $qb->expr()->eq('s.id', 'p.share_id'))
+			->leftJoin('s', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('s.id', 't.share_id'))
+			->leftJoin('t', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('t.shred_folder_id', 'sf.id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->orWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
+			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)));
 
 
 		$this->_findBookmarksBuildFilter($qb, $filters, $params);
@@ -398,7 +399,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findPendingPreviews(int $limit, int $stalePeriod): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('*');
+		$qb->select(Bookmark::$columns);
 		$qb->from('bookmarks', 'b');
 		$qb->where($qb->expr()->lt('last_preview', $qb->createPositionalParameter(time() - $stalePeriod)));
 		$qb->orWhere($qb->expr()->isNull('last_preview'));

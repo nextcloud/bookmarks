@@ -11,11 +11,27 @@ use OCP\IConfig;
 use OCP\IUserManager;
 
 class PreviewsJob extends TimedJob {
+	/**
+	 * @var BookmarkPreviewer
+	 */
+	private $bookmarkPreviewer;
+	/**
+	 * @var FaviconPreviewer
+	 */
+	private $faviconPreviewer;
+	/**
+	 * @var BookmarkMapper
+	 */
+	private $bookmarkMapper;
+	/**
+	 * @var IConfig
+	 */
+	private $settings;
+
 	public function __construct(
-		IConfig $settings, IUserManager $userManager, BookmarkMapper $bookmarkMapper, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer
+		IConfig $settings, BookmarkMapper $bookmarkMapper, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer
 	) {
 		$this->settings = $settings;
-		$this->userManager = $userManager;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->bookmarkPreviewer = $bookmarkPreviewer;
 		$this->faviconPreviewer = $faviconPreviewer;

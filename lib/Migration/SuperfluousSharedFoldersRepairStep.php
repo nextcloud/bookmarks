@@ -22,7 +22,7 @@ class SuperfluousSharedFoldersRepairStep implements IRepairStep {
 	 * Returns the step's name
 	 */
 	public function getName() {
-		return 'Remove superfluous shared folders';
+		return 'Remove superfluous shared bookmark folders';
 	}
 
 	/**
@@ -33,7 +33,8 @@ class SuperfluousSharedFoldersRepairStep implements IRepairStep {
 		$qb->select('t.id')
 			->from('bookmarks_tree', 't')
 			->join('t', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('t.id', 'sf.id'))
-			->join('sf', 'bookmarks_shares', 's', $qb->expr()->eq('sf.share_id', 's.id'))
+			->join('sf', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('sf.id', 't.shared_folder_id'))
+			->join('t', 'bookmarks_shares', 's', $qb->expr()->eq('t.share_id', 's.id'))
 			->where($qb->expr()->eq('t.type', $qb->createPositionalParameter('share')))
 			->andWhere($qb->expr()->eq('s.owner', 'sf.user_id'));
 		$superfluousSharedFolders = $qb->execute();

@@ -18,11 +18,16 @@ use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
+use OCA\Bookmarks\Hooks\UserGroupListener;
+use OCA\Bookmarks\Hooks\UserHooks;
 use OCA\Bookmarks\Service\HashManager;
 use OCP\AppFramework\App;
 use OCP\EventDispatcher\IEventDispatcher;
+use OCP\Group\Events\UserAddedEvent;
+use OCP\Group\Events\UserRemovedEvent;
 use OCP\IContainer;
 use OCP\IUser;
+use OCP\User\Events\BeforeUserDeletedEvent;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
@@ -46,5 +51,8 @@ class Application extends App {
 		$dispatcher->addServiceListener(UpdateEvent::class, HashManager::class);
 		$dispatcher->addServiceListener(BeforeDeleteEvent::class, HashManager::class);
 		$dispatcher->addServiceListener(MoveEvent::class, HashManager::class);
+		$dispatcher->addServiceListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
+		$dispatcher->addServiceListener(UserAddedEvent::class, UserGroupListener::class);
+		$dispatcher->addServiceListener(UserRemovedEvent::class, UserGroupListener::class);
 	}
 }
