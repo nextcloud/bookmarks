@@ -85,7 +85,7 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 			$qb = $this->db->getQueryBuilder();
 			$qb->select('sf.user_id')
 				->from('bookmarks_shared_folders', 'sf')
-				->join('bookmarks_shared_to_shares', 't', $qb->expr()->eq('t.shared_folder_id', 'sf.id'))
+				->join('sf', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('t.shared_folder_id', 'sf.id'))
 				->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($groupShare['id'])));
 			$usersInShare = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 
