@@ -87,7 +87,6 @@ OC.L10N.register(
     "Failed to save bookmark" : "Nepavyko įrašyti adresyno įrašo",
     "Failed to move bookmark" : "Nepavyko perkelti adresyno įrašo",
     "Failed to delete bookmark" : "Nepavyko ištrinti adresyno įrašo",
-    "Import successful" : "Importavimas pavyko",
     "Failed to load tags" : "Nepavyko įkelti žymių",
     "Failed to load folders" : "Nepavyko įkelti aplankų",
     "Failed to delete folder" : "Nepavyko ištrinti aplanko",
