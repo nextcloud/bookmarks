@@ -34,6 +34,10 @@
 						<ActionButton icon="icon-clippy" @click="onCopyPublicLink">
 							{{ t('bookmarks', 'Copy link') }}
 						</ActionButton>
+						<ActionButton icon="icon-clippy" @click="onCopyRssLink">
+							{{ t('bookmarks', 'Copy RSS feed') }}
+						</ActionButton>
+						<ActionSeparator />
 						<ActionButton icon="icon-delete" @click="onDeletePublicLink">
 							{{ t('bookmarks', 'Delete link') }}
 						</ActionButton>
@@ -131,7 +135,22 @@ export default {
 		},
 		publicLink() {
 			if (!this.token) return
-			return window.location.protocol + '//' + window.location.host + generateUrl('/apps/bookmarks/public/' + this.token)
+			return window.location.origin + generateUrl('/apps/bookmarks/public/' + this.token)
+		},
+		rssLink() {
+			return (
+				window.location.origin
+					+ generateUrl(
+						'/apps/bookmarks/public/rest/v2/bookmark?'
+							+ new URLSearchParams(
+								Object.assign({}, this.$store.state.fetchState.query, {
+									format: 'rss',
+									page: -1,
+									token: this.token,
+								})
+							).toString()
+					)
+			)
 		},
 	},
 
@@ -149,6 +168,10 @@ export default {
 		onCopyPublicLink() {
 			copy(this.publicLink)
 			this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'Link copied'))
+		},
+		onCopyRssLink() {
+			copy(this.rssLink)
+			this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'RSS feed copied'))
 		},
 		async onDeletePublicLink() {
 			await this.$store.dispatch(actions.DELETE_PUBLIC_LINK, this.folder.id)
