@@ -243,12 +243,19 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findByTag($userId, string $tag, QueryParameters $params): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(Bookmark::$columns);
+		$qb->select(array_map(static function($col) {
+			return 'b.'.$col;
+		}, Bookmark::$columns));
 
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
+			->innerJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('tr.id', 'b.id'))
+			->innerJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
+			->where($qb->expr()->orX(
+				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
+			))
 			->andWhere($qb->expr()->eq('t.tag', $qb->createPositionalParameter($tag)));
 
 		$this->_queryBuilderSortAndPaginate($qb, $params);
@@ -258,12 +265,19 @@ class BookmarkMapper extends QBMapper {
 
 	private function _findByTags($userId): IQueryBuilder {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(Bookmark::$columns);
+		$qb->select(array_map(static function($col) {
+			return 'b.'.$col;
+		}, Bookmark::$columns));
 
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
-			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
+			->innerJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('tr.id', 'b.id'))
+			->innerJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
+			->where($qb->expr()->orX(
+				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
+			));
 
 		return $qb;
 	}
@@ -289,7 +303,9 @@ class BookmarkMapper extends QBMapper {
 			$expr[] = $qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%' . $this->db->escapeLikeParameter($tag) . '%'));
 		}
 		$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $expr);
-		$qb->groupBy(...Bookmark::$columns);
+		$qb->groupBy(...array_map(static function($col) {
+			return 'b.'.$col;
+		}, Bookmark::$columns));
 		$qb->having($filterExpression);
 
 		$this->_queryBuilderSortAndPaginate($qb, $params);
