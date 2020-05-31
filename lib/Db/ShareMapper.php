@@ -149,4 +149,15 @@ class ShareMapper extends QBMapper {
 		$sharedFolder->setCreatedAt(time());
 		return parent::insertOrUpdate($sharedFolder);
 	}
+
+	public function findBySharedFolder(int $id) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(array_map(static function ($c) {
+			return 's.' . $c;
+		}, Share::$columns))
+			->from('bookmarks_shares', 's')
+			->innerJoin('s', 'bookmarks_shared_to_shares', 't', 's.id = t.share_id')
+			->where($qb->expr()->eq('t.shared_folder_id', $qb->createPositionalParameter($id)));
+		return $this->findEntity($qb);
+	}
 }

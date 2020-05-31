@@ -430,7 +430,7 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 * @return JSONResponse
 	 */
-	public function getFolders($root = -1, $layers = 0): JSONResponse {
+	public function getFolders($root = -1, $layers = -1): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
@@ -438,7 +438,7 @@ class FoldersController extends ApiController {
 		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers);
 		if ($root === -1 || $root === '-1') {
 			foreach($folders as $folder) {
-				$folder['parent_id'] = -1;
+				$folder['parent_folder'] = -1;
 			}
 		}
 		$res = new JSONResponse(['status' => 'success', 'data' => $folders]);

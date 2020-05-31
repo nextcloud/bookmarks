@@ -121,7 +121,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getFolders($root = -1, $layers = 0) {
+	public function getFolders($root = -1, $layers = -1) {
 		return $this->controller->getFolders($root, $layers);
 	}
 

@@ -38,8 +38,10 @@ class TagMapper {
 			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'count')
 			->from('bookmarks_tags', 't')
 			->innerJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.bookmark_id'))
-			->where($qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)));
-		$qb
+			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('b.id', 'tr.id'))
+			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
+			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
+			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
 			->groupBy('t.tag')
 			->orderBy('count', 'DESC');
 
@@ -56,7 +58,10 @@ class TagMapper {
 			->select('t.tag')
 			->from('bookmarks_tags', 't')
 			->innerJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.bookmark_id'))
-			->where($qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)))
+			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('b.id', 'tr.id'))
+			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
+			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
+			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
 			->groupBy('t.tag');
 		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 	}
@@ -162,7 +167,7 @@ class TagMapper {
 
 	/**
 	 * @brief Rename a tag
-	 * @param $userId UserId
+	 * @param int $userId UserId
 	 * @param string $old Old Tag Name
 	 * @param string $new New Tag Name
 	 */
