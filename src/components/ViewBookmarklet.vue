@@ -1,7 +1,7 @@
 <template>
 	<Content app-name="bookmarks">
 		<div class="bookmarklet">
-			<h2><figure :class="loading? 'icon-loading' : 'icon-link'" /> {{ t('bookmarks', 'Add a bookmark') }}</h2>
+			<h2><figure :class="loading? 'icon-loading-small' : 'icon-link'" /> {{ t('bookmarks', 'Add a bookmark') }}</h2>
 			<div v-if="exists" class="bookmarklet__exists">
 				{{ t('bookmarks', 'This URL is already bookmarked! Overwrite?') }}
 			</div>
@@ -11,7 +11,7 @@
 			<label>{{ t('bookmarks', 'Link') }}
 				<input v-model="bookmark.url" type="text" :placeholder="t('bookmarks', 'Enter bookmark URL')">
 			</label>
-			<label><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}
+			<label><figure class="icon-tag" /> {{ t('bookmarks', 'Tags') }}
 				<Multiselect
 					class="sidebar__tags"
 					:value="bookmark.tags"
@@ -22,6 +22,14 @@
 					:taggable="true"
 					@input="onTagsChange"
 					@tag="onAddTag" />
+			</label>
+			<label><figure class="icon-folder" /> {{ t('bookmarks', 'Folder') }}
+				<input :value="folderTitle"
+					type="text"
+					readonly
+					:placeholder="t('bookmarks', 'Root Folder')"
+					@click="showPicker = true">
+				<FolderPickerDialog v-model="folder" :show="showPicker" @close="showPicker = false" />
 			</label>
 			<label>{{ t('bookmarks', 'Notes') }}</label>
 			<div
@@ -41,10 +49,12 @@
 import Content from '@nextcloud/vue/dist/Components/Content'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import { actions } from '../store/'
+import FolderPickerDialog from './FolderPickerDialog'
 
 export default {
 	name: 'ViewBookmarklet',
 	components: {
+		FolderPickerDialog,
 		Content,
 		Multiselect,
 	},
@@ -67,6 +77,9 @@ export default {
 				description: '',
 			},
 			exists: false,
+			loading: true,
+			showPicker: false,
+			folder: -1,
 		}
 	},
 	computed: {
@@ -76,23 +89,27 @@ export default {
 		folders() {
 			return this.$store.state.folders
 		},
+		folderTitle() {
+			return this.$store.getters.getFolder(this.folder)[0].title
+		},
 	},
 
-	created() {
-		this.reloadTags()
-		this.reloadFolders()
-	},
-
-	mounted() {
-		this.findBookmark(this.bookmark.url)
+	async created() {
+		this.loading = true
+		await Promise.all([
+			this.reloadTags(),
+			this.reloadFolders(),
+		])
+		await this.findBookmark(this.bookmark.url)
+		this.loading = false
 	},
 
 	methods: {
-		reloadTags() {
-			this.$store.dispatch(actions.LOAD_TAGS)
+		async reloadTags() {
+			return this.$store.dispatch(actions.LOAD_TAGS)
 		},
-		reloadFolders() {
-			this.$store.dispatch(actions.LOAD_FOLDERS)
+		async reloadFolders() {
+			return this.$store.dispatch(actions.LOAD_FOLDERS)
 		},
 		reloadSettings() {
 			this.$store.dispatch(actions.LOAD_SETTINGS)
@@ -111,11 +128,17 @@ export default {
 			if (bookmark) {
 				this.exists = true
 				this.bookmark = bookmark
+				if (this.bookmark.folders.length) {
+					this.folder = this.bookmark.folders[0]
+				}
 			}
 		},
 
 		async submit() {
 			this.loading = true
+			if (this.folder !== -1) {
+				this.bookmark.folders = [this.folder]
+			}
 			if (this.exists) {
 				await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id)
 			} else {
