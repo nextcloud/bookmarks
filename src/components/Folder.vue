@@ -200,7 +200,7 @@ export default {
 }
 
 .folder--gridview .folder__icon.shared {
-	background-size: 30px, cover !important;
+	background-size: 30px, cover, cover !important;
 }
 
 .folder--gridview .folder__icon {
