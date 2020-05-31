@@ -127,12 +127,9 @@ class BookmarkMapper extends QBMapper {
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'))
 			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('tr.id', 'b.id'))
-			->leftJoin('tr', 'bookmarks_shares', 's', $qb->expr()->eq('tr.parent_folder', 's.folder_id'))
-			->leftJoin('s', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('s.id', 't.share_id'))
-			->leftJoin('t', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('t.shred_folder_id', 'sf.id'))
+			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
 			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)));
-
 
 		$this->_findBookmarksBuildFilter($qb, $filters, $params);
 		$this->_queryBuilderSortAndPaginate($qb, $params);

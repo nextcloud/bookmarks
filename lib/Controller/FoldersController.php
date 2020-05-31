@@ -159,9 +159,9 @@ class FoldersController extends ApiController {
 			/**
 			 * @var $share Share
 			 */
-			$share = $this->shareMapper->find($folder->getShareId());
+			$share = $this->shareMapper->findByFolderAndUser($folder->getFolderId(), $folder->getUserId());
 			$returnFolder = $folder->toArray();
-			$returnFolder['id'] = $share->getFolderId();
+			$returnFolder['id'] = $folder->getFolderId();
 			$returnFolder['user_id'] = $share->getOwner();
 			$parent = $this->treeMapper->findParentOf(TreeMapper::TYPE_SHARE, $folder->getId());
 			$returnFolder['parent_folder'] = $this->toExternalFolderId($parent->getId());

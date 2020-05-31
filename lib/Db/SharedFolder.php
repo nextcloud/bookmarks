@@ -10,7 +10,8 @@ use OCP\AppFramework\Db\Entity;
  * @package OCA\Bookmarks\Db
  *
  * @method getShareId
- * @method setShareId(int $shareId)
+ * @method setFolderId(int $shareId)
+ * @method getFolderId()
  * @method getUserId
  * @method setUserId(string $userId)
  * @method getTitle
@@ -20,14 +21,15 @@ class SharedFolder extends Entity {
 	protected $shareId;
 	protected $userId;
 	protected $title;
-	protected $index;
+	protected $folderId;
 
-	public static $columns = ['id', 'user_id', 'title'];
+	public static $columns = ['id', 'user_id', 'title', 'folder_id'];
 
 	public function __construct() {
 		// add types in constructor
 		$this->addType('id', 'integer');
 		$this->addType('userId', 'string');
+		$this->addType('folderId', 'integer');
 		$this->addType('title', 'string');
 	}
 

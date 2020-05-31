@@ -335,11 +335,12 @@ class FolderService {
 	 */
 	public function addSharedFolder(Share $share, Folder $folder, string $userId): void {
 		$sharedFolder = new SharedFolder();
-		$sharedFolder->setShareId($share->getId());
 		$sharedFolder->setTitle($folder->getTitle());
+		$sharedFolder->setFolderId($folder->getId());
 		$sharedFolder->setUserId($userId);
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
-		$this->sharedFolderMapper->insert($sharedFolder);
+		$sharedFolder = $this->sharedFolderMapper->insert($sharedFolder);
+		$this->sharedFolderMapper->mount($sharedFolder->getId(), $share->getId());
 		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $rootFolder->getId());
 	}
 

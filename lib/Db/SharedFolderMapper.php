@@ -181,4 +181,20 @@ class SharedFolderMapper extends QBMapper {
 			->andWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntities($qb);
 	}
+
+	public function delete(Entity $sharedFolder): Entity {
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks_shared_to_shares')
+			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($sharedFolder->getId())))
+			->execute();
+		return parent::delete($sharedFolder);
+	}
+
+	public function mount(int $id, int $share_id) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->insert('bookmarks_shared_to_shares')->values([
+			'shared_folder_id' => $qb->createPositionalParameter($id),
+			'share_id' => $qb->createPositionalParameter($share_id)
+		])->execute();
+	}
 }

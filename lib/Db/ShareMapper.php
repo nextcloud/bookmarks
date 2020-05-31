@@ -134,7 +134,7 @@ class ShareMapper extends QBMapper {
 		}, Share::$columns))
 			->from('bookmarks_shares', 's')
 			->leftJoin('s', 'bookmarks_shared_to_shares', 't', 's.id = t.share_id')
-			->leftJoin('t', 'bookmarks_shared_folders', 'sf', 's.shared_folder_id = sf.id')
+			->leftJoin('t', 'bookmarks_shared_folders', 'sf', 't.shared_folder_id = sf.id')
 			->where($qb->expr()->eq('s.owner', $qb->createPositionalParameter($owner)))
 			->andWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntities($qb);
