@@ -13,6 +13,7 @@
 			:name="t('bookmarks', 'Sharing')"
 			icon="icon-shared">
 			<div class="participant-select">
+				<figure :class="{'icon-user': true, 'share__avatar': true }" />
 				<Multiselect v-model="participant"
 					label="displayName"
 					track-by="user"
@@ -77,6 +78,7 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
+import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
@@ -86,7 +88,7 @@ import { actions, mutations } from '../store/'
 
 export default {
 	name: 'SidebarFolder',
-	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble },
+	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble, ActionSeparator },
 	data() {
 		return {
 			participantSearchResults: [],
