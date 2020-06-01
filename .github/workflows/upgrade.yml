@@ -30,14 +30,14 @@ jobs:
       mysql:
         image: mariadb
         ports:
-          - ${{ env.MYSQL_PORT }}:3306/tcp
+          - 4444:3306/tcp
         env:
           MYSQL_ROOT_PASSWORD: rootpassword
         options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
       postgres:
         image: postgres
         ports:
-          - ${{ env.PGSQL_PORT }}:5432/tcp
+          - 4445:5432/tcp
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: rootpassword
