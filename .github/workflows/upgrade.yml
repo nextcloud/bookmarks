@@ -29,15 +29,17 @@ jobs:
           - 4444:3306/tcp
         env:
           MYSQL_ROOT_PASSWORD: rootpassword
+          DB_PORT: 4444
         options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
       postgres:
         image: postgres
         ports:
-          - 4444:5432/tcp
+          - 4445:5432/tcp
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: rootpassword
           POSTGRES_DB: nextcloud
+          DB_PORT: 4445
         options: --health-cmd pg_isready --health-interval 5s --health-timeout 2s --health-retries 5
 
     steps:
@@ -62,18 +64,16 @@ jobs:
           extensions: mbstring, iconv, fileinfo, intl, sqlite, pdo_mysql, pdo_sqlite, pgsql, pdo_pgsql
 
       - name: Checkout app
-          uses: actions/checkout@v2
-          with:
-            ref: ${{ matrix.prev-version }}
-            path: apps/${{ env.APP_NAME }}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.prev-version }}
+          path: apps/${{ env.APP_NAME }}
 
       - name: Install app
-          working-directory: apps/${{ env.APP_NAME }}
-          run: composer i
+        working-directory: apps/${{ env.APP_NAME }}
+        run: composer i
 
       - name: Set up Nextcloud and install app
-        env:
-          DB_PORT: 4444
         run: |
           mkdir data
           ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
