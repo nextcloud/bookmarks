@@ -29,7 +29,7 @@ jobs:
           - 4444:3306/tcp
         env:
           MYSQL_ROOT_PASSWORD: rootpassword
-          DB_PORT: 4444
+          MYSQL_PORT: 4444
         options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
       postgres:
         image: postgres
@@ -39,7 +39,7 @@ jobs:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: rootpassword
           POSTGRES_DB: nextcloud
-          DB_PORT: 4445
+          PGSQL_PORT: 4445
         options: --health-cmd pg_isready --health-interval 5s --health-timeout 2s --health-retries 5
 
     steps:
@@ -74,9 +74,18 @@ jobs:
         run: composer i
 
       - name: Set up Nextcloud and install app
+        if: ${{ matrix.databases != 'pgsql'}}
         run: |
           mkdir data
-          ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
+          ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$MYSQL_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
+          ./occ app:enable -vvv -f ${{ env.APP_NAME }}
+          php -S localhost:8080 &
+
+      - name: Set up Nextcloud and install app
+        if: ${{ matrix.databases == 'pgsql'}}
+        run: |
+          mkdir data
+          ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$PGSQL_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
           ./occ app:enable -vvv -f ${{ env.APP_NAME }}
           php -S localhost:8080 &
 
