@@ -53,14 +53,14 @@ jobs:
 
       - name: Remove current stable bookmarks
         run: |
-          ./occ app:uninstall ${{ env.APP_NAME }}
+          ./occ app:remove ${{ env.APP_NAME }}
 
       - name: Checkout app
         uses: actions/checkout@v2
         with:
           path: apps/${{ env.APP_NAME }}
 
-      - name: Set up PHPUnit
+      - name: Install app
         working-directory: apps/${{ env.APP_NAME }}
         run: composer i
 
@@ -125,14 +125,14 @@ jobs:
 
       - name: Remove current stable bookmarks
         run: |
-          ./occ app:uninstall ${{ env.APP_NAME }}
+          ./occ app:remove ${{ env.APP_NAME }}
 
       - name: Checkout app
         uses: actions/checkout@v2
         with:
           path: apps/${{ env.APP_NAME }}
 
-      - name: Set up PHPUnit
+      - name: Install app
         working-directory: apps/${{ env.APP_NAME }}
         run: composer i
 
@@ -205,7 +205,7 @@ jobs:
         with:
           path: apps/${{ env.APP_NAME }}
 
-      - name: Set up PHPUnit
+      - name: Install app
         working-directory: apps/${{ env.APP_NAME }}
         run: composer i
 
