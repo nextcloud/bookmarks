@@ -33,6 +33,7 @@ OC.L10N.register(
     "Privacy" : "Privacidade",
     "Add a bookmark" : "Adicionar um marcador",
     "Title" : "Título",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "Pasta"
 },
 "nplurals=2; plural=(n != 1);");

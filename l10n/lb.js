@@ -22,6 +22,7 @@ OC.L10N.register(
     "Allow editing" : "Beaarbechten erlaben",
     "Select" : "Select",
     "Title" : "Titel",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "Dossier"
 },
 "nplurals=2; plural=(n != 1);");

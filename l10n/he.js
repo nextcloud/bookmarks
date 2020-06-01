@@ -100,6 +100,7 @@ OC.L10N.register(
     "Title" : "תפקיד",
     "Link" : "קישור",
     "Enter bookmark URL" : "נא למלא כתובת סימנייה",
+    "Folder" : "תיקייה",
     "Failed to find existing bookmark" : "איתור סימנייה קיימת נכשל",
     "Failed to create bookmark" : "יצירת סימנייה נכשלה",
     "Failed to save bookmark" : "שמירת סימנייה נכשלה",

@@ -12,6 +12,7 @@ OC.L10N.register(
     "Share link" : "اشتراک لنک",
     "Select" : "Select",
     "Title" : "عنوان",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "Folder"
 },
 "nplurals=2; plural=(n != 1);");

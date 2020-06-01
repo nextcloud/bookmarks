@@ -35,6 +35,7 @@ OC.L10N.register(
     "Add a bookmark" : "Agregar un marcador",
     "This URL is already bookmarked! Overwrite?" : "¡Esta URL ya está marcada! ¿Desea sobreescribir?",
     "Title" : "Título",
-    "Link" : "Liga"
+    "Link" : "Liga",
+    "Folder" : "Carpeta"
 },
 "nplurals=2; plural=(n != 1);");

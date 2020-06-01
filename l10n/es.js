@@ -101,6 +101,7 @@ OC.L10N.register(
     "Title" : "Título",
     "Link" : "Enlace",
     "Enter bookmark URL" : "Introducir URL del marcador",
+    "Folder" : "Carpeta",
     "Failed to find existing bookmark" : "Fallo al encontrar marcador existente",
     "Failed to create bookmark" : "Fallo al crear marcador",
     "Failed to save bookmark" : "Fallo al guardar marcador",

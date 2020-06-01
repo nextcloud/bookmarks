@@ -101,6 +101,7 @@ OC.L10N.register(
     "Title" : "Názov",
     "Link" : "Odkaz",
     "Enter bookmark URL" : "Zadajte URL záložky",
+    "Folder" : "Priečinok",
     "Failed to find existing bookmark" : "Nepodarilo sa nájsť existujúcu záložku",
     "Failed to create bookmark" : "Nepodarilo sa vytvoriť záložku",
     "Failed to save bookmark" : "Nepodarilo sa uložiť záložku",

@@ -20,6 +20,7 @@ OC.L10N.register(
     "Copy link" : "linki nüsxələ",
     "Select" : "Select",
     "Title" : "Başlıq",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "Qovluq"
 },
 "nplurals=2; plural=(n != 1);");

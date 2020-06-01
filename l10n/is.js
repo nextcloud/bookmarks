@@ -96,6 +96,7 @@ OC.L10N.register(
     "Title" : "Titill",
     "Link" : "Tengill",
     "Enter bookmark URL" : "Settu inn slóð á bókamerki",
+    "Folder" : "Mappa",
     "Failed to find existing bookmark" : "Mistókst að finna fyrirliggjandi bókamerki",
     "Failed to create bookmark" : "Mistókst að búa til bókamerki",
     "Failed to save bookmark" : "Mistókst að vista bókamerki",

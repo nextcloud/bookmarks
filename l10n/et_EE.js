@@ -29,6 +29,7 @@ OC.L10N.register(
     "Select" : "Vali",
     "Privacy" : "Privaatsus",
     "Title" : "Pealkiri",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "Kaust"
 },
 "nplurals=2; plural=(n != 1);");

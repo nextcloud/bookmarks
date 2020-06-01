@@ -101,6 +101,7 @@ OC.L10N.register(
     "Title" : "Titolo",
     "Link" : "Collegamento",
     "Enter bookmark URL" : "Digita URL del segnalibro",
+    "Folder" : "Cartella",
     "Failed to find existing bookmark" : "Recupero segnalibri esistenti non riuscito",
     "Failed to create bookmark" : "Creazione segnalibro non riuscita",
     "Failed to save bookmark" : "Salvataggio segnalibro non riuscito",

@@ -54,6 +54,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Denne lenken eksisterer allerede, ønsker du overskrive?",
     "Title" : "Tittel",
     "Link" : "Lenke",
+    "Folder" : "Mappe",
     "Failed to create bookmark" : "Klarte ikke å opprette bokmerke",
     "Bookmarks feed" : "Bokmerker-strøm"
 },

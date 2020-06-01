@@ -100,6 +100,7 @@ OC.L10N.register(
     "Title" : "Izenburua",
     "Link" : "Esteka",
     "Enter bookmark URL" : "Sartu laster-marka URL",
+    "Folder" : "Karpeta",
     "Failed to find existing bookmark" : "Existitzen den laster-markaren bilaketak huts egin du",
     "Failed to create bookmark" : "Laster-markaren sorrerak huts egin du",
     "Failed to save bookmark" : "Laster-markaren gordeketak huts egin du",

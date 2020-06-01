@@ -22,6 +22,7 @@ OC.L10N.register(
     "Allow editing" : "Tillat endring",
     "Select" : "Vel",
     "Title" : "Tittel",
-    "Link" : "Lenkje"
+    "Link" : "Lenkje",
+    "Folder" : "Mappe"
 },
 "nplurals=2; plural=(n != 1);");

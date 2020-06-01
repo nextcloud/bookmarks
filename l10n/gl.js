@@ -101,6 +101,7 @@ OC.L10N.register(
     "Title" : "Título",
     "Link" : "Ligazón",
     "Enter bookmark URL" : "Introduza o URL do marcador",
+    "Folder" : "Cartafol",
     "Failed to find existing bookmark" : "Produciuse un fallo ao buscar un marcador existente",
     "Failed to create bookmark" : "Produciuse un fallo ao crear o marcador",
     "Failed to save bookmark" : "Produciuse un fallo ao gardar o marcador",

@@ -31,6 +31,7 @@ OC.L10N.register(
     "Select" : "Seleccionar",
     "Privacy" : "Privacidad",
     "Title" : "Título",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "Carpeta"
 },
 "nplurals=2; plural=(n != 1);");
