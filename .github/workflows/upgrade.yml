@@ -22,24 +22,26 @@ jobs:
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
+    env:
+      MYSQL_PORT: 4444
+      PGSQL_PORT: 4445
+
     services:
       mysql:
         image: mariadb
         ports:
-          - 4444:3306/tcp
+          - ${{ env.MYSQL_PORT }}:3306/tcp
         env:
           MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_PORT: 4444
         options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
       postgres:
         image: postgres
         ports:
-          - 4445:5432/tcp
+          - ${{ env.PGSQL_PORT }}:5432/tcp
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: rootpassword
           POSTGRES_DB: nextcloud
-          PGSQL_PORT: 4445
         options: --health-cmd pg_isready --health-interval 5s --health-timeout 2s --health-retries 5
 
     steps:
