@@ -23,6 +23,7 @@ OC.L10N.register(
     "Allow editing" : "Permitter modificar",
     "Select" : "Selectionar",
     "Title" : "Titulo",
-    "Link" : "Ligamine"
+    "Link" : "Ligamine",
+    "Folder" : "Dossier"
 },
 "nplurals=2; plural=(n != 1);");

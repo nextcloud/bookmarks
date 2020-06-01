@@ -30,6 +30,7 @@ OC.L10N.register(
     "Privacy" : "Приватност",
     "Failed to save settings" : "Неуспешно зачувување на параметрите",
     "Title" : "Наслов",
-    "Link" : "Линк"
+    "Link" : "Линк",
+    "Folder" : "Папка"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

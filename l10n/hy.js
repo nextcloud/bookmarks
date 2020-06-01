@@ -19,6 +19,7 @@ OC.L10N.register(
     "Allow editing" : "Թույլատրել խմբագրումը",
     "Select" : "Select",
     "Title" : "Վերնագիր",
-    "Link" : "Հղում"
+    "Link" : "Հղում",
+    "Folder" : "Պանակ"
 },
 "nplurals=2; plural=(n != 1);");

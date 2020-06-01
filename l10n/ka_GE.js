@@ -35,6 +35,7 @@ OC.L10N.register(
     "Add a bookmark" : "სანიშნის დამატება",
     "This URL is already bookmarked! Overwrite?" : "ეს URL უკვე მონიშნულია! გადავწეროთ?",
     "Title" : "სათაური",
-    "Link" : "ბმული"
+    "Link" : "ბმული",
+    "Folder" : "დირექტორია"
 },
 "nplurals=2; plural=(n!=1);");

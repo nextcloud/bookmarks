@@ -48,6 +48,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "This URL is already bookmarked! Overwrite?",
     "Title" : "Title",
     "Link" : "Link",
+    "Folder" : "Folder",
     "Bookmarks feed" : "Bookmarks feed"
 },
 "nplurals=2; plural=(n != 1);");

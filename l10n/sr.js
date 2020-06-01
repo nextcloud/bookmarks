@@ -97,6 +97,7 @@ OC.L10N.register(
     "Title" : "Наслов",
     "Link" : "Веза",
     "Enter bookmark URL" : "Унеси адресу за бележење",
+    "Folder" : "Фасцикла",
     "Failed to find existing bookmark" : "Неспешно тражење постојећег обележивача",
     "Failed to create bookmark" : "Грешка при креирању обележивача",
     "Failed to save bookmark" : "Грешка при чувању обележивача",

@@ -101,6 +101,7 @@ OC.L10N.register(
     "Title" : "Titel",
     "Link" : "Link",
     "Enter bookmark URL" : "Geef bladwijzer-URL op",
+    "Folder" : "Map",
     "Failed to find existing bookmark" : "Kon bestaande bladwijzer niet vinden",
     "Failed to create bookmark" : "Kon bladwijzer niet aanmaken",
     "Failed to save bookmark" : "Kon bladwijzer niet bewaren",

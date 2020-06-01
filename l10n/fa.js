@@ -85,6 +85,7 @@ OC.L10N.register(
     "Title" : "عنوان",
     "Link" : "Link",
     "Enter bookmark URL" : "URL نشانک را وارد کنید",
+    "Folder" : "پوشه",
     "Failed to find existing bookmark" : "یافتن نشانک موجود انجام نشد",
     "Failed to create bookmark" : "ایجاد نشانک انجام نشد",
     "Failed to save bookmark" : "ذخیره نشانک انجام نشد",

@@ -85,6 +85,7 @@ OC.L10N.register(
     "Title" : "Titel",
     "Link" : "Länk",
     "Enter bookmark URL" : "Ange bokmärkets webbadress",
+    "Folder" : "Mapp",
     "Failed to find existing bookmark" : "Kunde inte hitta befintligt bokmärke",
     "Failed to create bookmark" : "Kunde inte skapa bokmärke",
     "Failed to save bookmark" : "Kunde inte spara bokmärke",

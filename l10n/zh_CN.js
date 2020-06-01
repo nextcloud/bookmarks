@@ -93,6 +93,7 @@ OC.L10N.register(
     "Title" : "标题",
     "Link" : "链接",
     "Enter bookmark URL" : "输入书签网址",
+    "Folder" : "文件夹",
     "Failed to find existing bookmark" : "无法找到已有书签",
     "Failed to create bookmark" : "无法创建书签",
     "Failed to save bookmark" : "无法保存书签",

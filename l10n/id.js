@@ -29,6 +29,7 @@ OC.L10N.register(
     "Select" : "Pilih",
     "Privacy" : "Privasi",
     "Title" : "Judul",
-    "Link" : "Tautan"
+    "Link" : "Tautan",
+    "Folder" : "Folder"
 },
 "nplurals=1; plural=0;");
