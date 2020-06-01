@@ -15,73 +15,12 @@ jobs:
       # do not stop on another job's failure
       fail-fast: false
       matrix:
-        php-versions: ['7.4']
-        databases: ['sqlite']
-        server-versions: ['master']
+        php-versions: ['7.2']
+        databases: ['sqlite', 'mysql', 'pgsql']
+        server-versions: ['stable18']
+        prev-version: ['v1.1.2', 'v2.3.4', 'v3.0.0', 'stable']
 
-    name: Update php${{ matrix.php-versions }}-${{ matrix.databases }}-${{ matrix.server-versions }}
-
-    steps:
-      - name: Checkout server
-        uses: actions/checkout@v2
-        with:
-          repository: nextcloud/server
-          ref: ${{ matrix.server-versions }}
-
-      - name: Checkout submodules
-        shell: bash
-        run: |
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-
-      - name: Set up php ${{ matrix.php-versions }}
-        uses: shivammathur/setup-php@v1
-        with:
-          php-version: ${{ matrix.php-versions }}
-          tools: phpunit
-          extensions: mbstring, iconv, fileinfo, intl, sqlite, pdo_sqlite
-
-      - name: Set up Nextcloud with current stable bookmarks
-        env:
-          DB_PORT: 4444
-        run: |
-          mkdir data
-          ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
-          ./occ app:install ${{ env.APP_NAME }}
-          php -S localhost:8080 &
-
-      - name: Remove current stable bookmarks
-        run: |
-          ./occ app:remove ${{ env.APP_NAME }}
-
-      - name: Checkout app
-        uses: actions/checkout@v2
-        with:
-          path: apps/${{ env.APP_NAME }}
-
-      - name: Install app
-        working-directory: apps/${{ env.APP_NAME }}
-        run: composer i
-
-      - name: Run update
-        run: |
-          ./occ app:update ${{ env.APP_NAME }}
-          ./occ app:enable ${{ env.APP_NAME }}
-
-
-  mysql:
-    runs-on: ubuntu-latest
-
-    strategy:
-      # do not stop on another job's failure
-      fail-fast: false
-      matrix:
-        php-versions: ['7.4']
-        databases: ['mysql']
-        server-versions: ['master']
-
-    name: Update php${{ matrix.php-versions }}-${{ matrix.databases }}-${{ matrix.server-versions }}
+    name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
     services:
       mysql:
@@ -91,70 +30,6 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: rootpassword
         options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
-
-    steps:
-      - name: Checkout server
-        uses: actions/checkout@v2
-        with:
-          repository: nextcloud/server
-          ref: ${{ matrix.server-versions }}
-
-      - name: Checkout submodules
-        shell: bash
-        run: |
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-
-      - name: Set up php ${{ matrix.php-versions }}
-        uses: shivammathur/setup-php@v1
-        with:
-          php-version: ${{ matrix.php-versions }}
-          tools: phpunit
-          extensions: mbstring, iconv, fileinfo, intl, mysql, pdo_mysql
-          coverage: none
-
-      - name: Set up Nextcloud with current stable bookmarks
-        env:
-          DB_PORT: 4444
-        run: |
-          mkdir data
-          ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
-          ./occ app:install ${{ env.APP_NAME }}
-          php -S localhost:8080 &
-
-      - name: Remove current stable bookmarks
-        run: |
-          ./occ app:remove ${{ env.APP_NAME }}
-
-      - name: Checkout app
-        uses: actions/checkout@v2
-        with:
-          path: apps/${{ env.APP_NAME }}
-
-      - name: Install app
-        working-directory: apps/${{ env.APP_NAME }}
-        run: composer i
-
-      - name: Run update
-        run: |
-          ./occ app:update ${{ env.APP_NAME }}
-          ./occ app:enable ${{ env.APP_NAME }}
-
-  pgsql:
-    runs-on: ubuntu-latest
-
-    strategy:
-      # do not stop on another job's failure
-      fail-fast: false
-      matrix:
-        php-versions: ['7.4']
-        databases: ['pgsql']
-        server-versions: ['master']
-
-    name: Update php${{ matrix.php-versions }}-${{ matrix.databases }}-${{ matrix.server-versions }}
-
-    services:
       postgres:
         image: postgres
         ports:
@@ -184,21 +59,30 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit
-          extensions: mbstring, iconv, fileinfo, intl, pgsql, pdo_pgsql
-          coverage: none
+          extensions: mbstring, iconv, fileinfo, intl, sqlite, pdo_mysql, pdo_sqlite, pgsql, pdo_pgsql
 
-      - name: Set up Nextcloud with current stable bookmarks
+      - name: Checkout app
+          uses: actions/checkout@v2
+          with:
+            ref: ${{ matrix.prev-version }}
+            path: apps/${{ env.APP_NAME }}
+
+      - name: Install app
+          working-directory: apps/${{ env.APP_NAME }}
+          run: composer i
+
+      - name: Set up Nextcloud and install app
         env:
           DB_PORT: 4444
         run: |
           mkdir data
           ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
-          ./occ app:install ${{ env.APP_NAME }}
+          ./occ app:enable -vvv -f ${{ env.APP_NAME }}
           php -S localhost:8080 &
 
       - name: Remove current stable bookmarks
         run: |
-          ./occ app:remove ${{ env.APP_NAME }}
+          ./occ app:disable ${{ env.APP_NAME }}
 
       - name: Checkout app
         uses: actions/checkout@v2
@@ -211,5 +95,4 @@ jobs:
 
       - name: Run update
         run: |
-          ./occ app:update ${{ env.APP_NAME }}
-          ./occ app:enable ${{ env.APP_NAME }}
+          ./occ app:enable -vvv ${{ env.APP_NAME }}
