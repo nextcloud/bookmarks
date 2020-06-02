@@ -74,6 +74,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Ja teniu aquest URL a les adreces d'interès. Voleu sobreescriure'l?",
     "Title" : "Títol",
     "Link" : "Enllaç",
+    "Folder" : "Carpeta",
     "Failed to find existing bookmark" : "Ha fallat trobar l'adreça d'interès existent.",
     "Failed to create bookmark" : "Ha fallat crear l'adreça d'interès.",
     "Failed to save bookmark" : "Ha fallat desar l'adreça d'interès.",

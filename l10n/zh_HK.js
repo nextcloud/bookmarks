@@ -20,6 +20,7 @@ OC.L10N.register(
     "Allow editing" : "容許編輯",
     "Select" : "Select",
     "Title" : "標題",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "資料夾"
 },
 "nplurals=1; plural=0;");

@@ -75,6 +75,7 @@
     "Title" : "標題",
     "Link" : "連結",
     "Enter bookmark URL" : "輸入書籤URL",
+    "Folder" : "資料夾",
     "Failed to find existing bookmark" : "尋找現存的書籤失敗",
     "Failed to create bookmark" : "建立書籤失敗",
     "Failed to save bookmark" : "儲存書籤失敗",

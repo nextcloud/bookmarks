@@ -85,6 +85,7 @@ OC.L10N.register(
     "Title" : "タイトル",
     "Link" : "リンク",
     "Enter bookmark URL" : "ブックマークのURLを入力",
+    "Folder" : "フォルダー",
     "Failed to find existing bookmark" : "ブックマークの検索に失敗しました",
     "Failed to create bookmark" : "ブックマークの作成に失敗しました",
     "Failed to save bookmark" : "ブックマークの保存に失敗しました",

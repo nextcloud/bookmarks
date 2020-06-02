@@ -34,6 +34,7 @@ OC.L10N.register(
     "Previews" : "Parapamjet",
     "Privacy" : "Privatësia",
     "Title" : "Titulli",
-    "Link" : "Lidhje"
+    "Link" : "Lidhje",
+    "Folder" : "Skedari"
 },
 "nplurals=2; plural=(n != 1);");

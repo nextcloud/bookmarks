@@ -101,6 +101,7 @@ OC.L10N.register(
     "Title" : "Τίτλος",
     "Link" : "Σύνδεσμος",
     "Enter bookmark URL" : "Καταχωρίστε τη διεύθυνση URL σελιδοδείκτη",
+    "Folder" : "Φάκελος",
     "Failed to find existing bookmark" : "Απέτυχε η εύρεση υπάρχων σελιδοδείκτη",
     "Failed to create bookmark" : "Απέτυχε η δημιουργία σελιδοδείκτη",
     "Failed to save bookmark" : "Απέτυχε η αποθήκευση σελιδοδείκτη",

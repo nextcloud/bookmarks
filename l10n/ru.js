@@ -97,6 +97,7 @@ OC.L10N.register(
     "Title" : "Название",
     "Link" : "Ссылка",
     "Enter bookmark URL" : "Введите URL закладки",
+    "Folder" : "Каталог",
     "Failed to find existing bookmark" : "Не удалось найти существующую закладку",
     "Failed to create bookmark" : "Не удалось создать закладку",
     "Failed to save bookmark" : "Не удалось сохранить закладку",

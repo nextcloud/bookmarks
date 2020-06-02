@@ -28,6 +28,7 @@
     "Select" : "Seleccionar",
     "Privacy" : "Privacidad",
     "Title" : "Título",
-    "Link" : "Liga"
+    "Link" : "Liga",
+    "Folder" : "Carpeta"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

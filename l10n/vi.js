@@ -26,6 +26,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Privacy" : "Riêng tư",
     "Title" : "Tên",
-    "Link" : "Liên kết"
+    "Link" : "Liên kết",
+    "Folder" : "Thư mục"
 },
 "nplurals=1; plural=0;");

@@ -47,6 +47,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Šī saite jau ir grāmatzīmēs! Vai pārrakstīt?",
     "Title" : "Amats",
     "Link" : "Saite",
+    "Folder" : "Mape",
     "Bookmarks feed" : "Grāmatzīmju plūsma"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

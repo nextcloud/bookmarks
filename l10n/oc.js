@@ -20,6 +20,7 @@ OC.L10N.register(
     "Allow editing" : "Permetre la modificacion",
     "Select" : "Select",
     "Title" : "Títol",
-    "Link" : "Ligam"
+    "Link" : "Ligam",
+    "Folder" : "Dorsièr"
 },
 "nplurals=2; plural=(n > 1);");

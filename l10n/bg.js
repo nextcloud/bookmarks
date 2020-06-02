@@ -42,6 +42,7 @@ OC.L10N.register(
     "Add a bookmark" : "Добави отметка",
     "This URL is already bookmarked! Overwrite?" : "Този адрес е вече добавен към отметките! Искате ли да презапишете?",
     "Title" : "Име",
-    "Link" : "Връзка"
+    "Link" : "Връзка",
+    "Folder" : "Папка"
 },
 "nplurals=2; plural=(n != 1);");
