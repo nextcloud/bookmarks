@@ -130,7 +130,7 @@ jobs:
         env:
           DB_PORT: 4444
         run: |
-          sleep 10
+          sleep 25
           mkdir data
           ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
           ./occ app:enable ${{ env.APP_NAME }}
