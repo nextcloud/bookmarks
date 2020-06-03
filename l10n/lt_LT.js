@@ -56,6 +56,7 @@ OC.L10N.register(
     "Sharing" : "Bendrinimas",
     "{time} ago" : "Prieš {time}",
     "Owner" : "Savininkas",
+    "Select a user or group" : "Pasirinkti naudotoją ar grupę",
     "Share link" : "Bendrinimo nuoroda",
     "Copy link" : "Kopijuoti nuorodą",
     "Delete link" : "Ištrinti nuorodą",
