@@ -134,5 +134,6 @@ jobs:
         env:
           SELENIUM_BROWSER: ${{ matrix.browsers }}
           FLOCCUS_TEST: ${{matrix.floccus-adapter}} ${{ matrix.test-name}}
+            GIST_TOKEN: "foo"
         run: |
           npm run test
