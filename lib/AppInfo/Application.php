@@ -3,6 +3,7 @@
 /**
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
+ *
  * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Stefan Klemm <mail@stefan-klemm.de>
@@ -13,24 +14,20 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
-use OCA\Bookmarks\Bookmarks;
-use OCA\Bookmarks\Previews\DefaultPreviewService;
-use OCA\Bookmarks\Previews\ScreenlyPreviewService;
-use OCA\Bookmarks\Previews\FaviconPreviewService;
-use \OCP\AppFramework\App;
-use OCP\AppFramework\Utility\ITimeFactory;
-use \OCP\IContainer;
-use \OCA\Bookmarks\Controller\WebViewController;
-use OCA\Bookmarks\Controller\Rest\BookmarkController;
-use OCA\Bookmarks\Controller\Rest\InternalBookmarkController;
-use OCA\Bookmarks\Controller\Rest\TagsController;
-use OCA\Bookmarks\Controller\Rest\InternalTagsController;
-use OCA\Bookmarks\Controller\Rest\FoldersController;
-use OCA\Bookmarks\Controller\Rest\InternalFoldersController;
-use OCA\Bookmarks\Controller\Rest\PublicController;
-use OCA\Bookmarks\Controller\Rest\SettingsController;
+use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\MoveEvent;
+use OCA\Bookmarks\Events\UpdateEvent;
+use OCA\Bookmarks\Hooks\UserGroupListener;
+use OCA\Bookmarks\Hooks\UserHooks;
+use OCA\Bookmarks\Service\HashManager;
+use OCP\AppFramework\App;
+use OCP\EventDispatcher\IEventDispatcher;
+use OCP\Group\Events\UserAddedEvent;
+use OCP\Group\Events\UserRemovedEvent;
+use OCP\IContainer;
 use OCP\IUser;
-use OCP\IURLGenerator;
+use OCP\User\Events\BeforeUserDeletedEvent;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
@@ -38,143 +35,24 @@ class Application extends App {
 
 		$container = $this->getContainer();
 
-		/**
-		 * Controllers
-		 * @param IContainer $c The Container instance that handles the request
-		 */
-		$container->registerService('WebViewController', function ($c) {
+		$container->registerService('UserId', static function ($c) {
 			/** @var IUser|null $user */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-
 			/** @var IContainer $c */
-			return new WebViewController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('ServerContainer')->getURLGenerator(),
-				$c->query('ServerContainer')->query(Bookmarks::class),
-				$c->query('ServerContainer')->getEventDispatcher()
-			);
+			return $user === null ? null : $user->getUID();
 		});
 
-		$container->registerService('BookmarkController', function ($c) {
-			/** @var IContainer $c */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-			return new BookmarkController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('ServerContainer')->getDatabaseConnection(),
-				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
-				$c->query('ServerContainer')->query(Bookmarks::class),
-				$c->query('ServerContainer')->getUserManager(),
-				$c->query('ServerContainer')->query(DefaultPreviewService::class),
-				$c->query('ServerContainer')->query(FaviconPreviewService::class),
-				$c->query('ServerContainer')->query(ScreenlyPreviewService::class),
-				$c->query('ServerContainer')->query(ITimeFactory::class),
-				$c->query('ServerContainer')->getLogger(),
-				$c->query('ServerContainer')->getUserSession(),
-				$c->query('ServerContainer')->query(IURLGenerator::class)
-			);
+		$container->registerService('request', static function ($c) {
+			return $c->query('Request');
 		});
 
-		$container->registerService('InternalBookmarkController', function ($c) {
-			/** @var IContainer $c */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-
-			return new InternalBookmarkController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('ServerContainer')->getDatabaseConnection(),
-				$c->query('ServerContainer')->getL10NFactory()->get('bookmarks'),
-				$c->query('ServerContainer')->query(Bookmarks::class),
-				$c->query('ServerContainer')->getUserManager(),
-				$c->query('ServerContainer')->query(DefaultPreviewService::class),
-				$c->query('ServerContainer')->query(FaviconPreviewService::class),
-				$c->query('ServerContainer')->query(ScreenlyPreviewService::class),
-				$c->query('ServerContainer')->query(ITimeFactory::class),
-				$c->query('ServerContainer')->getLogger(),
-				$c->query('ServerContainer')->getUserSession(),
-				$c->query('ServerContainer')->query(IURLGenerator::class)
-			);
-		});
-
-		$container->registerService('TagsController', function ($c) {
-			/** @var IContainer $c */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-			return new TagsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('ServerContainer')->query(Bookmarks::class)
-			);
-		});
-
-		$container->registerService('InternalTagsController', function ($c) {
-			/** @var IContainer $c */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-			return new InternalTagsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('ServerContainer')->query(Bookmarks::class)
-			);
-		});
-
-		$container->registerService('FoldersController', function ($c) {
-			/** @var IContainer $c */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-			return new FoldersController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('ServerContainer')->query(Bookmarks::class)
-			);
-		});
-
-		$container->registerService('InternalFoldersController', function ($c) {
-			/** @var IContainer $c */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-			return new InternalFoldersController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('FoldersController'),
-				$c->query('ServerContainer')->getLogger()
-			);
-		});
-
-		$container->registerService('PublicController', function ($c) {
-			/** @var IContainer $c */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-			return new PublicController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('ServerContainer')->query(Bookmarks::class),
-				$c->query('ServerContainer')->getUserManager()
-			);
-		});
-
-		$container->registerService('SettingsController', function ($c) {
-			/** @var IContainer $c */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			$uid = is_null($user) ? null : $user->getUID();
-			return new SettingsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$uid,
-				$c->query('ServerContainer')->getConfig()
-			);
-		});
+		$dispatcher = $this->getContainer()->query(IEventDispatcher::class);
+		$dispatcher->addServiceListener(CreateEvent::class, HashManager::class);
+		$dispatcher->addServiceListener(UpdateEvent::class, HashManager::class);
+		$dispatcher->addServiceListener(BeforeDeleteEvent::class, HashManager::class);
+		$dispatcher->addServiceListener(MoveEvent::class, HashManager::class);
+		$dispatcher->addServiceListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
+		$dispatcher->addServiceListener(UserAddedEvent::class, UserGroupListener::class);
+		$dispatcher->addServiceListener(UserRemovedEvent::class, UserGroupListener::class);
 	}
 }

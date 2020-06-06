@@ -1,10 +1,31 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import ViewPrivate from './components/ViewPrivate'
+import ViewPublic from './components/ViewPublic'
 import ViewBookmarklet from './components/ViewBookmarklet'
-import { generateUrl } from 'nextcloud-router'
+import { generateUrl } from '@nextcloud/router'
 
 Vue.use(Router)
+
+export const privateRoutes = {
+	HOME: 'home',
+	RECENT: 'recent',
+	SEARCH: 'search',
+	FOLDER: 'folder',
+	TAGS: 'tags',
+	UNTAGGED: 'untagged',
+	BOOKMARKLET: 'bookmarklet',
+}
+
+export const publicRoutes = {
+	HOME: 'public.home',
+	RECENT: 'public.recent',
+	SEARCH: 'public.search',
+	FOLDER: 'public.folder',
+	TAGS: 'public.tags',
+	UNTAGGED: 'public.untagged',
+	BOOKMARKLET: 'bookmarklet',
+}
 
 export default new Router({
 	mode: 'history',
@@ -13,39 +34,69 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			name: 'home',
-			component: ViewPrivate
+			name: privateRoutes.HOME,
+			component: ViewPrivate,
 		},
 		{
 			path: '/recent',
-			name: 'recent',
-			component: ViewPrivate
+			name: privateRoutes.RECENT,
+			component: ViewPrivate,
 		},
 		{
 			path: '/search/:search',
-			name: 'search',
-			component: ViewPrivate
+			name: privateRoutes.SEARCH,
+			component: ViewPrivate,
 		},
 		{
 			path: '/folder/:folder',
-			name: 'folder',
-			component: ViewPrivate
+			name: privateRoutes.FOLDER,
+			component: ViewPrivate,
 		},
 		{
 			path: '/tags/:tags',
-			name: 'tags',
-			component: ViewPrivate
+			name: privateRoutes.TAGS,
+			component: ViewPrivate,
 		},
 		{
 			path: '/untagged',
-			name: 'untagged',
-			component: ViewPrivate
+			name: privateRoutes.UNTAGGED,
+			component: ViewPrivate,
 		},
 		{
 			path: '/bookmarklet',
-			name: 'bookmarklet',
+			name: privateRoutes.BOOKMARKLET,
 			component: ViewBookmarklet,
-			props: (route) => ({ url: route.query.url, title: route.query.title })
-		}
-	]
+			props: (route) => ({ url: route.query.url, title: route.query.title }),
+		},
+		{
+			path: '/public/:token',
+			name: publicRoutes.HOME,
+			component: ViewPublic,
+		},
+		{
+			path: '/public/:token/recent',
+			name: publicRoutes.RECENT,
+			component: ViewPublic,
+		},
+		{
+			path: '/public/:token/search/:search',
+			name: publicRoutes.SEARCH,
+			component: ViewPublic,
+		},
+		{
+			path: '/public/:token/folder/:folder',
+			name: publicRoutes.FOLDER,
+			component: ViewPublic,
+		},
+		{
+			path: '/public/:token/tags/:tags',
+			name: publicRoutes.TAGS,
+			component: ViewPublic,
+		},
+		{
+			path: '/public/:token/untagged',
+			name: publicRoutes.UNTAGGED,
+			component: ViewPublic,
+		},
+	],
 })

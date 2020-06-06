@@ -20,7 +20,7 @@
  *
  */
 import Vue from 'vue'
-import Tooltip from 'nextcloud-vue/dist/Directives/Tooltip'
+import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
 import App from './App'
 import router from './router'
 import store from './store/'
@@ -33,7 +33,7 @@ const BookmarksApp = (global['Bookmarks'] = new Vue({
 	el: '#content',
 	store,
 	router,
-	render: h => h(App)
+	render: h => h(App),
 }))
 
 navigator.serviceWorker.register(OC.generateUrl('/apps/bookmarks/service-worker.js'))

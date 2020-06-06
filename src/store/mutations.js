@@ -1,6 +1,8 @@
 import Vue from 'vue'
+import axios from '@nextcloud/axios'
 
 export const mutations = {
+	SET_AUTH_TOKEN: 'SET_AUTH_TOKEN',
 	DISPLAY_NEW_BOOKMARK: 'DISPLAY_NEW_BOOKMARK',
 	DISPLAY_NEW_FOLDER: 'DISPLAY_NEW_FOLDER',
 	DISPLAY_MOVE_DIALOG: 'DISPLAY_MOVE_DIALOG',
@@ -11,8 +13,10 @@ export const mutations = {
 	ADD_SELECTION_FOLDER: 'ADD_SELECTION_FOLDER',
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
-	REMOVE_ALL_BOOKMARK: 'REMOVE_ALL_BOOKMARK',
+	REMOVE_ALL_BOOKMARKS: 'REMOVE_ALL_BOOKMARKS',
+	SET_BOOKMARK_COUNT: 'SET_BOOKMARK_COUNT',
 	SET_TAGS: 'SET_TAGS',
+	RENAME_TAG: 'RENAME_TAG',
 	INCREMENT_PAGE: 'INCREMENT_PAGE',
 	RESET_PAGE: 'RESET_PAGE',
 	SET_QUERY: 'SET_QUERY',
@@ -21,17 +25,35 @@ export const mutations = {
 	FETCH_END: 'FETCH_END',
 	REACHED_END: 'REACHED_END',
 	SET_ERROR: 'SET_ERROR',
+	SET_NOTIFICATION: 'SET_NOTIFICATION',
 	SET_FOLDERS: 'SET_FOLDERS',
 	SET_SIDEBAR: 'SET_SIDEBAR',
 	SET_SETTING: 'SET_SETTING',
-	SET_VIEW_MODE: 'SET_VIEW_MODE'
+	SET_VIEW_MODE: 'SET_VIEW_MODE',
+	ADD_SHARE: 'ADD_SHARE',
+	REMOVE_SHARE: 'REMOVE_SHARE',
+	ADD_PUBLIC_TOKEN: 'ADD_PUBLIC_TOKEN',
+	REMOVE_PUBLIC_TOKEN: 'REMOVE_PUBLIC_TOKEN',
 }
 export default {
+	[mutations.SET_AUTH_TOKEN](state, authToken) {
+		if (authToken) {
+			state.public = true
+		}
+		state.authToken = authToken
+		axios.defaults.headers = {
+			requesttoken: OC.requesttoken,
+			'Authorization': 'bearer ' + authToken,
+		}
+	},
 	[mutations.SET_VIEW_MODE](state, viewMode) {
 		state.viewMode = viewMode
 	},
 	[mutations.SET_ERROR](state, error) {
 		state.error = error
+	},
+	[mutations.SET_NOTIFICATION](state, msg) {
+		state.notification = msg
 	},
 	[mutations.SET_SETTING](state, { key, value }) {
 		Vue.set(state.settings, key, value)
@@ -41,6 +63,14 @@ export default {
 	},
 	[mutations.SET_TAGS](state, tags) {
 		state.tags = tags
+	},
+	[mutations.RENAME_TAG](state, { oldName, newName }) {
+		state.bookmarks.forEach((bookmark) => {
+			Vue.set(bookmark, 'tags', bookmark.tags.map((tag) => {
+				if (tag === oldName) return newName
+				return tag
+			}))
+		})
 	},
 	[mutations.DISPLAY_NEW_BOOKMARK](state, display) {
 		state.displayNewBookmark = display
@@ -62,6 +92,9 @@ export default {
 		state.selection = { folders: [], bookmarks: [] }
 	},
 	[mutations.ADD_SELECTION_BOOKMARK](state, item) {
+		if (state.selection.bookmarks.find(b => item.id === b.id)) {
+			return
+		}
 		state.selection.bookmarks.push(item)
 	},
 	[mutations.REMOVE_SELECTION_BOOKMARK](state, item) {
@@ -100,6 +133,9 @@ export default {
 		state.bookmarks = []
 		state.bookmarksById = {}
 	},
+	[mutations.SET_BOOKMARK_COUNT](state, { folderId, count }) {
+		Vue.set(state.countsByFolder, folderId, count)
+	},
 
 	[mutations.SET_SIDEBAR](state, sidebar) {
 		state.sidebar = sidebar
@@ -112,6 +148,7 @@ export default {
 		state.bookmarks = []
 		state.bookmarksById = {}
 		Vue.set(state.fetchState, 'page', 0)
+		Vue.set(state.fetchState, 'reachedEnd', false)
 	},
 	[mutations.SET_QUERY](state, query) {
 		state.bookmarks = []
@@ -132,7 +169,24 @@ export default {
 
 	[mutations.REACHED_END](state) {
 		Vue.set(state.fetchState, 'reachedEnd', true)
-	}
+	},
+
+	[mutations.ADD_SHARE](state, share) {
+		Vue.set(state.sharesById, share.id, share)
+	},
+	[mutations.REMOVE_SHARE](state, id) {
+		if (!state.sharesById[id]) {
+			return
+		}
+		Vue.delete(state.sharesById, id)
+	},
+
+	[mutations.ADD_PUBLIC_TOKEN](state, { folderId, token }) {
+		Vue.set(state.tokensByFolder, folderId, token)
+	},
+	[mutations.REMOVE_PUBLIC_TOKEN](state, { folderId }) {
+		Vue.delete(state.tokensByFolder, folderId)
+	},
 }
 
 function sortFolders(folders) {

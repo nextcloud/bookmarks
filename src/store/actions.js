@@ -1,5 +1,5 @@
-import axios from 'nextcloud-axios'
-import { generateUrl } from 'nextcloud-router'
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
 import AppGlobal from '../mixins/AppGlobal'
 import { mutations } from './mutations'
 
@@ -7,6 +7,7 @@ const BATCH_SIZE = 42
 
 export const actions = {
 	ADD_ALL_BOOKMARKS: 'ADD_ALL_BOOKMARKS',
+	COUNT_BOOKMARKS: 'COUNT_BOOKMARKS',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
@@ -24,6 +25,7 @@ export const actions = {
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
+	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
 	DELETE_SELECTION: 'DELETE_SELECTION',
@@ -40,7 +42,16 @@ export const actions = {
 
 	SET_SETTING: 'SET_SETTING',
 	LOAD_SETTING: 'LOAD_SETTING',
-	LOAD_SETTINGS: 'SLOAD_SETTINGS'
+	LOAD_SETTINGS: 'SLOAD_SETTINGS',
+
+	LOAD_SHARES_OF_FOLDER: 'LOAD_SHARES_OF_FOLDER',
+	CREATE_SHARE: 'CREATE_SHARE',
+	EDIT_SHARE: 'EDIT_SHARE',
+	DELETE_SHARE: 'DELETE_SHARE',
+
+	LOAD_PUBLIC_LINK: 'LOAD_PUBLIC_LINK',
+	CREATE_PUBLIC_LINK: 'CREATE_PUBLIC_LINK',
+	DELETE_PUBLIC_LINK: 'DELETE_PUBLIC_LINK',
 }
 
 export default {
@@ -50,16 +61,36 @@ export default {
 		}
 	},
 
+	async [actions.COUNT_BOOKMARKS]({ commit, dispatch, state }, folderId) {
+		try {
+			const response = await axios.get(url(state, `/folder/${folderId}/count`)
+			)
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_BOOKMARK_COUNT, { folderId, count })
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to count bookmarks')
+			)
+			throw err
+		}
+	},
 	async [actions.FIND_BOOKMARK]({ commit, dispatch, state }, link) {
 		if (state.loading.bookmarks) return
 		try {
-			const response = await axios.get(url('/bookmark'), {
+			const response = await axios.get(url(state, '/bookmark'), {
 				params: {
-					url: link
-				}
+					url: link,
+				},
 			})
 			const {
-				data: { data: bookmarks, status }
+				data: { data: bookmarks, status },
 			} = response
 			if (status !== 'success') {
 				throw new Error(response.data)
@@ -76,91 +107,90 @@ export default {
 			throw err
 		}
 	},
-	[actions.CREATE_BOOKMARK]({ commit, dispatch, state }, data) {
+	async [actions.CREATE_BOOKMARK]({ commit, dispatch, state }, data) {
 		if (state.loading.bookmarks) return
 		commit(mutations.FETCH_START, { type: 'createBookmark' })
-		return axios
-			.post(url('/bookmark'), {
+		try {
+			const response = await axios.post(url(state, '/bookmark'), {
 				url: data.url,
 				title: data.title,
 				description: data.description,
-				folders: data.folders,
-				tags: data.tags
+				folders: data.folders && data.folders.map(parseInt),
+				tags: data.tags,
 			})
-			.then(response => {
-				const {
-					data: { item: bookmark, status }
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data.data.join('\n'))
-				}
-				commit(mutations.DISPLAY_NEW_BOOKMARK, false)
-				commit(mutations.ADD_BOOKMARK, bookmark)
-				return dispatch(actions.OPEN_BOOKMARK, bookmark.id)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
-				)
-				throw err
-			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'createBookmark')
-			})
+			const {
+				data: { item: bookmark, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data.data.join('\n'))
+			}
+			commit(mutations.DISPLAY_NEW_BOOKMARK, false)
+			commit(mutations.ADD_BOOKMARK, bookmark)
+			commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: state.countsByFolder[-1] + 1 })
+			commit(mutations.FETCH_END, 'createBookmark')
+			return dispatch(actions.OPEN_BOOKMARK, bookmark.id)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'createBookmark')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
+			)
+			throw err
+		}
+
 	},
-	[actions.SAVE_BOOKMARK]({ commit, dispatch, state }, id) {
+	async [actions.SAVE_BOOKMARK]({ commit, dispatch, state }, id) {
 		commit(mutations.FETCH_START, { type: 'saveBookmark' })
-		return axios
-			.put(url(`/bookmark/${id}`), this.getters.getBookmark(id))
-			.then(response => {
-				const {
-					data: { status }
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to save bookmark')
-				)
-				throw err
-			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'saveBookmark')
-			})
+		try {
+			const response = await axios.put(url(state, `/bookmark/${id}`), this.getters.getBookmark(id))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.FETCH_END, 'saveBookmark')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'saveBookmark')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to save bookmark')
+			)
+			throw err
+		}
 	},
 	async [actions.MOVE_BOOKMARK](
 		{ commit, dispatch, state },
 		{ bookmark, oldFolder, newFolder }
 	) {
+		if (Number(oldFolder) === Number(newFolder)) {
+			return
+		}
 		commit(mutations.FETCH_START, { type: 'moveBookmark' })
 		try {
-			let response = await axios.post(
-				url(`/folder/${newFolder}/bookmarks/${bookmark}`)
+			const response = await axios.post(
+				url(state, `/folder/${newFolder}/bookmarks/${bookmark}`)
 			)
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
-			let response2 = await axios.delete(
-				url(`/folder/${oldFolder}/bookmarks/${bookmark}`)
+			const response2 = await axios.delete(
+				url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`)
 			)
 			if (response2.data.status !== 'success') {
 				throw new Error(response2.data)
 			}
+			commit(mutations.FETCH_END, 'moveBookmark')
 		} catch (err) {
 			console.error(err)
+			commit(mutations.FETCH_END, 'moveBookmark')
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to move bookmark')
 			)
 			throw err
-		} finally {
-			commit(mutations.FETCH_END, 'moveBookmark')
 		}
 	},
 	[actions.OPEN_BOOKMARK]({ commit }, id) {
@@ -170,12 +200,13 @@ export default {
 		if (folder) {
 			try {
 				const response = await axios.delete(
-					url(`/folder/${folder}/bookmarks/${id}`)
+					url(state, `/folder/${folder}/bookmarks/${id}`)
 				)
 				if (response.data.status !== 'success') {
 					throw new Error(response.data)
 				}
 				commit(mutations.REMOVE_BOOKMARK, id)
+				commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: Math.max(0, state.countsByFolder[-1] - 1) })
 			} catch (err) {
 				console.error(err)
 				commit(
@@ -187,7 +218,7 @@ export default {
 			return
 		}
 		try {
-			const response = await axios.delete(url(`/bookmark/${id}`))
+			const response = await axios.delete(url(state, `/bookmark/${id}`))
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
@@ -201,44 +232,44 @@ export default {
 			throw err
 		}
 	},
-	[actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, file) {
-		var data = new FormData()
+	[actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, { file, folder }) {
+		const data = new FormData()
 		data.append('bm_import', file)
 		return axios
-			.post(url(`/bookmark/import`), data)
+			.post(url(state, `/folder/${folder || -1}/import`), data)
 			.then(response => {
-				if (!response.ok) {
+				if (!response.data || response.data.status !== 'success') {
 					if (response.status === 413) {
 						throw new Error('Selected file is too large')
 					}
-					throw new Error(response.data.data.join('\n'))
-				} else {
-					const status = response.data.status
-					if (status !== 'success') {
-						throw new Error(response.data)
-					}
+					console.error('Failed to import bookmarks', response)
+					throw new Error(Array.isArray(response.data.data) ? response.data.data.join('. ') : response.data.data)
 				}
+				commit(mutations.SET_NOTIFICATION, AppGlobal.methods.t('bookmarks', 'Import successful'))
+				dispatch(actions.COUNT_BOOKMARKS, -1)
+				return dispatch(actions.RELOAD_VIEW)
 			})
 			.catch(err => {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', err.message)
+					err.message
 				)
 				throw err
 			})
 	},
 	[actions.DELETE_BOOKMARKS]({ commit, dispatch, state }) {
 		return axios
-			.delete(url(`/bookmark`))
+			.delete(url(state, `/bookmark`))
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
 				}
-				return dispatch(actions.LOAD_FOLDERS)
+				dispatch(actions.COUNT_BOOKMARKS, -1)
+				return dispatch(actions.RELOAD_VIEW)
 			})
 			.catch(err => {
 				console.error(err)
@@ -252,57 +283,55 @@ export default {
 
 	[actions.RENAME_TAG]({ commit, dispatch, state }, { oldName, newName }) {
 		commit(mutations.FETCH_START, { type: 'tag' })
-		return axios
-			.put(url(`/tag/${oldName}`), {
-				name: newName
-			})
-			.then(response => {
-				const {
-					data: { status }
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-				return dispatch(actions.LOAD_TAGS)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
-				)
-				throw err
-			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'tag')
-			})
+		try {
+			const response = axios
+				.put(url(state, `/tag/${oldName}`), {
+					name: newName,
+				})
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.RENAME_TAG, { oldName, newName })
+			commit(mutations.FETCH_END, 'tag')
+			return dispatch(actions.LOAD_TAGS)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'tag')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
+			)
+			throw err
+		}
 	},
-	[actions.LOAD_TAGS]({ commit, dispatch, state }, link) {
+	[actions.LOAD_TAGS]({ commit, dispatch, state }) {
 		commit(mutations.FETCH_START, { type: 'tags' })
 		return axios
-			.get(url('/tag'), { params: { count: true } })
+			.get(url(state, '/tag'), { params: { count: true } })
 			.then(response => {
 				const { data: tags } = response
+				commit(mutations.FETCH_END, 'tags')
 				return commit(mutations.SET_TAGS, tags)
 			})
 			.catch(err => {
 				console.error(err)
+				commit(mutations.FETCH_END, 'tags')
 				commit(
 					mutations.SET_ERROR,
 					AppGlobal.methods.t('bookmarks', 'Failed to load tags')
 				)
 				throw err
 			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'tags')
-			})
 	},
 	[actions.DELETE_TAG]({ commit, dispatch, state }, tag) {
 		return axios
-			.delete(url(`/tag/${tag}`))
+			.delete(url(state, `/tag/${tag}`))
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -325,37 +354,36 @@ export default {
 			type: 'folders',
 			cancel: () => {
 				canceled = true
-			}
+			},
 		})
 		return axios
-			.get(url('/folder'), { params: {} })
+			.get(url(state, '/folder'), { params: {} })
 			.then(response => {
 				if (canceled) return
 				const {
-					data: { data, status }
+					data: { data, status },
 				} = response
 				if (status !== 'success') throw new Error(data)
 				const folders = data
+				commit(mutations.FETCH_END, 'folders')
 				return commit(mutations.SET_FOLDERS, folders)
 			})
 			.catch(err => {
 				console.error(err)
+				commit(mutations.FETCH_END, 'folders')
 				commit(
 					mutations.SET_ERROR,
 					AppGlobal.methods.t('bookmarks', 'Failed to load folders')
 				)
 				throw err
 			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'folders')
-			})
 	},
 	[actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
 		return axios
-			.delete(url(`/folder/${id}`))
+			.delete(url(state, `/folder/${id}`))
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -376,13 +404,13 @@ export default {
 		{ parentFolder, title }
 	) {
 		return axios
-			.post(url(`/folder`), {
+			.post(url(state, `/folder`), {
 				parent_folder: parentFolder,
-				title
+				title,
 			})
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
@@ -403,29 +431,31 @@ export default {
 		const folder = this.getters.getFolder(id)[0]
 		commit(mutations.FETCH_START, { type: 'saveFolder' })
 		return axios
-			.put(url(`/folder/${id}`), {
+			.put(url(state, `/folder/${id}`), {
 				parent_folder: folder.parent_folder,
-				title: folder.title
+				title: folder.title,
 			})
 			.then(response => {
 				const {
-					data: { status }
+					data: { status },
 				} = response
 				if (status !== 'success') {
 					throw new Error(response.data)
 				}
+				commit(mutations.FETCH_END, 'saveFolder')
 			})
 			.catch(err => {
 				console.error(err)
+				commit(mutations.FETCH_END, 'saveFolder')
 				commit(
 					mutations.SET_ERROR,
 					AppGlobal.methods.t('bookmarks', 'Failed to create folder')
 				)
 				throw err
 			})
-			.finally(() => {
-				commit(mutations.FETCH_END, 'saveFolder')
-			})
+	},
+	[actions.OPEN_FOLDER_DETAILS]({ commit }, id) {
+		commit(mutations.SET_SIDEBAR, { type: 'folder', id })
 	},
 
 	async [actions.MOVE_SELECTION]({ commit, dispatch, state }, folderId) {
@@ -443,21 +473,21 @@ export default {
 				await dispatch(actions.MOVE_BOOKMARK, {
 					oldFolder: bookmark.folders[bookmark.folders.length - 1], // FIXME This is veeeery ugly and will cause issues. Inevitably.
 					newFolder: folderId,
-					bookmark: bookmark.id
+					bookmark: bookmark.id,
 				})
 			}
+			commit(mutations.FETCH_END, 'moveSelection')
 		} catch (err) {
 			console.error(err)
+			commit(mutations.FETCH_END, 'moveSelection')
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to move parts of selection')
 			)
 			throw err
-		} finally {
-			commit(mutations.FETCH_END, 'moveSelection')
 		}
 	},
-	async [actions.DELETE_SELECTION]({ commit, dispatch, state }) {
+	async [actions.DELETE_SELECTION]({ commit, dispatch, state }, { folder }) {
 		commit(mutations.FETCH_START, { type: 'deleteSelection' })
 		try {
 			for (const folder of state.selection.folders) {
@@ -465,17 +495,17 @@ export default {
 			}
 
 			for (const bookmark of state.selection.bookmarks) {
-				await dispatch(actions.DELETE_BOOKMARK, { id: bookmark.id })
+				await dispatch(actions.DELETE_BOOKMARK, { id: bookmark.id, folder })
 			}
+			commit(mutations.FETCH_END, 'deleteSelection')
 		} catch (err) {
 			console.error(err)
+			commit(mutations.FETCH_END, 'deleteSelection')
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete parts of selection')
 			)
 			throw err
-		} finally {
-			commit(mutations.FETCH_END, 'deleteSelection')
 		}
 	},
 
@@ -491,7 +521,7 @@ export default {
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_RECENT]({ dispatch, commit }, search) {
-		commit(mutations.SET_QUERY, { sortby: 'lastmodified' })
+		commit(mutations.SET_QUERY, { sortby: 'added' })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_SEARCH]({ dispatch, commit }, search) {
@@ -517,21 +547,21 @@ export default {
 			type: 'bookmarks',
 			cancel() {
 				canceled = true
-			}
+			},
 		})
 		axios
-			.get(url('/bookmark'), {
+			.get(url(state, '/bookmark'), {
 				params: {
 					limit: BATCH_SIZE,
 					page: state.fetchState.page,
 					sortby: state.settings.sorting,
-					...state.fetchState.query
-				}
+					...state.fetchState.query,
+				},
 			})
 			.then(response => {
 				if (canceled) return
 				const {
-					data: { data, status }
+					data: { data, status },
 				} = response
 				if (status !== 'success') throw new Error(data)
 				const bookmarks = data
@@ -539,19 +569,17 @@ export default {
 				if (bookmarks.length < BATCH_SIZE) {
 					commit(mutations.REACHED_END)
 				}
+				commit(mutations.FETCH_END, 'bookmarks')
 				return dispatch(actions.ADD_ALL_BOOKMARKS, bookmarks)
 			})
 			.catch(err => {
 				console.error(err)
+				commit(mutations.FETCH_END, 'bookmarks')
 				commit(
 					mutations.SET_ERROR,
 					AppGlobal.t('bookmarks', 'Failed to fetch bookmarks.')
 				)
 				throw err
-			})
-			.finally(() => {
-				if (canceled) return
-				commit(mutations.FETCH_END, 'bookmarks')
 			})
 	},
 
@@ -563,9 +591,12 @@ export default {
 		if (key === 'sorting') {
 			await commit(mutations.RESET_PAGE)
 		}
+		if (state.public) {
+			return
+		}
 		return axios
-			.post(url(`/settings/${key}`), {
-				[key]: value
+			.post(url(state, `/settings/${key}`), {
+				[key]: value,
 			})
 			.catch(err => {
 				console.error(err)
@@ -578,36 +609,190 @@ export default {
 	},
 	[actions.LOAD_SETTING]({ commit, dispatch, state }, key) {
 		return axios
-			.get(url(`/settings/${key}`))
+			.get(url(state, `/settings/${key}`))
 			.then(async response => {
 				const {
-					data: { [key]: value }
+					data: { [key]: value },
 				} = response
 				await commit(mutations.SET_SETTING, { key, value })
-				if (key === 'viewMode') {
+				switch (key) {
+				case 'viewMode':
 					await commit(mutations.SET_VIEW_MODE, value)
-				}
-				if (key === 'sorting') {
+					break
+				case 'sorting':
 					await commit(mutations.RESET_PAGE)
+					break
 				}
 			})
 			.catch(err => {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to load setting ' + key)
+					AppGlobal.methods.t('bookmarks', 'Failed to load setting {key}', { key })
 				)
 				throw err
 			})
 	},
 	[actions.LOAD_SETTINGS]({ commit, dispatch, state }) {
 		return Promise.all(
-			['sorting', 'viewMode'].map(key => dispatch(actions.LOAD_SETTING, key))
+			['sorting', 'viewMode', 'limit'].map(key => dispatch(actions.LOAD_SETTING, key))
 		)
-	}
+	},
+
+	[actions.LOAD_SHARES_OF_FOLDER]({ commit, dispatch, state }, folderId) {
+		if (folderId === -1 || folderId === '-1') {
+			return Promise.resolve()
+		}
+		return axios
+			.get(url(state, `/folder/${folderId}/shares`))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				const shares = data
+				for (const share of shares) {
+					await commit(mutations.ADD_SHARE, share)
+				}
+			})
+			.catch(err => {
+				console.error(err)
+				// Don't set a notification as this is expected to happen for subfolders of shares that we don't have a RESHAR permission for
+				throw err
+			})
+	},
+	[actions.CREATE_SHARE]({ commit, dispatch, state }, { folderId, type, participant }) {
+		return axios
+			.post(url(state, `/folder/${folderId}/shares`), {
+				folderId,
+				participant,
+				type,
+			})
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.ADD_SHARE, item)
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to create share for folder {folderId}', { folderId })
+				)
+				throw err
+			})
+	},
+	[actions.EDIT_SHARE]({ commit, dispatch, state }, { shareId, canWrite, canShare }) {
+		return axios
+			.put(url(state, `/share/${shareId}`), {
+				canWrite,
+				canShare,
+			})
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.ADD_SHARE, item)
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to update share {shareId}', { shareId })
+				)
+				throw err
+			})
+	},
+	[actions.DELETE_SHARE]({ commit, dispatch, state }, shareId) {
+		return axios
+			.delete(url(state, `/share/${shareId}`))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.REMOVE_SHARE, shareId)
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to delete share {shareId}', { shareId })
+				)
+				throw err
+			})
+	},
+
+	[actions.LOAD_PUBLIC_LINK]({ commit, dispatch, state }, folderId) {
+		return axios
+			.get(url(state, `/folder/${folderId}/publictoken`), {
+				validateStatus: (status) => status === 404 || status === 200,
+			})
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (response.status === 404) {
+					return
+				}
+				if (status !== 'success') throw new Error(data)
+				const token = item
+				await commit(mutations.ADD_PUBLIC_TOKEN, { folderId, token })
+			})
+			.catch(err => {
+				console.error(err)
+				// Not sending a notification because we might just not have enough permissions to see this
+			})
+	},
+	[actions.CREATE_PUBLIC_LINK]({ commit, dispatch, state }, folderId) {
+		return axios
+			.post(url(state, `/folder/${folderId}/publictoken`))
+			.then(async response => {
+				const {
+					data: { item, data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				const token = item
+				await commit(mutations.ADD_PUBLIC_TOKEN, { folderId, token })
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to create public link for folder {folderId}', { folderId })
+				)
+				throw err
+			})
+	},
+	[actions.DELETE_PUBLIC_LINK]({ commit, dispatch, state }, folderId) {
+		return axios
+			.delete(url(state, `/folder/${folderId}/publictoken`))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				await commit(mutations.REMOVE_PUBLIC_TOKEN, { folderId })
+			})
+			.catch(err => {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to delete public link for folder {folderId}', { folderId })
+				)
+				throw err
+			})
+	},
 }
 
-function url(url) {
-	url = `/apps/bookmarks${url}`
+function url(state, url) {
+	if (state.public) {
+		url = `/apps/bookmarks/public/rest/v2${url}`
+	} else {
+		url = `/apps/bookmarks${url}`
+	}
 	return generateUrl(url)
 }

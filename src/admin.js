@@ -20,7 +20,7 @@
  *
  */
 import Vue from 'vue'
-import Tooltip from 'nextcloud-vue/dist/Directives/Tooltip'
+import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
 import App from './components/ViewAdmin'
 import store from './store/'
 import AppGlobal from './mixins/AppGlobal'
@@ -31,7 +31,7 @@ Vue.directive('tooltip', Tooltip)
 const BookmarksApp = (global['Bookmarks'] = new Vue({
 	el: '#bookmarks',
 	store,
-	render: h => h(App)
+	render: h => h(App),
 }))
 
 export default BookmarksApp

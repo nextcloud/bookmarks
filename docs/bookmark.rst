@@ -28,13 +28,12 @@ Query bookmarks
 
    .. versionadded:: 0.11.0
 
-   :query conjunction: Set to `and` to require all tags to be present, ``or`` if one should suffice. Default: ``or``
+   :query conjunction: Set to ``and`` to require all tags to be present, ``or`` if one should suffice. Default: ``or``
    :query tags[]: An array of tags that bookmarks returned by the endpoint should have
-   :query page: if this is non-negative, results will be paginated by 10 bookmarks a page. Default: ``0``
+   :query page: if this is non-negative, results will be paginated by 10 bookmarks a page. Default: ``0``.
    :query sortby: The column to sort the results by; one of ``url``, ``title``, ``description``, ``public``, ``lastmodified``, ``clickcount``. Default: ``lastmodified``.
-   :query search[]: An array of words to search for in the following columns `url`, `title`, `description`
-   :query user: Instead of returning the bookmarks of the current user, return the public bookmarks of the user passed as this parameter.
-   :query folder: Only return bookmarks that are direct children of the folder with the passed ID. The root folder has id `-1`.
+   :query search[]: An array of words to search for in the following columns ``url``, ``title``, ``description``
+   :query folder: Only return bookmarks that are direct children of the folder with the passed ID. The root folder has id ``-1``.
    :query url: Only return bookmarks with this URL. This will only ever return just one bookmark or none, because the app doesn't store duplicates. Thus, with this parameter you can test whether a URL exists in the user's bookmarks. This parameter cannot be mixed with the others.
 
    :>json string status: ``success`` or ``error``
@@ -72,7 +71,6 @@ Create a bookmark
    :param id: the url of the new bookmark
    :param array tags: Array of tags for this bookmark (these needn't exist and are created on-the-fly; this used to be `item[tags][]`, which is now deprecated)
    :param string title: the title of the bookmark. If absent the title of the html site referenced by `url` is used
-   :param boolean is_public: Set this parameter (without a value) to mark the new bookmark as public, so that other users can see it
    :param string description: A description for this bookmark
    :param array folders: An array of IDs of the folders this bookmark should reside in.
 
@@ -165,7 +163,6 @@ Edit a bookmark
    :param id: the url of the new bookmark
    :param array tags: Array of tags for this bookmark (these needn't exist and are created on-the-fly; this used to be `item[tags][]`, which is now deprecated)
    :param string title: the title of the bookmark. If absent the title of the html site referenced by `url` is used
-   :param boolean is_public: Set this parameter (without a value) to mark the new bookmark as public, so that other users can see it
    :param string description: A description for this bookmark
    :param array folders: An array of IDs of the folders this bookmark should reside in.
 
@@ -232,3 +229,83 @@ Delete a bookmark
       {
         "status": "success"
       }
+
+Get a preview image
+===================
+
+.. get:: /public/rest/v2/bookmark/(int:id)/image
+
+   :synopsis: Retrieve the preview image of a bookmark
+
+   .. versionadded:: 1.0.0
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      GET /index.php/apps/bookmarks/public/rest/v2/bookmark/7/image HTTP/1.1
+      Host: example.com
+
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: image/png
+
+      ... binary data ...
+
+Get a favicon
+=============
+
+.. get:: /public/rest/v2/bookmark/(int:id)/favicon
+
+   :synopsis: Retrieve the favicon of a bookmark
+
+   .. versionadded:: 1.0.0
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      GET /index.php/apps/bookmarks/public/rest/v2/bookmark/7/favicon HTTP/1.1
+      Host: example.com
+
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: image/png
+
+      ... binary data ...
+
+Export all bookmarks
+====================
+
+.. get:: /public/rest/v2/bookmark/export
+
+   :synopsis: Export all bookmarks of the current user in a HTML file.
+
+   .. versionadded:: 0.11.0
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      GET /index.php/apps/bookmarks/public/rest/v2/bookmark/export HTTP/1.1
+      Host: example.com
+
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: text/html
+
+      <html>
+      ...
+

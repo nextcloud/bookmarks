@@ -6,7 +6,7 @@
 		}">
 		<CreateBookmark v-if="newBookmark" />
 		<CreateFolder v-if="newFolder" />
-		<template v-if="$route.name === 'folder' || $route.name === 'home'">
+		<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
 			<Folder
 				v-for="folder in folderChildren"
 				:key="'f' + folder.id"
@@ -21,8 +21,8 @@
 		<div
 			v-else-if="!loading && !folderChildren.length"
 			class="bookmarkslist__empty">
-			<h2>No bookmarks here</h2>
-			<p>Try changing your query or add some using the button on the left.</p>
+			<h2>{{ t('bookmarks', 'No bookmarks here') }}</h2>
+			<p>{{ t('bookmarks', 'Try changing your query or add some using the button on the left.') }}</p>
 		</div>
 		<div v-if="loading" class="bookmarkslist__loading">
 			<figure class="icon-loading" />
@@ -35,6 +35,7 @@ import Bookmark from './Bookmark'
 import Folder from './Folder'
 import CreateBookmark from './CreateBookmark'
 import CreateFolder from './CreateFolder'
+import { actions } from '../store'
 
 export default {
 	name: 'BookmarksList',
@@ -42,27 +43,28 @@ export default {
 		Bookmark,
 		Folder,
 		CreateBookmark,
-		CreateFolder
+		CreateFolder,
 	},
 	props: {
 		bookmarks: {
 			type: Array,
-			required: true
+			required: true,
 		},
 		loading: {
 			type: Boolean,
-			required: true
-		}
+			required: true,
+		},
 	},
 	computed: {
 		folderChildren() {
-			if (this.$route.name !== 'home' && this.$route.name !== 'folder') {
+			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []
 			}
 			const folderId = this.$route.params.folder || '-1'
 			if (!folderId) return []
 			const folder = this.$store.getters.getFolder(folderId)[0]
 			if (!folder) return []
+			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folder.id)
 			return folder.children
 		},
 		newBookmark() {
@@ -73,8 +75,8 @@ export default {
 		},
 		viewMode() {
 			return this.$store.state.viewMode
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

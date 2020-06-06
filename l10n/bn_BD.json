@@ -1,0 +1,24 @@
+{ "translations": {
+    "Details" : "বিসতারিত",
+    "Rename" : "পূনঃনামকরণ",
+    "Move" : "Move",
+    "Delete" : "মুছে",
+    "Save" : "সংরক্ষণ",
+    "New folder" : "নতুন ফোল্ডার",
+    "Create" : "তৈরী কর",
+    "Cancel" : "বাতির",
+    "Import" : "আমদানি",
+    "Export" : "রপ্তানি",
+    "URL" : "URL",
+    "Tags" : "ট্যাগ",
+    "Notes" : "নোট",
+    "Sharing" : "ভাগাভাগিরত",
+    "Owner" : "Owner",
+    "Share link" : "লিংক ভাগাভাগি করেন",
+    "Copy link" : "লিঙ্ক কপি করো",
+    "Select" : "সিলেক্ট",
+    "Title" : "শিরোনাম",
+    "Link" : "Link",
+    "Folder" : "ফোল্ডার"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

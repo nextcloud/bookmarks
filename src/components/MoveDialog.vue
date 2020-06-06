@@ -1,6 +1,6 @@
 <template>
 	<Modal v-if="showModal" :title="title" @close="onClose">
-		<div class="move-dialog">
+		<div v-if="!moving" class="move-dialog">
 			<TreeFolder
 				:folder="{
 					title: t('bookmarks', 'Root folder'),
@@ -10,10 +10,11 @@
 				:show-children-default="true"
 				@select="onSelect" />
 		</div>
+		<div v-else class="icon-loading move-dialog" />
 	</Modal>
 </template>
 <script>
-import Modal from 'nextcloud-vue/dist/Components/Modal'
+import Modal from '@nextcloud/vue/dist/Components/Modal'
 import { actions, mutations } from '../store/'
 import TreeFolder from './TreeFolder'
 
@@ -21,7 +22,7 @@ export default {
 	name: 'MoveDialog',
 	components: {
 		Modal,
-		TreeFolder
+		TreeFolder,
 	},
 	computed: {
 		showModal() {
@@ -30,35 +31,35 @@ export default {
 		selection() {
 			return this.$store.state.selection
 		},
+		moving() {
+			return this.$store.state.loading.moveSelection
+		},
 		allFolders() {
 			return this.filterFolders(this.$store.state.folders)
 		},
 		title() {
 			if (this.selection.folders.length) {
 				if (this.selection.bookmarks.length) {
-					return n(
-						'bookmarks',
+					return n('bookmarks',
 						'Moving %n folder and some bookmarks',
 						'Moving %n folders and some bookmarks',
 						this.selection.folders.length
 					)
 				} else {
-					return n(
-						'bookmarks',
+					return n('bookmarks',
 						'Moving %n folder',
 						'Moving %n folders',
 						this.selection.folders.length
 					)
 				}
 			} else {
-				return n(
-					'bookmarks',
+				return n('bookmarks',
 					'Moving %n bookmark',
 					'Moving %n bookmarks',
 					this.selection.bookmarks.length
 				)
 			}
-		}
+		},
 	},
 	created() {},
 	methods: {
@@ -79,10 +80,10 @@ export default {
 				)
 				.map(child => ({
 					...child,
-					children: this.filterFolders(child.children)
+					children: this.filterFolders(child.children),
 				}))
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

@@ -10,29 +10,45 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use OCP\AppFramework\Http\ContentSecurityPolicy;
-use \OCP\IRequest;
-use \OCP\AppFramework\Http\TemplateResponse;
+use OCA\Bookmarks\Db\Folder;
+use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Db\PublicFolder;
+use OCA\Bookmarks\Db\PublicFolderMapper;
+use OCP\AppFramework\Controller;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http\NotFoundResponse;
+use OCP\AppFramework\Http\Response;
+use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DownloadResponse;
-use \OCP\AppFramework\Controller;
-use \OCA\Bookmarks\Bookmarks;
-use OCP\IURLGenerator;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\IL10N;
+use OCP\IRequest;
+use OCP\IUserManager;
 
 class WebViewController extends Controller {
 
-	/** @var  string */
+	/** @var string */
 	private $userId;
 
-	/** @var IURLGenerator  */
-	private $urlgenerator;
+	/**
+	 * @var IL10N
+	 */
+	private $l;
 
-	/** @var Bookmarks */
-	private $bookmarks;
+	/**
+	 * @var PublicFolderMapper
+	 */
+	private $publicFolderMapper;
 
-	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
+	/**
+	 * @var FolderMapper
+	 */
+	private $folderMapper;
 
 
 	/**
@@ -41,16 +57,18 @@ class WebViewController extends Controller {
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param $userId
-	 * @param IURLGenerator $urlgenerator
-	 * @param Bookmarks $bookmarks
-	 * @param EventDispatcherInterface $eventDispatcher
+	 * @param IL10N $l
+	 * @param PublicFolderMapper $publicFolderMapper
+	 * @param IUserManager $userManager
+	 * @param FolderMapper $folderMapper
 	 */
-	public function __construct($appName, IRequest $request, $userId, IURLGenerator $urlgenerator, Bookmarks $bookmarks, EventDispatcherInterface $eventDispatcher) {
+	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, \OCA\Bookmarks\Db\FolderMapper $folderMapper) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
-		$this->urlgenerator = $urlgenerator;
-		$this->bookmarks = $bookmarks;
-		$this->eventDispatcher = $eventDispatcher;
+		$this->l = $l;
+		$this->publicFolderMapper = $publicFolderMapper;
+		$this->userManager = $userManager;
+		$this->folderMapper = $folderMapper;
 	}
 
 	/**
@@ -58,21 +76,45 @@ class WebViewController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		$params = ['user' => $this->userId];
+		return new TemplateResponse($this->appName, 'main', []);
+	}
 
-		$policy = new ContentSecurityPolicy();
-		$policy->addAllowedFrameDomain("'self'");
-		$policy->addAllowedWorkerSrcDomain("'self'");
-		$policy->allowEvalScript(true);
+	/**
+	 * @param string $token
+	 * @return Response
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 */
+	public function link(string $token) {
+		$title = 'No title found';
+		$userName = 'Unknown';
+		try {
+			/**
+			 * @var $publicFolder PublicFolder
+			 */
+			$publicFolder = $this->publicFolderMapper->find($token);
+			/**
+			 * @var $folder Folder
+			 */
+			$folder = $this->folderMapper->find($publicFolder->getFolderId());
+			$title = $folder->getTitle();
+			$user = $this->userManager->get($folder->getUserId());
+			if ($user !== null) {
+				$userName = $user->getDisplayName();
+			}
+		} catch (DoesNotExistException $e) {
+			return new NotFoundResponse();
+		} catch (MultipleObjectsReturnedException $e) {
+			return new NotFoundResponse();
+		}
 
-		$this->eventDispatcher->dispatch(
-			'\OCA\Bookmarks::loadAdditionalScripts',
-			new GenericEvent(null, [])
-		);
-
-		$response = new TemplateResponse('bookmarks', 'main', $params);
-		$response->setContentSecurityPolicy($policy);
-		return $response;
+		$res = new PublicTemplateResponse($this->appName, 'main', []);
+		$res->setHeaderTitle($title);
+		$res->setHeaderDetails($this->l->t('Bookmarks shared by %s', [$userName]));
+		$res->setFooterVisible(false);
+		return $res;
 	}
 
 	/**

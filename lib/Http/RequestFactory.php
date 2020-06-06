@@ -2,11 +2,10 @@
 
 namespace OCA\Bookmarks\Http;
 
+use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestFactoryInterface;
-
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
-use GuzzleHttp\Psr7\Request;
 
 class RequestFactory implements RequestFactoryInterface {
 	/**
@@ -16,8 +15,7 @@ class RequestFactory implements RequestFactoryInterface {
 	 * @param UriInterface|string $uri The URI associated with the request.
 	 * @return RequestInterface
 	 */
-	public function createRequest(string $method, $uri) : RequestInterface {
-		$req = new Request($method, $uri);
-		return $req;
+	public function createRequest(string $method, $uri): RequestInterface {
+		return new Request($method, $uri);
 	}
 }

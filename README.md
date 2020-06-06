@@ -1,20 +1,25 @@
 # Nextcloud Bookmarks
+![Downloads](https://img.shields.io/github/downloads/nextcloud/bookmarks/total.svg?style=flat-square)
+[![Code coverage](https://img.shields.io/codecov/c/github/nextcloud/bookmarks.svg?style=flat-square)](https://codecov.io/gh/nextcloud/bookmarks/)
+[![Dependabot status](https://img.shields.io/badge/Dependabot-enabled-brightgreen.svg?longCache=true&style=flat-square&logo=dependabot)](https://dependabot.com)
 
 ![](https://github.com/nextcloud/bookmarks/raw/master/screenshots/Bookmarks.png)
 
 > Bookmarks app for Nextcloud
 
-This app provides you with a web interface for collecting and organizing bookmarks to the sites on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.
+This app provides you with a web interface for collecting and organizing bookmarks to the places on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.
+
+## Community
+Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in #nextcloud on freenode.net (IRC)!
 
 ## Install
 
 ### Requirements
 
-- php v7.1+
+- php 7.2 and above
 
 PHP extensions:
 
-- gmp: \*
 - intl: \*
 - mbstring: \*
 
@@ -29,7 +34,7 @@ Install this app in the app store of your nextcloud instance (you must have admi
 - [git](https://git-scm.org/)
 - [Node.js and npm](https://nodejs.org/)
 - [php](https://php.net/)
-- [composer](https://getcompoert.org/)
+- [composer](https://getcomposer.org/)
 
 #### Setup
 
@@ -57,8 +62,11 @@ npm run build
 - [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) A MacOS client
 - [QOwnNotes](https://www.qownnotes.org/) - Plain-text file markdown note taking desktop application (no sync, just importing bookmarks)
 
+### iOS
+- [Nextbookmark](https://gitlab.com/altepizza/nextbookmark) - A minimal client for iOS
+
 ### Other
-- [uMarks](https://uappexplorer.com/app/umarks.ernesst) - App for Ubuntu touch
+- [uMarks](https://open-store.io/app/umarks.ernesst) - App for Ubuntu touch
 
 ## API
 
@@ -81,7 +89,7 @@ If you'd like to support the creation and maintenance of this software, consider
 
 ## Contribute
 
-We always welcome contributions and happily accept pull requests.
+We always welcome contributions. Have an issue or an idea for a feature? Let us know. Additionally, we happily accept pull requests.
 
 In order to make the process run more smoothly, you can make sure of the following things:
 

@@ -6,7 +6,25 @@
 		:subtitle="bookmark.url"
 		:background="background"
 		@close="onClose">
-		<AppSidebarTab :name="t('bookmarks', 'Details')" icon="icon-info">
+		<AppSidebarTab id="bookmark-details" :name="t('bookmarks', 'Details')" icon="icon-info">
+			<div>
+				<h3>
+					<span class="icon-link" />
+					{{ t('bookmarks', 'URL') }}
+				</h3>
+				<div v-if="!editingUrl" class="bookmark-details__line">
+					<span class="bookmark-details__url">{{ bookmark.url }}</span>
+					<Actions class="bookmark-details__action">
+						<ActionButton icon="icon-rename" @click="editingUrl = true" />
+					</Actions>
+				</div>
+				<div v-else class="bookmark-details__line">
+					<input v-model="bookmark.url" class="bookmark-details__url">
+					<Actions class="bookmark-details__action">
+						<ActionButton icon="icon-confirm" @click="onEditUrl" />
+					</Actions>
+				</div>
+			</div>
 			<div>
 				<h3>
 					<span class="icon-calendar-dark" />
@@ -25,12 +43,13 @@
 					:multiple="true"
 					:taggable="true"
 					:placeholder="t('bookmarks', 'Select tags are create new ones')"
+					:disabled="!isEditable"
 					@input="onTagsChange"
 					@tag="onAddTag" />
 			</div>
 			<div>
 				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-				<div class="sidebar__notes" contenteditable @input="onNotesChange">
+				<div class="sidebar__notes" :contenteditable="isEditable" @input="onNotesChange">
 					{{ description }}
 				</div>
 			</div>
@@ -39,10 +58,13 @@
 	</AppSidebar>
 </template>
 <script>
-import AppSidebar from 'nextcloud-vue/dist/Components/AppSidebar'
-import AppSidebarTab from 'nextcloud-vue/dist/Components/AppSidebarTab'
-import Multiselect from 'nextcloud-vue/dist/Components/Multiselect'
-import { generateUrl } from 'nextcloud-router'
+import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
+import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
+import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { getCurrentUser } from '@nextcloud/auth'
+import { generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
 import { actions, mutations } from '../store/'
 
@@ -50,10 +72,12 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect },
+	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton },
 	data() {
 		return {
-			description: ''
+			descripting: '',
+			url: '',
+			editingUrl: false,
 		}
 	},
 	computed: {
@@ -75,7 +99,7 @@ export default {
 				const duration = humanizeDuration(age, {
 					language: OC.getLanguage().split('-')[0],
 					units: ['d', 'h', 'm', 's'],
-					largest: 1
+					largest: 1,
 				})
 				return this.t('bookmarks', '{time} ago', { time: duration })
 			} else {
@@ -87,12 +111,24 @@ export default {
 		},
 		allTags() {
 			return this.$store.state.tags.map(tag => tag.name)
-		}
+		},
+		isOwner() {
+			const currentUser = getCurrentUser()
+			return currentUser && this.bookmark.userId === currentUser.uid
+		},
+		permissions() {
+			return this.$store.getters.getPermissionsForBookmark(this.bookmark.id)
+
+		},
+		isEditable() {
+			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
+		},
 	},
 	watch: {
 		bookmark(newBookmark) {
+			if (!this.isActive) return
 			this.description = newBookmark.description
-		}
+		},
 	},
 	created() {},
 	methods: {
@@ -111,14 +147,18 @@ export default {
 			this.bookmark.tags.push(tag)
 			this.scheduleSave()
 		},
+		onEditUrl() {
+			this.editingUrl = false
+			this.scheduleSave()
+		},
 		scheduleSave() {
 			if (this.changeTimeout) clearTimeout(this.changeTimeout)
 			this.changeTimeout = setTimeout(async() => {
 				await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id)
 				await this.$store.dispatch(actions.LOAD_TAGS)
 			}, 1000)
-		}
-	}
+		},
+	},
 }
 </script>
 <style>
@@ -136,5 +176,18 @@ export default {
 .sidebar__notes {
 	min-height: 200px !important;
 	width: auto !important;
+}
+
+.bookmark-details__line {
+	display: flex;
+}
+
+.bookmark-details__url {
+	flex-grow: 1;
+	padding: 8px 0;
+}
+
+.bookmark-details__action {
+	flex-grow: 0;
 }
 </style>

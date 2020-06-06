@@ -1,9 +1,9 @@
 <template>
-	<div class="breadcrumbs">
+	<div :class="['breadcrumbs', isPublic && 'wide']">
 		<div class="breadcrumbs__path">
-			<a class="icon-home" @click="onSelectHome" />
+			<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
 			<span class="icon-breadcrumb" />
-			<template v-if="$route.name === 'folder'">
+			<template v-if="$route.name === routes.FOLDER">
 				<template v-for="folder in folderPath">
 					<a
 						:key="'a' + folder.id"
@@ -12,7 +12,7 @@
 					<span :key="'b' + folder.id" class="icon-breadcrumb" />
 				</template>
 			</template>
-			<template v-if="$route.name === 'tags'">
+			<template v-if="$route.name === routes.TAGS">
 				<span class="icon-tag" />
 				<Multiselect
 					class="breadcrumbs__tags"
@@ -24,13 +24,22 @@
 					:placeholder="t('bookmarks', 'Select one or more tags')"
 					@input="onTagsChange" />
 			</template>
-			<Actions>
+			<Actions
+				v-if="($route.name === routes.FOLDER || $route.name === routes.HOME) && !isPublic"
+				class="breadcrumbs__AddFolder"
+				icon="icon-add">
 				<ActionButton
-					v-if="$route.name === 'folder' || $route.name === 'home'"
-					v-tooltip="t('bookmarks', 'New folder')"
-					icon="icon-add"
-					class="breadcrumbs__AddFolder"
-					@click="onAddFolder" />
+					icon="icon-link"
+					@click="onAddBookmark">
+					{{
+						t('bookmarks', 'New bookmark')
+					}}
+				</ActionButton>
+				<ActionButton
+					icon="icon-folder"
+					@click="onAddFolder">
+					{{ t('bookmarks', 'New folder') }}
+				</ActionButton>
 			</Actions>
 		</div>
 		<div class="breadcrumbs__controls">
@@ -42,17 +51,12 @@
 							: 'icon-toggle-filelist'
 					"
 					@click="onToggleViewMode">
-					{{ t('bookmarks', viewMode === 'list' ? 'Grid view' : 'List view') }}
+					{{ viewMode === 'list' ? t('bookmarks', 'Grid view') : t('bookmarks', 'List view') }}
 				</ActionButton>
 			</Actions>
-			<div v-if="selection.length" class="breadcrumbs__bulkediting">
+			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
 				{{
-					n(
-						'bookmarks',
-						'Selected %n bookmark',
-						'Selected %n bookmarks',
-						selection.length
-					)
+					selectionDescription
 				}}
 				<Actions>
 					<ActionButton icon="icon-category-files" @click="onBulkMove">
@@ -61,24 +65,35 @@
 					<ActionButton icon="icon-delete" @click="onBulkDelete">
 						{{ t('bookmarks', 'Delete selection') }}
 					</ActionButton>
+					<ActionButton icon="icon-external" @click="onBulkOpen">
+						{{ t('bookmarks', 'Open all selected') }}
+					</ActionButton>
+					<ActionSeparator />
+					<ActionButton icon="icon-checkmark" @click="onSelectVisible">
+						{{ t('bookmarks', 'Select all visible') }}
+					</ActionButton>
+					<ActionButton icon="icon-close" @click="onCancelSelection">
+						{{ t('bookmarks', 'Cancel selection') }}
+					</ActionButton>
 				</Actions>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-import Multiselect from 'nextcloud-vue/dist/Components/Multiselect'
-import Actions from 'nextcloud-vue/dist/Components/Actions'
-import ActionButton from 'nextcloud-vue/dist/Components/ActionButton'
-import { mutations, actions } from '../store/'
+import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
+import { actions, mutations } from '../store/'
 
 export default {
 	name: 'Breadcrumbs',
-	components: { Multiselect, Actions, ActionButton },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator },
 	props: {},
 	data() {
 		return {
-			url: ''
+			url: '',
 		}
 	},
 	computed: {
@@ -98,21 +113,44 @@ export default {
 		viewMode() {
 			return this.$store.state.viewMode
 		},
-		selection() {
-			return this.$store.state.selection.bookmarks
-		}
+		hasSelection() {
+			return this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length
+		},
+		selectionDescription() {
+			if (this.$store.state.selection.bookmarks.length !== 0 && this.$store.state.selection.folders.length !== 0) {
+				return this.t('bookmarks',
+					'Selected {folders} folders and {bookmarks} bookmarks',
+					{ folders: this.$store.state.selection.folders.length, bookmarks: this.$store.state.selection.bookmarks.length }
+				)
+			}
+			if (this.$store.state.selection.bookmarks.length !== 0) {
+				return this.n('bookmarks',
+					'Selected %n bookmark',
+					'Selected %n bookmarks',
+					this.$store.state.selection.bookmarks.length
+				)
+			}
+			if (this.$store.state.selection.folders.length !== 0) {
+				return this.n('bookmarks',
+					'Selected %n folder',
+					'Selected %n folders',
+					this.$store.state.selection.folders.length
+				)
+			}
+			return ''
+		},
 	},
 	created() {},
 	methods: {
 		onSelectHome() {
-			this.$router.push({ name: 'home' })
+			this.$router.push({ name: this.routes.HOME })
 		},
 		onTagsChange(tags) {
-			this.$router.push({ name: 'tags', params: { tags: tags.join(',') } })
+			this.$router.push({ name: this.routes.TAGS, params: { tags: tags.join(',') } })
 		},
 
 		onSelectFolder(folder) {
-			this.$router.push({ name: 'folder', params: { folder } })
+			this.$router.push({ name: this.routes.FOLDER, params: { folder } })
 		},
 
 		onAddFolder() {
@@ -121,22 +159,42 @@ export default {
 				!this.$store.state.displayNewFolder
 			)
 		},
+		onAddBookmark() {
+			this.$store.commit(
+				mutations.DISPLAY_NEW_BOOKMARK,
+				!this.$store.state.displayNewBookmark
+			)
+		},
 
 		onToggleViewMode() {
 			this.$store.dispatch(actions.SET_SETTING, {
 				key: 'viewMode',
-				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid'
+				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid',
 			})
 		},
 
+		async onBulkOpen() {
+			for (const { url } of this.$store.state.selection.bookmarks) {
+				window.open(url)
+				await new Promise(resolve => setTimeout(resolve, 200))
+			}
+		},
 		async onBulkDelete() {
-			await this.$store.dispatch(actions.DELETE_SELECTION)
+			await this.$store.dispatch(actions.DELETE_SELECTION, { folder: this.$route.params.folder })
 			this.$store.commit(mutations.RESET_SELECTION)
 		},
 		onBulkMove() {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
-		}
-	}
+		},
+		onCancelSelection() {
+			this.$store.commit(mutations.RESET_SELECTION)
+		},
+		onSelectVisible() {
+			this.$store.state.bookmarks.forEach(bookmark => {
+				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, bookmark)
+			})
+		},
+	},
 }
 </script>
 <style>
@@ -149,11 +207,16 @@ export default {
 	right: 0;
 	left: 300px;
 }
-@media only screen and (max-width: 768px) {
+
+@media only screen and (max-width: 1024px) {
 	.breadcrumbs {
 		padding-left: 52px;
 		left: 0;
 	}
+}
+.breadcrumbs.wide {
+	padding: 2px 8px;
+	left: 0;
 }
 
 .breadcrumbs + * {
@@ -195,6 +258,8 @@ export default {
 
 .breadcrumbs__AddFolder {
 	margin-left: 5px;
+	padding: 0;
+	margin-top: -10px;
 }
 
 .breadcrumbs__controls {

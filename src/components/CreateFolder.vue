@@ -17,25 +17,32 @@
 				{{ t('bookmarks', 'Create') }}
 			</ActionButton>
 		</Actions>
+		<Actions>
+			<ActionButton
+				icon="icon-close"
+				@click="cancel">
+				{{ t('bookmarks', 'Cancel') }}
+			</ActionButton>
+		</Actions>
 	</div>
 </template>
 <script>
-import Actions from 'nextcloud-vue/dist/Components/Actions'
-import ActionButton from 'nextcloud-vue/dist/Components/ActionButton'
-import { actions } from '../store/'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { actions, mutations } from '../store/'
 
 export default {
 	name: 'CreateFolder',
 	components: { Actions, ActionButton },
 	data() {
 		return {
-			title: ''
+			title: '',
 		}
 	},
 	computed: {
 		loading() {
 			return this.$store.state.loading.createFolder
-		}
+		},
 	},
 	mounted() {
 		this.$refs['input'].focus()
@@ -45,10 +52,16 @@ export default {
 			const parentFolder = this.$route.params.folder
 			this.$store.dispatch(actions.CREATE_FOLDER, {
 				parentFolder,
-				title: this.title
+				title: this.title,
 			})
-		}
-	}
+		},
+		cancel() {
+			this.$store.commit(
+				mutations.DISPLAY_NEW_FOLDER,
+				false
+			)
+		},
+	},
 }
 </script>
 <style>

@@ -1,0 +1,26 @@
+OC.L10N.register(
+    "bookmarks",
+    {
+    "Details" : "Detallar",
+    "Rename" : "Adı dəyiş",
+    "Move" : "Move",
+    "Delete" : "Sil",
+    "Save" : "Saxla",
+    "New folder" : "Yeni qovluq",
+    "Create" : "Yarat",
+    "Cancel" : "Dayandır",
+    "Import" : "Əlavə et",
+    "Export" : "Çıxarış",
+    "URL" : "URL",
+    "Tags" : "Işarələr",
+    "Notes" : "Qeydlər",
+    "Sharing" : "Paylaşılır",
+    "Owner" : "Owner",
+    "Share link" : "Linki yayımla",
+    "Copy link" : "linki nüsxələ",
+    "Select" : "Select",
+    "Title" : "Başlıq",
+    "Link" : "Link",
+    "Folder" : "Qovluq"
+},
+"nplurals=2; plural=(n != 1);");

@@ -6,18 +6,21 @@
 			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
 		<SidebarBookmark />
+		<SidebarFolder />
 		<MoveDialog />
 	</Content>
 </template>
 
 <script>
-import Content from 'nextcloud-vue/dist/Components/Content'
-import AppContent from 'nextcloud-vue/dist/Components/AppContent'
+import Content from '@nextcloud/vue/dist/Components/Content'
+import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import Navigation from './Navigation'
 import BookmarksList from './BookmarksList'
 import Breadcrumbs from './Breadcrumbs'
 import SidebarBookmark from './SidebarBookmark'
+import SidebarFolder from './SidebarFolder'
 import MoveDialog from './MoveDialog'
+import { privateRoutes } from '../router'
 import { actions, mutations } from '../store/'
 
 export default {
@@ -29,11 +32,12 @@ export default {
 		Breadcrumbs,
 		BookmarksList,
 		SidebarBookmark,
-		MoveDialog
+		SidebarFolder,
+		MoveDialog,
 	},
 	data: function() {
 		return {
-			newBookmark: false
+			newBookmark: false,
 		}
 	},
 	computed: {
@@ -48,11 +52,11 @@ export default {
 		},
 		loading() {
 			return this.$store.state.loading
-		}
+		},
 	},
 
 	watch: {
-		$route: 'onRoute'
+		$route: 'onRoute',
 	},
 
 	async created() {
@@ -63,7 +67,8 @@ export default {
 		await Promise.all([
 			this.reloadSettings(),
 			this.reloadTags(),
-			this.reloadFolders()
+			this.reloadFolders(),
+			this.reloadCount(),
 		])
 		this.onRoute()
 	},
@@ -71,26 +76,27 @@ export default {
 	methods: {
 		async onRoute() {
 			const route = this.$route
+			this.$store.commit(mutations.RESET_SELECTION)
 			switch (route.name) {
-			case 'home':
+			case privateRoutes.HOME:
 				this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1')
 				break
-			case 'recent':
+			case privateRoutes.RECENT:
 				this.$store.dispatch(actions.FILTER_BY_RECENT)
 				break
-			case 'untagged':
+			case privateRoutes.UNTAGGED:
 				this.$store.dispatch(actions.FILTER_BY_UNTAGGED)
 				break
-			case 'folder':
+			case privateRoutes.FOLDER:
 				this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder)
 				break
-			case 'tags':
+			case privateRoutes.TAGS:
 				this.$store.dispatch(
 					actions.FILTER_BY_TAGS,
 					route.params.tags.split(',')
 				)
 				break
-			case 'search':
+			case privateRoutes.SEARCH:
 				this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search)
 				break
 			default:
@@ -107,13 +113,16 @@ export default {
 		async reloadSettings() {
 			return this.$store.dispatch(actions.LOAD_SETTINGS)
 		},
+		async reloadCount() {
+			return this.$store.dispatch(actions.COUNT_BOOKMARKS, -1)
+		},
 
 		onSearch(search) {
-			this.$router.push({ name: 'search', params: { search } })
+			this.$router.push({ name: privateRoutes.SEARCH, params: { search } })
 		},
 
 		onResetSearch() {
-			this.$router.push({ name: 'home' })
+			this.$router.push({ name: privateRoutes.HOME })
 		},
 
 		onScroll() {
@@ -123,13 +132,14 @@ export default {
 			) {
 				this.$store.dispatch(actions.FETCH_PAGE)
 			}
-		}
-	}
+		},
+	},
 }
 </script>
 <style>
 #app-content {
 	max-width: calc(100vw - 300px);
+	min-width: 0;
 }
 
 @media only screen and (max-width: 768px) {

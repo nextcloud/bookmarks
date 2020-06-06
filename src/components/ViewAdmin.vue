@@ -5,8 +5,7 @@
 		<h2>{{ t('bookmarks', 'Previews') }}</h2>
 		<p>
 			{{
-				t(
-					'bookmarks',
+				t('bookmarks',
 					'In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those.'
 				)
 			}}
@@ -14,8 +13,7 @@
 		<h3>{{ t('bookmarks', 'Screeenly') }}</h3>
 		<p>
 			{{
-				t(
-					'bookmarks',
+				t('bookmarks',
 					'You can either sign up for free at screeenly.com or setup your own server.'
 				)
 			}}
@@ -25,6 +23,7 @@
 				<input
 					v-model="settings['previews.screenly.url']"
 					type="text"
+					placeholder="https://screeenly.example.com/api/v1/fullsize"
 					@input="onChange"></label>
 		</p>
 		<p>
@@ -37,8 +36,7 @@
 		<h2>{{ t('bookmarks', 'Privacy') }}</h2>
 		<p>
 			{{
-				t(
-					'bookmarks',
+				t('bookmarks',
 					'Bookmarks will try to access web pages that you add to automatically add information about them.'
 				)
 			}}
@@ -51,8 +49,7 @@
 				class="checkbox"
 				@input="onChange">
 			<label for="enableScraping">{{
-				t(
-					'bookmarks',
+				t('bookmarks',
 					'Enable accessing and collecting information from the web pages you add'
 				)
 			}}</label>
@@ -60,16 +57,14 @@
 		<h2>{{ t('bookmarks', 'Performance') }}</h2>
 		<p>
 			{{
-				t(
-					'bookmarks',
+				t('bookmarks',
 					'In an installation with  a lot of users it may be useful to restrict the number of bookmarks per account.'
 				)
 			}}
 		</p>
 		<p>
 			<label for="enableScraping">{{
-					t(
-						'bookmarks',
+					t('bookmarks',
 						'Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)'
 					)
 				}}
@@ -89,7 +84,7 @@ const SETTINGS = [
 	'previews.screenly.url',
 	'previews.screenly.token',
 	'privacy.enableScraping',
-	'performance.maxBookmarksperAccount'
+	'performance.maxBookmarksperAccount',
 ]
 
 export default {
@@ -100,7 +95,7 @@ export default {
 			loading: false,
 			success: false,
 			error: '',
-			timeout: null
+			timeout: null,
 		}
 	},
 
@@ -109,7 +104,7 @@ export default {
 		error(error) {
 			if (!error) return
 			OC.Notification.showTemporary(error)
-		}
+		},
 	},
 
 	async created() {
@@ -151,7 +146,7 @@ export default {
 				await new Promise((resolve, reject) =>
 					OCP.AppConfig.setValue('bookmarks', setting, value, {
 						success: resolve,
-						error: reject
+						error: reject,
 					})
 				)
 			} catch (e) {
@@ -165,7 +160,7 @@ export default {
 				const resDocument = await new Promise((resolve, reject) =>
 					OCP.AppConfig.getValue('bookmarks', setting, null, {
 						success: resolve,
-						error: reject
+						error: reject,
 					})
 				)
 				if (resDocument.querySelector('status').textContent !== 'ok') {
@@ -179,8 +174,8 @@ export default {
 				this.error = this.t('bookmarks', 'Failed to load settings')
 				throw e
 			}
-		}
-	}
+		},
+	},
 }
 </script>
 <style>

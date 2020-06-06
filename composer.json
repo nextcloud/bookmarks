@@ -1,12 +1,26 @@
 {
 	"require": {
-		"marcelklehr/link-preview": "^3",
+		"doctrine/inflector": "1.4.*",
+		"ext-dom": "*",
+		"ext-json": "*",
+		"ext-libxml": "*",
+		"ext-pdo": "*",
 		"guzzlehttp/psr7": "^1",
-		"doctrine/inflector": "1.1.*",
+		"marcelklehr/link-preview": "^3",
 		"pguardiario/phpuri": "1.0.*",
-		"psr/http-message": "^1.0",
-		"psr/http-factory": "^1.0",
 		"psr/http-client": "^0.2.0",
-		"rowbot/url": "^2.0"
+		"psr/http-factory": "^1.0",
+		"psr/http-message": "^1.0",
+		"rowbot/url": "^3.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^8.5"
+	},
+	"config": {
+		"optimize-autoloader": true,
+		"classmap-authoritative": true
+	},
+	"scripts": {
+		"lint": "find . -name \\*.php -not -path './vendor/*' -print0 | xargs -0 -n1 php -l"
 	}
 }

@@ -12,18 +12,15 @@ export default {
 	props: {
 		tags: {
 			type: Array,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data() {
 		return {}
 	},
 	created() {},
 	methods: {
-		submit() {
-			this.$emit('create-bookmark', this.url)
-		}
-	}
+	},
 }
 </script>
 <style>
@@ -47,6 +44,5 @@ export default {
 
 .tagline__tag:hover {
 	background-color: var(--color-background-dark);
-	cursor: pointer;
 }
 </style>

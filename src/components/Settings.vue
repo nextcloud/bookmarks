@@ -5,7 +5,7 @@
 			size="5"
 			@change="onImportSubmit">
 		<button @click="onImportOpen">
-			<span class="icon-upload" />{{ t('bookmarks', 'Import') }}
+			<span :class="{'icon-upload': !importing, 'icon-loading-small': importing}" />{{ t('bookmarks', 'Import') }}
 		</button>
 		<button @click="onExport">
 			<span class="icon-download" /> {{ t('bookmarks', 'Export') }}
@@ -30,8 +30,7 @@
 		<label>{{ t('bookmarks', 'RSS Feed') }}
 			<input
 				v-tooltip="
-					t(
-						'bookmarks',
+					t('bookmarks',
 						'This is an RSS feed of the current result set with access restricted to you.'
 					)
 				"
@@ -43,14 +42,13 @@
 		<label>{{ t('bookmarks', 'Clear data') }}
 			<button
 				v-tooltip="
-					t(
-						'bookmarks',
+					t('bookmarks',
 						'Permanently remove all bookmarks from your account. There is no going back!'
 					)
 				"
 				class="clear-data"
 				@click="onClearData">
-				<span class="icon-delete" />
+				<span :class="{'icon-delete': !deleting, 'icon-loading-small': deleting}" />
 				{{ t('bookmarks', 'Delete all bookmarks') }}
 			</button>
 		</label>
@@ -58,8 +56,7 @@
 		<label>{{ t('bookmarks', 'Bookmarklet') }}
 			<a
 				v-tooltip="
-					t(
-						'bookmarks',
+					t('bookmarks',
 						'Drag this to your browser bookmarks and click it to quickly bookmark a webpage'
 					)
 				"
@@ -74,8 +71,7 @@
 
 		<p>
 			{{
-				t(
-					'bookmarks',
+				t('bookmarks',
 					'Also check out the collection of client apps that integrate with this app: '
 				)
 			}}
@@ -86,18 +82,26 @@
 	</div>
 </template>
 <script>
-import { generateUrl } from 'nextcloud-router'
+import { generateUrl } from '@nextcloud/router'
 import { actions } from '../store/'
+import { getRequestToken } from '@nextcloud/auth'
+
 export default {
 	name: 'Settings',
 	components: {},
+	data() {
+		return {
+			importing: false,
+			deleting: false,
+		}
+	},
 	computed: {
 		oc_defaults() {
 			return window.oc_defaults
 		},
 		bookmarklet() {
 			const bookmarkletUrl
-				= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
+						= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
 			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=500px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
 		rssURL() {
@@ -108,7 +112,7 @@ export default {
 						+ new URLSearchParams(
 							Object.assign({}, this.$store.state.fetchState.query, {
 								format: 'rss',
-								page: -1
+								page: -1,
 							})
 						).toString()
 				)
@@ -119,24 +123,30 @@ export default {
 		},
 		sorting() {
 			return this.$store.state.settings.sorting
-		}
+		},
 	},
 	methods: {
 		onImportOpen(e) {
 			e.target.previousElementSibling.click()
 		},
-		onImportSubmit(e) {
-			this.$store.dispatch(actions.IMPORT_BOOKMARKS, e.target.files[0])
+		async onImportSubmit(e) {
+			this.importing = true
+			try {
+				await this.$store.dispatch(actions.IMPORT_BOOKMARKS, { file: e.target.files[0], folder: this.$route.params.folder })
+			} catch (e) {
+				console.warn(e)
+			}
+			this.importing = false
 		},
 		onExport() {
 			window.location
 				= 'bookmark/export?requesttoken='
-				+ encodeURIComponent(window.oc_requesttoken)
+					+ encodeURIComponent(getRequestToken())
 		},
 		async onChangeSorting(e) {
 			await this.$store.dispatch(actions.SET_SETTING, {
 				key: 'sorting',
-				value: e.target.value
+				value: e.target.value,
 			})
 			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
@@ -154,10 +164,12 @@ export default {
 			) {
 				return
 			}
+			this.deleting = true
 			await this.$store.dispatch(actions.DELETE_BOOKMARKS)
-			this.$router.push({ name: 'home' })
-		}
-	}
+			await this.$router.push({ name: this.routes.HOME })
+			this.deleting = false
+		},
+	},
 }
 </script>
 <style>
