@@ -25,6 +25,7 @@ import App from './App'
 import router from './router'
 import store from './store/'
 import AppGlobal from './mixins/AppGlobal'
+import { generateUrl } from '@nextcloud/router'
 
 Vue.mixin(AppGlobal)
 Vue.directive('tooltip', Tooltip)
@@ -36,16 +37,19 @@ const BookmarksApp = (global['Bookmarks'] = new Vue({
 	render: h => h(App),
 }))
 
-navigator.serviceWorker.register(OC.generateUrl('/apps/bookmarks/service-worker.js'))
-	.then(() => {
-		console.error('serviceWorker registered')
-	})
-	.catch(er => console.error(er))
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register(generateUrl('/apps/bookmarks/service-worker.js'))
+		.then(() => {
+			console.info('ServiceWorker registered')
+		})
+		.catch(er => console.error(er))
 
-window.caches.open('js').then(async cache => {
-	let url
-	url = OC.generateUrl('/custom_apps/bookmarks/js/bookmarks.main.js')
-	cache.put(url, await fetch(url))
-})
+	window.caches.open('js').then(async cache => {
+		const url = generateUrl('/apps/bookmarks/js/bookmarks.main.js')
+		cache.put(url, await fetch(url))
+	})
+} else {
+	console.warn('ServiceWorker not supported')
+}
 
 export default BookmarksApp

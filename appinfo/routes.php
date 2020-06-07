@@ -29,6 +29,7 @@ return [
 		['name' => 'web_view#index', 'url' => '/untagged', 'verb' => 'GET', 'postfix' => 'untagged'],
 		['name' => 'web_view#index', 'url' => '/bookmarklet', 'verb' => 'GET', 'postfix' => 'bookmarklet'],
 		['name' => 'web_view#service_worker', 'url' => '/service-worker.js', 'verb' => 'GET'],
+		['name' => 'web_view#manifest', 'url' => '/manifest.webmanifest', 'verb' => 'GET'],
 
 		//internal REST API
 		['name' => 'internal_bookmark#get_bookmarks', 'url' => '/bookmark', 'verb' => 'GET'],

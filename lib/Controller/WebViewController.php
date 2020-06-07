@@ -10,6 +10,7 @@
 
 namespace OCA\Bookmarks\Controller;
 
+use OCA\Bookmarks\AugmentedTemplateResponse;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
@@ -17,11 +18,12 @@ use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http\ContentSecurityPolicy;
+use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Http\DownloadResponse;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IUserManager;
@@ -49,6 +51,10 @@ class WebViewController extends Controller {
 	 * @var FolderMapper
 	 */
 	private $folderMapper;
+	/**
+	 * @var \OCP\IURLGenerator
+	 */
+	private $urlGenerator;
 
 
 	/**
@@ -61,14 +67,16 @@ class WebViewController extends Controller {
 	 * @param PublicFolderMapper $publicFolderMapper
 	 * @param IUserManager $userManager
 	 * @param FolderMapper $folderMapper
+	 * @param \OCP\IURLGenerator $urlGenerator
 	 */
-	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, \OCA\Bookmarks\Db\FolderMapper $folderMapper) {
+	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCP\IURLGenerator $urlGenerator) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->l = $l;
 		$this->publicFolderMapper = $publicFolderMapper;
 		$this->userManager = $userManager;
 		$this->folderMapper = $folderMapper;
+		$this->urlGenerator = $urlGenerator;
 	}
 
 	/**
@@ -76,7 +84,14 @@ class WebViewController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		return new TemplateResponse($this->appName, 'main', []);
+		$res = new AugmentedTemplateResponse($this->appName, 'main', ['url'=>$this->urlGenerator]);
+
+		$policy = new ContentSecurityPolicy();
+		$policy->addAllowedWorkerSrcDomain("'self'");
+		$policy->addAllowedScriptDomain("'self'");
+		$policy->addAllowedConnectDomain("'self'");
+		$res->setContentSecurityPolicy($policy);
+		return $res;
 	}
 
 	/**
@@ -122,7 +137,46 @@ class WebViewController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function serviceWorker() {
-		$response = new DownloadResponse(__DIR__.'/../../js/bookmarks.service-worker.js', 'application/javascript');
+		$response = new \OCP\AppFramework\Http\StreamResponse(__DIR__.'/../../js/bookmarks.service-worker.js');
+		$response->setHeaders(['Content-Type' => 'application/javascript']);
+		$policy = new ContentSecurityPolicy();
+		$policy->addAllowedWorkerSrcDomain("'self'");
+		$policy->addAllowedScriptDomain("'self'");
+		$policy->addAllowedConnectDomain("'self'");
+		$response->setContentSecurityPolicy($policy);
+		return $response;
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 */
+	public function manifest() {
+		$responseJS = [
+			'name' => $this->l->t('Bookmarks'),
+			'short_name' => $this->l->t('Bookmarks'),
+			'start_url' => $this->urlGenerator->linkToRouteAbsolute('bookmarks.web_view.index'),
+			'icons' =>
+				[
+					[
+						'src' => $this->urlGenerator->linkToRoute('theming.Icon.getTouchIcon',
+								['app' => 'bookmarks']),
+						'type'=> 'image/png',
+						'sizes'=> '512x512'
+					],
+					[
+						'src' => $this->urlGenerator->linkToRoute('theming.Icon.getFavicon',
+								['app' => 'bookmark']),
+						'type' => 'image/svg+xml',
+						'sizes' => '128x128'
+					]
+				],
+			'display' => 'standalone'
+		];
+		$response = new JSONResponse($responseJS);
+		$response->setHeaders(['Content-Type' => 'application/manifest+json']);
+		//$response->cacheFor(3600);
 		return $response;
 	}
 }

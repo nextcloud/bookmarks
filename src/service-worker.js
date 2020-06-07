@@ -1,11 +1,11 @@
 'use strict'
 
-const rev = '#5'
+const rev = '#1'
 
-const DYNAMIC_CACHE = 'dynamic-cache-v2.3.1' + rev
-const STATIC_CACHE = 'static-cache-v2.3.1' + rev
+const DYNAMIC_CACHE = 'dynamic-cache-v3.1.1' + rev
+const STATIC_CACHE = 'static-cache-v3.1.1' + rev
 const FILES_TO_CACHE = [
-	'./'
+	'./',
 ]
 
 self.addEventListener('install', (evt) => {
@@ -33,11 +33,15 @@ self.addEventListener('activate', (evt) => {
 self.addEventListener('fetch', (event) => {
 	event.respondWith(
 		fetch(event.request).then(response => {
-			caches.open(DYNAMIC_CACHE).then(cache => {
-				cache.put(event.request, response.clone())
+			const clonedResponse = response.clone()
+			console.debug('Caching', { request: event.request })
+			return caches.open(DYNAMIC_CACHE).then(cache => {
+				return cache.put(event.request, clonedResponse)
+			}).then(() => {
+				return response
 			})
-			return response
 		}).catch(() => {
+			console.debug('Hitting cache', { request: event.request })
 			return caches.match(event.request)
 		})
 	)
