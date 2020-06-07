@@ -75,6 +75,7 @@ OC.L10N.register(
     "Title" : "Cím",
     "Link" : "Hivatkozás",
     "Enter bookmark URL" : "Adja meg a könyvjelző URL-ét",
+    "Folder" : "Mappa",
     "Failed to find existing bookmark" : "A létező könyvjelző keresése sikertelen",
     "Failed to create bookmark" : "Könyvjelző létrehozása sikertelen",
     "Failed to save bookmark" : "Könyvjelző mentése sikertelen",

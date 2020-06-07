@@ -24,6 +24,7 @@ OC.L10N.register(
     "Allow editing" : "อนุญาตให้แก้ไข",
     "Select" : "Select",
     "Title" : "ชื่อเรื่อง",
-    "Link" : "ลิงค์"
+    "Link" : "ลิงค์",
+    "Folder" : "แฟ้มเอกสาร"
 },
 "nplurals=1; plural=0;");

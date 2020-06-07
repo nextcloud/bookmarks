@@ -15,6 +15,7 @@ OC.L10N.register(
     "Share link" : "Share link",
     "Select" : "Select",
     "Title" : "Judul",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "Folder"
 },
 "nplurals=1; plural=0;");

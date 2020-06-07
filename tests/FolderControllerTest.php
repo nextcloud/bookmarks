@@ -271,23 +271,11 @@ class FolderControllerTest extends TestCase {
 
 	/**
 	 * @throws MultipleObjectsReturnedException
+	 * @throws \OCA\Bookmarks\Exception\UnsupportedOperation
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
 	 */
 	public function setupSharedFolder() {
-		$this->share = new Share();
-		$this->share->setFolderId($this->folder1->getId());
-		$this->share->setOwner($this->userId);
-		$this->share->setParticipant($this->otherUser);
-		$this->share->setType(\OCP\Share\IShare::TYPE_USER);
-		$this->share->setCanWrite(true);
-		$this->share->setCanShare(false);
-		$this->shareMapper->insert($this->share);
-
-		$this->sharedFolder = new SharedFolder();
-		$this->sharedFolder->setShareId($this->share->getId());
-		$this->sharedFolder->setTitle('foo');
-		$this->sharedFolder->setUserId($this->otherUserId);
-		$this->sharedFolderMapper->insert($this->sharedFolder);
-		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $this->sharedFolder->getId(), $this->folderMapper->findRootFolder($this->otherUserId)->getId());
+		$this->folders->createShare($this->folder1->getId(), $this->otherUser, \OCP\Share\IShare::TYPE_USER, true, false);
 	}
 
 	/**

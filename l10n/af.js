@@ -36,6 +36,7 @@ OC.L10N.register(
     "Add a bookmark" : "Voeg 'n boekmerk by",
     "This URL is already bookmarked! Overwrite?" : "'n Boekmerk van die URL bestaan reeds. Skryf oor?",
     "Title" : "Titel",
-    "Link" : "Skakel"
+    "Link" : "Skakel",
+    "Folder" : "Vouer"
 },
 "nplurals=2; plural=(n != 1);");

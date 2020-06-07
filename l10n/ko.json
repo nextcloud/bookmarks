@@ -46,6 +46,7 @@
     "This URL is already bookmarked! Overwrite?" : "이 URL이 북마크에 이미 추가되어 있습니다! 덮어쓰시겠습니까?",
     "Title" : "직위",
     "Link" : "링크",
+    "Folder" : "폴더",
     "Bookmarks feed" : "북마크 피드"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

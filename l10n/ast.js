@@ -26,6 +26,7 @@ OC.L10N.register(
     "Allow editing" : "Permitir edición",
     "Select" : "Esbillar",
     "Title" : "Títulu",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "Carpeta"
 },
 "nplurals=2; plural=(n != 1);");

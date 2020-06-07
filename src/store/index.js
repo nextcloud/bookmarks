@@ -29,6 +29,7 @@ export default new Store({
 			saveBookmark: false,
 			createFolder: false,
 			saveFolder: false,
+			moveSelection: false,
 		},
 		error: null,
 		notification: null,

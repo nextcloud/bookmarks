@@ -52,6 +52,7 @@ return [
 		['name' => 'internal_folders#edit_folder', 'url' => '/folder/{folderId}', 'verb' => 'PUT'],
 		['name' => 'internal_folders#delete_folder', 'url' => '/folder/{folderId}', 'verb' => 'DELETE'],
 		['name' => 'internal_folders#hash_folder', 'url' => '/folder/{folderId}/hash', 'verb' => 'GET'],
+		['name' => 'internal_bookmark#import_bookmark', 'url' => '/folder/{folder}/import', 'verb' => 'POST'],
 		['name' => 'internal_folders#get_folder_children', 'url' => '/folder/{folderId}/children', 'verb' => 'GET'],
 		['name' => 'internal_folders#get_folder_children_order', 'url' => '/folder/{folderId}/childorder', 'verb' => 'GET'],
 		['name' => 'internal_folders#set_folder_children_order', 'url' => '/folder/{folderId}/childorder', 'verb' => 'PATCH'],

@@ -25,6 +25,7 @@ OC.L10N.register(
     "Select" : "Сонгох",
     "Privacy" : "Хувийн нууц",
     "Title" : "Цол/Албан тушаал",
-    "Link" : "Холбоос"
+    "Link" : "Холбоос",
+    "Folder" : "Хавтас"
 },
 "nplurals=2; plural=(n != 1);");

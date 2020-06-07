@@ -479,17 +479,16 @@ class TreeMapper extends QBMapper {
 
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select('folder_id', 'f.id')
-			->from('bookmarks_shares', 's')
-			->innerJoin('s', 'bookmarks_shared_folders', 'f', $qb->expr()->eq('f.share_id', 's.id'))
-			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
+			->select('s.folder_id', 's.id')
+			->from('bookmarks_shared_folders', 's')
+			->innerJoin('s', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 's.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_SHARE)))
 			->orderBy('t.index', 'ASC');
 		$childShares = $qb->execute()->fetchAll();
 
 		$foldersToShares = array_reduce($childShares, static function ($dict, $shareRec) {
-			$dict[$shareRec['folder_id']] = $shareRec['f.id'];
+			$dict[$shareRec['folder_id']] = $shareRec['id'];
 			return $dict;
 		}, []);
 
@@ -534,9 +533,8 @@ class TreeMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('folder_id', 'index')
-			->from('bookmarks_shares', 's')
-			->innerJoin('s', 'bookmarks_shared_folders', 'f', $qb->expr()->eq('f.share_id', 's.id'))
-			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
+			->from('bookmarks_shared_folders', 'sf')
+			->innerJoin('sf', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'sf.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_SHARE)))
 			->orderBy('t.index', 'ASC');
@@ -559,26 +557,29 @@ class TreeMapper extends QBMapper {
 	}
 
 	/**
-	 * @param $folderId
-	 * @param int $layers
+	 * @param int $folderId
+	 * @param int $layers [-1, inf]
 	 * @return array
 	 */
-	public function getSubFolders($folderId, $layers = 0): array {
+	public function getSubFolders(int $folderId, $layers = 0): array {
 		$folders = array_map(function (Folder $folder) use ($layers, $folderId) {
 			$array = $folder->toArray();
 			$array['parent_folder'] = $folderId;
-			if ($layers - 1 !== 0) {
+			if ($layers !== 0) {
 				$array['children'] = $this->getSubFolders($folder->getId(), $layers - 1);
 			}
 			return $array;
 		}, $this->findChildren(self::TYPE_FOLDER, $folderId));
 		$shares = array_map(function (SharedFolder $sharedFolder) use ($layers, $folderId) {
-			$share = $this->shareMapper->find($sharedFolder->getShareId());
+			/**
+			 * @var $share Share
+			 */
+			$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
 			$array = $sharedFolder->toArray();
 			$array['id'] = $share->getFolderId();
 			$array['userId'] = $share->getOwner();
 			$array['parent_folder'] = $folderId;
-			if ($layers - 1 !== 0) {
+			if ($layers !== 0) {
 				$array['children'] = $this->getSubFolders($share->getFolderId(), $layers - 1);
 			}
 			return $array;
@@ -659,10 +660,9 @@ class TreeMapper extends QBMapper {
 
 		$qb = $this->db->getQueryBuilder();
 		$qb
-			->select('folder_id', 'f.title', 'user_id', 'index', 't.type')
-			->from('bookmarks_shares', 's')
-			->innerJoin('s', 'bookmarks_shared_folders', 'f', $qb->expr()->eq('f.share_id', 's.id'))
-			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
+			->select('folder_id', 's.title', 'user_id', 'index', 't.type')
+			->from('bookmarks_shared_folders', 's')
+			->innerJoin('s', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 's.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_SHARE)))
 			->orderBy('t.index', 'ASC');

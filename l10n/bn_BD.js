@@ -20,6 +20,7 @@ OC.L10N.register(
     "Copy link" : "লিঙ্ক কপি করো",
     "Select" : "সিলেক্ট",
     "Title" : "শিরোনাম",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "ফোল্ডার"
 },
 "nplurals=2; plural=(n != 1);");

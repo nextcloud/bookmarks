@@ -18,6 +18,7 @@ OC.L10N.register(
     "Allow editing" : "﻿ಸಂಪಾದನೆಗೆ ಅವಕಾಶ ಮಾಡಿಕೊಡಿ",
     "Select" : "Select",
     "Title" : "ಶೀರ್ಷಿಕೆ",
-    "Link" : "ಸಂಪರ್ಕ ಕೊಂಡಿ"
+    "Link" : "ಸಂಪರ್ಕ ಕೊಂಡಿ",
+    "Folder" : "ಕೋಶ"
 },
 "nplurals=2; plural=(n > 1);");

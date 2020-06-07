@@ -13,6 +13,7 @@
 			:name="t('bookmarks', 'Sharing')"
 			icon="icon-shared">
 			<div class="participant-select">
+				<figure :class="{'icon-user': true, 'share__avatar': true }" />
 				<Multiselect v-model="participant"
 					label="displayName"
 					track-by="user"
@@ -34,6 +35,10 @@
 						<ActionButton icon="icon-clippy" @click="onCopyPublicLink">
 							{{ t('bookmarks', 'Copy link') }}
 						</ActionButton>
+						<ActionButton icon="icon-clippy" @click="onCopyRssLink">
+							{{ t('bookmarks', 'Copy RSS feed') }}
+						</ActionButton>
+						<ActionSeparator />
 						<ActionButton icon="icon-delete" @click="onDeletePublicLink">
 							{{ t('bookmarks', 'Delete link') }}
 						</ActionButton>
@@ -73,6 +78,7 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
+import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
@@ -82,7 +88,7 @@ import { actions, mutations } from '../store/'
 
 export default {
 	name: 'SidebarFolder',
-	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble },
+	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble, ActionSeparator },
 	data() {
 		return {
 			participantSearchResults: [],
@@ -131,7 +137,22 @@ export default {
 		},
 		publicLink() {
 			if (!this.token) return
-			return window.location.protocol + '//' + window.location.host + generateUrl('/apps/bookmarks/public/' + this.token)
+			return window.location.origin + generateUrl('/apps/bookmarks/public/' + this.token)
+		},
+		rssLink() {
+			return (
+				window.location.origin
+					+ generateUrl(
+						'/apps/bookmarks/public/rest/v2/bookmark?'
+							+ new URLSearchParams(
+								Object.assign({}, this.$store.state.fetchState.query, {
+									format: 'rss',
+									page: -1,
+									token: this.token,
+								})
+							).toString()
+					)
+			)
 		},
 	},
 
@@ -149,6 +170,10 @@ export default {
 		onCopyPublicLink() {
 			copy(this.publicLink)
 			this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'Link copied'))
+		},
+		onCopyRssLink() {
+			copy(this.rssLink)
+			this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'RSS feed copied'))
 		},
 		async onDeletePublicLink() {
 			await this.$store.dispatch(actions.DELETE_PUBLIC_LINK, this.folder.id)

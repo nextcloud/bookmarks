@@ -183,7 +183,7 @@ class FolderService {
 			 * @var $sharedFolder SharedFolder
 			 */
 			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
-			$this->sharedFolderMapper->delete($sharedFolder);
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
 			return;
 		} catch (DoesNotExistException $e) {
 			// noop
@@ -300,7 +300,7 @@ class FolderService {
 			if ($participant === $folder->getUserId()) {
 				throw new UnsupportedOperation('Cannot share with oneself');
 			}
-			$this->_addSharedFolder($share, $folder, $participant);
+			$this->addSharedFolder($share, $folder, $participant);
 		} else if ($type === IShare::TYPE_GROUP) {
 			$group = $this->groupManager->get($participant);
 			if ($group === null) {
@@ -320,7 +320,7 @@ class FolderService {
 					// do nothing
 				}
 
-				$this->_addSharedFolder($share, $folder, $user->getUID());
+				$this->addSharedFolder($share, $folder, $user->getUID());
 			}
 		}
 		return $share;
@@ -333,13 +333,14 @@ class FolderService {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	private function _addSharedFolder(Share $share, Folder $folder, string $userId): void {
+	public function addSharedFolder(Share $share, Folder $folder, string $userId): void {
 		$sharedFolder = new SharedFolder();
-		$sharedFolder->setShareId($share->getId());
 		$sharedFolder->setTitle($folder->getTitle());
+		$sharedFolder->setFolderId($folder->getId());
 		$sharedFolder->setUserId($userId);
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
-		$this->sharedFolderMapper->insert($sharedFolder);
+		$sharedFolder = $this->sharedFolderMapper->insert($sharedFolder);
+		$this->sharedFolderMapper->mount($sharedFolder->getId(), $share->getId());
 		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $rootFolder->getId());
 	}
 
@@ -372,13 +373,8 @@ class FolderService {
 	 * @throws UnauthorizedAccessError
 	 * @throws UserLimitExceededError
 	 */
-	public function importFile(string $userId, $file, $folder = null): array {
+	public function importFile(string $userId, $file, $folder): array {
 		$importFolderId = $folder;
-		if ($folder === null) {
-			$rootFolder = $this->folderMapper->findRootFolder($userId);
-			$newFolder = $this->create($this->l10n->t('Imported bookmarks'), $rootFolder->getId());
-			$importFolderId = $newFolder->getId();
-		}
 		return $this->htmlImporter->importFile($userId, $file, $importFolderId);
 	}
 }

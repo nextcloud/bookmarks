@@ -18,6 +18,7 @@ OC.L10N.register(
     "Share link" : "Share link",
     "Select" : "Select",
     "Title" : "ماۋزۇ",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "قىسقۇچ"
 },
 "nplurals=1; plural=0;");

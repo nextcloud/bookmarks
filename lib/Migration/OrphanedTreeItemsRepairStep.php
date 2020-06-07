@@ -22,7 +22,7 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 	 * Returns the step's name
 	 */
 	public function getName() {
-		return 'Remove orphaned tree items';
+		return 'Remove orphaned bookmark tree items';
 	}
 
 	/**

@@ -132,11 +132,11 @@ export default {
 		async onImportSubmit(e) {
 			this.importing = true
 			try {
-				await this.$store.dispatch(actions.IMPORT_BOOKMARKS, e.target.files[0])
-				this.$router.push({ name: this.routes.HOME })
-			} finally {
-				this.importing = false
+				await this.$store.dispatch(actions.IMPORT_BOOKMARKS, { file: e.target.files[0], folder: this.$route.params.folder })
+			} catch (e) {
+				console.warn(e)
 			}
+			this.importing = false
 		},
 		onExport() {
 			window.location

@@ -17,6 +17,7 @@ OC.L10N.register(
     "Share link" : "Share link",
     "Select" : "Select",
     "Title" : "தலைப்பு",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "கோப்புறை"
 },
 "nplurals=2; plural=(n != 1);");

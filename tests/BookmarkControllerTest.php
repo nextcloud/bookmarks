@@ -261,23 +261,7 @@ class BookmarkControllerTest extends TestCase {
 	 */
 	public function setupBookmarksWithSharedFolder(): void {
 		$this->setupBookmarksWithPublicFolder();
-		$this->share = new Share();
-		$this->share->setFolderId($this->folder1->getId());
-		$this->share->setOwner($this->userId);
-		$this->share->setParticipant($this->otherUserId);
-		$this->share->setType(\OCP\Share\IShare::TYPE_USER);
-		$this->share->setCanWrite(true);
-		$this->share->setCanShare(false);
-		$this->shareMapper->insert($this->share);
-
-		$this->sharedFolder = new SharedFolder();
-		$this->sharedFolder->setShareId($this->share->getId());
-		$this->sharedFolder->setTitle('foo');
-		$this->sharedFolder->setUserId($this->otherUser);
-		$this->sharedFolderMapper->insert($this->sharedFolder);
-
-		$otherRootFolder = $this->folderMapper->findRootFolder($this->otherUserId);
-		$this->treeMapper->move(TreeMapper::TYPE_SHARE, $this->sharedFolder->getId(), $otherRootFolder->getId());
+		$this->folders->createShare($this->folder1->getId(), $this->otherUserId,\OCP\Share\IShare::TYPE_USER, true, false);
 	}
 
 	/**
@@ -598,7 +582,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getBookmarks();
 		$data = $output->getData();
-		$this->assertCount(1, $data['data']); // TODO: 1 level search Limit
+		$this->assertCount(1, $data['data'], var_export($data, true)); // TODO: 1 level search Limit
 	}
 
 	/**

@@ -54,13 +54,9 @@
 					{{ viewMode === 'list' ? t('bookmarks', 'Grid view') : t('bookmarks', 'List view') }}
 				</ActionButton>
 			</Actions>
-			<div v-if="selection.length" class="breadcrumbs__bulkediting">
+			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
 				{{
-					n('bookmarks',
-						'Selected %n bookmark',
-						'Selected %n bookmarks',
-						selection.length
-					)
+					selectionDescription
 				}}
 				<Actions>
 					<ActionButton icon="icon-category-files" @click="onBulkMove">
@@ -69,6 +65,10 @@
 					<ActionButton icon="icon-delete" @click="onBulkDelete">
 						{{ t('bookmarks', 'Delete selection') }}
 					</ActionButton>
+					<ActionButton icon="icon-external" @click="onBulkOpen">
+						{{ t('bookmarks', 'Open all selected') }}
+					</ActionButton>
+					<ActionSeparator />
 					<ActionButton icon="icon-checkmark" @click="onSelectVisible">
 						{{ t('bookmarks', 'Select all visible') }}
 					</ActionButton>
@@ -84,11 +84,12 @@
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import { actions, mutations } from '../store/'
 
 export default {
 	name: 'Breadcrumbs',
-	components: { Multiselect, Actions, ActionButton },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator },
 	props: {},
 	data() {
 		return {
@@ -112,8 +113,31 @@ export default {
 		viewMode() {
 			return this.$store.state.viewMode
 		},
-		selection() {
-			return this.$store.state.selection.bookmarks
+		hasSelection() {
+			return this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length
+		},
+		selectionDescription() {
+			if (this.$store.state.selection.bookmarks.length !== 0 && this.$store.state.selection.folders.length !== 0) {
+				return this.t('bookmarks',
+					'Selected {folders} folders and {bookmarks} bookmarks',
+					{ folders: this.$store.state.selection.folders.length, bookmarks: this.$store.state.selection.bookmarks.length }
+				)
+			}
+			if (this.$store.state.selection.bookmarks.length !== 0) {
+				return this.n('bookmarks',
+					'Selected %n bookmark',
+					'Selected %n bookmarks',
+					this.$store.state.selection.bookmarks.length
+				)
+			}
+			if (this.$store.state.selection.folders.length !== 0) {
+				return this.n('bookmarks',
+					'Selected %n folder',
+					'Selected %n folders',
+					this.$store.state.selection.folders.length
+				)
+			}
+			return ''
 		},
 	},
 	created() {},
@@ -149,6 +173,12 @@ export default {
 			})
 		},
 
+		async onBulkOpen() {
+			for (const { url } of this.$store.state.selection.bookmarks) {
+				window.open(url)
+				await new Promise(resolve => setTimeout(resolve, 200))
+			}
+		},
 		async onBulkDelete() {
 			await this.$store.dispatch(actions.DELETE_SELECTION, { folder: this.$route.params.folder })
 			this.$store.commit(mutations.RESET_SELECTION)

@@ -159,9 +159,9 @@ class FoldersController extends ApiController {
 			/**
 			 * @var $share Share
 			 */
-			$share = $this->shareMapper->find($folder->getShareId());
+			$share = $this->shareMapper->findByFolderAndUser($folder->getFolderId(), $folder->getUserId());
 			$returnFolder = $folder->toArray();
-			$returnFolder['id'] = $share->getFolderId();
+			$returnFolder['id'] = $folder->getFolderId();
 			$returnFolder['user_id'] = $share->getOwner();
 			$parent = $this->treeMapper->findParentOf(TreeMapper::TYPE_SHARE, $folder->getId());
 			$returnFolder['parent_folder'] = $this->toExternalFolderId($parent->getId());
@@ -430,7 +430,7 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 * @return JSONResponse
 	 */
-	public function getFolders($root = -1, $layers = 0): JSONResponse {
+	public function getFolders($root = -1, $layers = -1): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
@@ -438,7 +438,7 @@ class FoldersController extends ApiController {
 		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers);
 		if ($root === -1 || $root === '-1') {
 			foreach($folders as $folder) {
-				$folder['parent_id'] = -1;
+				$folder['parent_folder'] = -1;
 			}
 		}
 		$res = new JSONResponse(['status' => 'success', 'data' => $folders]);

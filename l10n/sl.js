@@ -72,6 +72,7 @@ OC.L10N.register(
     "Title" : "Naslov",
     "Link" : "Povezava",
     "Enter bookmark URL" : "Naslov URL zaznamka",
+    "Folder" : "Mapa",
     "Failed to find existing bookmark" : "Dostop do obstoječega zaznamka je spodletel",
     "Failed to create bookmark" : "Ustvarjanje zaznamka je spodletelo",
     "Failed to save bookmark" : "Shranjevanje zaznamka je spodletelo",

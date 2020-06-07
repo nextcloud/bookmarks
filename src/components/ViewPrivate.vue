@@ -76,6 +76,7 @@ export default {
 	methods: {
 		async onRoute() {
 			const route = this.$route
+			this.$store.commit(mutations.RESET_SELECTION)
 			switch (route.name) {
 			case privateRoutes.HOME:
 				this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1')

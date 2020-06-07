@@ -19,6 +19,7 @@ OC.L10N.register(
     "Share link" : "Share link",
     "Select" : "Select",
     "Title" : "ចំណងជើង",
-    "Link" : "Link"
+    "Link" : "Link",
+    "Folder" : "ថត"
 },
 "nplurals=1; plural=0;");
