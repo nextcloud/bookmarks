@@ -26,6 +26,7 @@ OC.L10N.register(
     "Share link" : "Jaga link",
     "Copy link" : "Kopeeri link",
     "Allow editing" : "Luba muutmine",
+    "Link copied" : "Link kopeeritud",
     "Select" : "Vali",
     "Privacy" : "Privaatsus",
     "Title" : "Pealkiri",
