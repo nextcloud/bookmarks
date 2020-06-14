@@ -13,6 +13,8 @@ use OCA\Bookmarks\Db\SharedFolder;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\HtmlParseError;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;

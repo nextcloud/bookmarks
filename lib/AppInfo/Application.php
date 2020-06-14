@@ -14,6 +14,7 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
+use OCA\Bookmarks\Activity\ActivityPublisher;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
@@ -47,10 +48,17 @@ class Application extends App {
 		});
 
 		$dispatcher = $this->getContainer()->query(IEventDispatcher::class);
+
 		$dispatcher->addServiceListener(CreateEvent::class, HashManager::class);
 		$dispatcher->addServiceListener(UpdateEvent::class, HashManager::class);
 		$dispatcher->addServiceListener(BeforeDeleteEvent::class, HashManager::class);
 		$dispatcher->addServiceListener(MoveEvent::class, HashManager::class);
+
+		$dispatcher->addServiceListener(CreateEvent::class, ActivityPublisher::class);
+		$dispatcher->addServiceListener(UpdateEvent::class, ActivityPublisher::class);
+		$dispatcher->addServiceListener(BeforeDeleteEvent::class, ActivityPublisher::class);
+		$dispatcher->addServiceListener(MoveEvent::class, ActivityPublisher::class);
+
 		$dispatcher->addServiceListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
 		$dispatcher->addServiceListener(UserAddedEvent::class, UserGroupListener::class);
 		$dispatcher->addServiceListener(UserRemovedEvent::class, UserGroupListener::class);
