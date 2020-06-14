@@ -17,7 +17,7 @@ Requirements:
    - mbstring: *
  - Nextcloud v17+
 ]]></description>
-	<version>3.1.1</version>
+	<version>3.2.0</version>
 	<licence>agpl</licence>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
