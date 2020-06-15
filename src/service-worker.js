@@ -34,13 +34,17 @@ self.addEventListener('fetch', (event) => {
 	event.respondWith(
 		fetch(event.request).then(response => {
 			const clonedResponse = response.clone()
+			if (event.request.method !== 'GET') {
+				return response
+			}
 			console.debug('Caching', { request: event.request })
 			return caches.open(DYNAMIC_CACHE).then(cache => {
 				return cache.put(event.request, clonedResponse)
 			}).then(() => {
 				return response
 			})
-		}).catch(() => {
+		}).catch((e) => {
+			console.debug(e)
 			console.debug('Hitting cache', { request: event.request })
 			return caches.match(event.request)
 		})
