@@ -41,7 +41,10 @@ class TagMapper {
 			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('b.id', 'tr.id'))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
+			->orWhere($qb->expr()->andX(
+				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
+				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_SHARE)))
+			)
 			->groupBy('t.tag')
 			->orderBy('count', 'DESC');
 
@@ -61,7 +64,10 @@ class TagMapper {
 			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('b.id', 'tr.id'))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
+			->orWhere($qb->expr()->andX(
+				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
+				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_SHARE)))
+			)
 			->groupBy('t.tag');
 		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 	}
