@@ -112,7 +112,7 @@ export default {
 	flex: 1;
 	height: 200px;
 	align-items: flex-end;
-	background: rgb(255, 255, 255);
+	background: var(--color-main-background);
 	margin: 10px 0 0 10px;
 	border: 1px solid var(--color-border);
 	box-shadow: #efefef7d 0px 0 13px 0px inset;
