@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [3.2.1] - 2020-06-16
+
+### Fixed
+Fix service worker
+
 ## [3.2.0] - 2020-06-14
 
 ### Fixed
@@ -259,6 +265,7 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+[3.2.1]: https://github.com/nextcloud/bookmarks/compare/v3.1.0...v3.2.1
 [3.2.0]: https://github.com/nextcloud/bookmarks/compare/v3.1.1...v3.2.0
 [3.1.1]: https://github.com/nextcloud/bookmarks/compare/v3.1.0...v3.1.1
 [3.1.0]: https://github.com/nextcloud/bookmarks/compare/v3.0.13...v3.1.0

@@ -2,8 +2,8 @@
 
 const rev = '#1'
 
-const DYNAMIC_CACHE = 'dynamic-cache-v3.2.0' + rev
-const STATIC_CACHE = 'static-cache-v3.2.0' + rev
+const DYNAMIC_CACHE = 'dynamic-cache-v3.2.1' + rev
+const STATIC_CACHE = 'static-cache-v3.2.1' + rev
 const FILES_TO_CACHE = [
 	'./',
 ]
