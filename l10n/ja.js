@@ -64,6 +64,7 @@ OC.L10N.register(
     "Share link" : "URLで共有",
     "Copy link" : "リンクをコピー",
     "Allow editing" : "編集を許可",
+    "Remove share" : "共有を削除",
     "Link copied" : "リンクをコピーしました",
     "Select" : "選択",
     "Previews" : "プレビュー",
