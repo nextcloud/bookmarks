@@ -201,22 +201,12 @@ export default {
 .breadcrumbs {
 	padding: 0 8px 0 44px;
 	display: flex;
-	position: fixed;
+	position: absolute;
 	z-index: 100;
 	background: var(--color-main-background-translucent);
 	left: 0;
 	right: 0;
-}
-
-@media only screen and (min-width: 768px) {
-	.breadcrumbs {
-		left: 300px;
-		transition: left var(--animation-quick);
-	}
-
-	.app-navigation--close + .app-content .breadcrumbs {
-		left: 0;
-	}
+	top: 0;
 }
 
 .breadcrumbs + * {

@@ -81,6 +81,9 @@ export default {
 </script>
 <style>
 .bookmarkslist {
+	/* 50px header; 50px breadcrumbs */
+	height: calc(100vh - 50px - 50px);
+	overflow-y: scroll;
 	position: relative;
 }
 
