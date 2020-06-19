@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### New
+- In grid view the entire bookmark behaves like a link
+
 ### Fixed
+- Horizontal breadcrumb text alignment
+- Checkbox size in grid view
 - Menu toggle position
-- Breadcrumb text alignment
 
 ## [3.2.1] - 2020-06-16
 
