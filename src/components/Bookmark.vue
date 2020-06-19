@@ -182,6 +182,7 @@ export default {
 	background-size: cover !important;
 	background-color: var(--color-main-background);
 	position: relative;
+	padding: 0 8px 0 10px;
 }
 
 .bookmark.active,
