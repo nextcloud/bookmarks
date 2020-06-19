@@ -199,24 +199,24 @@ export default {
 </script>
 <style>
 .breadcrumbs {
-	padding: 2px 8px;
+	padding: 0 8px 0 44px;
 	display: flex;
 	position: fixed;
 	z-index: 100;
 	background: var(--color-main-background-translucent);
+	left: 0;
 	right: 0;
-	left: 300px;
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (min-width: 768px) {
 	.breadcrumbs {
-		padding-left: 52px;
+		left: 300px;
+		transition: left var(--animation-quick);
+	}
+
+	.app-navigation--close + .app-content .breadcrumbs {
 		left: 0;
 	}
-}
-.breadcrumbs.wide {
-	padding: 2px 8px;
-	left: 0;
 }
 
 .breadcrumbs + * {
@@ -232,7 +232,7 @@ export default {
 .breadcrumbs__path > * {
 	display: inline-block;
 	height: 30px;
-	padding: 7px;
+	padding: 5px 7px;
 	flex-shrink: 0;
 }
 
