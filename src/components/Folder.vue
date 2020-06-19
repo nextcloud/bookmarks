@@ -159,6 +159,7 @@ export default {
 	display: flex;
 	align-items: center;
 	position: relative;
+	padding: 0 8px 0 10px;
 }
 
 .folder.active,
