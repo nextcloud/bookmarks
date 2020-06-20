@@ -474,7 +474,7 @@ class BookmarkController extends ApiController {
 					return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 				}
 			}
-			$bookmark = $this->bookmarks->update($id, $url, $title, $description, $tags, $folders);
+			$bookmark = $this->bookmarks->update($this->authorizer->getUserId(), $id, $url, $title, $description, $tags, $folders);
 			return new JSONResponse(['item' => $bookmark ? $this->_returnBookmarkAsArray($bookmark) : null, 'status' => 'success']);
 		} catch (AlreadyExistsError $e) {
 			// This is really unlikely, as we make sure to use the existing one if it already exists
