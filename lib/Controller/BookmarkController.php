@@ -146,9 +146,21 @@ class BookmarkController extends ApiController {
 	 */
 	private function _returnBookmarkAsArray(Bookmark $bookmark): array {
 		$array = $bookmark->toArray();
+		$array['folders'] = array_values(array_filter($this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId()), function (Folder $folder) {
+			if ($folder->getUserId() === $this->authorizer->getUserId()) {
+				return true;
+			}
+			if ($this->toExternalFolderId($folder->getId()) === -1) {
+				return false;
+			}
+			if ($this->folders->findShareByDescendantAndUser($folder, $this->authorizer->getUserId()) !== null) {
+				return true;
+			}
+			return false;
+		}));
 		$array['folders'] = array_map(function (Folder $folder) {
 			return $this->toExternalFolderId($folder->getId());
-		}, $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId()));
+		}, $array['folders']);
 		$array['tags'] = $this->tagMapper->findByBookmark($bookmark->getId());
 		return $array;
 	}
