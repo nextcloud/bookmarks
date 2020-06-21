@@ -153,7 +153,7 @@ class BookmarkController extends ApiController {
 			if ($this->toExternalFolderId($folder->getId()) === -1) {
 				return false;
 			}
-			if ($this->folders->findShareByDescendantAndUser($folder, $this->authorizer->getUserId()) !== null) {
+			if ($this->authorizer->getUserId() !== null && $this->folders->findShareByDescendantAndUser($folder, $this->authorizer->getUserId()) !== null) {
 				return true;
 			}
 			return false;
