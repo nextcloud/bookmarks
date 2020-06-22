@@ -25,7 +25,11 @@
 				<option id="lastmodified" value="lastmodified">
 					{{ t('bookmarks', 'Last modified') }}
 				</option>
-			</select></label>
+				<option id="index" value="index">
+					{{ t('bookmarks', 'Custom order') }}
+				</option>
+			</select>
+		</label>
 
 		<label>{{ t('bookmarks', 'RSS Feed') }}
 			<input
