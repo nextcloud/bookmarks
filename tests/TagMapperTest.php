@@ -109,6 +109,21 @@ class TagMapperTest extends TestCase {
 	}
 
 	/**
+	 * @depends testAddToAndFind
+	 */
+	public function testDelete() {
+		$this->tagMapper->deleteTag($this->userId, 'one');
+		$allTags = $this->tagMapper->findAll($this->userId);
+		$this->assertNotContains('one', $allTags);
+		$this->assertContains('two', $allTags);
+		$this->assertContains('three', $allTags);
+
+		$allTagsWithCount = $this->tagMapper->findAllWithCount($this->userId);
+		$this->assertContains(['name' => 'two', 'count' => 2], $allTagsWithCount);
+		$this->assertContains(['name' => 'three', 'count' => 1], $allTagsWithCount);
+	}
+
+	/**
 	 * @depends      testAddToAndFind
 	 * @dataProvider singleBookmarksProvider
 	 * @param array $tags

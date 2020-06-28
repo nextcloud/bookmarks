@@ -217,4 +217,23 @@ class TagMapper {
 			$qb->execute();
 		}
 	}
+
+	public function deleteTag($userId, string $old) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('t.bookmark_id')
+			->from('bookmarks_tags', 't')
+			->innerJoin('t', 'bookmarks', 'bm', $qb->expr()->eq('t.bookmark_id', 'bm.id'))
+			->where($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)))
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
+		$affectedBookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		if (count($affectedBookmarks) !== 0) {
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->delete('bookmarks_tags')
+				->where($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $affectedBookmarks)))
+				->andWhere($qb->expr()->eq('tag', $qb->createNamedParameter($old)));
+			$qb->execute();
+		}
+	}
 }
