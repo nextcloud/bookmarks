@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [3.2.2] - 2020-06-28
 
 ### New
 - In grid view the entire bookmark behaves like a link
@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Horizontal breadcrumb text alignment
 - Checkbox size in grid view
 - Menu toggle position
+- Deletion of tags
+- API: Don't send folder IDs that the client cannot access
 
 ## [3.2.1] - 2020-06-16
 
@@ -274,7 +276,8 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
-[3.2.1]: https://github.com/nextcloud/bookmarks/compare/v3.1.0...v3.2.1
+[3.2.2]: https://github.com/nextcloud/bookmarks/compare/v3.2.1...v3.2.2
+[3.2.1]: https://github.com/nextcloud/bookmarks/compare/v3.2.0...v3.2.1
 [3.2.0]: https://github.com/nextcloud/bookmarks/compare/v3.1.1...v3.2.0
 [3.1.1]: https://github.com/nextcloud/bookmarks/compare/v3.1.0...v3.1.1
 [3.1.0]: https://github.com/nextcloud/bookmarks/compare/v3.0.13...v3.1.0
