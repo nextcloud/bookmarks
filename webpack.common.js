@@ -8,6 +8,7 @@ module.exports = {
 	entry: {
 		main: path.join(__dirname, 'src', 'main.js'),
 		admin: path.join(__dirname, 'src', 'admin.js'),
+		'service-worker': path.join(__dirname, 'src', 'service-worker.js')
 	},
 	output: {
 		path: path.resolve(__dirname, './js'),

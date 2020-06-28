@@ -36,7 +36,7 @@
 				class="bookmarklet__notes"
 				contenteditable
 				@input="onNotesChange">
-				{{ bookmark.description }}
+				{{ description }}
 			</div>
 			<button class="primary" @click="submit">
 				<span class="icon-confirm-white" />{{ t('bookmarks', 'Save') }}
@@ -76,6 +76,7 @@ export default {
 				tags: [],
 				description: '',
 			},
+			description: '',
 			exists: false,
 			loading: true,
 			showPicker: false,
@@ -92,6 +93,11 @@ export default {
 		folderTitle() {
 			return this.$store.getters.getFolder(this.folder)[0].title
 		},
+	},
+	watch: {
+	  bookmark() {
+		  this.description = this.bookmark.description
+	  },
 	},
 
 	async created() {

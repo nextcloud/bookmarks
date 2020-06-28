@@ -81,8 +81,12 @@ export default {
 </script>
 <style>
 .bookmarkslist {
+	/* 50px header; 50px breadcrumbs */
+	height: calc(100vh - 50px - 50px);
+	overflow-y: scroll;
 	position: relative;
 }
+
 .bookmarkslist
 	> *:first-child:not(.bookmarkslist__loading):not(.bookmarkslist__empty) {
 	border-top: 1px solid var(--color-border);
@@ -101,6 +105,8 @@ export default {
 .bookmarkslist--gridview {
 	display: flex;
 	flex-flow: wrap;
+	gap: 10px;
+	padding: 0 10px;
 }
 
 .folder--gridview,
@@ -112,8 +118,7 @@ export default {
 	flex: 1;
 	height: 200px;
 	align-items: flex-end;
-	background: rgb(255, 255, 255);
-	margin: 10px 0 0 10px;
+	background: var(--color-main-background);
 	border: 1px solid var(--color-border);
 	box-shadow: #efefef7d 0px 0 13px 0px inset;
 	border-radius: var(--border-radius);

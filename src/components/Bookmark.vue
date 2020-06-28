@@ -11,6 +11,9 @@
 					? `linear-gradient(0deg, var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
 					: undefined
 		}">
+		<a
+			:href="url"
+			class="bookmark__click-link" />
 		<template v-if="!renaming">
 			<div v-if="isEditable" class="bookmark__checkbox">
 				<input v-model="selected" class="checkbox" type="checkbox"><label
@@ -182,6 +185,7 @@ export default {
 	background-size: cover !important;
 	background-color: var(--color-main-background);
 	position: relative;
+	padding: 0 8px 0 10px;
 }
 
 .bookmark.active,
@@ -285,7 +289,25 @@ export default {
 	margin: 0;
 }
 
+.bookmark--gridview .bookmark__checkbox input[type="checkbox"].checkbox + label::before {
+	margin: 0 3px 3px 3px;
+}
+
 .bookmark--gridview .bookmark__icon {
 	margin: 0 5px 0 10px;
 }
+
+.bookmark__click-link {
+	bottom: 0;
+	display: none;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.bookmark--gridview .bookmark__click-link {
+	display: block;
+}
+
 </style>

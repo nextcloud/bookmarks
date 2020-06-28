@@ -41,7 +41,10 @@ class TagMapper {
 			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('b.id', 'tr.id'))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
+			->orWhere($qb->expr()->andX(
+				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
+				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_SHARE)))
+			)
 			->groupBy('t.tag')
 			->orderBy('count', 'DESC');
 
@@ -61,7 +64,10 @@ class TagMapper {
 			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('b.id', 'tr.id'))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
+			->orWhere($qb->expr()->andX(
+				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
+				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_SHARE)))
+			)
 			->groupBy('t.tag');
 		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
 	}
@@ -208,6 +214,25 @@ class TagMapper {
 				->set('tag', $qb->createNamedParameter($new))
 				->where($qb->expr()->eq('tag', $qb->createNamedParameter($old)))
 				->andWhere($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $bookmarks)));
+			$qb->execute();
+		}
+	}
+
+	public function deleteTag($userId, string $old) {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('t.bookmark_id')
+			->from('bookmarks_tags', 't')
+			->innerJoin('t', 'bookmarks', 'bm', $qb->expr()->eq('t.bookmark_id', 'bm.id'))
+			->where($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)))
+			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
+		$affectedBookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		if (count($affectedBookmarks) !== 0) {
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->delete('bookmarks_tags')
+				->where($qb->expr()->in('bookmark_id', array_map([$qb, 'createNamedParameter'], $affectedBookmarks)))
+				->andWhere($qb->expr()->eq('tag', $qb->createNamedParameter($old)));
 			$qb->execute();
 		}
 	}

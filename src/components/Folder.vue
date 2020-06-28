@@ -159,6 +159,7 @@ export default {
 	display: flex;
 	align-items: center;
 	position: relative;
+	padding: 0 8px 0 10px;
 }
 
 .folder.active,
@@ -189,18 +190,18 @@ export default {
 	background-size: cover;
 	margin: 15px;
 	cursor: pointer;
-	background-image: url('/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
+	background-image: url('/svg/core/filetypes/folder?color=0082c9'), url('/index.php/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
 	background-repeat: no-repeat;
 	background-position: center;
 }
 
 .folder__icon.shared {
-	background-image: var(--icon-share-fff), url('/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
-	background-size: 9px, cover, cover !important;
+	background-image: var(--icon-share-fff), url('/svg/core/filetypes/folder?color=0082c9'), url('/index.php/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
+	background-size: 9px, cover, cover, cover !important;
 }
 
 .folder--gridview .folder__icon.shared {
-	background-size: 30px, cover, cover !important;
+	background-size: 30px, cover, cover, cover !important;
 }
 
 .folder--gridview .folder__icon {

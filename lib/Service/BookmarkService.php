@@ -50,6 +50,10 @@ class BookmarkService {
 	 * @var FaviconPreviewer
 	 */
 	private $faviconPreviewer;
+	/**
+	 * @var FolderService
+	 */
+	private $folders;
 
 	/**
 	 * BookmarksService constructor.
@@ -62,8 +66,9 @@ class BookmarkService {
 	 * @param LinkExplorer $linkExplorer
 	 * @param BookmarkPreviewer $bookmarkPreviewer
 	 * @param FaviconPreviewer $faviconPreviewer
+	 * @param FolderService $folders
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, \OCA\Bookmarks\Service\FolderService $folders) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
@@ -72,6 +77,7 @@ class BookmarkService {
 		$this->tagMapper = $tagMapper;
 		$this->bookmarkPreviewer = $bookmarkPreviewer;
 		$this->faviconPreviewer = $faviconPreviewer;
+		$this->folders = $folders;
 	}
 
 	/**
@@ -180,7 +186,7 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function update($id = null, string $url = null, string $title = null, string $description = null, array $tags = null, array $folders = null): ?Bookmark {
+	public function update($userId, $id, string $url = null, string $title = null, string $description = null, array $tags = null, array $folders = null): ?Bookmark {
 		/**
 		 * @var $bookmark Bookmark
 		 */
@@ -222,7 +228,15 @@ class BookmarkService {
 				$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $bookmark->getUserId(), $tags ?? [], [$folder->getId()]);
 			}
 
-			$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $ownFolders);
+			/**
+			 * @var $currentOwnFolders Folder[]
+			 */
+			$currentOwnFolders = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId());
+			$currentInaccessibleOwnFolders = array_filter($currentOwnFolders, function($folder) use ($userId) {
+				return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
+			});
+
+			$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), array_merge($currentInaccessibleOwnFolders, $ownFolders));
 			if (count($ownFolders) === 0) {
 				$this->bookmarkMapper->delete($bookmark);
 				return null;
