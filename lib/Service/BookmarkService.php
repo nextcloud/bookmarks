@@ -232,9 +232,12 @@ class BookmarkService {
 			 * @var $currentOwnFolders Folder[]
 			 */
 			$currentOwnFolders = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId());
-			$currentInaccessibleOwnFolders = array_filter($currentOwnFolders, function($folder) use ($userId) {
-				return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
-			});
+			$currentInaccessibleOwnFolders = array_map(static function ($f) {
+				return $f->getId();
+			}, array_filter($currentOwnFolders, function ($folder) use ($userId) {
+					return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
+				})
+			);
 
 			$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), array_merge($currentInaccessibleOwnFolders, $ownFolders));
 			if (count($ownFolders) === 0) {
@@ -283,7 +286,7 @@ class BookmarkService {
 		$bookmark = $this->bookmarkMapper->find($bookmarkId);
 		if ($folder->getUserId() === $bookmark->getUserId()) {
 			$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
-		}else{
+		} else {
 			$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $folder->getUserId(), [], [$folder->getId()]);
 		}
 	}
