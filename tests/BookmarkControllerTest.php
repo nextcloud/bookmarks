@@ -394,6 +394,32 @@ class BookmarkControllerTest extends TestCase {
 
 	/**
 	 * @throws AlreadyExistsError
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
+	 */
+	public function testEditBookmarkFolders(): void {
+		$this->cleanUp();
+		$this->setupBookmarksWithPublicFolder();
+		$this->authorizer->setUserId($this->userId);
+		$res = $this->controller->newBookmark('https://www.heise.de', 'Heise', 'PublicNoTag', ['four'], [$this->folder1->getId()]);
+		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
+		$id = $res->getData()['item']['id'];
+
+		$this->controller->editBookmark($id, 'https://www.heise.de', '', null, null, [$this->folder2->getId()]);
+
+		$bookmark = $this->bookmarkMapper->find($id);
+		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id);
+		$this->assertEquals('https://www.heise.de/', $bookmark->getUrl()); // normalized URL
+		$this->assertEquals('', $bookmark->getTitle()); // normalized URL
+		$this->assertEquals([$this->folder2->getId()], array_map(function($f){
+			return $f->getId();
+		}, $parents)); // has the folders we set
+	}
+
+	/**
+	 * @throws AlreadyExistsError
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError

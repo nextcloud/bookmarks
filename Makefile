@@ -60,25 +60,23 @@ clean-dev:
 appstore:
 	mkdir -p $(sign_dir)
 	rsync -a \
-	--exclude=/build \
-	--exclude=/docs \
-	--exclude=/translationfiles \
-	--exclude=/.tx \
-	--exclude=/tests \
-	--exclude=/screenshots \
-	--exclude=/.git \
-	--exclude=/.github \
-	--exclude=/l10n/l10n.pl \
-	--exclude=/CONTRIBUTING.md \
-	--exclude=/issue_template.md \
-	--exclude=/README.md \
-	--exclude=/.gitattributes \
-	--exclude=/.gitignore \
-	--exclude=/.scrutinizer.yml \
-	--exclude=/.travis.yml \
-	--exclude=/Makefile \
-	--exclude=/node_modules \
 	--include=/js \
+	--include=/vendor \
+	--include=/CHANGELOG.md \
+	--include=/README.md \
+	--include=/composer.json \
+	--include=/composer.lock \
+	--include=/vendor \
+	--include=/tests \
+	--include=/templates \
+	--include=/package.json \
+	--include=/package-lock.json \
+	--include=/src \
+	--include=/lib \
+	--include=/l10n \
+	--include=/img \
+	--include=/appinfo \
+	--exclude=/* \
 	$(project_dir)/ $(sign_dir)/$(app_name)
 	tar -czf $(build_dir)/$(app_name)-$(version).tar.gz \
 		-C $(sign_dir) $(app_name)
