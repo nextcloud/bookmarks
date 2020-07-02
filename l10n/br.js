@@ -3,8 +3,11 @@ OC.L10N.register(
     {
     "Details" : "Munudoù",
     "Rename" : "Adenvel",
+    "Move" : "Diplasañ",
     "Delete" : "Dilemel",
     "New folder" : "Heuliad nevez",
+    "Grid view" : "Diskwell ar roued",
+    "List view" : "Gwelidik listenn",
     "Tags" : "Klavioù",
     "Share link" : "Rannan liamm",
     "Allow editing" : "Cheñchamentoù aotreet",
