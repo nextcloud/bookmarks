@@ -243,7 +243,8 @@ class BookmarkService {
 				$currentInaccessibleOwnFolders = [];
 			}
 
-			$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), array_merge($currentInaccessibleOwnFolders, $ownFolders));
+			$ownFolders = array_unique(array_merge($currentInaccessibleOwnFolders, $ownFolders));
+			$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $ownFolders);
 			if (count($ownFolders) === 0) {
 				$this->bookmarkMapper->delete($bookmark);
 				return null;
