@@ -27,7 +27,7 @@ jobs:
       matrix:
         floccus-ref: ['master', 'develop']
         node-versions: [13.x]
-        server-versions: ['18']
+        server-versions: ['19']
         floccus-adapter:
           - nextcloud-folders
         test-name:
@@ -37,17 +37,17 @@ jobs:
           - benchmark parallel-root
         browsers: ['chrome']
         include:
-          - server-versions: 18
+          - server-versions: 19
             floccus-adapter: nextcloud-folders
             test-name: benchmark standard-root
             browsers: chrome
-          - server-versions: 18
+          - server-versions: 19
             floccus-adapter: nextcloud-folders
             test-name: benchmark parallel-root
             browsers: chrome
 
 
-    name: ${{matrix.floccus-adapter}}:${{ matrix.test-name}}
+    name: floccus@${{matrix.floccus-ref}} ${{matrix.floccus-adapter}}:${{ matrix.test-name}} ${{matrix.browsers}}
 
     services:
       hub:
