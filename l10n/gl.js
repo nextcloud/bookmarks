@@ -56,7 +56,7 @@ OC.L10N.register(
     "RSS Feed" : "Fonte RSS",
     "This is an RSS feed of the current result set with access restricted to you." : "Isto é unha fonre RSS do conxunto de resultados actual con acceso restrinxido para vostede.",
     "Clear data" : "Limpar os datos",
-    "Permanently remove all bookmarks from your account. There is no going back!" : "Retirar permanentemente todos os marcadores da súa conta. Isto non ten volta atrás!",
+    "Permanently remove all bookmarks from your account. There is no going back!" : "Retirar de xeito permanente todos os marcadores da súa conta. Isto non ten volta atrás!",
     "Delete all bookmarks" : "Eliminar todos os marcadores",
     "Bookmarklet" : "Miniaplicación ligada",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Arrastre isto cara aos marcadores do seu navegador e prema para marcar rapidamente unha páxina web",
