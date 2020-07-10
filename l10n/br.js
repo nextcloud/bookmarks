@@ -9,8 +9,10 @@ OC.L10N.register(
     "New folder" : "Heuliad nevez",
     "Grid view" : "Diskwell ar roued",
     "List view" : "Gwelidik listenn",
+    "Create" : "Krouiñ",
     "Cancel" : "Arrest",
     "Recently added" : "Ouzpennet n'eus ket pel zo",
+    "Clear data" : "Lemel ar rouadennoù",
     "URL" : "URL",
     "Tags" : "Klavioù",
     "Sharing" : "Rannan",
@@ -19,6 +21,7 @@ OC.L10N.register(
     "Allow editing" : "Cheñchamentoù aotreet",
     "Link copied" : "Liamm eilet",
     "Select" : "Dibab",
+    "Privacy" : "Prevezder",
     "Link" : "Liamm",
     "Folder" : "Teuliad"
 },
