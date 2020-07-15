@@ -12,7 +12,7 @@ OC.L10N.register(
     "Create" : "Krouiñ",
     "Cancel" : "Arrest",
     "Recently added" : "Ouzpennet n'eus ket pel zo",
-    "Clear data" : "Lemel ar rouadennoù",
+    "Clear data" : "Lemel ar roadennoù",
     "URL" : "URL",
     "Tags" : "Klavioù",
     "Sharing" : "Rannan",
