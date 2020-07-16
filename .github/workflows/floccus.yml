@@ -100,6 +100,7 @@ jobs:
               sleep $(( NEXT_WAIT_TIME++ ))
           done
           [ $NEXT_WAIT_TIME -lt 25 ]
+          docker exec --user www-data nextcloud php occ app:list
         if: matrix.floccus-adapter != 'fake'
 
       - name: Enable APCu
