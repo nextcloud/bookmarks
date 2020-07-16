@@ -71,7 +71,7 @@ jobs:
           MYSQL_HOST: mysql
           NEXTCLOUD_TRUSTED_DOMAINS: nextcloud
         volumes:
-          - /home/runner/work/bookmarks/bookmarks:/var/www/html/custom_apps
+          - /home/runner/work/bookmarks/bookmarks/apps:/var/www/html/custom_apps
         options: --name nextcloud
       mysql:
         image: mariadb:latest
@@ -89,7 +89,7 @@ jobs:
       - name: Checkout bookmarks app
         uses: actions/checkout@v2
         with:
-          path: ${{ env.APP_NAME }}
+          path: apps/${{ env.APP_NAME }}
         if: matrix.floccus-adapter == 'nextcloud-folders'
 
       - name: Enable bookmarks app
