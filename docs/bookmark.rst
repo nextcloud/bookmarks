@@ -56,7 +56,7 @@ Query bookmarks
 
       {
         "status": "success",
-        "data": [{ "id": "7", "title": "Google", "tags": ["firsttag"] }]
+        "data": [{ "id": 7, "title": "Google", "tags": ["firsttag"] }]
       }
 
 Create a bookmark
@@ -102,12 +102,12 @@ Create a bookmark
       {
         "status": "success",
         "item": {
-          "id": "7",
+          "id": 7,
           "url": "http://google.com",
           "title": "Google",
           "description":"in case i forget",
           "tags": ["search-engines", "uselessbookmark"],
-          "folders": ["-1"]
+          "folders": [-1]
         }
       }
 
@@ -142,12 +142,12 @@ Get a bookmark
       {
         "status": "success",
         "item": {
-          "id": "7",
+          "id": 7,
           "url": "http://google.com",
           "title": "Google",
           "description":"in case i forget",
           "tags": ["search-engines", "uselessbookmark"],
-          "folders": ["-1"]
+          "folders": [-1]
         }
       }
 
@@ -190,12 +190,12 @@ Edit a bookmark
       {
         "status": "success",
         "item": {
-          "id": "7",
+          "id": 7,
           "url": "http://google.com",
           "title": "Boogle",
           "description":"in case i forget",
           "tags": ["search-engines", "uselessbookmark"],
-          "folders": ["-1"]
+          "folders": [-1]
         }
       }
 
