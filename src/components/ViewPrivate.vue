@@ -60,7 +60,6 @@ export default {
 	},
 
 	async created() {
-		document.addEventListener('scroll', this.onScroll)
 		this.search = new OCA.Search(this.onSearch, this.onResetSearch)
 		// set loading indicator
 		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
@@ -123,15 +122,6 @@ export default {
 
 		onResetSearch() {
 			this.$router.push({ name: privateRoutes.HOME })
-		},
-
-		onScroll() {
-			if (
-				document.body.scrollHeight
-				< window.scrollY + window.innerHeight + 500
-			) {
-				this.$store.dispatch(actions.FETCH_PAGE)
-			}
 		},
 	},
 }
