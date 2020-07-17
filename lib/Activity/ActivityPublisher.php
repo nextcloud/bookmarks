@@ -15,6 +15,7 @@ use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
+use OCA\Bookmarks\Service\Authorizer;
 use OCP\Activity\IManager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -49,8 +50,12 @@ class ActivityPublisher implements IEventListener {
 	 * @var TreeMapper
 	 */
 	private $treeMapper;
+	/**
+	 * @var Authorizer
+	 */
+	private $authorizer;
 
-	public function __construct($appName, IManager $activityManager, IL10N $l, SharedFolderMapper $sharedFolderMapper, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, \OCA\Bookmarks\Db\TreeMapper $treeMapper) {
+	public function __construct($appName, IManager $activityManager, IL10N $l, SharedFolderMapper $sharedFolderMapper, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, TreeMapper $treeMapper, Authorizer $authorizer) {
 		$this->appName = $appName;
 		$this->activityManager = $activityManager;
 		$this->l = $l;
@@ -58,6 +63,7 @@ class ActivityPublisher implements IEventListener {
 		$this->folderMapper = $folderMapper;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
+		$this->authorizer = $authorizer;
 	}
 
 	/**
@@ -87,7 +93,7 @@ class ActivityPublisher implements IEventListener {
 		$activity->setApp($this->appName);
 		$activity->setType('bookmarks');
 
-		$activity->setAuthor($this->activityManager->getCurrentUserId());
+		$activity->setAuthor($this->authorizer->getUserId());
 		$activity->setTimestamp(time());
 
 		/**
@@ -122,7 +128,7 @@ class ActivityPublisher implements IEventListener {
 		$activity->setApp($this->appName);
 		$activity->setType('bookmarks');
 
-		$activity->setAuthor($this->activityManager->getCurrentUserId());
+		$activity->setAuthor($this->authorizer->getUserId());
 		$activity->setTimestamp(time());
 
 		/**
@@ -150,8 +156,8 @@ class ActivityPublisher implements IEventListener {
 		/**
 		 * @var $shares SharedFolder[]
 		 */
-		$shares = $this->sharedFolderMapper->findByOwner($this->activityManager->getCurrentUserId());
-		$shares = array_merge($shares, $this->sharedFolderMapper->findByUser($this->activityManager->getCurrentUserId()));
+		$shares = $this->sharedFolderMapper->findByOwner($this->authorizer->getUserId());
+		$shares = array_merge($shares, $this->sharedFolderMapper->findByUser($this->authorizer->getUserId()));
 		$affectedShares = array_filter($shares, function($sharedFolder) use ($folder){
 			return $this->treeMapper->hasDescendant($sharedFolder->getFolderId(), TreeMapper::TYPE_FOLDER, $folder->getId());
 		});
@@ -159,7 +165,7 @@ class ActivityPublisher implements IEventListener {
 			return $sharedFolder->getUserId();
 		}, $affectedShares);
 		$affectedUsers[] = $folder->getUserId();
-		$affectedUsers[] = $this->activityManager->getCurrentUserId();
+		$affectedUsers[] = $this->authorizer->getUserId();
 
 		$affectedUsers = array_unique($affectedUsers);
 
@@ -174,7 +180,7 @@ class ActivityPublisher implements IEventListener {
 		$activity->setApp($this->appName);
 		$activity->setType('bookmarks');
 
-		$activity->setAuthor($this->activityManager->getCurrentUserId());
+		$activity->setAuthor($this->authorizer->getUserId());
 		$activity->setTimestamp(time());
 
 		/**
@@ -200,8 +206,8 @@ class ActivityPublisher implements IEventListener {
 		/**
 		 * @var $shares SharedFolder[]
 		 */
-		$shares = $this->sharedFolderMapper->findByOwner($this->activityManager->getCurrentUserId());
-		$shares = array_merge($shares, $this->sharedFolderMapper->findByUser($this->activityManager->getCurrentUserId()));
+		$shares = $this->sharedFolderMapper->findByOwner($this->authorizer->getUserId());
+		$shares = array_merge($shares, $this->sharedFolderMapper->findByUser($this->authorizer->getUserId()));
 		$affectedShares = array_filter($shares, function($sharedFolder) use ($bookmark) {
 			return $this->treeMapper->hasDescendant($sharedFolder->getFolderId(), TreeMapper::TYPE_BOOKMARK, $bookmark->getId());
 		});
@@ -209,7 +215,7 @@ class ActivityPublisher implements IEventListener {
 			return $sharedFolder->getUserId();
 		}, $affectedShares);
 		$affectedUsers[] = $bookmark->getUserId();
-		$affectedUsers[] = $this->activityManager->getCurrentUserId();
+		$affectedUsers[] = $this->authorizer->getUserId();
 
 		$affectedUsers = array_unique($affectedUsers);
 
