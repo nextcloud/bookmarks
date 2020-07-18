@@ -36,7 +36,7 @@
 		"vuex-router-sync": "^5.0.0"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.10.4",
+		"@babel/core": "^7.10.5",
 		"@babel/plugin-syntax-dynamic-import": "^7.7.4",
 		"@babel/preset-env": "^7.10.4",
 		"@nextcloud/eslint-config": "^2.0.0",
