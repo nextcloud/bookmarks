@@ -55,10 +55,10 @@ Get full hierarchy
 
       {
         "status": "success", "data": [
-          {"id": "1", "title": "work", "parent_folder": "-1"},
-          {"id": "2", "title": "personal", "parent_folder": "-1", "children": [
-            {"id": "3", "title": "garden", "parent_folder": "2"},
-            {"id": "4", "title": "music", "parent_folder": "2"}
+          {"id": 1, "title": "work", "parent_folder": -1},
+          {"id": 2, "title": "personal", "parent_folder": -1, "children": [
+            {"id": 3, "title": "garden", "parent_folder": 2},
+            {"id": 4, "title": "music", "parent_folder": 2}
           ]},
         ]
       }
@@ -93,9 +93,9 @@ Get single folder
       {
         "status": "success",
         "item": {
-          "id": "2",
+          "id": 2,
           "title": "My Personal Bookmarks",
-          "parent_folder": "-1"
+          "parent_folder": -1
         }
       }
 
@@ -178,7 +178,7 @@ Edit a folder
         "item": {
           "id": 5,
           "title": "optional physical activity",
-          "parent_folder": "-1"
+          "parent_folder": -1
         }
       }
 
@@ -375,10 +375,10 @@ Get folder's content order
       {
         "status": "success",
         "data": [
-          {"type": "folder", "id": "17"},
-          {"type": "bookmark", "id": "204"},
-          {"type": "bookmark", "id": "192"},
-          {"type": "bookmark", "id": "210"}
+          {"type": "folder", "id": 17},
+          {"type": "bookmark", "id": 204},
+          {"type": "bookmark", "id": 192},
+          {"type": "bookmark", "id": 210}
         ]
       }
 
@@ -409,10 +409,10 @@ Set folder's content order
       {
         "status": "success",
         "data": [
-          {"type": "folder", "id": "17"},
-          {"type": "bookmark", "id": "204"},
-          {"type": "bookmark", "id": "192"},
-          {"type": "bookmark", "id": "210"}
+          {"type": "folder", "id": 17},
+          {"type": "bookmark", "id": 204},
+          {"type": "bookmark", "id": 192},
+          {"type": "bookmark", "id": 210}
         ]
       }
 

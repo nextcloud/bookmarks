@@ -232,11 +232,19 @@ class BookmarkService {
 			 * @var $currentOwnFolders Folder[]
 			 */
 			$currentOwnFolders = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId());
-			$currentInaccessibleOwnFolders = array_filter($currentOwnFolders, function($folder) use ($userId) {
-				return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
-			});
+			if ($bookmark->getUserId() !== $userId) {
+				$currentInaccessibleOwnFolders = array_map(static function ($f) {
+					return $f->getId();
+				}, array_filter($currentOwnFolders, function ($folder) use ($userId) {
+						return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
+					})
+				);
+			}else{
+				$currentInaccessibleOwnFolders = [];
+			}
 
-			$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), array_merge($currentInaccessibleOwnFolders, $ownFolders));
+			$ownFolders = array_unique(array_merge($currentInaccessibleOwnFolders, $ownFolders));
+			$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $ownFolders);
 			if (count($ownFolders) === 0) {
 				$this->bookmarkMapper->delete($bookmark);
 				return null;
@@ -283,7 +291,7 @@ class BookmarkService {
 		$bookmark = $this->bookmarkMapper->find($bookmarkId);
 		if ($folder->getUserId() === $bookmark->getUserId()) {
 			$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
-		}else{
+		} else {
 			$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $folder->getUserId(), [], [$folder->getId()]);
 		}
 	}

@@ -542,6 +542,7 @@ export default {
 	},
 	[actions.FETCH_PAGE]({ dispatch, commit, state }) {
 		if (state.fetchState.reachedEnd) return
+		if (state.loading.bookmarks) return
 		let canceled = false
 		commit(mutations.FETCH_START, {
 			type: 'bookmarks',

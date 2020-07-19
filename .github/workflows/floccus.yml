@@ -25,8 +25,9 @@ jobs:
       # do not stop on another job's failure
       fail-fast: false
       matrix:
+        floccus-ref: ['master', 'develop']
         node-versions: [13.x]
-        server-versions: ['18']
+        server-versions: ['19']
         floccus-adapter:
           - nextcloud-folders
         test-name:
@@ -36,17 +37,17 @@ jobs:
           - benchmark parallel-root
         browsers: ['chrome']
         include:
-          - server-versions: 18
+          - server-versions: 19
             floccus-adapter: nextcloud-folders
             test-name: benchmark standard-root
             browsers: chrome
-          - server-versions: 18
+          - server-versions: 19
             floccus-adapter: nextcloud-folders
             test-name: benchmark parallel-root
             browsers: chrome
 
 
-    name: ${{matrix.floccus-adapter}}:${{ matrix.test-name}}
+    name: floccus@${{matrix.floccus-ref}} ${{matrix.floccus-adapter}}:${{ matrix.test-name}} ${{matrix.browsers}}
 
     services:
       hub:
@@ -70,7 +71,7 @@ jobs:
           MYSQL_HOST: mysql
           NEXTCLOUD_TRUSTED_DOMAINS: nextcloud
         volumes:
-          - apps:/home/runner/work/floccus/floccus/apps
+          - /home/runner/work/bookmarks/bookmarks/apps:/var/www/html/custom_apps
         options: --name nextcloud
       mysql:
         image: mariadb:latest
@@ -82,24 +83,37 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: marcelklehr/floccus
-          ref: master
+          ref: ${{matrix.floccus-ref}}
           path: floccus
 
       - name: Checkout bookmarks app
         uses: actions/checkout@v2
         with:
-          path: apps/${{ env.APP_NAME }}
+          path: ${{ env.APP_NAME }}
         if: matrix.floccus-adapter == 'nextcloud-folders'
 
       - name: Enable bookmarks app
         shell: bash
         run: |
+          cd ${{ env.APP_NAME }}
+          composer install
+        if: matrix.floccus-adapter == 'nextcloud-folders'
+
+      - name: Enable bookmarks app
+        shell: bash
+        run: |
+          sudo cp -R ${{ env.APP_NAME }} apps/
           NEXT_WAIT_TIME=0
           until [ $NEXT_WAIT_TIME -eq 25 ] || docker exec --user www-data nextcloud php occ app:enable ${{ env.APP_NAME }}; do
               sleep $(( NEXT_WAIT_TIME++ ))
           done
           [ $NEXT_WAIT_TIME -lt 25 ]
-        if: matrix.floccus-adapter != 'fake'
+        if: matrix.floccus-adapter == 'nextcloud-folders'
+
+      - name: List apps
+        shell: bash
+        run: |
+          docker exec --user www-data nextcloud php occ app:list
 
       - name: Enable APCu
         run: |
@@ -110,18 +124,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-versions }}
-
-      - name: Cache node modules
-        uses: actions/cache@v1
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
 
       - name: Install dependencies & build
         working-directory: floccus
