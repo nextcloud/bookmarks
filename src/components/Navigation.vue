@@ -49,9 +49,11 @@
 				</AppNavigationItem>
 			</template>
 		</ul>
-		<AppNavigationSettings v-if="!isPublic">
-			<Settings />
-		</AppNavigationSettings>
+		<template #footer>
+			<AppNavigationSettings v-if="!isPublic">
+				<Settings />
+			</AppNavigationSettings>
+		</template>
 	</AppNavigation>
 </template>
 
