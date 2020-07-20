@@ -308,6 +308,9 @@ class BookmarkService {
 		foreach ($parents as $parent) {
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $parent->getId());
 		}
+		if (count($parents) === 0) {
+			$this->bookmarkMapper->delete($bookmark);
+		}
 	}
 
 	/**
