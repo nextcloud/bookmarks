@@ -6,6 +6,7 @@ use OCA\Bookmarks\BackgroundJobs\PreviewsJob;
 use OC\BackgroundJob\JobList;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
+use OCA\Bookmarks\Service\Authorizer;
 use PHPUnit\Framework\TestCase;
 
 /**
