@@ -43,9 +43,10 @@ Requirements:
 	</settings>
 	<repair-steps>
 		<post-migration>
+			<step>OCA\Bookmarks\Migration\DeduplicateSharedFoldersRepairStep</step>
+			<step>OCA\Bookmarks\Migration\SuperfluousSharedFoldersRepairStep</step>
 			<step>OCA\Bookmarks\Migration\OrphanedSharesRepairStep</step>
 			<step>OCA\Bookmarks\Migration\OrphanedTreeItemsRepairStep</step>
-			<step>OCA\Bookmarks\Migration\SuperfluousSharedFoldersRepairStep</step>
 			<step>OCA\Bookmarks\Migration\GroupSharesUpdateRepairStep</step>
 		</post-migration>
 	</repair-steps>
