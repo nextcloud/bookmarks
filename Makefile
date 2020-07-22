@@ -76,6 +76,7 @@ appstore:
 	--include=/l10n \
 	--include=/img \
 	--include=/appinfo \
+	--exclude=**/*.map \
 	--exclude=/* \
 	$(project_dir)/ $(sign_dir)/$(app_name)
 	tar -czf $(build_dir)/$(app_name)-$(version).tar.gz \
