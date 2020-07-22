@@ -321,18 +321,9 @@ class BookmarkMapper extends QBMapper {
 	 * @return array|Entity[]
 	 */
 	public function findUntagged($userId, QueryParameters $params): array {
+		// select b.id from oc_bookmarks b LEFT JOIN oc_bookmarks_tags t ON b.id = t.bookmark_id WHERE t.bookmark_id IS NULL
 		$qb = $this->_findByTags($userId);
-
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-		if ($dbType === 'pgsql') {
-			$tagsCol = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
-		} else {
-			$tagsCol = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
-		}
-
-		$qb->groupBy(...Bookmark::$columns);
-		$qb->having($qb->expr()->eq($tagsCol, $qb->createPositionalParameter('', IQueryBuilder::PARAM_STR)));
-		$qb->orHaving($qb->expr()->isNull($tagsCol));
+		$qb->andWhere($qb->expr()->isNull('t.bookmark_id'));
 
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 		return $this->findEntities($qb);
