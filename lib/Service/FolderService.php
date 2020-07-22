@@ -15,6 +15,7 @@ use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
+use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\HtmlParseError;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
@@ -22,6 +23,7 @@ use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\Share\IShare;
@@ -59,6 +61,10 @@ class FolderService {
 	 * @var IL10N
 	 */
 	private $l10n;
+	/**
+	 * @var IEventDispatcher
+	 */
+	private $eventDispatcher;
 
 	/**
 	 * FolderService constructor.
@@ -71,8 +77,9 @@ class FolderService {
 	 * @param IGroupManager $groupManager
 	 * @param HtmlImporter $htmlImporter
 	 * @param IL10N $l10n
+	 * @param IEventDispatcher $eventDispatcher
 	 */
-	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, \OCA\Bookmarks\Service\HtmlImporter $htmlImporter, IL10N $l10n) {
+	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, \OCA\Bookmarks\Service\HtmlImporter $htmlImporter, IL10N $l10n, IEventDispatcher $eventDispatcher) {
 		$this->folderMapper = $folderMapper;
 		$this->treeMapper = $treeMapper;
 		$this->shareMapper = $shareMapper;
@@ -81,6 +88,7 @@ class FolderService {
 		$this->groupManager = $groupManager;
 		$this->htmlImporter = $htmlImporter;
 		$this->l10n = $l10n;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -103,6 +111,8 @@ class FolderService {
 
 		$this->folderMapper->insert($folder);
 		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parentFolderId);
+
+		$this->eventDispatcher->dispatch(CreateEvent::class, new CreateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
 		return $folder;
 	}
 
@@ -172,10 +182,8 @@ class FolderService {
 			foreach ($shares as $share) {
 				$this->deleteShare($share->getId());
 			}
-			$publicFolders = $this->publicFolderMapper->findByFolder($folderId);
-			foreach ($publicFolders as $publicFolder) {
-				$this->publicFolderMapper->delete($publicFolder);
-			}
+			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
+			$this->publicFolderMapper->delete($publicFolder);
 			return;
 		}
 
@@ -234,6 +242,7 @@ class FolderService {
 		if (isset($title)) {
 			$folder->setTitle($title);
 			$this->folderMapper->update($folder);
+			$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
 		}
 		if (isset($parent_folder)) {
 			$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parent_folder);
