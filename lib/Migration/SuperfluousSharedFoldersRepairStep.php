@@ -38,6 +38,7 @@ class SuperfluousSharedFoldersRepairStep implements IRepairStep {
 			->where($qb->expr()->eq('t.type', $qb->createPositionalParameter('share')))
 			->andWhere($qb->expr()->eq('s.owner', 'sf.user_id'));
 		$superfluousSharedFolders = $qb->execute();
+		$i = 0;
 		while ($sharedFolder = $superfluousSharedFolders->fetchColumn()) {
 			$qb = $this->db->getQueryBuilder();
 			$qb->delete('bookmarks_tree')
@@ -48,6 +49,8 @@ class SuperfluousSharedFoldersRepairStep implements IRepairStep {
 			$qb->delete('bookmarks_shared_folders')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($sharedFolder)))
 				->execute();
+			$i++;
 		}
+		$output->info("Removed $i superfluous shares");
 	}
 }
