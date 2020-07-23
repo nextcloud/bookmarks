@@ -7,19 +7,42 @@
 		<CreateBookmark v-if="newBookmark" />
 		<CreateFolder v-if="newFolder" />
 		<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
-			<Folder
-				v-for="folder in folderChildren"
-				:key="'f' + folder.id"
-				:folder="folder" />
+			<!-- FOLDER VIEW WITH CUSTOM SORTING -->
+			<template v-if="$store.state.settings.sorting === 'index'">
+				<template v-for="item in children">
+					<Folder
+						v-if="item.type === 'folder'"
+						:key="item.type + item.id"
+						:folder="$store.getters.getFolder(item.id)[0]" />
+					<Bookmark
+						v-if="item.type === 'bookmark' && $store.getters.getBookmark(item.id)"
+						:key="item.type + item.id"
+						:bookmark="$store.getters.getBookmark(item.id)" />
+				</template>
+			</template>
+			<!-- FOLDER VIEW WITH NORMAL SORTING -->
+			<template v-else>
+				<Folder
+					v-for="folder in subFolders"
+					:key="'folder' + folder.id"
+					:folder="folder" />
+				<template v-if="bookmarks.length">
+					<Bookmark
+						v-for="bookmark in bookmarks"
+						:key="'bookmark' + bookmark.id"
+						:bookmark="bookmark" />
+				</template>
+			</template>
 		</template>
-		<template v-if="bookmarks.length">
+		<!-- NON-FOLDER VIEW -->
+		<template v-else-if="bookmarks.length">
 			<Bookmark
 				v-for="bookmark in bookmarks"
-				:key="'b' + bookmark.id"
+				:key="'bookmark' + bookmark.id"
 				:bookmark="bookmark" />
 		</template>
 		<div
-			v-else-if="!loading && !folderChildren.length"
+			v-else-if="!loading && !children.length"
 			class="bookmarkslist__empty">
 			<h2>{{ t('bookmarks', 'No bookmarks here') }}</h2>
 			<p>{{ t('bookmarks', 'Try changing your query or add some using the button on the left.') }}</p>
@@ -56,15 +79,22 @@ export default {
 		},
 	},
 	computed: {
-		folderChildren() {
+		children() {
+			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
+				return []
+			}
+			const folderId = this.$route.params.folder || '-1'
+			if (!folderId) return []
+			return this.$store.getters.getFolderChildren(folderId)
+		},
+		subFolders() {
 			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []
 			}
 			const folderId = this.$route.params.folder || '-1'
 			if (!folderId) return []
 			const folder = this.$store.getters.getFolder(folderId)[0]
-			if (!folder) return []
-			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folder.id)
+			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folderId)
 			return folder.children
 		},
 		newBookmark() {

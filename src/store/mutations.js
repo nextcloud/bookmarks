@@ -34,6 +34,7 @@ export const mutations = {
 	REMOVE_SHARE: 'REMOVE_SHARE',
 	ADD_PUBLIC_TOKEN: 'ADD_PUBLIC_TOKEN',
 	REMOVE_PUBLIC_TOKEN: 'REMOVE_PUBLIC_TOKEN',
+	SET_FOLDER_CHILDREN_ORDER: 'SET_FOLDER_CHILDREN_ORDER',
 }
 export default {
 	[mutations.SET_AUTH_TOKEN](state, authToken) {
@@ -186,6 +187,9 @@ export default {
 	},
 	[mutations.REMOVE_PUBLIC_TOKEN](state, { folderId }) {
 		Vue.delete(state.tokensByFolder, folderId)
+	},
+	[mutations.SET_FOLDER_CHILDREN_ORDER](state, { folderId, children }) {
+		Vue.set(state.childrenByFolder, folderId, children)
 	},
 }
 
