@@ -160,10 +160,12 @@ class BookmarkMapper extends QBMapper {
 		$sqlSortColumn = $params->getSortBy('lastmodified', Bookmark::$columns);
 
 		if ($sqlSortColumn === 'title') {
-			$qb->orderBy($qb->createFunction('UPPER(`b`.`title`)'), 'ASC');
+			$qb->addOrderBy($qb->createFunction('UPPER(`b`.`title`)'), 'ASC');
 		} else {
-			$qb->orderBy('b.'.$sqlSortColumn, 'DESC');
+			$qb->addOrderBy('b.'.$sqlSortColumn, 'DESC');
 		}
+		// Always sort by id additionally, so the ordering is stable
+		$qb->addOrderBy('b.id', 'ASC');
 
 		if ($params->getLimit() !== -1) {
 			$qb->setMaxResults($params->getLimit());
@@ -319,18 +321,9 @@ class BookmarkMapper extends QBMapper {
 	 * @return array|Entity[]
 	 */
 	public function findUntagged($userId, QueryParameters $params): array {
+		// select b.id from oc_bookmarks b LEFT JOIN oc_bookmarks_tags t ON b.id = t.bookmark_id WHERE t.bookmark_id IS NULL
 		$qb = $this->_findByTags($userId);
-
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-		if ($dbType === 'pgsql') {
-			$tagsCol = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
-		} else {
-			$tagsCol = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
-		}
-
-		$qb->groupBy(...Bookmark::$columns);
-		$qb->having($qb->expr()->eq($tagsCol, $qb->createPositionalParameter('', IQueryBuilder::PARAM_STR)));
-		$qb->orHaving($qb->expr()->isNull($tagsCol));
+		$qb->andWhere($qb->expr()->isNull('t.bookmark_id'));
 
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 		return $this->findEntities($qb);
@@ -452,16 +445,7 @@ class BookmarkMapper extends QBMapper {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		$entity->setLastmodified(time());
-
-		$newEntity = parent::update($entity);
-
-		// trigger event
-		$this->eventDispatcher->dispatch(
-			UpdateEvent::class,
-			new UpdateEvent(TreeMapper::TYPE_BOOKMARK, $entity->getId())
-		);
-
-		return $newEntity;
+		return parent::update($entity);
 	}
 
 	/**
@@ -502,10 +486,6 @@ class BookmarkMapper extends QBMapper {
 		}
 
 		parent::insert($entity);
-
-		$this->eventDispatcher->dispatch(CreateEvent::class,
-			new CreateEvent(TreeMapper::TYPE_BOOKMARK, $entity->getId())
-		);
 		return $entity;
 	}
 

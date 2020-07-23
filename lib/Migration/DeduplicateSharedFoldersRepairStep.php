@@ -4,11 +4,12 @@
 namespace OCA\Bookmarks\Migration;
 
 
+use OCA\Bookmarks\Db\SharedFolder;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
-class SuperfluousSharedFoldersRepairStep implements IRepairStep {
+class DeduplicateSharedFoldersRepairStep implements IRepairStep {
 	/**
 	 * @var IDBConnection
 	 */
@@ -22,7 +23,7 @@ class SuperfluousSharedFoldersRepairStep implements IRepairStep {
 	 * Returns the step's name
 	 */
 	public function getName() {
-		return 'Remove superfluous shared bookmark folders';
+		return 'Deduplicate shared bookmark folders';
 	}
 
 	/**
@@ -30,18 +31,18 @@ class SuperfluousSharedFoldersRepairStep implements IRepairStep {
 	 */
 	public function run(IOutput $output) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('t.id')
-			->from('bookmarks_tree', 't')
-			->join('t', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('t.id', 'sf.id'))
-			->join('sf', 'bookmarks_shared_to_shares', 'to', $qb->expr()->eq('sf.id', 'to.shared_folder_id'))
-			->join('to', 'bookmarks_shares', 's', $qb->expr()->eq('to.share_id', 's.id'))
-			->where($qb->expr()->eq('t.type', $qb->createPositionalParameter('share')))
-			->andWhere($qb->expr()->eq('s.owner', 'sf.user_id'));
-		$superfluousSharedFolders = $qb->execute();
+		$qb->select('p1.id')
+			->from('bookmarks_shared_folders', 'p1')
+			->leftJoin('p1', 'bookmarks_shared_folders', 'p2', $qb->expr()->andX(
+				$qb->expr()->eq('p1.folder_id', 'p2.folder_id'),
+				$qb->expr()->eq('p1.user_id', 'p2.user_id')
+			))
+			->where($qb->expr()->lt('p2.id', 'p1.id'));
+		$duplicateSharedFolders = $qb->execute();
 		$i = 0;
-		while ($sharedFolder = $superfluousSharedFolders->fetchColumn()) {
+		while ($sharedFolder = $duplicateSharedFolders->fetchColumn()) {
 			$qb = $this->db->getQueryBuilder();
-			$qb->delete('bookmarks_tree')
+			$qb->delete('bookmarks_shared_folders')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($sharedFolder)))
 				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter('share')))
 				->execute();
@@ -51,6 +52,6 @@ class SuperfluousSharedFoldersRepairStep implements IRepairStep {
 				->execute();
 			$i++;
 		}
-		$output->info("Removed $i superfluous shares");
+		$output->info("Removed $i duplicate shares");
 	}
 }

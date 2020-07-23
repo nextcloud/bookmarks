@@ -7,7 +7,7 @@ source_dir=$(build_dir)/source
 sign_dir=$(build_dir)/sign
 package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
-version+=3.2.5
+version+=3.3.1
 
 all: dev-setup build-js-production test test-php
 
@@ -76,6 +76,7 @@ appstore:
 	--include=/l10n \
 	--include=/img \
 	--include=/appinfo \
+	--exclude=**/*.map \
 	--exclude=/* \
 	$(project_dir)/ $(sign_dir)/$(app_name)
 	tar -czf $(build_dir)/$(app_name)-$(version).tar.gz \

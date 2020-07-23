@@ -17,7 +17,7 @@ Requirements:
    - mbstring: *
  - Nextcloud v17+
 ]]></description>
-	<version>3.2.5</version>
+	<version>3.3.1</version>
 	<licence>agpl</licence>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
@@ -43,10 +43,22 @@ Requirements:
 	</settings>
 	<repair-steps>
 		<post-migration>
+			<step>OCA\Bookmarks\Migration\DeduplicateSharedFoldersRepairStep</step>
+			<step>OCA\Bookmarks\Migration\SuperfluousSharedFoldersRepairStep</step>
 			<step>OCA\Bookmarks\Migration\OrphanedSharesRepairStep</step>
 			<step>OCA\Bookmarks\Migration\OrphanedTreeItemsRepairStep</step>
-			<step>OCA\Bookmarks\Migration\SuperfluousSharedFoldersRepairStep</step>
 			<step>OCA\Bookmarks\Migration\GroupSharesUpdateRepairStep</step>
 		</post-migration>
 	</repair-steps>
+	<activity>
+		<settings>
+			<setting>OCA\Bookmarks\Activity\Setting</setting>
+		</settings>
+		<filters>
+			<filter>OCA\Bookmarks\Activity\Filter</filter>
+		</filters>
+		<providers>
+			<provider>OCA\Bookmarks\Activity\Provider</provider>
+		</providers>
+	</activity>
 </info>

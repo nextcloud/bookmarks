@@ -219,6 +219,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function setupBookmarks() {
+		$this->authorizer->setUserId($this->userId);
 		$this->folder1 = new Folder();
 		$this->folder1->setTitle('foo');
 		$this->folder1->setUserId($this->userId);
@@ -260,6 +261,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function setupPublicFolder(): void {
+		$this->authorizer->setUserId($this->userId);
 		$this->publicFolder = new PublicFolder();
 		$this->publicFolder->setFolderId($this->folder1->getId());
 		$this->publicFolderMapper->insert($this->publicFolder);
@@ -275,6 +277,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
 	 */
 	public function setupSharedFolder() {
+		$this->authorizer->setUserId($this->userId);
 		$this->folders->createShare($this->folder1->getId(), $this->otherUser, \OCP\Share\IShare::TYPE_USER, true, false);
 	}
 
@@ -578,6 +581,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
 		$output = $this->public->getFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -594,6 +598,7 @@ class FolderControllerTest extends TestCase {
 	public function testReadPublicFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId(null);
 		$output = $this->public->getFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
@@ -609,6 +614,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
 		$output = $this->public->addFolder('bla', $this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
@@ -625,6 +631,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
 		$output = $this->public->editFolder($this->folder2->getId(), 'blabla');
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
@@ -645,6 +652,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
 		$output = $this->public->deleteFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('error', $data['status'], var_export($data, true));
@@ -663,6 +671,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
 		$output = $this->public->getFolderChildrenOrder($this->folder1->getId(), -1);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -682,6 +691,7 @@ class FolderControllerTest extends TestCase {
 	public function testSetFullHierarchyPublicFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+		$this->authorizer->setUserId(null);
 		$output = $this->public->setFolderChildrenOrder($this->folder1->getId(), [
 			['type' => 'bookmark', 'id' => $this->bookmark1Id],
 			['type' => 'folder', 'id' => $this->folder2->getId()],
@@ -713,6 +723,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
+		$this->authorizer->setUserId(null);
 		$output = $this->public->getFolders($this->folder1->getId(), -1);
 		$data = $output->getData();
 		$this->assertCount(1, $data['data']);

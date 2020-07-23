@@ -35,13 +35,17 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 			->leftJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.id'))
 			->where($qb->expr()->isNull('b.id'));
 		$orphanedBookmarks = $qb->execute();
+		$i = 0;
 		while ($bookmark = $orphanedBookmarks->fetchColumn()) {
 			$qb = $this->db->getQueryBuilder();
 			$qb->delete('bookmarks_tree')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($bookmark)))
 				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter('bookmark')))
 				->execute();
+			$i++;
 		}
+		$output->info("Removed $i orphaned bookmarks");
+
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('t.id')
 			->from('bookmarks_tree', 't')
@@ -50,12 +54,15 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 			->where($qb->expr()->isNull('f.id'))
 			->andWhere($qb->expr()->isNull('r.folder_id'));
 		$orphanedFolders = $qb->execute();
+		$i = 0;
 		while ($folder = $orphanedFolders->fetchColumn()) {
 			$qb = $this->db->getQueryBuilder();
 			$qb->delete('bookmarks_tree')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($folder)))
 				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter('folder')))
 				->execute();
+			$i++;
 		}
+		$output->info("Removed $i orphaned bookmark folders");
 	}
 }

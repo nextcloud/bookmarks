@@ -196,6 +196,7 @@ class BookmarkControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function setupBookmarks(): void {
+		$this->authorizer->setUserId($this->userId);
 		$bookmark1 = Bookmark::fromArray([
 			'userId' => $this->userId,
 			'url' => 'https://www.golem.de',
@@ -227,6 +228,7 @@ class BookmarkControllerTest extends TestCase {
 	 */
 	public function setupBookmarksWithPublicFolder(): void {
 		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
 
 		$this->folder1 = new Folder();
 		$this->folder1->setTitle('foo');
@@ -261,6 +263,7 @@ class BookmarkControllerTest extends TestCase {
 	 */
 	public function setupBookmarksWithSharedFolder(): void {
 		$this->setupBookmarksWithPublicFolder();
+		$this->authorizer->setUserId($this->userId);
 		$this->folders->createShare($this->folder1->getId(), $this->otherUserId,\OCP\Share\IShare::TYPE_USER, true, false);
 	}
 
