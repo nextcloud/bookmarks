@@ -35,6 +35,7 @@ class OrphanedSharesRepairStep implements IRepairStep {
 			->leftJoin('s', 'bookmarks_folders', 'f', $qb->expr()->eq('f.id', 's.folder_id'))
 			->where($qb->expr()->isNull('f.id'));
 		$shares = $qb->execute();
+		$i = 0;
 		while ($share = $shares->fetchColumn()) {
 			$qb = $this->db->getQueryBuilder();
 			$folders = $qb->select('f.id')
@@ -56,7 +57,10 @@ class OrphanedSharesRepairStep implements IRepairStep {
 			$qb->delete('bookmarks_shares')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($share)))
 				->execute();
+			$i++;
 		}
+		$output->info("Removed $i orphaned shares");
+
 		$qb = $this->db->getQueryBuilder();
 		$publics = $qb->select('p.id')
 			->from('bookmarks_folders_public', 'p')
@@ -64,11 +68,14 @@ class OrphanedSharesRepairStep implements IRepairStep {
 			->where($qb->expr()->isNull('f.id'))
 			->execute()
 			->fetchAll(\PDO::FETCH_COLUMN);
+		$i = 0;
 		foreach ($publics as $publicId) {
 			$qb = $this->db->getQueryBuilder();
 			$qb->delete('bookmarks_folders_public')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($publicId)))
 				->execute();
+			$i++;
 		}
+		$output->info("Removed $i orphaned public links");
 	}
 }

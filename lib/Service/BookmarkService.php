@@ -10,6 +10,8 @@ use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\TagMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
@@ -54,6 +56,10 @@ class BookmarkService {
 	 * @var FolderService
 	 */
 	private $folders;
+	/**
+	 * @var \OCP\EventDispatcher\IEventDispatcher
+	 */
+	private $eventDispatcher;
 
 	/**
 	 * BookmarksService constructor.
@@ -67,8 +73,9 @@ class BookmarkService {
 	 * @param BookmarkPreviewer $bookmarkPreviewer
 	 * @param FaviconPreviewer $faviconPreviewer
 	 * @param FolderService $folders
+	 * @param \OCP\EventDispatcher\IEventDispatcher $eventDispatcher
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, \OCA\Bookmarks\Service\FolderService $folders) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, \OCA\Bookmarks\Service\FolderService $folders, \OCP\EventDispatcher\IEventDispatcher $eventDispatcher) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
@@ -78,6 +85,7 @@ class BookmarkService {
 		$this->bookmarkPreviewer = $bookmarkPreviewer;
 		$this->faviconPreviewer = $faviconPreviewer;
 		$this->folders = $folders;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -168,6 +176,9 @@ class BookmarkService {
 		$this->tagMapper->setOn($tags, $bookmark->getId());
 
 		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folders);
+		$this->eventDispatcher->dispatch(CreateEvent::class,
+			new CreateEvent(TreeMapper::TYPE_BOOKMARK, $bookmark->getId())
+		);
 		return $bookmark;
 	}
 
@@ -232,11 +243,19 @@ class BookmarkService {
 			 * @var $currentOwnFolders Folder[]
 			 */
 			$currentOwnFolders = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId());
-			$currentInaccessibleOwnFolders = array_filter($currentOwnFolders, function($folder) use ($userId) {
-				return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
-			});
+			if ($bookmark->getUserId() !== $userId) {
+				$currentInaccessibleOwnFolders = array_map(static function ($f) {
+					return $f->getId();
+				}, array_filter($currentOwnFolders, function ($folder) use ($userId) {
+						return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
+					})
+				);
+			}else{
+				$currentInaccessibleOwnFolders = [];
+			}
 
-			$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), array_merge($currentInaccessibleOwnFolders, $ownFolders));
+			$ownFolders = array_unique(array_merge($currentInaccessibleOwnFolders, $ownFolders));
+			$this->treeMapper->setToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $ownFolders);
 			if (count($ownFolders) === 0) {
 				$this->bookmarkMapper->delete($bookmark);
 				return null;
@@ -246,6 +265,13 @@ class BookmarkService {
 		if ($tags !== null) {
 			$this->tagMapper->setOn($tags, $bookmark->getId());
 		}
+
+		// trigger event
+		$this->eventDispatcher->dispatch(
+			UpdateEvent::class,
+			new UpdateEvent(TreeMapper::TYPE_BOOKMARK, $bookmark->getId())
+		);
+
 		$this->bookmarkMapper->update($bookmark);
 
 		return $bookmark;
@@ -283,7 +309,7 @@ class BookmarkService {
 		$bookmark = $this->bookmarkMapper->find($bookmarkId);
 		if ($folder->getUserId() === $bookmark->getUserId()) {
 			$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
-		}else{
+		} else {
 			$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $folder->getUserId(), [], [$folder->getId()]);
 		}
 	}
@@ -299,6 +325,9 @@ class BookmarkService {
 		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id);
 		foreach ($parents as $parent) {
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $parent->getId());
+		}
+		if (count($parents) === 0) {
+			$this->bookmarkMapper->delete($bookmark);
 		}
 	}
 

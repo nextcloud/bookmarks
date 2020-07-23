@@ -3,7 +3,8 @@
 		:class="{
 			bookmarkslist: true,
 			'bookmarkslist--gridview': viewMode === 'grid'
-		}">
+		}"
+		@scroll="onScroll">
 		<CreateBookmark v-if="newBookmark" />
 		<CreateFolder v-if="newFolder" />
 		<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
@@ -105,6 +106,16 @@ export default {
 		},
 		viewMode() {
 			return this.$store.state.viewMode
+		},
+	},
+	methods: {
+		onScroll() {
+			if (
+				this.$el.scrollHeight
+					< this.$el.scrollTop + this.$el.clientHeight + 500
+			) {
+				this.$store.dispatch(actions.FETCH_PAGE)
+			}
 		},
 	},
 }

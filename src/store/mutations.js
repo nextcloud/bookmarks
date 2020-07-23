@@ -157,6 +157,13 @@ export default {
 		Vue.set(state.fetchState, 'page', 0)
 		Vue.set(state.fetchState, 'reachedEnd', false)
 		Vue.set(state.fetchState, 'query', query)
+
+		// cancel currently running request
+		if (typeof state.loading['bookmarks'] === 'function') {
+			state.loading['bookmarks']()
+		}
+		// stop loading
+		Vue.set(state.loading, 'bookmarks', false)
 	},
 	[mutations.FETCH_START](state, event) {
 		if (typeof state.loading[event.type] === 'function') {

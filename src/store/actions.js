@@ -294,10 +294,10 @@ export default {
 			})
 	},
 
-	[actions.RENAME_TAG]({ commit, dispatch, state }, { oldName, newName }) {
+	async [actions.RENAME_TAG]({ commit, dispatch, state }, { oldName, newName }) {
 		commit(mutations.FETCH_START, { type: 'tag' })
 		try {
-			const response = axios
+			const response = await axios
 				.put(url(state, `/tag/${oldName}`), {
 					name: newName,
 				})
@@ -315,7 +315,7 @@ export default {
 			commit(mutations.FETCH_END, 'tag')
 			commit(
 				mutations.SET_ERROR,
-				AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
+				AppGlobal.methods.t('bookmarks', 'Failed to rename tag')
 			)
 			throw err
 		}
@@ -583,6 +583,7 @@ export default {
 	},
 	[actions.FETCH_PAGE]({ dispatch, commit, state }) {
 		if (state.fetchState.reachedEnd) return
+		if (state.loading.bookmarks) return
 		let canceled = false
 		commit(mutations.FETCH_START, {
 			type: 'bookmarks',

@@ -13,7 +13,8 @@
 		}">
 		<a
 			:href="url"
-			class="bookmark__click-link" />
+			class="bookmark__click-link"
+			target="_blank" />
 		<template v-if="!renaming">
 			<div v-if="isEditable" class="bookmark__checkbox">
 				<input v-model="selected" class="checkbox" type="checkbox"><label

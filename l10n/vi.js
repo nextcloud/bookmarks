@@ -1,14 +1,20 @@
 OC.L10N.register(
     "bookmarks",
     {
+    "Select bookmark" : "Chọn bookmark",
     "Details" : "Thông tin",
     "Rename" : "Đổi tên",
     "Move" : "Dịch chuyển",
     "Delete" : "Xóa",
+    "Enter bookmark title" : "Nhập tiêu đề bookmark",
     "Save" : "Lưu",
+    "Select one or more tags" : "Chọn một hoặc nhiều thẻ",
     "New folder" : "Tạo thư mục",
+    "Grid view" : "Xem dạng Lưới",
+    "List view" : "Xem dạng Danh sách",
     "Create" : "Tạo mới",
     "Cancel" : "Hủy bỏ",
+    "Enter folder title" : "Nhập tiêu đề thư mục",
     "Public" : "Công khai",
     "Import" : "Nhập vào",
     "Export" : "Xuất ra",
@@ -25,8 +31,12 @@ OC.L10N.register(
     "Allow editing" : "Cho phép chỉnh sửa",
     "Select" : "Select",
     "Privacy" : "Riêng tư",
+    "Failed to load settings" : "Tải cấu hình thất bại",
+    "Failed to save settings" : "Lưu cấu hình thất bại",
+    "Add a bookmark" : "Thêm một bookmark",
     "Title" : "Tên",
     "Link" : "Liên kết",
-    "Folder" : "Thư mục"
+    "Folder" : "Thư mục",
+    "Root Folder" : "Thư mục gốc"
 },
 "nplurals=1; plural=0;");

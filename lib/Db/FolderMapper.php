@@ -113,7 +113,6 @@ class FolderMapper extends QBMapper {
 	 */
 	public function update(Entity $entity): Entity {
 		parent::update($entity);
-		$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(TreeMapper::TYPE_FOLDER, $entity->getId()));
 		return $entity;
 	}
 
@@ -123,7 +122,6 @@ class FolderMapper extends QBMapper {
 	 */
 	public function insert(Entity $entity): Entity {
 		parent::insert($entity);
-		$this->eventDispatcher->dispatch(CreateEvent::class, new CreateEvent(TreeMapper::TYPE_FOLDER, $entity->getId()));
 		return $entity;
 	}
 }

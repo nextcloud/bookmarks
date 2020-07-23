@@ -63,7 +63,7 @@ npm run build
 - [QOwnNotes](https://www.qownnotes.org/) - Plain-text file markdown note taking desktop application (no sync, just importing bookmarks)
 
 ### iOS
-- [Nextbookmark](https://gitlab.com/altepizza/nextbookmark) - A minimal client for iOS
+- [Nextbookmark](https://gitlab.com/altepizza/nextbookmark) - A minimal client for iOS ([App Store entry](https://apps.apple.com/de/app/nextbookmark/id1500340092))
 
 ### Other
 - [uMarks](https://open-store.io/app/umarks.ernesst) - App for Ubuntu touch
