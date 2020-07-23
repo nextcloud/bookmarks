@@ -445,16 +445,7 @@ class BookmarkMapper extends QBMapper {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		$entity->setLastmodified(time());
-
-		$newEntity = parent::update($entity);
-
-		// trigger event
-		$this->eventDispatcher->dispatch(
-			UpdateEvent::class,
-			new UpdateEvent(TreeMapper::TYPE_BOOKMARK, $entity->getId())
-		);
-
-		return $newEntity;
+		return parent::update($entity);
 	}
 
 	/**
@@ -495,10 +486,6 @@ class BookmarkMapper extends QBMapper {
 		}
 
 		parent::insert($entity);
-
-		$this->eventDispatcher->dispatch(CreateEvent::class,
-			new CreateEvent(TreeMapper::TYPE_BOOKMARK, $entity->getId())
-		);
 		return $entity;
 	}
 

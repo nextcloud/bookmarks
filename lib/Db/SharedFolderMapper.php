@@ -2,6 +2,7 @@
 
 namespace OCA\Bookmarks\Db;
 
+use OCA\Bookmarks\Events\CreateEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -19,15 +20,35 @@ class SharedFolderMapper extends QBMapper {
 	 * @var IDBConnection
 	 */
 	protected $db;
+	/**
+	 * @var \OCP\EventDispatcher\IEventDispatcher
+	 */
+	private $eventDispatcher;
 
 	/**
 	 * TagMapper constructor.
 	 *
 	 * @param IDBConnection $db
+	 * @param \OCP\EventDispatcher\IEventDispatcher $eventDispatcher
 	 */
-	public function __construct(IDBConnection $db) {
+	public function __construct(IDBConnection $db, \OCP\EventDispatcher\IEventDispatcher $eventDispatcher) {
 		parent::__construct($db, 'bookmarks_shared_folders', SharedFolder::class);
 		$this->db = $db;
+		$this->eventDispatcher = $eventDispatcher;
+	}
+
+	/**
+	 * @param int $id
+	 * @return Entity
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function find(int $id): Entity {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(SharedFolder::$columns)
+			->from('bookmarks_shared_folders', 'sf')
+			->where($qb->expr()->eq('sf.id', $qb->createPositionalParameter($id)));
+		return $this->findEntity($qb);
 	}
 
 	/**
@@ -190,11 +211,25 @@ class SharedFolderMapper extends QBMapper {
 		return parent::delete($sharedFolder);
 	}
 
-	public function mount(int $id, int $share_id) {
+	public function mount(int $id, int $share_id): void {
 		$qb = $this->db->getQueryBuilder();
 		$qb->insert('bookmarks_shared_to_shares')->values([
 			'shared_folder_id' => $qb->createPositionalParameter($id),
 			'share_id' => $qb->createPositionalParameter($share_id)
 		])->execute();
+		$this->eventDispatcher->dispatch(CreateEvent::class, new CreateEvent(
+			TreeMapper::TYPE_SHARE,
+			$id
+		));
+	}
+
+	public function findByUser(string $userId): array {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(array_map(static function ($c) {
+			return 'sf.' . $c;
+		}, SharedFolder::$columns))
+			->from('bookmarks_shared_folders', 'sf')
+			->where($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)));
+		return $this->findEntities($qb);
 	}
 }
