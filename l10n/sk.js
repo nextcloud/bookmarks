@@ -110,6 +110,7 @@ OC.L10N.register(
     "Failed to save bookmark" : "Nepodarilo sa uložiť záložku",
     "Failed to move bookmark" : "Nepodarilo sa presunúť záložku",
     "Failed to delete bookmark" : "Nepodarilo sa zmazať záložky",
+    "Failed to rename tag" : "Nepodarilo sa premenovať štítok",
     "Failed to load tags" : "Nepodarilo sa načítať štítky",
     "Failed to load folders" : "Nepodarilo sa načítať priečinky",
     "Failed to delete folder" : "Nepodarilo sa zmazať priečinok",

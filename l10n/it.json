@@ -108,6 +108,7 @@
     "Failed to save bookmark" : "Salvataggio segnalibro non riuscito",
     "Failed to move bookmark" : "Spostamento segnalibro non riuscito",
     "Failed to delete bookmark" : "Eliminazione segnalibro non riuscita",
+    "Failed to rename tag" : "Rinomina dell'etichetta non riuscita",
     "Failed to load tags" : "Caricamento etichette non riuscito",
     "Failed to load folders" : "Caricamento cartelle non riuscito",
     "Failed to delete folder" : "Eliminazione cartelle non riuscita",

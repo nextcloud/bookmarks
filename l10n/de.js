@@ -110,6 +110,7 @@ OC.L10N.register(
     "Failed to save bookmark" : "Lesezeichen konnte nicht gespeichert werden",
     "Failed to move bookmark" : "Lesezeichen konnte nicht verschoben werden",
     "Failed to delete bookmark" : "Lesezeichen konnte nicht gelöscht werden",
+    "Failed to rename tag" : "Schlagwort umbenennen fehlgeschlagen",
     "Failed to load tags" : "Schlagworte konnten nicht geladen werden",
     "Failed to load folders" : "Ordner konnten nicht geladen werden",
     "Failed to delete folder" : "Ordner konnte nicht gelöscht werden",

@@ -110,6 +110,7 @@ OC.L10N.register(
     "Failed to save bookmark" : "Nie udało się zapisać zakładki",
     "Failed to move bookmark" : "Nie udało się przenieść zakładki",
     "Failed to delete bookmark" : "Nie udało się usunąć zakładki",
+    "Failed to rename tag" : "Nie można zmienić nazwy etykiety",
     "Failed to load tags" : "Nie udało się załadować etykiet",
     "Failed to load folders" : "Nie udało się załadować folderów",
     "Failed to delete folder" : "Nie udało się usunąć folderu",

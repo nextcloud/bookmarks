@@ -108,6 +108,7 @@
     "Failed to save bookmark" : "Produciuse un fallo ao gardar o marcador",
     "Failed to move bookmark" : "Produciuse un fallo ao mover os marcadores",
     "Failed to delete bookmark" : "Produciuse un fallo ao eliminar os marcadores",
+    "Failed to rename tag" : "Produciuse un fallo ao renomear a etiqueta",
     "Failed to load tags" : "Produciuse un fallo ao cargar as etiquetas",
     "Failed to load folders" : "Produciuse un fallo ao cargar os cartafoles",
     "Failed to delete folder" : "Produciuse un fallo ao eliminar o cartafol",

@@ -110,6 +110,7 @@ OC.L10N.register(
     "Failed to save bookmark" : "Erro ao salvar favorito",
     "Failed to move bookmark" : "Erro ao mover favorito",
     "Failed to delete bookmark" : "Erro ao excluir favorito",
+    "Failed to rename tag" : "Erro ao renomear o rótulo",
     "Failed to load tags" : "Erro ao carregar rótulos",
     "Failed to load folders" : "Erro ao carregar pastas",
     "Failed to delete folder" : "Erro ao excluir pasta",
