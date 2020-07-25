@@ -157,10 +157,12 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	private function _queryBuilderSortAndPaginate(IQueryBuilder $qb, QueryParameters $params): void {
-		$sqlSortColumn = $params->getSortBy('lastmodified', Bookmark::$columns);
+		$sqlSortColumn = $params->getSortBy('lastmodified', $this->getSortByColumns());
 
 		if ($sqlSortColumn === 'title') {
 			$qb->addOrderBy($qb->createFunction('UPPER(`b`.`title`)'), 'ASC');
+		} else if ($sqlSortColumn === 'index') {
+			$qb->addOrderBy('t.'.$sqlSortColumn, 'ASC');
 		} else {
 			$qb->addOrderBy('b.'.$sqlSortColumn, 'DESC');
 		}
@@ -528,5 +530,17 @@ class BookmarkMapper extends QBMapper {
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
 		return $qb->execute()->fetch(\PDO::FETCH_COLUMN);
 	}
+
+    /**
+     * Returns the list of possible sort by columns.
+     *
+     * @return string[]
+     */
+	private function getSortByColumns(): array {
+	    $treeFields = [
+	        'index',
+        ];
+	    return array_merge(Bookmark::$columns, $treeFields);
+    }
 
 }

@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New
 - In grid view the entire bookmark behaves like a link
+- Custom sort option setting for displaying the original order.
+E.g. in case of a browser sync as source.
 
 ### Fixed
 - Horizontal breadcrumb text alignment

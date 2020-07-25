@@ -25,6 +25,7 @@ export const actions = {
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
+	LOAD_FOLDER_CHILDREN_ORDER: 'LOAD_FOLDER_CHILDREN_ORDER',
 	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
@@ -126,8 +127,15 @@ export default {
 			}
 			commit(mutations.DISPLAY_NEW_BOOKMARK, false)
 			commit(mutations.ADD_BOOKMARK, bookmark)
-			commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: state.countsByFolder[-1] + 1 })
 			commit(mutations.FETCH_END, 'createBookmark')
+			commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: state.countsByFolder[-1] + 1 })
+			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
+			if (data.folders) {
+				for (const folderId of data.folders) {
+					commit(mutations.SET_BOOKMARK_COUNT, { folderId, count: state.countsByFolder[folderId] + 1 })
+					dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folderId)
+				}
+			}
 			return dispatch(actions.OPEN_BOOKMARK, bookmark.id)
 		} catch (err) {
 			console.error(err)
@@ -183,6 +191,8 @@ export default {
 				throw new Error(response2.data)
 			}
 			commit(mutations.FETCH_END, 'moveBookmark')
+			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldFolder)
+			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, newFolder)
 		} catch (err) {
 			console.error(err)
 			commit(mutations.FETCH_END, 'moveBookmark')
@@ -207,6 +217,7 @@ export default {
 				}
 				commit(mutations.REMOVE_BOOKMARK, id)
 				commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: Math.max(0, state.countsByFolder[-1] - 1) })
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
 			} catch (err) {
 				console.error(err)
 				commit(
@@ -247,6 +258,7 @@ export default {
 				}
 				commit(mutations.SET_NOTIFICATION, AppGlobal.methods.t('bookmarks', 'Import successful'))
 				dispatch(actions.COUNT_BOOKMARKS, -1)
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 				return dispatch(actions.RELOAD_VIEW)
 			})
 			.catch(err => {
@@ -269,6 +281,7 @@ export default {
 					throw new Error(response.data)
 				}
 				dispatch(actions.COUNT_BOOKMARKS, -1)
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 				return dispatch(actions.RELOAD_VIEW)
 			})
 			.catch(err => {
@@ -389,6 +402,7 @@ export default {
 					throw new Error(response.data)
 				}
 				dispatch(actions.LOAD_FOLDERS)
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, this.getters.getFolder(id)[0].parent_folder)
 			})
 			.catch(err => {
 				console.error(err)
@@ -417,6 +431,7 @@ export default {
 				}
 				commit(mutations.DISPLAY_NEW_FOLDER, false)
 				dispatch(actions.LOAD_FOLDERS)
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder)
 			})
 			.catch(err => {
 				console.error(err)
@@ -443,6 +458,7 @@ export default {
 					throw new Error(response.data)
 				}
 				commit(mutations.FETCH_END, 'saveFolder')
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder.parent_folder)
 			})
 			.catch(err => {
 				console.error(err)
@@ -453,6 +469,28 @@ export default {
 				)
 				throw err
 			})
+	},
+	async [actions.LOAD_FOLDER_CHILDREN_ORDER]({ commit, dispatch, state }, id) {
+		commit(mutations.FETCH_START, { type: 'childrenOrder' })
+		try {
+			const response = await axios.get(url(state, `/folder/${id}/childorder`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.FETCH_END, 'childrenOrder')
+			commit(mutations.SET_FOLDER_CHILDREN_ORDER, { folderId: id, children: response.data.data })
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'childrenOrder')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load children order')
+			)
+			throw err
+		}
 	},
 	[actions.OPEN_FOLDER_DETAILS]({ commit }, id) {
 		commit(mutations.SET_SIDEBAR, { type: 'folder', id })
@@ -465,8 +503,10 @@ export default {
 				if (folderId === folder.id) {
 					throw new Error('Cannot move folder into itself')
 				}
+				const oldParent = folder.parent_folder
 				folder.parent_folder = folderId
 				await dispatch(actions.SAVE_FOLDER, folder.id)
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldParent)
 			}
 
 			for (const bookmark of state.selection.bookmarks) {
@@ -538,6 +578,7 @@ export default {
 	},
 	[actions.FILTER_BY_FOLDER]({ dispatch, commit }, folder) {
 		commit(mutations.SET_QUERY, { folder })
+		dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FETCH_PAGE]({ dispatch, commit, state }) {
