@@ -31,8 +31,9 @@ use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\ILogger;
 
-class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
-	const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
+class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
+
+	const CACHE_PREFIX = 'bookmarks.ScreenshotMachinePreviewService';
 
 	const HTTP_TIMEOUT = 10 * 1000;
 
@@ -43,23 +44,17 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	/** @var IConfig */
 	private $config;
 
-	private $cache;
-
 	/** @var ILogger */
 	private $logger;
 
 	private $width = 800;
 
 	private $height = 800;
-	/**
-	 * @var string
-	 */
-	private $apiUrl;
 
 	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
 		$this->config = $config;
-		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
-		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
+		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenshotmachine.key', '');
+		$this->cache = $cache;
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
 	}
@@ -76,7 +71,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 		if (!isset($bookmark)) {
 			return null;
 		}
-		if ('' === $this->apiKey) {
+		if ($this->apiKey === '') {
 			return null;
 		}
 		$url = $bookmark->getUrl();
@@ -91,25 +86,23 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	public function fetchImage($url): ?Image {
 		try {
-			$response = $this->client->post($this->apiUrl, ['body' => [
-				'key' => $this->apiKey,
-				'url' => $url,
-				'width' => $this->width,
-				'height' => $this->height,
-			],
-				'timeout' => self::HTTP_TIMEOUT,
-			]);
-			$body = json_decode($response->getBody(), true);
+			// get it
+			$response = $this->client->get(
+				"http://api.screenshotmachine.com/?key={$this->apiKey}&dimension=" . $this->width . "x" . $this->height . "&device=desktop&format=jpg&url={$url}",
+				[
+					'timeout' => self::HTTP_TIMEOUT,
+				]
+			);
+			// Some HTPP Error occured :/
+			if (200 !== $response->getStatusCode()) {
+				return null;
+			}
+			$body = $response->getBody();
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ['app' => 'bookmarks']);
 			return null;
 		}
 
-		// Some HTPP Error occured :/
-		if (200 !== $response->getStatusCode()) {
-			return null;
-		}
-
-		return new Image('image/jpeg', base64_decode($body['base64_raw']));
+		return new Image('image/jpeg', $body);
 	}
 }

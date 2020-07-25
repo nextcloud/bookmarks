@@ -31,12 +31,11 @@ use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\ILogger;
 
-class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
-	const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
+class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
+
+	const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
 
 	const HTTP_TIMEOUT = 10 * 1000;
-
-	private $apiKey;
 
 	private $client;
 
@@ -58,8 +57,8 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 
 	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
 		$this->config = $config;
-		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
-		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
+		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.webshot.url', '');
+		$this->cache = $cache;
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
 	}
@@ -76,7 +75,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 		if (!isset($bookmark)) {
 			return null;
 		}
-		if ('' === $this->apiKey) {
+		if ($this->apiUrl === '') {
 			return null;
 		}
 		$url = $bookmark->getUrl();
@@ -91,25 +90,33 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	public function fetchImage($url): ?Image {
 		try {
+			// create screenshot
 			$response = $this->client->post($this->apiUrl, ['body' => [
-				'key' => $this->apiKey,
 				'url' => $url,
-				'width' => $this->width,
-				'height' => $this->height,
+				'view' => ['width' => $this->width],
 			],
 				'timeout' => self::HTTP_TIMEOUT,
 			]);
-			$body = json_decode($response->getBody(), true);
+			// Some HTPP Error occured :/
+			if (200 !== $response->getStatusCode()) {
+				return null;
+			}
+			$data = json_decode($response->getBody(), true);
+
+			// get it
+			$response = $this->client->get($this->apiUrl . $data->id);
+			// Some HTPP Error occured :/
+			if (200 !== $response->getStatusCode()) {
+				return null;
+			}
+			$body = $response->getBody();
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ['app' => 'bookmarks']);
 			return null;
 		}
 
-		// Some HTPP Error occured :/
-		if (200 !== $response->getStatusCode()) {
-			return null;
-		}
 
-		return new Image('image/jpeg', base64_decode($body['base64_raw']));
+
+		return new Image('image/jpeg', $body);
 	}
 }

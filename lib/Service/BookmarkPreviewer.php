@@ -23,11 +23,17 @@ namespace OCA\Bookmarks\Service;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreeenlyBookmarkPreviewer;
+use OCP\Files\NotFoundException;
+use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 
 class BookmarkPreviewer implements IBookmarkPreviewer {
+	// Cache for one month
+	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
+
 	/** @var IConfig */
 	private $config;
 	/**
@@ -44,16 +50,23 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 	private $screeenlyPreviewer;
 
 	/**
+	 * @var FileCache
+	 */
+	private $cache;
+
+	/**
 	 * @param IConfig $config
 	 * @param ScreeenlyBookmarkPreviewer $screeenlyPreviewer
 	 * @param DefaultBookmarkPreviewer $defaultPreviewer
+	 * @param FileCache $cache
 	 */
-	public function __construct(IConfig $config, ScreeenlyBookmarkPreviewer $screeenlyPreviewer, DefaultBookmarkPreviewer $defaultPreviewer) {
+	public function __construct(IConfig $config, ScreeenlyBookmarkPreviewer $screeenlyPreviewer, DefaultBookmarkPreviewer $defaultPreviewer, \OCA\Bookmarks\Service\FileCache $cache) {
 		$this->config = $config;
 		$this->screeenlyPreviewer = $screeenlyPreviewer;
 		$this->defaultPreviewer = $defaultPreviewer;
 
 		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', false);
+		$this->cache = $cache;
 	}
 
 	/**
@@ -71,10 +84,25 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 
 		$previewers = [$this->screeenlyPreviewer, $this->defaultPreviewer];
 		foreach ($previewers as $previewer) {
+			$key = $previewer->buildKey($bookmark->getUrl());
+			// Try cache first
+			try {
+				if ($image = $this->cache->get($key)) {
+					if ($image === 'null') {
+						continue;
+					}
+					return Image::deserialize($image);
+				}
+			} catch (NotFoundException $e) {
+			} catch (NotPermittedException $e) {
+			}
 			$image = $previewer->getImage($bookmark);
 			if (isset($image)) {
+				$this->cache->set($key, $image->serialize(), self::CACHE_TTL);
 				return $image;
 			}
+
+			$this->cache->set($key, 'null', self::CACHE_TTL);
 		}
 
 		return null;

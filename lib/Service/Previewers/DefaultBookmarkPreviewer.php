@@ -31,8 +31,6 @@ use OCP\Http\Client\IClientService;
 use OCP\ILogger;
 
 class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
-	// Cache for 4 months
-	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
 	const CACHE_PREFIX = 'bookmarks.DefaultPreviewService';
 
 	const HTTP_TIMEOUT = 10 * 1000;
@@ -66,14 +64,6 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 		return self::CACHE_PREFIX . '-' . md5($url);
 	}
 
-	private function buildScrapeKey($url) {
-		return $this->buildKey('meta-' . $url);
-	}
-
-	private function buildImageKey($url) {
-		return $this->buildKey('image-' . $url);
-	}
-
 	/**
 	 * @param Bookmark $bookmark
 	 * @return IImage|null
@@ -87,55 +77,16 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 		$site = $this->scrapeUrl($bookmark->getUrl());
 		$this->logger->debug('getImage for URL: ' . $bookmark->getUrl() . ' ' . var_export($site, true), ['app' => 'bookmarks']);
 		if (isset($site['image']['small'])) {
-			return $this->getOrFetchImageUrl($site['image']['small']);
+			return $this->fetchImage($site['image']['small']);
 		}
 		if (isset($site['image']['large'])) {
-			return $this->getOrFetchImageUrl($site['image']['large']);
+			return $this->fetchImage($site['image']['large']);
 		}
 		return null;
 	}
 
 	public function scrapeUrl($url) {
-		$key = $this->buildScrapeKey($url);
-		if ($data = $this->cache->get($key)) {
-			return json_decode($data, true);
-		}
-		$data = $this->linkExplorer->get($url);
-		$this->cache->set($key, json_encode($data), self::CACHE_TTL);
-		return $data;
-	}
-
-	/**
-	 * @param $url
-	 * @return array|mixed|\OCA\Bookmarks\Image|null
-	 * @throws \OCP\Files\NotFoundException
-	 * @throws \OCP\Files\NotPermittedException
-	 */
-	public function getOrFetchImageUrl($url) {
-		if (!isset($url) || $url === '') {
-			return null;
-		}
-
-		$key = $this->buildImageKey($url);
-		// Try cache first
-		if ($image = $this->cache->get($key)) {
-			if ($image === 'null') {
-				return null;
-			}
-			return \OCA\Bookmarks\Image::deserialize($image);
-		}
-
-		// Fetch image from remote server
-		$image = $this->fetchImage($url);
-
-		if ($image === null) {
-			$this->cache->set($key, 'null', self::CACHE_TTL);
-			return null;
-		}
-
-		// Store in cache for next time
-		$this->cache->set($key, $image->serialize(), self::CACHE_TTL);
-		return $image;
+		return $this->linkExplorer->get($url);
 	}
 
 	/**
