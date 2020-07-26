@@ -595,7 +595,7 @@ class BookmarkController extends ApiController {
 	 * @throws \Exception
 	 */
 	public function doImageResponse(?IImage $image): Response {
-		if ($image === null) {
+		if ($image === null || $image->getData() === null) {
 			return new NotFoundResponse();
 		}
 		$response = new DataDisplayResponse($image->getData());
