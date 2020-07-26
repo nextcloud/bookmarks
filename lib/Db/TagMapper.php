@@ -43,7 +43,7 @@ class TagMapper {
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
 			->orWhere($qb->expr()->andX(
 				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
-				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_SHARE)))
+				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
 			)
 			->groupBy('t.tag')
 			->orderBy('count', 'DESC');
