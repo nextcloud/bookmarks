@@ -60,7 +60,6 @@
     "Link copied" : "連結已複製",
     "Select" : "選擇",
     "Previews" : "預覽",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "為了顯示您書籤的及時畫面，Bookmarks程式會使用第三方服務來產生螢幕截圖",
     "You can either sign up for free at screeenly.com or setup your own server." : "您可以免費在 screeenly.com 註冊或是設定您自己的伺服器。",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Screeenly API key",
@@ -85,8 +84,6 @@
     "Failed to load folders" : "載入資料夾失敗",
     "Failed to delete folder" : "刪除資料夾失敗",
     "Failed to create folder" : "建立資料夾失敗",
-    "Failed to move parts of selection" : "移動部分選擇失敗",
-    "Failed to delete parts of selection" : "刪除部分選擇失敗",
     "Failed to fetch bookmarks." : "擷取書籤失敗",
     "Failed to change setting" : "變更設定失敗",
     "Bookmarks feed" : "Bookmarks feed"

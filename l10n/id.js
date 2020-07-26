@@ -85,8 +85,6 @@ OC.L10N.register(
     "Failed to load folders" : "Gagal memuat folder",
     "Failed to delete folder" : "Gagal menghapus folder",
     "Failed to create folder" : "Gagal membuat folder",
-    "Failed to move parts of selection" : "Gagal memindahkan sebagai pilihan",
-    "Failed to delete parts of selection" : "Gagal menghapus sebagian pilihan",
     "Failed to fetch bookmarks." : "Gagal menampilkan markah",
     "Failed to change setting" : "Gagal mengubah setelan",
     "Failed to load setting {key}" : "Gagal memuat setelan {key}",

@@ -93,8 +93,6 @@ OC.L10N.register(
     "Failed to load folders" : "Nalaganje map je spodletelo",
     "Failed to delete folder" : "Brisanje mape je spodletelo",
     "Failed to create folder" : "Ustvarjanje mape je spodletelo",
-    "Failed to move parts of selection" : "Premikanje delov izbire je spodletelo",
-    "Failed to delete parts of selection" : "Brisanje dela izbora je spodletelo",
     "Failed to fetch bookmarks." : "Pridobivanje zaznamkov je spodletelo",
     "Failed to change setting" : "Spreminjanje nastavitev je spodletelo",
     "Bookmarks feed" : "Vir zaznamkov"

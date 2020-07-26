@@ -61,7 +61,6 @@ OC.L10N.register(
     "Link copied" : "Hivatkozás másolva",
     "Select" : "Kijelölés",
     "Previews" : "Előnézetek",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Ahhoz, hogy valódi képernyőképeket kapjon a könyvjelzőzött weboldalakról, a Könyvjelzőknek szüksége van egy harmadik fél által üzemeltetett szolgáltatásra, amely előállítja a képernyőképeket.",
     "Screeenly" : "Screeenly",
     "You can either sign up for free at screeenly.com or setup your own server." : "Ingyenesen regisztrálhat a screenly.com weboldalon, vagy beállíthatja a saját kiszolgálóját.",
     "Screeenly API URL" : "Screeenly API URL",
@@ -85,8 +84,6 @@ OC.L10N.register(
     "Failed to load folders" : "Mappák betöltése sikertelen",
     "Failed to delete folder" : "Mappa törlése sikertelen",
     "Failed to create folder" : "Mappa létrehozása sikertelen",
-    "Failed to move parts of selection" : "Kiválasztás részeinek áthelyezése sikertelen",
-    "Failed to delete parts of selection" : "Kiválasztás részeinek törlése sikertelen",
     "Failed to fetch bookmarks." : "Könyvjelzők lekérése sikertelen.",
     "Failed to change setting" : "Beállítások módosítása sikertelen",
     "Bookmarks feed" : "Könyvjelzők folyam"

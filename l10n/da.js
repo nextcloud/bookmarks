@@ -59,7 +59,6 @@ OC.L10N.register(
     "Link copied" : "Link kopieret",
     "Select" : "Vælg",
     "Previews" : "Forhåndsvisning",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Bogmærker kan bruge en tredjepartsteneste til at danne skærmprints af dine bogmærker af hjemmesider",
     "Screeenly" : "Screeenly",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Screeenly API nøgle",
@@ -81,8 +80,6 @@ OC.L10N.register(
     "Failed to load folders" : "Fejl ved indlæsning af mapper",
     "Failed to delete folder" : "Fejl ved sletning af mappe",
     "Failed to create folder" : "Fejl ved opretning af mappe",
-    "Failed to move parts of selection" : "Fejl ved flytning af dele af det udvalgte",
-    "Failed to delete parts of selection" : "Kan ikke slette dele af det valgte",
     "Failed to fetch bookmarks." : "Fejl ved indlæsning af bogmærker.",
     "Failed to change setting" : "Fejl ved ændring af indstilling",
     "Bookmarks feed" : "Bogmærkestrøm"

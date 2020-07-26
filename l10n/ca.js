@@ -62,7 +62,6 @@ OC.L10N.register(
     "Link copied" : "Enllaç copiat",
     "Select" : "Selecciona",
     "Previews" : "Previsualitzacions",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use a third-party service to generate those." : "Per poder mostrar captures de pantalla reals de les pàgines web de les vostres adreces d'interès, podeu fer servir un servei de tercers per generar-les.",
     "Screeenly" : "Screeenly",
     "Screeenly API URL" : "URL de l'API de Screeenly",
     "Screeenly API key" : "Clau API de Screeenly",
@@ -84,8 +83,6 @@ OC.L10N.register(
     "Failed to load folders" : "Ha fallat carregar les carpetes.",
     "Failed to delete folder" : "Ha fallat crear la carpeta.",
     "Failed to create folder" : "Ha fallat crear la carpeta.",
-    "Failed to move parts of selection" : "Ha fallat moure les parts de la selecció.",
-    "Failed to delete parts of selection" : "Ha fallat suprimir parts de la selecció.",
     "Failed to fetch bookmarks." : "Ha fallat obtenir les adreces d'interès.",
     "Failed to change setting" : "Ha fallat canviar la configuració.",
     "Bookmarks feed" : "Canal d'adreces d'interès"
