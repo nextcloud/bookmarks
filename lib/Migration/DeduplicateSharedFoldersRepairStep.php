@@ -42,7 +42,7 @@ class DeduplicateSharedFoldersRepairStep implements IRepairStep {
 		$i = 0;
 		while ($sharedFolder = $duplicateSharedFolders->fetchColumn()) {
 			$qb = $this->db->getQueryBuilder();
-			$qb->delete('bookmarks_shared_folders')
+			$qb->delete('bookmarks_tree')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($sharedFolder)))
 				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter('share')))
 				->execute();
