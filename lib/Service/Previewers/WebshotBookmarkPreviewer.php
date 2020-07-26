@@ -63,10 +63,6 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 		$this->logger = $logger;
 	}
 
-	private function buildKey($url) {
-		return self::CACHE_PREFIX . '-' . md5($url);
-	}
-
 	/**
 	 * @param Bookmark $bookmark
 	 * @return IImage|null

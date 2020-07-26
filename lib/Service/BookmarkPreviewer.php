@@ -84,7 +84,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 
 		$previewers = [$this->screeenlyPreviewer, $this->defaultPreviewer];
 		foreach ($previewers as $previewer) {
-			$key = $previewer->buildKey($bookmark->getUrl());
+			$key = $previewer::CACHE_PREFIX . '-' . md5($bookmark->getUrl());
 			// Try cache first
 			try {
 				if ($image = $this->cache->get($key)) {

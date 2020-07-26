@@ -581,7 +581,7 @@ class BookmarkController extends ApiController {
 			$image = $this->bookmarks->getFavicon($id);
 			if ($image === null) {
 				// Return a placeholder
-				return new RedirectResponse($this->url->getAbsoluteURL('/svg/core/places/link?color=666666'));
+				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
 			}
 			return $this->doImageResponse($image);
 		} catch (DoesNotExistException|MultipleObjectsReturnedException|\Exception $e) {

@@ -60,10 +60,6 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 		$this->logger = $logger;
 	}
 
-	protected function buildKey($url) {
-		return self::CACHE_PREFIX . '-' . md5($url);
-	}
-
 	/**
 	 * @param Bookmark $bookmark
 	 * @return IImage|null
@@ -93,7 +89,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @param $url
 	 * @return Image|null
 	 */
-	private function fetchImage($url): ?Image {
+	protected function fetchImage($url): ?Image {
 		try {
 			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
 		} catch (\Exception $e) {
