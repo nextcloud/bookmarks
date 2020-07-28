@@ -54,6 +54,11 @@
 					{{ viewMode === 'list' ? t('bookmarks', 'Grid view') : t('bookmarks', 'List view') }}
 				</ActionButton>
 			</Actions>
+			<Actions>
+				<ActionButton :icon="'icon-category-monitoring'" @click="openRssUrl">
+					{{ t('bookmarks', 'RSS Feed') }}
+				</ActionButton>
+			</Actions>
 			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
 				{{
 					selectionDescription
@@ -86,6 +91,7 @@ import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import { actions, mutations } from '../store/'
+import { generateUrl } from '@nextcloud/router'
 
 export default {
 	name: 'Breadcrumbs',
@@ -138,6 +144,21 @@ export default {
 				)
 			}
 			return ''
+		},
+		rssURL() {
+			return (
+				window.location.origin
+					+ generateUrl(
+						'/apps/bookmarks/public/rest/v2/bookmark?'
+							+ new URLSearchParams(
+								Object.assign({}, this.$store.state.fetchState.query, {
+									format: 'rss',
+									page: -1,
+									...(this.$store.state.public && { token: this.$store.state.authToken }),
+								})
+							).toString()
+					)
+			)
 		},
 	},
 	created() {},
@@ -193,6 +214,10 @@ export default {
 			this.$store.state.bookmarks.forEach(bookmark => {
 				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, bookmark)
 			})
+		},
+
+		openRssUrl() {
+			window.open(this.rssURL)
 		},
 	},
 }

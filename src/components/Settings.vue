@@ -31,18 +31,6 @@
 			</select>
 		</label>
 
-		<label>{{ t('bookmarks', 'RSS Feed') }}
-			<input
-				v-tooltip="
-					t('bookmarks',
-						'This is an RSS feed of the current result set with access restricted to you.'
-					)
-				"
-				type="text"
-				readonly
-				:value="rssURL"
-				@click="onRssClick"></label>
-
 		<label>{{ t('bookmarks', 'Clear data') }}
 			<button
 				v-tooltip="
@@ -108,20 +96,6 @@ export default {
 						= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
 			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=500px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
-		rssURL() {
-			return (
-				window.location.origin
-				+ generateUrl(
-					'/apps/bookmarks/public/rest/v2/bookmark?'
-						+ new URLSearchParams(
-							Object.assign({}, this.$store.state.fetchState.query, {
-								format: 'rss',
-								page: -1,
-							})
-						).toString()
-				)
-			)
-		},
 		viewMode() {
 			return this.$store.state.settings.viewMode
 		},
@@ -155,11 +129,6 @@ export default {
 			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
 		onChangeViewMode(e) {},
-		onRssClick(e) {
-			setTimeout(() => {
-				e.target.select()
-			}, 100)
-		},
 		async onClearData() {
 			if (
 				!confirm(
