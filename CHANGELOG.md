@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.2] - 2020-07-28
+
+### Fixed
+
+- UI: Fix Navigation
+- Fix tag count
+- Fix deduplication repair step
+
 ## [3.3.1] - 2020-07-23
 
 ### Fixed
@@ -216,92 +224,74 @@ fdbe69ebc888132a4bb88f834c25d5f492b0fa10 Docs: Document /export API endpoint
 ### Changed
 - FIX: Load tags on app init
 
-## [2.3.0]
+## v2.3.0
 
-### Added
- - UI: Implement bulk editing
- - translations from transifex
- 
-### Changed
- - Fix overflow on bookmarks list
- - Fix sorting
- - Fix humanized duration: Use stem language only
+ - NEW: UI: Implement bulk editing
+ - NEW: translations from transifex
+ - FIX: overflow on bookmarks list
+ - FIX: sorting
+ - FIX: Fix humanized duration: Use stem language only
 
-## [2.2.0]
+## v2.2.0
 
-### Added
-- Use routes history mode instead of hash URLs
+- NEW: Use routes history mode instead of hash URLs
+- FIX: Sort folders alphabetically
+- FIX: Allow canceling page fetches
+- FIX: Import
+- UI: Fixgrid view, descriptions in list view & bread crumbs
 
-### Changed
-- Fix Sorting folders alphabetically
-- Fix Allow canceling page fetches
-- Fix Import
-- Fix grid view, descriptions in list view & bread crumbs
+## v2.1.1
 
-## [2.1.1]
+- FIX: Fix build script
 
-### Changed
-- Fix build script
+## v2.1.0
 
-## [v2.1.0]
+- NEW: Rewrite UI
+- NEW: Allow limiting the number of bookmarks per user
+- NEW: Allow disabling web requests to bookmarked web pages
 
-### Added
+## v2.0.3
 
-- Rewrite UI
-- Allow limiting the number of bookmarks per user
-- Allow disabling web requests to bookmarked web pages
-
-## [v2.0.3]
-
-### Changed
 - NEW: Properly specify dependencies in app manifest (allows conditional support for nc 15 again)
 
 Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl and mbstring php extensions installed
 
-## [2.0.2]
+## v2.0.2
 
-### Changed
-- Drop support for nextcloud 15
+- NEW: Drop support for nextcloud 15
 
-## [2.0.1]
+## v2.0.1
 
-### Changed
 - fix composer lock file
 
-## [2.0.0]
+## v2.0.0
 
-### Changed
-- gmp, intl, mbstring are now required
-- Drop support for nextcloud 14 and php 7.0
-- Switch URL normalizer to adhere strictly to WHATWG URL spec
+- NEW: gmp, intl, mbstring are now required
+- NEW: Drop support for nextcloud 14 and php 7.0
+- FIX: Switch URL normalizer to adhere strictly to WHATWG URL spec
 
-## [1.1.2]
-
-### Changed
+## v1.1.2
 
 - Revert breaking changes of v1.0.8
 
-## [1.1.1]
+## v1.1.1
 
-### Changed
-- Fix import from web UI
+- FIX import from web UI
 
-## [1.1.0]
+## v1.1.0
 
-### Added
+- NEW translations
 - NEW: API endpoint to import into a specific folder
 
-## [1.0.8]
+## v1.0.8
 
-### Changed
-- gmp, intl, mbstring are now required
+- NEW: gmp, intl, mbstring are now required
+- NEW translations
 - FIX: Switch URL normalizer to adhere strictly to WHATWG URL spec
 - FIX: Update dependencies
 - FIX: Run previews job in small batches instead of all at once
 
-## [1.0.6]
-
-### Changed
+## v1.0.6
 
 - FIX: Set timeout for submitting tags
 - NEW: Create favicon
@@ -314,7 +304,8 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX: Speed up findBookmarks SQL query
 
 
-[3.3.1]: https://github.com/nextcloud/bookmarks/compare/v3.2.5...v3.3.1
+[3.3.2]: https://github.com/nextcloud/bookmarks/compare/v3.3.1...v3.3.2
+[3.3.1]: https://github.com/nextcloud/bookmarks/compare/v3.3.0...v3.3.1
 [3.3.0]: https://github.com/nextcloud/bookmarks/compare/v3.2.5...v3.3.0
 [3.2.5]: https://github.com/nextcloud/bookmarks/compare/v3.2.4...v3.2.5
 [3.2.4]: https://github.com/nextcloud/bookmarks/compare/v3.2.2...v3.2.4
