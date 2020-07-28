@@ -9,16 +9,16 @@
 		<CreateFolder v-if="newFolder" />
 		<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
 			<!-- FOLDER VIEW WITH CUSTOM SORTING -->
-			<template v-if="$store.state.settings.sorting === 'index'">
+			<template v-if="sortOrder === 'index'">
 				<template v-for="item in children">
 					<Folder
 						v-if="item.type === 'folder'"
 						:key="item.type + item.id"
-						:folder="$store.getters.getFolder(item.id)[0]" />
+						:folder="getFolder(item.id)" />
 					<Bookmark
-						v-if="item.type === 'bookmark' && $store.getters.getBookmark(item.id)"
+						v-if="item.type === 'bookmark' && getBookmark(item.id)"
 						:key="item.type + item.id"
-						:bookmark="$store.getters.getBookmark(item.id)" />
+						:bookmark="getBookmark(item.id)" />
 				</template>
 			</template>
 			<!-- FOLDER VIEW WITH NORMAL SORTING -->
@@ -107,6 +107,9 @@ export default {
 		viewMode() {
 			return this.$store.state.viewMode
 		},
+		sortOrder() {
+			return this.$store.state.settings.sorting
+		},
 	},
 	methods: {
 		onScroll() {
@@ -116,6 +119,12 @@ export default {
 			) {
 				this.$store.dispatch(actions.FETCH_PAGE)
 			}
+		},
+		getFolder(id) {
+			return this.$store.getters.getFolder(id)[0]
+		},
+		getBookmark(id) {
+			return this.$store.getters.getBookmark(id)
 		},
 	},
 }
@@ -146,6 +155,7 @@ export default {
 .bookmarkslist--gridview {
 	display: flex;
 	flex-flow: wrap;
+	align-content: start;
 	gap: 10px;
 	padding: 0 10px;
 }
