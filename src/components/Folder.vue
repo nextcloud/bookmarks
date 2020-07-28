@@ -117,6 +117,7 @@ export default {
 	created() {
 		this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
 		this.$store.dispatch(actions.LOAD_PUBLIC_LINK, this.folder.id)
+		this.$store.dispatch(actions.COUNT_BOOKMARKS, this.folder.id)
 	},
 	methods: {
 		onDetails() {
