@@ -3,7 +3,6 @@
 
 namespace OCA\Bookmarks\Activity;
 
-
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
@@ -73,6 +72,9 @@ class ActivityPublisher implements IEventListener {
 	 */
 	public function handle(Event $event): void {
 		if (!($event instanceof ChangeEvent)) {
+			return;
+		}
+		if ($this->authorizer->getUserId() === null) {
 			return;
 		}
 		switch ($event->getType()) {
