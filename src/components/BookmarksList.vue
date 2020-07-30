@@ -43,7 +43,7 @@
 				:bookmark="bookmark" />
 		</template>
 		<div
-			v-else-if="!loading && !children.length"
+			v-else-if="!loading && !bookmarks.length && !subFolders.length"
 			class="bookmarkslist__empty">
 			<h2>{{ t('bookmarks', 'No bookmarks here') }}</h2>
 			<p>{{ t('bookmarks', 'Try changing your query or add some using the button on the left.') }}</p>
