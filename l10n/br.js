@@ -5,7 +5,7 @@ OC.L10N.register(
     "Rename" : "Adenvel",
     "Move" : "Diplasañ",
     "Delete" : "Dilemel",
-    "Save" : "Entilañ",
+    "Save" : "Enrollañ",
     "New folder" : "Heuliad nevez",
     "Grid view" : "Diskwell ar roued",
     "List view" : "Gwelidik listenn",
