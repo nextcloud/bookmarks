@@ -162,7 +162,7 @@ class BookmarkMapper extends QBMapper {
 		if ($sqlSortColumn === 'title') {
 			$qb->addOrderBy($qb->createFunction('UPPER(`b`.`title`)'), 'ASC');
 		} else if ($sqlSortColumn === 'index') {
-			$qb->addOrderBy('t.'.$sqlSortColumn, 'ASC');
+			$qb->addOrderBy('tr.'.$sqlSortColumn, 'ASC');
 		} else {
 			$qb->addOrderBy('b.'.$sqlSortColumn, 'DESC');
 		}
@@ -230,9 +230,9 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
+			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('tr.id', 'b.id'))
+			->where($qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
 
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 
@@ -307,7 +307,7 @@ class BookmarkMapper extends QBMapper {
 			$expr[] = $qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%' . $this->db->escapeLikeParameter($tag) . '%'));
 		}
 		$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $expr);
-		$qb->groupBy(...array_map(static function($col) {
+		$qb->groupBy('tr.index', ...array_map(static function($col) {
 			return 'b.'.$col;
 		}, Bookmark::$columns));
 		$qb->having($filterExpression);
