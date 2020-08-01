@@ -58,6 +58,7 @@ OC.L10N.register(
     "Share link" : "Hivatkozás megosztása",
     "Copy link" : "Hivatkozás másolása",
     "Allow editing" : "Szerkesztés engedélyezése",
+    "Remove share" : "Megosztás eltávolítása",
     "Link copied" : "Hivatkozás másolva",
     "Select" : "Kijelölés",
     "Previews" : "Előnézetek",
