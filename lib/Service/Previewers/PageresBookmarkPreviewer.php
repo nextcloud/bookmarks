@@ -38,26 +38,15 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
 	const CAPTURE_MAX_RETRIES = 3;
 
-
-	/** @var IConfig */
-	private $config;
-
 	/** @var ILogger */
 	private $logger;
-
-	/**
-	 * @var string
-	 */
-	private $enabled;
 
 	/**
 	 * @var ITempManager
 	 */
 	private $tempManager;
 
-	public function __construct(IConfig $config, ITempManager $tempManager, ILogger $logger) {
-		$this->config = $config;
-		$this->enabled = $config->getAppValue('bookmarks', 'previews.pageres.enabled', 'false');
+	public function __construct(ITempManager $tempManager, ILogger $logger) {
 		$this->tempManager = $tempManager;
 		$this->logger = $logger;
 	}
@@ -68,9 +57,6 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	public function getImage($bookmark): ?IImage {
 		if (!isset($bookmark)) {
-			return null;
-		}
-		if ($this->enabled === 'false') {
 			return null;
 		}
 

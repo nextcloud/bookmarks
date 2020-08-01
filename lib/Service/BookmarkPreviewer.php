@@ -93,7 +93,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 			return null;
 		}
 
-		$previewers = [$this->screeenlyPreviewer, $this->pageresPreviewer, $this->screenshotMachinePreviewer, $this->defaultPreviewer];
+		$previewers = [$this->screeenlyPreviewer, $this->screenshotMachinePreviewer, $this->pageresPreviewer, $this->defaultPreviewer];
 		foreach ($previewers as $previewer) {
 			$key = $previewer::CACHE_PREFIX . '-' . md5($bookmark->getUrl());
 			// Try cache first
