@@ -32,11 +32,7 @@ use OCP\ILogger;
 
 class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	const CACHE_PREFIX = 'bookmarks.DefaultPreviewService';
-
 	const HTTP_TIMEOUT = 10 * 1000;
-
-	/** @var FileCache */
-	protected $cache;
 
 	/** @var IClient */
 	protected $client;
@@ -53,8 +49,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @param IClientService $clientService
 	 * @param ILogger $logger
 	 */
-	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
-		$this->cache = $cache;
+	public function __construct(LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
 		$this->linkExplorer = $linkExplorer;
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
@@ -63,8 +58,6 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	/**
 	 * @param Bookmark $bookmark
 	 * @return IImage|null
-	 * @throws \OCP\Files\NotFoundException
-	 * @throws \OCP\Files\NotPermittedException
 	 */
 	public function getImage($bookmark): ?IImage {
 		if (!isset($bookmark)) {
