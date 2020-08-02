@@ -22,6 +22,7 @@ use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\Response;
+use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IL10N;
@@ -137,7 +138,7 @@ class WebViewController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function serviceWorker() {
-		$response = new \OCP\AppFramework\Http\StreamResponse(__DIR__.'/../../js/bookmarks.service-worker.js');
+		$response = new StreamResponse(__DIR__.'/../../js/bookmarks-service-worker.js');
 		$response->setHeaders(['Content-Type' => 'application/javascript']);
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedWorkerSrcDomain("'self'");

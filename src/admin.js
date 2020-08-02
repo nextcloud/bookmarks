@@ -28,7 +28,7 @@ import AppGlobal from './mixins/AppGlobal'
 Vue.mixin(AppGlobal)
 Vue.directive('tooltip', Tooltip)
 
-const BookmarksApp = (global['Bookmarks'] = new Vue({
+const BookmarksApp = (global.Bookmarks = new Vue({
 	el: '#bookmarks',
 	store,
 	render: h => h(App),

@@ -293,7 +293,7 @@ export default {
 	},
 	[actions.DELETE_BOOKMARKS]({ commit, dispatch, state }) {
 		return axios
-			.delete(url(state, `/bookmark`))
+			.delete(url(state, '/bookmark'))
 			.then(response => {
 				const {
 					data: { status },
@@ -439,7 +439,7 @@ export default {
 		{ parentFolder, title }
 	) {
 		return axios
-			.post(url(state, `/folder`), {
+			.post(url(state, '/folder'), {
 				parent_folder: parentFolder,
 				title,
 			})

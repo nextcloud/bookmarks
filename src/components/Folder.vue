@@ -137,7 +137,7 @@ export default {
 		async onRename() {
 			this.renaming = true
 			await Vue.nextTick()
-			this.$refs['input'].focus()
+			this.$refs.input.focus()
 		},
 		onRenameSubmit() {
 			this.folder.title = this.title

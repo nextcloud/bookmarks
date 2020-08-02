@@ -21,7 +21,7 @@ create-tag:
 dev-setup: clean clean-dev npm-init
 
 npm-init:
-	npm install
+	npm ci
 
 npm-update:
 	npm update

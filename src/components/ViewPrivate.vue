@@ -35,7 +35,7 @@ export default {
 		SidebarFolder,
 		MoveDialog,
 	},
-	data: function() {
+	data() {
 		return {
 			newBookmark: false,
 		}

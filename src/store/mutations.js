@@ -44,7 +44,7 @@ export default {
 		state.authToken = authToken
 		axios.defaults.headers = {
 			requesttoken: OC.requesttoken,
-			'Authorization': 'bearer ' + authToken,
+			Authorization: 'bearer ' + authToken,
 		}
 	},
 	[mutations.SET_VIEW_MODE](state, viewMode) {
@@ -159,8 +159,8 @@ export default {
 		Vue.set(state.fetchState, 'query', query)
 
 		// cancel currently running request
-		if (typeof state.loading['bookmarks'] === 'function') {
-			state.loading['bookmarks']()
+		if (typeof state.loading.bookmarks === 'function') {
+			state.loading.bookmarks()
 		}
 		// stop loading
 		Vue.set(state.loading, 'bookmarks', false)
