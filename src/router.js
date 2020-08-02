@@ -12,6 +12,7 @@ export const privateRoutes = {
 	RECENT: 'recent',
 	SEARCH: 'search',
 	FOLDER: 'folder',
+	BOOKMARK: 'bookmark',
 	TAGS: 'tags',
 	UNTAGGED: 'untagged',
 	BOOKMARKLET: 'bookmarklet',
@@ -48,8 +49,13 @@ export default new Router({
 			component: ViewPrivate,
 		},
 		{
-			path: '/folder/:folder',
+			path: '/folders/:folder',
 			name: privateRoutes.FOLDER,
+			component: ViewPrivate,
+		},
+		{
+			path: '/bookmarks/:bookmark',
+			name: privateRoutes.BOOKMARK,
 			component: ViewPrivate,
 		},
 		{
