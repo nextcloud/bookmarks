@@ -88,6 +88,14 @@ export default {
 		async reloadFolders() {
 			return this.$store.dispatch(actions.LOAD_FOLDERS)
 		},
+
+		onSearch(search) {
+			this.$router.push({ name: this.routes.SEARCH, params: { search } })
+		},
+
+		onResetSearch() {
+			this.$router.push({ name: this.routes.HOME })
+		},
 	},
 }
 </script>

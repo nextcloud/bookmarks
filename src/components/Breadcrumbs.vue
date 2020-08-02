@@ -59,7 +59,6 @@
 					{{ t('bookmarks', 'RSS Feed') }}
 				</ActionButton>
 			</Actions>
-			<Search />
 			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
 				{{
 					selectionDescription
@@ -93,11 +92,10 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
-import Search from './Search'
 
 export default {
 	name: 'Breadcrumbs',
-	components: { Search, Multiselect, Actions, ActionButton, ActionSeparator },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator },
 	props: {},
 	data() {
 		return {
@@ -128,10 +126,7 @@ export default {
 			if (this.$store.state.selection.bookmarks.length !== 0 && this.$store.state.selection.folders.length !== 0) {
 				return this.t('bookmarks',
 					'Selected {folders} folders and {bookmarks} bookmarks',
-					{
-						folders: this.$store.state.selection.folders.length,
-						bookmarks: this.$store.state.selection.bookmarks.length,
-					}
+					{ folders: this.$store.state.selection.folders.length, bookmarks: this.$store.state.selection.bookmarks.length }
 				)
 			}
 			if (this.$store.state.selection.bookmarks.length !== 0) {
@@ -151,15 +146,22 @@ export default {
 			return ''
 		},
 		rssURL() {
-			return (window.location.origin
-          + generateUrl('/apps/bookmarks/public/rest/v2/bookmark?'
-              + new URLSearchParams(Object.assign({}, this.$store.state.fetchState.query, { format: 'rss', page: -1, ...(this.$store.state.public && { token: this.$store.state.authToken }) })).toString()
-          )
+			return (
+				window.location.origin
+					+ generateUrl(
+						'/apps/bookmarks/public/rest/v2/bookmark?'
+							+ new URLSearchParams(
+								Object.assign({}, this.$store.state.fetchState.query, {
+									format: 'rss',
+									page: -1,
+									...(this.$store.state.public && { token: this.$store.state.authToken }),
+								})
+							).toString()
+					)
 			)
 		},
 	},
-	created() {
-	},
+	created() {},
 	methods: {
 		onSelectHome() {
 			this.$router.push({ name: this.routes.HOME })

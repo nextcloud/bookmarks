@@ -60,6 +60,7 @@ export default {
 	},
 
 	async created() {
+		this.search = new OCA.Search(this.onSearch, this.onResetSearch)
 		// set loading indicator
 		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
 		await Promise.all([
@@ -118,6 +119,14 @@ export default {
 		},
 		async reloadCount() {
 			return this.$store.dispatch(actions.COUNT_BOOKMARKS, -1)
+		},
+
+		onSearch(search) {
+			this.$router.push({ name: privateRoutes.SEARCH, params: { search } })
+		},
+
+		onResetSearch() {
+			this.$router.push({ name: privateRoutes.HOME })
 		},
 	},
 }
