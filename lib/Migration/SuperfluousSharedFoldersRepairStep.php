@@ -3,7 +3,6 @@
 
 namespace OCA\Bookmarks\Migration;
 
-
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;

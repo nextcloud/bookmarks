@@ -3,8 +3,6 @@
 namespace OCA\Bookmarks\Db;
 
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
-use OCA\Bookmarks\Events\CreateEvent;
-use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
@@ -161,7 +159,7 @@ class BookmarkMapper extends QBMapper {
 
 		if ($sqlSortColumn === 'title') {
 			$qb->addOrderBy($qb->createFunction('UPPER(`b`.`title`)'), 'ASC');
-		} else if ($sqlSortColumn === 'index') {
+		} elseif ($sqlSortColumn === 'index') {
 			$qb->addOrderBy('tr.'.$sqlSortColumn, 'ASC');
 			$qb->addGroupBy('tr.'.$sqlSortColumn);
 		} else {
@@ -249,7 +247,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function findByTag($userId, string $tag, QueryParameters $params): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(static function($col) {
+		$qb->select(array_map(static function ($col) {
 			return 'b.'.$col;
 		}, Bookmark::$columns));
 
@@ -271,7 +269,7 @@ class BookmarkMapper extends QBMapper {
 
 	private function _findByTags($userId): IQueryBuilder {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(static function($col) {
+		$qb->select(array_map(static function ($col) {
 			return 'b.'.$col;
 		}, Bookmark::$columns));
 
@@ -309,7 +307,7 @@ class BookmarkMapper extends QBMapper {
 			$expr[] = $qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%' . $this->db->escapeLikeParameter($tag) . '%'));
 		}
 		$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $expr);
-		$qb->groupBy('tr.index', ...array_map(static function($col) {
+		$qb->groupBy('tr.index', ...array_map(static function ($col) {
 			return 'b.'.$col;
 		}, Bookmark::$columns));
 		$qb->having($filterExpression);
@@ -477,7 +475,6 @@ class BookmarkMapper extends QBMapper {
 
 		$exists = true;
 		try {
-
 			$this->findByUrl($entity->getUserId(), $entity->getUrl());
 		} catch (DoesNotExistException $e) {
 			$exists = false;
@@ -533,16 +530,15 @@ class BookmarkMapper extends QBMapper {
 		return $qb->execute()->fetch(\PDO::FETCH_COLUMN);
 	}
 
-    /**
-     * Returns the list of possible sort by columns.
-     *
-     * @return string[]
-     */
+	/**
+	 * Returns the list of possible sort by columns.
+	 *
+	 * @return string[]
+	 */
 	private function getSortByColumns(): array {
-	    $treeFields = [
-	        'index',
-        ];
-	    return array_merge(Bookmark::$columns, $treeFields);
-    }
-
+		$treeFields = [
+			'index',
+		];
+		return array_merge(Bookmark::$columns, $treeFields);
+	}
 }

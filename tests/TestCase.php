@@ -26,7 +26,6 @@ namespace OCA\Bookmarks\Tests;
 
 use PHPUnit\Framework;
 
-
 class TestCase extends Framework\TestCase {
 	protected function cleanUp(): void {
 		parent::setUp();

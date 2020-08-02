@@ -167,7 +167,6 @@ class FoldersController extends ApiController {
 			$returnFolder['parent_folder'] = $this->toExternalFolderId($parent->getId());
 			return $returnFolder;
 		}
-
 	}
 
 	/**
@@ -437,7 +436,7 @@ class FoldersController extends ApiController {
 		$internalRoot = $this->toInternalFolderId($root);
 		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers);
 		if ($root === -1 || $root === '-1') {
-			foreach($folders as $folder) {
+			foreach ($folders as $folder) {
 				$folder['parent_folder'] = -1;
 			}
 		}

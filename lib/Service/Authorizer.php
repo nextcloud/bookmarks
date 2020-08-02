@@ -77,7 +77,7 @@ class Authorizer {
 				return;
 			}
 			$this->setUserId($this->userSession->getUser()->getUID());
-		} elseif($auth !== null && $auth !== '') {
+		} elseif ($auth !== null && $auth !== '') {
 			[$type, $credentials] = explode(' ', $auth);
 			if (strtolower($type) === 'basic') {
 				[$username, $password] = explode(':', base64_decode($credentials));

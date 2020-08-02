@@ -6,7 +6,6 @@ use OCA\Bookmarks\BackgroundJobs\PreviewsJob;
 use OC\BackgroundJob\JobList;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
-use OCA\Bookmarks\Service\Authorizer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,7 +20,7 @@ class BackgroundJobTest extends TestCase {
 		$this->jobList = \OC::$server->query(JobList::class);
 		$this->userId = 'test';
 
-		array_map(function($bm) {
+		array_map(function ($bm) {
 			$this->bookmarkMapper->insert($bm);
 		}, $this->singleBookmarksProvider());
 	}
@@ -37,7 +36,7 @@ class BackgroundJobTest extends TestCase {
 	 * @return array
 	 */
 	public function singleBookmarksProvider() {
-		return array_map(function($props) {
+		return array_map(function ($props) {
 			return Bookmark::fromArray($props);
 		}, [
 			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],

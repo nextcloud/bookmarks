@@ -2,8 +2,6 @@
 
 namespace OCA\Bookmarks\Db;
 
-use OCA\Bookmarks\Events\CreateEvent;
-use OCA\Bookmarks\Events\UpdateEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;

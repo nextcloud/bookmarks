@@ -24,7 +24,6 @@ use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\HtmlExporter;
-use OCA\Bookmarks\Service\HtmlImporter;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
@@ -416,7 +415,7 @@ class BookmarkControllerTest extends TestCase {
 		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id);
 		$this->assertEquals('https://www.heise.de/', $bookmark->getUrl()); // normalized URL
 		$this->assertEquals('', $bookmark->getTitle()); // normalized URL
-		$this->assertEquals([$this->folder2->getId()], array_map(function($f){
+		$this->assertEquals([$this->folder2->getId()], array_map(function ($f) {
 			return $f->getId();
 		}, $parents)); // has the folders we set
 	}

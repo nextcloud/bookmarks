@@ -3,17 +3,13 @@
 
 namespace OCA\Bookmarks\Migration;
 
-
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\Share;
-use OCA\Bookmarks\Db\SharedFolder;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
-use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Service\FolderService;
 use OCP\IDBConnection;
-use OCP\IUser;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use OCP\Share\IShare;

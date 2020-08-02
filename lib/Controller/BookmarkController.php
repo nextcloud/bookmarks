@@ -33,7 +33,6 @@ use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\HtmlExporter;
-use OCA\Bookmarks\Service\HtmlImporter;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -49,8 +48,6 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IURLGenerator;
-use OCP\IUserManager;
-use OCP\IUserSession;
 
 class BookmarkController extends ApiController {
 	private const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
@@ -359,7 +356,7 @@ class BookmarkController extends ApiController {
 		if ($this->authorizer->getUserId() !== null) {
 			if ($untagged) {
 				$result = $this->bookmarkMapper->findUntagged($this->authorizer->getUserId(), $params);
-			} else if ($tagsOnly && count($filterTag) > 0) {
+			} elseif ($tagsOnly && count($filterTag) > 0) {
 				$result = $this->bookmarkMapper->findByTags($this->authorizer->getUserId(), $filterTag, $params);
 			} else {
 				$result = $this->bookmarkMapper->findAll($this->authorizer->getUserId(), $filterTag, $params);
@@ -377,7 +374,7 @@ class BookmarkController extends ApiController {
 		try {
 			if ($untagged) {
 				$result = $this->bookmarkMapper->findUntaggedInPublicFolder($this->authorizer->getToken(), $params);
-			} else if ($tagsOnly && count($filterTag) > 0) {
+			} elseif ($tagsOnly && count($filterTag) > 0) {
 				$result = $this->bookmarkMapper->findByTagsInPublicFolder($this->authorizer->getToken(), $filterTag, $params);
 			} else {
 				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $filterTag, $params);
@@ -643,7 +640,7 @@ class BookmarkController extends ApiController {
 
 		if ($folder !== null) {
 			$folder = $this->toInternalFolderId($folder);
-		}else{
+		} else {
 			$folder = $this->_getRootFolderId();
 		}
 

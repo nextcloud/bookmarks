@@ -31,8 +31,8 @@ use OCP\Http\Client\IClientService;
 use OCP\ILogger;
 
 class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
-	const CACHE_PREFIX = 'bookmarks.DefaultPreviewService';
-	const HTTP_TIMEOUT = 10 * 1000;
+	public const CACHE_PREFIX = 'bookmarks.DefaultPreviewService';
+	public const HTTP_TIMEOUT = 10 * 1000;
 
 	/** @var IClient */
 	protected $client;

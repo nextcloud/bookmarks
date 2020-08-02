@@ -11,7 +11,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
 use PHPUnit\Framework\TestCase;
 
-
 class TagMapperTest extends TestCase {
 
 	/**
@@ -67,7 +66,7 @@ class TagMapperTest extends TestCase {
 		$this->tagMapper->addTo($tags, $bookmark->getId());
 
 		$actualTags = $this->tagMapper->findByBookmark($bookmark->getId());
-		foreach($tags as $tag) {
+		foreach ($tags as $tag) {
 			$this->assertContains($tag, $actualTags);
 		}
 	}
@@ -154,7 +153,7 @@ class TagMapperTest extends TestCase {
 		$newTags = ['foo', 'bar'];
 		$this->tagMapper->setOn($newTags, $bookmark->getId());
 		$actualTags = $this->tagMapper->findByBookmark($bookmark->getId());
-		foreach($newTags as $tag) {
+		foreach ($newTags as $tag) {
 			$this->assertContains($tag, $actualTags);
 		}
 	}
