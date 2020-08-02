@@ -138,7 +138,7 @@ export default {
 }
 
 .bookmarkslist
-	> *:first-child:not(.bookmarkslist__loading):not(.bookmarkslist__empty) {
+> *:first-child:not(.bookmarkslist__loading):not(.bookmarkslist__empty) {
 	border-top: 1px solid var(--color-border);
 }
 

@@ -31,10 +31,13 @@ use OCP\IUser;
 use OCP\User\Events\BeforeUserDeletedEvent;
 
 class Application extends App {
-	public function __construct(array $urlParams = []) {
-		parent::__construct('bookmarks', $urlParams);
+	public const APP_ID = 'bookmarks';
+
+	public function __construct() {
+		parent::__construct(self::APP_ID);
 
 		$container = $this->getContainer();
+		$server = $container->getServer();
 
 		$container->registerService('UserId', static function ($c) {
 			/** @var IUser|null $user */
@@ -47,20 +50,22 @@ class Application extends App {
 			return $c->query('Request');
 		});
 
-		$dispatcher = $this->getContainer()->query(IEventDispatcher::class);
+		/** @var IEventDispatcher $eventDispatcher */
+		$eventDispatcher = $server->query(IEventDispatcher::class);
 
-		$dispatcher->addServiceListener(CreateEvent::class, HashManager::class);
-		$dispatcher->addServiceListener(UpdateEvent::class, HashManager::class);
-		$dispatcher->addServiceListener(BeforeDeleteEvent::class, HashManager::class);
-		$dispatcher->addServiceListener(MoveEvent::class, HashManager::class);
 
-		$dispatcher->addServiceListener(CreateEvent::class, ActivityPublisher::class);
-		$dispatcher->addServiceListener(UpdateEvent::class, ActivityPublisher::class);
-		$dispatcher->addServiceListener(BeforeDeleteEvent::class, ActivityPublisher::class);
-		$dispatcher->addServiceListener(MoveEvent::class, ActivityPublisher::class);
+		$eventDispatcher->addServiceListener(CreateEvent::class, HashManager::class);
+		$eventDispatcher->addServiceListener(UpdateEvent::class, HashManager::class);
+		$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, HashManager::class);
+		$eventDispatcher->addServiceListener(MoveEvent::class, HashManager::class);
 
-		$dispatcher->addServiceListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
-		$dispatcher->addServiceListener(UserAddedEvent::class, UserGroupListener::class);
-		$dispatcher->addServiceListener(UserRemovedEvent::class, UserGroupListener::class);
+		$eventDispatcher->addServiceListener(CreateEvent::class, ActivityPublisher::class);
+		$eventDispatcher->addServiceListener(UpdateEvent::class, ActivityPublisher::class);
+		$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, ActivityPublisher::class);
+		$eventDispatcher->addServiceListener(MoveEvent::class, ActivityPublisher::class);
+
+		$eventDispatcher->addServiceListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
+		$eventDispatcher->addServiceListener(UserAddedEvent::class, UserGroupListener::class);
+		$eventDispatcher->addServiceListener(UserRemovedEvent::class, UserGroupListener::class);
 	}
 }

@@ -1,4 +1,4 @@
 <?php
-script('bookmarks', 'bookmarks.admin');
+script('bookmarks', 'bookmarks-admin');
 ?>
 <div id="bookmarks" class="section"></div>

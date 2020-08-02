@@ -108,7 +108,7 @@ const SETTINGS = [
 export default {
 	name: 'ViewAdmin',
 	components: { SettingsSection },
-	data: function() {
+	data() {
 		return {
 			settings: SETTINGS.reduce((obj, key) => ({ ...obj, [key]: '' }), {}),
 			loading: false,
@@ -201,31 +201,31 @@ export default {
 </script>
 <style>
 figure[class^='icon-'] {
-  display: inline-block;
+	display: inline-block;
 }
 
 #bookmarks h2 {
-  margin-top: 40px;
+	margin-top: 40px;
 }
 
 #bookmarks {
-  position: relative;
+	position: relative;
 }
 
 #bookmarks .loading,
 #bookmarks .success {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+	position: absolute;
+	top: 20px;
+	right: 20px;
 }
 
 #bookmarks label {
-  margin-top: 10px;
-  display: block;
+	margin-top: 10px;
+	display: block;
 }
 
 #bookmarks input {
-  width: 100%;
-  display: block;
+	width: 100%;
+	display: block;
 }
 </style>

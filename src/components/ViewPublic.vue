@@ -22,7 +22,7 @@ export default {
 		Breadcrumbs,
 		BookmarksList,
 	},
-	data: function() {
+	data() {
 		return {
 			newBookmark: false,
 		}

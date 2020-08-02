@@ -160,7 +160,7 @@ export default {
 		async onRename() {
 			this.renaming = true
 			await Vue.nextTick()
-			this.$refs['input'].focus()
+			this.$refs.input.focus()
 		},
 		async onRenameSubmit() {
 			this.bookmark.title = this.title
@@ -242,6 +242,7 @@ export default {
 	overflow: hidden;
 	min-width: 20px;
 }
+
 .bookmark__description figure {
 	display: none !important;
 }
@@ -290,7 +291,7 @@ export default {
 	margin: 0;
 }
 
-.bookmark--gridview .bookmark__checkbox input[type="checkbox"].checkbox + label::before {
+.bookmark--gridview .bookmark__checkbox input[type='checkbox'].checkbox + label::before {
 	margin: 0 3px 3px 3px;
 }
 
