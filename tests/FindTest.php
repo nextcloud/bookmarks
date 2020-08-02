@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
@@ -8,7 +9,6 @@ use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
-
 
 class FindTest extends TestCase {
 
@@ -62,7 +62,7 @@ class FindTest extends TestCase {
 		}
 		$this->userId = $this->userManager->get($this->user)->getUID();
 
-		foreach($this->singleBookmarksProvider() as $bookmarkEntry) {
+		foreach ($this->singleBookmarksProvider() as $bookmarkEntry) {
 			$bookmarkEntry[1]->setUserId($this->userId);
 			$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmarkEntry[1]);
 			$this->tagMapper->addTo($bookmarkEntry[0], $bookmark->getId());

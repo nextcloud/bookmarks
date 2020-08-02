@@ -2,8 +2,6 @@
 
 namespace OCA\Bookmarks\Migration;
 
-use Doctrine\DBAL\Types\BigIntType;
-use Doctrine\DBAL\Types\Type;
 use OCP\DB\ISchemaWrapper;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
@@ -75,7 +73,7 @@ class Version003001000Date20200526094721 extends SimpleMigrationStep {
 			->from('bookmarks_shared_folders', 'sf')
 			->leftJoin('sf', 'bookmarks_shares', 's', $qb->expr()->eq('sf.share_id', 's.id'))
 			->execute();
-		while($sharedFolder = $sharedFolders->fetch()) {
+		while ($sharedFolder = $sharedFolders->fetch()) {
 			// Find a shared folder with folder_id already set. This is gonna be the only one we will have for this folder from now on.
 			$qb = $this->db->getQueryBuilder();
 			$canonicalSharedFolder = $qb->select('sf.id', 'sf.folder_id')
@@ -92,7 +90,7 @@ class Version003001000Date20200526094721 extends SimpleMigrationStep {
 					->where($qb->expr()->eq('id', $qb->createPositionalParameter($sharedFolder['id'])))
 					->execute();
 				$canonicalSharedFolder = $sharedFolder;
-			}else{
+			} else {
 				// ...otherwise delete this shared folder.
 				$qb = $this->db->getQueryBuilder();
 				$qb->delete('bookmarks_shared_folders')

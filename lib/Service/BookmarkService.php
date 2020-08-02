@@ -2,7 +2,6 @@
 
 namespace OCA\Bookmarks\Service;
 
-
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -247,10 +246,10 @@ class BookmarkService {
 				$currentInaccessibleOwnFolders = array_map(static function ($f) {
 					return $f->getId();
 				}, array_filter($currentOwnFolders, function ($folder) use ($userId) {
-						return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
-					})
+					return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
+				})
 				);
-			}else{
+			} else {
 				$currentInaccessibleOwnFolders = [];
 			}
 

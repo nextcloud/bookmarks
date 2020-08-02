@@ -8,7 +8,6 @@ use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\FaviconPreviewer;
 use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
 use OCP\IConfig;
-use OCP\IUserManager;
 
 class PreviewsJob extends TimedJob {
 	/**

@@ -34,7 +34,7 @@ use OCP\IConfig;
 
 class BookmarkPreviewer implements IBookmarkPreviewer {
 	// Cache for one month
-	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
+	public const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
 
 	/**
 	 * @var string

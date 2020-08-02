@@ -122,14 +122,14 @@ class TagMapper {
 	public function addTo($tags, int $bookmarkId): void {
 		if (is_string($tags)) {
 			$tags = [$tags];
-		} else if (!is_array($tags)) {
+		} elseif (!is_array($tags)) {
 			throw new InvalidArgumentException('$tag must be string or array of strings');
 		}
-		if(count($tags) === 0) {
+		if (count($tags) === 0) {
 			return;
 		}
 		$currentTags = $this->findByBookmark($bookmarkId);
-		$tags = array_filter($tags, function($tag) use($currentTags) {
+		$tags = array_filter($tags, function ($tag) use ($currentTags) {
 			return !in_array($tag, $currentTags);
 		});
 		foreach ($tags as $tag) {

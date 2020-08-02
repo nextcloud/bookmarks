@@ -16,7 +16,7 @@ class BookmarksParser {
 	/**
 	 * Netscape Bookmark File Format DOCTYPE
 	 */
-	const DOCTYPE = 'NETSCAPE-Bookmark-file-1';
+	public const DOCTYPE = 'NETSCAPE-Bookmark-file-1';
 	/**
 	 * DOMXPath
 	 *
@@ -128,10 +128,14 @@ class BookmarksParser {
 	private function traverse(\DOMNode $node = null) {
 		$query = './*';
 		$entries = $this->xpath->query($query, $node ?: null);
-		if (!$entries) return;
+		if (!$entries) {
+			return;
+		}
 		for ($i = 0; $i < $entries->length; $i++) {
 			$entry = $entries->item($i);
-			if ($entry === null) continue;
+			if ($entry === null) {
+				continue;
+			}
 			switch ($entry->nodeName) {
 				case 'dl':
 					$this->traverse($entry);
@@ -234,7 +238,9 @@ class BookmarksParser {
 		$length = $node->attributes->length;
 		for ($i = 0; $i < $length; ++$i) {
 			$item = $node->attributes->item($i);
-			if ($item === null) continue;
+			if ($item === null) {
+				continue;
+			}
 			$attributes[strtolower($item->nodeName)] = $item->nodeValue;
 		}
 		$lastModified = null;

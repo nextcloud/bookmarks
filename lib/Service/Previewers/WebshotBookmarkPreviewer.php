@@ -25,17 +25,14 @@ use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\FileCache;
-use OCP\Files\NotFoundException;
-use OCP\Files\NotPermittedException;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\ILogger;
 
 class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
+	public const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
 
-	const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
-
-	const HTTP_TIMEOUT = 10 * 1000;
+	public const HTTP_TIMEOUT = 10 * 1000;
 
 	private $client;
 

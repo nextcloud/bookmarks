@@ -3,7 +3,6 @@
 
 namespace OCA\Bookmarks;
 
-
 class QueryParameters {
 	public const CONJ_AND = 'and';
 	public const CONJ_OR = 'or';
@@ -87,6 +86,4 @@ class QueryParameters {
 		$this->conjunction = $conjunction;
 		return $this;
 	}
-
-
 }

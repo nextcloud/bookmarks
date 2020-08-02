@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Events;
 
 class MoveEvent extends ChangeEvent {
@@ -32,5 +33,4 @@ class MoveEvent extends ChangeEvent {
 	public function getNewParent(): ?int {
 		return $this->newParent;
 	}
-
 }

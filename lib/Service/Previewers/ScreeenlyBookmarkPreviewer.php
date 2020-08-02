@@ -25,16 +25,14 @@ use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\FileCache;
-use OCP\Files\NotFoundException;
-use OCP\Files\NotPermittedException;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\ILogger;
 
 class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
-	const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
+	public const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
 
-	const HTTP_TIMEOUT = 10 * 1000;
+	public const HTTP_TIMEOUT = 10 * 1000;
 
 	private $apiKey;
 

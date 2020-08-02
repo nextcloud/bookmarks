@@ -3,7 +3,6 @@
 
 namespace OCA\Bookmarks;
 
-
 use OCA\Bookmarks\Contract\IImage;
 
 class Image implements IImage {
@@ -48,6 +47,5 @@ class Image implements IImage {
 			'contentType' => $this->getContentType(),
 			'data' => base64_encode($this->getData()),
 		]);
-
 	}
 }

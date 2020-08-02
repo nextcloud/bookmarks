@@ -33,7 +33,7 @@ use OCP\ILogger;
 class FaviconPreviewer implements IBookmarkPreviewer {
 	public const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60; // cache for one month
 	public const HTTP_TIMEOUT = 10 * 1000;
-    public const CACHE_PREFIX = 'bookmarks.FaviconPreviewer';
+	public const CACHE_PREFIX = 'bookmarks.FaviconPreviewer';
 
 	/**
 	 * @var FileCache

@@ -10,8 +10,6 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use OCA\Bookmarks\Db\FolderMapper;
-use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;

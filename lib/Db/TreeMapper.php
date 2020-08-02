@@ -17,14 +17,12 @@ use OCP\ICache;
 use OCP\IConfig;
 use OCP\IDBConnection;
 
-
 /**
  * Class TreeMapper
  *
  * @package OCA\Bookmarks\Db
  */
 class TreeMapper extends QBMapper {
-
 	public const TYPE_SHARE = 'share';
 	public const TYPE_FOLDER = 'folder';
 	public const TYPE_BOOKMARK = 'bookmark';

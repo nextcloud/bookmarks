@@ -1,6 +1,6 @@
 <?php
-namespace OCA\Bookmarks\Service;
 
+namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\FolderMapper;
@@ -134,7 +134,7 @@ class HashManager {
 		$folder = [];
 		if ($entity->getUserId() !== $userId) {
 			$folder['title'] = $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId)->getTitle();
-		} else if ($entity->getTitle() !== null) {
+		} elseif ($entity->getTitle() !== null) {
 			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;

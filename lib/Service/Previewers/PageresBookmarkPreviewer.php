@@ -26,17 +26,12 @@ use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
-use OCA\Bookmarks\Service\FileCache;
-use OCP\Files\NotFoundException;
-use OCP\Files\NotPermittedException;
-use OCP\Http\Client\IClientService;
-use OCP\IConfig;
 use OCP\ILogger;
 use OCP\ITempManager;
 
 class PageresBookmarkPreviewer implements IBookmarkPreviewer {
-	const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
-	const CAPTURE_MAX_RETRIES = 3;
+	public const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
+	public const CAPTURE_MAX_RETRIES = 3;
 
 	/** @var ILogger */
 	private $logger;
@@ -111,7 +106,9 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	public static function getPageresPath(): ?string {
 		$serverPath = @exec('which pageres');
-		if (!empty($serverPath) && is_readable($serverPath)) return $serverPath;
+		if (!empty($serverPath) && is_readable($serverPath)) {
+			return $serverPath;
+		}
 
 		return null;
 	}

@@ -12,7 +12,6 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
-
 class BookmarkMapperTest extends TestCase {
 
 	/**
@@ -137,7 +136,7 @@ class BookmarkMapperTest extends TestCase {
 	 * @return array
 	 */
 	public function singleBookmarksProvider(): array {
-		return array_map(static function($props) {
+		return array_map(static function ($props) {
 			return [Db\Bookmark::fromArray($props)];
 		}, [
 			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
