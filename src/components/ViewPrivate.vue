@@ -60,7 +60,10 @@ export default {
 	},
 
 	async created() {
-		this.search = new OCA.Search(this.onSearch, this.onResetSearch)
+	  if (OCA.Search) {
+	    // legacy search pre nc v20
+			this.search = new window.OCA.Search(this.onSearch, this.onResetSearch)
+		}
 		// set loading indicator
 		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
 		await Promise.all([
