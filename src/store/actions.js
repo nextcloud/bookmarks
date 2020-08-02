@@ -10,6 +10,7 @@ export const actions = {
 	COUNT_BOOKMARKS: 'COUNT_BOOKMARKS',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
+	LOAD_BOOKMARK: 'LOAD_BOOKMARK',
 	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
 	OPEN_BOOKMARK: 'OPEN_BOOKMARK',
 	SAVE_BOOKMARK: 'SAVE_BOOKMARK',
@@ -77,6 +78,26 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to count bookmarks')
+			)
+			throw err
+		}
+	},
+	async [actions.LOAD_BOOKMARK]({ commit, dispatch, state }, id) {
+		try {
+			const response = await axios.get(url(state, `/bookmark/${id}`))
+			const {
+				data: { item: bookmark, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.ADD_BOOKMARK, bookmark)
+			return bookmark
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load bookmark')
 			)
 			throw err
 		}
