@@ -222,67 +222,67 @@ export default {
 </script>
 <style>
 .breadcrumbs {
-  padding: 0 8px 0 44px;
-  display: flex;
-  position: absolute;
-  z-index: 100;
-  background: var(--color-main-background-translucent);
-  left: 0;
-  right: 0;
-  top: 0;
+	padding: 0 8px 0 44px;
+	display: flex;
+	position: absolute;
+	z-index: 100;
+	background: var(--color-main-background-translucent);
+	left: 0;
+	right: 0;
+	top: 0;
 }
 
 .breadcrumbs + * {
-  margin-top: 50px;
+	margin-top: 50px;
 }
 
 .breadcrumbs__path {
-  display: flex;
-  align-items: center;
-  flex: 0;
+	display: flex;
+	align-items: center;
+	flex: 0;
 }
 
 .breadcrumbs__path > * {
-  display: inline-block;
-  height: 30px;
-  padding: 5px 7px;
-  flex-shrink: 0;
+	display: inline-block;
+	height: 30px;
+	padding: 5px 7px;
+	flex-shrink: 0;
 }
 
 .breadcrumbs__path > *:not(.icon-breadcrumb) {
-  min-width: 30px;
-  opacity: 0.7;
+	min-width: 30px;
+	opacity: 0.7;
 }
 
 .breadcrumbs__path > *:hover {
-  opacity: 1;
+	opacity: 1;
 }
 
 .breadcrumbs__tags {
-  width: 300px;
-  flex: 1;
+	width: 300px;
+	flex: 1;
 }
 
 .breadcrumbs__tags .multiselect__tags {
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
+	border-top: none !important;
+	border-left: none !important;
+	border-right: none !important;
 }
 
 .breadcrumbs__AddFolder {
-  margin-left: 5px;
-  padding: 0;
-  margin-top: -10px;
+	margin-left: 5px;
+	padding: 0;
+	margin-top: -10px;
 }
 
 .breadcrumbs__controls {
-  flex: 2;
-  display: flex;
-  flex-direction: row-reverse;
-  padding: 0;
+	flex: 2;
+	display: flex;
+	flex-direction: row-reverse;
+	padding: 0;
 }
 
 .breadcrumbs__controls > * {
-  min-width: 30px;
+	min-width: 30px;
 }
 </style>
