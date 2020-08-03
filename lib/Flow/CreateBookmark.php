@@ -54,12 +54,17 @@ class CreateBookmark implements IOperation {
 
 	public static function register(IEventDispatcher $dispatcher): void {
 		if (interface_exists('\OCP\WorkflowEngine\IManager')) {
+			@include_once __DIR__ . '/../../vendor/autoload.php';
 			$dispatcher->addListener(\OCP\WorkflowEngine\IManager::EVENT_NAME_REG_OPERATION, static function ($event) {
 				$operation = \OC::$server->query(CreateBookmark::class);
 				$event->getSubject()->registerOperation($operation);
 				Util::addScript('bookmarks', 'flow');
 			});
-			@include_once __DIR__ . '/../../vendor/autoload.php';
+			$dispatcher->addListener(\OCP\WorkflowEngine\IManager::EVENT_NAME_REG_ENTITY, static function ($event) {
+				$entity = \OC::$server->query(Bookmark::class);
+				$event->getSubject()->registerEntity($entity);
+				Util::addScript('bookmarks', 'flow');
+			});
 		}
 	}
 
