@@ -115,6 +115,8 @@
     "Webshot API URL" : "API URL Webshot",
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Chiave API ScreenshotMachine",
+    "Pageres CLI" : "Pageres CLI",
+    "Simply install the pageres cli on your server and bookmarks will find it." : "Installa in modo semplice la riga di comando di pageres sul tuo server e i segnalibri la troveranno.",
     "Privacy" : "Riservatezza",
     "Bookmarks will try to access web pages that you add to automatically add information about them." : "Segnalibri proverà ad accedere alle pagine web che hai aggiunto per integrare automaticamente informazioni su di esse.",
     "Enable accessing and collecting information from the web pages you add" : "Abilita l'accesso e la raccolta di informazioni dalle pagine web che aggiungi",

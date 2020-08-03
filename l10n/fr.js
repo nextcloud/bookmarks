@@ -6,6 +6,7 @@ OC.L10N.register(
     "%1$s bookmarked \"%2$s\"" : "%1$s à mis en favori \"%2$s\"",
     "Someone bookmarked \"%s\"" : "Quelqu'un a mis en favori \"%s\"",
     "You deleted \"%s\"" : "Vous avez supprimé \"%s\"",
+    "%1$s deleted \"%1$s\"" : "%1$s a supprimé \"%1$s\"",
     "Someone deleted \"%s\"" : "Quelqu'un à supprimé \"%s\"",
     "You created folder \"%s\"" : "Vous avez créé le dossier \"%s\"",
     "%1$s created folder \"%2$s\"" : "%1$s à créé le dossier \"%2$s\"",

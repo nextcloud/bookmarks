@@ -117,6 +117,8 @@ OC.L10N.register(
     "Webshot API URL" : "Webshot-API-URL",
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine-API-Key",
+    "Pageres CLI" : "Pageres-Komandozeile",
+    "Simply install the pageres cli on your server and bookmarks will find it." : "Einfach die Pageres-Komandozeile auf dem Server installieren und Lesezeichen wird dies finden.",
     "Privacy" : "Datenschutz",
     "Bookmarks will try to access web pages that you add to automatically add information about them." : "Lesezeichen versucht, auf die von Dir hinzugefügten Webseiten zuzugreifen, um automatisch Informationen über die Seiten hinzuzufügen.",
     "Enable accessing and collecting information from the web pages you add" : "Aktiviere den Zugriff auf und das Sammeln von Informationen über die von Dir hinzugefügten Webseiten",
