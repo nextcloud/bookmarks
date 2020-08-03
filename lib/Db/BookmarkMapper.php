@@ -163,12 +163,13 @@ class BookmarkMapper extends QBMapper {
 			$qb->addOrderBy($qb->createFunction('UPPER(`b`.`title`)'), 'ASC');
 		} else if ($sqlSortColumn === 'index') {
 			$qb->addOrderBy('tr.'.$sqlSortColumn, 'ASC');
-			$qb->addGroupBy($sqlSortColumn);
+			$qb->addGroupBy('tr.'.$sqlSortColumn);
 		} else {
 			$qb->addOrderBy('b.'.$sqlSortColumn, 'DESC');
 		}
 		// Always sort by id additionally, so the ordering is stable
 		$qb->addOrderBy('b.id', 'ASC');
+		$qb->addGroupBy('b.id');
 
 		if ($params->getLimit() !== -1) {
 			$qb->setMaxResults($params->getLimit());
