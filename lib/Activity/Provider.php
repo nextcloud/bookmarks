@@ -99,7 +99,7 @@ class Provider implements IProvider {
 						$subjectParameters['bookmark']
 					]));
 				}elseif ($authorName){
-					$event->setParsedSubject($this->l->t('%1$s deleted "%1$s"', [
+					$event->setParsedSubject($this->l->t('%1$s deleted "%2$s"', [
 						$authorName,
 						$subjectParameters['bookmark'],
 					]));
