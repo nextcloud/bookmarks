@@ -21,7 +21,6 @@ use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Flow\CreateBookmark;
 use OCA\Bookmarks\Hooks\UserGroupListener;
-use OCA\Bookmarks\Hooks\UserHooks;
 use OCA\Bookmarks\Service\HashManager;
 use OCP\AppFramework\App;
 use OCP\EventDispatcher\IEventDispatcher;
