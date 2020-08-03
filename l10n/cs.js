@@ -117,6 +117,8 @@ OC.L10N.register(
     "Webshot API URL" : "URL adresa API rozhraní služby Webshot",
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Klíč k API rozhraní služby ScreenshotMachine",
+    "Pageres CLI" : "Pageres CLI",
+    "Simply install the pageres cli on your server and bookmarks will find it." : "Stačí jen nainstalovat pageres cli na váš server a záložky si ho najdou.",
     "Privacy" : "Soukromí",
     "Bookmarks will try to access web pages that you add to automatically add information about them." : "Záložky se budou snažit přistoupit k webovým stránkám, které jste přidali aby automaticky doplnily informace o nich.",
     "Enable accessing and collecting information from the web pages you add" : "Zapnout přístup a shromažďování informací z webových stránek, které přidáte",
