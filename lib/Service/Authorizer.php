@@ -122,41 +122,10 @@ class Authorizer {
 	public function getPermissionsForFolder(int $folderId, $request): int {
 		$this->setCredentials($request);
 		if (isset($this->userId)) {
-			if ($folderId === -1) {
-				return self::PERM_ALL;
-			}
-			try {
-				$folder = $this->folderMapper->find($folderId);
-			} catch (DoesNotExistException $e) {
-				return self::PERM_NONE;
-			} catch (MultipleObjectsReturnedException $e) {
-				return self::PERM_NONE;
-			}
-			if ($folder->getUserId() === $this->userId) {
-				return self::PERM_ALL;
-			}
-
-			$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $this->userId);
-			foreach ($shares as $share) {
-				if ($share->getFolderId() === $folderId || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $folderId)) {
-					return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
-				}
-			}
+			return $this->getUserPermissionsForFolder($this->userId, $folderId);
 		}
 		if (isset($this->token)) {
-			try {
-				$publicFolder = $this->publicMapper->find($this->token);
-			} catch (DoesNotExistException $e) {
-				return self::PERM_NONE;
-			} catch (MultipleObjectsReturnedException $e) {
-				return self::PERM_NONE;
-			}
-			if ($folderId === -1) {
-				return self::PERM_READ;
-			}
-			if ($publicFolder->getFolderId() === $folderId || $this->treeMapper->hasDescendant($publicFolder->getFolderId(), TreeMapper::TYPE_FOLDER, $folderId)) {
-				return self::PERM_READ;
-			}
+			return $this->getTokenPermissionsForFolder($this->token, $folderId);
 		}
 		return self::PERM_NONE;
 	}
@@ -169,36 +138,10 @@ class Authorizer {
 	public function getPermissionsForBookmark(int $bookmarkId, $request): int {
 		$this->setCredentials($request);
 		if (isset($this->userId)) {
-			try {
-				$bookmark = $this->bookmarkMapper->find($bookmarkId);
-			} catch (DoesNotExistException $e) {
-				return self::PERM_NONE;
-			} catch (MultipleObjectsReturnedException $e) {
-				return self::PERM_NONE;
-			}
-			if ($bookmark->getUserId() === $this->userId) {
-				return self::PERM_ALL;
-			}
-
-			$shares = $this->shareMapper->findByOwnerAndUser($bookmark->getUserId(), $this->userId);
-			foreach ($shares as $share) {
-				if ($this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_BOOKMARK, $bookmarkId)) {
-					return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
-				}
-			}
-			return self::PERM_NONE;
+			return $this->getUserPermissionsForBookmark($this->userId, $bookmarkId);
 		}
 		if (isset($this->token)) {
-			try {
-				$publicFolder = $this->publicMapper->find($this->token);
-			} catch (DoesNotExistException $e) {
-				return self::PERM_NONE;
-			} catch (MultipleObjectsReturnedException $e) {
-				return self::PERM_NONE;
-			}
-			if ($this->treeMapper->hasDescendant($publicFolder->getFolderId(), TreeMapper::TYPE_BOOKMARK, $bookmarkId)) {
-				return self::PERM_READ;
-			}
+			return $this->getTokenPermissionsForBookmark($this->token, $bookmarkId);
 		}
 		return self::PERM_NONE;
 	}
@@ -228,5 +171,101 @@ class Authorizer {
 	 */
 	public static function hasPermission($perm, $perms): bool {
 		return (boolean)($perms & $perm);
+	}
+
+	/**
+	 * @param string $userId
+	 * @param int $bookmarkId
+	 * @return int
+	 */
+	public function getUserPermissionsForBookmark(string $userId, int $bookmarkId): int {
+		try {
+			$bookmark = $this->bookmarkMapper->find($bookmarkId);
+		} catch (DoesNotExistException $e) {
+			return self::PERM_NONE;
+		} catch (MultipleObjectsReturnedException $e) {
+			return self::PERM_NONE;
+		}
+		if ($bookmark->getUserId() === $userId) {
+			return self::PERM_ALL;
+		}
+
+		$shares = $this->shareMapper->findByOwnerAndUser($bookmark->getUserId(), $userId);
+		foreach ($shares as $share) {
+			if ($this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_BOOKMARK, $bookmarkId)) {
+				return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
+			}
+		}
+		return self::PERM_NONE;
+	}
+
+	/**
+	 * @param string $token
+	 * @param int $bookmarkId
+	 * @return int
+	 */
+	public function getTokenPermissionsForBookmark(string $token, int $bookmarkId): int {
+		try {
+			$publicFolder = $this->publicMapper->find($token);
+		} catch (DoesNotExistException $e) {
+			return self::PERM_NONE;
+		} catch (MultipleObjectsReturnedException $e) {
+			return self::PERM_NONE;
+		}
+		if ($this->treeMapper->hasDescendant($publicFolder->getFolderId(), TreeMapper::TYPE_BOOKMARK, $bookmarkId)) {
+			return self::PERM_READ;
+		}
+		return self::PERM_NONE;
+	}
+
+	/**
+	 * @param string $userId
+	 * @param int $folderId
+	 * @return int
+	 */
+	public function getUserPermissionsForFolder(string $userId, int $folderId): int {
+		if ($userId === -1) {
+			return self::PERM_ALL;
+		}
+		try {
+			$folder = $this->folderMapper->find($folderId);
+		} catch (DoesNotExistException $e) {
+			return self::PERM_NONE;
+		} catch (MultipleObjectsReturnedException $e) {
+			return self::PERM_NONE;
+		}
+		if ($folder->getUserId() === $userId) {
+			return self::PERM_ALL;
+		}
+
+		$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $userId);
+		foreach ($shares as $share) {
+			if ($share->getFolderId() === $userId || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $userId)) {
+				return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
+			}
+		}
+		return self::PERM_NONE;
+	}
+
+	/**
+	 * @param string $token
+	 * @param int $folderId
+	 * @return int
+	 */
+	public function getTokenPermissionsForFolder(string $token, int $folderId): int {
+		try {
+			$publicFolder = $this->publicMapper->find($token);
+		} catch (DoesNotExistException $e) {
+			return self::PERM_NONE;
+		} catch (MultipleObjectsReturnedException $e) {
+			return self::PERM_NONE;
+		}
+		if ($folderId === -1) {
+			return self::PERM_READ;
+		}
+		if ($publicFolder->getFolderId() === $folderId || $this->treeMapper->hasDescendant($publicFolder->getFolderId(), TreeMapper::TYPE_FOLDER, $folderId)) {
+			return self::PERM_READ;
+		}
+		return self::PERM_NONE;
 	}
 }
