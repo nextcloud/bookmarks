@@ -11,7 +11,8 @@
 		"psr/http-client": "^0.2.0",
 		"psr/http-factory": "^1.0",
 		"psr/http-message": "^1.0",
-		"rowbot/url": "^3.0"
+		"rowbot/url": "^3.0",
+    "symfony/event-dispatcher": "^4.4"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^8.5",
