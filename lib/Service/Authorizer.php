@@ -240,7 +240,7 @@ class Authorizer {
 
 		$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $userId);
 		foreach ($shares as $share) {
-			if ($share->getFolderId() === $userId || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $userId)) {
+			if ($share->getFolderId() === $userId || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $folderId)) {
 				return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
 			}
 		}
