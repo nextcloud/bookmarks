@@ -6,10 +6,11 @@ use OC\BackgroundJob\TimedJob;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\FaviconPreviewer;
-use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
 use OCP\IConfig;
 
 class PreviewsJob extends TimedJob {
+	const BATCH_SIZE = 250; // 500 bookmarks
+	const INTERVAL = 30; // 30 minutes
 	/**
 	 * @var BookmarkPreviewer
 	 */
@@ -35,7 +36,7 @@ class PreviewsJob extends TimedJob {
 		$this->bookmarkPreviewer = $bookmarkPreviewer;
 		$this->faviconPreviewer = $faviconPreviewer;
 
-		$this->setInterval(60);//*60*24); //run hourly
+		$this->setInterval(self::INTERVAL);
 	}
 
 	protected function run($argument) {
@@ -45,7 +46,7 @@ class PreviewsJob extends TimedJob {
 			) !== 'cron') {
 			return;
 		}
-		$bookmarks = $this->bookmarkMapper->findPendingPreviews(100, DefaultBookmarkPreviewer::CACHE_TTL);
+		$bookmarks = $this->bookmarkMapper->findPendingPreviews(self::BATCH_SIZE, BookmarkPreviewer::CACHE_TTL);
 		foreach ($bookmarks as $bookmark) {
 			$this->bookmarkPreviewer->getImage($bookmark);
 			$this->faviconPreviewer->getImage($bookmark);
