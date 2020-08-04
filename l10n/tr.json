@@ -4,7 +4,6 @@
     "%1$s bookmarked \"%2$s\"" : "%1$s, \"%2$s\" yer imini ekledi",
     "Someone bookmarked \"%s\"" : "Biri \"%s\" yer imini ekledi",
     "You deleted \"%s\"" : "\"%s\" yer imini sildiniz",
-    "%1$s deleted \"%1$s\"" : "%1$s, \"%1$s\" yer imini sildi",
     "Someone deleted \"%s\"" : "Biri \"%s\" yer imini sildi",
     "You created folder \"%s\"" : "\"%s\" klasörünü eklediniz",
     "%1$s created folder \"%2$s\"" : "%1$s, \"%2$s\" klasörünü ekledi",
