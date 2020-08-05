@@ -19,6 +19,7 @@ use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
+use OCA\Bookmarks\Flow\CreateBookmark;
 use OCA\Bookmarks\Hooks\UserGroupListener;
 use OCA\Bookmarks\Service\HashManager;
 use OCP\AppFramework\App;
@@ -66,5 +67,7 @@ class Application extends App {
 		$eventDispatcher->addServiceListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
 		$eventDispatcher->addServiceListener(UserAddedEvent::class, UserGroupListener::class);
 		$eventDispatcher->addServiceListener(UserRemovedEvent::class, UserGroupListener::class);
+
+		CreateBookmark::register($eventDispatcher);
 	}
 }
