@@ -3,7 +3,6 @@
 
 namespace OCA\Bookmarks\Flow;
 
-
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\ChangeEvent;

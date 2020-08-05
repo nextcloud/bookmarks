@@ -3,7 +3,6 @@
 
 namespace OCA\Bookmarks\Flow;
 
-
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\WorkflowEngine\Entity\File;
 use OCP\EventDispatcher\Event;
@@ -17,10 +16,8 @@ use OCP\Util;
 use OCP\WorkflowEngine\EntityContext\IUrl;
 use OCP\WorkflowEngine\IOperation;
 use OCP\WorkflowEngine\IRuleMatcher;
-use OCP\WorkflowEngine\ISpecificOperation;
 
 class CreateBookmark implements IOperation {
-
 	private const REGEX_URL = "%^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?$%ium";
 
 	/**
@@ -129,7 +126,7 @@ class CreateBookmark implements IOperation {
 	}
 
 	private function handleFile(string $eventName, Event $event, IUser $user): void {
-		if($eventName === '\OCP\Files::postRename') {
+		if ($eventName === '\OCP\Files::postRename') {
 			/** @var Node $node */
 			[, $node] = $event->getSubject();
 		} else {
@@ -144,7 +141,7 @@ class CreateBookmark implements IOperation {
 		}
 
 		// on convert text files
-		if($node->getMimePart() !== 'text') {
+		if ($node->getMimePart() !== 'text') {
 			return;
 		}
 
@@ -156,11 +153,11 @@ class CreateBookmark implements IOperation {
 			return;
 		}
 
-		if(preg_match_all(self::REGEX_URL, $text, $matches) === FALSE) {
+		if (preg_match_all(self::REGEX_URL, $text, $matches) === false) {
 			return;
 		}
 
-		foreach($matches[0] as $url) {
+		foreach ($matches[0] as $url) {
 			$this->bookmarks->create($user->getUID(), $url);
 		}
 	}
