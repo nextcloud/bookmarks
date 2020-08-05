@@ -4,6 +4,7 @@
     "%1$s bookmarked \"%2$s\"" : "%1$s engadiu «%2$s» aos marcadores",
     "Someone bookmarked \"%s\"" : "Vostede engadiu «%s» aos marcadores",
     "You deleted \"%s\"" : "Vostede eliminou «%s»",
+    "%1$s deleted \"%2$s\"" : "%1$s eliminou «%2$s»",
     "Someone deleted \"%s\"" : "Alguén eliminou «%s»",
     "You created folder \"%s\"" : "Vostede creou o cartafol «%s»",
     "%1$s created folder \"%2$s\"" : "%1$s creou o cartafol «%2$s»",

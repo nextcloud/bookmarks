@@ -6,6 +6,7 @@ OC.L10N.register(
     "%1$s bookmarked \"%2$s\"" : "%1$s hat \"%2$s\" als Lesezeichen hinzugefügt",
     "Someone bookmarked \"%s\"" : "Jemand hat \"%s\" als Lesezeichen hinzugefügt",
     "You deleted \"%s\"" : "Du hast \"%s\" gelöscht",
+    "%1$s deleted \"%2$s\"" : "%1$s hat \"%2$s\" gelöscht",
     "Someone deleted \"%s\"" : "Jemand hat \"%s\" gelöscht",
     "You created folder \"%s\"" : "Du hast den Ordner \"%s\" erstellt",
     "%1$s created folder \"%2$s\"" : "%1$s hat den Ordner \"%2$s\" erstellt",

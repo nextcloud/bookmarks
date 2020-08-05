@@ -4,6 +4,7 @@
     "%1$s bookmarked \"%2$s\"" : "%1$s přidal(a) „%2$s“ do záložek",
     "Someone bookmarked \"%s\"" : "Někdo přidal „%s“ do záložek",
     "You deleted \"%s\"" : "Smazali jste „%s“",
+    "%1$s deleted \"%2$s\"" : "%1$s smazal(a) „%2$s“",
     "Someone deleted \"%s\"" : "Někdo smazal „%s“",
     "You created folder \"%s\"" : "Vytvořili jste složku „%s“",
     "%1$s created folder \"%2$s\"" : "%1$s vytvořil(a) složku „%2$s“",

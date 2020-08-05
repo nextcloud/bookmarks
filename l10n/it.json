@@ -4,6 +4,7 @@
     "%1$s bookmarked \"%2$s\"" : "%1$s ha aggiunto un segnalibro di \"%2$s\"",
     "Someone bookmarked \"%s\"" : "Qualcuno ha aggiunto un segnalibro di \"%s\"",
     "You deleted \"%s\"" : "Hai eliminato \"%s\"",
+    "%1$s deleted \"%2$s\"" : "%1$s ha eliminato \"%2$s\"",
     "Someone deleted \"%s\"" : "Qualcuno ha eliminato \"%s\"",
     "You created folder \"%s\"" : "Hai creato la cartella \"%s\"",
     "%1$s created folder \"%2$s\"" : "%1$s ha creato la cartella \"%2$s\"",
