@@ -2,9 +2,13 @@
 
 namespace OCA\Bookmarks\Service;
 
+use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
+use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
+use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -121,13 +125,14 @@ class Authorizer {
 	 */
 	public function getPermissionsForFolder(int $folderId, $request): int {
 		$this->setCredentials($request);
+		$perms = self::PERM_NONE;
 		if (isset($this->userId)) {
-			return $this->getUserPermissionsForFolder($this->userId, $folderId);
+			$perms |= $this->getUserPermissionsForFolder($this->userId, $folderId);
 		}
 		if (isset($this->token)) {
-			return $this->getTokenPermissionsForFolder($this->token, $folderId);
+			$perms |= $this->getTokenPermissionsForFolder($this->token, $folderId);
 		}
-		return self::PERM_NONE;
+		return $perms;
 	}
 
 	/**
@@ -137,13 +142,14 @@ class Authorizer {
 	 */
 	public function getPermissionsForBookmark(int $bookmarkId, $request): int {
 		$this->setCredentials($request);
+		$perms = self::PERM_NONE;
 		if (isset($this->userId)) {
-			return $this->getUserPermissionsForBookmark($this->userId, $bookmarkId);
+			$perms |= $this->getUserPermissionsForBookmark($this->userId, $bookmarkId);
 		}
 		if (isset($this->token)) {
-			return $this->getTokenPermissionsForBookmark($this->token, $bookmarkId);
+			$perms |= $this->getTokenPermissionsForBookmark($this->token, $bookmarkId);
 		}
-		return self::PERM_NONE;
+		return $perms;
 	}
 
 	/**
@@ -180,6 +186,7 @@ class Authorizer {
 	 */
 	public function getUserPermissionsForBookmark(string $userId, int $bookmarkId): int {
 		try {
+			/** @var Bookmark $bookmark */
 			$bookmark = $this->bookmarkMapper->find($bookmarkId);
 		} catch (DoesNotExistException $e) {
 			return self::PERM_NONE;
@@ -190,6 +197,7 @@ class Authorizer {
 			return self::PERM_ALL;
 		}
 
+		/** @var Share[] $shares */
 		$shares = $this->shareMapper->findByOwnerAndUser($bookmark->getUserId(), $userId);
 		foreach ($shares as $share) {
 			if ($this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_BOOKMARK, $bookmarkId)) {
@@ -206,6 +214,7 @@ class Authorizer {
 	 */
 	public function getTokenPermissionsForBookmark(string $token, int $bookmarkId): int {
 		try {
+			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicMapper->find($token);
 		} catch (DoesNotExistException $e) {
 			return self::PERM_NONE;
@@ -224,10 +233,11 @@ class Authorizer {
 	 * @return int
 	 */
 	public function getUserPermissionsForFolder(string $userId, int $folderId): int {
-		if ($userId === -1) {
+		if ($folderId === -1) {
 			return self::PERM_ALL;
 		}
 		try {
+			/** @var Folder $folder */
 			$folder = $this->folderMapper->find($folderId);
 		} catch (DoesNotExistException $e) {
 			return self::PERM_NONE;
@@ -238,9 +248,10 @@ class Authorizer {
 			return self::PERM_ALL;
 		}
 
+		/** @var Share[] $shares */
 		$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $userId);
 		foreach ($shares as $share) {
-			if ($share->getFolderId() === $userId || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $folderId)) {
+			if ($share->getFolderId() === $folderId || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $folderId)) {
 				return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
 			}
 		}
@@ -254,6 +265,7 @@ class Authorizer {
 	 */
 	public function getTokenPermissionsForFolder(string $token, int $folderId): int {
 		try {
+			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicMapper->find($token);
 		} catch (DoesNotExistException $e) {
 			return self::PERM_NONE;
