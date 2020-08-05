@@ -9,8 +9,8 @@ use OCA\Bookmarks\Service\FaviconPreviewer;
 use OCP\IConfig;
 
 class PreviewsJob extends TimedJob {
-	const BATCH_SIZE = 250; // 500 bookmarks
-	const INTERVAL = 30; // 30 minutes
+	public const BATCH_SIZE = 250; // 500 bookmarks
+	public const INTERVAL = 30; // 30 minutes
 	/**
 	 * @var BookmarkPreviewer
 	 */
