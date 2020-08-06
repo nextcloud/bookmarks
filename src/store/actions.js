@@ -434,34 +434,32 @@ export default {
 				throw err
 			})
 	},
-	[actions.CREATE_FOLDER](
+	async [actions.CREATE_FOLDER](
 		{ commit, dispatch, state },
 		{ parentFolder, title }
 	) {
-		return axios
-			.post(url(state, '/folder'), {
+		try {
+			const response = await axios.post(url(state, '/folder'), {
 				parent_folder: parentFolder,
 				title,
 			})
-			.then(response => {
-				const {
-					data: { status },
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-				commit(mutations.DISPLAY_NEW_FOLDER, false)
-				dispatch(actions.LOAD_FOLDERS)
-				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create folder')
-				)
-				throw err
-			})
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.DISPLAY_NEW_FOLDER, false)
+			dispatch(actions.LOAD_FOLDERS)
+			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder || -1)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to create folder')
+			)
+			throw err
+		}
 	},
 	[actions.SAVE_FOLDER]({ commit, dispatch, state }, id) {
 		const folder = this.getters.getFolder(id)[0]
