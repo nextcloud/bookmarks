@@ -2,7 +2,7 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use OCA\Bookmarks\BackgroundJobs\PreviewsJob;
+use OCA\Bookmarks\BackgroundJobs\CrawlJob;
 use OC\BackgroundJob\JobList;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -16,7 +16,7 @@ class BackgroundJobTest extends TestCase {
 		parent::setUp();
 
 		$this->bookmarkMapper = \OC::$server->query(BookmarkMapper::class);
-		$this->previewsJob = \OC::$server->query(PreviewsJob::class);
+		$this->previewsJob = \OC::$server->query(CrawlJob::class);
 		$this->jobList = \OC::$server->query(JobList::class);
 		$this->userId = 'test';
 

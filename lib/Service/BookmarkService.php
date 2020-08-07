@@ -202,6 +202,9 @@ class BookmarkService {
 		 */
 		$bookmark = $this->bookmarkMapper->find($id);
 		if ($url !== null) {
+			if ($url !== $bookmark->getUrl()) {
+				$bookmark->setAvailable(true);
+			}
 			$bookmark->setUrl($url);
 		}
 		if ($title !== null) {
