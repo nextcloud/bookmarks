@@ -8,6 +8,19 @@ const config = {
 		'service-worker': path.join(__dirname, 'src', 'service-worker.js'),
 		flow: path.join(__dirname, 'src', 'flow.js'),
 	},
+	module: {
+		rules: [
+			{
+				test: /\.vue$/,
+				loader: 'vue-loader',
+			},
+		],
+	},
 }
 
-module.exports = merge(config, webpackConfig)
+const mergedConfigs = merge(config, webpackConfig)
+
+// Remove duplicate rules by the `test` key
+mergedConfigs.module.rules = mergedConfigs.module.rules.filter((v, i, a) => a.findIndex(t => (t.test.toString() === v.test.toString())) === i)
+
+module.exports = mergedConfigs

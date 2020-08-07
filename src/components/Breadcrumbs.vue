@@ -55,15 +55,12 @@
 				</ActionButton>
 			</Actions>
 			<Actions>
-				<ActionButton :icon="'icon-category-monitoring'" @click="openRssUrl">
-					{{ t('bookmarks', 'RSS Feed') }}
+				<ActionButton @click="openRssUrl">
+					<RssIcon /> {{ t('bookmarks', 'RSS Feed') }}
 				</ActionButton>
 			</Actions>
 			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
-				{{
-					selectionDescription
-				}}
-				<Actions>
+				<Actions :primary="true" :menu-title="selectionDescription">
 					<ActionButton icon="icon-category-files" @click="onBulkMove">
 						{{ t('bookmarks', 'Move selection') }}
 					</ActionButton>
@@ -90,12 +87,13 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
+import RssIcon from 'vue-material-design-icons/Rss'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
 
 export default {
 	name: 'Breadcrumbs',
-	components: { Multiselect, Actions, ActionButton, ActionSeparator },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator, RssIcon },
 	props: {},
 	data() {
 		return {

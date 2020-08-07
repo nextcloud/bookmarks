@@ -18,16 +18,18 @@
 				</AppNavigationItem>
 				<AppNavigationItem key="menu-recent"
 					:to="{ name: routes.RECENT }"
-					icon="icon-category-monitoring"
-					:title="t('bookmarks', 'Recent Bookmarks')" />
+					:title="t('bookmarks', 'Recent Bookmarks')">
+					<HistoryIcon slot="icon" :size="18" />
+				</AppNavigationItem>
 				<AppNavigationItem key="menu-untagged"
 					:to="{ name: routes.UNAVAILABLE }"
 					icon="icon-link"
 					:title="t('bookmarks', 'Unavailable')" />
 				<AppNavigationItem key="menu-untagged"
 					:to="{ name: routes.UNTAGGED }"
-					icon="icon-category-disabled"
-					:title="t('bookmarks', 'Untagged')" />
+					:title="t('bookmarks', 'Untagged')">
+					<TagOffIcon slot="icon" :size="18" />
+				</AppNavigationItem>
 				<AppNavigationSpacer />
 				<AppNavigationItem v-for="tag in tags"
 					:key="'tag-'+tag.name"
@@ -71,6 +73,8 @@ import AppNavigationCounter from '@nextcloud/vue/dist/Components/AppNavigationCo
 import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
 import AppNavigationSpacer from '@nextcloud/vue/dist/Components/AppNavigationSpacer'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import HistoryIcon from 'vue-material-design-icons/History'
+import TagOffIcon from 'vue-material-design-icons/TagOff'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
 import { actions, mutations } from '../store/'
@@ -87,6 +91,8 @@ export default {
 		ActionButton,
 		Settings,
 		ProgressBar,
+		HistoryIcon,
+		TagOffIcon,
 	},
 	data() {
 		return {}

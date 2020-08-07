@@ -44,8 +44,9 @@
 				<ActionButton icon="icon-rename" @click="onRename">
 					{{ t('bookmarks', 'Rename') }}
 				</ActionButton>
-				<ActionButton icon="icon-category-files" @click="onMove">
+				<ActionButton @click="onMove">
 					{{ t('bookmarks', 'Move') }}
+					<FolderMoveIcon #icon />
 				</ActionButton>
 				<ActionButton icon="icon-delete" @click="onDelete">
 					{{ t('bookmarks', 'Delete') }}
@@ -74,6 +75,7 @@
 import Vue from 'vue'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/'
@@ -85,6 +87,7 @@ export default {
 		Actions,
 		ActionButton,
 		TagLine,
+		FolderMoveIcon,
 	},
 	props: {
 		bookmark: {
