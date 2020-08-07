@@ -22,6 +22,8 @@ use OCP\AppFramework\Db\Entity;
  * @method setClickcount(int $count)
  * @method getLastPreview
  * @method setLastPreview(int $lastpreview)
+ * @method getAvailable
+ * @method setAvailable(boolean $available)
  * @method getUserId
  * @method setUserId(string $userId)
  */
@@ -35,9 +37,10 @@ class Bookmark extends Entity {
 	protected $lastmodified;
 	protected $clickcount;
 	protected $lastPreview;
+	protected $available;
 
-	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'user_id'];
-	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'userId'];
+	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'user_id'];
+	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'userId'];
 
 	public static function fromArray($props) {
 		$bookmark = new Bookmark();
@@ -58,6 +61,7 @@ class Bookmark extends Entity {
 		$this->addType('lastmodified', 'integer');
 		$this->addType('clickcount', 'integer');
 		$this->addType('lastPreview', 'integer');
+		$this->addType('available', 'boolean');
 	}
 
 	public function toArray(): array {

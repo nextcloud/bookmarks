@@ -35,6 +35,7 @@ Query bookmarks
    :query search[]: An array of words to search for in the following columns ``url``, ``title``, ``description``
    :query folder: Only return bookmarks that are direct children of the folder with the passed ID. The root folder has id ``-1``.
    :query url: Only return bookmarks with this URL. This will only ever return just one bookmark or none, because the app doesn't store duplicates. Thus, with this parameter you can test whether a URL exists in the user's bookmarks. This parameter cannot be mixed with the others.
+   :query unavailable: Only return bookmarks that are dead links, i.e. return 404 status codes or similar. This parameter cannot be mixed with the others.
 
    :>json string status: ``success`` or ``error``
    :>json array data: The list of resulting bookmarks

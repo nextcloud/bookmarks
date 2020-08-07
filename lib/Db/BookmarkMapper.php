@@ -218,6 +218,32 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @param string $userId
+	 * @param QueryParameters $params
+	 * @return array|Entity[]
+	 */
+	public function findUnavailable(string $userId, QueryParameters $params): array {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(array_map(static function ($col) {
+			return 'b.'.$col;
+		}, Bookmark::$columns));
+
+		$qb
+			->from('bookmarks', 'b')
+			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('tr.id', 'b.id'))
+			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
+			->where($qb->expr()->orX(
+				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
+			))
+			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
+
+		$this->_queryBuilderSortAndPaginate($qb, $params);
+
+		return $this->findEntities($qb);
+	}
+
+	/**
 	 * @param int $folderId
 	 * @param QueryParameters $params
 	 * @return array|Entity[]
