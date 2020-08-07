@@ -42,7 +42,7 @@
 					:options="allTags"
 					:multiple="true"
 					:taggable="true"
-					:placeholder="t('bookmarks', 'Select tags are create new ones')"
+					:placeholder="t('bookmarks', 'Select tags and create new ones')"
 					:disabled="!isEditable"
 					@input="onTagsChange"
 					@tag="onAddTag" />
