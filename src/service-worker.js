@@ -1,9 +1,11 @@
 'use strict'
 
+import { version } from '../package.json'
+
 const rev = '#1'
 
-const DYNAMIC_CACHE = 'dynamic-cache-v3.3.3' + rev
-const STATIC_CACHE = 'static-cache-v3.3.3' + rev
+const DYNAMIC_CACHE = `dynamic-cache-${version}` + rev
+const STATIC_CACHE = `static-cache-${version}` + rev
 const FILES_TO_CACHE = [
 	'./',
 ]
