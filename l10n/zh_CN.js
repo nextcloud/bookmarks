@@ -61,7 +61,6 @@ OC.L10N.register(
     "URL" : "超链接",
     "Creation date" : "创建日期",
     "Tags" : "标签",
-    "Select tags are create new ones" : "选择标签或创建新标签",
     "Notes" : "笔记",
     "Sharing" : "正在共享",
     "{time} ago" : "{time} 之前",

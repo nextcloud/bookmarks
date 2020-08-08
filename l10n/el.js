@@ -66,7 +66,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Creation date" : "Ημερομηνία δημιουργίας",
     "Tags" : "Ετικέτες",
-    "Select tags are create new ones" : "Επιλογή ετικετών με δημιουργία νεας ",
     "Notes" : "Σημειώσεις",
     "Sharing" : "Διαμοιρασμός",
     "{time} ago" : "{time} πριν",

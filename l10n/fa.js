@@ -54,7 +54,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Creation date" : "تاریخ ایجاد",
     "Tags" : "برچسب‌ها",
-    "Select tags are create new ones" : "برچسب های انتخاب شده ، موارد جدیدی ایجاد می کنند",
     "Notes" : "یادداشت ها",
     "Sharing" : "اشتراک گذاری",
     "{time} ago" : "{time} قبل",

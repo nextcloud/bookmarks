@@ -54,7 +54,6 @@ OC.L10N.register(
     "URL" : "Webbadress",
     "Creation date" : "Skapat datum",
     "Tags" : "Taggar",
-    "Select tags are create new ones" : "Välj taggar skapar nya",
     "Notes" : "Anteckning",
     "Sharing" : "Delning",
     "{time} ago" : "{time} sedan",

@@ -65,7 +65,6 @@ OC.L10N.register(
     "URL" : "כתובת",
     "Creation date" : "מועד יצירה",
     "Tags" : "תגיות",
-    "Select tags are create new ones" : "נא לבחור תגיות או ליצור חדשות",
     "Notes" : "הערות",
     "Sharing" : "שיתוף",
     "{time} ago" : "לפני {time}",

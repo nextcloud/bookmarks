@@ -54,7 +54,6 @@ OC.L10N.register(
     "URL" : "Retadreso",
     "Creation date" : "Krea dato",
     "Tags" : "Etikedoj",
-    "Select tags are create new ones" : "Elekti etikedojn aŭ krei novajn",
     "Notes" : "Notoj",
     "Sharing" : "Kunhavigo",
     "{time} ago" : "antaŭ {time}",

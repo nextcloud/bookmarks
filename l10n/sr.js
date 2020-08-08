@@ -66,7 +66,6 @@ OC.L10N.register(
     "URL" : "Адреса",
     "Creation date" : "Датум креирања",
     "Tags" : "Ознаке",
-    "Select tags are create new ones" : "Одаберите ознаке или креирајте нове",
     "Notes" : "Белешке",
     "Sharing" : "Дељење",
     "{time} ago" : "Пре {time}",

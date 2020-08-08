@@ -97,7 +97,6 @@ OC.L10N.register(
     "URL" : "URL adresa",
     "Creation date" : "Datum vytvoření",
     "Tags" : "Štítky",
-    "Select tags are create new ones" : "Vyberte štítky nebo vytvořte nové",
     "Notes" : "Poznámky",
     "Sharing" : "Sdílení",
     "{time} ago" : "před {time}",

@@ -73,7 +73,6 @@ OC.L10N.register(
     "URL" : "Naslov URL",
     "Creation date" : "Datum ustvarjanja",
     "Tags" : "Oznake",
-    "Select tags are create new ones" : "Izbor oznak in ustvarjanje novih",
     "Notes" : "Opombe",
     "Sharing" : "Souporaba",
     "{time} ago" : "pred {time}",

@@ -65,7 +65,6 @@ OC.L10N.register(
     "URL" : "Slóð (URL)",
     "Creation date" : "Upprunadagsetning",
     "Tags" : "Merki",
-    "Select tags are create new ones" : "Veldu merki eða útbúðu ný",
     "Notes" : "Minnispunktar",
     "Sharing" : "Deiling",
     "{time} ago" : "fyrir {time} síðan",

@@ -89,7 +89,6 @@ OC.L10N.register(
     "URL" : "URLa",
     "Creation date" : "Sorrera data",
     "Tags" : "Etiketak",
-    "Select tags are create new ones" : "Hautatu etiketak eta sortu berriak",
     "Notes" : "Oharrak",
     "Sharing" : "Partekatzea",
     "{time} ago" : "Duela {time}",

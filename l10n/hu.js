@@ -51,7 +51,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Creation date" : "Létrehozás dátuma",
     "Tags" : "Cimkék",
-    "Select tags are create new ones" : "Válasszon címkéket, vagy hozzon létre újakat",
     "Notes" : "Jegyzetek",
     "Sharing" : "Megosztás",
     "Owner" : "Tulajdonos",

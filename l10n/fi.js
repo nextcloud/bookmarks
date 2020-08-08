@@ -59,7 +59,6 @@ OC.L10N.register(
     "URL" : "URL-osoite",
     "Creation date" : "Luontipäivä",
     "Tags" : "Tunnisteet",
-    "Select tags are create new ones" : "Valitse tunnisteet tai luo uusia",
     "Notes" : "Muistiinpanot",
     "Sharing" : "Jakaminen",
     "{time} ago" : "{time} sitten",

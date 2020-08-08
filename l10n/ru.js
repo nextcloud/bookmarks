@@ -89,7 +89,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Creation date" : "Дата создания",
     "Tags" : "Метки",
-    "Select tags are create new ones" : "Выберите метки или создайте новые",
     "Notes" : "Заметки",
     "Sharing" : "Общий доступ",
     "{time} ago" : "{time} назад",

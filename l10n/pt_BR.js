@@ -90,7 +90,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Creation date" : "Data de criação",
     "Tags" : "Etiquetas",
-    "Select tags are create new ones" : "Selecione os rótulos ou crie novos",
     "Notes" : "Anotações",
     "Sharing" : "Compartilhando",
     "{time} ago" : "{time} atrás",

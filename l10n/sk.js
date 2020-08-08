@@ -89,7 +89,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Creation date" : "Dátum vytvorenia",
     "Tags" : "Štítky",
-    "Select tags are create new ones" : "Vybrané štítky sú novovytvorené",
     "Notes" : "Poznámky",
     "Sharing" : "Sprístupnenie",
     "{time} ago" : "Pred {time} ",

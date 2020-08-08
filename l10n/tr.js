@@ -89,7 +89,6 @@ OC.L10N.register(
     "URL" : "Adres",
     "Creation date" : "Oluşturulma tarihi",
     "Tags" : "İşaretler",
-    "Select tags are create new ones" : "Seçilmiş etiketler yeni eklenecek",
     "Notes" : "Notlar",
     "Sharing" : "Paylaşım",
     "{time} ago" : "{time} önce",

@@ -51,7 +51,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Creation date" : "Sukūrimo data",
     "Tags" : "Žymės",
-    "Select tags are create new ones" : "Pasirinkite žymes arba sukurkite naujas",
     "Notes" : "Pastabos",
     "Sharing" : "Bendrinimas",
     "{time} ago" : "Prieš {time}",

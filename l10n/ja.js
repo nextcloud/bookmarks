@@ -66,7 +66,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Creation date" : "作成日",
     "Tags" : "タグ",
-    "Select tags are create new ones" : "タグを選択もしくは新規作成",
     "Notes" : "メモ",
     "Sharing" : "共有中",
     "{time} ago" : "{time} 前",

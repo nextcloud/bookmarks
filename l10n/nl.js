@@ -66,7 +66,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Creation date" : "Aanmaakdatum",
     "Tags" : "Tags",
-    "Select tags are create new ones" : "Kies tags of maak een nieuwe",
     "Notes" : "Notities",
     "Sharing" : "Delen",
     "{time} ago" : "{time} geleden",
