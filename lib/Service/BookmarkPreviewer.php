@@ -76,7 +76,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 		$this->screenshotMachinePreviewer = $screenshotMachinePreviewer;
 		$this->pageresPreviewer = $pageresPreviewer;
 
-		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', false);
+		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', 'false');
 		$this->cache = $cache;
 	}
 

@@ -21,6 +21,10 @@
 					icon="icon-category-monitoring"
 					:title="t('bookmarks', 'Recent Bookmarks')" />
 				<AppNavigationItem key="menu-untagged"
+					:to="{ name: routes.UNAVAILABLE }"
+					icon="icon-link"
+					:title="t('bookmarks', 'Unavailable')" />
+				<AppNavigationItem key="menu-untagged"
 					:to="{ name: routes.UNTAGGED }"
 					icon="icon-category-disabled"
 					:title="t('bookmarks', 'Untagged')" />

@@ -238,14 +238,15 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param int $page
-	 * @param array $tags
+	 * @param null $tags
 	 * @param string $conjunction
 	 * @param string $sortby
 	 * @param array $search
 	 * @param int $limit
 	 * @param bool $untagged
-	 * @param int $folder
-	 * @param string $url
+	 * @param null $folder
+	 * @param null $url
+	 * @param null $unavailable
 	 * @return DataResponse
 	 *
 	 * @throws UrlParseError
@@ -263,7 +264,8 @@ class BookmarkController extends ApiController {
 		$limit = 10,
 		$untagged = false,
 		$folder = null,
-		$url = null
+		$url = null,
+		$unavailable = null
 	): DataResponse {
 		$this->registerResponder('rss', function (DataResponse $res) {
 			if ($res->getData()['status'] === 'success') {
@@ -354,7 +356,9 @@ class BookmarkController extends ApiController {
 		}
 
 		if ($this->authorizer->getUserId() !== null) {
-			if ($untagged) {
+			if ($unavailable !== null) {
+				$result = $this->bookmarkMapper->findUnavailable($this->authorizer->getUserId(), $params);
+			} elseif ($untagged) {
 				$result = $this->bookmarkMapper->findUntagged($this->authorizer->getUserId(), $params);
 			} elseif ($tagsOnly && count($filterTag) > 0) {
 				$result = $this->bookmarkMapper->findByTags($this->authorizer->getUserId(), $filterTag, $params);

@@ -28,6 +28,7 @@ return [
 		['name' => 'web_view#index', 'url' => '/bookmarks/{bookmark}', 'verb' => 'GET', 'postfix' => 'bookmark'],
 		['name' => 'web_view#index', 'url' => '/tags/{tags}', 'verb' => 'GET', 'postfix' => 'tags'],
 		['name' => 'web_view#index', 'url' => '/untagged', 'verb' => 'GET', 'postfix' => 'untagged'],
+		['name' => 'web_view#index', 'url' => '/unavailable', 'verb' => 'GET', 'postfix' => 'unavailable'],
 		['name' => 'web_view#index', 'url' => '/bookmarklet', 'verb' => 'GET', 'postfix' => 'bookmarklet'],
 		['name' => 'web_view#service_worker', 'url' => '/service-worker.js', 'verb' => 'GET'],
 		['name' => 'web_view#manifest', 'url' => '/manifest.webmanifest', 'verb' => 'GET'],
