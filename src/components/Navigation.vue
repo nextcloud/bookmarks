@@ -21,10 +21,11 @@
 					:title="t('bookmarks', 'Recent Bookmarks')">
 					<HistoryIcon slot="icon" :size="18" />
 				</AppNavigationItem>
-				<AppNavigationItem key="menu-untagged"
+				<AppNavigationItem key="menu-unavailable"
 					:to="{ name: routes.UNAVAILABLE }"
-					icon="icon-link"
-					:title="t('bookmarks', 'Unavailable')" />
+					:title="t('bookmarks', 'Unavailable')">
+					<LinkVariantOffIcon slot="icon" :size="18" />
+				</AppNavigationItem>
 				<AppNavigationItem key="menu-untagged"
 					:to="{ name: routes.UNTAGGED }"
 					:title="t('bookmarks', 'Untagged')">
@@ -75,6 +76,7 @@ import AppNavigationSpacer from '@nextcloud/vue/dist/Components/AppNavigationSpa
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import HistoryIcon from 'vue-material-design-icons/History'
 import TagOffIcon from 'vue-material-design-icons/TagOff'
+import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
 import { actions, mutations } from '../store/'
@@ -93,6 +95,7 @@ export default {
 		ProgressBar,
 		HistoryIcon,
 		TagOffIcon,
+		LinkVariantOffIcon,
 	},
 	data() {
 		return {}
@@ -132,3 +135,9 @@ export default {
 	},
 }
 </script>
+<style>
+.material-design-icon {
+  position: relative;
+  top: 2px;
+}
+</style>
