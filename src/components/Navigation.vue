@@ -137,7 +137,7 @@ export default {
 </script>
 <style>
 .material-design-icon {
-  position: relative;
-  top: 2px;
+	position: relative;
+	top: 2px;
 }
 </style>

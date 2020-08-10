@@ -5,7 +5,15 @@
 				:aria-label="t('bookmarks', 'Select folder')"
 				@click="clickSelect" />
 		</div>
-		<figure :class="{'folder__icon': true, 'shared': !isOwner && !isPublic || isSharedPublicly || isShared }" @click="onSelect" />
+		<FolderIcon fill-color="#0082c9" :class="'folder__icon'" @click="onSelect" />
+		<ShareVariantIcon v-if="(isShared || !isOwner) && !isSharedPublicly"
+			fill-color="#ffffff"
+			:class="['folder__icon', 'shared']"
+			@click="onSelect" />
+		<LinkVariantIcon v-if="isSharedPublicly"
+			fill-color="#ffffff"
+			:class="['folder__icon', 'public' ]"
+			@click="onSelect" />
 		<template v-if="!renaming">
 			<h3
 				class="folder__title"
@@ -15,7 +23,7 @@
 			</h3>
 
 			<div class="folder__tags">
-				<div v-if="!isOwner && !isPublic" class="folder__tag">
+				<div v-if="!isOwner && !isSharedPublicly" class="folder__tag">
 					{{ t('bookmarks', 'Shared by {user}', {user: folder.userId}) }}
 				</div>
 				<div v-if="isOwner && isShared" class="folder__tag">
@@ -59,6 +67,9 @@
 <script>
 import Vue from 'vue'
 import { getCurrentUser } from '@nextcloud/auth'
+import FolderIcon from 'vue-material-design-icons/Folder'
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant'
+import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import { actions, mutations } from '../store/'
@@ -68,6 +79,9 @@ export default {
 	components: {
 		Actions,
 		ActionButton,
+		FolderIcon,
+		LinkVariantIcon,
+		ShareVariantIcon,
 	},
 	props: {
 		folder: {
@@ -191,27 +205,28 @@ export default {
 	background-size: cover;
 	margin: 15px;
 	cursor: pointer;
-	background-image: url('/svg/core/filetypes/folder?color=0082c9'), url('/index.php/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
-	background-repeat: no-repeat;
-	background-position: center;
 }
 
-.folder__icon.shared {
-	background-image: var(--icon-share-fff), url('/svg/core/filetypes/folder?color=0082c9'), url('/index.php/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
-	background-size: 9px, cover, cover, cover !important;
-}
-
-.folder--gridview .folder__icon.shared {
-	background-size: 30px, cover, cover, cover !important;
+.folder__icon.shared, .folder__icon.public {
+	transform: scale(0.5);
+	position: absolute;
+	left: 35px;
+	top: 2px;
+	height:auto;
+	width:auto;
 }
 
 .folder--gridview .folder__icon {
-	height: 70px;
-	width: 70px;
 	background-size: cover;
 	position: absolute;
 	top: 20%;
 	left: calc(45% - 35px);
+	transform: scale(3);
+	transform-origin: top left;
+}
+
+.folder--gridview .folder__icon.shared, .folder--gridview .folder__icon.public {
+	transform: translate(100%, 90%);
 }
 
 .folder__title {
