@@ -2,7 +2,6 @@
 
 namespace OCA\Bookmarks\Activity;
 
-use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager;
@@ -207,16 +206,7 @@ class Provider implements IProvider {
 			$event->setLink($this->url->linkToRouteAbsolute('bookmarks.web_view.indexfolder', ['folder' => $event->getObjectId()]));
 		}
 		if ($event->getObjectType() === TreeMapper::TYPE_BOOKMARK && !str_contains($event->getSubject(), 'deleted')) {
-			/**
-			 * @var $folders Folder[]
-			 */
-			$folders = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $event->getObjectId());
-			$folders = array_filter($folders, function ($folder) {
-				return $folder->getUserId() === $this->activityManager->getCurrentUserId();
-			});
-			if (isset($folders[0])) {
-				$event->setLink($this->url->linkToRouteAbsolute('bookmarks.web_view.indexfolder', ['folder' => $folders[0]->getId()]));
-			}
+			$event->setLink($this->url->linkToRouteAbsolute('bookmarks.web_view.indexbookmark', ['bookmark' => $event->getObjectId()]));
 		}
 
 		return $event;
