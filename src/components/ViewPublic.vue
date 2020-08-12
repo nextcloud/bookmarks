@@ -47,11 +47,6 @@ export default {
 	},
 
 	async created() {
-		if (OCA.Search) {
-			// legacy search pre nc v20
-			this.search = new window.OCA.Search(this.onSearch, this.onResetSearch)
-		}
-
 		// this.search = new OCA.Search(this.onSearch, this.onResetSearch)
 		this.$store.commit(mutations.SET_AUTH_TOKEN, this.$route.params.token)
 		// set loading indicator

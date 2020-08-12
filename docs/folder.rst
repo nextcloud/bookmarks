@@ -481,6 +481,38 @@ Get folder's contents
       }
 
 
+Get folder's contents
+=====================
+
+.. get:: /public/rest/v2/folder/(int:folder_id)/count
+
+   :synopsis: Retrieve the number of bookmarks contained in this folder and all descendants
+
+   .. versionadded:: 3.4.0
+
+   :>json string status: ``success`` or ``error``
+   :>json int item: The number of descendant bookmarks
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      GET /index.php/apps/bookmarks/public/rest/v2/folder/5/count HTTP/1.1
+      Host: example.com
+      Accept: application/json
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "success",
+        "item": 512
+      }
+
 Get public token
 ================
 

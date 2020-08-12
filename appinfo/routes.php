@@ -84,6 +84,7 @@ return [
 		['name' => 'bookmark#delete_bookmark', 'url' => '/public/rest/v2/bookmark/{id}', 'verb' => 'DELETE'],
 		['name' => 'bookmark#get_bookmark_image', 'url' => '/public/rest/v2/bookmark/{id}/image', 'verb' => 'GET'],
 		['name' => 'bookmark#get_bookmark_favicon', 'url' => '/public/rest/v2/bookmark/{id}/favicon', 'verb' => 'GET'],
+		['name' => 'bookmark#count_bookmarks', 'url' => '/public/rest/v2/folder/{folder}/count', 'verb' => 'GET'],
 		['name' => 'tags#full_tags', 'url' => '/public/rest/v2/tag', 'verb' => 'GET'],
 		['name' => 'tags#rename_tag', 'url' => '/public/rest/v2/tag', 'verb' => 'POST'],
 		['name' => 'tags#delete_tag', 'url' => '/public/rest/v2/tag', 'verb' => 'DELETE'],
