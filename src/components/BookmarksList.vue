@@ -9,7 +9,7 @@
 		<CreateFolder v-if="newFolder" />
 		<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
 			<!-- FOLDER VIEW WITH CUSTOM SORTING -->
-			<template v-if="sortOrder === 'index'">
+			<template v-if="sortOrder === 'index' && children.length">
 				<template v-for="item in children">
 					<Folder
 						v-if="item.type === 'folder' && getFolder(item.id)"
@@ -22,7 +22,7 @@
 				</template>
 			</template>
 			<!-- FOLDER VIEW WITH NORMAL SORTING -->
-			<template v-else>
+			<template v-else-if="subFolders.length || bookmarks.length">
 				<Folder
 					v-for="folder in subFolders"
 					:key="'folder' + folder.id"
@@ -34,6 +34,7 @@
 						:bookmark="bookmark" />
 				</template>
 			</template>
+			<NoBookmarks v-else-if="!loading" />
 		</template>
 		<!-- NON-FOLDER VIEW -->
 		<template v-else-if="bookmarks.length">
@@ -42,12 +43,7 @@
 				:key="'bookmark' + bookmark.id"
 				:bookmark="bookmark" />
 		</template>
-		<div
-			v-else-if="!loading && !bookmarks.length && !subFolders.length"
-			class="bookmarkslist__empty">
-			<h2>{{ t('bookmarks', 'No bookmarks here') }}</h2>
-			<p>{{ t('bookmarks', 'Try changing your query or add some using the button on the left.') }}</p>
-		</div>
+		<NoBookmarks v-else-if="!loading" />
 		<div v-if="loading" class="bookmarkslist__loading">
 			<figure class="icon-loading" />
 		</div>
@@ -60,10 +56,12 @@ import Folder from './Folder'
 import CreateBookmark from './CreateBookmark'
 import CreateFolder from './CreateFolder'
 import { actions } from '../store'
+import NoBookmarks from './NoBookmarks'
 
 export default {
 	name: 'BookmarksList',
 	components: {
+		NoBookmarks,
 		Bookmark,
 		Folder,
 		CreateBookmark,
