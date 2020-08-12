@@ -61,7 +61,7 @@ class Provider implements IProvider {
 		$subjectParameters = $event->getSubjectParameters();
 
 		$isSharee = $event->getAffectedUser() === $this->activityManager->getCurrentUserId();
-		$sharee = $subjectParameters['sharee'] ? $this->userManager->get($subjectParameters['sharee']) : null;
+		$sharee = isset($subjectParameters['sharee']) ? $this->userManager->get($subjectParameters['sharee']) : null;
 		if ($sharee !== null) {
 			$shareeName = $sharee->getDisplayName();
 		} else {
