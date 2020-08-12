@@ -524,7 +524,7 @@ export default {
 				}
 				const oldParent = folder.parent_folder
 				folder.parent_folder = folderId
-				await dispatch(actions.SAVE_FOLDER, folder.id)
+				await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
 				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldParent)
 			}
 			await dispatch(actions.LOAD_FOLDERS)
@@ -536,6 +536,10 @@ export default {
 					bookmark: bookmark.id,
 				})
 			}
+
+			// Because we're possibly moving across share boundaries we need to recount
+			await dispatch(actions.COUNT_BOOKMARKS, -1)
+
 			commit(mutations.FETCH_END, 'moveSelection')
 		} catch (err) {
 			console.error(err)
