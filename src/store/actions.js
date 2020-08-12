@@ -238,8 +238,8 @@ export default {
 					throw new Error(response.data)
 				}
 				commit(mutations.REMOVE_BOOKMARK, id)
-				commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: Math.max(0, state.countsByFolder[-1] - 1) })
-				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+				await dispatch(actions.COUNT_BOOKMARKS, -1)
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
 			} catch (err) {
 				console.error(err)
 				commit(
@@ -255,7 +255,8 @@ export default {
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
-			commit(mutations.REMOVE_BOOKMARK, id)
+			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			await commit(mutations.REMOVE_BOOKMARK, id)
 		} catch (err) {
 			console.error(err)
 			commit(
@@ -461,33 +462,32 @@ export default {
 			throw err
 		}
 	},
-	[actions.SAVE_FOLDER]({ commit, dispatch, state }, id) {
+	async [actions.SAVE_FOLDER]({ commit, dispatch, state }, id) {
 		const folder = this.getters.getFolder(id)[0]
 		commit(mutations.FETCH_START, { type: 'saveFolder' })
-		return axios
-			.put(url(state, `/folder/${id}`), {
+		try {
+			const response = await axios.put(url(state, `/folder/${id}`), {
 				parent_folder: folder.parent_folder,
 				title: folder.title,
 			})
-			.then(response => {
-				const {
-					data: { status },
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-				commit(mutations.FETCH_END, 'saveFolder')
-				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder.parent_folder)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(mutations.FETCH_END, 'saveFolder')
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create folder')
-				)
-				throw err
-			})
+
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder.parent_folder)
+			commit(mutations.FETCH_END, 'saveFolder')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'saveFolder')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to create folder')
+			)
+			throw err
+		}
 	},
 	async [actions.LOAD_FOLDER_CHILDREN_ORDER]({ commit, dispatch, state }, id) {
 		commit(mutations.FETCH_START, { type: 'childrenOrder' })
@@ -525,8 +525,9 @@ export default {
 				const oldParent = folder.parent_folder
 				folder.parent_folder = folderId
 				await dispatch(actions.SAVE_FOLDER, folder.id)
-				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldParent)
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldParent)
 			}
+			await dispatch(actions.LOAD_FOLDERS)
 
 			for (const bookmark of state.selection.bookmarks) {
 				await dispatch(actions.MOVE_BOOKMARK, {
