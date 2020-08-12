@@ -413,27 +413,26 @@ export default {
 				throw err
 			})
 	},
-	[actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
-		return axios
-			.delete(url(state, `/folder/${id}`))
-			.then(response => {
-				const {
-					data: { status },
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-				dispatch(actions.LOAD_FOLDERS)
-				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, this.getters.getFolder(id)[0].parent_folder)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
-				)
-				throw err
-			})
+	async [actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
+		try {
+			const response = await axios.delete(url(state, `/folder/${id}`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			const parentFolder = this.getters.getFolder(id)[0].parent_folder
+			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder)
+			await dispatch(actions.LOAD_FOLDERS)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
+			)
+			throw err
+		}
 	},
 	async [actions.CREATE_FOLDER](
 		{ commit, dispatch, state },
@@ -451,8 +450,8 @@ export default {
 				throw new Error(response.data)
 			}
 			commit(mutations.DISPLAY_NEW_FOLDER, false)
-			dispatch(actions.LOAD_FOLDERS)
-			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder || -1)
+			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder || -1)
+			await dispatch(actions.LOAD_FOLDERS)
 		} catch (err) {
 			console.error(err)
 			commit(
@@ -500,8 +499,8 @@ export default {
 			if (status !== 'success') {
 				throw new Error(response.data)
 			}
-			commit(mutations.FETCH_END, 'childrenOrder')
-			commit(mutations.SET_FOLDER_CHILDREN_ORDER, { folderId: id, children: response.data.data })
+			await commit(mutations.FETCH_END, 'childrenOrder')
+			await commit(mutations.SET_FOLDER_CHILDREN_ORDER, { folderId: id, children: response.data.data })
 		} catch (err) {
 			console.error(err)
 			commit(mutations.FETCH_END, 'childrenOrder')

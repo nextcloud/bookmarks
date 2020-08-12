@@ -12,7 +12,7 @@
 			<template v-if="sortOrder === 'index'">
 				<template v-for="item in children">
 					<Folder
-						v-if="item.type === 'folder'"
+						v-if="item.type === 'folder' && getFolder(item.id)"
 						:key="item.type + item.id"
 						:folder="getFolder(item.id)" />
 					<Bookmark
