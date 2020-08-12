@@ -11,7 +11,3 @@ export default {
 	name: 'NoBookmarks',
 }
 </script>
-
-<style scoped>
-
-</style>
