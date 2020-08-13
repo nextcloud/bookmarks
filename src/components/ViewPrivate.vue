@@ -66,11 +66,12 @@ export default {
 		}
 		// set loading indicator
 		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
+
+		this.reloadTags()
+		this.reloadCount()
 		await Promise.all([
 			this.reloadSettings(),
-			this.reloadTags(),
 			this.reloadFolders(),
-			this.reloadCount(),
 		])
 		this.onRoute()
 	},
