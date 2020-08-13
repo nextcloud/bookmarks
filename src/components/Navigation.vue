@@ -1,62 +1,61 @@
 <template>
 	<AppNavigation class="navigation">
+		<AppNavigationNew
+			v-if="!isPublic"
+			:text="t('bookmarks', 'New Bookmark')"
+			:disabled="false"
+			button-class="icon-add"
+			@click="onNewBookmark" />
 		<template #list>
-			<AppNavigationNew
-				v-if="!isPublic"
-				:text="t('bookmarks', 'New Bookmark')"
-				:disabled="false"
-				button-class="icon-add"
-				@click="onNewBookmark" />
-			<ul>
-				<AppNavigationItem key="menu-home"
-					:to="{ name: routes.HOME }"
-					icon="icon-home"
-					:title="t('bookmarks', 'All Bookmarks')">
-					<AppNavigationCounter slot="counter">
-						{{ allBookmarksCount }}
-					</AppNavigationCounter>
-				</AppNavigationItem>
-				<AppNavigationItem key="menu-recent"
-					:to="{ name: routes.RECENT }"
-					:title="t('bookmarks', 'Recent Bookmarks')">
-					<HistoryIcon slot="icon" :size="18" />
-				</AppNavigationItem>
-				<AppNavigationItem key="menu-unavailable"
-					:to="{ name: routes.UNAVAILABLE }"
-					:title="t('bookmarks', 'Unavailable')">
-					<LinkVariantOffIcon slot="icon" :size="18" />
-				</AppNavigationItem>
-				<AppNavigationItem key="menu-untagged"
-					:to="{ name: routes.UNTAGGED }"
-					:title="t('bookmarks', 'Untagged')">
-					<TagOffIcon slot="icon" :size="18" />
-				</AppNavigationItem>
-				<AppNavigationSpacer />
-				<AppNavigationItem v-for="tag in tags"
-					:key="'tag-'+tag.name"
-					icon="icon-tag"
-					:to="tag.route"
-					:force-menu="true"
-					:edit-label="t('bookmarks', 'Rename')"
-					:editable="!isPublic"
-					:title="tag.name"
-					@update:title="onRenameTag(tag.name, $event)">
-					<AppNavigationCounter slot="counter">
-						{{ tag.count }}
-					</AppNavigationCounter>
-					<template v-if="!isPublic" slot="actions">
-						<ActionButton icon="icon-delete" @click="onDeleteTag(tag.name)">
-							{{ t('bookmarks', 'Delete') }}
-						</ActionButton>
-					</template>
-				</AppNavigationItem>
-				<template v-if="Number(bookmarksLimit) > 0">
-					<AppNavigationSpacer />
-					<AppNavigationItem :pinned="true" icon="icon-quota" :title="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
-						<ProgressBar :val="allBookmarksCount" :max="bookmarksLimit" />
-					</AppNavigationItem>
+			<AppNavigationItem key="menu-home"
+				:to="{ name: routes.HOME }"
+				icon="icon-home"
+				:title="t('bookmarks', 'All Bookmarks')"
+				:exact="true">
+				<AppNavigationCounter slot="counter">
+					{{ allBookmarksCount }}
+				</AppNavigationCounter>
+			</AppNavigationItem>
+			<AppNavigationItem key="menu-recent"
+				:to="{ name: routes.RECENT }"
+				:title="t('bookmarks', 'Recent Bookmarks')">
+				<HistoryIcon slot="icon" :size="18" />
+			</AppNavigationItem>
+			<AppNavigationItem key="menu-unavailable"
+				:to="{ name: routes.UNAVAILABLE }"
+				:title="t('bookmarks', 'Unavailable')">
+				<LinkVariantOffIcon slot="icon" :size="18" />
+			</AppNavigationItem>
+			<AppNavigationItem key="menu-untagged"
+				:to="{ name: routes.UNTAGGED }"
+				:title="t('bookmarks', 'Untagged')">
+				<TagOffIcon slot="icon" :size="18" />
+			</AppNavigationItem>
+			<AppNavigationSpacer />
+			<AppNavigationItem v-for="tag in tags"
+				:key="'tag-'+tag.name"
+				icon="icon-tag"
+				:to="tag.route"
+				:force-menu="true"
+				:edit-label="t('bookmarks', 'Rename')"
+				:editable="!isPublic"
+				:title="tag.name"
+				@update:title="onRenameTag(tag.name, $event)">
+				<AppNavigationCounter slot="counter">
+					{{ tag.count }}
+				</AppNavigationCounter>
+				<template v-if="!isPublic" slot="actions">
+					<ActionButton icon="icon-delete" @click="onDeleteTag(tag.name)">
+						{{ t('bookmarks', 'Delete') }}
+					</ActionButton>
 				</template>
-			</ul>
+			</AppNavigationItem>
+			<template v-if="Number(bookmarksLimit) > 0">
+				<AppNavigationSpacer />
+				<AppNavigationItem :pinned="true" icon="icon-quota" :title="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
+					<ProgressBar :val="allBookmarksCount" :max="bookmarksLimit" />
+				</AppNavigationItem>
+			</template>
 		</template>
 		<template #footer>
 			<AppNavigationSettings v-if="!isPublic">
