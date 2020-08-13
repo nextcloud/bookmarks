@@ -1,5 +1,5 @@
 <template>
-	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected,}">
+	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected,}" @click="onSelect">
 		<div v-if="isEditable" class="folder__checkbox">
 			<input v-model="selected" class="checkbox" type="checkbox"><label
 				:aria-label="t('bookmarks', 'Select folder')"
@@ -8,13 +8,11 @@
 		<FolderIcon fill-color="#0082c9" :class="'folder__icon'" @click="onSelect" />
 		<ShareVariantIcon v-if="(isShared || !isOwner) || isSharedPublicly"
 			fill-color="#ffffff"
-			:class="['folder__icon', 'shared']"
-			@click="onSelect" />
+			:class="['folder__icon', 'shared']" />
 		<template v-if="!renaming">
 			<h3
 				class="folder__title"
-				:title="folder.title"
-				@click="onSelect">
+				:title="folder.title">
 				{{ folder.title }}
 			</h3>
 
@@ -24,7 +22,7 @@
 				</div>
 			</div>
 			<div v-if="count" class="folder__count folder__tag" v-text="count" />
-			<Actions v-if="isEditable" class="folder__actions">
+			<Actions v-if="isEditable" ref="actions" class="folder__actions">
 				<ActionButton icon="icon-info" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
 				</ActionButton>
@@ -137,8 +135,10 @@ export default {
 			this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
-		onSelect() {
+		onSelect(e) {
+			if (this.$refs.actions.$el.contains(e.target)) return
 			this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
+			e.preventDefault()
 		},
 		async onRename() {
 			this.renaming = true
@@ -150,12 +150,13 @@ export default {
 			this.$store.dispatch(actions.SAVE_FOLDER, this.folder.id)
 			this.renaming = false
 		},
-		clickSelect() {
+		clickSelect(e) {
 			if (!this.selected) {
 				this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
 			} else {
 				this.$store.commit(mutations.REMOVE_SELECTION_FOLDER, this.folder)
 			}
+			e.stopPropagation()
 		},
 	},
 }
