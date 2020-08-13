@@ -26,12 +26,12 @@
 				:title="t('bookmarks', 'Unavailable')">
 				<LinkVariantOffIcon slot="icon" :size="18" />
 			</AppNavigationItem>
+			<AppNavigationSpacer />
 			<AppNavigationItem key="menu-untagged"
 				:to="{ name: routes.UNTAGGED }"
 				:title="t('bookmarks', 'Untagged')">
 				<TagOffIcon slot="icon" :size="18" />
 			</AppNavigationItem>
-			<AppNavigationSpacer />
 			<AppNavigationItem v-for="tag in tags"
 				:key="'tag-'+tag.name"
 				icon="icon-tag"
