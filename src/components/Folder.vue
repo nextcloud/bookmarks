@@ -6,13 +6,9 @@
 				@click="clickSelect" />
 		</div>
 		<FolderIcon fill-color="#0082c9" :class="'folder__icon'" @click="onSelect" />
-		<ShareVariantIcon v-if="(isShared || !isOwner) && !isSharedPublicly"
+		<ShareVariantIcon v-if="(isShared || !isOwner) || isSharedPublicly"
 			fill-color="#ffffff"
 			:class="['folder__icon', 'shared']"
-			@click="onSelect" />
-		<LinkVariantIcon v-if="isSharedPublicly"
-			fill-color="#ffffff"
-			:class="['folder__icon', 'public' ]"
 			@click="onSelect" />
 		<template v-if="!renaming">
 			<h3
@@ -26,13 +22,8 @@
 				<div v-if="!isOwner && !isSharedPublicly" class="folder__tag">
 					{{ t('bookmarks', 'Shared by {user}', {user: folder.userId}) }}
 				</div>
-				<div v-if="isOwner && isShared" class="folder__tag">
-					{{ t('bookmarks','Shared privately') }}
-				</div>
-				<div v-if="isSharedPublicly" class="folder__tag">
-					{{ t('bookmarks', 'Public') }}
-				</div>
 			</div>
+			<div v-if="count" class="folder__count folder__tag" v-text="count" />
 			<Actions v-if="isEditable" class="folder__actions">
 				<ActionButton icon="icon-info" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
@@ -69,7 +60,6 @@ import Vue from 'vue'
 import { getCurrentUser } from '@nextcloud/auth'
 import FolderIcon from 'vue-material-design-icons/Folder'
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant'
-import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import { actions, mutations } from '../store/'
@@ -80,7 +70,6 @@ export default {
 		Actions,
 		ActionButton,
 		FolderIcon,
-		LinkVariantIcon,
 		ShareVariantIcon,
 	},
 	props: {
@@ -126,6 +115,9 @@ export default {
 		},
 		selected() {
 			return this.selectedFolders.map(f => f.id).includes(this.folder.id)
+		},
+		count() {
+			return this.$store.state.countsByFolder[this.folder.id] > 99 ? '99+' : this.$store.state.countsByFolder[this.folder.id] || ''
 		},
 	},
 	created() {
@@ -207,7 +199,7 @@ export default {
 	cursor: pointer;
 }
 
-.folder__icon.shared, .folder__icon.public {
+.folder__icon.shared {
 	transform: scale(0.5);
 	position: absolute;
 	left: 35px;
@@ -225,7 +217,7 @@ export default {
 	transform-origin: top left;
 }
 
-.folder--gridview .folder__icon.shared, .folder--gridview .folder__icon.public {
+.folder--gridview .folder__icon.shared {
 	transform: translate(100%, 90%);
 }
 
@@ -268,8 +260,22 @@ export default {
 	background-color: var(--color-primary-light);
 }
 
+.folder__count {
+	font-size: 12px;
+	height: 24px;
+	line-height: 1;
+	overflow: hidden;
+}
+
+.folder--gridview .folder__count {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
 .folder__actions {
 	flex: 0;
+	padding: 4px 0;
 }
 
 .folder__title input {
