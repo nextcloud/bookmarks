@@ -1,5 +1,5 @@
 <template>
-	<AppNavigation>
+	<AppNavigation class="navigation">
 		<template #list>
 			<AppNavigationNew
 				v-if="!isPublic"
@@ -136,7 +136,7 @@ export default {
 }
 </script>
 <style>
-.material-design-icon {
+.navigation .material-design-icon {
 	position: relative;
 	top: 2px;
 }
