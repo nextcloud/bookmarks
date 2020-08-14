@@ -1,33 +1,38 @@
 <template>
-	<div :class="['breadcrumbs', isPublic && 'wide']">
-		<div class="breadcrumbs__path">
-			<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
-			<span class="icon-breadcrumb" />
-			<template v-if="$route.name === routes.FOLDER">
-				<template v-for="folder in folderPath">
-					<a
-						:key="'a' + folder.id"
-						href="#"
-						@click.prevent="onSelectFolder(folder.id)">{{ folder.title }}</a>
-					<span :key="'b' + folder.id" class="icon-breadcrumb" />
+	<div :class="['controls', isPublic && 'wide']">
+		<div class="controls__left">
+			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME || $route.name === routes.TAGS">
+				<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
+					<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
+					<span class="icon-breadcrumb" />
+				</template>
+				<template v-if="$route.name === routes.FOLDER">
+					<template v-for="folder in folderPath">
+						<a
+							:key="'a' + folder.id"
+							href="#"
+							@click.prevent="onSelectFolder(folder.id)">{{ folder.title }}</a>
+						<span :key="'b' + folder.id" class="icon-breadcrumb" />
+					</template>
+				</template>
+				<template v-if="$route.name === routes.TAGS">
+					<span class="icon-tag" />
+					<Multiselect
+						class="controls__tags"
+						:value="tags"
+						:auto-limit="false"
+						:limit="7"
+						:options="allTags"
+						:multiple="true"
+						:placeholder="t('bookmarks', 'Select one or more tags')"
+						@input="onTagsChange" />
 				</template>
 			</template>
-			<template v-if="$route.name === routes.TAGS">
-				<span class="icon-tag" />
-				<Multiselect
-					class="breadcrumbs__tags"
-					:value="tags"
-					:auto-limit="false"
-					:limit="7"
-					:options="allTags"
-					:multiple="true"
-					:placeholder="t('bookmarks', 'Select one or more tags')"
-					@input="onTagsChange" />
-			</template>
 			<Actions
-				v-if="($route.name === routes.FOLDER || $route.name === routes.HOME) && !isPublic"
-				class="breadcrumbs__AddFolder"
-				icon="icon-add">
+				v-if="!isPublic"
+				class="controls__AddFolder"
+				:title="t('bookmarks', 'New')"
+				:icon="'icon-add'">
 				<ActionButton
 					icon="icon-link"
 					@click="onAddBookmark">
@@ -41,8 +46,19 @@
 					{{ t('bookmarks', 'New folder') }}
 				</ActionButton>
 			</Actions>
+			<Actions
+				v-if="$route.name !== routes.TAGS"
+				class="controls__toggleTags">
+				<ActionButton
+					icon="icon-tag"
+					@click="$router.push({name: routes.TAGS})">
+					{{
+						t('bookmarks', 'Filter by tags')
+					}}
+				</ActionButton>
+			</Actions>
 		</div>
-		<div class="breadcrumbs__controls">
+		<div class="controls__right">
 			<Actions>
 				<ActionButton
 					:icon="
@@ -59,7 +75,7 @@
 					{{ t('bookmarks', 'RSS Feed') }}
 				</ActionButton>
 			</Actions>
-			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
+			<div v-if="hasSelection" class="controls__bulkediting">
 				{{
 					selectionDescription
 				}}
@@ -94,7 +110,7 @@ import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
 
 export default {
-	name: 'Breadcrumbs',
+	name: 'Controls',
 	components: { Multiselect, Actions, ActionButton, ActionSeparator },
 	props: {},
 	data() {
@@ -223,7 +239,7 @@ export default {
 }
 </script>
 <style>
-.breadcrumbs {
+.controls {
 	padding: 0 8px 0 44px;
 	display: flex;
 	position: absolute;
@@ -234,57 +250,57 @@ export default {
 	top: 0;
 }
 
-.breadcrumbs + * {
+.controls + * {
 	margin-top: 50px;
 }
 
-.breadcrumbs__path {
+.controls__left {
 	display: flex;
 	align-items: center;
 	flex: 0;
 }
 
-.breadcrumbs__path > * {
+.controls__left > * {
 	display: inline-block;
 	height: 30px;
 	padding: 5px 7px;
 	flex-shrink: 0;
 }
 
-.breadcrumbs__path > *:not(.icon-breadcrumb) {
+.controls__left > *:not(.icon-breadcrumb) {
 	min-width: 30px;
 	opacity: 0.7;
 }
 
-.breadcrumbs__path > *:hover {
+.controls__left > *:hover {
 	opacity: 1;
 }
 
-.breadcrumbs__tags {
+.controls__tags {
 	width: 300px;
 	flex: 1;
 }
 
-.breadcrumbs__tags .multiselect__tags {
+.controls__tags .multiselect__tags {
 	border-top: none !important;
 	border-left: none !important;
 	border-right: none !important;
 }
 
-.breadcrumbs__AddFolder {
+.controls__AddFolder {
 	margin-left: 5px;
 	padding: 0;
 	margin-top: -10px;
 }
 
-.breadcrumbs__controls {
+.controls__right {
 	flex: 2;
 	display: flex;
 	flex-direction: row-reverse;
 	padding: 0;
 }
 
-.breadcrumbs__controls > * {
+.controls__right > * {
 	min-width: 30px;
 }
 </style>

@@ -2,7 +2,7 @@
 	<Content app-name="bookmarks">
 		<Navigation />
 		<AppContent>
-			<Breadcrumbs />
+			<Controls />
 			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
 		<SidebarBookmark />
@@ -16,7 +16,7 @@ import Content from '@nextcloud/vue/dist/Components/Content'
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import Navigation from './Navigation'
 import BookmarksList from './BookmarksList'
-import Breadcrumbs from './Breadcrumbs'
+import Controls from './Controls'
 import SidebarBookmark from './SidebarBookmark'
 import SidebarFolder from './SidebarFolder'
 import MoveDialog from './MoveDialog'
@@ -29,7 +29,7 @@ export default {
 		Navigation,
 		Content,
 		AppContent,
-		Breadcrumbs,
+		Controls,
 		BookmarksList,
 		SidebarBookmark,
 		SidebarFolder,
