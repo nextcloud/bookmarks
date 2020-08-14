@@ -360,7 +360,9 @@ class BookmarkController extends ApiController {
 				$result = $this->bookmarkMapper->findUnavailable($this->authorizer->getUserId(), $params);
 			} elseif ($untagged) {
 				$result = $this->bookmarkMapper->findUntagged($this->authorizer->getUserId(), $params);
-			} elseif ($tagsOnly && count($filterTag) > 0) {
+			} elseif ($tagsOnly && count($filterTag) === 1) {
+				$result = $this->bookmarkMapper->findByTag($this->authorizer->getUserId(), $filterTag[0], $params);
+			} elseif ($tagsOnly && count($filterTag) > 1) {
 				$result = $this->bookmarkMapper->findByTags($this->authorizer->getUserId(), $filterTag, $params);
 			} else {
 				$result = $this->bookmarkMapper->findAll($this->authorizer->getUserId(), $filterTag, $params);
