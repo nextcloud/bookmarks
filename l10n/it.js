@@ -73,6 +73,7 @@ OC.L10N.register(
     "New Bookmark" : "Nuovo segnalibro",
     "All Bookmarks" : "Tutti i segnalibri",
     "Recent Bookmarks" : "Segnalibri recenti",
+    "Unavailable" : "Non disponibile",
     "Untagged" : "Non etichettati",
     "{used} bookmarks of {available} available" : "{used} segnalibri di {available} disponibili",
     "No bookmarks here" : "Nessun segnalibro qui",

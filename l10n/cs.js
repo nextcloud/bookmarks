@@ -73,6 +73,7 @@ OC.L10N.register(
     "New Bookmark" : "Nová záložka",
     "All Bookmarks" : "Všechny záložky",
     "Recent Bookmarks" : "Nedávné záložky",
+    "Unavailable" : "Není dostupné",
     "Untagged" : "Neoštítkováno",
     "{used} bookmarks of {available} available" : "{used} záložek z {available} k dispozici",
     "No bookmarks here" : "Nejsou zde žádné záložky",

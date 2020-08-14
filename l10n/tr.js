@@ -73,6 +73,7 @@ OC.L10N.register(
     "New Bookmark" : "Yeni Yer İmi",
     "All Bookmarks" : "Tüm Yer İmleri",
     "Recent Bookmarks" : "Son Kullanılan Yer İmleri",
+    "Unavailable" : "Kullanılamıyor",
     "Untagged" : "Etiketlenmemiş",
     "{used} bookmarks of {available} available" : "{used} yer imi {available} kullanılabilir",
     "No bookmarks here" : "Burada herhangi bir yer imi yok",

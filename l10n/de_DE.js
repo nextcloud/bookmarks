@@ -73,6 +73,7 @@ OC.L10N.register(
     "New Bookmark" : "Neues Lesezeichen",
     "All Bookmarks" : "Alle Lesezeichen",
     "Recent Bookmarks" : "Aktuelle Lesezeichen",
+    "Unavailable" : "Nicht verfügbar",
     "Untagged" : "Kein Schlagwort",
     "{used} bookmarks of {available} available" : "{used} Lesezeichen von {available} verfügbaren",
     "No bookmarks here" : "Keine Lesezeichen vorhanden",
