@@ -43,6 +43,16 @@ class Provider implements IProvider {
 		return $this->l->t('Bookmarks');
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public function getOrder(string $route, array $routeParameters): int {
+		if ($route === 'bookmarks.WebView.index') {
+			return -1;
+		}
+		return 20;
+	}
+
 	public function search(IUser $user, ISearchQuery $query): SearchResult {
 		$params = new QueryParameters();
 		$params->setLimit($query->getLimit());
@@ -50,8 +60,9 @@ class Provider implements IProvider {
 		$bookmarks = $this->bookmarkMapper->findAll($user->getUID(), explode(' ', $query->getTerm()), $params);
 
 		$results = array_map(function (Bookmark $bookmark) {
-			$favicon = $this->url->linkToRouteAbsolute('bookmarks.web_view.indexbookmark', ['bookmark' => $bookmark->getId()]);
-			return new SearchResultEntry($favicon, $bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getUrl());
+			$favicon = $this->url->linkToRouteAbsolute('bookmarks.internal_bookmark_controller.get_bookmark_favicon', ['id' => $bookmark->getId()]);
+			$resourceUrl = $this->url->linkToRouteAbsolute('bookmarks.web_view.indexbookmark', ['bookmark' => $bookmark->getId()]);
+			return new SearchResultEntry($favicon, $bookmark->getTitle(), $bookmark->getUrl(), $resourceUrl);
 		}, $bookmarks);
 
 		return SearchResult::paginated($this->getName(), $results, $params->getLimit()+$params->getOffset());
