@@ -42,6 +42,7 @@ export const actions = {
 	FILTER_BY_FOLDER: 'FILTER_BY_FOLDER',
 	FILTER_BY_SEARCH: 'FILTER_BY_SEARCH',
 	FETCH_PAGE: 'FETCH_PAGE',
+	FETCH_ALL: 'FETCH_ALL',
 
 	SET_SETTING: 'SET_SETTING',
 	LOAD_SETTING: 'LOAD_SETTING',
@@ -609,6 +610,7 @@ export default {
 		dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
 		return dispatch(actions.FETCH_PAGE)
 	},
+
 	[actions.FETCH_PAGE]({ dispatch, commit, state }) {
 		if (state.fetchState.reachedEnd) return
 		if (state.loading.bookmarks) return
@@ -651,6 +653,44 @@ export default {
 				)
 				throw err
 			})
+	},
+	async [actions.FETCH_ALL]({ dispatch, commit, state }) {
+		if (state.fetchState.reachedEnd) return
+		if (state.loading.bookmarks) return
+		let canceled = false
+		commit(mutations.FETCH_START, {
+			type: 'bookmarks',
+			cancel() {
+				canceled = true
+			},
+		})
+		try {
+			const response = await axios.get(url(state, '/bookmark'), {
+				params: {
+					page: -1,
+					sortby: state.settings.sorting,
+					...state.fetchState.query,
+				},
+			})
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
+			const bookmarks = data
+			commit(mutations.REACHED_END)
+			commit(mutations.FETCH_END, 'bookmarks')
+			return dispatch(actions.ADD_ALL_BOOKMARKS, bookmarks)
+
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'bookmarks')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.t('bookmarks', 'Failed to fetch bookmarks.')
+			)
+			throw err
+		}
 	},
 
 	async [actions.SET_SETTING]({ commit, dispatch, state }, { key, value }) {

@@ -90,8 +90,8 @@
 						{{ t('bookmarks', 'Open all selected') }}
 					</ActionButton>
 					<ActionSeparator />
-					<ActionButton icon="icon-checkmark" @click="onSelectVisible">
-						{{ t('bookmarks', 'Select all visible') }}
+					<ActionButton icon="icon-checkmark" @click="onSelectAll">
+						{{ t('bookmarks', 'Select all') }}
 					</ActionButton>
 					<ActionButton icon="icon-close" @click="onCancelSelection">
 						{{ t('bookmarks', 'Cancel selection') }}
@@ -226,7 +226,8 @@ export default {
 		onCancelSelection() {
 			this.$store.commit(mutations.RESET_SELECTION)
 		},
-		onSelectVisible() {
+		async onSelectAll() {
+			await this.$store.dispatch(actions.FETCH_ALL)
 			this.$store.state.bookmarks.forEach(bookmark => {
 				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, bookmark)
 			})
