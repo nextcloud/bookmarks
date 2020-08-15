@@ -6,6 +6,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "মুছে",
     "Save" : "সংরক্ষণ",
+    "New" : "নতুন",
     "New folder" : "নতুন ফোল্ডার",
     "Create" : "তৈরী কর",
     "Cancel" : "বাতির",

@@ -6,6 +6,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "លុប",
     "Save" : "រក្សាទុក",
+    "New" : "ថ្មី",
     "New folder" : "ថត​ថ្មី",
     "Create" : "បង្កើត",
     "Cancel" : "បោះបង់",

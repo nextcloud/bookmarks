@@ -5,6 +5,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "刪除",
     "Save" : "儲存",
+    "New" : "新增",
     "New folder" : "新文件夾",
     "Create" : "新增",
     "Cancel" : "取消",

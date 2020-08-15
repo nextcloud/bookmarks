@@ -6,6 +6,7 @@ OC.L10N.register(
     "Move" : "Symud",
     "Delete" : "Dileu",
     "Save" : "Cadw",
+    "New" : "Newydd",
     "New folder" : "Ffolder newydd",
     "Grid view" : "Golwg grid",
     "List view" : "Golwg rhestr",
