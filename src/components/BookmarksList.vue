@@ -140,13 +140,16 @@ export default {
 	border-top: 1px solid var(--color-border);
 }
 
-.bookmarkslist__loading,
 .bookmarkslist__empty {
 	width: 200px;
 	margin: 200px auto;
 }
 
 .bookmarkslist__loading {
+	width: 100%;
+	margin: 200px auto;
+	flex-grow: 1;
+	flex-shrink: 0;
 	text-align: center;
 }
 
