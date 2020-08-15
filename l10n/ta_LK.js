@@ -6,6 +6,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "நீக்குக",
     "Save" : "சேமிக்க ",
+    "New" : "புதிய",
     "Create" : "உருவாக்குக",
     "Cancel" : "இரத்து செய்க",
     "Import" : "இறக்குமதி",

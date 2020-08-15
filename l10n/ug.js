@@ -5,6 +5,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "ئۆچۈر",
     "Save" : "ساقلا",
+    "New" : "يېڭى",
     "New folder" : "يېڭى قىسقۇچ",
     "Create" : "قۇر",
     "Cancel" : "ۋاز كەچ",

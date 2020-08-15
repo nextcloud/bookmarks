@@ -6,6 +6,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "Suprimir",
     "Save" : "Salvar",
+    "New" : "Novèl",
     "New folder" : "Novèl dorsièr",
     "Create" : "Crear",
     "Cancel" : "Anullar",

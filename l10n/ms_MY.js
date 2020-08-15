@@ -5,6 +5,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "Padam",
     "Save" : "Simpan",
+    "New" : "Baru",
     "Create" : "Buat",
     "Cancel" : "Batal",
     "Import" : "Import",

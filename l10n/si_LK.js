@@ -5,6 +5,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "ඉවත් කරන්න",
     "Save" : "සුරකින්න",
+    "New" : "නව",
     "Create" : "තනන්න",
     "Cancel" : "අවලංගු කරන්න",
     "Import" : "ආයාත කරන්න",

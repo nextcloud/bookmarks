@@ -6,6 +6,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "Ta bort",
     "Save" : "Lagre",
+    "New" : "Ny",
     "New folder" : "Ny mappe",
     "Create" : "Lag",
     "Cancel" : "Avbryt",
