@@ -48,6 +48,7 @@ OC.L10N.register(
     "New" : "Nová",
     "New bookmark" : "Nová záložka",
     "New folder" : "Nová složka",
+    "Filter by tags" : "Filtrovat podle štítků",
     "Grid view" : "Zobrazení v mřížce",
     "List view" : "Zobrazení v seznamu",
     "RSS Feed" : "RSS kanál",
