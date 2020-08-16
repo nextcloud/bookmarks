@@ -6,19 +6,44 @@ use OCA\Bookmarks\BackgroundJobs\CrawlJob;
 use OC\BackgroundJob\JobList;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
+use OCP\IConfig;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class Test_BackgroundJob
  */
 class BackgroundJobTest extends TestCase {
+	/**
+	 * @var mixed|\stdClass
+	 */
+	private $bookmarkMapper;
+	/**
+	 * @var mixed|\stdClass
+	 */
+	private $previewsJob;
+	/**
+	 * @var mixed|\stdClass
+	 */
+	private $jobList;
+	/**
+	 * @var mixed|\stdClass
+	 */
+	private $settings;
+	/**
+	 * @var string
+	 */
+	private $userId;
+
 	protected function setUp() :void {
 		parent::setUp();
 
 		$this->bookmarkMapper = \OC::$server->query(BookmarkMapper::class);
 		$this->previewsJob = \OC::$server->query(CrawlJob::class);
 		$this->jobList = \OC::$server->query(JobList::class);
+		$this->settings = \OC::$server->query(IConfig::class);
 		$this->userId = 'test';
+
+		$this->settings->setAppValue('bookmarks', 'privacy.enableScraping', 'true');
 
 		array_map(function ($bm) {
 			$this->bookmarkMapper->insert($bm);
@@ -43,6 +68,7 @@ class BackgroundJobTest extends TestCase {
 			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
 			'Simple URL' => ['url' => 'https://php.net/'],
 			'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
+			'Non-existent URL' => ['url' => 'https://http://www.bllaala.com/'],
 		]);
 	}
 }

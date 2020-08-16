@@ -11,7 +11,7 @@ use OCP\IConfig;
 
 class CrawlJob extends TimedJob {
 	public const BATCH_SIZE = 250; // 500 bookmarks
-	public const INTERVAL = 30; // 30 minutes
+	public const INTERVAL = 30*60; // 30 minutes
 	/**
 	 * @var BookmarkPreviewer
 	 */
@@ -50,12 +50,6 @@ class CrawlJob extends TimedJob {
 	}
 
 	protected function run($argument) {
-		if ($this->settings->getAppValue(
-				'core',
-				'backgroundjobs_mode'
-			) !== 'cron') {
-			return;
-		}
 		if ($this->settings->getAppValue('bookmarks', 'privacy.enableScraping', 'false') !== 'true') {
 			return;
 		}
