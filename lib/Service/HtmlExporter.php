@@ -80,6 +80,7 @@ class HtmlExporter {
 	 * @throws UnauthorizedAccessError
 	 */
 	protected function serializeFolder($userId, int $id): string {
+		$output = '';
 		$childBookmarks = $this->treeMapper->findChildren(TreeMapper::TYPE_BOOKMARK, $id);
 		foreach ($childBookmarks as $bookmark) {
 			// discards records with no URL. This should not happen but
