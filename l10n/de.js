@@ -48,6 +48,7 @@ OC.L10N.register(
     "New" : "Benötigt keine Übersetzung. Für Android wird nur die formelle Übersetzung verwendet (de_DE).",
     "New bookmark" : "Neues Lesezeichen",
     "New folder" : "Neuer Ordner",
+    "Filter by tags" : "Nach Schlagworten filtern",
     "Grid view" : "Rasteransicht",
     "List view" : "Listenansicht",
     "RSS Feed" : "RSS-Feed",
