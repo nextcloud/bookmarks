@@ -1,31 +1,28 @@
 <template>
-	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected,}">
+	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected,}" @click="onSelect">
 		<div v-if="isEditable" class="folder__checkbox">
 			<input v-model="selected" class="checkbox" type="checkbox"><label
 				:aria-label="t('bookmarks', 'Select folder')"
 				@click="clickSelect" />
 		</div>
-		<figure :class="{'folder__icon': true, 'shared': !isOwner && !isPublic || isSharedPublicly || isShared }" @click="onSelect" />
+		<FolderIcon fill-color="#0082c9" :class="'folder__icon'" @click="onSelect" />
+		<ShareVariantIcon v-if="(isShared || !isOwner) || isSharedPublicly"
+			fill-color="#ffffff"
+			:class="['folder__icon', 'shared']" />
 		<template v-if="!renaming">
 			<h3
 				class="folder__title"
-				:title="folder.title"
-				@click="onSelect">
+				:title="folder.title">
 				{{ folder.title }}
 			</h3>
 
 			<div class="folder__tags">
-				<div v-if="!isOwner && !isPublic" class="folder__tag">
+				<div v-if="!isOwner && !isSharedPublicly" class="folder__tag">
 					{{ t('bookmarks', 'Shared by {user}', {user: folder.userId}) }}
 				</div>
-				<div v-if="isOwner && isShared" class="folder__tag">
-					{{ t('bookmarks','Shared privately') }}
-				</div>
-				<div v-if="isSharedPublicly" class="folder__tag">
-					{{ t('bookmarks', 'Public') }}
-				</div>
 			</div>
-			<Actions v-if="isEditable" class="folder__actions">
+			<div v-if="count" class="folder__count folder__tag" v-text="count" />
+			<Actions v-if="isEditable" ref="actions" class="folder__actions">
 				<ActionButton icon="icon-info" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
 				</ActionButton>
@@ -59,6 +56,8 @@
 <script>
 import Vue from 'vue'
 import { getCurrentUser } from '@nextcloud/auth'
+import FolderIcon from 'vue-material-design-icons/Folder'
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import { actions, mutations } from '../store/'
@@ -68,6 +67,8 @@ export default {
 	components: {
 		Actions,
 		ActionButton,
+		FolderIcon,
+		ShareVariantIcon,
 	},
 	props: {
 		folder: {
@@ -113,6 +114,9 @@ export default {
 		selected() {
 			return this.selectedFolders.map(f => f.id).includes(this.folder.id)
 		},
+		count() {
+			return this.$store.state.countsByFolder[this.folder.id] > 99 ? '99+' : this.$store.state.countsByFolder[this.folder.id] || ''
+		},
 	},
 	created() {
 		this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
@@ -131,8 +135,10 @@ export default {
 			this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
-		onSelect() {
+		onSelect(e) {
+			if (this.$refs.actions.$el.contains(e.target)) return
 			this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
+			e.preventDefault()
 		},
 		async onRename() {
 			this.renaming = true
@@ -144,12 +150,13 @@ export default {
 			this.$store.dispatch(actions.SAVE_FOLDER, this.folder.id)
 			this.renaming = false
 		},
-		clickSelect() {
+		clickSelect(e) {
 			if (!this.selected) {
 				this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
 			} else {
 				this.$store.commit(mutations.REMOVE_SELECTION_FOLDER, this.folder)
 			}
+			e.stopPropagation()
 		},
 	},
 }
@@ -191,27 +198,28 @@ export default {
 	background-size: cover;
 	margin: 15px;
 	cursor: pointer;
-	background-image: url('/svg/core/filetypes/folder?color=0082c9'), url('/index.php/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
-	background-repeat: no-repeat;
-	background-position: center;
 }
 
 .folder__icon.shared {
-	background-image: var(--icon-share-fff), url('/svg/core/filetypes/folder?color=0082c9'), url('/index.php/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
-	background-size: 9px, cover, cover, cover !important;
-}
-
-.folder--gridview .folder__icon.shared {
-	background-size: 30px, cover, cover, cover !important;
+	transform: scale(0.5);
+	position: absolute;
+	left: 35px;
+	top: 2px;
+	height:auto;
+	width:auto;
 }
 
 .folder--gridview .folder__icon {
-	height: 70px;
-	width: 70px;
 	background-size: cover;
 	position: absolute;
 	top: 20%;
 	left: calc(45% - 35px);
+	transform: scale(3);
+	transform-origin: top left;
+}
+
+.folder--gridview .folder__icon.shared {
+	transform: translate(100%, 90%);
 }
 
 .folder__title {
@@ -253,8 +261,22 @@ export default {
 	background-color: var(--color-primary-light);
 }
 
+.folder__count {
+	font-size: 12px;
+	height: 24px;
+	line-height: 1;
+	overflow: hidden;
+}
+
+.folder--gridview .folder__count {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
 .folder__actions {
 	flex: 0;
+	padding: 4px 0;
 }
 
 .folder__title input {

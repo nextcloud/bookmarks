@@ -71,15 +71,12 @@
 				</ActionButton>
 			</Actions>
 			<Actions>
-				<ActionButton :icon="'icon-category-monitoring'" @click="openRssUrl">
+				<ActionButton icon="icon-category-integration" @click="openRssUrl">
 					{{ t('bookmarks', 'RSS Feed') }}
 				</ActionButton>
 			</Actions>
-			<div v-if="hasSelection" class="controls__bulkediting">
-				{{
-					selectionDescription
-				}}
-				<Actions>
+			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
+				<Actions :primary="true" :menu-title="selectionDescription">
 					<ActionButton icon="icon-category-files" @click="onBulkMove">
 						{{ t('bookmarks', 'Move selection') }}
 					</ActionButton>
