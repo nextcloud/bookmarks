@@ -13,7 +13,6 @@ OC.L10N.register(
     "Select all" : "Vali kõik",
     "Create" : "Loo",
     "Cancel" : "Loobu",
-    "Public" : "Avalik",
     "Import" : "Impordi",
     "Export" : "Ekspordi",
     "Recently added" : "Viimati lisatud",

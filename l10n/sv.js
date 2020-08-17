@@ -26,7 +26,6 @@ OC.L10N.register(
     "Create" : "Skapa",
     "Cancel" : "Avbryt",
     "Enter folder title" : "Ange titel",
-    "Public" : "Offentlig",
     "Root folder" : "Topp-mapp",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Flyttar %n mapp och några bokmärken","Flyttar %n mappar och några bokmärken"],
     "_Moving %n folder_::_Moving %n folders_" : ["Flyttar %n mapp","Flyttar %n mappar"],

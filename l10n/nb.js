@@ -21,7 +21,6 @@ OC.L10N.register(
     "Create" : "Opprett",
     "Cancel" : "Avbryt",
     "Enter folder title" : "Skriv inn tittel",
-    "Public" : "Offentlig",
     "Root folder" : "Hovedmappe",
     "New Bookmark" : "Legg til ny bokmerke",
     "All Bookmarks" : "Bokmerker",

@@ -32,8 +32,6 @@
     "Enter folder title" : "Settu inn heiti möppu",
     "Select folder" : "Veldu möppu",
     "Shared by {user}" : "Deilt af {user}",
-    "Shared privately" : "Deilt sem einkamáli",
-    "Public" : "Opinbert",
     "Root folder" : "Rótarmappa",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Færi %n möppu og einhver bókamerki","Færi %n möppur og einhver bókamerki"],
     "_Moving %n folder_::_Moving %n folders_" : ["Færi %n möppu","Færi %n möppur"],

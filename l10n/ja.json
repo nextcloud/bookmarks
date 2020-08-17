@@ -33,8 +33,6 @@
     "Enter folder title" : "フォルダーのタイトルを入力",
     "Select folder" : "フォルダーを選択",
     "Shared by {user}" : "{user} から共有されました",
-    "Shared privately" : "プライベート共有",
-    "Public" : "公開",
     "Root folder" : "ルートフォルダー",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["%n個のフォルダーといくつかのブックマークを移動中"],
     "_Moving %n folder_::_Moving %n folders_" : ["%n個のフォルダーを移動中"],

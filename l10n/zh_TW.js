@@ -26,7 +26,6 @@ OC.L10N.register(
     "Create" : "建立",
     "Cancel" : "取消",
     "Enter folder title" : "輸入資料夾標題",
-    "Public" : "公開",
     "Root folder" : "根目錄",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["正在移動%n資料夾和一些書籤"],
     "_Moving %n folder_::_Moving %n folders_" : ["移動%n個資料夾"],

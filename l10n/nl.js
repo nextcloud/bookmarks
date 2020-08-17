@@ -35,8 +35,6 @@ OC.L10N.register(
     "Enter folder title" : "Geef maptitel op",
     "Select folder" : "Selecteer map",
     "Shared by {user}" : "Gedeeld door {user}",
-    "Shared privately" : "Besloten gedeeld",
-    "Public" : "Openbaar",
     "Root folder" : "Hoofdmap",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["%n folder en bladwijzers verplaatsen","%n folders en bladwijzers verplaatsen"],
     "_Moving %n folder_::_Moving %n folders_" : ["%n folder verplaatsen","%n folders verplaatsen"],

@@ -24,7 +24,6 @@
     "Create" : "ایجاد کردن",
     "Cancel" : "لغو",
     "Enter folder title" : "عنوان پوشه را وارد کنید",
-    "Public" : "عمومی",
     "Root folder" : "پوشهٔ ریشه",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["در حال انتقال %nپوشه ها و برخی نشانک ها","در حال انتقال %n پوشه ها و برخی نشانک ها"],
     "_Moving %n folder_::_Moving %n folders_" : ["در حال انتقال %n پوشه","در حال انتقال %n پوشه ها"],

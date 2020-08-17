@@ -14,7 +14,6 @@ OC.L10N.register(
     "Select all" : "تحديد الكل",
     "Create" : "إنشاء",
     "Cancel" : "إلغاء",
-    "Public" : "للعامة",
     "Import" : "استيراد",
     "Export" : "تصدير",
     "Recently added" : "اضيفت مؤخرا",

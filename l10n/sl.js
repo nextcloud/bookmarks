@@ -50,7 +50,6 @@ OC.L10N.register(
     "Cancel" : "Prekliči",
     "Enter folder title" : "Vnesite naziv mape",
     "Select folder" : "Izbor mape",
-    "Public" : "Javno",
     "Root folder" : "Korenska mapa",
     "New Bookmark" : "Nov zaznamek",
     "All Bookmarks" : "Vsi zaznamki",

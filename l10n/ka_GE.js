@@ -16,7 +16,6 @@ OC.L10N.register(
     "Select all" : "ყველას არჩევა",
     "Create" : "შექმნა",
     "Cancel" : "უარყოფა",
-    "Public" : "ღია",
     "Import" : "იმპორტი",
     "Export" : "ექსპორტი",
     "Recently added" : "ახლად დამატებული",

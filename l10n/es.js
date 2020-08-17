@@ -65,8 +65,6 @@ OC.L10N.register(
     "Enter folder title" : "Introduce el título de la carpeta",
     "Select folder" : "Selecciona carpeta",
     "Shared by {user}" : "Compartidos por {user}",
-    "Shared privately" : "Compartidos de forma privada",
-    "Public" : "Públicos",
     "Root folder" : "Carpeta raíz",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Moviendo %ncarpeta y algunos marcadores","Moviendo %n carpetas y algunos marcadores"],
     "_Moving %n folder_::_Moving %n folders_" : ["Moviendo %ncarpeta","Moviendo %n carpetas"],

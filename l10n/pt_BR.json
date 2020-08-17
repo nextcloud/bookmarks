@@ -64,8 +64,6 @@
     "Enter folder title" : "Digite o título da pasta",
     "Select folder" : "Selecionar pasta",
     "Shared by {user}" : "Compartilhado por {user}",
-    "Shared privately" : "Compartilhamento privado",
-    "Public" : "Público",
     "Root folder" : "Pasta raiz",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Movendo %n pasta e alguns favoritos","Movendo %n pastas e alguns favoritos"],
     "_Moving %n folder_::_Moving %n folders_" : ["Movendo %n pasta","Movendo %n pastas"],

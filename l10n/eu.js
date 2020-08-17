@@ -57,8 +57,6 @@ OC.L10N.register(
     "Enter folder title" : "Sartu karpetaren izenburua",
     "Select folder" : "Hautatu karpeta",
     "Shared by {user}" : "{user}(e)k partekatua",
-    "Shared privately" : "Pribatuki partekatuta",
-    "Public" : "Publikoa",
     "Root folder" : "Erro karpeta",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Karpeta %n eta laster-marka batzuk mugitzen","%n karpeta eta laster-marka batzuk mugitzen"],
     "_Moving %n folder_::_Moving %n folders_" : ["Karpeta %n mugitzen","%n karpeta mugitzen"],

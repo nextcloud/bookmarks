@@ -26,7 +26,6 @@ OC.L10N.register(
     "Create" : "Krei",
     "Cancel" : "Nuligi",
     "Enter folder title" : "Entajpu titolon de la dosierujo",
-    "Public" : "Publika",
     "Root folder" : "Radika dosierujo",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Movo de %n dosierujo kaj kelkaj legosignoj","Movo de %n dosierujoj kaj kelkaj legosignoj"],
     "_Moving %n folder_::_Moving %n folders_" : ["Movo de %n dosierujo","Movo de %n dosierujoj"],

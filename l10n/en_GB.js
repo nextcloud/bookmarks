@@ -18,7 +18,6 @@ OC.L10N.register(
     "Select all" : "Select all",
     "Create" : "Create",
     "Cancel" : "Cancel",
-    "Public" : "Public",
     "Root folder" : "Root folder",
     "Import" : "Import",
     "Export" : "Export",

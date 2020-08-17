@@ -11,7 +11,6 @@ OC.L10N.register(
     "Select all" : "бүгдийг сонгох",
     "Create" : "Үүсгэх",
     "Cancel" : "болиулах",
-    "Public" : "Нийтийн",
     "Import" : "Импорт",
     "Export" : "Экспорт",
     "Recently added" : "Сүүлд нэмэгдсэн",

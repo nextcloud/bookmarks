@@ -13,7 +13,6 @@ OC.L10N.register(
     "Select all" : "Zgjidhi të gjitha",
     "Create" : "Krijo",
     "Cancel" : "Anullo",
-    "Public" : "Publik",
     "Untagged" : "E paetiketuar",
     "Import" : "Import",
     "Export" : "Eksport",

@@ -11,7 +11,6 @@ OC.L10N.register(
     "Select all" : "Selectionar toto",
     "Create" : "Crear",
     "Cancel" : "Cancellar",
-    "Public" : "Public",
     "Import" : "Importar",
     "Export" : "Exportar",
     "Alphabetically" : "Alphabeticamente",

@@ -35,8 +35,6 @@ OC.L10N.register(
     "Enter folder title" : "Unesite naslov mape",
     "Select folder" : "Odaberi mapu",
     "Shared by {user}" : "Dijeli {user}",
-    "Shared privately" : "Privatno dijeljenje",
-    "Public" : "Javna",
     "Root folder" : "Korijenska mapa",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Premještanje %n mape i nekih knjižnih oznaka","Premještanje %n mape i nekih knjižnih oznaka","Premještanje %n mapa i nekih knjižnih oznaka"],
     "_Moving %n folder_::_Moving %n folders_" : ["Premještanje %n mape","Premještanje %n mape","Premještanje %n mapa"],

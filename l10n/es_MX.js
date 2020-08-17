@@ -17,7 +17,6 @@ OC.L10N.register(
     "Select all" : "Seleccionar todo",
     "Create" : "Crear",
     "Cancel" : "Cancelar",
-    "Public" : "Público",
     "Import" : "Importar",
     "Export" : "Exportar",
     "Recently added" : "Agregado recientemente",

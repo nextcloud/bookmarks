@@ -66,8 +66,6 @@ OC.L10N.register(
     "Enter folder title" : "Saisissez le nom du dossier",
     "Select folder" : "Sélectionner un dossier",
     "Shared by {user}" : "Partagé par l'{user}",
-    "Shared privately" : "Partagé en privé",
-    "Public" : "Public",
     "Root folder" : "Dossier racine",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Déplacement de %n dossier et de certains signets","Déplacement de %n dossiers et de certains signets"],
     "_Moving %n folder_::_Moving %n folders_" : ["Déplacement de %n dossier","Déplacement de %n dossiers"],
