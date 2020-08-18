@@ -83,7 +83,7 @@ class CrawlService {
 
 	private function archiveFile(Bookmark $bookmark, IResponse $resp) :void {
 		$contentType = $resp->getHeader('Content-type');
-		if ((bool)preg_match('#text/html#i', $contentType) === false) {
+		if ((bool)preg_match('#text/html#i', $contentType) === false && $bookmark->getArchivedFile() === null) {
 			try {
 				$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
 				$folderPath = $this->getArchivePath($bookmark, $userFolder);
