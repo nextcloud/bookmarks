@@ -119,6 +119,8 @@ return [
 		['name' => 'settings#get_sorting', 'url' => '/settings/sorting', 'verb' => 'GET'],
 		['name' => 'settings#set_view_mode', 'url' => '/settings/viewMode', 'verb' => 'POST'],
 		['name' => 'settings#get_view_mode', 'url' => '/settings/viewMode', 'verb' => 'GET'],
+		['name' => 'settings#set_archive_path', 'url' => '/settings/viewMode', 'verb' => 'POST'],
+		['name' => 'settings#get_archive_path', 'url' => '/settings/archivePath', 'verb' => 'GET'],
 		['name' => 'settings#get_limit', 'url' => '/settings/limit', 'verb' => 'GET'],
 
 		# public link web view
