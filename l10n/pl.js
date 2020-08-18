@@ -48,6 +48,7 @@ OC.L10N.register(
     "New" : "Nowy",
     "New bookmark" : "Nowa zakładka",
     "New folder" : "Nowy folder",
+    "Filter by tags" : "Filtruj według etykiet",
     "Grid view" : "Widok siatki",
     "List view" : "Widok listy",
     "RSS Feed" : "Kanał RSS",
