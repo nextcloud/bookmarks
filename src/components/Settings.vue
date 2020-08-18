@@ -31,6 +31,16 @@
 			</select>
 		</label>
 
+		<label>{{ t('bookmarks', 'Archive path') }}
+			<input v-tooltip="
+					t('bookmarks',
+						'Enter the path of a folder where bookmarked files should be stored'
+					)
+				"
+				:value="archivePath"
+				@change="onChangeArchivePath">
+		</label>
+
 		<label>{{ t('bookmarks', 'Clear data') }}
 			<button
 				v-tooltip="
@@ -102,6 +112,9 @@ export default {
 		sorting() {
 			return this.$store.state.settings.sorting
 		},
+		archivePath() {
+			return this.$store.state.settings.archivePath
+		},
 	},
 	methods: {
 		onImportOpen(e) {
@@ -128,7 +141,12 @@ export default {
 			})
 			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
-		onChangeViewMode(e) {},
+		async onChangeArchivePath(e) {
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'archivePath',
+				value: e.target.value,
+			})
+		},
 		async onClearData() {
 			if (
 				!confirm(
