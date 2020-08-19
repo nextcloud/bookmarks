@@ -48,6 +48,7 @@ OC.L10N.register(
     "New" : "Yeni",
     "New bookmark" : "Yeni yer imi",
     "New folder" : "Yeni klasör",
+    "Filter by tags" : "Etikete göre süz",
     "Grid view" : "Tablo görünümü",
     "List view" : "Liste görünümü",
     "RSS Feed" : "RSS Akışı",
