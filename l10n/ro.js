@@ -13,7 +13,6 @@ OC.L10N.register(
     "Select all" : "Selectează tot",
     "Create" : "Creează",
     "Cancel" : "Anulează",
-    "Public" : "Public",
     "Import" : "Importă",
     "Export" : "Exportă",
     "Recently added" : "Adăugate recent",

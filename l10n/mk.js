@@ -13,7 +13,6 @@ OC.L10N.register(
     "Select all" : "Избери се",
     "Create" : "Креирај",
     "Cancel" : "Откажи",
-    "Public" : "Јавна",
     "Import" : "Увези",
     "Export" : "Извези",
     "Recently added" : "Скоро додадени",

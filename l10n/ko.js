@@ -28,8 +28,6 @@ OC.L10N.register(
     "Enter folder title" : "폴더명을 입력하시오.",
     "Select folder" : "폴더 선택",
     "Shared by {user}" : "{user}가 공유한",
-    "Shared privately" : "사적으로 공유됨",
-    "Public" : "공개",
     "Root folder" : "루트 폴더",
     "New Bookmark" : "새로운 북마크",
     "All Bookmarks" : "모든 북마크",

@@ -10,7 +10,6 @@ OC.L10N.register(
     "Select all" : "Označi sve",
     "Create" : "Ustvari",
     "Cancel" : "Otkaži",
-    "Public" : "Javno",
     "Import" : "Uvoz",
     "Export" : "Izvezi",
     "URL" : "Url",

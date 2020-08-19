@@ -59,8 +59,6 @@ OC.L10N.register(
     "Enter folder title" : "Anna nimi kansiolle",
     "Select folder" : "Valitse kansio",
     "Shared by {user}" : "Jakanut {user}",
-    "Shared privately" : "Jaettu yksityisesti",
-    "Public" : "Julkinen",
     "Root folder" : "Juurikansio",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Siirretään %n kansio ja joitain kirjanmerkkejä","Siirretään %n kansiota ja joitain kirjanmerkkejä"],
     "_Moving %n folder_::_Moving %n folders_" : ["Siirretään %n kansio","Siirretään %n kansiota"],

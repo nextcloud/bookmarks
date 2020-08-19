@@ -17,7 +17,6 @@ OC.L10N.register(
     "Select all" : "Избери всички",
     "Create" : "Създай",
     "Cancel" : "Отказ",
-    "Public" : "Публично",
     "Untagged" : "Без отметки",
     "Import" : "Внасяне",
     "Export" : "Изнасяне",

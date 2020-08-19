@@ -41,8 +41,6 @@
     "Enter folder title" : "Τίτλος φακέλου",
     "Select folder" : "Επιλογή φακέλου",
     "Shared by {user}" : "Διαμοιράστηκε από {user}",
-    "Shared privately" : "Διαμοιράστηκε ιδιωτικά",
-    "Public" : "Δημόσια",
     "Root folder" : "Αρχικός φάκελος",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Μετακίνηση %n φακέλου και μερικων σελιδοδεικτών","Μετακίνηση %nφακέλων και μερικων σελιδοδεικτών"],
     "_Moving %n folder_::_Moving %n folders_" : ["Μετακίνηση %n φακέλου","Μετακίνηση %n φακέλων"],

@@ -31,8 +31,6 @@ OC.L10N.register(
     "Cancel" : "取消",
     "Enter folder title" : "输入文件夹标题",
     "Shared by {user}" : "由 {user} 共享",
-    "Shared privately" : "私下共享",
-    "Public" : "公开",
     "Root folder" : "根文件夹",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["正在移动%n个文件夹和一些书签"],
     "_Moving %n folder_::_Moving %n folders_" : ["正在移动%n个文件夹"],

@@ -13,7 +13,6 @@ OC.L10N.register(
     "Select all" : "Dibab pep tra",
     "Create" : "Krouiñ",
     "Cancel" : "Arrest",
-    "Public" : "Publik",
     "Recently added" : "Ouzpennet n'eus ket pel zo",
     "Clear data" : "Lemel ar roadennoù",
     "URL" : "URL",

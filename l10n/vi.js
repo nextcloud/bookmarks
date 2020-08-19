@@ -17,7 +17,6 @@ OC.L10N.register(
     "Create" : "Tạo mới",
     "Cancel" : "Hủy bỏ",
     "Enter folder title" : "Nhập tiêu đề thư mục",
-    "Public" : "Công khai",
     "Import" : "Nhập vào",
     "Export" : "Xuất ra",
     "Recently added" : "Mới thêm",

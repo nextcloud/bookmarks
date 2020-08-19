@@ -16,7 +16,6 @@ OC.L10N.register(
     "Select all" : "Вибрати все",
     "Create" : "Створити",
     "Cancel" : "Скасувати",
-    "Public" : "Публічне",
     "Import" : "Імпорт",
     "Export" : "Експорт",
     "Recently added" : "Нещодавно додані",

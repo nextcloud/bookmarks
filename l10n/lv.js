@@ -18,7 +18,6 @@ OC.L10N.register(
     "Select all" : "Atzīmēt visu",
     "Create" : "Izveidot",
     "Cancel" : "Atcelt",
-    "Public" : "Publiska",
     "Import" : "Importēt",
     "Export" : "Eksportēt",
     "Recently added" : "Nesen pievienoja",
