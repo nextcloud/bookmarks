@@ -149,10 +149,10 @@ export default {
 				throw new Error(response.data.data.join('\n'))
 			}
 			commit(mutations.DISPLAY_NEW_BOOKMARK, false)
-			commit(mutations.ADD_BOOKMARK, bookmark)
 			commit(mutations.FETCH_END, 'createBookmark')
 			commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: state.countsByFolder[-1] + 1 })
 			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
+			dispatch(actions.RELOAD_VIEW)
 			if (data.folders) {
 				for (const folderId of data.folders) {
 					commit(mutations.SET_BOOKMARK_COUNT, { folderId, count: state.countsByFolder[folderId] + 1 })
