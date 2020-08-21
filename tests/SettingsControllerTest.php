@@ -51,11 +51,12 @@ class SettingsControllerTest extends TestCase {
 		$this->appName = 'bookmarks';
 		$this->request = \OC::$server->getRequest();
 		$userManager = \OC::$server->getUserManager();
+		$l = \OC::$server->getL10N('bookmarks');
 		if (!$userManager->userExists($this->userId)) {
 			$userManager->createUser($this->userId, 'password');
 		}
 		$this->config = \OC::$server->getConfig();
-		$this->controller = new SettingsController('bookmarks', $this->request, $this->userId, $this->config);
+		$this->controller = new SettingsController('bookmarks', $this->request, $this->userId, $this->config, $l);
 	}
 
 	/**
