@@ -19,19 +19,19 @@
 			<AppNavigationItem key="menu-recent"
 				:to="{ name: routes.RECENT }"
 				:title="t('bookmarks', 'Recent Bookmarks')">
-				<HistoryIcon slot="icon" :size="18" />
+				<HistoryIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
 			<AppNavigationItem key="menu-unavailable"
 				:to="{ name: routes.UNAVAILABLE }"
 				:title="t('bookmarks', 'Broken links')">
-				<LinkVariantOffIcon slot="icon" :size="18" />
+				<LinkVariantOffIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
 			<AppNavigationSpacer />
 			<AppNavigationItem key="menu-tags"
 				:to="{ name: routes.TAGS }"
 				:exact="true"
 				:title="t('bookmarks', 'Filter tags')">
-				<TagMultipleIcon slot="icon" :size="18" />
+				<TagMultipleIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
 			<AppNavigationItem v-for="tag in tags"
 				:key="'tag-'+tag.name"
@@ -54,7 +54,7 @@
 			<AppNavigationItem key="menu-untagged"
 				:to="{ name: routes.UNTAGGED }"
 				:title="t('bookmarks', 'Untagged')">
-				<TagOffIcon slot="icon" :size="18" />
+				<TagOffIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
 			<template v-if="Number(bookmarksLimit) > 0">
 				<AppNavigationSpacer />

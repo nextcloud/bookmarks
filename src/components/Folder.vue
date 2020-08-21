@@ -13,9 +13,9 @@
 					:for="'select'+folder.id"
 					@click="clickSelect" />
 		</div>
-		<FolderIcon fill-color="#0082c9" :class="'folder__icon'" @click="onSelect" />
+		<FolderIcon :fill-color="colorPrimaryElement" :class="'folder__icon'" @click="onSelect" />
 		<ShareVariantIcon v-if="(isShared || !isOwner) || isSharedPublicly"
-			fill-color="#ffffff"
+			:fill-color="colorPrimaryText"
 			:class="['folder__icon', 'shared']" />
 		<template v-if="!renaming">
 			<h3

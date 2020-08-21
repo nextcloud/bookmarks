@@ -48,7 +48,7 @@
 				</ActionButton>
 				<ActionButton @click="onMove">
 					{{ t('bookmarks', 'Move') }}
-					<FolderMoveIcon #icon />
+					<FolderMoveIcon #icon :fill-color="colorMainText" />
 				</ActionButton>
 				<ActionButton icon="icon-delete" @click="onDelete">
 					{{ t('bookmarks', 'Delete') }}
