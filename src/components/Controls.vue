@@ -32,7 +32,7 @@
 				v-if="!isPublic"
 				class="controls__AddFolder"
 				:title="t('bookmarks', 'New')"
-				:icon="'icon-add'">
+				:default-icon="'icon-add'">
 				<ActionButton
 					icon="icon-link"
 					@click="onAddBookmark">
