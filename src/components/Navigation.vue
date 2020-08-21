@@ -27,10 +27,11 @@
 				<LinkVariantOffIcon slot="icon" :size="18" />
 			</AppNavigationItem>
 			<AppNavigationSpacer />
-			<AppNavigationItem key="menu-untagged"
-				:to="{ name: routes.UNTAGGED }"
-				:title="t('bookmarks', 'Untagged')">
-				<TagOffIcon slot="icon" :size="18" />
+			<AppNavigationItem key="menu-tags"
+				:to="{ name: routes.TAGS }"
+				:exact="true"
+				:title="t('bookmarks', 'Filter tags')">
+				<TagMultipleIcon slot="icon" :size="18" />
 			</AppNavigationItem>
 			<AppNavigationItem v-for="tag in tags"
 				:key="'tag-'+tag.name"
@@ -49,6 +50,11 @@
 						{{ t('bookmarks', 'Delete') }}
 					</ActionButton>
 				</template>
+			</AppNavigationItem>
+			<AppNavigationItem key="menu-untagged"
+				:to="{ name: routes.UNTAGGED }"
+				:title="t('bookmarks', 'Untagged')">
+				<TagOffIcon slot="icon" :size="18" />
 			</AppNavigationItem>
 			<template v-if="Number(bookmarksLimit) > 0">
 				<AppNavigationSpacer />
@@ -76,6 +82,7 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import HistoryIcon from 'vue-material-design-icons/History'
 import TagOffIcon from 'vue-material-design-icons/TagOff'
 import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff'
+import TagMultipleIcon from 'vue-material-design-icons/TagMultiple'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
 import { actions, mutations } from '../store/'
@@ -95,6 +102,7 @@ export default {
 		HistoryIcon,
 		TagOffIcon,
 		LinkVariantOffIcon,
+		TagMultipleIcon,
 	},
 	data() {
 		return {}

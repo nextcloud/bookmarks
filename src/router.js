@@ -60,7 +60,7 @@ export default new Router({
 			component: ViewPrivate,
 		},
 		{
-			path: '/tags/:tags',
+			path: '/tags/:tags?',
 			name: privateRoutes.TAGS,
 			component: ViewPrivate,
 		},

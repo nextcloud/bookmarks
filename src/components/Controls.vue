@@ -46,17 +46,6 @@
 					{{ t('bookmarks', 'New folder') }}
 				</ActionButton>
 			</Actions>
-			<Actions
-				v-if="$route.name !== routes.TAGS"
-				class="controls__toggleTags">
-				<ActionButton
-					icon="icon-tag"
-					@click="$router.push({name: routes.TAGS})">
-					{{
-						t('bookmarks', 'Filter by tags')
-					}}
-				</ActionButton>
-			</Actions>
 		</div>
 		<div class="controls__right">
 			<Actions>
