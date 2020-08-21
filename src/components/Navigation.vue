@@ -23,7 +23,7 @@
 			</AppNavigationItem>
 			<AppNavigationItem key="menu-unavailable"
 				:to="{ name: routes.UNAVAILABLE }"
-				:title="t('bookmarks', 'Unavailable')">
+				:title="t('bookmarks', 'Broken links')">
 				<LinkVariantOffIcon slot="icon" :size="18" />
 			</AppNavigationItem>
 			<AppNavigationSpacer />
