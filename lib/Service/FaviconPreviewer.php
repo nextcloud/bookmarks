@@ -65,8 +65,6 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 	/**
 	 * @param Bookmark $bookmark
 	 * @return IImage|null
-	 * @throws NotFoundException
-	 * @throws NotPermittedException
 	 */
 	public function getImage($bookmark): ?IImage {
 		if (!isset($bookmark)) {
