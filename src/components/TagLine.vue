@@ -57,7 +57,8 @@ export default {
 	cursor: pointer;
 }
 
-.tagline__tag:hover {
+.tagline__tag:hover,
+.tagline__tag:focus {
 	background-color: var(--color-background-dark);
 }
 </style>

@@ -1,9 +1,17 @@
 <template>
-	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected,}" @click="onSelect">
+	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected,}"
+		tabindex="0"
+		@click="onSelect"
+		@keypress="onEnter">
 		<div v-if="isEditable" class="folder__checkbox">
-			<input v-model="selected" class="checkbox" type="checkbox"><label
-				:aria-label="t('bookmarks', 'Select folder')"
-				@click="clickSelect" />
+			<input :id="'select'+folder.id"
+				v-model="selected"
+				class="checkbox"
+				type="checkbox"><label
+					v-tooltip="t('bookmarks', 'Select folder')"
+					:aria-label="t('bookmarks', 'Select folder')"
+					:for="'select'+folder.id"
+					@click="clickSelect" />
 		</div>
 		<FolderIcon fill-color="#0082c9" :class="'folder__icon'" @click="onSelect" />
 		<ShareVariantIcon v-if="(isShared || !isOwner) || isSharedPublicly"
@@ -158,6 +166,11 @@ export default {
 			}
 			e.stopPropagation()
 		},
+		onEnter(e) {
+			if (e.key === 'Enter') {
+				this.onSelect(e)
+			}
+		},
 	},
 }
 </script>
@@ -171,7 +184,8 @@ export default {
 }
 
 .folder.active,
-.folder:hover {
+.folder:hover,
+.folder:focus {
 	background: var(--color-background-dark);
 }
 

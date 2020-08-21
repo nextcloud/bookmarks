@@ -18,7 +18,9 @@
 		<template v-if="!renaming">
 			<div v-if="isEditable" class="bookmark__checkbox">
 				<input v-model="selected" class="checkbox" type="checkbox"><label
+					v-tooltip="t('bookmarks', 'Select bookmark')"
 					:aria-label="t('bookmarks', 'Select bookmark')"
+
 					@click="clickSelect" />
 			</div>
 			<div class="bookmark__labels">
@@ -193,7 +195,8 @@ export default {
 }
 
 .bookmark.active,
-.bookmark:hover {
+.bookmark:hover,
+.bookmark:focus {
 	background: var(--color-background-dark);
 }
 

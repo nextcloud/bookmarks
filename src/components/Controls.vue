@@ -11,6 +11,7 @@
 						<a
 							:key="'a' + folder.id"
 							href="#"
+							tabindex="0"
 							@click.prevent="onSelectFolder(folder.id)">{{ folder.title }}</a>
 						<span :key="'b' + folder.id" class="icon-breadcrumb" />
 					</template>
@@ -259,7 +260,8 @@ export default {
 	opacity: 0.7;
 }
 
-.controls__left > *:hover {
+.controls__left > *:hover,
+.controls__left > *:focus {
 	opacity: 1;
 }
 

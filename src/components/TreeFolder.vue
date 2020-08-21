@@ -62,7 +62,8 @@ export default {
 	align-items: center;
 }
 
-.treefolder__title:hover {
+.treefolder__title:hover,
+.treefolder__title:focus {
 	background: var(--color-background-dark);
 }
 
