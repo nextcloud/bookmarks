@@ -18,6 +18,7 @@ OC.L10N.register(
     "URL" : "URL",
     "Tags" : "Klavioù",
     "Sharing" : "Rannan",
+    "Owner" : "Perc'henner",
     "Share link" : "Rannan liamm",
     "Copy link" : "Kopiañ al liamm",
     "Allow editing" : "Cheñchamentoù aotreet",
