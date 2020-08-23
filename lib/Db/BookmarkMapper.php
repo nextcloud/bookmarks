@@ -67,6 +67,21 @@ class BookmarkMapper extends QBMapper {
 		$this->tagMapper = $tagMapper;
 	}
 
+	/**
+	 * Magic to use BookmarkWithTags if possible
+	 * @param array $row
+	 * @return Entity
+	 */
+	protected function mapRowToEntity(array $row): Entity {
+		$hasTags = array_first($row, function ($field) {
+			return preg_match('#tag#i', $field, $matches) !== false;
+		}, false);
+		if ($hasTags !== false) {
+			return BookmarkWithTags::fromRow($row);
+		}
+		return \call_user_func($this->entityClass .'::fromRow', $row);
+	}
+
 
 	/**
 	 * Find a specific bookmark by Id
@@ -188,13 +203,17 @@ class BookmarkMapper extends QBMapper {
 		if ($params->getConjunction() === 'or') {
 			$connectWord = 'OR';
 		}
-		if (count($filters) === 0) {
-			return;
-		}
+
+		// select tags
 		if ($dbType === 'pgsql') {
 			$tags = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
 		} else {
 			$tags = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
+		}
+		$qb->selectAlias($tags, 'tags');
+
+		if (count($filters) === 0) {
+			return;
 		}
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
@@ -218,6 +237,20 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @param $qb
+	 */
+	private function _selectTags($qb): void {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		$qb->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'));
+		if ($dbType === 'pgsql') {
+			$tags = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
+		} else {
+			$tags = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
+		}
+		$qb->selectAlias($tags, 'tags');
+	}
+
+	/**
 	 * @param string $userId
 	 * @param QueryParameters $params
 	 * @return array|Entity[]
@@ -238,6 +271,7 @@ class BookmarkMapper extends QBMapper {
 			))
 			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
 
+		$this->_selectTags($qb);
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 
 		return $this->findEntities($qb);
@@ -260,6 +294,7 @@ class BookmarkMapper extends QBMapper {
 			->where($qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
 
+		$this->_selectTags($qb);
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 
 		return $this->findEntities($qb);
@@ -288,6 +323,14 @@ class BookmarkMapper extends QBMapper {
 			))
 			->andWhere($qb->expr()->eq('t.tag', $qb->createPositionalParameter($tag)));
 
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		if ($dbType === 'pgsql') {
+			$tags = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
+		} else {
+			$tags = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
+		}
+		$qb->selectAlias($tags, 'tags');
+
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 
 		return $this->findEntities($qb);
@@ -308,6 +351,14 @@ class BookmarkMapper extends QBMapper {
 				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
 				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
 			));
+
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		if ($dbType === 'pgsql') {
+			$tags = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
+		} else {
+			$tags = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
+		}
+		$qb->selectAlias($tags, 'tags');
 
 		return $qb;
 	}
