@@ -59,6 +59,7 @@ OC.L10N.register(
     "Share link" : "Enllaç de compartició",
     "Copy link" : "Copia l'enllaç",
     "Allow editing" : "Permet l'edició",
+    "Remove share" : "Suprimeix la compartició",
     "Link copied" : "Enllaç copiat",
     "Select" : "Selecciona",
     "Previews" : "Previsualitzacions",
