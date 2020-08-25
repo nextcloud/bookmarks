@@ -42,6 +42,12 @@ export default {
 		creating() {
 			return this.$store.state.loading.createBookmark
 		},
+		isFolderView() {
+			return this.$route.name === this.$store.getters.getRoutes().FOLDER
+		},
+		isTagView() {
+			return this.$route.name === this.$store.getters.getRoutes().TAGS
+		},
 	},
 	mounted() {
 		this.$refs.input.focus()
@@ -50,7 +56,8 @@ export default {
 		submit() {
 			this.$store.dispatch(actions.CREATE_BOOKMARK, {
 				url: this.url,
-				...(this.$route.name === this.$store.getters.getRoutes().FOLDER && { folders: [this.$route.params.folder] }),
+				...(this.isFolderView && { folders: [this.$route.params.folder] }),
+				...(this.isTagView && { tags: this.$route.params.tags.split(',') }),
 			})
 		},
 		cancel() {
