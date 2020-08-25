@@ -21,35 +21,37 @@
 				<LinkVariantOffIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
 			<AppNavigationSpacer />
-			<AppNavigationItem key="menu-tags"
-				:to="{ name: routes.TAGS }"
-				:exact="true"
-				:title="t('bookmarks', 'Filter tags')">
-				<TagMultipleIcon slot="icon" :size="18" :fill-color="colorMainText" />
-			</AppNavigationItem>
-			<AppNavigationItem v-for="tag in tags"
-				:key="'tag-'+tag.name"
-				icon="icon-tag"
-				:to="tag.route"
-				:force-menu="true"
-				:edit-label="t('bookmarks', 'Rename')"
-				:editable="!isPublic"
-				:title="tag.name"
-				@update:title="onRenameTag(tag.name, $event)">
-				<AppNavigationCounter slot="counter">
-					{{ tag.count }}
-				</AppNavigationCounter>
-				<template v-if="!isPublic" slot="actions">
-					<ActionButton icon="icon-delete" @click="onDeleteTag(tag.name)">
-						{{ t('bookmarks', 'Delete') }}
-					</ActionButton>
-				</template>
-			</AppNavigationItem>
-			<AppNavigationItem key="menu-untagged"
-				:to="{ name: routes.UNTAGGED }"
-				:title="t('bookmarks', 'Untagged')">
-				<TagOffIcon slot="icon" :size="18" :fill-color="colorMainText" />
-			</AppNavigationItem>
+			<template v-if="Boolean(tags.length)">
+				<AppNavigationItem key="menu-tags"
+					:to="{ name: routes.TAGS }"
+					:exact="true"
+					:title="t('bookmarks', 'Filter tags')">
+					<TagMultipleIcon slot="icon" :size="18" :fill-color="colorMainText" />
+				</AppNavigationItem>
+				<AppNavigationItem v-for="tag in tags"
+					:key="'tag-'+tag.name"
+					icon="icon-tag"
+					:to="tag.route"
+					:force-menu="true"
+					:edit-label="t('bookmarks', 'Rename')"
+					:editable="!isPublic"
+					:title="tag.name"
+					@update:title="onRenameTag(tag.name, $event)">
+					<AppNavigationCounter slot="counter">
+						{{ tag.count }}
+					</AppNavigationCounter>
+					<template v-if="!isPublic" slot="actions">
+						<ActionButton icon="icon-delete" :close-after-click="true" @click="onDeleteTag(tag.name)">
+							{{ t('bookmarks', 'Delete') }}
+						</ActionButton>
+					</template>
+				</AppNavigationItem>
+				<AppNavigationItem key="menu-untagged"
+					:to="{ name: routes.UNTAGGED }"
+					:title="t('bookmarks', 'Untagged')">
+					<TagOffIcon slot="icon" :size="18" :fill-color="colorMainText" />
+				</AppNavigationItem>
+			</template>
 			<template v-if="Number(bookmarksLimit) > 0">
 				<AppNavigationSpacer />
 				<AppNavigationItem :pinned="true" icon="icon-quota" :title="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
