@@ -1,11 +1,11 @@
 <template>
-	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected,}"
+	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected}"
 		tabindex="0"
 		@click="onSelect"
 		@keypress="onEnter">
-		<div v-if="isEditable" class="folder__checkbox">
+		<div v-if="isEditable" ref="checkbox" class="folder__checkbox">
 			<input :id="'select'+folder.id"
-				v-model="selected"
+				:value="selected"
 				class="checkbox"
 				type="checkbox"><label
 					v-tooltip="t('bookmarks', 'Select folder')"
@@ -147,7 +147,10 @@ export default {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
 		onSelect(e) {
-			if (this.$refs.actions.$el.contains(e.target)) return
+			if (this.$refs.actions.$el === e.target
+					|| this.$refs.actions.$el.contains(e.target)
+					|| this.$refs.checkbox.contains(e.target)
+					|| this.$refs.checkbox === e.target) return
 			this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
 			e.preventDefault()
 		},
@@ -167,7 +170,6 @@ export default {
 			} else {
 				this.$store.commit(mutations.REMOVE_SELECTION_FOLDER, this.folder)
 			}
-			e.stopPropagation()
 		},
 		onEnter(e) {
 			if (e.key === 'Enter') {
