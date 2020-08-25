@@ -29,7 +29,6 @@
 					{{ t('bookmarks', 'Shared by {user}', {user: folder.userId}) }}
 				</div>
 			</div>
-			<div v-if="count" class="folder__count folder__tag" v-text="count" />
 			<Actions v-if="isEditable"
 				ref="actions"
 				class="folder__actions"
@@ -124,9 +123,6 @@ export default {
 		},
 		selected() {
 			return this.selectedFolders.map(f => f.id).includes(this.folder.id)
-		},
-		count() {
-			return this.$store.state.countsByFolder[this.folder.id] > 99 ? '99+' : this.$store.state.countsByFolder[this.folder.id] || ''
 		},
 	},
 	created() {
@@ -278,19 +274,6 @@ export default {
 	padding: 5px 10px;
 	margin-right: 3px;
 	background-color: var(--color-primary-light);
-}
-
-.folder__count {
-	font-size: 12px;
-	height: 24px;
-	line-height: 1;
-	overflow: hidden;
-}
-
-.folder--gridview .folder__count {
-	position: absolute;
-	top: 10px;
-	right: 10px;
 }
 
 .folder__actions {
