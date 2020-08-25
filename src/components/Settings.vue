@@ -174,9 +174,10 @@ export default {
 .settings label,
 .settings input,
 .settings select,
-.settings label button,
+.settings button,
 .settings label a.button {
 	display: block;
+	width: 100%;
 }
 
 .settings label {
