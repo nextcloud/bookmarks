@@ -75,6 +75,7 @@ export default {
 	padding: 5px;
 	display: flex;
 	align-items: center;
+	position: relative;
 }
 
 .create-bookmark__icon {
@@ -88,13 +89,18 @@ export default {
 	top: 10px;
 }
 
+.bookmarkslist--gridview .create-bookmark__icon {
+	height: 100px;
+	width: 100px;
+	background-size: cover;
+	position: absolute;
+	top: 30px;
+	left: 60px;
+}
+
 .create-bookmark__title {
 	display: flex;
 	flex-grow: 1;
-}
-
-.create-bookmark__title > input {
-	width: 100%;
 }
 
 .create-bookmark button {
@@ -105,5 +111,6 @@ export default {
 	border-top: none;
 	border-left: none;
 	border-right: none;
+	width: 100%;
 }
 </style>

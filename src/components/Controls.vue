@@ -33,10 +33,10 @@
 				v-if="!isPublic"
 				class="controls__AddFolder"
 				:title="t('bookmarks', 'New')"
-				:default-icon="'icon-add'"
-				:close-after-click="true">
+				:default-icon="'icon-add'">
 				<ActionButton
 					icon="icon-link"
+					:close-after-click="true"
 					@click="onAddBookmark">
 					{{
 						t('bookmarks', 'New bookmark')
@@ -44,6 +44,7 @@
 				</ActionButton>
 				<ActionButton
 					icon="icon-folder"
+					:close-after-click="true"
 					@click="onAddFolder">
 					{{ t('bookmarks', 'New folder') }}
 				</ActionButton>

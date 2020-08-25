@@ -39,18 +39,18 @@
 					{{ bookmark.description }}</span>
 			</div>
 			<TagLine :tags="bookmark.tags" />
-			<Actions v-if="isEditable" class="bookmark__actions" :close-after-click="true">
-				<ActionButton icon="icon-info" @click="onDetails">
+			<Actions v-if="isEditable" class="bookmark__actions">
+				<ActionButton icon="icon-info" :close-after-click="true" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
 				</ActionButton>
-				<ActionButton icon="icon-rename" @click="onRename">
+				<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
 					{{ t('bookmarks', 'Rename') }}
 				</ActionButton>
-				<ActionButton @click="onMove">
+				<ActionButton :close-after-click="true" @click="onMove">
 					{{ t('bookmarks', 'Move') }}
 					<FolderMoveIcon #icon :fill-color="colorMainText" />
 				</ActionButton>
-				<ActionButton icon="icon-delete" @click="onDelete">
+				<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
 					{{ t('bookmarks', 'Delete') }}
 				</ActionButton>
 			</Actions>

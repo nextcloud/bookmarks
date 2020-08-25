@@ -1,11 +1,5 @@
 <template>
 	<AppNavigation class="navigation">
-		<AppNavigationNew
-			v-if="!isPublic"
-			:text="t('bookmarks', 'New Bookmark')"
-			:disabled="false"
-			button-class="icon-add"
-			@click="onNewBookmark" />
 		<template #list>
 			<AppNavigationItem key="menu-home"
 				:to="{ name: routes.HOME }"
@@ -73,7 +67,6 @@
 
 <script>
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
-import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
 import AppNavigationCounter from '@nextcloud/vue/dist/Components/AppNavigationCounter'
 import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
@@ -85,13 +78,12 @@ import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff'
 import TagMultipleIcon from 'vue-material-design-icons/TagMultiple'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
-import { actions, mutations } from '../store/'
+import { actions } from '../store/'
 
 export default {
 	name: 'Navigation',
 	components: {
 		AppNavigation,
-		AppNavigationNew,
 		AppNavigationItem,
 		AppNavigationCounter,
 		AppNavigationSettings,
@@ -127,12 +119,6 @@ export default {
 	},
 
 	methods: {
-		onNewBookmark() {
-			this.$store.commit(
-				mutations.DISPLAY_NEW_BOOKMARK,
-				!this.$store.state.displayNewBookmark
-			)
-		},
 		onDeleteTag(tag) {
 			this.$store.dispatch(actions.DELETE_TAG, tag)
 		},

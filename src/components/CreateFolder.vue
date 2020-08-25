@@ -70,6 +70,7 @@ export default {
 	padding: 5px;
 	display: flex;
 	align-items: center;
+	position: relative;
 }
 
 .create-folder__icon {
@@ -83,13 +84,18 @@ export default {
 	top: 8px;
 }
 
+.bookmarkslist--gridview .create-folder__icon {
+	height: 100px;
+	width: 100px;
+	background-size: cover;
+	position: absolute;
+	top: 30px;
+	left: 60px;
+}
+
 .create-folder__title {
 	display: flex;
 	flex-grow: 1;
-}
-
-.create-folder__title > input {
-	width: 100%;
 }
 
 .create-folder button {
@@ -100,5 +106,6 @@ export default {
 	border-top: none;
 	border-left: none;
 	border-right: none;
+	width: 100%;
 }
 </style>
