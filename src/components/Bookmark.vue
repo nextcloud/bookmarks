@@ -39,7 +39,7 @@
 					{{ bookmark.description }}</span>
 			</div>
 			<TagLine :tags="bookmark.tags" />
-			<Actions v-if="isEditable" class="bookmark__actions">
+			<Actions v-if="isEditable" class="bookmark__actions" :close-after-click="true">
 				<ActionButton icon="icon-info" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
 				</ActionButton>

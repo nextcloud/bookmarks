@@ -30,7 +30,10 @@
 				</div>
 			</div>
 			<div v-if="count" class="folder__count folder__tag" v-text="count" />
-			<Actions v-if="isEditable" ref="actions" class="folder__actions">
+			<Actions v-if="isEditable"
+				ref="actions"
+				class="folder__actions"
+				:close-after-click="true">
 				<ActionButton icon="icon-info" @click="onDetails">
 					{{ t('bookmarks', 'Details') }}
 				</ActionButton>
