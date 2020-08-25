@@ -95,6 +95,7 @@ export default {
 			const folderId = this.$route.params.folder || '-1'
 			if (!folderId) return []
 			const folder = this.$store.getters.getFolder(folderId)[0]
+			if (!folder) return []
 			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folderId)
 			return folder.children
 		},

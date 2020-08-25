@@ -385,7 +385,7 @@ export default {
 			})
 	},
 
-	[actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
+	async [actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
 		let canceled = false
 		commit(mutations.FETCH_START, {
 			type: 'folders',
@@ -393,27 +393,25 @@ export default {
 				canceled = true
 			},
 		})
-		return axios
-			.get(url(state, '/folder'), { params: {} })
-			.then(response => {
-				if (canceled) return
-				const {
-					data: { data, status },
-				} = response
-				if (status !== 'success') throw new Error(data)
-				const folders = data
-				commit(mutations.FETCH_END, 'folders')
-				return commit(mutations.SET_FOLDERS, folders)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(mutations.FETCH_END, 'folders')
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to load folders')
-				)
-				throw err
-			})
+		try {
+			const response = await axios.get(url(state, '/folder'), { params: {} })
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
+			const folders = data
+			commit(mutations.FETCH_END, 'folders')
+			return commit(mutations.SET_FOLDERS, folders)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'folders')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load folders')
+			)
+			throw err
+		}
 	},
 	async [actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
 		try {
