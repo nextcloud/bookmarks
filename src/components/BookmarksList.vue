@@ -5,47 +5,49 @@
 			'bookmarkslist--gridview': viewMode === 'grid'
 		}"
 		@scroll="onScroll">
-		<CreateBookmark v-if="newBookmark" />
-		<CreateFolder v-if="newFolder" />
-		<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
-			<!-- FOLDER VIEW WITH CUSTOM SORTING -->
-			<template v-if="sortOrder === 'index' && children.length">
-				<template v-for="item in children">
+		<div class="padding">
+			<CreateBookmark v-if="newBookmark" />
+			<CreateFolder v-if="newFolder" />
+			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
+				<!-- FOLDER VIEW WITH CUSTOM SORTING -->
+				<template v-if="sortOrder === 'index' && children.length">
+					<template v-for="item in children">
+						<Folder
+							v-if="item.type === 'folder' && getFolder(item.id)"
+							:key="item.type + item.id"
+							:folder="getFolder(item.id)" />
+						<Bookmark
+							v-if="item.type === 'bookmark' && getBookmark(item.id)"
+							:key="item.type + item.id"
+							:bookmark="getBookmark(item.id)" />
+					</template>
+				</template>
+				<!-- FOLDER VIEW WITH NORMAL SORTING -->
+				<template v-else-if="subFolders.length || bookmarks.length">
 					<Folder
-						v-if="item.type === 'folder' && getFolder(item.id)"
-						:key="item.type + item.id"
-						:folder="getFolder(item.id)" />
-					<Bookmark
-						v-if="item.type === 'bookmark' && getBookmark(item.id)"
-						:key="item.type + item.id"
-						:bookmark="getBookmark(item.id)" />
+						v-for="folder in subFolders"
+						:key="'folder' + folder.id"
+						:folder="folder" />
+					<template v-if="bookmarks.length">
+						<Bookmark
+							v-for="bookmark in bookmarks"
+							:key="'bookmark' + bookmark.id"
+							:bookmark="bookmark" />
+					</template>
 				</template>
+				<NoBookmarks v-else-if="!loading" />
 			</template>
-			<!-- FOLDER VIEW WITH NORMAL SORTING -->
-			<template v-else-if="subFolders.length || bookmarks.length">
-				<Folder
-					v-for="folder in subFolders"
-					:key="'folder' + folder.id"
-					:folder="folder" />
-				<template v-if="bookmarks.length">
-					<Bookmark
-						v-for="bookmark in bookmarks"
-						:key="'bookmark' + bookmark.id"
-						:bookmark="bookmark" />
-				</template>
+			<!-- NON-FOLDER VIEW -->
+			<template v-else-if="bookmarks.length">
+				<Bookmark
+					v-for="bookmark in bookmarks"
+					:key="'bookmark' + bookmark.id"
+					:bookmark="bookmark" />
 			</template>
 			<NoBookmarks v-else-if="!loading" />
-		</template>
-		<!-- NON-FOLDER VIEW -->
-		<template v-else-if="bookmarks.length">
-			<Bookmark
-				v-for="bookmark in bookmarks"
-				:key="'bookmark' + bookmark.id"
-				:bookmark="bookmark" />
-		</template>
-		<NoBookmarks v-else-if="!loading" />
-		<div v-if="loading" class="bookmarkslist__loading">
-			<figure class="icon-loading" />
+			<div v-if="loading" class="bookmarkslist__loading">
+				<figure class="icon-loading" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -135,9 +137,9 @@ export default {
 	position: relative;
 }
 
-.bookmarkslist
-> *:first-child:not(.bookmarkslist__loading):not(.bookmarkslist__empty) {
-	border-top: 1px solid var(--color-border);
+.bookmarkslist .padding {
+	width: calc((250px + 10px + 10px) * 4);
+	margin: 0 auto;
 }
 
 .bookmarkslist__empty {
@@ -153,7 +155,7 @@ export default {
 	text-align: center;
 }
 
-.bookmarkslist--gridview {
+.bookmarkslist--gridview .padding {
 	display: flex;
 	flex-flow: wrap;
 	align-content: start;
@@ -165,9 +167,7 @@ export default {
 .bookmark--gridview,
 .bookmarkslist--gridview > .create-folder,
 .bookmarkslist--gridview > .create-bookmark {
-	min-width: 200px;
-	max-width: 300px;
-	flex: 1;
+	width: 250px;
 	height: 200px;
 	align-items: flex-end;
 	background: var(--color-main-background);
