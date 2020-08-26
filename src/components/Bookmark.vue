@@ -1,94 +1,62 @@
 <template>
-	<div
-		:class="{
-			bookmark: true,
-			active: isOpen || selected,
-			'bookmark--gridview': viewMode === 'grid'
-		}"
-		:style="{
-			background:
-				viewMode === 'grid'
-					? `linear-gradient(0deg, var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${imageUrl}')`
-					: undefined
-		}">
-		<a
-			:href="url"
-			class="bookmark__click-link"
-			target="_blank" />
-		<template v-if="!renaming">
-			<div v-if="isEditable" class="bookmark__checkbox">
-				<input v-model="selected" class="checkbox" type="checkbox"><label
-					v-tooltip="t('bookmarks', 'Select bookmark')"
-					:aria-label="t('bookmarks', 'Select bookmark')"
-
-					@click="clickSelect" />
-			</div>
-			<div class="bookmark__labels">
-				<a :href="url" target="_blank" class="bookmark__title">
-					<h3 :title="bookmark.title">
-						<figure
-							class="bookmark__icon"
-							:style="{ backgroundImage: 'url(' + iconUrl + ')' }" />
-						{{ bookmark.title }}
-					</h3>
-				</a>
+	<Item :title="bookmark.title"
+		:tags="bookmark.tags"
+		:rename-placeholder="t('bookmarks', 'Enter new title')"
+		:select-label="t('bookmarks', 'Select bookmark')"
+		:active="isActive"
+		:editable="isEditable"
+		:selected="selected"
+		:renaming="renaming"
+		:background="background"
+		:url="url"
+		@select="onSelect"
+		@rename="onRenameSubmit"
+		@rename-cancel="renaming = false">
+		<template #title>
+			<div class="bookmark__title">
+				<h3 :title="bookmark.title">
+					<figure
+						class="bookmark__icon"
+						:style="{ backgroundImage: 'url(' + iconUrl + ')' }" />
+					{{ bookmark.title }}
+				</h3>
 				<span
 					v-if="bookmark.description"
 					v-tooltip="bookmark.description"
 					class="bookmark__description"><figure class="icon-file" />
 					{{ bookmark.description }}</span>
 			</div>
-			<TagLine :tags="bookmark.tags" />
-			<Actions v-if="isEditable" class="bookmark__actions">
-				<ActionButton icon="icon-info" :close-after-click="true" @click="onDetails">
-					{{ t('bookmarks', 'Details') }}
-				</ActionButton>
-				<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
-					{{ t('bookmarks', 'Rename') }}
-				</ActionButton>
-				<ActionButton :close-after-click="true" @click="onMove">
-					{{ t('bookmarks', 'Move') }}
-					<FolderMoveIcon #icon :fill-color="colorMainText" />
-				</ActionButton>
-				<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
-					{{ t('bookmarks', 'Delete') }}
-				</ActionButton>
-			</Actions>
 		</template>
-		<h3 v-else class="bookmark__title">
-			<figure
-				class="bookmark__icon"
-				:style="{ backgroundImage: 'url(' + iconUrl + ')' }" />
-			<input
-				ref="input"
-				v-model="title"
-				type="text"
-				:placeholder="t('bookmarks', 'Enter bookmark title')"
-				@keyup.enter="onRenameSubmit">
-			<Actions>
-				<ActionButton icon="icon-checkmark" @click="onRenameSubmit">
-					{{ t('bookmarks', 'Save') }}
-				</ActionButton>
-			</Actions>
-		</h3>
-	</div>
+		<template #actions>
+			<ActionButton icon="icon-info" :close-after-click="true" @click="onDetails">
+				{{ t('bookmarks', 'Details') }}
+			</ActionButton>
+			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
+				{{ t('bookmarks', 'Rename') }}
+			</ActionButton>
+			<ActionButton :close-after-click="true" @click="onMove">
+				{{ t('bookmarks', 'Move') }}
+				<FolderMoveIcon #icon :fill-color="colorMainText" />
+			</ActionButton>
+			<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
+				{{ t('bookmarks', 'Delete') }}
+			</ActionButton>
+		</template>
+	</Item>
 </template>
 <script>
-import Vue from 'vue'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
+import Item from './Item'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/'
-import TagLine from './TagLine'
 
 export default {
 	name: 'Bookmark',
 	components: {
-		Actions,
+		Item,
 		ActionButton,
-		TagLine,
 		FolderMoveIcon,
 	},
 	props: {
@@ -115,7 +83,9 @@ export default {
 		},
 		imageUrl() {
 			return this.apiUrl + '/bookmark/' + this.bookmark.id + '/image' + (this.$store.state.public ? '?token=' + this.$store.state.authToken : '')
-
+		},
+		background() {
+			return this.viewMode === 'grid' ? `linear-gradient(0deg, var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${this.imageUrl}')` : undefined
 		},
 		url() {
 			return this.bookmark.url
@@ -145,6 +115,9 @@ export default {
 		selected() {
 			return this.selectedBookmarks.map(b => b.id).includes(this.bookmark.id)
 		},
+		isActive() {
+			return this.isOpen || this.selected
+		},
 	},
 	created() {},
 	methods: {
@@ -164,15 +137,13 @@ export default {
 		},
 		async onRename() {
 			this.renaming = true
-			await Vue.nextTick()
-			this.$refs.input.focus()
 		},
-		async onRenameSubmit() {
-			this.bookmark.title = this.title
+		async onRenameSubmit(title) {
+			this.bookmark.title = title
 			await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id)
 			this.renaming = false
 		},
-		clickSelect() {
+		onSelect() {
 			if (!this.selected) {
 				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
 			} else {
@@ -183,26 +154,6 @@ export default {
 }
 </script>
 <style>
-.bookmark {
-	border-bottom: 1px solid var(--color-border);
-	display: flex;
-	align-items: center;
-	background-position: center !important;
-	background-size: cover !important;
-	background-color: var(--color-main-background);
-	position: relative;
-	padding: 0 8px 0 10px;
-}
-
-.bookmark.active,
-.bookmark:hover,
-.bookmark:focus {
-	background: var(--color-background-dark);
-}
-
-.bookmark__checkbox {
-	display: inline-block;
-}
 
 .bookmark__icon {
 	display: inline-block;
@@ -213,13 +164,6 @@ export default {
 	margin: 0 15px;
 	position: relative;
 	top: 3px;
-}
-
-.bookmark__labels {
-	display: flex;
-	flex: 1;
-	text-overflow: ellipsis;
-	overflow: hidden;
 }
 
 .bookmark__title {
@@ -235,7 +179,6 @@ export default {
 
 .bookmark__title > h3 {
 	margin: 0;
-	padding: 15px 0;
 }
 
 .bookmark__description {
@@ -253,69 +196,18 @@ export default {
 	display: none !important;
 }
 
-.bookmark--gridview.active {
-	border-color: var(--color-primary-element);
-}
-
-.bookmark--gridview .bookmark__description {
+.item--gridview .bookmark__description {
 	flex: 0;
 }
 
-.bookmark--gridview .bookmark__description figure {
+.item--gridview .bookmark__description figure {
 	display: inline-block !important;
 	position: relative;
 	top: 5px;
 }
 
-.bookmark--gridview .bookmark__checkbox {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	background: white;
-	border-radius: var(--border-radius);
-}
-
-.bookmark__actions {
-	flex: 0;
-}
-
-.bookmark__title > input {
-	width: 100%;
-	border-top: none;
-	border-left: none;
-	border-right: none;
-}
-
-.bookmark__title button {
-	height: 20px;
-}
-
-.bookmark--gridview .tagline {
-	position: absolute;
-	bottom: 47px;
-	left: 10px;
-	margin: 0;
-}
-
-.bookmark--gridview .bookmark__checkbox input[type='checkbox'].checkbox + label::before {
-	margin: 0 3px 3px 3px;
-}
-
-.bookmark--gridview .bookmark__icon {
-	margin: 0 5px 0 10px;
-}
-
-.bookmark__click-link {
-	bottom: 0;
-	display: none;
-	left: 0;
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-
-.bookmark--gridview .bookmark__click-link {
-	display: block;
+.item--gridview .bookmark__icon {
+	margin: 0 5px 0 8px;
 }
 
 </style>

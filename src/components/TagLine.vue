@@ -4,7 +4,7 @@
 			:key="tag"
 			class="tagline__tag"
 			role="button"
-			@click="clickTag(tag)">
+			@click="clickTag($event, tag)">
 			{{ tag }}
 		</div>
 	</div>
@@ -31,7 +31,9 @@ export default {
 	},
 	created() {},
 	methods: {
-		clickTag(tag) {
+		clickTag(e, tag) {
+			e.preventDefault()
+			e.stopImmediatePropagation()
 			this.$router.push({ name: this.routes.TAGS, params: { tags: tag } })
 		},
 	},
