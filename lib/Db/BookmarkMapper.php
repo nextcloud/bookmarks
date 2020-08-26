@@ -348,7 +348,8 @@ class BookmarkMapper extends QBMapper {
 			$expr[] = $qb->expr()->orX(
 				$qb->expr()->iLike($tagsCol, $qb->createPositionalParameter($this->db->escapeLikeParameter($tag) . ',%')),
 				$qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%,' . $this->db->escapeLikeParameter($tag))),
-				$qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%,' . $this->db->escapeLikeParameter($tag) . ',%'))
+				$qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%,' . $this->db->escapeLikeParameter($tag) . ',%')),
+				$qb->expr()->iLike($tagsCol, $qb->createPositionalParameter($this->db->escapeLikeParameter($tag)))
 			);
 		}
 		$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $expr);
