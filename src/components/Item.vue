@@ -13,11 +13,11 @@
 				tabindex="0"
 				target="_blank"
 				@click="onClick">
-				<div v-if="editable" class="item__checkbox">
-					<input :value="selected" class="checkbox" type="checkbox"><label
+				<div v-if="editable&&selectable" class="item__checkbox">
+					<input :checked="selected" class="checkbox" type="checkbox"><label
 						v-tooltip="selectLabel"
 						:aria-label="selectLabel"
-						@click="$emit('select')" />
+						@click="$event.preventDefault(); $event.stopImmediatePropagation(); $emit('select');" />
 				</div>
 				<slot name="icon" />
 				<div class="item__labels">
@@ -87,6 +87,10 @@ export default {
 			default: false,
 		},
 		selected: {
+			type: Boolean,
+			default: false,
+		},
+		selectable: {
 			type: Boolean,
 			default: false,
 		},

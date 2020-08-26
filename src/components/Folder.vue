@@ -6,6 +6,7 @@
 		:renaming="renaming"
 		:select-label="t('bookmarks', 'Select folder')"
 		:rename-placeholder="t('bookmarks', 'Enter folder title')"
+		:selectable="selectable"
 		@select="clickSelect"
 		@rename="onRenameSubmit"
 		@rename-cancel="renaming = false"
@@ -32,6 +33,9 @@
 			<ActionButton icon="icon-info" :close-after-click="true" @click="onDetails">
 				{{ t('bookmarks', 'Details') }}
 			</ActionButton>
+			<ActionCheckbox @change="clickSelect">
+				{{ t('bookmarks', 'Select folder') }}
+			</ActionCheckbox>
 			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
 				{{ t('bookmarks', 'Rename') }}
 			</ActionButton>
@@ -49,6 +53,7 @@ import { getCurrentUser } from '@nextcloud/auth'
 import FolderIcon from 'vue-material-design-icons/Folder'
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
 import { actions, mutations } from '../store/'
 import Item from './Item'
 
@@ -57,6 +62,7 @@ export default {
 	components: {
 		Item,
 		ActionButton,
+		ActionCheckbox,
 		FolderIcon,
 		ShareVariantIcon,
 	},
@@ -100,6 +106,9 @@ export default {
 		},
 		selectedFolders() {
 			return this.$store.state.selection.folders
+		},
+		selectable() {
+			return this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length
 		},
 		selected() {
 			return this.selectedFolders.map(f => f.id).includes(this.folder.id)
