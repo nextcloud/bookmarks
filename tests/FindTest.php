@@ -90,11 +90,6 @@ class FindTest extends TestCase {
 		$this->assertCount(2, $bookmarks);
 	}
 
-	public function testFindByTag() {
-		$bookmarks = $this->bookmarkMapper->findByTag($this->userId, 'one', new QueryParameters());
-		$this->assertCount(3, $bookmarks);
-	}
-
 	public function testFindByTags() {
 		$bookmarks = $this->bookmarkMapper->findByTags($this->userId, ['one', 'three'], new QueryParameters());
 		$this->assertCount(1, $bookmarks);
