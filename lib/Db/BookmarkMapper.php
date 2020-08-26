@@ -353,10 +353,10 @@ class BookmarkMapper extends QBMapper {
 			);
 		}
 		$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $expr);
+		$qb->having($filterExpression);
 		$qb->groupBy('tr.index', ...array_map(static function ($col) {
 			return 'b.'.$col;
 		}, Bookmark::$columns));
-		$qb->having($filterExpression);
 
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 
