@@ -123,7 +123,7 @@ export default {
 		async onImportSubmit(e) {
 			this.importing = true
 			try {
-				await this.$store.dispatch(actions.IMPORT_BOOKMARKS, { file: e.target.files[0], folder: this.$route.params.folder })
+				await this.$store.dispatch(actions.IMPORT_BOOKMARKS, { file: e.target.files[0], folder: this.$route.params.folder || -1 })
 			} catch (e) {
 				console.warn(e)
 			}
