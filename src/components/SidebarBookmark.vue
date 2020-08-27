@@ -3,14 +3,13 @@
 		v-if="isActive"
 		class="sidebar"
 		:title="bookmark.title"
-		:subtitle="bookmark.url"
 		:background="background"
 		@close="onClose">
 		<AppSidebarTab id="bookmark-details" :name="t('bookmarks', 'Details')" icon="icon-info">
 			<div>
 				<h3>
 					<span class="icon-link" />
-					{{ t('bookmarks', 'URL') }}
+					{{ t('bookmarks', 'Link') }}
 				</h3>
 				<div v-if="!editingUrl" class="bookmark-details__line">
 					<span class="bookmark-details__url">{{ bookmark.url }}</span>
@@ -49,7 +48,10 @@
 			</div>
 			<div>
 				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-				<div class="sidebar__notes" :contenteditable="isEditable" @input="onNotesChange">
+				<div class="sidebar__notes"
+					:contenteditable="isEditable"
+					:placeholder="t('bookmarks', 'Notes for this bookmark...')"
+					@input="onNotesChange">
 					{{ description }}
 				</div>
 			</div>
@@ -100,6 +102,7 @@ export default {
 					language: OC.getLanguage().split('-')[0],
 					units: ['d', 'h', 'm', 's'],
 					largest: 1,
+					round: true,
 				})
 				return this.t('bookmarks', '{time} ago', { time: duration })
 			} else {

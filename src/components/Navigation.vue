@@ -4,7 +4,7 @@
 			<AppNavigationItem key="menu-home"
 				:to="{ name: routes.HOME }"
 				icon="icon-home"
-				:title="t('bookmarks', 'All Bookmarks')"
+				:title="t('bookmarks', 'All bookmarks')"
 				:exact="true">
 				<AppNavigationCounter slot="counter">
 					{{ allBookmarksCount }}
@@ -12,7 +12,7 @@
 			</AppNavigationItem>
 			<AppNavigationItem key="menu-recent"
 				:to="{ name: routes.RECENT }"
-				:title="t('bookmarks', 'Recent Bookmarks')">
+				:title="t('bookmarks', 'Recent bookmarks')">
 				<HistoryIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
 			<AppNavigationItem key="menu-unavailable"
