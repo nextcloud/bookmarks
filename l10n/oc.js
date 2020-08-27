@@ -5,10 +5,8 @@ OC.L10N.register(
     "Rename" : "Renomenar",
     "Move" : "Move",
     "Delete" : "Suprimir",
-    "Save" : "Salvar",
     "New" : "Novèl",
     "New folder" : "Novèl dorsièr",
-    "Create" : "Crear",
     "Cancel" : "Anullar",
     "Import" : "Importar",
     "Export" : "Exportar",
@@ -22,6 +20,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "Títol",
     "Link" : "Ligam",
-    "Folder" : "Dorsièr"
+    "Folder" : "Dorsièr",
+    "Save" : "Salvar"
 },
 "nplurals=2; plural=(n > 1);");

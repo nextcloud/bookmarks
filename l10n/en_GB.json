@@ -7,16 +7,14 @@
     "Rename" : "Rename",
     "Move" : "Move",
     "Delete" : "Delete",
-    "Save" : "Save",
     "New" : "New",
     "New folder" : "New folder",
     "Grid view" : "Grid view",
     "List view" : "List view",
     "RSS Feed" : "RSS Feed",
     "Select all" : "Select all",
-    "Create" : "Create",
-    "Cancel" : "Cancel",
     "Root folder" : "Root folder",
+    "Cancel" : "Cancel",
     "Import" : "Import",
     "Export" : "Export",
     "Recently added" : "Recently added",
@@ -47,6 +45,7 @@
     "Title" : "Title",
     "Link" : "Link",
     "Folder" : "Folder",
+    "Save" : "Save",
     "Bookmarks feed" : "Bookmarks feed"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

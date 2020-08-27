@@ -4,9 +4,7 @@ OC.L10N.register(
     "Rename" : "Namakan",
     "Move" : "Move",
     "Delete" : "Padam",
-    "Save" : "Simpan",
     "New" : "Baru",
-    "Create" : "Buat",
     "Cancel" : "Batal",
     "Import" : "Import",
     "Export" : "Eksport",
@@ -17,6 +15,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "Judul",
     "Link" : "Link",
-    "Folder" : "Folder"
+    "Folder" : "Folder",
+    "Save" : "Simpan"
 },
 "nplurals=1; plural=0;");

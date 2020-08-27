@@ -6,15 +6,13 @@ OC.L10N.register(
     "Rename" : "Renomear",
     "Move" : "Mover",
     "Delete" : "Apagar",
-    "Save" : "Guardar",
     "New" : "Novo",
     "New folder" : "Nova pasta",
     "Grid view" : "Vista em grelha",
     "List view" : "Vista em lista",
     "Select all" : "Seleccionar todos",
-    "Create" : "Criar",
-    "Cancel" : "Cancelar",
     "Root folder" : "Pasta raiz",
+    "Cancel" : "Cancelar",
     "Import" : "Importar",
     "Export" : "Exportar",
     "Recently added" : "Adicionados recentemente",
@@ -35,6 +33,7 @@ OC.L10N.register(
     "Add a bookmark" : "Adicionar um marcador",
     "Title" : "Título",
     "Link" : "Link",
-    "Folder" : "Pasta"
+    "Folder" : "Pasta",
+    "Save" : "Guardar"
 },
 "nplurals=2; plural=(n != 1);");

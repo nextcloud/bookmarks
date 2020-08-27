@@ -5,11 +5,9 @@ OC.L10N.register(
     "Rename" : "Renominar",
     "Move" : "Mover",
     "Delete" : "Deler",
-    "Save" : "Salveguardar",
     "New" : "Nove",
     "New folder" : "Nove dossier",
     "Select all" : "Selectionar toto",
-    "Create" : "Crear",
     "Cancel" : "Cancellar",
     "Import" : "Importar",
     "Export" : "Exportar",
@@ -25,6 +23,7 @@ OC.L10N.register(
     "Select" : "Selectionar",
     "Title" : "Titulo",
     "Link" : "Ligamine",
-    "Folder" : "Dossier"
+    "Folder" : "Dossier",
+    "Save" : "Salveguardar"
 },
 "nplurals=2; plural=(n != 1);");

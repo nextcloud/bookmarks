@@ -5,13 +5,11 @@ OC.L10N.register(
     "Rename" : "Преименувај",
     "Move" : "Премести",
     "Delete" : "Избриши",
-    "Save" : "Зачувај",
     "New" : "Ново",
     "New folder" : "Нова папка",
     "Grid view" : "Мрежа",
     "List view" : "Листа",
     "Select all" : "Избери се",
-    "Create" : "Креирај",
     "Cancel" : "Откажи",
     "Import" : "Увези",
     "Export" : "Извези",
@@ -32,6 +30,7 @@ OC.L10N.register(
     "Failed to save settings" : "Неуспешно зачувување на параметрите",
     "Title" : "Наслов",
     "Link" : "Линк",
-    "Folder" : "Папка"
+    "Folder" : "Папка",
+    "Save" : "Зачувај"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

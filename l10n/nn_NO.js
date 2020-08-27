@@ -5,10 +5,8 @@ OC.L10N.register(
     "Rename" : "Gje nytt namn",
     "Move" : "Move",
     "Delete" : "Ta bort",
-    "Save" : "Lagre",
     "New" : "Ny",
     "New folder" : "Ny mappe",
-    "Create" : "Lag",
     "Cancel" : "Avbryt",
     "Import" : "Importer",
     "Export" : "Eksporter",
@@ -24,6 +22,7 @@ OC.L10N.register(
     "Select" : "Vel",
     "Title" : "Tittel",
     "Link" : "Lenkje",
-    "Folder" : "Mappe"
+    "Folder" : "Mappe",
+    "Save" : "Lagre"
 },
 "nplurals=2; plural=(n != 1);");

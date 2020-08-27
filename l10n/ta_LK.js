@@ -5,9 +5,7 @@ OC.L10N.register(
     "Rename" : "பெயர்மாற்றம்",
     "Move" : "Move",
     "Delete" : "நீக்குக",
-    "Save" : "சேமிக்க ",
     "New" : "புதிய",
-    "Create" : "உருவாக்குக",
     "Cancel" : "இரத்து செய்க",
     "Import" : "இறக்குமதி",
     "Export" : "ஏற்றுமதி",
@@ -19,6 +17,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "தலைப்பு",
     "Link" : "Link",
-    "Folder" : "கோப்புறை"
+    "Folder" : "கோப்புறை",
+    "Save" : "சேமிக்க "
 },
 "nplurals=2; plural=(n != 1);");

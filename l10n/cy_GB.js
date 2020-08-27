@@ -5,12 +5,10 @@ OC.L10N.register(
     "Rename" : "Ailenwi",
     "Move" : "Symud",
     "Delete" : "Dileu",
-    "Save" : "Cadw",
     "New" : "Newydd",
     "New folder" : "Ffolder newydd",
     "Grid view" : "Golwg grid",
     "List view" : "Golwg rhestr",
-    "Create" : "Creu",
     "Cancel" : "Diddymu",
     "Import" : "Mewnforio",
     "Export" : "Allforio",
@@ -25,6 +23,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "Teitl",
     "Link" : "Dolen",
-    "Folder" : "Plygell"
+    "Folder" : "Plygell",
+    "Save" : "Cadw"
 },
 "nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;");

@@ -8,13 +8,11 @@ OC.L10N.register(
     "Rename" : "Hernoem",
     "Move" : "Skuif",
     "Delete" : "Skrap",
-    "Save" : "Stoor",
     "New" : "Nuut",
     "New folder" : "Nuwe vouer",
     "List view" : "Lysaansig",
     "RSS Feed" : "RSS-voer",
     "Select all" : "Kies alle",
-    "Create" : "Skep",
     "Cancel" : "Kanselleer",
     "Import" : "Voer In",
     "Export" : "Voer uit",
@@ -39,6 +37,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "'n Boekmerk van die URL bestaan reeds. Skryf oor?",
     "Title" : "Titel",
     "Link" : "Skakel",
-    "Folder" : "Vouer"
+    "Folder" : "Vouer",
+    "Save" : "Stoor"
 },
 "nplurals=2; plural=(n != 1);");

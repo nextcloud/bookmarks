@@ -4,17 +4,14 @@
     "Rename" : "Đổi tên",
     "Move" : "Dịch chuyển",
     "Delete" : "Xóa",
-    "Enter bookmark title" : "Nhập tiêu đề bookmark",
-    "Save" : "Lưu",
     "Select one or more tags" : "Chọn một hoặc nhiều thẻ",
     "New" : "Tạo mới",
     "New folder" : "Tạo thư mục",
     "Grid view" : "Xem dạng Lưới",
     "List view" : "Xem dạng Danh sách",
     "Select all" : "Chọn tất cả",
-    "Create" : "Tạo mới",
-    "Cancel" : "Hủy bỏ",
     "Enter folder title" : "Nhập tiêu đề thư mục",
+    "Cancel" : "Hủy bỏ",
     "Import" : "Nhập vào",
     "Export" : "Xuất ra",
     "Recently added" : "Mới thêm",
@@ -34,8 +31,10 @@
     "Failed to save settings" : "Lưu cấu hình thất bại",
     "Add a bookmark" : "Thêm một bookmark",
     "Title" : "Tên",
+    "Enter bookmark title" : "Nhập tiêu đề bookmark",
     "Link" : "Liên kết",
     "Folder" : "Thư mục",
-    "Root Folder" : "Thư mục gốc"
+    "Root Folder" : "Thư mục gốc",
+    "Save" : "Lưu"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

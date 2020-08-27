@@ -8,13 +8,11 @@ OC.L10N.register(
     "Rename" : "სახელის შეცვლა",
     "Move" : "გადატანა",
     "Delete" : "წაშლა",
-    "Save" : "შენახვა",
     "New" : "ახალი",
     "New folder" : "ახალი დირექტორია",
     "Grid view" : "ბადისებური ხედი",
     "List view" : "ჩამონათვლისებური ხედი",
     "Select all" : "ყველას არჩევა",
-    "Create" : "შექმნა",
     "Cancel" : "უარყოფა",
     "Import" : "იმპორტი",
     "Export" : "ექსპორტი",
@@ -37,6 +35,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "ეს URL უკვე მონიშნულია! გადავწეროთ?",
     "Title" : "სათაური",
     "Link" : "ბმული",
-    "Folder" : "დირექტორია"
+    "Folder" : "დირექტორია",
+    "Save" : "შენახვა"
 },
 "nplurals=2; plural=(n!=1);");

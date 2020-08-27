@@ -4,11 +4,9 @@ OC.L10N.register(
     "Rename" : "﻿ಮರುಹೆಸರಿಸು",
     "Move" : "Move",
     "Delete" : "﻿ಅಳಿಸಿ",
-    "Save" : "﻿ಉಳಿಸಿ",
     "New" : "﻿ಹೊಸ",
     "New folder" : "﻿ಹೊಸ ಕೋಶ",
     "Select all" : "﻿ಎಲ್ಲಾ ಆಯ್ಕೆ ಮಾಡಿ",
-    "Create" : "ಸೃಷ್ಟಿಸಿ",
     "Cancel" : "﻿ರದ್ದು",
     "Import" : "ಆಮದು",
     "Export" : "ರಫ್ತು",
@@ -21,6 +19,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "ಶೀರ್ಷಿಕೆ",
     "Link" : "ಸಂಪರ್ಕ ಕೊಂಡಿ",
-    "Folder" : "ಕೋಶ"
+    "Folder" : "ಕೋಶ",
+    "Save" : "﻿ಉಳಿಸಿ"
 },
 "nplurals=2; plural=(n > 1);");

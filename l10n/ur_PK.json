@@ -2,7 +2,6 @@
     "Rename" : "Rename",
     "Move" : "Move",
     "Delete" : "حذف کریں",
-    "Save" : "حفظ",
     "Cancel" : "منسوخ کریں",
     "URL" : "یو ار ایل",
     "Notes" : "Notes",
@@ -11,6 +10,7 @@
     "Select" : "Select",
     "Title" : "عنوان",
     "Link" : "Link",
-    "Folder" : "Folder"
+    "Folder" : "Folder",
+    "Save" : "حفظ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

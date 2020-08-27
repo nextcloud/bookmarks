@@ -4,10 +4,8 @@ OC.L10N.register(
     "Rename" : "重新命名",
     "Move" : "Move",
     "Delete" : "刪除",
-    "Save" : "儲存",
     "New" : "新增",
     "New folder" : "新文件夾",
-    "Create" : "新增",
     "Cancel" : "取消",
     "Import" : "導入",
     "Export" : "滙出",
@@ -22,6 +20,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "標題",
     "Link" : "Link",
-    "Folder" : "資料夾"
+    "Folder" : "資料夾",
+    "Save" : "儲存"
 },
 "nplurals=1; plural=0;");

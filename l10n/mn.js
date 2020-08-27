@@ -5,11 +5,9 @@ OC.L10N.register(
     "Rename" : "Нэрлэнэ үү",
     "Move" : "Зөөх",
     "Delete" : "Устгах",
-    "Save" : "Хадгалах",
     "New" : "Шинэ",
     "New folder" : "Шинэ хавтас",
     "Select all" : "бүгдийг сонгох",
-    "Create" : "Үүсгэх",
     "Cancel" : "болиулах",
     "Import" : "Импорт",
     "Export" : "Экспорт",
@@ -27,6 +25,7 @@ OC.L10N.register(
     "Privacy" : "Хувийн нууц",
     "Title" : "Цол/Албан тушаал",
     "Link" : "Холбоос",
-    "Folder" : "Хавтас"
+    "Folder" : "Хавтас",
+    "Save" : "Хадгалах"
 },
 "nplurals=2; plural=(n != 1);");

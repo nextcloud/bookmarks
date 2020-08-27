@@ -5,10 +5,8 @@ OC.L10N.register(
     "Rename" : "পূনঃনামকরণ",
     "Move" : "Move",
     "Delete" : "মুছে",
-    "Save" : "সংরক্ষণ",
     "New" : "নতুন",
     "New folder" : "নতুন ফোল্ডার",
-    "Create" : "তৈরী কর",
     "Cancel" : "বাতির",
     "Import" : "আমদানি",
     "Export" : "রপ্তানি",
@@ -22,6 +20,7 @@ OC.L10N.register(
     "Select" : "সিলেক্ট",
     "Title" : "শিরোনাম",
     "Link" : "Link",
-    "Folder" : "ফোল্ডার"
+    "Folder" : "ফোল্ডার",
+    "Save" : "সংরক্ষণ"
 },
 "nplurals=2; plural=(n != 1);");

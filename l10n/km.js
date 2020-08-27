@@ -5,10 +5,8 @@ OC.L10N.register(
     "Rename" : "ប្ដូរ​ឈ្មោះ",
     "Move" : "Move",
     "Delete" : "លុប",
-    "Save" : "រក្សាទុក",
     "New" : "ថ្មី",
     "New folder" : "ថត​ថ្មី",
-    "Create" : "បង្កើត",
     "Cancel" : "បោះបង់",
     "Import" : "នាំយកចូល",
     "Export" : "នាំចេញ",
@@ -21,6 +19,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "ចំណងជើង",
     "Link" : "Link",
-    "Folder" : "ថត"
+    "Folder" : "ថត",
+    "Save" : "រក្សាទុក"
 },
 "nplurals=1; plural=0;");

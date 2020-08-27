@@ -5,11 +5,9 @@ OC.L10N.register(
     "Rename" : "Ëmbenennen",
     "Move" : "Verschieben",
     "Delete" : "Läschen",
-    "Save" : "Späicheren",
     "New" : "Nei",
     "New folder" : "Neien Dossier",
     "Select all" : "All auswielen",
-    "Create" : "Erstellen",
     "Cancel" : "Ofbriechen",
     "Import" : "Importéieren",
     "Export" : "Exportéieren",
@@ -25,6 +23,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "Titel",
     "Link" : "Link",
-    "Folder" : "Dossier"
+    "Folder" : "Dossier",
+    "Save" : "Späicheren"
 },
 "nplurals=2; plural=(n != 1);");

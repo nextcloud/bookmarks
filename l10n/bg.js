@@ -8,14 +8,12 @@ OC.L10N.register(
     "Rename" : "Преименувай",
     "Move" : "Преместване",
     "Delete" : "Изтрий",
-    "Save" : "Запиши",
     "New" : "Нов",
     "New folder" : "Нова папка",
     "Grid view" : "Решетъчен изглед",
     "List view" : "Списъчен изглед",
     "RSS Feed" : "RSS емисия",
     "Select all" : "Избери всички",
-    "Create" : "Създай",
     "Cancel" : "Отказ",
     "Untagged" : "Без отметки",
     "Import" : "Внасяне",
@@ -44,6 +42,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Този адрес е вече добавен към отметките! Искате ли да презапишете?",
     "Title" : "Име",
     "Link" : "Връзка",
-    "Folder" : "Папка"
+    "Folder" : "Папка",
+    "Save" : "Запиши"
 },
 "nplurals=2; plural=(n != 1);");

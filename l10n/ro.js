@@ -5,13 +5,11 @@ OC.L10N.register(
     "Rename" : "Redenumire",
     "Move" : "Mută",
     "Delete" : "Șterge",
-    "Save" : "Salvează",
     "New" : "Nou",
     "New folder" : "Director nou",
     "Grid view" : "Afișare în grilă",
     "List view" : "Afișare în listă",
     "Select all" : "Selectează tot",
-    "Create" : "Creează",
     "Cancel" : "Anulează",
     "Import" : "Importă",
     "Export" : "Exportă",
@@ -30,6 +28,7 @@ OC.L10N.register(
     "Privacy" : "Confindențialitate",
     "Title" : "Titlu",
     "Link" : "Legătură",
-    "Folder" : "Director"
+    "Folder" : "Director",
+    "Save" : "Salvează"
 },
 "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");
