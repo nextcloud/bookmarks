@@ -3,10 +3,8 @@
     "Rename" : "Gje nytt namn",
     "Move" : "Move",
     "Delete" : "Ta bort",
-    "Save" : "Lagre",
     "New" : "Ny",
     "New folder" : "Ny mappe",
-    "Create" : "Lag",
     "Cancel" : "Avbryt",
     "Import" : "Importer",
     "Export" : "Eksporter",
@@ -22,6 +20,7 @@
     "Select" : "Vel",
     "Title" : "Tittel",
     "Link" : "Lenkje",
-    "Folder" : "Mappe"
+    "Folder" : "Mappe",
+    "Save" : "Lagre"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

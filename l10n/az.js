@@ -5,11 +5,9 @@ OC.L10N.register(
     "Rename" : "Adı dəyiş",
     "Move" : "Move",
     "Delete" : "Sil",
-    "Save" : "Saxla",
     "New" : "Yeni",
     "New folder" : "Yeni qovluq",
     "Select all" : "Hamısıı seç",
-    "Create" : "Yarat",
     "Cancel" : "Dayandır",
     "Import" : "Əlavə et",
     "Export" : "Çıxarış",
@@ -23,6 +21,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "Başlıq",
     "Link" : "Link",
-    "Folder" : "Qovluq"
+    "Folder" : "Qovluq",
+    "Save" : "Saxla"
 },
 "nplurals=2; plural=(n != 1);");

@@ -3,11 +3,9 @@
     "Rename" : "Renominar",
     "Move" : "Mover",
     "Delete" : "Deler",
-    "Save" : "Salveguardar",
     "New" : "Nove",
     "New folder" : "Nove dossier",
     "Select all" : "Selectionar toto",
-    "Create" : "Crear",
     "Cancel" : "Cancellar",
     "Import" : "Importar",
     "Export" : "Exportar",
@@ -23,6 +21,7 @@
     "Select" : "Selectionar",
     "Title" : "Titulo",
     "Link" : "Ligamine",
-    "Folder" : "Dossier"
+    "Folder" : "Dossier",
+    "Save" : "Salveguardar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

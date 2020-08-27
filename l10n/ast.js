@@ -5,13 +5,11 @@ OC.L10N.register(
     "Rename" : "Renomar",
     "Move" : "Mover",
     "Delete" : "Desaniciar",
-    "Save" : "Guardar",
     "New" : "Nuevu",
     "New folder" : "Carpeta nueva",
     "Grid view" : "Vista de rexella",
     "List view" : "Vista de llista",
     "Select all" : "Esbillar too",
-    "Create" : "Crear",
     "Cancel" : "Encaboxar",
     "Import" : "Importar",
     "Export" : "Esportar",
@@ -29,6 +27,7 @@ OC.L10N.register(
     "Select" : "Esbillar",
     "Title" : "Títulu",
     "Link" : "Link",
-    "Folder" : "Carpeta"
+    "Folder" : "Carpeta",
+    "Save" : "Guardar"
 },
 "nplurals=2; plural=(n != 1);");

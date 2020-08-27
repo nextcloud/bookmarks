@@ -5,13 +5,11 @@ OC.L10N.register(
     "Rename" : "Nimeta ümber",
     "Move" : "Liiguta",
     "Delete" : "Kustuta",
-    "Save" : "Salvesta",
     "New" : "Uus",
     "New folder" : "Uus kaust",
     "Grid view" : "Ruudustikvaade",
     "List view" : "Nimekirjavaade",
     "Select all" : "Vali kõik",
-    "Create" : "Loo",
     "Cancel" : "Loobu",
     "Import" : "Impordi",
     "Export" : "Ekspordi",
@@ -32,6 +30,7 @@ OC.L10N.register(
     "Privacy" : "Privaatsus",
     "Title" : "Pealkiri",
     "Link" : "Link",
-    "Folder" : "Kaust"
+    "Folder" : "Kaust",
+    "Save" : "Salvesta"
 },
 "nplurals=2; plural=(n != 1);");

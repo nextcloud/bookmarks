@@ -4,10 +4,8 @@ OC.L10N.register(
     "Rename" : "ئات ئۆزگەرت",
     "Move" : "Move",
     "Delete" : "ئۆچۈر",
-    "Save" : "ساقلا",
     "New" : "يېڭى",
     "New folder" : "يېڭى قىسقۇچ",
-    "Create" : "قۇر",
     "Cancel" : "ۋاز كەچ",
     "Import" : "ئەكىر",
     "Export" : "چىقار",
@@ -20,6 +18,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "ماۋزۇ",
     "Link" : "Link",
-    "Folder" : "قىسقۇچ"
+    "Folder" : "قىسقۇچ",
+    "Save" : "ساقلا"
 },
 "nplurals=2; plural=(n != 1);");

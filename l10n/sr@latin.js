@@ -5,15 +5,13 @@ OC.L10N.register(
     "Rename" : "Rename",
     "Move" : "Move",
     "Delete" : "Delete",
-    "Save" : "Save",
     "New" : "Nov",
     "New folder" : "Nova fascikla",
     "Grid view" : "Prikaz mreže",
     "List view" : "Prikaz liste",
     "Select all" : "Označi sve",
-    "Create" : "Napravi",
-    "Cancel" : "Otkaži",
     "Root folder" : "Korena fascikla",
+    "Cancel" : "Otkaži",
     "Import" : "Uvezi",
     "Recently added" : "Nedavno dodato",
     "Clear data" : "Očisti podatke",
@@ -30,6 +28,7 @@ OC.L10N.register(
     "Privacy" : "Privatnost",
     "Title" : "Naslov",
     "Link" : "Prečica",
-    "Folder" : "Folder"
+    "Folder" : "Folder",
+    "Save" : "Save"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

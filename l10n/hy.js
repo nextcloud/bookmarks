@@ -5,11 +5,9 @@ OC.L10N.register(
     "Rename" : "Վերանվանել",
     "Move" : "Move",
     "Delete" : "հեռացնել",
-    "Save" : "Պահպանել",
     "New" : "Նոր",
     "New folder" : "Նոր պանակ",
     "Select all" : "Նշել բոլորը",
-    "Create" : "Ստեղծել",
     "Cancel" : "ընդհատել",
     "Import" : "Ներմուծում",
     "Export" : "Արտահանում",
@@ -22,6 +20,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "Վերնագիր",
     "Link" : "Հղում",
-    "Folder" : "Պանակ"
+    "Folder" : "Պանակ",
+    "Save" : "Պահպանել"
 },
 "nplurals=2; plural=(n != 1);");

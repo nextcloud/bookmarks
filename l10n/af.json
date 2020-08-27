@@ -6,13 +6,11 @@
     "Rename" : "Hernoem",
     "Move" : "Skuif",
     "Delete" : "Skrap",
-    "Save" : "Stoor",
     "New" : "Nuut",
     "New folder" : "Nuwe vouer",
     "List view" : "Lysaansig",
     "RSS Feed" : "RSS-voer",
     "Select all" : "Kies alle",
-    "Create" : "Skep",
     "Cancel" : "Kanselleer",
     "Import" : "Voer In",
     "Export" : "Voer uit",
@@ -37,6 +35,7 @@
     "This URL is already bookmarked! Overwrite?" : "'n Boekmerk van die URL bestaan reeds. Skryf oor?",
     "Title" : "Titel",
     "Link" : "Skakel",
-    "Folder" : "Vouer"
+    "Folder" : "Vouer",
+    "Save" : "Stoor"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

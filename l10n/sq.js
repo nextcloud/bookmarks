@@ -5,13 +5,11 @@ OC.L10N.register(
     "Rename" : "Rename",
     "Move" : "Zhvendos",
     "Delete" : "Fshij",
-    "Save" : "Ruaj",
     "New" : "I ri",
     "New folder" : "Dosje e re",
     "Grid view" : "Pamje galeri",
     "List view" : "Pamje listë",
     "Select all" : "Zgjidhi të gjitha",
-    "Create" : "Krijo",
     "Cancel" : "Anullo",
     "Untagged" : "E paetiketuar",
     "Import" : "Import",
@@ -36,6 +34,7 @@ OC.L10N.register(
     "Privacy" : "Privatësia",
     "Title" : "Titulli",
     "Link" : "Lidhje",
-    "Folder" : "Skedari"
+    "Folder" : "Skedari",
+    "Save" : "Ruaj"
 },
 "nplurals=2; plural=(n != 1);");

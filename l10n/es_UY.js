@@ -5,13 +5,11 @@ OC.L10N.register(
     "Rename" : "Renombrar",
     "Move" : "Mover",
     "Delete" : "Borrar",
-    "Save" : "Guardar",
     "New" : "Nuevo",
     "New folder" : "Carpeta nueva",
     "Grid view" : "Vista de cuadrícula",
     "List view" : "Vista de lista",
     "Select all" : "Seleccionar todo",
-    "Create" : "Crear",
     "Cancel" : "Cancelar",
     "Import" : "Importar",
     "Export" : "Exportar",
@@ -32,6 +30,7 @@ OC.L10N.register(
     "Privacy" : "Privacidad",
     "Title" : "Título",
     "Link" : "Liga",
-    "Folder" : "Carpeta"
+    "Folder" : "Carpeta",
+    "Save" : "Guardar"
 },
 "nplurals=2; plural=(n != 1);");

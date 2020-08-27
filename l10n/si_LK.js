@@ -4,9 +4,7 @@ OC.L10N.register(
     "Rename" : "නැවත නම් කරන්න",
     "Move" : "Move",
     "Delete" : "ඉවත් කරන්න",
-    "Save" : "සුරකින්න",
     "New" : "නව",
-    "Create" : "තනන්න",
     "Cancel" : "අවලංගු කරන්න",
     "Import" : "ආයාත කරන්න",
     "Export" : "නිර්යාත කරන්න",
@@ -19,6 +17,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Title" : "මාතෘකාව",
     "Link" : "Link",
-    "Folder" : "ෆෝල්ඩරය"
+    "Folder" : "ෆෝල්ඩරය",
+    "Save" : "සුරකින්න"
 },
 "nplurals=2; plural=(n != 1);");

@@ -9,14 +9,12 @@ OC.L10N.register(
     "Rename" : "Pārsaukt",
     "Move" : "Pārvietot",
     "Delete" : "Dzēst",
-    "Save" : "Saglabāt",
     "New" : "Jauns",
     "New folder" : "Jauna mape",
     "Grid view" : "Režģa izkārtojums",
     "List view" : "Saraksta izkārtojums",
     "RSS Feed" : "RSS plūsma",
     "Select all" : "Atzīmēt visu",
-    "Create" : "Izveidot",
     "Cancel" : "Atcelt",
     "Import" : "Importēt",
     "Export" : "Eksportēt",
@@ -48,6 +46,7 @@ OC.L10N.register(
     "Title" : "Amats",
     "Link" : "Saite",
     "Folder" : "Mape",
+    "Save" : "Saglabāt",
     "Bookmarks feed" : "Grāmatzīmju plūsma"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

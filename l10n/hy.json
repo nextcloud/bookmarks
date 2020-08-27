@@ -3,11 +3,9 @@
     "Rename" : "Վերանվանել",
     "Move" : "Move",
     "Delete" : "հեռացնել",
-    "Save" : "Պահպանել",
     "New" : "Նոր",
     "New folder" : "Նոր պանակ",
     "Select all" : "Նշել բոլորը",
-    "Create" : "Ստեղծել",
     "Cancel" : "ընդհատել",
     "Import" : "Ներմուծում",
     "Export" : "Արտահանում",
@@ -20,6 +18,7 @@
     "Select" : "Select",
     "Title" : "Վերնագիր",
     "Link" : "Հղում",
-    "Folder" : "Պանակ"
+    "Folder" : "Պանակ",
+    "Save" : "Պահպանել"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

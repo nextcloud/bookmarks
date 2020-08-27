@@ -3,7 +3,6 @@
     "Rename" : "نوم بدلول",
     "Move" : "انتقال",
     "Delete" : "ړنګول",
-    "Save" : "ساتل",
     "New" : "نوی",
     "New folder" : "نوی فولډر",
     "Select all" : "ټول ټاکل",
@@ -14,6 +13,7 @@
     "Copy link" : "لېنک کاپي کول",
     "Allow editing" : "د سمون اجازه ورکول",
     "Select" : "ټاکل",
-    "Link" : "لېنک"
+    "Link" : "لېنک",
+    "Save" : "ساتل"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
