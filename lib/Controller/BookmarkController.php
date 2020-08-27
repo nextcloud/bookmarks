@@ -553,14 +553,19 @@ class BookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 * @PublicPage
-	 * @return DataDisplayResponse|NotFoundResponse
+	 * @return DataDisplayResponse|NotFoundResponse|RedirectResponse
 	 */
 	public function getBookmarkImage($id) {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			return new NotFoundResponse();
 		}
 		try {
-			return $this->doImageResponse($this->bookmarks->getImage($id));
+			$image = $this->bookmarks->getImage($id);
+			if ($image === null) {
+				// Return a placeholder
+				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
+			}
+			return $this->doImageResponse($image);
 		} catch (DoesNotExistException|MultipleObjectsReturnedException|\Exception $e) {
 			return new NotFoundResponse();
 		}
