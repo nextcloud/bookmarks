@@ -168,7 +168,7 @@ export default {
 	background: var(--color-main-background);
 	border: 1px solid var(--color-border);
 	box-shadow: #efefef7d 0px 0 13px 0px inset;
-	border-radius: var(--border-radius);
+	border-radius: var(--border-radius-large);
 }
 
 .item__clickLink,
