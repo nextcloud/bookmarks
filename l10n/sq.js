@@ -20,7 +20,7 @@ OC.L10N.register(
     "Last modified" : "Ndryshuar së fundmi",
     "Clear data" : "Pastroji të dhënat",
     "Bookmarklet" : "Libër Shënues",
-    "URL" : "Url",
+    "Link" : "Lidhje",
     "Tags" : "Etiketat",
     "Notes" : "Shënime",
     "Sharing" : "Ndarje",
@@ -33,7 +33,6 @@ OC.L10N.register(
     "Previews" : "Parapamjet",
     "Privacy" : "Privatësia",
     "Title" : "Titulli",
-    "Link" : "Lidhje",
     "Folder" : "Skedari",
     "Save" : "Ruaj"
 },

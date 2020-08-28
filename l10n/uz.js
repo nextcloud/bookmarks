@@ -5,11 +5,11 @@ OC.L10N.register(
     "Move" : "Ko'chiring",
     "Delete" : "O'chir",
     "Cancel" : "Bekor qilish",
+    "Link" : "Ulanish",
     "Tags" : "Teglar",
     "Notes" : "Eslatmalar",
     "Share link" : "Ulanishni ulashing",
     "Allow editing" : "Tahrirlashga ruxsat bering",
-    "Link" : "Ulanish",
     "Save" : "Saqlash"
 },
 "nplurals=1; plural=0;");

@@ -10,7 +10,7 @@
     "Import" : "Importéieren",
     "Export" : "Exportéieren",
     "Clear data" : "Donnéeë läschen",
-    "URL" : "URL",
+    "Link" : "Link",
     "Tags" : "Tags",
     "Notes" : "Notizen",
     "Sharing" : "Gedeelt",
@@ -20,7 +20,6 @@
     "Allow editing" : "Beaarbechten erlaben",
     "Select" : "Select",
     "Title" : "Titel",
-    "Link" : "Link",
     "Folder" : "Dossier",
     "Save" : "Späicheren"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

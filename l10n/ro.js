@@ -15,7 +15,7 @@ OC.L10N.register(
     "Export" : "Exportă",
     "Recently added" : "Adăugate recent",
     "Clear data" : "Elimină datele",
-    "URL" : "URL",
+    "Link" : "Legătură",
     "Tags" : "Etichete",
     "Notes" : "Notițe",
     "Sharing" : "Partajare",
@@ -27,7 +27,6 @@ OC.L10N.register(
     "Select" : "Select",
     "Privacy" : "Confindențialitate",
     "Title" : "Titlu",
-    "Link" : "Legătură",
     "Folder" : "Director",
     "Save" : "Salvează"
 },

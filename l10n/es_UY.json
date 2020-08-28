@@ -16,7 +16,7 @@
     "Last modified" : "Última modificación",
     "Clear data" : "Borrar datos",
     "Bookmarklet" : "Marcador a código",
-    "URL" : "URL",
+    "Link" : "Liga",
     "Tags" : "Etiquetas",
     "Notes" : "Notas",
     "Sharing" : "Compartiendo",
@@ -27,7 +27,6 @@
     "Select" : "Seleccionar",
     "Privacy" : "Privacidad",
     "Title" : "Título",
-    "Link" : "Liga",
     "Folder" : "Carpeta",
     "Save" : "Guardar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

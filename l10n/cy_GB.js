@@ -14,7 +14,7 @@ OC.L10N.register(
     "Export" : "Allforio",
     "Recently added" : "Ychwanegwyd yn ddiweddar",
     "Last modified" : "Newidiwyd diwethaf",
-    "URL" : "URL",
+    "Link" : "Dolen",
     "Tags" : "Tagiau",
     "Notes" : "Nodiadau",
     "Owner" : "Owner",
@@ -22,7 +22,6 @@ OC.L10N.register(
     "Copy link" : "Copïo dolen",
     "Select" : "Select",
     "Title" : "Teitl",
-    "Link" : "Dolen",
     "Folder" : "Plygell",
     "Save" : "Cadw"
 },

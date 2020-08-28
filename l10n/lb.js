@@ -12,7 +12,7 @@ OC.L10N.register(
     "Import" : "Importéieren",
     "Export" : "Exportéieren",
     "Clear data" : "Donnéeë läschen",
-    "URL" : "URL",
+    "Link" : "Link",
     "Tags" : "Tags",
     "Notes" : "Notizen",
     "Sharing" : "Gedeelt",
@@ -22,7 +22,6 @@ OC.L10N.register(
     "Allow editing" : "Beaarbechten erlaben",
     "Select" : "Select",
     "Title" : "Titel",
-    "Link" : "Link",
     "Folder" : "Dossier",
     "Save" : "Späicheren"
 },

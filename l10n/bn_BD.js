@@ -10,7 +10,7 @@ OC.L10N.register(
     "Cancel" : "বাতির",
     "Import" : "আমদানি",
     "Export" : "রপ্তানি",
-    "URL" : "URL",
+    "Link" : "Link",
     "Tags" : "ট্যাগ",
     "Notes" : "নোট",
     "Sharing" : "ভাগাভাগিরত",
@@ -19,7 +19,6 @@ OC.L10N.register(
     "Copy link" : "লিঙ্ক কপি করো",
     "Select" : "সিলেক্ট",
     "Title" : "শিরোনাম",
-    "Link" : "Link",
     "Folder" : "ফোল্ডার",
     "Save" : "সংরক্ষণ"
 },

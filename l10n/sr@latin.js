@@ -15,7 +15,7 @@ OC.L10N.register(
     "Import" : "Uvezi",
     "Recently added" : "Nedavno dodato",
     "Clear data" : "Očisti podatke",
-    "URL" : "Url",
+    "Link" : "Prečica",
     "Tags" : "Oznake",
     "Notes" : "Notes",
     "Sharing" : "Deljenje",
@@ -27,7 +27,6 @@ OC.L10N.register(
     "Select" : "Select",
     "Privacy" : "Privatnost",
     "Title" : "Naslov",
-    "Link" : "Prečica",
     "Folder" : "Folder",
     "Save" : "Save"
 },

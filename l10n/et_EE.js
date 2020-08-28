@@ -17,7 +17,7 @@ OC.L10N.register(
     "Alphabetically" : "Tähestikujärjekorras",
     "Last modified" : "Viimati muudetud",
     "Clear data" : "Tühjenda andmed",
-    "URL" : "URL",
+    "Link" : "Link",
     "Tags" : "Sildid",
     "Notes" : "Märkmed",
     "Sharing" : "Jagamine",
@@ -29,7 +29,6 @@ OC.L10N.register(
     "Select" : "Vali",
     "Privacy" : "Privaatsus",
     "Title" : "Pealkiri",
-    "Link" : "Link",
     "Folder" : "Kaust",
     "Save" : "Salvesta"
 },

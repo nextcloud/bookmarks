@@ -12,7 +12,7 @@ OC.L10N.register(
     "Import" : "Importar",
     "Export" : "Exportar",
     "Alphabetically" : "Alphabeticamente",
-    "URL" : "URL",
+    "Link" : "Ligamine",
     "Tags" : "Etiquettas",
     "Notes" : "Notas",
     "Sharing" : "Compartente",
@@ -22,7 +22,6 @@ OC.L10N.register(
     "Allow editing" : "Permitter modificar",
     "Select" : "Selectionar",
     "Title" : "Titulo",
-    "Link" : "Ligamine",
     "Folder" : "Dossier",
     "Save" : "Salveguardar"
 },

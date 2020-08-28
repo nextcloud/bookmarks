@@ -9,7 +9,7 @@
     "Cancel" : "ընդհատել",
     "Import" : "Ներմուծում",
     "Export" : "Արտահանում",
-    "URL" : "URL",
+    "Link" : "Հղում",
     "Notes" : "Notes",
     "Owner" : "Owner",
     "Share link" : "Կիսվել հղմամբ",
@@ -17,7 +17,6 @@
     "Allow editing" : "Թույլատրել խմբագրումը",
     "Select" : "Select",
     "Title" : "Վերնագիր",
-    "Link" : "Հղում",
     "Folder" : "Պանակ",
     "Save" : "Պահպանել"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
