@@ -16,7 +16,7 @@ OC.L10N.register(
     "Recently added" : "Amestao apocayá",
     "Alphabetically" : "Alfabéticamente",
     "Clear data" : "Llimpiar datos",
-    "URL" : "Url",
+    "Link" : "Link",
     "Tags" : "Etiquetes",
     "Notes" : "Notes",
     "Sharing" : "Compartiendo",
@@ -26,7 +26,6 @@ OC.L10N.register(
     "Allow editing" : "Permitir edición",
     "Select" : "Esbillar",
     "Title" : "Títulu",
-    "Link" : "Link",
     "Folder" : "Carpeta",
     "Save" : "Guardar"
 },

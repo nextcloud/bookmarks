@@ -12,7 +12,7 @@ OC.L10N.register(
     "Export" : "Eksporter",
     "Recently added" : "Nyleg lagt til",
     "Last modified" : "Siste endra",
-    "URL" : "URL",
+    "Link" : "Lenkje",
     "Tags" : "Emneord",
     "Notes" : "Notat",
     "Sharing" : "Deling",
@@ -21,7 +21,6 @@ OC.L10N.register(
     "Allow editing" : "Tillat endring",
     "Select" : "Vel",
     "Title" : "Tittel",
-    "Link" : "Lenkje",
     "Folder" : "Mappe",
     "Save" : "Lagre"
 },

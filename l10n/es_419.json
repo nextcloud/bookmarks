@@ -12,6 +12,7 @@
     "List view" : "Vista de lista",
     "Select all" : "Seleccionar todo",
     "Cancel" : "Cancelar",
+    "Add a bookmark" : "Agregar un marcador",
     "Import" : "Importar",
     "Export" : "Exportar",
     "Recently added" : "Agregado recientemente",
@@ -19,7 +20,7 @@
     "Last modified" : "Última modificación",
     "Clear data" : "Borrar datos",
     "Bookmarklet" : "Marcadores",
-    "URL" : "URL",
+    "Link" : "Liga",
     "Tags" : "Etiquetas",
     "Notes" : "Notas",
     "Sharing" : "Compartiendo",
@@ -29,10 +30,8 @@
     "Allow editing" : "Permitir edición",
     "Select" : "Seleccionar",
     "Privacy" : "Privacidad",
-    "Add a bookmark" : "Agregar un marcador",
     "This URL is already bookmarked! Overwrite?" : "¡Esta URL ya está marcada! ¿Desea sobreescribir?",
     "Title" : "Título",
-    "Link" : "Liga",
     "Folder" : "Carpeta",
     "Save" : "Guardar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

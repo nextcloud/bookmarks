@@ -10,7 +10,7 @@ OC.L10N.register(
     "Cancel" : "Anullar",
     "Import" : "Importar",
     "Export" : "Exportar",
-    "URL" : "URL",
+    "Link" : "Ligam",
     "Notes" : "Nòtas",
     "Sharing" : "Partiment",
     "Owner" : "Owner",
@@ -19,7 +19,6 @@ OC.L10N.register(
     "Allow editing" : "Permetre la modificacion",
     "Select" : "Select",
     "Title" : "Títol",
-    "Link" : "Ligam",
     "Folder" : "Dorsièr",
     "Save" : "Salvar"
 },

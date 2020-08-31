@@ -16,7 +16,7 @@ OC.L10N.register(
     "Recently added" : "Ouzpennet n'eus ket pel zo",
     "Enter the path of a folder where bookmarked files should be stored" : "Lakait hent an teuliad lec'h ma vo enrollet ar restroù gant ur merket pajenn",
     "Clear data" : "Lemel ar roadennoù",
-    "URL" : "URL",
+    "Link" : "Liamm",
     "Tags" : "Klavioù",
     "Sharing" : "Rannan",
     "Owner" : "Perc'henner",
@@ -26,7 +26,6 @@ OC.L10N.register(
     "Link copied" : "Liamm eilet",
     "Select" : "Dibab",
     "Privacy" : "Prevezder",
-    "Link" : "Liamm",
     "Folder" : "Teuliad",
     "Save" : "Enrollañ"
 },

@@ -9,7 +9,7 @@
     "Cancel" : "Dayandır",
     "Import" : "Əlavə et",
     "Export" : "Çıxarış",
-    "URL" : "URL",
+    "Link" : "Link",
     "Tags" : "Işarələr",
     "Notes" : "Qeydlər",
     "Sharing" : "Paylaşılır",
@@ -18,7 +18,6 @@
     "Copy link" : "linki nüsxələ",
     "Select" : "Select",
     "Title" : "Başlıq",
-    "Link" : "Link",
     "Folder" : "Qovluq",
     "Save" : "Saxla"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

@@ -8,7 +8,7 @@ OC.L10N.register(
     "Cancel" : "අවලංගු කරන්න",
     "Import" : "ආයාත කරන්න",
     "Export" : "නිර්යාත කරන්න",
-    "URL" : "URL",
+    "Link" : "Link",
     "Tags" : "ටැග",
     "Notes" : "සටහන්",
     "Sharing" : "හුවමාරු කිරීම",
@@ -16,7 +16,6 @@ OC.L10N.register(
     "Share link" : "Share link",
     "Select" : "Select",
     "Title" : "මාතෘකාව",
-    "Link" : "Link",
     "Folder" : "ෆෝල්ඩරය",
     "Save" : "සුරකින්න"
 },

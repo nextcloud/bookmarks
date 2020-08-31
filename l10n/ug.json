@@ -7,7 +7,7 @@
     "Cancel" : "ۋاز كەچ",
     "Import" : "ئەكىر",
     "Export" : "چىقار",
-    "URL" : "URL",
+    "Link" : "Link",
     "Tags" : "بەلگەلەر",
     "Notes" : "ئىزاھاتلار",
     "Sharing" : "ھەمبەھىر",
@@ -15,7 +15,6 @@
     "Share link" : "Share link",
     "Select" : "Select",
     "Title" : "ماۋزۇ",
-    "Link" : "Link",
     "Folder" : "قىسقۇچ",
     "Save" : "ساقلا"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

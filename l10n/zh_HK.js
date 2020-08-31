@@ -10,7 +10,7 @@ OC.L10N.register(
     "Import" : "導入",
     "Export" : "滙出",
     "Recently added" : "最近加入",
-    "URL" : "網址",
+    "Link" : "Link",
     "Notes" : "筆記",
     "Sharing" : "分享",
     "Owner" : "Owner",
@@ -19,7 +19,6 @@ OC.L10N.register(
     "Allow editing" : "容許編輯",
     "Select" : "Select",
     "Title" : "標題",
-    "Link" : "Link",
     "Folder" : "資料夾",
     "Save" : "儲存"
 },

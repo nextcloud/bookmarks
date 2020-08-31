@@ -10,7 +10,7 @@ OC.L10N.register(
     "Cancel" : "បោះបង់",
     "Import" : "នាំយកចូល",
     "Export" : "នាំចេញ",
-    "URL" : "URL",
+    "Link" : "Link",
     "Tags" : "ស្លាក",
     "Notes" : "កំណត់​ចំណាំ",
     "Sharing" : "ការ​ចែក​រំលែក",
@@ -18,7 +18,6 @@ OC.L10N.register(
     "Share link" : "Share link",
     "Select" : "Select",
     "Title" : "ចំណងជើង",
-    "Link" : "Link",
     "Folder" : "ថត",
     "Save" : "រក្សាទុក"
 },

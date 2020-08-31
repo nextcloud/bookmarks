@@ -12,6 +12,7 @@
     "RSS Feed" : "RSS-voer",
     "Select all" : "Kies alle",
     "Cancel" : "Kanselleer",
+    "Add a bookmark" : "Voeg 'n boekmerk by",
     "Import" : "Voer In",
     "Export" : "Voer uit",
     "Recently added" : "Onlangs bygevoeg",
@@ -20,7 +21,7 @@
     "Last modified" : "Laas gewysig",
     "Delete all bookmarks" : "Skrap alle boekmerke",
     "Bookmarklet" : "Boekmerkie",
-    "URL" : "Bronadres",
+    "Link" : "Skakel",
     "Tags" : "Merkers",
     "Notes" : "Notas",
     "Owner" : "Eienaar",
@@ -31,10 +32,8 @@
     "Select" : "Kies",
     "Previews" : "Voorskoue",
     "Privacy" : "Privaatheid",
-    "Add a bookmark" : "Voeg 'n boekmerk by",
     "This URL is already bookmarked! Overwrite?" : "'n Boekmerk van die URL bestaan reeds. Skryf oor?",
     "Title" : "Titel",
-    "Link" : "Skakel",
     "Folder" : "Vouer",
     "Save" : "Stoor"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

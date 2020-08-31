@@ -10,7 +10,7 @@ OC.L10N.register(
     "Cancel" : "﻿ರದ್ದು",
     "Import" : "ಆಮದು",
     "Export" : "ರಫ್ತು",
-    "URL" : "ಜಾಲದ ಕೊಂಡಿ",
+    "Link" : "ಸಂಪರ್ಕ ಕೊಂಡಿ",
     "Notes" : "Notes",
     "Sharing" : "﻿ಹಂಚಿಕೆ",
     "Owner" : "Owner",
@@ -18,7 +18,6 @@ OC.L10N.register(
     "Allow editing" : "﻿ಸಂಪಾದನೆಗೆ ಅವಕಾಶ ಮಾಡಿಕೊಡಿ",
     "Select" : "Select",
     "Title" : "ಶೀರ್ಷಿಕೆ",
-    "Link" : "ಸಂಪರ್ಕ ಕೊಂಡಿ",
     "Folder" : "ಕೋಶ",
     "Save" : "﻿ಉಳಿಸಿ"
 },

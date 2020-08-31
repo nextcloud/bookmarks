@@ -18,7 +18,7 @@ OC.L10N.register(
     "Last modified" : "Última modificación",
     "Clear data" : "Borrar datos",
     "Bookmarklet" : "Marcador a código",
-    "URL" : "URL",
+    "Link" : "Link",
     "Tags" : "Etiquetas",
     "Notes" : "Notas",
     "Sharing" : "Compartiendo",
@@ -30,7 +30,6 @@ OC.L10N.register(
     "Select" : "Seleccionar",
     "Privacy" : "Privacidad",
     "Title" : "Título",
-    "Link" : "Link",
     "Folder" : "Carpeta",
     "Save" : "Guardar"
 },

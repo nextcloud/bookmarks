@@ -14,7 +14,7 @@ OC.L10N.register(
     "Recently added" : "Сүүлд нэмэгдсэн",
     "Last modified" : "Сүүлд өөрчилсөн",
     "Clear data" : "Өгөгдлийг цэвэрлэх",
-    "URL" : "URL",
+    "Link" : "Холбоос",
     "Tags" : "Tag-үүд",
     "Notes" : "Шинэ ",
     "Sharing" : "Түгээх",
@@ -24,7 +24,6 @@ OC.L10N.register(
     "Select" : "Сонгох",
     "Privacy" : "Хувийн нууц",
     "Title" : "Цол/Албан тушаал",
-    "Link" : "Холбоос",
     "Folder" : "Хавтас",
     "Save" : "Хадгалах"
 },

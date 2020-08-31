@@ -10,7 +10,7 @@
     "Import" : "Importar",
     "Export" : "Exportar",
     "Alphabetically" : "Alphabeticamente",
-    "URL" : "URL",
+    "Link" : "Ligamine",
     "Tags" : "Etiquettas",
     "Notes" : "Notas",
     "Sharing" : "Compartente",
@@ -20,7 +20,6 @@
     "Allow editing" : "Permitter modificar",
     "Select" : "Selectionar",
     "Title" : "Titulo",
-    "Link" : "Ligamine",
     "Folder" : "Dossier",
     "Save" : "Salveguardar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
