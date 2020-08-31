@@ -101,6 +101,7 @@ OC.L10N.register(
     "Tags" : "Schlagworte",
     "Select tags and create new ones" : "Schlagworte wählen und erstellen",
     "Notes" : "Notizen",
+    "Notes for this bookmark..." : "Notizen für dieses Lesezeichen …",
     "Sharing" : "Teilen",
     "{time} ago" : "{time} her",
     "Owner" : "Besitzer",
