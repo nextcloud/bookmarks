@@ -74,10 +74,10 @@ class BookmarkMapper extends QBMapper {
 	 */
 	protected function mapRowToEntity(array $row): Entity {
 		$hasTags = array_first($row, function ($field) {
-			return preg_match('#tag#i', $field, $matches) !== false;
+			return preg_match('#tag|folder#i', $field, $matches) !== false;
 		}, false);
 		if ($hasTags !== false) {
-			return BookmarkWithTags::fromRow($row);
+			return BookmarkWithTagsAndParent::fromRow($row);
 		}
 		return \call_user_func($this->entityClass .'::fromRow', $row);
 	}
@@ -144,6 +144,8 @@ class BookmarkMapper extends QBMapper {
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
 			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)));
 
+		$this->_selectFolders($qb);
+
 		$this->_findBookmarksBuildFilter($qb, $filters, $params);
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 
@@ -198,7 +200,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param QueryParameters $params
 	 */
 	private function _findBookmarksBuildFilter(&$qb, $filters, QueryParameters $params): void {
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		$dbType = $this->getDbType();
 		$connectWord = 'AND';
 		if ($params->getConjunction() === 'or') {
 			$connectWord = 'OR';
@@ -240,7 +242,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param $qb
 	 */
 	private function _selectTags($qb): void {
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		$dbType = $this->getDbType();
 		$qb->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'));
 		if ($dbType === 'pgsql') {
 			$tags = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
@@ -271,6 +273,7 @@ class BookmarkMapper extends QBMapper {
 			))
 			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
 
+		$this->_selectFolders($qb);
 		$this->_selectTags($qb);
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 
@@ -294,6 +297,7 @@ class BookmarkMapper extends QBMapper {
 			->where($qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
 
+		$this->_selectFolders($qb);
 		$this->_selectTags($qb);
 		$this->_queryBuilderSortAndPaginate($qb, $params);
 
@@ -315,9 +319,9 @@ class BookmarkMapper extends QBMapper {
 				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
 				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
 			));
+		$this->_selectFolders($qb);
 
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
-		if ($dbType === 'pgsql') {
+		if ($this->getDbType() === 'pgsql') {
 			$tags = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
 		} else {
 			$tags = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
@@ -336,7 +340,7 @@ class BookmarkMapper extends QBMapper {
 	public function findByTags($userId, array $tags, QueryParameters $params): array {
 		$qb = $this->_findByTags($userId);
 
-		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		$dbType = $this->getDbType();
 		if ($dbType === 'pgsql') {
 			$tagsCol = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
 		} else {
@@ -586,5 +590,25 @@ class BookmarkMapper extends QBMapper {
 			'index',
 		];
 		return array_merge(Bookmark::$columns, $treeFields);
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getDbType(): string {
+		return $this->config->getSystemValue('dbtype', 'sqlite');
+	}
+
+	/**
+	 * @param IQueryBuilder $qb
+	 */
+	private function _selectFolders(IQueryBuilder $qb): void {
+		$qb->leftJoin('b', 'bookmarks_tree', 'tree', $qb->expr()->eq('b.id', 'tree.id'));
+		if ($this->getDbType() === 'pgsql') {
+			$folders = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tree.parent_folder') . "), ',')");
+		} else {
+			$folders = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('tree.parent_folder') . ')');
+		}
+		$qb->selectAlias($folders, 'folders');
 	}
 }
