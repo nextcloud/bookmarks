@@ -44,7 +44,7 @@
 		"@nextcloud/eslint-config": "^2.2.0",
 		"@nextcloud/eslint-plugin": "^1.4.0",
 		"@nextcloud/webpack-vue-config": "^1.2.0",
-		"@vue/test-utils": "^1.0.4",
+		"@vue/test-utils": "^1.0.5",
 		"babel-eslint": "^10.1.0",
 		"babel-loader": "^8.0.6",
 		"css-loader": "^3.6.0",
