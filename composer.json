@@ -15,7 +15,7 @@
 		"ralouphie/mimey": "^2.1",
 		"symfony/console": "4.4.10",
 		"symfony/event-dispatcher": "^4.4",
-		"symfony/process": "4.4.10",
+		"symfony/process": "5.1.5",
 		"symfony/routing": "4.4.10"
 	},
 	"require-dev": {
