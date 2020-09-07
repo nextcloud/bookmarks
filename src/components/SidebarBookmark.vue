@@ -2,7 +2,6 @@
 	<AppSidebar
 		v-if="isActive"
 		class="sidebar"
-		:title="bookmark.title"
 		:background="background"
 		@close="onClose">
 		<AppSidebarTab id="bookmark-details"
@@ -10,20 +9,42 @@
 			icon="icon-info"
 			:order="0">
 			<div>
+				<div v-if="!editingTitle" class="bookmark-details__line">
+					<h2 class="bookmark-details__title">
+						{{ bookmark.title }}
+					</h2>
+					<Actions v-if="isEditable" class="bookmark-details__action">
+						<ActionButton icon="icon-rename" @click="onEditTitle" />
+					</Actions>
+				</div>
+				<div v-else class="bookmark-details__line">
+					<input v-model="title" class="bookmark-details__title">
+					<Actions class="bookmark-details__action">
+						<ActionButton icon="icon-confirm" @click="onEditTitleSubmit" />
+					</Actions>
+					<Actions class="bookmark-details__action">
+						<ActionButton icon="icon-close" @click="onEditTitleCancel" />
+					</Actions>
+				</div>
+			</div>
+			<div>
 				<h3>
 					<span class="icon-link" />
 					{{ t('bookmarks', 'Link') }}
 				</h3>
 				<div v-if="!editingUrl" class="bookmark-details__line">
 					<span class="bookmark-details__url">{{ bookmark.url }}</span>
-					<Actions class="bookmark-details__action">
-						<ActionButton icon="icon-rename" @click="editingUrl = true" />
+					<Actions v-if="isEditable" class="bookmark-details__action">
+						<ActionButton icon="icon-rename" @click="onEditUrl" />
 					</Actions>
 				</div>
 				<div v-else class="bookmark-details__line">
-					<input v-model="bookmark.url" class="bookmark-details__url">
+					<input v-model="url" class="bookmark-details__url">
 					<Actions class="bookmark-details__action">
-						<ActionButton icon="icon-confirm" @click="onEditUrl" />
+						<ActionButton icon="icon-confirm" @click="onEditUrlSubmit" />
+					</Actions>
+					<Actions class="bookmark-details__action">
+						<ActionButton icon="icon-close" @click="onEditUrlCancel" />
 					</Actions>
 				</div>
 			</div>
@@ -89,7 +110,9 @@ export default {
 	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, ArchiveArrowDownIcon },
 	data() {
 		return {
+			title: '',
 			url: '',
+			editingTitle: false,
 			editingUrl: false,
 		}
 	},
@@ -167,9 +190,31 @@ export default {
 			this.bookmark.tags.push(tag)
 			this.scheduleSave()
 		},
-		onEditUrl() {
-			this.editingUrl = false
+		onEditTitle() {
+			this.title = this.bookmark.title
+			this.editingTitle = true
+		},
+		onEditTitleSubmit() {
+			this.editingTitle = false
+			this.bookmark.title = this.title
 			this.scheduleSave()
+		},
+		onEditTitleCancel() {
+			this.editingTitle = false
+			this.title = ''
+		},
+		onEditUrl() {
+			this.url = this.bookmark.url
+			this.editingUrl = true
+		},
+		onEditUrlSubmit() {
+			this.editingUrl = false
+			this.bookmark.url = this.url
+			this.scheduleSave()
+		},
+		onEditUrlCancel() {
+			this.editingUrl = false
+			this.url = ''
 		},
 		scheduleSave() {
 			if (this.changeTimeout) clearTimeout(this.changeTimeout)
@@ -205,6 +250,12 @@ export default {
 
 .bookmark-details__line {
 	display: flex;
+}
+
+.bookmark-details__title {
+	flex-grow: 1;
+	padding: 7px 0;
+	margin-bottom: 0;
 }
 
 .bookmark-details__url {
