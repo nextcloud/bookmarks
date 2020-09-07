@@ -138,7 +138,7 @@ OC.L10N.register(
     "Failed to load settings" : "Ustawienia nie zostały wczytane",
     "Failed to save settings" : "Ustawienia nie zostały zapisane",
     "This URL is already bookmarked! Overwrite?" : "Ten URL jest już w zakładkach! Nadpisać?",
-    "Title" : "Tutuł",
+    "Title" : "Tytuł",
     "Enter bookmark title" : "Wpisz tytuł zakładki",
     "Enter bookmark URL" : "Wpisz adres URL zakładki",
     "Folder" : "Katalog",
