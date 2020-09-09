@@ -69,7 +69,10 @@
 			</Actions>
 			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
 				<Actions :primary="true" :menu-title="selectionDescription">
-					<ActionButton icon="icon-category-files" @click="onBulkMove">
+					<ActionButton @click="onBulkMove">
+						<template #icon>
+							<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+						</template>
 						{{ t('bookmarks', 'Move selection') }}
 					</ActionButton>
 					<ActionButton icon="icon-delete" @click="onBulkDelete">
@@ -95,12 +98,14 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
+import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
+import RssIcon from 'vue-material-design-icons/Rss'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
 
 export default {
 	name: 'Controls',
-	components: { Multiselect, Actions, ActionButton, ActionSeparator },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon, RssIcon },
 	props: {},
 	data() {
 		return {
