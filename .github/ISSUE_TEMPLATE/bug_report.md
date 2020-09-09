@@ -13,8 +13,8 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
+2. Click on '...'
+3. Scroll down to '...'
 4. See error
 
 **Expected behavior**
@@ -25,13 +25,13 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. MacOS X]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+ - Browser: [e.g. Chrome, Safari]
+ - Version: [e.g. 22]
 
 **Server (please complete the following information):**
  - OS: [e.g. CentOS 7]
  - HTTP server: [e.g. nginx 1.1]
- - Database [e.g. MySQL 5.3]
+ - Database: [e.g. MySQL 5.3]
  - PHP version: [e.g. v7.2]
  - Nextcloud version: [e.g. 15.0.1 (see Nextcloud admin page)]
  - Bookmarks app version: [e.g. 1.1.0 (see Nextcloud apps page)]
