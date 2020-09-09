@@ -125,7 +125,10 @@ export default {
 			return this.$store.dispatch(actions.LOAD_SETTINGS)
 		},
 		async reloadCount() {
-			return this.$store.dispatch(actions.COUNT_BOOKMARKS, -1)
+			return Promise.all([
+				this.$store.dispatch(actions.COUNT_BOOKMARKS, -1),
+				this.$store.dispatch(actions.COUNT_UNAVAILABLE),
+			])
 		},
 
 		onSearch(search) {

@@ -39,8 +39,10 @@
 				{{ t('bookmarks', 'Rename') }}
 			</ActionButton>
 			<ActionButton :close-after-click="true" @click="onMove">
+				<template #icon>
+					<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+				</template>
 				{{ t('bookmarks', 'Move') }}
-				<FolderMoveIcon #icon :fill-color="colorMainText" />
 			</ActionButton>
 			<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
 				{{ t('bookmarks', 'Delete') }}

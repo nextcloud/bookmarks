@@ -281,6 +281,28 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @param string $userId
+	 * @param QueryParameters $params
+	 * @return int
+	 */
+	public function countUnavailable(string $userId): int {
+		$qb = $this->db->getQueryBuilder();
+		$qb->selectAlias($qb->func()->count('b.id'), 'count');
+
+		$qb
+			->from('bookmarks', 'b')
+			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('tr.id', 'b.id'))
+			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
+			->where($qb->expr()->orX(
+				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
+			))
+			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
+
+		return $qb->execute()->fetch(\PDO::FETCH_COLUMN);
+	}
+
+	/**
 	 * @param int $folderId
 	 * @param QueryParameters $params
 	 * @return array|Entity[]
