@@ -8,6 +8,7 @@ const BATCH_SIZE = 42
 export const actions = {
 	ADD_ALL_BOOKMARKS: 'ADD_ALL_BOOKMARKS',
 	COUNT_BOOKMARKS: 'COUNT_BOOKMARKS',
+	COUNT_UNAVAILABLE: 'COUNT_UNAVAILABLE',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	LOAD_BOOKMARK: 'LOAD_BOOKMARK',
@@ -65,6 +66,26 @@ export default {
 		}
 	},
 
+	async [actions.COUNT_UNAVAILABLE]({ commit, dispatch, state }, folderId) {
+		try {
+			const response = await axios.get(url(state, '/bookmark/unavailable')
+			)
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_UNAVAILABLE_COUNT, count)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to count unavailable bookmarks')
+			)
+			throw err
+		}
+	},
 	async [actions.COUNT_BOOKMARKS]({ commit, dispatch, state }, folderId) {
 		try {
 			const response = await axios.get(url(state, `/folder/${folderId}/count`)

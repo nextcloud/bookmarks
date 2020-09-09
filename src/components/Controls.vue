@@ -99,13 +99,12 @@ import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
-import RssIcon from 'vue-material-design-icons/Rss'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
 
 export default {
 	name: 'Controls',
-	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon, RssIcon },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon },
 	props: {},
 	data() {
 		return {

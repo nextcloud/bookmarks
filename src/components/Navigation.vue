@@ -15,10 +15,14 @@
 				:title="t('bookmarks', 'Recent bookmarks')">
 				<HistoryIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
-			<AppNavigationItem key="menu-unavailable"
+			<AppNavigationItem v-if="unavailableBookmarksCount > 0"
+				key="menu-unavailable"
 				:to="{ name: routes.UNAVAILABLE }"
 				:title="t('bookmarks', 'Broken links')">
 				<LinkVariantOffIcon slot="icon" :size="18" :fill-color="colorMainText" />
+				<AppNavigationCounter slot="counter">
+					{{ unavailableBookmarksCount }}
+				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationSpacer />
 			<template v-if="Boolean(tags.length)">
@@ -111,6 +115,9 @@ export default {
 		},
 		allBookmarksCount() {
 			return this.$store.state.countsByFolder[-1]
+		},
+		unavailableBookmarksCount() {
+			return this.$store.state.unavailableCount
 		},
 		bookmarksLimit() {
 			return this.$store.state.settings.limit
