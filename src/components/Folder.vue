@@ -39,7 +39,10 @@
 			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
 				{{ t('bookmarks', 'Rename') }}
 			</ActionButton>
-			<ActionButton icon="icon-category-files" :close-after-click="true" @click="onMove">
+			<ActionButton :close-after-click="true" @click="onMove">
+				<template #icon>
+					<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+				</template>
 				{{ t('bookmarks', 'Move') }}
 			</ActionButton>
 			<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
@@ -50,6 +53,7 @@
 </template>
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
+import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import FolderIcon from 'vue-material-design-icons/Folder'
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
@@ -64,6 +68,7 @@ export default {
 		ActionButton,
 		ActionCheckbox,
 		FolderIcon,
+		FolderMoveIcon,
 		ShareVariantIcon,
 	},
 	props: {
@@ -226,5 +231,11 @@ export default {
 	padding: 5px 10px;
 	margin-right: 3px;
 	background-color: var(--color-primary-light);
+}
+
+.action-button-mdi-icon {
+	margin: 10px;
+	margin-top: 6px;
+	height: 21px;
 }
 </style>
