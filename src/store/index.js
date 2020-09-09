@@ -47,6 +47,7 @@ export default new Store({
 		childrenByFolder: {},
 		tokensByFolder: {},
 		countsByFolder: {},
+		unavailableCount: 0,
 		selection: {
 			folders: [],
 			bookmarks: [],

@@ -210,4 +210,15 @@ class InternalBookmarkController extends ApiController {
 	public function countBookmarks(int $folder): JSONResponse {
 		return $this->publicController->countBookmarks($folder);
 	}
+
+	/**
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function countUnavailable(): JSONResponse {
+		return $this->publicController->countUnavailable();
+	}
 }

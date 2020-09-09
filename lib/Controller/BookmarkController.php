@@ -723,4 +723,21 @@ class BookmarkController extends ApiController {
 		$count = $this->treeMapper->countBookmarksInFolder($this->toInternalFolderId($folder));
 		return new JSONResponse(['status' => 'success', 'item' => $count]);
 	}
+
+	/**
+	 * @param int $folder
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function countUnavailable(): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
+		}
+
+		$count = $this->bookmarkMapper->countUnavailable($this->authorizer->getUserId());
+		return new JSONResponse(['status' => 'success', 'item' => $count]);
+	}
 }
