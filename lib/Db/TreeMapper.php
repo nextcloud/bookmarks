@@ -267,6 +267,7 @@ class TreeMapper extends QBMapper {
 			$childFolders = $this->findChildren(self::TYPE_FOLDER, $id);
 			foreach ($childFolders as $childFolder) {
 				$this->deleteEntry(self::TYPE_FOLDER, $childFolder->getId());
+				$this->folderMapper->delete($childFolder);
 			}
 
 			$childBookmarks = $this->findChildren(self::TYPE_BOOKMARK, $id);
@@ -280,9 +281,6 @@ class TreeMapper extends QBMapper {
 			}
 
 			$this->remove($type, $id);
-
-			$folder = $this->folderMapper->find($id);
-			$this->folderMapper->delete($folder);
 		}
 
 		if ($type === self::TYPE_SHARE) {
