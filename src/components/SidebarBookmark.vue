@@ -48,12 +48,11 @@
 			</div>
 			<div>
 				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-				<div class="sidebar__notes"
+				<div ref="description"
+					class="sidebar__notes"
 					:contenteditable="isEditable"
 					:placeholder="t('bookmarks', 'Notes for this bookmark...')"
-					@input="onNotesChange">
-					{{ description }}
-				</div>
+					@input="onNotesChange" />
 			</div>
 		</AppSidebarTab>
 		<!--<AppSidebarTab :name="t('bookmarks', 'Sharing')" icon="icon-sharing" />-->
@@ -77,7 +76,6 @@ export default {
 	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton },
 	data() {
 		return {
-			descripting: '',
 			url: '',
 			editingUrl: false,
 		}
@@ -128,9 +126,9 @@ export default {
 		},
 	},
 	watch: {
-		bookmark(newBookmark) {
-			if (!this.isActive) return
-			this.description = newBookmark.description
+		bookmark() {
+			if (!this.isActive || !this.bookmark) return
+			this.$refs.description.textContent = this.bookmark.description || ''
 		},
 	},
 	created() {},
