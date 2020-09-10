@@ -182,6 +182,7 @@ class FolderService {
 			}
 			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 			$this->publicFolderMapper->delete($publicFolder);
+			$this->folderMapper->delete($folder);
 			return;
 		}
 
@@ -199,6 +200,7 @@ class FolderService {
 
 		// folder is subfolder of share
 		$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+		$this->folderMapper->delete($folder);
 	}
 
 	/**

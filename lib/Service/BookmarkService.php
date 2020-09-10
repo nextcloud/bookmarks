@@ -390,6 +390,7 @@ class BookmarkService {
 		}
 		$folders = $this->treeMapper->findChildren(TreeMapper::TYPE_FOLDER, $rootFolder->getId());
 		foreach ($folders as $folder) {
+			$this->folderMapper->delete($folder);
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
 		}
 	}
