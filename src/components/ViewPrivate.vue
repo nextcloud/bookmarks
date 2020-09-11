@@ -93,6 +93,9 @@ export default {
 			case privateRoutes.UNAVAILABLE:
 				this.$store.dispatch(actions.FILTER_BY_UNAVAILABLE)
 				break
+			case privateRoutes.ARCHIVED:
+				this.$store.dispatch(actions.FILTER_BY_ARCHIVED)
+				break
 			case privateRoutes.BOOKMARK:
 				await this.$store.dispatch(actions.LOAD_BOOKMARK, route.params.bookmark)
 				this.$store.dispatch(actions.OPEN_BOOKMARK, route.params.bookmark)
