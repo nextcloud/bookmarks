@@ -1,6 +1,12 @@
 <template>
 	<div class="bookmarkslist__emptyBookmarks">
-		<EmptyContent>
+		<EmptyContent v-if="$route.name === routes.ARCHIVED">
+			{{ t('bookmarks', 'No archived bookmarks') }}
+			<template #desc>
+				{{ t('bookmarks', 'Bookmarks to files like photos or PDFs will automatically be saved to your nextcloud files, so you can still find them even when the link goes offline.') }}
+			</template>
+		</EmptyContent>
+		<EmptyContent v-else>
 			{{ t('bookmarks', 'No bookmarks here') }}
 			<template #desc>
 				<button @click="onAddBookmark">
@@ -22,11 +28,18 @@
 <script>
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 import { actions, mutations } from '../store'
+import { privateRoutes } from '../router'
+
 export default {
 	name: 'NoBookmarks',
 	components: { EmptyContent },
 	data() {
 		return { importing: false }
+	},
+	computed: {
+		routes() {
+			return privateRoutes
+		},
 	},
 	methods: {
 		onAddBookmark() {
