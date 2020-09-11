@@ -444,7 +444,7 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Entity $entity
+	 * @param Bookmark $entity
 	 * @return Entity
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
@@ -466,16 +466,10 @@ class BookmarkMapper extends QBMapper {
 		$entity->setLastPreview(0);
 		$entity->setClickcount(0);
 
-		$exists = true;
-		try {
-			$this->findByUrl($entity->getUserId(), $entity->getUrl());
-		} catch (DoesNotExistException $e) {
-			$exists = false;
-		} catch (MultipleObjectsReturnedException $e) {
-			$exists = true;
-		}
+		$params = new QueryParameters();
+		$bookmark = $this->findAll($entity->getUserId(), $params->setUrl($entity->getUrl()));
 
-		if ($exists) {
+		if (isset($bookmark[0])) {
 			throw new AlreadyExistsError('A bookmark with this URL already exists');
 		}
 
