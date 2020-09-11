@@ -144,6 +144,7 @@ OC.L10N.register(
     "Folder" : "Složka",
     "Root Folder" : "Kořenová složka",
     "Save" : "Uložit",
+    "Failed to count unavailable bookmarks" : "Nepodařilo se spočítat nedostupné záložky",
     "Failed to load bookmark" : "Záložku se nepodařilo načíst",
     "Failed to find existing bookmark" : "Nepodařilo se najít existující záložku",
     "Failed to create bookmark" : "Záložku se nepodařilo vytvořit",

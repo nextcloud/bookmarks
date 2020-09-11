@@ -144,6 +144,7 @@ OC.L10N.register(
     "Folder" : "Ordner",
     "Root Folder" : "Root-Ordner",
     "Save" : "Speichern",
+    "Failed to count unavailable bookmarks" : "Die nicht verfügbare Lesezeichen konnten nicht gezählt werden",
     "Failed to load bookmark" : "Lesezeichen konnte nicht geladen werden",
     "Failed to find existing bookmark" : "Existierendes Lesezeichen konnte nicht gefunden werden",
     "Failed to create bookmark" : "Lesezeichen konnte nicht erstellt werden",

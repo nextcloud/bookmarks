@@ -144,6 +144,7 @@ OC.L10N.register(
     "Folder" : "Cartella",
     "Root Folder" : "Cartella radice",
     "Save" : "Salva",
+    "Failed to count unavailable bookmarks" : "Conteggio dei segnalibri non disponibili non riuscito",
     "Failed to load bookmark" : "Caricamento dei segnalibri non riuscito",
     "Failed to find existing bookmark" : "Recupero segnalibri esistenti non riuscito",
     "Failed to create bookmark" : "Creazione segnalibro non riuscita",
