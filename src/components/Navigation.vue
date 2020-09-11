@@ -12,8 +12,15 @@
 			</AppNavigationItem>
 			<AppNavigationItem key="menu-recent"
 				:to="{ name: routes.RECENT }"
-				:title="t('bookmarks', 'Recent bookmarks')">
+				:title="t('bookmarks', 'Recent')">
 				<HistoryIcon slot="icon" :size="18" :fill-color="colorMainText" />
+			</AppNavigationItem>
+			<AppNavigationItem
+
+				key="menu-archived"
+				:to="{ name: routes.ARCHIVED }"
+				:title="t('bookmarks', 'Archived')">
+				<ArchiveArrowDownIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
 			<AppNavigationItem v-if="unavailableBookmarksCount > 0"
 				key="menu-unavailable"
@@ -82,6 +89,7 @@ import HistoryIcon from 'vue-material-design-icons/History'
 import TagOffIcon from 'vue-material-design-icons/TagOff'
 import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff'
 import TagMultipleIcon from 'vue-material-design-icons/TagMultiple'
+import ArchiveArrowDownIcon from 'vue-material-design-icons/ArchiveArrowDown'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
 import { actions } from '../store/'
@@ -101,6 +109,7 @@ export default {
 		TagOffIcon,
 		LinkVariantOffIcon,
 		TagMultipleIcon,
+		ArchiveArrowDownIcon,
 	},
 	data() {
 		return {}
@@ -140,6 +149,6 @@ export default {
 <style>
 .navigation .material-design-icon {
 	position: relative;
-	top: 2px;
+	top: 4px;
 }
 </style>

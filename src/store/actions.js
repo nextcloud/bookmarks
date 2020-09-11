@@ -39,6 +39,7 @@ export const actions = {
 	FILTER_BY_RECENT: 'FILTER_BY_RECENT',
 	FILTER_BY_UNTAGGED: 'FILTER_BY_UNTAGGED',
 	FILTER_BY_UNAVAILABLE: 'FILTER_BY_UNAVAILABLE',
+	FILTER_BY_ARCHIVED: 'FILTER_BY_ARCHIVED',
 	FILTER_BY_TAGS: 'FILTER_BY_TAGS',
 	FILTER_BY_FOLDER: 'FILTER_BY_FOLDER',
 	FILTER_BY_SEARCH: 'FILTER_BY_SEARCH',
@@ -620,6 +621,10 @@ export default {
 	},
 	[actions.FILTER_BY_UNAVAILABLE]({ dispatch, commit }) {
 		commit(mutations.SET_QUERY, { unavailable: true })
+		return dispatch(actions.FETCH_PAGE)
+	},
+	[actions.FILTER_BY_ARCHIVED]({ dispatch, commit }) {
+		commit(mutations.SET_QUERY, { archived: true })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_FOLDER]({ dispatch, commit }, folder) {

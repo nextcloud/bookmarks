@@ -142,6 +142,7 @@
     "Folder" : "Dossier",
     "Root Folder" : "Dossier racine",
     "Save" : "Enregistrer",
+    "Failed to count unavailable bookmarks" : "Impossible de compter les favoris indisponibles",
     "Failed to load bookmark" : "Impossible de charger les favoris",
     "Failed to find existing bookmark" : "Impossible de trouver un signet existant",
     "Failed to create bookmark" : "Echec de la création du favori",

@@ -29,6 +29,7 @@ return [
 		['name' => 'web_view#index', 'url' => '/tags/{tags}', 'verb' => 'GET', 'postfix' => 'tags'],
 		['name' => 'web_view#index', 'url' => '/untagged', 'verb' => 'GET', 'postfix' => 'untagged'],
 		['name' => 'web_view#index', 'url' => '/unavailable', 'verb' => 'GET', 'postfix' => 'unavailable'],
+		['name' => 'web_view#index', 'url' => '/archived', 'verb' => 'GET', 'postfix' => 'archived'],
 		['name' => 'web_view#index', 'url' => '/bookmarklet', 'verb' => 'GET', 'postfix' => 'bookmarklet'],
 		['name' => 'web_view#service_worker', 'url' => '/service-worker.js', 'verb' => 'GET'],
 		['name' => 'web_view#manifest', 'url' => '/manifest.webmanifest', 'verb' => 'GET'],
@@ -121,7 +122,7 @@ return [
 		['name' => 'settings#get_sorting', 'url' => '/settings/sorting', 'verb' => 'GET'],
 		['name' => 'settings#set_view_mode', 'url' => '/settings/viewMode', 'verb' => 'POST'],
 		['name' => 'settings#get_view_mode', 'url' => '/settings/viewMode', 'verb' => 'GET'],
-		['name' => 'settings#set_archive_path', 'url' => '/settings/viewMode', 'verb' => 'POST'],
+		['name' => 'settings#set_archive_path', 'url' => '/settings/archivePath', 'verb' => 'POST'],
 		['name' => 'settings#get_archive_path', 'url' => '/settings/archivePath', 'verb' => 'GET'],
 		['name' => 'settings#get_limit', 'url' => '/settings/limit', 'verb' => 'GET'],
 

@@ -240,12 +240,12 @@ class BookmarkController extends ApiController {
 	 * @param array $search
 	 * @param int $limit
 	 * @param bool $untagged
-	 * @param null $folder
-	 * @param null $url
-	 * @param null $unavailable
+	 * @param int|null $folder
+	 * @param string|null $url
+	 * @param bool|null $unavailable
+	 * @param bool|null $archived
 	 * @return DataResponse
 	 *
-	 * @throws UrlParseError
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
@@ -259,9 +259,10 @@ class BookmarkController extends ApiController {
 		$search = [],
 		$limit = 10,
 		$untagged = false,
-		$folder = null,
-		$url = null,
-		$unavailable = null
+		?int $folder = null,
+		?string $url = null,
+		?bool $unavailable = null,
+		?bool $archived = null
 	): DataResponse {
 		$this->registerResponder('rss', function (DataResponse $res) {
 			if ($res->getData()['status'] === 'success') {
@@ -295,33 +296,28 @@ class BookmarkController extends ApiController {
 			return $res;
 		}
 
-		if ($url !== null) {
-			try {
-				/**
-				 * @var $bookmark Bookmark
-				 */
-				$bookmark = $this->bookmarkMapper->findByUrl($this->authorizer->getUserId(), $url);
-			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
-				return new DataResponse(['data' => [], 'status' => 'success']);
-			}
-			$bookmarks = [$this->_returnBookmarkAsArray($bookmark)];
-			return new DataResponse(['data' => $bookmarks, 'status' => 'success']);
-		}
-
 		if (is_array($tags)) {
 			$filterTag = $tags;
 		} else {
 			$filterTag = [];
 		}
 
-		$tagsOnly = true;
-		if (count($search) > 0) {
-			$filterTag = array_merge($filterTag, $search);
-			$tagsOnly = false;
-		}
-
 		// set query params
 		$params = new QueryParameters();
+		if ($url !== null) {
+			$params->setUrl($url);
+		}
+		if ($unavailable !== null) {
+			$params->setUnavailable($unavailable);
+		}
+		if ($untagged !== null) {
+			$params->setUntagged($untagged);
+		}
+		if ($archived !== null) {
+			$params->setArchived($archived);
+		}
+		$params->setTags($filterTag);
+		$params->setSearch($search);
 		$params->setConjunction($conjunction);
 		$params->setOffset($page * $limit);
 		$params->setLimit($limit);
@@ -339,48 +335,17 @@ class BookmarkController extends ApiController {
 			if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
 				return new DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 			}
-			$folder = $this->toInternalFolderId($folder);
-			$result = $this->bookmarkMapper->findByFolder($folder, $params);
-			return new DataResponse([
-				'data' => array_map(
-					function ($bm) {
-						return $this->_returnBookmarkAsArray($bm);
-					}, $result
-				),
-				'status' => 'success',
-			]);
+			$params->setFolder($this->toInternalFolderId($folder));
 		}
 
 		if ($this->authorizer->getUserId() !== null) {
-			if ($unavailable !== null) {
-				$result = $this->bookmarkMapper->findUnavailable($this->authorizer->getUserId(), $params);
-			} elseif ($untagged) {
-				$result = $this->bookmarkMapper->findUntagged($this->authorizer->getUserId(), $params);
-			} elseif ($tagsOnly && count($filterTag) > 0) {
-				$result = $this->bookmarkMapper->findByTags($this->authorizer->getUserId(), $filterTag, $params);
-			} else {
-				$result = $this->bookmarkMapper->findAll($this->authorizer->getUserId(), $filterTag, $params);
+			$result = $this->bookmarkMapper->findAll($this->authorizer->getUserId(), $params);
+		} else {
+			try {
+				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $params);
+			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
 			}
-			return new DataResponse([
-				'data' => array_map(
-					function ($bm) {
-						return $this->_returnBookmarkAsArray($bm);
-					}, $result
-				),
-				'status' => 'success',
-			]);
-		}
-
-		try {
-			if ($untagged) {
-				$result = $this->bookmarkMapper->findUntaggedInPublicFolder($this->authorizer->getToken(), $params);
-			} elseif ($tagsOnly && count($filterTag) > 0) {
-				$result = $this->bookmarkMapper->findByTagsInPublicFolder($this->authorizer->getToken(), $filterTag, $params);
-			} else {
-				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $filterTag, $params);
-			}
-		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
-			return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
 		}
 
 		return new DataResponse([
@@ -395,7 +360,7 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param string $url
-	 * @param string $title
+	 * @param string|null $title
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
@@ -527,13 +492,23 @@ class BookmarkController extends ApiController {
 	 */
 	public function clickBookmark($url = ''): JSONResponse {
 		try {
-			$this->bookmarks->click($this->authorizer->getUserId(), $url);
+			$bookmark = $this->bookmarks->findByUrl($this->authorizer->getUserId(), $url);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+		}
+
+		if ($bookmark->getUserId() !== $this->authorizer->getUserId()) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+		}
+
+		try {
+			$this->bookmarks->click($bookmark->getId());
+		} catch (UrlParseError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Failed to parse URL']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_BAD_REQUEST);
-		} catch (UrlParseError $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Malformed URL']], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 		}
 
 		return new JSONResponse(['status' => 'success'], Http::STATUS_OK);
@@ -738,6 +713,23 @@ class BookmarkController extends ApiController {
 		}
 
 		$count = $this->bookmarkMapper->countUnavailable($this->authorizer->getUserId());
+		return new JSONResponse(['status' => 'success', 'item' => $count]);
+	}
+
+	/**
+	 * @param int $folder
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function countArchived(): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
+		}
+
+		$count = $this->bookmarkMapper->countArchived($this->authorizer->getUserId());
 		return new JSONResponse(['status' => 'success', 'item' => $count]);
 	}
 }
