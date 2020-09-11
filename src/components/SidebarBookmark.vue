@@ -5,7 +5,10 @@
 		:title="bookmark.title"
 		:background="background"
 		@close="onClose">
-		<AppSidebarTab id="bookmark-details" :name="t('bookmarks', 'Details')" icon="icon-info">
+		<AppSidebarTab id="bookmark-details"
+			:name="t('bookmarks', 'Details')"
+			icon="icon-info"
+			:order="0">
 			<div>
 				<h3>
 					<span class="icon-link" />
@@ -46,6 +49,15 @@
 					@input="onTagsChange"
 					@tag="onAddTag" />
 			</div>
+		</AppSidebarTab>
+		<AppSidebarTab id="attachments"
+			:name="t('bookmarks', 'Attachments')"
+			icon="icon-edit"
+			:order="1">
+			<div v-if="archivedFile">
+				<h3><ArchiveArrowDownIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived version') }}</h3>
+				<a :href="archivedFile" class="button">{{ t('bookmarks', 'Open archived file') }}</a>
+			</div>
 			<div>
 				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
 				<div ref="description"
@@ -55,7 +67,6 @@
 					@input="onNotesChange" />
 			</div>
 		</AppSidebarTab>
-		<!--<AppSidebarTab :name="t('bookmarks', 'Sharing')" icon="icon-sharing" />-->
 	</AppSidebar>
 </template>
 <script>
@@ -64,6 +75,8 @@ import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+
+import ArchiveArrowDownIcon from 'vue-material-design-icons/ArchiveArrowDown'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
@@ -73,7 +86,7 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton },
+	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, ArchiveArrowDownIcon },
 	data() {
 		return {
 			url: '',
@@ -124,6 +137,12 @@ export default {
 		isEditable() {
 			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
+		archivedFile() {
+			if (this.bookmark.archivedFile) {
+				return generateUrl(`/apps/files/?fileid=${this.bookmark.archivedFile}`)
+			}
+			return null
+		},
 	},
 	watch: {
 		bookmark() {
@@ -163,11 +182,16 @@ export default {
 }
 </script>
 <style>
-.sidebar span[class^='icon-'] {
+.sidebar span[class^='icon-'],
+.sidebar .material-design-icon {
 	display: inline-block;
 	position: relative;
 	top: 3px;
 	opacity: 0.5;
+}
+
+.sidebar h3 {
+	margin-top: 20px;
 }
 
 .sidebar__tags {

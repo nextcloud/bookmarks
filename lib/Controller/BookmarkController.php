@@ -313,6 +313,9 @@ class BookmarkController extends ApiController {
 		if ($untagged !== null) {
 			$params->setUntagged($untagged);
 		}
+		if ($archived !== null) {
+			$params->setArchived($archived);
+		}
 		$params->setTags($filterTag);
 		$params->setSearch($search);
 		$params->setConjunction($conjunction);
