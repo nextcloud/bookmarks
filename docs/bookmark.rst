@@ -28,17 +28,21 @@ Query bookmarks
 
    .. versionadded:: 0.11.0
 
-   :query conjunction: Set to ``and`` to require all tags to be present, ``or`` if one should suffice. Default: ``or``
    :query tags[]: An array of tags that bookmarks returned by the endpoint should have
-   :query page: if this is non-negative, results will be paginated by 10 bookmarks a page. Default: ``0``.
+   :query page: if this is non-negative, results will be paginated by ``limit`` bookmarks a page. Default: ``0``.
+   :query limit: Results will be paginated by this amount of bookmarks per page. Default: ``10``.
    :query sortby: The column to sort the results by; one of ``url``, ``title``, ``description``, ``public``, ``lastmodified``, ``clickcount``. Default: ``lastmodified``.
-   :query search[]: An array of words to search for in the following columns ``url``, ``title``, ``description``
+   :query search[]: An array of words to search for in the following columns ``url``, ``title``, ``description``, ``tags``
+   :query conjunction: Set to ``and`` to require all search terms to be present, ``or`` if one should suffice. Default: ``or``
    :query folder: Only return bookmarks that are direct children of the folder with the passed ID. The root folder has id ``-1``.
-   :query url: Only return bookmarks with this URL. This will only ever return just one bookmark or none, because the app doesn't store duplicates. Thus, with this parameter you can test whether a URL exists in the user's bookmarks. This parameter cannot be mixed with the others.
-   :query unavailable: Only return bookmarks that are dead links, i.e. return 404 status codes or similar. This parameter cannot be mixed with the others.
+   :query url: Only return bookmarks with this URL. With this parameter you can test whether a URL exists in the user's bookmarks.
+   :query unavailable: Only return bookmarks that are dead links, i.e. return 404 status codes or similar.
+   :query archive: Only return bookmarks that whose contents have been archived.
 
    :>json string status: ``success`` or ``error``
    :>json array data: The list of resulting bookmarks
+
+   Note that before v3.4.0 You couldn't mix ``folder``, ``url``, ``unavailable`` and ``archive``.
 
    **Example:**
 

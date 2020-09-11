@@ -15,6 +15,7 @@ use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
@@ -337,11 +338,28 @@ class BookmarkService {
 	 * @param $userId
 	 * @param string $url
 	 * @throws DoesNotExistException
+	 */
+	public function findByUrl($userId, $url = ''): Bookmark {
+		$params = new QueryParameters();
+		/** @var Bookmark[] $bookmarks */
+		$bookmarks = $this->bookmarkMapper->findAll($userId, $params->setUrl($url));
+		if (isset($bookmarks[0])) {
+			return $bookmarks[0];
+		}
+
+		throw new DoesNotExistException('URL does not exist');
+	}
+
+	/**
+	 * @param int $id
+	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
 	 */
-	public function click($userId, $url = ''): void {
-		$bookmark = $this->bookmarkMapper->findByUrl($userId, $url);
+	public function click(int $id): void {
+		$params = new QueryParameters();
+		/** @var Bookmark $bookmark */
+		$bookmark = $this->bookmarkMapper->find($id);
 		$bookmark->incrementClickcount();
 		$this->bookmarkMapper->update($bookmark);
 	}
