@@ -32,22 +32,21 @@
 		</label>
 
 		<label>{{ t('bookmarks', 'Archive path') }}
-			<input v-tooltip="
-					t('bookmarks',
-						'Enter the path of a folder where bookmarked files should be stored'
-					)
-				"
+			<p>{{ t('bookmarks',
+				'Enter the path of a folder where bookmarked files should be stored'
+			) }}</p>
+			<input
 				:value="archivePath"
 				@change="onChangeArchivePath">
 		</label>
 
 		<label>{{ t('bookmarks', 'Clear data') }}
+			<p>{{
+				t('bookmarks',
+					'Permanently remove all bookmarks from your account.'
+				)
+			}}</p>
 			<button
-				v-tooltip="
-					t('bookmarks',
-						'Permanently remove all bookmarks from your account. There is no going back!'
-					)
-				"
 				class="clear-data"
 				@click="onClearData">
 				<span :class="{'icon-delete': !deleting, 'icon-loading-small': deleting}" />
@@ -56,12 +55,10 @@
 		</label>
 
 		<label>{{ t('bookmarks', 'Bookmarklet') }}
+			<p>{{ t('bookmarks',
+				'Drag this to your browser bookmarks and click it to quickly bookmark a webpage'
+			) }}</p>
 			<a
-				v-tooltip="
-					t('bookmarks',
-						'Drag this to your browser bookmarks and click it to quickly bookmark a webpage'
-					)
-				"
 				class="button"
 				:href="bookmarklet"
 				@click.prevent="void 0">{{
