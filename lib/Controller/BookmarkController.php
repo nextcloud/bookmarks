@@ -332,7 +332,7 @@ class BookmarkController extends ApiController {
 			if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
 				return new DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 			}
-			$params->setFolder($folder);
+			$params->setFolder($this->toInternalFolderId($folder));
 		}
 
 		if ($this->authorizer->getUserId() !== null) {
