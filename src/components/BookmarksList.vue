@@ -139,7 +139,7 @@ export default {
 }
 
 .bookmarkslist .padding {
-	width: calc((250px + 10px + 10px) * 4);
+	max-width: calc((250px + 10px + 10px) * 4);
 	margin: 0 auto;
 }
 
