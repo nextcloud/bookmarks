@@ -70,28 +70,38 @@ class FindTest extends TestCase {
 	}
 
 	public function testFindAll() {
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia'], new QueryParameters());
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['wikipedia']));
 		$this->assertCount(1, $bookmarks);
 	}
 
 
 	public function testFindAllWithAnd() {
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia', 'nextcloud'], new QueryParameters());
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['wikipedia', 'nextcloud']));
 		$this->assertCount(0, $bookmarks);
 
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['.com'], new QueryParameters());
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['.com']));
 		$this->assertCount(2, $bookmarks);
 	}
 
 
 	public function testFindAllWithOr() {
 		$params = new QueryParameters();
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia', 'nextcloud'], $params->setConjunction(QueryParameters::CONJ_OR));
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['wikipedia', 'nextcloud'])->setConjunction(QueryParameters::CONJ_OR));
 		$this->assertCount(2, $bookmarks);
 	}
 
 	public function testFindByTags() {
-		$bookmarks = $this->bookmarkMapper->findByTags($this->userId, ['one', 'three'], new QueryParameters());
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findALl($this->userId, $params->setTags(['one', 'three']));
+		$this->assertCount(1, $bookmarks);
+	}
+
+	public function testFindByTagsAndSearch() {
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findALl($this->userId, $params->setTags(['one'])->setSearch(['php']));
 		$this->assertCount(1, $bookmarks);
 	}
 
