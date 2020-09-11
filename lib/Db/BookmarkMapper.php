@@ -478,24 +478,18 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Entity $entity
+	 * @param Bookmark $entity
 	 * @return Entity
-	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws AlreadyExistsError
 	 */
 	public function insertOrUpdate(Entity $entity): Entity {
-		$exists = true;
-		try {
-			$existing = $this->findByUrl($entity->getUserId(), $entity->getUrl());
-			$entity->setId($existing->getId());
-		} catch (DoesNotExistException $e) {
-			// This bookmark doesn't already exist. That's ok.
-			$exists = false;
-		}
+		$params = new QueryParameters();
+		$bookmarks = $this->findAll($entity->getUserId(), $params->setUrl($entity->getUrl()));
 
-		if ($exists) {
+		if (isset($bookmarks[0])) {
+			$entity->setId($bookmarks[0]->getId());
 			$newEntity = $this->update($entity);
 		} else {
 			$newEntity = $this->insert($entity);
