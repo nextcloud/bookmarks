@@ -29,7 +29,8 @@ Query bookmarks
    .. versionadded:: 0.11.0
 
    :query tags[]: An array of tags that bookmarks returned by the endpoint should have
-   :query page: if this is non-negative, results will be paginated by 10 bookmarks a page. Default: ``0``.
+   :query page: if this is non-negative, results will be paginated by ``limit`` bookmarks a page. Default: ``0``.
+   :query limit: Results will be paginated by this amount of bookmarks per page. Default: ``10``.
    :query sortby: The column to sort the results by; one of ``url``, ``title``, ``description``, ``public``, ``lastmodified``, ``clickcount``. Default: ``lastmodified``.
    :query search[]: An array of words to search for in the following columns ``url``, ``title``, ``description``, ``tags``
    :query conjunction: Set to ``and`` to require all search terms to be present, ``or`` if one should suffice. Default: ``or``
