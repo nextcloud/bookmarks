@@ -304,9 +304,15 @@ class BookmarkController extends ApiController {
 
 		// set query params
 		$params = new QueryParameters();
-		$params->setUrl($url);
-		$params->setUnavailable($unavailable);
-		$params->setUntagged($untagged);
+		if ($url !== null) {
+			$params->setUrl($url);
+		}
+		if ($unavailable !== null) {
+			$params->setUnavailable($unavailable);
+		}
+		if ($untagged !== null) {
+			$params->setUntagged($untagged);
+		}
 		$params->setTags($filterTag);
 		$params->setSearch($search);
 		$params->setConjunction($conjunction);
