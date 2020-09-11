@@ -489,13 +489,23 @@ class BookmarkController extends ApiController {
 	 */
 	public function clickBookmark($url = ''): JSONResponse {
 		try {
-			$this->bookmarks->click($this->authorizer->getUserId(), $url);
+			$bookmark = $this->bookmarks->findByUrl($this->authorizer->getUserId(), $url);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+		}
+
+		if ($bookmark->getUserId() !== $this->authorizer->getUserId()) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+		}
+
+		try {
+			$this->bookmarks->click($bookmark->getId());
+		} catch (UrlParseError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Failed to parse URL']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_BAD_REQUEST);
-		} catch (UrlParseError $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Malformed URL']], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 		}
 
 		return new JSONResponse(['status' => 'success'], Http::STATUS_OK);

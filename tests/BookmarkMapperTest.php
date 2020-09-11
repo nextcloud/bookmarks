@@ -84,7 +84,10 @@ class BookmarkMapperTest extends TestCase {
 		$bookmark->setUserId($this->userId);
 		$bookmark = $this->bookmarkMapper->insert($bookmark);
 
-		$entity = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
+		$params = new QueryParameters();
+		$entities = $this->bookmarkMapper->findAll($this->userId, $params->setUrl($bookmark->getUrl()));
+		$this->assertCount(1, $entities);
+		$entity = $entities[0];
 		$entity->setTitle('foobar');
 		$this->bookmarkMapper->update($entity);
 		$foundEntity = $this->bookmarkMapper->find($entity->getId());
@@ -108,7 +111,9 @@ class BookmarkMapperTest extends TestCase {
 
 		$params = new QueryParameters();
 
-		$foundEntity = $this->bookmarkMapper->findAll($this->userId, $params->setUrl($bookmark->getUrl()))[0];
+		$foundEntities = $this->bookmarkMapper->findAll($this->userId, $params->setUrl($bookmark->getUrl()));
+		$this->assertCount(1, $foundEntities);
+		$foundEntity = $foundEntities[0];
 		$this->bookmarkMapper->delete($foundEntity);
 		$this->expectException(DoesNotExistException::class);
 		$this->bookmarkMapper->find($foundEntity->getId());

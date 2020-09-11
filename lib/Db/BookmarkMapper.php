@@ -13,6 +13,7 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\DB\QueryBuilder\IQueryFunction;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -122,8 +123,12 @@ class BookmarkMapper extends QBMapper {
 				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 			))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->orWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)));
+			->where(
+				$qb->expr()->orX(
+					$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+					$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
+				)
+			);
 
 		$this->_selectFolders($qb);
 		$this->_selectTags($qb);
@@ -159,13 +164,6 @@ class BookmarkMapper extends QBMapper {
 		return (int)$count;
 	}
 
-	private function _filterUrl(IQueryBuilder $qb, QueryParameters $params): void {
-		if ($url = $params->getUrl()) {
-			$normalized = $this->urlNormalizer->normalize($url);
-			$qb->andWhere($qb->expr()->eq('b.url', $qb->createNamedParameter($normalized)));
-		}
-	}
-
 	private function _sortAndPaginate(IQueryBuilder $qb, QueryParameters $params): void {
 		$sqlSortColumn = $params->getSortBy('lastmodified', $this->getSortByColumns());
 
@@ -189,6 +187,13 @@ class BookmarkMapper extends QBMapper {
 		}
 	}
 
+	private function _filterUrl(IQueryBuilder $qb, QueryParameters $params): void {
+		if (($url = $params->getUrl()) !== null) {
+			$normalized = $this->urlNormalizer->normalize($url);
+			$qb->andWhere($qb->expr()->eq('b.url', $qb->createPositionalParameter($normalized)));
+		}
+	}
+
 	/**
 	 * @param IQueryBuilder $qb
 	 * @param QueryParameters $params
@@ -205,13 +210,12 @@ class BookmarkMapper extends QBMapper {
 			return;
 		}
 
-		$tags = $this->_getTagsColumn($qb);
-
+		$tagsCol = $this->_getTagsColumn($qb);
 		$filterExpressions = [];
 		$otherColumns = ['b.url', 'b.title', 'b.description'];
 		foreach ($filters as $filter) {
 			$expr = [];
-			$expr[] = $qb->expr()->iLike($tags, $qb->createPositionalParameter('%' . $this->db->escapeLikeParameter($filter) . '%'));
+			$expr[] = $qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%' . $this->db->escapeLikeParameter($filter) . '%'));
 			foreach ($otherColumns as $col) {
 				$expr[] = $qb->expr()->iLike(
 					$qb->createFunction($qb->getColumnName($col)),
@@ -225,7 +229,7 @@ class BookmarkMapper extends QBMapper {
 		} else {
 			$filterExpression = call_user_func_array([$qb->expr(), 'orX'], $filterExpressions);
 		}
-		$qb->having($filterExpression);
+		$qb->andHaving($filterExpression);
 	}
 
 	/**
@@ -263,14 +267,8 @@ class BookmarkMapper extends QBMapper {
 	 * @param IQueryBuilder $qb
 	 */
 	private function _selectTags(IQueryBuilder $qb): void {
-		$dbType = $this->getDbType();
 		$qb->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'));
-		if ($dbType === 'pgsql') {
-			$tagsCol = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
-		} else {
-			$tagsCol = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
-		}
-		$qb->selectAlias($tagsCol, 'tags');
+		$qb->selectAlias($this->_getTagsColumn($qb), 'tags');
 	}
 
 	/**
@@ -288,8 +286,8 @@ class BookmarkMapper extends QBMapper {
 	 * @param QueryParameters $params
 	 */
 	private function _filterTags(IQueryBuilder $qb, QueryParameters $params): void {
-		$tagsCol = $this->_getTagsColumn($qb);
 		if (count($params->getTags())) {
+			$tagsCol = $this->_getTagsColumn($qb);
 			$expr = [];
 			foreach ($params->getTags() as $tag) {
 				$expr[] = $qb->expr()->orX(
@@ -300,7 +298,7 @@ class BookmarkMapper extends QBMapper {
 				);
 			}
 			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $expr);
-			$qb->having($filterExpression);
+			$qb->andHaving($filterExpression);
 		}
 	}
 
@@ -355,6 +353,7 @@ class BookmarkMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function findAllInPublicFolder($token, QueryParameters $params): array {
+		/** @var PublicFolder $publicFolder */
 		$publicFolder = $this->publicMapper->find($token);
 
 		$qb = $this->db->getQueryBuilder();
@@ -372,11 +371,15 @@ class BookmarkMapper extends QBMapper {
 				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 			))
 			->leftJoin('tr', 'bookmarks_tree', 'tr2', $qb->expr()->andX(
-				$qb->expr()->eq('tr.parent_folder', 'tr2.id'),
+				$qb->expr()->eq('tr2.id', 'tr.parent_folder'),
 				$qb->expr()->eq('tr2.type', $qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
 			))
-			->where($qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($publicFolder->getId())))
-			->orWhere($qb->expr()->eq('tr2.parent_folder', $qb->createPositionalParameter($publicFolder->getId())));
+			->where(
+				$qb->expr()->orX(
+					$qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId())),
+					$qb->expr()->eq('tr2.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId()))
+				)
+			);
 
 		$this->_selectFolders($qb);
 		$this->_selectTags($qb);
@@ -425,7 +428,7 @@ class BookmarkMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->delete('bookmarks_tags')
-			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($id)));
+			->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($id)));
 		$qb->execute();
 
 		return $returnedEntity;
@@ -545,8 +548,9 @@ class BookmarkMapper extends QBMapper {
 
 	/**
 	 * @param IQueryBuilder $qb
+	 * @return IQueryFunction
 	 */
-	private function _getTagsColumn(IQueryBuilder $qb): string {
+	private function _getTagsColumn(IQueryBuilder $qb) : IQueryFunction {
 		$dbType = $this->getDbType();
 		if ($dbType === 'pgsql') {
 			$tagsCol = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
