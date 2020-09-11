@@ -58,8 +58,10 @@ class InternalBookmarkController extends ApiController {
 	 * @param array $search
 	 * @param int $limit
 	 * @param bool $untagged
-	 * @param int $folder
-	 * @param string $url
+	 * @param int|null $folder
+	 * @param string|null $url
+	 * @param bool|null $unavailable
+	 * @param bool|null $archived
 	 * @return DataResponse
 	 *
 	 * @throws UrlParseError
@@ -75,9 +77,10 @@ class InternalBookmarkController extends ApiController {
 		$untagged = false,
 		$folder = null,
 		$url = null,
-		$unavailable = null
+		$unavailable = null,
+		$archived = null
 	) {
-		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable);
+		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived);
 	}
 
 	/**
@@ -220,5 +223,16 @@ class InternalBookmarkController extends ApiController {
 	 */
 	public function countUnavailable(): JSONResponse {
 		return $this->publicController->countUnavailable();
+	}
+
+	/**
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function countArchived(): JSONResponse {
+		return $this->publicController->countArchived();
 	}
 }

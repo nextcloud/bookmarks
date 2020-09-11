@@ -11,6 +11,46 @@ class QueryParameters {
 	private $offset = 0;
 	private $sortBy = null;
 	private $conjunction = self::CONJ_AND;
+	private $folder = null;
+	private $url = null;
+	private $untagged = false;
+	private $unavailable = false;
+	private $archived = false;
+	private $search = [];
+	private $tags = [];
+
+	/**
+	 * @return array
+	 */
+	public function getSearch(): array {
+		return $this->search;
+	}
+
+	/**
+	 * @param array $search
+	 * @return QueryParameters
+	 */
+	public function setSearch(array $search): QueryParameters {
+		$this->search = $search;
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getTags(): array {
+		return $this->tags;
+	}
+
+	/**
+	 * @param array $tags
+	 * @return QueryParameters
+	 */
+	public function setTags(array $tags): QueryParameters {
+		$this->tags = $tags;
+		return $this;
+	}
+
 
 	/**
 	 * @return int
@@ -84,6 +124,86 @@ class QueryParameters {
 			throw new \InvalidArgumentException("Conjunction value must be 'and' or 'or'");
 		}
 		$this->conjunction = $conjunction;
+		return $this;
+	}
+
+	/**
+	 * @return null|int
+	 */
+	public function getFolder() {
+		return $this->folder;
+	}
+
+	/**
+	 * @param int $folder
+	 * @return QueryParameters
+	 */
+	public function setFolder(int $folder): QueryParameters {
+		$this->folder = $folder;
+		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getUrl(): ?string {
+		return $this->url;
+	}
+
+	/**
+	 * @param string $url
+	 * @return QueryParameters
+	 */
+	public function setUrl(string $url): QueryParameters {
+		$this->url = $url;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getUnavailable(): bool {
+		return (boolean) $this->unavailable;
+	}
+
+	/**
+	 * @param boolean $unavailable
+	 * @return QueryParameters
+	 */
+	public function setUnavailable(bool $unavailable): QueryParameters {
+		$this->unavailable = $unavailable;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getArchived(): bool {
+		return (boolean) $this->archived;
+	}
+
+	/**
+	 * @param boolean $archived
+	 * @return QueryParameters
+	 */
+	public function setArchived(bool $archived): QueryParameters {
+		$this->archived = $archived;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getUntagged(): bool {
+		return $this->untagged;
+	}
+
+	/**
+	 * @param bool $untagged
+	 * @return QueryParameters
+	 */
+	public function setUntagged(bool $untagged): QueryParameters {
+		$this->untagged = $untagged;
 		return $this;
 	}
 }
