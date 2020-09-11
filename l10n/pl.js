@@ -144,6 +144,7 @@ OC.L10N.register(
     "Folder" : "Katalog",
     "Root Folder" : "Katalog główny",
     "Save" : "Zapisz",
+    "Failed to count unavailable bookmarks" : "Nie udało się zliczyć niedostępnych zakładek",
     "Failed to load bookmark" : "Nie udało się załadować zakładki",
     "Failed to find existing bookmark" : "Nie udało się znaleźć istniejącej zakładki",
     "Failed to create bookmark" : "Nie udało się utworzyć zakładki",
