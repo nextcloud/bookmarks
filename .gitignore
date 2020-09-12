@@ -5,3 +5,10 @@ _build
 node_modules
 vendor
 /.php_cs.cache
+
+## php composer
+composer.lock
+
+## Jetbrains
+.idea/
+*.iml
