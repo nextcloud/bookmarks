@@ -2,31 +2,25 @@
 	<AppSidebar
 		v-if="isActive"
 		class="sidebar"
+		:title="bookmark.title"
+		:title-editable="editingTitle"
+		:title-placeholder="t('bookmarks', 'Title')"
 		:background="background"
+		@update:title="onEditTitleUpdate"
+		@submit-title="onEditTitleSubmit"
+		@dismiss-editing="onEditTitleCancel"
 		@close="onClose">
-		<AppSidebarTab id="bookmark-details"
+		<template v-if="!editingTitle" slot="secondary-actions">
+			<ActionButton icon="icon-rename" @click="onEditTitle" />
+		</template>
+		<template v-if="editingTitle" slot="secondary-actions">
+			<ActionButton icon="icon-close" @click="onEditTitleCancel" />
+		</template>
+		<AppSidebarTab
+			id="bookmark-details"
 			:name="t('bookmarks', 'Details')"
 			icon="icon-info"
 			:order="0">
-			<div>
-				<div v-if="!editingTitle" class="bookmark-details__line">
-					<h2 class="bookmark-details__title">
-						{{ bookmark.title }}
-					</h2>
-					<Actions v-if="isEditable" class="bookmark-details__action">
-						<ActionButton icon="icon-rename" @click="onEditTitle" />
-					</Actions>
-				</div>
-				<div v-else class="bookmark-details__line">
-					<input v-model="title" class="bookmark-details__title">
-					<Actions class="bookmark-details__action">
-						<ActionButton icon="icon-confirm" @click="onEditTitleSubmit" />
-					</Actions>
-					<Actions class="bookmark-details__action">
-						<ActionButton icon="icon-close" @click="onEditTitleCancel" />
-					</Actions>
-				</div>
-			</div>
 			<div>
 				<h3>
 					<span class="icon-link" />
@@ -71,7 +65,8 @@
 					@tag="onAddTag" />
 			</div>
 		</AppSidebarTab>
-		<AppSidebarTab id="attachments"
+		<AppSidebarTab
+			id="attachments"
 			:name="t('bookmarks', 'Attachments')"
 			icon="icon-edit"
 			:order="1">
@@ -113,6 +108,7 @@ export default {
 			title: '',
 			url: '',
 			editingTitle: false,
+			url: '',
 			editingUrl: false,
 		}
 	},
@@ -155,7 +151,6 @@ export default {
 		},
 		permissions() {
 			return this.$store.getters.getPermissionsForBookmark(this.bookmark.id)
-
 		},
 		isEditable() {
 			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
@@ -173,7 +168,8 @@ export default {
 			this.$refs.description.textContent = this.bookmark.description || ''
 		},
 	},
-	created() {},
+	created() {
+	},
 	methods: {
 		onClose() {
 			this.$store.commit(mutations.SET_SIDEBAR, null)
@@ -193,6 +189,9 @@ export default {
 		onEditTitle() {
 			this.title = this.bookmark.title
 			this.editingTitle = true
+		},
+		onEditTitleUpdate(e) {
+			this.title = e
 		},
 		onEditTitleSubmit() {
 			this.editingTitle = false
@@ -250,12 +249,6 @@ export default {
 
 .bookmark-details__line {
 	display: flex;
-}
-
-.bookmark-details__title {
-	flex-grow: 1;
-	padding: 7px 0;
-	margin-bottom: 0;
 }
 
 .bookmark-details__url {
