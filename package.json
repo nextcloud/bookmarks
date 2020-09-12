@@ -24,7 +24,7 @@
 		"@nextcloud/axios": "^1.4.0",
 		"@nextcloud/dialogs": "^2.0.1",
 		"@nextcloud/router": "^1.2.0",
-		"@nextcloud/vue": "^2.6.4",
+		"@nextcloud/vue": "^2.6.5",
 		"copy-text-to-clipboard": "^2.2.0",
 		"humanize-duration": "^3.23.1",
 		"vue": "^2.6.12",
