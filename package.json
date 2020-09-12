@@ -24,7 +24,7 @@
 		"@nextcloud/axios": "^1.4.0",
 		"@nextcloud/dialogs": "^2.0.1",
 		"@nextcloud/router": "^1.2.0",
-		"@nextcloud/vue": "^2.6.4",
+		"@nextcloud/vue": "^2.6.5",
 		"copy-text-to-clipboard": "^2.2.0",
 		"humanize-duration": "^3.23.1",
 		"vue": "^2.6.12",
@@ -44,7 +44,7 @@
 		"@nextcloud/eslint-config": "^2.2.0",
 		"@nextcloud/eslint-plugin": "^1.4.0",
 		"@nextcloud/webpack-vue-config": "^1.2.0",
-		"@vue/test-utils": "^1.0.5",
+		"@vue/test-utils": "^1.1.0",
 		"babel-eslint": "^10.1.0",
 		"babel-loader": "^8.0.6",
 		"css-loader": "^3.6.0",
@@ -60,7 +60,7 @@
 		"file-loader": "^6.1.0",
 		"node-sass": "^4.14.1",
 		"sass-loader": "^8.0.2",
-		"stylelint": "^13.7.0",
+		"stylelint": "^13.7.1",
 		"stylelint-config-recommended-scss": "^4.2.0",
 		"stylelint-scss": "^3.18.0",
 		"stylelint-webpack-plugin": "^2.1.0",
@@ -68,7 +68,7 @@
 		"vue-template-compiler": "^2.6.12",
 		"webpack": "^4.44.1",
 		"webpack-cli": "^3.3.12",
-		"webpack-merge": "^5.1.3"
+		"webpack-merge": "^5.1.4"
 	},
 	"engines": {
 		"node": ">=10.0.0"
