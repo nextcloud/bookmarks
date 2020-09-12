@@ -9,6 +9,7 @@ OC.L10N.register(
     "New folder" : "نوی فولډر",
     "Select all" : "ټول ټاکل",
     "Cancel" : "پرېښول",
+    "Recent" : "وروستي",
     "Link" : "لېنک",
     "Tags" : "نښکې",
     "Notes" : "شسیب",
