@@ -14,6 +14,7 @@ OC.L10N.register(
     "RSS Feed" : "RSS-voer",
     "Select all" : "Kies alle",
     "Cancel" : "Kanselleer",
+    "Recent" : "Onlangs",
     "Add a bookmark" : "Voeg 'n boekmerk by",
     "Import" : "Voer In",
     "Export" : "Voer uit",

@@ -10,6 +10,7 @@ OC.L10N.register(
     "Grid view" : "Golwg grid",
     "List view" : "Golwg rhestr",
     "Cancel" : "Diddymu",
+    "Recent" : "Diweddar",
     "Import" : "Mewnforio",
     "Export" : "Allforio",
     "Recently added" : "Ychwanegwyd yn ddiweddar",
