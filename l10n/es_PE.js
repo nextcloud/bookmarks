@@ -11,6 +11,7 @@ OC.L10N.register(
     "List view" : "Vista de lista",
     "Select all" : "Seleccionar todo",
     "Cancel" : "Cancelar",
+    "Recent" : "Reciente",
     "Import" : "Importar",
     "Export" : "Exportar",
     "Recently added" : "Agregado recientemente",
