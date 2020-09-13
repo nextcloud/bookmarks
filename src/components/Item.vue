@@ -13,7 +13,7 @@
 				tabindex="0"
 				target="_blank"
 				@click="onClick">
-				<div v-if="editable&&selectable" class="item__checkbox">
+				<div v-if="editable && selectable" ref="checkbox" class="item__checkbox">
 					<input :checked="selected" class="checkbox" type="checkbox"><label
 						v-tooltip="selectLabel"
 						:aria-label="selectLabel"
@@ -23,10 +23,13 @@
 				<div class="item__labels">
 					<slot name="title" />
 				</div>
-				<slot name="tags">
-					<TagLine ref="tags" :tags="tags" />
-				</slot>
+				<div ref="tags">
+					<slot name="tags">
+						<TagLine :tags="tags" />
+					</slot>
+				</div>
 				<div v-if="editable"
+					ref="actions"
 					class="item__actions"
 					@click="$event.preventDefault(); $event.stopPropagation()">
 					<Actions>
@@ -138,12 +141,13 @@ export default {
 			this.$emit('rename', this.newTitle)
 		},
 		onClick(e) {
-			if (this.$refs.actions.$el === e.target
-					|| this.$refs.actions.$el.contains(e.target)
-					|| this.$refs.checkbox.contains(e.target)
-					|| this.$refs.checkbox === e.target
-					|| this.$refs.tags.$el.contains(e.target)
-					|| this.$refs.tags.$el === e.target) {
+			if (this.$refs.actions === e.target
+					|| this.$refs.actions.contains(e.target)
+					|| (this.$refs.checkbox
+							&& (this.$refs.checkbox.contains(e.target) || this.$refs.checkbox === e.target)
+					)
+					|| this.$refs.tags.contains(e.target)
+					|| this.$refs.tags === e.target) {
 				e.stopImmediatePropagation()
 				return
 			}

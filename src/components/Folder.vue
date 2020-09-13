@@ -113,7 +113,7 @@ export default {
 			return this.$store.state.selection.folders
 		},
 		selectable() {
-			return this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length
+			return Boolean(this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length)
 		},
 		selected() {
 			return this.selectedFolders.map(f => f.id).includes(this.folder.id)
