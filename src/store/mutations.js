@@ -16,6 +16,7 @@ export const mutations = {
 	REMOVE_ALL_BOOKMARKS: 'REMOVE_ALL_BOOKMARKS',
 	SET_BOOKMARK_COUNT: 'SET_BOOKMARK_COUNT',
 	SET_UNAVAILABLE_COUNT: 'SET_UNAVAILABLE_COUNT',
+	SET_ARCHIVED_COUNT: 'SET_ARCHIVED_COUNT',
 	SET_TAGS: 'SET_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
 	INCREMENT_PAGE: 'INCREMENT_PAGE',
@@ -140,6 +141,9 @@ export default {
 	},
 	[mutations.SET_UNAVAILABLE_COUNT](state, count) {
 		state.unavailableCount = count
+	},
+	[mutations.SET_ARCHIVED_COUNT](state, count) {
+		state.archivedCount = count
 	},
 
 	[mutations.SET_SIDEBAR](state, sidebar) {

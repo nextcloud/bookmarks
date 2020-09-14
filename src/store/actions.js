@@ -9,6 +9,7 @@ export const actions = {
 	ADD_ALL_BOOKMARKS: 'ADD_ALL_BOOKMARKS',
 	COUNT_BOOKMARKS: 'COUNT_BOOKMARKS',
 	COUNT_UNAVAILABLE: 'COUNT_UNAVAILABLE',
+	COUNT_ARCHIVED: 'COUNT_ARCHIVED',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	LOAD_BOOKMARK: 'LOAD_BOOKMARK',
@@ -83,6 +84,26 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to count unavailable bookmarks')
+			)
+			throw err
+		}
+	},
+	async [actions.COUNT_ARCHIVED]({ commit, dispatch, state }, folderId) {
+		try {
+			const response = await axios.get(url(state, '/bookmark/archived')
+			)
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_ARCHIVED_COUNT, count)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to count archived bookmarks')
 			)
 			throw err
 		}
@@ -597,6 +618,9 @@ export default {
 		dispatch(actions.FETCH_PAGE)
 		dispatch(actions.LOAD_FOLDERS)
 		dispatch(actions.LOAD_TAGS)
+		dispatch(actions.COUNT_BOOKMARKS, -1)
+		dispatch(actions.COUNT_UNAVAILABLE)
+		dispatch(actions.COUNT_ARCHIVED)
 	},
 
 	[actions.NO_FILTER]({ dispatch, commit }) {

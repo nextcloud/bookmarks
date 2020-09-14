@@ -16,11 +16,13 @@
 				<HistoryIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
 			<AppNavigationItem
-
 				key="menu-archived"
 				:to="{ name: routes.ARCHIVED }"
 				:title="t('bookmarks', 'Archived')">
 				<ArchiveArrowDownIcon slot="icon" :size="18" :fill-color="colorMainText" />
+				<AppNavigationCounter v-show="Boolean(archivedBookmarksCount)" slot="counter">
+					{{ archivedBookmarksCount }}
+				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationItem v-if="unavailableBookmarksCount > 0"
 				key="menu-unavailable"
@@ -127,6 +129,9 @@ export default {
 		},
 		unavailableBookmarksCount() {
 			return this.$store.state.unavailableCount
+		},
+		archivedBookmarksCount() {
+			return this.$store.state.archivedCount
 		},
 		bookmarksLimit() {
 			return this.$store.state.settings.limit

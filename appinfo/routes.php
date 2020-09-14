@@ -41,6 +41,7 @@ return [
 		['name' => 'internal_bookmark#export_bookmark', 'url' => '/bookmark/export', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#import_bookmark', 'url' => '/bookmark/import', 'verb' => 'POST'],
 		['name' => 'internal_bookmark#count_unavailable', 'url' => '/bookmark/unavailable', 'verb' => 'GET'],
+		['name' => 'internal_bookmark#count_archived', 'url' => '/bookmark/archived', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#edit_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'PUT'],
 		['name' => 'internal_bookmark#get_single_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#delete_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'DELETE'],

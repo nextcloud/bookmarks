@@ -131,6 +131,7 @@ export default {
 			return Promise.all([
 				this.$store.dispatch(actions.COUNT_BOOKMARKS, -1),
 				this.$store.dispatch(actions.COUNT_UNAVAILABLE),
+				this.$store.dispatch(actions.COUNT_ARCHIVED),
 			])
 		},
 
