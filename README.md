@@ -51,7 +51,7 @@ npm run build
 
 ### Android
 - [Nextcloud Bookmarks](https://gitlab.com/bisada/OCBookmarks) - client app for Android ([new PlayStore entry](https://play.google.com/store/apps/details?id=org.bisw.nxbookmarks))
-- [NCBookmarks](https://github.com/lenchan139/NCBookmark) - Android App
+- [NCBookmark](https://gitlab.com/lenchan139/NCBookmark) - Android App
 
 ### Browser
 - [Owncloud Bookmarks](https://chrome.google.com/webstore/detail/owncloud-bookmarks/eomolhpeokmbnincelpkagpapjpeeckc?hl=de) - Bookmarks extension for Chromium-based browsers (Chromium/Chrome/Opera/Vivaldi)
