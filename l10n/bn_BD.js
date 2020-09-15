@@ -11,6 +11,7 @@ OC.L10N.register(
     "Recent" : "সাম্প্রতিক",
     "Import" : "আমদানি",
     "Export" : "রপ্তানি",
+    "Title" : "শিরোনাম",
     "Link" : "Link",
     "Tags" : "ট্যাগ",
     "Notes" : "নোট",
@@ -19,7 +20,6 @@ OC.L10N.register(
     "Share link" : "লিংক ভাগাভাগি করেন",
     "Copy link" : "লিঙ্ক কপি করো",
     "Select" : "সিলেক্ট",
-    "Title" : "শিরোনাম",
     "Folder" : "ফোল্ডার",
     "Save" : "সংরক্ষণ"
 },

@@ -11,6 +11,7 @@ OC.L10N.register(
     "Cancel" : "ընդհատել",
     "Import" : "Ներմուծում",
     "Export" : "Արտահանում",
+    "Title" : "Վերնագիր",
     "Link" : "Հղում",
     "Notes" : "Notes",
     "Owner" : "Owner",
@@ -18,7 +19,6 @@ OC.L10N.register(
     "Copy link" : "Պատճենել հղումը",
     "Allow editing" : "Թույլատրել խմբագրումը",
     "Select" : "Select",
-    "Title" : "Վերնագիր",
     "Folder" : "Պանակ",
     "Save" : "Պահպանել"
 },

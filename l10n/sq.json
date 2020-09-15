@@ -19,6 +19,7 @@
     "Last modified" : "Ndryshuar së fundmi",
     "Clear data" : "Pastroji të dhënat",
     "Bookmarklet" : "Libër Shënues",
+    "Title" : "Titulli",
     "Link" : "Lidhje",
     "Tags" : "Etiketat",
     "Attachments" : "Bashkangjitjet",
@@ -32,7 +33,6 @@
     "Select" : "Përzgjidh",
     "Previews" : "Parapamjet",
     "Privacy" : "Privatësia",
-    "Title" : "Titulli",
     "Folder" : "Skedari",
     "Save" : "Ruaj"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

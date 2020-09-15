@@ -11,6 +11,7 @@ OC.L10N.register(
     "Recent" : "Recents",
     "Import" : "Importar",
     "Export" : "Exportar",
+    "Title" : "Títol",
     "Link" : "Ligam",
     "Notes" : "Nòtas",
     "Owner" : "Owner",
@@ -19,7 +20,6 @@ OC.L10N.register(
     "Copy link" : "Copiar lo ligam",
     "Allow editing" : "Permetre la modificacion",
     "Select" : "Select",
-    "Title" : "Títol",
     "Folder" : "Dorsièr",
     "Save" : "Salvar"
 },

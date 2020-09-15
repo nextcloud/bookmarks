@@ -9,6 +9,7 @@
     "Recent" : "Recents",
     "Import" : "Importar",
     "Export" : "Exportar",
+    "Title" : "Títol",
     "Link" : "Ligam",
     "Notes" : "Nòtas",
     "Owner" : "Owner",
@@ -17,7 +18,6 @@
     "Copy link" : "Copiar lo ligam",
     "Allow editing" : "Permetre la modificacion",
     "Select" : "Select",
-    "Title" : "Títol",
     "Folder" : "Dorsièr",
     "Save" : "Salvar"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"

@@ -9,6 +9,7 @@ OC.L10N.register(
     "Cancel" : "ۋاز كەچ",
     "Import" : "ئەكىر",
     "Export" : "چىقار",
+    "Title" : "ماۋزۇ",
     "Link" : "Link",
     "Tags" : "بەلگەلەر",
     "Notes" : "ئىزاھاتلار",
@@ -16,7 +17,6 @@ OC.L10N.register(
     "Sharing" : "ھەمبەھىر",
     "Share link" : "Share link",
     "Select" : "Select",
-    "Title" : "ماۋزۇ",
     "Folder" : "قىسقۇچ",
     "Save" : "ساقلا"
 },

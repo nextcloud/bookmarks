@@ -23,6 +23,7 @@ OC.L10N.register(
     "Last modified" : "ბოლო ცვლილება",
     "Clear data" : "მონაცემების გასუფთავება",
     "Bookmarklet" : "Bookmarklet-ი",
+    "Title" : "სათაური",
     "Link" : "ბმული",
     "Tags" : "ტეგები",
     "Notes" : "ჩანაწერები",
@@ -34,7 +35,6 @@ OC.L10N.register(
     "Select" : "არჩევა",
     "Privacy" : "კონფიდენციალურობა",
     "This URL is already bookmarked! Overwrite?" : "ეს URL უკვე მონიშნულია! გადავწეროთ?",
-    "Title" : "სათაური",
     "Folder" : "დირექტორია",
     "Save" : "შენახვა"
 },

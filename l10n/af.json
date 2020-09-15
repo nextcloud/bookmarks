@@ -22,6 +22,7 @@
     "Last modified" : "Laas gewysig",
     "Delete all bookmarks" : "Skrap alle boekmerke",
     "Bookmarklet" : "Boekmerkie",
+    "Title" : "Titel",
     "Link" : "Skakel",
     "Tags" : "Merkers",
     "Notes" : "Notas",
@@ -34,7 +35,6 @@
     "Previews" : "Voorskoue",
     "Privacy" : "Privaatheid",
     "This URL is already bookmarked! Overwrite?" : "'n Boekmerk van die URL bestaan reeds. Skryf oor?",
-    "Title" : "Titel",
     "Folder" : "Vouer",
     "Save" : "Stoor"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

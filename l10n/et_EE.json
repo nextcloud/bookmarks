@@ -16,6 +16,7 @@
     "Alphabetically" : "Tähestikujärjekorras",
     "Last modified" : "Viimati muudetud",
     "Clear data" : "Tühjenda andmed",
+    "Title" : "Pealkiri",
     "Link" : "Link",
     "Tags" : "Sildid",
     "Notes" : "Märkmed",
@@ -27,7 +28,6 @@
     "Link copied" : "Link kopeeritud",
     "Select" : "Vali",
     "Privacy" : "Privaatsus",
-    "Title" : "Pealkiri",
     "Folder" : "Kaust",
     "Save" : "Salvesta"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

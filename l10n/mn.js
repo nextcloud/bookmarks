@@ -15,6 +15,7 @@ OC.L10N.register(
     "Recently added" : "Сүүлд нэмэгдсэн",
     "Last modified" : "Сүүлд өөрчилсөн",
     "Clear data" : "Өгөгдлийг цэвэрлэх",
+    "Title" : "Цол/Албан тушаал",
     "Link" : "Холбоос",
     "Tags" : "Tag-үүд",
     "Attachments" : "Хавсралт",
@@ -25,7 +26,6 @@ OC.L10N.register(
     "Allow editing" : "Засварлахыг зөвшөөрөх",
     "Select" : "Сонгох",
     "Privacy" : "Хувийн нууц",
-    "Title" : "Цол/Албан тушаал",
     "Folder" : "Хавтас",
     "Save" : "Хадгалах"
 },

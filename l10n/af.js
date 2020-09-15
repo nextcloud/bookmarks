@@ -24,6 +24,7 @@ OC.L10N.register(
     "Last modified" : "Laas gewysig",
     "Delete all bookmarks" : "Skrap alle boekmerke",
     "Bookmarklet" : "Boekmerkie",
+    "Title" : "Titel",
     "Link" : "Skakel",
     "Tags" : "Merkers",
     "Notes" : "Notas",
@@ -36,7 +37,6 @@ OC.L10N.register(
     "Previews" : "Voorskoue",
     "Privacy" : "Privaatheid",
     "This URL is already bookmarked! Overwrite?" : "'n Boekmerk van die URL bestaan reeds. Skryf oor?",
-    "Title" : "Titel",
     "Folder" : "Vouer",
     "Save" : "Stoor"
 },

@@ -28,6 +28,7 @@ OC.L10N.register(
     "Delete all bookmarks" : "Dzēst visas grāmatzīmes",
     "Bookmarklet" : "Grāmatzīme",
     "Do you really want to delete all your bookmarks?" : "Vai tiešām vēlaties dzēst visas savas grāmatzīmes?",
+    "Title" : "Amats",
     "Link" : "Saite",
     "Tags" : "Birkas",
     "Attachments" : "Pielikumi",
@@ -44,7 +45,6 @@ OC.L10N.register(
     "Screeenly API key" : "Screeenly API atslēga",
     "Privacy" : "Privātums",
     "This URL is already bookmarked! Overwrite?" : "Šī saite jau ir grāmatzīmēs! Vai pārrakstīt?",
-    "Title" : "Amats",
     "Folder" : "Mape",
     "Save" : "Saglabāt",
     "Bookmarks feed" : "Grāmatzīmju plūsma"

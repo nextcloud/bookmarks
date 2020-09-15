@@ -10,6 +10,7 @@ OC.L10N.register(
     "Cancel" : "Otkaži",
     "Import" : "Uvoz",
     "Export" : "Izvezi",
+    "Title" : "Naslov",
     "Link" : "Veza",
     "Notes" : "Notes",
     "Owner" : "Vlasnik",
@@ -17,7 +18,6 @@ OC.L10N.register(
     "Share link" : "Podijelite vezu",
     "Allow editing" : "Dozvolite izmjenu",
     "Select" : "Select",
-    "Title" : "Naslov",
     "Folder" : "Fasikla",
     "Save" : "Spremi"
 },

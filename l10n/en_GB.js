@@ -30,6 +30,7 @@ OC.L10N.register(
     "Delete all bookmarks" : "Delete all bookmarks",
     "Bookmarklet" : "Bookmarklet",
     "Do you really want to delete all your bookmarks?" : "Do you really want to delete all your bookmarks?",
+    "Title" : "Title",
     "Link" : "Link",
     "Tags" : "Tags",
     "Attachments" : "Attachments",
@@ -46,7 +47,6 @@ OC.L10N.register(
     "Screeenly API key" : "Screeenly API key",
     "Privacy" : "Privacy",
     "This URL is already bookmarked! Overwrite?" : "This URL is already bookmarked! Overwrite?",
-    "Title" : "Title",
     "Folder" : "Folder",
     "Save" : "Save",
     "Bookmarks feed" : "Bookmarks feed"

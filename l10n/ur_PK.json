@@ -3,12 +3,12 @@
     "Move" : "Move",
     "Delete" : "حذف کریں",
     "Cancel" : "منسوخ کریں",
+    "Title" : "عنوان",
     "Link" : "Link",
     "Notes" : "Notes",
     "Owner" : "Owner",
     "Share link" : "اشتراک لنک",
     "Select" : "Select",
-    "Title" : "عنوان",
     "Folder" : "Folder",
     "Save" : "حفظ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

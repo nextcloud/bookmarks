@@ -8,12 +8,12 @@ OC.L10N.register(
     "Cancel" : "Batal",
     "Import" : "Import",
     "Export" : "Eksport",
+    "Title" : "Judul",
     "Link" : "Link",
     "Notes" : "Nota",
     "Owner" : "Owner",
     "Share link" : "Share link",
     "Select" : "Select",
-    "Title" : "Judul",
     "Folder" : "Folder",
     "Save" : "Simpan"
 },

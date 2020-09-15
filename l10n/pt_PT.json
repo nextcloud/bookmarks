@@ -19,6 +19,7 @@
     "Recently added" : "Adicionados recentemente",
     "Last modified" : "Última modificação",
     "Clear data" : "Limpar dados",
+    "Title" : "Título",
     "Link" : "Link",
     "Tags" : "Marcações",
     "Attachments" : "Anexos",
@@ -32,7 +33,6 @@
     "Link copied" : "Link copiado",
     "Select" : "Seleccionar",
     "Privacy" : "Privacidade",
-    "Title" : "Título",
     "Folder" : "Pasta",
     "Save" : "Guardar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

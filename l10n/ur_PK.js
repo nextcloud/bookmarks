@@ -5,12 +5,12 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "حذف کریں",
     "Cancel" : "منسوخ کریں",
+    "Title" : "عنوان",
     "Link" : "Link",
     "Notes" : "Notes",
     "Owner" : "Owner",
     "Share link" : "اشتراک لنک",
     "Select" : "Select",
-    "Title" : "عنوان",
     "Folder" : "Folder",
     "Save" : "حفظ"
 },
