@@ -17,6 +17,7 @@ OC.L10N.register(
     "Recently added" : "Скоро додадени",
     "Last modified" : "Скоро изменети",
     "Clear data" : "Исчисти податоци",
+    "Title" : "Наслов",
     "Link" : "Линк",
     "Tags" : "Ознаки",
     "Notes" : "Белешки",
@@ -29,7 +30,6 @@ OC.L10N.register(
     "Select" : "Select",
     "Privacy" : "Приватност",
     "Failed to save settings" : "Неуспешно зачувување на параметрите",
-    "Title" : "Наслов",
     "Folder" : "Папка",
     "Save" : "Зачувај"
 },

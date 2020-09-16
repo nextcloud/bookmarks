@@ -9,6 +9,7 @@
     "Recent" : "সাম্প্রতিক",
     "Import" : "আমদানি",
     "Export" : "রপ্তানি",
+    "Title" : "শিরোনাম",
     "Link" : "Link",
     "Tags" : "ট্যাগ",
     "Notes" : "নোট",
@@ -17,7 +18,6 @@
     "Share link" : "লিংক ভাগাভাগি করেন",
     "Copy link" : "লিঙ্ক কপি করো",
     "Select" : "সিলেক্ট",
-    "Title" : "শিরোনাম",
     "Folder" : "ফোল্ডার",
     "Save" : "সংরক্ষণ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

@@ -13,6 +13,7 @@
     "Import" : "Uvezi",
     "Recently added" : "Nedavno dodato",
     "Clear data" : "Očisti podatke",
+    "Title" : "Naslov",
     "Link" : "Prečica",
     "Tags" : "Oznake",
     "Attachments" : "Prilozi",
@@ -25,7 +26,6 @@
     "Link copied" : "Veza iskopirana",
     "Select" : "Select",
     "Privacy" : "Privatnost",
-    "Title" : "Naslov",
     "Folder" : "Folder",
     "Save" : "Save"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"

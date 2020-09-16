@@ -14,6 +14,7 @@
     "Export" : "Exportă",
     "Recently added" : "Adăugate recent",
     "Clear data" : "Elimină datele",
+    "Title" : "Titlu",
     "Link" : "Legătură",
     "Tags" : "Etichete",
     "Notes" : "Notițe",
@@ -25,7 +26,6 @@
     "Link copied" : "Link copiat",
     "Select" : "Select",
     "Privacy" : "Confindențialitate",
-    "Title" : "Titlu",
     "Folder" : "Director",
     "Save" : "Salvează"
 },"pluralForm" :"nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));"

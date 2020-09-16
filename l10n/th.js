@@ -14,6 +14,7 @@ OC.L10N.register(
     "Import" : "นำเข้า",
     "Export" : "ส่งออก",
     "Alphabetically" : "เรียงตามตัวอักษร",
+    "Title" : "ชื่อเรื่อง",
     "Link" : "ลิงค์",
     "Tags" : "ป้ายกำกับ",
     "Notes" : "บันทึกย่อ",
@@ -23,7 +24,6 @@ OC.L10N.register(
     "Copy link" : "คัดลอกลิงค์",
     "Allow editing" : "อนุญาตให้แก้ไข",
     "Select" : "Select",
-    "Title" : "ชื่อเรื่อง",
     "Folder" : "แฟ้มเอกสาร",
     "Save" : "บันทึก"
 },

@@ -29,6 +29,7 @@ OC.L10N.register(
     "Delete all bookmarks" : "Изтрий всички отметки",
     "Bookmarklet" : "Скриптова отметка",
     "Do you really want to delete all your bookmarks?" : "Наистина ли желаете всички отметки да бъдат изтрити?",
+    "Title" : "Име",
     "Link" : "Връзка",
     "Tags" : "Етикети",
     "Attachments" : "Прикачени файлове",
@@ -43,7 +44,6 @@ OC.L10N.register(
     "Select" : "Маркирай",
     "Privacy" : "Защита на лични данни",
     "This URL is already bookmarked! Overwrite?" : "Този адрес е вече добавен към отметките! Искате ли да презапишете?",
-    "Title" : "Име",
     "Folder" : "Папка",
     "Save" : "Запиши"
 },

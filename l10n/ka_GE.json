@@ -21,6 +21,7 @@
     "Last modified" : "ბოლო ცვლილება",
     "Clear data" : "მონაცემების გასუფთავება",
     "Bookmarklet" : "Bookmarklet-ი",
+    "Title" : "სათაური",
     "Link" : "ბმული",
     "Tags" : "ტეგები",
     "Notes" : "ჩანაწერები",
@@ -32,7 +33,6 @@
     "Select" : "არჩევა",
     "Privacy" : "კონფიდენციალურობა",
     "This URL is already bookmarked! Overwrite?" : "ეს URL უკვე მონიშნულია! გადავწეროთ?",
-    "Title" : "სათაური",
     "Folder" : "დირექტორია",
     "Save" : "შენახვა"
 },"pluralForm" :"nplurals=2; plural=(n!=1);"

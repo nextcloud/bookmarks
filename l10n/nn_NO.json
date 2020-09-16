@@ -10,6 +10,7 @@
     "Export" : "Eksporter",
     "Recently added" : "Nyleg lagt til",
     "Last modified" : "Siste endra",
+    "Title" : "Tittel",
     "Link" : "Lenkje",
     "Tags" : "Emneord",
     "Notes" : "Notat",
@@ -18,7 +19,6 @@
     "Share link" : "Del lenkje",
     "Allow editing" : "Tillat endring",
     "Select" : "Vel",
-    "Title" : "Tittel",
     "Folder" : "Mappe",
     "Save" : "Lagre"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

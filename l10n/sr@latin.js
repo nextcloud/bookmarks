@@ -15,6 +15,7 @@ OC.L10N.register(
     "Import" : "Uvezi",
     "Recently added" : "Nedavno dodato",
     "Clear data" : "Očisti podatke",
+    "Title" : "Naslov",
     "Link" : "Prečica",
     "Tags" : "Oznake",
     "Attachments" : "Prilozi",
@@ -27,7 +28,6 @@ OC.L10N.register(
     "Link copied" : "Veza iskopirana",
     "Select" : "Select",
     "Privacy" : "Privatnost",
-    "Title" : "Naslov",
     "Folder" : "Folder",
     "Save" : "Save"
 },

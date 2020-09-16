@@ -22,6 +22,7 @@ OC.L10N.register(
     "Alphabetically" : "За алфавітом",
     "Last modified" : "Останні зміни",
     "Clear data" : "Очистити дані",
+    "Title" : "Назва",
     "Link" : "Посилання",
     "Tags" : "Позначки",
     "Attachments" : "Вкладення",
@@ -37,7 +38,6 @@ OC.L10N.register(
     "Privacy" : "Конфіденційність",
     "Failed to save settings" : "Неможливо зберегти налаштування",
     "This URL is already bookmarked! Overwrite?" : "Цей URL вже є в закладках! Перезаписати?",
-    "Title" : "Назва",
     "Folder" : "Папка",
     "Save" : "Зберегти"
 },

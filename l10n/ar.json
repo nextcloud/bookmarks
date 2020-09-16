@@ -17,6 +17,7 @@
     "Recently added" : "اضيفت مؤخرا",
     "Last modified" : "آخر تعديل",
     "Clear data" : "مسح البيانات",
+    "Title" : "العنوان",
     "Link" : "الرابط",
     "Tags" : "الوسوم",
     "Attachments" : "المرفقات",
@@ -30,7 +31,6 @@
     "Select" : "تحديد",
     "Previews" : "المعاينات",
     "Privacy" : "الخصوصية",
-    "Title" : "العنوان",
     "Folder" : "مجلد",
     "Save" : "حفظ"
 },"pluralForm" :"nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;"

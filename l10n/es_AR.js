@@ -19,6 +19,7 @@ OC.L10N.register(
     "Last modified" : "Última modificación",
     "Clear data" : "Borrar datos",
     "Bookmarklet" : "Marcador a código",
+    "Title" : "Título",
     "Link" : "Link",
     "Tags" : "Etiquetas",
     "Attachments" : "Adjuntos",
@@ -31,7 +32,6 @@ OC.L10N.register(
     "Link copied" : "Link copiado",
     "Select" : "Seleccionar",
     "Privacy" : "Privacidad",
-    "Title" : "Título",
     "Folder" : "Carpeta",
     "Save" : "Guardar"
 },

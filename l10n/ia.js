@@ -13,6 +13,7 @@ OC.L10N.register(
     "Import" : "Importar",
     "Export" : "Exportar",
     "Alphabetically" : "Alphabeticamente",
+    "Title" : "Titulo",
     "Link" : "Ligamine",
     "Tags" : "Etiquettas",
     "Attachments" : "Attachamentos",
@@ -23,7 +24,6 @@ OC.L10N.register(
     "Copy link" : "Copiar ligamine",
     "Allow editing" : "Permitter modificar",
     "Select" : "Selectionar",
-    "Title" : "Titulo",
     "Folder" : "Dossier",
     "Save" : "Salveguardar"
 },

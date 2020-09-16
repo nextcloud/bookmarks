@@ -19,6 +19,7 @@ OC.L10N.register(
     "Recently added" : "اضيفت مؤخرا",
     "Last modified" : "آخر تعديل",
     "Clear data" : "مسح البيانات",
+    "Title" : "العنوان",
     "Link" : "الرابط",
     "Tags" : "الوسوم",
     "Attachments" : "المرفقات",
@@ -32,7 +33,6 @@ OC.L10N.register(
     "Select" : "تحديد",
     "Previews" : "المعاينات",
     "Privacy" : "الخصوصية",
-    "Title" : "العنوان",
     "Folder" : "مجلد",
     "Save" : "حفظ"
 },

@@ -21,6 +21,7 @@ OC.L10N.register(
     "Recently added" : "Adicionados recentemente",
     "Last modified" : "Última modificação",
     "Clear data" : "Limpar dados",
+    "Title" : "Título",
     "Link" : "Link",
     "Tags" : "Marcações",
     "Attachments" : "Anexos",
@@ -34,7 +35,6 @@ OC.L10N.register(
     "Link copied" : "Link copiado",
     "Select" : "Seleccionar",
     "Privacy" : "Privacidade",
-    "Title" : "Título",
     "Folder" : "Pasta",
     "Save" : "Guardar"
 },

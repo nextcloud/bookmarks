@@ -11,6 +11,7 @@ OC.L10N.register(
     "Cancel" : "Dayandır",
     "Import" : "Əlavə et",
     "Export" : "Çıxarış",
+    "Title" : "Başlıq",
     "Link" : "Link",
     "Tags" : "Işarələr",
     "Notes" : "Qeydlər",
@@ -19,7 +20,6 @@ OC.L10N.register(
     "Share link" : "Linki yayımla",
     "Copy link" : "linki nüsxələ",
     "Select" : "Select",
-    "Title" : "Başlıq",
     "Folder" : "Qovluq",
     "Save" : "Saxla"
 },

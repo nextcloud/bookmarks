@@ -21,6 +21,7 @@ OC.L10N.register(
     "Last modified" : "Ndryshuar së fundmi",
     "Clear data" : "Pastroji të dhënat",
     "Bookmarklet" : "Libër Shënues",
+    "Title" : "Titulli",
     "Link" : "Lidhje",
     "Tags" : "Etiketat",
     "Attachments" : "Bashkangjitjet",
@@ -34,7 +35,6 @@ OC.L10N.register(
     "Select" : "Përzgjidh",
     "Previews" : "Parapamjet",
     "Privacy" : "Privatësia",
-    "Title" : "Titulli",
     "Folder" : "Skedari",
     "Save" : "Ruaj"
 },

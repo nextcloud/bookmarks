@@ -23,6 +23,7 @@ OC.L10N.register(
     "Last modified" : "Última modificación",
     "Clear data" : "Borrar datos",
     "Bookmarklet" : "Marcador a código ",
+    "Title" : "Título",
     "Link" : "Liga",
     "Tags" : "Etiquetas",
     "Notes" : "Notas",
@@ -34,7 +35,6 @@ OC.L10N.register(
     "Select" : "Seleccionar",
     "Privacy" : "Privacidad",
     "This URL is already bookmarked! Overwrite?" : "¡Esta URL ya está marcada! ¿Quieres sobreescribirlo?",
-    "Title" : "Título",
     "Folder" : "Carpeta",
     "Save" : "Guardar"
 },
