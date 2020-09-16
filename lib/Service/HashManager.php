@@ -73,15 +73,21 @@ class HashManager {
 
 	/**
 	 * @param int $folderId
+	 * @param array $previousFolders
 	 */
-	public function invalidateFolder(int $folderId): void {
+	public function invalidateFolder(int $folderId, array $previousFolders = []): void {
+		if (in_array($folderId, $previousFolders, true)) {
+			// In case we have run into a folder loop
+			return;
+		}
 		$key = $this->getCacheKey(TreeMapper::TYPE_FOLDER, $folderId);
 		$this->cache->remove($key);
+		$previousFolders[] = $folderId;
 
 		// Invalidate parent
 		try {
 			$parentFolder = $this->treeMapper->findParentOf(TreeMapper::TYPE_FOLDER, $folderId);
-			$this->invalidateFolder($parentFolder->getId());
+			$this->invalidateFolder($parentFolder->getId(), $previousFolders);
 		} catch (DoesNotExistException $e) {
 			return;
 		} catch (MultipleObjectsReturnedException $e) {

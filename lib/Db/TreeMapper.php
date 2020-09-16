@@ -321,7 +321,21 @@ class TreeMapper extends QBMapper {
 			throw new UnsupportedOperation('Cannot move Bookmark');
 		}
 		try {
+			/** @var Folder $currentParent */
 			$currentParent = $this->findParentOf($type, $itemId);
+
+			$ancestor = new Folder();
+			$ancestor->setId($newParentFolderId);
+			while (true) {
+				if ($ancestor->getId() === $itemId) {
+					throw new UnsupportedOperation('Cannot nest a folder inside one of its descendants');
+				}
+				try {
+					$ancestor = $this->findParentOf(self::TYPE_FOLDER, $ancestor->getId());
+				} catch (DoesNotExistException $e) {
+					break;
+				}
+			}
 
 			// Item currently has a parent => move.
 
