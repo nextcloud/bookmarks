@@ -106,7 +106,6 @@ export default {
 	data() {
 		return {
 			title: '',
-			url: '',
 			editingTitle: false,
 			url: '',
 			editingUrl: false,
