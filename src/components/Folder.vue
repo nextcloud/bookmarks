@@ -176,8 +176,7 @@ export default {
 .folder__icon.shared {
 	transform: scale(0.5);
 	position: absolute;
-	left: 35px;
-	top: 2px;
+	top: 11px;
 	height:auto;
 	width:auto;
 }
@@ -192,7 +191,7 @@ export default {
 }
 
 .item--gridview .folder__icon.shared {
-	transform: translate(100%, 90%);
+	transform: translate(100%, 90%) scale(2);
 }
 
 .folder__title {
