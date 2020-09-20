@@ -79,7 +79,7 @@
 				<div ref="description"
 					class="sidebar__notes"
 					:contenteditable="isEditable"
-					:placeholder="t('bookmarks', 'Notes for this bookmark...')"
+					:placeholder="t('bookmarks', 'Notes for this bookmark …')"
 					@input="onNotesChange" />
 			</div>
 		</AppSidebarTab>
