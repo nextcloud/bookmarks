@@ -67,7 +67,7 @@
     "_Moving %n folder_::_Moving %n folders_" : ["Verschiebe %n Verzeichnis","Verschiebe %n Verzeichnisse"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["%n Lesezeichen verschoben","Verschiebe %n Lesezeichen"],
     "All bookmarks" : "Alle Lesezeichen",
-    "Recent" : "Benötigt keine Übersetzung. Für Android wird nur die formelle Übersetzung verwendet (de_DE).",
+    "Recent" : "Neueste",
     "Archived" : "Archiviert",
     "Broken links" : "Ungültiger Link",
     "Filter tags" : "Schlagworte filtern",
