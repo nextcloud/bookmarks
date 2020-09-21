@@ -108,7 +108,6 @@ OC.L10N.register(
     "Archived version" : "Versão arquivada",
     "Open archived file" : "Abrir arquivo",
     "Notes" : "Anotações",
-    "Notes for this bookmark..." : "Notas para este favorito...",
     "{time} ago" : "{time} atrás",
     "Owner" : "Proprietário",
     "Sharing" : "Compartilhando",

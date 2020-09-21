@@ -107,7 +107,6 @@ OC.L10N.register(
     "Archived version" : "Artxibatutako bertsioa",
     "Open archived file" : "Ireki artxibatutako fitxategia",
     "Notes" : "Oharrak",
-    "Notes for this bookmark..." : "Laster-bide honetarako oharrak",
     "{time} ago" : "Duela {time}",
     "Owner" : "Jabea",
     "Sharing" : "Partekatzea",

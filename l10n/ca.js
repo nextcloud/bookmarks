@@ -108,7 +108,6 @@ OC.L10N.register(
     "Archived version" : "Versió arxivada",
     "Open archived file" : "Obre el fitxer arxivat",
     "Notes" : "Notes",
-    "Notes for this bookmark..." : "Notes per a aquesta adreça d'interès...",
     "{time} ago" : "fa {time}",
     "Owner" : "Propietari",
     "Sharing" : "Compartició",
