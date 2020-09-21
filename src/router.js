@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
+
 import Vue from 'vue'
 import Router from 'vue-router'
 import ViewPrivate from './components/ViewPrivate'

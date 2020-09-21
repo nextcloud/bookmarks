@@ -1,11 +1,9 @@
 <?php
 
-/**
- * This file is licensed under the Affero General Public License version 3 or
- * later. See the COPYING file.
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
  *
- * @author Stefan Klemm <mail@stefan-klemm.de>
- * @copyright Stefan Klemm 2014
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
 
 namespace OCA\Bookmarks\Controller;

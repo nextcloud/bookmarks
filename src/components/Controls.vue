@@ -1,3 +1,9 @@
+<!--
+  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  -
+  - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+  -->
+
 <template>
 	<div :class="['controls', isPublic && 'wide']">
 		<div class="controls__left">
