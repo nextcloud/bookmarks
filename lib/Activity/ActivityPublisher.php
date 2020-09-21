@@ -90,7 +90,7 @@ class ActivityPublisher implements IEventListener {
 		}
 	}
 
-	public function publishShare(ChangeEvent $event) {
+	public function publishShare(ChangeEvent $event): void {
 		$activity = $this->activityManager->generateEvent();
 		$activity->setApp($this->appName);
 		$activity->setType('bookmarks');
@@ -125,7 +125,7 @@ class ActivityPublisher implements IEventListener {
 		}
 	}
 
-	public function publishFolder(ChangeEvent $event) {
+	public function publishFolder(ChangeEvent $event): void {
 		$activity = $this->activityManager->generateEvent();
 		$activity->setApp($this->appName);
 		$activity->setType('bookmarks');
@@ -177,7 +177,7 @@ class ActivityPublisher implements IEventListener {
 		}
 	}
 
-	public function publishBookmark(ChangeEvent $event) {
+	public function publishBookmark(ChangeEvent $event): void {
 		$activity = $this->activityManager->generateEvent();
 		$activity->setApp($this->appName);
 		$activity->setType('bookmarks');

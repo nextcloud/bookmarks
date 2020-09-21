@@ -150,7 +150,7 @@ class ShareMapper extends QBMapper {
 		return parent::insertOrUpdate($sharedFolder);
 	}
 
-	public function findBySharedFolder(int $id) {
+	public function findBySharedFolder(int $id): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;

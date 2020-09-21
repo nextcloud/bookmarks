@@ -20,6 +20,7 @@
 
 namespace OCA\Bookmarks\Service\Previewers;
 
+use Exception;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
@@ -47,6 +48,10 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 	private $width = 800;
 
 	private $height = 800;
+	/**
+	 * @var FileCache
+	 */
+	private $cache;
 
 	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
 		$this->config = $config;
@@ -91,7 +96,7 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 				return null;
 			}
 			$body = $response->getBody();
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$this->logger->logException($e, ['app' => 'bookmarks']);
 			return null;
 		}

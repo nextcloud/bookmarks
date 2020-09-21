@@ -19,11 +19,14 @@
 
 namespace OCA\Bookmarks\Controller;
 
+use Exception;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\IRequest;
+use OCP\Util;
 
 class SettingsController extends ApiController {
 
@@ -33,7 +36,7 @@ class SettingsController extends ApiController {
 	/** @var string */
 	private $userId;
 	/**
-	 * @var \OCP\IL10N
+	 * @var IL10N
 	 */
 	private $l;
 
@@ -42,10 +45,10 @@ class SettingsController extends ApiController {
 	 * @param IRequest $request
 	 * @param string $userId
 	 * @param IConfig $config
-	 * @param \OCP\IL10N $l
+	 * @param IL10N $l
 	 */
 	public function __construct(
-		$appName, $request, $userId, IConfig $config, \OCP\IL10N $l
+		$appName, $request, $userId, IConfig $config, IL10N $l
 	) {
 		parent::__construct($appName, $request);
 		$this->config = $config;
@@ -53,7 +56,7 @@ class SettingsController extends ApiController {
 		$this->l = $l;
 	}
 
-	private function getSetting(string $key, string $name, $default) {
+	private function getSetting(string $key, string $name, $default): JSONResponse {
 		try {
 			$userValue = $this->config->getUserValue(
 				$this->userId,
@@ -61,15 +64,15 @@ class SettingsController extends ApiController {
 				$key,
 				$default
 			);
-		} catch (\Exception $e) {
-			\OCP\Util::writeLog('bookmarks', $e->getMessage(), \OCP\Util::ERROR);
+		} catch (Exception $e) {
+			Util::writeLog('bookmarks', $e->getMessage(), Util::ERROR);
 			return new JSONResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
 		return new JSONResponse([$name => $userValue], Http::STATUS_OK);
 	}
 
-	private function setSetting($key, $value) {
+	private function setSetting($key, $value): JSONResponse {
 		try {
 			$this->config->setUserValue(
 				$this->userId,
@@ -77,7 +80,7 @@ class SettingsController extends ApiController {
 				$key,
 				$value
 			);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
@@ -91,7 +94,7 @@ class SettingsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getSorting() {
+	public function getSorting(): JSONResponse {
 		return $this->getSetting('sorting', 'sorting', 'lastmodified');
 	}
 
@@ -103,7 +106,7 @@ class SettingsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function setSorting($sorting = "") {
+	public function setSorting($sorting = ""): JSONResponse {
 		$legalArguments = ['title', 'added', 'clickcount', 'lastmodified', 'index'];
 		if (!in_array($sorting, $legalArguments)) {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
@@ -121,7 +124,7 @@ class SettingsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getViewMode() {
+	public function getViewMode(): JSONResponse {
 		return $this->getSetting('viewMode', 'viewMode', 'grid');
 	}
 
@@ -133,7 +136,7 @@ class SettingsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function setViewMode($viewMode = "") {
+	public function setViewMode($viewMode = ""): JSONResponse {
 		$legalArguments = ['grid', 'list'];
 		if (!in_array($viewMode, $legalArguments)) {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
@@ -151,7 +154,7 @@ class SettingsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getLimit() {
+	public function getLimit(): JSONResponse {
 		$limit = (int)$this->config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
 		return new JSONResponse(['limit' => $limit], Http::STATUS_OK);
 	}
@@ -163,7 +166,7 @@ class SettingsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getArchivePath() {
+	public function getArchivePath(): JSONResponse {
 		return $this->getSetting(
 			'archive.filePath',
 			'archivePath',
@@ -174,11 +177,12 @@ class SettingsController extends ApiController {
 	/**
 	 * set user-defined archive path
 	 *
+	 * @param string $archivePath
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function setArchivePath($archivePath) {
+	public function setArchivePath(string $archivePath): JSONResponse: JSONResponse {
 		return $this->setSetting('archive.filePath', $archivePath);
 	}
 }

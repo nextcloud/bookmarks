@@ -4,11 +4,11 @@ namespace OCA\Bookmarks;
 
 class Helper {
 	public static function getDomainWithoutExt($name) {
-		$pos = strripos($name, '.');
+		$pos = strrpos($name, '.');
 		if ($pos === false) {
 			return $name;
-		} else {
-			return substr($name, 0, $pos);
 		}
+
+		return substr($name, 0, $pos);
 	}
 }

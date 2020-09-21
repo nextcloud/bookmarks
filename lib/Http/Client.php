@@ -2,6 +2,7 @@
 
 namespace OCA\Bookmarks\Http;
 
+use Exception;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Response;
 use OCP\Http\Client\IClient;
@@ -35,11 +36,11 @@ class Client implements ClientInterface {
 	 *
 	 * @return ResponseInterface
 	 *
-	 * @throws \Psr\Http\Client\ClientException If an error happens while processing the request.
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function sendRequest(RequestInterface $request): ResponseInterface {
-		if ($request->getMethod() === 'GET' || $request->getMethod() === 'OPTIONS') {
+		$method = $request->getMethod();
+		if ($method === 'GET' || $method === 'OPTIONS') {
 			$ncRes = $this->nextcloudClient->{strtolower($request->getMethod())}($request->getUri(), ['timeout' => 10]);
 			$res = new Response();
 
@@ -50,8 +51,8 @@ class Client implements ClientInterface {
 			return $res
 				->withStatus($ncRes->getStatusCode())
 				->withBody(Psr7\stream_for($ncRes->getBody()));
-		} else {
-			throw new \Exception('Can only send GET or OPTIONS requests'); // XXX: How should Streams be sent using nextcloud?
 		}
+
+		throw new Exception('Can only send GET or OPTIONS requests'); // XXX: How should Streams be sent using nextcloud?
 	}
 }

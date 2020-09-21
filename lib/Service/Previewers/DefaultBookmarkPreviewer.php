@@ -20,11 +20,11 @@
 
 namespace OCA\Bookmarks\Service\Previewers;
 
+use Exception;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
-use OCA\Bookmarks\Service\FileCache;
 use OCA\Bookmarks\Service\LinkExplorer;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
@@ -44,7 +44,6 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	private $logger;
 
 	/**
-	 * @param FileCache $cache
 	 * @param LinkExplorer $linkExplorer
 	 * @param IClientService $clientService
 	 * @param ILogger $logger
@@ -85,7 +84,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	protected function fetchImage($url): ?Image {
 		try {
 			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$this->logger->debug($e, ['app' => 'bookmarks']);
 			return null;
 		}

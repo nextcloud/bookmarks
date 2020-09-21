@@ -33,7 +33,7 @@ class SharedFolder extends Entity {
 		$this->addType('title', 'string');
 	}
 
-	public function toArray() {
+	public function toArray(): array {
 		return ['title' => $this->title, 'userId' => $this->userId];
 	}
 }

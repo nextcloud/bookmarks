@@ -26,6 +26,7 @@
 
 namespace OCA\Bookmarks;
 
+use OC;
 use OC\HintException;
 use OCP\AppFramework\Http\Response;
 
@@ -33,14 +34,16 @@ class ExportResponse extends Response {
 	private $returnstring;
 
 	public function __construct($returnstring) {
-		$user = \OC::$server->getUserSession()->getUser();
+		parent::__construct();
+
+		$user = OC::$server->getUserSession()->getUser();
 		if (is_null($user)) {
 			throw new HintException('User not logged in');
 		}
 
 		$userName = $user->getDisplayName();
-		$productName = \OC::$server->getThemingDefaults()->getName();
-		$dateTime = \OC::$server->getDateTimeFormatter();
+		$productName = OC::$server->getThemingDefaults()->getName();
+		$dateTime = OC::$server->getDateTimeFormatter();
 
 		$export_name = '"' . $productName . ' Bookmarks (' . $userName . ') (' . $dateTime->formatDate(time()) . ').html"';
 		$this->addHeader("Cache-Control", "private");

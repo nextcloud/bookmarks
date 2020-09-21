@@ -2,10 +2,12 @@
 
 namespace OCA\Bookmarks\Activity;
 
+use InvalidArgumentException;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager;
 use OCP\Activity\IProvider;
+use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
@@ -29,7 +31,7 @@ class Provider implements IProvider {
 	 */
 	private $activityManager;
 	/**
-	 * @var \OCP\IL10N
+	 * @var IL10N
 	 */
 	private $l;
 	/**
@@ -50,7 +52,7 @@ class Provider implements IProvider {
 	 */
 	public function parse($language, IEvent $event, IEvent $previousEvent = null) {
 		if ($event->getApp() !== 'bookmarks') {
-			throw new \InvalidArgumentException();
+			throw new InvalidArgumentException();
 		}
 
 		$this->l = $this->languageFactory->get('bookmarks', $language);
@@ -199,7 +201,7 @@ class Provider implements IProvider {
 				}
 				break;
 			default:
-				throw new \InvalidArgumentException();
+				throw new InvalidArgumentException();
 		}
 
 		if ($event->getObjectType() === TreeMapper::TYPE_FOLDER && !str_contains($event->getSubject(), 'deleted')) {

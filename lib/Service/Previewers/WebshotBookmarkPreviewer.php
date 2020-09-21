@@ -20,6 +20,7 @@
 
 namespace OCA\Bookmarks\Service\Previewers;
 
+use Exception;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
@@ -94,7 +95,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 			if (200 !== $response->getStatusCode()) {
 				return null;
 			}
-			$data = json_decode($response->getBody(), true);
+			$data = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
 
 			// get it
 			$response = $this->client->get($this->apiUrl . $data->id);
@@ -103,7 +104,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 				return null;
 			}
 			$body = $response->getBody();
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$this->logger->logException($e, ['app' => 'bookmarks']);
 			return null;
 		}

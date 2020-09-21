@@ -20,6 +20,7 @@
 
 namespace OCA\Bookmarks\Service\Previewers;
 
+use Exception;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
@@ -93,8 +94,8 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 			],
 				'timeout' => self::HTTP_TIMEOUT,
 			]);
-			$body = json_decode($response->getBody(), true);
-		} catch (\Exception $e) {
+			$body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+		} catch (Exception $e) {
 			$this->logger->logException($e, ['app' => 'bookmarks']);
 			return null;
 		}

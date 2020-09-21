@@ -3,5 +3,7 @@
 
 namespace OCA\Bookmarks\Search;
 
-class SearchResultEntry extends \OCP\Search\ASearchResultEntry {
+use OCP\Search\ASearchResultEntry;
+
+class SearchResultEntry extends ASearchResultEntry {
 }

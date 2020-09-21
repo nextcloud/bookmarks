@@ -30,10 +30,10 @@ Requirements:
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
 
 	<dependencies>
-		<php min-version="7.2" />
+		<php min-version="7.3" />
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="18" max-version="21" />
+		<nextcloud min-version="20" max-version="21" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>

@@ -5,7 +5,12 @@
 
 namespace OCA\Bookmarks\Service;
 
+use DateTime;
+use DOMDocument;
+use DOMNode;
+use DOMXPath;
 use OCA\Bookmarks\Exception\HtmlParseError;
+use const LIBXML_PARSEHUGE;
 
 /**
  * Bookmark parser
@@ -20,7 +25,7 @@ class BookmarksParser {
 	/**
 	 * DOMXPath
 	 *
-	 * @var \DOMXPath
+	 * @var DOMXPath
 	 */
 	private $xpath;
 	/**
@@ -82,7 +87,7 @@ class BookmarksParser {
 	 *
 	 * @return boolean
 	 */
-	public static function isValid($doctype) {
+	public static function isValid($doctype): bool {
 		return self::DOCTYPE === $doctype;
 	}
 
@@ -99,15 +104,15 @@ class BookmarksParser {
 	 * @throws HtmlParseError
 	 */
 	public function parse($input, $ignorePersonalToolbarFolder = true, $includeFolderTags = true, $useDateTimeObjects = true) {
-		$document = new \DOMDocument();
+		$document = new DOMDocument();
 		$document->preserveWhiteSpace = false;
 		if (empty($input)) {
 			throw new HtmlParseError("The input shouldn't be empty");
 		}
-		if (false === $document->loadHTML($input, \LIBXML_PARSEHUGE)) {
+		if (false === $document->loadHTML($input, LIBXML_PARSEHUGE)) {
 			throw new HtmlParseError('The HTML value does not appear to be valid Netscape Bookmark File Format HTML.');
 		}
-		$this->xpath = new \DOMXPath($document);
+		$this->xpath = new DOMXPath($document);
 		$this->ignorePersonalToolbarFolder = $ignorePersonalToolbarFolder;
 		$this->includeFolderTags = $includeFolderTags;
 		$this->useDateTimeObjects = $useDateTimeObjects;
@@ -123,9 +128,9 @@ class BookmarksParser {
 	/**
 	 * Traverses a DOMNode
 	 *
-	 * @param \DOMNode $node
+	 * @param DOMNode|null $node
 	 */
-	private function traverse(\DOMNode $node = null) {
+	private function traverse(DOMNode $node = null): void: void {
 		$query = './*';
 		$entries = $this->xpath->query($query, $node ?: null);
 		if (!$entries) {
@@ -166,9 +171,9 @@ class BookmarksParser {
 	/**
 	 * Add a folder from a \DOMNode
 	 *
-	 * @param \DOMNode $node
+	 * @param DOMNode $node
 	 */
-	private function addFolder(\DOMNode $node): void {
+	private function addFolder(DOMNode $node): void {
 		$folder = [
 			'title' => $node->textContent,
 			'children' => [],
@@ -194,9 +199,9 @@ class BookmarksParser {
 	/**
 	 * Add a bookmark from a \DOMNode
 	 *
-	 * @param \DOMNode $node
+	 * @param DOMNode $node
 	 */
-	private function addBookmark(\DOMNode $node): void {
+	private function addBookmark(DOMNode $node): void {
 		$bookmark = [
 			'title' => $node->textContent,
 			'description' => '',
@@ -216,9 +221,9 @@ class BookmarksParser {
 	/**
 	 * Add a bookmark from a \DOMNode
 	 *
-	 * @param \DOMNode $node
+	 * @param DOMNode $node
 	 */
-	private function addDescription(\DOMNode $node): void {
+	private function addDescription(DOMNode $node): void {
 		$count = count($this->bookmarks);
 		if ($count === 0) {
 			return;
@@ -230,10 +235,10 @@ class BookmarksParser {
 	/**
 	 * Get attributes of a \DOMNode
 	 *
-	 * @param \DOMNode $node
+	 * @param DOMNode $node
 	 * @return array
 	 */
-	private function getAttributes(\DOMNode $node): array {
+	private function getAttributes(DOMNode $node): array {
 		$attributes = [];
 		$length = $node->attributes->length;
 		for ($i = 0; $i < $length; ++$i) {
@@ -249,12 +254,12 @@ class BookmarksParser {
 		}
 		if ($this->useDateTimeObjects) {
 			if (isset($attributes['add_date'])) {
-				$added = new \DateTime();
+				$added = new DateTime();
 				$added->setTimestamp((int)$attributes['add_date']);
 				$attributes['add_date'] = $added;
 			}
 			if (isset($attributes['last_modified'])) {
-				$modified = new \DateTime();
+				$modified = new DateTime();
 				$modified->setTimestamp((int)$attributes['last_modified']);
 				$attributes['last_modified'] = $modified;
 			}
@@ -272,7 +277,7 @@ class BookmarksParser {
 	 */
 	private function getCurrentFolderTags(): array {
 		$tags = [];
-		array_walk_recursive($this->currentFolder, function ($tag, $key) use (&$tags) {
+		array_walk_recursive($this->currentFolder, static function ($tag, $key) use (&$tags) {
 			if ('name' === $key) {
 				$tags[] = $tag;
 			}

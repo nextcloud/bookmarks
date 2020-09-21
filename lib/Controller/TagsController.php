@@ -29,7 +29,7 @@ class TagsController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function deleteTag($old_name = "") {
+	public function deleteTag($old_name = ""): JSONResponse {
 		if ($old_name === "") {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
@@ -48,7 +48,7 @@ class TagsController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function renameTag($old_name = "", $new_name = "", $name = '') {
+	public function renameTag($old_name = "", $new_name = "", $name = ''): JSONResponse {
 		if ($new_name === '') {
 			$new_name = $name;
 		}
@@ -68,7 +68,7 @@ class TagsController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function fullTags($count = false) {
+	public function fullTags($count = false): JSONResponse {
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 

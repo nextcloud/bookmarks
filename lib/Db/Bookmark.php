@@ -76,11 +76,11 @@ class Bookmark extends Entity {
 		return $array;
 	}
 
-	public function markPreviewCreated() {
+	public function markPreviewCreated(): void {
 		$this->setLastPreview(time());
 	}
 
-	public function incrementClickcount() {
+	public function incrementClickcount(): void {
 		$this->setClickcount($this->clickcount + 1);
 	}
 }

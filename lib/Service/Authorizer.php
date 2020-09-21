@@ -44,7 +44,7 @@ class Authorizer {
 	 */
 	private $publicMapper;
 
-	private $userId = null;
+	private $userId;
 	private $token = null;
 
 	/**

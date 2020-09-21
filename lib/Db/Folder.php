@@ -27,7 +27,7 @@ class Folder extends Entity {
 		$this->addType('userId', 'string');
 	}
 
-	public function toArray() {
+	public function toArray(): array {
 		return ['id' => $this->id, 'title' => $this->title, 'userId' => $this->userId];
 	}
 }

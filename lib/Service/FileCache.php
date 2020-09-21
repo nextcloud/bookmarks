@@ -67,7 +67,7 @@ class FileCache implements ICache {
 	 * @return int
 	 * @throws NotFoundException
 	 */
-	public function size($key) {
+	public function size($key): int {
 		$result = 0;
 		if ($this->hasKey($key)) {
 			$result = $this->storage->getFile($key)->getSize();
@@ -124,7 +124,7 @@ class FileCache implements ICache {
 	 *
 	 * @throws NotPermittedException
 	 */
-	public function gc() {
+	public function gc(): void {
 		foreach ($this->storage->getDirectoryListing() as $file) {
 			if (time() - self::TIMEOUT > $file->getMTime()) {
 				$file->delete();

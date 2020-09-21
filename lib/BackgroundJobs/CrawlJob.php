@@ -7,6 +7,7 @@ use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\CrawlService;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 
@@ -27,7 +28,7 @@ class CrawlJob extends TimedJob {
 	 */
 	private $clientService;
 	/**
-	 * @var \OCP\Http\Client\IClient
+	 * @var IClient
 	 */
 	private $client;
 	/**

@@ -64,7 +64,6 @@ class HashManager {
 	/**
 	 * @param string $type
 	 * @param int $folderId
-	 * @param string $userId
 	 * @return string
 	 */
 	private function getCacheKey(string $type, int $folderId) : string {
@@ -144,7 +143,7 @@ class HashManager {
 			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;
-		$hash[$selector] = hash('sha256', json_encode($folder, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$hash[$selector] = hash('sha256', json_encode($folder, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
 		$this->cache->set($key, $hash, 60 * 60 * 24);
 		return $hash[$selector];
@@ -175,7 +174,7 @@ class HashManager {
 				$bookmark[$field] = $entity->{'get' . $field}();
 			}
 		}
-		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		$this->cache->set($key, $hash, 60 * 60 * 24);
 		return $hash[$selector];
 	}

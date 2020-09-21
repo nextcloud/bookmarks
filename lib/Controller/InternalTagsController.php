@@ -19,7 +19,7 @@ class InternalTagsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function deleteTag($old_name = "") {
+	public function deleteTag($old_name = ""): JSONResponse {
 		return $this->publicController->deleteTag($old_name);
 	}
 
@@ -31,7 +31,7 @@ class InternalTagsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function renameTag($old_name = "", $new_name = "", $name = '') {
+	public function renameTag($old_name = "", $new_name = "", $name = ''): JSONResponse {
 		return $this->publicController->renameTag($old_name, $new_name, $name);
 	}
 
@@ -40,7 +40,7 @@ class InternalTagsController extends ApiController {
 	 * @NoAdminRequired
 	 * @return JSONResponse
 	 */
-	public function fullTags($count) {
+	public function fullTags($count): JSONResponse {
 		return $this->publicController->fullTags($count);
 	}
 }

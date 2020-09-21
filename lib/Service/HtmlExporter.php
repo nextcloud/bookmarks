@@ -44,6 +44,7 @@ class HtmlExporter {
 	 * @param BookmarkMapper $bookmarkMapper
 	 * @param FolderMapper $folderMapper
 	 * @param TagMapper $tagMapper
+	 * @param TreeMapper $treeMapper
 	 */
 	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper) {
 		$this->bookmarkMapper = $bookmarkMapper;

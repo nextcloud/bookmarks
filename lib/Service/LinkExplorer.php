@@ -2,6 +2,7 @@
 
 namespace OCA\Bookmarks\Service;
 
+use Exception;
 use Marcelklehr\LinkPreview\Client as LinkPreview;
 use OCA\Bookmarks\Http\Client;
 use OCA\Bookmarks\Http\RequestFactory;
@@ -16,6 +17,10 @@ class LinkExplorer {
 	private $logger;
 
 	private $config;
+	/**
+	 * @var string
+	 */
+	private $enabled;
 
 	public function __construct(IClientService $clientService, ILogger $logger, IConfig $config) {
 		$client = $clientService->newClient();
@@ -31,7 +36,7 @@ class LinkExplorer {
 	 * @param string $url Url to load and analyze
 	 * @return array Metadata for url;
 	 */
-	public function get($url) {
+	public function get($url): array {
 		$data = ['url' => $url];
 
 		if ($this->enabled === 'false') {
@@ -42,7 +47,7 @@ class LinkExplorer {
 		try {
 			libxml_use_internal_errors(false);
 			$preview = $this->linkPreview->getLink($url)->getPreview();
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$this->logger->debug($e, ['app' => 'bookmarks']);
 			return $data;
 		}

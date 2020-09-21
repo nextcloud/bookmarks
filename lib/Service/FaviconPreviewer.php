@@ -20,6 +20,7 @@
 
 namespace OCA\Bookmarks\Service;
 
+use Exception;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
@@ -134,7 +135,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 	protected function fetchImage($url): ?Image {
 		try {
 			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$this->logger->debug($e, ['app' => 'bookmarks']);
 			return null;
 		}

@@ -26,6 +26,7 @@ use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
 use OCP\IL10N;
 use OCP\IRequest;
+use OCP\IURLGenerator;
 use OCP\IUserManager;
 
 class WebViewController extends Controller {
@@ -52,7 +53,7 @@ class WebViewController extends Controller {
 	 */
 	private $folderMapper;
 	/**
-	 * @var \OCP\IURLGenerator
+	 * @var IURLGenerator
 	 */
 	private $urlGenerator;
 	/**
@@ -75,11 +76,11 @@ class WebViewController extends Controller {
 	 * @param PublicFolderMapper $publicFolderMapper
 	 * @param IUserManager $userManager
 	 * @param FolderMapper $folderMapper
-	 * @param \OCP\IURLGenerator $urlGenerator
+	 * @param IURLGenerator $urlGenerator
 	 * @param \OCP\IInitialStateService $initialState
 	 * @param FoldersController $folderController
 	 */
-	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCP\IURLGenerator $urlGenerator, \OCP\IInitialStateService $initialState, \OCA\Bookmarks\Controller\FoldersController $folderController) {
+	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, FolderMapper $folderMapper, IURLGenerator $urlGenerator, \OCP\IInitialStateService $initialState, \OCA\Bookmarks\Controller\FoldersController $folderController) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->l = $l;

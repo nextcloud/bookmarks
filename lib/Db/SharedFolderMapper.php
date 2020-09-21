@@ -7,6 +7,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IDBConnection;
 
 /**
@@ -21,7 +22,7 @@ class SharedFolderMapper extends QBMapper {
 	 */
 	protected $db;
 	/**
-	 * @var \OCP\EventDispatcher\IEventDispatcher
+	 * @var IEventDispatcher
 	 */
 	private $eventDispatcher;
 
@@ -29,9 +30,9 @@ class SharedFolderMapper extends QBMapper {
 	 * TagMapper constructor.
 	 *
 	 * @param IDBConnection $db
-	 * @param \OCP\EventDispatcher\IEventDispatcher $eventDispatcher
+	 * @param IEventDispatcher $eventDispatcher
 	 */
-	public function __construct(IDBConnection $db, \OCP\EventDispatcher\IEventDispatcher $eventDispatcher) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher) {
 		parent::__construct($db, 'bookmarks_shared_folders', SharedFolder::class);
 		$this->db = $db;
 		$this->eventDispatcher = $eventDispatcher;
@@ -101,7 +102,7 @@ class SharedFolderMapper extends QBMapper {
 	 */
 	public function findByParticipant(int $type, string $participant): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(function ($c) {
+		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared_folders', 'p')
@@ -189,7 +190,7 @@ class SharedFolderMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-	public function findByParticipantAndUser(int $type, string $participant, string $userId) {
+	public function findByParticipantAndUser(int $type, string $participant, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;

@@ -5,8 +5,10 @@ namespace OCA\Bookmarks\Db;
 use Exception;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\IDBConnection;
+use RangeException;
 
 /**
  * Class PublicFolderMapper
@@ -34,7 +36,7 @@ class PublicFolderMapper extends QBMapper {
 	 * @param string $id
 	 * @return Entity
 	 * @throws DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function find(string $id): Entity {
 		$qb = $this->db->getQueryBuilder();
@@ -50,7 +52,7 @@ class PublicFolderMapper extends QBMapper {
 	 * @param int $folderId
 	 * @return Entity
 	 * @throws DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function findByFolder(int $folderId): Entity {
 		$qb = $this->db->getQueryBuilder();
@@ -79,7 +81,7 @@ class PublicFolderMapper extends QBMapper {
 	/**
 	 * @param Entity $publicFolder
 	 * @return Entity
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 * @throws Exception
 	 */
 	public function insert(Entity $publicFolder): Entity {
@@ -97,7 +99,7 @@ class PublicFolderMapper extends QBMapper {
 	/**
 	 * @param Entity $publicFolder
 	 * @return Entity
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function insertOrUpdate(Entity $publicFolder): Entity {
 		try {
@@ -105,7 +107,7 @@ class PublicFolderMapper extends QBMapper {
 		} catch (DoesNotExistException $e) {
 			return $this->insert($publicFolder);
 		}
-		$this->update($publicFolder);
+		return $this->update($publicFolder);
 	}
 
 	/**
@@ -122,7 +124,7 @@ class PublicFolderMapper extends QBMapper {
 	 * @param string $keyspace A string of all possible characters
 	 *                         to select from
 	 * @return string
-	 * @throws \RangeException
+	 * @throws RangeException
 	 * @throws Exception
 	 */
 	public static function randomString(
@@ -130,7 +132,7 @@ class PublicFolderMapper extends QBMapper {
 		string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	): string {
 		if ($length < 1) {
-			throw new \RangeException('Length must be a positive integer');
+			throw new RangeException('Length must be a positive integer');
 		}
 		$pieces = [];
 		$max = mb_strlen($keyspace, '8bit') - 1;

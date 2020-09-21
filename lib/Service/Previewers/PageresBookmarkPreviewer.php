@@ -22,6 +22,7 @@
 
 namespace OCA\Bookmarks\Service\Previewers;
 
+use Exception;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
@@ -70,7 +71,7 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @param string $serverPath
 	 * @param string $url
 	 * @return Image|null
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	protected function fetchImage(string $serverPath, string $url): ?Image {
 		$tempPath = $this->tempManager->getTemporaryFile('.png');
@@ -98,7 +99,7 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 			$retries++;
 		}
 
-		throw new \Exception("Pageres Error\nCommand: {$cmd}\nOutput: " . implode(' ' . PHP_EOL, $output) . PHP_EOL);
+		throw new Exception("Pageres Error\nCommand: {$cmd}\nOutput: " . implode(' ' . PHP_EOL, $output) . PHP_EOL);
 	}
 
 	/**

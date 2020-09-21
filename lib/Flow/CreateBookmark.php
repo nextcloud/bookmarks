@@ -3,6 +3,9 @@
 
 namespace OCA\Bookmarks\Flow;
 
+use Exception;
+use OC;
+use OC\Files\View;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\WorkflowEngine\Entity\File;
 use OCP\EventDispatcher\Event;
@@ -10,10 +13,13 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Files\Folder;
 use OCP\Files\Node;
 use OCP\IL10N;
+use OCP\ILogger;
+use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
 use OCP\Util;
 use OCP\WorkflowEngine\EntityContext\IUrl;
+use OCP\WorkflowEngine\IManager;
 use OCP\WorkflowEngine\IOperation;
 use OCP\WorkflowEngine\IRuleMatcher;
 
@@ -33,15 +39,15 @@ class CreateBookmark implements IOperation {
 	 */
 	private $session;
 	/**
-	 * @var \OCP\IURLGenerator
+	 * @var IURLGenerator
 	 */
 	private $urlGenerator;
 	/**
-	 * @var \OCP\ILogger
+	 * @var ILogger
 	 */
 	private $logger;
 
-	public function __construct(IL10N $l, BookmarkService $bookmarks, IUserSession $session, \OCP\IURLGenerator $urlGenerator, \OCP\ILogger $logger) {
+	public function __construct(IL10N $l, BookmarkService $bookmarks, IUserSession $session, IURLGenerator $urlGenerator, ILogger $logger) {
 		$this->l = $l;
 		$this->bookmarks = $bookmarks;
 		$this->session = $session;
@@ -50,15 +56,15 @@ class CreateBookmark implements IOperation {
 	}
 
 	public static function register(IEventDispatcher $dispatcher): void {
-		if (interface_exists('\OCP\WorkflowEngine\IManager')) {
+		if (interface_exists(IManager::class)) {
 			@include_once __DIR__ . '/../../vendor/autoload.php';
-			$dispatcher->addListener(\OCP\WorkflowEngine\IManager::EVENT_NAME_REG_OPERATION, static function ($event) {
-				$operation = \OC::$server->query(CreateBookmark::class);
+			$dispatcher->addListener(IManager::EVENT_NAME_REG_OPERATION, static function ($event) {
+				$operation = OC::$server->query(CreateBookmark::class);
 				$event->getSubject()->registerOperation($operation);
 				Util::addScript('bookmarks', 'flow');
 			});
-			$dispatcher->addListener(\OCP\WorkflowEngine\IManager::EVENT_NAME_REG_ENTITY, static function ($event) {
-				$entity = \OC::$server->query(Bookmark::class);
+			$dispatcher->addListener(IManager::EVENT_NAME_REG_ENTITY, static function ($event) {
+				$entity = OC::$server->query(Bookmark::class);
 				$event->getSubject()->registerEntity($entity);
 				Util::addScript('bookmarks', 'flow');
 			});
@@ -147,9 +153,9 @@ class CreateBookmark implements IOperation {
 
 
 		try {
-			$view = new \OC\Files\View('/' . $userId . '/files');
+			$view = new View('/' . $userId . '/files');
 			$text = $view->file_get_contents($path);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return;
 		}
 

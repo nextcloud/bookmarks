@@ -2,6 +2,7 @@
 
 namespace OCA\Bookmarks\Service;
 
+use Exception;
 use Mimey\MimeTypes;
 use OC\User\NoUserException;
 use OCA\Bookmarks\Db\Bookmark;
@@ -16,6 +17,7 @@ use OCP\Files\NotPermittedException;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IResponse;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\Lock\LockedException;
 
 class CrawlService {
@@ -42,11 +44,19 @@ class CrawlService {
 	private $path;
 	private $rootFolder;
 	/**
-	 * @var \OCP\IL10N
+	 * @var IL10N
 	 */
 	private $l;
+	/**
+	 * @var MimeTypes
+	 */
+	private $mimey;
+	/**
+	 * @var \OCP\Http\Client\IClient
+	 */
+	private $client;
 
-	public function __construct(BookmarkMapper $bookmarkMapper, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, IClientService $clientService, IConfig $config, IRootFolder $rootFolder, \OCP\IL10N $l) {
+	public function __construct(BookmarkMapper $bookmarkMapper, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, IClientService $clientService, IConfig $config, IRootFolder $rootFolder, IL10N $l) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->bookmarkPreviewer = $bookmarkPreviewer;
 		$this->faviconPreviewer = $faviconPreviewer;
@@ -60,14 +70,13 @@ class CrawlService {
 
 	/**
 	 * @param Bookmark $bookmark
-	 * @throws \OCA\Bookmarks\Exception\UrlParseError
+	 * @throws UrlParseError
 	 */
 	public function crawl(Bookmark $bookmark): void {
 		try {
-			/** @var IResponse $resp */
 			$resp = $this->client->get($bookmark->getUrl());
 			$available = $resp->getStatusCode() !== 404;
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$available = false;
 		}
 

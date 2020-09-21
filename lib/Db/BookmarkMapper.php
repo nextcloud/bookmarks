@@ -17,6 +17,8 @@ use OCP\DB\QueryBuilder\IQueryFunction;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IDBConnection;
+use PDO;
+use function call_user_func;
 
 /**
  * Class BookmarkMapper
@@ -115,7 +117,7 @@ class BookmarkMapper extends QBMapper {
 		if ($hasTags !== false) {
 			return BookmarkWithTagsAndParent::fromRow($row);
 		}
-		return \call_user_func($this->entityClass .'::fromRow', $row);
+		return call_user_func($this->entityClass .'::fromRow', $row);
 	}
 
 
@@ -194,7 +196,7 @@ class BookmarkMapper extends QBMapper {
 			->from('bookmarks', 'b')
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
 
-		$count = $qb->execute()->fetch(\PDO::FETCH_COLUMN)[0];
+		$count = $qb->execute()->fetch(PDO::FETCH_COLUMN)[0];
 
 		return (int)$count;
 	}
@@ -355,7 +357,7 @@ class BookmarkMapper extends QBMapper {
 			))
 			->andWhere($qb->expr()->isNotNull('b.archived_file'));
 
-		return $qb->execute()->fetch(\PDO::FETCH_COLUMN);
+		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
 	}
 
 	/**
@@ -376,7 +378,7 @@ class BookmarkMapper extends QBMapper {
 			))
 			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
 
-		return $qb->execute()->fetch(\PDO::FETCH_COLUMN);
+		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
 	}
 
 	/**
@@ -480,7 +482,7 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Bookmark $entity
+	 * @param Entity $entity
 	 * @return Entity
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
@@ -514,11 +516,11 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Bookmark $entity
+	 * @param Entity $entity
 	 * @return Entity
+	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws AlreadyExistsError
 	 */
 	public function insertOrUpdate(Entity $entity): Entity {
 		$params = new QueryParameters();
@@ -544,7 +546,7 @@ class BookmarkMapper extends QBMapper {
 			->select($qb->func()->count('id'))
 			->from('bookmarks')
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
-		return $qb->execute()->fetch(\PDO::FETCH_COLUMN);
+		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
 	}
 
 	/**
