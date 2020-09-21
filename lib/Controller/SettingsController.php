@@ -170,7 +170,7 @@ class SettingsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function setArchivePath(string $archivePath): JSONResponse: JSONResponse {
+	public function setArchivePath(string $archivePath): JSONResponse {
 		return $this->setSetting('archive.filePath', $archivePath);
 	}
 }

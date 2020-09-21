@@ -136,7 +136,7 @@ class BookmarksParser {
 	 *
 	 * @param DOMNode|null $node
 	 */
-	private function traverse(DOMNode $node = null): void: void {
+	private function traverse(DOMNode $node = null): void {
 		$query = './*';
 		$entries = $this->xpath->query($query, $node ?: null);
 		if (!$entries) {

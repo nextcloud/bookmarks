@@ -101,7 +101,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editFolder(int $folderId, $title = null, $parent_folder = null): JSONResponse: JSONResponse {
+	public function editFolder(int $folderId, $title = null, $parent_folder = null): JSONResponse {
 		return $this->controller->editFolder($folderId, $title, $parent_folder);
 	}
 
