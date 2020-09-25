@@ -477,7 +477,7 @@ class TreeMapper extends QBMapper {
 		$existingChildren = $this->getChildrenOrder($folderId);
 		foreach ($existingChildren as $child) {
 			if (!in_array($child, $newChildrenOrder, false)) {
-				throw new ChildrenOrderValidationError('A child is missing');
+				throw new ChildrenOrderValidationError('A child is missing: '.$child['type'].':'.$child['id']);
 			}
 			if (!isset($child['id'], $child['type'])) {
 				throw new ChildrenOrderValidationError('A child item is missing properties');
