@@ -52,7 +52,7 @@
 			}}</a>
 		</p>
 
-		<label v-if="showAddToHomeScreen">
+		<label>
 			<h3>{{ t('bookmarks', 'Install web app') }}</h3>
 			<a class="button" href="#" @click.prevent="clickAddToHomeScreen">{{ t('bookmarks', 'Install on home screen') }}</a>
 		</label>
@@ -98,7 +98,6 @@ export default {
 		return {
 			importing: false,
 			deleting: false,
-			showAddToHomeScreen: false,
 			addToHomeScreen: null,
 		}
 	},
@@ -175,8 +174,10 @@ export default {
 			this.deleting = false
 		},
 		clickAddToHomeScreen() {
-			// hide our user interface that shows our A2HS button
-			this.showAddToHomeScreen = false
+			if (!this.addToHomeScreen) {
+				alert(this.t('bookmarks', 'Please select "Add to home screen" in your browser menu'))
+				return
+			}
 			// Show the prompt
 			this.addToHomeScreen.prompt()
 			// Wait for the user to respond to the prompt
