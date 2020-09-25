@@ -45,6 +45,10 @@ class HtmlImporter {
 	 * @var TreeMapper
 	 */
 	private $treeMapper;
+	/**
+	 * @var \OCP\IDBConnection
+	 */
+	private $db;
 
 	/**
 	 * ImportService constructor.
@@ -52,14 +56,17 @@ class HtmlImporter {
 	 * @param BookmarkMapper $bookmarkMapper
 	 * @param FolderMapper $folderMapper
 	 * @param TagMapper $tagMapper
+	 * @param TreeMapper $treeMapper
 	 * @param BookmarksParser $bookmarksParser
+	 * @param \OCP\IDBConnection $db
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser, \OCP\IDBConnection $db) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->folderMapper = $folderMapper;
 		$this->tagMapper = $tagMapper;
 		$this->treeMapper = $treeMapper;
 		$this->bookmarksParser = $bookmarksParser;
+		$this->db = $db;
 	}
 
 	/**
@@ -94,6 +101,7 @@ class HtmlImporter {
 	 * @throws UserLimitExceededError
 	 */
 	public function import($userId, string $content, int $rootFolderId = null): array {
+		$this->db->beginTransaction();
 		$imported = [];
 		$errors = [];
 		if ($rootFolderId === null) {
@@ -116,6 +124,11 @@ class HtmlImporter {
 				continue;
 			}
 			$imported[] = ['type' => 'bookmark', 'id' => $bm->getId(), 'title' => $bookmark['title'], 'url' => $bookmark['href']];
+		}
+		if (count($errors) === 0) {
+			$this->db->commit();
+		} else {
+			$this->db->rollBack();
 		}
 		return ['imported' => $imported, 'errors' => $errors];
 	}

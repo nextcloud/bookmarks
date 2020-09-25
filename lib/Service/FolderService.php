@@ -63,6 +63,10 @@ class FolderService {
 	 * @var IEventDispatcher
 	 */
 	private $eventDispatcher;
+	/**
+	 * @var \OCP\IDBConnection
+	 */
+	private $db;
 
 	/**
 	 * FolderService constructor.
@@ -76,8 +80,9 @@ class FolderService {
 	 * @param HtmlImporter $htmlImporter
 	 * @param IL10N $l10n
 	 * @param IEventDispatcher $eventDispatcher
+	 * @param \OCP\IDBConnection $db
 	 */
-	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, \OCA\Bookmarks\Service\HtmlImporter $htmlImporter, IL10N $l10n, IEventDispatcher $eventDispatcher) {
+	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, \OCA\Bookmarks\Service\HtmlImporter $htmlImporter, IL10N $l10n, IEventDispatcher $eventDispatcher, \OCP\IDBConnection $db) {
 		$this->folderMapper = $folderMapper;
 		$this->treeMapper = $treeMapper;
 		$this->shareMapper = $shareMapper;
@@ -87,6 +92,7 @@ class FolderService {
 		$this->htmlImporter = $htmlImporter;
 		$this->l10n = $l10n;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->db = $db;
 	}
 
 	/**
@@ -174,33 +180,30 @@ class FolderService {
 		 */
 		$folder = $this->folderMapper->find($folderId);
 
-		if ($userId === null || $userId === $folder->getUserId()) {
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
-			$shares = $this->shareMapper->findByFolder($folderId);
-			foreach ($shares as $share) {
-				$this->deleteShare($share->getId());
+		if ($userId !== $folder->getUserId()) {
+			try {
+				// folder is shared folder
+				/**
+				 * @var $sharedFolder SharedFolder
+				 */
+				$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
+				$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+				return;
+			} catch (DoesNotExistException $e) {
+				// noop
 			}
-			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
-			$this->publicFolderMapper->delete($publicFolder);
-			$this->folderMapper->delete($folder);
-			return;
 		}
 
-		try {
-			// folder is shared folder
-			/**
-			 * @var $sharedFolder SharedFolder
-			 */
-			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
-			return;
-		} catch (DoesNotExistException $e) {
-			// noop
-		}
-
-		// folder is subfolder of share
+		$this->db->beginTransaction();
 		$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+		$shares = $this->shareMapper->findByFolder($folderId);
+		foreach ($shares as $share) {
+			$this->deleteShare($share->getId());
+		}
+		$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
+		$this->publicFolderMapper->delete($publicFolder);
 		$this->folderMapper->delete($folder);
+		$this->db->commit();
 	}
 
 	/**
