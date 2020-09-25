@@ -1,5 +1,6 @@
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
+import { loadState } from '@nextcloud/initial-state'
 import AppGlobal from '../mixins/AppGlobal'
 import { mutations } from './mutations'
 
@@ -427,6 +428,14 @@ export default {
 	},
 
 	async [actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
+		if (!state.folders.length) {
+			try {
+				const folders = loadState('bookmarks', 'folders')
+				return commit(mutations.SET_FOLDERS, folders)
+			} catch (e) {
+				console.warn('Could not load initial folder state, continuing with HTTP request')
+			}
+		}
 		let canceled = false
 		commit(mutations.FETCH_START, {
 			type: 'folders',

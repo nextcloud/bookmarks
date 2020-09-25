@@ -55,6 +55,14 @@ class WebViewController extends Controller {
 	 * @var \OCP\IURLGenerator
 	 */
 	private $urlGenerator;
+	/**
+	 * @var \OCP\IInitialStateService
+	 */
+	private $initialState;
+	/**
+	 * @var FoldersController
+	 */
+	private $folderController;
 
 
 	/**
@@ -68,8 +76,10 @@ class WebViewController extends Controller {
 	 * @param IUserManager $userManager
 	 * @param FolderMapper $folderMapper
 	 * @param \OCP\IURLGenerator $urlGenerator
+	 * @param \OCP\IInitialStateService $initialState
+	 * @param FoldersController $folderController
 	 */
-	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCP\IURLGenerator $urlGenerator) {
+	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCP\IURLGenerator $urlGenerator, \OCP\IInitialStateService $initialState, \OCA\Bookmarks\Controller\FoldersController $folderController) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->l = $l;
@@ -77,6 +87,8 @@ class WebViewController extends Controller {
 		$this->userManager = $userManager;
 		$this->folderMapper = $folderMapper;
 		$this->urlGenerator = $urlGenerator;
+		$this->initialState = $initialState;
+		$this->folderController = $folderController;
 	}
 
 	/**
@@ -91,6 +103,10 @@ class WebViewController extends Controller {
 		$policy->addAllowedScriptDomain("'self'");
 		$policy->addAllowedConnectDomain("'self'");
 		$res->setContentSecurityPolicy($policy);
+
+		// Provide complete folder hierarchy
+		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFolders()->getData()['data']);
+
 		return $res;
 	}
 
