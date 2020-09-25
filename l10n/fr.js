@@ -108,7 +108,7 @@ OC.L10N.register(
     "Archived version" : "Version Archivée",
     "Open archived file" : "Ouvrir le fichier archivé",
     "Notes" : "Notes",
-    "Notes for this bookmark..." : "Notes pour ce favori ...",
+    "Notes for this bookmark …" : "Notes pour ce favori ...",
     "{time} ago" : "il y a {time}",
     "Owner" : "Propriétaire",
     "Sharing" : "Partagé",

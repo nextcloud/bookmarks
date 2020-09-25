@@ -108,7 +108,7 @@ OC.L10N.register(
     "Archived version" : "Arşivlenmiş sürüm",
     "Open archived file" : "Arşivlenmiş dosyayı aç",
     "Notes" : "Notlar",
-    "Notes for this bookmark..." : "Bu yer imi için notlar...",
+    "Notes for this bookmark …" : "Bu yer imi için notlar ...",
     "{time} ago" : "{time} önce",
     "Owner" : "Sahibi",
     "Sharing" : "Paylaşım",
