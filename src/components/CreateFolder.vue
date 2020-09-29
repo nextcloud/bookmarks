@@ -1,58 +1,39 @@
 <template>
-	<div class="create-folder">
-		<span class="create-folder__title">
-			<figure class="icon-folder create-folder__icon" />
-			<input
-				ref="input"
-				v-model="title"
-				type="text"
-				:disabled="loading"
-				:placeholder="t('bookmarks', 'Enter folder title')"
-				@keyup.enter="submit">
-		</span>
-		<Actions>
-			<ActionButton
-				:icon="loading ? 'icon-loading' : 'icon-confirm'"
-				@click="submit">
-				{{ t('bookmarks', 'Create') }}
-			</ActionButton>
-		</Actions>
-		<Actions>
-			<ActionButton
-				icon="icon-close"
-				@click="cancel">
-				{{ t('bookmarks', 'Cancel') }}
-			</ActionButton>
-		</Actions>
-	</div>
+	<Item :selectable="false"
+		:renaming="true"
+		title=""
+		:editable="true"
+		:rename-placeholder="t('bookmarks', 'Enter a title')"
+		select-label=""
+		@rename="submit"
+		@rename-cancel="cancel">
+		<template #icon>
+			<FolderIcon :fill-color="colorPrimaryElement" class="icon" />
+		</template>
+	</Item>
 </template>
 <script>
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import FolderIcon from 'vue-material-design-icons/Folder'
+import Item from './Item'
 import { actions, mutations } from '../store/'
 
 export default {
 	name: 'CreateFolder',
-	components: { Actions, ActionButton },
-	data() {
-		return {
-			title: '',
-		}
-	},
+	components: { Item, FolderIcon },
 	computed: {
 		loading() {
 			return this.$store.state.loading.createFolder
 		},
 	},
 	mounted() {
-		this.$refs['input'].focus()
+		this.$refs.input.focus()
 	},
 	methods: {
-		submit() {
+		submit(title) {
 			const parentFolder = this.$route.params.folder
 			this.$store.dispatch(actions.CREATE_FOLDER, {
 				parentFolder,
-				title: this.title,
+				title,
 			})
 		},
 		cancel() {
@@ -64,41 +45,22 @@ export default {
 	},
 }
 </script>
-<style>
-.create-folder {
-	border-bottom: 1px solid var(--color-border);
-	padding: 5px;
-	display: flex;
-	align-items: center;
-}
-
-.create-folder__icon {
-	display: inline-block;
-	flex-shrink: 0;
+<style scoped>
+.icon {
+	flex-grow: 0;
 	height: 20px;
 	width: 20px;
 	background-size: cover;
-	margin: 0 10px;
-	position: relative;
-	top: 8px;
+	margin: 0 15px;
+	cursor: pointer;
 }
 
-.create-folder__title {
-	display: flex;
-	flex-grow: 1;
-}
-
-.create-folder__title > input {
-	width: 100%;
-}
-
-.create-folder button {
-	height: 20px;
-}
-
-.create-folder input {
-	border-top: none;
-	border-left: none;
-	border-right: none;
+.item--gridview .icon {
+	background-size: cover;
+	position: absolute;
+	top: 20%;
+	left: calc(45% - 50px);
+	transform: scale(4);
+	transform-origin: top left;
 }
 </style>

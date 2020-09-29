@@ -1,8 +1,7 @@
 <?php
+
 namespace OCA\Bookmarks\Activity;
 
-
-use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager;
@@ -64,7 +63,7 @@ class Provider implements IProvider {
 		$sharee = isset($subjectParameters['sharee']) ? $this->userManager->get($subjectParameters['sharee']) : null;
 		if ($sharee !== null) {
 			$shareeName = $sharee->getDisplayName();
-		}else{
+		} else {
 			$shareeName = null;
 		}
 
@@ -72,22 +71,22 @@ class Provider implements IProvider {
 		$author = $this->userManager->get($event->getAuthor());
 		if ($author !== null) {
 			$authorName = $author->getDisplayName();
-		}else{
+		} else {
 			$authorName = null;
 		}
 
-		switch($event->getSubject()) {
+		switch ($event->getSubject()) {
 			case 'bookmark_created':
 				if ($isAuthor) {
 					$event->setParsedSubject($this->l->t('You bookmarked "%s"', [
 						$subjectParameters['bookmark']
 					]));
-				}elseif ($authorName){
+				} elseif ($authorName) {
 					$event->setParsedSubject($this->l->t('%1$s bookmarked "%2$s"', [
 						$authorName,
 						$subjectParameters['bookmark'],
 					]));
-				}else {
+				} else {
 					$event->setParsedSubject($this->l->t('Someone bookmarked "%s"', [
 						$subjectParameters['bookmark']
 					]));
@@ -98,12 +97,12 @@ class Provider implements IProvider {
 					$event->setParsedSubject($this->l->t('You deleted "%s"', [
 						$subjectParameters['bookmark']
 					]));
-				}elseif ($authorName){
-					$event->setParsedSubject($this->l->t('%1$s deleted "%1$s"', [
+				} elseif ($authorName) {
+					$event->setParsedSubject($this->l->t('%1$s deleted "%2$s"', [
 						$authorName,
 						$subjectParameters['bookmark'],
 					]));
-				}else {
+				} else {
 					$event->setParsedSubject($this->l->t('Someone deleted "%s"', [
 						$subjectParameters['bookmark']
 					]));
@@ -114,12 +113,12 @@ class Provider implements IProvider {
 					$event->setParsedSubject($this->l->t('You created folder "%s"', [
 						$subjectParameters['folder']
 					]));
-				}elseif ($authorName){
+				} elseif ($authorName) {
 					$event->setParsedSubject($this->l->t('%1$s created folder "%2$s"', [
 						$authorName,
 						$subjectParameters['folder']
 					]));
-				}else {
+				} else {
 					$event->setParsedSubject($this->l->t('Someone created folder "%s"', [
 						$subjectParameters['folder']
 					]));
@@ -130,12 +129,12 @@ class Provider implements IProvider {
 					$event->setParsedSubject($this->l->t('You moved folder "%s"', [
 						$subjectParameters['folder']
 					]));
-				}elseif ($authorName){
+				} elseif ($authorName) {
 					$event->setParsedSubject($this->l->t('%1$s moved folder "%2$s"', [
 						$authorName,
 						$subjectParameters['folder']
 					]));
-				}else {
+				} else {
 					$event->setParsedSubject($this->l->t('Someone moved folder "%s"', [
 						$subjectParameters['folder']
 					]));
@@ -146,12 +145,12 @@ class Provider implements IProvider {
 					$event->setParsedSubject($this->l->t('You deleted folder "%s"', [
 						$subjectParameters['folder']
 					]));
-				}elseif ($authorName){
+				} elseif ($authorName) {
 					$event->setParsedSubject($this->l->t('%1$s deleted folder "%2$s"', [
 						$authorName,
 						$subjectParameters['folder'],
 					]));
-				}else {
+				} else {
 					$event->setParsedSubject($this->l->t('Someone deleted folder "%s"', [
 						$subjectParameters['folder']
 					]));
@@ -163,16 +162,16 @@ class Provider implements IProvider {
 						$subjectParameters['folder'],
 						$shareeName
 					]));
-				}elseif ($isAuthor){
+				} elseif ($isAuthor) {
 					$event->setParsedSubject($this->l->t('You shared folder "%s" with someone', [
 						$subjectParameters['folder']
 					]));
-				}elseif ($authorName && $isSharee) {
+				} elseif ($authorName && $isSharee) {
 					$event->setParsedSubject($this->l->t('%1$s shared folder "%2$s" with you', [
 						$authorName,
 						$subjectParameters['folder'],
 					]));
-				}elseif ($isSharee) {
+				} elseif ($isSharee) {
 					$event->setParsedSubject($this->l->t('Someone shared folder "%s" with you', [
 						$subjectParameters['folder']
 					]));
@@ -184,16 +183,16 @@ class Provider implements IProvider {
 						$subjectParameters['folder'],
 						$shareeName
 					]));
-				}elseif ($isAuthor){
+				} elseif ($isAuthor) {
 					$event->setParsedSubject($this->l->t('You unshared folder "%s" with someone', [
 						$subjectParameters['folder']
 					]));
-				}elseif ($authorName && $isSharee) {
+				} elseif ($authorName && $isSharee) {
 					$event->setParsedSubject($this->l->t('%1$s unshared folder "%2$s" with you', [
 						$subjectParameters['folder'],
 						$authorName
 					]));
-				}elseif ($isSharee) {
+				} elseif ($isSharee) {
 					$event->setParsedSubject($this->l->t('Someone unshared folder "%s" with you', [
 						$subjectParameters['folder']
 					]));
@@ -207,16 +206,7 @@ class Provider implements IProvider {
 			$event->setLink($this->url->linkToRouteAbsolute('bookmarks.web_view.indexfolder', ['folder' => $event->getObjectId()]));
 		}
 		if ($event->getObjectType() === TreeMapper::TYPE_BOOKMARK && !str_contains($event->getSubject(), 'deleted')) {
-			/**
-			 * @var $folders Folder[]
-			 */
-			$folders = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $event->getObjectId());
-			$folders = array_filter($folders, function($folder) {
-				return $folder->getUserId() === $this->activityManager->getCurrentUserId();
-			});
-			if (isset($folders[0])) {
-				$event->setLink($this->url->linkToRouteAbsolute('bookmarks.web_view.indexfolder', ['folder' => $folders[0]->getId()]));
-			}
+			$event->setLink($this->url->linkToRouteAbsolute('bookmarks.web_view.indexbookmark', ['bookmark' => $event->getObjectId()]));
 		}
 
 		return $event;

@@ -11,7 +11,7 @@
 			<span class="icon-download" /> {{ t('bookmarks', 'Export') }}
 		</button>
 
-		<label>{{ t('bookmarks', 'Sorting') }}
+		<label><h3>{{ t('bookmarks', 'Sorting') }}</h3>
 			<select :value="sorting" @change="onChangeSorting">
 				<option id="added" value="added">
 					{{ t('bookmarks', 'Recently added') }}
@@ -25,50 +25,23 @@
 				<option id="lastmodified" value="lastmodified">
 					{{ t('bookmarks', 'Last modified') }}
 				</option>
-			</select></label>
+				<option id="index" value="index">
+					{{ t('bookmarks', 'Custom order') }}
+				</option>
+			</select>
+		</label>
 
-		<label>{{ t('bookmarks', 'RSS Feed') }}
+		<label><h3>{{ t('bookmarks', 'Archive path') }}</h3>
+			<p>{{ t('bookmarks',
+				'Enter the path of a folder where bookmarked files should be stored'
+			) }}</p>
 			<input
-				v-tooltip="
-					t('bookmarks',
-						'This is an RSS feed of the current result set with access restricted to you.'
-					)
-				"
-				type="text"
-				readonly
-				:value="rssURL"
-				@click="onRssClick"></label>
-
-		<label>{{ t('bookmarks', 'Clear data') }}
-			<button
-				v-tooltip="
-					t('bookmarks',
-						'Permanently remove all bookmarks from your account. There is no going back!'
-					)
-				"
-				class="clear-data"
-				@click="onClearData">
-				<span :class="{'icon-delete': !deleting, 'icon-loading-small': deleting}" />
-				{{ t('bookmarks', 'Delete all bookmarks') }}
-			</button>
+				:value="archivePath"
+				:readonly="true"
+				@click="onChangeArchivePath">
 		</label>
 
-		<label>{{ t('bookmarks', 'Bookmarklet') }}
-			<a
-				v-tooltip="
-					t('bookmarks',
-						'Drag this to your browser bookmarks and click it to quickly bookmark a webpage'
-					)
-				"
-				class="button"
-				:href="bookmarklet"
-				@click.prevent="void 0">{{
-					t('bookmarks', 'Add to {instanceName}', {
-						instanceName: oc_defaults.name
-					})
-				}}</a>
-		</label>
-
+		<h3>{{ t('bookmarks', 'Client apps') }}</h3>
 		<p>
 			{{
 				t('bookmarks',
@@ -79,12 +52,46 @@
 				t('bookmarks', 'Client apps')
 			}}</a>
 		</p>
+
+		<label>
+			<h3>{{ t('bookmarks', 'Install web app') }}</h3>
+			<a class="button" href="#" @click.prevent="clickAddToHomeScreen">{{ t('bookmarks', 'Install on home screen') }}</a>
+		</label>
+
+		<label><h3>{{ t('bookmarks', 'Bookmarklet') }}</h3>
+			<p>{{ t('bookmarks',
+				'Drag this to your browser bookmarks and click it to quickly bookmark a webpage'
+			) }}</p>
+			<a
+				class="button"
+				:href="bookmarklet"
+				@click.prevent="void 0">{{
+					t('bookmarks', 'Add to {instanceName}', {
+						instanceName: oc_defaults.name
+					})
+				}}</a>
+		</label>
+
+		<label><h3>{{ t('bookmarks', 'Clear data') }}</h3>
+			<p>{{
+				t('bookmarks',
+					'Permanently remove all bookmarks from your account.'
+				)
+			}}</p>
+			<button
+				class="clear-data"
+				@click="onClearData">
+				<span :class="{'icon-delete': !deleting, 'icon-loading-small': deleting}" />
+				{{ t('bookmarks', 'Delete all bookmarks') }}
+			</button>
+		</label>
 	</div>
 </template>
 <script>
 import { generateUrl } from '@nextcloud/router'
 import { actions } from '../store/'
 import { getRequestToken } from '@nextcloud/auth'
+import { getFilePickerBuilder } from '@nextcloud/dialogs'
 
 export default {
 	name: 'Settings',
@@ -93,6 +100,13 @@ export default {
 		return {
 			importing: false,
 			deleting: false,
+			addToHomeScreen: null,
+			filePicker: getFilePickerBuilder(this.t('bookmarks', 'Archive path'))
+				.allowDirectories(true)
+				.setModal(true)
+				.setType(1)// CHOOSE
+				.setMultiSelect(false)
+				.build(),
 		}
 	},
 	computed: {
@@ -104,26 +118,24 @@ export default {
 						= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
 			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=500px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
-		rssURL() {
-			return (
-				window.location.origin
-				+ generateUrl(
-					'/apps/bookmarks/public/rest/v2/bookmark?'
-						+ new URLSearchParams(
-							Object.assign({}, this.$store.state.fetchState.query, {
-								format: 'rss',
-								page: -1,
-							})
-						).toString()
-				)
-			)
-		},
 		viewMode() {
 			return this.$store.state.settings.viewMode
 		},
 		sorting() {
 			return this.$store.state.settings.sorting
 		},
+		archivePath() {
+			return this.$store.state.settings.archivePath
+		},
+	},
+	mounted() {
+		window.addEventListener('beforeinstallprompt', (e) => {
+			// Prevent Chrome 67 and earlier from automatically showing the prompt
+			e.preventDefault()
+			// Stash the event so it can be triggered later.
+			this.addToHomeScreen = e
+			this.showAddToHomeScreen = true
+		})
 	},
 	methods: {
 		onImportOpen(e) {
@@ -132,7 +144,7 @@ export default {
 		async onImportSubmit(e) {
 			this.importing = true
 			try {
-				await this.$store.dispatch(actions.IMPORT_BOOKMARKS, { file: e.target.files[0], folder: this.$route.params.folder })
+				await this.$store.dispatch(actions.IMPORT_BOOKMARKS, { file: e.target.files[0], folder: this.$route.params.folder || -1 })
 			} catch (e) {
 				console.warn(e)
 			}
@@ -150,11 +162,12 @@ export default {
 			})
 			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
-		onChangeViewMode(e) {},
-		onRssClick(e) {
-			setTimeout(() => {
-				e.target.select()
-			}, 100)
+		async onChangeArchivePath(e) {
+			const path = await this.filePicker.pick()
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'archivePath',
+				value: path,
+			})
 		},
 		async onClearData() {
 			if (
@@ -168,6 +181,23 @@ export default {
 			await this.$store.dispatch(actions.DELETE_BOOKMARKS)
 			await this.$router.push({ name: this.routes.HOME })
 			this.deleting = false
+		},
+		clickAddToHomeScreen() {
+			if (!this.addToHomeScreen) {
+				alert(this.t('bookmarks', 'Please select "Add to home screen" in your browser menu'))
+				return
+			}
+			// Show the prompt
+			this.addToHomeScreen.prompt()
+			// Wait for the user to respond to the prompt
+			this.addToHomeScreen.userChoice.then((choiceResult) => {
+				if (choiceResult.outcome === 'accepted') {
+					console.warn('User accepted the A2HS prompt')
+				} else {
+					console.warn('User dismissed the A2HS prompt')
+				}
+				this.addToHomeScreen = null
+			})
 		},
 	},
 }
@@ -183,9 +213,10 @@ export default {
 .settings label,
 .settings input,
 .settings select,
-.settings label button,
+.settings button,
 .settings label a.button {
 	display: block;
+	width: 100%;
 }
 
 .settings label {

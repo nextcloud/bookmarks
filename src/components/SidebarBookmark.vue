@@ -3,25 +3,42 @@
 		v-if="isActive"
 		class="sidebar"
 		:title="bookmark.title"
-		:subtitle="bookmark.url"
+		:title-editable="editingTitle"
+		:title-placeholder="t('bookmarks', 'Title')"
 		:background="background"
+		@update:title="onEditTitleUpdate"
+		@submit-title="onEditTitleSubmit"
+		@dismiss-editing="onEditTitleCancel"
 		@close="onClose">
-		<AppSidebarTab id="bookmark-details" :name="t('bookmarks', 'Details')" icon="icon-info">
+		<template v-if="!editingTitle" slot="secondary-actions">
+			<ActionButton icon="icon-rename" @click="onEditTitle" />
+		</template>
+		<template v-if="editingTitle" slot="secondary-actions">
+			<ActionButton icon="icon-close" @click="onEditTitleCancel" />
+		</template>
+		<AppSidebarTab
+			id="bookmark-details"
+			:name="t('bookmarks', 'Details')"
+			icon="icon-info"
+			:order="0">
 			<div>
 				<h3>
 					<span class="icon-link" />
-					{{ t('bookmarks', 'URL') }}
+					{{ t('bookmarks', 'Link') }}
 				</h3>
 				<div v-if="!editingUrl" class="bookmark-details__line">
 					<span class="bookmark-details__url">{{ bookmark.url }}</span>
-					<Actions class="bookmark-details__action">
-						<ActionButton icon="icon-rename" @click="editingUrl = true" />
+					<Actions v-if="isEditable" class="bookmark-details__action">
+						<ActionButton icon="icon-rename" @click="onEditUrl" />
 					</Actions>
 				</div>
 				<div v-else class="bookmark-details__line">
-					<input v-model="bookmark.url" class="bookmark-details__url">
+					<input v-model="url" class="bookmark-details__url">
 					<Actions class="bookmark-details__action">
-						<ActionButton icon="icon-confirm" @click="onEditUrl" />
+						<ActionButton icon="icon-confirm" @click="onEditUrlSubmit" />
+					</Actions>
+					<Actions class="bookmark-details__action">
+						<ActionButton icon="icon-close" @click="onEditUrlCancel" />
 					</Actions>
 				</div>
 			</div>
@@ -42,19 +59,30 @@
 					:options="allTags"
 					:multiple="true"
 					:taggable="true"
-					:placeholder="t('bookmarks', 'Select tags are create new ones')"
+					:placeholder="t('bookmarks', 'Select tags and create new ones')"
 					:disabled="!isEditable"
 					@input="onTagsChange"
 					@tag="onAddTag" />
 			</div>
+		</AppSidebarTab>
+		<AppSidebarTab
+			id="attachments"
+			:name="t('bookmarks', 'Attachments')"
+			icon="icon-edit"
+			:order="1">
+			<div v-if="archivedFile">
+				<h3><ArchiveArrowDownIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived version') }}</h3>
+				<a :href="archivedFile" class="button">{{ t('bookmarks', 'Open archived file') }}</a>
+			</div>
 			<div>
 				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-				<div class="sidebar__notes" :contenteditable="isEditable" @input="onNotesChange">
-					{{ description }}
-				</div>
+				<div ref="description"
+					class="sidebar__notes"
+					:contenteditable="isEditable"
+					:placeholder="t('bookmarks', 'Notes for this bookmark …')"
+					@input="onNotesChange" />
 			</div>
 		</AppSidebarTab>
-		<!--<AppSidebarTab :name="t('bookmarks', 'Sharing')" icon="icon-sharing" />-->
 	</AppSidebar>
 </template>
 <script>
@@ -63,6 +91,8 @@ import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+
+import ArchiveArrowDownIcon from 'vue-material-design-icons/ArchiveArrowDown'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
@@ -72,10 +102,11 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton },
+	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, ArchiveArrowDownIcon },
 	data() {
 		return {
-			descripting: '',
+			title: '',
+			editingTitle: false,
 			url: '',
 			editingUrl: false,
 		}
@@ -100,6 +131,7 @@ export default {
 					language: OC.getLanguage().split('-')[0],
 					units: ['d', 'h', 'm', 's'],
 					largest: 1,
+					round: true,
 				})
 				return this.t('bookmarks', '{time} ago', { time: duration })
 			} else {
@@ -118,19 +150,25 @@ export default {
 		},
 		permissions() {
 			return this.$store.getters.getPermissionsForBookmark(this.bookmark.id)
-
 		},
 		isEditable() {
 			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
-	},
-	watch: {
-		bookmark(newBookmark) {
-			if (!this.isActive) return
-			this.description = newBookmark.description
+		archivedFile() {
+			if (this.bookmark.archivedFile) {
+				return generateUrl(`/apps/files/?fileid=${this.bookmark.archivedFile}`)
+			}
+			return null
 		},
 	},
-	created() {},
+	watch: {
+		bookmark() {
+			if (!this.isActive || !this.bookmark) return
+			this.$refs.description.textContent = this.bookmark.description || ''
+		},
+	},
+	created() {
+	},
 	methods: {
 		onClose() {
 			this.$store.commit(mutations.SET_SIDEBAR, null)
@@ -147,9 +185,34 @@ export default {
 			this.bookmark.tags.push(tag)
 			this.scheduleSave()
 		},
-		onEditUrl() {
-			this.editingUrl = false
+		onEditTitle() {
+			this.title = this.bookmark.title
+			this.editingTitle = true
+		},
+		onEditTitleUpdate(e) {
+			this.title = e
+		},
+		onEditTitleSubmit() {
+			this.editingTitle = false
+			this.bookmark.title = this.title
 			this.scheduleSave()
+		},
+		onEditTitleCancel() {
+			this.editingTitle = false
+			this.title = ''
+		},
+		onEditUrl() {
+			this.url = this.bookmark.url
+			this.editingUrl = true
+		},
+		onEditUrlSubmit() {
+			this.editingUrl = false
+			this.bookmark.url = this.url
+			this.scheduleSave()
+		},
+		onEditUrlCancel() {
+			this.editingUrl = false
+			this.url = ''
 		},
 		scheduleSave() {
 			if (this.changeTimeout) clearTimeout(this.changeTimeout)
@@ -162,11 +225,16 @@ export default {
 }
 </script>
 <style>
-.sidebar span[class^='icon-'] {
+.sidebar span[class^='icon-'],
+.sidebar .material-design-icon {
 	display: inline-block;
 	position: relative;
 	top: 3px;
 	opacity: 0.5;
+}
+
+.sidebar h3 {
+	margin-top: 20px;
 }
 
 .sidebar__tags {

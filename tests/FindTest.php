@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
@@ -8,7 +9,6 @@ use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
-
 
 class FindTest extends TestCase {
 
@@ -62,7 +62,7 @@ class FindTest extends TestCase {
 		}
 		$this->userId = $this->userManager->get($this->user)->getUID();
 
-		foreach($this->singleBookmarksProvider() as $bookmarkEntry) {
+		foreach ($this->singleBookmarksProvider() as $bookmarkEntry) {
 			$bookmarkEntry[1]->setUserId($this->userId);
 			$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmarkEntry[1]);
 			$this->tagMapper->addTo($bookmarkEntry[0], $bookmark->getId());
@@ -70,33 +70,38 @@ class FindTest extends TestCase {
 	}
 
 	public function testFindAll() {
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia'], new QueryParameters());
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['wikipedia']));
 		$this->assertCount(1, $bookmarks);
 	}
 
 
 	public function testFindAllWithAnd() {
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia', 'nextcloud'], new QueryParameters());
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['wikipedia', 'nextcloud']));
 		$this->assertCount(0, $bookmarks);
 
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['.com'], new QueryParameters());
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['.com']));
 		$this->assertCount(2, $bookmarks);
 	}
 
 
 	public function testFindAllWithOr() {
 		$params = new QueryParameters();
-		$bookmarks = $this->bookmarkMapper->findAll($this->userId, ['wikipedia', 'nextcloud'], $params->setConjunction(QueryParameters::CONJ_OR));
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['wikipedia', 'nextcloud'])->setConjunction(QueryParameters::CONJ_OR));
 		$this->assertCount(2, $bookmarks);
 	}
 
-	public function testFindByTag() {
-		$bookmarks = $this->bookmarkMapper->findByTag($this->userId, 'one', new QueryParameters());
-		$this->assertCount(3, $bookmarks);
+	public function testFindByTags() {
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findALl($this->userId, $params->setTags(['one', 'three']));
+		$this->assertCount(1, $bookmarks);
 	}
 
-	public function testFindByTags() {
-		$bookmarks = $this->bookmarkMapper->findByTags($this->userId, ['one', 'three'], new QueryParameters());
+	public function testFindByTagsAndSearch() {
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findALl($this->userId, $params->setTags(['one'])->setSearch(['php']));
 		$this->assertCount(1, $bookmarks);
 	}
 

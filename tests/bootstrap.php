@@ -15,7 +15,7 @@ if (!class_exists('\PHPUnit\Framework\TestCase')) {
 
 // OC >= 9.1 Tests?
 $dummyClass = \OC::$SERVERROOT . '/tests/lib/Util/User/Dummy.php';
-if(file_exists($dummyClass)) {
+if (file_exists($dummyClass)) {
 	require_once($dummyClass);
 }
 

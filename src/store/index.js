@@ -44,8 +44,11 @@ export default new Store({
 		tags: [],
 		folders: [],
 		foldersById: {},
+		childrenByFolder: {},
 		tokensByFolder: {},
 		countsByFolder: {},
+		unavailableCount: 0,
+		archivedCount: 0,
 		selection: {
 			folders: [],
 			bookmarks: [],
@@ -66,6 +69,9 @@ export default new Store({
 				return [{ id: '-1', children: state.folders }]
 			}
 			return findFolder(id, state.folders)
+		},
+		getFolderChildren: state => id => {
+		  return state.childrenByFolder[id] || []
 		},
 		getSharesOfFolder: state => folderId => {
 			return Object.values(state.sharesById).filter(share => share.folderId === folderId)

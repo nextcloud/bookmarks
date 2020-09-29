@@ -1,5 +1,6 @@
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
+import { loadState } from '@nextcloud/initial-state'
 import AppGlobal from '../mixins/AppGlobal'
 import { mutations } from './mutations'
 
@@ -8,6 +9,8 @@ const BATCH_SIZE = 42
 export const actions = {
 	ADD_ALL_BOOKMARKS: 'ADD_ALL_BOOKMARKS',
 	COUNT_BOOKMARKS: 'COUNT_BOOKMARKS',
+	COUNT_UNAVAILABLE: 'COUNT_UNAVAILABLE',
+	COUNT_ARCHIVED: 'COUNT_ARCHIVED',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	LOAD_BOOKMARK: 'LOAD_BOOKMARK',
@@ -26,6 +29,7 @@ export const actions = {
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
+	LOAD_FOLDER_CHILDREN_ORDER: 'LOAD_FOLDER_CHILDREN_ORDER',
 	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
@@ -36,10 +40,13 @@ export const actions = {
 	NO_FILTER: 'NO_FILTER',
 	FILTER_BY_RECENT: 'FILTER_BY_RECENT',
 	FILTER_BY_UNTAGGED: 'FILTER_BY_UNTAGGED',
+	FILTER_BY_UNAVAILABLE: 'FILTER_BY_UNAVAILABLE',
+	FILTER_BY_ARCHIVED: 'FILTER_BY_ARCHIVED',
 	FILTER_BY_TAGS: 'FILTER_BY_TAGS',
 	FILTER_BY_FOLDER: 'FILTER_BY_FOLDER',
 	FILTER_BY_SEARCH: 'FILTER_BY_SEARCH',
 	FETCH_PAGE: 'FETCH_PAGE',
+	FETCH_ALL: 'FETCH_ALL',
 
 	SET_SETTING: 'SET_SETTING',
 	LOAD_SETTING: 'LOAD_SETTING',
@@ -62,6 +69,46 @@ export default {
 		}
 	},
 
+	async [actions.COUNT_UNAVAILABLE]({ commit, dispatch, state }, folderId) {
+		try {
+			const response = await axios.get(url(state, '/bookmark/unavailable')
+			)
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_UNAVAILABLE_COUNT, count)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to count unavailable bookmarks')
+			)
+			throw err
+		}
+	},
+	async [actions.COUNT_ARCHIVED]({ commit, dispatch, state }, folderId) {
+		try {
+			const response = await axios.get(url(state, '/bookmark/archived')
+			)
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_ARCHIVED_COUNT, count)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to count archived bookmarks')
+			)
+			throw err
+		}
+	},
 	async [actions.COUNT_BOOKMARKS]({ commit, dispatch, state }, folderId) {
 		try {
 			const response = await axios.get(url(state, `/folder/${folderId}/count`)
@@ -146,9 +193,16 @@ export default {
 				throw new Error(response.data.data.join('\n'))
 			}
 			commit(mutations.DISPLAY_NEW_BOOKMARK, false)
-			commit(mutations.ADD_BOOKMARK, bookmark)
-			commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: state.countsByFolder[-1] + 1 })
 			commit(mutations.FETCH_END, 'createBookmark')
+			commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: state.countsByFolder[-1] + 1 })
+			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
+			dispatch(actions.RELOAD_VIEW)
+			if (data.folders) {
+				for (const folderId of data.folders) {
+					commit(mutations.SET_BOOKMARK_COUNT, { folderId, count: state.countsByFolder[folderId] + 1 })
+					dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folderId)
+				}
+			}
 			return dispatch(actions.OPEN_BOOKMARK, bookmark.id)
 		} catch (err) {
 			console.error(err)
@@ -204,6 +258,8 @@ export default {
 				throw new Error(response2.data)
 			}
 			commit(mutations.FETCH_END, 'moveBookmark')
+			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldFolder)
+			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, newFolder)
 		} catch (err) {
 			console.error(err)
 			commit(mutations.FETCH_END, 'moveBookmark')
@@ -227,7 +283,8 @@ export default {
 					throw new Error(response.data)
 				}
 				commit(mutations.REMOVE_BOOKMARK, id)
-				commit(mutations.SET_BOOKMARK_COUNT, { folderId: -1, count: Math.max(0, state.countsByFolder[-1] - 1) })
+				await dispatch(actions.COUNT_BOOKMARKS, -1)
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
 			} catch (err) {
 				console.error(err)
 				commit(
@@ -243,7 +300,8 @@ export default {
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
-			commit(mutations.REMOVE_BOOKMARK, id)
+			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			await commit(mutations.REMOVE_BOOKMARK, id)
 		} catch (err) {
 			console.error(err)
 			commit(
@@ -253,35 +311,34 @@ export default {
 			throw err
 		}
 	},
-	[actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, { file, folder }) {
+	async [actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, { file, folder }) {
 		const data = new FormData()
 		data.append('bm_import', file)
-		return axios
-			.post(url(state, `/folder/${folder || -1}/import`), data)
-			.then(response => {
-				if (!response.data || response.data.status !== 'success') {
-					if (response.status === 413) {
-						throw new Error('Selected file is too large')
-					}
-					console.error('Failed to import bookmarks', response)
-					throw new Error(Array.isArray(response.data.data) ? response.data.data.join('. ') : response.data.data)
+		try {
+			const response = await axios.post(url(state, `/folder/${folder || -1}/import`), data)
+			if (!response.data || response.data.status !== 'success') {
+				if (response.status === 413) {
+					throw new Error('Selected file is too large')
 				}
-				commit(mutations.SET_NOTIFICATION, AppGlobal.methods.t('bookmarks', 'Import successful'))
-				dispatch(actions.COUNT_BOOKMARKS, -1)
-				return dispatch(actions.RELOAD_VIEW)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					err.message
-				)
-				throw err
-			})
+				console.error('Failed to import bookmarks', response)
+				throw new Error(Array.isArray(response.data.data) ? response.data.data.join('. ') : response.data.data)
+			}
+			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
+			await dispatch(actions.RELOAD_VIEW)
+			return commit(mutations.SET_NOTIFICATION, AppGlobal.methods.t('bookmarks', 'Import successful'))
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				err.message
+			)
+			throw err
+		}
 	},
 	[actions.DELETE_BOOKMARKS]({ commit, dispatch, state }) {
 		return axios
-			.delete(url(state, `/bookmark`))
+			.delete(url(state, '/bookmark'))
 			.then(response => {
 				const {
 					data: { status },
@@ -290,6 +347,7 @@ export default {
 					throw new Error(response.data)
 				}
 				dispatch(actions.COUNT_BOOKMARKS, -1)
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 				return dispatch(actions.RELOAD_VIEW)
 			})
 			.catch(err => {
@@ -369,7 +427,15 @@ export default {
 			})
 	},
 
-	[actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
+	async [actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
+		if (!state.folders.length) {
+			try {
+				const folders = loadState('bookmarks', 'folders')
+				return commit(mutations.SET_FOLDERS, folders)
+			} catch (e) {
+				console.warn('Could not load initial folder state, continuing with HTTP request')
+			}
+		}
 		let canceled = false
 		commit(mutations.FETCH_START, {
 			type: 'folders',
@@ -377,103 +443,122 @@ export default {
 				canceled = true
 			},
 		})
-		return axios
-			.get(url(state, '/folder'), { params: {} })
-			.then(response => {
-				if (canceled) return
-				const {
-					data: { data, status },
-				} = response
-				if (status !== 'success') throw new Error(data)
-				const folders = data
-				commit(mutations.FETCH_END, 'folders')
-				return commit(mutations.SET_FOLDERS, folders)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(mutations.FETCH_END, 'folders')
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to load folders')
-				)
-				throw err
-			})
+		try {
+			const response = await axios.get(url(state, '/folder'), { params: {} })
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
+			const folders = data
+			commit(mutations.FETCH_END, 'folders')
+			return commit(mutations.SET_FOLDERS, folders)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'folders')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load folders')
+			)
+			throw err
+		}
 	},
-	[actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
-		return axios
-			.delete(url(state, `/folder/${id}`))
-			.then(response => {
-				const {
-					data: { status },
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-				dispatch(actions.LOAD_FOLDERS)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
-				)
-				throw err
-			})
+	async [actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
+		try {
+			const response = await axios.delete(url(state, `/folder/${id}`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			const parentFolder = this.getters.getFolder(id)[0].parent_folder
+			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder)
+			await dispatch(actions.LOAD_FOLDERS)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
+			)
+			throw err
+		}
 	},
-	[actions.CREATE_FOLDER](
+	async [actions.CREATE_FOLDER](
 		{ commit, dispatch, state },
 		{ parentFolder, title }
 	) {
-		return axios
-			.post(url(state, `/folder`), {
+		try {
+			const response = await axios.post(url(state, '/folder'), {
 				parent_folder: parentFolder,
 				title,
 			})
-			.then(response => {
-				const {
-					data: { status },
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-				commit(mutations.DISPLAY_NEW_FOLDER, false)
-				dispatch(actions.LOAD_FOLDERS)
-			})
-			.catch(err => {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create folder')
-				)
-				throw err
-			})
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.DISPLAY_NEW_FOLDER, false)
+			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder || -1)
+			await dispatch(actions.LOAD_FOLDERS)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to create folder')
+			)
+			throw err
+		}
 	},
-	[actions.SAVE_FOLDER]({ commit, dispatch, state }, id) {
+	async [actions.SAVE_FOLDER]({ commit, dispatch, state }, id) {
 		const folder = this.getters.getFolder(id)[0]
 		commit(mutations.FETCH_START, { type: 'saveFolder' })
-		return axios
-			.put(url(state, `/folder/${id}`), {
+		try {
+			const response = await axios.put(url(state, `/folder/${id}`), {
 				parent_folder: folder.parent_folder,
 				title: folder.title,
 			})
-			.then(response => {
-				const {
-					data: { status },
-				} = response
-				if (status !== 'success') {
-					throw new Error(response.data)
-				}
-				commit(mutations.FETCH_END, 'saveFolder')
-			})
-			.catch(err => {
-				console.error(err)
-				commit(mutations.FETCH_END, 'saveFolder')
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to create folder')
-				)
-				throw err
-			})
+
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder.parent_folder)
+			commit(mutations.FETCH_END, 'saveFolder')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'saveFolder')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to create folder')
+			)
+			throw err
+		}
+	},
+	async [actions.LOAD_FOLDER_CHILDREN_ORDER]({ commit, dispatch, state }, id) {
+		commit(mutations.FETCH_START, { type: 'childrenOrder' })
+		try {
+			const response = await axios.get(url(state, `/folder/${id}/childorder`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			await commit(mutations.FETCH_END, 'childrenOrder')
+			await commit(mutations.SET_FOLDER_CHILDREN_ORDER, { folderId: id, children: response.data.data })
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'childrenOrder')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load children order')
+			)
+			throw err
+		}
 	},
 	[actions.OPEN_FOLDER_DETAILS]({ commit }, id) {
 		commit(mutations.SET_SIDEBAR, { type: 'folder', id })
@@ -486,9 +571,12 @@ export default {
 				if (folderId === folder.id) {
 					throw new Error('Cannot move folder into itself')
 				}
+				const oldParent = folder.parent_folder
 				folder.parent_folder = folderId
-				await dispatch(actions.SAVE_FOLDER, folder.id)
+				await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldParent)
 			}
+			await dispatch(actions.LOAD_FOLDERS)
 
 			for (const bookmark of state.selection.bookmarks) {
 				await dispatch(actions.MOVE_BOOKMARK, {
@@ -497,6 +585,10 @@ export default {
 					bookmark: bookmark.id,
 				})
 			}
+
+			// Because we're possibly moving across share boundaries we need to recount
+			await dispatch(actions.COUNT_BOOKMARKS, -1)
+
 			commit(mutations.FETCH_END, 'moveSelection')
 		} catch (err) {
 			console.error(err)
@@ -535,6 +627,9 @@ export default {
 		dispatch(actions.FETCH_PAGE)
 		dispatch(actions.LOAD_FOLDERS)
 		dispatch(actions.LOAD_TAGS)
+		dispatch(actions.COUNT_BOOKMARKS, -1)
+		dispatch(actions.COUNT_UNAVAILABLE)
+		dispatch(actions.COUNT_ARCHIVED)
 	},
 
 	[actions.NO_FILTER]({ dispatch, commit }) {
@@ -557,10 +652,20 @@ export default {
 		commit(mutations.SET_QUERY, { untagged: true })
 		return dispatch(actions.FETCH_PAGE)
 	},
-	[actions.FILTER_BY_FOLDER]({ dispatch, commit }, folder) {
-		commit(mutations.SET_QUERY, { folder })
+	[actions.FILTER_BY_UNAVAILABLE]({ dispatch, commit }) {
+		commit(mutations.SET_QUERY, { unavailable: true })
 		return dispatch(actions.FETCH_PAGE)
 	},
+	[actions.FILTER_BY_ARCHIVED]({ dispatch, commit }) {
+		commit(mutations.SET_QUERY, { archived: true })
+		return dispatch(actions.FETCH_PAGE)
+	},
+	[actions.FILTER_BY_FOLDER]({ dispatch, commit }, folder) {
+		commit(mutations.SET_QUERY, { folder })
+		dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+		return dispatch(actions.FETCH_PAGE)
+	},
+
 	[actions.FETCH_PAGE]({ dispatch, commit, state }) {
 		if (state.fetchState.reachedEnd) return
 		if (state.loading.bookmarks) return
@@ -603,6 +708,44 @@ export default {
 				)
 				throw err
 			})
+	},
+	async [actions.FETCH_ALL]({ dispatch, commit, state }) {
+		if (state.fetchState.reachedEnd) return
+		if (state.loading.bookmarks) return
+		let canceled = false
+		commit(mutations.FETCH_START, {
+			type: 'bookmarks',
+			cancel() {
+				canceled = true
+			},
+		})
+		try {
+			const response = await axios.get(url(state, '/bookmark'), {
+				params: {
+					page: -1,
+					sortby: state.settings.sorting,
+					...state.fetchState.query,
+				},
+			})
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
+			const bookmarks = data
+			commit(mutations.REACHED_END)
+			commit(mutations.FETCH_END, 'bookmarks')
+			return dispatch(actions.ADD_ALL_BOOKMARKS, bookmarks)
+
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'bookmarks')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.t('bookmarks', 'Failed to fetch bookmarks.')
+			)
+			throw err
+		}
 	},
 
 	async [actions.SET_SETTING]({ commit, dispatch, state }, { key, value }) {
@@ -657,7 +800,7 @@ export default {
 	},
 	[actions.LOAD_SETTINGS]({ commit, dispatch, state }) {
 		return Promise.all(
-			['sorting', 'viewMode', 'limit'].map(key => dispatch(actions.LOAD_SETTING, key))
+			['sorting', 'viewMode', 'archivePath', 'limit'].map(key => dispatch(actions.LOAD_SETTING, key))
 		)
 	},
 

@@ -1,35 +1,42 @@
 <template>
-	<div :class="['breadcrumbs', isPublic && 'wide']">
-		<div class="breadcrumbs__path">
-			<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
-			<span class="icon-breadcrumb" />
-			<template v-if="$route.name === routes.FOLDER">
-				<template v-for="folder in folderPath">
-					<a
-						:key="'a' + folder.id"
-						href="#"
-						@click.prevent="onSelectFolder(folder.id)">{{ folder.title }}</a>
-					<span :key="'b' + folder.id" class="icon-breadcrumb" />
+	<div :class="['controls', isPublic && 'wide']">
+		<div class="controls__left">
+			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME || $route.name === routes.TAGS">
+				<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
+					<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
+					<span class="icon-breadcrumb" />
+				</template>
+				<template v-if="$route.name === routes.FOLDER">
+					<template v-for="folder in folderPath">
+						<a
+							:key="'a' + folder.id"
+							href="#"
+							tabindex="0"
+							@click.prevent="onSelectFolder(folder.id)">{{ folder.title }}</a>
+						<span :key="'b' + folder.id" class="icon-breadcrumb" />
+					</template>
+				</template>
+				<template v-if="$route.name === routes.TAGS">
+					<span class="icon-tag" />
+					<Multiselect
+						class="controls__tags"
+						:value="tags"
+						:auto-limit="false"
+						:limit="7"
+						:options="allTags"
+						:multiple="true"
+						:placeholder="t('bookmarks', 'Select one or more tags')"
+						@input="onTagsChange" />
 				</template>
 			</template>
-			<template v-if="$route.name === routes.TAGS">
-				<span class="icon-tag" />
-				<Multiselect
-					class="breadcrumbs__tags"
-					:value="tags"
-					:auto-limit="false"
-					:limit="7"
-					:options="allTags"
-					:multiple="true"
-					:placeholder="t('bookmarks', 'Select one or more tags')"
-					@input="onTagsChange" />
-			</template>
 			<Actions
-				v-if="($route.name === routes.FOLDER || $route.name === routes.HOME) && !isPublic"
-				class="breadcrumbs__AddFolder"
-				icon="icon-add">
+				v-if="!isPublic"
+				class="controls__AddFolder"
+				:title="t('bookmarks', 'New')"
+				:default-icon="'icon-add'">
 				<ActionButton
 					icon="icon-link"
+					:close-after-click="true"
 					@click="onAddBookmark">
 					{{
 						t('bookmarks', 'New bookmark')
@@ -37,12 +44,13 @@
 				</ActionButton>
 				<ActionButton
 					icon="icon-folder"
+					:close-after-click="true"
 					@click="onAddFolder">
 					{{ t('bookmarks', 'New folder') }}
 				</ActionButton>
 			</Actions>
 		</div>
-		<div class="breadcrumbs__controls">
+		<div class="controls__right">
 			<Actions>
 				<ActionButton
 					:icon="
@@ -54,12 +62,18 @@
 					{{ viewMode === 'list' ? t('bookmarks', 'Grid view') : t('bookmarks', 'List view') }}
 				</ActionButton>
 			</Actions>
+			<button v-tooltip="t('bookmarks', 'Private RSS Feed of current view')"
+				class="custom-button"
+				:title="t('bookmarks', 'Private RSS Feed of current view')"
+				@click="openRssUrl">
+				<RssIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+			</button>
 			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
-				{{
-					selectionDescription
-				}}
-				<Actions>
-					<ActionButton icon="icon-category-files" @click="onBulkMove">
+				<Actions :primary="true" :menu-title="selectionDescription">
+					<ActionButton @click="onBulkMove">
+						<template #icon>
+							<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+						</template>
 						{{ t('bookmarks', 'Move selection') }}
 					</ActionButton>
 					<ActionButton icon="icon-delete" @click="onBulkDelete">
@@ -69,8 +83,8 @@
 						{{ t('bookmarks', 'Open all selected') }}
 					</ActionButton>
 					<ActionSeparator />
-					<ActionButton icon="icon-checkmark" @click="onSelectVisible">
-						{{ t('bookmarks', 'Select all visible') }}
+					<ActionButton icon="icon-checkmark" @click="onSelectAll">
+						{{ t('bookmarks', 'Select all') }}
 					</ActionButton>
 					<ActionButton icon="icon-close" @click="onCancelSelection">
 						{{ t('bookmarks', 'Cancel selection') }}
@@ -85,11 +99,14 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
+import RssIcon from 'vue-material-design-icons/Rss'
+import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { actions, mutations } from '../store/'
+import { generateUrl } from '@nextcloud/router'
 
 export default {
-	name: 'Breadcrumbs',
-	components: { Multiselect, Actions, ActionButton, ActionSeparator },
+	name: 'Controls',
+	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon, RssIcon },
 	props: {},
 	data() {
 		return {
@@ -138,6 +155,21 @@ export default {
 				)
 			}
 			return ''
+		},
+		rssURL() {
+			return (
+				window.location.origin
+					+ generateUrl(
+						'/apps/bookmarks/public/rest/v2/bookmark?'
+							+ new URLSearchParams(
+								Object.assign({}, this.$store.state.fetchState.query, {
+									format: 'rss',
+									page: -1,
+									...(this.$store.state.public && { token: this.$store.state.authToken }),
+								})
+							).toString()
+					)
+			)
 		},
 	},
 	created() {},
@@ -189,16 +221,21 @@ export default {
 		onCancelSelection() {
 			this.$store.commit(mutations.RESET_SELECTION)
 		},
-		onSelectVisible() {
+		async onSelectAll() {
+			await this.$store.dispatch(actions.FETCH_ALL)
 			this.$store.state.bookmarks.forEach(bookmark => {
 				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, bookmark)
 			})
+		},
+
+		openRssUrl() {
+			window.open(this.rssURL)
 		},
 	},
 }
 </script>
 <style>
-.breadcrumbs {
+.controls {
 	padding: 0 8px 0 44px;
 	display: flex;
 	position: absolute;
@@ -209,57 +246,69 @@ export default {
 	top: 0;
 }
 
-.breadcrumbs + * {
+.controls .custom-button {
+	background: none;
+	padding: 0;
+	border: none;
+}
+
+.controls .custom-button:hover,
+.controls .custom-button:active {
+	background-color: var(--color-background-hover);
+}
+
+.controls + * {
 	margin-top: 50px;
 }
 
-.breadcrumbs__path {
+.controls__left {
 	display: flex;
 	align-items: center;
 	flex: 0;
 }
 
-.breadcrumbs__path > * {
+.controls__left > * {
 	display: inline-block;
 	height: 30px;
 	padding: 5px 7px;
 	flex-shrink: 0;
 }
 
-.breadcrumbs__path > *:not(.icon-breadcrumb) {
+.controls__left > *:not(.icon-breadcrumb) {
 	min-width: 30px;
 	opacity: 0.7;
 }
 
-.breadcrumbs__path > *:hover {
+.controls__left > *:hover,
+.controls__left > *:focus {
 	opacity: 1;
 }
 
-.breadcrumbs__tags {
+.controls__tags {
 	width: 300px;
 	flex: 1;
 }
 
-.breadcrumbs__tags .multiselect__tags {
+.controls__tags .multiselect__tags {
 	border-top: none !important;
 	border-left: none !important;
 	border-right: none !important;
 }
 
-.breadcrumbs__AddFolder {
+.controls__AddFolder {
 	margin-left: 5px;
 	padding: 0;
 	margin-top: -10px;
 }
 
-.breadcrumbs__controls {
+.controls__right {
 	flex: 2;
 	display: flex;
 	flex-direction: row-reverse;
 	padding: 0;
 }
 
-.breadcrumbs__controls > * {
+.controls__right > * {
 	min-width: 30px;
 }
 </style>

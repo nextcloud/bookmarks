@@ -20,11 +20,11 @@ use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCA\Bookmarks\QueryParameters;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\HtmlExporter;
-use OCA\Bookmarks\Service\HtmlImporter;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
@@ -359,7 +359,8 @@ class BookmarkControllerTest extends TestCase {
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 
 		// the bookmark should exist
-		$this->bookmarkMapper->findByUrl($this->userId, 'https://www.heise.de');
+		$params = new QueryParameters();
+		$this->assertCount(1, $this->bookmarkMapper->findAll($this->userId, $params->setUrl('https://www.heise.de')));
 
 		// user should see this bookmark
 		$output = $this->controller->getBookmarks();
@@ -416,7 +417,7 @@ class BookmarkControllerTest extends TestCase {
 		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id);
 		$this->assertEquals('https://www.heise.de/', $bookmark->getUrl()); // normalized URL
 		$this->assertEquals('', $bookmark->getTitle()); // normalized URL
-		$this->assertEquals([$this->folder2->getId()], array_map(function($f){
+		$this->assertEquals([$this->folder2->getId()], array_map(function ($f) {
 			return $f->getId();
 		}, $parents)); // has the folders we set
 	}
@@ -436,13 +437,8 @@ class BookmarkControllerTest extends TestCase {
 		$id = $res->getData()['item']['id'];
 
 		$this->controller->deleteBookmark($id);
-		$exception = null;
-		try {
-			$this->bookmarkMapper->findByUrl($this->userId, 'https://www.google.com');
-		} catch (\Exception $e) {
-			$exception = $e;
-		}
-		$this->assertInstanceOf(DoesNotExistException::class, $exception, 'Expected bookmark not to exist and throw');
+		$params = new QueryParameters();
+		$this->assertCount(0, $this->bookmarkMapper->findAll($this->userId, $params->setUrl('https://www.google.com')));
 	}
 
 	/**
@@ -630,7 +626,9 @@ class BookmarkControllerTest extends TestCase {
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 
 		// the bookmark should exist
-		$this->bookmarkMapper->findByUrl($this->userId, 'https://www.heise.de');
+
+		$params = new QueryParameters();
+		$this->assertCount(1, $this->bookmarkMapper->findAll($this->userId, $params->setUrl('https://www.heise.de')));
 
 		// user should see this bookmark
 		$this->authorizer->setUserId($this->userId);
@@ -690,13 +688,8 @@ class BookmarkControllerTest extends TestCase {
 		$res = $this->otherController->deleteBookmark($id);
 		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
 
-		$exception = null;
-		try {
-			$this->bookmarkMapper->findByUrl($this->userId, 'https://www.google.com');
-		} catch (\Exception $e) {
-			$exception = $e;
-		}
-		$this->assertInstanceOf(DoesNotExistException::class, $exception, 'Expected bookmark not to exist and throw');
+		$params = new QueryParameters();
+		$this->assertCount(0, $this->bookmarkMapper->findAll($this->userId, $params->setUrl('https://www.google.com')));
 	}
 
 	/**

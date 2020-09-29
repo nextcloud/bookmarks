@@ -15,6 +15,8 @@ export const mutations = {
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
 	REMOVE_ALL_BOOKMARKS: 'REMOVE_ALL_BOOKMARKS',
 	SET_BOOKMARK_COUNT: 'SET_BOOKMARK_COUNT',
+	SET_UNAVAILABLE_COUNT: 'SET_UNAVAILABLE_COUNT',
+	SET_ARCHIVED_COUNT: 'SET_ARCHIVED_COUNT',
 	SET_TAGS: 'SET_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
 	INCREMENT_PAGE: 'INCREMENT_PAGE',
@@ -34,6 +36,7 @@ export const mutations = {
 	REMOVE_SHARE: 'REMOVE_SHARE',
 	ADD_PUBLIC_TOKEN: 'ADD_PUBLIC_TOKEN',
 	REMOVE_PUBLIC_TOKEN: 'REMOVE_PUBLIC_TOKEN',
+	SET_FOLDER_CHILDREN_ORDER: 'SET_FOLDER_CHILDREN_ORDER',
 }
 export default {
 	[mutations.SET_AUTH_TOKEN](state, authToken) {
@@ -43,7 +46,7 @@ export default {
 		state.authToken = authToken
 		axios.defaults.headers = {
 			requesttoken: OC.requesttoken,
-			'Authorization': 'bearer ' + authToken,
+			Authorization: 'bearer ' + authToken,
 		}
 	},
 	[mutations.SET_VIEW_MODE](state, viewMode) {
@@ -136,6 +139,12 @@ export default {
 	[mutations.SET_BOOKMARK_COUNT](state, { folderId, count }) {
 		Vue.set(state.countsByFolder, folderId, count)
 	},
+	[mutations.SET_UNAVAILABLE_COUNT](state, count) {
+		state.unavailableCount = count
+	},
+	[mutations.SET_ARCHIVED_COUNT](state, count) {
+		state.archivedCount = count
+	},
 
 	[mutations.SET_SIDEBAR](state, sidebar) {
 		state.sidebar = sidebar
@@ -158,8 +167,8 @@ export default {
 		Vue.set(state.fetchState, 'query', query)
 
 		// cancel currently running request
-		if (typeof state.loading['bookmarks'] === 'function') {
-			state.loading['bookmarks']()
+		if (typeof state.loading.bookmarks === 'function') {
+			state.loading.bookmarks()
 		}
 		// stop loading
 		Vue.set(state.loading, 'bookmarks', false)
@@ -193,6 +202,9 @@ export default {
 	},
 	[mutations.REMOVE_PUBLIC_TOKEN](state, { folderId }) {
 		Vue.delete(state.tokensByFolder, folderId)
+	},
+	[mutations.SET_FOLDER_CHILDREN_ORDER](state, { folderId, children }) {
+		Vue.set(state.childrenByFolder, folderId, children)
 	},
 }
 

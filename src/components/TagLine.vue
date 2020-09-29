@@ -1,11 +1,17 @@
 <template>
 	<div class="tagline">
-		<div v-for="tag in tags" :key="tag" class="tagline__tag">
+		<div v-for="tag in tags"
+			:key="tag"
+			class="tagline__tag"
+			role="button"
+			@click="clickTag($event, tag)">
 			{{ tag }}
 		</div>
 	</div>
 </template>
 <script>
+import { privateRoutes, publicRoutes } from '../router'
+
 export default {
 	name: 'TagLine',
 	components: {},
@@ -18,8 +24,18 @@ export default {
 	data() {
 		return {}
 	},
+	computed: {
+		routes() {
+			return this.$store.state.public ? publicRoutes : privateRoutes
+		},
+	},
 	created() {},
 	methods: {
+		clickTag(e, tag) {
+			e.preventDefault()
+			e.stopImmediatePropagation()
+			this.$router.push({ name: this.routes.TAGS, params: { tags: tag } })
+		},
 	},
 }
 </script>
@@ -40,9 +56,11 @@ export default {
 	padding: 5px 10px;
 	margin-right: 3px;
 	background-color: var(--color-main-background);
+	cursor: pointer;
 }
 
-.tagline__tag:hover {
+.tagline__tag:hover,
+.tagline__tag:focus {
 	background-color: var(--color-background-dark);
 }
 </style>

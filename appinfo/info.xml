@@ -17,7 +17,7 @@ Requirements:
    - mbstring: *
  - Nextcloud v17+
 ]]></description>
-	<version>3.3.4</version>
+	<version>3.4.0</version>
 	<licence>agpl</licence>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
@@ -28,19 +28,22 @@ Requirements:
 	<bugs>https://github.com/nextcloud/bookmarks/issues</bugs>
 	<repository type="git">https://github.com/nextcloud/bookmarks.git</repository>
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
+
 	<dependencies>
 		<php min-version="7.2" />
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="17" max-version="20" />
+		<nextcloud min-version="17" max-version="21" />
 	</dependencies>
 	<background-jobs>
-		<job>OCA\Bookmarks\BackgroundJobs\PreviewsJob</job>
+		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>
 	</background-jobs>
+
 	<settings>
 		<admin>OCA\Bookmarks\Settings\AdminSettings</admin>
 		<admin-section>OCA\Bookmarks\Settings\AdminSection</admin-section>
 	</settings>
+
 	<repair-steps>
 		<post-migration>
 			<step>OCA\Bookmarks\Migration\DeduplicateSharedFoldersRepairStep</step>
@@ -50,6 +53,16 @@ Requirements:
 			<step>OCA\Bookmarks\Migration\GroupSharesUpdateRepairStep</step>
 		</post-migration>
 	</repair-steps>
+
+	<navigations>
+		<navigation>
+			<name>Bookmarks</name>
+			<route>bookmarks.web_view.index</route>
+			<icon>bookmarks.svg</icon>
+			<order>10</order>
+		</navigation>
+	</navigations>
+
 	<activity>
 		<settings>
 			<setting>OCA\Bookmarks\Activity\Setting</setting>

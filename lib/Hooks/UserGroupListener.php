@@ -17,12 +17,10 @@ use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
 use OCP\IGroup;
 use OCP\IUser;
-use OCP\IUserManager;
 use OCP\Share\IShare;
 use OCP\User\Events\BeforeUserDeletedEvent;
 
 class UserGroupListener implements IEventListener {
-
 	private $userManager;
 	/**
 	 * @var ShareMapper

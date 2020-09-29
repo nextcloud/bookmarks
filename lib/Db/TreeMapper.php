@@ -17,14 +17,12 @@ use OCP\ICache;
 use OCP\IConfig;
 use OCP\IDBConnection;
 
-
 /**
  * Class TreeMapper
  *
  * @package OCA\Bookmarks\Db
  */
 class TreeMapper extends QBMapper {
-
 	public const TYPE_SHARE = 'share';
 	public const TYPE_FOLDER = 'folder';
 	public const TYPE_BOOKMARK = 'bookmark';
@@ -269,6 +267,7 @@ class TreeMapper extends QBMapper {
 			$childFolders = $this->findChildren(self::TYPE_FOLDER, $id);
 			foreach ($childFolders as $childFolder) {
 				$this->deleteEntry(self::TYPE_FOLDER, $childFolder->getId());
+				$this->folderMapper->delete($childFolder);
 			}
 
 			$childBookmarks = $this->findChildren(self::TYPE_BOOKMARK, $id);
@@ -282,9 +281,6 @@ class TreeMapper extends QBMapper {
 			}
 
 			$this->remove($type, $id);
-
-			$folder = $this->folderMapper->find($id);
-			$this->folderMapper->delete($folder);
 		}
 
 		if ($type === self::TYPE_SHARE) {
@@ -325,7 +321,21 @@ class TreeMapper extends QBMapper {
 			throw new UnsupportedOperation('Cannot move Bookmark');
 		}
 		try {
+			/** @var Folder $currentParent */
 			$currentParent = $this->findParentOf($type, $itemId);
+
+			$ancestor = new Folder();
+			$ancestor->setId($newParentFolderId);
+			while (true) {
+				if ($ancestor->getId() === $itemId) {
+					throw new UnsupportedOperation('Cannot nest a folder inside one of its descendants');
+				}
+				try {
+					$ancestor = $this->findParentOf(self::TYPE_FOLDER, $ancestor->getId());
+				} catch (DoesNotExistException $e) {
+					break;
+				}
+			}
 
 			// Item currently has a parent => move.
 
@@ -467,7 +477,7 @@ class TreeMapper extends QBMapper {
 		$existingChildren = $this->getChildrenOrder($folderId);
 		foreach ($existingChildren as $child) {
 			if (!in_array($child, $newChildrenOrder, false)) {
-				throw new ChildrenOrderValidationError('A child is missing');
+				throw new ChildrenOrderValidationError('A child is missing: '.$child['type'].':'.$child['id']);
 			}
 			if (!isset($child['id'], $child['type'])) {
 				throw new ChildrenOrderValidationError('A child item is missing properties');

@@ -7,6 +7,8 @@
 		<AppSidebarTab id="folder-details" :name="t('bookmarks', 'Details')" icon="icon-info">
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
 			<UserBubble :user="folder.userId" :display-name="folder.userId" />
+			<h3>{{ t('bookmarks', 'Bookmarks') }}</h3>
+			{{ bookmarkCount }}
 		</AppSidebarTab>
 		<AppSidebarTab v-if="isSharable"
 			id="folder-sharing"
@@ -154,9 +156,9 @@ export default {
 					)
 			)
 		},
-	},
-
-	watch: {
+		bookmarkCount() {
+			return this.$store.state.countsByFolder[this.folder.id]
+		},
 	},
 
 	methods: {

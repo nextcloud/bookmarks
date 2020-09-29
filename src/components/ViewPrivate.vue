@@ -2,7 +2,7 @@
 	<Content app-name="bookmarks">
 		<Navigation />
 		<AppContent>
-			<Breadcrumbs />
+			<Controls />
 			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
 		<SidebarBookmark />
@@ -16,7 +16,7 @@ import Content from '@nextcloud/vue/dist/Components/Content'
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import Navigation from './Navigation'
 import BookmarksList from './BookmarksList'
-import Breadcrumbs from './Breadcrumbs'
+import Controls from './Controls'
 import SidebarBookmark from './SidebarBookmark'
 import SidebarFolder from './SidebarFolder'
 import MoveDialog from './MoveDialog'
@@ -29,13 +29,13 @@ export default {
 		Navigation,
 		Content,
 		AppContent,
-		Breadcrumbs,
+		Controls,
 		BookmarksList,
 		SidebarBookmark,
 		SidebarFolder,
 		MoveDialog,
 	},
-	data: function() {
+	data() {
 		return {
 			newBookmark: false,
 		}
@@ -60,14 +60,18 @@ export default {
 	},
 
 	async created() {
-		this.search = new OCA.Search(this.onSearch, this.onResetSearch)
+	  if (OCA.Search) {
+	    // legacy search pre nc v20
+			this.search = new window.OCA.Search(this.onSearch, this.onResetSearch)
+		}
 		// set loading indicator
 		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
+
+		this.reloadTags()
+		this.reloadCount()
 		await Promise.all([
 			this.reloadSettings(),
-			this.reloadTags(),
 			this.reloadFolders(),
-			this.reloadCount(),
 		])
 		this.onRoute()
 	},
@@ -85,6 +89,12 @@ export default {
 				break
 			case privateRoutes.UNTAGGED:
 				this.$store.dispatch(actions.FILTER_BY_UNTAGGED)
+				break
+			case privateRoutes.UNAVAILABLE:
+				this.$store.dispatch(actions.FILTER_BY_UNAVAILABLE)
+				break
+			case privateRoutes.ARCHIVED:
+				this.$store.dispatch(actions.FILTER_BY_ARCHIVED)
 				break
 			case privateRoutes.BOOKMARK:
 				await this.$store.dispatch(actions.LOAD_BOOKMARK, route.params.bookmark)
@@ -118,7 +128,11 @@ export default {
 			return this.$store.dispatch(actions.LOAD_SETTINGS)
 		},
 		async reloadCount() {
-			return this.$store.dispatch(actions.COUNT_BOOKMARKS, -1)
+			return Promise.all([
+				this.$store.dispatch(actions.COUNT_BOOKMARKS, -1),
+				this.$store.dispatch(actions.COUNT_UNAVAILABLE),
+				this.$store.dispatch(actions.COUNT_ARCHIVED),
+			])
 		},
 
 		onSearch(search) {

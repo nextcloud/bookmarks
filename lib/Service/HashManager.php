@@ -1,6 +1,6 @@
 <?php
-namespace OCA\Bookmarks\Service;
 
+namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\FolderMapper;
@@ -73,15 +73,21 @@ class HashManager {
 
 	/**
 	 * @param int $folderId
+	 * @param array $previousFolders
 	 */
-	public function invalidateFolder(int $folderId): void {
+	public function invalidateFolder(int $folderId, array $previousFolders = []): void {
+		if (in_array($folderId, $previousFolders, true)) {
+			// In case we have run into a folder loop
+			return;
+		}
 		$key = $this->getCacheKey(TreeMapper::TYPE_FOLDER, $folderId);
 		$this->cache->remove($key);
+		$previousFolders[] = $folderId;
 
 		// Invalidate parent
 		try {
 			$parentFolder = $this->treeMapper->findParentOf(TreeMapper::TYPE_FOLDER, $folderId);
-			$this->invalidateFolder($parentFolder->getId());
+			$this->invalidateFolder($parentFolder->getId(), $previousFolders);
 		} catch (DoesNotExistException $e) {
 			return;
 		} catch (MultipleObjectsReturnedException $e) {
@@ -134,7 +140,7 @@ class HashManager {
 		$folder = [];
 		if ($entity->getUserId() !== $userId) {
 			$folder['title'] = $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId)->getTitle();
-		} else if ($entity->getTitle() !== null) {
+		} elseif ($entity->getTitle() !== null) {
 			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;

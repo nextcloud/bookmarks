@@ -25,18 +25,14 @@ use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\FileCache;
-use OCP\Files\NotFoundException;
-use OCP\Files\NotPermittedException;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\ILogger;
 
 class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
-	// Cache for one month
-	const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
-	const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
+	public const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
 
-	const HTTP_TIMEOUT = 10 * 1000;
+	public const HTTP_TIMEOUT = 10 * 1000;
 
 	private $apiKey;
 
@@ -57,35 +53,20 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @var string
 	 */
 	private $apiUrl;
-	/**
-	 * @var string
-	 */
-	private $enabled;
 
 	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
 		$this->config = $config;
 		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
-		$this->cache = $cache;
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
-		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', true);
-	}
-
-	private function buildKey($url) {
-		return self::CACHE_PREFIX . '-' . md5($url);
 	}
 
 	/**
 	 * @param Bookmark $bookmark
 	 * @return IImage|null
-	 * @throws NotFoundException
-	 * @throws NotPermittedException
 	 */
 	public function getImage($bookmark): ?IImage {
-		if ($this->enabled === 'false') {
-			return null;
-		}
 		if (!isset($bookmark)) {
 			return null;
 		}
@@ -94,27 +75,8 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 		}
 		$url = $bookmark->getUrl();
 
-		$key = $this->buildKey($url);
-		// Try cache first
-		if ($image = $this->cache->get($key)) {
-			if ($image === 'null') {
-				return null;
-			}
-			return Image::deserialize($image);
-		}
-
 		// Fetch image from remote server
-		$image = $this->fetchImage($url);
-
-		if ($image === null) {
-			$this->cache->set($key, 'null', self::CACHE_TTL);
-			return null;
-		}
-
-		// Store in cache for next time
-		$this->cache->set($key, $image->serialize(), self::CACHE_TTL);
-
-		return $image;
+		return $this->fetchImage($url);
 	}
 
 	/**

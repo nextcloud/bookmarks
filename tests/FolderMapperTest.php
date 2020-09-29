@@ -8,7 +8,6 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
-
 class FolderMapperTest extends TestCase {
 	/**
 	 * @var Db\FolderMapper

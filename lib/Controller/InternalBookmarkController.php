@@ -10,8 +10,6 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use OCA\Bookmarks\Db\FolderMapper;
-use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
@@ -60,8 +58,10 @@ class InternalBookmarkController extends ApiController {
 	 * @param array $search
 	 * @param int $limit
 	 * @param bool $untagged
-	 * @param int $folder
-	 * @param string $url
+	 * @param int|null $folder
+	 * @param string|null $url
+	 * @param bool|null $unavailable
+	 * @param bool|null $archived
 	 * @return DataResponse
 	 *
 	 * @throws UrlParseError
@@ -76,9 +76,11 @@ class InternalBookmarkController extends ApiController {
 		$limit = 10,
 		$untagged = false,
 		$folder = null,
-		$url = null
+		$url = null,
+		$unavailable = null,
+		$archived = null
 	) {
-		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url);
+		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived);
 	}
 
 	/**
@@ -210,5 +212,27 @@ class InternalBookmarkController extends ApiController {
 	 */
 	public function countBookmarks(int $folder): JSONResponse {
 		return $this->publicController->countBookmarks($folder);
+	}
+
+	/**
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function countUnavailable(): JSONResponse {
+		return $this->publicController->countUnavailable();
+	}
+
+	/**
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function countArchived(): JSONResponse {
+		return $this->publicController->countArchived();
 	}
 }

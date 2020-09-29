@@ -15,6 +15,8 @@ export const privateRoutes = {
 	BOOKMARK: 'bookmark',
 	TAGS: 'tags',
 	UNTAGGED: 'untagged',
+	UNAVAILABLE: 'UNAVAILABLE',
+	ARCHIVED: 'ARCHIVED',
 	BOOKMARKLET: 'bookmarklet',
 }
 
@@ -59,13 +61,23 @@ export default new Router({
 			component: ViewPrivate,
 		},
 		{
-			path: '/tags/:tags',
+			path: '/tags/:tags?',
 			name: privateRoutes.TAGS,
 			component: ViewPrivate,
 		},
 		{
 			path: '/untagged',
 			name: privateRoutes.UNTAGGED,
+			component: ViewPrivate,
+		},
+		{
+			path: '/unavailable',
+			name: privateRoutes.UNAVAILABLE,
+			component: ViewPrivate,
+		},
+		{
+			path: '/archived',
+			name: privateRoutes.ARCHIVED,
 			component: ViewPrivate,
 		},
 		{

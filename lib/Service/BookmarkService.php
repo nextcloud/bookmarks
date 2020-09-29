@@ -2,7 +2,6 @@
 
 namespace OCA\Bookmarks\Service;
 
-
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -16,6 +15,7 @@ use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
@@ -203,6 +203,9 @@ class BookmarkService {
 		 */
 		$bookmark = $this->bookmarkMapper->find($id);
 		if ($url !== null) {
+			if ($url !== $bookmark->getUrl()) {
+				$bookmark->setAvailable(true);
+			}
 			$bookmark->setUrl($url);
 		}
 		if ($title !== null) {
@@ -247,10 +250,10 @@ class BookmarkService {
 				$currentInaccessibleOwnFolders = array_map(static function ($f) {
 					return $f->getId();
 				}, array_filter($currentOwnFolders, function ($folder) use ($userId) {
-						return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
-					})
+					return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
+				})
 				);
-			}else{
+			} else {
 				$currentInaccessibleOwnFolders = [];
 			}
 
@@ -335,11 +338,28 @@ class BookmarkService {
 	 * @param $userId
 	 * @param string $url
 	 * @throws DoesNotExistException
+	 */
+	public function findByUrl($userId, $url = ''): Bookmark {
+		$params = new QueryParameters();
+		/** @var Bookmark[] $bookmarks */
+		$bookmarks = $this->bookmarkMapper->findAll($userId, $params->setUrl($url));
+		if (isset($bookmarks[0])) {
+			return $bookmarks[0];
+		}
+
+		throw new DoesNotExistException('URL does not exist');
+	}
+
+	/**
+	 * @param int $id
+	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
 	 */
-	public function click($userId, $url = ''): void {
-		$bookmark = $this->bookmarkMapper->findByUrl($userId, $url);
+	public function click(int $id): void {
+		$params = new QueryParameters();
+		/** @var Bookmark $bookmark */
+		$bookmark = $this->bookmarkMapper->find($id);
 		$bookmark->incrementClickcount();
 		$this->bookmarkMapper->update($bookmark);
 	}
@@ -388,6 +408,7 @@ class BookmarkService {
 		}
 		$folders = $this->treeMapper->findChildren(TreeMapper::TYPE_FOLDER, $rootFolder->getId());
 		foreach ($folders as $folder) {
+			$this->folderMapper->delete($folder);
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
 		}
 	}

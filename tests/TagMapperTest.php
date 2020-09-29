@@ -6,11 +6,11 @@ namespace OCA\Bookmarks\Tests;
 use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
 use PHPUnit\Framework\TestCase;
-
 
 class TagMapperTest extends TestCase {
 
@@ -67,7 +67,7 @@ class TagMapperTest extends TestCase {
 		$this->tagMapper->addTo($tags, $bookmark->getId());
 
 		$actualTags = $this->tagMapper->findByBookmark($bookmark->getId());
-		foreach($tags as $tag) {
+		foreach ($tags as $tag) {
 			$this->assertContains($tag, $actualTags);
 		}
 	}
@@ -133,7 +133,8 @@ class TagMapperTest extends TestCase {
 	 * @throws UrlParseError
 	 */
 	public function testRemoveAllFrom(array $tags, Bookmark $bookmark) {
-		$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
+		$params = new QueryParameters();
+		$bookmark = $this->bookmarkMapper->findAll($this->userId, $params->setUrl($bookmark->getUrl()))[0];
 		$this->tagMapper->removeAllFrom($bookmark->getId());
 		$tags = $this->tagMapper->findByBookmark($bookmark->getId());
 		$this->assertEmpty($tags);
@@ -150,11 +151,12 @@ class TagMapperTest extends TestCase {
 	 * @throws UrlParseError
 	 */
 	public function testSetOn(array $tags, Bookmark $bookmark) {
-		$bookmark = $this->bookmarkMapper->findByUrl($this->userId, $bookmark->getUrl());
+		$params = new QueryParameters();
+		$bookmark = $this->bookmarkMapper->findAll($this->userId, $params->setUrl($bookmark->getUrl()))[0];
 		$newTags = ['foo', 'bar'];
 		$this->tagMapper->setOn($newTags, $bookmark->getId());
 		$actualTags = $this->tagMapper->findByBookmark($bookmark->getId());
-		foreach($newTags as $tag) {
+		foreach ($newTags as $tag) {
 			$this->assertContains($tag, $actualTags);
 		}
 	}

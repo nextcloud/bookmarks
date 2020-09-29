@@ -3,7 +3,6 @@
 
 namespace OCA\Bookmarks\Activity;
 
-
 use OCP\Activity\IFilter;
 
 class Filter implements IFilter {

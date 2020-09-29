@@ -33,7 +33,7 @@ use OCP\Files\NotPermittedException;
 use OCP\ICache;
 
 class FileCache implements ICache {
-	const TIMEOUT = 60 * 60 * 24 * 30 * 2; // two months
+	public const TIMEOUT = 60 * 60 * 24 * 30 * 2; // two months
 
 	protected $storage;
 

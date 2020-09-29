@@ -68,7 +68,7 @@ export default {
 			default: '',
 		},
 	},
-	data: function() {
+	data() {
 		return {
 			bookmark: {
 				title: this.title,

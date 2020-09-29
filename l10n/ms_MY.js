@@ -4,18 +4,17 @@ OC.L10N.register(
     "Rename" : "Namakan",
     "Move" : "Move",
     "Delete" : "Padam",
-    "Save" : "Simpan",
-    "Create" : "Buat",
+    "New" : "Baru",
     "Cancel" : "Batal",
     "Import" : "Import",
     "Export" : "Eksport",
-    "URL" : "URL",
+    "Title" : "Judul",
+    "Link" : "Link",
     "Notes" : "Nota",
     "Owner" : "Owner",
     "Share link" : "Share link",
     "Select" : "Select",
-    "Title" : "Judul",
-    "Link" : "Link",
-    "Folder" : "Folder"
+    "Folder" : "Folder",
+    "Save" : "Simpan"
 },
 "nplurals=1; plural=0;");

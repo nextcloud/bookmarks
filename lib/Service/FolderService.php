@@ -3,7 +3,6 @@
 
 namespace OCA\Bookmarks\Service;
 
-
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
@@ -14,7 +13,6 @@ use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\CreateEvent;
-use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\HtmlParseError;
@@ -184,6 +182,7 @@ class FolderService {
 			}
 			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 			$this->publicFolderMapper->delete($publicFolder);
+			$this->folderMapper->delete($folder);
 			return;
 		}
 
@@ -201,6 +200,7 @@ class FolderService {
 
 		// folder is subfolder of share
 		$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+		$this->folderMapper->delete($folder);
 	}
 
 	/**
@@ -312,7 +312,7 @@ class FolderService {
 				throw new UnsupportedOperation('Cannot share with oneself');
 			}
 			$this->addSharedFolder($share, $folder, $participant);
-		} else if ($type === IShare::TYPE_GROUP) {
+		} elseif ($type === IShare::TYPE_GROUP) {
 			$group = $this->groupManager->get($participant);
 			if ($group === null) {
 				throw new DoesNotExistException('Group does not exist');
@@ -327,7 +327,7 @@ class FolderService {
 				try {
 					$this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $user->getUID());
 					continue;
-				}catch (DoesNotExistException $e) {
+				} catch (DoesNotExistException $e) {
 					// do nothing
 				}
 

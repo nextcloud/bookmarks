@@ -5,28 +5,49 @@
 			'bookmarkslist--gridview': viewMode === 'grid'
 		}"
 		@scroll="onScroll">
-		<CreateBookmark v-if="newBookmark" />
-		<CreateFolder v-if="newFolder" />
-		<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
-			<Folder
-				v-for="folder in folderChildren"
-				:key="'f' + folder.id"
-				:folder="folder" />
-		</template>
-		<template v-if="bookmarks.length">
-			<Bookmark
-				v-for="bookmark in bookmarks"
-				:key="'b' + bookmark.id"
-				:bookmark="bookmark" />
-		</template>
-		<div
-			v-else-if="!loading && !folderChildren.length"
-			class="bookmarkslist__empty">
-			<h2>{{ t('bookmarks', 'No bookmarks here') }}</h2>
-			<p>{{ t('bookmarks', 'Try changing your query or add some using the button on the left.') }}</p>
-		</div>
-		<div v-if="loading" class="bookmarkslist__loading">
-			<figure class="icon-loading" />
+		<div class="padding">
+			<CreateBookmark v-if="newBookmark" />
+			<CreateFolder v-if="newFolder" />
+			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
+				<!-- FOLDER VIEW WITH CUSTOM SORTING -->
+				<template v-if="sortOrder === 'index' && children.length">
+					<template v-for="item in children">
+						<Folder
+							v-if="item.type === 'folder' && getFolder(item.id)"
+							:key="item.type + item.id"
+							:folder="getFolder(item.id)" />
+						<Bookmark
+							v-if="item.type === 'bookmark' && getBookmark(item.id)"
+							:key="item.type + item.id"
+							:bookmark="getBookmark(item.id)" />
+					</template>
+				</template>
+				<!-- FOLDER VIEW WITH NORMAL SORTING -->
+				<template v-else-if="subFolders.length || bookmarks.length">
+					<Folder
+						v-for="folder in subFolders"
+						:key="'folder' + folder.id"
+						:folder="folder" />
+					<template v-if="bookmarks.length">
+						<Bookmark
+							v-for="bookmark in bookmarks"
+							:key="'bookmark' + bookmark.id"
+							:bookmark="bookmark" />
+					</template>
+				</template>
+				<NoBookmarks v-else-if="!loading" />
+			</template>
+			<!-- NON-FOLDER VIEW -->
+			<template v-else-if="bookmarks.length">
+				<Bookmark
+					v-for="bookmark in bookmarks"
+					:key="'bookmark' + bookmark.id"
+					:bookmark="bookmark" />
+			</template>
+			<NoBookmarks v-else-if="!loading" />
+			<div v-if="loading" class="bookmarkslist__loading">
+				<figure class="icon-loading" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -37,10 +58,12 @@ import Folder from './Folder'
 import CreateBookmark from './CreateBookmark'
 import CreateFolder from './CreateFolder'
 import { actions } from '../store'
+import NoBookmarks from './NoBookmarks'
 
 export default {
 	name: 'BookmarksList',
 	components: {
+		NoBookmarks,
 		Bookmark,
 		Folder,
 		CreateBookmark,
@@ -57,7 +80,15 @@ export default {
 		},
 	},
 	computed: {
-		folderChildren() {
+		children() {
+			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
+				return []
+			}
+			const folderId = this.$route.params.folder || '-1'
+			if (!folderId) return []
+			return this.$store.getters.getFolderChildren(folderId)
+		},
+		subFolders() {
 			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []
 			}
@@ -65,7 +96,7 @@ export default {
 			if (!folderId) return []
 			const folder = this.$store.getters.getFolder(folderId)[0]
 			if (!folder) return []
-			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folder.id)
+			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folderId)
 			return folder.children
 		},
 		newBookmark() {
@@ -77,6 +108,9 @@ export default {
 		viewMode() {
 			return this.$store.state.viewMode
 		},
+		sortOrder() {
+			return this.$store.state.settings.sorting
+		},
 	},
 	methods: {
 		onScroll() {
@@ -86,6 +120,12 @@ export default {
 			) {
 				this.$store.dispatch(actions.FETCH_PAGE)
 			}
+		},
+		getFolder(id) {
+			return this.$store.getters.getFolder(id)[0]
+		},
+		getBookmark(id) {
+			return this.$store.getters.getBookmark(id)
 		},
 	},
 }
@@ -98,35 +138,37 @@ export default {
 	position: relative;
 }
 
-.bookmarkslist
-	> *:first-child:not(.bookmarkslist__loading):not(.bookmarkslist__empty) {
-	border-top: 1px solid var(--color-border);
+.bookmarkslist .padding {
+	max-width: calc((250px + 10px + 10px) * 4);
+	margin: 0 auto;
 }
 
-.bookmarkslist__loading,
 .bookmarkslist__empty {
 	width: 200px;
 	margin: 200px auto;
 }
 
 .bookmarkslist__loading {
+	width: 100%;
+	margin: 200px auto;
+	flex-grow: 1;
+	flex-shrink: 0;
 	text-align: center;
 }
 
-.bookmarkslist--gridview {
+.bookmarkslist--gridview .padding {
 	display: flex;
 	flex-flow: wrap;
+	align-content: start;
 	gap: 10px;
 	padding: 0 10px;
 }
 
 .folder--gridview,
 .bookmark--gridview,
-.bookmarkslist--gridview > .create-folder,
-.bookmarkslist--gridview > .create-bookmark {
-	min-width: 200px;
-	max-width: 300px;
-	flex: 1;
+.bookmarkslist--gridview .create-folder,
+.bookmarkslist--gridview .create-bookmark {
+	width: 250px;
 	height: 200px;
 	align-items: flex-end;
 	background: var(--color-main-background);

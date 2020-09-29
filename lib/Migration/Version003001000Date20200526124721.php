@@ -2,8 +2,6 @@
 
 namespace OCA\Bookmarks\Migration;
 
-use Doctrine\DBAL\Types\BigIntType;
-use Doctrine\DBAL\Types\Type;
 use OCP\DB\ISchemaWrapper;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;

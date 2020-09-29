@@ -3,21 +3,21 @@
     "Rename" : "Վերանվանել",
     "Move" : "Move",
     "Delete" : "հեռացնել",
-    "Save" : "Պահպանել",
+    "New" : "Նոր",
     "New folder" : "Նոր պանակ",
-    "Create" : "Ստեղծել",
+    "Select all" : "Նշել բոլորը",
     "Cancel" : "ընդհատել",
     "Import" : "Ներմուծում",
     "Export" : "Արտահանում",
-    "URL" : "URL",
+    "Title" : "Վերնագիր",
+    "Link" : "Հղում",
     "Notes" : "Notes",
     "Owner" : "Owner",
     "Share link" : "Կիսվել հղմամբ",
     "Copy link" : "Պատճենել հղումը",
     "Allow editing" : "Թույլատրել խմբագրումը",
     "Select" : "Select",
-    "Title" : "Վերնագիր",
-    "Link" : "Հղում",
-    "Folder" : "Պանակ"
+    "Folder" : "Պանակ",
+    "Save" : "Պահպանել"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

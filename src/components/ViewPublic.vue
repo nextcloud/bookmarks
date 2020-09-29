@@ -1,7 +1,7 @@
 <template>
 	<Content app-name="bookmarks">
 		<AppContent>
-			<Breadcrumbs />
+			<Controls />
 			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
 	</Content>
@@ -11,7 +11,7 @@
 import Content from '@nextcloud/vue/dist/Components/Content'
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import BookmarksList from './BookmarksList'
-import Breadcrumbs from './Breadcrumbs'
+import Controls from './Controls'
 import { actions, mutations } from '../store/'
 
 export default {
@@ -19,10 +19,10 @@ export default {
 	components: {
 		Content,
 		AppContent,
-		Breadcrumbs,
+		Controls,
 		BookmarksList,
 	},
-	data: function() {
+	data() {
 		return {
 			newBookmark: false,
 		}

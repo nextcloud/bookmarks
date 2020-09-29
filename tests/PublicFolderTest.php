@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;

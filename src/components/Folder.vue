@@ -1,73 +1,75 @@
 <template>
-	<div :class="{folder: true, 'folder--gridview': viewMode === 'grid', active: selected,}">
-		<div v-if="isEditable" class="folder__checkbox">
-			<input v-model="selected" class="checkbox" type="checkbox"><label
-				:aria-label="t('bookmarks', 'Select folder')"
-				@click="clickSelect" />
-		</div>
-		<figure :class="{'folder__icon': true, 'shared': !isOwner && !isPublic || isSharedPublicly || isShared }" @click="onSelect" />
-		<template v-if="!renaming">
-			<h3
-				class="folder__title"
-				:title="folder.title"
-				@click="onSelect">
+	<Item :active="selected"
+		:editable="isEditable"
+		:selected="selected"
+		:title="folder.title"
+		:renaming="renaming"
+		:select-label="t('bookmarks', 'Select folder')"
+		:rename-placeholder="t('bookmarks', 'Enter folder title')"
+		:selectable="selectable"
+		@select="clickSelect"
+		@rename="onRenameSubmit"
+		@rename-cancel="renaming = false"
+		@click="onSelect">
+		<template #icon>
+			<FolderIcon :fill-color="colorPrimaryElement" :class="'folder__icon'" @click="onSelect" />
+			<ShareVariantIcon v-if="(isShared || !isOwner) || isSharedPublicly"
+				:fill-color="colorPrimaryText"
+				:class="['folder__icon', 'shared']" />
+		</template>
+		<template #title>
+			<h3 class="folder__title">
 				{{ folder.title }}
 			</h3>
-
+		</template>
+		<template #tags>
 			<div class="folder__tags">
-				<div v-if="!isOwner && !isPublic" class="folder__tag">
+				<div v-if="!isOwner && !isSharedPublicly" class="folder__tag">
 					{{ t('bookmarks', 'Shared by {user}', {user: folder.userId}) }}
 				</div>
-				<div v-if="isOwner && isShared" class="folder__tag">
-					{{ t('bookmarks','Shared privately') }}
-				</div>
-				<div v-if="isSharedPublicly" class="folder__tag">
-					{{ t('bookmarks', 'Public') }}
-				</div>
 			</div>
-			<Actions v-if="isEditable" class="folder__actions">
-				<ActionButton icon="icon-info" @click="onDetails">
-					{{ t('bookmarks', 'Details') }}
-				</ActionButton>
-				<ActionButton icon="icon-rename" @click="onRename">
-					{{ t('bookmarks', 'Rename') }}
-				</ActionButton>
-				<ActionButton icon="icon-category-files" @click="onMove">
-					{{ t('bookmarks', 'Move') }}
-				</ActionButton>
-				<ActionButton icon="icon-delete" @click="onDelete">
-					{{ t('bookmarks', 'Delete') }}
-				</ActionButton>
-			</Actions>
 		</template>
-		<template v-else>
-			<span class="folder__title">
-				<input ref="input"
-					v-model="title"
-					type="text"
-					:placeholder="t('bookmarks', 'Enter folder title')"
-					@keyup.enter="onRenameSubmit">
-				<Actions>
-					<ActionButton icon="icon-checkmark" @click="onRenameSubmit">
-						{{ t('bookmarks', 'Save') }}
-					</ActionButton>
-				</Actions>
-			</span>
+		<template #actions>
+			<ActionButton icon="icon-info" :close-after-click="true" @click="onDetails">
+				{{ t('bookmarks', 'Details') }}
+			</ActionButton>
+			<ActionCheckbox @change="clickSelect">
+				{{ t('bookmarks', 'Select folder') }}
+			</ActionCheckbox>
+			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
+				{{ t('bookmarks', 'Rename') }}
+			</ActionButton>
+			<ActionButton :close-after-click="true" @click="onMove">
+				<template #icon>
+					<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+				</template>
+				{{ t('bookmarks', 'Move') }}
+			</ActionButton>
+			<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
+				{{ t('bookmarks', 'Delete') }}
+			</ActionButton>
 		</template>
-	</div>
+	</Item>
 </template>
 <script>
-import Vue from 'vue'
 import { getCurrentUser } from '@nextcloud/auth'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
+import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
+import FolderIcon from 'vue-material-design-icons/Folder'
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
 import { actions, mutations } from '../store/'
+import Item from './Item'
 
 export default {
 	name: 'Folder',
 	components: {
-		Actions,
+		Item,
 		ActionButton,
+		ActionCheckbox,
+		FolderIcon,
+		FolderMoveIcon,
+		ShareVariantIcon,
 	},
 	props: {
 		folder: {
@@ -76,7 +78,7 @@ export default {
 		},
 	},
 	data() {
-		return { renaming: false, title: this.folder.title }
+		return { renaming: false }
 	},
 	computed: {
 		viewMode() {
@@ -110,6 +112,9 @@ export default {
 		selectedFolders() {
 			return this.$store.state.selection.folders
 		},
+		selectable() {
+			return Boolean(this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length)
+		},
 		selected() {
 			return this.selectedFolders.map(f => f.id).includes(this.folder.id)
 		},
@@ -117,6 +122,7 @@ export default {
 	created() {
 		this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
 		this.$store.dispatch(actions.LOAD_PUBLIC_LINK, this.folder.id)
+		this.$store.dispatch(actions.COUNT_BOOKMARKS, this.folder.id)
 	},
 	methods: {
 		onDetails() {
@@ -130,87 +136,62 @@ export default {
 			this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
-		onSelect() {
+		onSelect(e) {
 			this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
+			e.preventDefault()
 		},
 		async onRename() {
 			this.renaming = true
-			await Vue.nextTick()
-			this.$refs['input'].focus()
 		},
-		onRenameSubmit() {
-			this.folder.title = this.title
+		onRenameSubmit(title) {
+			this.folder.title = title
 			this.$store.dispatch(actions.SAVE_FOLDER, this.folder.id)
 			this.renaming = false
 		},
-		clickSelect() {
+		clickSelect(e) {
 			if (!this.selected) {
 				this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
 			} else {
 				this.$store.commit(mutations.REMOVE_SELECTION_FOLDER, this.folder)
 			}
 		},
+		onEnter(e) {
+			if (e.key === 'Enter') {
+				this.onSelect(e)
+			}
+		},
 	},
 }
 </script>
 <style>
-.folder {
-	border-bottom: 1px solid var(--color-border);
-	display: flex;
-	align-items: center;
-	position: relative;
-	padding: 0 8px 0 10px;
-}
-
-.folder.active,
-.folder:hover {
-	background: var(--color-background-dark);
-}
-
-.folder--gridview.active {
-	border-color: var(--color-primary-element);
-}
-
-.folder__checkbox {
-	display: inline-block;
-}
-
-.folder--gridview .folder__checkbox {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	background: white;
-	border-radius: var(--border-radius);
-}
-
 .folder__icon {
 	flex-grow: 0;
 	height: 20px;
 	width: 20px;
 	background-size: cover;
-	margin: 15px;
+	margin: 0 15px;
 	cursor: pointer;
-	background-image: url('/svg/core/filetypes/folder?color=0082c9'), url('/index.php/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
-	background-repeat: no-repeat;
-	background-position: center;
 }
 
 .folder__icon.shared {
-	background-image: var(--icon-share-fff), url('/svg/core/filetypes/folder?color=0082c9'), url('/index.php/svg/core/filetypes/folder?color=0082c9'), var(--icon-folder-000);
-	background-size: 9px, cover, cover, cover !important;
+	transform: scale(0.5);
+	position: absolute;
+	top: 11px;
+	height:auto;
+	width:auto;
 }
 
-.folder--gridview .folder__icon.shared {
-	background-size: 30px, cover, cover, cover !important;
-}
-
-.folder--gridview .folder__icon {
-	height: 70px;
-	width: 70px;
+.item--gridview .folder__icon {
 	background-size: cover;
 	position: absolute;
 	top: 20%;
-	left: calc(45% - 35px);
+	left: calc(45% - 50px);
+	transform: scale(4);
+	transform-origin: top left;
+}
+
+.item--gridview .folder__icon.shared {
+	transform: translate(100%, 90%) scale(2);
 }
 
 .folder__title {
@@ -220,10 +201,9 @@ export default {
 	white-space: nowrap;
 	cursor: pointer;
 	margin: 0;
-	padding: 15px 0;
 }
 
-.folder--gridview .folder__title {
+.item--gridview .folder__title {
 	margin-left: 15px;
 }
 
@@ -236,7 +216,7 @@ export default {
 	margin: 0 15px;
 }
 
-.folder--gridview .folder__tags {
+.item--gridview .folder__tags {
 	position: absolute;
 	bottom: 47px;
 	left: 10px;
@@ -252,18 +232,9 @@ export default {
 	background-color: var(--color-primary-light);
 }
 
-.folder__actions {
-	flex: 0;
-}
-
-.folder__title input {
-	width: 100%;
-	border-top: none;
-	border-left: none;
-	border-right: none;
-}
-
-.folder__title button {
-	height: 20px;
+.action-button-mdi-icon {
+	margin: 10px;
+	margin-top: 6px;
+	height: 21px;
 }
 </style>
