@@ -37,7 +37,8 @@
 			) }}</p>
 			<input
 				:value="archivePath"
-				@change="onChangeArchivePath">
+				:readonly="true"
+				@click="onChangeArchivePath">
 		</label>
 
 		<h3>{{ t('bookmarks', 'Client apps') }}</h3>
@@ -90,6 +91,7 @@
 import { generateUrl } from '@nextcloud/router'
 import { actions } from '../store/'
 import { getRequestToken } from '@nextcloud/auth'
+import { getFilePickerBuilder } from '@nextcloud/dialogs'
 
 export default {
 	name: 'Settings',
@@ -99,6 +101,12 @@ export default {
 			importing: false,
 			deleting: false,
 			addToHomeScreen: null,
+			filePicker: getFilePickerBuilder(this.t('bookmarks', 'Archive path'))
+				.allowDirectories(true)
+				.setModal(true)
+				.setType(1)// CHOOSE
+				.setMultiSelect(false)
+				.build(),
 		}
 	},
 	computed: {
@@ -155,9 +163,10 @@ export default {
 			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
 		async onChangeArchivePath(e) {
+			const path = await this.filePicker.pick()
 			await this.$store.dispatch(actions.SET_SETTING, {
 				key: 'archivePath',
-				value: e.target.value,
+				value: path,
 			})
 		},
 		async onClearData() {
