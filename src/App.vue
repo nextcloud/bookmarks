@@ -5,6 +5,7 @@
 <script>
 import { mutations } from './store/'
 import { showError, showMessage } from '@nextcloud/dialogs'
+import '@nextcloud/dialogs/styles/toast.scss'
 
 export default {
 	name: 'App',

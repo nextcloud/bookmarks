@@ -3,10 +3,6 @@ export default {
 		t,
 		n,
 	},
-	data: () => ({
-		OC,
-		OCA,
-	}),
 	computed: {
 		routes() {
 			return this.$store.getters.getRoutes()
