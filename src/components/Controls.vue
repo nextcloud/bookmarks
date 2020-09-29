@@ -62,11 +62,12 @@
 					{{ viewMode === 'list' ? t('bookmarks', 'Grid view') : t('bookmarks', 'List view') }}
 				</ActionButton>
 			</Actions>
-			<Actions>
-				<ActionButton icon="icon-category-integration" @click="openRssUrl">
-					{{ t('bookmarks', 'RSS Feed') }}
-				</ActionButton>
-			</Actions>
+			<button v-tooltip="t('bookmarks', 'Private RSS Feed of current view')"
+				class="custom-button"
+				:title="t('bookmarks', 'Private RSS Feed of current view')"
+				@click="openRssUrl">
+				<RssIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+			</button>
 			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
 				<Actions :primary="true" :menu-title="selectionDescription">
 					<ActionButton @click="onBulkMove">
@@ -98,13 +99,14 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
+import RssIcon from 'vue-material-design-icons/Rss'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
 
 export default {
 	name: 'Controls',
-	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon, RssIcon },
 	props: {},
 	data() {
 		return {
@@ -242,6 +244,17 @@ export default {
 	left: 0;
 	right: 0;
 	top: 0;
+}
+
+.controls .custom-button {
+	background: none;
+	padding: 0;
+	border: none;
+}
+
+.controls .custom-button:hover,
+.controls .custom-button:active {
+  background-color: var(--color-background-hover);
 }
 
 .controls + * {
