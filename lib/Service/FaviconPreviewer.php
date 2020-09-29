@@ -54,12 +54,22 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 	 * @var IClient
 	 */
 	private $client;
+	/**
+	 * @var \OCP\IConfig
+	 */
+	private $config;
+	/**
+	 * @var string
+	 */
+	private $enabled;
 
-	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, ILogger $logger, IClientService $clientService) {
+	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, ILogger $logger, IClientService $clientService, \OCP\IConfig $config) {
 		$this->cache = $cache;
 		$this->linkExplorer = $linkExplorer;
 		$this->logger = $logger;
 		$this->client = $clientService->newClient();
+
+		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', 'false');
 	}
 
 	/**
@@ -67,6 +77,9 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 	 * @return IImage|null
 	 */
 	public function getImage($bookmark): ?IImage {
+		if ($this->enabled === 'false') {
+			return null;
+		}
 		if (!isset($bookmark)) {
 			return null;
 		}
