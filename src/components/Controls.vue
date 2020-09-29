@@ -254,7 +254,7 @@ export default {
 
 .controls .custom-button:hover,
 .controls .custom-button:active {
-  background-color: var(--color-background-hover);
+	background-color: var(--color-background-hover);
 }
 
 .controls + * {

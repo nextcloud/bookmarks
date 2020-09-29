@@ -4,6 +4,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0] - 2020-09-29
+
+### Fixed
+- UI: Fix navigation
+- BookmarkController: counting bookmarks should only require READ perms
+- Make tags clickable again
+- UI: Make whole folder card clickable
+- UI: Implement "Select all" instead of "select all visible"
+- Make export and re-import work as expected
+- UI: Make sure the newly created bookmark is visible in the list
+- UI: Fix default icon for add-actions
+- Speedup bookmark queries (#1182)
+- UI: Fix folder route on direct entry
+- UI: Fix settings styles
+- UI: Don't show tags control in navigation if there are no tags
+- UI: Fix bookmark/folder creation
+- UI: Close actions after clicking
+- UI: BookmarksList: Make cards fixed width and add padding
+- UI: Automatically add currently filtered tags to new bookmarks
+- UI: Only show checkboxes when selection mode is activated
+- BookmarkController: Show default image for previews
+- UI: Improve no-bookmarks view
+- Fix don't allow creating folder loops
+- UI: Allow editing bookmark title in sidebar
+- Fix: Improve DB query performance
+- Fix: Fix dependency hell with symfony v5 
+
+### New
+- Implement Pageres cli previewer
+- Add custom sort option
+- Refactor previews system and add support for new providers
+- Try to fix favicon error
+- Implement Flow integration (#1138)
+- UI: Fix folder creation
+- Implement dead link detection
+- Use material design icons
+- API: Add count endpoint publicly
+- Implement file archiver (#1167)
+
 ## [3.4.0-beta.1] - 2020-08-27
 
 ### Fixed
