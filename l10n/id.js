@@ -17,7 +17,6 @@ OC.L10N.register(
     "New folder" : "Folder baru",
     "Grid view" : "Tampilan kotak",
     "List view" : "Tampilan lis",
-    "RSS Feed" : "Umpan RSS",
     "Move selection" : "Pindah pilihan",
     "Delete selection" : "Hapus pilihan",
     "Open all selected" : "Buka semua pilihan",

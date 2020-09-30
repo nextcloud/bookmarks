@@ -13,7 +13,6 @@ OC.L10N.register(
     "New folder" : "New folder",
     "Grid view" : "Grid view",
     "List view" : "List view",
-    "RSS Feed" : "RSS Feed",
     "Select all" : "Select all",
     "Root folder" : "Root folder",
     "Cancel" : "Cancel",

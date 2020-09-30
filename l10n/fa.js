@@ -15,7 +15,6 @@ OC.L10N.register(
     "New folder" : "پوشه جدید",
     "Grid view" : "نمایش گرید",
     "List view" : "نمایش لیست",
-    "RSS Feed" : "RSS Feed",
     "Move selection" : "انتخاب را جابجا کنید",
     "Delete selection" : "انتخاب را حذف کنید",
     "Select all" : "انتخاب همه",

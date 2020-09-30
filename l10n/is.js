@@ -17,7 +17,6 @@ OC.L10N.register(
     "New folder" : "Ný mappa",
     "Grid view" : "Reitasýn",
     "List view" : "Listasýn",
-    "RSS Feed" : "RSS streymi",
     "Move selection" : "Færa valið",
     "Delete selection" : "Eyða vali",
     "Open all selected" : "Opna allt valið",

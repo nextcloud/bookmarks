@@ -29,7 +29,6 @@ OC.L10N.register(
     "New folder" : "Ny mappe",
     "Grid view" : "Rutenett-visning",
     "List view" : "Listevisning",
-    "RSS Feed" : "RSS-strøm",
     "Select all" : "Velg alle",
     "Enter a link" : "Skriv inn et lenke",
     "Enter folder title" : "Skriv inn tittel",

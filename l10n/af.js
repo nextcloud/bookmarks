@@ -11,7 +11,6 @@ OC.L10N.register(
     "New" : "Nuut",
     "New folder" : "Nuwe vouer",
     "List view" : "Lysaansig",
-    "RSS Feed" : "RSS-voer",
     "Select all" : "Kies alle",
     "Cancel" : "Kanselleer",
     "Recent" : "Onlangs",

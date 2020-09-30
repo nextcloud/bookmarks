@@ -15,7 +15,6 @@ OC.L10N.register(
     "New folder" : "新增資料夾",
     "Grid view" : "網格檢視",
     "List view" : "清單檢視",
-    "RSS Feed" : "RSS Feed",
     "Move selection" : "移動選擇",
     "Delete selection" : "刪除選擇",
     "Select all" : "全選",

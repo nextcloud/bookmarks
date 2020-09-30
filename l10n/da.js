@@ -15,7 +15,6 @@ OC.L10N.register(
     "New folder" : "Ny mappe",
     "Grid view" : "Grid visning",
     "List view" : "Vis som liste",
-    "RSS Feed" : "RSS-strøm",
     "Move selection" : "Flyt valgte",
     "Delete selection" : "Slet valgte",
     "Select all" : "Vælg alle",

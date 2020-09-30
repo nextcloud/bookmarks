@@ -13,7 +13,6 @@ OC.L10N.register(
     "New folder" : "Jauna mape",
     "Grid view" : "Režģa izkārtojums",
     "List view" : "Saraksta izkārtojums",
-    "RSS Feed" : "RSS plūsma",
     "Select all" : "Atzīmēt visu",
     "Cancel" : "Atcelt",
     "Recent" : "Nesenās",
