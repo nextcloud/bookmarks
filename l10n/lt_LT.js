@@ -27,7 +27,6 @@ OC.L10N.register(
     "New folder" : "Naujas aplankas",
     "Grid view" : "Tinklelio rodinys",
     "List view" : "Sąrašo rodinys",
-    "RSS Feed" : "RSS kanalas",
     "Move selection" : "Perkelti žymėjimą",
     "Delete selection" : "Ištrinti žymėjimą",
     "Select all" : "Pažymėti viską",

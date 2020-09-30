@@ -12,7 +12,6 @@ OC.L10N.register(
     "New folder" : "Нова папка",
     "Grid view" : "Решетъчен изглед",
     "List view" : "Списъчен изглед",
-    "RSS Feed" : "RSS емисия",
     "Select all" : "Избери всички",
     "Cancel" : "Отказ",
     "All bookmarks" : "Всички отметки",

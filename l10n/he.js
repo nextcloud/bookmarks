@@ -17,7 +17,6 @@ OC.L10N.register(
     "New folder" : "תיקייה חדשה",
     "Grid view" : "תצוגת טבלה",
     "List view" : "תצוגת רשימה",
-    "RSS Feed" : "ערוץ RSS",
     "Move selection" : "העברת בחירה",
     "Delete selection" : "מחיקת בחירה",
     "Open all selected" : "לפתוח את כל הנבחרים",

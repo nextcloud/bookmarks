@@ -42,7 +42,6 @@ OC.L10N.register(
     "New folder" : "Uusi kansio",
     "Grid view" : "Ruudukkonäkymä",
     "List view" : "Luettelonäkymä",
-    "RSS Feed" : "RSS-syöte",
     "Move selection" : "Siirrä valintaa",
     "Delete selection" : "Poista valinta",
     "Open all selected" : "Avaa kaikki valitut",

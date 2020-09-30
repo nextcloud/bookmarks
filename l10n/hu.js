@@ -15,7 +15,6 @@ OC.L10N.register(
     "New folder" : "Új mappa",
     "Grid view" : "Rács nézet",
     "List view" : "Lista nézet",
-    "RSS Feed" : "RSS-csatorna",
     "Move selection" : "Kiválasztás áthelyezése",
     "Delete selection" : "Kiválasztás törlése",
     "Select all" : "Összes kijelölése",

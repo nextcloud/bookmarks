@@ -16,7 +16,6 @@ OC.L10N.register(
     "New folder" : "새 폴더",
     "Grid view" : "바둑판식 보기",
     "List view" : "목록 보기",
-    "RSS Feed" : "RSS 피드",
     "Select all" : "Select all",
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["선택된 %n 북마크들"],
     "_Selected %n folder_::_Selected %n folders_" : ["선택된 %n 폴더들"],

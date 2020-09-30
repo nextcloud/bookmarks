@@ -7,9 +7,9 @@ source_dir=$(build_dir)/source
 sign_dir=$(build_dir)/sign
 package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
-version+=3.4.0
+version+=3.4.1
 
-all: dev-setup build-js-production test test-php
+all: dev-setup build-js-production
 
 release: appstore create-tag
 
@@ -53,6 +53,7 @@ stylelint-fix:
 # Cleaning
 clean:
 	rm -rf js
+	rm -rf $(sign_dir)
 
 clean-dev:
 	rm -rf node_modules

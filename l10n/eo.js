@@ -15,7 +15,6 @@ OC.L10N.register(
     "New folder" : "Nova dosierujo",
     "Grid view" : "Krada vido",
     "List view" : "Lista vido",
-    "RSS Feed" : "RSS-fluo",
     "Move selection" : "Movi elekton",
     "Delete selection" : "Forigi elekton",
     "Select all" : "Elekti ĉion",
