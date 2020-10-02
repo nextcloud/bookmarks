@@ -32,6 +32,7 @@ OC.L10N.register(
     "Share link" : "Compartir liga",
     "Copy link" : "Copiar liga",
     "Allow editing" : "Permitir edición",
+    "Link copied" : "Enlace copiado",
     "Select" : "Seleccionar",
     "Privacy" : "Privacidad",
     "This URL is already bookmarked! Overwrite?" : "¡Esta URL ya está marcada! ¿Quieres sobreescribirlo?",
