@@ -164,7 +164,7 @@
     "Failed to load folders" : "Produciuse un fallo ao cargar os cartafoles",
     "Failed to delete folder" : "Produciuse un fallo ao eliminar o cartafol",
     "Failed to create folder" : "Produciuse un fallo ao crear o cartafol",
-    "Failed to fetch bookmarks." : "Produciuse un fallo ao recuperar os marcadores",
+    "Failed to fetch bookmarks." : "Produciuse un fallo ao obter os marcadores",
     "Failed to change setting" : "Produciuse un fallo ao cambiar os axustes",
     "Failed to load setting {key}" : "Produciuse un fallo ao cargar o axuste {key}",
     "Failed to update share {shareId}" : "Produciuse un fallo ao actualizar a compartición {shareId}",
