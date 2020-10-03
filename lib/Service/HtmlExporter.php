@@ -65,7 +65,7 @@ class HtmlExporter {
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 <TITLE>Bookmarks</TITLE>';
 
-		$file .= $this->serializeFolder($userId, $folderId);
+		$file .= $this->serializeFolder($userId, $folderId, true);
 
 		return $file;
 	}
@@ -73,14 +73,20 @@ class HtmlExporter {
 	/**
 	 * @param int $userId
 	 * @param int $id
-	 * @param bool $recurse
+	 * @param bool $onlyContent
 	 * @return string
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
 	 */
-	protected function serializeFolder($userId, int $id): string {
-		$output = '';
+	protected function serializeFolder($userId, int $id, bool $onlyContent = false): string {
+		if ($onlyContent) {
+			$output = '';
+		} else {
+			$folder = $this->folderMapper->find($id);
+			$output = '<DT><h3>' . htmlspecialchars($folder->getTitle()) . '</h3>' . "\n"
+				. '<DL><p>';
+		}
 		$childBookmarks = $this->treeMapper->findChildren(TreeMapper::TYPE_BOOKMARK, $id);
 		foreach ($childBookmarks as $bookmark) {
 			// discards records with no URL. This should not happen but
