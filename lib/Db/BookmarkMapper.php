@@ -74,9 +74,13 @@ class BookmarkMapper extends QBMapper {
 	 * @return Entity
 	 */
 	protected function mapRowToEntity(array $row): Entity {
-		$hasTags = array_first(array_keys($row), static function ($field) {
-			return preg_match('#.*tag|folder.*#i', $field, $matches) === 1; // 1 means it matches, 0 means it doesn't.
-		}, false);
+		$hasTags = false;
+		foreach (array_keys($row) as $field) {
+			if (preg_match('#.*tag|folder.*#i', $field, $matches) === 1) { // 1 means it matches, 0 means it doesn't.
+				$hasTags = true;
+				break;
+			}
+		}
 		if ($hasTags !== false) {
 			return BookmarkWithTagsAndParent::fromRow($row);
 		}
