@@ -74,7 +74,7 @@
     "Untagged" : "Kein Schlagwort",
     "{used} bookmarks of {available} available" : "{used} Lesezeichen von {available} verfügbaren",
     "No archived bookmarks" : "Keine archivierten Lesezeichen",
-    "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Lesezeichen für Dateien wie Fotos oder PDFs werden automatisch in Ihren nextcloud-Dateien gespeichert, sodass Sie sie auch dann finden können, wenn der Link offline geschaltet wird.",
+    "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Lesezeichen für Dateien wie Fotos oder PDFs werden automatisch in Ihren Nextcloud-Dateien gespeichert, sodass Sie sie auch dann finden können, wenn der Link nicht mehr erreichbar ist.",
     "No bookmarks here" : "Keine Lesezeichen vorhanden",
     "Add a bookmark" : "Lesezeichen hinzufügen",
     "Import bookmarks" : "Lesezeichen importieren",
