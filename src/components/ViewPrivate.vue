@@ -8,6 +8,7 @@
 		<SidebarBookmark />
 		<SidebarFolder />
 		<MoveDialog />
+		<LoadingModal />
 	</Content>
 </template>
 
@@ -22,10 +23,12 @@ import SidebarFolder from './SidebarFolder'
 import MoveDialog from './MoveDialog'
 import { privateRoutes } from '../router'
 import { actions, mutations } from '../store/'
+import LoadingModal from './LoadingModal'
 
 export default {
 	name: 'ViewPrivate',
 	components: {
+		LoadingModal,
 		Navigation,
 		Content,
 		AppContent,

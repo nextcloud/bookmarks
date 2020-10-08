@@ -312,6 +312,7 @@ export default {
 		}
 	},
 	async [actions.IMPORT_BOOKMARKS]({ commit, dispatch, state }, { file, folder }) {
+		commit(mutations.FETCH_START, { type: 'importBookmarks' })
 		const data = new FormData()
 		data.append('bm_import', file)
 		try {
@@ -326,9 +327,11 @@ export default {
 			await dispatch(actions.COUNT_BOOKMARKS, -1)
 			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 			await dispatch(actions.RELOAD_VIEW)
+			commit(mutations.FETCH_END, 'importBookmarks')
 			return commit(mutations.SET_NOTIFICATION, AppGlobal.methods.t('bookmarks', 'Import successful'))
 		} catch (err) {
 			console.error(err)
+			commit(mutations.FETCH_END, 'importBookmarks')
 			commit(
 				mutations.SET_ERROR,
 				err.message
@@ -337,6 +340,7 @@ export default {
 		}
 	},
 	[actions.DELETE_BOOKMARKS]({ commit, dispatch, state }) {
+		commit(mutations.FETCH_START, { type: 'deleteBookmarks' })
 		return axios
 			.delete(url(state, '/bookmark'))
 			.then(response => {
@@ -348,10 +352,12 @@ export default {
 				}
 				dispatch(actions.COUNT_BOOKMARKS, -1)
 				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
+				commit(mutations.FETCH_END, 'deleteBookmarks')
 				return dispatch(actions.RELOAD_VIEW)
 			})
 			.catch(err => {
 				console.error(err)
+				commit(mutations.FETCH_END, 'deleteBookmarks')
 				commit(
 					mutations.SET_ERROR,
 					AppGlobal.methods.t('bookmarks', err.message)

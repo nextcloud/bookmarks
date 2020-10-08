@@ -1,6 +1,6 @@
 <template>
 	<Modal v-if="showModal" :title="title" @close="onClose">
-		<div v-if="!moving" class="move-dialog">
+		<div class="move-dialog">
 			<TreeFolder
 				:folder="{
 					title: t('bookmarks', 'Root folder'),
@@ -10,7 +10,6 @@
 				:show-children-default="true"
 				@select="onSelect" />
 		</div>
-		<div v-else class="icon-loading move-dialog" />
 	</Modal>
 </template>
 <script>
@@ -30,9 +29,6 @@ export default {
 		},
 		selection() {
 			return this.$store.state.selection
-		},
-		moving() {
-			return this.$store.state.loading.moveSelection
 		},
 		allFolders() {
 			return this.filterFolders(this.$store.state.folders)
@@ -64,9 +60,9 @@ export default {
 	created() {},
 	methods: {
 		async onSelect(folderId) {
+			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, false)
 			await this.$store.dispatch(actions.MOVE_SELECTION, folderId)
 			this.$store.commit(mutations.RESET_SELECTION)
-			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, false)
 			this.$store.dispatch(actions.RELOAD_VIEW)
 		},
 		onClose() {
