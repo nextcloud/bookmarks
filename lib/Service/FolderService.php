@@ -197,6 +197,16 @@ class FolderService {
 	}
 
 	/**
+	 * @param $shareId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	public function deleteShare($shareId): void {
+		$this->treeMapper->deleteShare($shareId);
+	}
+
+	/**
 	 * @param $userId
 	 * @param $folderId
 	 * @param null $title
