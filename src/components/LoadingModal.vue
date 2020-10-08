@@ -47,6 +47,7 @@ export default {
 				}, 500)
 			} else if (!this.state && previous) {
 				clearTimeout(this.showTimeout)
+				this.showModal = false
 			}
 		},
 	},

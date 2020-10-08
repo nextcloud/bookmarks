@@ -2,6 +2,7 @@
 
 namespace OCA\Bookmarks\Db;
 
+use Doctrine\DBAL\Types\Type;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
@@ -75,6 +76,14 @@ class TreeMapper extends QBMapper {
 	 * @var IConfig
 	 */
 	private $config;
+	/**
+	 * @var PublicFolderMapper
+	 */
+	private $publicFolderMapper;
+	/**
+	 * @var IQueryBuilder
+	 */
+	private $insertQuery;
 
 	/**
 	 * FolderMapper constructor.
@@ -87,8 +96,9 @@ class TreeMapper extends QBMapper {
 	 * @param SharedFolderMapper $sharedFolderMapper
 	 * @param TagMapper $tagMapper
 	 * @param IConfig $config
+	 * @param PublicFolderMapper $publicFolderMapper
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, TagMapper $tagMapper, IConfig $config) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, TagMapper $tagMapper, IConfig $config, \OCA\Bookmarks\Db\PublicFolderMapper $publicFolderMapper) {
 		parent::__construct($db, 'bookmarks_tree');
 		$this->eventDispatcher = $eventDispatcher;
 		$this->folderMapper = $folderMapper;
@@ -103,6 +113,9 @@ class TreeMapper extends QBMapper {
 		];
 		$this->tagMapper = $tagMapper;
 		$this->config = $config;
+		$this->publicFolderMapper = $publicFolderMapper;
+
+		$this->insertQuery = $this->getInsertQuery();
 	}
 
 	/**
@@ -164,6 +177,19 @@ class TreeMapper extends QBMapper {
 				return 'i.' . $col;
 			}, $this->entityColumns[$type]))
 			->from($this->entityTables[$type], 'i');
+		return $qb;
+	}
+
+	protected function getInsertQuery(): IQueryBuilder {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->insert('bookmarks_tree')
+			->values([
+				'id' => $qb->createParameter('id'),
+				'parent_folder' => $qb->createParameter('parent_folder'),
+				'type' => $qb->createParameter('type'),
+				'index' => $qb->createParameter('index'),
+			]);
 		return $qb;
 	}
 
@@ -264,23 +290,51 @@ class TreeMapper extends QBMapper {
 		$this->eventDispatcher->dispatch(BeforeDeleteEvent::class, new BeforeDeleteEvent($type, $id));
 
 		if ($type === self::TYPE_FOLDER) {
-			$childFolders = $this->findChildren(self::TYPE_FOLDER, $id);
-			foreach ($childFolders as $childFolder) {
-				$this->deleteEntry(self::TYPE_FOLDER, $childFolder->getId());
-				$this->folderMapper->delete($childFolder);
-			}
-
-			$childBookmarks = $this->findChildren(self::TYPE_BOOKMARK, $id);
-			foreach ($childBookmarks as $bookmark) {
-				$this->deleteEntry(self::TYPE_BOOKMARK, $bookmark->getId(), $id);
-			}
-
-			$childShares = $this->findChildren(self::TYPE_SHARE, $id);
-			foreach ($childShares as $share) {
+			// First get all shares out of the way
+			$descendantShares = $this->findByAncestorFolder(self::TYPE_SHARE, $id);
+			foreach ($descendantShares as $share) {
 				$this->deleteEntry(self::TYPE_SHARE, $share->getId(), $id);
 			}
 
-			$this->remove($type, $id);
+			// then get all folders in this sub tree
+			$descendantFolders = $this->findByAncestorFolder(self::TYPE_FOLDER, $id);
+			/** @var Folder $folder */
+			$folder = $this->folderMapper->find($id);
+			$descendantFolders[] = $folder;
+
+			// remove all bookmarks entries from this subtree
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->delete('bookmarks_tree')
+				->where($qb->expr()->eq('type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
+				->andWhere($qb->expr()->in('parent_folder', $qb->createPositionalParameter(array_map(static function ($folder) {
+					return $folder->getId();
+				}, $descendantFolders), IQueryBuilder::PARAM_INT_ARRAY)));
+			$qb->execute();
+
+			// remove all folders  entries from this subtree
+			foreach ($descendantFolders as $descendantFolder) {
+				$this->removeFolderTangibles($descendantFolder->getId());
+				$this->remove(self::TYPE_FOLDER, $descendantFolder->getId());
+				$this->folderMapper->delete($descendantFolder);
+			}
+
+			// Remove orphaned bookmarks
+			$qb = $this->db->getQueryBuilder();
+			$qb->select('b.id')
+				->from('bookmarks', 'b')
+				->leftJoin('b', 'bookmarks_tree', 't',  $qb->expr()->andX(
+					$qb->expr()->eq('b.id', 't.id'),
+					$qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK))
+				))
+				->where($qb->expr()->isNull('t.id'));
+			$orphanedBookmarks = $qb->execute();
+			while ($bookmark = $orphanedBookmarks->fetchColumn()) {
+				$bm = $this->bookmarkMapper->find($bookmark);
+				$this->bookmarkMapper->delete($bm);
+			}
+
+			return;
 		}
 
 		if ($type === self::TYPE_SHARE) {
@@ -310,13 +364,30 @@ class TreeMapper extends QBMapper {
 	}
 
 	/**
-	 * @param string $type
-	 * @param int $itemId
-	 * @param int $newParentFolderId
+	 * @param $shareId
+	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function move(string $type, int $itemId, int $newParentFolderId): void {
+	public function deleteShare($shareId): void {
+		$share = $this->shareMapper->find($shareId);
+		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);
+		foreach ($sharedFolders as $sharedFolder) {
+			$this->sharedFolderMapper->delete($sharedFolder);
+			$this->deleteEntry(self::TYPE_SHARE, $sharedFolder->getId());
+		}
+		$this->shareMapper->delete($share);
+	}
+
+	/**
+	 * @param string $type
+	 * @param int $itemId
+	 * @param int $newParentFolderId
+	 * @param int|null $index
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	public function move(string $type, int $itemId, int $newParentFolderId, int $index = null): void {
 		if ($type === self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Cannot move Bookmark');
 		}
@@ -343,7 +414,7 @@ class TreeMapper extends QBMapper {
 			$qb
 				->update('bookmarks_tree')
 				->set('parent_folder', $qb->createPositionalParameter($newParentFolderId, IQueryBuilder::PARAM_INT))
-				->set('index', $qb->createPositionalParameter($this->countChildren($newParentFolderId)))
+				->set('index', $qb->createPositionalParameter($index ?? $this->countChildren($newParentFolderId)))
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($itemId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
 			$qb->execute();
@@ -351,14 +422,12 @@ class TreeMapper extends QBMapper {
 			// Item currently has no parent => insert into tree.
 			$currentParent = null;
 
-			$qb = $this->db->getQueryBuilder();
+			$qb = $this->insertQuery;
 			$qb
-				->insert('bookmarks_tree')
-				->values([
-					'id' => $qb->createPositionalParameter($itemId),
-					'parent_folder' => $qb->createPositionalParameter($newParentFolderId, IQueryBuilder::PARAM_INT),
-					'type' => $qb->createPositionalParameter($type),
-					'index' => $qb->createPositionalParameter($this->countChildren($newParentFolderId)),
+				->setParameters(['id'=>$itemId,
+					'parent_folder' => $newParentFolderId,
+					'type' => $type,
+					'index' => $index ?? $this->countChildren($newParentFolderId),
 				]);
 			$qb->execute();
 		}
@@ -403,9 +472,10 @@ class TreeMapper extends QBMapper {
 	 * @param string $type
 	 * @param int $itemId The bookmark reference
 	 * @param array $folders Set of folders ids to add the bookmark to
+	 * @param int|null $index
 	 * @throws UnsupportedOperation
 	 */
-	public function addToFolders(string $type, int $itemId, array $folders): void {
+	public function addToFolders(string $type, int $itemId, array $folders, int $index=null): void {
 		if ($type !== self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Only bookmarks can be in multiple folders');
 		}
@@ -417,14 +487,13 @@ class TreeMapper extends QBMapper {
 			return !in_array($folderId, $currentFolders, true);
 		});
 		foreach ($folders as $folderId) {
-			$qb = $this->db->getQueryBuilder();
+			$qb = $this->insertQuery;
 			$qb
-				->insert('bookmarks_tree')
-				->values([
-					'parent_folder' => $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT),
-					'type' => $qb->createPositionalParameter($type),
-					'id' => $qb->createPositionalParameter($itemId, IQueryBuilder::PARAM_INT),
-					'index' => $qb->createPositionalParameter($this->countChildren($folderId)),
+				->setParameters([
+					'parent_folder' => $folderId,
+					'type' => $type,
+					'id' => $itemId,
+					'index' => $index ?? $this->countChildren($folderId),
 				]);
 			$qb->execute();
 
@@ -706,5 +775,27 @@ class TreeMapper extends QBMapper {
 		}, $children);
 
 		return $children;
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return void
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	private function removeFolderTangibles(int $folderId): void {
+		try {
+			// Remove shares of this folder
+			$shares = $this->shareMapper->findByFolder($folderId);
+			foreach ($shares as $share) {
+				$this->deleteShare($share->getId());
+			}
+
+			// remove public folder
+			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
+			$this->publicFolderMapper->delete($publicFolder);
+		} catch (DoesNotExistException $e) {
+			// noop
+		}
 	}
 }

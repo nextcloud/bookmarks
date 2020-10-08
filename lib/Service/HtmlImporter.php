@@ -11,6 +11,7 @@ use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\HtmlParseError;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
+use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -131,17 +132,19 @@ class HtmlImporter {
 	 * @throws UnauthorizedAccessError
 	 * @throws AlreadyExistsError
 	 * @throws UserLimitExceededError
+	 * @throws UnsupportedOperation
 	 */
-	private function importFolder($userId, array $folderParams, int $parentId, &$errors = []): array {
+	private function importFolder($userId, array $folderParams, int $parentId, &$errors = [], $index = null): array {
 		$folder = new Folder();
 		$folder->setUserId($userId);
 		$folder->setTitle($folderParams['title']);
 		$folder = $this->folderMapper->insert($folder);
-		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parentId);
+		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parentId, $index);
 		$newFolder = ['type' => 'folder', 'id' => $folder->getId(), 'title' => $folderParams['title'], 'children' => []];
+		$index = 0;
 		foreach ($folderParams['bookmarks'] as $bookmark) {
 			try {
-				$bm = $this->importBookmark($userId, $folder->getId(), $bookmark);
+				$bm = $this->importBookmark($userId, $folder->getId(), $bookmark, $index++);
 			} catch (UrlParseError $e) {
 				$errors[] = 'Failed to parse URL: ' . $bookmark['href'];
 				continue;
@@ -149,7 +152,7 @@ class HtmlImporter {
 			$newFolder['children'][] = ['type' => 'bookmark', 'id' => $bm->getId(), 'title' => $bookmark['title'], 'url' => $bookmark['href']];
 		}
 		foreach ($folderParams['children'] as $childFolder) {
-			$newFolder['children'][] = $this->importFolder($userId, $childFolder, $folder->getId(), $errors);
+			$newFolder['children'][] = $this->importFolder($userId, $childFolder, $folder->getId(), $errors, $index++);
 		}
 		return $newFolder;
 	}
@@ -158,14 +161,14 @@ class HtmlImporter {
 	 * @param int $userId
 	 * @param int $folderId
 	 * @param array $bookmark
+	 * @param null $index
 	 * @return Bookmark|Entity
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
-	 * @throws UrlParseError
 	 * @throws AlreadyExistsError
+	 * @throws UnsupportedOperation
+	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	private function importBookmark($userId, int $folderId, array $bookmark) {
+	private function importBookmark($userId, int $folderId, array $bookmark, $index = null) {
 		$bm = new Bookmark();
 		$bm->setUserId($userId);
 		$bm->setUrl($bookmark['href']);
@@ -178,7 +181,7 @@ class HtmlImporter {
 		// insert bookmark
 		$bm = $this->bookmarkMapper->insertOrUpdate($bm);
 		// add to folder
-		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bm->getId(), [$folderId]);
+		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bm->getId(), [$folderId], $index);
 		// add tags
 		$this->tagMapper->addTo($bookmark['tags'], $bm->getId());
 

@@ -47,6 +47,10 @@ class BookmarkMapper extends QBMapper {
 	 * @var TagMapper
 	 */
 	private $tagMapper;
+	/**
+	 * @var IQueryBuilder
+	 */
+	private $deleteTagsQuery;
 
 	/**
 	 * BookmarkMapper constructor.
@@ -66,6 +70,33 @@ class BookmarkMapper extends QBMapper {
 		$this->limit = (int)$config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
 		$this->publicMapper = $publicMapper;
 		$this->tagMapper = $tagMapper;
+
+		$this->deleteTagsQuery = $this->getDeleteTagsQuery();
+	}
+
+	protected function getDeleteTagsQuery() {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->delete('bookmarks_tags')
+			->where($qb->expr()->eq('bookmark_id', $qb->createParameter('id')));
+		return $qb;
+	}
+
+	/**
+	 * @param string $userId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function deleteAll(string $userId): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('b.id')
+			->from('bookmarks', 'b')
+			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
+		$orphanedBookmarks = $qb->execute();
+		while ($bookmark = $orphanedBookmarks->fetchColumn()) {
+			$bm = $this->find($bookmark);
+			$this->delete($bm);
+		}
 	}
 
 	/**
@@ -429,10 +460,8 @@ class BookmarkMapper extends QBMapper {
 
 		$id = $entity->getId();
 
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->delete('bookmarks_tags')
-			->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($id)));
+		$qb = $this->deleteTagsQuery;
+		$qb->setParameter('id', $id);
 		$qb->execute();
 
 		return $returnedEntity;
