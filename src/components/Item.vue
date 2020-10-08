@@ -48,7 +48,7 @@
 				@keyup.enter="onRenameSubmit">
 			<Actions>
 				<ActionButton icon="icon-checkmark" @click="onRenameSubmit">
-					{{ t('bookmarks', 'Cancel') }}
+					{{ t('bookmarks', 'Submit') }}
 				</ActionButton>
 			</Actions>
 			<Actions>
