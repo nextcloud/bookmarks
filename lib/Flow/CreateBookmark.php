@@ -63,7 +63,6 @@ class CreateBookmark implements IOperation {
 
 	public static function register(IEventDispatcher $dispatcher): void {
 		if (interface_exists(IManager::class)) {
-			@include_once __DIR__ . '/../../vendor/autoload.php';
 			$dispatcher->addListener(IManager::EVENT_NAME_REG_OPERATION, static function ($event) {
 				$operation = OC::$server->query(CreateBookmark::class);
 				$event->getSubject()->registerOperation($operation);

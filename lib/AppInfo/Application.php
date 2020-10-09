@@ -15,8 +15,12 @@ use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Flow\CreateBookmark;
 use OCA\Bookmarks\Hooks\UserGroupListener;
+use OCA\Bookmarks\Search\Provider;
 use OCA\Bookmarks\Service\HashManager;
 use OCP\AppFramework\App;
+use OCP\AppFramework\Bootstrap\IBootContext;
+use OCP\AppFramework\Bootstrap\IBootstrap;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
@@ -24,44 +28,46 @@ use OCP\IContainer;
 use OCP\IUser;
 use OCP\User\Events\BeforeUserDeletedEvent;
 
-class Application extends App {
+class Application extends App implements IBootstrap {
 	public const APP_ID = 'bookmarks';
 
 	public function __construct() {
 		parent::__construct(self::APP_ID);
+	}
 
-		$container = $this->getContainer();
-		$server = $container->getServer();
+	public function register(IRegistrationContext $context): void {
+		@include_once __DIR__ . '/../../vendor/autoload.php';
 
-		$container->registerService('UserId', static function ($c) {
+		$context->registerService('UserId', static function ($c) {
 			/** @var IUser|null $user */
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 			/** @var IContainer $c */
 			return $user === null ? null : $user->getUID();
 		});
 
-		$container->registerService('request', static function ($c) {
+		$context->registerService('request', static function ($c) {
 			return $c->query('Request');
 		});
 
-		/** @var IEventDispatcher $eventDispatcher */
-		$eventDispatcher = $server->query(IEventDispatcher::class);
+		$context->registerSearchProvider(Provider::class);
 
+		$context->registerEventListener(CreateEvent::class, HashManager::class);
+		$context->registerEventListener(UpdateEvent::class, HashManager::class);
+		$context->registerEventListener(BeforeDeleteEvent::class, HashManager::class);
+		$context->registerEventListener(MoveEvent::class, HashManager::class);
 
-		$eventDispatcher->addServiceListener(CreateEvent::class, HashManager::class);
-		$eventDispatcher->addServiceListener(UpdateEvent::class, HashManager::class);
-		$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, HashManager::class);
-		$eventDispatcher->addServiceListener(MoveEvent::class, HashManager::class);
+		$context->registerEventListener(CreateEvent::class, ActivityPublisher::class);
+		$context->registerEventListener(UpdateEvent::class, ActivityPublisher::class);
+		$context->registerEventListener(BeforeDeleteEvent::class, ActivityPublisher::class);
+		$context->registerEventListener(MoveEvent::class, ActivityPublisher::class);
 
-		$eventDispatcher->addServiceListener(CreateEvent::class, ActivityPublisher::class);
-		$eventDispatcher->addServiceListener(UpdateEvent::class, ActivityPublisher::class);
-		$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, ActivityPublisher::class);
-		$eventDispatcher->addServiceListener(MoveEvent::class, ActivityPublisher::class);
+		$context->registerEventListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
+		$context->registerEventListener(UserAddedEvent::class, UserGroupListener::class);
+		$context->registerEventListener(UserRemovedEvent::class, UserGroupListener::class);
+	}
 
-		$eventDispatcher->addServiceListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
-		$eventDispatcher->addServiceListener(UserAddedEvent::class, UserGroupListener::class);
-		$eventDispatcher->addServiceListener(UserRemovedEvent::class, UserGroupListener::class);
-
-		CreateBookmark::register($eventDispatcher);
+	public function boot(IBootContext $context): void {
+		$container = $context->getServerContainer();
+		CreateBookmark::register($container->get(IEventDispatcher::class));
 	}
 }
