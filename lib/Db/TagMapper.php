@@ -35,7 +35,7 @@ class TagMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('t.tag AS name')
-			->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('t.bookmark_id') . ')'), 'count')
+			->selectAlias($qb->createFunction('COUNT(DISTINCT ' . $qb->getColumnName('t.bookmark_id') . ')'), 'count')
 			->from('bookmarks_tags', 't')
 			->innerJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.bookmark_id'))
 			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('b.id', 'tr.id'))
