@@ -17,7 +17,9 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Files\Folder;
 use OCP\Files\Node;
 use OCP\IL10N;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
+
+;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
@@ -47,11 +49,11 @@ class CreateBookmark implements IOperation {
 	 */
 	private $urlGenerator;
 	/**
-	 * @var ILogger
+	 * @var LoggerInterface
 	 */
 	private $logger;
 
-	public function __construct(IL10N $l, BookmarkService $bookmarks, IUserSession $session, IURLGenerator $urlGenerator, ILogger $logger) {
+	public function __construct(IL10N $l, BookmarkService $bookmarks, IUserSession $session, IURLGenerator $urlGenerator, LoggerInterface $logger) {
 		$this->l = $l;
 		$this->bookmarks = $bookmarks;
 		$this->session = $session;
