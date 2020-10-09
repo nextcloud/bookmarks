@@ -13,6 +13,7 @@ OC.L10N.register(
     "List view" : "Xem dạng Danh sách",
     "Select all" : "Chọn tất cả",
     "Enter folder title" : "Nhập tiêu đề thư mục",
+    "Submit" : "Gửi đi",
     "Cancel" : "Hủy bỏ",
     "Recent" : "Gần đây",
     "Add a bookmark" : "Thêm một bookmark",

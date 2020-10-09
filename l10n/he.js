@@ -30,6 +30,7 @@ OC.L10N.register(
     "Enter folder title" : "נא למלא כותרת לתיקייה",
     "Shared by {user}" : "שותפה על ידי {user}",
     "Root folder" : "תיקיית בסיס",
+    "Submit" : "שליחה",
     "Cancel" : "ביטול",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["תיקייה אחת ומספר סימניות מועברות","%n תיקיות ומספר סימניות מועברות","%n תיקיות ומספר סימניות מועברות","%n תיקיות ומספר סימניות מועברות"],
     "_Moving %n folder_::_Moving %n folders_" : ["תיקייה אחת מועברת","%n תיקיות מועברות","%n תיקיות מועברות","%n תיקיות מועברות"],

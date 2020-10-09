@@ -58,6 +58,7 @@
     "Enter folder title" : "Unesite naslov mape",
     "Shared by {user}" : "Dijeli {user}",
     "Root folder" : "Korijenska mapa",
+    "Submit" : "Šalji",
     "Cancel" : "Odustani",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Premještanje %n mape i nekih knjižnih oznaka","Premještanje %n mape i nekih knjižnih oznaka","Premještanje %n mapa i nekih knjižnih oznaka"],
     "_Moving %n folder_::_Moving %n folders_" : ["Premještanje %n mape","Premještanje %n mape","Premještanje %n mapa"],

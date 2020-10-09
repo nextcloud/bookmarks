@@ -62,6 +62,7 @@
     "Enter folder title" : "Introduza o título do cartafol",
     "Shared by {user}" : "Compartido por {user}",
     "Root folder" : "Cartafol raíz",
+    "Submit" : "Enviar",
     "Cancel" : "Cancelar",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Movendo %n cartafol e algúns marcadores","Movendo %n cartafoles e algúns marcadores"],
     "_Moving %n folder_::_Moving %n folders_" : ["Movendo %n cartafol","Movendo %n cartafoles"],

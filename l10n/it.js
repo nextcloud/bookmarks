@@ -64,6 +64,7 @@ OC.L10N.register(
     "Enter folder title" : "Digita titolo della cartella",
     "Shared by {user}" : "Condiviso da {user}",
     "Root folder" : "Cartella radice",
+    "Submit" : "Invia",
     "Cancel" : "Annulla",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Spostamento di %n cartella e di alcuni segnalibri","Spostamento di %n cartelle e alcuni segnalibri"],
     "_Moving %n folder_::_Moving %n folders_" : ["Spostamento di %n cartella","Spostamento di %n cartelle"],

@@ -10,6 +10,7 @@ OC.L10N.register(
     "Grid view" : "Afișare în grilă",
     "List view" : "Afișare în listă",
     "Select all" : "Selectează tot",
+    "Submit" : "Trimite",
     "Cancel" : "Anulează",
     "Recent" : "Recente",
     "Import" : "Importă",

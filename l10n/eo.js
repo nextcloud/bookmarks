@@ -22,6 +22,7 @@ OC.L10N.register(
     "Enter a link" : "Entajpu ligilon",
     "Enter folder title" : "Entajpu titolon de la dosierujo",
     "Root folder" : "Radika dosierujo",
+    "Submit" : "Sendi",
     "Cancel" : "Nuligi",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Movo de %n dosierujo kaj kelkaj legosignoj","Movo de %n dosierujoj kaj kelkaj legosignoj"],
     "_Moving %n folder_::_Moving %n folders_" : ["Movo de %n dosierujo","Movo de %n dosierujoj"],

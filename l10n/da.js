@@ -22,6 +22,7 @@ OC.L10N.register(
     "Enter a link" : "Indtast et link",
     "Enter folder title" : "Angiv folder navn",
     "Root folder" : "Rodmappe",
+    "Submit" : "Tilføj",
     "Cancel" : "Annullér",
     "_Moving %n folder_::_Moving %n folders_" : ["Flytter %n mappe","Flytter %n mapper"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Flytter %n bogmærke","Flytter %n bogmærker"],

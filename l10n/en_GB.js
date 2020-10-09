@@ -15,6 +15,7 @@ OC.L10N.register(
     "List view" : "List view",
     "Select all" : "Select all",
     "Root folder" : "Root folder",
+    "Submit" : "Submit",
     "Cancel" : "Cancel",
     "All bookmarks" : "All bookmarks",
     "Recent" : "Recent",

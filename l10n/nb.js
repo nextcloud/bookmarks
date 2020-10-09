@@ -33,6 +33,7 @@ OC.L10N.register(
     "Enter a link" : "Skriv inn et lenke",
     "Enter folder title" : "Skriv inn tittel",
     "Root folder" : "Hovedmappe",
+    "Submit" : "Send inn",
     "Cancel" : "Avbryt",
     "Recent" : "Nylig",
     "Add a bookmark" : "Legg til bokmerke",

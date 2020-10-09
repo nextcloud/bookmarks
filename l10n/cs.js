@@ -64,6 +64,7 @@ OC.L10N.register(
     "Enter folder title" : "Zadejte název složky",
     "Shared by {user}" : "Sdílí {user}",
     "Root folder" : "Kořenová složka",
+    "Submit" : "Odeslat",
     "Cancel" : "Storno",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Přesouvá se %n složka a nějaké záložky","Přesouvají se %n složky a nějaké záložky","Přesouvá se %n složek a nějaké záložky","Přesouvají se %n složky a nějaké záložky"],
     "_Moving %n folder_::_Moving %n folders_" : ["Přesouvá se %n složka","Přesouvají se %n složky","Přesouvá se %n složek","Přesouvají se %n složky"],

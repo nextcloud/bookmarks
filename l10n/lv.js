@@ -14,6 +14,7 @@ OC.L10N.register(
     "Grid view" : "Režģa izkārtojums",
     "List view" : "Saraksta izkārtojums",
     "Select all" : "Atzīmēt visu",
+    "Submit" : "Iesniegt",
     "Cancel" : "Atcelt",
     "Recent" : "Nesenās",
     "Add a bookmark" : "Pievienot grāmatzīmi",

@@ -13,6 +13,7 @@ OC.L10N.register(
     "Grid view" : "ბადისებური ხედი",
     "List view" : "ჩამონათვლისებური ხედი",
     "Select all" : "ყველას არჩევა",
+    "Submit" : "გაგზავნა",
     "Cancel" : "უარყოფა",
     "Recent" : "ახალი",
     "Add a bookmark" : "სანიშნის დამატება",

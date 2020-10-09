@@ -13,6 +13,7 @@ OC.L10N.register(
     "Grid view" : "Решетъчен изглед",
     "List view" : "Списъчен изглед",
     "Select all" : "Избери всички",
+    "Submit" : "Изпращане",
     "Cancel" : "Отказ",
     "All bookmarks" : "Всички отметки",
     "Recent" : "Последни",
