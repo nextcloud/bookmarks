@@ -31,7 +31,7 @@ class BookmarkWithTagsAndParent extends Bookmark {
 		$array = [];
 		foreach (self::$fields as $field) {
 			if ($field === 'tags') {
-				$array[$field] = $this->{$field} === ''? [] : explode(',',$this->{$field});
+				$array[$field] = $this->{$field} === ''? [] : array_unique(explode(',',$this->{$field}));
 				continue;
 			}
 			if ($field === 'folders') {
