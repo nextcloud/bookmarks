@@ -10,6 +10,7 @@ OC.L10N.register(
     "Grid view" : "Мрежа",
     "List view" : "Листа",
     "Select all" : "Избери се",
+    "Submit" : "Испрати",
     "Cancel" : "Откажи",
     "Recent" : "Неодамнешни",
     "Import" : "Увези",

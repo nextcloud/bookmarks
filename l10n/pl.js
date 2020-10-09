@@ -64,6 +64,7 @@ OC.L10N.register(
     "Enter folder title" : "Wpisz nazwę folderu",
     "Shared by {user}" : "Udostępnione przez {user}",
     "Root folder" : "Katalog główny",
+    "Submit" : "Prześlij",
     "Cancel" : "Anuluj",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Przenoszenie %n katalogu i niektórych zakładek","Przenoszenie %n katalogów i niektórych zakładek","Przenoszenie %n katalogów i niektórych zakładek","Przenoszenie %n katalogów i niektórych zakładek"],
     "_Moving %n folder_::_Moving %n folders_" : ["Przenoszenie %n katalogu","Przenoszenie %n katalogów","Przenoszenie %n katalogów","Przenoszenie %n katalogów"],

@@ -34,6 +34,7 @@ OC.L10N.register(
     "Enter a link" : "Įveskite nuorodą",
     "Enter folder title" : "Įveskite aplanko pavadinimą",
     "Root folder" : "Šakninis aplankas",
+    "Submit" : "Pateikti",
     "Cancel" : "Atsisakyti",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Perkeliamas %n aplankas ir keli adresyno įrašai","Perkeliami %n aplankai ir keli adresyno įrašai","Perkeliama %n aplankų ir keli adresyno įrašai","Perkeliamas %n aplankas ir keli adresyno įrašai"],
     "_Moving %n folder_::_Moving %n folders_" : ["Perkeliamas %n aplankas","Perkeliami %n aplankai","Perkeliama %n aplankų","Perkeliamas %n aplankas"],

@@ -30,6 +30,7 @@ OC.L10N.register(
     "Enter folder title" : "Унесите назив фасцикле",
     "Shared by {user}" : "Поделио {user}",
     "Root folder" : "Корена фасцикла",
+    "Submit" : "Пошаљи",
     "Cancel" : "Поништи",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Премештам %n фасциклу и неке обележиваче","Премештам %n фасцикле и неке обележиваче","Премештам %n фасцикли и неке обележиваче"],
     "_Moving %n folder_::_Moving %n folders_" : ["Премештам %n фасциклу","Премештам %n фасцикле","Премештам %n фасцикли "],

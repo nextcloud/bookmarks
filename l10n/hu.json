@@ -20,6 +20,7 @@
     "Enter a link" : "Adjon meg egy hivatkozást",
     "Enter folder title" : "Adja meg a mappa nevét",
     "Root folder" : "Gyökérmappa",
+    "Submit" : "Beküldés",
     "Cancel" : "Mégse",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["%n mappa és néhány könyvjelző áthelyezése","%n mappa és néhány könyvjelző áthelyezése"],
     "_Moving %n folder_::_Moving %n folders_" : ["%n mappa áthelyezése","%n mappa áthelyezése"],

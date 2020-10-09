@@ -10,6 +10,7 @@ OC.L10N.register(
     "Grid view" : "Vista de cuadrícula",
     "List view" : "Vista de lista",
     "Select all" : "Seleccionar todo",
+    "Submit" : "Enviar",
     "Cancel" : "Cancelar",
     "Recent" : "Reciente",
     "Import" : "Importar",

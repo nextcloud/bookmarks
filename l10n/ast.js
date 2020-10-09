@@ -10,6 +10,7 @@ OC.L10N.register(
     "Grid view" : "Vista de rexella",
     "List view" : "Vista de llista",
     "Select all" : "Esbillar too",
+    "Submit" : "Unviar",
     "Cancel" : "Encaboxar",
     "Recent" : "Reciente",
     "Import" : "Importar",

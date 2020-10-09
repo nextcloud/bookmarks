@@ -60,6 +60,7 @@
     "Enter folder title" : "Τίτλος φακέλου",
     "Shared by {user}" : "Διαμοιράστηκε από {user}",
     "Root folder" : "Αρχικός φάκελος",
+    "Submit" : "Υποβολή",
     "Cancel" : "Ακύρωση",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Μετακίνηση %n φακέλου και μερικων σελιδοδεικτών","Μετακίνηση %nφακέλων και μερικων σελιδοδεικτών"],
     "_Moving %n folder_::_Moving %n folders_" : ["Μετακίνηση %n φακέλου","Μετακίνηση %n φακέλων"],

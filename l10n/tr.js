@@ -64,6 +64,7 @@ OC.L10N.register(
     "Enter folder title" : "Klasör başlığını yazın",
     "Shared by {user}" : "{user} tarafından paylaşıldı",
     "Root folder" : "Kök klasör",
+    "Submit" : "Gönder",
     "Cancel" : "İptal",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["%n klasör ve bazı yer imleri taşınıyor","%n klasör ve bazı yer imleri taşınıyor"],
     "_Moving %n folder_::_Moving %n folders_" : ["%n klasör taşınıyor","%n klasör taşınıyor"],

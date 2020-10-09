@@ -10,6 +10,7 @@ OC.L10N.register(
     "Grid view" : "Diskwell ar roued",
     "List view" : "Gwelidik listenn",
     "Select all" : "Dibab pep tra",
+    "Submit" : "Kinnig",
     "Cancel" : "Arrest",
     "Recent" : "Nevez",
     "Broken links" : "Liammoù toret",

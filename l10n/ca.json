@@ -60,6 +60,7 @@
     "Enter folder title" : "Escriviu el títol de la carpeta",
     "Shared by {user}" : "Compartit per {user}",
     "Root folder" : "Carpeta d'arrel",
+    "Submit" : "Envia",
     "Cancel" : "Cancel·la",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["S' està movent la carpeta %n i algunes adreces d'interès","S’ estan movent %n carpetes i algunes adreces d'interès"],
     "_Moving %n folder_::_Moving %n folders_" : ["S' està movent la carpeta %n","S’estan movent %n carpetes"],

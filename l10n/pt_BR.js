@@ -62,6 +62,7 @@ OC.L10N.register(
     "Enter folder title" : "Digite o título da pasta",
     "Shared by {user}" : "Compartilhado por {user}",
     "Root folder" : "Pasta raiz",
+    "Submit" : "Enviar",
     "Cancel" : "Cancelar",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Movendo %n pasta e alguns favoritos","Movendo %n pastas e alguns favoritos"],
     "_Moving %n folder_::_Moving %n folders_" : ["Movendo %n pasta","Movendo %n pastas"],

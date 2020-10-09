@@ -55,6 +55,7 @@
     "Enter folder title" : "Zadať názov priečinka",
     "Shared by {user}" : "Zdieľa {user}",
     "Root folder" : "Koreňový priečinok",
+    "Submit" : "Odoslať",
     "Cancel" : "Zrušiť",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Presúva sa %n priečinok a niektoré záložky","Presúvajú sa %n priečinky a niektoré záložky","Presúvajú sa %n priečinky a niektoré záložky","Presúva sa %n priečinkov a niektoré záložky"],
     "_Moving %n folder_::_Moving %n folders_" : ["Presúva sa %n priečinok","Presúvajú sa %n priečinky","Presúvajú sa %n priečinky","Presúva sa %n priečinkov"],

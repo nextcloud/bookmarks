@@ -59,6 +59,7 @@
     "Enter folder title" : "Ange titel",
     "Shared by {user}" : "Delad av {user}",
     "Root folder" : "Topp-mapp",
+    "Submit" : "Verkställ",
     "Cancel" : "Avbryt",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Flyttar %n mapp och några bokmärken","Flyttar %n mappar och några bokmärken"],
     "_Moving %n folder_::_Moving %n folders_" : ["Flyttar %n mapp","Flyttar %n mappar"],

@@ -24,6 +24,7 @@ OC.L10N.register(
     "Enter folder title" : "폴더명을 입력하시오.",
     "Shared by {user}" : "{user}가 공유한",
     "Root folder" : "루트 폴더",
+    "Submit" : "제출",
     "Cancel" : "취소",
     "Recent" : "최근 항목",
     "Untagged" : "태그 지우기",

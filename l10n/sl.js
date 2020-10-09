@@ -58,6 +58,7 @@ OC.L10N.register(
     "Enter folder title" : "Vnesite naziv mape",
     "Shared by {user}" : "V skupni rabi z {user}",
     "Root folder" : "Korenska mapa",
+    "Submit" : "Pošlji",
     "Cancel" : "Prekliči",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Premikanje mape %n in nekaterih zaznamkov","Premikanje map %n in nekaterih zaznamkov","Premikanje map %n in nekaterih zaznamkov","Premikanje map %n in nekaterih zaznamkov"],
     "_Moving %n folder_::_Moving %n folders_" : ["Poteka premikanje %n mape","Poteka premikanje %n map","Poteka premikanje %n map","Poteka premikanje %n map"],

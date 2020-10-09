@@ -8,6 +8,7 @@ OC.L10N.register(
     "New" : "Шинэ",
     "New folder" : "Шинэ хавтас",
     "Select all" : "бүгдийг сонгох",
+    "Submit" : "мэдэгдэх",
     "Cancel" : "болиулах",
     "Recent" : "Сүүлийн үеийн",
     "Import" : "Импорт",

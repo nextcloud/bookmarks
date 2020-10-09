@@ -10,6 +10,7 @@ OC.L10N.register(
     "Grid view" : "Pamje galeri",
     "List view" : "Pamje listë",
     "Select all" : "Zgjidhi të gjitha",
+    "Submit" : "Dërgo",
     "Cancel" : "Anullo",
     "Recent" : "Së fundmi",
     "Untagged" : "E paetiketuar",

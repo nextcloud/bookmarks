@@ -64,6 +64,7 @@ OC.L10N.register(
     "Enter folder title" : "Ordnernamen eingeben",
     "Shared by {user}" : "Geteilt von {user}",
     "Root folder" : "Root-Ordner",
+    "Submit" : "Übermitteln",
     "Cancel" : "Abbrechen",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Verschiebe %n Verzeichnis und einige Lesezeichen","Verschiebe %n Verzeichnisse und einige Lesezeichen"],
     "_Moving %n folder_::_Moving %n folders_" : ["Verschiebe %n Verzeichnis","Verschiebe %n Verzeichnisse"],

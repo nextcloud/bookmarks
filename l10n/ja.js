@@ -30,6 +30,7 @@ OC.L10N.register(
     "Enter folder title" : "フォルダーのタイトルを入力",
     "Shared by {user}" : "{user} から共有されました",
     "Root folder" : "ルートフォルダー",
+    "Submit" : "送信",
     "Cancel" : "キャンセル",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["%n個のフォルダーといくつかのブックマークを移動中"],
     "_Moving %n folder_::_Moving %n folders_" : ["%n個のフォルダーを移動中"],

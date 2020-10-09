@@ -12,6 +12,7 @@ OC.L10N.register(
     "List view" : "Vista em lista",
     "Select all" : "Seleccionar todos",
     "Root folder" : "Pasta raiz",
+    "Submit" : "Submeter",
     "Cancel" : "Cancelar",
     "All bookmarks" : "Todos os marcadores",
     "Recent" : "Recentes",
