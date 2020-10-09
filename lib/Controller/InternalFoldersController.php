@@ -1,7 +1,13 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Controller;
 
+use OCA\Bookmarks\Service\Authorizer;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
@@ -12,7 +18,7 @@ class InternalFoldersController extends ApiController {
 	/** @var FoldersController */
 	private $controller;
 
-	public function __construct($appName, $request, $userId, FoldersController $controller, \OCA\Bookmarks\Service\Authorizer $authorizer) {
+	public function __construct($appName, $request, $userId, FoldersController $controller, Authorizer $authorizer) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->controller = $controller;
@@ -28,7 +34,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function addFolder($title = '', $parent_folder = -1) {
+	public function addFolder($title = '', $parent_folder = -1): JSONResponse {
 		return $this->controller->addFolder($title, $parent_folder);
 	}
 
@@ -40,7 +46,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getFolderChildrenOrder($folderId, $layers) {
+	public function getFolderChildrenOrder($folderId, $layers): JSONResponse {
 		return $this->controller->getFolderChildrenOrder($folderId, $layers);
 	}
 
@@ -51,7 +57,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function setFolderChildrenOrder($folderId, $data = []) {
+	public function setFolderChildrenOrder($folderId, $data = []): JSONResponse {
 		return $this->controller->setFolderChildrenOrder($folderId, $data);
 	}
 
@@ -61,7 +67,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function deleteFolder($folderId) {
+	public function deleteFolder($folderId): JSONResponse {
 		return $this->controller->deleteFolder($folderId);
 	}
 
@@ -72,7 +78,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function addToFolder($folderId, $bookmarkId) {
+	public function addToFolder($folderId, $bookmarkId): JSONResponse {
 		return $this->controller->addToFolder($folderId, $bookmarkId);
 	}
 
@@ -83,19 +89,19 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function removeFromFolder($folderId, $bookmarkId) {
+	public function removeFromFolder($folderId, $bookmarkId): JSONResponse {
 		return $this->controller->removeFromFolder($folderId, $bookmarkId);
 	}
 
 	/**
 	 * @param int $folderId
-	 * @param string $title
-	 * @param null $parent_folder
+	 * @param string|null $title
+	 * @param int|null $parent_folder
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editFolder($folderId, $title = null, $parent_folder = null) {
+	public function editFolder(int $folderId, $title = null, $parent_folder = null): JSONResponse {
 		return $this->controller->editFolder($folderId, $title, $parent_folder);
 	}
 
@@ -106,7 +112,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function hashFolder($folderId, $fields = ['title', 'url']) {
+	public function hashFolder($folderId, $fields = ['title', 'url']): JSONResponse {
 		return $this->controller->hashFolder($folderId, $fields);
 	}
 
@@ -117,7 +123,7 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getFolders($root = -1, $layers = -1) {
+	public function getFolders($root = -1, $layers = -1): JSONResponse {
 		return $this->controller->getFolders($root, $layers);
 	}
 
@@ -126,7 +132,7 @@ class InternalFoldersController extends ApiController {
 	 * @return DataResponse
 	 * @NoAdminRequired
 	 */
-	public function getFolderPublicToken($folderId) {
+	public function getFolderPublicToken($folderId): DataResponse {
 		return $this->controller->getFolderPublicToken($folderId);
 	}
 
@@ -135,7 +141,7 @@ class InternalFoldersController extends ApiController {
 	 * @return DataResponse
 	 * @NoAdminRequired
 	 */
-	public function createFolderPublicToken($folderId) {
+	public function createFolderPublicToken($folderId): DataResponse {
 		return $this->controller->createFolderPublicToken($folderId);
 	}
 
@@ -144,7 +150,7 @@ class InternalFoldersController extends ApiController {
 	 * @return DataResponse
 	 * @NoAdminRequired
 	 */
-	public function deleteFolderPublicToken($folderId) {
+	public function deleteFolderPublicToken($folderId): DataResponse {
 		return $this->controller->deleteFolderPublicToken($folderId);
 	}
 
@@ -153,7 +159,7 @@ class InternalFoldersController extends ApiController {
 	 * @return DataResponse
 	 * @NoAdminRequired
 	 */
-	public function getShares($folderId) {
+	public function getShares($folderId): DataResponse {
 		return $this->controller->getShares($folderId);
 	}
 
@@ -166,7 +172,7 @@ class InternalFoldersController extends ApiController {
 	 * @return DataResponse
 	 * @NoAdminRequired
 	 */
-	public function createShare($folderId, $participant, $type, $canWrite = false, $canShare = false) {
+	public function createShare($folderId, $participant, $type, $canWrite = false, $canShare = false): DataResponse {
 		return $this->controller->createShare($folderId, $participant, $type, $canWrite, $canShare);
 	}
 
@@ -177,7 +183,7 @@ class InternalFoldersController extends ApiController {
 	 * @return DataResponse
 	 * @NoAdminRequired
 	 */
-	public function editShare($shareId, $canWrite = false, $canShare = false) {
+	public function editShare($shareId, $canWrite = false, $canShare = false): DataResponse {
 		return $this->controller->editShare($shareId, $canWrite, $canShare);
 	}
 
@@ -186,7 +192,7 @@ class InternalFoldersController extends ApiController {
 	 * @return DataResponse
 	 * @NoAdminRequired
 	 */
-	public function deleteShare($shareId) {
+	public function deleteShare($shareId): DataResponse {
 		return $this->controller->deleteShare($shareId);
 	}
 }

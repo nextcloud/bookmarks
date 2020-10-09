@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Service;
 
@@ -53,6 +58,7 @@ class HtmlImporter {
 	 * @param BookmarkMapper $bookmarkMapper
 	 * @param FolderMapper $folderMapper
 	 * @param TagMapper $tagMapper
+	 * @param TreeMapper $treeMapper
 	 * @param BookmarksParser $bookmarksParser
 	 */
 	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser) {
@@ -66,8 +72,8 @@ class HtmlImporter {
 	/**
 	 * @brief Import Bookmarks from html formatted file
 	 * @param int $userId
-	 * @param string $file Content to import
-	 * @param int $rootFolder
+	 * @param string|null $file Content to import
+	 * @param int|null $rootFolder
 	 * @return array
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
@@ -163,9 +169,9 @@ class HtmlImporter {
 	 * @param array $bookmark
 	 * @param null $index
 	 * @return Bookmark|Entity
+	 * @throws UrlParseError
 	 * @throws AlreadyExistsError
 	 * @throws UnsupportedOperation
-	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
 	private function importBookmark($userId, int $folderId, array $bookmark, $index = null) {

@@ -1,11 +1,16 @@
 <?php
-
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Migration;
 
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
+use PDO;
 
 class OrphanedSharesRepairStep implements IRepairStep {
 	/**
@@ -42,7 +47,7 @@ class OrphanedSharesRepairStep implements IRepairStep {
 				->join('f', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('f.id', 't.shared_folder_id'))
 				->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($share)))
 				->execute()
-				->fetchAll(\PDO::FETCH_COLUMN);
+				->fetchAll(PDO::FETCH_COLUMN);
 			foreach ($folders as $folderId) {
 				$qb = $this->db->getQueryBuilder();
 				$qb->delete('bookmarks_tree')
@@ -50,7 +55,6 @@ class OrphanedSharesRepairStep implements IRepairStep {
 					->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($folderId)))
 					->execute();
 			}
-			$qb = $this->db->getQueryBuilder();
 			$this->db->executeQuery('DELETE sf FROM *PREFIX*bookmarks_shared_folders sf JOIN *PREFIX*bookmarks_shared_to_shares t ON sf.id = t.shared_folder_id WHERE t.share_id = ?', [$share]);
 			$qb = $this->db->getQueryBuilder();
 			$qb->delete('bookmarks_shares')
@@ -66,7 +70,7 @@ class OrphanedSharesRepairStep implements IRepairStep {
 			->leftJoin('p', 'bookmarks_folders', 'f', $qb->expr()->eq('f.id', 'p.folder_id'))
 			->where($qb->expr()->isNull('f.id'))
 			->execute()
-			->fetchAll(\PDO::FETCH_COLUMN);
+			->fetchAll(PDO::FETCH_COLUMN);
 		$i = 0;
 		foreach ($publics as $publicId) {
 			$qb = $this->db->getQueryBuilder();

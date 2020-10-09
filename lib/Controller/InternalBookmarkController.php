@@ -1,19 +1,15 @@
 <?php
 
-/**
- * This file is licensed under the Affero General Public License version 3 or
- * later. See the COPYING file.
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
  *
- * @author Stefan Klemm <mail@stefan-klemm.de>
- * @copyright Stefan Klemm 2014
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
 
 namespace OCA\Bookmarks\Controller;
 
-use OCA\Bookmarks\Exception\AlreadyExistsError;
+use Exception;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
-use OCA\Bookmarks\Exception\UrlParseError;
-use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCP\AppFramework\ApiController;
@@ -64,7 +60,6 @@ class InternalBookmarkController extends ApiController {
 	 * @param bool|null $archived
 	 * @return DataResponse
 	 *
-	 * @throws UrlParseError
 	 * @NoAdminRequired
 	 */
 	public function getBookmarks(
@@ -79,7 +74,7 @@ class InternalBookmarkController extends ApiController {
 		$url = null,
 		$unavailable = null,
 		$archived = null
-	) {
+	): DataResponse {
 		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived);
 	}
 
@@ -89,29 +84,13 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getSingleBookmark($id) {
+	public function getSingleBookmark($id): JSONResponse {
 		return $this->publicController->getSingleBookmark($id);
 	}
 
 	/**
 	 * @param string $url
-	 * @param string $title
-	 * @param string $description
-	 * @param array $tags
-	 * @return JSONResponse
-	 *
-	 * @throws AlreadyExistsError
-	 * @throws UserLimitExceededError
-	 * @NoAdminRequired
-	 */
-	public function newBookmark($url = "", $title = null, $description = "", $tags = [], $folders = []) {
-		return $this->publicController->newBookmark($url, $title, $description, $tags, $folders);
-	}
-
-	/**
-	 * @param int $id
-	 * @param string $url
-	 * @param string $title
+	 * @param string|null $title
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
@@ -119,7 +98,22 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editBookmark($id = null, $url = null, $title = null, $description = "", $tags = [], $folders = null) {
+	public function newBookmark($url = "", $title = null, $description = "", $tags = [], $folders = []): JSONResponse {
+		return $this->publicController->newBookmark($url, $title, $description, $tags, $folders);
+	}
+
+	/**
+	 * @param int|null $id
+	 * @param string|null $url
+	 * @param string|null $title
+	 * @param string $description
+	 * @param array $tags
+	 * @param array|null $folders
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function editBookmark($id = null, $url = null, $title = null, $description = "", $tags = [], $folders = null): JSONResponse {
 		return $this->publicController->editBookmark($id, $url, $title, $description, $tags, $folders);
 	}
 
@@ -129,7 +123,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function deleteBookmark($id = -1) {
+	public function deleteBookmark($id = -1): JSONResponse {
 		return $this->publicController->deleteBookmark($id);
 	}
 
@@ -138,7 +132,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function deleteAllBookmarks() {
+	public function deleteAllBookmarks(): DataResponse {
 		try {
 			$this->bookmarks->deleteAll($this->userId);
 		} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException $e) {
@@ -152,9 +146,8 @@ class InternalBookmarkController extends ApiController {
 	 * @param string $url
 	 * @return JSONResponse
 	 * @NoAdminRequired
-	 * @throws UrlParseError
 	 */
-	public function clickBookmark($url = "") {
+	public function clickBookmark($url = ""): JSONResponse {
 		return $this->publicController->clickBookmark($url);
 	}
 
@@ -163,7 +156,7 @@ class InternalBookmarkController extends ApiController {
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 */
-	public function importBookmark($folder = null) {
+	public function importBookmark($folder = null): JSONResponse {
 		return $this->publicController->importBookmark($folder);
 	}
 
@@ -172,7 +165,7 @@ class InternalBookmarkController extends ApiController {
 	 * @return Response
 	 * @NoAdminRequired
 	 */
-	public function exportBookmark() {
+	public function exportBookmark(): Response {
 		return $this->publicController->exportBookmark();
 	}
 
@@ -183,9 +176,9 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function getBookmarkImage($id) {
+	public function getBookmarkImage($id): Response {
 		return $this->publicController->getBookmarkImage($id);
 	}
 
@@ -196,9 +189,9 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function getBookmarkFavicon($id) {
+	public function getBookmarkFavicon($id): Response {
 		return $this->publicController->getBookmarkFavicon($id);
 	}
 

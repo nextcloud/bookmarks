@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Db;
 
@@ -14,18 +19,6 @@ class BookmarkWithTagsAndParent extends Bookmark {
 
 	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id', 'tags', 'folders'];
 	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId', 'tags', 'folders'];
-
-	public static function fromArray($props) {
-		$bookmark = new Bookmark();
-		foreach ($props as $prop => $val) {
-			$bookmark->{'set' . $prop}($val);
-		}
-		return $bookmark;
-	}
-
-	public function __construct() {
-		parent::__construct();
-	}
 
 	public function toArray(): array {
 		$array = [];

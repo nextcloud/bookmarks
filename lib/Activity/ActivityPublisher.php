@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Activity;
 
@@ -90,7 +94,7 @@ class ActivityPublisher implements IEventListener {
 		}
 	}
 
-	public function publishShare(ChangeEvent $event) {
+	public function publishShare(ChangeEvent $event): void {
 		$activity = $this->activityManager->generateEvent();
 		$activity->setApp($this->appName);
 		$activity->setType('bookmarks');
@@ -125,7 +129,7 @@ class ActivityPublisher implements IEventListener {
 		}
 	}
 
-	public function publishFolder(ChangeEvent $event) {
+	public function publishFolder(ChangeEvent $event): void {
 		$activity = $this->activityManager->generateEvent();
 		$activity->setApp($this->appName);
 		$activity->setType('bookmarks');
@@ -177,7 +181,7 @@ class ActivityPublisher implements IEventListener {
 		}
 	}
 
-	public function publishBookmark(ChangeEvent $event) {
+	public function publishBookmark(ChangeEvent $event): void {
 		$activity = $this->activityManager->generateEvent();
 		$activity->setApp($this->appName);
 		$activity->setType('bookmarks');

@@ -1,27 +1,13 @@
 <?php
-/**
- * @author Marcel Klehr
- * @author Marius David Wieschollek
- * @copyright 2020 Marcel Klehr mklehr@gmx.net
- * @copyright Marius David Wieschollek
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
 
 namespace OCA\Bookmarks\Service\Previewers;
 
+use Exception;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
@@ -70,7 +56,7 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @param string $serverPath
 	 * @param string $url
 	 * @return Image|null
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	protected function fetchImage(string $serverPath, string $url): ?Image {
 		$tempPath = $this->tempManager->getTemporaryFile('.png');
@@ -98,7 +84,7 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 			$retries++;
 		}
 
-		throw new \Exception("Pageres Error\nCommand: {$cmd}\nOutput: " . implode(' ' . PHP_EOL, $output) . PHP_EOL);
+		throw new Exception("Pageres Error\nCommand: {$cmd}\nOutput: " . implode(' ' . PHP_EOL, $output) . PHP_EOL);
 	}
 
 	/**

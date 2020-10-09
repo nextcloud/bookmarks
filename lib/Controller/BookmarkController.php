@@ -1,17 +1,16 @@
 <?php
 
-/**
- * This file is licensed under the Affero General Public License version 3 or
- * later. See the COPYING file.
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
  *
- * @author Stefan Klemm <mail@stefan-klemm.de>
- * @copyright Stefan Klemm 2014
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
 
 namespace OCA\Bookmarks\Controller;
 
 use DateInterval;
 use DateTime;
+use Exception;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -405,12 +404,12 @@ class BookmarkController extends ApiController {
 
 
 	/**
-	 * @param int $id
-	 * @param string $url
-	 * @param string $title
-	 * @param string $description
-	 * @param array $tags
-	 * @param array $folders
+	 * @param int|null $id
+	 * @param string|null $url
+	 * @param string|null $title
+	 * @param string|null $description
+	 * @param array|null $tags
+	 * @param array|null $folders
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -535,7 +534,7 @@ class BookmarkController extends ApiController {
 				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
 			}
 			return $this->doImageResponse($image);
-		} catch (DoesNotExistException|MultipleObjectsReturnedException|\Exception $e) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 			return new NotFoundResponse();
 		}
 	}
@@ -561,7 +560,7 @@ class BookmarkController extends ApiController {
 				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
 			}
 			return $this->doImageResponse($image);
-		} catch (DoesNotExistException|MultipleObjectsReturnedException|\Exception $e) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 			return new NotFoundResponse();
 		}
 	}
@@ -569,7 +568,7 @@ class BookmarkController extends ApiController {
 	/**
 	 * @param $image
 	 * @return DataDisplayResponse
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function doImageResponse(?IImage $image): Response {
 		if ($image === null || $image->getData() === null) {
@@ -700,7 +699,6 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @param int $folder
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -717,7 +715,6 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @param int $folder
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired

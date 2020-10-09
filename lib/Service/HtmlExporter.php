@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Service;
 
@@ -44,6 +48,7 @@ class HtmlExporter {
 	 * @param BookmarkMapper $bookmarkMapper
 	 * @param FolderMapper $folderMapper
 	 * @param TagMapper $tagMapper
+	 * @param TreeMapper $treeMapper
 	 */
 	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper) {
 		$this->bookmarkMapper = $bookmarkMapper;

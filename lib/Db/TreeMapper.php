@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Db;
 
@@ -17,6 +22,8 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\ICache;
 use OCP\IConfig;
 use OCP\IDBConnection;
+use PDO;
+use function call_user_func;
 
 /**
  * Class TreeMapper
@@ -127,7 +134,7 @@ class TreeMapper extends QBMapper {
 	 * @return Entity the entity
 	 */
 	protected function mapRowToEntityWithClass(array $row, string $entityClass): Entity {
-		return \call_user_func($entityClass . '::fromRow', $row);
+		return call_user_func($entityClass . '::fromRow', $row);
 	}
 
 
@@ -680,7 +687,7 @@ class TreeMapper extends QBMapper {
 			->select($qb->func()->count('index', 'count'))
 			->from('bookmarks_tree')
 			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)));
-		return $qb->execute()->fetch(\PDO::FETCH_COLUMN);
+		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
 	}
 
 	/**
@@ -696,7 +703,7 @@ class TreeMapper extends QBMapper {
 			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)));
-		$countChildren = $qb->execute()->fetch(\PDO::FETCH_COLUMN);
+		$countChildren = $qb->execute()->fetch(PDO::FETCH_COLUMN);
 
 		$qb = $this->db->getQueryBuilder();
 		$qb
@@ -705,7 +712,7 @@ class TreeMapper extends QBMapper {
 			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_FOLDER)));
-		$childFolders = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		$childFolders = $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
 
 		foreach ($childFolders as $subFolderId) {
 			$countChildren += $this->countBookmarksInFolder($subFolderId);

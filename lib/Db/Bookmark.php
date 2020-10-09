@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Db;
 
@@ -76,11 +81,11 @@ class Bookmark extends Entity {
 		return $array;
 	}
 
-	public function markPreviewCreated() {
+	public function markPreviewCreated(): void {
 		$this->setLastPreview(time());
 	}
 
-	public function incrementClickcount() {
+	public function incrementClickcount(): void {
 		$this->setClickcount($this->clickcount + 1);
 	}
 }

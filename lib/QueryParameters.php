@@ -1,7 +1,13 @@
 <?php
-
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks;
+
+use InvalidArgumentException;
 
 class QueryParameters {
 	public const CONJ_AND = 'and';
@@ -9,10 +15,10 @@ class QueryParameters {
 
 	private $limit = 10;
 	private $offset = 0;
-	private $sortBy = null;
+	private $sortBy;
 	private $conjunction = self::CONJ_AND;
-	private $folder = null;
-	private $url = null;
+	private $folder;
+	private $url;
 	private $untagged = false;
 	private $unavailable = false;
 	private $archived = false;
@@ -121,7 +127,7 @@ class QueryParameters {
 	 */
 	public function setConjunction(string $conjunction): QueryParameters {
 		if ($conjunction !== self::CONJ_AND && $conjunction !== self::CONJ_OR) {
-			throw new \InvalidArgumentException("Conjunction value must be 'and' or 'or'");
+			throw new InvalidArgumentException("Conjunction value must be 'and' or 'or'");
 		}
 		$this->conjunction = $conjunction;
 		return $this;
@@ -130,7 +136,7 @@ class QueryParameters {
 	/**
 	 * @return null|int
 	 */
-	public function getFolder() {
+	public function getFolder(): ?int {
 		return $this->folder;
 	}
 
@@ -163,7 +169,7 @@ class QueryParameters {
 	 * @return boolean
 	 */
 	public function getUnavailable(): bool {
-		return (boolean) $this->unavailable;
+		return $this->unavailable;
 	}
 
 	/**
@@ -179,7 +185,7 @@ class QueryParameters {
 	 * @return boolean
 	 */
 	public function getArchived(): bool {
-		return (boolean) $this->archived;
+		return $this->archived;
 	}
 
 	/**

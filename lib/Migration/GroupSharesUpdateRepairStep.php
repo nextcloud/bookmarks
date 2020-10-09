@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Migration;
 
@@ -8,11 +12,16 @@ use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
+use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Service\FolderService;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use OCP\Share\IShare;
+use PDO;
 
 class GroupSharesUpdateRepairStep implements IRepairStep {
 	/**
@@ -20,7 +29,7 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 	 */
 	private $db;
 	/**
-	 * @var \OCP\IGroupManager
+	 * @var IGroupManager
 	 */
 	private $groupManager;
 	/**
@@ -40,7 +49,7 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 	 */
 	private $sharedFolderMapper;
 
-	public function __construct(IDBConnection $db, \OCP\IGroupManager $groupManager, FolderService $folders, ShareMapper $shareMapper, FolderMapper $folderMapper, SharedFolderMapper $sharedFolderMapper) {
+	public function __construct(IDBConnection $db, IGroupManager $groupManager, FolderService $folders, ShareMapper $shareMapper, FolderMapper $folderMapper, SharedFolderMapper $sharedFolderMapper) {
 		$this->db = $db;
 		$this->groupManager = $groupManager;
 		$this->folders = $folders;
@@ -58,9 +67,9 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 
 	/**
 	 * @param IOutput $output
-	 * @throws \OCA\Bookmarks\Exception\UnsupportedOperation
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function run(IOutput $output) {
 		$deleted = 0;
@@ -83,7 +92,7 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 				->from('bookmarks_shared_folders', 'sf')
 				->join('sf', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('t.shared_folder_id', 'sf.id'))
 				->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($groupShare['id'])));
-			$usersInShare = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+			$usersInShare = $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
 
 			$group = $this->groupManager->get($groupShare['participant']);
 			if ($group === null) {

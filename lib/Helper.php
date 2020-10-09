@@ -1,14 +1,19 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks;
 
 class Helper {
 	public static function getDomainWithoutExt($name) {
-		$pos = strripos($name, '.');
+		$pos = strrpos($name, '.');
 		if ($pos === false) {
 			return $name;
-		} else {
-			return substr($name, 0, $pos);
 		}
+
+		return substr($name, 0, $pos);
 	}
 }

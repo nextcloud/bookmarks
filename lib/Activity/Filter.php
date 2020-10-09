@@ -1,21 +1,27 @@
 <?php
-
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Activity;
 
 use OCP\Activity\IFilter;
+use OCP\IL10N;
+use OCP\IURLGenerator;
 
 class Filter implements IFilter {
 	/**
-	 * @var \OCP\IL10N
+	 * @var IL10N
 	 */
 	private $l;
 	/**
-	 * @var \OCP\IURLGenerator
+	 * @var IURLGenerator
 	 */
 	private $urlGenerator;
 
-	public function __construct(\OCP\IL10N $l, \OCP\IURLGenerator $urlGenerator) {
+	public function __construct(IL10N $l, IURLGenerator $urlGenerator) {
 		$this->l = $l;
 		$this->urlGenerator = $urlGenerator;
 	}

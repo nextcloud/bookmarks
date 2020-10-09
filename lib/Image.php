@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks;
 
@@ -24,7 +28,7 @@ class Image implements IImage {
 	}
 
 	public static function deserialize(string $json): Image {
-		$image = json_decode($json, true);
+		$image = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 		return new Image($image['contentType'], $image['data'] ? base64_decode($image['data']) : null);
 	}
 
@@ -46,6 +50,6 @@ class Image implements IImage {
 		return json_encode([
 			'contentType' => $this->getContentType(),
 			'data' => base64_encode($this->getData()),
-		]);
+		], JSON_THROW_ON_ERROR);
 	}
 }
