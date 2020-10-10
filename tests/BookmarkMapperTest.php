@@ -12,6 +12,7 @@ use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\IUserManager;
 
 class BookmarkMapperTest extends TestCase {
 
@@ -40,9 +41,9 @@ class BookmarkMapperTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->bookmarkMapper = OC::$server->query(Db\BookmarkMapper::class);
+		$this->bookmarkMapper = OC::$server->get(Db\BookmarkMapper::class);
 
-		$this->userManager = OC::$server->getUserManager();
+		$this->userManager = OC::$server->get(IUserManager::class);;
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

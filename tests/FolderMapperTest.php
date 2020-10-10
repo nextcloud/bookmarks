@@ -7,6 +7,7 @@ use OCA\Bookmarks\Db;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\IUserManager;
 
 class FolderMapperTest extends TestCase {
 	/**
@@ -31,9 +32,9 @@ class FolderMapperTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
+		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
 
-		$this->userManager = \OC::$server->getUserManager();
+		$this->userManager = \OC::$server->get(IUserManager::class);;
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

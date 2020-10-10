@@ -13,6 +13,7 @@ use OCA\Bookmarks\Service;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
+use OCP\IUserManager;
 
 class HtmlImportExportTest extends TestCase {
 
@@ -64,14 +65,14 @@ class HtmlImportExportTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
-		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
-		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
-		$this->treeMapper = \OC::$server->query(Db\TreeMapper::class);
-		$this->htmlImporter = \OC::$server->query(Service\HtmlImporter::class);
-		$this->htmlExporter = \OC::$server->query(Service\HtmlExporter::class);
+		$this->bookmarkMapper = \OC::$server->get(Db\BookmarkMapper::class);
+		$this->tagMapper = \OC::$server->get(Db\TagMapper::class);
+		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
+		$this->treeMapper = \OC::$server->get(Db\TreeMapper::class);
+		$this->htmlImporter = \OC::$server->get(Service\HtmlImporter::class);
+		$this->htmlExporter = \OC::$server->get(Service\HtmlExporter::class);
 
-		$this->userManager = \OC::$server->getUserManager();
+		$this->userManager = \OC::$server->get(IUserManager::class);;
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
