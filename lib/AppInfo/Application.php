@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\AppInfo;
 
 use OCA\Bookmarks\Activity\ActivityPublisher;
+use OCA\Bookmarks\Dashboard\Widget;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
@@ -50,6 +51,7 @@ class Application extends App implements IBootstrap {
 		});
 
 		$context->registerSearchProvider(Provider::class);
+		$context->registerDashboardWidget(Widget::class);
 
 		$context->registerEventListener(CreateEvent::class, HashManager::class);
 		$context->registerEventListener(UpdateEvent::class, HashManager::class);
