@@ -55,7 +55,7 @@ class LinkExplorer {
 			libxml_use_internal_errors(false);
 			$preview = $this->linkPreview->getLink($url)->getPreview();
 		} catch (Exception $e) {
-			$this->logger->debug($e, ['app' => 'bookmarks']);
+			$this->logger->debug($e->getMessage()->getMessage(), ['app' => 'bookmarks']);
 			return $data;
 		}
 

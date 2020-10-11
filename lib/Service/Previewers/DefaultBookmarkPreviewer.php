@@ -74,7 +74,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 		try {
 			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
 		} catch (Exception $e) {
-			$this->logger->debug($e, ['app' => 'bookmarks']);
+			$this->logger->debug($e->getMessage(), ['app' => 'bookmarks']);
 			return null;
 		}
 		$body = $response->getBody();
