@@ -13,8 +13,6 @@ use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
 use Psr\Log\LoggerInterface;
-
-;
 use OCP\ITempManager;
 
 class PageresBookmarkPreviewer implements IBookmarkPreviewer {

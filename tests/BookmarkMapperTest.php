@@ -43,7 +43,7 @@ class BookmarkMapperTest extends TestCase {
 
 		$this->bookmarkMapper = OC::$server->get(Db\BookmarkMapper::class);
 
-		$this->userManager = OC::$server->get(IUserManager::class);;
+		$this->userManager = OC::$server->get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

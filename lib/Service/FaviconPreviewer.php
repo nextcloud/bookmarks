@@ -18,8 +18,6 @@ use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use Psr\Log\LoggerInterface;
 
-;
-
 class FaviconPreviewer implements IBookmarkPreviewer {
 	public const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60; // cache for one month
 	public const HTTP_TIMEOUT = 10 * 1000;

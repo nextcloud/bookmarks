@@ -72,7 +72,7 @@ class HtmlImportExportTest extends TestCase {
 		$this->htmlImporter = \OC::$server->get(Service\HtmlImporter::class);
 		$this->htmlExporter = \OC::$server->get(Service\HtmlExporter::class);
 
-		$this->userManager = \OC::$server->get(IUserManager::class);;
+		$this->userManager = \OC::$server->get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

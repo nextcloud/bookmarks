@@ -17,8 +17,6 @@ use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use Psr\Log\LoggerInterface;
 
-;
-
 class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.DefaultPreviewService';
 	public const HTTP_TIMEOUT = 10 * 1000;

@@ -18,8 +18,6 @@ use OCP\Files\Folder;
 use OCP\Files\Node;
 use OCP\IL10N;
 use Psr\Log\LoggerInterface;
-
-;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;

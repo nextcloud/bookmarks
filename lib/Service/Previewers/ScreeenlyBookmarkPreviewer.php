@@ -17,8 +17,6 @@ use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
 
-;
-
 class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
 

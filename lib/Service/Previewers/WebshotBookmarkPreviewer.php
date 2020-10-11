@@ -17,8 +17,6 @@ use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
 
-;
-
 class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
 

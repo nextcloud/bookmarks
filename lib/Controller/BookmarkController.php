@@ -46,8 +46,6 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
 use Psr\Log\LoggerInterface;
-
-;
 use OCP\IURLGenerator;
 
 class BookmarkController extends ApiController {

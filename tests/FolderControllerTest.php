@@ -172,11 +172,11 @@ class FolderControllerTest extends TestCase {
 
 		$this->user = 'test';
 		$this->otherUser = 'otheruser';
-		$this->request = OC::$server->get(IRequest::class);;
+		$this->request = OC::$server->get(IRequest::class);
 
 		$this->publicRequest = $this->createMock(IRequest::class);
 
-		$this->userManager = OC::$server->get(IUserManager::class);;
+		$this->userManager = OC::$server->get(IUserManager::class);
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
 		}

@@ -14,8 +14,6 @@ use OCA\Bookmarks\Http\RequestFactory;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
-
-;
 use phpUri;
 
 class LinkExplorer {
