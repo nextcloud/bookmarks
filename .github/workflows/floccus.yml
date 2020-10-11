@@ -31,8 +31,7 @@ jobs:
         floccus-adapter:
           - nextcloud-folders
         test-name:
-          - standard
-          - parallel
+          - ''
         browsers: ['chrome']
 
 
