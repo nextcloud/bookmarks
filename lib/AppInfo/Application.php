@@ -25,8 +25,9 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
-use OCP\IContainer;
+use OCP\IRequest;
 use OCP\IUser;
+use OCP\IUserSession;
 use OCP\User\Events\BeforeUserDeletedEvent;
 
 class Application extends App implements IBootstrap {
@@ -41,13 +42,12 @@ class Application extends App implements IBootstrap {
 
 		$context->registerService('UserId', static function ($c) {
 			/** @var IUser|null $user */
-			$user = $c->query('ServerContainer')->getUserSession()->getUser();
-			/** @var IContainer $c */
+			$user = $c->get(IUserSession::class)->getUser();
 			return $user === null ? null : $user->getUID();
 		});
 
 		$context->registerService('request', static function ($c) {
-			return $c->query('Request');
+			return $c->get(IRequest::class);
 		});
 
 		$context->registerSearchProvider(Provider::class);
