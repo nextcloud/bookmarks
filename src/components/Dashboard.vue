@@ -5,11 +5,11 @@
   -->
 
 <template>
-	<DashboardWidget :items="items" :loading="loading">
-		<template v-slot:empty-content>
-			{{ t('bookmarks', 'No bookmarks here') }}
-		</template>
-	</DashboardWidget>
+	<DashboardWidget :items="items"
+		:loading="loading"
+		:show-more-text="t('bookmarks', 'Bookmarks')"
+		:show-more-url="moreUrl"
+		:empty-content-message="t('bookmarks', 'No bookmarks found')" />
 </template>
 
 <script>
@@ -21,7 +21,7 @@ export default {
 	components: { DashboardWidget },
 	computed: {
 		loading() {
-			return this.$store.state.loading.bookmarks
+			return Boolean(this.$store.state.loading.bookmarks)
 		},
 		items() {
 			return this.$store.state.bookmarks.map(bookmark => ({
@@ -31,6 +31,9 @@ export default {
 				mainText: bookmark.title,
 				subText: bookmark.url,
 			}))
+		},
+		moreUrl() {
+			return generateUrl('/apps/bookmarks/')
 		},
 	},
 	async mounted() {
