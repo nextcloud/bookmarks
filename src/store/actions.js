@@ -9,7 +9,7 @@ import { generateUrl } from '@nextcloud/router'
 import { loadState } from '@nextcloud/initial-state'
 import AppGlobal from '../mixins/AppGlobal'
 import { mutations } from './mutations'
-import { Parallel } from 'async-parallel'
+import * as Parallel from 'async-parallel'
 
 const BATCH_SIZE = 42
 
