@@ -51,6 +51,10 @@ class HtmlImporter {
 	 * @var TreeMapper
 	 */
 	private $treeMapper;
+	/**
+	 * @var HashManager
+	 */
+	private $hashManager;
 
 	/**
 	 * ImportService constructor.
@@ -60,13 +64,15 @@ class HtmlImporter {
 	 * @param TagMapper $tagMapper
 	 * @param TreeMapper $treeMapper
 	 * @param BookmarksParser $bookmarksParser
+	 * @param HashManager $hashManager
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser, \OCA\Bookmarks\Service\HashManager $hashManager) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->folderMapper = $folderMapper;
 		$this->tagMapper = $tagMapper;
 		$this->treeMapper = $treeMapper;
 		$this->bookmarksParser = $bookmarksParser;
+		$this->hashManager = $hashManager;
 	}
 
 	/**
@@ -103,6 +109,7 @@ class HtmlImporter {
 	public function import($userId, string $content, int $rootFolderId = null): array {
 		$imported = [];
 		$errors = [];
+
 		if ($rootFolderId === null) {
 			$rootFolder = $this->folderMapper->findRootFolder($userId);
 		} else {
@@ -111,7 +118,12 @@ class HtmlImporter {
 				throw new UnauthorizedAccessError('Not allowed to access folder ' . $rootFolder->getId());
 			}
 		}
+
 		$this->bookmarksParser->parse($content, false);
+
+		// Disable invalidation, since we're going to add a bunch of new data to the tree at a single point
+		$this->hashManager->setInvalidationEnabled(false);
+
 		foreach ($this->bookmarksParser->currentFolder['children'] as $folder) {
 			$imported[] = $this->importFolder($userId, $folder, $rootFolder->getId(), $errors);
 		}
@@ -124,6 +136,10 @@ class HtmlImporter {
 			}
 			$imported[] = ['type' => 'bookmark', 'id' => $bm->getId(), 'title' => $bookmark['title'], 'url' => $bookmark['href']];
 		}
+
+		$this->hashManager->setInvalidationEnabled(true);
+		$this->hashManager->invalidateFolder($rootFolderId);
+
 		return ['imported' => $imported, 'errors' => $errors];
 	}
 

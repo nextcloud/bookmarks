@@ -91,6 +91,10 @@ class TreeMapper extends QBMapper {
 	 * @var IQueryBuilder
 	 */
 	private $insertQuery;
+	/**
+	 * @var IQueryBuilder
+	 */
+	private $parentQuery;
 
 	/**
 	 * FolderMapper constructor.
@@ -123,6 +127,7 @@ class TreeMapper extends QBMapper {
 		$this->publicFolderMapper = $publicFolderMapper;
 
 		$this->insertQuery = $this->getInsertQuery();
+		$this->parentQuery = $this->getParentQuery();
 	}
 
 	/**
@@ -200,6 +205,15 @@ class TreeMapper extends QBMapper {
 		return $qb;
 	}
 
+	protected function getParentQuery(): IQueryBuilder {
+		$qb = $this->selectFromType(self::TYPE_FOLDER);
+		$qb
+			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.parent_folder', 'i.id'))
+			->where($qb->expr()->eq('t.id', $qb->createParameter('id')))
+			->andWhere($qb->expr()->eq('t.type', $qb->createParameter('type')));
+		return $qb;
+	}
+
 	/**
 	 * @param int $folderId
 	 * @param string $type
@@ -223,11 +237,11 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function findParentOf(string $type, int $itemId): Entity {
-		$qb = $this->selectFromType(self::TYPE_FOLDER);
-		$qb
-			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.parent_folder', 'i.id'))
-			->where($qb->expr()->eq('t.id', $qb->createPositionalParameter($itemId)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter($type)));
+		$qb = $this->parentQuery;
+		$qb->setParameters([
+			'id' => $itemId,
+			'type' => $type,
+		]);
 		return $this->findEntityWithType($qb, $type);
 	}
 
@@ -237,11 +251,11 @@ class TreeMapper extends QBMapper {
 	 * @return array|Entity[]
 	 */
 	public function findParentsOf(string $type, int $itemId): array {
-		$qb = $this->selectFromType(self::TYPE_FOLDER);
-		$qb
-			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.parent_folder', 'i.id'))
-			->where($qb->expr()->eq('t.id', $qb->createPositionalParameter($itemId)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter($type)));
+		$qb = $this->parentQuery;
+		$qb->setParameters([
+			'id' => $itemId,
+			'type' => $type,
+		]);
 		return $this->findEntitiesWithType($qb, self::TYPE_FOLDER);
 	}
 
@@ -337,8 +351,9 @@ class TreeMapper extends QBMapper {
 				->where($qb->expr()->isNull('t.id'));
 			$orphanedBookmarks = $qb->execute();
 			while ($bookmark = $orphanedBookmarks->fetchColumn()) {
-				$bm = $this->bookmarkMapper->find($bookmark);
-				$this->bookmarkMapper->delete($bm);
+				$qb = $this->db->getQueryBuilder();
+				$qb->delete('bookmarks', 'b')
+					->where($qb->expr()->eq('b.id', $qb->createPositionalParameter($bookmark)));
 			}
 
 			return;
@@ -399,20 +414,12 @@ class TreeMapper extends QBMapper {
 			throw new UnsupportedOperation('Cannot move Bookmark');
 		}
 		try {
+			// Try to find current parent
 			/** @var Folder $currentParent */
 			$currentParent = $this->findParentOf($type, $itemId);
 
-			$ancestor = new Folder();
-			$ancestor->setId($newParentFolderId);
-			while (true) {
-				if ($ancestor->getId() === $itemId) {
-					throw new UnsupportedOperation('Cannot nest a folder inside one of its descendants');
-				}
-				try {
-					$ancestor = $this->findParentOf(self::TYPE_FOLDER, $ancestor->getId());
-				} catch (DoesNotExistException $e) {
-					break;
-				}
+			if ($this->hasDescendant($itemId, self::TYPE_FOLDER, $newParentFolderId)) {
+				throw new UnsupportedOperation('Cannot nest a folder inside one of its descendants');
 			}
 
 			// Item currently has a parent => move.

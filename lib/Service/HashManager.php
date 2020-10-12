@@ -46,6 +46,10 @@ class HashManager {
 	 * @var FolderMapper
 	 */
 	protected $folderMapper;
+	/**
+	 * @var bool
+	 */
+	private $enabled = true;
 
 	/**
 	 * FolderMapper constructor.
@@ -190,6 +194,9 @@ class HashManager {
 	 * @param ChangeEvent $event
 	 */
 	public function handle(ChangeEvent $event): void {
+		if ($this->enabled === false) {
+			return;
+		}
 		switch ($event->getType()) {
 			case TreeMapper::TYPE_FOLDER:
 				$this->invalidateFolder($event->getId());
@@ -206,5 +213,9 @@ class HashManager {
 				$this->invalidateFolder($event->getOldParent());
 			}
 		}
+	}
+
+	public function setInvalidationEnabled(bool $enabled) {
+		$this->enabled = $enabled;
 	}
 }

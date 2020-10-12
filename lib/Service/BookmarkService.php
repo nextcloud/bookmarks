@@ -66,6 +66,10 @@ class BookmarkService {
 	 * @var IEventDispatcher
 	 */
 	private $eventDispatcher;
+	/**
+	 * @var HashManager
+	 */
+	private $hashManager;
 
 	/**
 	 * BookmarksService constructor.
@@ -80,8 +84,9 @@ class BookmarkService {
 	 * @param FaviconPreviewer $faviconPreviewer
 	 * @param FolderService $folders
 	 * @param IEventDispatcher $eventDispatcher
+	 * @param HashManager $hashManager
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\HashManager $hashManager) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
@@ -92,6 +97,7 @@ class BookmarkService {
 		$this->faviconPreviewer = $faviconPreviewer;
 		$this->folders = $folders;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->hashManager = $hashManager;
 	}
 
 	/**
@@ -404,6 +410,7 @@ class BookmarkService {
 	 * @throws UnsupportedOperation
 	 */
 	public function deleteAll(string $userId): void {
+		$this->hashManager->setInvalidationEnabled(false);
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$bookmarks = $this->treeMapper->findChildren(TreeMapper::TYPE_BOOKMARK, $rootFolder->getId());
 		foreach ($bookmarks as $bookmark) {
@@ -414,5 +421,7 @@ class BookmarkService {
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
 		}
 		$this->bookmarkMapper->deleteAll($userId);
+		$this->hashManager->setInvalidationEnabled(true);
+		$this->hashManager->invalidateFolder($rootFolder->getId());
 	}
 }
