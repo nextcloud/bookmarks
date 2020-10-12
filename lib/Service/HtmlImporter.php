@@ -138,7 +138,7 @@ class HtmlImporter {
 		}
 
 		$this->hashManager->setInvalidationEnabled(true);
-		$this->hashManager->invalidateFolder($rootFolderId);
+		$this->hashManager->invalidateFolder($rootFolder->getId());
 
 		return ['imported' => $imported, 'errors' => $errors];
 	}
