@@ -108,7 +108,7 @@ export default {
 			case privateRoutes.BOOKMARK:
 				await this.$store.dispatch(actions.LOAD_BOOKMARK, route.params.bookmark)
 				this.$store.dispatch(actions.OPEN_BOOKMARK, route.params.bookmark)
-				this.$store.commit(mutations.FETCH_END, { type: 'bookmarks' })
+				this.$store.commit(mutations.FETCH_END, 'bookmarks')
 				break
 			case privateRoutes.FOLDER:
 				this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder)

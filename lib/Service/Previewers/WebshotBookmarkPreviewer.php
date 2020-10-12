@@ -15,7 +15,7 @@ use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\FileCache;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 
 class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
@@ -29,7 +29,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 
 	private $cache;
 
-	/** @var ILogger */
+	/** @var LoggerInterface */
 	private $logger;
 
 	private $width = 800;
@@ -40,7 +40,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	private $apiUrl;
 
-	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
+	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, LoggerInterface $logger) {
 		$this->config = $config;
 		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.webshot.url', '');
 		$this->cache = $cache;
@@ -92,7 +92,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 			}
 			$body = $response->getBody();
 		} catch (Exception $e) {
-			$this->logger->logException($e, ['app' => 'bookmarks']);
+			$this->logger->warning($e->getMessage(), ['app' => 'bookmarks']);
 			return null;
 		}
 

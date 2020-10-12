@@ -7,6 +7,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
+use OCP\IUserManager;
 
 class PublicFolderTest extends TestCase {
 
@@ -56,11 +57,11 @@ class PublicFolderTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->folderPublicMapper = \OC::$server->query(Db\PublicFolderMapper::class);
-		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
-		$this->treeMapper = \OC::$server->query(Db\TreeMapper::class);
+		$this->folderPublicMapper = \OC::$server->get(Db\PublicFolderMapper::class);
+		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
+		$this->treeMapper = \OC::$server->get(Db\TreeMapper::class);
 
-		$this->userManager = \OC::$server->getUserManager();
+		$this->userManager = \OC::$server->get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

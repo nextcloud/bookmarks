@@ -12,14 +12,14 @@ use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 use OCP\ITempManager;
 
 class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
 	public const CAPTURE_MAX_RETRIES = 3;
 
-	/** @var ILogger */
+	/** @var LoggerInterface */
 	private $logger;
 
 	/**
@@ -27,7 +27,7 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	private $tempManager;
 
-	public function __construct(ITempManager $tempManager, ILogger $logger) {
+	public function __construct(ITempManager $tempManager, LoggerInterface $logger) {
 		$this->tempManager = $tempManager;
 		$this->logger = $logger;
 	}

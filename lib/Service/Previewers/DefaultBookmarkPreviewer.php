@@ -15,7 +15,7 @@ use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\LinkExplorer;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 
 class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.DefaultPreviewService';
@@ -27,15 +27,15 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	/** @var LinkExplorer */
 	protected $linkExplorer;
 
-	/** @var ILogger */
+	/** @var LoggerInterface */
 	private $logger;
 
 	/**
 	 * @param LinkExplorer $linkExplorer
 	 * @param IClientService $clientService
-	 * @param ILogger $logger
+	 * @param LoggerInterface $logger
 	 */
-	public function __construct(LinkExplorer $linkExplorer, IClientService $clientService, ILogger $logger) {
+	public function __construct(LinkExplorer $linkExplorer, IClientService $clientService, LoggerInterface $logger) {
 		$this->linkExplorer = $linkExplorer;
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
@@ -72,7 +72,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 		try {
 			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
 		} catch (Exception $e) {
-			$this->logger->debug($e, ['app' => 'bookmarks']);
+			$this->logger->debug($e->getMessage(), ['app' => 'bookmarks']);
 			return null;
 		}
 		$body = $response->getBody();
