@@ -91,6 +91,26 @@ class TreeMapper extends QBMapper {
 	 * @var IQueryBuilder
 	 */
 	private $insertQuery;
+	/**
+	 * @var IQueryBuilder
+	 */
+	private $parentQuery;
+	/**
+	 * @var IQueryBuilder
+	 */
+	private $getChildrenOrderQuery;
+	/**
+	 * @var IQueryBuilder
+	 */
+	private $getChildrenBookmarksQuery;
+	/**
+	 * @var IQueryBuilder
+	 */
+	private $getChildrenFoldersQuery;
+	/**
+	 * @var IQueryBuilder
+	 */
+	private $getChildrenSharesQuery;
 
 	/**
 	 * FolderMapper constructor.
@@ -123,6 +143,11 @@ class TreeMapper extends QBMapper {
 		$this->publicFolderMapper = $publicFolderMapper;
 
 		$this->insertQuery = $this->getInsertQuery();
+		$this->parentQuery = $this->getParentQuery();
+		$this->getChildrenOrderQuery = $this->getGetChildrenOrderQuery();
+		$this->getChildrenBookmarksQuery = $this->getGetChildrenBookmarksQuery();
+		$this->getChildrenFoldersQuery = $this->getGetChildrenFoldersQuery();
+		$this->getChildrenSharesQuery = $this->getGetChildrenSharesQuery();
 	}
 
 	/**
@@ -200,6 +225,63 @@ class TreeMapper extends QBMapper {
 		return $qb;
 	}
 
+	protected function getParentQuery(): IQueryBuilder {
+		$qb = $this->selectFromType(self::TYPE_FOLDER);
+		$qb
+			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.parent_folder', 'i.id'))
+			->where($qb->expr()->eq('t.id', $qb->createParameter('id')))
+			->andWhere($qb->expr()->eq('t.type', $qb->createParameter('type')));
+		return $qb;
+	}
+
+	protected function getGetChildrenOrderQuery(): IQueryBuilder {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('id', 'type', 'index')
+			->from('bookmarks_tree')
+			->where($qb->expr()->eq('parent_folder', $qb->createParameter('parent_folder')))
+			->orderBy('index', 'ASC');
+		return $qb;
+	}
+
+	protected function getGetChildrenSharesQuery(): IQueryBuilder {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('folder_id', 's.title', 'user_id', 'index', 't.type')
+			->from('bookmarks_shared_folders', 's')
+			->innerJoin('s', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 's.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
+			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter(self::TYPE_SHARE)))
+			->orderBy('t.index', 'ASC');
+		return $qb;
+	}
+	protected function getGetChildrenFoldersQuery(): IQueryBuilder {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('f.id', 'title', 'user_id', 'index', 't.type')
+			->from('bookmarks_folders', 'f')
+			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
+			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter(self::TYPE_FOLDER)))
+			->orderBy('t.index', 'ASC');
+		return $qb;
+	}
+
+	protected function getGetChildrenBookmarksQuery(): IQueryBuilder {
+		$qb = $this->db->getQueryBuilder();
+		$cols = array_merge(['index', 't.type'], array_map(static function ($col) {
+			return 'b.' . $col;
+		}, Bookmark::$columns));
+		$qb
+			->select($cols)
+			->from('bookmarks', 'b')
+			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
+			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter(self::TYPE_BOOKMARK)))
+			->orderBy('t.index', 'ASC');
+		return $qb;
+	}
+
 	/**
 	 * @param int $folderId
 	 * @param string $type
@@ -223,11 +305,11 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function findParentOf(string $type, int $itemId): Entity {
-		$qb = $this->selectFromType(self::TYPE_FOLDER);
-		$qb
-			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.parent_folder', 'i.id'))
-			->where($qb->expr()->eq('t.id', $qb->createPositionalParameter($itemId)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter($type)));
+		$qb = $this->parentQuery;
+		$qb->setParameters([
+			'id' => $itemId,
+			'type' => $type,
+		]);
 		return $this->findEntityWithType($qb, $type);
 	}
 
@@ -237,11 +319,11 @@ class TreeMapper extends QBMapper {
 	 * @return array|Entity[]
 	 */
 	public function findParentsOf(string $type, int $itemId): array {
-		$qb = $this->selectFromType(self::TYPE_FOLDER);
-		$qb
-			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.parent_folder', 'i.id'))
-			->where($qb->expr()->eq('t.id', $qb->createPositionalParameter($itemId)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter($type)));
+		$qb = $this->parentQuery;
+		$qb->setParameters([
+			'id' => $itemId,
+			'type' => $type,
+		]);
 		return $this->findEntitiesWithType($qb, self::TYPE_FOLDER);
 	}
 
@@ -337,8 +419,9 @@ class TreeMapper extends QBMapper {
 				->where($qb->expr()->isNull('t.id'));
 			$orphanedBookmarks = $qb->execute();
 			while ($bookmark = $orphanedBookmarks->fetchColumn()) {
-				$bm = $this->bookmarkMapper->find($bookmark);
-				$this->bookmarkMapper->delete($bm);
+				$qb = $this->db->getQueryBuilder();
+				$qb->delete('bookmarks', 'b')
+					->where($qb->expr()->eq('b.id', $qb->createPositionalParameter($bookmark)));
 			}
 
 			return;
@@ -399,20 +482,12 @@ class TreeMapper extends QBMapper {
 			throw new UnsupportedOperation('Cannot move Bookmark');
 		}
 		try {
+			// Try to find current parent
 			/** @var Folder $currentParent */
 			$currentParent = $this->findParentOf($type, $itemId);
 
-			$ancestor = new Folder();
-			$ancestor->setId($newParentFolderId);
-			while (true) {
-				if ($ancestor->getId() === $itemId) {
-					throw new UnsupportedOperation('Cannot nest a folder inside one of its descendants');
-				}
-				try {
-					$ancestor = $this->findParentOf(self::TYPE_FOLDER, $ancestor->getId());
-				} catch (DoesNotExistException $e) {
-					break;
-				}
+			if ($this->hasDescendant($itemId, self::TYPE_FOLDER, $newParentFolderId)) {
+				throw new UnsupportedOperation('Cannot nest a folder inside one of its descendants');
 			}
 
 			// Item currently has a parent => move.
@@ -608,12 +683,8 @@ class TreeMapper extends QBMapper {
 	 * @return array the children each in the format ["id" => int, "type" => 'bookmark' | 'folder' ]
 	 */
 	public function getChildrenOrder($folderId, $layers = 0): array {
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->select('id', 'type', 'index')
-			->from('bookmarks_tree')
-			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
-			->orderBy('index', 'ASC');
+		$qb = $this->getChildrenOrderQuery;
+		$qb->setParameter('parent_folder', $folderId);
 		$children = $qb->execute()->fetchAll();
 
 		$qb = $this->db->getQueryBuilder();
@@ -721,37 +792,16 @@ class TreeMapper extends QBMapper {
 	}
 
 	public function getChildren(int $folderId, int $layers = 0) {
-		$qb = $this->db->getQueryBuilder();
-		$cols = array_merge(['index', 't.type'], array_map(static function ($col) {
-			return 'b.' . $col;
-		}, Bookmark::$columns));
-		$qb
-			->select($cols)
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
-			->orderBy('t.index', 'ASC');
+		$qb = $this->getChildrenBookmarksQuery;
+		$qb->setParameter('parent_folder', $folderId);
 		$childBookmarks = $qb->execute()->fetchAll();
 
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->select('f.id', 'title', 'user_id', 'index', 't.type')
-			->from('bookmarks_folders', 'f')
-			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_FOLDER)))
-			->orderBy('t.index', 'ASC');
+		$qb = $this->getChildrenFoldersQuery;
+		$qb->setParameter('parent_folder', $folderId);
 		$childFolders = $qb->execute()->fetchAll();
 
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->select('folder_id', 's.title', 'user_id', 'index', 't.type')
-			->from('bookmarks_shared_folders', 's')
-			->innerJoin('s', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 's.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_SHARE)))
-			->orderBy('t.index', 'ASC');
+		$qb = $this->getChildrenSharesQuery;
+		$qb->setParameter('parent_folder', $folderId);
 		$childShares = $qb->execute()->fetchAll();
 
 		$children = array_merge($childBookmarks, $childFolders, $childShares);

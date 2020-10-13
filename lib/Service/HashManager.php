@@ -12,6 +12,7 @@ use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -46,6 +47,10 @@ class HashManager {
 	 * @var FolderMapper
 	 */
 	protected $folderMapper;
+	/**
+	 * @var bool
+	 */
+	private $enabled = true;
 
 	/**
 	 * FolderMapper constructor.
@@ -129,6 +134,7 @@ class HashManager {
 			$hash = [];
 		}
 
+		/** @var Folder $entity */
 		$entity = $this->folderMapper->find($folderId);
 		$children = $this->treeMapper->getChildrenOrder($folderId);
 		$childHashes = array_map(function ($item) use ($fields, $entity) {
@@ -190,6 +196,9 @@ class HashManager {
 	 * @param ChangeEvent $event
 	 */
 	public function handle(ChangeEvent $event): void {
+		if ($this->enabled === false) {
+			return;
+		}
 		switch ($event->getType()) {
 			case TreeMapper::TYPE_FOLDER:
 				$this->invalidateFolder($event->getId());
@@ -206,5 +215,9 @@ class HashManager {
 				$this->invalidateFolder($event->getOldParent());
 			}
 		}
+	}
+
+	public function setInvalidationEnabled(bool $enabled) {
+		$this->enabled = $enabled;
 	}
 }
