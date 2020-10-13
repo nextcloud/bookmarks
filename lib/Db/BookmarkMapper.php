@@ -58,6 +58,10 @@ class BookmarkMapper extends QBMapper {
 	 * @var IQueryBuilder
 	 */
 	private $deleteTagsQuery;
+	/**
+	 * @var IQueryBuilder
+	 */
+	private $findByUrlQuery;
 
 	/**
 	 * BookmarkMapper constructor.
@@ -79,14 +83,41 @@ class BookmarkMapper extends QBMapper {
 		$this->tagMapper = $tagMapper;
 
 		$this->deleteTagsQuery = $this->getDeleteTagsQuery();
+		$this->findByUrlQuery = $this->getFindByUrlQuery();
 	}
 
-	protected function getDeleteTagsQuery() {
+	protected function getFindByUrlQuery(): IQueryBuilder {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('*')
+			->from('bookmarks')
+			->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')))
+			->andWhere($qb->expr()->eq('url', $qb->createParameter('url')));
+		return $qb;
+	}
+
+	protected function getDeleteTagsQuery(): IQueryBuilder {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->delete('bookmarks_tags')
 			->where($qb->expr()->eq('bookmark_id', $qb->createParameter('id')));
 		return $qb;
+	}
+
+	/**
+	 * @param $userId
+	 * @param $url
+	 * @return Entity
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	protected function findByUrl($userId, $url) {
+		$qb = $this->findByUrlQuery;
+		$qb->setParameters([
+			'user_id' => $userId,
+			'url' => $url
+		]);
+		return $this->findEntity($qb);
 	}
 
 	/**
@@ -509,15 +540,16 @@ class BookmarkMapper extends QBMapper {
 		$entity->setLastPreview(0);
 		$entity->setClickcount(0);
 
-		$params = new QueryParameters();
-		$bookmark = $this->findAll($entity->getUserId(), $params->setUrl($entity->getUrl()));
-
-		if (isset($bookmark[0])) {
-			throw new AlreadyExistsError('A bookmark with this URL already exists');
+		try {
+			$this->findByUrl($entity->getUserId(), $entity->getUrl());
+		} catch (DoesNotExistException $e) {
+			parent::insert($entity);
+			return $entity;
+		} catch (MultipleObjectsReturnedException $e) {
+			// noop
 		}
 
-		parent::insert($entity);
-		return $entity;
+		throw new AlreadyExistsError('A bookmark with this URL already exists');
 	}
 
 	/**
@@ -525,17 +557,15 @@ class BookmarkMapper extends QBMapper {
 	 * @return Entity
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
-	 * @throws UserLimitExceededError
+	 * @throws UserLimitExceededError|MultipleObjectsReturnedException
 	 */
 	public function insertOrUpdate(Entity $entity): Entity {
-		$params = new QueryParameters();
-		$bookmarks = $this->findAll($entity->getUserId(), $params->setUrl($entity->getUrl()));
-
-		if (isset($bookmarks[0])) {
-			$entity->setId($bookmarks[0]->getId());
-			$newEntity = $this->update($entity);
-		} else {
+		try {
 			$newEntity = $this->insert($entity);
+		} catch (AlreadyExistsError $e) {
+			$bookmark = $this->findByUrl($entity->getUserId(), $entity->getUrl());
+			$entity->setId($bookmark->getId());
+			$newEntity = $this->update($entity);
 		}
 
 		return $newEntity;
