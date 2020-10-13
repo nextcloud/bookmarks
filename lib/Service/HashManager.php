@@ -12,6 +12,7 @@ use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -133,6 +134,7 @@ class HashManager {
 			$hash = [];
 		}
 
+		/** @var Folder $entity */
 		$entity = $this->folderMapper->find($folderId);
 		$children = $this->treeMapper->getChildrenOrder($folderId);
 		$childHashes = array_map(function ($item) use ($fields, $entity) {
