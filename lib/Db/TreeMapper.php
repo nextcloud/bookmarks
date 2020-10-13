@@ -251,7 +251,7 @@ class TreeMapper extends QBMapper {
 			->from('bookmarks_shared_folders', 's')
 			->innerJoin('s', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 's.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_SHARE)))
+			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter(self::TYPE_SHARE)))
 			->orderBy('t.index', 'ASC');
 		return $qb;
 	}
@@ -262,7 +262,7 @@ class TreeMapper extends QBMapper {
 			->from('bookmarks_folders', 'f')
 			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_FOLDER)))
+			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter(self::TYPE_FOLDER)))
 			->orderBy('t.index', 'ASC');
 		return $qb;
 	}
@@ -277,7 +277,7 @@ class TreeMapper extends QBMapper {
 			->from('bookmarks', 'b')
 			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
+			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter(self::TYPE_BOOKMARK)))
 			->orderBy('t.index', 'ASC');
 		return $qb;
 	}
