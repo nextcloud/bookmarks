@@ -28,6 +28,7 @@ OC.L10N.register(
     "No file provided for import" : "No s'ha proporcionat cap fitxer per importar",
     "Unsupported file type for import" : "El tipus de fitxer que voleu importar no és compatible",
     "Bookmarks shared by %s" : "Adreces d'interès compartides per %s",
+    "Recent Bookmarks" : "Adreces d'interès recents",
     "Bookmark" : "Marcadors",
     "Bookmark deleted" : "S'ha suprimit l'adreça d'interès",
     "Bookmark created" : "S’ha creat una adreça d’interès",

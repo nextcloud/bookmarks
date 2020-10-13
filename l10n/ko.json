@@ -3,6 +3,7 @@
     "No file provided for import" : "가져올 파일을 지정하지 않았음",
     "Unsupported file type for import" : "지원하지 않는 가져오기 파일 형식",
     "Bookmarks shared by %s" : "%s이(가) 공유한 북마크 ",
+    "Recent Bookmarks" : "최근 북마크",
     "A Bookmark manager for Nextcloud" : "Nextcloud 북마크 관리자",
     "Select bookmark" : "북마크 선택",
     "Details" : "자세한 정보",

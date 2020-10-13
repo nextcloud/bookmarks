@@ -27,6 +27,7 @@ OC.L10N.register(
     "No file provided for import" : "Nie je k dispozícii žiadny súbor na import",
     "Unsupported file type for import" : "Nepodporovaný typ súboru na import",
     "Bookmarks shared by %s" : "Záložky, ktoré zdieľa %s",
+    "Recent Bookmarks" : "Aktuálne záložky",
     "Bookmark" : "Záložka",
     "Bookmark deleted" : "Záložka zmazaná",
     "Bookmark created" : "Záložka vytvorená",

@@ -16,6 +16,7 @@ OC.L10N.register(
     "Someone deleted folder \"%s\"" : "Kažkas ištrynė aplanką \"%s\"",
     "No file provided for import" : "Importavimui nepateiktas joks failas",
     "Unsupported file type for import" : "Importavimui pateiktas nepalaikomas failo tipas",
+    "Recent Bookmarks" : "Paskiausi adresyno įrašai",
     "A Bookmark manager for Nextcloud" : "Adresyno tvarkytuvė, skirta Nextcloud",
     "Select bookmark" : "Pasirinkti adresyno įrašą",
     "Details" : "Išsamiau",

@@ -5,6 +5,7 @@ OC.L10N.register(
     "No file provided for import" : "未提供导入文件",
     "Unsupported file type for import" : "不支持导入的文件类型",
     "Bookmarks shared by %s" : "书签共享者 %s",
+    "Recent Bookmarks" : "近期书签",
     "A Bookmark manager for Nextcloud" : "适用于 Nextcloud 的书签管理",
     "Select bookmark" : "选择书签",
     "Details" : "详情",

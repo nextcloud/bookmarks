@@ -20,6 +20,7 @@ OC.L10N.register(
     "Someone shared folder \"%s\" with you" : "Noen delte mappen \"%s\" med deg",
     "No file provided for import" : "Ingen fil valgt for import",
     "Unsupported file type for import" : "Usupportert filtype for import",
+    "Recent Bookmarks" : "Nylige bokmerker",
     "Details" : "Detaljer",
     "Rename" : "Gi nytt navn",
     "Move" : "Flytt",
