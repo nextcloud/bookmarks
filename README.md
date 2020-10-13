@@ -44,7 +44,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 
 
 ## Community
-Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in #nextcloud on freenode.net (IRC)!
+Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in our [official Talk channel](https://cloud.nextcloud.com/call/u52jcby9)
 
 ## Install
 
