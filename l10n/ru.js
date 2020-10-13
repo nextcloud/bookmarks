@@ -27,6 +27,7 @@ OC.L10N.register(
     "No file provided for import" : "Не указан файл для импорта",
     "Unsupported file type for import" : "Неподдерживаемый тип файла для импорта",
     "Bookmarks shared by %s" : "Закладки предоставлены пользователем %s ",
+    "Recent Bookmarks" : "Последние закладки",
     "A Bookmark manager for Nextcloud" : "Менеджер закладок для Nextcloud",
     "Select bookmark" : "Выберите закладки",
     "Details" : "Подробнее",

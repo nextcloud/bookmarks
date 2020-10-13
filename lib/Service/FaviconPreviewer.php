@@ -16,7 +16,7 @@ use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 
 class FaviconPreviewer implements IBookmarkPreviewer {
 	public const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60; // cache for one month
@@ -34,7 +34,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 	private $linkExplorer;
 
 	/**
-	 * @var ILogger
+	 * @var LoggerInterface
 	 */
 	private $logger;
 
@@ -51,7 +51,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 	 */
 	private $enabled;
 
-	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, ILogger $logger, IClientService $clientService, \OCP\IConfig $config) {
+	public function __construct(FileCache $cache, LinkExplorer $linkExplorer, LoggerInterface $logger, IClientService $clientService, \OCP\IConfig $config) {
 		$this->cache = $cache;
 		$this->linkExplorer = $linkExplorer;
 		$this->logger = $logger;
@@ -123,7 +123,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 		try {
 			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
 		} catch (Exception $e) {
-			$this->logger->debug($e, ['app' => 'bookmarks']);
+			$this->logger->debug($e->getMessage(), ['app' => 'bookmarks']);
 			return null;
 		}
 		$body = $response->getBody();

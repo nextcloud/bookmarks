@@ -4,6 +4,7 @@ OC.L10N.register(
     "Bookmarks" : "書籤",
     "No file provided for import" : "無匯入檔案",
     "Unsupported file type for import" : "匯入不支援的檔案格式",
+    "Recent Bookmarks" : "最近的書籤",
     "A Bookmark manager for Nextcloud" : "Nextcloud上的書籤管理員",
     "Select bookmark" : "選擇書籤",
     "Details" : "細節",

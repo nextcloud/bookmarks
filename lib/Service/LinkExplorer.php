@@ -13,7 +13,7 @@ use OCA\Bookmarks\Http\Client;
 use OCA\Bookmarks\Http\RequestFactory;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 use phpUri;
 
 class LinkExplorer {
@@ -27,7 +27,7 @@ class LinkExplorer {
 	 */
 	private $enabled;
 
-	public function __construct(IClientService $clientService, ILogger $logger, IConfig $config) {
+	public function __construct(IClientService $clientService, LoggerInterface $logger, IConfig $config) {
 		$client = $clientService->newClient();
 		$this->linkPreview = new LinkPreview(new Client($client), new RequestFactory());
 		$this->linkPreview->getParser('general')->setMinimumImageDimensions(150, 550);
@@ -53,7 +53,7 @@ class LinkExplorer {
 			libxml_use_internal_errors(false);
 			$preview = $this->linkPreview->getLink($url)->getPreview();
 		} catch (Exception $e) {
-			$this->logger->debug($e, ['app' => 'bookmarks']);
+			$this->logger->debug($e->getMessage(), ['app' => 'bookmarks']);
 			return $data;
 		}
 

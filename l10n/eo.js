@@ -4,6 +4,7 @@ OC.L10N.register(
     "Bookmarks" : "Legosignaro",
     "No file provided for import" : "Neniu dosiero provizita por enporto",
     "Unsupported file type for import" : "Nesubtenita dosiertipo por enporto",
+    "Recent Bookmarks" : "Lastaj legosignoj",
     "A Bookmark manager for Nextcloud" : "Mastrumilo de legosignoj por Nextcloud",
     "Select bookmark" : "Elekti legosignon",
     "Details" : "Detaloj",

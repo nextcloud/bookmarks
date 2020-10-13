@@ -4,6 +4,7 @@ OC.L10N.register(
     "Bookmarks" : "Könyvjelzők",
     "No file provided for import" : "Nincs fájl megadva importáláshoz",
     "Unsupported file type for import" : "Nem támogatott fájltípus az importáláshoz",
+    "Recent Bookmarks" : "Legújabb könyvjelzők",
     "A Bookmark manager for Nextcloud" : "Könyvjelző kezelő Nextcloud-hoz",
     "Select bookmark" : "Válasszon könyvjelzőt",
     "Details" : "Részletek",

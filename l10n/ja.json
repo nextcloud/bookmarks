@@ -3,6 +3,7 @@
     "No file provided for import" : "インポート用に提供されたファイルがありません",
     "Unsupported file type for import" : "インポートでサポートされていないファイル形式です",
     "Bookmarks shared by %s" : "%s から共有されたブックマーク",
+    "Recent Bookmarks" : "最新のブックマーク",
     "A Bookmark manager for Nextcloud" : "Nextcloud のブックマークマネージャー",
     "Select bookmark" : "ブックマークを選択",
     "Details" : "詳細",

@@ -37,10 +37,10 @@ class BackgroundJobTest extends TestCase {
 	protected function setUp() :void {
 		parent::setUp();
 
-		$this->bookmarkMapper = \OC::$server->query(BookmarkMapper::class);
-		$this->previewsJob = \OC::$server->query(CrawlJob::class);
-		$this->jobList = \OC::$server->query(JobList::class);
-		$this->settings = \OC::$server->query(IConfig::class);
+		$this->bookmarkMapper = \OC::$server->get(BookmarkMapper::class);
+		$this->previewsJob = \OC::$server->get(CrawlJob::class);
+		$this->jobList = \OC::$server->get(JobList::class);
+		$this->settings = \OC::$server->get(IConfig::class);
 		$this->userId = 'test';
 
 		$this->settings->setAppValue('bookmarks', 'privacy.enableScraping', 'true');

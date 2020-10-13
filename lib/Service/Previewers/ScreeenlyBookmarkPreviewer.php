@@ -15,7 +15,7 @@ use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\FileCache;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 
 class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.ScreenlyPreviewService';
@@ -31,7 +31,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 
 	private $cache;
 
-	/** @var ILogger */
+	/** @var LoggerInterface */
 	private $logger;
 
 	private $width = 800;
@@ -42,7 +42,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	private $apiUrl;
 
-	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
+	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, LoggerInterface $logger) {
 		$this->config = $config;
 		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
@@ -83,7 +83,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 			]);
 			$body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
 		} catch (Exception $e) {
-			$this->logger->logException($e, ['app' => 'bookmarks']);
+			$this->logger->warning($e->getMessage(), ['app' => 'bookmarks']);
 			return null;
 		}
 

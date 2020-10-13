@@ -15,7 +15,7 @@ use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\FileCache;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 
 class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.ScreenshotMachinePreviewService';
@@ -29,7 +29,7 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 	/** @var IConfig */
 	private $config;
 
-	/** @var ILogger */
+	/** @var LoggerInterface */
 	private $logger;
 
 	private $width = 800;
@@ -40,7 +40,7 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	private $cache;
 
-	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
+	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, LoggerInterface $logger) {
 		$this->config = $config;
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenshotmachine.key', '');
 		$this->cache = $cache;
@@ -84,7 +84,7 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 			}
 			$body = $response->getBody();
 		} catch (Exception $e) {
-			$this->logger->logException($e, ['app' => 'bookmarks']);
+			$this->logger->warning($e->getMessage(), ['app' => 'bookmarks']);
 			return null;
 		}
 

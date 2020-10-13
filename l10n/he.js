@@ -5,6 +5,7 @@ OC.L10N.register(
     "No file provided for import" : "לא סופק קובץ לייבוא",
     "Unsupported file type for import" : "סוג הקובץ לייבוא אינו נתמך",
     "Bookmarks shared by %s" : "סימניות שמשותפות על ידי %s",
+    "Recent Bookmarks" : "סימניות אחרונות",
     "A Bookmark manager for Nextcloud" : "מנהל סימניות ל־Nextcloud",
     "Select bookmark" : "בחירת סימנייה",
     "Details" : "פרטים",

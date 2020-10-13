@@ -28,6 +28,7 @@ OC.L10N.register(
     "No file provided for import" : "Inga filer given för importering",
     "Unsupported file type for import" : "Ogiltig filtyp för import",
     "Bookmarks shared by %s" : "Bokmärken delas av %s",
+    "Recent Bookmarks" : "Senaste bokmärken",
     "Bookmark" : "Bokmärke",
     "Bookmark deleted" : "Bokmärke raderat",
     "Bookmark created" : "Bokmärke skapat",

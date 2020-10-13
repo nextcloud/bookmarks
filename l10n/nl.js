@@ -28,6 +28,7 @@ OC.L10N.register(
     "No file provided for import" : "Geen bestand aangeboden om te importeren",
     "Unsupported file type for import" : "Bestandstype wordt niet ondersteund voor importeren",
     "Bookmarks shared by %s" : "Bookmarks gedeeld door %s",
+    "Recent Bookmarks" : "Recente Bookmarks",
     "Bookmark" : "Bookmark",
     "Bookmark deleted" : "Bookmark verwijderd",
     "Bookmark created" : "Bookmark aangemaakt",
