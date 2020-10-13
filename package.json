@@ -25,7 +25,7 @@
 		"@nextcloud/dialogs": "^2.0.1",
 		"@nextcloud/initial-state": "^1.2.0",
 		"@nextcloud/router": "^1.2.0",
-		"@nextcloud/vue": "^2.6.5",
+		"@nextcloud/vue": "^2.7.0",
 		"@nextcloud/vue-dashboard": "^1.0.1",
     "async-parallel": "^1.2.3",
 		"copy-text-to-clipboard": "^2.2.0",
