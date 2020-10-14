@@ -1,6 +1,7 @@
 OC.L10N.register(
     "bookmarks",
     {
+    "You created folder \"%s\"" : "Avètz creat lo dossièr « %s »",
     "Details" : "Detalhs",
     "Rename" : "Renomenar",
     "Move" : "Move",

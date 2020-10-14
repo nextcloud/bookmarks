@@ -60,6 +60,7 @@ OC.L10N.register(
     "_Selected %n folder_::_Selected %n folders_" : ["%n  dossier sélectionné","%n dossiers sélectionnés"],
     "Enter a link" : "Saisissez un lien",
     "Enter a title" : "Saisissez un titre",
+    "No bookmarks found" : "Aucun favori",
     "Select folder" : "Sélectionner un dossier",
     "Enter folder title" : "Saisissez le nom du dossier",
     "Shared by {user}" : "Partagé par l'{user}",

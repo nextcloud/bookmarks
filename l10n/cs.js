@@ -60,6 +60,7 @@ OC.L10N.register(
     "_Selected %n folder_::_Selected %n folders_" : ["Vybrat %n složku","Vybrat %n složky","Vybrat %n složek","Vybrat %n složky"],
     "Enter a link" : "Zadejte odkaz",
     "Enter a title" : "Zadejte titulek",
+    "No bookmarks found" : "Nenalezeny žádné záložky",
     "Select folder" : "Vyberte složku",
     "Enter folder title" : "Zadejte název složky",
     "Shared by {user}" : "Sdílí {user}",
