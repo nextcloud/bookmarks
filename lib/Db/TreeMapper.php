@@ -96,21 +96,13 @@ class TreeMapper extends QBMapper {
 	 */
 	private $parentQuery;
 	/**
+	 * @var array
+	 */
+	private $getChildrenQuery;
+	/**
 	 * @var IQueryBuilder
 	 */
 	private $getChildrenOrderQuery;
-	/**
-	 * @var IQueryBuilder
-	 */
-	private $getChildrenBookmarksQuery;
-	/**
-	 * @var IQueryBuilder
-	 */
-	private $getChildrenFoldersQuery;
-	/**
-	 * @var IQueryBuilder
-	 */
-	private $getChildrenSharesQuery;
 
 	/**
 	 * FolderMapper constructor.
@@ -145,9 +137,11 @@ class TreeMapper extends QBMapper {
 		$this->insertQuery = $this->getInsertQuery();
 		$this->parentQuery = $this->getParentQuery();
 		$this->getChildrenOrderQuery = $this->getGetChildrenOrderQuery();
-		$this->getChildrenBookmarksQuery = $this->getGetChildrenBookmarksQuery();
-		$this->getChildrenFoldersQuery = $this->getGetChildrenFoldersQuery();
-		$this->getChildrenSharesQuery = $this->getGetChildrenSharesQuery();
+		$this->getChildrenQuery = [
+			self::TYPE_BOOKMARK => $this->getFindChildrenQuery(self::TYPE_BOOKMARK),
+			self::TYPE_FOLDER => $this->getFindChildrenQuery(self::TYPE_FOLDER),
+			self::TYPE_SHARE => $this->getFindChildrenQuery(self::TYPE_SHARE)
+		];
 	}
 
 	/**
@@ -200,14 +194,17 @@ class TreeMapper extends QBMapper {
 
 	/**
 	 * @param string $type
+	 * @param array $cols
+	 * @param IQueryBuilder|null $queryBuilder
 	 * @return IQueryBuilder
 	 */
-	protected function selectFromType(string $type): IQueryBuilder {
-		$qb = $this->db->getQueryBuilder();
+	protected function selectFromType(string $type, array $cols = [], IQueryBuilder $queryBuilder = null): IQueryBuilder {
+		$qb = $queryBuilder ?? $this->db->getQueryBuilder();
+		$qb->resetQueryPart('from');
 		$qb
-			->select(array_map(static function ($col) {
+			->select(array_merge(array_map(static function ($col) {
 				return 'i.' . $col;
-			}, $this->entityColumns[$type]))
+			}, $this->entityColumns[$type]), $cols))
 			->from($this->entityTables[$type], 'i');
 		return $qb;
 	}
@@ -244,41 +241,13 @@ class TreeMapper extends QBMapper {
 		return $qb;
 	}
 
-	protected function getGetChildrenSharesQuery(): IQueryBuilder {
-		$qb = $this->db->getQueryBuilder();
+	protected function getFindChildrenQuery(string $type): IQueryBuilder {
+		$qb = $this->selectFromType($type);
 		$qb
-			->select('folder_id', 's.title', 'user_id', 'index', 't.type')
-			->from('bookmarks_shared_folders', 's')
-			->innerJoin('s', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 's.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
-			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter(self::TYPE_SHARE)))
-			->orderBy('t.index', 'ASC');
-		return $qb;
-	}
-	protected function getGetChildrenFoldersQuery(): IQueryBuilder {
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->select('f.id', 'title', 'user_id', 'index', 't.type')
-			->from('bookmarks_folders', 'f')
-			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
-			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter(self::TYPE_FOLDER)))
-			->orderBy('t.index', 'ASC');
-		return $qb;
-	}
-
-	protected function getGetChildrenBookmarksQuery(): IQueryBuilder {
-		$qb = $this->db->getQueryBuilder();
-		$cols = array_merge(['index', 't.type'], array_map(static function ($col) {
-			return 'b.' . $col;
-		}, Bookmark::$columns));
-		$qb
-			->select($cols)
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
-			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter(self::TYPE_BOOKMARK)))
-			->orderBy('t.index', 'ASC');
+				->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'i.id'))
+				->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
+				->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter($type)))
+				->orderBy('t.index', 'ASC');
 		return $qb;
 	}
 
@@ -288,12 +257,8 @@ class TreeMapper extends QBMapper {
 	 * @return array|Entity[]
 	 */
 	public function findChildren(string $type, int $folderId): array {
-		$qb = $this->selectFromType($type);
-		$qb
-			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'i.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter($type)))
-			->orderBy('t.index', 'ASC');
+		$qb = $this->getChildrenQuery[$type];
+		$qb->setParameter('parent_folder', $folderId);
 		return $this->findEntitiesWithType($qb, $type);
 	}
 
@@ -687,14 +652,9 @@ class TreeMapper extends QBMapper {
 		$qb->setParameter('parent_folder', $folderId);
 		$children = $qb->execute()->fetchAll();
 
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->select('folder_id', 'index')
-			->from('bookmarks_shared_folders', 'sf')
-			->innerJoin('sf', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'sf.id'))
-			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_SHARE)))
-			->orderBy('t.index', 'ASC');
+		$qb = $this->getChildrenQuery[self::TYPE_SHARE];
+		$this->selectFromType(self::TYPE_SHARE, ['t.index'], $qb);
+		$qb->setParameter('parent_folder', $folderId);
 		$childShares = $qb->execute()->fetchAll();
 
 		$children = array_map(function ($child) use ($layers, $childShares) {
@@ -792,15 +752,18 @@ class TreeMapper extends QBMapper {
 	}
 
 	public function getChildren(int $folderId, int $layers = 0) {
-		$qb = $this->getChildrenBookmarksQuery;
+		$qb = $this->getChildrenQuery[self::TYPE_BOOKMARK];
+		$this->selectFromType(self::TYPE_BOOKMARK, ['t.index', 't.type'], $qb);
 		$qb->setParameter('parent_folder', $folderId);
 		$childBookmarks = $qb->execute()->fetchAll();
 
-		$qb = $this->getChildrenFoldersQuery;
+		$qb = $this->getChildrenQuery[self::TYPE_FOLDER];
+		$this->selectFromType(self::TYPE_FOLDER, ['t.index', 't.type'], $qb);
 		$qb->setParameter('parent_folder', $folderId);
 		$childFolders = $qb->execute()->fetchAll();
 
-		$qb = $this->getChildrenSharesQuery;
+		$qb = $this->getChildrenQuery[self::TYPE_SHARE];
+		$this->selectFromType(self::TYPE_SHARE, ['t.index', 't.type'], $qb);
 		$qb->setParameter('parent_folder', $folderId);
 		$childShares = $qb->execute()->fetchAll();
 

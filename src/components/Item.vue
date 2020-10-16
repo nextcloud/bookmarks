@@ -148,11 +148,11 @@ export default {
 		},
 		onClick(e) {
 			if (this.$refs.actions === e.target
-					|| this.$refs.actions.contains(e.target)
+					|| (this.$refs.actions && this.$refs.actions.contains(e.target))
 					|| (this.$refs.checkbox
 							&& (this.$refs.checkbox.contains(e.target) || this.$refs.checkbox === e.target)
 					)
-					|| this.$refs.tags.contains(e.target)
+					|| (this.$refs.tags && this.$refs.tags.contains(e.target))
 					|| this.$refs.tags === e.target) {
 				e.stopImmediatePropagation()
 				return
