@@ -29,6 +29,7 @@ OC.L10N.register(
     "Share link" : "مشاركة الرابط",
     "Copy link" : "انسخ الرابط",
     "Allow editing" : "السماح بالتعديلات",
+    "Allow sharing" : "السماح بالمشاركة",
     "Link copied" : "نُسِخ الرابط",
     "Select" : "تحديد",
     "Previews" : "المعاينات",
