@@ -296,6 +296,8 @@ class BookmarkController extends ApiController {
 			return $res;
 		}
 
+		$userId = $this->authorizer->getUserId();
+
 		if (is_array($tags)) {
 			$filterTag = $tags;
 		} else {
@@ -335,11 +337,18 @@ class BookmarkController extends ApiController {
 			if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
 				return new DataResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 			}
+			try {
+				/** @var Folder $folderEntity */
+				$folderEntity = $this->folderMapper->find($this->toInternalFolderId($folder));
+				$userId = $folderEntity->getUserId();
+			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
+			}
 			$params->setFolder($this->toInternalFolderId($folder));
 		}
 
 		if ($this->authorizer->getUserId() !== null) {
-			$result = $this->bookmarkMapper->findAll($this->authorizer->getUserId(), $params);
+			$result = $this->bookmarkMapper->findAll($userId, $params);
 		} else {
 			try {
 				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $params);
