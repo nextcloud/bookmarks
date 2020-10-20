@@ -135,7 +135,7 @@ export default {
 			this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
 		},
 		onDelete() {
-			this.$store.dispatch(actions.DELETE_FOLDER, this.folder.id)
+			this.$store.dispatch(actions.DELETE_FOLDER, { id: this.folder.id })
 		},
 		onMove() {
 			this.$store.commit(mutations.RESET_SELECTION)
