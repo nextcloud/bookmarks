@@ -7,33 +7,43 @@
 <template>
 	<div :class="['controls', isPublic && 'wide']">
 		<div class="controls__left">
-			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME || $route.name === routes.TAGS">
-				<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
-					<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
-					<span class="icon-breadcrumb" />
+			<button
+				v-if="$route.name !== routes.SEARCH"
+				v-tooltip="t('bookmarks', 'Search')"
+				class="custom-button"
+				:title="t('bookmarks', 'Search')"
+				@click="openSearch">
+				<MagnifyIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+			</button>
+			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
+				<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
+				<span class="icon-breadcrumb" />
+			</template>
+			<template v-if="$route.name === routes.FOLDER">
+				<template v-for="folder in folderPath">
+					<a
+						:key="'a' + folder.id"
+						href="#"
+						tabindex="0"
+						@click.prevent="onSelectFolder(folder.id)">{{ folder.title }}</a>
+					<span :key="'b' + folder.id" class="icon-breadcrumb" />
 				</template>
-				<template v-if="$route.name === routes.FOLDER">
-					<template v-for="folder in folderPath">
-						<a
-							:key="'a' + folder.id"
-							href="#"
-							tabindex="0"
-							@click.prevent="onSelectFolder(folder.id)">{{ folder.title }}</a>
-						<span :key="'b' + folder.id" class="icon-breadcrumb" />
-					</template>
-				</template>
-				<template v-if="$route.name === routes.TAGS">
-					<span class="icon-tag" />
-					<Multiselect
-						class="controls__tags"
-						:value="tags"
-						:auto-limit="false"
-						:limit="7"
-						:options="allTags"
-						:multiple="true"
-						:placeholder="t('bookmarks', 'Select one or more tags')"
-						@input="onTagsChange" />
-				</template>
+			</template>
+			<template v-if="$route.name === routes.TAGS">
+				<span class="icon-tag" />
+				<Multiselect
+					class="controls__tags"
+					:value="tags"
+					:auto-limit="false"
+					:limit="7"
+					:options="allTags"
+					:multiple="true"
+					:placeholder="t('bookmarks', 'Select one or more tags')"
+					@input="onTagsChange" />
+			</template>
+			<template v-if="$route.name === routes.SEARCH">
+				<MagnifyIcon :fill-color="colorMainText" />
+				<input ref="search" v-model="search" type="search">
 			</template>
 			<Actions
 				v-if="!isPublic"
@@ -107,16 +117,18 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import RssIcon from 'vue-material-design-icons/Rss'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
+import MagnifyIcon from 'vue-material-design-icons/Magnify'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
 
 export default {
 	name: 'Controls',
-	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon, RssIcon },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon, RssIcon, MagnifyIcon },
 	props: {},
 	data() {
 		return {
 			url: '',
+			search: this.$route.params.search || '',
 		}
 	},
 	computed: {
@@ -138,6 +150,9 @@ export default {
 		},
 		hasSelection() {
 			return this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length
+		},
+		selectedFolders() {
+			return this.$store.state.selection.folders
 		},
 		selectionDescription() {
 			if (this.$store.state.selection.bookmarks.length !== 0 && this.$store.state.selection.folders.length !== 0) {
@@ -176,6 +191,11 @@ export default {
 							).toString()
 					)
 			)
+		},
+	},
+	watch: {
+		search() {
+			this.$router.push({ name: this.routes.SEARCH, params: { search: this.search } })
 		},
 	},
 	created() {},
@@ -236,6 +256,13 @@ export default {
 
 		openRssUrl() {
 			window.open(this.rssURL)
+		},
+
+		openSearch() {
+			this.$router.push({ name: this.routes.SEARCH, params: { search: '' } })
+			setTimeout(() => {
+				this.$refs.search.focus()
+			}, 100)
 		},
 	},
 }

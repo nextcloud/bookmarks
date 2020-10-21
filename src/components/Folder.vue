@@ -242,5 +242,7 @@ export default {
 	margin: 10px;
 	margin-top: 6px;
 	height: 21px;
+	position: relative;
+	top: 2px;
 }
 </style>
