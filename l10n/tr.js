@@ -137,7 +137,7 @@ OC.L10N.register(
     "Previews" : "Ön izlemeler",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use third-party services to generate previews." : "Yer imlerine eklenmiş web sitelerine ait gerçek ekran görüntülerinin gösterilmesi için 3. taraf hizmetler kullanılabilir.",
     "Screeenly" : "Screeenly",
-    "You can either sign up for free at screeenly.com or setup your own server." : "Screenly.com sitesinde bir hesap açabilir ya da kendi sunucunuzu kurabilirsiniz.",
+    "You can either sign up for free at screeenly.com or setup your own server." : "Screeenly.com sitesinde bir hesap açabilir ya da kendi sunucunuzu kurabilirsiniz.",
     "Screeenly API URL" : "Screeenly API Adresi",
     "Screeenly API key" : "Screeenly API Anahtarı",
     "Webshot" : "Webshot",

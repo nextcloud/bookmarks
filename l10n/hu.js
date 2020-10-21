@@ -62,7 +62,7 @@ OC.L10N.register(
     "Select" : "Kijelölés",
     "Previews" : "Előnézetek",
     "Screeenly" : "Screeenly",
-    "You can either sign up for free at screeenly.com or setup your own server." : "Ingyenesen regisztrálhat a screenly.com weboldalon, vagy beállíthatja a saját kiszolgálóját.",
+    "You can either sign up for free at screeenly.com or setup your own server." : "Ingyenesen regisztrálhat a screeenly.com weboldalon, vagy beállíthatja a saját kiszolgálóját.",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Screeenly API-kulcs",
     "Privacy" : "Adatvédelem",
