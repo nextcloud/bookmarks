@@ -23,7 +23,7 @@ class BookmarkWithTagsAndParent extends Bookmark {
 	public function toArray(): array {
 		$array = [];
 		foreach (self::$fields as $field) {
-			if ($field === 'tags') {
+			if ($field === 'tags' && is_string($this->{$field})) {
 				$array[$field] = $this->{$field} === ''? [] : array_unique(explode(',',$this->{$field}));
 				continue;
 			}
