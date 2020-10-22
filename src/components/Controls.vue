@@ -5,7 +5,7 @@
   -->
 
 <template>
-	<div :class="['controls', isPublic && 'wide']">
+	<div :class="['controls', $store.state.public && 'wide']">
 		<div class="controls__left">
 			<button
 				v-if="$route.name !== routes.SEARCH"
@@ -15,7 +15,7 @@
 				@click="openSearch">
 				<MagnifyIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
 			</button>
-			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
+			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME || $store.state.public">
 				<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
 				<span class="icon-breadcrumb" />
 			</template>
@@ -277,6 +277,10 @@ export default {
 	left: 0;
 	right: 0;
 	top: 0;
+}
+
+.controls.wide {
+	padding: 0 8px;
 }
 
 .controls .custom-button {
