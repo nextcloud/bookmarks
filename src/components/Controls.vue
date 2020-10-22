@@ -78,9 +78,9 @@
 					{{ viewMode === 'list' ? t('bookmarks', 'Grid view') : t('bookmarks', 'List view') }}
 				</ActionButton>
 			</Actions>
-			<button v-tooltip="t('bookmarks', 'Private RSS Feed of current view')"
+			<button v-tooltip="t('bookmarks', 'RSS Feed of current view')"
 				class="custom-button"
-				:title="t('bookmarks', 'Private RSS Feed of current view')"
+				:title="t('bookmarks', 'RSS Feed of current view')"
 				@click="openRssUrl">
 				<RssIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
 			</button>
