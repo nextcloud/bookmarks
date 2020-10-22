@@ -1,8 +1,15 @@
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
+
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { loadState } from '@nextcloud/initial-state'
 import AppGlobal from '../mixins/AppGlobal'
 import { mutations } from './mutations'
+import * as Parallel from 'async-parallel'
 
 const BATCH_SIZE = 42
 
@@ -273,7 +280,7 @@ export default {
 	[actions.OPEN_BOOKMARK]({ commit }, id) {
 		commit(mutations.SET_SIDEBAR, { type: 'bookmark', id })
 	},
-	async [actions.DELETE_BOOKMARK]({ commit, dispatch, state }, { id, folder }) {
+	async [actions.DELETE_BOOKMARK]({ commit, dispatch, state }, { id, folder, avoidReload }) {
 		if (folder) {
 			try {
 				const response = await axios.delete(
@@ -283,8 +290,10 @@ export default {
 					throw new Error(response.data)
 				}
 				commit(mutations.REMOVE_BOOKMARK, id)
-				await dispatch(actions.COUNT_BOOKMARKS, -1)
-				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+				if (!avoidReload) {
+					await dispatch(actions.COUNT_BOOKMARKS, -1)
+					await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+				}
 			} catch (err) {
 				console.error(err)
 				commit(
@@ -469,7 +478,7 @@ export default {
 			throw err
 		}
 	},
-	async [actions.DELETE_FOLDER]({ commit, dispatch, state }, id) {
+	async [actions.DELETE_FOLDER]({ commit, dispatch, state }, { id, avoidReload }) {
 		try {
 			const response = await axios.delete(url(state, `/folder/${id}`))
 			const {
@@ -479,8 +488,10 @@ export default {
 				throw new Error(response.data)
 			}
 			const parentFolder = this.getters.getFolder(id)[0].parent_folder
-			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder)
-			await dispatch(actions.LOAD_FOLDERS)
+			if (!avoidReload) {
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder)
+				await dispatch(actions.LOAD_FOLDERS)
+			}
 		} catch (err) {
 			console.error(err)
 			commit(
@@ -573,7 +584,7 @@ export default {
 	async [actions.MOVE_SELECTION]({ commit, dispatch, state }, folderId) {
 		commit(mutations.FETCH_START, { type: 'moveSelection' })
 		try {
-			for (const folder of state.selection.folders) {
+			await Parallel.each(state.selection.folders, async folder => {
 				if (folderId === folder.id) {
 					throw new Error('Cannot move folder into itself')
 				}
@@ -581,16 +592,16 @@ export default {
 				folder.parent_folder = folderId
 				await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
 				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldParent)
-			}
+			}, 10)
 			await dispatch(actions.LOAD_FOLDERS)
 
-			for (const bookmark of state.selection.bookmarks) {
-				await dispatch(actions.MOVE_BOOKMARK, {
+			await Parallel.each(state.selection.bookmarks, bookmark =>
+				dispatch(actions.MOVE_BOOKMARK, {
 					oldFolder: bookmark.folders[bookmark.folders.length - 1], // FIXME This is veeeery ugly and will cause issues. Inevitably.
 					newFolder: folderId,
 					bookmark: bookmark.id,
 				})
-			}
+			, 10)
 
 			// Because we're possibly moving across share boundaries we need to recount
 			await dispatch(actions.COUNT_BOOKMARKS, -1)
@@ -609,13 +620,9 @@ export default {
 	async [actions.DELETE_SELECTION]({ commit, dispatch, state }, { folder }) {
 		commit(mutations.FETCH_START, { type: 'deleteSelection' })
 		try {
-			for (const folder of state.selection.folders) {
-				await dispatch(actions.DELETE_FOLDER, folder.id)
-			}
-
-			for (const bookmark of state.selection.bookmarks) {
-				await dispatch(actions.DELETE_BOOKMARK, { id: bookmark.id, folder })
-			}
+			await Parallel.each(state.selection.folders, folder => dispatch(actions.DELETE_FOLDER, { id: folder.id, avoidReload: true }), 10)
+			await Parallel.each(state.selection.bookmarks, bookmark => dispatch(actions.DELETE_BOOKMARK, { id: bookmark.id, folder, avoidReload: true }), 10)
+			dispatch(actions.RELOAD_VIEW)
 			commit(mutations.FETCH_END, 'deleteSelection')
 		} catch (err) {
 			console.error(err)

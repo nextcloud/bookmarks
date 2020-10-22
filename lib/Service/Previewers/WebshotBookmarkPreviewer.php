@@ -1,25 +1,13 @@
 <?php
-/**
- * @author Marcel Klehr
- * @copyright 2018 Marcel Klehr mklehr@gmx.net
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
 
 namespace OCA\Bookmarks\Service\Previewers;
 
+use Exception;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
@@ -27,7 +15,7 @@ use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\FileCache;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 
 class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
@@ -41,7 +29,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 
 	private $cache;
 
-	/** @var ILogger */
+	/** @var LoggerInterface */
 	private $logger;
 
 	private $width = 800;
@@ -52,7 +40,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	private $apiUrl;
 
-	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, ILogger $logger) {
+	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, LoggerInterface $logger) {
 		$this->config = $config;
 		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.webshot.url', '');
 		$this->cache = $cache;
@@ -94,7 +82,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 			if (200 !== $response->getStatusCode()) {
 				return null;
 			}
-			$data = json_decode($response->getBody(), true);
+			$data = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
 
 			// get it
 			$response = $this->client->get($this->apiUrl . $data->id);
@@ -103,8 +91,8 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 				return null;
 			}
 			$body = $response->getBody();
-		} catch (\Exception $e) {
-			$this->logger->logException($e, ['app' => 'bookmarks']);
+		} catch (Exception $e) {
+			$this->logger->warning($e->getMessage(), ['app' => 'bookmarks']);
 			return null;
 		}
 

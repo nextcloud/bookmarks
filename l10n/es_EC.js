@@ -8,6 +8,7 @@ OC.L10N.register(
     "Rename" : "Renombrar",
     "Move" : "Mover",
     "Delete" : "Borrar",
+    "Search" : "Buscar",
     "New" : "Nuevo",
     "New folder" : "Carpeta nueva",
     "Grid view" : "Vista de cuadrícula",

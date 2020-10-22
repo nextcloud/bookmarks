@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Db;
 
@@ -47,7 +52,7 @@ class Share extends Entity {
 		$this->addType('createdAt', 'integer');
 	}
 
-	public function toArray() {
+	public function toArray(): array {
 		return ['id' => $this->id, 'folderId' => $this->folderId, 'owner' => $this->owner, 'participant' => $this->participant, 'type' => $this->type, 'canWrite' => $this->canWrite, 'canShare' => $this->canShare, 'createdAt' => $this->createdAt];
 	}
 }

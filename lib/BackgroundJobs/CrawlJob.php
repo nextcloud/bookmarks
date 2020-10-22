@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\BackgroundJobs;
 
@@ -7,6 +12,7 @@ use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\CrawlService;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 
@@ -27,7 +33,7 @@ class CrawlJob extends TimedJob {
 	 */
 	private $clientService;
 	/**
-	 * @var \OCP\Http\Client\IClient
+	 * @var IClient
 	 */
 	private $client;
 	/**

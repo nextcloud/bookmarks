@@ -1,13 +1,19 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Service;
 
+use Exception;
 use Marcelklehr\LinkPreview\Client as LinkPreview;
 use OCA\Bookmarks\Http\Client;
 use OCA\Bookmarks\Http\RequestFactory;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
 use phpUri;
 
 class LinkExplorer {
@@ -16,8 +22,12 @@ class LinkExplorer {
 	private $logger;
 
 	private $config;
+	/**
+	 * @var string
+	 */
+	private $enabled;
 
-	public function __construct(IClientService $clientService, ILogger $logger, IConfig $config) {
+	public function __construct(IClientService $clientService, LoggerInterface $logger, IConfig $config) {
 		$client = $clientService->newClient();
 		$this->linkPreview = new LinkPreview(new Client($client), new RequestFactory());
 		$this->linkPreview->getParser('general')->setMinimumImageDimensions(150, 550);
@@ -31,7 +41,7 @@ class LinkExplorer {
 	 * @param string $url Url to load and analyze
 	 * @return array Metadata for url;
 	 */
-	public function get($url) {
+	public function get($url): array {
 		$data = ['url' => $url];
 
 		if ($this->enabled === 'false') {
@@ -42,8 +52,8 @@ class LinkExplorer {
 		try {
 			libxml_use_internal_errors(false);
 			$preview = $this->linkPreview->getLink($url)->getPreview();
-		} catch (\Exception $e) {
-			$this->logger->debug($e, ['app' => 'bookmarks']);
+		} catch (Exception $e) {
+			$this->logger->debug($e->getMessage(), ['app' => 'bookmarks']);
 			return $data;
 		}
 

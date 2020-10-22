@@ -1,3 +1,9 @@
+<!--
+  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  -
+  - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+  -->
+
 <template>
 	<div
 		:class="{
@@ -142,11 +148,11 @@ export default {
 		},
 		onClick(e) {
 			if (this.$refs.actions === e.target
-					|| this.$refs.actions.contains(e.target)
+					|| (this.$refs.actions && this.$refs.actions.contains(e.target))
 					|| (this.$refs.checkbox
 							&& (this.$refs.checkbox.contains(e.target) || this.$refs.checkbox === e.target)
 					)
-					|| this.$refs.tags.contains(e.target)
+					|| (this.$refs.tags && this.$refs.tags.contains(e.target))
 					|| this.$refs.tags === e.target) {
 				e.stopImmediatePropagation()
 				return

@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Service;
 
@@ -18,6 +23,7 @@ use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\EventDispatcher\IEventDispatcher;
 
 class BookmarkService {
 	/**
@@ -57,9 +63,13 @@ class BookmarkService {
 	 */
 	private $folders;
 	/**
-	 * @var \OCP\EventDispatcher\IEventDispatcher
+	 * @var IEventDispatcher
 	 */
 	private $eventDispatcher;
+	/**
+	 * @var HashManager
+	 */
+	private $hashManager;
 
 	/**
 	 * BookmarksService constructor.
@@ -73,9 +83,10 @@ class BookmarkService {
 	 * @param BookmarkPreviewer $bookmarkPreviewer
 	 * @param FaviconPreviewer $faviconPreviewer
 	 * @param FolderService $folders
-	 * @param \OCP\EventDispatcher\IEventDispatcher $eventDispatcher
+	 * @param IEventDispatcher $eventDispatcher
+	 * @param HashManager $hashManager
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, \OCA\Bookmarks\Service\FolderService $folders, \OCP\EventDispatcher\IEventDispatcher $eventDispatcher) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\HashManager $hashManager) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
@@ -86,6 +97,7 @@ class BookmarkService {
 		$this->faviconPreviewer = $faviconPreviewer;
 		$this->folders = $folders;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->hashManager = $hashManager;
 	}
 
 	/**
@@ -160,8 +172,6 @@ class BookmarkService {
 	 * @param $folders
 	 * @return Bookmark
 	 * @throws AlreadyExistsError
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 * @throws UnsupportedOperation
@@ -183,6 +193,7 @@ class BookmarkService {
 	}
 
 	/**
+	 * @param $userId
 	 * @param null $id
 	 * @param string|null $url
 	 * @param string|null $title
@@ -287,7 +298,7 @@ class BookmarkService {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function removeFromFolder($folderId, $bookmarkId) {
+	public function removeFromFolder($folderId, $bookmarkId): void {
 		$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
 	}
 
@@ -301,7 +312,7 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function addToFolder($folderId, $bookmarkId) {
+	public function addToFolder($folderId, $bookmarkId): void {
 		/**
 		 * @var $folder Folder
 		 */
@@ -337,6 +348,7 @@ class BookmarkService {
 	/**
 	 * @param $userId
 	 * @param string $url
+	 * @return Bookmark
 	 * @throws DoesNotExistException
 	 */
 	public function findByUrl($userId, $url = ''): Bookmark {
@@ -357,7 +369,6 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 */
 	public function click(int $id): void {
-		$params = new QueryParameters();
 		/** @var Bookmark $bookmark */
 		$bookmark = $this->bookmarkMapper->find($id);
 		$bookmark->incrementClickcount();
@@ -383,8 +394,6 @@ class BookmarkService {
 	 * @return IImage|null
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws \OCP\Files\NotFoundException
-	 * @throws \OCP\Files\NotPermittedException
 	 */
 	public function getFavicon($id): ?IImage {
 		/**
@@ -401,6 +410,7 @@ class BookmarkService {
 	 * @throws UnsupportedOperation
 	 */
 	public function deleteAll(string $userId): void {
+		$this->hashManager->setInvalidationEnabled(false);
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$bookmarks = $this->treeMapper->findChildren(TreeMapper::TYPE_BOOKMARK, $rootFolder->getId());
 		foreach ($bookmarks as $bookmark) {
@@ -411,5 +421,7 @@ class BookmarkService {
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
 		}
 		$this->bookmarkMapper->deleteAll($userId);
+		$this->hashManager->setInvalidationEnabled(true);
+		$this->hashManager->invalidateFolder($rootFolder->getId());
 	}
 }

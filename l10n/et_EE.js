@@ -5,10 +5,12 @@ OC.L10N.register(
     "Rename" : "Nimeta ümber",
     "Move" : "Liiguta",
     "Delete" : "Kustuta",
+    "Search" : "Otsi",
     "New" : "Uus",
     "New folder" : "Uus kaust",
     "Grid view" : "Ruudustikvaade",
     "List view" : "Nimekirjavaade",
+    "Delete selection" : "Kustuta valik",
     "Select all" : "Vali kõik",
     "Cancel" : "Loobu",
     "Recent" : "Hiljutised",
@@ -31,6 +33,8 @@ OC.L10N.register(
     "Select" : "Vali",
     "Privacy" : "Privaatsus",
     "Folder" : "Kaust",
-    "Save" : "Salvesta"
+    "Save" : "Salvesta",
+    "Failed to delete bookmark" : "Järjehoidja kustutamine ebaõnnestus",
+    "Failed to delete folder" : "Kausta kustutamine ebaõnnestus"
 },
 "nplurals=2; plural=(n != 1);");

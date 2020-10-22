@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Service;
 
@@ -44,7 +49,7 @@ class Authorizer {
 	 */
 	private $publicMapper;
 
-	private $userId = null;
+	private $userId;
 	private $token = null;
 
 	/**
@@ -76,7 +81,9 @@ class Authorizer {
 
 		$auth = $request->getHeader('Authorization');
 
-		if (isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+		if ($this->userSession->isLoggedIn()) {
+			$this->setUserId($this->userSession->getUser()->getUID());
+		} elseif (isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
 			if (false === $this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
 				return;
 			}

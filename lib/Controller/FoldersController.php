@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Controller;
 
@@ -52,7 +57,7 @@ class FoldersController extends ApiController {
 	/**
 	 * @var int|null
 	 */
-	private $rootFolderId = null;
+	private $rootFolderId;
 	/**
 	 * @var HashManager
 	 */
@@ -146,7 +151,7 @@ class FoldersController extends ApiController {
 	 * @param $folder
 	 * @return array
 	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException|UnsupportedOperation
 	 */
 	private function _returnFolderAsArray($folder): array {
 		if ($folder instanceof Folder) {
@@ -167,6 +172,8 @@ class FoldersController extends ApiController {
 			$returnFolder['parent_folder'] = $this->toExternalFolderId($parent->getId());
 			return $returnFolder;
 		}
+
+		throw new UnsupportedOperation('Expected folder or Shared Folder');
 	}
 
 	/**
@@ -305,8 +312,8 @@ class FoldersController extends ApiController {
 
 	/**
 	 * @param int $folderId
-	 * @param string $title
-	 * @param int $parent_folder
+	 * @param string|null $title
+	 * @param int|null $parent_folder
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -475,7 +482,6 @@ class FoldersController extends ApiController {
 	 * @NoCSRFRequired
 	 * @CORS
 	 * @PublicPage
-	 * @throws MultipleObjectsReturnedException
 	 */
 	public function createFolderPublicToken($folderId): DataResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {

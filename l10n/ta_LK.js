@@ -5,6 +5,7 @@ OC.L10N.register(
     "Rename" : "பெயர்மாற்றம்",
     "Move" : "Move",
     "Delete" : "நீக்குக",
+    "Search" : "Search",
     "New" : "புதிய",
     "Cancel" : "இரத்து செய்க",
     "Import" : "இறக்குமதி",

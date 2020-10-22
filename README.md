@@ -7,16 +7,50 @@
 
 > Bookmarks app for Nextcloud
 
-This app provides you with a web interface for collecting and organizing bookmarks to the places on the web that are precious to you. You can browse and filter your bookmarks via tags and folders and by using the built-in search feature. Furthermore, in order to access your bookmarks anywhere, it also allows you to synchronize third-party clients via a built-in REST API -- in your browsers and on your phone.
+This app provides you with a web interface for collecting and organizing bookmarks to the places on the web that are precious to you.
+ 
+- 📂 Browse and filter your bookmarks via tags and folders.
+- 📰 Write down additional notes
+- 🔍 Built-in search integrated into Nextcloud's unified search
+- 👪 Share bookmarks with other users as well as publicly
+- ☠ Easily ind broken links
+- 📔 Archive bookmarked files 
+- 📲 Access your bookmarks anywhere, via a built-in REST API
+- 💡 Keep track of changes in the activity stream
+- 💼 Includes a Dashboard widget
+- ⚛ Easily generate public and private RSS feeds of your collections
+
+
+## Third-party clients
+
+### Android
+- [Nextcloud Bookmarks](https://gitlab.com/bisada/OCBookmarks) - client app for Android ([new PlayStore entry](https://play.google.com/store/apps/details?id=org.bisw.nxbookmarks))
+- [NCBookmark](https://gitlab.com/lenchan139/NCBookmark) - Android App
+
+### Browser
+- [Owncloud Bookmarks](https://chrome.google.com/webstore/detail/owncloud-bookmarks/eomolhpeokmbnincelpkagpapjpeeckc?hl=de) - Bookmarks extension for Chromium-based browsers (Chromium/Chrome/Opera/Vivaldi)
+- [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based browsers
+- [FreedomMarks](https://github.com/damko/freedommarks-browser-webextension) - Addon for Firefox and Chrome. No sync, just a client.
+
+### Desktop
+- [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) A MacOS client
+- [QOwnNotes](https://www.qownnotes.org/) - Plain-text file markdown note taking desktop application (no sync, just importing bookmarks)
+
+### iOS
+- [Nextbookmark](https://gitlab.com/altepizza/nextbookmark) - A minimal client for iOS ([App Store entry](https://apps.apple.com/de/app/nextbookmark/id1500340092))
+
+### Other
+- [uMarks](https://open-store.io/app/umarks.ernesst) - App for Ubuntu touch
+
 
 ## Community
-Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in #nextcloud on freenode.net (IRC)!
+Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in our [official Talk channel](https://cloud.nextcloud.com/call/u52jcby9)
 
 ## Install
 
 ### Requirements
 
-- php 7.2 and above
+- php 7.3 and above
 
 PHP extensions:
 
@@ -47,27 +81,6 @@ npm install
 npm run build
 ```
 
-## Third-party clients
-
-### Android
-- [Nextcloud Bookmarks](https://gitlab.com/bisada/OCBookmarks) - client app for Android ([new PlayStore entry](https://play.google.com/store/apps/details?id=org.bisw.nxbookmarks))
-- [NCBookmark](https://gitlab.com/lenchan139/NCBookmark) - Android App
-
-### Browser
-- [Owncloud Bookmarks](https://chrome.google.com/webstore/detail/owncloud-bookmarks/eomolhpeokmbnincelpkagpapjpeeckc?hl=de) - Bookmarks extension for Chromium-based browsers (Chromium/Chrome/Opera/Vivaldi)
-- [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based browsers
-- [FreedomMarks](https://github.com/damko/freedommarks-browser-webextension) - Addon for Firefox and Chrome. No sync, just a client.
-
-### Desktop
-- [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) A MacOS client
-- [QOwnNotes](https://www.qownnotes.org/) - Plain-text file markdown note taking desktop application (no sync, just importing bookmarks)
-
-### iOS
-- [Nextbookmark](https://gitlab.com/altepizza/nextbookmark) - A minimal client for iOS ([App Store entry](https://apps.apple.com/de/app/nextbookmark/id1500340092))
-
-### Other
-- [uMarks](https://open-store.io/app/umarks.ernesst) - App for Ubuntu touch
-
 ## API
 
 This app exposes a public REST API that third-party clients can interface with.
@@ -76,15 +89,14 @@ This app exposes a public REST API that third-party clients can interface with.
 
 ## Maintainers
 
-- [Blizzz](https://github.com/Blizzz)
 - [Marcel Klehr](https://github.com/marcelklehr)
 
 ## Donate
 
 If you'd like to support the creation and maintenance of this software, consider donating.
 
-| [<img src="https://img.shields.io/badge/paypal-donate-blue.svg?logo=paypal&style=for-the-badge">](https://www.paypal.me/marcelklehr1) | [<img src="http://img.shields.io/liberapay/receives/marcelklehr.svg?logo=liberapay&style=for-the-badge">](https://liberapay.com/marcelklehr/donate) |
-| :-----------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------: |
+| [<img src="https://img.shields.io/badge/paypal-donate-blue.svg?logo=paypal&style=for-the-badge">](https://www.paypal.me/marcelklehr1) | [<img src="http://img.shields.io/liberapay/receives/marcelklehr.svg?logo=liberapay&style=for-the-badge">](https://liberapay.com/marcelklehr/donate) |[<img src="https://img.shields.io/badge/github-sponsors-violet.svg?logo=github&style=for-the-badge">](https://github.com/sponsors/marcelklehr) |
+| :-----------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------: |:--:|
 
 
 ## Contribute

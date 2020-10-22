@@ -10,6 +10,7 @@ use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
+use OCP\IUserManager;
 use PHPUnit\Framework\TestCase;
 
 class TagMapperTest extends TestCase {
@@ -40,11 +41,11 @@ class TagMapperTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
-		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
-		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
+		$this->bookmarkMapper = \OC::$server->get(Db\BookmarkMapper::class);
+		$this->tagMapper = \OC::$server->get(Db\TagMapper::class);
+		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
 
-		$this->userManager = \OC::$server->getUserManager();
+		$this->userManager = \OC::$server->get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

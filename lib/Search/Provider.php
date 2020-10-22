@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Search;
 
@@ -57,10 +62,11 @@ class Provider implements IProvider {
 		$params = new QueryParameters();
 		$params->setLimit($query->getLimit());
 		$params->setOffset($query->getCursor() ?? 0);
-		$bookmarks = $this->bookmarkMapper->findAll($user->getUID(), explode(' ', $query->getTerm()), $params);
+		$params->setSearch(explode(' ', $query->getTerm()));
+		$bookmarks = $this->bookmarkMapper->findAll($user->getUID(), $params);
 
 		$results = array_map(function (Bookmark $bookmark) {
-			$favicon = $this->url->linkToRouteAbsolute('bookmarks.internal_bookmark_controller.get_bookmark_favicon', ['id' => $bookmark->getId()]);
+			$favicon = $this->url->linkToRouteAbsolute('bookmarks.internal_bookmark.get_bookmark_favicon', ['id' => $bookmark->getId()]);
 			$resourceUrl = $this->url->linkToRouteAbsolute('bookmarks.web_view.indexbookmark', ['bookmark' => $bookmark->getId()]);
 			return new SearchResultEntry($favicon, $bookmark->getTitle(), $bookmark->getUrl(), $resourceUrl);
 		}, $bookmarks);

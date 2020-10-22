@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Db;
 
@@ -33,7 +38,7 @@ class SharedFolder extends Entity {
 		$this->addType('title', 'string');
 	}
 
-	public function toArray() {
+	public function toArray(): array {
 		return ['title' => $this->title, 'userId' => $this->userId];
 	}
 }

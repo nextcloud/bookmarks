@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Controller;
 
@@ -19,7 +24,7 @@ class InternalTagsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function deleteTag($old_name = "") {
+	public function deleteTag($old_name = ""): JSONResponse {
 		return $this->publicController->deleteTag($old_name);
 	}
 
@@ -31,7 +36,7 @@ class InternalTagsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function renameTag($old_name = "", $new_name = "", $name = '') {
+	public function renameTag($old_name = "", $new_name = "", $name = ''): JSONResponse {
 		return $this->publicController->renameTag($old_name, $new_name, $name);
 	}
 
@@ -40,7 +45,7 @@ class InternalTagsController extends ApiController {
 	 * @NoAdminRequired
 	 * @return JSONResponse
 	 */
-	public function fullTags($count) {
+	public function fullTags($count): JSONResponse {
 		return $this->publicController->fullTags($count);
 	}
 }

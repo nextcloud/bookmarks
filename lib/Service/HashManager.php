@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Service;
 
@@ -7,6 +12,7 @@ use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -41,6 +47,10 @@ class HashManager {
 	 * @var FolderMapper
 	 */
 	protected $folderMapper;
+	/**
+	 * @var bool
+	 */
+	private $enabled = true;
 
 	/**
 	 * FolderMapper constructor.
@@ -64,7 +74,6 @@ class HashManager {
 	/**
 	 * @param string $type
 	 * @param int $folderId
-	 * @param string $userId
 	 * @return string
 	 */
 	private function getCacheKey(string $type, int $folderId) : string {
@@ -125,6 +134,7 @@ class HashManager {
 			$hash = [];
 		}
 
+		/** @var Folder $entity */
 		$entity = $this->folderMapper->find($folderId);
 		$children = $this->treeMapper->getChildrenOrder($folderId);
 		$childHashes = array_map(function ($item) use ($fields, $entity) {
@@ -144,7 +154,7 @@ class HashManager {
 			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;
-		$hash[$selector] = hash('sha256', json_encode($folder, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$hash[$selector] = hash('sha256', json_encode($folder, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
 		$this->cache->set($key, $hash, 60 * 60 * 24);
 		return $hash[$selector];
@@ -175,7 +185,7 @@ class HashManager {
 				$bookmark[$field] = $entity->{'get' . $field}();
 			}
 		}
-		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		$this->cache->set($key, $hash, 60 * 60 * 24);
 		return $hash[$selector];
 	}
@@ -186,6 +196,9 @@ class HashManager {
 	 * @param ChangeEvent $event
 	 */
 	public function handle(ChangeEvent $event): void {
+		if ($this->enabled === false) {
+			return;
+		}
 		switch ($event->getType()) {
 			case TreeMapper::TYPE_FOLDER:
 				$this->invalidateFolder($event->getId());
@@ -202,5 +215,9 @@ class HashManager {
 				$this->invalidateFolder($event->getOldParent());
 			}
 		}
+	}
+
+	public function setInvalidationEnabled(bool $enabled) {
+		$this->enabled = $enabled;
 	}
 }

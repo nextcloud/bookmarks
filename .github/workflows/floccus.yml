@@ -27,12 +27,11 @@ jobs:
       matrix:
         floccus-ref: ['master', 'develop']
         node-versions: [13.x]
-        server-versions: ['19']
+        server-versions: ['20']
         floccus-adapter:
           - nextcloud-folders
         test-name:
-          - standard
-          - parallel
+          - ''
         browsers: ['chrome']
 
 

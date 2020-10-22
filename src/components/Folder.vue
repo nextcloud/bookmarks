@@ -1,3 +1,9 @@
+<!--
+  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  -
+  - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+  -->
+
 <template>
 	<Item :active="selected"
 		:editable="isEditable"
@@ -129,7 +135,7 @@ export default {
 			this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
 		},
 		onDelete() {
-			this.$store.dispatch(actions.DELETE_FOLDER, this.folder.id)
+			this.$store.dispatch(actions.DELETE_FOLDER, { id: this.folder.id })
 		},
 		onMove() {
 			this.$store.commit(mutations.RESET_SELECTION)
@@ -236,5 +242,7 @@ export default {
 	margin: 10px;
 	margin-top: 6px;
 	height: 21px;
+	position: relative;
+	top: 2px;
 }
 </style>

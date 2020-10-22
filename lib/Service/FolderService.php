@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Service;
 
@@ -77,7 +81,7 @@ class FolderService {
 	 * @param IL10N $l10n
 	 * @param IEventDispatcher $eventDispatcher
 	 */
-	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, \OCA\Bookmarks\Service\HtmlImporter $htmlImporter, IL10N $l10n, IEventDispatcher $eventDispatcher) {
+	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, HtmlImporter $htmlImporter, IL10N $l10n, IEventDispatcher $eventDispatcher) {
 		$this->folderMapper = $folderMapper;
 		$this->treeMapper = $treeMapper;
 		$this->shareMapper = $shareMapper;
@@ -90,13 +94,12 @@ class FolderService {
 	}
 
 	/**
-	 * @param $userId
 	 * @param $title
-	 * @param $parent_folder
+	 * @param $parentFolderId
 	 * @return Folder
+	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
-	 * @throws DoesNotExistException
 	 */
 	public function create($title, $parentFolderId): Folder {
 		/**
@@ -365,7 +368,6 @@ class FolderService {
 	 * @return array
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws UnsupportedOperation
 	 * @throws AlreadyExistsError
 	 * @throws HtmlParseError
 	 * @throws UnauthorizedAccessError

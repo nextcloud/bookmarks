@@ -172,11 +172,11 @@ class FolderControllerTest extends TestCase {
 
 		$this->user = 'test';
 		$this->otherUser = 'otheruser';
-		$this->request = OC::$server->getRequest();
+		$this->request = OC::$server->get(IRequest::class);
 
 		$this->publicRequest = $this->createMock(IRequest::class);
 
-		$this->userManager = OC::$server->getUserManager();
+		$this->userManager = OC::$server->get(IUserManager::class);
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
 		}
@@ -186,25 +186,25 @@ class FolderControllerTest extends TestCase {
 		}
 		$this->otherUserId = $this->userManager->get($this->otherUser)->getUID();
 
-		$this->bookmarkMapper = OC::$server->query(BookmarkMapper::class);
-		$this->tagMapper = OC::$server->query(TagMapper::class);
-		$this->folderMapper = OC::$server->query(FolderMapper::class);
-		$this->treeMapper = OC::$server->query(TreeMapper::class);
-		$this->publicFolderMapper = OC::$server->query(PublicFolderMapper::class);
-		$this->shareMapper = OC::$server->query(ShareMapper::class);
-		$this->sharedFolderMapper = OC::$server->query(SharedFolderMapper::class);
-		$this->hashManager = OC::$server->query(HashManager::class);
-		$this->folders = OC::$server->query(FolderService::class);
-		$this->bookmarks = OC::$server->query(BookmarkService::class);
-		$this->groupManager = OC::$server->query(IGroupManager::class);
+		$this->bookmarkMapper = OC::$server->get(BookmarkMapper::class);
+		$this->tagMapper = OC::$server->get(TagMapper::class);
+		$this->folderMapper = OC::$server->get(FolderMapper::class);
+		$this->treeMapper = OC::$server->get(TreeMapper::class);
+		$this->publicFolderMapper = OC::$server->get(PublicFolderMapper::class);
+		$this->shareMapper = OC::$server->get(ShareMapper::class);
+		$this->sharedFolderMapper = OC::$server->get(SharedFolderMapper::class);
+		$this->hashManager = OC::$server->get(HashManager::class);
+		$this->folders = OC::$server->get(FolderService::class);
+		$this->bookmarks = OC::$server->get(BookmarkService::class);
+		$this->groupManager = OC::$server->get(IGroupManager::class);
 
 		/** @var IUserManager */
-		$userManager = OC::$server->query(IUserManager::class);
+		$userManager = OC::$server->get(IUserManager::class);
 
 		$this->group = $this->groupManager->createGroup('foobar');
 		$this->group->addUser($userManager->get($this->otherUser));
 
-		$this->authorizer = OC::$server->query(Authorizer::class);
+		$this->authorizer = OC::$server->get(Authorizer::class);
 
 		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks);
 		$this->otherController = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks);

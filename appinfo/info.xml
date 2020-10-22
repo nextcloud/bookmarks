@@ -11,16 +11,16 @@ Also, in order to access your bookmarks anywhere, it also allows you to synchron
 Check out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients
 
 Requirements:
- - PHP v7.2+
+ - PHP v7.3+
  - PHP extensions:
    - intl: *
    - mbstring: *
- - Nextcloud v18+
+ - Nextcloud v20+
 ]]></description>
-	<version>3.4.4</version>
+	<version>4.0.0</version>
 	<licence>agpl</licence>
-	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
+	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
 	<author>Marvin Thomas Rabe</author>
 	<author>Stefan Klemm</author>
 	<category>organization</category>
@@ -30,10 +30,10 @@ Requirements:
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
 
 	<dependencies>
-		<php min-version="7.2" />
+		<php min-version="7.3" />
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="18" max-version="21" />
+		<nextcloud min-version="20" max-version="21" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>

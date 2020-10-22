@@ -1,11 +1,18 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Migration;
 
+use Closure;
 use OCP\DB\ISchemaWrapper;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
+use PDO;
 
 /**
  * Auto-generated migration step: Please modify to your needs!
@@ -19,19 +26,19 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 
 	/**
 	 * @param IOutput $output
-	 * @param \Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
+	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
 	 * @param array $options
 	 */
-	public function preSchemaChange(IOutput $output, \Closure $schemaClosure, array $options) {
+	public function preSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 	}
 
 	/**
 	 * @param IOutput $output
-	 * @param \Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
+	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
 	 * @param array $options
 	 * @return null|ISchemaWrapper
 	 */
-	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options) {
+	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 		$table = $schema->getTable('bookmarks_folders');
@@ -51,14 +58,14 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 
 	/**
 	 * @param IOutput $output
-	 * @param \Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
+	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
 	 * @param array $options
 	 */
-	public function postSchemaChange(IOutput $output, \Closure $schemaClosure, array $options) {
+	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 		$query = $this->db->getQueryBuilder();
 		$query->select('id')->from('bookmarks_folders');
-		$folders = $query->execute()->fetchAll(\PDO::FETCH_COLUMN);
-		array_push($folders, -1);
+		$folders = $query->execute()->fetchAll(PDO::FETCH_COLUMN);
+		$folders[] = -1;
 		foreach ($folders as $folder) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
@@ -76,7 +83,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 			$childBookmarks = $qb->execute()->fetchAll();
 
 			$children = array_merge($childFolders, $childBookmarks);
-			$children = array_map(function ($child) {
+			$children = array_map(static function ($child) {
 				return $child['bookmark_id'] ?
 					['type' => 'bookmark', 'id' => $child['bookmark_id']]
 					: ['type' => 'folder', 'id' => $child['id']];

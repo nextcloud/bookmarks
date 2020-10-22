@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Hooks;
 
@@ -8,8 +13,11 @@ use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Group\Events\BeforeGroupDeletedEvent;
@@ -58,9 +66,9 @@ class UserGroupListener implements IEventListener {
 
 	/**
 	 * @param Event $event
-	 * @throws \OCA\Bookmarks\Exception\UnsupportedOperation
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function handle(Event $event): void {
 		if ($event instanceof BeforeUserDeletedEvent) {
@@ -79,9 +87,9 @@ class UserGroupListener implements IEventListener {
 
 	/**
 	 * @param IUser $user
-	 * @throws \OCA\Bookmarks\Exception\UnsupportedOperation
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function preDeleteUser(IUser $user): void {
 		$this->bookmarks->deleteAll($user->getUID());
@@ -105,9 +113,9 @@ class UserGroupListener implements IEventListener {
 	/**
 	 * @param IGroup $group
 	 * @param IUser $user
-	 * @throws \OCA\Bookmarks\Exception\UnsupportedOperation
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function preRemoveUser(IGroup $group, IUser $user): void {
 		$sharedFoldersToDelete = $this->sharedFolderMapper->findByParticipantAndUser(IShare::TYPE_GROUP, $group->getGID(), $user->getUID());
@@ -119,9 +127,9 @@ class UserGroupListener implements IEventListener {
 	/**
 	 * @param IGroup $group
 	 * @param IUser $user
-	 * @throws \OCA\Bookmarks\Exception\UnsupportedOperation
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function postAddUser(IGroup $group, IUser $user): void {
 		/**

@@ -5,6 +5,8 @@ namespace OCA\Bookmarks\Tests;
 use OCA\Bookmarks\Controller\SettingsController;
 use OCP\IConfig;
 use OCP\IRequest;
+use OCP\IUserManager;
+use OCP\L10N\IFactory;
 
 /**
  * Class Test_SettingsController
@@ -24,8 +26,10 @@ class SettingsControllerTest extends TestCase {
 	 * @var IRequest
 	 */
 	private $request;
+
 	/** @var IConfig */
 	private $config;
+
 	/** @var SettingsController */
 	private $controller;
 	/**
@@ -41,7 +45,7 @@ class SettingsControllerTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->userManager = \OC::$server->getUserManager();
+		$this->userManager = \OC::$server->get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
@@ -49,13 +53,14 @@ class SettingsControllerTest extends TestCase {
 		$this->userId = $this->userManager->get($this->user)->getUID();
 
 		$this->appName = 'bookmarks';
-		$this->request = \OC::$server->getRequest();
-		$userManager = \OC::$server->getUserManager();
-		$l = \OC::$server->getL10N('bookmarks');
-		if (!$userManager->userExists($this->userId)) {
-			$userManager->createUser($this->userId, 'password');
+		$this->request = \OC::$server->get(IRequest::class);
+		/** @var IFactory $l10nFactory */
+		$l10nFactory = \OC::$server->get(IFactory::class);
+		$l = $l10nFactory->get('bookmarks');
+		if (!$this->userManager->userExists($this->userId)) {
+			$this->userManager->createUser($this->userId, 'password');
 		}
-		$this->config = \OC::$server->getConfig();
+		$this->config = \OC::$server->get(IConfig::class);
 		$this->controller = new SettingsController('bookmarks', $this->request, $this->userId, $this->config, $l);
 	}
 

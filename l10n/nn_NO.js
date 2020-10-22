@@ -5,6 +5,7 @@ OC.L10N.register(
     "Rename" : "Gje nytt namn",
     "Move" : "Move",
     "Delete" : "Ta bort",
+    "Search" : "Search",
     "New" : "Ny",
     "New folder" : "Ny mappe",
     "Cancel" : "Avbryt",

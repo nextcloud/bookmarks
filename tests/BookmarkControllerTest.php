@@ -31,6 +31,9 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IRequest;
 use OCP\IURLGenerator;
+use OCP\IUserManager;
+use OCP\L10N\IFactory;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Test_BookmarkController
@@ -151,12 +154,12 @@ class BookmarkControllerTest extends TestCase {
 
 		$this->user = 'test';
 		$this->otherUser = 'otheruser';
-		$this->request = OC::$server->getRequest();
-		$this->otherRequest = OC::$server->getRequest();
+		$this->request = OC::$server->get(IRequest::class);
+		$this->otherRequest = OC::$server->get(IRequest::class);
 
 		$this->publicRequest = $this->createMock(IRequest::class);
 
-		$this->userManager = OC::$server->getUserManager();
+		$this->userManager = OC::$server->get(IUserManager::class);
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
 		}
@@ -166,22 +169,24 @@ class BookmarkControllerTest extends TestCase {
 		}
 		$this->otherUserId = $this->userManager->get($this->otherUser)->getUID();
 
-		$l = OC::$server->getL10N('bookmarks');
-		$this->bookmarks = OC::$server->query(BookmarkService::class);
-		$this->bookmarkMapper = OC::$server->query(BookmarkMapper::class);
-		$this->tagMapper = OC::$server->query(TagMapper::class);
-		$this->folderMapper = OC::$server->query(FolderMapper::class);
-		$this->treeMapper = OC::$server->query(TreeMapper::class);
-		$this->publicFolderMapper = OC::$server->query(PublicFolderMapper::class);
-		$this->shareMapper = OC::$server->query(ShareMapper::class);
-		$this->sharedFolderMapper = OC::$server->query(SharedFolderMapper::class);
+		/** @var IFactory $l10nFactory */
+		$l10nFactory = OC::$server->get(IFactory::class);
+		$l = $l10nFactory->get('bookmarks');
+		$this->bookmarks = OC::$server->get(BookmarkService::class);
+		$this->bookmarkMapper = OC::$server->get(BookmarkMapper::class);
+		$this->tagMapper = OC::$server->get(TagMapper::class);
+		$this->folderMapper = OC::$server->get(FolderMapper::class);
+		$this->treeMapper = OC::$server->get(TreeMapper::class);
+		$this->publicFolderMapper = OC::$server->get(PublicFolderMapper::class);
+		$this->shareMapper = OC::$server->get(ShareMapper::class);
+		$this->sharedFolderMapper = OC::$server->get(SharedFolderMapper::class);
 
-		$timeFactory = OC::$server->query(ITimeFactory::class);
-		$logger = OC::$server->getLogger();
-		$urlGenerator = OC::$server->query(IURLGenerator::class);
-		$htmlExporter = OC::$server->query(HtmlExporter::class);
-		$this->authorizer = OC::$server->query(Authorizer::class);
-		$this->folders = OC::$server->query(FolderService::class);
+		$timeFactory = OC::$server->get(ITimeFactory::class);
+		$logger = OC::$server->get(LoggerInterface::class);
+		$urlGenerator = OC::$server->get(IURLGenerator::class);
+		$htmlExporter = OC::$server->get(HtmlExporter::class);
+		$this->authorizer = OC::$server->get(Authorizer::class);
+		$this->folders = OC::$server->get(FolderService::class);
 
 		$this->controller = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
 		$this->otherController = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders);
@@ -335,7 +340,7 @@ class BookmarkControllerTest extends TestCase {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function testPrivateQuery(): void {
+	public function testPrivateget(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
@@ -515,7 +520,7 @@ class BookmarkControllerTest extends TestCase {
 	 * @throws UserLimitExceededError
 	 * @throws UnsupportedOperation
 	 */
-	public function testPublicQuery(): void {
+	public function testPublicget(): void {
 		$this->cleanUp();
 		$this->setupBookmarksWithPublicFolder();
 		$this->authorizer->setUserId(null);

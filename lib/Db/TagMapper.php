@@ -1,10 +1,16 @@
 <?php
+/*
+ * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
 
 namespace OCA\Bookmarks\Db;
 
 use Doctrine\DBAL\Driver\Statement;
 use InvalidArgumentException;
 use OCP\IDBConnection;
+use PDO;
 
 /**
  * Class TagMapper
@@ -69,7 +75,7 @@ class TagMapper {
 				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_SHARE)))
 			)
 			->groupBy('t.tag');
-		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		return $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
 	}
 
 	/**
@@ -84,7 +90,7 @@ class TagMapper {
 			->from('bookmarks_tags', 't')
 			->where($qb->expr()->eq('t.bookmark_id', $qb->createPositionalParameter($bookmarkId)));
 
-		return $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		return $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
 	}
 
 	/**
@@ -129,8 +135,8 @@ class TagMapper {
 			return;
 		}
 		$currentTags = $this->findByBookmark($bookmarkId);
-		$tags = array_filter($tags, function ($tag) use ($currentTags) {
-			return !in_array($tag, $currentTags);
+		$tags = array_filter($tags, static function ($tag) use ($currentTags) {
+			return !in_array($tag, $currentTags, true);
 		});
 		foreach ($tags as $tag) {
 			$tag = trim($tag);
@@ -188,7 +194,7 @@ class TagMapper {
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($new)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)))
 			->andWhere($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)));
-		$duplicates = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		$duplicates = $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
 		if (count($duplicates) !== 0) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
@@ -206,7 +212,7 @@ class TagMapper {
 			->innerJoin('tgs', 'bookmarks', 'bm', $qb->expr()->eq('tgs.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('tgs.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
-		$bookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		$bookmarks = $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
 		if (count($bookmarks) !== 0) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
@@ -218,7 +224,7 @@ class TagMapper {
 		}
 	}
 
-	public function deleteTag($userId, string $old) {
+	public function deleteTag($userId, string $old): void {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('t.bookmark_id')
@@ -226,7 +232,7 @@ class TagMapper {
 			->innerJoin('t', 'bookmarks', 'bm', $qb->expr()->eq('t.bookmark_id', 'bm.id'))
 			->where($qb->expr()->eq('t.tag', $qb->createNamedParameter($old)))
 			->andWhere($qb->expr()->eq('bm.user_id', $qb->createNamedParameter($userId)));
-		$affectedBookmarks = $qb->execute()->fetchAll(\PDO::FETCH_COLUMN);
+		$affectedBookmarks = $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
 		if (count($affectedBookmarks) !== 0) {
 			$qb = $this->db->getQueryBuilder();
 			$qb
