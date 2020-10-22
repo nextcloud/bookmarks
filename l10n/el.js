@@ -44,6 +44,7 @@ OC.L10N.register(
     "Rename" : "Μετονομασία",
     "Move" : "Μετακίνηση",
     "Delete" : "Διαγραφή",
+    "Search" : "Αναζήτηση",
     "Select one or more tags" : "Επιλέξτε μία ή περισσότερες ετικέτες",
     "New" : "Νέα",
     "New bookmark" : "Νέος σελιδοδείκτης",

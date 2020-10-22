@@ -6,6 +6,7 @@ OC.L10N.register(
     "Rename" : "Renomenar",
     "Move" : "Move",
     "Delete" : "Suprimir",
+    "Search" : "Search",
     "New" : "Novèl",
     "New folder" : "Novèl dorsièr",
     "Cancel" : "Anullar",

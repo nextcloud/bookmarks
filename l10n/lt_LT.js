@@ -23,6 +23,7 @@ OC.L10N.register(
     "Rename" : "Pervadinti",
     "Move" : "Perkelti",
     "Delete" : "Ištrinti",
+    "Search" : "Ieškoti",
     "Select one or more tags" : "Pasirinkite vieną ar daugiau žymių",
     "New" : "Nauja",
     "New folder" : "Naujas aplankas",

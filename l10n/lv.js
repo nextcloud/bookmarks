@@ -9,6 +9,7 @@ OC.L10N.register(
     "Rename" : "Pārsaukt",
     "Move" : "Pārvietot",
     "Delete" : "Dzēst",
+    "Search" : "Meklēt",
     "New" : "Jauns",
     "New folder" : "Jauna mape",
     "Grid view" : "Režģa izkārtojums",

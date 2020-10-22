@@ -37,6 +37,7 @@ OC.L10N.register(
     "Rename" : "Переименовать",
     "Move" : "Переместить",
     "Delete" : "Удалить",
+    "Search" : "Поиск",
     "Select one or more tags" : "Выберите одну или больше меток",
     "New" : "Новая",
     "New bookmark" : "Новая закладка",

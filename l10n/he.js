@@ -12,6 +12,7 @@ OC.L10N.register(
     "Rename" : "שינוי שם",
     "Move" : "העברה",
     "Delete" : "מחיקה",
+    "Search" : "חיפוש",
     "Select one or more tags" : "יש לבחור תגית אחת או יותר",
     "New" : "חדש",
     "New bookmark" : "סימנייה חדשה",

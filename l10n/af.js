@@ -8,6 +8,7 @@ OC.L10N.register(
     "Rename" : "Hernoem",
     "Move" : "Skuif",
     "Delete" : "Skrap",
+    "Search" : "Soek",
     "New" : "Nuut",
     "New folder" : "Nuwe vouer",
     "List view" : "Lysaansig",

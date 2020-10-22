@@ -5,6 +5,7 @@ OC.L10N.register(
     "Rename" : "Rename",
     "Move" : "Move",
     "Delete" : "Delete",
+    "Search" : "Traži",
     "New" : "Nov",
     "New folder" : "Nova fascikla",
     "Grid view" : "Prikaz mreže",

@@ -44,6 +44,7 @@ OC.L10N.register(
     "Rename" : "Yeniden adlandır",
     "Move" : "Taşı",
     "Delete" : "Sil",
+    "Search" : "Arama",
     "Select one or more tags" : "Bir ya da bir kaç etiket seçin",
     "New" : "Yeni",
     "New bookmark" : "Yeni yer imi",

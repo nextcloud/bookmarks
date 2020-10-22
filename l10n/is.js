@@ -12,6 +12,7 @@ OC.L10N.register(
     "Rename" : "Endurnefna",
     "Move" : "Færa",
     "Delete" : "Eyða",
+    "Search" : "Search",
     "Select one or more tags" : "Veldu eitt eða fleiri merki",
     "New" : "Nýtt",
     "New bookmark" : "Nýtt bókamerki",

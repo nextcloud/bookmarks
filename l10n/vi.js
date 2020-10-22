@@ -6,6 +6,7 @@ OC.L10N.register(
     "Rename" : "Đổi tên",
     "Move" : "Dịch chuyển",
     "Delete" : "Xóa",
+    "Search" : "Tìm",
     "Select one or more tags" : "Chọn một hoặc nhiều thẻ",
     "New" : "Tạo mới",
     "New folder" : "Tạo thư mục",

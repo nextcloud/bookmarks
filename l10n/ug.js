@@ -4,6 +4,7 @@ OC.L10N.register(
     "Rename" : "ئات ئۆزگەرت",
     "Move" : "Move",
     "Delete" : "ئۆچۈر",
+    "Search" : "Search",
     "New" : "يېڭى",
     "New folder" : "يېڭى قىسقۇچ",
     "Cancel" : "ۋاز كەچ",

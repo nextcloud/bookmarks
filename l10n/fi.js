@@ -37,6 +37,7 @@ OC.L10N.register(
     "Rename" : "Nimeä uudelleen",
     "Move" : "Siirrä",
     "Delete" : "Poista",
+    "Search" : "Etsi",
     "Select one or more tags" : "Valitse yksi tai useampi tunniste",
     "New" : "Uusi",
     "New bookmark" : "Uusi kirjanmerkki",

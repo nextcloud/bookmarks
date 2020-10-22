@@ -12,6 +12,7 @@ OC.L10N.register(
     "Rename" : "名前の変更",
     "Move" : "移動",
     "Delete" : "削除",
+    "Search" : "検索",
     "Select one or more tags" : "1つ以上のタグを選択",
     "New" : "新規作成",
     "New bookmark" : "新しいブックマーク",

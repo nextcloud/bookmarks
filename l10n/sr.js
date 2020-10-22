@@ -12,6 +12,7 @@ OC.L10N.register(
     "Rename" : "Преименуј",
     "Move" : "Премести",
     "Delete" : "Обриши",
+    "Search" : "Претрага",
     "Select one or more tags" : "Одаберите једну или више ознака",
     "New" : "Нов",
     "New bookmark" : "Нови обележивач",

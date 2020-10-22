@@ -43,6 +43,7 @@ OC.L10N.register(
     "Rename" : "Preimenuj",
     "Move" : "Premakni",
     "Delete" : "Izbriši",
+    "Search" : "Poišči",
     "Select one or more tags" : "Izbor enega oziroma več zaznamkov",
     "New" : "Novo",
     "New bookmark" : "Nov zaznamek",

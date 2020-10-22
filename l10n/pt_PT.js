@@ -6,6 +6,7 @@ OC.L10N.register(
     "Rename" : "Renomear",
     "Move" : "Mover",
     "Delete" : "Apagar",
+    "Search" : "Pesquisa sobre",
     "New" : "Novo",
     "New folder" : "Nova pasta",
     "Grid view" : "Vista em grelha",

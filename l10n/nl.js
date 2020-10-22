@@ -43,6 +43,7 @@ OC.L10N.register(
     "Rename" : "Hernoemen",
     "Move" : "Verplaatsen",
     "Delete" : "Verwijderen",
+    "Search" : "Zoeken",
     "Select one or more tags" : "Kies één of meer tags",
     "New" : "Nieuw",
     "New bookmark" : "Nieuwe bookmark",
