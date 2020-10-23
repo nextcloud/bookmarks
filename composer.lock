@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e20e4fc3a18f59f8610b9572c9369b58",
+    "content-hash": "ac58298ac5f05fe326e0d828977b6c2c",
     "packages": [
         {
             "name": "brick/math",
@@ -1849,6 +1849,42 @@
                 "stream"
             ],
             "time": "2020-06-29T18:35:05+00:00"
+        },
+        {
+            "name": "christophwurst/nextcloud",
+            "version": "v20.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ChristophWurst/nextcloud_composer.git",
+                "reference": "898b3b7feda1d8a761dffeaeda6fccace44eb649"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ChristophWurst/nextcloud_composer/zipball/898b3b7feda1d8a761dffeaeda6fccace44eb649",
+                "reference": "898b3b7feda1d8a761dffeaeda6fccace44eb649",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "20.0.0-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "AGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Christoph Wurst",
+                    "email": "christoph@winzerhof-wurst.at"
+                }
+            ],
+            "description": "Composer package containing Nextcloud's public API (classes, interfaces)",
+            "time": "2020-10-05T12:40:45+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
