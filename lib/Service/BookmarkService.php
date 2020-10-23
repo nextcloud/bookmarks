@@ -176,7 +176,7 @@ class BookmarkService {
 	 * @throws UserLimitExceededError
 	 * @throws UnsupportedOperation
 	 */
-	private function _addBookmark($title, $url, $description, $userId, $tags, $folders): Bookmark {
+	private function _addBookmark(string $title, $url, $description, $userId, array $tags, array $folders): Bookmark {
 		$bookmark = new Bookmark();
 		$bookmark->setTitle($title);
 		$bookmark->setUrl($url);

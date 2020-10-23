@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.18.2@19aa905f7c3c7350569999a93c40ae91ae4e1626">
+  <file src="lib/BackgroundJobs/CrawlJob.php">
+    <UndefinedClass occurrences="1">
+      <code>TimedJob</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Controller/BookmarkController.php">
+    <InvalidArgument occurrences="3">
+      <code>$folder</code>
+      <code>$id</code>
+      <code>$title</code>
+    </InvalidArgument>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <InvalidReturnStatement occurrences="1">
+      <code>new NotFoundResponse()</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>DataDisplayResponse</code>
+    </InvalidReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;_getRootFolderId()</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="lib/Controller/FoldersController.php">
+    <InvalidArgument occurrences="2">
+      <code>$parent_folder</code>
+      <code>$title</code>
+    </InvalidArgument>
+  </file>
+  <file src="lib/Controller/InternalBookmarkController.php">
+    <InvalidArgument occurrences="1">
+      <code>$tags</code>
+    </InvalidArgument>
+  </file>
+  <file src="lib/Db/BookmarkMapper.php">
+    <InvalidArgument occurrences="3"/>
+  </file>
+  <file src="lib/Db/PublicFolderMapper.php">
+    <InvalidReturnType occurrences="1">
+      <code>Entity</code>
+    </InvalidReturnType>
+  </file>
+  <file src="lib/Db/TreeMapper.php">
+    <InvalidArgument occurrences="1"/>
+  </file>
+  <file src="lib/Flow/CreateBookmark.php">
+    <UndefinedClass occurrences="2">
+      <code>File</code>
+      <code>View</code>
+    </UndefinedClass>
+    <UndefinedMethod occurrences="2">
+      <code>getSubject</code>
+      <code>getSubject</code>
+    </UndefinedMethod>
+  </file>
+  <file src="lib/Image.php">
+    <UndefinedConstant occurrences="2">
+      <code>JSON_THROW_ON_ERROR</code>
+      <code>JSON_THROW_ON_ERROR</code>
+    </UndefinedConstant>
+  </file>
+  <file src="lib/Migration/DeduplicateSharedFoldersRepairStep.php">
+    <InvalidArgument occurrences="1"/>
+  </file>
+  <file src="lib/Migration/Version000014000Date20181029094721.php">
+    <InvalidArgument occurrences="2">
+      <code>['index' =&gt; $qb-&gt;createPositionalParameter($i)]</code>
+      <code>['index' =&gt; $qb-&gt;createPositionalParameter($i)]</code>
+    </InvalidArgument>
+    <TooFewArguments occurrences="2">
+      <code>set</code>
+      <code>set</code>
+    </TooFewArguments>
+  </file>
+  <file src="lib/Migration/Version003000009Date20200505094721.php">
+    <UndefinedClass occurrences="1">
+      <code>Type</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Migration/Version003004000Date20200807124721.php">
+    <UndefinedClass occurrences="1">
+      <code>Type</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Migration/Version003004000Date20200817124721.php">
+    <UndefinedClass occurrences="1">
+      <code>Type</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/QueryParameters.php">
+    <NullableReturnStatement occurrences="1">
+      <code>$default</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="lib/Service/BookmarkPreviewer.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>serialize</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="lib/Service/BookmarkService.php">
+    <NullArgument occurrences="1">
+      <code>$id</code>
+    </NullArgument>
+  </file>
+  <file src="lib/Service/BookmarksParser.php">
+    <NullPropertyFetch occurrences="1">
+      <code>$node-&gt;attributes-&gt;length</code>
+    </NullPropertyFetch>
+  </file>
+  <file src="lib/Service/CrawlService.php">
+    <MissingDependency occurrences="1">
+      <code>IRootFolder</code>
+    </MissingDependency>
+    <UndefinedClass occurrences="1">
+      <code>NoUserException</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Service/FileCache.php">
+    <LessSpecificImplementedReturnType occurrences="2">
+      <code>bool|mixed</code>
+      <code>bool|mixed</code>
+    </LessSpecificImplementedReturnType>
+  </file>
+  <file src="lib/Service/FolderService.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$publicFolder-&gt;getId()</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>string</code>
+    </InvalidReturnType>
+  </file>
+  <file src="lib/Service/HashManager.php">
+    <UndefinedConstant occurrences="2">
+      <code>JSON_THROW_ON_ERROR</code>
+      <code>JSON_THROW_ON_ERROR</code>
+    </UndefinedConstant>
+  </file>
+  <file src="lib/Service/HtmlImporter.php">
+    <InvalidArgument occurrences="1">
+      <code>$index++</code>
+    </InvalidArgument>
+  </file>
+  <file src="lib/Service/LinkExplorer.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>setMinimumImageDimensions</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="lib/Service/Previewers/ScreeenlyBookmarkPreviewer.php">
+    <UndefinedConstant occurrences="1">
+      <code>JSON_THROW_ON_ERROR</code>
+    </UndefinedConstant>
+  </file>
+  <file src="lib/Service/Previewers/WebshotBookmarkPreviewer.php">
+    <UndefinedConstant occurrences="1">
+      <code>JSON_THROW_ON_ERROR</code>
+    </UndefinedConstant>
+  </file>
+</files>

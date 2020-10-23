@@ -77,7 +77,10 @@ class FolderMapper extends QBMapper {
 
 	/**
 	 * @param $userId
+	 * @param int|string $userId
+	 *
 	 * @return Entity
+	 *
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function findRootFolder($userId): Entity {
