@@ -51,7 +51,6 @@ OC.L10N.register(
     "New folder" : "Nowy folder",
     "Grid view" : "Widok siatki",
     "List view" : "Widok listy",
-    "Private RSS Feed of current view" : "Prywatny kanał RSS aktualnego widoku",
     "Move selection" : "Przenieś wybrane",
     "Delete selection" : "Usuń wybrane",
     "Open all selected" : "Otwórz wszystkie wybrane",

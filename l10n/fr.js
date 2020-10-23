@@ -50,7 +50,6 @@ OC.L10N.register(
     "New folder" : "Nouveau dossier",
     "Grid view" : "Affichage mosaïque",
     "List view" : "Affichage liste",
-    "Private RSS Feed of current view" : "Flux RSS privé de la vue actuelle",
     "Move selection" : "Déplacer la sélection",
     "Delete selection" : "Supprimer la sélection",
     "Open all selected" : "Ouvrir toute la sélection",
