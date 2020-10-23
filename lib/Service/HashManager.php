@@ -17,13 +17,11 @@ use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use OCP\EventDispatcher\Event;
-use OCP\EventDispatcher\IEventListener;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use UnexpectedValueException;
 
-class HashManager implements IEventListener {
+class HashManager {
 
 	/**
 	 * @var ICache
@@ -194,13 +192,10 @@ class HashManager implements IEventListener {
 	/**
 	 * Handle events
 	 *
-	 * @param Event $event
+	 * @param ChangeEvent $event
 	 */
-	public function handle(Event $event): void {
+	public function handle(ChangeEvent $event): void {
 		if ($this->enabled === false) {
-			return;
-		}
-		if (!($event instanceof ChangeEvent)) {
 			return;
 		}
 		switch ($event->getType()) {
