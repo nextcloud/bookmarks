@@ -136,6 +136,7 @@ class HashManager {
 
 		/** @var Folder $entity */
 		$entity = $this->folderMapper->find($folderId);
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$children = $this->treeMapper->getChildrenOrder($folderId);
 		$childHashes = array_map(function ($item) use ($fields, $entity) {
 			switch ($item['type']) {
@@ -150,7 +151,7 @@ class HashManager {
 		$folder = [];
 		if ($entity->getUserId() !== $userId) {
 			$folder['title'] = $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId)->getTitle();
-		} elseif ($entity->getTitle() !== null) {
+		} elseif ($entity->getTitle() !== null && $entity->getId() !== $rootFolder->getId()) {
 			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;
@@ -181,9 +182,7 @@ class HashManager {
 		$entity = $this->bookmarkMapper->find($bookmarkId);
 		$bookmark = [];
 		foreach ($fields as $field) {
-			if (isset($entity->{$field})) {
-				$bookmark[$field] = $entity->{'get' . $field}();
-			}
+			$bookmark[$field] = $entity->{'get' . $field}();
 		}
 		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		$this->cache->set($key, $hash, 60 * 60 * 24);
