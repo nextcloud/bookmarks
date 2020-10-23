@@ -103,7 +103,7 @@ class Authorizer {
 		}
 	}
 
-	public function setToken($token): void {
+	public function setToken(string $token): void {
 		$this->token = $token;
 	}
 

@@ -217,7 +217,7 @@ class HashManager {
 		}
 	}
 
-	public function setInvalidationEnabled(bool $enabled) {
+	public function setInvalidationEnabled(bool $enabled): void {
 		$this->enabled = $enabled;
 	}
 }

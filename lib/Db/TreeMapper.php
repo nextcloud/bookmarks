@@ -647,7 +647,7 @@ class TreeMapper extends QBMapper {
 	 * @param int $layers The amount of levels to return
 	 * @return array the children each in the format ["id" => int, "type" => 'bookmark' | 'folder' ]
 	 */
-	public function getChildrenOrder($folderId, $layers = 0): array {
+	public function getChildrenOrder(int $folderId, $layers = 0): array {
 		$qb = $this->getChildrenOrderQuery;
 		$qb->setParameter('parent_folder', $folderId);
 		$children = $qb->execute()->fetchAll();

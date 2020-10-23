@@ -46,6 +46,9 @@ class Image implements IImage {
 		return $this->data;
 	}
 
+	/**
+	 * @return false|string
+	 */
 	public function serialize() {
 		return json_encode([
 			'contentType' => $this->getContentType(),

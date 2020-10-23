@@ -125,7 +125,7 @@ class TagMapper {
 	 * @param $tags
 	 * @param int $bookmarkId
 	 */
-	public function addTo($tags, int $bookmarkId): void {
+	public function addTo(array $tags, int $bookmarkId): void {
 		if (is_string($tags)) {
 			$tags = [$tags];
 		} elseif (!is_array($tags)) {
