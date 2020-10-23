@@ -171,9 +171,7 @@ class HashManager {
 		$entity = $this->bookmarkMapper->find($bookmarkId);
 		$bookmark = [];
 		foreach ($fields as $field) {
-			if (isset($entity->{$field})) {
-				$bookmark[$field] = $entity->{'get' . $field}();
-			}
+			$bookmark[$field] = $entity->{'get' . $field}();
 		}
 		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		$this->cache->set($key, $hash, 60 * 60 * 24);
