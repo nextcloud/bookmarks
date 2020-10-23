@@ -103,7 +103,10 @@ class Authorizer {
 		}
 	}
 
-	public function setToken(string $token): void {
+	/**
+	 * @param null|string $token
+	 */
+	public function setToken(?string $token): void {
 		$this->token = $token;
 	}
 
@@ -114,7 +117,10 @@ class Authorizer {
 		return $this->token;
 	}
 
-	public function setUserId($userId): void {
+	/**
+	 * @param string|null $userId
+	 */
+	public function setUserId(?string $userId): void {
 		$this->userId = $userId;
 	}
 
