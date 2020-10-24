@@ -51,6 +51,7 @@ OC.L10N.register(
     "New folder" : "Neuer Ordner",
     "Grid view" : "Rasteransicht",
     "List view" : "Listenansicht",
+    "RSS Feed of current view" : "RSS-Feed der aktuellen Ansicht",
     "Move selection" : "Auswahl verschieben",
     "Delete selection" : "Auswahl löschen",
     "Open all selected" : "Alle ausgewählten öffnen",

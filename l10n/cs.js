@@ -51,6 +51,7 @@ OC.L10N.register(
     "New folder" : "Nová složka",
     "Grid view" : "Zobrazení v mřížce",
     "List view" : "Zobrazení v seznamu",
+    "RSS Feed of current view" : "RSS kanál stávajícího pohledu",
     "Move selection" : "Přesunout vybrané",
     "Delete selection" : "Smazat výběr",
     "Open all selected" : "Otevřít vše vybrané",
