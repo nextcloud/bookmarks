@@ -1,6 +1,6 @@
 {
 	"name": "bookmarks",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"main": "js/index.js",
 	"scripts": {
 		"build": "NODE_ENV=production webpack --progress --hide-modules --config webpack.js",
