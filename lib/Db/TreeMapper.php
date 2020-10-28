@@ -385,8 +385,9 @@ class TreeMapper extends QBMapper {
 			$orphanedBookmarks = $qb->execute();
 			while ($bookmark = $orphanedBookmarks->fetchColumn()) {
 				$qb = $this->db->getQueryBuilder();
-				$qb->delete('bookmarks', 'b')
-					->where($qb->expr()->eq('b.id', $qb->createPositionalParameter($bookmark)));
+				$qb->delete('bookmarks')
+					->where($qb->expr()->eq('id', $qb->createPositionalParameter($bookmark)))
+					->execute();
 			}
 
 			return;
