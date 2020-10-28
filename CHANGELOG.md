@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.2] - 2020-10-28
+
+### Fixed
+
+ - Extend OrphanedTreeItems repair step
+ - Fix TreeMapper#deleteEntry: Properly remove orphaned bookmarks
+
 ## [4.0.1] - 2020-10-27
 
 ### Fixed
@@ -438,6 +445,7 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+[4.0.2]: https://github.com/nextcloud/bookmarks/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/nextcloud/bookmarks/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/nextcloud/bookmarks/compare/v3.4.4...v4.0.0
 [3.4.4]: https://github.com/nextcloud/bookmarks/compare/v3.4.3...v3.4.4
