@@ -129,7 +129,7 @@ class CrawlService {
 		return $folderPath;
 	}
 
-	public function getOrCreateFolder($userFolder, string $path) : ?Folder {
+	public function getOrCreateFolder(Folder $userFolder, string $path) : ?Folder {
 		if ($path === '/') {
 			return $userFolder;
 		}

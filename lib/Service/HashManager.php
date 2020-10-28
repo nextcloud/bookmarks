@@ -17,11 +17,13 @@ use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\EventDispatcher\Event;
+use OCP\EventDispatcher\IEventListener;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use UnexpectedValueException;
 
-class HashManager {
+class HashManager implements IEventListener {
 
 	/**
 	 * @var ICache
@@ -136,6 +138,7 @@ class HashManager {
 
 		/** @var Folder $entity */
 		$entity = $this->folderMapper->find($folderId);
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$children = $this->treeMapper->getChildrenOrder($folderId);
 		$childHashes = array_map(function ($item) use ($fields, $entity) {
 			switch ($item['type']) {
@@ -150,7 +153,7 @@ class HashManager {
 		$folder = [];
 		if ($entity->getUserId() !== $userId) {
 			$folder['title'] = $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId)->getTitle();
-		} elseif ($entity->getTitle() !== null) {
+		} elseif ($entity->getTitle() !== null && $entity->getId() !== $rootFolder->getId()) {
 			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;
@@ -191,10 +194,13 @@ class HashManager {
 	/**
 	 * Handle events
 	 *
-	 * @param ChangeEvent $event
+	 * @param Event $event
 	 */
-	public function handle(ChangeEvent $event): void {
+	public function handle(Event $event): void {
 		if ($this->enabled === false) {
+			return;
+		}
+		if (!($event instanceof ChangeEvent)) {
 			return;
 		}
 		switch ($event->getType()) {
@@ -215,7 +221,7 @@ class HashManager {
 		}
 	}
 
-	public function setInvalidationEnabled(bool $enabled) {
+	public function setInvalidationEnabled(bool $enabled): void {
 		$this->enabled = $enabled;
 	}
 }

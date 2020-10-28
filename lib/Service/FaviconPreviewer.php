@@ -111,7 +111,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 		return null;
 	}
 
-	public function scrapeUrl($url) {
+	public function scrapeUrl($url): array {
 		return $this->linkExplorer->get($url);
 	}
 
@@ -119,7 +119,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 	 * @param $url
 	 * @return Image|null
 	 */
-	protected function fetchImage($url): ?Image {
+	protected function fetchImage(string $url): ?Image {
 		try {
 			$response = $this->client->get($url, ['timeout' => self::HTTP_TIMEOUT]);
 		} catch (Exception $e) {

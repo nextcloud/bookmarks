@@ -51,7 +51,7 @@ OC.L10N.register(
     "New folder" : "Novo cartafol",
     "Grid view" : "Ver como grella",
     "List view" : "Ver como lista",
-    "Private RSS Feed of current view" : "Fonte RSS privada da vista actual",
+    "RSS Feed of current view" : "Fonte RSS da vista actual",
     "Move selection" : "Mover a selección",
     "Delete selection" : "Eliminar a selección",
     "Open all selected" : "Abrir todos os seleccionados",

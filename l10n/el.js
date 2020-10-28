@@ -51,7 +51,6 @@ OC.L10N.register(
     "New folder" : "Νέος φάκελος",
     "Grid view" : "Προβολή πλέγματος",
     "List view" : "Προβολή λίστας",
-    "Private RSS Feed of current view" : "Ιδιωτική ροή RSS τρέχουσας προβολής",
     "Move selection" : "Μετακίνηση επιλογής",
     "Delete selection" : "Διαγραφή επιλογής",
     "Open all selected" : "Άνοιγμα των επιλεγμένων",

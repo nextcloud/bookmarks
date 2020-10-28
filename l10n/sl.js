@@ -50,7 +50,6 @@ OC.L10N.register(
     "New folder" : "Nova mapa",
     "Grid view" : "Mrežni pogled",
     "List view" : "Seznamski pogled",
-    "Private RSS Feed of current view" : "Zasebni vir RSS trenutnega pogleda",
     "Move selection" : "Premakni izbor",
     "Delete selection" : "Izbriši izbor",
     "Open all selected" : "Odpri vse izbrane",

@@ -77,10 +77,13 @@ class HtmlImporter {
 
 	/**
 	 * @brief Import Bookmarks from html formatted file
+	 *
 	 * @param int $userId
-	 * @param string|null $file Content to import
+	 * @param string $file
 	 * @param int|null $rootFolder
+	 *
 	 * @return array
+	 *
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
@@ -148,7 +151,10 @@ class HtmlImporter {
 	 * @param array $folderParams
 	 * @param int $parentId
 	 * @param array $errors
+	 * @param int|null $index
+	 *
 	 * @return array
+	 *
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError

@@ -60,7 +60,7 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 		return null;
 	}
 
-	public function scrapeUrl($url) {
+	public function scrapeUrl($url): array {
 		return $this->linkExplorer->get($url);
 	}
 

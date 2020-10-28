@@ -5,6 +5,7 @@ OC.L10N.register(
     "Rename" : "Rename",
     "Move" : "Zhvendos",
     "Delete" : "Fshij",
+    "Search" : "Kërko",
     "New" : "I ri",
     "New folder" : "Dosje e re",
     "Grid view" : "Pamje galeri",
