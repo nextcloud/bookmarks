@@ -9,7 +9,7 @@ package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
 version+=4.0.2
 
-all: dev-setup build-js-production
+all: dev-setup build-js-production composer-no-dev
 
 release: appstore create-tag
 
@@ -18,13 +18,19 @@ create-tag:
 	git push origin v$(version)
 
 # Dev env management
-dev-setup: clean clean-dev npm-init
+dev-setup: clean clean-dev npm-init composer-install
 
 npm-init:
 	npm ci
 
 npm-update:
 	npm update
+
+composer-install:
+	composer install
+
+composer-no-dev:
+	composer install --no-dev
 
 # Building
 build-js:
