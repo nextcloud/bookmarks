@@ -22,6 +22,7 @@ OC.L10N.register(
     "Title" : "Наслов",
     "Link" : "Линк",
     "Tags" : "Ознаки",
+    "Attachments" : "Прилози",
     "Notes" : "Белешки",
     "Owner" : "Сопственик",
     "Sharing" : "Споделување",
