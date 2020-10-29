@@ -24,7 +24,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 ## Third-party clients
 
 ### Android
-- [Nextcloud Bookmarks](https://gitlab.com/bisada/OCBookmarks) - client app for Android ([new PlayStore entry](https://play.google.com/store/apps/details?id=org.bisw.nxbookmarks))
+- [Nextcloud Bookmarks](https://gitlab.com/bisada/OCBookmarks) - client app for Android ([new App Store entry](https://www.amazon.com/dp/B08L5RKHMM/ref=apps_sf_sta))
 - [NCBookmark](https://gitlab.com/lenchan139/NCBookmark) - Android App
 
 ### Browser
