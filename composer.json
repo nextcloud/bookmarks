@@ -22,7 +22,7 @@
 		"phpunit/phpunit": "^8.5",
 		"nextcloud/coding-standard": "^0.3.0",
 		"vimeo/psalm": "^3.18",
-		"christophwurst/nextcloud": "v20.0.0"
+		"christophwurst/nextcloud": "v20.0.1"
 	},
 	"config": {
 		"optimize-autoloader": true,
