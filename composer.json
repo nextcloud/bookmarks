@@ -16,7 +16,7 @@
 		"symfony/console": "^4.4",
 		"symfony/event-dispatcher": "^4.4",
 		"symfony/process": "^4.4",
-		"symfony/routing": "^4.4"
+		"symfony/routing": "^5.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^8.5",
