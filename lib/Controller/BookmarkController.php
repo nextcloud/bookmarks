@@ -296,8 +296,6 @@ class BookmarkController extends ApiController {
 		}
 		$userId = $this->authorizer->getUserId();
 
-		$userId = $this->authorizer->getUserId();
-
 		if (is_array($tags)) {
 			$filterTag = $tags;
 		} else {

@@ -31,9 +31,9 @@ class BookmarkWithTagsAndParent extends Bookmark {
 				if ($this->{$field} === '') {
 					$array[$field] = [];
 				} else {
-					$array[$field] = array_map(static function ($id) {
+					$array[$field] = array_unique(array_map(static function ($id) {
 						return (int) $id;
-					},explode(',',$this->{$field}));
+					},explode(',',$this->{$field})));
 				}
 				continue;
 			}
