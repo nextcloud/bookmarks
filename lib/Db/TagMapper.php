@@ -44,7 +44,10 @@ class TagMapper {
 			->selectAlias($qb->createFunction('COUNT(DISTINCT ' . $qb->getColumnName('t.bookmark_id') . ')'), 'count')
 			->from('bookmarks_tags', 't')
 			->innerJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.bookmark_id'))
-			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('b.id', 'tr.id'))
+			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->andX(
+				$qb->expr()->eq('b.id', 'tr.id'),
+				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
 			->orWhere($qb->expr()->andX(
@@ -67,7 +70,10 @@ class TagMapper {
 			->select('t.tag')
 			->from('bookmarks_tags', 't')
 			->innerJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.bookmark_id'))
-			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->eq('b.id', 'tr.id'))
+			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->andX(
+				$qb->expr()->eq('b.id', 'tr.id'),
+				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
 			->orWhere($qb->expr()->andX(
