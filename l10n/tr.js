@@ -51,6 +51,7 @@ OC.L10N.register(
     "New folder" : "Yeni klasör",
     "Grid view" : "Tablo görünümü",
     "List view" : "Liste görünümü",
+    "RSS Feed of current view" : "Geçerli görünümün RSS akışı",
     "Move selection" : "Seçilmişleri taşı",
     "Delete selection" : "Seçilmişleri sil",
     "Open all selected" : "Tüm seçilmişleri aç",
