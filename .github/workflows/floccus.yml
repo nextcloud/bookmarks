@@ -5,7 +5,8 @@ on:
   push:
     branches:
       - master
-      - develop
+      - stable
+      - stable3
 
 env:
   APP_NAME: bookmarks
