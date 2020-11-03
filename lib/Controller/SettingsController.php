@@ -14,7 +14,6 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
-use OCP\Util;
 
 class SettingsController extends ApiController {
 
@@ -53,7 +52,6 @@ class SettingsController extends ApiController {
 				$default
 			);
 		} catch (Exception $e) {
-			Util::writeLog('bookmarks', $e->getMessage(), Util::ERROR);
 			return new JSONResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
