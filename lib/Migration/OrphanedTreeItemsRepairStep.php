@@ -98,7 +98,7 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 				$qb->expr()->eq('t.type', $qb->createPositionalParameter('folder'))
 			))
 			->leftJoin('f', 'bookmarks_root_folders', 'r', $qb->expr()->andX(
-				$qb->expr()->eq('r.folder_id', 't.id'),
+				$qb->expr()->eq('r.folder_id', 'f.id'),
 				$qb->expr()->eq('t.type', $qb->createPositionalParameter('folder'))
 			))
 			->where($qb->expr()->isNull('t.id'))
