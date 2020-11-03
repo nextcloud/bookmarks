@@ -24,16 +24,16 @@ class BookmarkWithTagsAndParent extends Bookmark {
 		$array = [];
 		foreach (self::$fields as $field) {
 			if ($field === 'tags' && is_string($this->{$field})) {
-				$array[$field] = $this->{$field} === ''? [] : array_unique(explode(',',$this->{$field}));
+				$array[$field] = $this->{$field} === ''? [] : array_values(array_unique(explode(',',$this->{$field})));
 				continue;
 			}
 			if ($field === 'folders') {
 				if ($this->{$field} === '') {
 					$array[$field] = [];
 				} else {
-					$array[$field] = array_unique(array_map(static function ($id) {
+					$array[$field] = array_values(array_unique(array_map(static function ($id) {
 						return (int) $id;
-					},explode(',',$this->{$field})));
+					},explode(',',$this->{$field}))));
 				}
 				continue;
 			}
