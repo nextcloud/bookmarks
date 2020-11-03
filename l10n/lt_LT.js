@@ -35,6 +35,7 @@ OC.L10N.register(
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["Pažymėtas %n adresyno įrašas","Pažymėti %n adresyno įrašai","Pažymėta %n adresyno įrašų","Pažymėtas %n adresyno įrašas"],
     "Enter a link" : "Įveskite nuorodą",
     "Enter folder title" : "Įveskite aplanko pavadinimą",
+    "Shared by {user}" : "Bendrina {user}",
     "Root folder" : "Šakninis aplankas",
     "Submit" : "Pateikti",
     "Cancel" : "Atsisakyti",
