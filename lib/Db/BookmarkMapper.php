@@ -151,6 +151,9 @@ class BookmarkMapper extends QBMapper {
 		$qb->select($bookmark_cols);
 		$qb->groupBy($bookmark_cols);
 
+		$this->_selectFolders($qb);
+		$this->_selectTags($qb);
+
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->andX(
@@ -170,9 +173,6 @@ class BookmarkMapper extends QBMapper {
 					$qb->expr()->eq('sf2.user_id', $qb->createPositionalParameter($userId))
 				)
 			);
-
-		$this->_selectFolders($qb);
-		$this->_selectTags($qb);
 
 		$this->_filterUrl($qb, $params);
 		$this->_filterArchived($qb, $params);
@@ -411,6 +411,9 @@ class BookmarkMapper extends QBMapper {
 		$qb->select($bookmark_cols);
 		$qb->groupBy($bookmark_cols);
 
+		$this->_selectFolders($qb);
+		$this->_selectTags($qb);
+
 		$qb
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->andX(
@@ -423,13 +426,10 @@ class BookmarkMapper extends QBMapper {
 			))
 			->where(
 				$qb->expr()->orX(
-					$qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId())),
-					$qb->expr()->eq('tr2.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId()))
+					$qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId(), IQueryBuilder::PARAM_INT)),
+					$qb->expr()->eq('tr2.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId(), IQueryBuilder::PARAM_INT))
 				)
 			);
-
-		$this->_selectFolders($qb);
-		$this->_selectTags($qb);
 
 		$this->_filterUrl($qb, $params);
 		$this->_filterArchived($qb, $params);
