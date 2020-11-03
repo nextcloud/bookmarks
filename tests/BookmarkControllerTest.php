@@ -522,7 +522,7 @@ class BookmarkControllerTest extends TestCase {
 		$output = $this->publicController->getBookmarks(-1, null, 'or', '', [], 10, false, $this->folder2->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertCount(1, $data['data']); // TODO: 1-level search Limit!
+		$this->assertCount(1, $data['data'], var_export($data, true)); // TODO: 1-level search Limit!
 	}
 
 	/**
