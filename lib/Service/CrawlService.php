@@ -8,6 +8,8 @@
 namespace OCA\Bookmarks\Service;
 
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
 use Mimey\MimeTypes;
 use OC\User\NoUserException;
 use OCA\Bookmarks\Db\Bookmark;
@@ -19,8 +21,6 @@ use OCP\Files\InvalidPathException;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
-use OCP\Http\Client\IClientService;
-use OCP\Http\Client\IResponse;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\Lock\LockedException;
@@ -39,10 +39,6 @@ class CrawlService {
 	 */
 	private $faviconPreviewer;
 	/**
-	 * @var IClientService
-	 */
-	private $clientService;
-	/**
 	 * @var IConfig
 	 */
 	private $config;
@@ -57,20 +53,19 @@ class CrawlService {
 	 */
 	private $mimey;
 	/**
-	 * @var \OCP\Http\Client\IClient
+	 * @var \Psr\Log\LoggerInterface
 	 */
-	private $client;
+	private $logger;
 
-	public function __construct(BookmarkMapper $bookmarkMapper, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, IClientService $clientService, IConfig $config, IRootFolder $rootFolder, IL10N $l) {
+	public function __construct(BookmarkMapper $bookmarkMapper, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, IConfig $config, IRootFolder $rootFolder, IL10N $l, \Psr\Log\LoggerInterface $logger) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->bookmarkPreviewer = $bookmarkPreviewer;
 		$this->faviconPreviewer = $faviconPreviewer;
-		$this->clientService = $clientService;
-		$this->client = $this->clientService->newClient();
 		$this->config = $config;
 		$this->rootFolder = $rootFolder;
 		$this->l = $l;
 		$this->mimey = new MimeTypes;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -79,8 +74,10 @@ class CrawlService {
 	 */
 	public function crawl(Bookmark $bookmark): void {
 		try {
-			$resp = $this->client->get($bookmark->getUrl());
-			$available = $resp->getStatusCode() !== 404;
+			$client = new Client();
+			/** @var Response $resp */
+			$resp = $client->get($bookmark->getUrl());
+			$available = $resp ? $resp->getStatusCode() !== 404 : false;
 		} catch (Exception $e) {
 			$available = false;
 		}
@@ -95,8 +92,8 @@ class CrawlService {
 		$this->bookmarkMapper->update($bookmark);
 	}
 
-	private function archiveFile(Bookmark $bookmark, IResponse $resp) :void {
-		$contentType = $resp->getHeader('Content-type');
+	private function archiveFile(Bookmark $bookmark, Response $resp) :void {
+		$contentType = $resp->getHeader('Content-type')[0];
 		if ((bool)preg_match('#text/html#i', $contentType) === false && $bookmark->getArchivedFile() === null) {
 			try {
 				$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());

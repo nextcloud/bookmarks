@@ -42,13 +42,12 @@ class CrawlJob extends TimedJob {
 	private $crawler;
 
 	public function __construct(
-		IConfig $settings, BookmarkMapper $bookmarkMapper, IClientService $clientService, CrawlService $crawler
+		IConfig $settings, BookmarkMapper $bookmarkMapper, CrawlService $crawler
 	) {
 		$this->settings = $settings;
 		$this->bookmarkMapper = $bookmarkMapper;
 
 		$this->setInterval(self::INTERVAL);
-		$this->client = $clientService->newClient();
 		$this->crawler = $crawler;
 	}
 
