@@ -31,6 +31,7 @@ OC.L10N.register(
     "Copy link" : "Копирај линк",
     "Copy RSS feed" : "Копирај RSS канал",
     "Allow editing" : "Овозможи уредување",
+    "Remove share" : "Отстрани споделување",
     "Link copied" : "Линкот е копиран",
     "RSS feed copied" : "RSS канал копиран",
     "Select" : "Select",
