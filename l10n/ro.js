@@ -25,7 +25,7 @@ OC.L10N.register(
     "Owner" : "Proprietar",
     "Sharing" : "Partajare",
     "Share link" : "Partajează link-ul",
-    "Copy link" : "Copiză link",
+    "Copy link" : "Copiază link",
     "Allow editing" : "Permite editarea",
     "Link copied" : "Link copiat",
     "Select" : "Select",
