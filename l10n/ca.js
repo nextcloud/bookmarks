@@ -80,7 +80,7 @@ OC.L10N.register(
     "Recent" : "Recents",
     "Archived" : "Arxivat",
     "Broken links" : "Enllaços trencats",
-    "Filter tags" : "Etiquetes de filtre",
+    "Filter tags" : "Filtra les etiquetes",
     "Untagged" : "Sense etiqueta",
     "{used} bookmarks of {available} available" : "{used} marcadors de {available} disponibles",
     "No archived bookmarks" : "No hi ha adreces d'interès arxivades",
