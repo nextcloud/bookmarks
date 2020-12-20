@@ -67,7 +67,7 @@ OC.L10N.register(
     "Enter folder title" : "Wpisz nazwę folderu",
     "Shared by {user}" : "Udostępnione przez {user}",
     "Root folder" : "Katalog główny",
-    "Submit" : "Prześlij",
+    "Submit" : "Wyślij",
     "Cancel" : "Anuluj",
     "Deleting bookmarks" : "Usuwanie zakładek",
     "Deleting selection" : "Usuwanie zaznaczenia",
