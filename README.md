@@ -31,6 +31,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 - [Owncloud Bookmarks](https://chrome.google.com/webstore/detail/owncloud-bookmarks/eomolhpeokmbnincelpkagpapjpeeckc?hl=de) - Bookmarks extension for Chromium-based browsers (Chromium/Chrome/Opera/Vivaldi)
 - [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based browsers
 - [FreedomMarks](https://github.com/damko/freedommarks-browser-webextension) - Addon for Firefox and Chrome. No sync, just a client.
+- [add-nextcloud-bookmarks](https://github.com/qutebrowser/qutebrowser/blob/master/misc/userscripts/add-nextcloud-bookmarks) - qutebrowser userscript that allows for easy bookmark creation
 
 ### Desktop
 - [Nextcloud Bookmark Manager](https://www.midwinter-dg.com/mac-apps/nextcloud-bookmark-manager.html) A MacOS client
