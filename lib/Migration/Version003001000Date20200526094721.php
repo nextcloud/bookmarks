@@ -52,7 +52,7 @@ class Version003001000Date20200526094721 extends SimpleMigrationStep {
 				'notnull' => true,
 				'length' => 64,
 			]);
-			$table->setPrimaryKey(['shared_folder_id'], 'bookmarks_shares_to_shares');
+			$table->addIndex(['shared_folder_id'], 'bookmarks_shares_to_shares');
 			$table->addIndex(['share_id'], 'bookmarks_share_to_shared');
 		}
 		$table = $schema->getTable('bookmarks_shared_folders');
