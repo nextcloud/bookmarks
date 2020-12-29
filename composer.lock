@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac58298ac5f05fe326e0d828977b6c2c",
+    "content-hash": "7ceed94f3e2addf2dde90e7e27802689",
     "packages": [
         {
             "name": "brick/math",
@@ -2977,21 +2977,21 @@
         },
         {
             "name": "nextcloud/coding-standard",
-            "version": "v0.3.0",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nextcloud/coding-standard.git",
-                "reference": "4f5cd012760f8293e19e602651a0ecaa265e4db9"
+                "reference": "57654010946567d063d231ff0e1ea44e1289f965"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nextcloud/coding-standard/zipball/4f5cd012760f8293e19e602651a0ecaa265e4db9",
-                "reference": "4f5cd012760f8293e19e602651a0ecaa265e4db9",
+                "url": "https://api.github.com/repos/nextcloud/coding-standard/zipball/57654010946567d063d231ff0e1ea44e1289f965",
+                "reference": "57654010946567d063d231ff0e1ea44e1289f965",
                 "shasum": ""
             },
             "require": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "php": "^7.2"
+                "friendsofphp/php-cs-fixer": "^2.17",
+                "php": "^7.3|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -3012,9 +3012,9 @@
             "description": "Nextcloud coding standards for the php cs fixer",
             "support": {
                 "issues": "https://github.com/nextcloud/coding-standard/issues",
-                "source": "https://github.com/nextcloud/coding-standard/tree/v0.3.0"
+                "source": "https://github.com/nextcloud/coding-standard/tree/v0.4.0"
             },
-            "time": "2020-04-10T14:57:18+00:00"
+            "time": "2020-12-14T07:22:40+00:00"
         },
         {
             "name": "nikic/php-parser",
