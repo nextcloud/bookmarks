@@ -71,6 +71,15 @@
 					<TagOffIcon slot="icon" :size="18" :fill-color="colorMainText" />
 				</AppNavigationItem>
 			</template>
+			<AppNavigationItem key="menu-deleted"
+				:to="{ name: routes.DELETED }"
+				icon="icon-delete"
+				:title="t('bookmarks', 'Deleted bookmarks')"
+				:pinned="true">
+				<!--<AppNavigationCounter slot="counter">
+					{{ allBookmarksCount }}
+				</AppNavigationCounter>-->
+			</AppNavigationItem>
 			<template v-if="Number(bookmarksLimit) > 0">
 				<AppNavigationSpacer />
 				<AppNavigationItem :pinned="true" icon="icon-quota" :title="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
