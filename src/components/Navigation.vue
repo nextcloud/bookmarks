@@ -76,9 +76,9 @@
 				icon="icon-delete"
 				:title="t('bookmarks', 'Deleted bookmarks')"
 				:pinned="true">
-				<!--<AppNavigationCounter slot="counter">
-					{{ allBookmarksCount }}
-				</AppNavigationCounter>-->
+				<AppNavigationCounter v-show="Boolean(deletedBookmarksCount)" slot="counter">
+					{{ deletedBookmarksCount }}
+				</AppNavigationCounter>
 			</AppNavigationItem>
 			<template v-if="Number(bookmarksLimit) > 0">
 				<AppNavigationSpacer />
@@ -147,6 +147,9 @@ export default {
 		},
 		archivedBookmarksCount() {
 			return this.$store.state.archivedCount
+		},
+		deletedBookmarksCount() {
+			return this.$store.state.deletedCount
 		},
 		bookmarksLimit() {
 			return this.$store.state.settings.limit

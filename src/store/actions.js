@@ -18,6 +18,7 @@ export const actions = {
 	COUNT_BOOKMARKS: 'COUNT_BOOKMARKS',
 	COUNT_UNAVAILABLE: 'COUNT_UNAVAILABLE',
 	COUNT_ARCHIVED: 'COUNT_ARCHIVED',
+	COUNT_DELETED: 'COUNT_DELETED',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	LOAD_BOOKMARK: 'LOAD_BOOKMARK',
@@ -49,6 +50,7 @@ export const actions = {
 	FILTER_BY_UNTAGGED: 'FILTER_BY_UNTAGGED',
 	FILTER_BY_UNAVAILABLE: 'FILTER_BY_UNAVAILABLE',
 	FILTER_BY_ARCHIVED: 'FILTER_BY_ARCHIVED',
+	FILTER_BY_DELETED: 'FILTER_BY_DELETED',
 	FILTER_BY_TAGS: 'FILTER_BY_TAGS',
 	FILTER_BY_FOLDER: 'FILTER_BY_FOLDER',
 	FILTER_BY_SEARCH: 'FILTER_BY_SEARCH',
@@ -112,6 +114,26 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to count archived bookmarks')
+			)
+			throw err
+		}
+	},
+	async [actions.COUNT_DELETED]({ commit, dispatch, state }, folderId) {
+		try {
+			const response = await axios.get(url(state, '/bookmark/deleted')
+			)
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_DELETED_COUNT, count)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to count deleted bookmarks')
 			)
 			throw err
 		}
@@ -643,6 +665,7 @@ export default {
 		dispatch(actions.COUNT_BOOKMARKS, -1)
 		dispatch(actions.COUNT_UNAVAILABLE)
 		dispatch(actions.COUNT_ARCHIVED)
+		dispatch(actions.COUNT_DELETED)
 	},
 
 	[actions.NO_FILTER]({ dispatch, commit }) {
@@ -671,6 +694,10 @@ export default {
 	},
 	[actions.FILTER_BY_ARCHIVED]({ dispatch, commit }) {
 		commit(mutations.SET_QUERY, { archived: true })
+		return dispatch(actions.FETCH_PAGE)
+	},
+	[actions.FILTER_BY_DELETED]({ dispatch, commit }) {
+		commit(mutations.SET_QUERY, { deleted: true })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_FOLDER]({ dispatch, commit }, folder) {

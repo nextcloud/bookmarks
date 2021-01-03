@@ -105,6 +105,9 @@ export default {
 			case privateRoutes.ARCHIVED:
 				this.$store.dispatch(actions.FILTER_BY_ARCHIVED)
 				break
+			case privateRoutes.DELETED:
+				this.$store.dispatch(actions.FILTER_BY_DELETED)
+				break
 			case privateRoutes.BOOKMARK:
 				await this.$store.dispatch(actions.LOAD_BOOKMARK, route.params.bookmark)
 				this.$store.dispatch(actions.OPEN_BOOKMARK, route.params.bookmark)
@@ -141,6 +144,7 @@ export default {
 				this.$store.dispatch(actions.COUNT_BOOKMARKS, -1),
 				this.$store.dispatch(actions.COUNT_UNAVAILABLE),
 				this.$store.dispatch(actions.COUNT_ARCHIVED),
+				this.$store.dispatch(actions.COUNT_DELETED),
 			])
 		},
 

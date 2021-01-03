@@ -80,6 +80,7 @@ OC.L10N.register(
     "Recent" : "Recent",
     "Archived" : "Gearchiveerd",
     "Broken links" : "Niet-werkende links",
+    "Deleted bookmarks" : "Verwijderde bladwijzers",
     "Filter tags" : "Filter tags",
     "Untagged" : "Niet getagd",
     "{used} bookmarks of {available} available" : "{used} bookmarks van {available} beschikbare",

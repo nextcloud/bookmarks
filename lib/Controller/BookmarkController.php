@@ -243,6 +243,7 @@ class BookmarkController extends ApiController {
 	 * @param string|null $url
 	 * @param bool|null $unavailable
 	 * @param bool|null $archived
+	 * @param bool|null $deleted
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
@@ -261,7 +262,8 @@ class BookmarkController extends ApiController {
 		?int $folder = null,
 		?string $url = null,
 		?bool $unavailable = null,
-		?bool $archived = null
+		?bool $archived = null,
+		?bool $deleted = null
 	): DataResponse {
 		$this->registerResponder('rss', function (DataResponse $res) {
 			if ($res->getData()['status'] === 'success') {
@@ -309,6 +311,9 @@ class BookmarkController extends ApiController {
 		}
 		if ($unavailable !== null) {
 			$params->setUnavailable($unavailable);
+		}
+		if ($deleted !== null) {
+			$params->setDeleted($deleted);
 		}
 		if ($untagged !== null) {
 			$params->setUntagged($untagged);
@@ -735,6 +740,22 @@ class BookmarkController extends ApiController {
 		}
 
 		$count = $this->bookmarkMapper->countArchived($this->authorizer->getUserId());
+		return new JSONResponse(['status' => 'success', 'item' => $count]);
+	}
+
+	/**
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function countDeleted(): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
+		}
+
+		$count = $this->bookmarkMapper->countDeleted($this->authorizer->getUserId());
 		return new JSONResponse(['status' => 'success', 'item' => $count]);
 	}
 }

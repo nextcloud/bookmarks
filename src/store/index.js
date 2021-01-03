@@ -55,6 +55,7 @@ export default new Store({
 		countsByFolder: {},
 		unavailableCount: 0,
 		archivedCount: 0,
+		deletedCount: 0,
 		selection: {
 			folders: [],
 			bookmarks: [],

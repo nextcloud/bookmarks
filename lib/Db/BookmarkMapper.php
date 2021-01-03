@@ -215,6 +215,7 @@ class BookmarkMapper extends QBMapper {
 		$this->_filterUrl($qb, $params);
 		$this->_filterArchived($qb, $params);
 		$this->_filterUnavailable($qb, $params);
+		$this->_filterDeleted($qb, $params);
 		$this->_filterFolder($qb, $params);
 		$this->_filterTags($qb, $params);
 		$this->_filterUntagged($qb, $params);
@@ -335,6 +336,16 @@ class BookmarkMapper extends QBMapper {
 	 * @param IQueryBuilder $qb
 	 * @param QueryParameters $params
 	 */
+	private function _filterDeleted(IQueryBuilder $qb, QueryParameters $params): void {
+		if ($params->getDeleted()) {
+			$qb->andWhere($qb->expr()->isNotNull('b.deleted'));
+		}
+	}
+
+	/**
+	 * @param IQueryBuilder $qb
+	 * @param QueryParameters $params
+	 */
 	private function _filterFolder(IQueryBuilder $qb, QueryParameters $params): void {
 		if ($params->getFolder() !== null) {
 			$qb->andWhere($qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($params->getFolder(), IQueryBuilder::PARAM_INT)))
@@ -430,6 +441,30 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @param string $userId
+	 * @return int
+	 */
+	public function countDeleted(string $userId): int {
+		$qb = $this->db->getQueryBuilder();
+		$qb->selectAlias($qb->func()->count('b.id'), 'count');
+
+		$qb
+			->from('bookmarks', 'b')
+			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->andX(
+				$qb->expr()->eq('b.id', 'tr.id'),
+				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			))
+			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
+			->where($qb->expr()->orX(
+				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
+			))
+			->andWhere($qb->expr()->isNotNull('b.deleted'));
+
+		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
+	}
+
+	/**
 	 *
 	 * @param $token
 	 * @param QueryParameters $params
@@ -472,6 +507,7 @@ class BookmarkMapper extends QBMapper {
 		$this->_filterUrl($qb, $params);
 		$this->_filterArchived($qb, $params);
 		$this->_filterUnavailable($qb, $params);
+		$this->_filterDeleted($qb, $params);
 		$this->_filterFolder($qb, $params);
 		$this->_filterTags($qb, $params);
 		$this->_filterUntagged($qb, $params);
