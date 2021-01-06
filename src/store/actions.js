@@ -332,6 +332,7 @@ export default {
 				throw new Error(response.data)
 			}
 			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			await dispatch(actions.COUNT_DELETED, 1)
 			await commit(mutations.REMOVE_BOOKMARK, id)
 		} catch (err) {
 			console.error(err)

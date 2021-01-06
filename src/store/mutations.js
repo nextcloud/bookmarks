@@ -19,6 +19,7 @@ export const mutations = {
 	ADD_SELECTION_FOLDER: 'ADD_SELECTION_FOLDER',
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
+	REMOVE_BOOKMARK_PERMANENTLY: 'REMOVE_BOOKMARK_PERMANENTLY',
 	REMOVE_ALL_BOOKMARKS: 'REMOVE_ALL_BOOKMARKS',
 	SET_BOOKMARK_COUNT: 'SET_BOOKMARK_COUNT',
 	SET_UNAVAILABLE_COUNT: 'SET_UNAVAILABLE_COUNT',
@@ -133,6 +134,13 @@ export default {
 		}
 	},
 	[mutations.REMOVE_BOOKMARK](state, id) {
+		const index = state.bookmarks.findIndex(bookmark => bookmark.id === id)
+		if (index !== -1) {
+			state.bookmarks.splice(index, 1)
+			Vue.delete(state.bookmarksById, id)
+		}
+	},
+	[mutations.REMOVE_BOOKMARK_PERMANENTLY](state, id) {
 		const index = state.bookmarks.findIndex(bookmark => bookmark.id === id)
 		if (index !== -1) {
 			state.bookmarks.splice(index, 1)
