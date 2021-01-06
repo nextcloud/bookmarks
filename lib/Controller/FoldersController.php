@@ -357,7 +357,10 @@ class FoldersController extends ApiController {
 		try {
 			$folderId = $this->toInternalFolderId($folderId);
 			$hash = $this->hashManager->hashFolder($this->authorizer->getUserId(), $folderId, $fields);
-			return new JSONResponse(['status' => 'success', 'data' => $hash]);
+			$res = new JSONResponse(['status' => 'success', 'data' => $hash]);
+			$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
+			$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+			return $res;
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
@@ -381,7 +384,10 @@ class FoldersController extends ApiController {
 		}
 		$folderId = $this->toInternalFolderId($folderId);
 		$children = $this->treeMapper->getChildren($folderId, $layers);
-		return new JSONResponse(['status' => 'success', 'data' => $children]);
+		$res = new JSONResponse(['status' => 'success', 'data' => $children]);
+		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
+		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+		return $res;
 	}
 
 	/**
@@ -400,7 +406,10 @@ class FoldersController extends ApiController {
 		}
 		$folderId = $this->toInternalFolderId($folderId);
 		$children = $this->treeMapper->getChildrenOrder($folderId, $layers);
-		return new JSONResponse(['status' => 'success', 'data' => $children]);
+		$res = new JSONResponse(['status' => 'success', 'data' => $children]);
+		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
+		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+		return $res;
 	}
 
 	/**
