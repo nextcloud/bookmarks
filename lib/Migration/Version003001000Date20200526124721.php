@@ -45,6 +45,7 @@ class Version003001000Date20200526124721 extends SimpleMigrationStep {
 		if ($schema->hasTable('bookmarks_shared_folders')) {
 			$table = $schema->getTable('bookmarks_shared_folders');
 			$table->dropColumn('share_id');
+			$table->dropIndex('bookmarks_shared_share');
 		}
 		return $schema;
 	}
