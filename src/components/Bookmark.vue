@@ -139,6 +139,9 @@ export default {
 	created() {},
 	methods: {
 		onDelete() {
+			if (!confirm(t('bookmarks', 'Do you really want to delete this bookmark?'))) {
+				return
+			}
 			this.$store.dispatch(actions.DELETE_BOOKMARK, {
 				id: this.bookmark.id,
 				folder: this.$store.state.fetchState.query.folder,

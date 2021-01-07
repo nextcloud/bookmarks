@@ -135,6 +135,9 @@ export default {
 			this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
 		},
 		onDelete() {
+			if (!confirm(t('bookmarks', 'Do you really want to delete this folder?'))) {
+				return
+			}
 			this.$store.dispatch(actions.DELETE_FOLDER, { id: this.folder.id })
 		},
 		onMove() {
