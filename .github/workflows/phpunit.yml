@@ -52,7 +52,7 @@ jobs:
 
       - name: Set up PHPUnit
         working-directory: apps/${{ env.APP_NAME }}
-        run: composer i
+        run: composer install --ignore-platform-req=php
 
       - name: Set up Nextcloud
         env:
@@ -124,7 +124,7 @@ jobs:
 
       - name: Set up PHPUnit
         working-directory: apps/${{ env.APP_NAME }}
-        run: composer i
+        run: composer install --ignore-platform-req=php
 
       - name: Set up Nextcloud
         env:
@@ -193,7 +193,7 @@ jobs:
 
       - name: Set up PHPUnit
         working-directory: apps/${{ env.APP_NAME }}
-        run: composer i
+        run: composer install --ignore-platform-req=php
 
       - name: Set up Nextcloud
         env:
