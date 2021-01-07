@@ -61,7 +61,7 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	protected function fetchImage(string $serverPath, string $url): ?Image {
 		$tempPath = $this->tempManager->getTemporaryFile('.png');
 		$tempDir = dirname($tempPath);
-		$tempFile = basename($tempPath);
+		$tempFile = basename($tempPath, '.png');
 		$command = $serverPath;
 		$escapedUrl = escapeshellarg($url);
 
