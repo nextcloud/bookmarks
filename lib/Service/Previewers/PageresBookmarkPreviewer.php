@@ -65,7 +65,7 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 		$command = $serverPath;
 		$escapedUrl = escapeshellarg($url);
 
-		$cmd = "cd {$tempDir} && {$command} {$escapedUrl} desktop" .
+		$cmd = "cd {$tempDir} && {$command} {$escapedUrl}" .
 			' --delay=4 --filename=' . escapeshellarg($tempFile) . ' --overwrite 2>&1';
 
 		$retries = 0;
