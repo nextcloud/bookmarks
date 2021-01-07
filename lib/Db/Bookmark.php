@@ -88,4 +88,12 @@ class Bookmark extends Entity {
 	public function incrementClickcount(): void {
 		$this->setClickcount($this->clickcount + 1);
 	}
+
+	public function setTitle($title): void {
+		// Cap title length at 255 because the DB doesn't have more space currently
+		if (mb_strlen($title) > 255) {
+			$title = mb_substr($title, 0, 254) . '…';
+		}
+		parent::setTitle($title);
+	}
 }
