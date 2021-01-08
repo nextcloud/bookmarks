@@ -314,6 +314,7 @@ export default {
 				commit(mutations.REMOVE_BOOKMARK, id)
 				if (!avoidReload) {
 					await dispatch(actions.COUNT_BOOKMARKS, -1)
+					await dispatch(actions.COUNT_DELETED)
 					await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
 				}
 			} catch (err) {
@@ -332,7 +333,7 @@ export default {
 				throw new Error(response.data)
 			}
 			await dispatch(actions.COUNT_BOOKMARKS, -1)
-			await dispatch(actions.COUNT_DELETED, 1)
+			await dispatch(actions.COUNT_DELETED)
 			await commit(mutations.REMOVE_BOOKMARK, id)
 		} catch (err) {
 			console.error(err)
@@ -357,6 +358,7 @@ export default {
 				throw new Error(Array.isArray(response.data.data) ? response.data.data.join('. ') : response.data.data)
 			}
 			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			await dispatch(actions.COUNT_DELETED)
 			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 			await dispatch(actions.RELOAD_VIEW)
 			commit(mutations.FETCH_END, 'importBookmarks')
@@ -383,6 +385,7 @@ export default {
 					throw new Error(response.data)
 				}
 				dispatch(actions.COUNT_BOOKMARKS, -1)
+				dispatch(actions.COUNT_DELETED)
 				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 				commit(mutations.FETCH_END, 'deleteBookmarks')
 				return dispatch(actions.RELOAD_VIEW)
