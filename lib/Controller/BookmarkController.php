@@ -314,6 +314,8 @@ class BookmarkController extends ApiController {
 		}
 		if ($deleted !== null) {
 			$params->setDeleted($deleted);
+		} else {
+			$params->setDeleted(false);
 		}
 		if ($untagged !== null) {
 			$params->setUntagged($untagged);

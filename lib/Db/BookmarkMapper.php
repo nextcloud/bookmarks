@@ -337,9 +337,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param QueryParameters $params
 	 */
 	private function _filterDeleted(IQueryBuilder $qb, QueryParameters $params): void {
-		if ($params->getDeleted()) {
-			$qb->andWhere($qb->expr()->eq('b.deleted', $qb->createPositionalParameter(true, IQueryBuilder::PARAM_BOOL)));
-		}
+		$qb->andWhere($qb->expr()->eq('b.deleted', $qb->createPositionalParameter($params->getDeleted(), IQueryBuilder::PARAM_BOOL)));
 	}
 
 	/**
