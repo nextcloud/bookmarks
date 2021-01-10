@@ -50,13 +50,25 @@
 				</template>
 				{{ t('bookmarks', 'Move') }}
 			</ActionButton>
-			<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
+			<ActionButton
+				v-if="!bookmark.deleted"
+				icon="icon-delete"
+				:close-after-click="true"
+				@click="onDelete">
 				{{ t('bookmarks', 'Delete') }}
 			</ActionButton>
-			<ActionButton icon="icon-history" :close-after-click="true" @click="onRestore">
+			<ActionButton
+				v-if="bookmark.deleted"
+				icon="icon-history"
+				:close-after-click="true"
+				@click="onRestore">
 				{{ t('bookmarks', 'Restore') }}
 			</ActionButton>
-			<ActionButton icon="icon-delete" :close-after-click="true" @click="onPermanentlyDelete">
+			<ActionButton
+				v-if="bookmark.deleted"
+				icon="icon-delete"
+				:close-after-click="true"
+				@click="onPermanentlyDelete">
 				{{ t('bookmarks', 'Permanently delete') }}
 			</ActionButton>
 		</template>
