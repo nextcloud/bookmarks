@@ -130,6 +130,16 @@ class InternalBookmarkController extends ApiController {
 	}
 
 	/**
+	 * @param int $id
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function restoreBookmark($id = -1): JSONResponse {
+		return $this->publicController->restoreBookmark($id);
+	}
+
+	/**
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired

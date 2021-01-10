@@ -47,6 +47,7 @@ return [
 		['name' => 'internal_bookmark#edit_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'PUT'],
 		['name' => 'internal_bookmark#get_single_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#delete_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'DELETE'],
+		['name' => 'internal_bookmark#restore_bookmark', 'url' => '/bookmark/restore/{id}', 'verb' => 'PUT'],
 		['name' => 'internal_bookmark#delete_all_bookmarks', 'url' => '/bookmark', 'verb' => 'DELETE'],
 		['name' => 'internal_bookmark#get_bookmark_image', 'url' => '/bookmark/{id}/image', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#get_bookmark_favicon', 'url' => '/bookmark/{id}/favicon', 'verb' => 'GET'],

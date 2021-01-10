@@ -53,6 +53,12 @@
 			<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
 				{{ t('bookmarks', 'Delete') }}
 			</ActionButton>
+			<ActionButton icon="icon-history" :close-after-click="true" @click="onRestore">
+				{{ t('bookmarks', 'Restore') }}
+			</ActionButton>
+			<ActionButton icon="icon-delete" :close-after-click="true" @click="onPermanentlyDelete">
+				{{ t('bookmarks', 'Permanently delete') }}
+			</ActionButton>
 		</template>
 	</Item>
 </template>
@@ -140,6 +146,18 @@ export default {
 	methods: {
 		onDelete() {
 			this.$store.dispatch(actions.DELETE_BOOKMARK, {
+				id: this.bookmark.id,
+				folder: this.$store.state.fetchState.query.folder,
+			})
+		},
+		onPermanentlyDelete() {
+			this.$store.dispatch(actions.DELETE_BOOKMARK, {
+				id: this.bookmark.id,
+				folder: this.$store.state.fetchState.query.folder,
+			})
+		},
+		onRestore() {
+			this.$store.dispatch(actions.RESTORE_BOOKMARK, {
 				id: this.bookmark.id,
 				folder: this.$store.state.fetchState.query.folder,
 			})
