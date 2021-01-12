@@ -163,7 +163,7 @@ export default {
 			})
 		},
 		onPermanentlyDelete() {
-			this.$store.dispatch(actions.DELETE_BOOKMARK, {
+			this.$store.dispatch(actions.PERMANENTLY_DELETE_BOOKMARK, {
 				id: this.bookmark.id,
 				folder: this.$store.state.fetchState.query.folder,
 			})

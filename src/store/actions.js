@@ -392,7 +392,7 @@ export default {
 		if (folder) {
 			try {
 				const response = await axios.delete(
-					url(state, `/folder/${folder}/bookmarks/${id}`)
+					url(state, `/folder/${folder}/bookmarks/permanent/${id}`)
 				)
 				if (response.data.status !== 'success') {
 					throw new Error(response.data)
@@ -407,14 +407,14 @@ export default {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to permentently delete bookmark')
+					AppGlobal.methods.t('bookmarks', 'Failed to permanently delete bookmark')
 				)
 				throw err
 			}
 			return
 		}
 		try {
-			const response = await axios.delete(url(state, `/bookmark/${id}`))
+			const response = await axios.delete(url(state, `/bookmark/permanent/${id}`))
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
@@ -425,7 +425,7 @@ export default {
 			console.error(err)
 			commit(
 				mutations.SET_ERROR,
-				AppGlobal.methods.t('bookmarks', 'Failed to delete bookmark')
+				AppGlobal.methods.t('bookmarks', 'Failed to permanently delete bookmark')
 			)
 			throw err
 		}

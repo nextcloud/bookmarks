@@ -140,6 +140,16 @@ class InternalBookmarkController extends ApiController {
 	}
 
 	/**
+	 * @param int $id
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function deleteBookmarkPermanently($id = -1): JSONResponse {
+		return $this->publicController->deleteBookmarkPermanently($id);
+	}
+
+	/**
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
