@@ -44,6 +44,8 @@ OC.L10N.register(
     "Rename" : "Hernoemen",
     "Move" : "Verplaatsen",
     "Delete" : "Verwijderen",
+    "Permanently delete" : "Definitief verwijderen",
+    "Restore" : "Herstellen",
     "Search" : "Zoeken",
     "Select one or more tags" : "Kies één of meer tags",
     "New" : "Nieuw",
