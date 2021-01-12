@@ -147,7 +147,7 @@ OC.L10N.register(
     "Webshot" : "Webshot",
     "Webshot API URL" : "URL da API do Webshot",
     "ScreenshotMachine" : "ScreenshotMachine",
-    "ScreenshotMachine API key" : "Chave da API do ScreenshotMachine",
+    "ScreenshotMachine API key" : "Clave da API do ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
     "Simply install the pageres cli on your server and bookmarks will find it." : "Simplemente instale o «pageres cli» no seu servidor e os marcadores atoparano.",
     "Privacy" : "Privacidade",
