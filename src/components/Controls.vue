@@ -19,6 +19,10 @@
 				<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
 				<span class="icon-breadcrumb" />
 			</template>
+			<template v-if="$route.name === routes.DELETED">
+				<a class="icon-delete" @click="onSelectHome" />
+				<span class="icon-breadcrumb" />
+			</template>
 			<template v-if="$route.name === routes.FOLDER">
 				<template v-for="folder in folderPath">
 					<a
