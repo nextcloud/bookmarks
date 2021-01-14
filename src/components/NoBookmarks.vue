@@ -14,7 +14,7 @@
 		</EmptyContent>
 		<EmptyContent v-else>
 			{{ t('bookmarks', 'No bookmarks here') }}
-			<template #desc>
+			<template v-if="$route.name !== routes.DELETED" #desc>
 				<button @click="onAddBookmark">
 					{{ t('bookmarks', 'Add a bookmark') }}
 				</button>
