@@ -44,7 +44,10 @@
 			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
 				{{ t('bookmarks', 'Rename') }}
 			</ActionButton>
-			<ActionButton :close-after-click="true" @click="onMove">
+			<ActionButton
+				v-if="!bookmark.deleted"
+				:close-after-click="true"
+				@click="onMove">
 				<template #icon>
 					<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
 				</template>
