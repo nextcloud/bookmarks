@@ -73,7 +73,7 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 		try {
 			// get it
 			$response = $this->client->get(
-				"http://api.screenshotmachine.com/?key={$this->apiKey}&dimension=" . $this->width . "x" . $this->height . "&device=desktop&format=jpg&url={$url}",
+				"https://api.screenshotmachine.com/?key=". $this->apiKey . "&dimension=" . $this->width . "x" . $this->height . "&device=desktop&delay=2000&format=jpg&url=" . $url,
 				[
 					'timeout' => self::HTTP_TIMEOUT,
 				]
