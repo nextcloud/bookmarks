@@ -39,6 +39,8 @@ export const actions = {
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
+	RESTORE_FOLDER: 'RESTORE_FOLDER',
+	PERMANENTLY_DELETE_FOLDER: 'PERMANENTLY_DELETE_FOLDER',
 	LOAD_FOLDER_CHILDREN_ORDER: 'LOAD_FOLDER_CHILDREN_ORDER',
 	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
 
@@ -609,6 +611,52 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
+			)
+			throw err
+		}
+	},
+	async [actions.RESTORE_FOLDER]({ commit, dispatch, state }, { id, avoidReload }) {
+		try {
+			const response = await axios.put(url(state, `/folder/restore/${id}`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			const parentFolder = this.getters.getFolder(id)[0].parent_folder
+			if (!avoidReload) {
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder)
+				await dispatch(actions.LOAD_FOLDERS)
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to restore folder')
+			)
+			throw err
+		}
+	},
+	async [actions.PERMANENTLY_DELETE_FOLDER]({ commit, dispatch, state }, { id, avoidReload }) {
+		try {
+			const response = await axios.delete(url(state, `/folder/permanent/${id}`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			const parentFolder = this.getters.getFolder(id)[0].parent_folder
+			if (!avoidReload) {
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder)
+				await dispatch(actions.LOAD_FOLDERS)
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to permanently delete folder')
 			)
 			throw err
 		}

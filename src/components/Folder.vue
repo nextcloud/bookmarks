@@ -45,14 +45,34 @@
 			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
 				{{ t('bookmarks', 'Rename') }}
 			</ActionButton>
-			<ActionButton :close-after-click="true" @click="onMove">
+			<ActionButton
+				v-if="!folder.deleted"
+				:close-after-click="true"
+				@click="onMove">
 				<template #icon>
 					<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
 				</template>
 				{{ t('bookmarks', 'Move') }}
 			</ActionButton>
-			<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
+			<ActionButton
+				v-if="!folder.deleted"
+				icon="icon-delete"
+				:close-after-click="true"
+				@click="onDelete">
 				{{ t('bookmarks', 'Delete') }}
+			</ActionButton>
+			<ActionButton icon="icon-history"
+				v-if="folder.deleted"
+				:close-after-click="true"
+				@click="onRestore">
+				{{ t('bookmarks', 'Restore') }}
+			</ActionButton>
+			<ActionButton
+				v-if="folder.deleted"
+				icon="icon-delete"
+				:close-after-click="true"
+				@click="onPermanentlyDelete">
+				{{ t('bookmarks', 'Permanently delete') }}
 			</ActionButton>
 		</template>
 	</Item>
@@ -136,6 +156,12 @@ export default {
 		},
 		onDelete() {
 			this.$store.dispatch(actions.DELETE_FOLDER, { id: this.folder.id })
+		},
+		onRestore() {
+			this.$store.dispatch(actions.RESTORE_FOLDER, { id: this.folder.id })
+		},
+		onPermanentlyDelete() {
+			this.$store.dispatch(actions.PERMANENTLY_DELETE_FOLDER, { id: this.folder.id })
 		},
 		onMove() {
 			this.$store.commit(mutations.RESET_SELECTION)
