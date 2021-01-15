@@ -22,17 +22,19 @@ class Folder extends Entity {
 	protected $title;
 	protected $userId;
 	protected $index;
+	protected $deleted;
 
-	public static $columns = ['id', 'title', 'user_id'];
+	public static $columns = ['id', 'title', 'user_id', 'deleted'];
 
 
 	public function __construct() {
 		// add types in constructor
 		$this->addType('title', 'string');
 		$this->addType('userId', 'string');
+		$this->addType('deleted', 'boolean');
 	}
 
 	public function toArray(): array {
-		return ['id' => $this->id, 'title' => $this->title, 'userId' => $this->userId];
+		return ['id' => $this->id, 'title' => $this->title, 'userId' => $this->userId, 'deleted' => $this->deleted];
 	}
 }

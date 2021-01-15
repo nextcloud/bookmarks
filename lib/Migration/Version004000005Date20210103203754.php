@@ -44,6 +44,13 @@ class Version004000005Date20210103203754 extends SimpleMigrationStep {
 				'default' => false,
 			]);
 		}
+		if ($schema->hasTable('bookmarks_folders')) {
+			$table = $schema->getTable('bookmarks_folders');
+			$table->addColumn('deleted', Type::BOOLEAN, [
+				'notnull' => false,
+				'default' => false,
+			]);
+		}
 		return $schema;
 	}
 
