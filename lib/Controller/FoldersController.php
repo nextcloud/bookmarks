@@ -340,6 +340,60 @@ class FoldersController extends ApiController {
 
 	/**
 	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function restoreFolder($folderId): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+
+		$folderId = $this->toInternalFolderId($folderId);
+		try {
+			$this->folders->restoreSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			return new JSONResponse(['status' => 'success']);
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'success']);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function deleteFolderPermanently($folderId): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+
+		$folderId = $this->toInternalFolderId($folderId);
+		try {
+			$this->folders->deleteSharedFolderOrFolderPermanently($this->authorizer->getUserId(), $folderId);
+			return new JSONResponse(['status' => 'success']);
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'success']);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * @param int $folderId
 	 * @param string|null $title
 	 * @param int|null $parent_folder
 	 * @return JSONResponse

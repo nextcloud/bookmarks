@@ -110,7 +110,7 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 			$notInGroupUsers = array_diff($usersInShare, $usersInGroup);
 
 			foreach ($notInGroupUsers as $userId) {
-				$this->folders->deleteSharedFolderOrFolder($userId, $groupShare['folder_id']);
+				$this->folders->deleteSharedFolderOrFolderPermanently($userId, $groupShare['folder_id']);
 				$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($groupShare['folder_id'], $userId);
 				$this->sharedFolderMapper->delete($sharedFolder);
 				$deleted++;

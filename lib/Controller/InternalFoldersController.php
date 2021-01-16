@@ -73,6 +73,26 @@ class InternalFoldersController extends ApiController {
 
 	/**
 	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function restoreFolder($folderId): JSONResponse {
+		return $this->controller->restoreFolder($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function deleteFolderPermanently($folderId): JSONResponse {
+		return $this->controller->deleteFolderPermanently($folderId);
+	}
+
+	/**
+	 * @param int $folderId
 	 * @param int $bookmarkId
 	 * @return JSONResponse
 	 *

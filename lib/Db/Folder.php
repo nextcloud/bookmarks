@@ -17,6 +17,8 @@ use OCP\AppFramework\Db\Entity;
  * @method setTitle(string $title)
  * @method getUserId
  * @method setUserId(string $userId)
+ * @method getDeleted
+ * @method setDeleted(boolean $deleted)
  */
 class Folder extends Entity {
 	protected $title;
