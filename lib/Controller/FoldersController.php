@@ -293,11 +293,21 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 */
 	public function deleteFolder($folderId): JSONResponse {
+		if ($folderId !== -1) {
+			try {
+				$this->folders->findSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+				return new JSONResponse(['status' => 'success']);
+			}
+		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 
 		$folderId = $this->toInternalFolderId($folderId);
+		if ($folderId === null) {
+			return new JSONResponse(['status' => 'success']);
+		}
 		try {
 			$this->folders->deleteSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
 			return new JSONResponse(['status' => 'success']);
