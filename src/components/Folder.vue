@@ -61,8 +61,9 @@
 				@click="onDelete">
 				{{ t('bookmarks', 'Delete') }}
 			</ActionButton>
-			<ActionButton icon="icon-history"
+			<ActionButton
 				v-if="folder.deleted"
+				icon="icon-history"
 				:close-after-click="true"
 				@click="onRestore">
 				{{ t('bookmarks', 'Restore') }}
