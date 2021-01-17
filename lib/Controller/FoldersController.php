@@ -529,6 +529,10 @@ class FoldersController extends ApiController {
 				$folder['parent_folder'] = -1;
 			}
 		}
+		$folders = array_filter($folders, function($folder) {
+			return $folder['deleted'] !== true;
+		});
+		$folders = array_values($folders);
 		$res = new JSONResponse(['status' => 'success', 'data' => $folders]);
 		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
 		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
