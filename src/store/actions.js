@@ -483,6 +483,7 @@ export default {
 				if (status !== 'success') {
 					throw new Error(response.data)
 				}
+				commit(mutations.REMOVE_TAG, tag)
 				dispatch(actions.LOAD_TAGS)
 			})
 			.catch(err => {

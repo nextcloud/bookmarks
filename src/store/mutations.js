@@ -25,6 +25,7 @@ export const mutations = {
 	SET_ARCHIVED_COUNT: 'SET_ARCHIVED_COUNT',
 	SET_TAGS: 'SET_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
+	REMOVE_TAG: 'REMOVE_TAG',
 	INCREMENT_PAGE: 'INCREMENT_PAGE',
 	RESET_PAGE: 'RESET_PAGE',
 	SET_QUERY: 'SET_QUERY',
@@ -78,6 +79,13 @@ export default {
 			Vue.set(bookmark, 'tags', bookmark.tags.map((tag) => {
 				if (tag === oldName) return newName
 				return tag
+			}))
+		})
+	},
+	[mutations.REMOVE_TAG](state, oldTag) {
+		state.bookmarks.forEach((bookmark) => {
+			Vue.set(bookmark, 'tags', bookmark.tags.filter((tag) => {
+				return tag !== oldTag
 			}))
 		})
 	},
