@@ -218,6 +218,7 @@ class FolderService {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws \OCA\Bookmarks\Exception\UrlParseError
 	 */
 	public function updateSharedFolderOrFolder($userId, $folderId, $title = null, $parent_folder = null) {
 		/**
@@ -244,15 +245,20 @@ class FolderService {
 				// noop
 			}
 		}
-
 		if (isset($title)) {
 			$folder->setTitle($title);
 			$this->folderMapper->update($folder);
 			$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
 		}
 		if (isset($parent_folder)) {
+			/** @var Folder $parentFolder */
+			$parentFolder = $this->folderMapper->find($parent_folder);
+			if ($parentFolder->getUserId() !== $folder->getUserId()) {
+				$this->treeMapper->changeFolderOwner($folder, $parentFolder->getUserId());
+			}
 			$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parent_folder);
 		}
+
 		return $folder;
 	}
 

@@ -819,4 +819,30 @@ class TreeMapper extends QBMapper {
 			// noop
 		}
 	}
+
+	/**
+	 * @param Folder $folder
+	 * @param $userId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws \OCA\Bookmarks\Exception\UrlParseError
+	 */
+	public function changeFolderOwner(Folder $folder, $userId) {
+		$folder->setUserId($userId);
+		$this->folderMapper->update($folder);
+
+		$children = $this->getChildren($folder->getId());
+		foreach($children as $child) {
+			if ($child['type'] === 'bookmark') {
+				/** @var Bookmark $bookmark */
+				$bookmark = $this->bookmarkMapper->find($child['id']);
+				$bookmark->setUserId($userId);
+				$this->bookmarkMapper->update($bookmark);
+			}else if ($child['type'] === 'folder') {
+				/** @var Folder $folder */
+				$folder = $this->folderMapper->find($child['id']);
+				$this->changeFolderOwner($folder, $userId);
+			}
+		}
+	}
 }

@@ -18,6 +18,7 @@ use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
+use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
@@ -347,6 +348,8 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (UrlParseError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Error changing owner of a bookmark: UrlParseError'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}
 
