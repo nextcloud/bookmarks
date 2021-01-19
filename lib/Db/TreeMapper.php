@@ -13,6 +13,7 @@ use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
+use OCA\Bookmarks\Exception\UrlParseError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -825,20 +826,20 @@ class TreeMapper extends QBMapper {
 	 * @param $userId
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @throws \OCA\Bookmarks\Exception\UrlParseError
+	 * @throws UrlParseError
 	 */
 	public function changeFolderOwner(Folder $folder, $userId) {
 		$folder->setUserId($userId);
 		$this->folderMapper->update($folder);
 
 		$children = $this->getChildren($folder->getId());
-		foreach($children as $child) {
+		foreach ($children as $child) {
 			if ($child['type'] === 'bookmark') {
 				/** @var Bookmark $bookmark */
 				$bookmark = $this->bookmarkMapper->find($child['id']);
 				$bookmark->setUserId($userId);
 				$this->bookmarkMapper->update($bookmark);
-			}else if ($child['type'] === 'folder') {
+			} elseif ($child['type'] === 'folder') {
 				/** @var Folder $folder */
 				$folder = $this->folderMapper->find($child['id']);
 				$this->changeFolderOwner($folder, $userId);
