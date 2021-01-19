@@ -82,10 +82,12 @@
 			</div>
 			<div>
 				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-				<div ref="description"
-					class="sidebar__notes"
+				<RichContenteditable
+					v-model="bookmark.description"
 					:contenteditable="isEditable"
+					:auto-complete="() => {}"
 					:placeholder="t('bookmarks', 'Notes for this bookmark …')"
+					:multiline="true"
 					@input="onNotesChange" />
 			</div>
 		</AppSidebarTab>
@@ -97,8 +99,8 @@ import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import RichContenteditable from '@nextcloud/vue/dist/Components/RichContenteditable'
 
-import ArchiveArrowDownIcon from 'vue-material-design-icons/ArchiveArrowDown'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
@@ -108,7 +110,7 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, ArchiveArrowDownIcon },
+	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable },
 	data() {
 		return {
 			title: '',
@@ -167,12 +169,6 @@ export default {
 			return null
 		},
 	},
-	watch: {
-		bookmark() {
-			if (!this.isActive || !this.bookmark) return
-			this.$refs.description.textContent = this.bookmark.description || ''
-		},
-	},
 	created() {
 	},
 	methods: {
@@ -180,7 +176,6 @@ export default {
 			this.$store.commit(mutations.SET_SIDEBAR, null)
 		},
 		onNotesChange(e) {
-			this.bookmark.description = e.target.textContent
 			this.scheduleSave()
 		},
 		onTagsChange(tags) {
