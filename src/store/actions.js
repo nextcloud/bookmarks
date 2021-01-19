@@ -499,8 +499,8 @@ export default {
 			})
 	},
 
-	async [actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
-		if (!state.folders.length) {
+	async [actions.LOAD_FOLDERS]({ commit, dispatch, state }, force) {
+		if (!state.folders.length && !force) {
 			try {
 				const folders = loadState('bookmarks', 'folders')
 				return commit(mutations.SET_FOLDERS, folders)
@@ -588,7 +588,7 @@ export default {
 				actions.LOAD_FOLDER_CHILDREN_ORDER,
 				parentFolder || -1
 			)
-			await dispatch(actions.LOAD_FOLDERS)
+			await dispatch(actions.LOAD_FOLDERS, /* force: */ true)
 		} catch (err) {
 			console.error(err)
 			commit(
