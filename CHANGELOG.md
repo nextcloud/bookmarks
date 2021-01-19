@@ -1,8 +1,25 @@
+
 # Changelog
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [4.0.6] - 2021-01-19
+
+### Fixed
+
+- Fix autofocus in Create{Bookmark|Folder}
+- Fix moving folders across share borders
+- Fix creating a new folder, when no folders exist yet
+- Fix: Remove a tag from all displayed bookmarks when deleting it from the app
+- Fix Bookmark Notes: Don't loose line breaks
+- API: Report success if item to delete is already deleted
+- Fix ScreenshotMachineBookmarkPreviewer
+- Fix: Actually Count bookmark clicks
+- Fix: pageres bookmark previewer
+- ViewAdmin: add link to github of pageres
+- Update dependencies
 
 ## [4.0.5] - 2020-11-04
 
