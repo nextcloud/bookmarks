@@ -74,7 +74,7 @@ jobs:
 
       - name: Install app
         working-directory: apps/${{ env.APP_NAME }}
-        run: composer i
+        run: composer install --ignore-platform-req=php
 
       - name: Set up Nextcloud and install app
         if: ${{ matrix.databases != 'pgsql'}}
@@ -105,7 +105,7 @@ jobs:
 
       - name: Install app
         working-directory: apps/${{ env.APP_NAME }}
-        run: composer i
+        run: composer install --ignore-platform-req=php
 
       - name: Run update
         run: |
