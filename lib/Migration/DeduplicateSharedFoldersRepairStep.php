@@ -39,10 +39,7 @@ class DeduplicateSharedFoldersRepairStep implements IRepairStep {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('p1.id')
 			->from('bookmarks_shared_folders', 'p1')
-			->leftJoin('p1', 'bookmarks_shared_folders', 'p2', $qb->expr()->andX(
-				$qb->expr()->eq('p1.folder_id', 'p2.folder_id'),
-				$qb->expr()->eq('p1.user_id', 'p2.user_id')
-			))
+			->leftJoin('p1', 'bookmarks_shared_folders', 'p2', 'p1.folder_id = p2.folder_id AND p1.user_id = p2.user_id')
 			->where($qb->expr()->lt('p2.id', 'p1.id'));
 		$duplicateSharedFolders = $qb->execute();
 		$i = 0;

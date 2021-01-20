@@ -388,10 +388,7 @@ class TreeMapper extends QBMapper {
 			$qb = $this->db->getQueryBuilder();
 			$qb->select('b.id')
 				->from('bookmarks', 'b')
-				->leftJoin('b', 'bookmarks_tree', 't',  $qb->expr()->andX(
-					$qb->expr()->eq('b.id', 't.id'),
-					$qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK))
-				))
+				->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND t.type = '.$qb->createPositionalParameter(self::TYPE_BOOKMARK))
 				->where($qb->expr()->isNull('t.id'));
 			$orphanedBookmarks = $qb->execute();
 			while ($bookmark = $orphanedBookmarks->fetchColumn()) {

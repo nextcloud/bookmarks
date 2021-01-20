@@ -13,9 +13,9 @@ use OCP\AppFramework\Db\Entity;
  * Class Folder
  *
  * @package OCA\Bookmarks\Db
- * @method getTitle()
+ * @method string getTitle()
  * @method setTitle(string $title)
- * @method getUserId
+ * @method string getUserId()
  * @method setUserId(string $userId)
  */
 class Folder extends Entity {
@@ -27,10 +27,6 @@ class Folder extends Entity {
 	 * @var string
 	 */
 	protected $userId;
-	/**
-	 * @var int
-	 */
-	protected $index;
 
 	public static $columns = ['id', 'title', 'user_id'];
 

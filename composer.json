@@ -28,10 +28,16 @@
 		"optimize-autoloader": true,
 		"classmap-authoritative": true
 	},
+	"autoload": {
+		"psr-4": {
+			"OCA\\Bookmarks\\": "lib/"
+		}
+	},
 	"scripts": {
 		"lint": "find . -name \\*.php -not -path './vendor/*' -print0 | xargs -0 -n1 php -l",
         "cs:check": "php-cs-fixer fix --dry-run --diff",
         "cs:fix": "php-cs-fixer fix",
-		"psalm": "psalm  --output-format=github --no-progress --show-info=true"
+		"psalm": "psalm  --output-format=github --no-progress --no-cache",
+		"psalm-ui": "psalm --no-cache"
 	}
 }

@@ -12,6 +12,7 @@ use Rowbot\URL\Exception\TypeError;
 use Rowbot\URL\URL;
 
 class UrlNormalizer {
+	/** @var array<string, string>  */
 	private $cache = [];
 
 	public function __construct() {

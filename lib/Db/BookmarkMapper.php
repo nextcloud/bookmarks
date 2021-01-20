@@ -197,15 +197,9 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->andX(
-				$qb->expr()->eq('tr.id', 'b.id'),
-				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
-			))
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'tr.id = b.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->leftJoin('tr', 'bookmarks_tree', 'tr2', $qb->expr()->andX(
-				$qb->expr()->eq('tr2.id', 'tr.parent_folder'),
-				$qb->expr()->eq('tr2.type', $qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
-			))
+			->leftJoin('tr', 'bookmarks_tree', 'tr2', 'tr2.id = tr.parent_folder AND tr2.type = '. $qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
 			->leftJoin('tr2', 'bookmarks_shared_folders', 'sf2', $qb->expr()->eq('tr2.parent_folder', 'sf.folder_id'))
 			->where(
 				$qb->expr()->orX(
@@ -394,10 +388,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->andX(
-				$qb->expr()->eq('b.id', 'tr.id'),
-				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
-			))
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where($qb->expr()->orX(
 				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
@@ -418,10 +409,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->andX(
-				$qb->expr()->eq('b.id', 'tr.id'),
-				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
-			))
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where($qb->expr()->orX(
 				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
@@ -463,14 +451,8 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', $qb->expr()->andX(
-				$qb->expr()->eq('tr.id', 'b.id'),
-				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
-			))
-			->leftJoin('tr', 'bookmarks_tree', 'tr2', $qb->expr()->andX(
-				$qb->expr()->eq('tr2.id', 'tr.parent_folder'),
-				$qb->expr()->eq('tr2.type', $qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
-			))
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'tr.id = b.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			->leftJoin('tr', 'bookmarks_tree', 'tr2', 'tr2.id = tr.parent_folder AND tr2.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
 			->where(
 				$qb->expr()->orX(
 					$qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId(), IQueryBuilder::PARAM_INT)),
@@ -635,10 +617,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param IQueryBuilder $qb
 	 */
 	private function _selectFolders(IQueryBuilder $qb): void {
-		$qb->leftJoin('b', 'bookmarks_tree', 'tree', $qb->expr()->andX(
-			$qb->expr()->eq('b.id', 'tree.id'),
-			$qb->expr()->eq('tree.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
-		));
+		$qb->leftJoin('b', 'bookmarks_tree', 'tree', 'b.id =tree.id AND tree.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 		if ($this->getDbType() === 'pgsql') {
 			$folders = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tree.parent_folder') . "), ',')");
 		} else {

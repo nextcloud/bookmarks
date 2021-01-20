@@ -13,25 +13,24 @@ use OCP\AppFramework\Db\Entity;
  * Class Bookmark
  *
  * @package OCA\Bookmarks\Db
- * @method getUrl
+ * @method string getUrl()
  * @method setUrl(string $url)
- * @method getTitle
- * @method setTitle(string $title)
- * @method getDescription
+ * @method string getTitle()
+ * @method string getDescription()
  * @method setDescription(string $description)
- * @method getLastmodified
+ * @method int getLastmodified()
  * @method setLastmodified(int $lastmodified)
- * @method getAdded
+ * @method int getAdded()
  * @method setAdded(int $added)
- * @method getClickcount
+ * @method int getClickcount
  * @method setClickcount(int $count)
- * @method getLastPreview
+ * @method int getLastPreview()
  * @method setLastPreview(int $lastpreview)
- * @method getAvailable
+ * @method bool getAvailable()
  * @method setAvailable(boolean $available)
- * @method getArchivedFile
+ * @method int getArchivedFile()
  * @method setArchivedFile(int $fileId)
- * @method getUserId
+ * @method string getUserId()
  * @method setUserId(string $userId)
  */
 class Bookmark extends Entity {
@@ -94,6 +93,6 @@ class Bookmark extends Entity {
 		if (mb_strlen($title) > 255) {
 			$title = mb_substr($title, 0, 254) . '…';
 		}
-		parent::setTitle($title);
+		$this->setter('title', [$title]);
 	}
 }

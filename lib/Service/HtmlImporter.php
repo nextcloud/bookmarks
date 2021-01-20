@@ -197,7 +197,7 @@ class HtmlImporter {
 	 * @param string $userId
 	 * @param int $folderId
 	 * @param array $bookmark
-	 * @param null $index
+	 * @param null|int $index
 	 * @return Bookmark|Entity
 	 * @throws UrlParseError
 	 * @throws AlreadyExistsError

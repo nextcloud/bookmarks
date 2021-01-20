@@ -97,13 +97,13 @@ class QueryParameters {
 	/**
 	 * @param string|null $default
 	 * @param array|null $columns
-	 * @return string
+	 * @return string|null
 	 */
-	public function getSortBy(string $default = null, array $columns = null): string {
+	public function getSortBy(string $default = null, array $columns = null): ?string {
 		if (isset($default) && !isset($this->sortBy)) {
 			return $default;
 		}
-		if (isset($columns) && !in_array($this->sortBy, $columns, true)) {
+		if (isset($default, $columns) && !in_array($this->sortBy, $columns, true)) {
 			return $default;
 		}
 		return $this->sortBy;

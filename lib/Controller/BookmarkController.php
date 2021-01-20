@@ -236,7 +236,7 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param int $page
-	 * @param null $tags
+	 * @param string[] $tags
 	 * @param string $conjunction
 	 * @param string $sortby
 	 * @param array $search

@@ -33,7 +33,7 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	}
 
 	/**
-	 * @param Bookmark $bookmark
+	 * @param Bookmark|null $bookmark
 	 *
 	 * @return Image|null
 	 */

@@ -12,7 +12,7 @@ use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
-use OCA\Bookmarks\Service\FileCache;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
@@ -22,34 +22,38 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 
 	public const HTTP_TIMEOUT = 10 * 1000;
 
+	/**
+	 * @var string
+	 */
 	private $apiKey;
 
+	/**
+	 * @var IClient
+	 */
 	private $client;
-
-	/** @var IConfig */
-	private $config;
 
 	/** @var LoggerInterface */
 	private $logger;
 
+	/**
+	 * @var int
+	 */
 	private $width = 800;
 
-	private $height = 800;
 	/**
-	 * @var FileCache
+	 * @var int
 	 */
-	private $cache;
+	private $height = 800;
 
-	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, LoggerInterface $logger) {
-		$this->config = $config;
+
+	public function __construct(IConfig $config, IClientService $clientService, LoggerInterface $logger) {
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenshotmachine.key', '');
-		$this->cache = $cache;
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
 	}
 
 	/**
-	 * @param Bookmark $bookmark
+	 * @param Bookmark|null $bookmark
 	 *
 	 * @return Image|null
 	 */

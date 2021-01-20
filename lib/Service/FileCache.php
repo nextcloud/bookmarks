@@ -59,7 +59,7 @@ class FileCache implements ICache {
 	 * @param string $key
 	 * @param mixed $value
 	 * @param int $ttl
-	 * @return bool|mixed
+	 * @return bool
 	 * @throws NotFoundException
 	 * @throws NotPermittedException
 	 */
@@ -82,12 +82,12 @@ class FileCache implements ICache {
 
 	/**
 	 * @param string $key
-	 * @return bool|mixed
+	 * @return bool
 	 * @throws NotFoundException
 	 * @throws NotPermittedException
 	 */
 	public function remove($key) {
-		return $this->storage->getFile($key)->delete();
+		return (boolean) $this->storage->getFile($key)->delete();
 	}
 
 	/**

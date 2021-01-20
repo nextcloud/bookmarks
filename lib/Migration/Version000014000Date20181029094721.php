@@ -102,7 +102,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 					$qb = $this->db->getQueryBuilder();
 					$qb
 						->update('bookmarks_folders_bookmarks')
-						->set(['index' => $qb->createPositionalParameter($i)])
+						->set('index', $qb->createPositionalParameter($i))
 						->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($child['id'])))
 						->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder)));
 					$qb->execute();
@@ -110,7 +110,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 					$qb = $this->db->getQueryBuilder();
 					$qb
 						->update('bookmarks_folders')
-						->set(['index' => $qb->createPositionalParameter($i)])
+						->set('index', $qb->createPositionalParameter($i))
 						->where($qb->expr()->eq('id', $qb->createPositionalParameter($child['id'])))
 						->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folder)));
 					$qb->execute();
