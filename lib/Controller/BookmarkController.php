@@ -506,6 +506,9 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function clickBookmark($url = ''): JSONResponse {
+		if ($this->authorizer->getUserId() === null) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+		}
 		try {
 			$bookmark = $this->bookmarks->findByUrl($this->authorizer->getUserId(), $url);
 		} catch (DoesNotExistException $e) {
