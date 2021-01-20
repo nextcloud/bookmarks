@@ -52,6 +52,11 @@ class Share extends Entity {
 		$this->addType('createdAt', 'integer');
 	}
 
+	/**
+	 * @return array
+	 *
+	 * @psalm-return array{id: mixed, folderId: mixed, owner: mixed, participant: mixed, type: mixed, canWrite: mixed, canShare: mixed, createdAt: mixed}
+	 */
 	public function toArray(): array {
 		return ['id' => $this->id, 'folderId' => $this->folderId, 'owner' => $this->owner, 'participant' => $this->participant, 'type' => $this->type, 'canWrite' => $this->canWrite, 'canShare' => $this->canShare, 'createdAt' => $this->createdAt];
 	}

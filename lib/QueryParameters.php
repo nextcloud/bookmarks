@@ -34,9 +34,10 @@ class QueryParameters {
 
 	/**
 	 * @param array $search
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setSearch(array $search): QueryParameters {
+	public function setSearch(array $search): self {
 		$this->search = $search;
 		return $this;
 	}
@@ -50,9 +51,10 @@ class QueryParameters {
 
 	/**
 	 * @param array $tags
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setTags(array $tags): QueryParameters {
+	public function setTags(array $tags): self {
 		$this->tags = $tags;
 		return $this;
 	}
@@ -67,9 +69,10 @@ class QueryParameters {
 
 	/**
 	 * @param int $limit
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setLimit(int $limit): QueryParameters {
+	public function setLimit(int $limit): self {
 		$this->limit = $limit;
 		return $this;
 	}
@@ -83,9 +86,10 @@ class QueryParameters {
 
 	/**
 	 * @param int $offset
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setOffset(int $offset): QueryParameters {
+	public function setOffset(int $offset): self {
 		$this->offset = $offset;
 		return $this;
 	}
@@ -107,9 +111,10 @@ class QueryParameters {
 
 	/**
 	 * @param string $sortBy
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setSortBy(string $sortBy): QueryParameters {
+	public function setSortBy(string $sortBy): self {
 		$this->sortBy = $sortBy;
 		return $this;
 	}
@@ -123,9 +128,10 @@ class QueryParameters {
 
 	/**
 	 * @param string $conjunction
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setConjunction(string $conjunction): QueryParameters {
+	public function setConjunction(string $conjunction): self {
 		if ($conjunction !== self::CONJ_AND && $conjunction !== self::CONJ_OR) {
 			throw new InvalidArgumentException("Conjunction value must be 'and' or 'or'");
 		}
@@ -142,9 +148,10 @@ class QueryParameters {
 
 	/**
 	 * @param int $folder
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setFolder(int $folder): QueryParameters {
+	public function setFolder(int $folder): self {
 		$this->folder = $folder;
 		return $this;
 	}
@@ -158,9 +165,10 @@ class QueryParameters {
 
 	/**
 	 * @param string $url
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setUrl(string $url): QueryParameters {
+	public function setUrl(string $url): self {
 		$this->url = $url;
 		return $this;
 	}
@@ -174,9 +182,10 @@ class QueryParameters {
 
 	/**
 	 * @param boolean $unavailable
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setUnavailable(bool $unavailable): QueryParameters {
+	public function setUnavailable(bool $unavailable): self {
 		$this->unavailable = $unavailable;
 		return $this;
 	}
@@ -190,9 +199,10 @@ class QueryParameters {
 
 	/**
 	 * @param boolean $archived
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setArchived(bool $archived): QueryParameters {
+	public function setArchived(bool $archived): self {
 		$this->archived = $archived;
 		return $this;
 	}
@@ -206,9 +216,10 @@ class QueryParameters {
 
 	/**
 	 * @param bool $untagged
-	 * @return QueryParameters
+	 *
+	 * @return static
 	 */
-	public function setUntagged(bool $untagged): QueryParameters {
+	public function setUntagged(bool $untagged): self {
 		$this->untagged = $untagged;
 		return $this;
 	}

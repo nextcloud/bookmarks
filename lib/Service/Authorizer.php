@@ -136,7 +136,7 @@ class Authorizer {
 	 * @param $request
 	 * @return int
 	 */
-	public function getPermissionsForFolder(int $folderId, $request): int {
+	public function getPermissionsForFolder(int $folderId, IRequest $request): int {
 		$this->setCredentials($request);
 		$perms = self::PERM_NONE;
 		if (isset($this->userId)) {
@@ -153,7 +153,7 @@ class Authorizer {
 	 * @param $request
 	 * @return int
 	 */
-	public function getPermissionsForBookmark(int $bookmarkId, $request): int {
+	public function getPermissionsForBookmark(int $bookmarkId, IRequest $request): int {
 		$this->setCredentials($request);
 		$perms = self::PERM_NONE;
 		if (isset($this->userId)) {
@@ -168,7 +168,10 @@ class Authorizer {
 	/**
 	 * @param $canWrite
 	 * @param $canShare
+	 *
 	 * @return int
+	 *
+	 * @psalm-return positive-int
 	 */
 	protected function getMaskFromFlags($canWrite, $canShare): int {
 		$perms = self::PERM_READ;
@@ -184,11 +187,13 @@ class Authorizer {
 	/**
 	 * Check permissions
 	 *
-	 * @param $perm
-	 * @param $perms
+	 *
+	 * @param int $perm
+	 * @param int $perms
+	 *
 	 * @return boolean
 	 */
-	public static function hasPermission($perm, $perms): bool {
+	public static function hasPermission(int $perm, int $perms): bool {
 		return (boolean)($perms & $perm);
 	}
 
@@ -223,7 +228,10 @@ class Authorizer {
 	/**
 	 * @param string $token
 	 * @param int $bookmarkId
+	 *
 	 * @return int
+	 *
+	 * @psalm-return 0|1
 	 */
 	public function getTokenPermissionsForBookmark(string $token, int $bookmarkId): int {
 		try {
@@ -274,7 +282,10 @@ class Authorizer {
 	/**
 	 * @param string $token
 	 * @param int $folderId
+	 *
 	 * @return int
+	 *
+	 * @psalm-return 0|1
 	 */
 	public function getTokenPermissionsForFolder(string $token, int $folderId): int {
 		try {

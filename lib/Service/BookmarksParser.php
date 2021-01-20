@@ -242,7 +242,10 @@ class BookmarksParser {
 	 * Get attributes of a \DOMNode
 	 *
 	 * @param DOMNode $node
+	 *
 	 * @return array
+	 *
+	 * @psalm-return array<string, mixed>
 	 */
 	private function getAttributes(DOMNode $node): array {
 		$attributes = [];

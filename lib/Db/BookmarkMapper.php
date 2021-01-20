@@ -178,9 +178,12 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param $userId
 	 * @param QueryParameters $params
-	 * @return array|Entity[]
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, Bookmark>
 	 */
-	public function findAll($userId, QueryParameters $params): array {
+	public function findAll(string $userId, QueryParameters $params): array {
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
 			return 'b.' . $c;
@@ -430,14 +433,20 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * 	 *
 	 *
-	 * @param $token
+	 * @param string $token
 	 * @param QueryParameters $params
-	 * @return array|Entity[]
+	 *
+	 *
+	 * @return Entity[]
+	 *
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 *
+	 * @psalm-return array<array-key, Bookmark>
 	 */
-	public function findAllInPublicFolder($token, QueryParameters $params): array {
+	public function findAllInPublicFolder(string $token, QueryParameters $params): array {
 		/** @var PublicFolder $publicFolder */
 		$publicFolder = $this->publicMapper->find($token);
 
@@ -484,7 +493,10 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param int $limit
 	 * @param int $stalePeriod
-	 * @return array|Entity[]
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, Bookmark>
 	 */
 	public function findPendingPreviews(int $limit, int $stalePeriod): array {
 		$qb = $this->db->getQueryBuilder();
@@ -498,7 +510,9 @@ class BookmarkMapper extends QBMapper {
 
 	/**
 	 * @param Entity $entity
-	 * @return Entity|void
+	 *
+	 * @return Entity
+	 * @psalm-return Bookmark
 	 */
 	public function delete(Entity $entity): Entity {
 		$this->eventDispatcher->dispatch(
@@ -585,9 +599,11 @@ class BookmarkMapper extends QBMapper {
 
 	/**
 	 * @param $userId
+	 * @param string $userId
+	 *
 	 * @return int
 	 */
-	public function countBookmarksOfUser($userId) : int {
+	public function countBookmarksOfUser(string $userId) : int {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select($qb->func()->count('id'))

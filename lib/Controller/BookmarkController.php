@@ -41,7 +41,6 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
-use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
@@ -138,7 +137,10 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param Bookmark $bookmark
-	 * @return array
+	 *
+	 * @return ((int|mixed)[]|mixed)[]
+	 *
+	 * @psalm-return array{folders: array<array-key, int>, tags: array|mixed}
 	 */
 	private function _returnBookmarkAsArray(Bookmark $bookmark): array {
 		$array = $bookmark->toArray();
@@ -160,7 +162,7 @@ class BookmarkController extends ApiController {
 	/**
 	 * @return int|null
 	 */
-	private function _getRootFolderId(): int {
+	private function _getRootFolderId(): ?int {
 		if ($this->rootFolderId !== null) {
 			return $this->rootFolderId;
 		}
@@ -185,9 +187,10 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param int $external
-	 * @return int
+	 *
+	 * @return int|null
 	 */
-	private function toInternalFolderId(int $external): int {
+	private function toInternalFolderId(int $external): ?int {
 		if ($external === -1) {
 			return $this->_getRootFolderId();
 		}
@@ -580,10 +583,12 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param $image
-	 * @return DataDisplayResponse
+	 *
+	 * @return DataDisplayResponse|NotFoundResponse
+	 *
 	 * @throws Exception
 	 */
-	public function doImageResponse(?IImage $image): Response {
+	public function doImageResponse(?IImage $image) {
 		if ($image === null || $image->getData() === null) {
 			return new NotFoundResponse();
 		}

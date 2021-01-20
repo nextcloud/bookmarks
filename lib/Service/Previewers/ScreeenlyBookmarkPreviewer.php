@@ -52,7 +52,8 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 
 	/**
 	 * @param Bookmark $bookmark
-	 * @return IImage|null
+	 *
+	 * @return Image|null
 	 */
 	public function getImage($bookmark): ?IImage {
 		if (!isset($bookmark)) {

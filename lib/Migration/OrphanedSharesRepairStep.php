@@ -23,7 +23,9 @@ class OrphanedSharesRepairStep implements IRepairStep {
 	}
 
 	/**
-	 * Returns the step's name
+	 * 	 * Returns the step's name
+	 *
+	 * @return string
 	 */
 	public function getName() {
 		return 'Remove orphaned bookmark shares';
@@ -31,6 +33,8 @@ class OrphanedSharesRepairStep implements IRepairStep {
 
 	/**
 	 * @param IOutput $output
+	 *
+	 * @return void
 	 */
 	public function run(IOutput $output) {
 		$qb = $this->db->getQueryBuilder();

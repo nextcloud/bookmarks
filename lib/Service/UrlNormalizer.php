@@ -22,7 +22,7 @@ class UrlNormalizer {
 	 * @return string
 	 * @throws UrlParseError
 	 */
-	public function normalize($urlString): string {
+	public function normalize(string $urlString): string {
 		if (isset($this->cache[$urlString])) {
 			return $this->cache[$urlString];
 		}

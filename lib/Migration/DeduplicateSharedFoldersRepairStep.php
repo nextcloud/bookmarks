@@ -22,7 +22,9 @@ class DeduplicateSharedFoldersRepairStep implements IRepairStep {
 	}
 
 	/**
-	 * Returns the step's name
+	 * 	 * Returns the step's name
+	 *
+	 * @return string
 	 */
 	public function getName() {
 		return 'Deduplicate shared bookmark folders';
@@ -30,6 +32,8 @@ class DeduplicateSharedFoldersRepairStep implements IRepairStep {
 
 	/**
 	 * @param IOutput $output
+	 *
+	 * @return void
 	 */
 	public function run(IOutput $output) {
 		$qb = $this->db->getQueryBuilder();

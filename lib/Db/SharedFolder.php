@@ -38,6 +38,11 @@ class SharedFolder extends Entity {
 		$this->addType('title', 'string');
 	}
 
+	/**
+	 * @return array
+	 *
+	 * @psalm-return array{title: mixed, userId: mixed}
+	 */
 	public function toArray(): array {
 		return ['title' => $this->title, 'userId' => $this->userId];
 	}

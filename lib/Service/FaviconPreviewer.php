@@ -62,7 +62,8 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 
 	/**
 	 * @param Bookmark $bookmark
-	 * @return IImage|null
+	 *
+	 * @return Image|null
 	 */
 	public function getImage($bookmark): ?IImage {
 		if ($this->enabled === 'false') {

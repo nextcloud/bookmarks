@@ -159,11 +159,15 @@ class TreeMapper extends QBMapper {
 
 
 	/**
-	 * Runs a sql query and returns an array of entities
+	 * 	 * Runs a sql query and returns an array of entities
+	 * 	 *
 	 *
 	 * @param IQueryBuilder $query
 	 * @param string $type
+	 *
 	 * @return Entity[] all fetched entities
+	 *
+	 * @psalm-return list<Entity>
 	 */
 	protected function findEntitiesWithType(IQueryBuilder $query, string $type): array {
 		$cursor = $query->execute();
@@ -255,7 +259,10 @@ class TreeMapper extends QBMapper {
 	/**
 	 * @param int $folderId
 	 * @param string $type
-	 * @return array|Entity[]
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, Entity>
 	 */
 	public function findChildren(string $type, int $folderId): array {
 		$qb = $this->getChildrenQuery[$type];
@@ -282,7 +289,10 @@ class TreeMapper extends QBMapper {
 	/**
 	 * @param string $type
 	 * @param int $itemId
-	 * @return array|Entity[]
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, Entity>
 	 */
 	public function findParentsOf(string $type, int $itemId): array {
 		$qb = $this->parentQuery;
@@ -421,12 +431,12 @@ class TreeMapper extends QBMapper {
 	}
 
 	/**
-	 * @param $shareId
+	 * @param int $shareId
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function deleteShare($shareId): void {
+	public function deleteShare(int $shareId): void {
 		$share = $this->shareMapper->find($shareId);
 		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);
 		foreach ($sharedFolders as $sharedFolder) {
@@ -645,9 +655,13 @@ class TreeMapper extends QBMapper {
 
 	/**
 	 * @brief Lists bookmark folders' child folders (helper)
+	 *
 	 * @param $folderId
 	 * @param int $layers The amount of levels to return
-	 * @return array the children each in the format ["id" => int, "type" => 'bookmark' | 'folder' ]
+	 *
+	 * @return (array|int|mixed|string)[][] the children each in the format ["id" => int, "type" => 'bookmark' | 'folder' ]
+	 *
+	 * @psalm-return array<array-key, array{type: mixed|string, id: int, children?: array}>
 	 */
 	public function getChildrenOrder(int $folderId, $layers = 0): array {
 		$qb = $this->getChildrenOrderQuery;
@@ -678,7 +692,10 @@ class TreeMapper extends QBMapper {
 	/**
 	 * @param int $folderId
 	 * @param int $layers [-1, inf]
-	 * @return array
+	 *
+	 * @return (int|mixed)[][]
+	 *
+	 * @psalm-return array<array-key, array{parent_folder: int}>
 	 */
 	public function getSubFolders(int $folderId, $layers = 0): array {
 		$folders = array_map(function (Folder $folder) use ($layers, $folderId) {
@@ -753,7 +770,12 @@ class TreeMapper extends QBMapper {
 		return $countChildren;
 	}
 
-	public function getChildren(int $folderId, int $layers = 0) {
+	/**
+	 * @return (int|mixed|string)[][]
+	 *
+	 * @psalm-return array<array-key, array<string, int|mixed|string>>
+	 */
+	public function getChildren(int $folderId, int $layers = 0): array {
 		$qb = $this->getChildrenQuery[self::TYPE_BOOKMARK];
 		$this->selectFromType(self::TYPE_BOOKMARK, ['t.index', 't.type'], $qb);
 		$qb->setParameter('parent_folder', $folderId);
@@ -824,11 +846,14 @@ class TreeMapper extends QBMapper {
 	/**
 	 * @param Folder $folder
 	 * @param $userId
+	 *
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UrlParseError
+	 *
+	 * @return void
 	 */
-	public function changeFolderOwner(Folder $folder, $userId) {
+	public function changeFolderOwner(Folder $folder, $userId): void {
 		$folder->setUserId($userId);
 		$this->folderMapper->update($folder);
 

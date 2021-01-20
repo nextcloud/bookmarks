@@ -19,8 +19,17 @@ use OCP\AppFramework\Db\Entity;
  * @method setUserId(string $userId)
  */
 class Folder extends Entity {
+	/**
+	 * @var string
+	 */
 	protected $title;
+	/**
+	 * @var string
+	 */
 	protected $userId;
+	/**
+	 * @var int
+	 */
 	protected $index;
 
 	public static $columns = ['id', 'title', 'user_id'];
@@ -32,6 +41,11 @@ class Folder extends Entity {
 		$this->addType('userId', 'string');
 	}
 
+	/**
+	 * @return array
+	 *
+	 * @psalm-return array{id: int, title: string, userId: string}
+	 */
 	public function toArray(): array {
 		return ['id' => $this->id, 'title' => $this->title, 'userId' => $this->userId];
 	}

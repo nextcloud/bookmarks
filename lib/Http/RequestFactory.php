@@ -14,11 +14,13 @@ use Psr\Http\Message\UriInterface;
 
 class RequestFactory implements RequestFactoryInterface {
 	/**
-	 * Create a new request.
+	 * 	 * Create a new request.
+	 * 	 *
 	 *
 	 * @param string $method The HTTP method associated with the request.
 	 * @param UriInterface|string $uri The URI associated with the request.
-	 * @return RequestInterface
+	 *
+	 * @return Request
 	 */
 	public function createRequest(string $method, $uri): RequestInterface {
 		return new Request($method, $uri);

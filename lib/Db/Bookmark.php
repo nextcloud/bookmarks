@@ -50,7 +50,7 @@ class Bookmark extends Entity {
 	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id'];
 	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId'];
 
-	public static function fromArray($props) {
+	public static function fromArray($props): self {
 		$bookmark = new Bookmark();
 		foreach ($props as $prop => $val) {
 			$bookmark->{'set' . $prop}($val);
@@ -89,7 +89,7 @@ class Bookmark extends Entity {
 		$this->setClickcount($this->clickcount + 1);
 	}
 
-	public function setTitle($title): void {
+	public function setTitle(string $title): void {
 		// Cap title length at 255 because the DB doesn't have more space currently
 		if (mb_strlen($title) > 255) {
 			$title = mb_substr($title, 0, 254) . '…';
