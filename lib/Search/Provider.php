@@ -40,6 +40,9 @@ class Provider implements IProvider {
 		$this->url = $url;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getId(): string {
 		return 'bookmarks';
 	}

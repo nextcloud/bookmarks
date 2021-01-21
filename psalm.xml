@@ -4,15 +4,13 @@
   ~
   ~ This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
-
 <psalm
-        totallyTyped="true"
-        errorLevel="5"
-        resolveFromConfigFile="true"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="https://getpsalm.org/schema/config"
-        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-        errorBaseline="tests/psalm-baseline.xml"
+    errorLevel="5"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    errorBaseline="psalm-baseline.xml"
 >
     <projectFiles>
         <directory name="lib" />
@@ -24,12 +22,14 @@
         <directory name="vendor" />
         <ignoreFiles>
             <directory name="vendor/phpunit/php-code-coverage" />
+            <directory name="vendor/vimeo" />
         </ignoreFiles>
     </extraFiles>
     <issueHandlers>
         <UndefinedClass>
             <errorLevel type="suppress">
                 <referencedClass name="OC" />
+                <referencedClass name="Doctrine\DBAL\Types\Type" />
             </errorLevel>
         </UndefinedClass>
         <UndefinedDocblockClass>
@@ -38,6 +38,7 @@
                 <referencedClass name="Doctrine\DBAL\Schema\SchemaException" />
                 <referencedClass name="Doctrine\DBAL\Driver\Statement" />
                 <referencedClass name="Doctrine\DBAL\Schema\Table" />
+                <referencedClass name="Doctrine\DBAL\Types\Type" />
             </errorLevel>
         </UndefinedDocblockClass>
     </issueHandlers>

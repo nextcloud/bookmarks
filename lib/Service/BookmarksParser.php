@@ -242,17 +242,22 @@ class BookmarksParser {
 	 * Get attributes of a \DOMNode
 	 *
 	 * @param DOMNode $node
+	 *
 	 * @return array
+	 *
+	 * @psalm-return array<string, mixed>
 	 */
 	private function getAttributes(DOMNode $node): array {
 		$attributes = [];
-		$length = $node->attributes->length;
-		for ($i = 0; $i < $length; ++$i) {
-			$item = $node->attributes->item($i);
-			if ($item === null) {
-				continue;
+		if ($node->attributes) {
+			$length = $node->attributes->length;
+			for ($i = 0; $i < $length; ++$i) {
+				$item = $node->attributes->item($i);
+				if ($item === null) {
+					continue;
+				}
+				$attributes[strtolower($item->nodeName)] = $item->nodeValue;
 			}
-			$attributes[strtolower($item->nodeName)] = $item->nodeValue;
 		}
 		$lastModified = null;
 		if (isset($attributes['time_added'])) {

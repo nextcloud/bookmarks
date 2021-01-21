@@ -71,7 +71,10 @@ class PublicFolderMapper extends QBMapper {
 
 	/**
 	 * @param int $createdAt
-	 * @return array|Entity[]
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, PublicFolder>
 	 */
 	public function findAllCreatedBefore(int $createdAt): array {
 		$qb = $this->db->getQueryBuilder();

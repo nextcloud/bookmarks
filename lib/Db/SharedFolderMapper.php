@@ -86,7 +86,10 @@ class SharedFolderMapper extends QBMapper {
 
 	/**
 	 * @param string $userId
-	 * @return array|Entity[]
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, SharedFolder>
 	 */
 	public function findByOwner(string $userId): array {
 		$qb = $this->db->getQueryBuilder();
@@ -103,7 +106,10 @@ class SharedFolderMapper extends QBMapper {
 	/**
 	 * @param int $type
 	 * @param string $participant
-	 * @return array|Entity[]
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, SharedFolder>
 	 */
 	public function findByParticipant(int $type, string $participant): array {
 		$qb = $this->db->getQueryBuilder();
@@ -195,6 +201,11 @@ class SharedFolderMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
+	/**
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, SharedFolder>
+	 */
 	public function findByParticipantAndUser(int $type, string $participant, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
@@ -229,6 +240,11 @@ class SharedFolderMapper extends QBMapper {
 		));
 	}
 
+	/**
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, SharedFolder>
+	 */
 	public function findByUser(string $userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {

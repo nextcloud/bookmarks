@@ -210,10 +210,10 @@ class FolderService {
 	}
 
 	/**
-	 * @param $userId
-	 * @param $folderId
-	 * @param null $title
-	 * @param null $parent_folder
+	 * @param string $userId
+	 * @param int $folderId
+	 * @param string $title
+	 * @param int $parent_folder
 	 * @return Folder|SharedFolder
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
@@ -271,6 +271,7 @@ class FolderService {
 	public function createFolderPublicToken($folderId): string {
 		$this->folderMapper->find($folderId);
 		try {
+			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 		} catch (DoesNotExistException $e) {
 			$publicFolder = new PublicFolder();
@@ -370,7 +371,7 @@ class FolderService {
 	/**
 	 * @param string $userId
 	 * @param $file
-	 * @param null $folder
+	 * @param int $folder
 	 * @return array
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException

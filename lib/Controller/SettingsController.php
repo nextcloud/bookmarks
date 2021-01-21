@@ -43,7 +43,7 @@ class SettingsController extends ApiController {
 		$this->l = $l;
 	}
 
-	private function getSetting(string $key, string $name, $default): JSONResponse {
+	private function getSetting(string $key, string $name, string $default): JSONResponse {
 		try {
 			$userValue = $this->config->getUserValue(
 				$this->userId,
@@ -58,7 +58,7 @@ class SettingsController extends ApiController {
 		return new JSONResponse([$name => $userValue], Http::STATUS_OK);
 	}
 
-	private function setSetting($key, $value): JSONResponse {
+	private function setSetting(string $key, string $value): JSONResponse {
 		try {
 			$this->config->setUserValue(
 				$this->userId,

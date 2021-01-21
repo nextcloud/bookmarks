@@ -18,7 +18,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\AppFramework\Http\Response;
 
 class InternalBookmarkController extends ApiController {
 
@@ -162,36 +161,40 @@ class InternalBookmarkController extends ApiController {
 
 	/**
 	 *
-	 * @return Response
+	 * @return JSONResponse|\OCA\Bookmarks\ExportResponse
+	 *
 	 * @NoAdminRequired
 	 */
-	public function exportBookmark(): Response {
+	public function exportBookmark() {
 		return $this->publicController->exportBookmark();
 	}
 
 	/**
 	 *
 	 * @param int $id The id of the bookmark whose favicon shoudl be returned
-	 * @return Response
+	 *
+	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 *
 	 * @throws Exception
 	 */
-	public function getBookmarkImage($id): Response {
+	public function getBookmarkImage($id) {
 		return $this->publicController->getBookmarkImage($id);
 	}
 
 	/**
-	 *
 	 * @param int $id The id of the bookmark whose image shoudl be returned
-	 * @return Response
+	 *
+	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 *
 	 * @throws Exception
 	 */
-	public function getBookmarkFavicon($id): Response {
+	public function getBookmarkFavicon($id) {
 		return $this->publicController->getBookmarkFavicon($id);
 	}
 

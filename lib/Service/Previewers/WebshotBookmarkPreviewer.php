@@ -13,6 +13,7 @@ use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\FileCache;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
@@ -22,18 +23,30 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 
 	public const HTTP_TIMEOUT = 10 * 1000;
 
+	/**
+	 * @var IClient
+	 */
 	private $client;
 
 	/** @var IConfig */
 	private $config;
 
+	/**
+	 * @var FileCache
+	 */
 	private $cache;
 
 	/** @var LoggerInterface */
 	private $logger;
 
+	/**
+	 * @var int
+	 */
 	private $width = 800;
 
+	/**
+	 * @var int
+	 */
 	private $height = 800;
 	/**
 	 * @var string
@@ -50,7 +63,8 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 
 	/**
 	 * @param Bookmark $bookmark
-	 * @return IImage|null
+	 *
+	 * @return Image|null
 	 */
 	public function getImage($bookmark): ?IImage {
 		if (!isset($bookmark)) {
