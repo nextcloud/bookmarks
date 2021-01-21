@@ -60,6 +60,7 @@ return [
 		['name' => 'internal_tags#rename_tag', 'url' => '/tag/{old_name}', 'verb' => 'PUT'],
 		['name' => 'internal_tags#delete_tag', 'url' => '/tag/{old_name}', 'verb' => 'DELETE'],
 		['name' => 'internal_folders#get_folders', 'url' => '/folder', 'verb' => 'GET'],
+		['name' => 'internal_folders#get_folders_with_deleted', 'url' => '/folder/withdeleted', 'verb' => 'GET'],
 		['name' => 'internal_folders#get_folder', 'url' => '/folder/{folderId}', 'verb' => 'GET'],
 		['name' => 'internal_folders#add_folder', 'url' => '/folder', 'verb' => 'POST'],
 		['name' => 'internal_folders#edit_folder', 'url' => '/folder/{folderId}', 'verb' => 'PUT'],

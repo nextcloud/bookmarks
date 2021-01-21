@@ -104,7 +104,7 @@ class WebViewController extends Controller {
 		$res->setContentSecurityPolicy($policy);
 
 		// Provide complete folder hierarchy
-		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFolders()->getData()['data']);
+		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFoldersWithDeleted()->getData()['data']);
 
 		return $res;
 	}

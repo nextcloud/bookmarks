@@ -37,6 +37,7 @@ export const mutations = {
 	SET_ERROR: 'SET_ERROR',
 	SET_NOTIFICATION: 'SET_NOTIFICATION',
 	SET_FOLDERS: 'SET_FOLDERS',
+	SET_DELETED_FOLDERS: 'SET_DELETED_FOLDERS',
 	SET_SIDEBAR: 'SET_SIDEBAR',
 	SET_SETTING: 'SET_SETTING',
 	SET_VIEW_MODE: 'SET_VIEW_MODE',
@@ -71,6 +72,9 @@ export default {
 	},
 	[mutations.SET_FOLDERS](state, folders) {
 		state.folders = sortFolders(folders)
+	},
+	[mutations.SET_DELETED_FOLDERS](state, deletedFolders) {
+		state.deletedFolders = sortFolders(deletedFolders)
 	},
 	[mutations.SET_TAGS](state, tags) {
 		state.tags = tags

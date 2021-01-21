@@ -518,6 +518,34 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 * @return JSONResponse
 	 */
+	public function getFoldersWithDeleted($root = -1, $layers = -1): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		$internalRoot = $this->toInternalFolderId($root);
+		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers);
+		if ($root === -1 || $root === '-1') {
+			foreach ($folders as $folder) {
+				$folder['parent_folder'] = -1;
+			}
+		}
+		khufr;
+		$res = new JSONResponse(['status' => 'success', 'data' => $folders]);
+		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
+		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+		return $res;
+	}
+
+	/**
+	 * @param int $root the id of the root folder whose descendants to return
+	 * @param int $layers the number of layers of hierarchy too return
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 * @return JSONResponse
+	 */
 	public function getFolders($root = -1, $layers = -1): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);

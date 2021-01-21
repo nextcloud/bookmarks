@@ -143,6 +143,17 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
+	public function getFoldersWithDeleted($root = -1, $layers = -1): JSONResponse {
+		return $this->controller->getFoldersWithDeleted($root, $layers);
+	}
+
+	/**
+	 * @param int $root the id of the root folder whose descendants to return
+	 * @param int $layers the number of layers of hierarchy to return
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
 	public function getFolders($root = -1, $layers = -1): JSONResponse {
 		return $this->controller->getFolders($root, $layers);
 	}

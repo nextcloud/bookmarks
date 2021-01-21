@@ -559,7 +559,10 @@ export default {
 	async [actions.LOAD_FOLDERS]({ commit, dispatch, state }) {
 		if (!state.folders.length) {
 			try {
-				const folders = loadState('bookmarks', 'folders')
+				const allfolders = loadState('bookmarks', 'folders')
+				const folders = allfolders.filter(folder => !folder.deleted)
+				const deletedFolders = allfolders.filter(folder => !!folder.deleted)
+				commit(mutations.SET_DELETED_FOLDERS, deletedFolders)
 				return commit(mutations.SET_FOLDERS, folders)
 			} catch (e) {
 				console.warn('Could not load initial folder state, continuing with HTTP request')
@@ -573,14 +576,16 @@ export default {
 			},
 		})
 		try {
-			const response = await axios.get(url(state, '/folder'), { params: {} })
+			const response = await axios.get(url(state, '/folder/withdeleted'), { params: {} })
 			if (canceled) return
 			const {
 				data: { data, status },
 			} = response
 			if (status !== 'success') throw new Error(data)
-			const folders = data
+			const folders = data.filter(folder => !folder.deleted)
+			const deletedFolders = data.filter(folder => !!folder.deleted)
 			commit(mutations.FETCH_END, 'folders')
+			commit(mutations.SET_DELETED_FOLDERS, deletedFolders)
 			return commit(mutations.SET_FOLDERS, folders)
 		} catch (err) {
 			console.error(err)
@@ -836,6 +841,7 @@ export default {
 	},
 	[actions.FILTER_BY_DELETED]({ dispatch, commit }) {
 		commit(mutations.SET_QUERY, { deleted: true })
+		dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_FOLDER]({ dispatch, commit }, folder) {
