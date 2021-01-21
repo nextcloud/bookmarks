@@ -74,6 +74,6 @@ class Provider implements IProvider {
 			return new SearchResultEntry($favicon, $bookmark->getTitle(), $bookmark->getUrl(), $resourceUrl);
 		}, $bookmarks);
 
-		return SearchResult::paginated($this->getName(), $results, $params->getLimit()+$params->getOffset());
+		return SearchResult::paginated($this->getName(), $results, $params->getLimit() + $params->getOffset());
 	}
 }

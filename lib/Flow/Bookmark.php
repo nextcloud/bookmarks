@@ -104,7 +104,7 @@ class Bookmark implements IEntity, IUrl {
 		}
 		try {
 			$this->bookmark = $this->bookmarkMapper->find($event->getId());
-		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 			return;
 		}
 		$ruleMatcher->setEntitySubject($this, $this->bookmark);

@@ -134,7 +134,7 @@ class InternalBookmarkController extends ApiController {
 	public function deleteAllBookmarks(): DataResponse {
 		try {
 			$this->bookmarks->deleteAll($this->userId);
-		} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException $e) {
+		} catch (UnsupportedOperation | DoesNotExistException | MultipleObjectsReturnedException $e) {
 			return new DataResponse(['status' => 'error', 'data' => ['Internal server error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		return new DataResponse(['status' => 'success']);

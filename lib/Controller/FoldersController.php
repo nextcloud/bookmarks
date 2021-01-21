@@ -297,7 +297,7 @@ class FoldersController extends ApiController {
 		if ($folderId !== -1) {
 			try {
 				$this->folders->findSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
-			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 				return new JSONResponse(['status' => 'success']);
 			}
 		}

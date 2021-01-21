@@ -125,7 +125,7 @@ class BookmarksParser {
 
 		// set root folder
 		$this->currentFolder = ['bookmarks' => [], 'children' => []];
-		$this->folderDepth[] =& $this->currentFolder;
+		$this->folderDepth[] = & $this->currentFolder;
 
 		$this->traverse();
 		return empty($this->bookmarks) ? null : $this->bookmarks;
@@ -189,9 +189,9 @@ class BookmarksParser {
 		if (isset($folder['personal_toolbar_folder']) && $this->ignorePersonalToolbarFolder) {
 			return;
 		}
-		$this->currentFolder['children'][] =& $folder;
-		$this->folderDepth[] =& $folder;
-		$this->currentFolder =& $folder;
+		$this->currentFolder['children'][] = & $folder;
+		$this->folderDepth[] = & $folder;
+		$this->currentFolder = & $folder;
 	}
 
 	/**
@@ -199,7 +199,7 @@ class BookmarksParser {
 	 */
 	private function closeFolder(): void {
 		array_pop($this->folderDepth);
-		$this->currentFolder =& $this->folderDepth[count($this->folderDepth) - 1];
+		$this->currentFolder = & $this->folderDepth[count($this->folderDepth) - 1];
 	}
 
 	/**
@@ -220,8 +220,8 @@ class BookmarksParser {
 				$bookmark['tags'] = $tags;
 			}
 		}
-		$this->currentFolder['bookmarks'][] =& $bookmark;
-		$this->bookmarks[] =& $bookmark;
+		$this->currentFolder['bookmarks'][] = & $bookmark;
+		$this->bookmarks[] = & $bookmark;
 	}
 
 	/**
@@ -234,7 +234,7 @@ class BookmarksParser {
 		if ($count === 0) {
 			return;
 		}
-		$bookmark =& $this->bookmarks[$count - 1];
+		$bookmark = & $this->bookmarks[$count - 1];
 		$bookmark['description'] = $node->textContent;
 	}
 

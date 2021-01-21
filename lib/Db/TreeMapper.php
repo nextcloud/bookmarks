@@ -480,7 +480,7 @@ class TreeMapper extends QBMapper {
 
 			$qb = $this->insertQuery;
 			$qb
-				->setParameters(['id'=>$itemId,
+				->setParameters(['id' => $itemId,
 					'parent_folder' => $newParentFolderId,
 					'type' => $type,
 					'index' => $index ?? $this->countChildren($newParentFolderId),
@@ -531,7 +531,7 @@ class TreeMapper extends QBMapper {
 	 * @param int|null $index
 	 * @throws UnsupportedOperation
 	 */
-	public function addToFolders(string $type, int $itemId, array $folders, int $index=null): void {
+	public function addToFolders(string $type, int $itemId, array $folders, int $index = null): void {
 		if ($type !== self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Only bookmarks can be in multiple folders');
 		}

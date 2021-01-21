@@ -342,7 +342,7 @@ class BookmarkController extends ApiController {
 				/** @var Folder $folderEntity */
 				$folderEntity = $this->folderMapper->find($this->toInternalFolderId($folder));
 				$userId = $folderEntity->getUserId();
-			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
 			}
 			$params->setFolder($this->toInternalFolderId($folder));
@@ -353,7 +353,7 @@ class BookmarkController extends ApiController {
 		} else {
 			try {
 				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $params);
-			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
 			}
 		}
@@ -476,7 +476,7 @@ class BookmarkController extends ApiController {
 	public function deleteBookmark($id): JSONResponse {
 		try {
 			$this->bookmarkMapper->find($id);
-		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'success']);
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
@@ -553,7 +553,7 @@ class BookmarkController extends ApiController {
 				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
 			}
 			return $this->doImageResponse($image);
-		} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+		} catch (DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {
 			return new NotFoundResponse();
 		}
 	}
@@ -579,7 +579,7 @@ class BookmarkController extends ApiController {
 				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
 			}
 			return $this->doImageResponse($image);
-		} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+		} catch (DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {
 			return new NotFoundResponse();
 		}
 	}

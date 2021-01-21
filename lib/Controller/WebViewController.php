@@ -97,7 +97,7 @@ class WebViewController extends Controller {
 	 * @return AugmentedTemplateResponse
 	 */
 	public function index(): AugmentedTemplateResponse {
-		$res = new AugmentedTemplateResponse($this->appName, 'main', ['url'=>$this->urlGenerator]);
+		$res = new AugmentedTemplateResponse($this->appName, 'main', ['url' => $this->urlGenerator]);
 
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedWorkerSrcDomain("'self'");
@@ -189,8 +189,8 @@ class WebViewController extends Controller {
 					[
 						'src' => $this->urlGenerator->linkToRoute('theming.Icon.getTouchIcon',
 								['app' => 'bookmarks']),
-						'type'=> 'image/png',
-						'sizes'=> '512x512'
+						'type' => 'image/png',
+						'sizes' => '512x512'
 					],
 					[
 						'src' => $this->urlGenerator->linkToRoute('theming.Icon.getFavicon',
