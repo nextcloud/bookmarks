@@ -9,6 +9,7 @@ import App from './App'
 import router from './router'
 import store from './store/'
 import AppGlobal from './mixins/AppGlobal'
+import { subscribe } from '@nextcloud/event-bus'
 // import { generateUrl } from '@nextcloud/router'
 
 Vue.mixin(AppGlobal)
@@ -18,6 +19,14 @@ const BookmarksApp = (global.Bookmarks = new Vue({
 	el: '#content',
 	store,
 	router,
+	created() {
+		subscribe('nextcloud:unified-search.search', ({ query }) => {
+			this.$router.push({ name: this.routes.SEARCH, params: { search: query } })
+		})
+		subscribe('nextcloud:unified-search.reset', () => {
+			this.$router.push({ name: this.routes.HOME })
+		})
+	},
 	render: h => h(App),
 }))
 
