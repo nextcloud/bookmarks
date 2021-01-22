@@ -14,13 +14,13 @@ use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Service\TreeCacheManager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\IEventDispatcher;
-use OCP\ICache;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use PDO;
@@ -64,9 +64,9 @@ class TreeMapper extends QBMapper {
 	protected $folderMapper;
 
 	/**
-	 * @var ICache
+	 * @var TreeCacheManager
 	 */
-	protected $cache;
+	protected $treeCache;
 
 	/**
 	 * @var ShareMapper
@@ -117,8 +117,9 @@ class TreeMapper extends QBMapper {
 	 * @param TagMapper $tagMapper
 	 * @param IConfig $config
 	 * @param PublicFolderMapper $publicFolderMapper
+	 * @param TreeCacheManager $treeCache
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, TagMapper $tagMapper, IConfig $config, \OCA\Bookmarks\Db\PublicFolderMapper $publicFolderMapper) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, TagMapper $tagMapper, IConfig $config, \OCA\Bookmarks\Db\PublicFolderMapper $publicFolderMapper, TreeCacheManager $treeCache) {
 		parent::__construct($db, 'bookmarks_tree');
 		$this->eventDispatcher = $eventDispatcher;
 		$this->folderMapper = $folderMapper;
@@ -143,6 +144,8 @@ class TreeMapper extends QBMapper {
 			self::TYPE_FOLDER => $this->getFindChildrenQuery(self::TYPE_FOLDER),
 			self::TYPE_SHARE => $this->getFindChildrenQuery(self::TYPE_SHARE)
 		];
+
+		$this->treeCache = $treeCache;
 	}
 
 	/**
@@ -695,6 +698,10 @@ class TreeMapper extends QBMapper {
 	 * @psalm-return array<array-key, array{parent_folder: int}>
 	 */
 	public function getSubFolders(int $folderId, $layers = 0): array {
+		$folders = $this->treeCache->get(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId);
+		if ($folders !== null) {
+			return $folders;
+		}
 		$folders = array_map(function (Folder $folder) use ($layers, $folderId) {
 			$array = $folder->toArray();
 			$array['parent_folder'] = $folderId;
@@ -720,6 +727,9 @@ class TreeMapper extends QBMapper {
 		if (count($shares) > 0) {
 			array_push($folders, ...$shares);
 		}
+		if ($layers < 0) {
+			$this->treeCache->set(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId, $folders);
+		}
 		return $folders;
 	}
 
@@ -743,6 +753,10 @@ class TreeMapper extends QBMapper {
 	 * @return int
 	 */
 	public function countBookmarksInFolder(int $folderId): int {
+		$count = $this->treeCache->get(TreeCacheManager::CATEGORY_FOLDERCOUNT, TreeMapper::TYPE_FOLDER, $folderId);
+		if ($count !== null) {
+			return $count;
+		}
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select($qb->func()->count('b.id'))
@@ -764,6 +778,7 @@ class TreeMapper extends QBMapper {
 		foreach ($childFolders as $subFolderId) {
 			$countChildren += $this->countBookmarksInFolder($subFolderId);
 		}
+		$this->treeCache->set(TreeCacheManager::CATEGORY_FOLDERCOUNT, TreeMapper::TYPE_FOLDER, $folderId, $countChildren);
 		return $countChildren;
 	}
 

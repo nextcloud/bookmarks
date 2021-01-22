@@ -17,18 +17,18 @@ use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\IAppContainer;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use UnexpectedValueException;
 
-class HashManager implements IEventListener {
+class TreeCacheManager implements IEventListener {
+	public const CATEGORY_HASH = 'hashes';
+	public const CATEGORY_SUBFOLDERS = 'subFolders';
+	public const CATEGORY_FOLDERCOUNT = 'folderCount';
 
-	/**
-	 * @var ICache
-	 */
-	protected $cache;
 	/**
 	 * @var BookmarkMapper
 	 */
@@ -55,22 +55,38 @@ class HashManager implements IEventListener {
 	private $enabled = true;
 
 	/**
+	 * @var ICache[]
+	 */
+	private $caches = [];
+	/**
+	 * @var IAppContainer
+	 */
+	private $appContainer;
+
+	/**
 	 * FolderMapper constructor.
 	 *
-	 * @param TreeMapper $treeMapper
 	 * @param FolderMapper $folderMapper
 	 * @param BookmarkMapper $bookmarkMapper
 	 * @param ShareMapper $shareMapper
 	 * @param SharedFolderMapper $sharedFolderMapper
 	 * @param ICacheFactory $cacheFactory
+	 * @param IAppContainer $appContainer
 	 */
-	public function __construct(TreeMapper $treeMapper, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, ICacheFactory $cacheFactory) {
-		$this->treeMapper = $treeMapper;
+	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, ICacheFactory $cacheFactory, IAppContainer $appContainer) {
 		$this->folderMapper = $folderMapper;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->shareMapper = $shareMapper;
 		$this->sharedFolderMapper = $sharedFolderMapper;
-		$this->cache = $cacheFactory->createLocal('bookmarks:hashes');
+		$this->caches[self::CATEGORY_HASH] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_HASH);
+		$this->caches[self::CATEGORY_SUBFOLDERS] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_SUBFOLDERS);
+		$this->caches[self::CATEGORY_FOLDERCOUNT] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_FOLDERCOUNT);
+		$this->appContainer = $appContainer;
+	}
+
+
+	private function getTreeMapper(): TreeMapper {
+		return $this->appContainer->get(TreeMapper::class);
 	}
 
 	/**
@@ -79,7 +95,41 @@ class HashManager implements IEventListener {
 	 * @return string
 	 */
 	private function getCacheKey(string $type, int $folderId) : string {
-		return $type . ':'. ',' . $folderId;
+		return $type . ':'. $folderId;
+	}
+
+	/**
+	 * @param string $category
+	 * @param string $type
+	 * @param int $id
+	 * @return mixed
+	 */
+	public function get(string $category, string $type, int $id) {
+		$key = $this->getCacheKey($type, $id);
+		return $this->caches[$category]->get($key);
+	}
+
+	/**
+	 * @param string $category
+	 * @param string $type
+	 * @param int $id
+	 * @param mixed $data
+	 * @return mixed
+	 */
+	public function set(string $category, string $type, int $id, $data) {
+		$key = $this->getCacheKey($type, $id);
+		return $this->caches[$category]->set($key, $data, 60 * 60 * 24);
+	}
+
+	/**
+	 * @param string $type
+	 * @param int $id
+	 */
+	public function remove(string $type, int $id): void {
+		$key = $this->getCacheKey($type, $id);
+		foreach ($this->caches as $cache) {
+			$cache->remove($key);
+		}
 	}
 
 	/**
@@ -91,27 +141,23 @@ class HashManager implements IEventListener {
 			// In case we have run into a folder loop
 			return;
 		}
-		$key = $this->getCacheKey(TreeMapper::TYPE_FOLDER, $folderId);
-		$this->cache->remove($key);
+		$this->remove(TreeMapper::TYPE_FOLDER, $folderId);
 		$previousFolders[] = $folderId;
 
 		// Invalidate parent
 		try {
-			$parentFolder = $this->treeMapper->findParentOf(TreeMapper::TYPE_FOLDER, $folderId);
+			$parentFolder = $this->getTreeMapper()->findParentOf(TreeMapper::TYPE_FOLDER, $folderId);
 			$this->invalidateFolder($parentFolder->getId(), $previousFolders);
-		} catch (DoesNotExistException $e) {
-			return;
-		} catch (MultipleObjectsReturnedException $e) {
+		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 			return;
 		}
 	}
 
 	public function invalidateBookmark(int $bookmarkId): void {
-		$key = $this->getCacheKey(TreeMapper::TYPE_BOOKMARK, $bookmarkId);
-		$this->cache->remove($key);
+		$this->remove(TreeMapper::TYPE_BOOKMARK, $bookmarkId);
 
 		// Invalidate parent
-		$parentFolders = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmarkId);
+		$parentFolders = $this->getTreeMapper()->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmarkId);
 		foreach ($parentFolders as $parentFolder) {
 			$this->invalidateFolder($parentFolder->getId());
 		}
@@ -123,11 +169,10 @@ class HashManager implements IEventListener {
 	 * @param string $userId
 	 * @return string
 	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException|\JsonException
 	 */
 	public function hashFolder($userId, int $folderId, $fields = ['title', 'url']) : string {
-		$key = $this->getCacheKey(TreeMapper::TYPE_FOLDER, $folderId);
-		$hash = $this->cache->get($key);
+		$hash = $this->get(self::CATEGORY_HASH, TreeMapper::TYPE_FOLDER, $folderId);
 		$selector = $userId . ':' . implode(',', $fields);
 		if (isset($hash[$selector])) {
 			return $hash[$selector];
@@ -139,7 +184,7 @@ class HashManager implements IEventListener {
 		/** @var Folder $entity */
 		$entity = $this->folderMapper->find($folderId);
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
-		$children = $this->treeMapper->getChildrenOrder($folderId);
+		$children = $this->getTreeMapper()->getChildrenOrder($folderId);
 		$childHashes = array_map(function ($item) use ($fields, $entity) {
 			switch ($item['type']) {
 				case TreeMapper::TYPE_BOOKMARK:
@@ -159,7 +204,7 @@ class HashManager implements IEventListener {
 		$folder['children'] = $childHashes;
 		$hash[$selector] = hash('sha256', json_encode($folder, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
-		$this->cache->set($key, $hash, 60 * 60 * 24);
+		$this->set(self::CATEGORY_HASH, TreeMapper::TYPE_FOLDER, $folderId, $hash);
 		return $hash[$selector];
 	}
 
@@ -168,11 +213,10 @@ class HashManager implements IEventListener {
 	 * @param array $fields
 	 * @return string
 	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException|\JsonException
 	 */
 	public function hashBookmark(int $bookmarkId, array $fields = ['title', 'url']): string {
-		$key = $this->getCacheKey(TreeMapper::TYPE_BOOKMARK, $bookmarkId);
-		$hash = $this->cache->get($key);
+		$hash = $this->get(self::CATEGORY_HASH, TreeMapper::TYPE_BOOKMARK, $bookmarkId);
 		$selector = implode(',', $fields);
 		if (isset($hash[$selector])) {
 			return $hash[$selector];
@@ -187,7 +231,7 @@ class HashManager implements IEventListener {
 			$bookmark[$field] = $entity->{'get' . $field}();
 		}
 		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-		$this->cache->set($key, $hash, 60 * 60 * 24);
+		$this->set(self::CATEGORY_HASH, TreeMapper::TYPE_BOOKMARK, $bookmarkId, $hash);
 		return $hash[$selector];
 	}
 

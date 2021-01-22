@@ -52,7 +52,7 @@ class HtmlImporter {
 	 */
 	private $treeMapper;
 	/**
-	 * @var HashManager
+	 * @var TreeCacheManager
 	 */
 	private $hashManager;
 
@@ -64,9 +64,9 @@ class HtmlImporter {
 	 * @param TagMapper $tagMapper
 	 * @param TreeMapper $treeMapper
 	 * @param BookmarksParser $bookmarksParser
-	 * @param HashManager $hashManager
+	 * @param TreeCacheManager $hashManager
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser, \OCA\Bookmarks\Service\HashManager $hashManager) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser, \OCA\Bookmarks\Service\TreeCacheManager $hashManager) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->folderMapper = $folderMapper;
 		$this->tagMapper = $tagMapper;

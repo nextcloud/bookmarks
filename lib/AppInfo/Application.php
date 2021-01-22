@@ -17,7 +17,7 @@ use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Flow\CreateBookmark;
 use OCA\Bookmarks\Hooks\UserGroupListener;
 use OCA\Bookmarks\Search\Provider;
-use OCA\Bookmarks\Service\HashManager;
+use OCA\Bookmarks\Service\TreeCacheManager;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -53,10 +53,10 @@ class Application extends App implements IBootstrap {
 		$context->registerSearchProvider(Provider::class);
 		$context->registerDashboardWidget(Widget::class);
 
-		$context->registerEventListener(CreateEvent::class, HashManager::class);
-		$context->registerEventListener(UpdateEvent::class, HashManager::class);
-		$context->registerEventListener(BeforeDeleteEvent::class, HashManager::class);
-		$context->registerEventListener(MoveEvent::class, HashManager::class);
+		$context->registerEventListener(CreateEvent::class, TreeCacheManager::class);
+		$context->registerEventListener(UpdateEvent::class, TreeCacheManager::class);
+		$context->registerEventListener(BeforeDeleteEvent::class, TreeCacheManager::class);
+		$context->registerEventListener(MoveEvent::class, TreeCacheManager::class);
 
 		$context->registerEventListener(CreateEvent::class, ActivityPublisher::class);
 		$context->registerEventListener(UpdateEvent::class, ActivityPublisher::class);

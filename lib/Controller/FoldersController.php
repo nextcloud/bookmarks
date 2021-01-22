@@ -22,7 +22,7 @@ use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
-use OCA\Bookmarks\Service\HashManager;
+use OCA\Bookmarks\Service\TreeCacheManager;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -60,7 +60,7 @@ class FoldersController extends ApiController {
 	 */
 	private $rootFolderId;
 	/**
-	 * @var HashManager
+	 * @var TreeCacheManager
 	 */
 	private $hashManager;
 	/**
@@ -83,11 +83,11 @@ class FoldersController extends ApiController {
 	 * @param ShareMapper $shareMapper
 	 * @param TreeMapper $treeMapper
 	 * @param Authorizer $authorizer
-	 * @param HashManager $hashManager
+	 * @param TreeCacheManager $hashManager
 	 * @param FolderService $folders
 	 * @param BookmarkService $bookmarks
 	 */
-	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, HashManager $hashManager, FolderService $folders, BookmarkService $bookmarks) {
+	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, TreeCacheManager $hashManager, FolderService $folders, BookmarkService $bookmarks) {
 		parent::__construct($appName, $request);
 		$this->folderMapper = $folderMapper;
 		$this->publicFolderMapper = $publicFolderMapper;
