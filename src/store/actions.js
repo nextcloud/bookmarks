@@ -629,9 +629,8 @@ export default {
 			if (status !== 'success') {
 				throw new Error(response.data)
 			}
-			const parentFolder = this.getters.getFolder(id)[0].parent_folder
 			if (!avoidReload) {
-				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, parentFolder)
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 				await dispatch(actions.LOAD_FOLDERS)
 			}
 		} catch (err) {
