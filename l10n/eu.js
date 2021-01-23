@@ -43,7 +43,6 @@ OC.L10N.register(
     "Rename" : "Berrizendatu",
     "Move" : "Mugitu",
     "Delete" : "Ezabatu",
-    "Search" : "Bilatu",
     "Select one or more tags" : "Hautatu etiketa bat edo gehiago",
     "New" : "Berria",
     "New bookmark" : "Laster-marka berria",

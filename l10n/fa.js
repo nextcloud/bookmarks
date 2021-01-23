@@ -11,7 +11,6 @@ OC.L10N.register(
     "Rename" : "تغییرنام",
     "Move" : "انتقال",
     "Delete" : "حذف",
-    "Search" : "جستجو کردن",
     "Select one or more tags" : "یک یا چند تگ را انتخاب کنید",
     "New" : "جدید",
     "New folder" : "پوشه جدید",

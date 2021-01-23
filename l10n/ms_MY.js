@@ -4,7 +4,6 @@ OC.L10N.register(
     "Rename" : "Namakan",
     "Move" : "Move",
     "Delete" : "Padam",
-    "Search" : "Search",
     "New" : "Baru",
     "Cancel" : "Batal",
     "Import" : "Import",

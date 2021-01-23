@@ -4,7 +4,6 @@ OC.L10N.register(
     "Rename" : "重新命名",
     "Move" : "Move",
     "Delete" : "刪除",
-    "Search" : "Search",
     "New" : "新增",
     "New folder" : "新文件夾",
     "Cancel" : "取消",

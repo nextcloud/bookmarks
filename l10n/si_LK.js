@@ -4,7 +4,6 @@ OC.L10N.register(
     "Rename" : "නැවත නම් කරන්න",
     "Move" : "Move",
     "Delete" : "ඉවත් කරන්න",
-    "Search" : "Search",
     "New" : "නව",
     "Cancel" : "අවලංගු කරන්න",
     "Import" : "ආයාත කරන්න",

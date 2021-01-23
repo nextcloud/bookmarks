@@ -44,7 +44,6 @@ OC.L10N.register(
     "Move" : "Verplaatsen",
     "Delete" : "Verwijderen",
     "Do you really want to delete this bookmark?" : "Wil je deze bladwijzer echt verwijderen?",
-    "Search" : "Zoeken",
     "Select one or more tags" : "Kies één of meer tags",
     "New" : "Nieuw",
     "New bookmark" : "Nieuwe bookmark",

@@ -12,7 +12,6 @@ OC.L10N.register(
     "Rename" : "Ubah nama",
     "Move" : "Pindah",
     "Delete" : "Hapus",
-    "Search" : "Cari",
     "Select one or more tags" : "Pilih satu atau lebih tag",
     "New" : "Baru",
     "New bookmark" : "Markah baru",

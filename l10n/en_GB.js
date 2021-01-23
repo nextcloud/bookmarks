@@ -9,7 +9,6 @@ OC.L10N.register(
     "Rename" : "Rename",
     "Move" : "Move",
     "Delete" : "Delete",
-    "Search" : "Search",
     "New" : "New",
     "New folder" : "New folder",
     "Grid view" : "Grid view",

@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "ប្ដូរ​ឈ្មោះ",
     "Move" : "Move",
     "Delete" : "លុប",
-    "Search" : "Search",
     "New" : "ថ្មី",
     "New folder" : "ថត​ថ្មី",
     "Cancel" : "បោះបង់",

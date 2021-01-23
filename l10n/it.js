@@ -45,7 +45,6 @@ OC.L10N.register(
     "Move" : "Sposta",
     "Delete" : "Elimina",
     "Do you really want to delete this bookmark?" : "Vuoi davvero eliminare questo segnalibro?",
-    "Search" : "Cerca",
     "Select one or more tags" : "Seleziona una o più etichette",
     "New" : "Nuovo",
     "New bookmark" : "Nuovo segnalibro",

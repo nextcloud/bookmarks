@@ -25,7 +25,6 @@ OC.L10N.register(
     "Rename" : "Gi nytt navn",
     "Move" : "Flytt",
     "Delete" : "Slett",
-    "Search" : "Søk",
     "Select one or more tags" : "Velg en eller flere merkelapper",
     "New" : "Ny",
     "New folder" : "Ny mappe",

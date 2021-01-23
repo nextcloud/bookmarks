@@ -43,7 +43,6 @@ OC.L10N.register(
     "Rename" : "Canvia'n el nom",
     "Move" : "Mou",
     "Delete" : "Suprimeix",
-    "Search" : "Cerca",
     "Select one or more tags" : "Seleccionau una o més etiquetes",
     "New" : "Nou",
     "New bookmark" : "Adreça d'interès nova",

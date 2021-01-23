@@ -43,7 +43,6 @@ OC.L10N.register(
     "Rename" : "Byt namn",
     "Move" : "Flytta",
     "Delete" : "Ta bort",
-    "Search" : "Sök",
     "Select one or more tags" : "Välj en eller flera taggar",
     "New" : "Nytt",
     "New bookmark" : "Nytt bokmärke",

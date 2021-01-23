@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Adı dəyiş",
     "Move" : "Move",
     "Delete" : "Sil",
-    "Search" : "Axtarış",
     "New" : "Yeni",
     "New folder" : "Yeni qovluq",
     "Select all" : "Hamısıı seç",

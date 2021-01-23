@@ -44,7 +44,6 @@ OC.L10N.register(
     "Move" : "Μετακίνηση",
     "Delete" : "Διαγραφή",
     "Do you really want to delete this bookmark?" : "Θέλετε πραγματικά να διαγράψετε αυτόν τον σελιδοδείκτη;",
-    "Search" : "Αναζήτηση",
     "Select one or more tags" : "Επιλέξτε μία ή περισσότερες ετικέτες",
     "New" : "Νέα",
     "New bookmark" : "Νέος σελιδοδείκτης",

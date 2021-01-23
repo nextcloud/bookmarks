@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "পূনঃনামকরণ",
     "Move" : "Move",
     "Delete" : "মুছে",
-    "Search" : "Search",
     "New" : "নতুন",
     "New folder" : "নতুন ফোল্ডার",
     "Cancel" : "বাতির",

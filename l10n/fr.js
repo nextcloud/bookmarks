@@ -43,7 +43,6 @@ OC.L10N.register(
     "Rename" : "Renommer",
     "Move" : "Déplacer",
     "Delete" : "Supprimer",
-    "Search" : "Rechercher",
     "Select one or more tags" : "Sélectionnez une ou plusieurs étiquettes",
     "New" : "Créer",
     "New bookmark" : "Nouveau favori",

@@ -11,7 +11,6 @@ OC.L10N.register(
     "Rename" : "Átnevezés",
     "Move" : "Áthelyezés",
     "Delete" : "Törlés",
-    "Search" : "Keresés",
     "Select one or more tags" : "Válasszon egy vagy több címkét",
     "New" : "Új",
     "New folder" : "Új mappa",

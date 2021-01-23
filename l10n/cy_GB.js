@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Ailenwi",
     "Move" : "Symud",
     "Delete" : "Dileu",
-    "Search" : "Chwilio",
     "New" : "Newydd",
     "New folder" : "Ffolder newydd",
     "Grid view" : "Golwg grid",

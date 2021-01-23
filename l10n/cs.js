@@ -44,7 +44,6 @@ OC.L10N.register(
     "Move" : "Přesunout",
     "Delete" : "Smazat",
     "Do you really want to delete this bookmark?" : "Opravdu chcete tuto záložku smazat?",
-    "Search" : "Hledat",
     "Select one or more tags" : "Vyberte jeden nebo více štítků",
     "New" : "Nová",
     "New bookmark" : "Nová záložka",
