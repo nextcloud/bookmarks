@@ -43,7 +43,6 @@ class Version003000009Date20200505094721 extends SimpleMigrationStep {
 	 * @return ISchemaWrapper
 	 *
 	 * @throws SchemaException
-	 * @throws \Doctrine\DBAL\DBALException
 	 */
 	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
 		/** @var ISchemaWrapper $schema */
