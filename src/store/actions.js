@@ -46,6 +46,8 @@ export const actions = {
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
 	DELETE_SELECTION: 'DELETE_SELECTION',
+	RESTORE_SELECTION: 'RESTORE_SELECTION',
+	PERMANENTLY_DELETE_SELECTION: 'PERMANENTLY_DELETE_SELECTION',
 
 	RELOAD_VIEW: 'RELOAD_VIEW',
 
@@ -285,7 +287,7 @@ export default {
 				throw new Error(response.data)
 			}
 			const response2 = await axios.delete(
-				url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`)
+				url(state, `/folder/${oldFolder}/bookmarks/permanent/${bookmark}`)
 			)
 			if (response2.data.status !== 'success') {
 				throw new Error(response2.data)
@@ -793,6 +795,40 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete parts of selection')
+			)
+			throw err
+		}
+	},
+	async [actions.RESTORE_SELECTION]({ commit, dispatch, state }, { folder }) {
+		commit(mutations.FETCH_START, { type: 'restoreSelection' })
+		try {
+			await Parallel.each(state.selection.folders, folder => dispatch(actions.RESTORE_FOLDER, { id: folder.id, avoidReload: true }), 10)
+			await Parallel.each(state.selection.bookmarks, bookmark => dispatch(actions.RESTORE_BOOKMARK, { id: bookmark.id, folder, avoidReload: true }), 10)
+			dispatch(actions.RELOAD_VIEW)
+			commit(mutations.FETCH_END, 'restoreSelection')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'restoreSelection')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to restore parts of selection')
+			)
+			throw err
+		}
+	},
+	async [actions.PERMANENTLY_DELETE_SELECTION]({ commit, dispatch, state }, { folder }) {
+		commit(mutations.FETCH_START, { type: 'permanentlyDeleteSelection' })
+		try {
+			await Parallel.each(state.selection.folders, folder => dispatch(actions.PERMANENTLY_DELETE_FOLDER, { id: folder.id, avoidReload: true }), 10)
+			await Parallel.each(state.selection.bookmarks, bookmark => dispatch(actions.PERMANENTLY_DELETE_BOOKMARK, { id: bookmark.id, folder, avoidReload: true }), 10)
+			dispatch(actions.RELOAD_VIEW)
+			commit(mutations.FETCH_END, 'permanentlyDeleteSelection')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'permanentlyDeleteSelection')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to permanently delete parts of selection')
 			)
 			throw err
 		}

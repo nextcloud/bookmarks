@@ -96,8 +96,14 @@
 						</template>
 						{{ t('bookmarks', 'Move selection') }}
 					</ActionButton>
-					<ActionButton icon="icon-delete" @click="onBulkDelete">
+					<ActionButton v-if="$route.name !== routes.DELETED" icon="icon-delete" @click="onBulkDelete">
 						{{ t('bookmarks', 'Delete selection') }}
+					</ActionButton>
+					<ActionButton v-if="$route.name === routes.DELETED" icon="icon-history" @click="onBulkRestore">
+						{{ t('bookmarks', 'Restore selection') }}
+					</ActionButton>
+					<ActionButton v-if="$route.name === routes.DELETED" icon="icon-delete" @click="onBulkPermanentlyDelete">
+						{{ t('bookmarks', 'Permanently delete selection') }}
 					</ActionButton>
 					<ActionButton icon="icon-external" @click="onBulkOpen">
 						{{ t('bookmarks', 'Open all selected') }}
@@ -246,6 +252,14 @@ export default {
 		},
 		async onBulkDelete() {
 			await this.$store.dispatch(actions.DELETE_SELECTION, { folder: this.$route.params.folder })
+			this.$store.commit(mutations.RESET_SELECTION)
+		},
+		async onBulkRestore() {
+			await this.$store.dispatch(actions.RESTORE_SELECTION, { folder: this.$route.params.folder })
+			this.$store.commit(mutations.RESET_SELECTION)
+		},
+		async onBulkPermanentlyDelete() {
+			await this.$store.dispatch(actions.PERMANENTLY_DELETE_SELECTION, { folder: this.$route.params.folder })
 			this.$store.commit(mutations.RESET_SELECTION)
 		},
 		onBulkMove() {
