@@ -59,7 +59,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer i
+        run: composer install --ignore-platform-req=php
 
       - name: Install dependencies
         run: composer require --dev christophwurst/nextcloud:${{ matrix.ocp-version }}
