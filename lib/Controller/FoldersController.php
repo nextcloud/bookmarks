@@ -269,34 +269,6 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
-			$this->bookmarks->delete($bookmarkId);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_BAD_REQUEST);
-		}
-
-		return new JSONResponse(['status' => 'success']);
-	}
-
-	/**
-	 * @param int $folderId
-	 * @param int $bookmarkId
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @CORS
-	 * @PublicPage
-	 */
-	public function removeFromFolderPermanently($folderId, $bookmarkId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
-			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($bookmarkId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		}
-		try {
 			$folderId = $this->toInternalFolderId($folderId);
 			$this->bookmarks->removeFromFolder($folderId, $bookmarkId);
 		} catch (DoesNotExistException $e) {

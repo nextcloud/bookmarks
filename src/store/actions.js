@@ -287,7 +287,7 @@ export default {
 				throw new Error(response.data)
 			}
 			const response2 = await axios.delete(
-				url(state, `/folder/${oldFolder}/bookmarks/permanent/${bookmark}`)
+				url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`)
 			)
 			if (response2.data.status !== 'success') {
 				throw new Error(response2.data)
