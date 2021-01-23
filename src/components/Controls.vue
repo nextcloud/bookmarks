@@ -20,7 +20,7 @@
 				<span class="icon-breadcrumb" />
 			</template>
 			<template v-if="$route.name === routes.DELETED">
-				<a class="icon-delete" @click="onSelectHome" />
+				<a class="icon-delete" @click="onSelectDeleted" />
 				<span class="icon-breadcrumb" />
 			</template>
 			<template v-if="$route.name === routes.FOLDER">
@@ -206,6 +206,9 @@ export default {
 	methods: {
 		onSelectHome() {
 			this.$router.push({ name: this.routes.HOME })
+		},
+		onSelectDeleted() {
+			this.$router.push({ name: this.routes.DELETED })
 		},
 		onTagsChange(tags) {
 			this.$router.push({ name: this.routes.TAGS, params: { tags: tags.join(',') } })
