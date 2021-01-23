@@ -9,7 +9,7 @@ namespace OCA\Bookmarks\Migration;
 
 use Closure;
 use Doctrine\DBAL\Schema\SchemaException;
-use OCA\Bookmarks\Db\Types;
+use Doctrine\DBAL\Types\Type;
 use OCP\DB\ISchemaWrapper;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
@@ -43,13 +43,14 @@ class Version003000009Date20200505094721 extends SimpleMigrationStep {
 	 * @return ISchemaWrapper
 	 *
 	 * @throws SchemaException
+	 * @throws \Doctrine\DBAL\DBALException
 	 */
 	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 		$table = $schema->getTable('bookmarks_tree');
 		$table->changeColumn('index', [
-			'type' => Types::BIGINT,
+			'type' => Type::getType('bigint'),
 			'unsigned' => true,
 		]);
 		return $schema;
