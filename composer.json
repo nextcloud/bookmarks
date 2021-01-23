@@ -6,17 +6,17 @@
 		"ext-libxml": "*",
 		"ext-pdo": "*",
 		"guzzlehttp/psr7": "^1",
-		"marcelklehr/link-preview": "^3",
+		"marcelklehr/link-preview": "^3.0.5",
 		"pguardiario/phpuri": "1.0.*",
 		"psr/http-client": "^1.0",
 		"psr/http-factory": "^1.0",
 		"psr/http-message": "^1.0",
 		"rowbot/url": "^3.0",
-		"ralouphie/mimey": "^2.1",
 		"symfony/console": "^4.4",
 		"symfony/event-dispatcher": "^4.4",
 		"symfony/process": "^4.4",
-		"symfony/routing": "^4.4"
+		"symfony/routing": "^4.4",
+		"xantios/mimey": "^2.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^8.5",
