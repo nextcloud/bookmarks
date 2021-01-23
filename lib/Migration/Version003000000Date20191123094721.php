@@ -204,8 +204,9 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 					'user_id' => $qb->createPositionalParameter($user),
 				]);
 				$qb->execute();
+
+				$rootFolderId = $qb->getLastInsertId();
 				$qb = $this->db->getQueryBuilder();
-				$rootFolderId = $this->db->lastInsertId();
 				$qb->insert('bookmarks_root_folders')->values([
 					'folder_id' => $qb->createPositionalParameter($rootFolderId),
 					'user_id' => $qb->createPositionalParameter($user),
