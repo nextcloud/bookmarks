@@ -315,10 +315,10 @@ class TreeMapper extends QBMapper {
 		$descendants = [];
 		$newDescendants = $this->findChildren($type, $folderId);
 		do {
+			array_push($descendants, ...$newDescendants);
 			$newDescendants = array_flatten(array_map(function (Entity $descendant) use ($type) {
 				return $this->findChildren($type, $descendant->getId());
 			}, $newDescendants));
-			array_push($descendants, ...$newDescendants);
 		} while (count($newDescendants) > 0);
 		return $descendants;
 	}

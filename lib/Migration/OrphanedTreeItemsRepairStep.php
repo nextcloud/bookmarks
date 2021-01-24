@@ -114,9 +114,8 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('b.id')
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('b.id', 't.id'))
-			->where($qb->expr()->isNull('t.id'))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter('bookmark')));
+			->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND '.$qb->createPositionalParameter('bookmark'))
+			->where($qb->expr()->isNull('t.id'));
 		$orphanedBookmarks = $qb->execute();
 		$i = 0;
 		while ($bookmark = $orphanedBookmarks->fetchColumn()) {
