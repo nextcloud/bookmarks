@@ -90,6 +90,7 @@ OC.L10N.register(
     "No bookmarks here" : "Nessun segnalibro qui",
     "Add a bookmark" : "Aggiungi un segnalibro",
     "Import bookmarks" : "Importa segnalibri",
+    "Sync with your browser" : "Sincronizza con il tuo browser",
     "Import" : "Importa",
     "Export" : "Esporta",
     "Sorting" : "Ordina",
