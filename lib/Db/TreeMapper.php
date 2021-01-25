@@ -664,6 +664,10 @@ class TreeMapper extends QBMapper {
 	 * @psalm-return array<array-key, array{type: mixed|string, id: int, children?: array}>
 	 */
 	public function getChildrenOrder(int $folderId, $layers = 0): array {
+		$children = $this->treeCache->get(TreeCacheManager::CATEGORY_CHILDORDER, TreeMapper::TYPE_FOLDER, $folderId);
+		if ($children !== null) {
+			return $children;
+		}
 		$qb = $this->getChildrenOrderQuery;
 		$qb->setParameter('parent_folder', $folderId);
 		$children = $qb->execute()->fetchAll();
@@ -686,6 +690,11 @@ class TreeMapper extends QBMapper {
 			}
 			return $item;
 		}, $children);
+
+		if ($layers < 0) {
+			$this->treeCache->set(TreeCacheManager::CATEGORY_CHILDORDER, TreeMapper::TYPE_FOLDER, $folderId, $children);
+		}
+
 		return $children;
 	}
 
@@ -788,6 +797,10 @@ class TreeMapper extends QBMapper {
 	 * @psalm-return array<array-key, array<string, int|mixed|string>>
 	 */
 	public function getChildren(int $folderId, int $layers = 0): array {
+		$children = $this->treeCache->get(TreeCacheManager::CATEGORY_CHILDREN, TreeMapper::TYPE_FOLDER, $folderId);
+		if ($children !== null) {
+			return $children;
+		}
 		$qb = $this->getChildrenQuery[self::TYPE_BOOKMARK];
 		$this->selectFromType(self::TYPE_BOOKMARK, ['t.index', 't.type'], $qb);
 		$qb->setParameter('parent_folder', $folderId);
@@ -829,6 +842,10 @@ class TreeMapper extends QBMapper {
 
 			return $item;
 		}, $children);
+
+		if ($layers < 0) {
+			$this->treeCache->set(TreeCacheManager::CATEGORY_CHILDREN, TreeMapper::TYPE_FOLDER, $folderId, $children);
+		}
 
 		return $children;
 	}

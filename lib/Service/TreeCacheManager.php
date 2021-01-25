@@ -28,6 +28,8 @@ class TreeCacheManager implements IEventListener {
 	public const CATEGORY_HASH = 'hashes';
 	public const CATEGORY_SUBFOLDERS = 'subFolders';
 	public const CATEGORY_FOLDERCOUNT = 'folderCount';
+	public const CATEGORY_CHILDREN = 'children';
+	public const CATEGORY_CHILDORDER = 'childOrder';
 
 	/**
 	 * @var BookmarkMapper
@@ -81,6 +83,8 @@ class TreeCacheManager implements IEventListener {
 		$this->caches[self::CATEGORY_HASH] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_HASH);
 		$this->caches[self::CATEGORY_SUBFOLDERS] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_SUBFOLDERS);
 		$this->caches[self::CATEGORY_FOLDERCOUNT] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_FOLDERCOUNT);
+		$this->caches[self::CATEGORY_CHILDREN] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDREN);
+		$this->caches[self::CATEGORY_CHILDORDER] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDORDER);
 		$this->appContainer = $appContainer;
 	}
 
