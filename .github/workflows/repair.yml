@@ -117,7 +117,7 @@ jobs:
 
       - name: Run update
         run: |
-          ./occ app:enable -vvv ${{ env.APP_NAME }}
+          ./occ maintenance:repair
 
       - name: Export bookmarks
         run: |
@@ -126,4 +126,3 @@ jobs:
       - name: Compare exports
         run: |
           diff export.json export2.json
-
