@@ -94,6 +94,14 @@ jobs:
           ./occ app:enable -vvv -f ${{ env.APP_NAME }}
           php -S localhost:8080 &
 
+      - name: Import bookmarks
+        run: |
+          curl -u 'admin:admin' -F 'bm_import=@./apps/bookmarks/tests/res/import.file' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/import
+
+      - name: Export bookmarks
+        run: |
+          curl -u 'admin:admin' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/children\?layers\=-1 > export.json
+
       - name: Remove current stable bookmarks
         run: |
           ./occ app:disable ${{ env.APP_NAME }}
@@ -106,14 +114,6 @@ jobs:
       - name: Install app
         working-directory: apps/${{ env.APP_NAME }}
         run: composer install --ignore-platform-req=php
-
-      - name: Import bookmarks
-        run: |
-          curl -u 'admin:admin' -F 'bm_import=@./apps/bookmarks/tests/res/import.file' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/import
-
-      - name: Export bookmarks
-        run: |
-          curl -u 'admin:admin' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/children\?layers\=-1 > export.json
 
       - name: Run update
         run: |
