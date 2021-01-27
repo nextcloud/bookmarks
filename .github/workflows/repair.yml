@@ -1,4 +1,4 @@
-name: Upgrade
+name: Repair step
 
 on:
   pull_request:
@@ -18,9 +18,8 @@ jobs:
         php-versions: ['7.3']
         databases: ['sqlite', 'mysql', 'pgsql']
         server-versions: ['stable20']
-        prev-version: ['v3.0.0', 'v3.4.9', 'stable']
 
-    name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
+    name: Repair step on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
     env:
       MYSQL_PORT: 4444
@@ -68,8 +67,6 @@ jobs:
       - name: Checkout app
         uses: actions/checkout@v2
         with:
-          repository: nextcloud/bookmarks
-          ref: ${{ matrix.prev-version }}
           path: apps/${{ env.APP_NAME }}
 
       - name: Install app
@@ -102,22 +99,9 @@ jobs:
         run: |
           curl -u 'admin:admin' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/children\?layers\=-1 > export.json
 
-      - name: Remove current stable bookmarks
-        run: |
-          ./occ app:disable ${{ env.APP_NAME }}
-
-      - name: Checkout app
-        uses: actions/checkout@v2
-        with:
-          path: apps/${{ env.APP_NAME }}
-
-      - name: Install app
-        working-directory: apps/${{ env.APP_NAME }}
-        run: composer install --ignore-platform-req=php
-
       - name: Run update
         run: |
-          ./occ app:enable -vvv ${{ env.APP_NAME }}
+          ./occ maintenance:repair
 
       - name: Export bookmarks
         run: |
@@ -126,4 +110,3 @@ jobs:
       - name: Compare exports
         run: |
           diff export.json export2.json
-
