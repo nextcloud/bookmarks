@@ -68,8 +68,6 @@ jobs:
       - name: Checkout app
         uses: actions/checkout@v2
         with:
-          repository: nextcloud/bookmarks
-          ref: ${{ matrix.prev-version }}
           path: apps/${{ env.APP_NAME }}
 
       - name: Install app
@@ -93,19 +91,6 @@ jobs:
           ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$PGSQL_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
           ./occ app:enable -vvv -f ${{ env.APP_NAME }}
           php -S localhost:8080 &
-
-      - name: Remove current stable bookmarks
-        run: |
-          ./occ app:disable ${{ env.APP_NAME }}
-
-      - name: Checkout app
-        uses: actions/checkout@v2
-        with:
-          path: apps/${{ env.APP_NAME }}
-
-      - name: Install app
-        working-directory: apps/${{ env.APP_NAME }}
-        run: composer install --ignore-platform-req=php
 
       - name: Import bookmarks
         run: |
