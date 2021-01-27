@@ -109,7 +109,7 @@ jobs:
 
       - name: Import bookmarks
         run: |
-          curl -u 'admin:admin' -F ‘bm_import=@./apps/bookmarks/tests/res/import.file’ http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/import
+          curl -u 'admin:admin' -F 'bm_import=@./apps/bookmarks/tests/res/import.file' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/import
 
       - name: Export bookmarks
         run: |
