@@ -89,6 +89,7 @@ OC.L10N.register(
     "No bookmarks here" : "Ni še dodanih zaznamkov.",
     "Add a bookmark" : "Dodaj zaznamek",
     "Import bookmarks" : "Uvozi zaznamke",
+    "Sync with your browser" : "Uskladi z brskalnikom",
     "Import" : "Uvozi",
     "Export" : "Izvozi",
     "Sorting" : "Razvrščanje",
