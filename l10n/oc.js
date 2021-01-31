@@ -15,6 +15,7 @@ OC.L10N.register(
     "Title" : "Títol",
     "Link" : "Ligam",
     "Notes" : "Nòtas",
+    "{time} ago" : "fa {time}",
     "Owner" : "Owner",
     "Sharing" : "Partiment",
     "Share link" : "Partejar lo ligam",
