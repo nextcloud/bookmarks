@@ -24,6 +24,18 @@ class FileCache implements ICache {
 			$appData->newFolder('cache');
 			$this->storage = $appData->getFolder('cache');
 		}
+		if (!$this->storage->fileExists('CACHEDIR.TAG')) {
+			try {
+				$this->storage->newFile('CACHEDIR.TAG',
+					'Signature: 8a477f597d28d172789f06886806bc55' . "\r\n" .
+					'# This file is a cache directory tag created by the nextcloud bookmarks app.' . "\r\n" .
+					'# For information about cache directory tags, see:' . "\r\n" .
+					'#       http://www.brynosaurus.com/cachedir/)' . "\r\n"
+				);
+			} catch (NotPermittedException $e) {
+				// No op
+			}
+		}
 	}
 
 	/**

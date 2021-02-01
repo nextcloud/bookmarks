@@ -4,6 +4,7 @@ namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\BackgroundJobs\CrawlJob;
 use OC\BackgroundJob\JobList;
+use OCA\Bookmarks\BackgroundJobs\FileCacheGCJob;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCP\IConfig;
@@ -33,12 +34,17 @@ class BackgroundJobTest extends TestCase {
 	 * @var string
 	 */
 	private $userId;
+	/**
+	 * @var FileCacheGCJob
+	 */
+	private $gcJob;
 
 	protected function setUp() :void {
 		parent::setUp();
 
 		$this->bookmarkMapper = \OC::$server->get(BookmarkMapper::class);
 		$this->previewsJob = \OC::$server->get(CrawlJob::class);
+		$this->gcJob = \OC::$server->get(FileCacheGCJob::class);
 		$this->jobList = \OC::$server->get(JobList::class);
 		$this->settings = \OC::$server->get(IConfig::class);
 		$this->userId = 'test';
@@ -55,6 +61,13 @@ class BackgroundJobTest extends TestCase {
 	 */
 	public function testPreviewsJob() {
 		$this->previewsJob->execute($this->jobList);
+	}
+
+	/**
+	 * @doesNotPerformAssertions
+	 */
+	public function testGCJob() {
+		$this->gcJob->execute($this->jobList);
 	}
 
 	/**
