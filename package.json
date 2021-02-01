@@ -38,7 +38,7 @@
 		"vue-material-design-icons": "^4.11.0",
 		"vue-router": "^3.5.1",
 		"vue-simple-progress": "^1.1.1",
-		"vuex": "^3.6.0",
+		"vuex": "^3.6.2",
 		"vuex-router-sync": "^5.0.0"
 	},
 	"license": "AGPL-3.0-or-later",
