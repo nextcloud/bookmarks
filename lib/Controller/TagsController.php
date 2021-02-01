@@ -59,7 +59,7 @@ class TagsController extends ApiController {
 		}
 
 		if ($old_name === "" || $new_name === "") {
-			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Must provide old_name and a new name']], Http::STATUS_BAD_REQUEST);
 		}
 
 		$this->tagMapper->renameTag($this->userId, $old_name, $new_name);
