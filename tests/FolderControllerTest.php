@@ -23,7 +23,7 @@ use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
-use OCA\Bookmarks\Service\HashManager;
+use OCA\Bookmarks\Service\TreeCacheManager;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
 use OCP\IGroupManager;
@@ -147,7 +147,7 @@ class FolderControllerTest extends TestCase {
 	 */
 	private $sharedFolder;
 	/**
-	 * @var HashManager
+	 * @var TreeCacheManager
 	 */
 	private $hashManager;
 	/**
@@ -193,7 +193,7 @@ class FolderControllerTest extends TestCase {
 		$this->publicFolderMapper = OC::$server->get(PublicFolderMapper::class);
 		$this->shareMapper = OC::$server->get(ShareMapper::class);
 		$this->sharedFolderMapper = OC::$server->get(SharedFolderMapper::class);
-		$this->hashManager = OC::$server->get(HashManager::class);
+		$this->hashManager = OC::$server->get(TreeCacheManager::class);
 		$this->folders = OC::$server->get(FolderService::class);
 		$this->bookmarks = OC::$server->get(BookmarkService::class);
 		$this->groupManager = OC::$server->get(IGroupManager::class);

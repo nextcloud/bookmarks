@@ -28,6 +28,8 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 	 * @param IOutput $output
 	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
 	 * @param array $options
+	 *
+	 * @return void
 	 */
 	public function preSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 	}
@@ -36,7 +38,8 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 	 * @param IOutput $output
 	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
 	 * @param array $options
-	 * @return null|ISchemaWrapper
+	 *
+	 * @return ISchemaWrapper
 	 */
 	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
 		/** @var ISchemaWrapper $schema */
@@ -60,6 +63,8 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 	 * @param IOutput $output
 	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
 	 * @param array $options
+	 *
+	 * @return void
 	 */
 	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 		$query = $this->db->getQueryBuilder();
@@ -97,7 +102,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 					$qb = $this->db->getQueryBuilder();
 					$qb
 						->update('bookmarks_folders_bookmarks')
-						->set(['index' => $qb->createPositionalParameter($i)])
+						->set('index', $qb->createPositionalParameter($i))
 						->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($child['id'])))
 						->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder)));
 					$qb->execute();
@@ -105,7 +110,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 					$qb = $this->db->getQueryBuilder();
 					$qb
 						->update('bookmarks_folders')
-						->set(['index' => $qb->createPositionalParameter($i)])
+						->set('index', $qb->createPositionalParameter($i))
 						->where($qb->expr()->eq('id', $qb->createPositionalParameter($child['id'])))
 						->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folder)));
 					$qb->execute();

@@ -11,7 +11,6 @@ OC.L10N.register(
     "Rename" : "Alinomi",
     "Move" : "Movi",
     "Delete" : "Forigi",
-    "Search" : "Serĉi",
     "Select one or more tags" : "Elekti unu aŭ pliajn etikedojn",
     "New" : "Nova",
     "New folder" : "Nova dosierujo",

@@ -15,7 +15,6 @@ OC.L10N.register(
     "Rename" : "Нэрлэнэ үү",
     "Move" : "Зөөх",
     "Delete" : "Устгах",
-    "Search" : "Хайх",
     "New" : "Шинэ",
     "New folder" : "Шинэ хавтас",
     "Select all" : "бүгдийг сонгох",

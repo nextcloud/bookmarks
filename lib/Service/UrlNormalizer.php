@@ -12,6 +12,7 @@ use Rowbot\URL\Exception\TypeError;
 use Rowbot\URL\URL;
 
 class UrlNormalizer {
+	/** @var array<string, string>  */
 	private $cache = [];
 
 	public function __construct() {
@@ -22,7 +23,7 @@ class UrlNormalizer {
 	 * @return string
 	 * @throws UrlParseError
 	 */
-	public function normalize($urlString): string {
+	public function normalize(string $urlString): string {
 		if (isset($this->cache[$urlString])) {
 			return $this->cache[$urlString];
 		}

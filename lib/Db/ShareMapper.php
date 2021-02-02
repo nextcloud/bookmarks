@@ -63,7 +63,10 @@ class ShareMapper extends QBMapper {
 
 	/**
 	 * @param string $userId
-	 * @return array|Entity[]
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, Share>
 	 */
 	public function findByOwner(string $userId): array {
 		$qb = $this->db->getQueryBuilder();
@@ -76,7 +79,10 @@ class ShareMapper extends QBMapper {
 	/**
 	 * @param int $type
 	 * @param string $participant
-	 * @return array|Entity[]
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, Share>
 	 */
 	public function findByParticipant(int $type, string $participant): array {
 		$qb = $this->db->getQueryBuilder();

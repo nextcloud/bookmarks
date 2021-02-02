@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Renominar",
     "Move" : "Mover",
     "Delete" : "Deler",
-    "Search" : "Cercar",
     "New" : "Nove",
     "New folder" : "Nove dossier",
     "Select all" : "Selectionar toto",

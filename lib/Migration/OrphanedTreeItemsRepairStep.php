@@ -23,7 +23,9 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 	}
 
 	/**
-	 * Returns the step's name
+	 * 	 * Returns the step's name
+	 *
+	 * @return string
 	 */
 	public function getName() {
 		return 'Remove orphaned bookmark tree items';
@@ -31,6 +33,8 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 
 	/**
 	 * @param IOutput $output
+	 *
+	 * @return void
 	 */
 	public function run(IOutput $output) {
 		$qb = $this->db->getQueryBuilder();
@@ -110,9 +114,8 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('b.id')
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('b.id', 't.id'))
-			->where($qb->expr()->isNull('t.id'))
-			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter('bookmark')));
+			->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND t.type = '.$qb->createPositionalParameter('bookmark'))
+			->where($qb->expr()->isNull('t.id'));
 		$orphanedBookmarks = $qb->execute();
 		$i = 0;
 		while ($bookmark = $orphanedBookmarks->fetchColumn()) {

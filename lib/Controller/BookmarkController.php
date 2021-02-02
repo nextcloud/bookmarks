@@ -41,7 +41,6 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
-use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
@@ -138,7 +137,10 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param Bookmark $bookmark
-	 * @return array
+	 *
+	 * @return ((int|mixed)[]|mixed)[]
+	 *
+	 * @psalm-return array{folders: array<array-key, int>, tags: array|mixed}
 	 */
 	private function _returnBookmarkAsArray(Bookmark $bookmark): array {
 		$array = $bookmark->toArray();
@@ -160,7 +162,7 @@ class BookmarkController extends ApiController {
 	/**
 	 * @return int|null
 	 */
-	private function _getRootFolderId(): int {
+	private function _getRootFolderId(): ?int {
 		if ($this->rootFolderId !== null) {
 			return $this->rootFolderId;
 		}
@@ -185,9 +187,10 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param int $external
-	 * @return int
+	 *
+	 * @return int|null
 	 */
-	private function toInternalFolderId(int $external): int {
+	private function toInternalFolderId(int $external): ?int {
 		if ($external === -1) {
 			return $this->_getRootFolderId();
 		}
@@ -233,7 +236,7 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @param int $page
-	 * @param null $tags
+	 * @param string[] $tags
 	 * @param string $conjunction
 	 * @param string $sortby
 	 * @param array $search
@@ -346,7 +349,7 @@ class BookmarkController extends ApiController {
 				/** @var Folder $folderEntity */
 				$folderEntity = $this->folderMapper->find($this->toInternalFolderId($folder));
 				$userId = $folderEntity->getUserId();
-			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
 			}
 			$params->setFolder($this->toInternalFolderId($folder));
@@ -357,7 +360,7 @@ class BookmarkController extends ApiController {
 		} else {
 			try {
 				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $params);
-			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
 			}
 		}
@@ -478,6 +481,11 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function deleteBookmark($id): JSONResponse {
+		try {
+			$this->bookmarkMapper->find($id);
+		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'success']);
+		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
@@ -557,6 +565,9 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function clickBookmark($url = ''): JSONResponse {
+		if ($this->authorizer->getUserId() === null) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+		}
 		try {
 			$bookmark = $this->bookmarks->findByUrl($this->authorizer->getUserId(), $url);
 		} catch (DoesNotExistException $e) {
@@ -601,7 +612,7 @@ class BookmarkController extends ApiController {
 				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
 			}
 			return $this->doImageResponse($image);
-		} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+		} catch (DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {
 			return new NotFoundResponse();
 		}
 	}
@@ -627,17 +638,19 @@ class BookmarkController extends ApiController {
 				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
 			}
 			return $this->doImageResponse($image);
-		} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+		} catch (DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {
 			return new NotFoundResponse();
 		}
 	}
 
 	/**
 	 * @param $image
-	 * @return DataDisplayResponse
+	 *
+	 * @return DataDisplayResponse|NotFoundResponse
+	 *
 	 * @throws Exception
 	 */
-	public function doImageResponse(?IImage $image): Response {
+	public function doImageResponse(?IImage $image) {
 		if ($image === null || $image->getData() === null) {
 			return new NotFoundResponse();
 		}

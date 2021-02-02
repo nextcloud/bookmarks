@@ -31,9 +31,6 @@ export default {
 			return this.$store.state.loading.createFolder
 		},
 	},
-	mounted() {
-		this.$refs.input.focus()
-	},
 	methods: {
 		submit(title) {
 			const parentFolder = this.$route.params.folder

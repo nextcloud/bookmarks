@@ -16,7 +16,7 @@
 			{{ t('bookmarks', 'No bookmarks here') }}
 			<template v-if="$route.name !== routes.DELETED" #desc>
 				<button @click="onAddBookmark">
-					{{ t('bookmarks', 'Add a bookmark') }}
+					<span class="icon-add" /> {{ t('bookmarks', 'Add a bookmark') }}
 				</button>
 				<input ref="import"
 					type="file"
@@ -25,6 +25,9 @@
 					@change="onImportSubmit">
 				<button @click="onImportOpen">
 					<span :class="{'icon-upload': !importing, 'icon-loading-small': importing}" /> {{ t('bookmarks', 'Import bookmarks') }}
+				</button>
+				<button @click="onSyncOpen">
+					<SyncIcon :fill-color="colorMainText" :size="18" :style="{opacity: 0.5}" /> {{ t('bookmarks', 'Sync with your browser') }}
 				</button>
 			</template>
 		</EmptyContent>
@@ -35,10 +38,11 @@
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 import { actions, mutations } from '../store'
 import { privateRoutes } from '../router'
+import SyncIcon from 'vue-material-design-icons/Sync'
 
 export default {
 	name: 'NoBookmarks',
-	components: { EmptyContent },
+	components: { EmptyContent, SyncIcon },
 	data() {
 		return { importing: false }
 	},
@@ -57,6 +61,9 @@ export default {
 		onImportOpen() {
 			this.$refs.import.click()
 		},
+		onSyncOpen() {
+			window.open('https://floccus.org', '_blank')
+		},
 		async onImportSubmit(e) {
 			this.importing = true
 			try {
@@ -69,9 +76,9 @@ export default {
 	},
 }
 </script>
-<style>
+<style scoped>
 .bookmarkslist__emptyBookmarks {
-	width: 450px;
+	width: 500px;
 	margin: 0 auto;
 }
 
@@ -80,5 +87,10 @@ export default {
 	position: absolute;
 	top: 0;
 	left: -1000px;
+}
+
+.material-design-icon {
+	position: relative;
+	top: 4px;
 }
 </style>

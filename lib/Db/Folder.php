@@ -13,15 +13,21 @@ use OCP\AppFramework\Db\Entity;
  * Class Folder
  *
  * @package OCA\Bookmarks\Db
- * @method getTitle()
+ * @method string getTitle()
  * @method setTitle(string $title)
- * @method getUserId
+ * @method string getUserId()
  * @method setUserId(string $userId)
  * @method getDeleted
  * @method setDeleted(boolean $deleted)
  */
 class Folder extends Entity {
+	/**
+	 * @var string
+	 */
 	protected $title;
+	/**
+	 * @var string
+	 */
 	protected $userId;
 	protected $index;
 	protected $deleted;
@@ -36,6 +42,11 @@ class Folder extends Entity {
 		$this->addType('deleted', 'boolean');
 	}
 
+	/**
+	 * @return array
+	 *
+	 * @psalm-return array{id: int, title: string, userId: string}
+	 */
 	public function toArray(): array {
 		return ['id' => $this->id, 'title' => $this->title, 'userId' => $this->userId, 'deleted' => $this->deleted];
 	}

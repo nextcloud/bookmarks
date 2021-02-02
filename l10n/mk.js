@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Преименувај",
     "Move" : "Премести",
     "Delete" : "Избриши",
-    "Search" : "Барај",
     "New" : "Ново",
     "New folder" : "Нова папка",
     "Grid view" : "Мрежа",

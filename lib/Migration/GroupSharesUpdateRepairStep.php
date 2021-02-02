@@ -59,7 +59,9 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 	}
 
 	/**
-	 * Returns the step's name
+	 * 	 * Returns the step's name
+	 *
+	 * @return string
 	 */
 	public function getName() {
 		return 'Update bookmark group shares';
@@ -67,9 +69,12 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 
 	/**
 	 * @param IOutput $output
+	 *
 	 * @throws UnsupportedOperation
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 *
+	 * @return void
 	 */
 	public function run(IOutput $output) {
 		$deleted = 0;

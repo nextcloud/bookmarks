@@ -4,7 +4,6 @@ OC.L10N.register(
     "Rename" : "Preimenuj",
     "Move" : "Move",
     "Delete" : "Obriši",
-    "Search" : "Search",
     "New" : "Novo",
     "New folder" : "Nova fascikla",
     "Select all" : "Označi sve",

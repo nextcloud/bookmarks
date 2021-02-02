@@ -11,7 +11,6 @@ OC.L10N.register(
     "Rename" : "Omdøb",
     "Move" : "Flyt",
     "Delete" : "Slet",
-    "Search" : "Søg",
     "Select one or more tags" : "Vælg et eller flere tags",
     "New" : "Ny",
     "New folder" : "Ny mappe",

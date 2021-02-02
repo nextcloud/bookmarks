@@ -6,7 +6,6 @@ OC.L10N.register(
     "Rename" : "إعادة التسمية",
     "Move" : "نقل",
     "Delete" : "حذف ",
-    "Search" : "بحث",
     "New" : "جديد",
     "New folder" : "مجلد جديد",
     "Grid view" : "عرض شبكي",

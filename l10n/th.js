@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "เปลี่ยนชื่อ",
     "Move" : "Move",
     "Delete" : "ลบ",
-    "Search" : "Search",
     "New" : "ใหม่",
     "New folder" : "โฟลเดอร์ใหม่",
     "Grid view" : "มุมมองแบบตาราง Grid",

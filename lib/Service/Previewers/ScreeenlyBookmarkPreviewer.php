@@ -12,7 +12,7 @@ use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
-use OCA\Bookmarks\Service\FileCache;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
@@ -22,28 +22,36 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 
 	public const HTTP_TIMEOUT = 10 * 1000;
 
+	/**
+	 * @var string
+	 */
 	private $apiKey;
 
+	/**
+	 * @var IClient
+	 */
 	private $client;
 
-	/** @var IConfig */
-	private $config;
-
-	private $cache;
 
 	/** @var LoggerInterface */
 	private $logger;
 
+	/**
+	 * @var int
+	 */
 	private $width = 800;
 
+	/**
+	 * @var int
+	 */
 	private $height = 800;
+
 	/**
 	 * @var string
 	 */
 	private $apiUrl;
 
-	public function __construct(FileCache $cache, IConfig $config, IClientService $clientService, LoggerInterface $logger) {
-		$this->config = $config;
+	public function __construct(IConfig $config, IClientService $clientService, LoggerInterface $logger) {
 		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
 		$this->client = $clientService->newClient();
@@ -51,8 +59,9 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	}
 
 	/**
-	 * @param Bookmark $bookmark
-	 * @return IImage|null
+	 * @param Bookmark|null $bookmark
+	 *
+	 * @return Image|null
 	 */
 	public function getImage($bookmark): ?IImage {
 		if (!isset($bookmark)) {
@@ -68,7 +77,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	}
 
 	/**
-	 * @param $url
+	 * @param string $url
 	 * @return Image|null
 	 */
 	public function fetchImage($url): ?Image {

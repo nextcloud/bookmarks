@@ -242,14 +242,15 @@ class FolderService {
 	}
 
 	/**
-	 * @param $userId
-	 * @param $folderId
-	 * @param null $title
-	 * @param null $parent_folder
+	 * @param string $userId
+	 * @param int $folderId
+	 * @param string $title
+	 * @param int $parent_folder
 	 * @return Folder|SharedFolder
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws \OCA\Bookmarks\Exception\UrlParseError
 	 */
 	public function updateSharedFolderOrFolder($userId, $folderId, $title = null, $parent_folder = null) {
 		/**
@@ -276,15 +277,20 @@ class FolderService {
 				// noop
 			}
 		}
-
 		if (isset($title)) {
 			$folder->setTitle($title);
 			$this->folderMapper->update($folder);
 			$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
 		}
 		if (isset($parent_folder)) {
+			/** @var Folder $parentFolder */
+			$parentFolder = $this->folderMapper->find($parent_folder);
+			if ($parentFolder->getUserId() !== $folder->getUserId()) {
+				$this->treeMapper->changeFolderOwner($folder, $parentFolder->getUserId());
+			}
 			$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parent_folder);
 		}
+
 		return $folder;
 	}
 
@@ -297,6 +303,7 @@ class FolderService {
 	public function createFolderPublicToken($folderId): string {
 		$this->folderMapper->find($folderId);
 		try {
+			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 		} catch (DoesNotExistException $e) {
 			$publicFolder = new PublicFolder();
@@ -396,7 +403,7 @@ class FolderService {
 	/**
 	 * @param string $userId
 	 * @param $file
-	 * @param null $folder
+	 * @param int $folder
 	 * @return array
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException

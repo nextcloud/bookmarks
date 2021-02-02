@@ -19,7 +19,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
-use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
 use OCP\IL10N;
@@ -92,10 +91,13 @@ class WebViewController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 *
 	 * @NoCSRFRequired
+	 *
+	 * @return AugmentedTemplateResponse
 	 */
-	public function index() {
-		$res = new AugmentedTemplateResponse($this->appName, 'main', ['url'=>$this->urlGenerator]);
+	public function index(): AugmentedTemplateResponse {
+		$res = new AugmentedTemplateResponse($this->appName, 'main', ['url' => $this->urlGenerator]);
 
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedWorkerSrcDomain("'self'");
@@ -111,10 +113,13 @@ class WebViewController extends Controller {
 
 	/**
 	 * @param string $token
-	 * @return Response
+	 *
+	 * @return NotFoundResponse|PublicTemplateResponse
 	 *
 	 * @NoAdminRequired
+	 *
 	 * @NoCSRFRequired
+	 *
 	 * @PublicPage
 	 */
 	public function link(string $token) {
@@ -149,9 +154,12 @@ class WebViewController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 *
 	 * @NoCSRFRequired
+	 *
+	 * @return StreamResponse
 	 */
-	public function serviceWorker() {
+	public function serviceWorker(): StreamResponse {
 		$response = new StreamResponse(__DIR__.'/../../js/bookmarks-service-worker.js');
 		$response->setHeaders(['Content-Type' => 'application/javascript']);
 		$policy = new ContentSecurityPolicy();
@@ -164,10 +172,14 @@ class WebViewController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 *
 	 * @NoCSRFRequired
+	 *
 	 * @PublicPage
+	 *
+	 * @return JSONResponse
 	 */
-	public function manifest() {
+	public function manifest(): JSONResponse {
 		$responseJS = [
 			'name' => $this->l->t('Bookmarks'),
 			'short_name' => $this->l->t('Bookmarks'),
@@ -177,8 +189,8 @@ class WebViewController extends Controller {
 					[
 						'src' => $this->urlGenerator->linkToRoute('theming.Icon.getTouchIcon',
 								['app' => 'bookmarks']),
-						'type'=> 'image/png',
-						'sizes'=> '512x512'
+						'type' => 'image/png',
+						'sizes' => '512x512'
 					],
 					[
 						'src' => $this->urlGenerator->linkToRoute('theming.Icon.getFavicon',

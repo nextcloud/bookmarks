@@ -27,7 +27,8 @@ class AdminSection implements IIconSection {
 	/**
 	 * returns the ID of the section. It is supposed to be a lower case string
 	 *
-	 * @returns string
+	 *
+	 * @return string
 	 */
 	public function getID() {
 		return 'bookmarks';
@@ -43,14 +44,15 @@ class AdminSection implements IIconSection {
 		return $this->l->t('Bookmarks');
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getIcon() {
 		return $this->urlgen->imagePath('bookmarks', 'bookmarks-black.svg');
 	}
 
 	/**
-	 * @return int whether the form should be rather on the top or bottom of
-	 * the settings navigation. The sections are arranged in ascending order of
-	 * the priority values. It is required to return a value between 0 and 99.
+	 * @return int whether the form should be rather on the top or bottom of the settings navigation. The sections are arranged in ascending order of the priority values. It is required to return a value between 0 and 99.
 	 */
 	public function getPriority() {
 		return 80;

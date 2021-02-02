@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Adenvel",
     "Move" : "Diplasañ",
     "Delete" : "Dilemel",
-    "Search" : "Klask",
     "New" : "Nevez",
     "New folder" : "Heuliad nevez",
     "Grid view" : "Diskwell ar roued",

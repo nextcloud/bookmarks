@@ -67,7 +67,7 @@ class BookmarkService {
 	 */
 	private $eventDispatcher;
 	/**
-	 * @var HashManager
+	 * @var TreeCacheManager
 	 */
 	private $hashManager;
 
@@ -84,9 +84,9 @@ class BookmarkService {
 	 * @param FaviconPreviewer $faviconPreviewer
 	 * @param FolderService $folders
 	 * @param IEventDispatcher $eventDispatcher
-	 * @param HashManager $hashManager
+	 * @param TreeCacheManager $hashManager
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\HashManager $hashManager) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
@@ -107,7 +107,10 @@ class BookmarkService {
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
+	 * @param string $userId
+	 *
 	 * @return Bookmark
+	 *
 	 * @throws AlreadyExistsError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
@@ -115,7 +118,7 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function create($userId, $url = '', $title = null, $description = '', $tags = [], $folders = []): Bookmark {
+	public function create(string $userId, $url = '', $title = null, $description = '', $tags = [], $folders = []): Bookmark {
 		// Inspect web page (do some light scraping)
 		// allow only http(s) and (s)ftp
 		$protocols = '/^(https?|s?ftp)\:\/\//i';
@@ -200,7 +203,10 @@ class BookmarkService {
 	 * @param string|null $description
 	 * @param array|null $tags
 	 * @param array|null $folders
+	 * @param string $userId
+	 *
 	 * @return Bookmark
+	 *
 	 * @throws AlreadyExistsError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
@@ -208,7 +214,7 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function update($userId, $id, string $url = null, string $title = null, string $description = null, array $tags = null, array $folders = null): ?Bookmark {
+	public function update(string $userId, $id, string $url = null, string $title = null, string $description = null, array $tags = null, array $folders = null): ?Bookmark {
 		/**
 		 * @var $bookmark Bookmark
 		 */
@@ -292,19 +298,21 @@ class BookmarkService {
 	}
 
 	/**
-	 * @param $folderId
 	 * @param $bookmarkId
+	 * @param int $folderId
+	 *
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function removeFromFolder($folderId, $bookmarkId): void {
+	public function removeFromFolder(int $folderId, int $bookmarkId): void {
 		$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
 	}
 
 	/**
-	 * @param $folderId
 	 * @param $bookmarkId
+	 * @param int $folderId
+	 *
 	 * @throws AlreadyExistsError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
@@ -312,7 +320,7 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function addToFolder($folderId, $bookmarkId): void {
+	public function addToFolder(int $folderId, int $bookmarkId): void {
 		/**
 		 * @var $folder Folder
 		 */
@@ -329,12 +337,12 @@ class BookmarkService {
 	}
 
 	/**
-	 * @param $id
+	 * @param int $id
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function delete($id): void {
+	public function delete(int $id): void {
 		$bookmark = $this->bookmarkMapper->find($id);
 		$bookmark->setDeleted(true);
 		$this->bookmarkMapper->update($bookmark);
@@ -372,10 +380,13 @@ class BookmarkService {
 	/**
 	 * @param $userId
 	 * @param string $url
+	 * @param string $userId
+	 *
 	 * @return Bookmark
+	 *
 	 * @throws DoesNotExistException
 	 */
-	public function findByUrl($userId, $url = ''): Bookmark {
+	public function findByUrl(string $userId, $url = ''): Bookmark {
 		$params = new QueryParameters();
 		/** @var Bookmark[] $bookmarks */
 		$bookmarks = $this->bookmarkMapper->findAll($userId, $params->setUrl($url));
@@ -400,12 +411,12 @@ class BookmarkService {
 	}
 
 	/**
-	 * @param $id
+	 * @param int $id
 	 * @return IImage|null
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function getImage($id): ?IImage {
+	public function getImage(int $id): ?IImage {
 		/**
 		 * @var $bookmark Bookmark
 		 */
@@ -414,12 +425,12 @@ class BookmarkService {
 	}
 
 	/**
-	 * @param $id
+	 * @param int $id
 	 * @return IImage|null
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function getFavicon($id): ?IImage {
+	public function getFavicon(int $id): ?IImage {
 		/**
 		 * @var $bookmark Bookmark
 		 */

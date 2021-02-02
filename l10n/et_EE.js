@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Nimeta ümber",
     "Move" : "Liiguta",
     "Delete" : "Kustuta",
-    "Search" : "Otsi",
     "New" : "Uus",
     "New folder" : "Uus kaust",
     "Grid view" : "Ruudustikvaade",

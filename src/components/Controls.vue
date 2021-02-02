@@ -7,14 +7,6 @@
 <template>
 	<div :class="['controls', $store.state.public && 'wide']">
 		<div class="controls__left">
-			<button
-				v-if="$route.name !== routes.SEARCH"
-				v-tooltip="t('bookmarks', 'Search')"
-				class="custom-button"
-				:title="t('bookmarks', 'Search')"
-				@click="openSearch">
-				<MagnifyIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
-			</button>
 			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME || $store.state.public">
 				<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
 				<span class="icon-breadcrumb" />
@@ -44,10 +36,6 @@
 					:multiple="true"
 					:placeholder="t('bookmarks', 'Select one or more tags')"
 					@input="onTagsChange" />
-			</template>
-			<template v-if="$route.name === routes.SEARCH">
-				<MagnifyIcon :fill-color="colorMainText" />
-				<input ref="search" v-model="search" type="search">
 			</template>
 			<Actions
 				v-if="!isPublic"
@@ -127,13 +115,12 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import RssIcon from 'vue-material-design-icons/Rss'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
-import MagnifyIcon from 'vue-material-design-icons/Magnify'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
 
 export default {
 	name: 'Controls',
-	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon, RssIcon, MagnifyIcon },
+	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon, RssIcon },
 	props: {},
 	data() {
 		return {
@@ -203,11 +190,6 @@ export default {
 			)
 		},
 	},
-	watch: {
-		search() {
-			this.$router.push({ name: this.routes.SEARCH, params: { search: this.search } })
-		},
-	},
 	created() {},
 	methods: {
 		onSelectHome() {
@@ -251,6 +233,9 @@ export default {
 			}
 		},
 		async onBulkDelete() {
+			if (!confirm(t('bookmarks', 'Do you really want to delete these items?'))) {
+				return
+			}
 			await this.$store.dispatch(actions.DELETE_SELECTION, { folder: this.$route.params.folder })
 			this.$store.commit(mutations.RESET_SELECTION)
 		},
@@ -277,13 +262,6 @@ export default {
 
 		openRssUrl() {
 			window.open(this.rssURL)
-		},
-
-		openSearch() {
-			this.$router.push({ name: this.routes.SEARCH, params: { search: '' } })
-			setTimeout(() => {
-				this.$refs.search.focus()
-			}, 100)
 		},
 	},
 }

@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Renombrar",
     "Move" : "Mover",
     "Delete" : "Eliminar",
-    "Search" : "Buscar",
     "New" : "Nuevo",
     "New folder" : "Carpeta nueva",
     "Grid view" : "Vista de cuadrícula",

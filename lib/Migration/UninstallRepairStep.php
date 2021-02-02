@@ -33,7 +33,9 @@ class UninstallRepairStep implements IRepairStep {
 	}
 
 	/**
-	 * Returns the step's name
+	 * 	 * Returns the step's name
+	 *
+	 * @return string
 	 */
 	public function getName() {
 		return 'Uninstall routine';
@@ -41,6 +43,8 @@ class UninstallRepairStep implements IRepairStep {
 
 	/**
 	 * @param IOutput $output
+	 *
+	 * @return void
 	 */
 	public function run(IOutput $output) {
 		foreach ($this->tables as $table) {

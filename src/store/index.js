@@ -82,7 +82,9 @@ export default new Store({
 			return state.childrenByFolder[id] || []
 		},
 		getSharesOfFolder: state => folderId => {
-			return Object.values(state.sharesById).filter(share => share.folderId === folderId)
+			return Object.values(state.sharesById).filter(
+				share => share.folderId === folderId
+			)
 		},
 		getTokenOfFolder: state => folderId => {
 			return state.tokensByFolder[folderId]

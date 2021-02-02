@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Redenumire",
     "Move" : "Mută",
     "Delete" : "Șterge",
-    "Search" : "Caută",
     "New" : "Nou",
     "New folder" : "Director nou",
     "Grid view" : "Afișare în grilă",

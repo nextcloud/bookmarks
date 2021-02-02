@@ -13,27 +13,27 @@ use OCP\AppFramework\Db\Entity;
  * Class Bookmark
  *
  * @package OCA\Bookmarks\Db
- * @method getUrl
+ * @method string getUrl()
  * @method setUrl(string $url)
- * @method getTitle
- * @method setTitle(string $title)
- * @method getDescription
+ * @method string getTitle()
+ * @method string getDescription()
  * @method setDescription(string $description)
- * @method getLastmodified
+ * @method int getLastmodified()
  * @method setLastmodified(int $lastmodified)
- * @method getAdded
+ * @method int getAdded()
  * @method setAdded(int $added)
- * @method getClickcount
+ * @method int getClickcount
  * @method setClickcount(int $count)
- * @method getLastPreview
+ * @method int getLastPreview()
  * @method setLastPreview(int $lastpreview)
- * @method getAvailable
+ * @method bool getAvailable()
  * @method setAvailable(boolean $available)
  * @method getDeleted
  * @method setDeleted(boolean $deleted)
  * @method getArchivedFile
+ * @method int getArchivedFile()
  * @method setArchivedFile(int $fileId)
- * @method getUserId
+ * @method string getUserId()
  * @method setUserId(string $userId)
  */
 class Bookmark extends Entity {
@@ -53,7 +53,7 @@ class Bookmark extends Entity {
 	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'deleted', 'archived_file', 'user_id'];
 	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'deleted', 'archivedFile', 'userId'];
 
-	public static function fromArray($props) {
+	public static function fromArray($props): self {
 		$bookmark = new Bookmark();
 		foreach ($props as $prop => $val) {
 			$bookmark->{'set' . $prop}($val);
@@ -91,5 +91,13 @@ class Bookmark extends Entity {
 
 	public function incrementClickcount(): void {
 		$this->setClickcount($this->clickcount + 1);
+	}
+
+	public function setTitle(string $title): void {
+		// Cap title length at 255 because the DB doesn't have more space currently
+		if (mb_strlen($title) > 255) {
+			$title = mb_substr($title, 0, 254) . '…';
+		}
+		$this->setter('title', [$title]);
 	}
 }

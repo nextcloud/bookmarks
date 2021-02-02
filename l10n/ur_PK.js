@@ -4,7 +4,6 @@ OC.L10N.register(
     "Rename" : "Rename",
     "Move" : "Move",
     "Delete" : "حذف کریں",
-    "Search" : "Search",
     "Cancel" : "منسوخ کریں",
     "Title" : "عنوان",
     "Link" : "Link",

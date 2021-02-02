@@ -52,7 +52,7 @@ class HtmlImporter {
 	 */
 	private $treeMapper;
 	/**
-	 * @var HashManager
+	 * @var TreeCacheManager
 	 */
 	private $hashManager;
 
@@ -64,9 +64,9 @@ class HtmlImporter {
 	 * @param TagMapper $tagMapper
 	 * @param TreeMapper $treeMapper
 	 * @param BookmarksParser $bookmarksParser
-	 * @param HashManager $hashManager
+	 * @param TreeCacheManager $hashManager
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser, \OCA\Bookmarks\Service\HashManager $hashManager) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser, \OCA\Bookmarks\Service\TreeCacheManager $hashManager) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->folderMapper = $folderMapper;
 		$this->tagMapper = $tagMapper;
@@ -98,16 +98,21 @@ class HtmlImporter {
 
 	/**
 	 * @brief Import Bookmarks from html
+	 *
 	 * @param int $userId
 	 * @param string $content
 	 * @param int|null $rootFolderId
-	 * @return array
+	 *
+	 * @return (array|mixed|string)[][]
+	 *
 	 * @throws AlreadyExistsError
 	 * @throws DoesNotExistException
 	 * @throws HtmlParseError
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
 	 * @throws UserLimitExceededError
+	 *
+	 * @psalm-return array{imported: list<array>, errors: array<array-key, mixed|string>}
 	 */
 	public function import($userId, string $content, int $rootFolderId = null): array {
 		$imported = [];
@@ -147,13 +152,13 @@ class HtmlImporter {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param string $userId
 	 * @param array $folderParams
 	 * @param int $parentId
 	 * @param array $errors
 	 * @param int|null $index
 	 *
-	 * @return array
+	 * @return (array[]|int|mixed|string)[]
 	 *
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
@@ -161,11 +166,14 @@ class HtmlImporter {
 	 * @throws AlreadyExistsError
 	 * @throws UserLimitExceededError
 	 * @throws UnsupportedOperation
+	 *
+	 * @psalm-return array{type: string, id: int, title: mixed, children: list<array>}
 	 */
-	private function importFolder($userId, array $folderParams, int $parentId, &$errors = [], $index = null): array {
+	private function importFolder(string $userId, array $folderParams, int $parentId, &$errors = [], $index = null): array {
 		$folder = new Folder();
 		$folder->setUserId($userId);
 		$folder->setTitle($folderParams['title']);
+		/** @var Folder $folder */
 		$folder = $this->folderMapper->insert($folder);
 		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parentId, $index);
 		$newFolder = ['type' => 'folder', 'id' => $folder->getId(), 'title' => $folderParams['title'], 'children' => []];
@@ -186,17 +194,17 @@ class HtmlImporter {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param string $userId
 	 * @param int $folderId
 	 * @param array $bookmark
-	 * @param null $index
+	 * @param null|int $index
 	 * @return Bookmark|Entity
 	 * @throws UrlParseError
 	 * @throws AlreadyExistsError
 	 * @throws UnsupportedOperation
 	 * @throws UserLimitExceededError
 	 */
-	private function importBookmark($userId, int $folderId, array $bookmark, $index = null) {
+	private function importBookmark(string $userId, int $folderId, array $bookmark, $index = null) {
 		$bm = new Bookmark();
 		$bm->setUserId($userId);
 		$bm->setUrl($bookmark['href']);
@@ -207,6 +215,7 @@ class HtmlImporter {
 		}
 
 		// insert bookmark
+		/** @var Bookmark $bm */
 		$bm = $this->bookmarkMapper->insertOrUpdate($bm);
 		// add to folder
 		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bm->getId(), [$folderId], $index);

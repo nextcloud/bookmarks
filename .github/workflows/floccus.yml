@@ -31,7 +31,8 @@ jobs:
         floccus-adapter:
           - nextcloud-folders
         test-name:
-          - ''
+          - 'test'
+          - 'benchmark root'
         browsers: ['chrome']
 
 

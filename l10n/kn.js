@@ -4,7 +4,6 @@ OC.L10N.register(
     "Rename" : "﻿ಮರುಹೆಸರಿಸು",
     "Move" : "Move",
     "Delete" : "﻿ಅಳಿಸಿ",
-    "Search" : "Search",
     "New" : "﻿ಹೊಸ",
     "New folder" : "﻿ಹೊಸ ಕೋಶ",
     "Select all" : "﻿ಎಲ್ಲಾ ಆಯ್ಕೆ ಮಾಡಿ",

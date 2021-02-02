@@ -15,9 +15,9 @@ Requirements:
  - PHP extensions:
    - intl: *
    - mbstring: *
- - Nextcloud v20+
+ - Nextcloud v20
 ]]></description>
-	<version>4.0.5</version>
+	<version>4.0.8</version>
 	<licence>agpl</licence>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
@@ -33,7 +33,7 @@ Requirements:
 		<php min-version="7.3" />
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="20" max-version="21" />
+		<nextcloud min-version="20" max-version="20" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>

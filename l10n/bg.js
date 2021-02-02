@@ -8,7 +8,6 @@ OC.L10N.register(
     "Rename" : "Преименувай",
     "Move" : "Преместване",
     "Delete" : "Изтрий",
-    "Search" : "Търсене",
     "New" : "Нов",
     "New folder" : "Нова папка",
     "Grid view" : "Решетъчен изглед",

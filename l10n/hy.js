@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Վերանվանել",
     "Move" : "Move",
     "Delete" : "հեռացնել",
-    "Search" : "Search",
     "New" : "Նոր",
     "New folder" : "Նոր պանակ",
     "Select all" : "Նշել բոլորը",

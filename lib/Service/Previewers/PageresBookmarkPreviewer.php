@@ -33,8 +33,9 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	}
 
 	/**
-	 * @param Bookmark $bookmark
-	 * @return IImage|null
+	 * @param Bookmark|null $bookmark
+	 *
+	 * @return Image|null
 	 */
 	public function getImage($bookmark): ?IImage {
 		if (!isset($bookmark)) {
@@ -55,18 +56,20 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	/**
 	 * @param string $serverPath
 	 * @param string $url
-	 * @return Image|null
+	 *
+	 * @return Image
+	 *
 	 * @throws Exception
 	 */
-	protected function fetchImage(string $serverPath, string $url): ?Image {
+	protected function fetchImage(string $serverPath, string $url): Image {
 		$tempPath = $this->tempManager->getTemporaryFile('.png');
 		$tempDir = dirname($tempPath);
-		$tempFile = basename($tempPath);
+		$tempFile = basename($tempPath, '.png');
 		$command = $serverPath;
 		$escapedUrl = escapeshellarg($url);
 
-		$cmd = "cd {$tempDir} && {$command} {$escapedUrl} desktop" .
-			' --delay=4 --filename=' . escapeshellarg($tempFile) . ' --overwrite 2>&1';
+		$cmd = "cd {$tempDir} && {$command} {$escapedUrl} 1024x768" .
+			' --delay=4 --filename=' . escapeshellarg($tempFile) . ' --crop --overwrite 2>&1';
 
 		$retries = 0;
 		$output = [];

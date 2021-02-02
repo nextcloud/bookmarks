@@ -37,9 +37,6 @@ export default {
 			return this.$route.name === this.$store.getters.getRoutes().TAGS
 		},
 	},
-	mounted() {
-		this.$refs.input.focus()
-	},
 	methods: {
 		submit(url) {
 			this.$store.dispatch(actions.CREATE_BOOKMARK, {

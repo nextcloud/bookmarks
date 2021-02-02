@@ -18,10 +18,11 @@ use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
+use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
-use OCA\Bookmarks\Service\HashManager;
+use OCA\Bookmarks\Service\TreeCacheManager;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -59,7 +60,7 @@ class FoldersController extends ApiController {
 	 */
 	private $rootFolderId;
 	/**
-	 * @var HashManager
+	 * @var TreeCacheManager
 	 */
 	private $hashManager;
 	/**
@@ -82,11 +83,11 @@ class FoldersController extends ApiController {
 	 * @param ShareMapper $shareMapper
 	 * @param TreeMapper $treeMapper
 	 * @param Authorizer $authorizer
-	 * @param HashManager $hashManager
+	 * @param TreeCacheManager $hashManager
 	 * @param FolderService $folders
 	 * @param BookmarkService $bookmarks
 	 */
-	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, HashManager $hashManager, FolderService $folders, BookmarkService $bookmarks) {
+	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, TreeCacheManager $hashManager, FolderService $folders, BookmarkService $bookmarks) {
 		parent::__construct($appName, $request);
 		$this->folderMapper = $folderMapper;
 		$this->publicFolderMapper = $publicFolderMapper;
@@ -321,11 +322,21 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 */
 	public function deleteFolder($folderId): JSONResponse {
+		if ($folderId !== -1) {
+			try {
+				$this->folders->findSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+				return new JSONResponse(['status' => 'success']);
+			}
+		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 
 		$folderId = $this->toInternalFolderId($folderId);
+		if ($folderId === null) {
+			return new JSONResponse(['status' => 'success']);
+		}
 		try {
 			$this->folders->deleteSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
 			return new JSONResponse(['status' => 'success']);
@@ -419,6 +430,8 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (UrlParseError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Error changing owner of a bookmark: UrlParseError'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -439,7 +452,10 @@ class FoldersController extends ApiController {
 		try {
 			$folderId = $this->toInternalFolderId($folderId);
 			$hash = $this->hashManager->hashFolder($this->authorizer->getUserId(), $folderId, $fields);
-			return new JSONResponse(['status' => 'success', 'data' => $hash]);
+			$res = new JSONResponse(['status' => 'success', 'data' => $hash]);
+			$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
+			$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+			return $res;
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
@@ -463,7 +479,10 @@ class FoldersController extends ApiController {
 		}
 		$folderId = $this->toInternalFolderId($folderId);
 		$children = $this->treeMapper->getChildren($folderId, $layers);
-		return new JSONResponse(['status' => 'success', 'data' => $children]);
+		$res = new JSONResponse(['status' => 'success', 'data' => $children]);
+		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
+		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+		return $res;
 	}
 
 	/**
@@ -482,7 +501,10 @@ class FoldersController extends ApiController {
 		}
 		$folderId = $this->toInternalFolderId($folderId);
 		$children = $this->treeMapper->getChildrenOrder($folderId, $layers);
-		return new JSONResponse(['status' => 'success', 'data' => $children]);
+		$res = new JSONResponse(['status' => 'success', 'data' => $children]);
+		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
+		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+		return $res;
 	}
 
 	/**

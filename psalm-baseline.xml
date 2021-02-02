@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.4.1@9fd7a7d885b3a216cff8dec9d8c21a132f275224">
+  <file src="lib/BackgroundJobs/CrawlJob.php">
+    <UndefinedClass occurrences="1">
+      <code>TimedJob</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Db/PublicFolderMapper.php">
+    <InvalidReturnType occurrences="1">
+      <code>Entity</code>
+    </InvalidReturnType>
+  </file>
+  <file src="lib/Flow/CreateBookmark.php">
+    <UndefinedClass occurrences="2">
+      <code>File</code>
+      <code>View</code>
+    </UndefinedClass>
+    <UndefinedMethod occurrences="2">
+      <code>getSubject</code>
+      <code>getSubject</code>
+    </UndefinedMethod>
+  </file>
+  <file src="lib/Service/CrawlService.php">
+    <MissingDependency occurrences="1">
+      <code>IRootFolder</code>
+    </MissingDependency>
+    <UndefinedClass occurrences="2">
+      <code>Client</code>
+      <code>NoUserException</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Service/LinkExplorer.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>setMinimumImageDimensions</code>
+    </UndefinedInterfaceMethod>
+  </file>
+</files>

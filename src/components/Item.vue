@@ -142,6 +142,9 @@ export default {
 			}
 		},
 	},
+	mounted() {
+		this.$refs.input.focus()
+	},
 	methods: {
 		async onRenameSubmit(event) {
 			this.$emit('rename', this.newTitle)

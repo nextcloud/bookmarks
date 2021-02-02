@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Ëmbenennen",
     "Move" : "Verschieben",
     "Delete" : "Läschen",
-    "Search" : "Search",
     "New" : "Nei",
     "New folder" : "Neien Dossier",
     "Select all" : "All auswielen",

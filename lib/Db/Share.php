@@ -14,19 +14,19 @@ use OCP\AppFramework\Db\Entity;
  *
  * @package OCA\Bookmarks\Db
  *
- * @method getFolderId
+ * @method int getFolderId()
  * @method setFolderId(int $folderId)
- * @method getOwner
+ * @method string getOwner()
  * @method setOwner(string $owner)
- * @method getParticipant
+ * @method string getParticipant
  * @method setParticipant(string $participant)
- * @method getType
+ * @method string getType()
  * @method setType(string $type)
- * @method getCanWrite
+ * @method bool getCanWrite()
  * @method setCanWrite(bool $canWrite)
- * @method getCanShare
+ * @method bool getCanShare()
  * @method setCanShare(bool $canShare)
- * @method getCreatedAt
+ * @method int getCreatedAt()
  * @method setCreatedAt(int $createdAt)
  */
 class Share extends Entity {
@@ -52,6 +52,11 @@ class Share extends Entity {
 		$this->addType('createdAt', 'integer');
 	}
 
+	/**
+	 * @return array
+	 *
+	 * @psalm-return array{id: mixed, folderId: mixed, owner: mixed, participant: mixed, type: mixed, canWrite: mixed, canShare: mixed, createdAt: mixed}
+	 */
 	public function toArray(): array {
 		return ['id' => $this->id, 'folderId' => $this->folderId, 'owner' => $this->owner, 'participant' => $this->participant, 'type' => $this->type, 'canWrite' => $this->canWrite, 'canShare' => $this->canShare, 'createdAt' => $this->createdAt];
 	}

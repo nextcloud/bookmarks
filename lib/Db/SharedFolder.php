@@ -14,12 +14,12 @@ use OCP\AppFramework\Db\Entity;
  *
  * @package OCA\Bookmarks\Db
  *
- * @method getShareId
+ * @method int getShareId()
  * @method setFolderId(int $shareId)
- * @method getFolderId()
- * @method getUserId
+ * @method int getFolderId()
+ * @method string getUserId()
  * @method setUserId(string $userId)
- * @method getTitle
+ * @method string getTitle()
  * @method setTitle(string $title)
  */
 class SharedFolder extends Entity {
@@ -38,6 +38,11 @@ class SharedFolder extends Entity {
 		$this->addType('title', 'string');
 	}
 
+	/**
+	 * @return array
+	 *
+	 * @psalm-return array{title: mixed, userId: mixed}
+	 */
 	public function toArray(): array {
 		return ['title' => $this->title, 'userId' => $this->userId];
 	}

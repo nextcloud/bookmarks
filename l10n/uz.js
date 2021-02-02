@@ -4,7 +4,6 @@ OC.L10N.register(
     "Rename" : "Nomni o'zgartiring",
     "Move" : "Ko'chiring",
     "Delete" : "O'chir",
-    "Search" : "Qidirmoq",
     "Cancel" : "Bekor qilish",
     "Link" : "Ulanish",
     "Tags" : "Teglar",

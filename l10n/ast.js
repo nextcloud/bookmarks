@@ -5,7 +5,6 @@ OC.L10N.register(
     "Rename" : "Renomar",
     "Move" : "Mover",
     "Delete" : "Desaniciar",
-    "Search" : "Search",
     "New" : "Nuevu",
     "New folder" : "Carpeta nueva",
     "Grid view" : "Vista de rexella",
