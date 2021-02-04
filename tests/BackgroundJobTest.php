@@ -23,7 +23,7 @@ class BackgroundJobTest extends TestCase {
 	 */
 	private $previewsJob;
 	/**
-	 * @var mixed|\stdClass
+	 * @var JobList
 	 */
 	private $jobList;
 	/**
@@ -60,6 +60,7 @@ class BackgroundJobTest extends TestCase {
 	 * @doesNotPerformAssertions
 	 */
 	public function testPreviewsJob() {
+		$this->jobList->add($this->previewsJob);
 		$this->previewsJob->execute($this->jobList);
 	}
 
@@ -67,6 +68,7 @@ class BackgroundJobTest extends TestCase {
 	 * @doesNotPerformAssertions
 	 */
 	public function testGCJob() {
+		$this->jobList->add($this->gcJob);
 		$this->gcJob->execute($this->jobList);
 	}
 
