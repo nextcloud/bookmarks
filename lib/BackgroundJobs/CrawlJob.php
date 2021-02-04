@@ -7,7 +7,8 @@
 
 namespace OCA\Bookmarks\BackgroundJobs;
 
-use OC\BackgroundJob\TimedJob;
+use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\BackgroundJob\TimedJob;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Service\BookmarkPreviewer;
@@ -40,10 +41,15 @@ class CrawlJob extends TimedJob {
 	 * @var CrawlService
 	 */
 	private $crawler;
+	/**
+	 * @var ITimeFactory
+	 */
+	private $timeFactory;
 
 	public function __construct(
-		IConfig $settings, BookmarkMapper $bookmarkMapper, CrawlService $crawler
+		IConfig $settings, BookmarkMapper $bookmarkMapper, CrawlService $crawler, ITimeFactory $timeFactory
 	) {
+		parent::__construct($timeFactory);
 		$this->settings = $settings;
 		$this->bookmarkMapper = $bookmarkMapper;
 

@@ -7,7 +7,8 @@
 
 namespace OCA\Bookmarks\BackgroundJobs;
 
-use OC\BackgroundJob\TimedJob;
+use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\BackgroundJob\TimedJob;
 use OCA\Bookmarks\Service\FileCache;
 use OCP\Files\NotPermittedException;
 use Psr\Log\LoggerInterface;
@@ -25,8 +26,9 @@ class FileCacheGCJob extends TimedJob {
 	private $logger;
 
 	public function __construct(
-		FileCache $fileCache, LoggerInterface $logger
+		FileCache $fileCache, LoggerInterface $logger, ITimeFactory $timeFactory
 	) {
+		parent::__construct($timeFactory);
 		$this->setInterval(self::INTERVAL);
 		$this->fileCache = $fileCache;
 		$this->logger = $logger;
