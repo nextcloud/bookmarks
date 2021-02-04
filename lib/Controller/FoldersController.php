@@ -551,7 +551,6 @@ class FoldersController extends ApiController {
 				$folder['parent_folder'] = -1;
 			}
 		}
-		khufr;
 		$res = new JSONResponse(['status' => 'success', 'data' => $folders]);
 		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
 		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
