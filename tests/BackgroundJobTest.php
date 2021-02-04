@@ -60,7 +60,7 @@ class BackgroundJobTest extends TestCase {
 	 * @doesNotPerformAssertions
 	 */
 	public function testPreviewsJob() {
-		$this->jobList->add($this->previewsJob);
+		$this->previewsJob->setId(1);
 		$this->previewsJob->execute($this->jobList);
 	}
 
@@ -68,7 +68,7 @@ class BackgroundJobTest extends TestCase {
 	 * @doesNotPerformAssertions
 	 */
 	public function testGCJob() {
-		$this->jobList->add($this->gcJob);
+		$this->gcJob->setId(2);
 		$this->gcJob->execute($this->jobList);
 	}
 
