@@ -89,6 +89,7 @@ OC.L10N.register(
     "No bookmarks here" : "Δεν υπάρχουν σελιδοδείκτες εδώ",
     "Add a bookmark" : "Προσθήκη σελιδοδείκτη",
     "Import bookmarks" : "Εισαγωγή σελιδοδεικτών",
+    "Sync with your browser" : "Συγχρονισμός με τον περιηγητή σας",
     "Import" : "Εισαγωγή",
     "Export" : "Εξαγωγή",
     "Sorting" : "Ταξινόμηση",
