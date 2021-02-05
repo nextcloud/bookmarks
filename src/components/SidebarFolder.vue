@@ -111,7 +111,7 @@ export default {
 		},
 		folder() {
 			if (!this.isActive) return
-			const folders = this.$store.getters.getFolder(this.$store.state.sidebar.id)
+			const folders = this.$store.getters.getFolderIncludingDeleted(this.$store.state.sidebar.id)
 			const folder = folders[0]
 			if (folder.userId === getCurrentUser()) {
 				this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folder.id)
@@ -128,7 +128,7 @@ export default {
 			return this.$store.getters.getPermissionsForFolder(this.folder.id)
 		},
 		isSharable() {
-			if (!this.folder) return
+			if (!this.folder || this.folder.deleted) return
 			return this.isOwner || (!this.isOwner && this.permissions.canShare)
 		},
 		isEditable() {

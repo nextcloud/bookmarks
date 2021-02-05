@@ -173,7 +173,11 @@ export default {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
 		onSelect(e) {
-			this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
+			if (this.folder.deleted === true) {
+				this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
+			} else {
+				this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
+			}
 			e.preventDefault()
 		},
 		async onRename() {

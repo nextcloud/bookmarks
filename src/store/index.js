@@ -78,6 +78,9 @@ export default new Store({
 			}
 			return findFolder(id, state.folders)
 		},
+		getFolderIncludingDeleted: state => id => {
+			return findFolder(id, state.folders.concat(state.deletedFolders))
+		},
 		getFolderChildren: state => id => {
 			return state.childrenByFolder[id] || []
 		},
