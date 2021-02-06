@@ -48,7 +48,7 @@ OC.L10N.register(
     "Select one or more tags" : "Wybierz jedną lub więcej etykiet",
     "New" : "Nowy",
     "New bookmark" : "Nowa zakładka",
-    "New folder" : "Nowy folder",
+    "New folder" : "Nowy katalog",
     "Grid view" : "Widok siatki",
     "List view" : "Widok listy",
     "RSS Feed of current view" : "Kanał RSS bieżącego widoku",
