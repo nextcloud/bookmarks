@@ -37,6 +37,7 @@ Requirements:
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>
+		<job>OCA\Bookmarks\BackgroundJobs\FileCacheGCJob</job>
 	</background-jobs>
 
 	<settings>
