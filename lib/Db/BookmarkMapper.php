@@ -17,6 +17,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\DB\QueryBuilder\IQueryFunction;
 use OCP\EventDispatcher\IEventDispatcher;
@@ -62,6 +63,10 @@ class BookmarkMapper extends QBMapper {
 	 * @var IQueryBuilder
 	 */
 	private $findByUrlQuery;
+	/**
+	 * @var ITimeFactory
+	 */
+	private $time;
 
 	/**
 	 * BookmarkMapper constructor.
@@ -72,8 +77,9 @@ class BookmarkMapper extends QBMapper {
 	 * @param IConfig $config
 	 * @param PublicFolderMapper $publicMapper
 	 * @param TagMapper $tagMapper
+	 * @param ITimeFactory $timeFactory
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper, ITimeFactory $timeFactory) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
@@ -84,6 +90,7 @@ class BookmarkMapper extends QBMapper {
 
 		$this->deleteTagsQuery = $this->getDeleteTagsQuery();
 		$this->findByUrlQuery = $this->getFindByUrlQuery();
+		$this->time = $timeFactory;
 	}
 
 	protected function getFindByUrlQuery(): IQueryBuilder {
@@ -484,7 +491,7 @@ class BookmarkMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Bookmark::$columns);
 		$qb->from('bookmarks', 'b');
-		$qb->where($qb->expr()->lt('last_preview', $qb->createPositionalParameter(time() - $stalePeriod)));
+		$qb->where($qb->expr()->lt('last_preview', $qb->createPositionalParameter($this->time->getTime() - $stalePeriod)));
 		$qb->orWhere($qb->expr()->isNull('last_preview'));
 		$qb->setMaxResults($limit);
 		return $this->findEntities($qb);

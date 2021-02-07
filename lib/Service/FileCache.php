@@ -7,9 +7,11 @@
 
 namespace OCA\Bookmarks\Service;
 
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Files\IAppData;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
+use OCP\Files\SimpleFS\ISimpleFolder;
 use OCP\ICache;
 
 class FileCache implements ICache {
@@ -17,12 +19,36 @@ class FileCache implements ICache {
 
 	protected $storage;
 
-	public function __construct(IAppData $appData) {
+	/**
+	 * @var ITimeFactory
+	 */
+	private $timeFactory;
+
+	/**
+	 * @var IAppData
+	 */
+	private $appData;
+
+	public function __construct(IAppData $appData, ITimeFactory $timeFactory) {
+		$this->appData = $appData;
+		$this->timeFactory = $timeFactory;
+	}
+
+	/**
+	 * @return ISimpleFolder
+	 * @throws NotPermittedException
+	 */
+	private function getStorage(): ISimpleFolder {
+		if ($this->storage !== null) {
+			return $this->storage;
+		}
 		try {
-			$this->storage = $appData->getFolder('cache');
+			$this->storage = $this->appData->getFolder('cache');
 		} catch (NotFoundException $e) {
-			$appData->newFolder('cache');
-			$this->storage = $appData->getFolder('cache');
+			// noop
+		}
+		if ($this->storage === null || !$this->storage->fileExists('/')) {
+			$this->storage = $this->appData->newFolder('cache');
 		}
 		if (!$this->storage->fileExists('CACHEDIR.TAG')) {
 			try {
@@ -36,18 +62,19 @@ class FileCache implements ICache {
 				// No op
 			}
 		}
+		return $this->storage;
 	}
 
 	/**
 	 * @param string $key
 	 * @return mixed|null
-	 * @throws NotFoundException
-	 * @throws NotPermittedException
 	 */
 	public function get($key) {
 		$result = null;
-		if ($this->hasKey($key)) {
-			$result = $this->storage->getFile($key)->getContent();
+		try {
+			$result = $this->getStorage()->getFile($key)->getContent();
+		} catch (\Exception $e) {
+			// noop
 		}
 		return $result;
 	}
@@ -62,7 +89,7 @@ class FileCache implements ICache {
 	public function size($key): int {
 		$result = 0;
 		if ($this->hasKey($key)) {
-			$result = $this->storage->getFile($key)->getSize();
+			$result = $this->getStorage()->getFile($key)->getSize();
 		}
 		return $result;
 	}
@@ -72,12 +99,13 @@ class FileCache implements ICache {
 	 * @param mixed $value
 	 * @param int $ttl
 	 * @return bool
-	 * @throws NotFoundException
-	 * @throws NotPermittedException
 	 */
 	public function set($key, $value, $ttl = 0) {
-		$file = $this->storage->newFile($key);
-		$file->putContent($value);
+		try {
+			$this->getStorage()->newFile($key, $value);
+		} catch (NotPermittedException $e) {
+			return false;
+		}
 		return true;
 	}
 
@@ -86,7 +114,7 @@ class FileCache implements ICache {
 	 * @return bool
 	 */
 	public function hasKey($key) {
-		if ($this->storage->fileExists($key)) {
+		if ($this->getStorage()->fileExists($key)) {
 			return true;
 		}
 		return false;
@@ -99,7 +127,7 @@ class FileCache implements ICache {
 	 * @throws NotPermittedException
 	 */
 	public function remove($key) {
-		return (boolean) $this->storage->getFile($key)->delete();
+		return (boolean) $this->getStorage()->getFile($key)->delete();
 	}
 
 	/**
@@ -108,7 +136,9 @@ class FileCache implements ICache {
 	 * @throws NotPermittedException
 	 */
 	public function clear($prefix = '') {
-		$this->storage->delete();
+		foreach ($this->getStorage()->getDirectoryListing() as $file) {
+			$file->delete();
+		}
 	}
 
 	/**
@@ -117,8 +147,8 @@ class FileCache implements ICache {
 	 * @throws NotPermittedException
 	 */
 	public function gc(): void {
-		foreach ($this->storage->getDirectoryListing() as $file) {
-			if (time() - self::TIMEOUT > $file->getMTime()) {
+		foreach ($this->getStorage()->getDirectoryListing() as $file) {
+			if ($this->timeFactory->getTime() - self::TIMEOUT > $file->getMTime()) {
 				$file->delete();
 			}
 		}
