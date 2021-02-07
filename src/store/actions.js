@@ -626,8 +626,13 @@ export default {
 			try {
 				const allfolders = loadState('bookmarks', 'folders')
 				const folders = allfolders.filter(folder => !folder.deleted)
+				let deletedChildren = []
+				folders.forEach((folder) => {
+					deletedChildren = deletedChildren.concat(folder.children.filter(child => !!child.deleted))
+					folder.children = folder.children.filter(child => !child.deleted)
+				})
 				const deletedFolders = allfolders.filter(folder => !!folder.deleted)
-				commit(mutations.SET_DELETED_FOLDERS, deletedFolders)
+				commit(mutations.SET_DELETED_FOLDERS, deletedFolders.concat(deletedChildren))
 				return commit(mutations.SET_FOLDERS, folders)
 			} catch (e) {
 				console.warn(
@@ -652,9 +657,14 @@ export default {
 			} = response
 			if (status !== 'success') throw new Error(data)
 			const folders = data.filter(folder => !folder.deleted)
+			let deletedChildren = []
+			folders.forEach((folder) => {
+				deletedChildren = deletedChildren.concat(folder.children.filter(child => !!child.deleted))
+				folder.children = folder.children.filter(child => !child.deleted)
+			})
 			const deletedFolders = data.filter(folder => !!folder.deleted)
 			commit(mutations.FETCH_END, 'folders')
-			commit(mutations.SET_DELETED_FOLDERS, deletedFolders)
+			commit(mutations.SET_DELETED_FOLDERS, deletedFolders.concat(deletedChildren))
 			return commit(mutations.SET_FOLDERS, folders)
 		} catch (err) {
 			console.error(err)
