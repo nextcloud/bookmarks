@@ -9,7 +9,6 @@ use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Db\TagMapper;
-use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\CrawlService;
 use OCA\Bookmarks\Service\FileCache;
 use OCA\Bookmarks\Service\UrlNormalizer;
@@ -158,7 +157,7 @@ class BackgroundJobTest extends TestCase {
 		self::assertGreaterThan($initialCacheSize, $cacheSize);
 
 		// fast-forward to a time when the previews should be garbage collected
-		$time = time() + FileCache::TIMEOUT + 60*60*24;
+		$time = time() + FileCache::TIMEOUT + 60 * 60 * 24;
 		$this->timeFactory = $this->createStub(ITimeFactory::class);
 		$this->timeFactory->method('getTime')
 			->willReturn($time);
