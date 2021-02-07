@@ -47,7 +47,7 @@
 			</ActionButton>
 			<ActionButton :close-after-click="true" @click="onMove">
 				<template #icon>
-					<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+					<FolderMoveIcon :fill-color="colorMainText" />
 				</template>
 				{{ t('bookmarks', 'Move') }}
 			</ActionButton>
@@ -239,13 +239,5 @@ export default {
 	padding: 5px 10px;
 	margin-right: 3px;
 	background-color: var(--color-primary-light);
-}
-
-.action-button-mdi-icon {
-	margin: 10px;
-	margin-top: 6px;
-	height: 21px;
-	position: relative;
-	top: 2px;
 }
 </style>

@@ -10,6 +10,8 @@ import { loadState } from '@nextcloud/initial-state'
 import AppGlobal from '../mixins/AppGlobal'
 import { mutations } from './mutations'
 import * as Parallel from 'async-parallel'
+import uniq from 'lodash/uniq'
+import difference from 'lodash/difference'
 
 const BATCH_SIZE = 42
 
@@ -42,6 +44,7 @@ export const actions = {
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
 	DELETE_SELECTION: 'DELETE_SELECTION',
+	TAG_SELECTION: 'TAG_SELECTION',
 
 	RELOAD_VIEW: 'RELOAD_VIEW',
 
@@ -747,6 +750,37 @@ export default {
 				AppGlobal.methods.t(
 					'bookmarks',
 					'Failed to delete parts of selection'
+				)
+			)
+			throw err
+		}
+	},
+	async [actions.TAG_SELECTION]({ commit, dispatch, state }, { tags, originalTags }) {
+		commit(mutations.FETCH_START, { type: 'tagSelection' })
+		try {
+			const removed = difference(originalTags, tags)
+			await Parallel.each(
+				state.selection.bookmarks,
+				bookmark => {
+					const originalTags = bookmark.tags
+					bookmark.tags = uniq(tags.concat(bookmark.tags))
+						.filter(tag => !removed.includes(tag))
+					if (originalTags.join(',') !== bookmark.tags.join(',')) {
+						return dispatch(actions.SAVE_BOOKMARK, bookmark.id)
+					}
+				},
+				10
+			)
+			await dispatch(actions.LOAD_TAGS)
+			commit(mutations.FETCH_END, 'tagSelection')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'tagSelection')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t(
+					'bookmarks',
+					'Failed to tag parts of selection'
 				)
 			)
 			throw err
