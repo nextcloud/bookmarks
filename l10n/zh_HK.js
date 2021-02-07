@@ -72,7 +72,7 @@ OC.L10N.register(
     "_Moving %n folder_::_Moving %n folders_" : ["移動%n個資料夾"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["正在移動%n個書籤"],
     "All bookmarks" : "所有書籤",
-    "Recent" : "近期",
+    "Recent" : "最新",
     "Archived" : "已封存",
     "Untagged" : "未標記",
     "No bookmarks here" : "無書籤",
