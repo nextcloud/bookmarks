@@ -295,7 +295,7 @@ class BookmarkMapper extends QBMapper {
 
 		$tagsCol = $this->_getTagsColumn($qb);
 		$filterExpressions = [];
-		$otherColumns = ['b.url', 'b.title', 'b.description'];
+		$otherColumns = ['b.url', 'b.title', 'b.description', 'b.text_content'];
 		foreach ($filters as $filter) {
 			$expr = [];
 			$expr[] = $qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%' . $this->db->escapeLikeParameter($filter) . '%'));

@@ -30,6 +30,10 @@ use OCP\AppFramework\Db\Entity;
  * @method setAvailable(boolean $available)
  * @method int getArchivedFile()
  * @method setArchivedFile(int $fileId)
+ * @method string getTextContent()
+ * @method setTextContent(string $content)
+ * @method string getHtmlContent()
+ * @method setHtmlContent(string $content)
  * @method string getUserId()
  * @method setUserId(string $userId)
  */
@@ -45,9 +49,11 @@ class Bookmark extends Entity {
 	protected $lastPreview;
 	protected $available;
 	protected $archivedFile;
+	protected $textContent;
+	protected $htmlContent;
 
-	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id'];
-	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId'];
+	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id', 'text_content', 'html_content'];
+	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId', 'textContent','htmlContent'];
 
 	public static function fromArray($props): self {
 		$bookmark = new Bookmark();

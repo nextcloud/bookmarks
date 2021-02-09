@@ -7,6 +7,9 @@
 
 namespace OCA\Bookmarks\Service;
 
+use andreskrey\Readability\Configuration;
+use andreskrey\Readability\ParseException;
+use andreskrey\Readability\Readability;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
@@ -24,6 +27,7 @@ use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\Lock\LockedException;
+use Psr\Log\LoggerInterface;
 
 class CrawlService {
 	/**
@@ -53,11 +57,11 @@ class CrawlService {
 	 */
 	private $mimey;
 	/**
-	 * @var \Psr\Log\LoggerInterface
+	 * @var LoggerInterface
 	 */
 	private $logger;
 
-	public function __construct(BookmarkMapper $bookmarkMapper, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, IConfig $config, IRootFolder $rootFolder, IL10N $l, \Psr\Log\LoggerInterface $logger) {
+	public function __construct(BookmarkMapper $bookmarkMapper, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, IConfig $config, IRootFolder $rootFolder, IL10N $l, LoggerInterface $logger) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->bookmarkPreviewer = $bookmarkPreviewer;
 		$this->faviconPreviewer = $faviconPreviewer;
@@ -84,12 +88,32 @@ class CrawlService {
 
 		if ($available) {
 			$this->archiveFile($bookmark, $resp);
+			$this->archiveContent($bookmark, $resp);
 			$this->bookmarkPreviewer->getImage($bookmark);
 			$this->faviconPreviewer->getImage($bookmark);
 		}
 		$bookmark->markPreviewCreated();
 		$bookmark->setAvailable($available);
 		$this->bookmarkMapper->update($bookmark);
+	}
+
+	private function archiveContent(Bookmark $bookmark, Response $resp) : void {
+		$contentType = $resp->getHeader('Content-type')[0];
+		if ((bool)preg_match('#text/html#i', $contentType) === true && ($bookmark->getHtmlContent() === null || $bookmark->getHtmlContent() === '')) {
+			$config = new Configuration();
+			$config
+				->setFixRelativeURLs(true)
+				->setOriginalURL($bookmark->getUrl())
+				->setSubstituteEntities(true);
+			$readability = new Readability($config);
+			try {
+				$readability->parse($resp->getBody());
+			} catch (ParseException $e) {
+				$this->logger->debug(get_class($e)." ".$e->getMessage()."\r\n".$e->getTraceAsString());
+			}
+			$bookmark->setHtmlContent($readability->getContent());
+			$bookmark->setTextContent(strip_tags($readability->getContent()));
+		}
 	}
 
 	private function archiveFile(Bookmark $bookmark, Response $resp) :void {
@@ -109,13 +133,8 @@ class CrawlService {
 				$file->putContent($resp->getBody());
 				$bookmark->setArchivedFile($file->getId());
 				$this->bookmarkMapper->update($bookmark);
-			} catch (NotPermittedException $e) {
-			} catch (NoUserException $e) {
-			} catch (GenericFileException $e) {
-			} catch (LockedException $e) {
-			} catch (UrlParseError $e) {
-			} catch (InvalidPathException $e) {
-			} catch (NotFoundException $e) {
+			} catch (NotPermittedException | NoUserException | GenericFileException | LockedException | UrlParseError | InvalidPathException | NotFoundException $e) {
+				$this->logger->debug(get_class($e)." ".$e->getMessage()."\r\n".$e->getTraceAsString());
 			}
 		}
 	}

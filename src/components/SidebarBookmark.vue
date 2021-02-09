@@ -11,7 +11,9 @@
 		:title="bookmark.title"
 		:title-editable="editingTitle"
 		:title-placeholder="t('bookmarks', 'Title')"
+		:subtitle="addedDate"
 		:background="background"
+		@update:active="activeTab = $event"
 		@update:title="onEditTitleUpdate"
 		@submit-title="onEditTitleSubmit"
 		@dismiss-editing="onEditTitleCancel"
@@ -49,13 +51,6 @@
 				</div>
 			</div>
 			<div>
-				<h3>
-					<span class="icon-calendar-dark" />
-					{{ t('bookmarks', 'Creation date') }}
-				</h3>
-				{{ addedDate }}
-			</div>
-			<div>
 				<h3><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}</h3>
 				<Multiselect
 					class="sidebar__tags"
@@ -70,16 +65,6 @@
 					@input="onTagsChange"
 					@tag="onAddTag" />
 			</div>
-		</AppSidebarTab>
-		<AppSidebarTab
-			id="attachments"
-			:name="t('bookmarks', 'Attachments')"
-			icon="icon-edit"
-			:order="1">
-			<div v-if="archivedFile">
-				<h3><ArchiveArrowDownIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived version') }}</h3>
-				<a :href="archivedFile" class="button">{{ t('bookmarks', 'Open archived file') }}</a>
-			</div>
 			<div>
 				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
 				<RichContenteditable
@@ -91,6 +76,17 @@
 					@update:value="onNotesChange" />
 			</div>
 		</AppSidebarTab>
+		<AppSidebarTab
+			id="bookmarks-content"
+			:name="t('bookmarks', 'Content')"
+			icon="icon-edit"
+			:order="1">
+			<div v-if="archivedFile">
+				<h3><ArchiveArrowDownIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived file') }}</h3>
+				<a :href="archivedFile" class="button">{{ t('bookmarks', 'Open archived file') }}</a>
+			</div>
+			<div v-else v-html="content" />
+		</AppSidebarTab>
 	</AppSidebar>
 </template>
 <script>
@@ -101,6 +97,7 @@ import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import RichContenteditable from '@nextcloud/vue/dist/Components/RichContenteditable'
 
+import sanitizeHtml from 'sanitize-html'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
@@ -117,6 +114,7 @@ export default {
 			editingTitle: false,
 			url: '',
 			editingUrl: false,
+			activeTab: '',
 		}
 	},
 	computed: {
@@ -129,7 +127,10 @@ export default {
 			return this.$store.getters.getBookmark(this.$store.state.sidebar.id)
 		},
 		background() {
-			return generateUrl(`/apps/bookmarks/bookmark/${this.bookmark.id}/image`)
+			return this.showBackground ? generateUrl(`/apps/bookmarks/bookmark/${this.bookmark.id}/image`) : ''
+		},
+		showBackground() {
+			return this.activeTab !== 'bookmarks-content'
 		},
 		addedDate() {
 			const date = new Date(Number(this.bookmark.added) * 1000)
@@ -141,9 +142,9 @@ export default {
 					largest: 1,
 					round: true,
 				})
-				return this.t('bookmarks', '{time} ago', { time: duration })
+				return this.t('bookmarks', 'Created {time} ago', { time: duration })
 			} else {
-				return date.toLocaleDateString()
+				return this.t('bookmarks', 'Created on {date}', { date: date.toLocaleDateString() })
 			}
 		},
 		tags() {
@@ -167,6 +168,11 @@ export default {
 				return generateUrl(`/apps/files/?fileid=${this.bookmark.archivedFile}`)
 			}
 			return null
+		},
+		content() {
+			return sanitizeHtml(this.bookmark.htmlContent, {
+				allowProtocolRelative: false,
+			})
 		},
 	},
 	created() {
