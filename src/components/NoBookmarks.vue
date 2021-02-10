@@ -12,12 +12,10 @@
 				{{ t('bookmarks', 'Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.') }}
 			</template>
 		</EmptyContent>
-		<EmptyContent v-else>
+		<EmptyContent v-else icon="icon-favorite">
 			{{ t('bookmarks', 'No bookmarks here') }}
 			<template #desc>
-				<button @click="onAddBookmark">
-					<span class="icon-add" /> {{ t('bookmarks', 'Add a bookmark') }}
-				</button>
+				<p>{{ t('bookmarks', 'Start by importing bookmarks from a file or synchronizing your browser bookmarks with this app') }}</p>
 				<input ref="import"
 					type="file"
 					class="import"
@@ -36,7 +34,7 @@
 
 <script>
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
-import { actions, mutations } from '../store'
+import { actions } from '../store'
 import { privateRoutes } from '../router'
 import SyncIcon from 'vue-material-design-icons/Sync'
 
@@ -52,12 +50,6 @@ export default {
 		},
 	},
 	methods: {
-		onAddBookmark() {
-			this.$store.commit(
-				mutations.DISPLAY_NEW_BOOKMARK,
-				!this.$store.state.displayNewBookmark
-			)
-		},
 		onImportOpen() {
 			this.$refs.import.click()
 		},
