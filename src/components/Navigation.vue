@@ -24,7 +24,7 @@
 			<AppNavigationItem
 				key="menu-archived"
 				:to="{ name: routes.ARCHIVED }"
-				:title="t('bookmarks', 'Archived')">
+				:title="t('bookmarks', 'Archived files')">
 				<ArchiveArrowDownIcon slot="icon" :size="18" :fill-color="colorMainText" />
 				<AppNavigationCounter v-show="Boolean(archivedBookmarksCount)" slot="counter">
 					{{ archivedBookmarksCount }}
