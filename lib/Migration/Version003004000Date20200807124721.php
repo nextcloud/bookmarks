@@ -9,7 +9,7 @@ namespace OCA\Bookmarks\Migration;
 
 use Closure;
 use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\DBAL\Types\Type;
+use OCA\Bookmarks\Db\Types;
 use OCP\DB\ISchemaWrapper;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
@@ -49,7 +49,7 @@ class Version003004000Date20200807124721 extends SimpleMigrationStep {
 		$schema = $schemaClosure();
 		if ($schema->hasTable('bookmarks')) {
 			$table = $schema->getTable('bookmarks');
-			$table->addColumn('available', Type::BOOLEAN, [
+			$table->addColumn('available', Types::BOOLEAN, [
 				'notnull' => true,
 				'default' => true,
 			]);

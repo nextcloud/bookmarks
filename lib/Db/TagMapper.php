@@ -7,7 +7,6 @@
 
 namespace OCA\Bookmarks\Db;
 
-use Doctrine\DBAL\Driver\Statement;
 use InvalidArgumentException;
 use OCP\IDBConnection;
 use PDO;
@@ -96,7 +95,6 @@ class TagMapper {
 	/**
 	 * @param $userId
 	 * @param string $tag
-	 * @return Statement|int
 	 */
 	public function delete($userId, string $tag) {
 		$qb = $this->db->getQueryBuilder();
@@ -110,7 +108,6 @@ class TagMapper {
 
 	/**
 	 * @param $userId
-	 * @return Statement|int
 	 */
 	public function deleteAll(int $userId) {
 		$qb = $this->db->getQueryBuilder();
@@ -224,6 +221,10 @@ class TagMapper {
 		}
 	}
 
+	/**
+	 * @param $userId
+	 * @param string $old
+	 */
 	public function deleteTag($userId, string $old): void {
 		$qb = $this->db->getQueryBuilder();
 		$qb

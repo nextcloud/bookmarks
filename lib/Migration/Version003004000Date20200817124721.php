@@ -9,7 +9,7 @@ namespace OCA\Bookmarks\Migration;
 
 use Closure;
 use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\DBAL\Types\Type;
+use OCA\Bookmarks\Db\Types;
 use OCP\DB\ISchemaWrapper;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
@@ -49,7 +49,7 @@ class Version003004000Date20200817124721 extends SimpleMigrationStep {
 		$schema = $schemaClosure();
 		if ($schema->hasTable('bookmarks')) {
 			$table = $schema->getTable('bookmarks');
-			$table->addColumn('archived_file', Type::BIGINT, [
+			$table->addColumn('archived_file', Types::BIGINT, [
 				'notnull' => false,
 			]);
 		}

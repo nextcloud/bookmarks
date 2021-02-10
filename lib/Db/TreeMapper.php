@@ -7,7 +7,6 @@
 
 namespace OCA\Bookmarks\Db;
 
-use Doctrine\DBAL\Types\Type;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
