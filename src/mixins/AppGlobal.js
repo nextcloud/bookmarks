@@ -28,5 +28,8 @@ export default {
 		colorMainBackground() {
 			return getComputedStyle(document.documentElement).getPropertyValue('--color-main-background')
 		},
+		colorPlaceholderDark() {
+			return getComputedStyle(document.documentElement).getPropertyValue('--color-placeholder-dark')
+		},
 	},
 }

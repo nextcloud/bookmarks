@@ -30,10 +30,6 @@
 			icon="icon-info"
 			:order="0">
 			<div>
-				<h3>
-					<span class="icon-link" />
-					{{ t('bookmarks', 'Link') }}
-				</h3>
 				<div v-if="!editingUrl" class="bookmark-details__line">
 					<span class="bookmark-details__url">{{ bookmark.url }}</span>
 					<Actions v-if="isEditable" class="bookmark-details__action">
@@ -49,6 +45,16 @@
 						<ActionButton icon="icon-close" @click="onEditUrlCancel" />
 					</Actions>
 				</div>
+			</div>
+			<div v-if="archivedFile">
+				<h3><ArchiveArrowDownIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived file') }}</h3>
+				<a :href="archivedFile" class="button">{{ t('bookmarks', 'Open archived file') }}</a>
+			</div>
+			<div v-else-if="bookmark.textContent">
+				<h3><ArchiveArrowDownIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived content') }}</h3>
+				<blockquote v-text="bookmark.textContent.substr(0, 250)+'...'" />
+				<a href="javascript:void(0)" class="button" @click="showContentModal = true">{{ t('bookmarks', 'Read more') }}</a>
+				<ContentModal v-if="showContentModal" :bookmark="bookmark" @close="showContentModal = false" />
 			</div>
 			<div>
 				<h3><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}</h3>
@@ -76,17 +82,6 @@
 					@update:value="onNotesChange" />
 			</div>
 		</AppSidebarTab>
-		<AppSidebarTab
-			id="bookmarks-content"
-			:name="t('bookmarks', 'Content')"
-			icon="icon-edit"
-			:order="1">
-			<div v-if="archivedFile">
-				<h3><ArchiveArrowDownIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived file') }}</h3>
-				<a :href="archivedFile" class="button">{{ t('bookmarks', 'Open archived file') }}</a>
-			</div>
-			<div v-else v-html="content" />
-		</AppSidebarTab>
 	</AppSidebar>
 </template>
 <script>
@@ -96,18 +91,19 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import RichContenteditable from '@nextcloud/vue/dist/Components/RichContenteditable'
+import ArchiveArrowDownIcon from 'vue-material-design-icons/ArchiveArrowDown'
 
-import sanitizeHtml from 'sanitize-html'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
 import { actions, mutations } from '../store/'
+import ContentModal from './ContentModal'
 
 const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable },
+	components: { ContentModal, AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable, ArchiveArrowDownIcon },
 	data() {
 		return {
 			title: '',
@@ -115,6 +111,7 @@ export default {
 			url: '',
 			editingUrl: false,
 			activeTab: '',
+			showContentModal: false,
 		}
 	},
 	computed: {
@@ -127,10 +124,7 @@ export default {
 			return this.$store.getters.getBookmark(this.$store.state.sidebar.id)
 		},
 		background() {
-			return this.showBackground ? generateUrl(`/apps/bookmarks/bookmark/${this.bookmark.id}/image`) : ''
-		},
-		showBackground() {
-			return this.activeTab !== 'bookmarks-content'
+			return generateUrl(`/apps/bookmarks/bookmark/${this.bookmark.id}/image`)
 		},
 		addedDate() {
 			const date = new Date(Number(this.bookmark.added) * 1000)
@@ -168,11 +162,6 @@ export default {
 				return generateUrl(`/apps/files/?fileid=${this.bookmark.archivedFile}`)
 			}
 			return null
-		},
-		content() {
-			return sanitizeHtml(this.bookmark.htmlContent, {
-				allowProtocolRelative: false,
-			})
 		},
 	},
 	created() {
@@ -264,5 +253,12 @@ export default {
 
 .bookmark-details__action {
 	flex-grow: 0;
+}
+
+.sidebar blockquote {
+	border-left: var(--color-placeholder-dark) 3px solid;
+	padding-left: 10px;
+	color: var(--color-text-lighter);
+	margin: 10px 0;
 }
 </style>
