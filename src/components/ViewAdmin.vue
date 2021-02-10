@@ -5,9 +5,48 @@
   -->
 
 <template>
-	<div id="bookmarks" class="section">
+	<div id="bookmarks">
 		<figure v-if="loading" class="icon-loading loading" />
 		<figure v-if="!loading && success" class="icon-checkmark success" />
+		<SettingsSection
+			:title="t('bookmarks', 'Privacy')"
+			:description="t('bookmarks',
+				'Bookmarks will try to access web pages that you add to automatically add information about them.'
+			)">
+			<p>
+				<input
+					id="enableScraping"
+					v-model="settings['privacy.enableScraping']"
+					type="checkbox"
+					class="checkbox"
+					@input="onChange">
+				<label for="enableScraping">{{
+					t('bookmarks',
+						'Enable accessing and collecting information from the web pages you add'
+					)
+				}}</label>
+			</p>
+		</SettingsSection>
+		<SettingsSection
+			:title="t('bookmarks', 'Performance') "
+			:description="t('bookmarks',
+				'In an installation with a lot of users it may be useful to restrict the number of bookmarks per account.'
+			)">
+			<p>
+				<label for="maxBookmarksperAccount">{{
+						t('bookmarks',
+							'Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)'
+						)
+					}}
+					<input id="maxBookmarksperAccount"
+						v-model.number="settings['performance.maxBookmarksperAccount']"
+						type="number"
+						min="0"
+						placeholder="0"
+						step="1"
+						@input="onChange"></label>
+			</p>
+		</SettingsSection>
 		<SettingsSection
 			:title="t('bookmarks', 'Previews')"
 			:description="t('bookmarks',
@@ -57,45 +96,6 @@
 				<a href="https://github.com/sindresorhus/pageres-cli" target="_blank">{{
 					t('bookmarks', 'Simply install the pageres cli on your server and bookmarks will find it.')
 				}}</a>
-			</p>
-		</SettingsSection>
-		<SettingsSection
-			:title="t('bookmarks', 'Privacy')"
-			:description="t('bookmarks',
-				'Bookmarks will try to access web pages that you add to automatically add information about them.'
-			)">
-			<p>
-				<input
-					id="enableScraping"
-					v-model="settings['privacy.enableScraping']"
-					type="checkbox"
-					class="checkbox"
-					@input="onChange">
-				<label for="enableScraping">{{
-					t('bookmarks',
-						'Enable accessing and collecting information from the web pages you add'
-					)
-				}}</label>
-			</p>
-		</SettingsSection>
-		<SettingsSection
-			:title="t('bookmarks', 'Performance') "
-			:description="t('bookmarks',
-				'In an installation with a lot of users it may be useful to restrict the number of bookmarks per account.'
-			)">
-			<p>
-				<label for="maxBookmarksperAccount">{{
-						t('bookmarks',
-							'Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)'
-						)
-					}}
-					<input id="maxBookmarksperAccount"
-						v-model.number="settings['performance.maxBookmarksperAccount']"
-						type="number"
-						min="0"
-						placeholder="0"
-						step="1"
-						@input="onChange"></label>
 			</p>
 		</SettingsSection>
 	</div>
@@ -212,10 +212,6 @@ figure[class^='icon-'] {
 	display: inline-block;
 }
 
-#bookmarks h2 {
-	margin-top: 40px;
-}
-
 #bookmarks {
 	position: relative;
 }
@@ -233,7 +229,8 @@ figure[class^='icon-'] {
 }
 
 #bookmarks input {
-	width: 100%;
+	width: 50%;
+	min-width: 300px;
 	display: block;
 }
 </style>
