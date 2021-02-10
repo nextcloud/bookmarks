@@ -4,6 +4,8 @@
     "Unsupported file type for import" : "インポートでサポートされていないファイル形式です",
     "Bookmarks shared by %s" : "%s から共有されたブックマーク",
     "Recent Bookmarks" : "最新のブックマーク",
+    "Create bookmark" : "ブックマークを作成",
+    "Takes a link and adds it to your collection of bookmarks." : "リンクを取得し、ブックマークのコレクションに追加します。",
     "A Bookmark manager for Nextcloud" : "Nextcloud のブックマークマネージャー",
     "Select bookmark" : "ブックマークを選択",
     "Details" : "詳細",
