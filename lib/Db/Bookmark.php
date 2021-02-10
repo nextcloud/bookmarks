@@ -89,9 +89,9 @@ class Bookmark extends Entity {
 	}
 
 	public function setTitle(string $title): void {
-		// Cap title length at 255 because the DB doesn't have more space currently
-		if (mb_strlen($title) > 255) {
-			$title = mb_substr($title, 0, 254) . '…';
+		// Cap title length at 1024 because the DB doesn't have more space currently (4096 byte with utf8mb4)
+		if (mb_strlen($title) > 1024) {
+			$title = mb_substr($title, 0, 1023) . '…';
 		}
 		$this->setter('title', [$title]);
 	}
