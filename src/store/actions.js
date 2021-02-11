@@ -420,7 +420,7 @@ export default {
 			return
 		}
 		try {
-			const response = await axios.put(url(state, `/bookmark/restore/${id}`))
+			const response = await axios.post(url(state, `/bookmark/restore/${id}`))
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
@@ -707,7 +707,7 @@ export default {
 	},
 	async [actions.RESTORE_FOLDER]({ commit, dispatch, state }, { id, avoidReload }) {
 		try {
-			const response = await axios.put(url(state, `/folder/restore/${id}`))
+			const response = await axios.post(url(state, `/folder/restore/${id}`))
 			const {
 				data: { status },
 			} = response
