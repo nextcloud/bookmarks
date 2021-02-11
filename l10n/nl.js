@@ -44,8 +44,6 @@ OC.L10N.register(
     "Rename" : "Hernoemen",
     "Move" : "Verplaatsen",
     "Delete" : "Verwijderen",
-    "Permanently delete" : "Definitief verwijderen",
-    "Restore" : "Herstellen",
     "Search" : "Zoeken",
     "Do you really want to delete this bookmark?" : "Wil je deze bladwijzer echt verwijderen?",
     "Select one or more tags" : "Kies één of meer tags",
