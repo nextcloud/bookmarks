@@ -1,3 +1,4 @@
+
 # Nextcloud Bookmarks
 ![Downloads](https://img.shields.io/github/downloads/nextcloud/bookmarks/total.svg?style=flat-square)
 [![Code coverage](https://img.shields.io/codecov/c/github/nextcloud/bookmarks.svg?style=flat-square)](https://codecov.io/gh/nextcloud/bookmarks/)
@@ -44,7 +45,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 
 
 ## Community
-Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community) or in our [official Talk channel](https://cloud.nextcloud.com/call/u52jcby9)
+Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community), via matrix `#nextcloud-bookmarks_community:gitter.im` or in our [official Talk channel](https://cloud.nextcloud.com/call/u52jcby9)
 
 ## Install
 
