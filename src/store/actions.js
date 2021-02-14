@@ -729,7 +729,7 @@ export default {
 	},
 	async [actions.PERMANENTLY_DELETE_FOLDER]({ commit, dispatch, state }, { id, avoidReload }) {
 		try {
-			const response = await axios.delete(url(state, `/folder/permanent/${id}`))
+			const response = await axios.delete(url(state, `/folder/${id}?permanent=true`))
 			const {
 				data: { status },
 			} = response

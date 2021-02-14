@@ -64,7 +64,6 @@ return [
 		['name' => 'internal_folders#add_folder', 'url' => '/folder', 'verb' => 'POST'],
 		['name' => 'internal_folders#edit_folder', 'url' => '/folder/{folderId}', 'verb' => 'PUT'],
 		['name' => 'internal_folders#delete_folder', 'url' => '/folder/{folderId}', 'verb' => 'DELETE'],
-		['name' => 'internal_folders#delete_folder_permanently', 'url' => '/folder/permanent/{folderId}', 'verb' => 'DELETE'],
 		['name' => 'internal_folders#restore_folder', 'url' => '/folder/restore/{folderId}', 'verb' => 'POST'],
 		['name' => 'internal_folders#hash_folder', 'url' => '/folder/{folderId}/hash', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#import_bookmark', 'url' => '/folder/{folder}/import', 'verb' => 'POST'],

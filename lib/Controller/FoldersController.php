@@ -321,12 +321,14 @@ class FoldersController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function deleteFolder($folderId): JSONResponse {
-		if ($folderId !== -1) {
-			try {
-				$this->folders->findSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
-			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
-				return new JSONResponse(['status' => 'success']);
+	public function deleteFolder($folderId, $permanent): JSONResponse {
+		if ($permanent !== "true") {
+			if ($folderId !== -1) {
+				try {
+					$this->folders->findSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+				} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+					return new JSONResponse(['status' => 'success']);
+				}
 			}
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
@@ -338,7 +340,11 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'success']);
 		}
 		try {
-			$this->folders->deleteSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			if ($permanent === "true") {
+				$this->folders->deleteSharedFolderOrFolderPermanently($this->authorizer->getUserId(), $folderId);
+			} else {
+				$this->folders->deleteSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			}
 			return new JSONResponse(['status' => 'success']);
 		} catch (UnsupportedOperation $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -385,7 +391,7 @@ class FoldersController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function deleteFolderPermanently($folderId): JSONResponse {
+/*	public function deleteFolderPermanently($folderId): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
@@ -401,7 +407,7 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
-	}
+	}*/
 
 	/**
 	 * @param int $folderId
