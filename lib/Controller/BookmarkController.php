@@ -480,18 +480,24 @@ class BookmarkController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function deleteBookmark($id): JSONResponse {
-		try {
-			$this->bookmarkMapper->find($id);
-		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'success']);
-		}
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+	public function deleteBookmark($id, $permanent): JSONResponse {
+		if ($permanent !== "true") {
+			try {
+				$this->bookmarkMapper->find($id);
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+				return new JSONResponse(['status' => 'success']);
+			}
+			if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
+				return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+			}
 		}
 
 		try {
-			$this->bookmarks->delete($id);
+			if ($permanent === "true") {
+				$this->bookmarks->deletePermanently($id);
+			} else {
+				$this->bookmarks->delete($id);
+			}
 		} catch (UnsupportedOperation $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (DoesNotExistException $e) {
@@ -518,32 +524,6 @@ class BookmarkController extends ApiController {
 
 		try {
 			$this->bookmarks->restore($id);
-		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'success']);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
-		}
-		return new JSONResponse(['status' => 'success']);
-	}
-
-	/**
-	 * @param int $id
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @CORS
-	 * @PublicPage
-	 */
-	public function deleteBookmarkPermanently($id): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
-		}
-
-		try {
-			$this->bookmarks->deletePermanently($id);
 		} catch (UnsupportedOperation $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (DoesNotExistException $e) {

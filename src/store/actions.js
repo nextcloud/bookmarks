@@ -465,7 +465,7 @@ export default {
 			return
 		}
 		try {
-			const response = await axios.delete(url(state, `/bookmark/permanent/${id}`))
+			const response = await axios.delete(url(state, `/bookmark/${id}?permanent=true`))
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
