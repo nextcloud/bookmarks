@@ -49,12 +49,14 @@ export default new Store({
 		sharesById: {},
 		tags: [],
 		folders: [],
+		deletedFolders: [],
 		foldersById: {},
 		childrenByFolder: {},
 		tokensByFolder: {},
 		countsByFolder: {},
 		unavailableCount: 0,
 		archivedCount: 0,
+		deletedCount: 0,
 		selection: {
 			folders: [],
 			bookmarks: [],
@@ -75,6 +77,9 @@ export default new Store({
 				return [{ id: '-1', children: state.folders }]
 			}
 			return findFolder(id, state.folders)
+		},
+		getFolderIncludingDeleted: state => id => {
+			return findFolder(id, state.folders.concat(state.deletedFolders))
 		},
 		getFolderChildren: state => id => {
 			return state.childrenByFolder[id] || []

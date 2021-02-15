@@ -24,6 +24,7 @@ export const privateRoutes = {
 	UNAVAILABLE: 'UNAVAILABLE',
 	ARCHIVED: 'ARCHIVED',
 	BOOKMARKLET: 'bookmarklet',
+	DELETED: 'DELETED',
 }
 
 export const publicRoutes = {
@@ -91,6 +92,11 @@ export default new Router({
 			name: privateRoutes.BOOKMARKLET,
 			component: ViewBookmarklet,
 			props: (route) => ({ url: route.query.url, title: route.query.title }),
+		},
+		{
+			path: '/deleted',
+			name: privateRoutes.DELETED,
+			component: ViewPrivate,
 		},
 		{
 			path: '/public/:token',

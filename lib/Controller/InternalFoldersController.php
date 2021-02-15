@@ -67,8 +67,18 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function deleteFolder($folderId): JSONResponse {
-		return $this->controller->deleteFolder($folderId);
+	public function deleteFolder($folderId, $permanent = false): JSONResponse {
+		return $this->controller->deleteFolder($folderId, $permanent);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function restoreFolder($folderId): JSONResponse {
+		return $this->controller->restoreFolder($folderId);
 	}
 
 	/**
@@ -114,6 +124,17 @@ class InternalFoldersController extends ApiController {
 	 */
 	public function hashFolder($folderId, $fields = ['title', 'url']): JSONResponse {
 		return $this->controller->hashFolder($folderId, $fields);
+	}
+
+	/**
+	 * @param int $root the id of the root folder whose descendants to return
+	 * @param int $layers the number of layers of hierarchy to return
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function getFoldersWithDeleted($root = -1, $layers = -1): JSONResponse {
+		return $this->controller->getFoldersWithDeleted($root, $layers);
 	}
 
 	/**

@@ -19,10 +19,12 @@ export const mutations = {
 	ADD_SELECTION_FOLDER: 'ADD_SELECTION_FOLDER',
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
+	REMOVE_BOOKMARK_PERMANENTLY: 'REMOVE_BOOKMARK_PERMANENTLY',
 	REMOVE_ALL_BOOKMARKS: 'REMOVE_ALL_BOOKMARKS',
 	SET_BOOKMARK_COUNT: 'SET_BOOKMARK_COUNT',
 	SET_UNAVAILABLE_COUNT: 'SET_UNAVAILABLE_COUNT',
 	SET_ARCHIVED_COUNT: 'SET_ARCHIVED_COUNT',
+	SET_DELETED_COUNT: 'SET_DELETED_COUNT',
 	SET_TAGS: 'SET_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
 	REMOVE_TAG: 'REMOVE_TAG',
@@ -36,6 +38,7 @@ export const mutations = {
 	SET_ERROR: 'SET_ERROR',
 	SET_NOTIFICATION: 'SET_NOTIFICATION',
 	SET_FOLDERS: 'SET_FOLDERS',
+	SET_DELETED_FOLDERS: 'SET_DELETED_FOLDERS',
 	SET_SIDEBAR: 'SET_SIDEBAR',
 	SET_SETTING: 'SET_SETTING',
 	SET_VIEW_MODE: 'SET_VIEW_MODE',
@@ -70,6 +73,9 @@ export default {
 	},
 	[mutations.SET_FOLDERS](state, folders) {
 		state.folders = sortFolders(folders)
+	},
+	[mutations.SET_DELETED_FOLDERS](state, deletedFolders) {
+		state.deletedFolders = sortFolders(deletedFolders)
 	},
 	[mutations.SET_TAGS](state, tags) {
 		state.tags = tags
@@ -146,6 +152,13 @@ export default {
 			Vue.delete(state.bookmarksById, id)
 		}
 	},
+	[mutations.REMOVE_BOOKMARK_PERMANENTLY](state, id) {
+		const index = state.bookmarks.findIndex(bookmark => bookmark.id === id)
+		if (index !== -1) {
+			state.bookmarks.splice(index, 1)
+			Vue.delete(state.bookmarksById, id)
+		}
+	},
 	[mutations.REMOVE_ALL_BOOKMARKS](state) {
 		state.bookmarks = []
 		state.bookmarksById = {}
@@ -158,6 +171,9 @@ export default {
 	},
 	[mutations.SET_ARCHIVED_COUNT](state, count) {
 		state.archivedCount = count
+	},
+	[mutations.SET_DELETED_COUNT](state, count) {
+		state.deletedCount = count
 	},
 
 	[mutations.SET_SIDEBAR](state, sidebar) {

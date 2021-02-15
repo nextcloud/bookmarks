@@ -38,6 +38,7 @@ Query bookmarks
    :query url: Only return bookmarks with this URL. With this parameter you can test whether a URL exists in the user's bookmarks.
    :query unavailable: Only return bookmarks that are dead links, i.e. return 404 status codes or similar.
    :query archive: Only return bookmarks that whose contents have been archived.
+   :query deleted: Only return bookmarks that have been deleted.
 
    :>json string status: ``success`` or ``error``
    :>json array data: The list of resulting bookmarks

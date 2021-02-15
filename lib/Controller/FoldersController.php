@@ -270,6 +270,34 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
+			$this->bookmarks->delete($bookmarkId);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_BAD_REQUEST);
+		}
+
+		return new JSONResponse(['status' => 'success']);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function removeFromFolderPermanently($folderId, $bookmarkId): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
+			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($bookmarkId, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+		try {
 			$folderId = $this->toInternalFolderId($folderId);
 			$this->bookmarks->removeFromFolder($folderId, $bookmarkId);
 		} catch (DoesNotExistException $e) {
@@ -293,12 +321,14 @@ class FoldersController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function deleteFolder($folderId): JSONResponse {
-		if ($folderId !== -1) {
-			try {
-				$this->folders->findSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
-			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
-				return new JSONResponse(['status' => 'success']);
+	public function deleteFolder($folderId, $permanent): JSONResponse {
+		if ($permanent !== "true") {
+			if ($folderId !== -1) {
+				try {
+					$this->folders->findSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+				} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+					return new JSONResponse(['status' => 'success']);
+				}
 			}
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
@@ -310,7 +340,11 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'success']);
 		}
 		try {
-			$this->folders->deleteSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			if ($permanent === "true") {
+				$this->folders->deleteSharedFolderOrFolderPermanently($this->authorizer->getUserId(), $folderId);
+			} else {
+				$this->folders->deleteSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			}
 			return new JSONResponse(['status' => 'success']);
 		} catch (UnsupportedOperation $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -320,6 +354,60 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	/**
+	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function restoreFolder($folderId): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+
+		$folderId = $this->toInternalFolderId($folderId);
+		try {
+			$this->folders->restoreSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			return new JSONResponse(['status' => 'success']);
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'success']);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+/*	public function deleteFolderPermanently($folderId): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+		}
+
+		$folderId = $this->toInternalFolderId($folderId);
+		try {
+			$this->folders->deleteSharedFolderOrFolderPermanently($this->authorizer->getUserId(), $folderId);
+			return new JSONResponse(['status' => 'success']);
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'success']);
+		} catch (MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+	}*/
 
 	/**
 	 * @param int $folderId
@@ -458,6 +546,33 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 * @return JSONResponse
 	 */
+	public function getFoldersWithDeleted($root = -1, $layers = -1): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
+		}
+		$internalRoot = $this->toInternalFolderId($root);
+		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers);
+		if ($root === -1 || $root === '-1') {
+			foreach ($folders as $folder) {
+				$folder['parent_folder'] = -1;
+			}
+		}
+		$res = new JSONResponse(['status' => 'success', 'data' => $folders]);
+		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
+		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+		return $res;
+	}
+
+	/**
+	 * @param int $root the id of the root folder whose descendants to return
+	 * @param int $layers the number of layers of hierarchy too return
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 * @return JSONResponse
+	 */
 	public function getFolders($root = -1, $layers = -1): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
@@ -469,6 +584,10 @@ class FoldersController extends ApiController {
 				$folder['parent_folder'] = -1;
 			}
 		}
+		$folders = array_filter($folders, function($folder) {
+			return $folder['deleted'] !== true;
+		});
+		$folders = array_values($folders);
 		$res = new JSONResponse(['status' => 'success', 'data' => $folders]);
 		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
 		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');

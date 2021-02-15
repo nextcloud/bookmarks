@@ -18,10 +18,13 @@ export const actions = {
 	COUNT_BOOKMARKS: 'COUNT_BOOKMARKS',
 	COUNT_UNAVAILABLE: 'COUNT_UNAVAILABLE',
 	COUNT_ARCHIVED: 'COUNT_ARCHIVED',
+	COUNT_DELETED: 'COUNT_DELETED',
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	LOAD_BOOKMARK: 'LOAD_BOOKMARK',
 	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
+	RESTORE_BOOKMARK: 'RESTORE_BOOKMARK',
+	PERMANENTLY_DELETE_BOOKMARK: 'PERMANENTLY_DELETE_BOOKMARK',
 	OPEN_BOOKMARK: 'OPEN_BOOKMARK',
 	SAVE_BOOKMARK: 'SAVE_BOOKMARK',
 	MOVE_BOOKMARK: 'MOVE_BOOKMARK',
@@ -37,11 +40,15 @@ export const actions = {
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
+	RESTORE_FOLDER: 'RESTORE_FOLDER',
+	PERMANENTLY_DELETE_FOLDER: 'PERMANENTLY_DELETE_FOLDER',
 	LOAD_FOLDER_CHILDREN_ORDER: 'LOAD_FOLDER_CHILDREN_ORDER',
 	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
 	DELETE_SELECTION: 'DELETE_SELECTION',
+	RESTORE_SELECTION: 'RESTORE_SELECTION',
+	PERMANENTLY_DELETE_SELECTION: 'PERMANENTLY_DELETE_SELECTION',
 
 	RELOAD_VIEW: 'RELOAD_VIEW',
 
@@ -50,6 +57,7 @@ export const actions = {
 	FILTER_BY_UNTAGGED: 'FILTER_BY_UNTAGGED',
 	FILTER_BY_UNAVAILABLE: 'FILTER_BY_UNAVAILABLE',
 	FILTER_BY_ARCHIVED: 'FILTER_BY_ARCHIVED',
+	FILTER_BY_DELETED: 'FILTER_BY_DELETED',
 	FILTER_BY_TAGS: 'FILTER_BY_TAGS',
 	FILTER_BY_FOLDER: 'FILTER_BY_FOLDER',
 	FILTER_BY_SEARCH: 'FILTER_BY_SEARCH',
@@ -119,6 +127,26 @@ export default {
 					'bookmarks',
 					'Failed to count archived bookmarks'
 				)
+			)
+			throw err
+		}
+	},
+	async [actions.COUNT_DELETED]({ commit, dispatch, state }, folderId) {
+		try {
+			const response = await axios.get(url(state, '/bookmark/deleted')
+			)
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_DELETED_COUNT, count)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to count deleted bookmarks')
 			)
 			throw err
 		}
@@ -330,6 +358,7 @@ export default {
 				commit(mutations.REMOVE_BOOKMARK, id)
 				if (!avoidReload) {
 					await dispatch(actions.COUNT_BOOKMARKS, -1)
+					await dispatch(actions.COUNT_DELETED)
 					await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
 				}
 			} catch (err) {
@@ -351,12 +380,103 @@ export default {
 				throw new Error(response.data)
 			}
 			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			await dispatch(actions.COUNT_DELETED)
 			await commit(mutations.REMOVE_BOOKMARK, id)
 		} catch (err) {
 			console.error(err)
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete bookmark')
+			)
+			throw err
+		}
+	},
+	async [actions.RESTORE_BOOKMARK](
+		{ commit, dispatch, state },
+		{ id, folder, avoidReload }
+	) {
+		if (folder) {
+			try {
+				const response = await axios.put(
+					url(state, `/folder/${folder}/bookmarks/restore/${id}`)
+				)
+				if (response.data.status !== 'success') {
+					throw new Error(response.data)
+				}
+				commit(mutations.REMOVE_BOOKMARK, id)
+				if (!avoidReload) {
+					await dispatch(actions.COUNT_BOOKMARKS, -1)
+					await dispatch(actions.COUNT_DELETED)
+					await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+				}
+			} catch (err) {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to restore bookmark')
+				)
+				throw err
+			}
+			return
+		}
+		try {
+			const response = await axios.post(url(state, `/bookmark/restore/${id}`))
+			if (response.data.status !== 'success') {
+				throw new Error(response.data)
+			}
+			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			await dispatch(actions.COUNT_DELETED)
+			await commit(mutations.REMOVE_BOOKMARK, id)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to restore bookmark')
+			)
+			throw err
+		}
+	},
+	async [actions.PERMANENTLY_DELETE_BOOKMARK](
+		{ commit, dispatch, state },
+		{ id, folder, avoidReload }
+	) {
+		if (folder) {
+			try {
+				const response = await axios.delete(
+					url(state, `/folder/${folder}/bookmarks/permanent/${id}`)
+				)
+				if (response.data.status !== 'success') {
+					throw new Error(response.data)
+				}
+				commit(mutations.REMOVE_BOOKMARK, id)
+				if (!avoidReload) {
+					await dispatch(actions.COUNT_BOOKMARKS, -1)
+					await dispatch(actions.COUNT_DELETED)
+					await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+				}
+			} catch (err) {
+				console.error(err)
+				commit(
+					mutations.SET_ERROR,
+					AppGlobal.methods.t('bookmarks', 'Failed to permanently delete bookmark')
+				)
+				throw err
+			}
+			return
+		}
+		try {
+			const response = await axios.delete(url(state, `/bookmark/${id}?permanent=true`))
+			if (response.data.status !== 'success') {
+				throw new Error(response.data)
+			}
+			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			await dispatch(actions.COUNT_DELETED)
+			await commit(mutations.REMOVE_BOOKMARK, id)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to permanently delete bookmark')
 			)
 			throw err
 		}
@@ -385,6 +505,7 @@ export default {
 				)
 			}
 			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			await dispatch(actions.COUNT_DELETED)
 			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 			await dispatch(actions.RELOAD_VIEW)
 			commit(mutations.FETCH_END, 'importBookmarks')
@@ -411,6 +532,7 @@ export default {
 					throw new Error(response.data)
 				}
 				dispatch(actions.COUNT_BOOKMARKS, -1)
+				dispatch(actions.COUNT_DELETED)
 				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 				commit(mutations.FETCH_END, 'deleteBookmarks')
 				return dispatch(actions.RELOAD_VIEW)
@@ -502,7 +624,15 @@ export default {
 	async [actions.LOAD_FOLDERS]({ commit, dispatch, state }, force) {
 		if (!state.folders.length && !force) {
 			try {
-				const folders = loadState('bookmarks', 'folders')
+				const allfolders = loadState('bookmarks', 'folders')
+				const folders = allfolders.filter(folder => !folder.deleted)
+				let deletedChildren = []
+				folders.forEach((folder) => {
+					deletedChildren = deletedChildren.concat(folder.children.filter(child => !!child.deleted))
+					folder.children = folder.children.filter(child => !child.deleted)
+				})
+				const deletedFolders = allfolders.filter(folder => !!folder.deleted)
+				commit(mutations.SET_DELETED_FOLDERS, deletedFolders.concat(deletedChildren))
 				return commit(mutations.SET_FOLDERS, folders)
 			} catch (e) {
 				console.warn(
@@ -518,7 +648,7 @@ export default {
 			},
 		})
 		try {
-			const response = await axios.get(url(state, '/folder'), {
+			const response = await axios.get(url(state, '/folder/withdeleted'), {
 				params: {},
 			})
 			if (canceled) return
@@ -526,8 +656,15 @@ export default {
 				data: { data, status },
 			} = response
 			if (status !== 'success') throw new Error(data)
-			const folders = data
+			const folders = data.filter(folder => !folder.deleted)
+			let deletedChildren = []
+			folders.forEach((folder) => {
+				deletedChildren = deletedChildren.concat(folder.children.filter(child => !!child.deleted))
+				folder.children = folder.children.filter(child => !child.deleted)
+			})
+			const deletedFolders = data.filter(folder => !!folder.deleted)
 			commit(mutations.FETCH_END, 'folders')
+			commit(mutations.SET_DELETED_FOLDERS, deletedFolders.concat(deletedChildren))
 			return commit(mutations.SET_FOLDERS, folders)
 		} catch (err) {
 			console.error(err)
@@ -564,6 +701,50 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
+			)
+			throw err
+		}
+	},
+	async [actions.RESTORE_FOLDER]({ commit, dispatch, state }, { id, avoidReload }) {
+		try {
+			const response = await axios.post(url(state, `/folder/restore/${id}`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			if (!avoidReload) {
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
+				await dispatch(actions.LOAD_FOLDERS)
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to restore folder')
+			)
+			throw err
+		}
+	},
+	async [actions.PERMANENTLY_DELETE_FOLDER]({ commit, dispatch, state }, { id, avoidReload }) {
+		try {
+			const response = await axios.delete(url(state, `/folder/${id}?permanent=true`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			if (!avoidReload) {
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
+				await dispatch(actions.LOAD_FOLDERS)
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to permanently delete folder')
 			)
 			throw err
 		}
@@ -752,6 +933,40 @@ export default {
 			throw err
 		}
 	},
+	async [actions.RESTORE_SELECTION]({ commit, dispatch, state }, { folder }) {
+		commit(mutations.FETCH_START, { type: 'restoreSelection' })
+		try {
+			await Parallel.each(state.selection.folders, folder => dispatch(actions.RESTORE_FOLDER, { id: folder.id, avoidReload: true }), 10)
+			await Parallel.each(state.selection.bookmarks, bookmark => dispatch(actions.RESTORE_BOOKMARK, { id: bookmark.id, folder, avoidReload: true }), 10)
+			dispatch(actions.RELOAD_VIEW)
+			commit(mutations.FETCH_END, 'restoreSelection')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'restoreSelection')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to restore parts of selection')
+			)
+			throw err
+		}
+	},
+	async [actions.PERMANENTLY_DELETE_SELECTION]({ commit, dispatch, state }, { folder }) {
+		commit(mutations.FETCH_START, { type: 'permanentlyDeleteSelection' })
+		try {
+			await Parallel.each(state.selection.folders, folder => dispatch(actions.PERMANENTLY_DELETE_FOLDER, { id: folder.id, avoidReload: true }), 10)
+			await Parallel.each(state.selection.bookmarks, bookmark => dispatch(actions.PERMANENTLY_DELETE_BOOKMARK, { id: bookmark.id, folder, avoidReload: true }), 10)
+			dispatch(actions.RELOAD_VIEW)
+			commit(mutations.FETCH_END, 'permanentlyDeleteSelection')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'permanentlyDeleteSelection')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to permanently delete parts of selection')
+			)
+			throw err
+		}
+	},
 
 	[actions.RELOAD_VIEW]({ state, dispatch, commit }) {
 		commit(mutations.SET_QUERY, state.fetchState.query)
@@ -761,6 +976,7 @@ export default {
 		dispatch(actions.COUNT_BOOKMARKS, -1)
 		dispatch(actions.COUNT_UNAVAILABLE)
 		dispatch(actions.COUNT_ARCHIVED)
+		dispatch(actions.COUNT_DELETED)
 	},
 
 	[actions.NO_FILTER]({ dispatch, commit }) {
@@ -789,6 +1005,11 @@ export default {
 	},
 	[actions.FILTER_BY_ARCHIVED]({ dispatch, commit }) {
 		commit(mutations.SET_QUERY, { archived: true })
+		return dispatch(actions.FETCH_PAGE)
+	},
+	[actions.FILTER_BY_DELETED]({ dispatch, commit }) {
+		commit(mutations.SET_QUERY, { deleted: true })
+		dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_FOLDER]({ dispatch, commit }, folder) {

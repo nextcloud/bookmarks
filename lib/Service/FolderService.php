@@ -176,6 +176,38 @@ class FolderService {
 		 * @var $folder Folder
 		 */
 		$folder = $this->folderMapper->find($folderId);
+		$folder->setDeleted(true);
+		$this->folderMapper->update($folder);
+	}
+
+	/**
+	 * @param $userId
+	 * @param $folderId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	public function restoreSharedFolderOrFolder($userId, $folderId): void {
+		/**
+		 * @var $folder Folder
+		 */
+		$folder = $this->folderMapper->find($folderId);
+		$folder->setDeleted(false);
+		$this->folderMapper->update($folder);
+	}
+
+	/**
+	 * @param $userId
+	 * @param $folderId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	public function deleteSharedFolderOrFolderPermanently($userId, $folderId): void {
+		/**
+		 * @var $folder Folder
+		 */
+		$folder = $this->folderMapper->find($folderId);
 
 		if ($userId === null || $userId === $folder->getUserId()) {
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());

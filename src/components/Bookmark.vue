@@ -52,7 +52,10 @@
 				@click="onRename">
 				{{ t('bookmarks', 'Rename') }}
 			</ActionButton>
-			<ActionButton :close-after-click="true" @click="onMove">
+			<ActionButton
+				v-if="!bookmark.deleted"
+				:close-after-click="true"
+				@click="onMove">
 				<template #icon>
 					<FolderMoveIcon
 						:fill-color="colorMainText"
@@ -61,10 +64,25 @@
 				{{ t('bookmarks', 'Move') }}
 			</ActionButton>
 			<ActionButton
+				v-if="!bookmark.deleted"
 				icon="icon-delete"
 				:close-after-click="true"
 				@click="onDelete">
 				{{ t('bookmarks', 'Delete') }}
+			</ActionButton>
+			<ActionButton
+				v-if="bookmark.deleted"
+				icon="icon-history"
+				:close-after-click="true"
+				@click="onRestore">
+				{{ t('bookmarks', 'Restore') }}
+			</ActionButton>
+			<ActionButton
+				v-if="bookmark.deleted"
+				icon="icon-delete"
+				:close-after-click="true"
+				@click="onPermanentlyDelete">
+				{{ t('bookmarks', 'Permanently delete') }}
 			</ActionButton>
 		</template>
 	</Item>
@@ -188,6 +206,18 @@ export default {
 				return
 			}
 			this.$store.dispatch(actions.DELETE_BOOKMARK, {
+				id: this.bookmark.id,
+				folder: this.$store.state.fetchState.query.folder,
+			})
+		},
+		onPermanentlyDelete() {
+			this.$store.dispatch(actions.PERMANENTLY_DELETE_BOOKMARK, {
+				id: this.bookmark.id,
+				folder: this.$store.state.fetchState.query.folder,
+			})
+		},
+		onRestore() {
+			this.$store.dispatch(actions.RESTORE_BOOKMARK, {
 				id: this.bookmark.id,
 				folder: this.$store.state.fetchState.query.folder,
 			})

@@ -43,6 +43,21 @@
 				</template>
 				<NoBookmarks v-else-if="!loading" />
 			</template>
+			<template v-else-if="$route.name === routes.DELETED">
+				<template v-if="deletedFolders.length || bookmarks.length">
+					<Folder
+						v-for="folder in deletedFolders"
+						:key="'folder' + folder.id"
+						:folder="folder" />
+					<template v-if="bookmarks.length">
+						<Bookmark
+							v-for="bookmark in bookmarks"
+							:key="'bookmark' + bookmark.id"
+							:bookmark="bookmark" />
+					</template>
+				</template>
+				<NoBookmarks v-else-if="!loading" />
+			</template>
 			<!-- NON-FOLDER VIEW -->
 			<template v-else-if="bookmarks.length">
 				<Bookmark
@@ -104,6 +119,12 @@ export default {
 			if (!folder) return []
 			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folderId)
 			return folder.children
+		},
+		deletedFolders() {
+			if (this.$route.name !== this.routes.DELETED) {
+				return []
+			}
+			return this.$store.state.deletedFolders
 		},
 		newBookmark() {
 			return this.$store.state.displayNewBookmark

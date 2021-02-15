@@ -344,6 +344,30 @@ class BookmarkService {
 	 */
 	public function delete(int $id): void {
 		$bookmark = $this->bookmarkMapper->find($id);
+		$bookmark->setDeleted(true);
+		$this->bookmarkMapper->update($bookmark);
+	}
+
+	/**
+	 * @param $id
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	public function restore($id): void {
+		$bookmark = $this->bookmarkMapper->find($id);
+		$bookmark->setDeleted(false);
+		$this->bookmarkMapper->update($bookmark);
+	}
+
+	/**
+	 * @param $id
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	public function deletePermanently($id): void {
+		$bookmark = $this->bookmarkMapper->find($id);
 		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id);
 		foreach ($parents as $parent) {
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $parent->getId());

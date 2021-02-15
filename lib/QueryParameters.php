@@ -22,6 +22,7 @@ class QueryParameters {
 	private $untagged = false;
 	private $unavailable = false;
 	private $archived = false;
+	private $deleted = false;
 	private $search = [];
 	private $tags = [];
 
@@ -187,6 +188,22 @@ class QueryParameters {
 	 */
 	public function setUnavailable(bool $unavailable): self {
 		$this->unavailable = $unavailable;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getDeleted(): bool {
+		return $this->deleted;
+	}
+
+	/**
+	 * @param boolean $deleted
+	 * @return QueryParameters
+	 */
+	public function setDeleted(bool $deleted): QueryParameters {
+		$this->deleted = $deleted;
 		return $this;
 	}
 

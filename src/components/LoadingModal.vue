@@ -18,6 +18,8 @@ export default {
 			states: {
 				deleteBookmarks: this.t('bookmarks', 'Deleting bookmarks'),
 				deleteSelection: this.t('bookmarks', 'Deleting selection'),
+				restoreSelection: this.t('bookmarks', 'Restoring selection'),
+				PermanentlyDeleteSelection: this.t('bookmarks', 'Permanently deleting selection'),
 				importBookmarks: this.t('bookmarks', 'Importing bookmarks'),
 				moveSelection: this.t('bookmkarks', 'Moving selection'),
 			},

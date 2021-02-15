@@ -17,6 +17,8 @@ use OCP\AppFramework\Db\Entity;
  * @method setTitle(string $title)
  * @method string getUserId()
  * @method setUserId(string $userId)
+ * @method getDeleted
+ * @method setDeleted(boolean $deleted)
  */
 class Folder extends Entity {
 	/**
@@ -27,14 +29,17 @@ class Folder extends Entity {
 	 * @var string
 	 */
 	protected $userId;
+	protected $index;
+	protected $deleted;
 
-	public static $columns = ['id', 'title', 'user_id'];
+	public static $columns = ['id', 'title', 'user_id', 'deleted'];
 
 
 	public function __construct() {
 		// add types in constructor
 		$this->addType('title', 'string');
 		$this->addType('userId', 'string');
+		$this->addType('deleted', 'boolean');
 	}
 
 	/**
@@ -43,6 +48,6 @@ class Folder extends Entity {
 	 * @psalm-return array{id: int, title: string, userId: string}
 	 */
 	public function toArray(): array {
-		return ['id' => $this->id, 'title' => $this->title, 'userId' => $this->userId];
+		return ['id' => $this->id, 'title' => $this->title, 'userId' => $this->userId, 'deleted' => $this->deleted];
 	}
 }
