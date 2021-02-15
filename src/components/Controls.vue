@@ -38,7 +38,7 @@
 					@input="onTagsChange" />
 			</template>
 			<Actions
-				v-if="!isPublic"
+				v-if="!isPublic && $route.name !== routes.DELETED"
 				class="controls__AddFolder"
 				:title="t('bookmarks', 'New')"
 				:default-icon="'icon-add'">
