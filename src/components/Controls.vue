@@ -80,6 +80,18 @@
 						</template>
 						{{ t('bookmarks', 'Move selection') }}
 					</ActionButton>
+					<ActionInput
+						v-if="!selectedFolders.length"
+						:value="selectionTags"
+						icon="icon-tag"
+						type="multiselect"
+						:options="allTags"
+						:multiple="true"
+						:taggable="true"
+						@tag="onBulkTag([...selectionTags, $event])"
+						@input="onBulkTag">
+						{{ t('bookmarks', 'Edit tags of selection') }}
+					</ActionInput>
 					<ActionButton icon="icon-delete" @click="onBulkDelete">
 						{{ t('bookmarks', 'Delete selection') }}
 					</ActionButton>
@@ -102,20 +114,23 @@
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import RssIcon from 'vue-material-design-icons/Rss'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
+import intersection from 'lodash/intersection'
 
 export default {
 	name: 'Controls',
-	components: { Multiselect, Actions, ActionButton, ActionSeparator, FolderMoveIcon, RssIcon },
+	components: { Multiselect, Actions, ActionButton, ActionInput, ActionSeparator, FolderMoveIcon, RssIcon },
 	props: {},
 	data() {
 		return {
 			url: '',
 			search: this.$route.params.search || '',
+			selectionTags: [],
 		}
 	},
 	computed: {
@@ -140,6 +155,9 @@ export default {
 		},
 		selectedFolders() {
 			return this.$store.state.selection.folders
+		},
+		selectedBookmarks() {
+			return this.$store.state.selection.bookmarks
 		},
 		selectionDescription() {
 			if (this.$store.state.selection.bookmarks.length !== 0 && this.$store.state.selection.folders.length !== 0) {
@@ -178,6 +196,11 @@ export default {
 							).toString()
 					)
 			)
+		},
+	},
+	watch: {
+		selectedBookmarks(bookmarks) {
+			this.updateSelectionTags()
 		},
 	},
 	created() {},
@@ -229,6 +252,11 @@ export default {
 		onBulkMove() {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
+		async onBulkTag(tags) {
+			const originalTags = this.selectionTags
+			this.selectionTags = tags
+			await this.$store.dispatch(actions.TAG_SELECTION, { tags, originalTags })
+		},
 		onCancelSelection() {
 			this.$store.commit(mutations.RESET_SELECTION)
 		},
@@ -237,6 +265,9 @@ export default {
 			this.$store.state.bookmarks.forEach(bookmark => {
 				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, bookmark)
 			})
+		},
+		updateSelectionTags() {
+			this.selectionTags = intersection(...this.selectedBookmarks.map((bm) => bm.tags))
 		},
 
 		openRssUrl() {
