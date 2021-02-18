@@ -34,7 +34,7 @@ class FileCacheGCJob extends TimedJob {
 		$this->logger = $logger;
 	}
 
-	protected function run($argument) {
+	protected function run($argument) : void {
 		try {
 			$this->fileCache->gc();
 		} catch (NotPermittedException $e) {
