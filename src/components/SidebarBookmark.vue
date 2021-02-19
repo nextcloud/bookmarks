@@ -83,12 +83,12 @@
 			<div>
 				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
 				<RichContenteditable
-					v-model="bookmark.description"
+					:value.sync="bookmark.description"
 					:contenteditable="isEditable"
 					:auto-complete="() => {}"
 					:placeholder="t('bookmarks', 'Notes for this bookmark …')"
 					:multiline="true"
-					@input="onNotesChange" />
+					@update:value="onNotesChange" />
 			</div>
 		</AppSidebarTab>
 	</AppSidebar>
