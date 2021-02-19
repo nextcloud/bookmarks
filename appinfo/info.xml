@@ -15,9 +15,9 @@ Requirements:
  - PHP extensions:
    - intl: *
    - mbstring: *
- - Nextcloud v20
+ - Nextcloud v20+
 ]]></description>
-	<version>4.0.8</version>
+	<version>4.1.0</version>
 	<licence>agpl</licence>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
