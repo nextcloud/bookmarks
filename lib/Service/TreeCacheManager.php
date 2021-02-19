@@ -155,6 +155,17 @@ class TreeCacheManager implements IEventListener {
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 			return;
 		}
+
+		// Invalidate share participants
+		$sharedFolders = $this->sharedFolderMapper->findByFolder($folderId);
+		foreach ($sharedFolders as $sharedFolder) {
+			try {
+				$parentFolder = $this->getTreeMapper()->findParentOf(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+				$this->invalidateFolder($parentFolder->getId(), $previousFolders);
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+				continue;
+			}
+		}
 	}
 
 	public function invalidateBookmark(int $bookmarkId): void {
