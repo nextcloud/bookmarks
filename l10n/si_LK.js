@@ -1,6 +1,7 @@
 OC.L10N.register(
     "bookmarks",
     {
+    "Details" : "විස්තර",
     "Rename" : "නැවත නම් කරන්න",
     "Move" : "Move",
     "Delete" : "ඉවත් කරන්න",
