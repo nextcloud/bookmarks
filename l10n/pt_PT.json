@@ -14,7 +14,6 @@
     "Cancel" : "Cancelar",
     "All bookmarks" : "Todos os marcadores",
     "Recent" : "Recentes",
-    "Add a bookmark" : "Adicionar um marcador",
     "Import" : "Importar",
     "Export" : "Exportar",
     "Recently added" : "Adicionados recentemente",
@@ -34,6 +33,7 @@
     "Link copied" : "Link copiado",
     "Select" : "Seleccionar",
     "Privacy" : "Privacidade",
+    "Add a bookmark" : "Adicionar um marcador",
     "Folder" : "Pasta",
     "Save" : "Guardar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

@@ -16,7 +16,6 @@ OC.L10N.register(
     "Submit" : "გაგზავნა",
     "Cancel" : "უარყოფა",
     "Recent" : "ახალი",
-    "Add a bookmark" : "სანიშნის დამატება",
     "Import" : "იმპორტი",
     "Export" : "ექსპორტი",
     "Recently added" : "ახლად დამატებული",
@@ -35,6 +34,7 @@ OC.L10N.register(
     "Allow editing" : "შეცვლის ნების დართვა",
     "Select" : "არჩევა",
     "Privacy" : "კონფიდენციალურობა",
+    "Add a bookmark" : "სანიშნის დამატება",
     "This URL is already bookmarked! Overwrite?" : "ეს URL უკვე მონიშნულია! გადავწეროთ?",
     "Folder" : "დირექტორია",
     "Save" : "შენახვა"

@@ -18,7 +18,6 @@ OC.L10N.register(
     "All bookmarks" : "Всички отметки",
     "Recent" : "Последни",
     "Untagged" : "Без отметки",
-    "Add a bookmark" : "Добави отметка",
     "Import" : "Внасяне",
     "Export" : "Изнасяне",
     "Recently added" : "Последно добавени",
@@ -43,6 +42,7 @@ OC.L10N.register(
     "Link copied" : "Връзката е копирана",
     "Select" : "Маркирай",
     "Privacy" : "Защита на лични данни",
+    "Add a bookmark" : "Добави отметка",
     "This URL is already bookmarked! Overwrite?" : "Този адрес е вече добавен към отметките! Искате ли да презапишете?",
     "Folder" : "Папка",
     "Save" : "Запиши"

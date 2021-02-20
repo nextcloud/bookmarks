@@ -11,7 +11,6 @@
     "Select all" : "تحديد الكل",
     "Cancel" : "إلغاء",
     "Recent" : "الحديثة",
-    "Add a bookmark" : "إضافة فاصلة مرجعية",
     "Import" : "استيراد",
     "Export" : "تصدير",
     "Recently added" : "اضيفت مؤخرا",
@@ -30,8 +29,9 @@
     "Allow sharing" : "السماح بالمشاركة",
     "Link copied" : "نُسِخ الرابط",
     "Select" : "تحديد",
-    "Previews" : "المعاينات",
     "Privacy" : "الخصوصية",
+    "Previews" : "المعاينات",
+    "Add a bookmark" : "إضافة فاصلة مرجعية",
     "Folder" : "مجلد",
     "Save" : "حفظ"
 },"pluralForm" :"nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;"

@@ -34,8 +34,8 @@ OC.L10N.register(
     "Allow editing" : "Lejo redaktimin",
     "Link copied" : "Linku u kopjua",
     "Select" : "Përzgjidh",
-    "Previews" : "Parapamjet",
     "Privacy" : "Privatësia",
+    "Previews" : "Parapamjet",
     "Folder" : "Skedari",
     "Save" : "Ruaj"
 },

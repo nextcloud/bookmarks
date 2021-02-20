@@ -16,7 +16,6 @@ OC.L10N.register(
     "Submit" : "Гаразд",
     "Cancel" : "Скасувати",
     "Recent" : "Нещодавні",
-    "Add a bookmark" : "Додати закладку",
     "Import" : "Імпорт",
     "Export" : "Експорт",
     "Recently added" : "Нещодавно додані",
@@ -38,6 +37,7 @@ OC.L10N.register(
     "Select" : "Вибрати",
     "Privacy" : "Конфіденційність",
     "Failed to save settings" : "Неможливо зберегти налаштування",
+    "Add a bookmark" : "Додати закладку",
     "This URL is already bookmarked! Overwrite?" : "Цей URL вже є в закладках! Перезаписати?",
     "Folder" : "Папка",
     "Save" : "Зберегти"

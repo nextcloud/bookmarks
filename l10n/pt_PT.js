@@ -16,7 +16,6 @@ OC.L10N.register(
     "Cancel" : "Cancelar",
     "All bookmarks" : "Todos os marcadores",
     "Recent" : "Recentes",
-    "Add a bookmark" : "Adicionar um marcador",
     "Import" : "Importar",
     "Export" : "Exportar",
     "Recently added" : "Adicionados recentemente",
@@ -36,6 +35,7 @@ OC.L10N.register(
     "Link copied" : "Link copiado",
     "Select" : "Seleccionar",
     "Privacy" : "Privacidade",
+    "Add a bookmark" : "Adicionar um marcador",
     "Folder" : "Pasta",
     "Save" : "Guardar"
 },

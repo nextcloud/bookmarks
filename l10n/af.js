@@ -14,7 +14,6 @@ OC.L10N.register(
     "Select all" : "Kies alle",
     "Cancel" : "Kanselleer",
     "Recent" : "Onlangs",
-    "Add a bookmark" : "Voeg 'n boekmerk by",
     "Import" : "Voer In",
     "Export" : "Voer uit",
     "Recently added" : "Onlangs bygevoeg",
@@ -33,8 +32,9 @@ OC.L10N.register(
     "Allow editing" : "Laat redigering toe",
     "Link copied" : "Skakel gekopieer",
     "Select" : "Kies",
-    "Previews" : "Voorskoue",
     "Privacy" : "Privaatheid",
+    "Previews" : "Voorskoue",
+    "Add a bookmark" : "Voeg 'n boekmerk by",
     "This URL is already bookmarked! Overwrite?" : "'n Boekmerk van die URL bestaan reeds. Skryf oor?",
     "Folder" : "Vouer",
     "Save" : "Stoor"

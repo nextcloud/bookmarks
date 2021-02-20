@@ -13,7 +13,6 @@ OC.L10N.register(
     "Select all" : "تحديد الكل",
     "Cancel" : "إلغاء",
     "Recent" : "الحديثة",
-    "Add a bookmark" : "إضافة فاصلة مرجعية",
     "Import" : "استيراد",
     "Export" : "تصدير",
     "Recently added" : "اضيفت مؤخرا",
@@ -32,8 +31,9 @@ OC.L10N.register(
     "Allow sharing" : "السماح بالمشاركة",
     "Link copied" : "نُسِخ الرابط",
     "Select" : "تحديد",
-    "Previews" : "المعاينات",
     "Privacy" : "الخصوصية",
+    "Previews" : "المعاينات",
+    "Add a bookmark" : "إضافة فاصلة مرجعية",
     "Folder" : "مجلد",
     "Save" : "حفظ"
 },
