@@ -86,6 +86,7 @@
     "No archived bookmarks" : "已存档标签为空",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "照片或PDF等文件的书签会被自动保存到你的 Nextcloud 文件中 因此即使链接下线，你仍然可以找到它们。",
     "No bookmarks here" : "无书签",
+    "Start by importing bookmarks from a file or synchronizing your browser bookmarks with this app" : "要开始，请从文件导入书签，或者用这个应用同步浏览器书签",
     "Import bookmarks" : "导入标签",
     "Sync with your browser" : "与你的浏览器同步",
     "Import" : "导入",

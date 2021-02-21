@@ -22,6 +22,7 @@ OC.L10N.register(
     "Copy link" : "Copiar lo ligam",
     "Allow editing" : "Permetre la modificacion",
     "Select" : "Select",
+    "Privacy" : "Confidencialitat",
     "Folder" : "Dorsièr",
     "Save" : "Salvar"
 },
