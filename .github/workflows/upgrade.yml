@@ -22,6 +22,11 @@ jobs:
         exclude:
           - prev-version: 'stable3'
             server-versions: 'stable21'
+        include:
+          - prev-version: 'v3.3.3'
+            server-versions: 'stable20'
+            php-versions: '7.3'
+            databases: 'mysql'
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
