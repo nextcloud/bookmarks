@@ -7,7 +7,7 @@
 <template>
 	<div class="bookmarkslist__emptyBookmarks">
 		<EmptyContent v-if="$route.name === routes.ARCHIVED">
-			{{ t('bookmarks', 'No archived bookmarks') }}
+			{{ t('bookmarks', 'No bookmarked files') }}
 			<template #desc>
 				{{ t('bookmarks', 'Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.') }}
 			</template>
