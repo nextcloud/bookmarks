@@ -305,8 +305,8 @@ class BookmarkService {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function removeFromFolder(int $folderId, int $bookmarkId): void {
-		$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
+	public function removeFromFolder(int $folderId, int $bookmarkId, bool $permanent): void {
+		$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId], $permanent);
 	}
 
 	/**
@@ -370,7 +370,7 @@ class BookmarkService {
 		$bookmark = $this->bookmarkMapper->find($id);
 		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id);
 		foreach ($parents as $parent) {
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $parent->getId());
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), true, $parent->getId());
 		}
 		if (count($parents) === 0) {
 			$this->bookmarkMapper->delete($bookmark);
@@ -449,7 +449,7 @@ class BookmarkService {
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$bookmarks = $this->treeMapper->findChildren(TreeMapper::TYPE_BOOKMARK, $rootFolder->getId());
 		foreach ($bookmarks as $bookmark) {
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $rootFolder->getId());
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), false, $rootFolder->getId());
 		}
 		$folders = $this->treeMapper->findChildren(TreeMapper::TYPE_FOLDER, $rootFolder->getId());
 		foreach ($folders as $folder) {

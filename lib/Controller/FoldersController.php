@@ -264,42 +264,14 @@ class FoldersController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function removeFromFolder($folderId, $bookmarkId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
-			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($bookmarkId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		}
-		try {
-			$this->bookmarks->delete($bookmarkId);
-		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_BAD_REQUEST);
-		}
-
-		return new JSONResponse(['status' => 'success']);
-	}
-
-	/**
-	 * @param int $folderId
-	 * @param int $bookmarkId
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @CORS
-	 * @PublicPage
-	 */
-	public function removeFromFolderPermanently($folderId, $bookmarkId): JSONResponse {
+	public function removeFromFolder($folderId, $bookmarkId, $permanent = false): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
 			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($bookmarkId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		}
 		try {
 			$folderId = $this->toInternalFolderId($folderId);
-			$this->bookmarks->removeFromFolder($folderId, $bookmarkId);
+			$this->bookmarks->removeFromFolder($folderId, $bookmarkId, $permanent);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {

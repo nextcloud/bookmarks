@@ -334,7 +334,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param QueryParameters $params
 	 */
 	private function _filterDeleted(IQueryBuilder $qb, QueryParameters $params): void {
-		$qb->andWhere($qb->expr()->eq('b.deleted', $qb->createPositionalParameter($params->getDeleted(), IQueryBuilder::PARAM_BOOL)));
+		$qb->andWhere($qb->expr()->eq('tr.deleted', $qb->createPositionalParameter($params->getDeleted(), IQueryBuilder::PARAM_BOOL)));
 	}
 
 	/**
@@ -448,7 +448,7 @@ class BookmarkMapper extends QBMapper {
 				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
 				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
 			))
-			->andWhere($qb->expr()->eq('b.deleted', $qb->createPositionalParameter(true, IQueryBuilder::PARAM_BOOL)));
+			->andWhere($qb->expr()->eq('tr.deleted', $qb->createPositionalParameter(true, IQueryBuilder::PARAM_BOOL)));
 
 		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
 	}

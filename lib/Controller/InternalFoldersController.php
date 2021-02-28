@@ -99,8 +99,8 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function removeFromFolder($folderId, $bookmarkId): JSONResponse {
-		return $this->controller->removeFromFolder($folderId, $bookmarkId);
+	public function removeFromFolder($folderId, $bookmarkId, $permanent = false): JSONResponse {
+		return $this->controller->removeFromFolder($folderId, $bookmarkId, $permanent);
 	}
 
 	/**

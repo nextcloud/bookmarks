@@ -354,14 +354,14 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function deleteEntry(string $type, int $id, int $folderId = null): void {
+	public function deleteEntry(string $type, int $id, bool $permanent = false, int $folderId = null): void {
 		$this->eventDispatcher->dispatch(BeforeDeleteEvent::class, new BeforeDeleteEvent($type, $id));
 
 		if ($type === self::TYPE_FOLDER) {
 			// First get all shares out of the way
 			$descendantShares = $this->findByAncestorFolder(self::TYPE_SHARE, $id);
 			foreach ($descendantShares as $share) {
-				$this->deleteEntry(self::TYPE_SHARE, $share->getId(), $id);
+				$this->deleteEntry(self::TYPE_SHARE, $share->getId(), $permanent, $id);
 			}
 
 			// then get all folders in this sub tree
@@ -419,9 +419,43 @@ class TreeMapper extends QBMapper {
 	/**
 	 * @param string $type
 	 * @param int $itemId
+	 * @param bool $deleted
+	 * @return void
+	 */
+	private function toggleDeleted(string $type, int $itemId, bool $deleted): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->update('bookmarks_tree')
+			->set('deleted', $qb->createPositionalParameter($deleted, IQueryBuilder::PARAM_BOOL))
+			->where($qb->expr()->eq('type', $qb->createPositionalParameter($type)))
+			->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($itemId, IQueryBuilder::PARAM_INT)));
+		$qb->execute();
+	}
+
+	/**
+	 * @param string $type
+	 * @param int $itemId
 	 * @return void
 	 */
 	public function remove(string $type, int $itemId): void {
+		$this->toggleDeleted($type, $itemId, true);
+	}
+
+	/**
+	 * @param string $type
+	 * @param int $itemId
+	 * @return void
+	 */
+	public function restore(string $type, int $itemId): void {
+		$this->toggleDeleted($type, $itemId, false);
+	}
+
+	/**
+	 * @param string $type
+	 * @param int $itemId
+	 * @return void
+	 */
+	public function removePermanently(string $type, int $itemId): void {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->delete('bookmarks_tree')
@@ -569,7 +603,7 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function removeFromFolders(string $type, int $itemId, array $folders): void {
+	public function removeFromFolders(string $type, int $itemId, array $folders, bool $permanent): void {
 		if ($type !== self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Only bookmarks can be in multiple folders');
 		}
@@ -577,18 +611,28 @@ class TreeMapper extends QBMapper {
 
 		foreach ($folders as $folderId) {
 			$qb = $this->db->getQueryBuilder();
-			$qb
-				->delete('bookmarks_tree')
-				->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
-				->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($itemId)))
-				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
-			$qb->execute();
+			if ($permanent === true) {
+				$qb
+					->delete('bookmarks_tree')
+					->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
+					->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($itemId)))
+					->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
+				$qb->execute();
+			} else {
+				$qb
+					->update('bookmarks_tree')
+					->set('deleted', $qb->createPositionalParameter(true, IQueryBuilder::PARAM_BOOL))
+					->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
+					->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($itemId)))
+					->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
+				$qb->execute();
+			}
 
 			$this->eventDispatcher->dispatch(MoveEvent::class, new MoveEvent($type, $itemId, $folderId));
 
 			$foldersLeft--;
 		}
-		if ($foldersLeft <= 0 && $type === self::TYPE_BOOKMARK) {
+		if ($foldersLeft <= 0 && $type === self::TYPE_BOOKMARK && $permanent === true) {
 			$bm = $this->bookmarkMapper->find($itemId);
 			$this->bookmarkMapper->delete($bm);
 		}
@@ -752,7 +796,8 @@ class TreeMapper extends QBMapper {
 		$qb
 			->select($qb->func()->count('index', 'count'))
 			->from('bookmarks_tree')
-			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)));
+			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
+			->andWhere($qb->expr()->eq('deleted', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
 		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
 	}
 
@@ -772,6 +817,7 @@ class TreeMapper extends QBMapper {
 			->from('bookmarks', 'b')
 			->innerJoin('b', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'b.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
+			->andWhere($qb->expr()->eq('t.deleted', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)))
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)));
 		$countChildren = $qb->execute()->fetch(PDO::FETCH_COLUMN);
 
@@ -781,6 +827,7 @@ class TreeMapper extends QBMapper {
 			->from('bookmarks_folders', 'f')
 			->innerJoin('f', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'f.id'))
 			->where($qb->expr()->eq('t.parent_folder', $qb->createPositionalParameter($folderId)))
+			->andWhere($qb->expr()->eq('t.deleted', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)))
 			->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter(self::TYPE_FOLDER)));
 		$childFolders = $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
 
