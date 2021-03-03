@@ -8,6 +8,7 @@ OC.L10N.register(
     "Delete" : "Suprimir",
     "New" : "Novèl",
     "New folder" : "Novèl dorsièr",
+    "Cancel selection" : "Anullar la seleccion",
     "Cancel" : "Anullar",
     "Recent" : "Recents",
     "Import" : "Importar",
