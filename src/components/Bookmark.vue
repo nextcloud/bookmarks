@@ -53,7 +53,7 @@
 				{{ t('bookmarks', 'Rename') }}
 			</ActionButton>
 			<ActionButton
-				v-if="!bookmark.deleted"
+				v-if="!deleted"
 				:close-after-click="true"
 				@click="onMove">
 				<template #icon>
@@ -64,21 +64,21 @@
 				{{ t('bookmarks', 'Move') }}
 			</ActionButton>
 			<ActionButton
-				v-if="!bookmark.deleted"
+				v-if="!deleted"
 				icon="icon-delete"
 				:close-after-click="true"
 				@click="onDelete">
 				{{ t('bookmarks', 'Delete') }}
 			</ActionButton>
 			<ActionButton
-				v-if="bookmark.deleted"
+				v-if="deleted"
 				icon="icon-history"
 				:close-after-click="true"
 				@click="onRestore">
 				{{ t('bookmarks', 'Restore') }}
 			</ActionButton>
 			<ActionButton
-				v-if="bookmark.deleted"
+				v-if="deleted"
 				icon="icon-delete"
 				:close-after-click="true"
 				@click="onPermanentlyDelete">
@@ -108,6 +108,10 @@ export default {
 		bookmark: {
 			type: Object,
 			required: true,
+		},
+		deleted: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	data() {

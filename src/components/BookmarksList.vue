@@ -53,7 +53,8 @@
 						<Bookmark
 							v-for="bookmark in bookmarks"
 							:key="'bookmark' + bookmark.id"
-							:bookmark="bookmark" />
+							:bookmark="bookmark"
+							:deleted="true" />
 					</template>
 				</template>
 				<NoBookmarks v-else-if="!loading" />
