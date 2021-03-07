@@ -355,9 +355,7 @@ class BookmarkService {
 	 * @throws UnsupportedOperation
 	 */
 	public function restore($id): void {
-		$bookmark = $this->bookmarkMapper->find($id);
-		$bookmark->setDeleted(false);
-		$this->bookmarkMapper->update($bookmark);
+		$this->treeMapper->restore(TreeMapper::TYPE_BOOKMARK, $id);
 	}
 
 	/**
