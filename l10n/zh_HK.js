@@ -146,7 +146,7 @@ OC.L10N.register(
     "In an installation with a lot of users it may be useful to restrict the number of bookmarks per account." : "在具有大量用戶的安裝中，限制每個賬戶的書籤數量可能很有用。",
     "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "每個帳號可以允許的書籤最大數量。(0是無限制; 預設是無限制)",
     "Previews" : "預覽",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use third-party services to generate previews." : "為了顯示您添加了書籤的網站的真實屏幕截圖，書籤可以使用第三方服務來生成預覽。",
+    "In order to display real screenshots of your bookmarked websites, Bookmarks can use third-party services to generate previews." : "為了顯示您添加了書籤的網站的真實屏幕截圖，Bookmarks 可以使用第三方服務來生成預覽。",
     "Screeenly" : "Screeenly",
     "You can either sign up for free at screeenly.com or setup your own server." : "您可以免費在 screeenly.com 註冊或是設定您自己的伺服器。",
     "Screeenly API URL" : "Screeenly API URL",
