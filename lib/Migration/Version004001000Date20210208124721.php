@@ -9,7 +9,7 @@ namespace OCA\Bookmarks\Migration;
 
 use Closure;
 use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\DBAL\Types\Type;
+use OCA\Bookmarks\Db\Types;
 use OCP\DB\ISchemaWrapper;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
@@ -18,7 +18,7 @@ use OCP\Migration\SimpleMigrationStep;
 /**
  * Auto-generated migration step: Please modify to your needs!
  */
-class Version004009000Date20210208124721 extends SimpleMigrationStep {
+class Version004001000Date20210208124721 extends SimpleMigrationStep {
 	private $db;
 
 	public function __construct(IDBConnection $db) {
@@ -49,10 +49,10 @@ class Version004009000Date20210208124721 extends SimpleMigrationStep {
 		$schema = $schemaClosure();
 		if ($schema->hasTable('bookmarks')) {
 			$table = $schema->getTable('bookmarks');
-			$table->addColumn('html_content', Type::TEXT, [
+			$table->addColumn('html_content', Types::TEXT, [
 				'notnull' => false,
 			]);
-			$table->addColumn('text_content', Type::TEXT, [
+			$table->addColumn('text_content', Types::TEXT, [
 				'notnull' => false,
 			]);
 		}
