@@ -52,6 +52,7 @@ OC.L10N.register(
     "List view" : "Seznamski pogled",
     "RSS Feed of current view" : "Vir RSS trenutnega pogleda",
     "Move selection" : "Premakni izbor",
+    "Edit tags of selection" : "Uredi oznake izbire",
     "Delete selection" : "Izbriši izbor",
     "Open all selected" : "Odpri vse izbrane",
     "Select all" : "Izberi vse",

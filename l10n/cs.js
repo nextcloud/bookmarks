@@ -82,7 +82,7 @@ OC.L10N.register(
     "All bookmarks" : "Všechny záložky",
     "Recent" : "Nedávné",
     "Archived" : "Archivováno",
-    "Broken links" : "Rozbité odkazy",
+    "Broken links" : "Nefunkční odkazy",
     "Filter tags" : "Filtrovat štítky",
     "Untagged" : "Neoštítkováno",
     "{used} bookmarks of {available} available" : "{used} záložek z {available} k dispozici",
