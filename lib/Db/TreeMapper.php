@@ -354,7 +354,7 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function deleteEntry(string $type, int $id, bool $permanent = false, int $folderId = null): void {
+	public function deleteEntry(string $type, int $id, bool $permanent, int $folderId = null): void {
 		$this->eventDispatcher->dispatch(BeforeDeleteEvent::class, new BeforeDeleteEvent($type, $id));
 
 		if ($type === self::TYPE_FOLDER) {
@@ -370,35 +370,40 @@ class TreeMapper extends QBMapper {
 			$folder = $this->folderMapper->find($id);
 			$descendantFolders[] = $folder;
 
-			// remove all bookmarks entries from this subtree
-			$qb = $this->db->getQueryBuilder();
-			$qb
-				->delete('bookmarks_tree')
-				->where($qb->expr()->eq('type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
-				->andWhere($qb->expr()->in('parent_folder', $qb->createPositionalParameter(array_map(static function ($folder) {
-					return $folder->getId();
-				}, $descendantFolders), IQueryBuilder::PARAM_INT_ARRAY)));
-			$qb->execute();
-
-			// remove all folders  entries from this subtree
-			foreach ($descendantFolders as $descendantFolder) {
-				$this->removeFolderTangibles($descendantFolder->getId());
-				$this->remove(self::TYPE_FOLDER, $descendantFolder->getId());
-				$this->folderMapper->delete($descendantFolder);
-			}
-
-			// Remove orphaned bookmarks
-			$qb = $this->db->getQueryBuilder();
-			$qb->select('b.id')
-				->from('bookmarks', 'b')
-				->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND t.type = '.$qb->createPositionalParameter(self::TYPE_BOOKMARK))
-				->where($qb->expr()->isNull('t.id'));
-			$orphanedBookmarks = $qb->execute();
-			while ($bookmark = $orphanedBookmarks->fetchColumn()) {
+			if ($permanent) {
+				// remove all bookmarks entries from this subtree
 				$qb = $this->db->getQueryBuilder();
-				$qb->delete('bookmarks')
-					->where($qb->expr()->eq('id', $qb->createPositionalParameter($bookmark)))
-					->execute();
+				$qb
+					->delete('bookmarks_tree')
+					->where($qb->expr()->eq('type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
+					->andWhere($qb->expr()->in('parent_folder', $qb->createPositionalParameter(array_map(static function ($folder) {
+						return $folder->getId();
+					}, $descendantFolders), IQueryBuilder::PARAM_INT_ARRAY)));
+				$qb->execute();
+
+				// remove all folders  entries from this subtree
+				foreach ($descendantFolders as $descendantFolder) {
+					$this->removeFolderTangibles($descendantFolder->getId());
+					$this->removePermanently(self::TYPE_FOLDER, $descendantFolder->getId());
+					$this->folderMapper->delete($descendantFolder);
+				}
+
+				// Remove orphaned bookmarks
+				$qb = $this->db->getQueryBuilder();
+				$qb->select('b.id')
+					->from('bookmarks', 'b')
+					->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND t.type = '.$qb->createPositionalParameter(self::TYPE_BOOKMARK))
+					->where($qb->expr()->isNull('t.id'));
+				$orphanedBookmarks = $qb->execute();
+				while ($bookmark = $orphanedBookmarks->fetchColumn()) {
+					$qb = $this->db->getQueryBuilder();
+					$qb->delete('bookmarks')
+						->where($qb->expr()->eq('id', $qb->createPositionalParameter($bookmark)))
+						->execute();
+				}
+			} else {
+				// Mark folder as deleted
+				$this->remove(self::TYPE_FOLDER, $folder->getId());
 			}
 
 			return;
@@ -412,7 +417,7 @@ class TreeMapper extends QBMapper {
 		}
 
 		if ($type === self::TYPE_BOOKMARK) {
-			$this->removeFromFolders(self::TYPE_BOOKMARK, $id, [$folderId]);
+			$this->removeFromFolders(self::TYPE_BOOKMARK, $id, [$folderId], $permanent);
 		}
 	}
 
@@ -475,7 +480,7 @@ class TreeMapper extends QBMapper {
 		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);
 		foreach ($sharedFolders as $sharedFolder) {
 			$this->sharedFolderMapper->delete($sharedFolder);
-			$this->deleteEntry(self::TYPE_SHARE, $sharedFolder->getId());
+			$this->deleteEntry(self::TYPE_SHARE, $sharedFolder->getId(), true);
 		}
 		$this->shareMapper->delete($share);
 	}
@@ -557,7 +562,7 @@ class TreeMapper extends QBMapper {
 			return $f->getId();
 		}, array_filter($currentFolders, static function (Folder $folder) use ($folders) {
 			return !in_array($folder->getId(), $folders, true);
-		})));
+		})), true);
 	}
 
 	/**

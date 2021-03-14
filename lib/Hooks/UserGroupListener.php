@@ -120,7 +120,7 @@ class UserGroupListener implements IEventListener {
 	public function preRemoveUser(IGroup $group, IUser $user): void {
 		$sharedFoldersToDelete = $this->sharedFolderMapper->findByParticipantAndUser(IShare::TYPE_GROUP, $group->getGID(), $user->getUID());
 		foreach ($sharedFoldersToDelete as $sharedFolder) {
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), true);
 		}
 	}
 

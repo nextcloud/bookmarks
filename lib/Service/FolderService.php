@@ -210,7 +210,7 @@ class FolderService {
 		$folder = $this->folderMapper->find($folderId);
 
 		if ($userId === null || $userId === $folder->getUserId()) {
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId(), true);
 			return;
 		}
 
@@ -220,14 +220,14 @@ class FolderService {
 			 * @var $sharedFolder SharedFolder
 			 */
 			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), true);
 			return;
 		} catch (DoesNotExistException $e) {
 			// noop
 		}
 
 		// folder is subfolder of share
-		$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+		$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId(), true);
 		$this->folderMapper->delete($folder);
 	}
 

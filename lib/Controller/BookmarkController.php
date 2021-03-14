@@ -481,15 +481,13 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function deleteBookmark($id, $permanent): JSONResponse {
-		if ($permanent !== "true") {
-			try {
-				$this->bookmarkMapper->find($id);
-			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
-				return new JSONResponse(['status' => 'success']);
-			}
-			if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
-				return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
-			}
+		try {
+			$this->bookmarkMapper->find($id);
+		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+			return new JSONResponse(['status' => 'success']);
+		}
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 
 		try {

@@ -338,21 +338,15 @@ class BookmarkService {
 
 	/**
 	 * @param int $id
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
-	 * @throws UnsupportedOperation
+	 * @return void
 	 */
 	public function delete(int $id): void {
-		$bookmark = $this->bookmarkMapper->find($id);
-		$bookmark->setDeleted(true);
-		$this->bookmarkMapper->update($bookmark);
+		$this->treeMapper->remove(TreeMapper::TYPE_BOOKMARK, $id);
 	}
 
 	/**
 	 * @param $id
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
-	 * @throws UnsupportedOperation
+	 * @return void
 	 */
 	public function restore($id): void {
 		$this->treeMapper->restore(TreeMapper::TYPE_BOOKMARK, $id);
@@ -451,7 +445,7 @@ class BookmarkService {
 		}
 		$folders = $this->treeMapper->findChildren(TreeMapper::TYPE_FOLDER, $rootFolder->getId());
 		foreach ($folders as $folder) {
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId(), true);
 		}
 		$this->bookmarkMapper->deleteAll($userId);
 		$this->hashManager->setInvalidationEnabled(true);
