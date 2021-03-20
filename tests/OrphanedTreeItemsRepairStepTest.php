@@ -106,7 +106,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 		self::assertCount(5, $this->treeMapper->getChildren($rootFolder->getId()));
 
 		// Remove tree structure
-		$this->db->executeQuery('TRUNCATE TABLE oc_bookmarks_tree');
+		$this->db->executeQuery('DELETE FROM oc_bookmarks_tree');
 
 		// check for no children
 		self::assertCount(0, $this->treeMapper->getChildren($rootFolder->getId()));
