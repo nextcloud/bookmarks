@@ -14,7 +14,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 - 📰 Write down additional notes
 - 🔍 Built-in search integrated into Nextcloud's unified search
 - 👪 Share bookmarks with other users as well as publicly
-- ☠ Easily ind broken links
+- ☠ Easily find broken links
 - 📔 Archive bookmarked files 
 - 📲 Access your bookmarks anywhere, via a built-in REST API
 - 💡 Keep track of changes in the activity stream
@@ -25,7 +25,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 ## Third-party clients
 
 ### Android
-- [Nextcloud Bookmarks](https://gitlab.com/bisada/OCBookmarks) - client app for Android ([new App Store entry](https://www.amazon.com/dp/B08L5RKHMM/ref=apps_sf_sta))
+- [Nextcloud Bookmarks](https://gitlab.com/bisada/OCBookmarks) - client app for Android ([Amazon Appstore](https://www.amazon.com/dp/B08L5RKHMM/ref=apps_sf_sta)/[F-Droid](https://f-droid.org/packages/org.schabi.nxbookmarks))
 - [NCBookmark](https://gitlab.com/lenchan139/NCBookmark) - Android App
 
 ### Browser
