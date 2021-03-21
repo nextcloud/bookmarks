@@ -53,6 +53,7 @@
 					{{ t('bookmarks', 'New folder') }}
 				</ActionButton>
 			</Actions>
+			<BulkEditing v-if="hasSelection" />
 		</div>
 		<div class="controls__right">
 			<Actions>
@@ -72,41 +73,6 @@
 				@click="openRssUrl">
 				<RssIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
 			</button>
-			<div v-if="hasSelection" class="breadcrumbs__bulkediting">
-				<Actions :primary="true" :menu-title="selectionDescription">
-					<ActionButton @click="onBulkMove">
-						<template #icon>
-							<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
-						</template>
-						{{ t('bookmarks', 'Move selection') }}
-					</ActionButton>
-					<ActionInput
-						v-if="!selectedFolders.length"
-						:value="selectionTags"
-						icon="icon-tag"
-						type="multiselect"
-						:options="allTags"
-						:multiple="true"
-						:taggable="true"
-						@tag="onBulkTag([...selectionTags, $event])"
-						@input="onBulkTag">
-						{{ t('bookmarks', 'Edit tags of selection') }}
-					</ActionInput>
-					<ActionButton icon="icon-delete" @click="onBulkDelete">
-						{{ t('bookmarks', 'Delete selection') }}
-					</ActionButton>
-					<ActionButton icon="icon-external" @click="onBulkOpen">
-						{{ t('bookmarks', 'Open all selected') }}
-					</ActionButton>
-					<ActionSeparator />
-					<ActionButton icon="icon-checkmark" @click="onSelectAll">
-						{{ t('bookmarks', 'Select all') }}
-					</ActionButton>
-					<ActionButton icon="icon-close" @click="onCancelSelection">
-						{{ t('bookmarks', 'Cancel selection') }}
-					</ActionButton>
-				</Actions>
-			</div>
 		</div>
 	</div>
 </template>
@@ -114,23 +80,19 @@
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
-import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import RssIcon from 'vue-material-design-icons/Rss'
-import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
-import intersection from 'lodash/intersection'
+import BulkEditing from './BulkEditing'
 
 export default {
 	name: 'Controls',
-	components: { Multiselect, Actions, ActionButton, ActionInput, ActionSeparator, FolderMoveIcon, RssIcon },
+	components: { BulkEditing, Multiselect, Actions, ActionButton, RssIcon },
 	props: {},
 	data() {
 		return {
 			url: '',
 			search: this.$route.params.search || '',
-			selectionTags: [],
 		}
 	},
 	computed: {
@@ -153,35 +115,6 @@ export default {
 		hasSelection() {
 			return this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length
 		},
-		selectedFolders() {
-			return this.$store.state.selection.folders
-		},
-		selectedBookmarks() {
-			return this.$store.state.selection.bookmarks
-		},
-		selectionDescription() {
-			if (this.$store.state.selection.bookmarks.length !== 0 && this.$store.state.selection.folders.length !== 0) {
-				return this.t('bookmarks',
-					'Selected {folders} folders and {bookmarks} bookmarks',
-					{ folders: this.$store.state.selection.folders.length, bookmarks: this.$store.state.selection.bookmarks.length }
-				)
-			}
-			if (this.$store.state.selection.bookmarks.length !== 0) {
-				return this.n('bookmarks',
-					'Selected %n bookmark',
-					'Selected %n bookmarks',
-					this.$store.state.selection.bookmarks.length
-				)
-			}
-			if (this.$store.state.selection.folders.length !== 0) {
-				return this.n('bookmarks',
-					'Selected %n folder',
-					'Selected %n folders',
-					this.$store.state.selection.folders.length
-				)
-			}
-			return ''
-		},
 		rssURL() {
 			return (
 				window.location.origin
@@ -196,11 +129,6 @@ export default {
 							).toString()
 					)
 			)
-		},
-	},
-	watch: {
-		selectedBookmarks(bookmarks) {
-			this.updateSelectionTags()
 		},
 	},
 	created() {},
@@ -234,40 +162,6 @@ export default {
 				key: 'viewMode',
 				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid',
 			})
-		},
-
-		async onBulkOpen() {
-			for (const { url } of this.$store.state.selection.bookmarks) {
-				window.open(url)
-				await new Promise(resolve => setTimeout(resolve, 200))
-			}
-		},
-		async onBulkDelete() {
-			if (!confirm(t('bookmarks', 'Do you really want to delete these items?'))) {
-				return
-			}
-			await this.$store.dispatch(actions.DELETE_SELECTION, { folder: this.$route.params.folder })
-			this.$store.commit(mutations.RESET_SELECTION)
-		},
-		onBulkMove() {
-			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
-		},
-		async onBulkTag(tags) {
-			const originalTags = this.selectionTags
-			this.selectionTags = tags
-			await this.$store.dispatch(actions.TAG_SELECTION, { tags, originalTags })
-		},
-		onCancelSelection() {
-			this.$store.commit(mutations.RESET_SELECTION)
-		},
-		async onSelectAll() {
-			await this.$store.dispatch(actions.FETCH_ALL)
-			this.$store.state.bookmarks.forEach(bookmark => {
-				this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, bookmark)
-			})
-		},
-		updateSelectionTags() {
-			this.selectionTags = intersection(...this.selectedBookmarks.map((bm) => bm.tags))
 		},
 
 		openRssUrl() {
