@@ -438,32 +438,8 @@ export default {
 	},
 	async [actions.PERMANENTLY_DELETE_BOOKMARK](
 		{ commit, dispatch, state },
-		{ id, folder, avoidReload }
+		{ id, avoidReload }
 	) {
-		if (folder) {
-			try {
-				const response = await axios.delete(
-					url(state, `/folder/${folder}/bookmarks/permanent/${id}`)
-				)
-				if (response.data.status !== 'success') {
-					throw new Error(response.data)
-				}
-				commit(mutations.REMOVE_BOOKMARK, id)
-				if (!avoidReload) {
-					await dispatch(actions.COUNT_BOOKMARKS, -1)
-					await dispatch(actions.COUNT_DELETED)
-					await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
-				}
-			} catch (err) {
-				console.error(err)
-				commit(
-					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to permanently delete bookmark')
-				)
-				throw err
-			}
-			return
-		}
 		try {
 			const response = await axios.delete(url(state, `/bookmark/${id}?permanent=true`))
 			if (response.data.status !== 'success') {

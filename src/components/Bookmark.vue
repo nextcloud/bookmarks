@@ -215,9 +215,18 @@ export default {
 			})
 		},
 		onPermanentlyDelete() {
+			if (
+				!confirm(
+					t(
+						'bookmarks',
+						'Do you really want to permanently delete this bookmark?'
+					)
+				)
+			) {
+				return
+			}
 			this.$store.dispatch(actions.PERMANENTLY_DELETE_BOOKMARK, {
 				id: this.bookmark.id,
-				folder: this.$store.state.fetchState.query.folder,
 			})
 		},
 		onRestore() {

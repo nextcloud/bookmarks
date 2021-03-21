@@ -470,6 +470,20 @@ class TreeMapper extends QBMapper {
 	}
 
 	/**
+	 * @param int $itemId
+	 * @return void
+	 */
+	public function purgeDeleted(int $itemId): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->delete('bookmarks_tree')
+			->where($qb->expr()->eq('id', $qb->createPositionalParameter($itemId, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('deleted', $qb->createPositionalParameter(true, IQueryBuilder::PARAM_BOOL)));
+		$qb->execute();
+	}
+
+
+	/**
 	 * @param int $shareId
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException

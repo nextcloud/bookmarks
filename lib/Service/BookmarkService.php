@@ -360,10 +360,8 @@ class BookmarkService {
 	 */
 	public function deletePermanently($id): void {
 		$bookmark = $this->bookmarkMapper->find($id);
+		$this->treeMapper->purgeDeleted($id);
 		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id);
-		foreach ($parents as $parent) {
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), true, $parent->getId());
-		}
 		if (count($parents) === 0) {
 			$this->bookmarkMapper->delete($bookmark);
 		}
