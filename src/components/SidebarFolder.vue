@@ -9,6 +9,7 @@
 		v-if="isActive"
 		class="sidebar"
 		:title="folder.title"
+		:active.sync="activeTab"
 		@close="onClose">
 		<AppSidebarTab id="folder-details" :name="t('bookmarks', 'Details')" icon="icon-info">
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
@@ -102,6 +103,7 @@ export default {
 			participantSearchResults: [],
 			participant: null,
 			isSearching: false,
+			activeTab: '',
 		}
 	},
 	computed: {
@@ -164,6 +166,12 @@ export default {
 		},
 		bookmarkCount() {
 			return this.$store.state.countsByFolder[this.folder.id]
+		},
+	},
+
+	watch: {
+		'$store.state.sidebar.tab'(newActiveTab) {
+			this.activeTab = newActiveTab
 		},
 	},
 

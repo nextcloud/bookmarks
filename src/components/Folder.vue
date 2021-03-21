@@ -42,17 +42,20 @@
 			<ActionCheckbox @change="clickSelect">
 				{{ t('bookmarks', 'Select folder') }}
 			</ActionCheckbox>
+			<ActionButton icon="icon-share" :close-after-click="true" @click="onShare">
+				{{ t('bookmarks', 'Share folder') }}
+			</ActionButton>
 			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
-				{{ t('bookmarks', 'Rename') }}
+				{{ t('bookmarks', 'Rename folder') }}
 			</ActionButton>
 			<ActionButton :close-after-click="true" @click="onMove">
 				<template #icon>
 					<FolderMoveIcon :fill-color="colorMainText" />
 				</template>
-				{{ t('bookmarks', 'Move') }}
+				{{ t('bookmarks', 'Move folder') }}
 			</ActionButton>
 			<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
-				{{ t('bookmarks', 'Delete') }}
+				{{ t('bookmarks', 'Delete folder') }}
 			</ActionButton>
 		</template>
 	</Item>
@@ -133,6 +136,9 @@ export default {
 	methods: {
 		onDetails() {
 			this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
+		},
+		onShare() {
+			this.$store.dispatch(actions.OPEN_FOLDER_SHARING, this.folder.id)
 		},
 		onDelete() {
 			if (!confirm(t('bookmarks', 'Do you really want to delete this folder?'))) {

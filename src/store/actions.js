@@ -41,6 +41,7 @@ export const actions = {
 	DELETE_FOLDER: 'DELETE_FOLDER',
 	LOAD_FOLDER_CHILDREN_ORDER: 'LOAD_FOLDER_CHILDREN_ORDER',
 	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
+	OPEN_FOLDER_SHARING: 'OPEN_FOLDER_SHARING',
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
 	DELETE_SELECTION: 'DELETE_SELECTION',
@@ -666,6 +667,9 @@ export default {
 	},
 	[actions.OPEN_FOLDER_DETAILS]({ commit }, id) {
 		commit(mutations.SET_SIDEBAR, { type: 'folder', id })
+	},
+	[actions.OPEN_FOLDER_SHARING]({ commit }, id) {
+		commit(mutations.SET_SIDEBAR, { type: 'folder', id, tab: 'folder-sharing' })
 	},
 
 	async [actions.MOVE_SELECTION]({ commit, dispatch, state }, folderId) {
