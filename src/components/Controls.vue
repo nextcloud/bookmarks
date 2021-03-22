@@ -64,7 +64,23 @@
 							: 'icon-toggle-filelist'
 					"
 					@click="onToggleViewMode">
-					{{ viewMode === 'list' ? t('bookmarks', 'Grid view') : t('bookmarks', 'List view') }}
+					{{ viewMode === 'list' ? t('bookmarks', 'Change to grid view') : t('bookmarks', 'Change to list view') }}
+				</ActionButton>
+			</Actions>
+			<Actions :title="sortingOptions[sorting].description">
+				<template #icon>
+					<component :is="sortingOptions[sorting].icon" :size="20" :fill-color="colorMainText" />
+				</template>
+				<ActionButton v-for="(option, key) in sortingOptions"
+					:key="key"
+					:close-after-click="true"
+					@click="onChangeSorting(key)">
+					<template #icon>
+						<component :is="option.icon"
+							:size="20"
+							:fill-color="key === sorting? colorPrimaryElement : colorMainText" />
+					</template>
+					{{ option.description }}
 				</ActionButton>
 			</Actions>
 			<button v-tooltip="t('bookmarks', 'RSS Feed of current view')"
@@ -81,18 +97,30 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import RssIcon from 'vue-material-design-icons/Rss'
+import SortAlphabeticalAscendingIcon from 'vue-material-design-icons/SortAlphabeticalAscending'
+import SortBoolAscendingIcon from 'vue-material-design-icons/SortBoolAscending'
+import SortClockAscendingOutlineIcon from 'vue-material-design-icons/SortClockAscendingOutline'
+import SortCalendarAscendingIcon from 'vue-material-design-icons/SortCalendarAscending'
+import SortAscendingIcon from 'vue-material-design-icons/SortAscending'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
 import BulkEditing from './BulkEditing'
 
 export default {
 	name: 'Controls',
-	components: { BulkEditing, Multiselect, Actions, ActionButton, RssIcon },
+	components: { BulkEditing, Multiselect, Actions, ActionButton, RssIcon, SortAscendingIcon, SortCalendarAscendingIcon, SortAlphabeticalAscendingIcon, SortClockAscendingOutlineIcon, SortBoolAscendingIcon },
 	props: {},
 	data() {
 		return {
 			url: '',
 			search: this.$route.params.search || '',
+			sortingOptions: {
+				added: { icon: 'SortCalendarAscendingIcon', description: this.t('bookmarks', 'Sort by creation date') },
+				lastmodified: { icon: 'SortClockAscendingOutlineIcon', description: this.t('bookmarks', 'Sort by last modified') },
+				title: { icon: 'SortAlphabeticalAscendingIcon', description: this.t('bookmarks', 'Sort by title') },
+				clickcount: { icon: 'SortBoolAscendingIcon', description: this.t('bookmarks', 'Sort by click count') },
+				index: { icon: 'SortAscendingIcon', description: this.t('bookmarks', 'Sort by manual order') },
+			},
 		}
 	},
 	computed: {
@@ -130,6 +158,9 @@ export default {
 					)
 			)
 		},
+		sorting() {
+			return this.$store.state.settings.sorting
+		},
 	},
 	created() {},
 	methods: {
@@ -166,6 +197,14 @@ export default {
 
 		openRssUrl() {
 			window.open(this.rssURL)
+		},
+
+		async onChangeSorting(value) {
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'sorting',
+				value,
+			})
+			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
 	},
 }
