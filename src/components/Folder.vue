@@ -7,12 +7,15 @@
 <template>
 	<Item :active="selected"
 		:editable="isEditable"
+		:draggable="isEditable"
 		:selected="selected"
 		:title="folder.title"
 		:renaming="renaming"
 		:select-label="t('bookmarks', 'Select folder')"
 		:rename-placeholder="t('bookmarks', 'Enter folder title')"
 		:selectable="selectable"
+		:allow-drop="allowDrop"
+		@drop="onDrop"
 		@select="clickSelect"
 		@rename="onRenameSubmit"
 		@rename-cancel="renaming = false"
@@ -174,6 +177,15 @@ export default {
 			if (e.key === 'Enter') {
 				this.onSelect(e)
 			}
+		},
+		allowDrop() {
+			return !this.$store.state.selection.folders.includes(this.folder)
+		},
+		async onDrop(e) {
+			e.preventDefault()
+			await this.$store.dispatch(actions.MOVE_SELECTION, this.folder.id)
+			this.$store.commit(mutations.RESET_SELECTION)
+			await this.$store.dispatch(actions.RELOAD_VIEW)
 		},
 	},
 }

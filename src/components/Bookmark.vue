@@ -13,6 +13,7 @@
 		:active="isActive"
 		:editable="isEditable"
 		:selected="selected"
+		:draggable="isEditable"
 		:renaming="renaming"
 		:background="background"
 		:url="url"

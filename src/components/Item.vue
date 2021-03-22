@@ -9,9 +9,16 @@
 		:class="{
 			item: true,
 			active,
+			dropTarget,
 			'item--gridview': viewMode === 'grid'
 		}"
-		:style="{ background }">
+		:style="{ background }"
+		:draggable="draggable"
+		@dragstart="onDragStart"
+		@dragenter="onDragEnter"
+		@dragover="onDragOver"
+		@dragleave="onDragLeave"
+		@drop="$emit('drop', $event); dropTargetEntered = 0">
 		<template v-if="!renaming">
 			<a
 				:href="url"
@@ -70,6 +77,8 @@ import Vue from 'vue'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import TagLine from './TagLine'
+import DragImage from './DragImage'
+import { mutations } from '../store'
 
 export default {
 	name: 'Item',
@@ -103,6 +112,14 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		draggable: {
+			type: Boolean,
+			default: false,
+		},
+		allowDrop: {
+			type: Function,
+			default: () => false,
+		},
 		renaming: {
 			type: Boolean,
 			default: false,
@@ -127,11 +144,15 @@ export default {
 	data() {
 		return {
 			newTitle: this.title,
+			dropTargetEntered: 0,
 		}
 	},
 	computed: {
 		viewMode() {
 			return this.$store.state.viewMode
+		},
+		dropTarget() {
+			return this.dropTargetEntered > 0
 		},
 	},
 	watch: {
@@ -161,6 +182,51 @@ export default {
 				return
 			}
 			this.$emit('click', e)
+		},
+		async onDragStart(e) {
+			if (!this.selected) {
+				if (this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length) {
+					// If something is already selected not including the current element, reset selection
+					this.$store.commit(mutations.RESET_SELECTION)
+				}
+				// Select the current item
+				this.$emit('select')
+				await this.$nextTick()
+			}
+			// Build the drag image
+			const element = document.createElement('div')
+			const placeholder = element.appendChild(document.createElement('div'))
+			document.body.appendChild(element)
+			const vueInstance = new Vue({ el: placeholder, store: this.$store, render: (h) => h(DragImage) })
+			await vueInstance.$nextTick()
+
+			// set drag data and drag image
+			e.dataTransfer.clearData()
+			e.dataTransfer.setData('text/plain', JSON.stringify(this.$store.state.selection))
+			e.dataTransfer.setDragImage(element, 0, 0)
+
+			// dispose of drag image element, as the browser only takes a visual snapshot once
+			await new Promise(resolve => setTimeout(resolve, 0))
+			document.body.removeChild(element)
+		},
+		onDragEnter(e) {
+			if (this.allowDrop()) {
+				e.preventDefault()
+				// for every descendant of this element, increment
+				// when this is 0, the dropTarget class is removed
+				this.dropTargetEntered++
+				e.dataTransfer.dropEffect = 'move'
+			}
+		},
+		onDragOver(e) {
+			if (this.allowDrop()) {
+				e.preventDefault()
+			}
+		},
+		onDragLeave(e) {
+			// for every descendant of this element, decrement
+			// when this is 0, the dropTarget class is removed
+			this.dropTargetEntered = this.dropTargetEntered > 0 ? this.dropTargetEntered - 1 : 0
 		},
 	},
 }
@@ -201,6 +267,10 @@ export default {
 	display: flex;
 	align-items: flex-end;
 	padding: 0 8px 5px 10px;
+}
+
+.item.dropTarget {
+	background: var(--color-primary-element-light);
 }
 
 .item.active,
