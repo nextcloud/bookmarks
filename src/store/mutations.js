@@ -174,8 +174,13 @@ export default {
 		Vue.set(state.fetchState, 'reachedEnd', false)
 	},
 	[mutations.SET_QUERY](state, query) {
-		state.bookmarks = []
-		state.bookmarksById = {}
+		if (JSON.stringify(query) !== JSON.stringify(state.fetchState.query)) {
+			// when the query doesn't change, we're likely reloading the view, which looks better
+			// when we don't remove bookmarks until the new set is loaded
+			// FETCH_PAGE will remove bookmarks upon retrieving the new set when page === 0
+			state.bookmarks = []
+			state.bookmarksById = {}
+		}
 		Vue.set(state.fetchState, 'page', 0)
 		Vue.set(state.fetchState, 'reachedEnd', false)
 		Vue.set(state.fetchState, 'query', query)

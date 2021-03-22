@@ -9,7 +9,7 @@
 		<Navigation />
 		<AppContent>
 			<Controls />
-			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
+			<BookmarksList :loading="showLoadingBookmarks" :bookmarks="bookmarks" />
 		</AppContent>
 		<SidebarBookmark />
 		<SidebarFolder />
@@ -47,6 +47,8 @@ export default {
 	data() {
 		return {
 			newBookmark: false,
+			showLoadingBookmarks: false,
+			loadingTimeout: null,
 		}
 	},
 	computed: {
@@ -58,9 +60,6 @@ export default {
 		},
 		tags() {
 			return this.$store.state.tags
-		},
-		loading() {
-			return this.$store.state.loading
 		},
 	},
 

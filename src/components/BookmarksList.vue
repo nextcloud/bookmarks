@@ -51,7 +51,7 @@
 					:bookmark="bookmark" />
 			</template>
 			<NoBookmarks v-else-if="!loading" />
-			<div v-if="loading" class="bookmarkslist__loading">
+			<div v-if="showLoading" class="bookmarkslist__loading">
 				<figure class="icon-loading" />
 			</div>
 		</div>
@@ -80,10 +80,12 @@ export default {
 			type: Array,
 			required: true,
 		},
-		loading: {
-			type: Boolean,
-			required: true,
-		},
+	},
+	data() {
+		return {
+			showLoading: false,
+			loadingTimeout: null,
+		}
 	},
 	computed: {
 		children() {
@@ -116,6 +118,21 @@ export default {
 		},
 		sortOrder() {
 			return this.$store.state.settings.sorting
+		},
+		loading() {
+			return this.$store.state.loading.bookmarks
+		},
+	},
+	watch: {
+		loading(state, previous) {
+			if (state && !previous) {
+				this.loadingTimeout = setTimeout(() => {
+					this.showLoading = true
+				}, 500)
+			} else if (!state && previous) {
+				clearTimeout(this.loadingTimeout)
+				this.showLoading = false
+			}
 		},
 	},
 	methods: {
