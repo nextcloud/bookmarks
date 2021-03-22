@@ -691,19 +691,22 @@ export default {
 				},
 				10
 			)
-			await dispatch(actions.LOAD_FOLDERS)
-
-			await Parallel.each(
-				state.selection.bookmarks,
-				bookmark =>
-					dispatch(actions.MOVE_BOOKMARK, {
-						oldFolder:
+			await Promise.all([
+				dispatch(actions.LOAD_FOLDERS),
+				Parallel.each(
+					state.selection.bookmarks,
+					bookmark => {
+						commit(mutations.REMOVE_BOOKMARK, bookmark.id)
+						return dispatch(actions.MOVE_BOOKMARK, {
+							oldFolder:
 							bookmark.folders[bookmark.folders.length - 1], // FIXME This is veeeery ugly and will cause issues. Inevitably.
-						newFolder: folderId,
-						bookmark: bookmark.id,
-					}),
-				10
-			)
+							newFolder: folderId,
+							bookmark: bookmark.id,
+						})
+					},
+					10
+				),
+			])
 
 			// Because we're possibly moving across share boundaries we need to recount
 			await dispatch(actions.COUNT_BOOKMARKS, -1)
@@ -839,6 +842,7 @@ export default {
 		if (state.fetchState.reachedEnd) return
 		if (state.loading.bookmarks) return
 		let canceled = false
+		const fetchedPage = state.fetchState.page
 		commit(mutations.FETCH_START, {
 			type: 'bookmarks',
 			cancel() {
@@ -866,6 +870,9 @@ export default {
 					commit(mutations.REACHED_END)
 				}
 				commit(mutations.FETCH_END, 'bookmarks')
+				if (fetchedPage === 0) {
+					commit(mutations.REMOVE_ALL_BOOKMARKS)
+				}
 				return dispatch(actions.ADD_ALL_BOOKMARKS, bookmarks)
 			})
 			.catch(err => {
