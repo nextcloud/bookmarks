@@ -250,7 +250,14 @@ export default {
 .item__rename {
 	display: flex;
 	align-items: center;
+}
+
+.item__rename {
 	padding: 0 8px 0 10px;
+}
+
+.item--gridview  .item__rename {
+	padding: 0 8px 5px 10px;
 }
 
 .item--gridview .item__clickLink,
@@ -262,7 +269,6 @@ export default {
 	top: 0;
 	display: flex;
 	align-items: flex-end;
-	padding: 0 8px 5px 10px;
 }
 
 .item.dropTarget {
@@ -283,12 +289,18 @@ export default {
 	display: inline-block;
 }
 
+.item__checkbox label {
+	padding: 7px;
+	display: inline-block;
+}
+
 .item__labels {
 	display: flex;
 	flex: 1;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	margin: 10px 0;
+	margin-left: 5px;
 }
 
 .item:not(.item--gridview) .item__rename input {
@@ -297,10 +309,11 @@ export default {
 
 .item--gridview .item__checkbox {
 	position: absolute;
-	top: 10px;
-	left: 10px;
+	top: -1px;
+	left: -1px;
 	background: white;
 	border-radius: var(--border-radius);
+	box-shadow: #aaa 0 0 3px inset;
 }
 
 .item__actions {
@@ -312,7 +325,7 @@ export default {
 	bottom: 47px;
 	left: 10px;
 	margin: 0;
-	width: 100%;
+	right: 10px;
 }
 
 .item--gridview .item__checkbox input[type='checkbox'].checkbox + label::before {
