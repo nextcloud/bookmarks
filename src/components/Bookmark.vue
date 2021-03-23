@@ -269,6 +269,14 @@ export default {
 	display: none !important;
 }
 
+.bookmark__title {
+	min-width: calc(50px + 40%);
+}
+
+.item--gridview .bookmark__title {
+	min-width: auto;
+}
+
 .item--gridview .bookmark__description {
 	flex: 0;
 }

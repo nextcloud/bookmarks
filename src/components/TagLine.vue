@@ -40,6 +40,7 @@ export default {
 		clickTag(e, tag) {
 			e.preventDefault()
 			e.stopImmediatePropagation()
+			e.stopPropagation()
 			this.$router.push({ name: this.routes.TAGS, params: { tags: tag } })
 		},
 	},

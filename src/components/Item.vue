@@ -35,8 +35,6 @@
 				<slot name="icon" />
 				<div class="item__labels">
 					<slot name="title" />
-				</div>
-				<div ref="tags">
 					<slot name="tags">
 						<TagLine :tags="tags" />
 					</slot>
@@ -175,9 +173,7 @@ export default {
 					|| (this.$refs.actions && this.$refs.actions.contains(e.target))
 					|| (this.$refs.checkbox
 							&& (this.$refs.checkbox.contains(e.target) || this.$refs.checkbox === e.target)
-					)
-					|| (this.$refs.tags && this.$refs.tags.contains(e.target))
-					|| this.$refs.tags === e.target) {
+					)) {
 				e.stopImmediatePropagation()
 				return
 			}
@@ -316,6 +312,7 @@ export default {
 	bottom: 47px;
 	left: 10px;
 	margin: 0;
+	width: 100%;
 }
 
 .item--gridview .item__checkbox input[type='checkbox'].checkbox + label::before {
