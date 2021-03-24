@@ -20,6 +20,7 @@ export const mutations = {
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
 	REMOVE_ALL_BOOKMARKS: 'REMOVE_ALL_BOOKMARKS',
+	SORT_BOOKMARKS: 'SORT_BOOKMARKS',
 	SET_BOOKMARK_COUNT: 'SET_BOOKMARK_COUNT',
 	SET_UNAVAILABLE_COUNT: 'SET_UNAVAILABLE_COUNT',
 	SET_ARCHIVED_COUNT: 'SET_ARCHIVED_COUNT',
@@ -149,6 +150,9 @@ export default {
 	[mutations.REMOVE_ALL_BOOKMARKS](state) {
 		state.bookmarks = []
 		state.bookmarksById = {}
+	},
+	[mutations.SORT_BOOKMARKS](state, column) {
+		state.bookmarks.sort((a, b) => b[column] - a[column])
 	},
 	[mutations.SET_BOOKMARK_COUNT](state, { folderId, count }) {
 		Vue.set(state.countsByFolder, folderId, count)
