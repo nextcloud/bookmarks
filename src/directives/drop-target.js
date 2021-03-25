@@ -37,6 +37,7 @@ export default {
 		el.addEventListener('drop', (e) => {
 			dropTargetEntered = 0
 			drop(e)
+			el.classList.remove('dropTarget')
 		})
 	},
 }
