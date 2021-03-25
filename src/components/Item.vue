@@ -6,19 +6,15 @@
 
 <template>
 	<div
+		v-drop-target="{allow: allowDrop, drop: (e) => $emit('drop', e)}"
 		:class="{
 			item: true,
 			active,
-			dropTarget,
 			'item--gridview': viewMode === 'grid'
 		}"
 		:style="{ background }"
 		:draggable="draggable"
-		@dragstart="onDragStart"
-		@dragenter="onDragEnter"
-		@dragover="onDragOver"
-		@dragleave="onDragLeave"
-		@drop="$emit('drop', $event); dropTargetEntered = 0">
+		@dragstart="onDragStart">
 		<template v-if="!renaming">
 			<a
 				:href="url"
@@ -142,15 +138,11 @@ export default {
 	data() {
 		return {
 			newTitle: this.title,
-			dropTargetEntered: 0,
 		}
 	},
 	computed: {
 		viewMode() {
 			return this.$store.state.viewMode
-		},
-		dropTarget() {
-			return this.dropTargetEntered > 0
 		},
 	},
 	watch: {
@@ -204,25 +196,6 @@ export default {
 			// dispose of drag image element, as the browser only takes a visual snapshot once
 			await new Promise(resolve => setTimeout(resolve, 0))
 			document.body.removeChild(element)
-		},
-		onDragEnter(e) {
-			if (this.allowDrop()) {
-				e.preventDefault()
-				// for every descendant of this element, increment
-				// when this is 0, the dropTarget class is removed
-				this.dropTargetEntered++
-				e.dataTransfer.dropEffect = 'move'
-			}
-		},
-		onDragOver(e) {
-			if (this.allowDrop()) {
-				e.preventDefault()
-			}
-		},
-		onDragLeave(e) {
-			// for every descendant of this element, decrement
-			// when this is 0, the dropTarget class is removed
-			this.dropTargetEntered = this.dropTargetEntered > 0 ? this.dropTargetEntered - 1 : 0
 		},
 	},
 }
