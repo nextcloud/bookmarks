@@ -48,6 +48,7 @@
 			<template v-if="Boolean(tags.length)">
 				<AppNavigationItem v-for="tag in tags"
 					:key="'tag-'+tag.name"
+					v-drop-target="{allow: (e) => allowDropOnTag(tag.name, e), drop: (e) => onDropOnTag(tag.name, e)}"
 					icon="icon-tag"
 					:to="tag.route"
 					:force-menu="true"
@@ -158,6 +159,12 @@ export default {
 		onNewTag(tagName) {
 			this.$store.commit(mutations.ADD_TAG, tagName)
 		},
+		allowDropOnTag(tagName) {
+			return !this.$store.state.selection.folders.length
+		},
+		onDropOnTag(tagName) {
+			this.$store.dispatch(actions.TAG_SELECTION, { tags: [tagName], originalTags: [] })
+		},
 	},
 }
 </script>
@@ -165,5 +172,9 @@ export default {
 .navigation .material-design-icon {
 	position: relative;
 	top: 4px;
+}
+
+.navigation .dropTarget {
+	background: var(--color-primary-element-light);
 }
 </style>
