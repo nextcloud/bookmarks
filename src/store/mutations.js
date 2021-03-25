@@ -24,6 +24,7 @@ export const mutations = {
 	SET_BOOKMARK_COUNT: 'SET_BOOKMARK_COUNT',
 	SET_UNAVAILABLE_COUNT: 'SET_UNAVAILABLE_COUNT',
 	SET_ARCHIVED_COUNT: 'SET_ARCHIVED_COUNT',
+	ADD_TAG: 'ADD_TAG',
 	SET_TAGS: 'SET_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
 	REMOVE_TAG: 'REMOVE_TAG',
@@ -71,6 +72,9 @@ export default {
 	},
 	[mutations.SET_FOLDERS](state, folders) {
 		state.folders = sortFolders(folders)
+	},
+	[mutations.ADD_TAG](state, tag) {
+		state.tags.push({ name: tag, count: 0 })
 	},
 	[mutations.SET_TAGS](state, tags) {
 		state.tags = tags
