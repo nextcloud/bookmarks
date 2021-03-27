@@ -7,19 +7,19 @@
 <template>
 	<div :class="['controls', $store.state.public && 'wide']">
 		<div class="controls__left">
-			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME || $store.state.public">
-				<a :class="!isPublic? 'icon-home' : 'icon-public'" @click="onSelectHome" />
-				<span class="icon-breadcrumb" />
-			</template>
+			<Actions v-if="$route.name !== routes.HOME">
+				<ActionButton @click="onClickBack">
+					<ArrowLeftIcon slot="icon" :size="18" :fill-color="colorMainText" />
+					{{ t('bookmarks', 'Go back') }}
+				</ActionButton>
+			</Actions>
 			<template v-if="$route.name === routes.FOLDER">
-				<template v-for="folder in folderPath">
-					<a
-						:key="'a' + folder.id"
-						href="#"
-						tabindex="0"
-						@click.prevent="onSelectFolder(folder.id)">{{ folder.title }}</a>
-					<span :key="'b' + folder.id" class="icon-breadcrumb" />
-				</template>
+				<h2><FolderIcon :size="18" :fill-color="colorMainText" /> <span>{{ folder.title }}</span></h2>
+				<Actions>
+					<ActionButton icon="icon-share" :close-after-click="true" @click="onOpenFolderShare">
+						{{ t('bookmarks', 'Share folder') }}
+					</ActionButton>
+				</Actions>
 			</template>
 			<template v-if="$route.name === routes.TAGS">
 				<span class="icon-tag" />
@@ -35,7 +35,7 @@
 			</template>
 			<Actions
 				v-if="!isPublic"
-				class="controls__AddFolder"
+				v-tooltip="t('bookmarks', 'New')"
 				:title="t('bookmarks', 'New')"
 				:default-icon="'icon-add'">
 				<ActionButton
@@ -67,7 +67,7 @@
 					{{ viewMode === 'list' ? t('bookmarks', 'Change to grid view') : t('bookmarks', 'Change to list view') }}
 				</ActionButton>
 			</Actions>
-			<Actions :title="sortingOptions[sorting].description">
+			<Actions v-tooltip="sortingOptions[sorting].description">
 				<template #icon>
 					<component :is="sortingOptions[sorting].icon" :size="20" :fill-color="colorMainText" />
 				</template>
@@ -83,12 +83,20 @@
 					{{ option.description }}
 				</ActionButton>
 			</Actions>
-			<button v-tooltip="t('bookmarks', 'RSS Feed of current view')"
-				class="custom-button"
-				:title="t('bookmarks', 'RSS Feed of current view')"
-				@click="openRssUrl">
-				<RssIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
-			</button>
+			<Actions force-menu>
+				<template #icon>
+					<RssIcon :fill-color="colorMainText" :size="20" class="action-button-mdi-icon" />
+				</template>
+				<ActionButton
+					:title="t('bookmarks', 'Copy RSS Feed of current view')"
+					:close-after-click="true"
+					@click="copyRssUrl">
+					<template #icon>
+						<RssIcon :fill-color="colorMainText" :size="20" class="action-button-mdi-icon" />
+					</template>
+					{{ !this.$store.state.public? t('bookmarks', 'The RSS feed requires authentication with your nextcloud credentials') : '' }}
+				</ActionButton>
+			</Actions>
 		</div>
 	</div>
 </template>
@@ -96,6 +104,10 @@
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
+import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
+import FolderIcon from 'vue-material-design-icons/Folder'
+import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft'
 import RssIcon from 'vue-material-design-icons/Rss'
 import SortAlphabeticalAscendingIcon from 'vue-material-design-icons/SortAlphabeticalAscending'
 import SortBoolAscendingIcon from 'vue-material-design-icons/SortBoolAscending'
@@ -105,10 +117,26 @@ import SortAscendingIcon from 'vue-material-design-icons/SortAscending'
 import { actions, mutations } from '../store/'
 import { generateUrl } from '@nextcloud/router'
 import BulkEditing from './BulkEditing'
+import copy from 'copy-text-to-clipboard'
 
 export default {
 	name: 'Controls',
-	components: { BulkEditing, Multiselect, Actions, ActionButton, RssIcon, SortAscendingIcon, SortCalendarAscendingIcon, SortAlphabeticalAscendingIcon, SortClockAscendingOutlineIcon, SortBoolAscendingIcon },
+	components: {
+		BulkEditing,
+		Multiselect,
+		Actions,
+		ActionButton,
+		ActionInput,
+		ActionRouter,
+		RssIcon,
+		SortAscendingIcon,
+		SortCalendarAscendingIcon,
+		SortAlphabeticalAscendingIcon,
+		SortClockAscendingOutlineIcon,
+		SortBoolAscendingIcon,
+		FolderIcon,
+		ArrowLeftIcon,
+	},
 	props: {},
 	data() {
 		return {
@@ -124,6 +152,13 @@ export default {
 		}
 	},
 	computed: {
+		backLink() {
+			if (this.folder && this.folderPath.length > 1) {
+				return { name: this.routes.FOLDER, params: { folder: this.folder.parent_folder } }
+			}
+
+			return { name: this.routes.HOME }
+		},
 		allTags() {
 			return this.$store.state.tags.map(tag => tag.name)
 		},
@@ -137,6 +172,11 @@ export default {
 			if (!folder) return []
 			return this.$store.getters.getFolder(folder).reverse()
 		},
+		folder() {
+			const folder = this.$route.params.folder
+			if (!folder) return
+			return this.$store.getters.getFolder(folder)[0]
+		},
 		viewMode() {
 			return this.$store.state.viewMode
 		},
@@ -144,17 +184,26 @@ export default {
 			return this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length
 		},
 		rssURL() {
+			const params = new URLSearchParams()
+			for (const field in this.$store.state.fetchState.query) {
+				if (Array.isArray(this.$store.state.fetchState.query[field])) {
+					this.$store.state.fetchState.query[field].forEach(value => {
+						params.append(field + '[]', value)
+					})
+				} else {
+					params.append(field, this.$store.state.fetchState.query[field])
+				}
+			}
+			params.set('format', 'rss')
+			params.set('page', '-1')
+			if (this.$store.state.public) {
+				params.set('token', this.$store.state.authToken)
+			}
 			return (
 				window.location.origin
 					+ generateUrl(
 						'/apps/bookmarks/public/rest/v2/bookmark?'
-							+ new URLSearchParams(
-								Object.assign({}, this.$store.state.fetchState.query, {
-									format: 'rss',
-									page: -1,
-									...(this.$store.state.public && { token: this.$store.state.authToken }),
-								})
-							).toString()
+							+ params.toString()
 					)
 			)
 		},
@@ -167,12 +216,21 @@ export default {
 		onSelectHome() {
 			this.$router.push({ name: this.routes.HOME })
 		},
+
+		onClickBack() {
+			this.$router.push(this.backLink)
+		},
+
 		onTagsChange(tags) {
 			this.$router.push({ name: this.routes.TAGS, params: { tags: tags.join(',') } })
 		},
 
 		onSelectFolder(folder) {
 			this.$router.push({ name: this.routes.FOLDER, params: { folder } })
+		},
+
+		onOpenFolderShare() {
+			this.$store.dispatch(actions.OPEN_FOLDER_SHARING, this.folder.id)
 		},
 
 		onAddFolder() {
@@ -195,8 +253,9 @@ export default {
 			})
 		},
 
-		openRssUrl() {
-			window.open(this.rssURL)
+		copyRssUrl() {
+			copy(this.rssURL)
+			this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'RSS feed copied'))
 		},
 
 		async onChangeSorting(value) {
@@ -221,14 +280,25 @@ export default {
 	top: 0;
 }
 
-.controls.wide {
-	padding: 0 8px;
+.controls h2 {
+	margin: 0;
+	margin-left: 10px;
+	display: flex;
+	position: relative;
+	top: -2px;
 }
 
-.controls .custom-button {
-	background: none;
-	padding: 0;
-	border: none;
+.controls h2 :nth-child(2) {
+	margin-left: 5px;
+}
+
+.controls h2 > .material-design-icon {
+	position: relative;
+	top: 4px;
+}
+
+.controls.wide {
+	padding: 0 8px;
 }
 
 .controls .custom-button:hover,
@@ -246,23 +316,6 @@ export default {
 	flex: 0;
 }
 
-.controls__left > * {
-	display: inline-block;
-	height: 30px;
-	padding: 5px 7px;
-	flex-shrink: 0;
-}
-
-.controls__left > *:not(.icon-breadcrumb) {
-	min-width: 30px;
-	opacity: 0.7;
-}
-
-.controls__left > *:hover,
-.controls__left > *:focus {
-	opacity: 1;
-}
-
 .controls__tags {
 	width: 300px;
 	flex: 1;
@@ -272,12 +325,6 @@ export default {
 	border-top: none !important;
 	border-left: none !important;
 	border-right: none !important;
-}
-
-.controls__AddFolder {
-	margin-left: 5px;
-	padding: 0;
-	margin-top: -10px;
 }
 
 .controls__right {
