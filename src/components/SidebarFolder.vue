@@ -68,7 +68,7 @@
 							{{ t('bookmarks', 'Allow editing') }}
 						</ActionCheckbox>
 						<ActionCheckbox :checked="share.canShare" @update:checked="onEditShare(share.id, {canWrite: share.canWrite, canShare: $event})">
-							{{ t('bookmarks', 'Allow sharing') }}
+							{{ t('bookmarks', 'Allow re-sharing') }}
 						</ActionCheckbox>
 						<ActionButton icon="icon-delete" @click="onDeleteShare(share.id)">
 							{{ t('bookmarks', 'Remove share') }}
