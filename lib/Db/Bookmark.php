@@ -28,8 +28,6 @@ use OCP\AppFramework\Db\Entity;
  * @method setLastPreview(int $lastpreview)
  * @method bool getAvailable()
  * @method setAvailable(boolean $available)
- * @method getDeleted
- * @method setDeleted(boolean $deleted)
  * @method getArchivedFile
  * @method int getArchivedFile()
  * @method setArchivedFile(int $fileId)
@@ -47,11 +45,10 @@ class Bookmark extends Entity {
 	protected $clickcount;
 	protected $lastPreview;
 	protected $available;
-	protected $deleted;
 	protected $archivedFile;
 
-	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'deleted', 'archived_file', 'user_id'];
-	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'deleted', 'archivedFile', 'userId'];
+	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id'];
+	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId'];
 
 	public static function fromArray($props): self {
 		$bookmark = new Bookmark();
@@ -73,7 +70,6 @@ class Bookmark extends Entity {
 		$this->addType('clickcount', 'integer');
 		$this->addType('lastPreview', 'integer');
 		$this->addType('available', 'boolean');
-		$this->addType('deleted', 'boolean');
 		$this->addType('archivedFile', 'integer');
 	}
 
