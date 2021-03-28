@@ -624,8 +624,8 @@ class BookmarkMapper extends QBMapper {
 		$qb
 			->select($qb->func()->count('id'))
 			->from('bookmarks')
-			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->eq('deleted', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
+//			->andWhere($qb->expr()->eq('deleted', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
 		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
 	}
 

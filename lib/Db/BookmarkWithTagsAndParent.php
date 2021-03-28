@@ -17,8 +17,8 @@ class BookmarkWithTagsAndParent extends Bookmark {
 	protected $tags;
 	protected $folders;
 
-	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'deleted', 'archived_file', 'user_id', 'tags', 'folders'];
-	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'deleted', 'archivedFile', 'userId', 'tags', 'folders'];
+	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id', 'tags', 'folders'];
+	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId', 'tags', 'folders'];
 
 	public function toArray(): array {
 		$array = [];
