@@ -410,6 +410,7 @@ class TreeMapper extends QBMapper {
 		}
 
 		if ($type === self::TYPE_SHARE) {
+
 			$this->remove($type, $id);
 			// This will only be removed if the share is removed!
 			//$sharedFolder = $this->sharedFolderMapper->find($id);
@@ -443,7 +444,11 @@ class TreeMapper extends QBMapper {
 	 * @return void
 	 */
 	public function remove(string $type, int $itemId): void {
-		$this->toggleDeleted($type, $itemId, true);
+		if ($type === self::TYPE_SHARE) {
+			$this->removePermanently($type, $itemId);
+		} else {
+			$this->toggleDeleted($type, $itemId, true);
+		}
 	}
 
 	/**
