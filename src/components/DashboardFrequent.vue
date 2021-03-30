@@ -17,7 +17,7 @@ import { DashboardWidget } from '@nextcloud/vue-dashboard'
 import { generateUrl } from '@nextcloud/router'
 import { actions } from '../store'
 export default {
-	name: 'Dashboard',
+	name: 'DashboardFrequent',
 	components: { DashboardWidget },
 	computed: {
 		loading() {
@@ -37,7 +37,7 @@ export default {
 		},
 	},
 	async mounted() {
-		await this.$store.dispatch(actions.FILTER_BY_RECENT)
+		await this.$store.dispatch(actions.FILTER_BY_FREQUENT)
 		await this.$store.dispatch(actions.FETCH_PAGE)
 	},
 }

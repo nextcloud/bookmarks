@@ -11,7 +11,7 @@ use OCP\Dashboard\IWidget;
 use OCP\IL10N;
 use OCP\Util;
 
-class Widget implements IWidget {
+class Recent implements IWidget {
 	/**
 	 * @var IL10N
 	 */
@@ -44,7 +44,7 @@ class Widget implements IWidget {
 	 * @inheritDoc
 	 */
 	public function getTitle(): string {
-		return $this->l->t('Recent Bookmarks');
+		return $this->l->t('Recent bookmarks');
 	}
 
 	/**

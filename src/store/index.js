@@ -5,7 +5,7 @@
  */
 
 import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
+import Vuex from 'vuex'
 import Mutations from './mutations'
 import Actions from './actions'
 import { privateRoutes, publicRoutes } from '../router'
@@ -16,7 +16,7 @@ export { mutations } from './mutations'
 
 export { actions } from './actions'
 
-export default new Store({
+export default {
 	mutations: Mutations,
 	actions: Actions,
 	state: {
@@ -111,7 +111,7 @@ export default new Store({
 			return getters.getPermissionsForFolder(bookmark.folders[0])
 		},
 	},
-})
+}
 
 function findFolder(id, children) {
 	if (!children || !children.length) return []

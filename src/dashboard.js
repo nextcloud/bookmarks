@@ -6,21 +6,29 @@
 
 import Vue from 'vue'
 import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
-import router from './router'
 import store from './store/'
 import AppGlobal from './mixins/AppGlobal'
-import Dashboard from './components/Dashboard.vue'
+import DashboardRecent from './components/DashboardRecent.vue'
+import DashboardFrequent from './components/DashboardFrequent'
+import { Store } from 'vuex'
+import deepClone from 'clone-deep'
 
 Vue.mixin(AppGlobal)
 Vue.directive('tooltip', Tooltip)
 
 document.addEventListener('DOMContentLoaded', () => {
 	OCA.Dashboard.register('bookmarks.recent', (el) => {
-		global.Bookmarks = new Vue({
+		global.BookmarksRecent = new Vue({
 			el,
-			store,
-			router,
-			render: h => h(Dashboard),
+			store: new Store(deepClone(store)),
+			render: h => h(DashboardRecent),
+		})
+	})
+	OCA.Dashboard.register('bookmarks.frequent', (el) => {
+		global.BookmarksFrequent = new Vue({
+			el,
+			store: new Store(deepClone(store)),
+			render: h => h(DashboardFrequent),
 		})
 	})
 })
