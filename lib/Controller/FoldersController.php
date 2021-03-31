@@ -71,6 +71,10 @@ class FoldersController extends ApiController {
 	 * @var BookmarkService
 	 */
 	private $bookmarks;
+	/**
+	 * @var \Psr\Log\LoggerInterface
+	 */
+	private $logger;
 
 	/**
 	 * FoldersController constructor.
@@ -86,8 +90,9 @@ class FoldersController extends ApiController {
 	 * @param TreeCacheManager $hashManager
 	 * @param FolderService $folders
 	 * @param BookmarkService $bookmarks
+	 * @param \Psr\Log\LoggerInterface $logger
 	 */
-	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, TreeCacheManager $hashManager, FolderService $folders, BookmarkService $bookmarks) {
+	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, TreeCacheManager $hashManager, FolderService $folders, BookmarkService $bookmarks, \Psr\Log\LoggerInterface $logger) {
 		parent::__construct($appName, $request);
 		$this->folderMapper = $folderMapper;
 		$this->publicFolderMapper = $publicFolderMapper;
@@ -98,6 +103,7 @@ class FoldersController extends ApiController {
 		$this->hashManager = $hashManager;
 		$this->folders = $folders;
 		$this->bookmarks = $bookmarks;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -107,21 +113,19 @@ class FoldersController extends ApiController {
 		if ($this->rootFolderId !== null) {
 			return $this->rootFolderId;
 		}
-		try {
-			if ($this->authorizer->getUserId() !== null) {
-				$this->rootFolderId = $this->folderMapper->findRootFolder($this->authorizer->getUserId())->getId();
-			}
-			if ($this->authorizer->getToken() !== null) {
+		if ($this->authorizer->getUserId() !== null) {
+			$this->rootFolderId = $this->folderMapper->findRootFolder($this->authorizer->getUserId())->getId();
+		}
+		if ($this->authorizer->getToken() !== null) {
+			try {
 				/**
 				 * @var $publicFolder PublicFolder
 				 */
 				$publicFolder = $this->publicFolderMapper->find($this->authorizer->getToken());
 				$this->rootFolderId = $publicFolder->getFolderId();
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+				$this->logger->error($e->getMessage()."\n".$e->getMessage());
 			}
-		} catch (DoesNotExistException $e) {
-			// noop
-		} catch (MultipleObjectsReturnedException $e) {
-			// noop
 		}
 		return $this->rootFolderId;
 	}
