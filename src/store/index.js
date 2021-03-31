@@ -9,6 +9,7 @@ import Vuex from 'vuex'
 import Mutations from './mutations'
 import Actions from './actions'
 import { privateRoutes, publicRoutes } from '../router'
+import { generateUrl } from '@nextcloud/router'
 
 Vue.use(Vuex)
 
@@ -70,6 +71,13 @@ export default {
 		getBookmark: state => id => {
 			return state.bookmarksById[id]
 		},
+		getBookmarksForDashboard: state => () => state.bookmarks.map(bookmark => ({
+			id: bookmark.id,
+			targetUrl: bookmark.url,
+			avatarUrl: generateUrl(`/apps/bookmarks/bookmark/${bookmark.id}/favicon`),
+			mainText: bookmark.title,
+			subText: bookmark.url,
+		})),
 		getFolder: state => id => {
 			if (Number(id) === -1) {
 				return [{ id: '-1', children: state.folders }]
