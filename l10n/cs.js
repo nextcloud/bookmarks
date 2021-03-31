@@ -17,7 +17,7 @@ OC.L10N.register(
     "You deleted folder \"%s\"" : "Smazali jste složku „%s“",
     "%1$s deleted folder \"%2$s\"" : "%1$s smazal(a) složku „%2$s“",
     "Someone deleted folder \"%s\"" : "Někdo smazal složku „%s“",
-    "You shared folder \"%1$s\" with %2$s" : "Nasdíleli jste složku „%1$s“ uživateli %2$s",
+    "You shared folder \"%1$s\" with %2$s" : "Nasdíleli jste složku „%1$s“ uživateli/skupině %2$s",
     "You shared folder \"%s\" with someone" : "Nasdíleli jste složku „%s“ někomu",
     "%1$s shared folder \"%2$s\" with you" : "%1$s vám nasdílel(a) složku „%2$s“",
     "Someone shared folder \"%s\" with you" : "Někdo vám nasdílel složku „%s“",
