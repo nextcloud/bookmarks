@@ -67,11 +67,11 @@ jobs:
         working-directory: apps/${{ env.APP_NAME }}
         run: ./vendor/phpunit/phpunit/phpunit --coverage-clover coverage.xml -c tests/phpunit.xml
 
-      - name: Upload coverage
-        working-directory: apps/${{ env.APP_NAME }}
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: bash <(curl -s https://codecov.io/bash)
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: apps/${{ env.APP_NAME }}/coverage.xml
+          fail_ci_if_error: true
 
   mysql:
     runs-on: ubuntu-latest
