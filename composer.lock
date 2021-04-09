@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fee71bf4d3c237c8b4135b69ad49c8d7",
+    "content-hash": "894eefdda03c4cc7c8a624ff1c6be930",
     "packages": [
         {
             "name": "brick/math",
@@ -2153,16 +2153,16 @@
         },
         {
             "name": "christophwurst/nextcloud",
-            "version": "v21.0.0-beta6",
+            "version": "v21.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ChristophWurst/nextcloud_composer.git",
-                "reference": "1a47a3cba5ce8185e84e8ffcb5ca1a3b050f5adc"
+                "reference": "41e1476b4aed5bce7371895054049eca353729c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ChristophWurst/nextcloud_composer/zipball/1a47a3cba5ce8185e84e8ffcb5ca1a3b050f5adc",
-                "reference": "1a47a3cba5ce8185e84e8ffcb5ca1a3b050f5adc",
+                "url": "https://api.github.com/repos/ChristophWurst/nextcloud_composer/zipball/41e1476b4aed5bce7371895054049eca353729c5",
+                "reference": "41e1476b4aed5bce7371895054049eca353729c5",
                 "shasum": ""
             },
             "require": {
@@ -2187,9 +2187,9 @@
             "description": "Composer package containing Nextcloud's public API (classes, interfaces)",
             "support": {
                 "issues": "https://github.com/ChristophWurst/nextcloud_composer/issues",
-                "source": "https://github.com/ChristophWurst/nextcloud_composer/tree/v21.0.0-beta6"
+                "source": "https://github.com/ChristophWurst/nextcloud_composer/tree/v21.0.0"
             },
-            "time": "2021-01-20T09:09:58+00:00"
+            "time": "2021-03-01T08:42:25+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -5428,9 +5428,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "christophwurst/nextcloud": 10
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
