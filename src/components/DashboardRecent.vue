@@ -17,20 +17,14 @@ import { DashboardWidget } from '@nextcloud/vue-dashboard'
 import { generateUrl } from '@nextcloud/router'
 import { actions } from '../store'
 export default {
-	name: 'Dashboard',
+	name: 'DashboardRecent',
 	components: { DashboardWidget },
 	computed: {
 		loading() {
 			return Boolean(this.$store.state.loading.bookmarks)
 		},
 		items() {
-			return this.$store.state.bookmarks.map(bookmark => ({
-				id: bookmark.id,
-				targetUrl: bookmark.url,
-				avatarUrl: generateUrl(`/apps/bookmarks/bookmark/${bookmark.id}/favicon`),
-				mainText: bookmark.title,
-				subText: bookmark.url,
-			}))
+			return this.$store.getters.getBookmarksForDashboard()
 		},
 		moreUrl() {
 			return generateUrl('/apps/bookmarks/')

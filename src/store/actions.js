@@ -50,6 +50,7 @@ export const actions = {
 
 	NO_FILTER: 'NO_FILTER',
 	FILTER_BY_RECENT: 'FILTER_BY_RECENT',
+	FILTER_BY_FREQUENT: 'FILTER_BY_FREQUENT',
 	FILTER_BY_UNTAGGED: 'FILTER_BY_UNTAGGED',
 	FILTER_BY_UNAVAILABLE: 'FILTER_BY_UNAVAILABLE',
 	FILTER_BY_ARCHIVED: 'FILTER_BY_ARCHIVED',
@@ -71,6 +72,7 @@ export const actions = {
 	LOAD_PUBLIC_LINK: 'LOAD_PUBLIC_LINK',
 	CREATE_PUBLIC_LINK: 'CREATE_PUBLIC_LINK',
 	DELETE_PUBLIC_LINK: 'DELETE_PUBLIC_LINK',
+
 }
 
 export default {
@@ -803,6 +805,10 @@ export default {
 	},
 	[actions.FILTER_BY_RECENT]({ dispatch, commit }, search) {
 		commit(mutations.SET_QUERY, { sortby: 'added' })
+		return dispatch(actions.FETCH_PAGE)
+	},
+	[actions.FILTER_BY_FREQUENT]({ dispatch, commit }, search) {
+		commit(mutations.SET_QUERY, { sortby: 'clickcount' })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_SEARCH]({ dispatch, commit }, search) {

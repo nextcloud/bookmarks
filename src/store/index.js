@@ -5,10 +5,11 @@
  */
 
 import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
+import Vuex from 'vuex'
 import Mutations from './mutations'
 import Actions from './actions'
 import { privateRoutes, publicRoutes } from '../router'
+import { generateUrl } from '@nextcloud/router'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,7 @@ export { mutations } from './mutations'
 
 export { actions } from './actions'
 
-export default new Store({
+export default {
 	mutations: Mutations,
 	actions: Actions,
 	state: {
@@ -70,6 +71,13 @@ export default new Store({
 		getBookmark: state => id => {
 			return state.bookmarksById[id]
 		},
+		getBookmarksForDashboard: state => () => state.bookmarks.map(bookmark => ({
+			id: bookmark.id,
+			targetUrl: bookmark.url,
+			avatarUrl: generateUrl(`/apps/bookmarks/bookmark/${bookmark.id}/favicon`),
+			mainText: bookmark.title,
+			subText: bookmark.url,
+		})),
 		getFolder: state => id => {
 			if (Number(id) === -1) {
 				return [{ id: '-1', children: state.folders }]
@@ -111,7 +119,7 @@ export default new Store({
 			return getters.getPermissionsForFolder(bookmark.folders[0])
 		},
 	},
-})
+}
 
 function findFolder(id, children) {
 	if (!children || !children.length) return []

@@ -8,13 +8,14 @@ import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
 import App from './components/ViewAdmin'
 import store from './store/'
 import AppGlobal from './mixins/AppGlobal'
+import { Store } from 'vuex'
 
 Vue.mixin(AppGlobal)
 Vue.directive('tooltip', Tooltip)
 
 const BookmarksApp = (global.Bookmarks = new Vue({
 	el: '#bookmarks',
-	store,
+	store: new Store(store),
 	render: h => h(App),
 }))
 

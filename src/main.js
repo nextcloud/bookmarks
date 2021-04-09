@@ -4,6 +4,7 @@
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
 import Vue from 'vue'
+import { Store } from 'vuex'
 import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
 import App from './App'
 import router from './router'
@@ -17,7 +18,7 @@ Vue.directive('tooltip', Tooltip)
 
 const BookmarksApp = (global.Bookmarks = new Vue({
 	el: '#content',
-	store,
+	store: new Store(store),
 	router,
 	created() {
 		subscribe('nextcloud:unified-search.search', ({ query }) => {
