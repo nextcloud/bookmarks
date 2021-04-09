@@ -738,16 +738,16 @@
         },
         {
             "name": "rowbot/idna",
-            "version": "0.1.3",
+            "version": "0.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/idna.git",
-                "reference": "c9280e5c02bfab5f8abd37b23b3e750a93b68362"
+                "reference": "bbf5607a9e17a149fbc6c2761b41b608cbd39795"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/idna/zipball/c9280e5c02bfab5f8abd37b23b3e750a93b68362",
-                "reference": "c9280e5c02bfab5f8abd37b23b3e750a93b68362",
+                "url": "https://api.github.com/repos/TRowbotham/idna/zipball/bbf5607a9e17a149fbc6c2761b41b608cbd39795",
+                "reference": "bbf5607a9e17a149fbc6c2761b41b608cbd39795",
                 "shasum": ""
             },
             "require": {
@@ -756,8 +756,8 @@
                 "symfony/polyfill-intl-normalizer": "^1.18"
             },
             "require-dev": {
-                "guzzlehttp/guzzle": "^6.5",
-                "phpstan/phpstan": "^0.12.20",
+                "guzzlehttp/guzzle": "^6.5 || ^7.0",
+                "phpstan/phpstan": "^0.12.60",
                 "phpstan/phpstan-deprecation-rules": "^0.12.2",
                 "phpstan/phpstan-strict-rules": "^0.12.2",
                 "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
@@ -797,9 +797,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TRowbotham/idna/issues",
-                "source": "https://github.com/TRowbotham/idna/tree/master"
+                "source": "https://github.com/TRowbotham/idna/tree/0.1.4"
             },
-            "time": "2020-08-04T20:40:24+00:00"
+            "time": "2021-02-12T00:12:51+00:00"
         },
         {
             "name": "rowbot/punycode",
@@ -857,16 +857,16 @@
         },
         {
             "name": "rowbot/url",
-            "version": "3.1.1",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/URL-Parser.git",
-                "reference": "bd80a91380ba6dc1a13c12f4f45dcf68fe352b00"
+                "reference": "b63fb4a74285ebf4de55b27a108f7552206fbca4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/bd80a91380ba6dc1a13c12f4f45dcf68fe352b00",
-                "reference": "bd80a91380ba6dc1a13c12f4f45dcf68fe352b00",
+                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/b63fb4a74285ebf4de55b27a108f7552206fbca4",
+                "reference": "b63fb4a74285ebf4de55b27a108f7552206fbca4",
                 "shasum": ""
             },
             "require": {
@@ -878,7 +878,7 @@
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3 || ^7.0",
-                "phpstan/phpstan": "^0.12.20",
+                "phpstan/phpstan": "^0.12.66",
                 "phpstan/phpstan-deprecation-rules": "^0.12.2",
                 "phpstan/phpstan-strict-rules": "^0.12.2",
                 "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
@@ -914,9 +914,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TRowbotham/URL-Parser/issues",
-                "source": "https://github.com/TRowbotham/URL-Parser/tree/3.1.1"
+                "source": "https://github.com/TRowbotham/URL-Parser/tree/3.1.2"
             },
-            "time": "2020-10-17T20:33:56+00:00"
+            "time": "2021-02-11T23:40:30+00:00"
         },
         {
             "name": "symfony/console",
@@ -1384,16 +1384,16 @@
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.22.0",
+            "version": "v1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
-                "reference": "6e971c891537eb617a00bb07a43d182a6915faba"
+                "reference": "43a0283138253ed1d48d352ab6d0bdb3f809f248"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/6e971c891537eb617a00bb07a43d182a6915faba",
-                "reference": "6e971c891537eb617a00bb07a43d182a6915faba",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/43a0283138253ed1d48d352ab6d0bdb3f809f248",
+                "reference": "43a0283138253ed1d48d352ab6d0bdb3f809f248",
                 "shasum": ""
             },
             "require": {
@@ -1448,7 +1448,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.22.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.22.1"
             },
             "funding": [
                 {
@@ -1464,7 +1464,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-07T17:09:11+00:00"
+            "time": "2021-01-22T09:19:47+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
