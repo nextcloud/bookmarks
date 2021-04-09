@@ -76,14 +76,11 @@ class FolderMapper extends QBMapper {
 	}
 
 	/**
-	 * @param $userId
-	 * @param int|string $userId
+	 * @param string $userId
 	 *
 	 * @return Entity
-	 *
-	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findRootFolder($userId): Entity {
+	public function findRootFolder(string $userId): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select(array_map(static function ($col) {
@@ -108,6 +105,9 @@ class FolderMapper extends QBMapper {
 					'folder_id' => $qb->createPositionalParameter($rootFolder->getId()),
 				])
 				->execute();
+		} catch (MultipleObjectsReturnedException $e) {
+			$rootFolders = $this->findEntities($qb);
+			return $rootFolders[0];
 		}
 		return $rootFolder;
 	}
