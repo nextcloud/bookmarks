@@ -4,7 +4,6 @@ OC.L10N.register(
     "Bookmarks" : "Favoritter",
     "No file provided for import" : "Ingen fil til import",
     "Unsupported file type for import" : "Denne filtype er ikke understøttet til import",
-    "Recent Bookmarks" : "Seneste Bokmærker",
     "A Bookmark manager for Nextcloud" : "En app til at administrere bogmærker i Nextcloud",
     "Select bookmark" : "Vælg bogmærke",
     "Details" : "Detaljer",

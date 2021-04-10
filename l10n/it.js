@@ -28,7 +28,6 @@ OC.L10N.register(
     "No file provided for import" : "Nessun file fornito per l'importazione",
     "Unsupported file type for import" : "Tipo di file non supportato per l'importazione",
     "Bookmarks shared by %s" : "Segnalibri condivisi da %s",
-    "Recent Bookmarks" : "Segnalibri recenti",
     "Bookmark" : "Segnalibro",
     "Bookmark deleted" : "Segnalibro eliminato",
     "Bookmark created" : "Segnalibro creato",

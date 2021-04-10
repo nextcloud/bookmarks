@@ -4,7 +4,6 @@ OC.L10N.register(
     "Bookmarks" : "Bookmarks",
     "No file provided for import" : "هیچ پرونده ای برای واردکردن ارائه نشده است",
     "Unsupported file type for import" : "این نوع فایل برای افزودن پشتیبانی نمی شود",
-    "Recent Bookmarks" : "نشانک های اخیر",
     "A Bookmark manager for Nextcloud" : "یک مدیر نشانک برای نکست کلود",
     "Select bookmark" : "نشانک را انتخاب کنید",
     "Details" : "جزئیات",

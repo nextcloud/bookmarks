@@ -28,7 +28,6 @@ OC.L10N.register(
     "No file provided for import" : "İçe aktarılacak bir dosya seçilmemiş",
     "Unsupported file type for import" : "İçe aktarılacak dosya türü desteklenmiyor",
     "Bookmarks shared by %s" : "%s tarafından paylaşılan yer imleri",
-    "Recent Bookmarks" : "Son Kullanılan Yer İmleri",
     "Bookmark" : "Yer imi",
     "Bookmark deleted" : "Yer imi silindi",
     "Bookmark created" : "Yer imi eklendi",

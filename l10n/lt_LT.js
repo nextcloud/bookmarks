@@ -17,7 +17,6 @@ OC.L10N.register(
     "You shared folder \"%1$s\" with %2$s" : "Jūs pradėjote bendrinti aplanką „%1$s“ su %2$s",
     "No file provided for import" : "Importavimui nepateiktas joks failas",
     "Unsupported file type for import" : "Importavimui pateiktas nepalaikomas failo tipas",
-    "Recent Bookmarks" : "Paskiausi adresyno įrašai",
     "A Bookmark manager for Nextcloud" : "Adresyno tvarkytuvė, skirta Nextcloud",
     "Select bookmark" : "Pasirinkti adresyno įrašą",
     "Details" : "Išsamiau",

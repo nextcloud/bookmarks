@@ -24,7 +24,6 @@ OC.L10N.register(
     "No file provided for import" : "Tuotavaa tiedostoa ei ole valittu",
     "Unsupported file type for import" : "Tiedoston tyyppi ei ole tuotavaa muotoa",
     "Bookmarks shared by %s" : "Henkilön %s jakamat kirjanmerkit",
-    "Recent Bookmarks" : "Uusimmat kirjanmerkit",
     "Bookmark" : "Kirjanmerkki",
     "Bookmark deleted" : "Kirjanmerkki poistettu",
     "Bookmark created" : "Kirjanmerkki luotu",

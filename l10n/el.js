@@ -28,7 +28,6 @@ OC.L10N.register(
     "No file provided for import" : "Κανένα αρχείο για εισαγωγή",
     "Unsupported file type for import" : "Μη υποστηριζόμενος τύπος αρχείου",
     "Bookmarks shared by %s" : "Σελιδοδείκτες σε κοινή χρήση από %s",
-    "Recent Bookmarks" : "Πρόσφατοι Σελιδοδείκτες",
     "Bookmark" : "Σελιδοδείκτης",
     "Bookmark deleted" : "Ο σελιδοδείκτης διαγράφηκε",
     "Bookmark created" : "Ο σελιδοδείκτης δημιουργήθηκε",

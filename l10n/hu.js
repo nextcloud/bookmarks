@@ -28,7 +28,6 @@ OC.L10N.register(
     "No file provided for import" : "Nincs fájl megadva importáláshoz",
     "Unsupported file type for import" : "Nem támogatott fájltípus az importáláshoz",
     "Bookmarks shared by %s" : "Könyvjelzők %s által megosztva",
-    "Recent Bookmarks" : "Legújabb könyvjelzők",
     "Bookmark" : "Könyvjelző",
     "Bookmark deleted" : "Könyvjelző törölve",
     "Bookmark created" : "Könyvjelző létrehozva",

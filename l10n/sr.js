@@ -5,7 +5,6 @@ OC.L10N.register(
     "No file provided for import" : "није дат фајл за увоз",
     "Unsupported file type for import" : "врста фајла за увоз није подржана",
     "Bookmarks shared by %s" : "%s поделио обележиваче",
-    "Recent Bookmarks" : "Недавни обележивачи",
     "A Bookmark manager for Nextcloud" : "Менаџер обележивача за Некстклауд",
     "Select bookmark" : "Изабери обележивач",
     "Details" : "Детаљи",

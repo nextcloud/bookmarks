@@ -28,7 +28,6 @@ OC.L10N.register(
     "No file provided for import" : "無匯入檔案",
     "Unsupported file type for import" : "匯入不支援的檔案格式",
     "Bookmarks shared by %s" : "由 %s 共用的書籤",
-    "Recent Bookmarks" : "最近的書籤",
     "Bookmark" : "書籤",
     "Bookmark deleted" : "書籤已刪除",
     "Bookmark created" : "書籤已建立",

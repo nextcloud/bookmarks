@@ -9,7 +9,6 @@ OC.L10N.register(
     "%1$s deleted \"%2$s\"" : "%1$s a suprimit « %2$s »",
     "Someone deleted \"%s\"" : "Qualqu’un a suprimit « %s »",
     "You created folder \"%s\"" : "Avètz creat lo dossièr « %s »",
-    "Recent Bookmarks" : "Marcapaginas recents",
     "Bookmark" : "Marcapagina",
     "Bookmark deleted" : "Marcapagina suprimit",
     "Bookmark created" : "Marcapagina creat",

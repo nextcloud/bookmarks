@@ -28,7 +28,6 @@ OC.L10N.register(
     "No file provided for import" : "Perunu archìviu est frunidu pro s'importatzione",
     "Unsupported file type for import" : "Genia de archìviu non suportadu pro s'importatzione",
     "Bookmarks shared by %s" : "Signalibros cumpartzidos dae %s",
-    "Recent Bookmarks" : "Signalibros reghentes",
     "Bookmark" : "Signalibru",
     "Bookmark deleted" : "Signalibru cantzelladu",
     "Bookmark created" : "Signalibru creadu",

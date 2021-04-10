@@ -28,7 +28,6 @@ OC.L10N.register(
     "No file provided for import" : "Nije navedena datoteka za uvoz",
     "Unsupported file type for import" : "Nepodržana vrsta datoteke za uvoz",
     "Bookmarks shared by %s" : "Knjižne oznake dijeljene s %s",
-    "Recent Bookmarks" : "Nedavne knjižne oznake",
     "Bookmark" : "Dodaj knjižnu oznaku",
     "Bookmark deleted" : "Knjižna oznaka je izbrisana",
     "Bookmark created" : "Knjižna oznaka je stvorena",

@@ -18,7 +18,6 @@ OC.L10N.register(
     "No file provided for import" : "לא סופק קובץ לייבוא",
     "Unsupported file type for import" : "סוג הקובץ לייבוא אינו נתמך",
     "Bookmarks shared by %s" : "סימניות שמשותפות על ידי %s",
-    "Recent Bookmarks" : "סימניות אחרונות",
     "Bookmark" : "סימנייה",
     "Bookmark deleted" : "סימנייה נמחקה",
     "Bookmark created" : "סימנייה נוצרה",
