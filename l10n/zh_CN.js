@@ -28,6 +28,8 @@ OC.L10N.register(
     "No file provided for import" : "未提供导入文件",
     "Unsupported file type for import" : "不支持导入的文件类型",
     "Bookmarks shared by %s" : "书签共享者 %s",
+    "Frequent bookmarks" : "常用书签",
+    "Recent bookmarks" : "近期书签",
     "Bookmark" : "书签",
     "Bookmark deleted" : "书签已删除",
     "Bookmark created" : "书签已创建",

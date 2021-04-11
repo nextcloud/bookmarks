@@ -28,6 +28,8 @@ OC.L10N.register(
     "No file provided for import" : "Brak pliku do importu",
     "Unsupported file type for import" : "NIewspierany typ pliku importowania",
     "Bookmarks shared by %s" : "Zakładki udostępnione przez %s",
+    "Frequent bookmarks" : "Częste zakładki",
+    "Recent bookmarks" : "Najnowsze zakładki",
     "Bookmark" : "Zakładka",
     "Bookmark deleted" : "Usunięto zakładkę",
     "Bookmark created" : "Utworzono zakładkę",
