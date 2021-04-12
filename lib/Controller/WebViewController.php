@@ -103,6 +103,7 @@ class WebViewController extends Controller {
 		$policy->addAllowedWorkerSrcDomain("'self'");
 		$policy->addAllowedScriptDomain("'self'");
 		$policy->addAllowedConnectDomain("'self'");
+		$policy->addAllowedFrameDomain("'self'");
 		$res->setContentSecurityPolicy($policy);
 
 		// Provide complete folder hierarchy

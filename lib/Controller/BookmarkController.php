@@ -43,6 +43,7 @@ use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\Files\IRootFolder;
 use OCP\IL10N;
 use Psr\Log\LoggerInterface;
 use OCP\IURLGenerator;
@@ -114,9 +115,13 @@ class BookmarkController extends ApiController {
 	 * @var FolderService
 	 */
 	private $folders;
+	/**
+	 * @var IRootFolder
+	 */
+	private $rootFolder;
 
 	public function __construct(
-		$appName, $request, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, LoggerInterface $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders
+		$appName, $request, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, LoggerInterface $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders, IRootFolder $rootFolder
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
@@ -133,6 +138,7 @@ class BookmarkController extends ApiController {
 		$this->authorizer = $authorizer;
 		$this->bookmarks = $bookmarks;
 		$this->folders = $folders;
+		$this->rootFolder = $rootFolder;
 	}
 
 	/**
@@ -155,6 +161,13 @@ class BookmarkController extends ApiController {
 		}
 		if (!isset($array['tags'])) {
 			$array['tags'] = $this->tagMapper->findByBookmark($bookmark->getId());
+		}
+		if ($array['archivedFile'] !== 0) {
+			$results = $this->rootFolder->getById($array['archivedFile']);
+			if (count($results)) {
+				$array['archivedFilePath'] = $results[0]->getPath();
+				$array['archivedFileType'] = $results[0]->getMimePart();
+			}
 		}
 		return $array;
 	}

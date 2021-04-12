@@ -30,56 +30,57 @@
 			icon="icon-info"
 			:order="0">
 			<div>
-				<div v-if="!editingUrl" class="bookmark-details__line">
-					<span class="bookmark-details__url">{{ bookmark.url }}</span>
-					<Actions v-if="isEditable" class="bookmark-details__action">
+				<div v-if="!editingUrl" class="details__line">
+					<span class="icon-external" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
+					<span class="details__url">{{ bookmark.url }}</span>
+					<Actions v-if="isEditable" class="details__action">
 						<ActionButton icon="icon-rename" @click="onEditUrl" />
 					</Actions>
 				</div>
-				<div v-else class="bookmark-details__line">
-					<input v-model="url" class="bookmark-details__url">
-					<Actions class="bookmark-details__action">
+				<div v-else class="details__line">
+					<span class="icon-external" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
+					<input v-model="url" class="details__url">
+					<Actions class="details__action">
 						<ActionButton icon="icon-confirm" @click="onEditUrlSubmit" />
 					</Actions>
-					<Actions class="bookmark-details__action">
+					<Actions class="details__action">
 						<ActionButton icon="icon-close" @click="onEditUrlCancel" />
 					</Actions>
 				</div>
+				<div class="details__line">
+					<span class="icon-tag" :aria-label="t('bookmarks', 'Tags')" :title="t('bookmarks', 'Tags')" />
+					<Multiselect
+						class="tags"
+						:value="tags"
+						:auto-limit="false"
+						:limit="7"
+						:options="allTags"
+						:multiple="true"
+						:taggable="true"
+						:placeholder="t('bookmarks', 'Select tags and create new ones')"
+						:disabled="!isEditable"
+						@input="onTagsChange"
+						@tag="onAddTag" />
+				</div>
+				<div class="details__line">
+					<span class="icon-edit"
+						role="figure"
+						:aria-label="t('bookmarks', 'Notes')"
+						:title="t('bookmarks', 'Notes')" />
+					<RichContenteditable
+						:value.sync="bookmark.description"
+						:contenteditable="isEditable"
+						:auto-complete="() => {}"
+						:placeholder="t('bookmarks', 'Notes for this bookmark …')"
+						:multiline="true"
+						class="notes"
+						@update:value="onNotesChange" />
+				</div>
 			</div>
 			<div v-if="archivedFile">
-				<h3><ArchiveArrowDownIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived file') }}</h3>
-				<a :href="archivedFile" class="button">{{ t('bookmarks', 'Open archived file') }}</a>
-			</div>
-			<div v-else-if="bookmark.textContent">
-				<h3><ArchiveArrowDownIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived content') }}</h3>
-				<blockquote v-text="bookmark.textContent.substr(0, 250)+'...'" />
-				<a href="javascript:void(0)" class="button" @click="showContentModal = true">{{ t('bookmarks', 'Read more') }}</a>
-				<ContentModal v-if="showContentModal" :bookmark="bookmark" @close="showContentModal = false" />
-			</div>
-			<div>
-				<h3><span class="icon-tag" /> {{ t('bookmarks', 'Tags') }}</h3>
-				<Multiselect
-					class="sidebar__tags"
-					:value="tags"
-					:auto-limit="false"
-					:limit="7"
-					:options="allTags"
-					:multiple="true"
-					:taggable="true"
-					:placeholder="t('bookmarks', 'Select tags and create new ones')"
-					:disabled="!isEditable"
-					@input="onTagsChange"
-					@tag="onAddTag" />
-			</div>
-			<div>
-				<h3><span class="icon-edit" /> {{ t('bookmarks', 'Notes') }}</h3>
-				<RichContenteditable
-					:value.sync="bookmark.description"
-					:contenteditable="isEditable"
-					:auto-complete="() => {}"
-					:placeholder="t('bookmarks', 'Notes for this bookmark …')"
-					:multiline="true"
-					@update:value="onNotesChange" />
+				<h3><FileDocumentIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived file') }}</h3>
+				<a class="button" :href="archivedFileUrl" target="_blank"><FileDocumentIcon :size="18" :fill-color="colorMainText" /> {{ t('bookmarks', 'Open File') }}</a>
+				<a class="button" :href="archivedFile" target="_blank"><span class="icon-files-dark" /> {{ t('bookmarks', 'Open File location') }}</a>
 			</div>
 		</AppSidebarTab>
 	</AppSidebar>
@@ -91,19 +92,18 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import RichContenteditable from '@nextcloud/vue/dist/Components/RichContenteditable'
-import ArchiveArrowDownIcon from 'vue-material-design-icons/ArchiveArrowDown'
+import FileDocumentIcon from 'vue-material-design-icons/FileDocument'
 
 import { getCurrentUser } from '@nextcloud/auth'
-import { generateUrl } from '@nextcloud/router'
+import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
 import { actions, mutations } from '../store/'
-import ContentModal from './ContentModal'
 
 const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { ContentModal, AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable, ArchiveArrowDownIcon },
+	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable, FileDocumentIcon },
 	data() {
 		return {
 			title: '',
@@ -162,6 +162,11 @@ export default {
 				return generateUrl(`/apps/files/?fileid=${this.bookmark.archivedFile}`)
 			}
 			return null
+		},
+		archivedFileUrl() {
+			// remove `/username/files/`
+			const barePath = this.bookmark.archivedFilePath.split('/').slice(3).join('/')
+			return generateRemoteUrl(`webdav/${barePath}`)
 		},
 	},
 	created() {
@@ -229,36 +234,56 @@ export default {
 	opacity: 0.5;
 }
 
+.sidebar .details__line > span[class^='icon-'],
+.sidebar .details__line > .material-design-icon {
+	display: inline-block;
+	position: relative;
+	top: 11px;
+	opacity: 0.5;
+	margin-right: 10px;
+}
+
 .sidebar h3 {
 	margin-top: 20px;
 }
 
-.sidebar__tags {
+.sidebar .tags {
 	width: 100%;
 }
 
-.sidebar__notes {
-	min-height: 200px !important;
-	width: auto !important;
-}
-
-.bookmark-details__line {
-	display: flex;
-}
-
-.bookmark-details__url {
+.sidebar .notes {
 	flex-grow: 1;
-	padding: 8px 0;
+	min-height: 80px;
 }
 
-.bookmark-details__action {
+.sidebar .details__line {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 10px;
+}
+
+.sidebar .details__line > * {
 	flex-grow: 0;
 }
 
-.sidebar blockquote {
-	border-left: var(--color-placeholder-dark) 3px solid;
-	padding-left: 10px;
-	color: var(--color-text-lighter);
-	margin: 10px 0;
+.sidebar .details__line > :nth-child(2) {
+	flex-grow: 1;
+}
+
+.sidebar .details__line .notes {
+	flex-grow: 1;
+}
+
+.sidebar .details__url {
+	flex-grow: 1;
+	padding: 8px 0;
+	text-overflow: ellipsis;
+	height: 2em;
+	display: inline-block;
+	overflow: hidden;
+}
+
+.sidebar .details__action {
+	flex-grow: 0;
 }
 </style>

@@ -10,6 +10,7 @@
 		<AppContent>
 			<Controls />
 			<BookmarksList :bookmarks="bookmarks" />
+			<BookmarkContent />
 		</AppContent>
 		<SidebarBookmark />
 		<SidebarFolder />
@@ -30,11 +31,13 @@ import MoveDialog from './MoveDialog'
 import { privateRoutes } from '../router'
 import { actions, mutations } from '../store/'
 import LoadingModal from './LoadingModal'
+import BookmarkContent from './BookmarkContent'
 import { getCurrentUser } from '@nextcloud/auth'
 
 export default {
 	name: 'ViewPrivate',
 	components: {
+		BookmarkContent,
 		LoadingModal,
 		Navigation,
 		Content,
