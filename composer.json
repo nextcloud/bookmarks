@@ -39,6 +39,7 @@
         "cs:check": "php-cs-fixer fix --dry-run --diff",
         "cs:fix": "php-cs-fixer fix",
 		"psalm": "psalm  --output-format=github --no-progress --no-cache --use-baseline=psalm-baseline.xml",
+		"psalm-new-baseline": "psalm  --output-format=github --no-progress --no-cache --set-baseline=psalm-baseline.xml",
 		"psalm-ui": "psalm --no-cache"
 	}
 }
