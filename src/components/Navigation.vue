@@ -24,8 +24,10 @@
 			<AppNavigationItem
 				key="menu-archived"
 				:to="{ name: routes.ARCHIVED }"
-				:title="t('bookmarks', 'Archived')">
-				<ArchiveArrowDownIcon slot="icon" :size="18" :fill-color="colorMainText" />
+				:title="t('bookmarks', 'Files')">
+				<FileDocumentMultipleIcon slot="icon"
+					:size="18"
+					:fill-color="colorMainText" />
 				<AppNavigationCounter v-show="Boolean(archivedBookmarksCount)" slot="counter">
 					{{ archivedBookmarksCount }}
 				</AppNavigationCounter>
@@ -97,8 +99,8 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import HistoryIcon from 'vue-material-design-icons/History'
 import TagOffIcon from 'vue-material-design-icons/TagOff'
 import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff'
+import FileDocumentMultipleIcon from 'vue-material-design-icons/FileDocumentMultiple'
 import TagPlusIcon from 'vue-material-design-icons/TagPlus'
-import ArchiveArrowDownIcon from 'vue-material-design-icons/ArchiveArrowDown'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
 import { actions, mutations } from '../store/'
@@ -119,7 +121,7 @@ export default {
 		TagOffIcon,
 		LinkVariantOffIcon,
 		TagPlusIcon,
-		ArchiveArrowDownIcon,
+		FileDocumentMultipleIcon,
 	},
 	data() {
 		return {}

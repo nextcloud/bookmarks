@@ -16,7 +16,8 @@
 		"symfony/event-dispatcher": "^4.4",
 		"symfony/process": "^4.4",
 		"symfony/routing": "^4.4",
-		"xantios/mimey": "^2.1"
+		"xantios/mimey": "^2.1",
+		"andreskrey/readability.php": "^2.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^8.5",
@@ -38,6 +39,7 @@
         "cs:check": "php-cs-fixer fix --dry-run --diff",
         "cs:fix": "php-cs-fixer fix",
 		"psalm": "psalm  --output-format=github --no-progress --no-cache --use-baseline=psalm-baseline.xml",
+		"psalm-new-baseline": "psalm  --output-format=github --no-progress --no-cache --set-baseline=psalm-baseline.xml",
 		"psalm-ui": "psalm --no-cache"
 	}
 }

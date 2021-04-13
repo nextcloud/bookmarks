@@ -10,6 +10,7 @@
 			<Controls />
 			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
 		</AppContent>
+		<BookmarkContent />
 	</Content>
 </template>
 
@@ -19,10 +20,12 @@ import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import BookmarksList from './BookmarksList'
 import Controls from './Controls'
 import { actions, mutations } from '../store/'
+import BookmarkContent from './BookmarkContent'
 
 export default {
 	name: 'ViewPublic',
 	components: {
+		BookmarkContent,
 		Content,
 		AppContent,
 		Controls,

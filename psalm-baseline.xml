@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.4.1@9fd7a7d885b3a216cff8dec9d8c21a132f275224">
-  <file src="lib/BackgroundJobs/CrawlJob.php">
-    <UndefinedClass occurrences="1">
-      <code>TimedJob</code>
-    </UndefinedClass>
+<files psalm-version="4.7.0@d4377c0baf3ffbf0b1ec6998e8d1be2a40971005">
+  <file src="lib/Controller/BookmarkController.php">
+    <MissingDependency occurrences="3">
+      <code>$this-&gt;rootFolder</code>
+      <code>IRootFolder</code>
+      <code>IRootFolder</code>
+    </MissingDependency>
   </file>
   <file src="lib/Db/PublicFolderMapper.php">
     <InvalidReturnType occurrences="1">
@@ -24,7 +26,9 @@
     <MissingDependency occurrences="1">
       <code>IRootFolder</code>
     </MissingDependency>
-    <UndefinedClass occurrences="2">
+    <UndefinedClass occurrences="4">
+      <code>$e</code>
+      <code>$e</code>
       <code>Client</code>
       <code>NoUserException</code>
     </UndefinedClass>
