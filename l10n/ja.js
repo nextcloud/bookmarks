@@ -28,6 +28,7 @@ OC.L10N.register(
     "No file provided for import" : "インポート用に提供されたファイルがありません",
     "Unsupported file type for import" : "インポートでサポートされていないファイル形式です",
     "Bookmarks shared by %s" : "%sさんから共有されたブックマーク",
+    "Recent bookmarks" : "最新のブックマーク",
     "Bookmark" : "ブックマーク",
     "Bookmark deleted" : "ブックマーク削除時",
     "Bookmark created" : "ブックマーク作成時",
