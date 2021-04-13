@@ -68,30 +68,31 @@ export default {
 <style>
 .bookmark-content {
 	position: absolute;
-	top: 0;
+	top: 50px;/* nc header bar */
 	left: 0;
-	right: 0;
+	right: max( min(27vw, 500px), 300px); /* side bar */
 	bottom: 0;
 	background: var(--color-main-background);
-	z-index: 110;
+	z-index: 3000;
 	display: flex;
-	padding-top: 50px;
+	overflow: scroll;
+	flex-direction: column;
 }
 
 .bookmark-content .content {
-	padding: 30px 30px;
+	margin: 30px auto;
+	width: 600px;
 	font-size: 15px;
 	text-align: justify;
 	position: relative;
 	flex-grow: 1;
-	overflow: scroll;
 }
 
 .bookmark-content .content.iframe {
-	margin: 0 -30px;
-	margin-bottom: -30px;
-	padding: 0;
+	margin: 0;
 	position: relative;
+	overflow: hidden;
+	width: auto;
 }
 
 .bookmark-content .content iframe {

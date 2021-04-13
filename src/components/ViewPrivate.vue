@@ -10,12 +10,12 @@
 		<AppContent>
 			<Controls />
 			<BookmarksList :bookmarks="bookmarks" />
-			<BookmarkContent />
 		</AppContent>
 		<SidebarBookmark />
 		<SidebarFolder />
 		<MoveDialog />
 		<LoadingModal />
+		<BookmarkContent />
 	</Content>
 </template>
 
