@@ -30,6 +30,10 @@ use OCP\Lock\LockedException;
 use Psr\Log\LoggerInterface;
 
 class CrawlService {
+	public const MAX_BODY_LENGTH = 92160; // 90 MiB
+	public const CONNECT_TIMEOUT = 10;
+	public const READ_TIMEOUT = 10;
+
 	/**
 	 * @var BookmarkMapper
 	 */
@@ -78,7 +82,7 @@ class CrawlService {
 	 */
 	public function crawl(Bookmark $bookmark): void {
 		try {
-			$client = new Client();
+			$client = new Client(['connect_timeout' => self::CONNECT_TIMEOUT, 'read_timeout' => self::READ_TIMEOUT]);
 			/** @var Response $resp */
 			$resp = $client->get($bookmark->getUrl());
 			$available = $resp ? $resp->getStatusCode() !== 404 : false;
@@ -118,7 +122,7 @@ class CrawlService {
 
 	private function archiveFile(Bookmark $bookmark, Response $resp) :void {
 		$contentType = $resp->getHeader('Content-type')[0];
-		if ((bool)preg_match('#text/html#i', $contentType) === false && $bookmark->getArchivedFile() === null) {
+		if ((bool)preg_match('#text/html#i', $contentType) === false && $bookmark->getArchivedFile() === null && (int)$resp->getHeader('Content-length')[0] < self::MAX_BODY_LENGTH) {
 			try {
 				$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
 				$folderPath = $this->getArchivePath($bookmark, $userFolder);
