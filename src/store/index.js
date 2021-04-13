@@ -80,7 +80,7 @@ export default {
 		})),
 		getFolder: state => id => {
 			if (Number(id) === -1) {
-				return [{ id: '-1', children: state.folders }]
+				return [{ id: -1, children: state.folders }]
 			}
 			return findFolder(id, state.folders)
 		},

@@ -7,27 +7,20 @@
 <template>
 	<Modal v-if="showModal" :title="title" @close="onClose">
 		<div class="move-dialog">
-			<TreeFolder
-				:folder="{
-					title: t('bookmarks', 'Root folder'),
-					id: '-1',
-					children: allFolders
-				}"
-				:show-children-default="true"
-				@select="onSelect" />
+			<FolderPicker :title="title" :filter="filterFolders" @submit="onSubmit" />
 		</div>
 	</Modal>
 </template>
 <script>
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 import { actions, mutations } from '../store/'
-import TreeFolder from './TreeFolder'
+import FolderPicker from './FolderPicker'
 
 export default {
 	name: 'MoveDialog',
 	components: {
+		FolderPicker,
 		Modal,
-		TreeFolder,
 	},
 	computed: {
 		showModal() {
@@ -35,9 +28,6 @@ export default {
 		},
 		selection() {
 			return this.$store.state.selection
-		},
-		allFolders() {
-			return this.filterFolders(this.$store.state.folders)
 		},
 		title() {
 			if (this.selection.folders.length) {
@@ -63,9 +53,8 @@ export default {
 			}
 		},
 	},
-	created() {},
 	methods: {
-		async onSelect(folderId) {
+		async onSubmit(folderId) {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, false)
 			await this.$store.dispatch(actions.MOVE_SELECTION, folderId)
 			this.$store.commit(mutations.RESET_SELECTION)
@@ -74,16 +63,8 @@ export default {
 		onClose() {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, false)
 		},
-		filterFolders(children) {
-			return children
-				.filter(
-					child =>
-						!this.selection.folders.some(folder => folder.id === child.id)
-				)
-				.map(child => ({
-					...child,
-					children: this.filterFolders(child.children),
-				}))
+		filterFolders(child) {
+			return !this.selection.folders.some(folder => folder.id === child.id)
 		},
 	},
 }
@@ -93,6 +74,6 @@ export default {
 	min-width: 300px;
 	height: 300px;
 	overflow-y: scroll;
-	padding: 10px;
+	padding: 20px;
 }
 </style>

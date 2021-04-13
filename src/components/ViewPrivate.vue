@@ -9,7 +9,7 @@
 		<Navigation />
 		<AppContent>
 			<Controls />
-			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
+			<BookmarksList :bookmarks="bookmarks" />
 		</AppContent>
 		<SidebarBookmark />
 		<SidebarFolder />
@@ -30,6 +30,7 @@ import MoveDialog from './MoveDialog'
 import { privateRoutes } from '../router'
 import { actions, mutations } from '../store/'
 import LoadingModal from './LoadingModal'
+import { getCurrentUser } from '@nextcloud/auth'
 
 export default {
 	name: 'ViewPrivate',
@@ -59,9 +60,6 @@ export default {
 		tags() {
 			return this.$store.state.tags
 		},
-		loading() {
-			return this.$store.state.loading
-		},
 	},
 
 	watch: {
@@ -83,6 +81,14 @@ export default {
 			this.reloadFolders(),
 		])
 		this.onRoute()
+
+		const currentUser = getCurrentUser()
+		if (currentUser.isAdmin) {
+			const scrapingEnabled = await this.getSettingValue('privacy.enableScraping')
+			if (scrapingEnabled !== 'true') {
+				this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons.'))
+			}
+		}
 	},
 
 	methods: {
@@ -150,6 +156,21 @@ export default {
 
 		onResetSearch() {
 			this.$router.push({ name: privateRoutes.HOME })
+		},
+
+		async getSettingValue(setting) {
+			const resDocument = await new Promise((resolve, reject) =>
+				OCP.AppConfig.getValue('bookmarks', setting, null, {
+					success: resolve,
+					error: reject,
+				})
+			)
+			if (resDocument.querySelector('status').textContent !== 'ok') {
+				console.error('Failed request', resDocument)
+				return
+			}
+			const dataEl = resDocument.querySelector('data')
+			return dataEl.firstElementChild.textContent
 		},
 	},
 }

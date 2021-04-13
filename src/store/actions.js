@@ -41,6 +41,7 @@ export const actions = {
 	DELETE_FOLDER: 'DELETE_FOLDER',
 	LOAD_FOLDER_CHILDREN_ORDER: 'LOAD_FOLDER_CHILDREN_ORDER',
 	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
+	OPEN_FOLDER_SHARING: 'OPEN_FOLDER_SHARING',
 
 	MOVE_SELECTION: 'MOVE_SELECTION',
 	DELETE_SELECTION: 'DELETE_SELECTION',
@@ -201,6 +202,37 @@ export default {
 	async [actions.CREATE_BOOKMARK]({ commit, dispatch, state }, data) {
 		if (state.loading.bookmarks) return
 		commit(mutations.FETCH_START, { type: 'createBookmark' })
+		commit(mutations.DISPLAY_NEW_BOOKMARK, false)
+
+		// Insert a dummy bookmark
+		const currentTimestamp = Math.round(Date.now() / 1000)
+		const prelimBookmark = {
+			id: 'preliminary-' + Math.random(),
+			title: data.url,
+			folders: [-1],
+			tags: [],
+			added: currentTimestamp,
+			lastmodified: currentTimestamp,
+			clickcount: 0,
+			...data,
+			preliminary: true,
+		}
+		commit(mutations.ADD_BOOKMARK, prelimBookmark)
+		commit(mutations.SORT_BOOKMARKS, state.settings.sorting)
+		if (data.folders) {
+			for (const folderId of data.folders) {
+				commit(mutations.SET_FOLDER_CHILDREN_ORDER, {
+					folderId,
+					children: [...state.childrenByFolder[folderId], { type: 'bookmark', id: prelimBookmark.id }],
+				})
+			}
+		} else {
+			commit(mutations.SET_FOLDER_CHILDREN_ORDER, {
+				folderId: -1,
+				children: [...state.childrenByFolder[-1], { type: 'bookmark', id: prelimBookmark.id }],
+			})
+		}
+
 		try {
 			const response = await axios.post(url(state, '/bookmark'), {
 				url: data.url,
@@ -215,27 +247,43 @@ export default {
 			if (status !== 'success') {
 				throw new Error(response.data.data.join('\n'))
 			}
-			commit(mutations.DISPLAY_NEW_BOOKMARK, false)
 			commit(mutations.FETCH_END, 'createBookmark')
+			commit(mutations.REMOVE_BOOKMARK, prelimBookmark.id)
+			commit(mutations.ADD_BOOKMARK, bookmark)
+			commit(mutations.SORT_BOOKMARKS, state.settings.sorting)
+
+			// Update other displays
 			commit(mutations.SET_BOOKMARK_COUNT, {
 				folderId: -1,
 				count: state.countsByFolder[-1] + 1,
 			})
-			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
-			dispatch(actions.RELOAD_VIEW)
 			if (data.folders) {
 				for (const folderId of data.folders) {
+					commit(mutations.SET_FOLDER_CHILDREN_ORDER, {
+						folderId,
+						children: [...state.childrenByFolder[folderId], { type: 'bookmark', id: bookmark.id }],
+					})
 					commit(mutations.SET_BOOKMARK_COUNT, {
 						folderId,
 						count: state.countsByFolder[folderId] + 1,
 					})
 					dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folderId)
 				}
+			} else {
+				commit(mutations.SET_FOLDER_CHILDREN_ORDER, {
+					folderId: -1,
+					children: [...state.childrenByFolder[-1], { type: 'bookmark', id: bookmark.id }],
+				})
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 			}
+			dispatch(actions.RELOAD_VIEW)
+
+			// open sidebar
 			return dispatch(actions.OPEN_BOOKMARK, bookmark.id)
 		} catch (err) {
 			console.error(err)
 			commit(mutations.FETCH_END, 'createBookmark')
+			commit(mutations.REMOVE_BOOKMARK, prelimBookmark.id)
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to create bookmark')
@@ -669,6 +717,9 @@ export default {
 	[actions.OPEN_FOLDER_DETAILS]({ commit }, id) {
 		commit(mutations.SET_SIDEBAR, { type: 'folder', id })
 	},
+	[actions.OPEN_FOLDER_SHARING]({ commit }, id) {
+		commit(mutations.SET_SIDEBAR, { type: 'folder', id, tab: 'folder-sharing' })
+	},
 
 	async [actions.MOVE_SELECTION]({ commit, dispatch, state }, folderId) {
 		commit(mutations.FETCH_START, { type: 'moveSelection' })
@@ -689,19 +740,22 @@ export default {
 				},
 				10
 			)
-			await dispatch(actions.LOAD_FOLDERS)
-
-			await Parallel.each(
-				state.selection.bookmarks,
-				bookmark =>
-					dispatch(actions.MOVE_BOOKMARK, {
-						oldFolder:
+			await Promise.all([
+				dispatch(actions.LOAD_FOLDERS),
+				Parallel.each(
+					state.selection.bookmarks,
+					bookmark => {
+						commit(mutations.REMOVE_BOOKMARK, bookmark.id)
+						return dispatch(actions.MOVE_BOOKMARK, {
+							oldFolder:
 							bookmark.folders[bookmark.folders.length - 1], // FIXME This is veeeery ugly and will cause issues. Inevitably.
-						newFolder: folderId,
-						bookmark: bookmark.id,
-					}),
-				10
-			)
+							newFolder: folderId,
+							bookmark: bookmark.id,
+						})
+					},
+					10
+				),
+			])
 
 			// Because we're possibly moving across share boundaries we need to recount
 			await dispatch(actions.COUNT_BOOKMARKS, -1)
@@ -841,6 +895,7 @@ export default {
 		if (state.fetchState.reachedEnd) return
 		if (state.loading.bookmarks) return
 		let canceled = false
+		const fetchedPage = state.fetchState.page
 		commit(mutations.FETCH_START, {
 			type: 'bookmarks',
 			cancel() {
@@ -868,6 +923,9 @@ export default {
 					commit(mutations.REACHED_END)
 				}
 				commit(mutations.FETCH_END, 'bookmarks')
+				if (fetchedPage === 0) {
+					commit(mutations.REMOVE_ALL_BOOKMARKS)
+				}
 				return dispatch(actions.ADD_ALL_BOOKMARKS, bookmarks)
 			})
 			.catch(err => {

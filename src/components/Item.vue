@@ -6,12 +6,15 @@
 
 <template>
 	<div
+		v-drop-target="{allow: allowDrop, drop: (e) => $emit('drop', e)}"
 		:class="{
 			item: true,
 			active,
 			'item--gridview': viewMode === 'grid'
 		}"
-		:style="{ background }">
+		:style="{ background }"
+		:draggable="draggable"
+		@dragstart="onDragStart">
 		<template v-if="!renaming">
 			<a
 				:href="url"
@@ -28,8 +31,6 @@
 				<slot name="icon" />
 				<div class="item__labels">
 					<slot name="title" />
-				</div>
-				<div ref="tags">
 					<slot name="tags">
 						<TagLine :tags="tags" />
 					</slot>
@@ -70,6 +71,8 @@ import Vue from 'vue'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import TagLine from './TagLine'
+import DragImage from './DragImage'
+import { mutations } from '../store'
 
 export default {
 	name: 'Item',
@@ -102,6 +105,14 @@ export default {
 		selectable: {
 			type: Boolean,
 			default: false,
+		},
+		draggable: {
+			type: Boolean,
+			default: false,
+		},
+		allowDrop: {
+			type: Function,
+			default: () => false,
 		},
 		renaming: {
 			type: Boolean,
@@ -154,13 +165,37 @@ export default {
 					|| (this.$refs.actions && this.$refs.actions.contains(e.target))
 					|| (this.$refs.checkbox
 							&& (this.$refs.checkbox.contains(e.target) || this.$refs.checkbox === e.target)
-					)
-					|| (this.$refs.tags && this.$refs.tags.contains(e.target))
-					|| this.$refs.tags === e.target) {
+					)) {
 				e.stopImmediatePropagation()
 				return
 			}
 			this.$emit('click', e)
+		},
+		async onDragStart(e) {
+			if (!this.selected) {
+				if (this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length) {
+					// If something is already selected not including the current element, reset selection
+					this.$store.commit(mutations.RESET_SELECTION)
+				}
+				// Select the current item
+				this.$emit('select')
+				await this.$nextTick()
+			}
+			// Build the drag image
+			const element = document.createElement('div')
+			const placeholder = element.appendChild(document.createElement('div'))
+			document.body.appendChild(element)
+			const vueInstance = new Vue({ el: placeholder, store: this.$store, render: (h) => h(DragImage) })
+			await vueInstance.$nextTick()
+
+			// set drag data and drag image
+			e.dataTransfer.clearData()
+			e.dataTransfer.setData('text/plain', JSON.stringify(this.$store.state.selection))
+			e.dataTransfer.setDragImage(element, 0, 0)
+
+			// dispose of drag image element, as the browser only takes a visual snapshot once
+			await new Promise(resolve => setTimeout(resolve, 0))
+			document.body.removeChild(element)
 		},
 	},
 }
@@ -188,7 +223,14 @@ export default {
 .item__rename {
 	display: flex;
 	align-items: center;
+}
+
+.item__rename {
 	padding: 0 8px 0 10px;
+}
+
+.item--gridview  .item__rename {
+	padding: 0 8px 5px 10px;
 }
 
 .item--gridview .item__clickLink,
@@ -200,7 +242,10 @@ export default {
 	top: 0;
 	display: flex;
 	align-items: flex-end;
-	padding: 0 8px 5px 10px;
+}
+
+.item.dropTarget {
+	background: var(--color-primary-element-light);
 }
 
 .item.active,
@@ -217,12 +262,18 @@ export default {
 	display: inline-block;
 }
 
+.item__checkbox label {
+	padding: 7px;
+	display: inline-block;
+}
+
 .item__labels {
 	display: flex;
 	flex: 1;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	margin: 10px 0;
+	margin-left: 5px;
 }
 
 .item:not(.item--gridview) .item__rename input {
@@ -231,10 +282,11 @@ export default {
 
 .item--gridview .item__checkbox {
 	position: absolute;
-	top: 10px;
-	left: 10px;
+	top: -1px;
+	left: -1px;
 	background: white;
 	border-radius: var(--border-radius);
+	box-shadow: #aaa 0 0 3px inset;
 }
 
 .item__actions {
@@ -246,6 +298,7 @@ export default {
 	bottom: 47px;
 	left: 10px;
 	margin: 0;
+	right: 10px;
 }
 
 .item--gridview .item__checkbox input[type='checkbox'].checkbox + label::before {

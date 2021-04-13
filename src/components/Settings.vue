@@ -17,26 +17,6 @@
 			<span class="icon-download" /> {{ t('bookmarks', 'Export') }}
 		</button>
 
-		<label><h3>{{ t('bookmarks', 'Sorting') }}</h3>
-			<select :value="sorting" @change="onChangeSorting">
-				<option id="added" value="added">
-					{{ t('bookmarks', 'Recently added') }}
-				</option>
-				<option id="title" value="title">
-					{{ t('bookmarks', 'Alphabetically') }}
-				</option>
-				<option id="clickcount" value="clickcount">
-					{{ t('bookmarks', 'Most visited') }}
-				</option>
-				<option id="lastmodified" value="lastmodified">
-					{{ t('bookmarks', 'Last modified') }}
-				</option>
-				<option id="index" value="index">
-					{{ t('bookmarks', 'Custom order') }}
-				</option>
-			</select>
-		</label>
-
 		<label><h3>{{ t('bookmarks', 'Archive path') }}</h3>
 			<p>{{ t('bookmarks',
 				'Enter the path of a folder where bookmarked files should be stored'
@@ -122,13 +102,7 @@ export default {
 		bookmarklet() {
 			const bookmarkletUrl
 						= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
-			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=500px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
-		},
-		viewMode() {
-			return this.$store.state.settings.viewMode
-		},
-		sorting() {
-			return this.$store.state.settings.sorting
+			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=650px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
 		archivePath() {
 			return this.$store.state.settings.archivePath
@@ -160,13 +134,6 @@ export default {
 			window.location
 				= 'bookmark/export?requesttoken='
 					+ encodeURIComponent(getRequestToken())
-		},
-		async onChangeSorting(e) {
-			await this.$store.dispatch(actions.SET_SETTING, {
-				key: 'sorting',
-				value: e.target.value,
-			})
-			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
 		async onChangeArchivePath(e) {
 			const path = await this.filePicker.pick()

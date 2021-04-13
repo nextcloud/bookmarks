@@ -13,6 +13,7 @@
 		:active="isActive"
 		:editable="isEditable"
 		:selected="selected"
+		:draggable="isEditable"
 		:renaming="renaming"
 		:background="background"
 		:url="url"
@@ -24,7 +25,9 @@
 		<template #title>
 			<div class="bookmark__title">
 				<h3 :title="bookmark.title">
+					<span v-if="bookmark.preliminary" class="icon-loading-small bookmark__icon" />
 					<figure
+						v-else
 						class="bookmark__icon"
 						:style="{ backgroundImage: 'url(' + iconUrl + ')' }" />
 					{{ bookmark.title }}
@@ -240,6 +243,7 @@ export default {
 
 .bookmark__title {
 	display: flex;
+	min-width: calc(50px + 40%);
 }
 
 .bookmark__title,
@@ -266,6 +270,10 @@ export default {
 
 .bookmark__description figure {
 	display: none !important;
+}
+
+.item--gridview .bookmark__title {
+	min-width: auto;
 }
 
 .item--gridview .bookmark__description {

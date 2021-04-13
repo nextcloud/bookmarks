@@ -40,15 +40,15 @@
 				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationSpacer />
+			<AppNavigationNewItem key="menu-new-tag"
+				:title="t('bookmarks', 'New tag')"
+				@new-item="onNewTag">
+				<TagPlusIcon slot="icon" :size="18" :fill-color="colorMainText" />
+			</AppNavigationNewItem>
 			<template v-if="Boolean(tags.length)">
-				<AppNavigationItem key="menu-tags"
-					:to="{ name: routes.TAGS }"
-					:exact="true"
-					:title="t('bookmarks', 'Filter tags')">
-					<TagMultipleIcon slot="icon" :size="18" :fill-color="colorMainText" />
-				</AppNavigationItem>
 				<AppNavigationItem v-for="tag in tags"
 					:key="'tag-'+tag.name"
+					v-drop-target="{allow: (e) => allowDropOnTag(tag.name, e), drop: (e) => onDropOnTag(tag.name, e)}"
 					icon="icon-tag"
 					:to="tag.route"
 					:force-menu="true"
@@ -89,6 +89,7 @@
 <script>
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
+import AppNavigationNewItem from '@nextcloud/vue/dist/Components/AppNavigationNewItem'
 import AppNavigationCounter from '@nextcloud/vue/dist/Components/AppNavigationCounter'
 import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
 import AppNavigationSpacer from '@nextcloud/vue/dist/Components/AppNavigationSpacer'
@@ -96,17 +97,18 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import HistoryIcon from 'vue-material-design-icons/History'
 import TagOffIcon from 'vue-material-design-icons/TagOff'
 import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff'
-import TagMultipleIcon from 'vue-material-design-icons/TagMultiple'
+import TagPlusIcon from 'vue-material-design-icons/TagPlus'
 import ArchiveArrowDownIcon from 'vue-material-design-icons/ArchiveArrowDown'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
-import { actions } from '../store/'
+import { actions, mutations } from '../store/'
 
 export default {
 	name: 'Navigation',
 	components: {
 		AppNavigation,
 		AppNavigationItem,
+		AppNavigationNewItem,
 		AppNavigationCounter,
 		AppNavigationSettings,
 		AppNavigationSpacer,
@@ -116,7 +118,7 @@ export default {
 		HistoryIcon,
 		TagOffIcon,
 		LinkVariantOffIcon,
-		TagMultipleIcon,
+		TagPlusIcon,
 		ArchiveArrowDownIcon,
 	},
 	data() {
@@ -154,6 +156,15 @@ export default {
 		onRenameTag(oldName, newName) {
 			this.$store.dispatch(actions.RENAME_TAG, { oldName, newName })
 		},
+		onNewTag(tagName) {
+			this.$store.commit(mutations.ADD_TAG, tagName)
+		},
+		allowDropOnTag(tagName) {
+			return !this.$store.state.selection.folders.length
+		},
+		onDropOnTag(tagName) {
+			this.$store.dispatch(actions.TAG_SELECTION, { tags: [tagName], originalTags: [] })
+		},
 	},
 }
 </script>
@@ -161,5 +172,9 @@ export default {
 .navigation .material-design-icon {
 	position: relative;
 	top: 4px;
+}
+
+.navigation .dropTarget {
+	background: var(--color-primary-element-light);
 }
 </style>

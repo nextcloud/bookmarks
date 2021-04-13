@@ -9,6 +9,7 @@
 		v-if="isActive"
 		class="sidebar"
 		:title="folder.title"
+		:active.sync="activeTab"
 		@close="onClose">
 		<AppSidebarTab id="folder-details" :name="t('bookmarks', 'Details')" icon="icon-info">
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
@@ -38,6 +39,15 @@
 				<h3 class="share__title">
 					{{ t('bookmarks', 'Share link') }}
 				</h3>
+				<div class="share__privs">
+					<div v-if="publicLink"
+						v-tooltip="t('bookmarks', 'Reading allowed')"
+						:aria-label="t('bookmarks', 'Reading allowed')">
+						<EyeIcon
+							:size="20"
+							:fill-color="colorMainText" />
+					</div>
+				</div>
 				<Actions class="share__actions">
 					<template v-if="publicLink">
 						<ActionButton icon="icon-clippy" @click="onCopyPublicLink">
@@ -62,12 +72,34 @@
 					<h3 class="share__title">
 						{{ share.participant }}
 					</h3>
+					<div class="share__privs">
+						<div v-if="share.canShare"
+							v-tooltip="t('bookmarks', 'Re-sharing allowed')"
+							:aria-label="t('bookmarks','Re-sharing allowed')">
+							<ShareAllIcon
+								:size="20"
+								:fill-color="colorMainText" />
+						</div>
+						<div v-if="share.canWrite"
+							v-tooltip="t('bookmarks','Editing allowed')"
+							:aria-label="t('bookmarks','Editing allowed')">
+							<PencilIcon
+								:size="20"
+								:fill-color="colorMainText" />
+						</div>
+						<div v-tooltip="t('bookmarks','Reading allowed')"
+							:aria-label="t('bookmarks', 'Reading allowed')">
+							<EyeIcon
+								:size="20"
+								:fill-color="colorMainText" />
+						</div>
+					</div>
 					<Actions class="share__actions">
 						<ActionCheckbox :checked="share.canWrite" @update:checked="onEditShare(share.id, {canWrite: $event, canShare: share.canShare})">
 							{{ t('bookmarks', 'Allow editing') }}
 						</ActionCheckbox>
 						<ActionCheckbox :checked="share.canShare" @update:checked="onEditShare(share.id, {canWrite: share.canWrite, canShare: $event})">
-							{{ t('bookmarks', 'Allow sharing') }}
+							{{ t('bookmarks', 'Allow re-sharing') }}
 						</ActionCheckbox>
 						<ActionButton icon="icon-delete" @click="onDeleteShare(share.id)">
 							{{ t('bookmarks', 'Remove share') }}
@@ -93,15 +125,19 @@ import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import copy from 'copy-text-to-clipboard'
 import { actions, mutations } from '../store/'
+import EyeIcon from 'vue-material-design-icons/Eye'
+import PencilIcon from 'vue-material-design-icons/Pencil'
+import ShareAllIcon from 'vue-material-design-icons/ShareAll'
 
 export default {
 	name: 'SidebarFolder',
-	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble, ActionSeparator },
+	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble, ActionSeparator, EyeIcon, PencilIcon, ShareAllIcon },
 	data() {
 		return {
 			participantSearchResults: [],
 			participant: null,
 			isSearching: false,
+			activeTab: '',
 		}
 	},
 	computed: {
@@ -164,6 +200,12 @@ export default {
 		},
 		bookmarkCount() {
 			return this.$store.state.countsByFolder[this.folder.id]
+		},
+	},
+
+	watch: {
+		'$store.state.sidebar.tab'(newActiveTab) {
+			this.activeTab = newActiveTab
 		},
 	},
 
@@ -246,6 +288,7 @@ export default {
 
 	.share {
 		display: flex;
+		align-items: center;
 		margin-top: 10px;
 	}
 
@@ -260,9 +303,21 @@ export default {
 		border-radius: 44px;
 	}
 
+	.share__privs {
+		display: flex;
+		width: 70px;
+		flex-direction: row;
+		justify-content: end;
+	}
+
+	.share__privs > * {
+		padding-right: 5px;
+	}
+
 	.share__title {
 		flex: 1;
 		padding-left: 10px;
+		margin: 0 !important;
 	}
 
 	.share__actions {

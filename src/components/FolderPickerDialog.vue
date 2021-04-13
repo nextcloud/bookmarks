@@ -7,26 +7,19 @@
 <template>
 	<Modal v-if="show" :title="t('bookmarks', 'Select folder')" @close="onClose">
 		<div class="folderpicker-dialog">
-			<TreeFolder
-				:folder="{
-					title: t('bookmarks', 'Root folder'),
-					id: -1,
-					children: allFolders
-				}"
-				:show-children-default="true"
-				@select="onSelect" />
+			<FolderPicker :title="t('bookmarks', 'Select folder')" @submit="onSelect" />
 		</div>
 	</Modal>
 </template>
 <script>
 import Modal from '@nextcloud/vue/dist/Components/Modal'
-import TreeFolder from './TreeFolder'
+import FolderPicker from './FolderPicker'
 
 export default {
 	name: 'FolderPickerDialog',
 	components: {
+		FolderPicker,
 		Modal,
-		TreeFolder,
 	},
 	props: {
 		value: {

@@ -41,7 +41,6 @@ export default {
 	watch: {
 		state(newState, previous) {
 			if (this.state && !previous) {
-				clearTimeout(this.showTimeout)
 				this.showTimeout = setTimeout(() => {
 					this.showModal = true
 				}, 500)

@@ -10,11 +10,13 @@ import App from './App'
 import router from './router'
 import store from './store/'
 import AppGlobal from './mixins/AppGlobal'
+import DropTarget from './directives/drop-target'
 import { subscribe } from '@nextcloud/event-bus'
 import { generateUrl } from '@nextcloud/router'
 
 Vue.mixin(AppGlobal)
 Vue.directive('tooltip', Tooltip)
+Vue.directive('drop-target', DropTarget)
 
 const BookmarksApp = (global.Bookmarks = new Vue({
 	el: '#content',
