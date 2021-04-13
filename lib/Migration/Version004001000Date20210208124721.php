@@ -11,6 +11,7 @@ use Closure;
 use Doctrine\DBAL\Schema\SchemaException;
 use OCA\Bookmarks\Db\Types;
 use OCP\DB\ISchemaWrapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
@@ -67,5 +68,8 @@ class Version004001000Date20210208124721 extends SimpleMigrationStep {
 	 * @return void
 	 */
 	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
+		// Reset last_preview of all bookmarks to trigger re-visiting them
+		$qb = $this->db->getQueryBuilder();
+		$qb->update('bookmarks')->set('last_preview', $qb->createPositionalParameter(0,IQueryBuilder::PARAM_INT))->execute();
 	}
 }
