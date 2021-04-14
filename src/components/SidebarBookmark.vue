@@ -79,8 +79,8 @@
 			</div>
 			<div v-if="archivedFile">
 				<h3><FileDocumentIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived file') }}</h3>
-				<a class="button" :href="archivedFileUrl" target="_blank"><FileDocumentIcon :size="18" :fill-color="colorMainText" /> {{ t('bookmarks', 'Open File') }}</a>
-				<a class="button" :href="archivedFile" target="_blank"><span class="icon-files-dark" /> {{ t('bookmarks', 'Open File location') }}</a>
+				<a class="button" :href="archivedFileUrl" target="_blank"><FileDocumentIcon :size="18" :fill-color="colorMainText" /> {{ t('bookmarks', 'Open file') }}</a>
+				<a class="button" :href="archivedFile" target="_blank"><span class="icon-files-dark" /> {{ t('bookmarks', 'Open file location') }}</a>
 			</div>
 		</AppSidebarTab>
 	</AppSidebar>

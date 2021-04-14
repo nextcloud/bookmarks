@@ -74,8 +74,8 @@
 					</h3>
 					<div class="share__privs">
 						<div v-if="share.canShare"
-							v-tooltip="t('bookmarks', 'Re-sharing allowed')"
-							:aria-label="t('bookmarks','Re-sharing allowed')">
+							v-tooltip="t('bookmarks', 'Resharing allowed')"
+							:aria-label="t('bookmarks','Resharing allowed')">
 							<ShareAllIcon
 								:size="20"
 								:fill-color="colorMainText" />
@@ -99,7 +99,7 @@
 							{{ t('bookmarks', 'Allow editing') }}
 						</ActionCheckbox>
 						<ActionCheckbox :checked="share.canShare" @update:checked="onEditShare(share.id, {canWrite: share.canWrite, canShare: $event})">
-							{{ t('bookmarks', 'Allow re-sharing') }}
+							{{ t('bookmarks', 'Allow resharing') }}
 						</ActionCheckbox>
 						<ActionButton icon="icon-delete" @click="onDeleteShare(share.id)">
 							{{ t('bookmarks', 'Remove share') }}
