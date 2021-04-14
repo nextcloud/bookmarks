@@ -17,7 +17,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "ការ​ចែក​រំលែក",
     "Share link" : "Share link",
-    "Select" : "Select",
     "Folder" : "ថត",
     "Save" : "រក្សាទុក"
 },

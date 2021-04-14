@@ -11,7 +11,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Share link" : "Share link",
     "Allow editing" : "Дазволіць рэдагаванне",
-    "Select" : "Select",
     "Folder" : "Folder",
     "Save" : "Save"
 },

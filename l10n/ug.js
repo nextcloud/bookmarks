@@ -16,7 +16,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "ھەمبەھىر",
     "Share link" : "Share link",
-    "Select" : "Select",
     "Folder" : "قىسقۇچ",
     "Save" : "ساقلا"
 },

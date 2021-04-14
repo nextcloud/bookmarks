@@ -5,9 +5,9 @@ OC.L10N.register(
     "Rename" : "Ëmbenennen",
     "Move" : "Verschieben",
     "Delete" : "Läschen",
+    "Select all" : "All auswielen",
     "New" : "Nei",
     "New folder" : "Neien Dossier",
-    "Select all" : "All auswielen",
     "Cancel" : "Ofbriechen",
     "Recent" : "Rezent",
     "Import" : "Importéieren",
@@ -22,7 +22,6 @@ OC.L10N.register(
     "Share link" : "Link deelen",
     "Copy link" : "Link kopéieren",
     "Allow editing" : "Beaarbechten erlaben",
-    "Select" : "Select",
     "Folder" : "Dossier",
     "Save" : "Späicheren"
 },

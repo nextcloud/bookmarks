@@ -3,9 +3,9 @@
     "Rename" : "Վերանվանել",
     "Move" : "Move",
     "Delete" : "հեռացնել",
+    "Select all" : "Նշել բոլորը",
     "New" : "Նոր",
     "New folder" : "Նոր պանակ",
-    "Select all" : "Նշել բոլորը",
     "Cancel" : "ընդհատել",
     "Import" : "Ներմուծում",
     "Export" : "Արտահանում",
@@ -16,7 +16,6 @@
     "Share link" : "Կիսվել հղմամբ",
     "Copy link" : "Պատճենել հղումը",
     "Allow editing" : "Թույլատրել խմբագրումը",
-    "Select" : "Select",
     "Folder" : "Պանակ",
     "Save" : "Պահպանել"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

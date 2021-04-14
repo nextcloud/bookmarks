@@ -4,9 +4,9 @@ OC.L10N.register(
     "Rename" : "﻿ಮರುಹೆಸರಿಸು",
     "Move" : "Move",
     "Delete" : "﻿ಅಳಿಸಿ",
+    "Select all" : "﻿ಎಲ್ಲಾ ಆಯ್ಕೆ ಮಾಡಿ",
     "New" : "﻿ಹೊಸ",
     "New folder" : "﻿ಹೊಸ ಕೋಶ",
-    "Select all" : "﻿ಎಲ್ಲಾ ಆಯ್ಕೆ ಮಾಡಿ",
     "Cancel" : "﻿ರದ್ದು",
     "Import" : "ಆಮದು",
     "Export" : "ರಫ್ತು",
@@ -17,7 +17,6 @@ OC.L10N.register(
     "Sharing" : "﻿ಹಂಚಿಕೆ",
     "Share link" : "ಸಂಪರ್ಕ ಕೊಂಡಿಯನ್ನು  ﻿ಹಂಚಿಕೊಳ್ಳಬಹುದು",
     "Allow editing" : "﻿ಸಂಪಾದನೆಗೆ ಅವಕಾಶ ಮಾಡಿಕೊಡಿ",
-    "Select" : "Select",
     "Folder" : "ಕೋಶ",
     "Save" : "﻿ಉಳಿಸಿ"
 },

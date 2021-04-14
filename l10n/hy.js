@@ -5,9 +5,9 @@ OC.L10N.register(
     "Rename" : "Վերանվանել",
     "Move" : "Move",
     "Delete" : "հեռացնել",
+    "Select all" : "Նշել բոլորը",
     "New" : "Նոր",
     "New folder" : "Նոր պանակ",
-    "Select all" : "Նշել բոլորը",
     "Cancel" : "ընդհատել",
     "Import" : "Ներմուծում",
     "Export" : "Արտահանում",
@@ -18,7 +18,6 @@ OC.L10N.register(
     "Share link" : "Կիսվել հղմամբ",
     "Copy link" : "Պատճենել հղումը",
     "Allow editing" : "Թույլատրել խմբագրումը",
-    "Select" : "Select",
     "Folder" : "Պանակ",
     "Save" : "Պահպանել"
 },

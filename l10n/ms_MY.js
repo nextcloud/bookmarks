@@ -13,7 +13,6 @@ OC.L10N.register(
     "Notes" : "Nota",
     "Owner" : "Owner",
     "Share link" : "Share link",
-    "Select" : "Select",
     "Folder" : "Folder",
     "Save" : "Simpan"
 },

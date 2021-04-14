@@ -5,14 +5,10 @@
     "Delete" : "Dileu",
     "New" : "Newydd",
     "New folder" : "Ffolder newydd",
-    "Grid view" : "Golwg grid",
-    "List view" : "Golwg rhestr",
     "Cancel" : "Diddymu",
     "Recent" : "Diweddar",
     "Import" : "Mewnforio",
     "Export" : "Allforio",
-    "Recently added" : "Ychwanegwyd yn ddiweddar",
-    "Last modified" : "Newidiwyd diwethaf",
     "Title" : "Teitl",
     "Link" : "Dolen",
     "Tags" : "Tagiau",
@@ -20,7 +16,6 @@
     "Owner" : "Owner",
     "Share link" : "Rhannu dolen",
     "Copy link" : "Copïo dolen",
-    "Select" : "Select",
     "Folder" : "Plygell",
     "Save" : "Cadw"
 },"pluralForm" :"nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;"

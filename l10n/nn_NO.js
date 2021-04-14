@@ -10,8 +10,6 @@ OC.L10N.register(
     "Cancel" : "Avbryt",
     "Import" : "Importer",
     "Export" : "Eksporter",
-    "Recently added" : "Nyleg lagt til",
-    "Last modified" : "Siste endra",
     "Title" : "Tittel",
     "Link" : "Lenkje",
     "Tags" : "Emneord",
@@ -20,7 +18,6 @@ OC.L10N.register(
     "Sharing" : "Deling",
     "Share link" : "Del lenkje",
     "Allow editing" : "Tillat endring",
-    "Select" : "Vel",
     "Folder" : "Mappe",
     "Save" : "Lagre"
 },

@@ -19,7 +19,6 @@ OC.L10N.register(
     "Sharing" : "ভাগাভাগিরত",
     "Share link" : "লিংক ভাগাভাগি করেন",
     "Copy link" : "লিঙ্ক কপি করো",
-    "Select" : "সিলেক্ট",
     "Folder" : "ফোল্ডার",
     "Save" : "সংরক্ষণ"
 },

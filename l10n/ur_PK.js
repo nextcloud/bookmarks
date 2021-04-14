@@ -10,7 +10,6 @@ OC.L10N.register(
     "Notes" : "Notes",
     "Owner" : "Owner",
     "Share link" : "اشتراک لنک",
-    "Select" : "Select",
     "Folder" : "Folder",
     "Save" : "حفظ"
 },

@@ -15,7 +15,6 @@ OC.L10N.register(
     "Notes" : "குறிப்புகள்",
     "Owner" : "Owner",
     "Share link" : "Share link",
-    "Select" : "Select",
     "Folder" : "கோப்புறை",
     "Save" : "சேமிக்க "
 },

@@ -5,9 +5,9 @@ OC.L10N.register(
     "Rename" : "نوم بدلول",
     "Move" : "انتقال",
     "Delete" : "ړنګول",
+    "Select all" : "ټول ټاکل",
     "New" : "نوی",
     "New folder" : "نوی فولډر",
-    "Select all" : "ټول ټاکل",
     "Cancel" : "پرېښول",
     "Recent" : "وروستي",
     "Link" : "لېنک",
@@ -16,7 +16,6 @@ OC.L10N.register(
     "Share link" : "د شرېکېدو لېنک",
     "Copy link" : "لېنک کاپي کول",
     "Allow editing" : "د سمون اجازه ورکول",
-    "Select" : "ټاکل",
     "Save" : "ساتل"
 },
 "nplurals=2; plural=(n != 1);");

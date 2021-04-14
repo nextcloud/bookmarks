@@ -4,9 +4,9 @@ OC.L10N.register(
     "Rename" : "Preimenuj",
     "Move" : "Move",
     "Delete" : "Obriši",
+    "Select all" : "Označi sve",
     "New" : "Novo",
     "New folder" : "Nova fascikla",
-    "Select all" : "Označi sve",
     "Cancel" : "Otkaži",
     "Import" : "Uvoz",
     "Export" : "Izvezi",
@@ -17,7 +17,6 @@ OC.L10N.register(
     "Sharing" : "Dijeljenje",
     "Share link" : "Podijelite vezu",
     "Allow editing" : "Dozvolite izmjenu",
-    "Select" : "Select",
     "Folder" : "Fasikla",
     "Save" : "Spremi"
 },

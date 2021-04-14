@@ -5,9 +5,9 @@ OC.L10N.register(
     "Rename" : "Adı dəyiş",
     "Move" : "Move",
     "Delete" : "Sil",
+    "Select all" : "Hamısıı seç",
     "New" : "Yeni",
     "New folder" : "Yeni qovluq",
-    "Select all" : "Hamısıı seç",
     "Cancel" : "Dayandır",
     "Import" : "Əlavə et",
     "Export" : "Çıxarış",
@@ -19,7 +19,6 @@ OC.L10N.register(
     "Sharing" : "Paylaşılır",
     "Share link" : "Linki yayımla",
     "Copy link" : "linki nüsxələ",
-    "Select" : "Select",
     "Folder" : "Qovluq",
     "Save" : "Saxla"
 },
