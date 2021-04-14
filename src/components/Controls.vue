@@ -143,7 +143,7 @@ export default {
 			url: '',
 			search: this.$route.params.search || '',
 			sortingOptions: {
-				added: { icon: 'SortCalendarAscendingIcon', description: this.t('bookmarks', 'Sort by creation date') },
+				added: { icon: 'SortCalendarAscendingIcon', description: this.t('bookmarks', 'Sort by created date') },
 				lastmodified: { icon: 'SortClockAscendingOutlineIcon', description: this.t('bookmarks', 'Sort by last modified') },
 				title: { icon: 'SortAlphabeticalAscendingIcon', description: this.t('bookmarks', 'Sort by title') },
 				clickcount: { icon: 'SortBoolAscendingIcon', description: this.t('bookmarks', 'Sort by click count') },
