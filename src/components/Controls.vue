@@ -94,7 +94,7 @@
 					<template #icon>
 						<RssIcon :fill-color="colorMainText" :size="20" class="action-button-mdi-icon" />
 					</template>
-					{{ !this.$store.state.public? t('bookmarks', 'The RSS feed requires authentication with your nextcloud credentials') : '' }}
+					{{ !this.$store.state.public? t('bookmarks', 'The RSS feed requires authentication with your Nextcloud credentials') : '' }}
 				</ActionButton>
 			</Actions>
 		</div>
