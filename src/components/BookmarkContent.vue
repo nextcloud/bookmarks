@@ -16,7 +16,7 @@
 			<EmptyContent icon="icon-download">
 				{{ t('bookmarks', 'Content pending') }}
 				<template #desc>
-					{{ t('bookmarks', ' This content is being downloaded for offline use. Please check back later.') }}
+					{{ t('bookmarks', 'This content is being downloaded for offline use. Please check back later.') }}
 				</template>
 			</EmptyContent>
 		</div>
