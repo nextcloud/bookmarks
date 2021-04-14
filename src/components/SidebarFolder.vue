@@ -74,8 +74,8 @@
 					</h3>
 					<div class="share__privs">
 						<div v-if="share.canShare"
-							v-tooltip="t('bookmarks', 'Re-sharing allowed')"
-							:aria-label="t('bookmarks','Re-sharing allowed')">
+							v-tooltip="t('bookmarks', 'Resharing allowed')"
+							:aria-label="t('bookmarks','Resharing allowed')">
 							<ShareAllIcon
 								:size="20"
 								:fill-color="colorMainText" />
