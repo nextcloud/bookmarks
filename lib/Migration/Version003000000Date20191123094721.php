@@ -141,11 +141,11 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 				'unsigned' => true,
 			]);
 			$table->addColumn('can_write', 'boolean', [
-				'notnull' => true,
+				'notnull' => false,
 				'default' => false,
 			]);
 			$table->addColumn('can_share', 'boolean', [
-				'notnull' => true,
+				'notnull' => false,
 				'default' => false,
 			]);
 			$table->setPrimaryKey(['id']);
