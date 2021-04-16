@@ -57,6 +57,11 @@ class Version004001000Date20210208124721 extends SimpleMigrationStep {
 				'notnull' => false,
 			]);
 		}
+
+		$this->ensureColumnIsNullable($schema, 'bookmarks', 'available');
+		$this->ensureColumnIsNullable($schema, 'bookmarks_shares', 'can_share');
+		$this->ensureColumnIsNullable($schema, 'bookmarks_shares', 'can_write');
+
 		return $schema;
 	}
 
@@ -71,5 +76,17 @@ class Version004001000Date20210208124721 extends SimpleMigrationStep {
 		// Reset last_preview of all bookmarks to trigger re-visiting them
 		$qb = $this->db->getQueryBuilder();
 		$qb->update('bookmarks')->set('last_preview', $qb->createPositionalParameter(0,IQueryBuilder::PARAM_INT))->execute();
+	}
+
+	protected function ensureColumnIsNullable(ISchemaWrapper $schema, string $tableName, string $columnName): bool {
+		$table = $schema->getTable($tableName);
+		$column = $table->getColumn($columnName);
+
+		if ($column->getNotnull()) {
+			$column->setNotnull(false);
+			return true;
+		}
+
+		return false;
 	}
 }

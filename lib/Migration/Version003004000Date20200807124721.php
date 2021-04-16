@@ -50,7 +50,7 @@ class Version003004000Date20200807124721 extends SimpleMigrationStep {
 		if ($schema->hasTable('bookmarks')) {
 			$table = $schema->getTable('bookmarks');
 			$table->addColumn('available', Types::BOOLEAN, [
-				'notnull' => true,
+				'notnull' => false,
 				'default' => true,
 			]);
 			$table->addIndex(['user_id', 'available'], 'bookmarks_deadbyuser');
