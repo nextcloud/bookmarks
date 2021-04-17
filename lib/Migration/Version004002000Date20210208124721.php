@@ -19,7 +19,7 @@ use OCP\Migration\SimpleMigrationStep;
 /**
  * Auto-generated migration step: Please modify to your needs!
  */
-class Version004001000Date20210208124721 extends SimpleMigrationStep {
+class Version004002000Date20210208124721 extends SimpleMigrationStep {
 	private $db;
 
 	public function __construct(IDBConnection $db) {
@@ -48,6 +48,7 @@ class Version004001000Date20210208124721 extends SimpleMigrationStep {
 	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
+		// Add text content columns
 		if ($schema->hasTable('bookmarks')) {
 			$table = $schema->getTable('bookmarks');
 			$table->addColumn('html_content', Types::TEXT, [
@@ -58,6 +59,22 @@ class Version004001000Date20210208124721 extends SimpleMigrationStep {
 			]);
 		}
 
+		// Ensure all tables have primary keys
+		if ($schema->hasTable('bookmarks_tags')) {
+			$table = $schema->getTable('bookmarks_tags');
+			$table->setPrimaryKey(['bookmark_id', 'tag']);
+		}
+		if ($schema->hasTable('bookmarks_shared_to_shares')) {
+			$table = $schema->getTable('bookmarks_shared_to_shares');
+			if (!$table->hasPrimaryKey()) {
+				if ($table->hasIndex('bookmarks_shares_to_shares')) {
+					$table->dropIndex('bookmarks_shares_to_shares');
+				}
+				$table->setPrimaryKey(['shared_folder_id'], 'bookmarks_shared_to_shares');
+			}
+		}
+
+		// Ensure boolean columns are nullable
 		$this->ensureColumnIsNullable($schema, 'bookmarks', 'available');
 		$this->ensureColumnIsNullable($schema, 'bookmarks_shares', 'can_share');
 		$this->ensureColumnIsNullable($schema, 'bookmarks_shares', 'can_write');
