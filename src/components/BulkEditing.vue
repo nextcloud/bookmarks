@@ -140,6 +140,6 @@ export default {
 .bulkediting {
 	opacity: 1 !important;
 	padding: 0 !important;
-	margin-top: -10px;
+	margin-top: 1px;
 }
 </style>
