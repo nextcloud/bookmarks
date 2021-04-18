@@ -45,7 +45,10 @@
 			<ActionCheckbox @change="clickSelect">
 				{{ t('bookmarks', 'Select folder') }}
 			</ActionCheckbox>
-			<ActionButton icon="icon-share" :close-after-click="true" @click="onShare">
+			<ActionButton v-if="permissions.canShare"
+				icon="icon-share"
+				:close-after-click="true"
+				@click="onShare">
 				{{ t('bookmarks', 'Share folder') }}
 			</ActionButton>
 			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
@@ -179,7 +182,7 @@ export default {
 			}
 		},
 		allowDrop() {
-			return !this.$store.state.selection.folders.includes(this.folder)
+			return !this.$store.state.selection.folders.includes(this.folder) && (this.$store.state.selection.folders.length || this.$store.state.selection.bookmarks.length)
 		},
 		async onDrop(e) {
 			e.preventDefault()
