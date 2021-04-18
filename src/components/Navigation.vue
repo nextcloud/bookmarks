@@ -162,7 +162,7 @@ export default {
 			this.$store.commit(mutations.ADD_TAG, tagName)
 		},
 		allowDropOnTag(tagName) {
-			return !this.$store.state.selection.folders.length
+			return !this.$store.state.selection.folders.length && this.$store.state.selection.bookmarks.length
 		},
 		onDropOnTag(tagName) {
 			this.$store.dispatch(actions.TAG_SELECTION, { tags: [tagName], originalTags: [] })

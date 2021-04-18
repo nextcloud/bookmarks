@@ -179,7 +179,7 @@ export default {
 			}
 		},
 		allowDrop() {
-			return !this.$store.state.selection.folders.includes(this.folder)
+			return !this.$store.state.selection.folders.includes(this.folder) && (this.$store.state.selection.folders.length || this.$store.state.selection.bookmarks.length)
 		},
 		async onDrop(e) {
 			e.preventDefault()
