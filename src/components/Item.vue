@@ -172,6 +172,9 @@ export default {
 			this.$emit('click', e)
 		},
 		async onDragStart(e) {
+			if (!this.draggable) {
+				return
+			}
 			if (!this.selected) {
 				if (this.$store.state.selection.bookmarks.length || this.$store.state.selection.folders.length) {
 					// If something is already selected not including the current element, reset selection
