@@ -45,7 +45,10 @@
 			<ActionCheckbox @change="clickSelect">
 				{{ t('bookmarks', 'Select folder') }}
 			</ActionCheckbox>
-			<ActionButton icon="icon-share" :close-after-click="true" @click="onShare">
+			<ActionButton v-if="permissions.canShare"
+				icon="icon-share"
+				:close-after-click="true"
+				@click="onShare">
 				{{ t('bookmarks', 'Share folder') }}
 			</ActionButton>
 			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
