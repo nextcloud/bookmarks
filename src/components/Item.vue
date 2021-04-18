@@ -35,7 +35,7 @@
 						<TagLine :tags="tags" />
 					</slot>
 				</div>
-				<div v-if="editable"
+				<div v-if="editable && !selected"
 					ref="actions"
 					class="item__actions"
 					@click="$event.preventDefault(); $event.stopPropagation()">
