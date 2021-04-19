@@ -179,21 +179,19 @@ class BookmarkController extends ApiController {
 		if ($this->rootFolderId !== null) {
 			return $this->rootFolderId;
 		}
-		try {
-			if ($this->authorizer->getUserId() !== null) {
-				$this->rootFolderId = $this->folderMapper->findRootFolder($this->authorizer->getUserId())->getId();
-			}
-			if ($this->authorizer->getToken() !== null) {
+		if ($this->authorizer->getUserId() !== null) {
+			$this->rootFolderId = $this->folderMapper->findRootFolder($this->authorizer->getUserId())->getId();
+		}
+		if ($this->authorizer->getToken() !== null) {
+			try {
 				/**
 				 * @var $publicFolder PublicFolder
 				 */
 				$publicFolder = $this->publicFolderMapper->find($this->authorizer->getToken());
 				$this->rootFolderId = $publicFolder->getFolderId();
+			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+				$this->logger->error($e->getMessage()."\n".$e->getMessage());
 			}
-		} catch (DoesNotExistException $e) {
-			// noop
-		} catch (MultipleObjectsReturnedException $e) {
-			// noop
 		}
 		return $this->rootFolderId;
 	}
