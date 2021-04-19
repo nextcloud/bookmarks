@@ -72,6 +72,7 @@ jobs:
         with:
           file: ./apps/${{ env.APP_NAME }}/coverage.xml
           fail_ci_if_error: true
+          root_dir: ./apps/${{ env.APP_NAME }}/
           verbose: true
 
   mysql:
