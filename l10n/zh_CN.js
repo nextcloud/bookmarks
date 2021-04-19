@@ -38,6 +38,7 @@ OC.L10N.register(
     "Create bookmark" : "创建书签",
     "Takes a link and adds it to your collection of bookmarks." : "获取一个链接并将其添加到您的书签中。",
     "A Bookmark manager for Nextcloud" : "适用于 Nextcloud 的书签管理",
+    "This app provides you with a web interface for collecting, organizing and sharing bookmarks to the sites on the web that are precious to you.\nYou can browse and filter your bookmarks via tags, folders and by using the built-in search feature and you can share folders with other users and groups as well as create public links for them.\nAlso, in order to access your bookmarks anywhere, it also allows you to synchronize with third-party clients via a built-in REST API -- be it in your browsers or on your phone.\nCheck out the third-party clients listed here: https://github.com/nextcloud/bookmarks#third-party-clients\n\nRequirements:\n - PHP v7.3+\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - Nextcloud v20+" : "该应用使得您能够方便地通过web界面，来管理、组织和分享您的书签。\n您可以通过标签、文件夹或内置的搜索功能，来浏览和过滤书签。还可以与其他用户或组共享文件夹，以及为其创建公共链接。\n同样地，为了方便随时访问您的书签，您还可用通过手机或浏览器内建的REST API，用第三方客户端来同步书签。\n您可以在这里找到所有支持的第三方客户端：https://github.com/nextcloud/bookmarks#third-party-clients\n\n环境要求：\n- PHP v7.3+\n- PHP extensions:\n- intl: *\n- mbstring: *\n- Nextcloud v20+",
     "Enter new title" : "输入新标题",
     "Select bookmark" : "选择书签",
     "Details" : "详情",
