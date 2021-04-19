@@ -81,14 +81,7 @@ class Authorizer {
 
 		$auth = $request->getHeader('Authorization');
 
-		if ($this->userSession->isLoggedIn()) {
-			$this->setUserId($this->userSession->getUser()->getUID());
-		} elseif (isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
-			if (false === $this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
-				return;
-			}
-			$this->setUserId($this->userSession->getUser()->getUID());
-		} elseif ($auth !== null && $auth !== '') {
+		if ($auth !== null && $auth !== '') {
 			[$type, $credentials] = explode(' ', $auth);
 			if (strtolower($type) === 'basic') {
 				[$username, $password] = explode(':', base64_decode($credentials));
@@ -100,6 +93,13 @@ class Authorizer {
 			if (strtolower($type) === 'bearer') {
 				$this->setToken($credentials);
 			}
+		} elseif ($this->userSession->isLoggedIn()) {
+			$this->setUserId($this->userSession->getUser()->getUID());
+		} elseif (isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+			if (false === $this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+				return;
+			}
+			$this->setUserId($this->userSession->getUser()->getUID());
 		}
 	}
 
