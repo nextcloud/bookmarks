@@ -15,7 +15,7 @@
 			</Actions>
 			<template v-if="$route.name === routes.FOLDER">
 				<h2><FolderIcon :size="18" :fill-color="colorMainText" /> <span>{{ folder.title }}</span></h2>
-				<Actions>
+				<Actions v-if="permissions.canShare">
 					<ActionButton icon="icon-share" :close-after-click="true" @click="onOpenFolderShare">
 						{{ t('bookmarks', 'Share folder') }}
 					</ActionButton>
@@ -158,6 +158,13 @@ export default {
 			}
 
 			return { name: this.routes.HOME }
+		},
+		permissions() {
+			const folder = this.folder
+			if (!folder) {
+				return {}
+			}
+			return this.$store.getters.getPermissionsForFolder(folder.id)
 		},
 		allTags() {
 			return this.$store.state.tags.map(tag => tag.name)

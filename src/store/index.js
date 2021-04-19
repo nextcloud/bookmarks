@@ -10,6 +10,7 @@ import Mutations from './mutations'
 import Actions from './actions'
 import { privateRoutes, publicRoutes } from '../router'
 import { generateUrl } from '@nextcloud/router'
+import { getCurrentUser } from '@nextcloud/auth'
 
 Vue.use(Vuex)
 
@@ -103,6 +104,9 @@ export default {
 		},
 		getPermissionsForFolder: (state, getters) => folderId => {
 			const path = getters.getFolder(folderId)
+			if (path[0].userId === getCurrentUser().uid) {
+				return { canRead: true, canWrite: true, canShare: true }
+			}
 			for (let i = 0; i < path.length; i++) {
 				const shares = getters.getSharesOfFolder(path[i].id)
 				if (shares.length) {
