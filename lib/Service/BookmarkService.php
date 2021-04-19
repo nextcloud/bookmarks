@@ -332,7 +332,8 @@ class BookmarkService {
 		if ($folder->getUserId() === $bookmark->getUserId()) {
 			$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
 		} else {
-			$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $folder->getUserId(), [], [$folder->getId()]);
+			$tags = $this->tagMapper->findByBookmark($bookmarkId);
+			$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $folder->getUserId(), $tags, [$folder->getId()]);
 		}
 	}
 
