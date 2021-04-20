@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0] - 2021-04-2ß
+
+### New 
+ - UX: Implement drag and drop for moving items
+ - UI: Add visual indicators for sharee privileges
+ - UX: Add note for admins if scraping is disabled
+ - UX: Allow dragging bookmarks onto tags
+ - UX: Allow creating new tags in main menu (optimistically)
+ - UX: Optimistically add bookmark to list when creating
+ - UI: Move Sort order from settings to Controls
+ - Dashboard: Add 'frequent bookmarks' widget
+ - Implement full-text archiving of HTML pages
+
+### Fixed
+- Updated translations from transifex :hearts:
+- Authorizer: Check token first, then check user credentials
+- BookmarkService: Keep tags when moving across share boundaries
+- Migration: Ensure all tables have primary key
+- CrawlJob: Set some time and size limits for archiving content
+- Fix: Recover from multiple root folders
+- Fix OrphanedTreeItemsRepairStep: Reinsert lost bookmarks instead of deleting them
+- UI: Display archived content in full-page overlay
+- UI: Change "Archived" to "Files" menu entry (+new icon)
+- UX: Refactor and improve folder picker
+- UX: Bookmarklet: Adjust window height
+- UI: Remove frustrating paddings from Item.vue
+- UI: Don't cover bookmark titles when there's many tags
+- UX: Don't display spinners for the first 500ms
+- UX: Improve speed of moving items
+- UX: Make sharing visible in folder menu
+- UX: Move BulkEditing to the left
+- UI: Fix getPermissionsForFolder
+
 ## [4.1.0] - 2021-02-19
 
 ### New 
@@ -514,6 +547,7 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+[4.2.0]: https://github.com/nextcloud/bookmarks/compare/v4.1.0...v4.2.0
 [4.0.8]: https://github.com/nextcloud/bookmarks/compare/v4.0.7...v4.0.8
 [4.0.7]: https://github.com/nextcloud/bookmarks/compare/v4.0.6...v4.0.7
 [4.0.6]: https://github.com/nextcloud/bookmarks/compare/v4.0.5...v4.0.6
