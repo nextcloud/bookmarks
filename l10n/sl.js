@@ -58,6 +58,7 @@ OC.L10N.register(
     "Do you really want to delete these items?" : "Ali ste prepričani, da želite izbrisati te predmete?",
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["Izbran je %n zaznamek","Izbrana sta %n zaznamka","Izbrani so %n zaznamki","Izbranih je %n zaznamkov"],
     "_Selected %n folder_::_Selected %n folders_" : ["Izbrana je %n mapa","Izbrani sta %n mapi","Izbrane so %n mape","Izbranih je %n map"],
+    "Share folder" : "Omogoči souporabo mape",
     "Select one or more tags" : "Izbor enega oziroma več zaznamkov",
     "New" : "Novo",
     "New bookmark" : "Nov zaznamek",

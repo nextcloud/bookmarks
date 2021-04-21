@@ -115,7 +115,7 @@ OC.L10N.register(
     "Copy RSS feed" : "Còpia sorgente RSS",
     "Delete link" : "Cantzella ligòngiu",
     "Create public link" : "Crea unu ligòngiu pùblicu",
-    "Allow editing" : "Permiti sa modìfica",
+    "Allow editing" : "Permite sa modìfica",
     "Remove share" : "Boga cumpartzidura",
     "Link copied" : "Ligòngiu copiadu",
     "Privacy" : "Riservadesa",
