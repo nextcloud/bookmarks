@@ -76,7 +76,7 @@
     "Enter a title" : "Digita un titolo",
     "No bookmarks found" : "Nessun segnalibro trovato",
     "{folders} folders and {bookmarks} bookmarks" : "{folders} cartelle e {bookmarks} segnalibri",
-    "_%n bookmark_::_%n bookmarks_" : ["1%n segnalibro","1%n segnalibri"],
+    "_%n bookmark_::_%n bookmarks_" : ["%n segnalibro","%n segnalibri"],
     "_%n folder_::_%n folders_" : ["1%n cartella","%n cartelle"],
     "Select folder" : "Seleziona cartella",
     "Enter folder title" : "Digita titolo della cartella",
