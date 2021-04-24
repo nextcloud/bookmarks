@@ -31,8 +31,10 @@ use Psr\Log\LoggerInterface;
 
 class CrawlService {
 	public const MAX_BODY_LENGTH = 92160; // 90 MiB
+	public const TIMEOUT = 10;
 	public const CONNECT_TIMEOUT = 10;
 	public const READ_TIMEOUT = 10;
+	public const UA_FIREFOX = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:87.0) Gecko/20100101 Firefox/87.0';
 
 	/**
 	 * @var BookmarkMapper
@@ -82,9 +84,16 @@ class CrawlService {
 	 */
 	public function crawl(Bookmark $bookmark): void {
 		try {
-			$client = new Client(['connect_timeout' => self::CONNECT_TIMEOUT, 'read_timeout' => self::READ_TIMEOUT]);
+			$client = new Client();
 			/** @var Response $resp */
-			$resp = $client->get($bookmark->getUrl());
+			$resp = $client->get($bookmark->getUrl(), [
+				'headers' => [
+					'User-Agent' => self::UA_FIREFOX,
+				],
+				'connect_timeout' => self::CONNECT_TIMEOUT,
+				'timeout' => self::TIMEOUT,
+				'read_timeout' => self::READ_TIMEOUT,
+			]);
 			$available = $resp ? $resp->getStatusCode() !== 404 : false;
 		} catch (Exception $e) {
 			$available = false;
