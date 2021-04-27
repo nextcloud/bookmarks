@@ -46,7 +46,7 @@
 	},
 	"license": "AGPL-3.0-or-later",
 	"devDependencies": {
-		"@babel/core": "^7.13.15",
+		"@babel/core": "^7.13.16",
 		"@babel/plugin-syntax-dynamic-import": "^7.7.4",
 		"@babel/preset-env": "^7.13.15",
 		"@nextcloud/browserslist-config": "^2.1.0",
