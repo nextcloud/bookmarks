@@ -96,6 +96,7 @@ class CrawlService {
 			]);
 			$available = $resp ? $resp->getStatusCode() !== 404 : false;
 		} catch (Exception $e) {
+			$this->logger->warning($e->getMessage());
 			$available = false;
 		}
 
