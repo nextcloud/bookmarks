@@ -293,6 +293,7 @@ export default {
 	display: flex;
 	position: relative;
 	top: -2px;
+	flex-shrink: 0;
 }
 
 .controls h2 :nth-child(2) {
