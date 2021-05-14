@@ -223,13 +223,13 @@ export default {
 			for (const folderId of data.folders) {
 				commit(mutations.SET_FOLDER_CHILDREN_ORDER, {
 					folderId,
-					children: [...state.childrenByFolder[folderId], { type: 'bookmark', id: prelimBookmark.id }],
+					children: [...this.getters.getFolderChildren(folderId), { type: 'bookmark', id: prelimBookmark.id }],
 				})
 			}
 		} else {
 			commit(mutations.SET_FOLDER_CHILDREN_ORDER, {
 				folderId: -1,
-				children: [...state.childrenByFolder[-1], { type: 'bookmark', id: prelimBookmark.id }],
+				children: [...this.getters.getFolderChildren(-1), { type: 'bookmark', id: prelimBookmark.id }],
 			})
 		}
 
@@ -261,7 +261,7 @@ export default {
 				for (const folderId of data.folders) {
 					commit(mutations.SET_FOLDER_CHILDREN_ORDER, {
 						folderId,
-						children: [...state.childrenByFolder[folderId], { type: 'bookmark', id: bookmark.id }],
+						children: [...this.getters.getFolderChildren(folderId), { type: 'bookmark', id: bookmark.id }],
 					})
 					commit(mutations.SET_BOOKMARK_COUNT, {
 						folderId,
@@ -272,7 +272,7 @@ export default {
 			} else {
 				commit(mutations.SET_FOLDER_CHILDREN_ORDER, {
 					folderId: -1,
-					children: [...state.childrenByFolder[-1], { type: 'bookmark', id: bookmark.id }],
+					children: [...this.getters.getFolderChildren(-1), { type: 'bookmark', id: bookmark.id }],
 				})
 				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 			}
