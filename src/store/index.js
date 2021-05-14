@@ -104,7 +104,8 @@ export default {
 		},
 		getPermissionsForFolder: (state, getters) => folderId => {
 			const path = getters.getFolder(folderId)
-			if (path[0].userId === getCurrentUser().uid) {
+			const user = getCurrentUser()
+			if (user && path[0].userId === user.uid) {
 				return { canRead: true, canWrite: true, canShare: true }
 			}
 			for (let i = 0; i < path.length; i++) {
