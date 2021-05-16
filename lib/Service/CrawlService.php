@@ -93,6 +93,7 @@ class CrawlService {
 				'connect_timeout' => self::CONNECT_TIMEOUT,
 				'timeout' => self::TIMEOUT,
 				'read_timeout' => self::READ_TIMEOUT,
+				'http_errors' => false
 			]);
 			$available = $resp ? $resp->getStatusCode() !== 404 : false;
 		} catch (Exception $e) {
