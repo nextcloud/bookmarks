@@ -127,6 +127,24 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 				->groupBy(['r.folder_id'])
 				->execute()
 				->fetch();
+			if ($rootFolder === null || $rootFolder === false || $rootFolder['folder_id'] === null) {
+				$qb = $this->db->getQueryBuilder();
+				$qb->insert('bookmarks_folders')
+					->values([
+						'user_id' => $qb->createNamedParameter($bookmark['user_id'])
+					]);
+				$rootFolder = [
+					'folder_id' => $qb->getLastInsertId(),
+					'count' => 0
+				];
+				$qb = $this->db->getQueryBuilder();
+				$qb->insert('bookmarks_root_folders')
+					->values([
+						'folder_id' => $qb->createNamedParameter($rootFolder['folder_id']),
+						'user_id' => $qb->createNamedParameter($bookmark['user_id'])
+					])
+					->execute();
+			}
 			$qb = $this->db->getQueryBuilder();
 			$qb->insert('bookmarks_tree')->values([
 				'id' => $qb->createPositionalParameter($bookmark['id']),
