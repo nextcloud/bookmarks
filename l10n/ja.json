@@ -92,7 +92,7 @@
     "Untagged" : "タグなし",
     "{used} bookmarks of {available} available" : "利用可能ブックマーク数 {available} のうち{used} が使用済み ",
     "No bookmarked files" : "ブックマーク済みファイルがありません",
-    "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "ファイルへのブックマーク、例えば画像もしくはPDFは自動的あなたのNextcloudファイルに保存ので、リンクがオフラインになっても見つかれます。",
+    "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "写真やPDFといったファイルへのブックマークは、自動的にNextcloudファイルとして保存されるため、リンクがオフラインになっても見つけることができます。",
     "No bookmarks here" : "ブックマークがありません",
     "Start by importing bookmarks from a file or synchronizing your browser bookmarks with this app" : "ブックマークをファイルからインポートが、このアプリであなたのブラウザーブックマークと同期して始めましょう",
     "Import bookmarks" : "ブックマークをインポート",
