@@ -81,6 +81,7 @@ export default {
 		await Promise.all([
 			this.reloadSettings(),
 			this.reloadFolders(),
+			this.reloadDeletedFolders(),
 		])
 		this.onRoute()
 	},
@@ -135,6 +136,9 @@ export default {
 		},
 		async reloadFolders() {
 			return this.$store.dispatch(actions.LOAD_FOLDERS)
+		},
+		async reloadDeletedFolders() {
+			return this.$store.dispatch(actions.LOAD_DELETED_FOLDERS)
 		},
 		async reloadSettings() {
 			return this.$store.dispatch(actions.LOAD_SETTINGS)

@@ -144,8 +144,8 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function getFolders($root = -1, $layers = -1): JSONResponse {
-		return $this->controller->getFolders($root, $layers);
+	public function getFolders($root = -1, $layers = -1, $deleted = "false"): JSONResponse {
+		return $this->controller->getFolders($root, $layers, $deleted);
 	}
 
 	/**

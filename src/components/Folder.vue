@@ -46,7 +46,7 @@
 				{{ t('bookmarks', 'Rename') }}
 			</ActionButton>
 			<ActionButton
-				v-if="!folder.deleted"
+				v-if="!deleted"
 				:close-after-click="true"
 				@click="onMove">
 				<template #icon>
@@ -55,21 +55,21 @@
 				{{ t('bookmarks', 'Move') }}
 			</ActionButton>
 			<ActionButton
-				v-if="!folder.deleted"
+				v-if="!deleted"
 				icon="icon-delete"
 				:close-after-click="true"
 				@click="onDelete">
 				{{ t('bookmarks', 'Delete') }}
 			</ActionButton>
 			<ActionButton
-				v-if="folder.deleted"
+				v-if="deleted"
 				icon="icon-history"
 				:close-after-click="true"
 				@click="onRestore">
 				{{ t('bookmarks', 'Restore') }}
 			</ActionButton>
 			<ActionButton
-				v-if="folder.deleted"
+				v-if="deleted"
 				icon="icon-delete"
 				:close-after-click="true"
 				@click="onPermanentlyDelete">
@@ -102,6 +102,10 @@ export default {
 		folder: {
 			type: Object,
 			required: true,
+		},
+		deleted: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	data() {

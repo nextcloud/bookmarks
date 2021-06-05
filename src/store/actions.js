@@ -37,6 +37,7 @@ export const actions = {
 	DELETE_TAG: 'DELETE_TAG',
 
 	LOAD_FOLDERS: 'LOAD_FOLDERS',
+	LOAD_DELETED_FOLDERS: 'LOAD_DELETED_FOLDERS',
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
@@ -600,15 +601,7 @@ export default {
 	async [actions.LOAD_FOLDERS]({ commit, dispatch, state }, force) {
 		if (!state.folders.length && !force) {
 			try {
-				const allfolders = loadState('bookmarks', 'folders')
-				const folders = allfolders.filter(folder => !folder.deleted)
-				let deletedChildren = []
-				folders.forEach((folder) => {
-					deletedChildren = deletedChildren.concat(folder.children.filter(child => !!child.deleted))
-					folder.children = folder.children.filter(child => !child.deleted)
-				})
-				const deletedFolders = allfolders.filter(folder => !!folder.deleted)
-				commit(mutations.SET_DELETED_FOLDERS, deletedFolders.concat(deletedChildren))
+				const folders = loadState('bookmarks', 'folders')
 				return commit(mutations.SET_FOLDERS, folders)
 			} catch (e) {
 				console.warn(
@@ -624,7 +617,7 @@ export default {
 			},
 		})
 		try {
-			const response = await axios.get(url(state, '/folder/withdeleted'), {
+			const response = await axios.get(url(state, '/folder?deleted=false'), {
 				params: {},
 			})
 			if (canceled) return
@@ -632,16 +625,63 @@ export default {
 				data: { data, status },
 			} = response
 			if (status !== 'success') throw new Error(data)
-			const folders = data.filter(folder => !folder.deleted)
-			let deletedChildren = []
-			folders.forEach((folder) => {
-				deletedChildren = deletedChildren.concat(folder.children.filter(child => !!child.deleted))
-				folder.children = folder.children.filter(child => !child.deleted)
-			})
-			const deletedFolders = data.filter(folder => !!folder.deleted)
+			const folders = data
 			commit(mutations.FETCH_END, 'folders')
-			commit(mutations.SET_DELETED_FOLDERS, deletedFolders.concat(deletedChildren))
 			return commit(mutations.SET_FOLDERS, folders)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'folders')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load folders')
+			)
+			throw err
+		}
+	},
+	async [actions.LOAD_DELETED_FOLDERS]({ commit, dispatch, state }, force) {
+		if (!state.folders.length && !force) {
+			try {
+				const allfolders = loadState('bookmarks', 'folders')
+				const folders = allfolders.filter(folder => !folder.deleted)
+				let deletedChildren = []
+				folders.forEach((folder) => {
+					deletedChildren = deletedChildren.concat(folder.children.filter(child => !!child.deleted))
+					folder.children = folder.children.filter(child => !child.deleted)
+				})
+				const deletedFolders = allfolders.filter(folder => !!folder.deleted)
+				return commit(mutations.SET_DELETED_FOLDERS, deletedFolders.concat(deletedChildren))
+			} catch (e) {
+				console.warn(
+					'Could not load initial folder state, continuing with HTTP request'
+				)
+			}
+		}
+		let canceled = false
+		commit(mutations.FETCH_START, {
+			type: 'folders',
+			cancel: () => {
+				canceled = true
+			},
+		})
+		try {
+			const response = await axios.get(url(state, '/folder?deleted=true'), {
+				params: {},
+			})
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
+			const folders = data
+			// let deletedChildren = []
+			// folders.forEach((folder) => {
+			// deletedChildren = deletedChildren.concat(folder.children.filter(child => !!child.deleted))
+			// folder.children = folder.children.filter(child => !child.deleted)
+			// })
+			// const deletedFolders = data.filter(folder => !!folder.deleted)
+			commit(mutations.FETCH_END, 'folders')
+			// return commit(mutations.SET_DELETED_FOLDERS, deletedFolders.concat(deletedChildren))
+			return commit(mutations.SET_DELETED_FOLDERS, folders)
 		} catch (err) {
 			console.error(err)
 			commit(mutations.FETCH_END, 'folders')

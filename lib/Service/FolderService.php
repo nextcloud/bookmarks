@@ -189,8 +189,7 @@ class FolderService {
 			// noop
 		}
 
-		$folder->setDeleted(true);
-		$this->folderMapper->update($folder);
+		$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId(), false);
 	}
 
 	/**
@@ -204,9 +203,7 @@ class FolderService {
 		/**
 		 * @var $folder Folder
 		 */
-		$folder = $this->folderMapper->find($folderId);
-		$folder->setDeleted(false);
-		$this->folderMapper->update($folder);
+		$this->treeMapper->restore(TreeMapper::TYPE_FOLDER, $folderId);
 	}
 
 	/**

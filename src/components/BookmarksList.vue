@@ -48,7 +48,8 @@
 					<Folder
 						v-for="folder in deletedFolders"
 						:key="'folder' + folder.id"
-						:folder="folder" />
+						:folder="folder"
+						:deleted="true" />
 					<template v-if="bookmarks.length">
 						<Bookmark
 							v-for="bookmark in bookmarks"

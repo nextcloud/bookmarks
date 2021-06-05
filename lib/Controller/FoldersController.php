@@ -545,20 +545,17 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 * @return JSONResponse
 	 */
-	public function getFolders($root = -1, $layers = -1): JSONResponse {
+	public function getFolders($root = -1, $layers = -1, $deleted = "false"): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Insufficient permissions'], Http::STATUS_BAD_REQUEST);
 		}
 		$internalRoot = $this->toInternalFolderId($root);
-		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers);
+		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers, $deleted === "true");
 		if ($root === -1 || $root === '-1') {
 			foreach ($folders as $folder) {
 				$folder['parent_folder'] = -1;
 			}
 		}
-		$folders = array_filter($folders, function($folder) {
-			return $folder['deleted'] !== true;
-		});
 		$folders = array_values($folders);
 		$res = new JSONResponse(['status' => 'success', 'data' => $folders]);
 		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');

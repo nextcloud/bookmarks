@@ -103,6 +103,10 @@ class TreeMapper extends QBMapper {
 	/**
 	 * @var IQueryBuilder
 	 */
+	private $getChildrenQueryDeleted;
+	/**
+	 * @var IQueryBuilder
+	 */
 	private $getChildrenOrderQuery;
 
 	/**
@@ -143,6 +147,11 @@ class TreeMapper extends QBMapper {
 			self::TYPE_BOOKMARK => $this->getFindChildrenQuery(self::TYPE_BOOKMARK),
 			self::TYPE_FOLDER => $this->getFindChildrenQuery(self::TYPE_FOLDER),
 			self::TYPE_SHARE => $this->getFindChildrenQuery(self::TYPE_SHARE)
+		];
+		$this->getChildrenQueryDeleted = [
+			self::TYPE_BOOKMARK => $this->getFindChildrenQueryDeleted(self::TYPE_BOOKMARK),
+			self::TYPE_FOLDER => $this->getFindChildrenQueryDeleted(self::TYPE_FOLDER),
+			self::TYPE_SHARE => $this->getFindChildrenQueryDeleted(self::TYPE_SHARE)
 		];
 
 		$this->treeCache = $treeCache;
@@ -259,6 +268,17 @@ class TreeMapper extends QBMapper {
 		return $qb;
 	}
 
+	protected function getFindChildrenQueryDeleted(string $type): IQueryBuilder {
+		$qb = $this->selectFromType($type);
+		$qb
+				->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'i.id'))
+				->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
+				->andWhere($qb->expr()->eq('t.deleted', $qb->createParameter('deleted')))
+				->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter($type)))
+				->orderBy('t.index', 'ASC');
+		return $qb;
+	}
+
 	/**
 	 * @param int $folderId
 	 * @param string $type
@@ -270,6 +290,21 @@ class TreeMapper extends QBMapper {
 	public function findChildren(string $type, int $folderId): array {
 		$qb = $this->getChildrenQuery[$type];
 		$qb->setParameter('parent_folder', $folderId);
+		return $this->findEntitiesWithType($qb, $type);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param string $type
+	 *
+	 * @return Entity[]
+	 *
+	 * @psalm-return array<array-key, Entity>
+	 */
+	public function findChildrenDeleted(string $type, int $folderId, bool $deleted): array {
+		$qb = $this->getChildrenQueryDeleted[$type];
+		$qb->setParameter('parent_folder', $folderId);
+		$qb->setParameter('deleted', $deleted);
 		return $this->findEntitiesWithType($qb, $type);
 	}
 
@@ -774,19 +809,24 @@ class TreeMapper extends QBMapper {
 	 *
 	 * @psalm-return array<array-key, array{parent_folder: int}>
 	 */
-	public function getSubFolders(int $folderId, $layers = 0): array {
-		$folders = $this->treeCache->get(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId);
-		if ($folders !== null) {
-			return $folders;
+	public function getSubFolders(int $folderId, $layers = 0, bool $deleted = false): array {
+// 		$folders = $this->treeCache->get(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId);
+// 		if ($folders !== null) {
+// 			return $folders;
+// 		}
+		if ($deleted) {
+			$children = $this->findChildrenDeleted(self::TYPE_FOLDER, $folderId, true);
+		} else {
+			$children = $this->findChildrenDeleted(self::TYPE_FOLDER, $folderId, false);
 		}
-		$folders = array_map(function (Folder $folder) use ($layers, $folderId) {
+		$folders = array_map(function (Folder $folder) use ($layers, $folderId, $deleted) {
 			$array = $folder->toArray();
 			$array['parent_folder'] = $folderId;
 			if ($layers !== 0) {
-				$array['children'] = $this->getSubFolders($folder->getId(), $layers - 1);
+				$array['children'] = $this->getSubFolders($folder->getId(), $layers - 1, $deleted);
 			}
 			return $array;
-		}, $this->findChildren(self::TYPE_FOLDER, $folderId));
+		}, $children);
 		$shares = array_map(function (SharedFolder $sharedFolder) use ($layers, $folderId) {
 			/**
 			 * @var $share Share
@@ -797,7 +837,7 @@ class TreeMapper extends QBMapper {
 			$array['userId'] = $share->getOwner();
 			$array['parent_folder'] = $folderId;
 			if ($layers !== 0) {
-				$array['children'] = $this->getSubFolders($share->getFolderId(), $layers - 1);
+				$array['children'] = $this->getSubFolders($share->getFolderId(), $layers - 1, $deleted);
 			}
 			return $array;
 		}, $this->findChildren(self::TYPE_SHARE, $folderId));
