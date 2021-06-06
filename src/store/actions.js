@@ -711,6 +711,7 @@ export default {
 					parentFolder
 				)
 				await dispatch(actions.LOAD_FOLDERS)
+				await dispatch(actions.LOAD_DELETED_FOLDERS)
 			}
 		} catch (err) {
 			console.error(err)
@@ -733,6 +734,7 @@ export default {
 			if (!avoidReload) {
 				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 				await dispatch(actions.LOAD_FOLDERS)
+				await dispatch(actions.LOAD_DELETED_FOLDERS)
 			}
 		} catch (err) {
 			console.error(err)
@@ -754,7 +756,7 @@ export default {
 			}
 			if (!avoidReload) {
 				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
-				await dispatch(actions.LOAD_FOLDERS)
+				await dispatch(actions.LOAD_DELETED_FOLDERS)
 			}
 		} catch (err) {
 			console.error(err)
