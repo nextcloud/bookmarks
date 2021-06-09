@@ -29,7 +29,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 - [NCBookmark](https://gitlab.com/lenchan139/NCBookmark) - Android App
 
 ### Browser
-- [Owncloud Bookmarks](https://chrome.google.com/webstore/detail/owncloud-bookmarks/eomolhpeokmbnincelpkagpapjpeeckc?hl=de) - Bookmarks extension for Chromium-based browsers (Chromium/Chrome/Opera/Vivaldi)
+- [Owncloud Bookmarks](https://chrome.google.com/webstore/detail/owncloud-bookmarks/eomolhpeokmbnincelpkagpapjpeeckc) - Bookmarks extension for Chromium-based browsers (Chromium/Chrome/Opera/Vivaldi)
 - [Floccus](https://github.com/marcelklehr/floccus) - Bookmark sync for Firefox/Chromium-based browsers
 - [FreedomMarks](https://github.com/damko/freedommarks-browser-webextension) - Addon for Firefox and Chrome. No sync, just a client.
 
@@ -38,7 +38,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 - [QOwnNotes](https://www.qownnotes.org/) - Plain-text file markdown note taking desktop application (no sync, just importing bookmarks)
 
 ### iOS
-- [Nextbookmark](https://gitlab.com/altepizza/nextbookmark) - A minimal client for iOS ([App Store entry](https://apps.apple.com/de/app/nextbookmark/id1500340092))
+- [Nextbookmark](https://gitlab.com/altepizza/nextbookmark) - A minimal client for iOS ([App Store entry](https://apps.apple.com/app/nextbookmark/id1500340092))
 
 ### Other
 - [uMarks](https://open-store.io/app/umarks.ernesst) - App for Ubuntu touch
