@@ -7,10 +7,10 @@
 <template>
 	<div class="bulkediting">
 		<Actions :primary="true" :menu-title="selectionDescription">
-			<ActionButton icon="icon-external" @click="onBulkOpen">
+			<ActionButton icon="icon-external" close-after-click @click="onBulkOpen">
 				{{ t('bookmarks', 'Open all selected') }}
 			</ActionButton>
-			<ActionButton @click="onBulkMove">
+			<ActionButton close-after-click @click="onBulkMove">
 				<template #icon>
 					<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
 				</template>
@@ -28,7 +28,7 @@
 				@input="onBulkTag">
 				{{ t('bookmarks', 'Edit tags of selection') }}
 			</ActionInput>
-			<ActionButton icon="icon-delete" @click="onBulkDelete">
+			<ActionButton icon="icon-delete" close-after-click @click="onBulkDelete">
 				{{ t('bookmarks', 'Delete selection') }}
 			</ActionButton>
 			<ActionSeparator />
