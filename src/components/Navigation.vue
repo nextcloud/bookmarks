@@ -48,6 +48,11 @@
 				<TagPlusIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationNewItem>
 			<template v-if="Boolean(tags.length)">
+				<AppNavigationItem key="menu-tags"
+					:title="t('bookmarks', 'Search tags')"
+					@click="onSearchTags">
+					<TagMultipleIcon slot="icon" :size="18" :fill-color="colorMainText" />
+				</AppNavigationItem>
 				<AppNavigationItem v-for="tag in tags"
 					:key="'tag-'+tag.name"
 					v-drop-target="{allow: (e) => allowDropOnTag(tag.name, e), drop: (e) => onDropOnTag(tag.name, e)}"
@@ -101,6 +106,7 @@ import TagOffIcon from 'vue-material-design-icons/TagOff'
 import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff'
 import FileDocumentMultipleIcon from 'vue-material-design-icons/FileDocumentMultiple'
 import TagPlusIcon from 'vue-material-design-icons/TagPlus'
+import TagMultipleIcon from 'vue-material-design-icons/TagMultiple'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
 import { actions, mutations } from '../store/'
@@ -121,6 +127,7 @@ export default {
 		TagOffIcon,
 		LinkVariantOffIcon,
 		TagPlusIcon,
+		TagMultipleIcon,
 		FileDocumentMultipleIcon,
 	},
 	data() {
@@ -152,6 +159,9 @@ export default {
 	},
 
 	methods: {
+		onSearchTags() {
+			this.$router.push({ name: this.routes.TAGS })
+		},
 		onDeleteTag(tag) {
 			this.$store.dispatch(actions.DELETE_TAG, tag)
 		},
