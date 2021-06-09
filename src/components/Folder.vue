@@ -134,10 +134,13 @@ export default {
 			return this.selectedFolders.map(f => f.id).includes(this.folder.id)
 		},
 	},
-	created() {
-		this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
-		this.$store.dispatch(actions.LOAD_PUBLIC_LINK, this.folder.id)
-		this.$store.dispatch(actions.COUNT_BOOKMARKS, this.folder.id)
+	mounted() {
+		// This slows down initial load otherwise and it's not directly necessary
+		setTimeout(() => {
+			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
+			this.$store.dispatch(actions.LOAD_PUBLIC_LINK, this.folder.id)
+			this.$store.dispatch(actions.COUNT_BOOKMARKS, this.folder.id)
+		}, 2000)
 	},
 	methods: {
 		onDetails() {

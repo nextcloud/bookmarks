@@ -77,13 +77,11 @@ export default {
 		// set loading indicator
 		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
 
-		this.reloadTags()
-		this.reloadCount()
-		await Promise.all([
-			this.reloadSettings(),
-			this.reloadFolders(),
-		])
+		await this.reloadSettings()
 		this.onRoute()
+		this.reloadFolders()
+		this.reloadCount()
+		this.reloadTags()
 
 		const currentUser = getCurrentUser()
 		if (currentUser.isAdmin) {

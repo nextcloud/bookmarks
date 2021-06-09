@@ -29,7 +29,7 @@
 					</template>
 				</template>
 				<!-- FOLDER VIEW WITH NORMAL SORTING -->
-				<template v-else-if="subFolders.length || bookmarks.length">
+				<template v-else-if="(subFolders.length || bookmarks.length) && !loading">
 					<Folder
 						v-for="folder in subFolders"
 						:key="'folder' + folder.id"
@@ -83,7 +83,7 @@ export default {
 	},
 	data() {
 		return {
-			showLoading: false,
+			showLoading: true,
 			loadingTimeout: null,
 		}
 	},
@@ -120,7 +120,7 @@ export default {
 			return this.$store.state.settings.sorting
 		},
 		loading() {
-			return this.$store.state.loading.bookmarks
+			return this.$store.state.loading.bookmarks || this.$store.state.loading.folders
 		},
 	},
 	watch: {
