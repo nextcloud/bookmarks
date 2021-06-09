@@ -370,18 +370,10 @@ class BookmarkMapper extends QBMapper {
 	 */
 	private function _filterTags(IQueryBuilder $qb, QueryParameters $params): void {
 		if (count($params->getTags())) {
-			$tagsCol = $this->_getTagsColumn($qb);
-			$expr = [];
-			foreach ($params->getTags() as $tag) {
-				$expr[] = $qb->expr()->orX(
-					$qb->expr()->iLike($tagsCol, $qb->createPositionalParameter($this->db->escapeLikeParameter($tag) . ',%')),
-					$qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%,' . $this->db->escapeLikeParameter($tag))),
-					$qb->expr()->iLike($tagsCol, $qb->createPositionalParameter('%,' . $this->db->escapeLikeParameter($tag) . ',%')),
-					$qb->expr()->iLike($tagsCol, $qb->createPositionalParameter($this->db->escapeLikeParameter($tag)))
-				);
+			foreach ($params->getTags() as $i => $tag) {
+				$qb->leftJoin('b', 'bookmarks_tags', 'tg'.$i, $qb->expr()->eq('tg'.$i.'.bookmark_id', 'b.id'));
+				$qb->andWhere($qb->expr()->eq('tg'.$i.'.tag', $qb->createPositionalParameter($tag)));
 			}
-			$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $expr);
-			$qb->andHaving($filterExpression);
 		}
 	}
 
