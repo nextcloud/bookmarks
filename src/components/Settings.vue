@@ -40,7 +40,8 @@
 		</p>
 
 		<label>
-			<h3>{{ t('bookmarks', 'Install web app') }}</h3>
+			<h3>{{ t('bookmarks', 'Install web app on device') }}</h3>
+			<p>{{ t('bookmarks', 'You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don\'t like it.') }}</p>
 			<a class="button" href="#" @click.prevent="clickAddToHomeScreen">{{ t('bookmarks', 'Install on home screen') }}</a>
 		</label>
 
