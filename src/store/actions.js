@@ -885,9 +885,11 @@ export default {
 		commit(mutations.SET_QUERY, { archived: true })
 		return dispatch(actions.FETCH_PAGE)
 	},
-	[actions.FILTER_BY_FOLDER]({ dispatch, commit }, folder) {
+	[actions.FILTER_BY_FOLDER]({ dispatch, commit, state }, folder) {
 		commit(mutations.SET_QUERY, { folder })
-		dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+		if (state.settings.sorting === 'index') {
+			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+		}
 		return dispatch(actions.FETCH_PAGE)
 	},
 
