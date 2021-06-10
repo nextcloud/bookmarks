@@ -115,7 +115,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Syötä polku kansioon, johon kirjanmerkiksi lisätyt tiedostot tallennetaan",
     "Client apps" : "Asiakasohjelmat",
     "Also check out the collection of client apps that integrate with this app: " : "Katso kokoelma asiakassovelluksista, jotka toimivat tämän sovelluksen kanssa:",
-    "Install web app" : "Asenna web-sovellus",
     "Install on home screen" : "Asenna kotinäytölle",
     "Bookmarklet" : "Sovelluskirjanmerkki",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Raahaa tämä selaimesi kirjanmerkkeihin ja klikkaa siitä lisätäksesi kirjanmerkin vaivattomasti",

@@ -116,7 +116,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Adja meg egy mappa elérési útját, ahol a könyvjelzőket tárolni szeretné",
     "Client apps" : "Kliensalkalmazások",
     "Also check out the collection of client apps that integrate with this app: " : "Nézze meg az alkalmazással integrált ügyfélalkalmazások gyűjteményét is: ",
-    "Install web app" : "Web alkalmazás telepítése",
     "Install on home screen" : "Beállítás a kezdőképernyőn",
     "Bookmarklet" : "Bookmarklet",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Húzza ezt a böngésző könyvjelzőihez, és kattintson rá a weboldal gyors elmentéséhez a könyvjelzők közé",

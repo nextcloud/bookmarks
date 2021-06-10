@@ -105,7 +105,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "ブックマークしたファイルの保存先のフォルダーパスを入力してください",
     "Client apps" : "クライアントアプリ",
     "Also check out the collection of client apps that integrate with this app: " : "このアプリと連携するクライアントアプリもご確認ください：",
-    "Install web app" : "Webアプリをインストール",
     "Install on home screen" : "ホーム画面でインストール",
     "Bookmarklet" : "ブックマークレット",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "これをお使いのブラウザーのブックマークにドラッグしてクリックすれば、すぐにウェブページをブックマークできます",

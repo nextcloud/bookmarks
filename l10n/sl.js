@@ -116,7 +116,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Vpis poti do mape, kjer bi morali biti shranjeni zaznamki datotek",
     "Client apps" : "Odjemalski programi",
     "Also check out the collection of client apps that integrate with this app: " : "Preverite tudi zbirko programov, ki se povezujejo z zmožnostmi:",
-    "Install web app" : "Namesti spletni program",
     "Install on home screen" : "Namesti na začetni zaslon",
     "Bookmarklet" : "Program za zaznamke",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Potegnite to med zaznamke brskalnika in kliknite za hitro dodajanje zaznamka spletne strani.",

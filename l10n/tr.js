@@ -116,7 +116,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Yer imlerine eklenmiş dosyaların kaydedileceği klasör yolunu yazın",
     "Client apps" : "İstemci uygulamaları",
     "Also check out the collection of client apps that integrate with this app: " : "Ayrıca bu uygulama ile birlikte çalışan istemci uygulamalarına da bakın:",
-    "Install web app" : "Web uygulaması kur",
     "Install on home screen" : "Ana sayfaya kur",
     "Bookmarklet" : "Bookmarklet",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Bunu sürükleyip web tarayıcınızın yer imleri bölümüne bırakın ve bir web sayfasını kolayca yer imlerine eklemek için üzerine tıklayın",

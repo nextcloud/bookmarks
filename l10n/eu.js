@@ -116,7 +116,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Sartu karpeta baterako bidea laster-marketako fitxategiek biltegiratuta egon beharko luketen tokira",
     "Client apps" : "Bezero-aplikazioak",
     "Also check out the collection of client apps that integrate with this app: " : "Ikuskatu, baita, aplikazio honekin integratuta dagoen bezero aplikazioen bilduma",
-    "Install web app" : "Instalatu web aplikazioa",
     "Install on home screen" : "Instalatu hasierako pantailan",
     "Bookmarklet" : "Applet-marka",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Arrastatu hau zure nabigatzaileko laster-marken gunera eta egin klik  webgune baten laster-marka azkar-azkar egiteko",

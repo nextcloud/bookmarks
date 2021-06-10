@@ -116,7 +116,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Voer het pad in van een map waar de bladwijzers van de bestanden moeten worden opgeslagen",
     "Client apps" : "Client apps",
     "Also check out the collection of client apps that integrate with this app: " : "Bekijk ook de verzameling client-apps die met deze app kunnen worden geïntegreerd:",
-    "Install web app" : "Installeer web-app",
     "Install on home screen" : "Installeren op thuisscherm",
     "Bookmarklet" : "Bookmarklet",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Sleep dit naar de bladwijzers van je browser en klik erop om snel een bladwijzer voor een webpagina te maken",

@@ -84,7 +84,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Introduïu el camí d'una carpeta on s'han d'emmagatzemar els fitxers marcats",
     "Client apps" : "Aplicacions de client",
     "Also check out the collection of client apps that integrate with this app: " : "Feu també un cop d'hora al conjunt d'aplicacions client que s'integren amb aquesta aplicació: ",
-    "Install web app" : "Instal·la l'aplicació web",
     "Install on home screen" : "Instal·la a la pantalla d'inici",
     "Bookmarklet" : "Miniaplicació d'adreces d'interès",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Arrossegueu-lo a les adreces d'interès del navegador i feu-hi clic per afegir ràpidament una pàgina web a les adreces d'interès",

@@ -88,7 +88,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Προσθέστε την διαδρομή του φακέλου όπου θα αποθηκεύονται τα αρχεία σελιδοδεικτών",
     "Client apps" : "Εφαρμογές πελάτη",
     "Also check out the collection of client apps that integrate with this app: " : "Ελέγξτε επίσης τη συλλογή των εφαρμογών που ενσωματώνονται σε αυτήν την εφαρμογή:",
-    "Install web app" : "Εγκατάσταση εφαρμογής ιστού",
     "Install on home screen" : "Εγκατάσταση στην αρχική οθόνη",
     "Bookmarklet" : "Εφαρμογίδιο Σελιδοδεικτών",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Σύρετε στους σελιδοδείκτες του περιηγητή και κάντε κλικ σε για γρήγορη αποθήκευση σελιδοδείκτη μιας ιστοσελίδας",

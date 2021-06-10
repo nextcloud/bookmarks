@@ -116,7 +116,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Digita il percorso di una cartella dove i file dei segnalibri dovrebbe essere conservati",
     "Client apps" : "Applicazioni client",
     "Also check out the collection of client apps that integrate with this app: " : "Controlla inoltre l'elenco delle applicazioni client che si integrano con questa applicazione:",
-    "Install web app" : "Installazione l'applicazione web",
     "Install on home screen" : "Installa sulla schermata principale",
     "Bookmarklet" : "Bookmarklet",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Trascinalo nei segnalibri del tuo browser e fai clic su di esso per creare rapidamente un segnalibro di una pagina web",

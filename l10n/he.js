@@ -73,7 +73,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "נא למלא את הנתיב לתיקייה שבה יישמרו הקבצים שיש סימניות שמפנות אליהם",
     "Client apps" : "יישומוני לקוח",
     "Also check out the collection of client apps that integrate with this app: " : "כדאי להציץ באוסף יישומוני הלקוח שמשתלבים עם היישומון הזה:",
-    "Install web app" : "התקנת יישומון דפדפן",
     "Install on home screen" : "התקנה על מסך הבית",
     "Bookmarklet" : "יישומון סימנייה",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "יש לגרור זאת לדפדפן שלך וללחוץ על זה כדי להוסיף דף כלשהו כסימנייה",

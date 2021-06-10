@@ -91,7 +91,6 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Unesite put do mape u kojoj trebaju biti pohranjene datoteke označene kao knjižne oznake",
     "Client apps" : "Korisnička aplikacija",
     "Also check out the collection of client apps that integrate with this app: " : "Također pregledajte zbirku klijentskih aplikacija koje se mogu integrirati s ovom aplikacijom:",
-    "Install web app" : "Instaliraj web aplikaciju",
     "Install on home screen" : "Instaliraj na početni zaslon",
     "Bookmarklet" : "Bookmarklet",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Odvucite na knjižne oznake u svom pregledniku i kliknite kako biste brzo spremili mrežno mjesto u knjižne oznake.",

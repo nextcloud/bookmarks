@@ -10,7 +10,6 @@ OC.L10N.register(
     "Enter a link" : "සබැඳියක් ඇතුළත් කරන්න",
     "Select folder" : "බහාලුම තෝරන්න",
     "Cancel" : "අවලංගු කරන්න",
-    "Install web app" : "වියමන යෙදුම ස්ථාපනය කරන්න",
     "Link" : "සබැඳිය",
     "Notes" : "සටහන්",
     "Owner" : "හිමිකරු",
