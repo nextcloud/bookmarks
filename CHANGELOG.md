@@ -1,9 +1,20 @@
-
 # Changelog
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [4.2.2] - 2021-06-09
+
+### Fixed
+ - Fix OrphanedTreeItemsRepairStep
+ - Switch out readability.php (#1563)
+ - Fix BulkEditing covering MoveDialog
+ - Add description to "Install on home screen"
+ - UX: Navigation: re-add Search tags menu item
+ - UI: Performance: Don't load children order unnecessarily
+ - UX: Improve initial load time
+ - Fix tag filter query performance issue
 
 ## [4.2.1] - 2021-05-16
 
@@ -556,6 +567,8 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+[4.2.2]: https://github.com/nextcloud/bookmarks/compare/v4.2.1...v4.2.2
+[4.2.1]: https://github.com/nextcloud/bookmarks/compare/v4.2.0...v4.2.1
 [4.2.0]: https://github.com/nextcloud/bookmarks/compare/v4.1.0...v4.2.0
 [4.0.8]: https://github.com/nextcloud/bookmarks/compare/v4.0.7...v4.0.8
 [4.0.7]: https://github.com/nextcloud/bookmarks/compare/v4.0.6...v4.0.7
