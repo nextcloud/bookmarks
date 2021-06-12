@@ -48,7 +48,7 @@
 	"devDependencies": {
 		"@babel/core": "^7.13.15",
 		"@babel/plugin-syntax-dynamic-import": "^7.7.4",
-		"@babel/preset-env": "^7.13.15",
+		"@babel/preset-env": "^7.14.5",
 		"@nextcloud/browserslist-config": "^2.1.0",
 		"@nextcloud/eslint-config": "^2.2.0",
 		"@nextcloud/eslint-plugin": "^1.5.0",
