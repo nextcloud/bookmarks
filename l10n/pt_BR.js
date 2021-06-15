@@ -137,7 +137,7 @@ OC.L10N.register(
     "Archived file" : "Arquivo arquivado",
     "Open file" : "Abrir arquivo",
     "Open file location" : "Abrir local do arquivo",
-    "Created {time} ago" : "Criado a {time} atrás",
+    "Created {time} ago" : "Criado há {time}",
     "Created on {date}" : "Criado em {date}",
     "Owner" : "Proprietário",
     "Sharing" : "Compartilhando",
