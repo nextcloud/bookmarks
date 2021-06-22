@@ -163,7 +163,7 @@ OC.L10N.register(
     "Previews" : "Náhledy",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use third-party services to generate previews." : "Pro zobrazování skutečných snímků obrazovky webů, které máte v záložkách, Záložky mohou použít pro vytváření náhledů služby třetích stran.",
     "Screeenly" : "Screeenly",
-    "You can either sign up for free at screeenly.com or setup your own server." : "Je možné si buď bezplatně zaregistrovat na screeenly.com nebo si vytvořit vlastní server.",
+    "You can either sign up for free at screeenly.com or setup your own server." : "Je možné se buď bezplatně zaregistrovat na screeenly.com nebo si vytvořit vlastní server.",
     "Screeenly API URL" : "URL adresa aplikačního program. rozhraní (API) služby Screenly",
     "Screeenly API key" : "Klíč k aplikačnímu program. rozhraní (API) služby Screenly",
     "Webshot" : "Webshot",
