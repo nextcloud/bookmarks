@@ -95,13 +95,13 @@ class HtmlImportExportTest extends TestCase {
 
 		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
 		$imported = $this->treeMapper->getChildrenOrder($rootFolder->getId());
-		$this->assertCount(5, $imported);
+		$this->assertCount(6, $imported);
 
 		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][0]['id']));
 		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][1]['id']));
 		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][2]['id']));
 		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][3]['id']));
-		$this->assertCount(2, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][4]['id']));
+		$this->assertCount(1, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][4]['id']));
 
 		/**
 		 * @var $firstBookmark Db\Bookmark

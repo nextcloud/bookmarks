@@ -9,6 +9,7 @@ use OCA\Bookmarks\Exception\HtmlParseError;
 use OCA\Bookmarks\Exception\UnauthorizedAccessError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Migration\OrphanedTreeItemsRepairStep;
+use OCA\Bookmarks\QueryParameters;
 use OCA\Bookmarks\Service;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -74,6 +75,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 		$this->repairStep = \OC::$server->get(OrphanedTreeItemsRepairStep::class);
 		$this->db = \OC::$server->get(\OCP\IDBConnection::class);
 		$this->treeMapper = \OC::$server->get(Db\TreeMapper::class);
+		$this->bookmarkMapper = \OC::$server->get(Db\BookmarkMapper::class);
 		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
 		$this->htmlImporter = \OC::$server->get(Service\HtmlImporter::class);
 
@@ -96,14 +98,14 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 	 * @throws HtmlParseError
 	 * @throws \OCP\DB\Exception
 	 */
-	public function testRepair(string $file): void {
+	public function testRepairTreeGone(string $file): void {
 		$this->cleanUp();
 		$result = $this->htmlImporter->importFile($this->userId, $file);
 		/** @var Db\Folder $rootFolder */
 		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
 
-		// check for 5 folders
-		self::assertCount(5, $this->treeMapper->getChildren($rootFolder->getId()));
+		// check for 5 folders + 1 bookmark
+		self::assertCount(6, $this->treeMapper->getChildren($rootFolder->getId()));
 
 		// Remove tree structure
 		$this->db->executeQuery('DELETE FROM oc_bookmarks_tree');
@@ -117,6 +119,113 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 
 		// check for 10 bookmarks
 		self::assertCount(10, $this->treeMapper->getChildren($rootFolder->getId()));
+	}
+
+	/**
+	 * @dataProvider importProvider
+	 * @param string $file
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
+	 * @throws HtmlParseError
+	 * @throws \OCP\DB\Exception
+	 */
+	public function testNoRepair(string $file): void {
+		$this->cleanUp();
+		$result = $this->htmlImporter->importFile($this->userId, $file);
+		/** @var Db\Folder $rootFolder */
+		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
+
+		// check for 5 folders + 1 bookmark
+		self::assertCount(6, $this->treeMapper->getChildren($rootFolder->getId()));
+
+		// repair
+		$output = $this->getMockBuilder(IOutput::class)->getMock();
+		$this->repairStep->run($output);
+
+		// check for 5 folders + 1 bookmark
+		self::assertCount(6, $this->treeMapper->getChildren($rootFolder->getId()));
+
+		// check for 10 bookmarks
+		self::assertCount(10, $this->bookmarkMapper->findAll($this->userId, new QueryParameters()));
+	}
+
+	/**
+	 * @dataProvider importProvider
+	 * @param string $file
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
+	 * @throws HtmlParseError
+	 * @throws \OCP\DB\Exception
+	 */
+	public function testRepairRootFolderGone(string $file): void {
+		$this->cleanUp();
+		$result = $this->htmlImporter->importFile($this->userId, $file);
+		/** @var Db\Folder $rootFolder */
+		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
+
+		// check for 5 folders + 1 bookmark
+		self::assertCount(6, $this->treeMapper->getChildren($rootFolder->getId()));
+
+		// delete root folder but not root_folders entry
+		$this->folderMapper->delete($rootFolder);
+
+		// repair
+		$output = $this->getMockBuilder(IOutput::class)->getMock();
+		$this->repairStep->run($output);
+
+		/** @var Db\Folder $rootFolder */
+		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
+
+		// check for 5 folders + 1 bookmark
+		self::assertCount(6, $this->treeMapper->getChildren($rootFolder->getId()));
+
+		// check for 10 bookmarks
+		self::assertCount(10, $this->bookmarkMapper->findAll($this->userId, new QueryParameters()));
+	}
+
+	/**
+	 * @dataProvider importProvider
+	 * @param string $file
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
+	 * @throws HtmlParseError
+	 * @throws \OCP\DB\Exception
+	 */
+	public function testRepairRootFolderGone2(string $file): void {
+		$this->cleanUp();
+		$result = $this->htmlImporter->importFile($this->userId, $file);
+		/** @var Db\Folder $rootFolder */
+		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
+
+		// check for 5 folders + 1 bookmark
+		self::assertCount(6, $this->treeMapper->getChildren($rootFolder->getId()));
+
+		// delete root folder and root_folders entry
+		$this->folderMapper->delete($rootFolder);
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks_root_folders', 'r')->where($qb->expr()->eq('r.folder_id', $qb->createNamedParameter($rootFolder->getId())));
+
+		// repair
+		$output = $this->getMockBuilder(IOutput::class)->getMock();
+		$this->repairStep->run($output);
+
+		/** @var Db\Folder $rootFolder */
+		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
+
+		// check for 5 folders + 1 bookmark
+		self::assertCount(6, $this->treeMapper->getChildren($rootFolder->getId()));
+
+		// check for 10 bookmarks
+		self::assertCount(10, $this->bookmarkMapper->findAll($this->userId, new QueryParameters()));
 	}
 
 	public function importProvider(): array {

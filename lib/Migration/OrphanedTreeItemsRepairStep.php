@@ -83,14 +83,43 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 		$orphanedTreeItems = $qb->execute();
 		$i = 0;
 		while ($treeItem = $orphanedTreeItems->fetch()) {
+			if ($treeItem['type'] === 'bookmark') {
+				$qb = $this->db->getQueryBuilder();
+				$bookmark = $qb->select('user_id')
+					->from('bookmarks')
+					->where($qb->expr()->eq('id', $qb->createNamedParameter($treeItem['id'])))
+					->execute()
+					->fetch();
+				$userId = $bookmark['user_id'];
+			} elseif ($treeItem['type'] === 'folder') {
+				$qb = $this->db->getQueryBuilder();
+				$folder = $qb->select('user_id')
+					->from('bookmarks_folders')
+					->where($qb->expr()->eq('id', $qb->createNamedParameter($treeItem['id'])))
+					->execute()
+					->fetch();
+				$userId = $folder['user_id'];
+			} elseif ($treeItem['type'] === 'share') {
+				$qb = $this->db->getQueryBuilder();
+				$folder = $qb->select('user_id')
+					->from('bookmarks_shared_folders')
+					->where($qb->expr()->eq('id', $qb->createNamedParameter($treeItem['id'])))
+					->execute()
+					->fetch();
+				$userId = $folder['user_id'];
+			}
+
+			$rootFolder = $this->ensureRootFolder($userId);
 			$qb = $this->db->getQueryBuilder();
-			$qb->delete('bookmarks_tree')
-				->where($qb->expr()->eq('id', $qb->createPositionalParameter($treeItem['id'], IQueryBuilder::PARAM_INT)))
-				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($treeItem['type'])))
+			$qb->update('bookmarks_tree')
+				->set('parent_folder', $qb->createNamedParameter($rootFolder['folder_id']))
+				->set('index', $qb->createNamedParameter($rootFolder['count']))
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($treeItem['id'], IQueryBuilder::PARAM_INT)))
+				->andWhere($qb->expr()->eq('type', $qb->createNamedParameter($treeItem['type'])))
 				->execute();
 			$i++;
 		}
-		$output->info("Removed $i orphaned children entries");
+		$output->info("Reinserted $i orphaned children entries");
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('f.id')
@@ -119,32 +148,7 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 		$orphanedBookmarks = $qb->execute();
 		$i = 0;
 		while ($bookmark = $orphanedBookmarks->fetch()) {
-			$qb = $this->db->getQueryBuilder();
-			$rootFolder = $qb->select('r.folder_id', $qb->func()->count('t.id', 'count'))
-				->from('bookmarks_root_folders', 'r')
-				->leftJoin('r', 'bookmarks_tree', 't', 't.parent_folder = r.folder_id')
-				->where($qb->expr()->eq('r.user_id', $qb->createPositionalParameter($bookmark['user_id'])))
-				->groupBy(['r.folder_id'])
-				->execute()
-				->fetch();
-			if ($rootFolder === null || $rootFolder === false || $rootFolder['folder_id'] === null) {
-				$qb = $this->db->getQueryBuilder();
-				$qb->insert('bookmarks_folders')
-					->values([
-						'user_id' => $qb->createNamedParameter($bookmark['user_id'])
-					]);
-				$rootFolder = [
-					'folder_id' => $qb->getLastInsertId(),
-					'count' => 0
-				];
-				$qb = $this->db->getQueryBuilder();
-				$qb->insert('bookmarks_root_folders')
-					->values([
-						'folder_id' => $qb->createNamedParameter($rootFolder['folder_id']),
-						'user_id' => $qb->createNamedParameter($bookmark['user_id'])
-					])
-					->execute();
-			}
+			$rootFolder = $this->ensureRootFolder($bookmark['user_id']);
 			$qb = $this->db->getQueryBuilder();
 			$qb->insert('bookmarks_tree')->values([
 				'id' => $qb->createPositionalParameter($bookmark['id']),
@@ -155,5 +159,52 @@ class OrphanedTreeItemsRepairStep implements IRepairStep {
 			$i++;
 		}
 		$output->info("Reinserted $i orphaned bookmarks");
+	}
+
+	private function ensureRootFolder($userId) {
+		$qb = $this->db->getQueryBuilder();
+		$rootFolder = $qb->select('r.folder_id', $qb->func()->count('t.id', 'count'))
+			->from('bookmarks_root_folders', 'r')
+			->innerJoin('r', 'bookmarks_folders', 'f', 'r.folder_id = f.id')
+			->leftJoin('r', 'bookmarks_tree', 't', 't.parent_folder = r.folder_id')
+			->where($qb->expr()->eq('r.user_id', $qb->createNamedParameter($userId)))
+			->groupBy(['r.folder_id'])
+			->execute()
+			->fetch();
+		if ($rootFolder === null || $rootFolder === false || $rootFolder['folder_id'] === null) {
+			$qb = $this->db->getQueryBuilder();
+			$qb->insert('bookmarks_folders')
+				->values([
+					'user_id' => $qb->createNamedParameter($userId),
+					'title' => $qb->createNamedParameter('')
+				])
+				->execute();
+			$rootFolder = [
+				'folder_id' => $qb->getLastInsertId(),
+				'count' => 0
+			];
+			$qb = $this->db->getQueryBuilder();
+			$oldRootFolder = $qb->select('folder_id')
+				->from('bookmarks_root_folders', 'r')
+				->where($qb->expr()->eq('r.user_id', $qb->createNamedParameter($userId)))
+				->execute()
+				->fetch();
+			if ($oldRootFolder) {
+				$qb = $this->db->getQueryBuilder();
+				$qb->update('bookmarks_root_folders', 'r')
+					->set('folder_id', $qb->createNamedParameter($rootFolder['folder_id']))
+					->where($qb->expr()->eq('r.user_id', $qb->createNamedParameter($userId)))
+					->execute();
+			} else {
+				$qb = $this->db->getQueryBuilder();
+				$qb->insert('bookmarks_root_folders')
+					->values([
+						'folder_id' => $qb->createNamedParameter($rootFolder['folder_id']),
+						'user_id' => $qb->createNamedParameter($userId)
+					])
+					->execute();
+			}
+		}
+		return $rootFolder;
 	}
 }
