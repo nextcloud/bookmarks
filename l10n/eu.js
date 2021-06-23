@@ -102,6 +102,7 @@ OC.L10N.register(
     "Files" : "Fitxategiak",
     "Broken links" : "Hautsitako estekak",
     "New tag" : "Etiketa berria",
+    "Search tags" : "Bilatu etiketak",
     "Untagged" : "Etiketatu gabe",
     "{used} bookmarks of {available} available" : "{available} laster-marketatik {used} erabilita",
     "No bookmarked files" : "Ez dago laster-marka fitxategirik",
