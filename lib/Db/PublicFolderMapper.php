@@ -87,35 +87,35 @@ class PublicFolderMapper extends QBMapper {
 	}
 
 	/**
-	 * @param Entity $publicFolder
+	 * @param Entity $entity
 	 * @return Entity
 	 * @throws MultipleObjectsReturnedException
 	 * @throws Exception
 	 */
-	public function insert(Entity $publicFolder): Entity {
+	public function insert(Entity $entity): Entity {
 		try {
 			while (true) {
 				// 63^7 = 3 939 000 000 000 links -- I guess that's enough.
-				$publicFolder->setId(self::randomString(7));
-				$this->find($publicFolder->getId());
+				$entity->setId(self::randomString(7));
+				$this->find($entity->getId());
 			}
 		} catch (DoesNotExistException $e) {
-			return parent::insert($publicFolder);
+			return parent::insert($entity);
 		}
 	}
 
 	/**
-	 * @param Entity $publicFolder
+	 * @param Entity $entity
 	 * @return Entity
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function insertOrUpdate(Entity $publicFolder): Entity {
+	public function insertOrUpdate(Entity $entity): Entity {
 		try {
-			$this->find($publicFolder->getId());
+			$this->find($entity->getId());
 		} catch (DoesNotExistException $e) {
-			return $this->insert($publicFolder);
+			return $this->insert($entity);
 		}
-		return $this->update($publicFolder);
+		return $this->update($entity);
 	}
 
 	/**

@@ -151,14 +151,14 @@ class ShareMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function insert(Entity $sharedFolder): Entity {
-		$sharedFolder->setCreatedAt(time());
-		return parent::insert($sharedFolder);
+	public function insert(Entity $entity): Entity {
+		$entity->setCreatedAt(time());
+		return parent::insert($entity);
 	}
 
-	public function insertOrUpdate(Entity $sharedFolder): Entity {
-		$sharedFolder->setCreatedAt(time());
-		return parent::insertOrUpdate($sharedFolder);
+	public function insertOrUpdate(Entity $entity): Entity {
+		$entity->setCreatedAt(time());
+		return parent::insertOrUpdate($entity);
 	}
 
 	public function findBySharedFolder(int $id): Entity {
