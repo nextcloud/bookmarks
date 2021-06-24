@@ -220,12 +220,12 @@ class SharedFolderMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function delete(Entity $sharedFolder): Entity {
+	public function delete(Entity $entity): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('bookmarks_shared_to_shares')
-			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($sharedFolder->getId())))
+			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($entity->getId())))
 			->execute();
-		return parent::delete($sharedFolder);
+		return parent::delete($entity);
 	}
 
 	public function mount(int $id, int $share_id): void {
