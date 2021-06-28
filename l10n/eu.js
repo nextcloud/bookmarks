@@ -117,6 +117,7 @@ OC.L10N.register(
     "Enter the path of a folder where bookmarked files should be stored" : "Sartu karpeta baterako bidea laster-marketako fitxategiek biltegiratuta egon beharko luketen tokira",
     "Client apps" : "Bezero-aplikazioak",
     "Also check out the collection of client apps that integrate with this app: " : "Ikuskatu, baita, aplikazio honekin integratuta dagoen bezero aplikazioen bilduma",
+    "Install web app on device" : "Instalatu web aplikazioa gailuan",
     "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Aplikazio hau gailuko hasierako pantailan instalatu dezakezu telefonoan laster-markak azkar sartzeko. Erraz ken dezakezu aplikazioa hasierako pantailatik, gustatzen ez bazaizu.",
     "Install on home screen" : "Instalatu hasierako pantailan",
     "Bookmarklet" : "Applet-marka",
