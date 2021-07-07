@@ -25,7 +25,7 @@
 		"@nextcloud/dialogs": "^3.1.2",
 		"@nextcloud/event-bus": "^1.2.0",
 		"@nextcloud/initial-state": "^1.2.0",
-		"@nextcloud/router": "^1.2.0",
+		"@nextcloud/router": "^2.0.0",
 		"@nextcloud/vue": "^3.7.2",
 		"@nextcloud/vue-dashboard": "^1.0.1",
 		"async-parallel": "^1.2.3",
