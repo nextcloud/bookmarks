@@ -63,7 +63,7 @@ jobs:
           - /home/runner/work/bookmarks/bookmarks/apps:/var/www/html/custom_apps
         options: --name nextcloud
       mysql:
-        image: mariadb:latest
+        image: mariadb:10.5
         env:
           MYSQL_ROOT_PASSWORD: ${{env.MYSQL_PASSWORD}}
 
