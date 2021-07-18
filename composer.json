@@ -5,7 +5,7 @@
 		"ext-json": "*",
 		"ext-libxml": "*",
 		"ext-pdo": "*",
-		"guzzlehttp/psr7": "^1",
+		"guzzlehttp/psr7": "^2",
 		"marcelklehr/link-preview": "^3.0.5",
 		"pguardiario/phpuri": "1.0.*",
 		"psr/http-client": "^1.0",
