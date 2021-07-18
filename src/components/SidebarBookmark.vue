@@ -57,6 +57,7 @@
 						:options="allTags"
 						:multiple="true"
 						:taggable="true"
+						open-direction="below"
 						:placeholder="t('bookmarks', 'Select tags and create new ones')"
 						:disabled="!isEditable"
 						@input="onTagsChange"
