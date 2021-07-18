@@ -98,7 +98,7 @@ jobs:
 
       - name: Export bookmarks
         run: |
-          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmarks/export" > export.html
+          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/export" > export.html
 
       - name: Run update
         run: |
@@ -106,7 +106,7 @@ jobs:
 
       - name: Export bookmarks
         run: |
-          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmarks/export" > export2.html
+          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/export" > export2.html
 
       - name: Compare exports
         run: |
