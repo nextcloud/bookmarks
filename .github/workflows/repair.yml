@@ -93,11 +93,11 @@ jobs:
 
       - name: Import bookmarks
         run: |
-          curl -u 'admin:admin' -F 'bm_import=@./apps/bookmarks/tests/res/import.file' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/import
+          curl -u 'admin:password' -vvv --fail -F 'bm_import=@./apps/bookmarks/tests/res/import.file' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/import
 
       - name: Export bookmarks
         run: |
-          curl -u 'admin:admin' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/children\?layers\=-1 > export.json
+          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/children?layers=-1" > export.json
 
       - name: Run update
         run: |
@@ -105,7 +105,7 @@ jobs:
 
       - name: Export bookmarks
         run: |
-          curl -u 'admin:admin' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/children\?layers\=-1 > export2.json
+          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/children?layers=-1" > export2.json
 
       - name: Compare exports
         run: |
