@@ -93,6 +93,7 @@ jobs:
 
       - name: Import bookmarks
         run: |
+          cp ./apps/bookmarks/tests/res/import.file ./apps/bookmarks/tests/res/import.html
           curl -u 'admin:password' -vvv --fail -F 'bm_import=@./apps/bookmarks/tests/res/import.html' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/import
 
       - name: Export bookmarks
