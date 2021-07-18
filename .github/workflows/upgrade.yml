@@ -104,7 +104,7 @@ jobs:
 
       - name: Export bookmarks
         run: |
-          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/children?layers=-1" > export.json
+          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/export" > export.html
 
       - name: Remove current stable bookmarks
         run: |
@@ -125,9 +125,9 @@ jobs:
 
       - name: Export bookmarks
         run: |
-          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/children?layers=-1" > export2.json
+          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/export" > export2.html
 
       - name: Compare exports
         run: |
-          diff export.json export2.json
+          diff export.html export2.html
 
