@@ -118,7 +118,7 @@ OC.L10N.register(
     "Client apps" : "Aplikacje klienckie",
     "Also check out the collection of client apps that integrate with this app: " : "Sprawdź także kolekcję aplikacji klienckich, które integrują się z tą aplikacją: ",
     "Install web app on device" : "Zainstaluj aplikację internetową na urządzeniu",
-    "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Możesz dodać tę aplikację do ekranu głównego swojego urządzenia, aby szybko uzyskać dostęp do zakładek w telefonie. Możesz łatwo usunąć aplikację z ekranu głównego, jeżeli już jej nie potrzebujesz.",
+    "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Możesz dodać aplikację do ekranu głównego swojego urządzenia, aby szybko uzyskać dostęp do zakładek w telefonie. Jeżeli nie będziesz jej potrzebować, będziesz mógł ją łatwo usunąć z ekranu głównego.",
     "Install on home screen" : "Zainstaluj na ekranie głównym",
     "Bookmarklet" : "Skryptozakładka",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Aby szybko dodać stronę do zakładek, przeciągnij ją do zakładek przeglądarki i kliknij",
