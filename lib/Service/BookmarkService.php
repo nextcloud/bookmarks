@@ -361,9 +361,9 @@ class BookmarkService {
 	 *
 	 * @return Bookmark
 	 *
-	 * @throws DoesNotExistException
+	 * @throws DoesNotExistException|UrlParseError
 	 */
-	public function findByUrl(string $userId, $url = ''): Bookmark {
+	public function findByUrl(string $userId, string $url = ''): Bookmark {
 		$params = new QueryParameters();
 		/** @var Bookmark[] $bookmarks */
 		$bookmarks = $this->bookmarkMapper->findAll($userId, $params->setUrl($url));

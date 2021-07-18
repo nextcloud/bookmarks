@@ -183,12 +183,12 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param $userId
+	 * @param string $userId
 	 * @param QueryParameters $params
 	 *
 	 * @return Entity[]
 	 *
-	 * @psalm-return array<array-key, Bookmark>
+	 * @throws UrlParseError
 	 */
 	public function findAll(string $userId, QueryParameters $params): array {
 		$qb = $this->db->getQueryBuilder();
@@ -270,6 +270,9 @@ class BookmarkMapper extends QBMapper {
 		}
 	}
 
+	/**
+	 * @throws UrlParseError
+	 */
 	private function _filterUrl(IQueryBuilder $qb, QueryParameters $params): void {
 		if (($url = $params->getUrl()) !== null) {
 			$normalized = $this->urlNormalizer->normalize($url);

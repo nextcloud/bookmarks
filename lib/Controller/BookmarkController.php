@@ -360,7 +360,11 @@ class BookmarkController extends ApiController {
 		}
 
 		if ($this->authorizer->getUserId() !== null) {
-			$result = $this->bookmarkMapper->findAll($userId, $params);
+			try {
+				$result = $this->bookmarkMapper->findAll($userId, $params);
+			} catch (UrlParseError $e) {
+				return new DataResponse(['status' => 'error', 'data' => 'Failed to parse URL'], Http::STATUS_BAD_REQUEST);
+			}
 		} else {
 			try {
 				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $params);
@@ -524,6 +528,8 @@ class BookmarkController extends ApiController {
 			$bookmark = $this->bookmarks->findByUrl($this->authorizer->getUserId(), $url);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+		} catch (UrlParseError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Failed to parse URL']], Http::STATUS_BAD_REQUEST);
 		}
 
 		if ($bookmark->getUserId() !== $this->authorizer->getUserId()) {
@@ -533,7 +539,7 @@ class BookmarkController extends ApiController {
 		try {
 			$this->bookmarks->click($bookmark->getId());
 		} catch (UrlParseError $e) {
-			return new JSONResponse(['status' => 'error', 'data' => ['Failed to parse URL']], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Failed to parse URL']], Http::STATUS_BAD_REQUEST);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
