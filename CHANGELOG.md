@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.0] - 2021-07-18
+
+### New
+- Support Nextcloud 22
+- New screenshots
+
+### Fixed
+- Fix OrphanedTreeItemsRepairStep
+- Fix multiselect in sidebar (see #1554)
+- Fix uncaught UrlParseErrors (see #1598)
+- API: Permission errors now have status 403 instead of 405 (see #1602)
+- Add clickcount db index (see #1588)
+
 ## [4.2.2] - 2021-06-09
 
 ### Fixed
@@ -567,6 +580,7 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+[4.3.0]: https://github.com/nextcloud/bookmarks/compare/v4.2.2...v4.3.0
 [4.2.2]: https://github.com/nextcloud/bookmarks/compare/v4.2.1...v4.2.2
 [4.2.1]: https://github.com/nextcloud/bookmarks/compare/v4.2.0...v4.2.1
 [4.2.0]: https://github.com/nextcloud/bookmarks/compare/v4.1.0...v4.2.0
