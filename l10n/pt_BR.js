@@ -174,7 +174,7 @@ OC.L10N.register(
     "Simply install the pageres cli on your server and bookmarks will find it." : "Basta instalar os pagers cli em seu servidor e os favoritos irão encontrá-lo.",
     "Failed to load settings" : "Erro ao carregar configurações",
     "Failed to save settings" : "Erro ao salvar configurações",
-    "Add a bookmark" : "Adicionar um favorito",
+    "Add a bookmark" : "Adicionar favorito",
     "This URL is already bookmarked! Overwrite?" : "Esta URL já está nos seus favoritos. Sobrescrever?",
     "Enter bookmark title" : "Digite o título do favorito",
     "Enter bookmark URL" : "Digite a URL do favorito",
