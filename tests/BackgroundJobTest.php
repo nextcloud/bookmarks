@@ -7,8 +7,9 @@ use OC\BackgroundJob\JobList;
 use OCA\Bookmarks\BackgroundJobs\FileCacheGCJob;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
+use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolderMapper;
-use OCA\Bookmarks\Db\TagMapper;
+use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Service\CrawlService;
 use OCA\Bookmarks\Service\FileCache;
 use OCA\Bookmarks\Service\UrlNormalizer;
@@ -91,8 +92,9 @@ class BackgroundJobTest extends TestCase {
 			$container->get(UrlNormalizer::class),
 			$this->settings,
 			$container->get(PublicFolderMapper::class),
-			$container->get(TagMapper::class),
-			$this->timeFactory
+			$this->timeFactory,
+			$container->get(FolderMapper::class),
+			$container->get(ShareMapper::class),
 		);
 		$this->previewsJob = new CrawlJob(
 			$this->settings,

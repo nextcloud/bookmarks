@@ -52,10 +52,6 @@ class BookmarkMapper extends QBMapper {
 	private $publicMapper;
 
 	/**
-	 * @var TagMapper
-	 */
-	private $tagMapper;
-	/**
 	 * @var IQueryBuilder
 	 */
 	private $deleteTagsQuery;
@@ -67,6 +63,14 @@ class BookmarkMapper extends QBMapper {
 	 * @var ITimeFactory
 	 */
 	private $time;
+	/**
+	 * @var FolderMapper
+	 */
+	private $folderMapper;
+	/**
+	 * @var ShareMapper
+	 */
+	private $shareMapper;
 
 	/**
 	 * BookmarkMapper constructor.
@@ -76,21 +80,23 @@ class BookmarkMapper extends QBMapper {
 	 * @param UrlNormalizer $urlNormalizer
 	 * @param IConfig $config
 	 * @param PublicFolderMapper $publicMapper
-	 * @param TagMapper $tagMapper
 	 * @param ITimeFactory $timeFactory
+	 * @param FolderMapper $folderMapper
+	 * @param ShareMapper $shareMapper
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, TagMapper $tagMapper, ITimeFactory $timeFactory) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, ITimeFactory $timeFactory, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\ShareMapper $shareMapper) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
 		$this->config = $config;
 		$this->limit = (int)$config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
 		$this->publicMapper = $publicMapper;
-		$this->tagMapper = $tagMapper;
 
 		$this->deleteTagsQuery = $this->getDeleteTagsQuery();
 		$this->findByUrlQuery = $this->getFindByUrlQuery();
 		$this->time = $timeFactory;
+		$this->folderMapper = $folderMapper;
+		$this->shareMapper = $shareMapper;
 	}
 
 	protected function getFindByUrlQuery(): IQueryBuilder {
@@ -209,10 +215,13 @@ class BookmarkMapper extends QBMapper {
 			->leftJoin('tr', 'bookmarks_tree', 'tr2', 'tr2.id = tr.parent_folder AND tr2.type = '. $qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
 			->leftJoin('tr2', 'bookmarks_shared_folders', 'sf2', $qb->expr()->eq('tr2.parent_folder', 'sf.folder_id'))
 			->where(
-				$qb->expr()->orX(
-					$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
-					$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
-					$qb->expr()->eq('sf2.user_id', $qb->createPositionalParameter($userId))
+				$qb->expr()->andX(
+					$qb->expr()->orX(
+						$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+						$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
+						$qb->expr()->eq('sf2.user_id', $qb->createPositionalParameter($userId))
+					),
+					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($userId), [$userId])))
 				)
 			);
 
@@ -392,10 +401,15 @@ class BookmarkMapper extends QBMapper {
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->orX(
-				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
-				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
-			))
+			->where(
+				$qb->expr()->andX(
+					$qb->expr()->orX(
+						$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+						$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
+					),
+					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($userId), [$userId])))
+				)
+			)
 			->andWhere($qb->expr()->isNotNull('b.archived_file'));
 
 		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
@@ -413,10 +427,15 @@ class BookmarkMapper extends QBMapper {
 			->from('bookmarks', 'b')
 			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->orX(
-				$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
-				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
-			))
+			->where(
+				$qb->expr()->andX(
+					$qb->expr()->orX(
+						$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+						$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
+					),
+					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($userId), [$userId])))
+				)
+			)
 			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
 
 		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
@@ -439,6 +458,8 @@ class BookmarkMapper extends QBMapper {
 	public function findAllInPublicFolder(string $token, QueryParameters $params): array {
 		/** @var PublicFolder $publicFolder */
 		$publicFolder = $this->publicMapper->find($token);
+		/** @var Folder $folder */
+		$folder = $this->folderMapper->find($publicFolder->getFolderId());
 
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
@@ -456,9 +477,12 @@ class BookmarkMapper extends QBMapper {
 			->leftJoin('b', 'bookmarks_tree', 'tr', 'tr.id = b.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 			->leftJoin('tr', 'bookmarks_tree', 'tr2', 'tr2.id = tr.parent_folder AND tr2.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
 			->where(
-				$qb->expr()->orX(
-					$qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId(), IQueryBuilder::PARAM_INT)),
-					$qb->expr()->eq('tr2.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId(), IQueryBuilder::PARAM_INT))
+				$qb->expr()->andX(
+					$qb->expr()->orX(
+						$qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId(), IQueryBuilder::PARAM_INT)),
+						$qb->expr()->eq('tr2.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId(), IQueryBuilder::PARAM_INT))
+					),
+					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($folder->getUserId()), [$folder->getUserId()])))
 				)
 			);
 
@@ -640,5 +664,15 @@ class BookmarkMapper extends QBMapper {
 			$tagsCol = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
 		}
 		return $tagsCol;
+	}
+
+	/**
+	 * @param string $userId
+	 * @return string[]
+	 */
+	private function _findSharersFor(string $userId) :array {
+		return array_map(static function (Share $share) {
+			return  $share->getOwner();
+		}, $this->shareMapper->findByUser($userId));
 	}
 }
