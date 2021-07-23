@@ -46,14 +46,12 @@ class FolderMapper extends QBMapper {
 	 * FolderMapper constructor.
 	 *
 	 * @param IDBConnection $db
-	 * @param BookmarkMapper $bookmarkMapper
 	 * @param ShareMapper $shareMapper
 	 * @param SharedFolderMapper $sharedFolderMapper
 	 * @param IEventDispatcher $eventDispatcher
 	 */
-	public function __construct(IDBConnection $db, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, IEventDispatcher $eventDispatcher) {
+	public function __construct(IDBConnection $db, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, IEventDispatcher $eventDispatcher) {
 		parent::__construct($db, 'bookmarks_folders', Folder::class);
-		$this->bookmarkMapper = $bookmarkMapper;
 		$this->shareMapper = $shareMapper;
 		$this->sharedFolderMapper = $sharedFolderMapper;
 		$this->eventDispatcher = $eventDispatcher;
