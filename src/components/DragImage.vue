@@ -6,7 +6,7 @@
 
 <template>
 	<div class="dragImage">
-		<FolderIcon v-if="this.$store.state.selection.folders.length" :fill-color="colorPrimaryElement" />
+		<FolderIcon v-if="$store.state.selection.folders.length" :fill-color="colorPrimaryElement" />
 		<EarthIcon v-else :fill-color="colorPrimaryElement" /><span class="description">{{ selectionDescription }}</span>
 	</div>
 </template>

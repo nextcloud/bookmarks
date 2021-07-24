@@ -1215,6 +1215,10 @@ export default {
 	},
 }
 
+/**
+ * @param state
+ * @param url
+ */
 function url(state, url) {
 	if (state.public) {
 		url = `/apps/bookmarks/public/rest/v2${url}`

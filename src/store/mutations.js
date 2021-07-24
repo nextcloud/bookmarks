@@ -235,6 +235,9 @@ export default {
 	},
 }
 
+/**
+ * @param folders
+ */
 function sortFolders(folders) {
 	folders.forEach(folder => {
 		folder.children = sortFolders(folder.children)

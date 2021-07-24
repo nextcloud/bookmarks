@@ -126,6 +126,10 @@ export default {
 	},
 }
 
+/**
+ * @param id
+ * @param children
+ */
 function findFolder(id, children) {
 	if (!children || !children.length) return []
 	const folders = children.filter(folder => Number(folder.id) === Number(id))
