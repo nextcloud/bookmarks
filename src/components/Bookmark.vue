@@ -206,6 +206,7 @@ export default {
 			this.renaming = true
 		},
 		async onRenameSubmit(title) {
+			// eslint-disable-next-line vue/no-mutating-props
 			this.bookmark.title = title
 			await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id)
 			this.renaming = false
