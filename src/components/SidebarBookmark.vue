@@ -218,7 +218,7 @@ export default {
 		},
 		scheduleSave() {
 			if (this.changeTimeout) clearTimeout(this.changeTimeout)
-			this.changeTimeout = setTimeout(async() => {
+			this.changeTimeout = setTimeout(async () => {
 				await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id)
 				await this.$store.dispatch(actions.LOAD_TAGS)
 			}, 1000)

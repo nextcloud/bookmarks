@@ -32,6 +32,7 @@ self.addEventListener('activate', (evt) => {
 				if (key !== STATIC_CACHE && key !== DYNAMIC_CACHE) {
 					return caches.delete(key)
 				}
+				return Promise.resolve()
 			}))
 		})
 	)
