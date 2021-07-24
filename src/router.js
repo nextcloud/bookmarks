@@ -6,10 +6,11 @@
 
 import Vue from 'vue'
 import Router from 'vue-router'
-import ViewPrivate from './components/ViewPrivate'
-import ViewPublic from './components/ViewPublic'
-import ViewBookmarklet from './components/ViewBookmarklet'
 import { generateUrl } from '@nextcloud/router'
+
+const ViewPrivate = () => import(/* webpackPreload: true */ './components/ViewPrivate')
+const ViewPublic = () => import(/* webpackPreload: true */'./components/ViewPublic')
+const ViewBookmarklet = () => import(/* webpackPreload: true */'./components/ViewBookmarklet')
 
 Vue.use(Router)
 
