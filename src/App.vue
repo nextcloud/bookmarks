@@ -11,7 +11,14 @@
 <script>
 import { mutations } from './store/'
 import { showError, showMessage } from '@nextcloud/dialogs'
+import { generateFilePath } from '@nextcloud/router'
+import { getRequestToken } from '@nextcloud/auth'
 import '@nextcloud/dialogs/styles/toast.scss'
+
+// eslint-disable-next-line camelcase
+__webpack_nonce__ = btoa(getRequestToken())
+// eslint-disable-next-line camelcase
+__webpack_public_path__ = generateFilePath('bookmarks', '', 'js/')
 
 export default {
 	name: 'App',
