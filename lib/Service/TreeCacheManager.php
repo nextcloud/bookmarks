@@ -15,6 +15,7 @@ use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\MoveEvent;
+use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\IAppContainer;
@@ -64,6 +65,10 @@ class TreeCacheManager implements IEventListener {
 	 * @var IAppContainer
 	 */
 	private $appContainer;
+	/**
+	 * @var \OCA\Bookmarks\Db\TagMapper
+	 */
+	private $tagMapper;
 
 	/**
 	 * FolderMapper constructor.
@@ -74,8 +79,9 @@ class TreeCacheManager implements IEventListener {
 	 * @param SharedFolderMapper $sharedFolderMapper
 	 * @param ICacheFactory $cacheFactory
 	 * @param IAppContainer $appContainer
+	 * @param \OCA\Bookmarks\Db\TagMapper $tagMapper
 	 */
-	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, ICacheFactory $cacheFactory, IAppContainer $appContainer) {
+	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, ICacheFactory $cacheFactory, IAppContainer $appContainer, \OCA\Bookmarks\Db\TagMapper $tagMapper) {
 		$this->folderMapper = $folderMapper;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->shareMapper = $shareMapper;
@@ -86,6 +92,7 @@ class TreeCacheManager implements IEventListener {
 		$this->caches[self::CATEGORY_CHILDREN] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDREN);
 		$this->caches[self::CATEGORY_CHILDORDER] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDORDER);
 		$this->appContainer = $appContainer;
+		$this->tagMapper = $tagMapper;
 	}
 
 
@@ -185,8 +192,9 @@ class TreeCacheManager implements IEventListener {
 	 * @return string
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException|\JsonException
+	 * @throws UnsupportedOperation
 	 */
-	public function hashFolder($userId, int $folderId, $fields = ['title', 'url']) : string {
+	public function hashFolder($userId, int $folderId, array $fields = ['title', 'url']) : string {
 		$hash = $this->get(self::CATEGORY_HASH, TreeMapper::TYPE_FOLDER, $folderId);
 		$selector = $userId . ':' . implode(',', $fields);
 		if (isset($hash[$selector])) {
@@ -229,6 +237,7 @@ class TreeCacheManager implements IEventListener {
 	 * @return string
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException|\JsonException
+	 * @throws UnsupportedOperation
 	 */
 	public function hashBookmark(int $bookmarkId, array $fields = ['title', 'url']): string {
 		$hash = $this->get(self::CATEGORY_HASH, TreeMapper::TYPE_BOOKMARK, $bookmarkId);
@@ -243,7 +252,15 @@ class TreeCacheManager implements IEventListener {
 		$entity = $this->bookmarkMapper->find($bookmarkId);
 		$bookmark = [];
 		foreach ($fields as $field) {
-			$bookmark[$field] = $entity->{'get' . $field}();
+			if ($field === 'tags') {
+				$bookmark[$field] = $this->tagMapper->findByBookmark($bookmarkId);
+				continue;
+			}
+			try {
+				$bookmark[$field] = $entity->{'get' . $field}();
+			} catch (\BadFunctionCallException $e) {
+				throw new UnsupportedOperation('Field '.$field.' does not exist');
+			}
 		}
 		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		$this->set(self::CATEGORY_HASH, TreeMapper::TYPE_BOOKMARK, $bookmarkId, $hash);

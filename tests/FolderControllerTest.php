@@ -307,6 +307,55 @@ class FolderControllerTest extends TestCase {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
+	public function testHash(): void {
+		$this->cleanUp();
+		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
+
+		// get hash for title,url
+		$output = $this->controller->hashFolder(-1);
+		$data1 = $output->getData();
+		$this->assertEquals('success', $data1['status'], var_export($data1, true));
+
+		// get hash for title,url,tags
+		$output = $this->controller->hashFolder(-1, ['title', 'url', 'tags']);
+		$data2 = $output->getData();
+		$this->assertEquals('success', $data2['status'], var_export($data2, true));
+
+		$this->assertNotEquals($data2['data'], $data1['data']);
+
+		// change sub folder
+		$output = $this->controller->editFolder($this->folder1->getId(), 'blabla');
+		$data = $output->getData();
+		$this->assertEquals('success', $data['status'], var_export($data, true));
+
+		// get hash for title,url
+		$output = $this->controller->hashFolder(-1);
+		$data1New = $output->getData();
+		$this->assertEquals('success', $data1New['status'], var_export($data1New, true));
+
+		// get hash for title,url,tags
+		$output = $this->controller->hashFolder(-1, ['title', 'url', 'tags']);
+		$data2New = $output->getData();
+		$this->assertEquals('success', $data2New['status'], var_export($data2New, true));
+
+		$this->assertNotEquals($data1New['data'], $data1['data']);
+		$this->assertNotEquals($data2New['data'], $data2['data']);
+		$this->assertNotEquals($data1New['data'], $data2New['data']);
+
+		// check fail
+		$output = $this->controller->hashFolder(-1, ['title', 'url', 'foo']);
+		$data3 = $output->getData();
+		$this->assertEquals('error', $data3['status'], var_export($data3, true));
+	}
+
+	/**
+	 * @throws AlreadyExistsError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
 	public function testCreate(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();

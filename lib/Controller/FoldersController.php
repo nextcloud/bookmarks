@@ -382,6 +382,10 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_BAD_REQUEST);
+		} catch (\JsonException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation: '.$e->getMessage()], Http::STATUS_BAD_REQUEST);
 		}
 	}
 
