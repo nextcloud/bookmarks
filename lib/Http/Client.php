@@ -56,7 +56,7 @@ class Client implements ClientInterface {
 
 			return $res
 				->withStatus($ncRes->getStatusCode())
-				->withBody(Psr7\stream_for($ncRes->getBody()));
+				->withBody(Psr7\Utils::streamFor($ncRes->getBody()));
 		}
 
 		throw new Exception('Can only send GET or OPTIONS requests'); // XXX: How should Streams be sent using nextcloud?
