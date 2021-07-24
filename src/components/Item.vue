@@ -154,7 +154,9 @@ export default {
 		},
 	},
 	mounted() {
-		this.$refs.input.focus()
+		if (typeof this.$refs.input !== 'undefined') {
+			this.$refs.input.focus()
+		}
 	},
 	methods: {
 		async onRenameSubmit(event) {
