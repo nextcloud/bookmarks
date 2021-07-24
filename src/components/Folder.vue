@@ -168,6 +168,7 @@ export default {
 			this.renaming = true
 		},
 		onRenameSubmit(title) {
+			// eslint-disable-next-line vue/no-mutating-props
 			this.folder.title = title
 			this.$store.dispatch(actions.SAVE_FOLDER, this.folder.id)
 			this.renaming = false
