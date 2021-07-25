@@ -32,7 +32,7 @@
 		"async-parallel": "^1.2.3",
 		"clone-deep": "^4.0.1",
 		"copy-text-to-clipboard": "^3.0.1",
-		"humanize-duration": "^3.25.2",
+		"humanize-duration": "^3.27.0",
 		"lodash": "^4.17.21",
 		"sanitize-html": "^2.3.2",
 		"vue": "^2.6.12",
