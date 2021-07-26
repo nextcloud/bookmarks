@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.4.0] - 2021-07-26
+
+### New
+- Use webpack code splitting for faster loading times
+- bookmark endpoint: Improve performance by introducing supporting query
+- DB: Add new composite index for bookmarks_shared_folders (performance optimzation)
+- Switch to npm7 and use latests global configs
+
+### Fixed
+ - NoBookmarks view: Don't display import and sync buttons in public view
+ - Fix: Adding same bookmark second time removes preexisting tags
+ - Fix input.focus error
+ - Fix hash endpoint: Allow hashing with tags
+
 ## [4.3.0] - 2021-07-18
 
 ### New
@@ -580,6 +594,7 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+[4.4.0]: https://github.com/nextcloud/bookmarks/compare/v4.3.0...v4.4.0
 [4.3.0]: https://github.com/nextcloud/bookmarks/compare/v4.2.2...v4.3.0
 [4.2.2]: https://github.com/nextcloud/bookmarks/compare/v4.2.1...v4.2.2
 [4.2.1]: https://github.com/nextcloud/bookmarks/compare/v4.2.0...v4.2.1
