@@ -14,7 +14,7 @@
 		</EmptyContent>
 		<EmptyContent v-else icon="icon-favorite">
 			{{ t('bookmarks', 'No bookmarks here') }}
-			<template #desc>
+			<template v-if="!isPublic" #desc>
 				<p>{{ t('bookmarks', 'Start by importing bookmarks from a file or synchronizing your browser bookmarks with this app') }}</p>
 				<input ref="import"
 					type="file"
