@@ -124,7 +124,7 @@ class BookmarkMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	protected function findByUrl($userId, $url) {
+	public function findByUrl($userId, $url) {
 		$qb = $this->findByUrlQuery;
 		$qb->setParameters([
 			'user_id' => $userId,

@@ -396,7 +396,7 @@ class BookmarkController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function newBookmark($url = '', $title = null, $description = '', $tags = [], $folders = []): JSONResponse {
+	public function newBookmark($url = '', $title = null, $description = null, $tags = null, $folders = []): JSONResponse {
 		$permissions = Authorizer::PERM_ALL;
 		$this->authorizer->setCredentials($this->request);
 		foreach ($folders as $folder) {

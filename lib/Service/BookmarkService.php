@@ -103,7 +103,7 @@ class BookmarkService {
 	/**
 	 * @param $userId
 	 * @param string $url
-	 * @param null $title
+	 * @param string $title
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
@@ -118,30 +118,8 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function create(string $userId, $url = '', $title = null, $description = '', $tags = [], $folders = []): Bookmark {
-		// Inspect web page (do some light scraping)
-		// allow only http(s) and (s)ftp
-		$protocols = '/^(https?|s?ftp)\:\/\//i';
-		if (preg_match($protocols, $url)) {
-			$data = $this->linkExplorer->get($url);
-		} else {
-			// if no allowed protocol is given, evaluate https and https
-			foreach (['https://', 'http://'] as $protocol) {
-				$testUrl = $protocol . $url;
-				$data = $this->linkExplorer->get($testUrl);
-				if (isset($data['basic']['title'])) {
-					break;
-				}
-			}
-		}
-
-		$url = $data['url'] ?? $url;
-		$title = $title ?? $data['basic']['title'] ?? $url;
-		$title = trim($title);
-		$description = $description ?? $data['basic']['description'] ?? '';
-
+	public function create(string $userId, string $url = '', string $title = null, string $description = null, array $tags = null, $folders = []): Bookmark {
 		$bookmark = null;
-
 		$ownFolders = array_filter($folders, function ($folderId) use ($userId) {
 			/**
 			 * @var $folder Folder
@@ -155,13 +133,13 @@ class BookmarkService {
 			 * @var $folder Folder
 			 */
 			$folder = $this->folderMapper->find($folderId);
-			$bookmark = $this->_addBookmark($title, $url, $description, $folder->getUserId(), $tags, [$folder->getId()]);
+			$bookmark = $this->_addBookmark($folder->getUserId(), $url, $title, $description, $tags, [$folder->getId()]);
 		}
 		if (!empty($ownFolders)) {
-			$bookmark = $this->_addBookmark($title, $url, $description, $userId, $tags, $ownFolders);
+			$bookmark = $this->_addBookmark($userId, $url, $title, $description, $tags, $ownFolders);
 		}
 		if ($bookmark === null) {
-			return $this->_addBookmark($title, $url, $description, $userId, $tags, [$this->folderMapper->findRootFolder($userId)->getId()]);
+			return $this->_addBookmark($userId, $url, $title, $description, $tags, [$this->folderMapper->findRootFolder($userId)->getId()]);
 		}
 		return $bookmark;
 	}
@@ -179,14 +157,47 @@ class BookmarkService {
 	 * @throws UserLimitExceededError
 	 * @throws UnsupportedOperation
 	 */
-	private function _addBookmark(string $title, $url, $description, $userId, array $tags, array $folders): Bookmark {
-		$bookmark = new Bookmark();
-		$bookmark->setTitle($title);
+	private function _addBookmark($userId, $url, string $title = null, $description = null, array $tags = null, array $folders = []): Bookmark {
+		try {
+			$bookmark = $this->bookmarkMapper->findByUrl($userId, $url);
+		} catch (DoesNotExistException $e) {
+			$bookmark = new Bookmark();
+
+			if (!isset($title,$description)) {
+				// Inspect web page (do some light scraping)
+				// allow only http(s) and (s)ftp
+				$protocols = '/^(https?|s?ftp)\:\/\//i';
+				if (preg_match($protocols, $url)) {
+					$data = $this->linkExplorer->get($url);
+				} else {
+					// if no allowed protocol is given, evaluate https and https
+					foreach (['https://', 'http://'] as $protocol) {
+						$testUrl = $protocol . $url;
+						$data = $this->linkExplorer->get($testUrl);
+						if (isset($data['basic']['title'])) {
+							break;
+						}
+					}
+				}
+			}
+
+			$url = $data['url'] ?? $url;
+			$title = $title ?? $data['basic']['title'] ?? $url;
+			$title = trim($title);
+			$description = $description ?? $data['basic']['description'] ?? '';
+		}
+
 		$bookmark->setUrl($url);
-		$bookmark->setDescription($description);
+		if (isset($title)) {
+			$bookmark->setTitle($title);
+		}
+
+		if (isset($description)) {
+			$bookmark->setDescription($description);
+		}
 		$bookmark->setUserId($userId);
 		$this->bookmarkMapper->insertOrUpdate($bookmark);
-		$this->tagMapper->setOn($tags, $bookmark->getId());
+		$this->tagMapper->addTo($tags, $bookmark->getId());
 
 		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folders);
 		$this->eventDispatcher->dispatch(CreateEvent::class,
@@ -256,7 +267,7 @@ class BookmarkService {
 			foreach ($foreignFolders as $folderId) {
 				$folder = $this->folderMapper->find($folderId);
 				$bookmark->setUserId($folder->getUserId());
-				$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $bookmark->getUserId(), $tags ?? [], [$folder->getId()]);
+				$this->_addBookmark($bookmark->getUserId(), $bookmark->getUrl(), $bookmark->getTitle(), $bookmark->getDescription(), $tags ?? [], [$folder->getId()]);
 			}
 
 			/**
@@ -333,7 +344,7 @@ class BookmarkService {
 			$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
 		} else {
 			$tags = $this->tagMapper->findByBookmark($bookmarkId);
-			$this->_addBookmark($bookmark->getTitle(), $bookmark->getUrl(), $bookmark->getDescription(), $folder->getUserId(), $tags, [$folder->getId()]);
+			$this->_addBookmark($folder->getUserId(), $bookmark->getUrl(), $bookmark->getTitle(), $bookmark->getDescription(), $tags, [$folder->getId()]);
 		}
 	}
 
