@@ -197,7 +197,10 @@ class BookmarkService {
 		}
 		$bookmark->setUserId($userId);
 		$this->bookmarkMapper->insertOrUpdate($bookmark);
-		$this->tagMapper->addTo($tags, $bookmark->getId());
+
+		if (isset($tags)) {
+			$this->tagMapper->addTo($tags, $bookmark->getId());
+		}
 
 		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folders);
 		$this->eventDispatcher->dispatch(CreateEvent::class,
