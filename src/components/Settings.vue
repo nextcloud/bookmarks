@@ -17,7 +17,7 @@
 			<span class="icon-download" /> {{ t('bookmarks', 'Export') }}
 		</button>
 
-		<label><h3>{{ t('bookmarks', 'Archive path') }}</h3>
+		<label><h3 class="bold">{{ t('bookmarks', 'Archive path') }}</h3>
 			<p>{{ t('bookmarks',
 				'Enter the path of a folder where bookmarked files should be stored'
 			) }}</p>
@@ -27,7 +27,7 @@
 				@click="onChangeArchivePath">
 		</label>
 
-		<h3>{{ t('bookmarks', 'Client apps') }}</h3>
+		<h3 class="bold">{{ t('bookmarks', 'Client apps') }}</h3>
 		<p>
 			{{
 				t('bookmarks',
@@ -40,17 +40,17 @@
 		</p>
 
 		<label>
-			<h3>{{ t('bookmarks', 'Install web app on device') }}</h3>
+			<h3 class="bold">{{ t('bookmarks', 'Install web app on device') }}</h3>
 			<p>{{ t('bookmarks', 'You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don\'t like it.') }}</p>
-			<a class="button" href="#" @click.prevent="clickAddToHomeScreen">{{ t('bookmarks', 'Install on home screen') }}</a>
+			<a class="button center" href="#" @click.prevent="clickAddToHomeScreen">{{ t('bookmarks', 'Install on home screen') }}</a>
 		</label>
 
-		<label><h3>{{ t('bookmarks', 'Bookmarklet') }}</h3>
+		<label><h3 class="bold">{{ t('bookmarks', 'Bookmarklet') }}</h3>
 			<p>{{ t('bookmarks',
 				'Drag this to your browser bookmarks and click it to quickly bookmark a webpage'
 			) }}</p>
 			<a
-				class="button"
+				class="button center"
 				:href="bookmarklet"
 				@click.prevent="void 0">{{
 					t('bookmarks', 'Add to {instanceName}', {
@@ -59,14 +59,14 @@
 				}}</a>
 		</label>
 
-		<label><h3>{{ t('bookmarks', 'Clear data') }}</h3>
+		<label><h3 class="bold">{{ t('bookmarks', 'Clear data') }}</h3>
 			<p>{{
 				t('bookmarks',
 					'Permanently remove all bookmarks from your account.'
 				)
 			}}</p>
 			<button
-				class="clear-data"
+				class="clear-data warning"
 				@click="onClearData">
 				<span :class="{'icon-delete': !deleting, 'icon-loading-small': deleting}" />
 				{{ t('bookmarks', 'Delete all bookmarks') }}
