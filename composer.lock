@@ -969,16 +969,16 @@
         },
         {
             "name": "rowbot/url",
-            "version": "3.1.3",
+            "version": "3.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/URL-Parser.git",
-                "reference": "8747192b0c87206c5b6cbbb2f5c548623b70b239"
+                "reference": "e50331ce2d7975022ede212a57323aee09c29404"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/8747192b0c87206c5b6cbbb2f5c548623b70b239",
-                "reference": "8747192b0c87206c5b6cbbb2f5c548623b70b239",
+                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/e50331ce2d7975022ede212a57323aee09c29404",
+                "reference": "e50331ce2d7975022ede212a57323aee09c29404",
                 "shasum": ""
             },
             "require": {
@@ -990,7 +990,7 @@
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3 || ^7.0",
-                "phpstan/phpstan": "^0.12.66",
+                "phpstan/phpstan": "^0.12.93",
                 "phpstan/phpstan-deprecation-rules": "^0.12.2",
                 "phpstan/phpstan-strict-rules": "^0.12.2",
                 "phpunit/phpunit": "^7.5 || ^8.0 || ^9.0",
@@ -1027,9 +1027,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TRowbotham/URL-Parser/issues",
-                "source": "https://github.com/TRowbotham/URL-Parser/tree/3.1.3"
+                "source": "https://github.com/TRowbotham/URL-Parser/tree/3.1.4"
             },
-            "time": "2021-05-11T20:09:02+00:00"
+            "time": "2021-07-28T03:16:32+00:00"
         },
         {
             "name": "symfony/console",
