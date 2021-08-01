@@ -118,6 +118,7 @@ OC.L10N.register(
     "Client apps" : "Aplicatziones cliente",
     "Also check out the collection of client apps that integrate with this app: " : "Controlla fintzas sa colletzione de aplicatziones clientes intergradas cun custa aplicatzione",
     "Install web app on device" : "Installa aplicatzione internet in su dispositivu",
+    "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Podes installare cust'aplicatzione in s'ischermada printzipale de su dispositivu tuo pro atzèdere a lestru a is preferidos in su telèfonu tuo. Chi no ti praghet, podes torrare a nde bogare s'aplicatzione manera fàtzile.",
     "Install on home screen" : "Installa in s'ischermada printzipale",
     "Bookmarklet" : "Bookmarklet",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Traga·ddu in is signalibros de su navigadore tuo e incarca·ci in subra pro creare a sa lestra unu signalibru de una pàgina internet",
