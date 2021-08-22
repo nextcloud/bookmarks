@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.7.0@d4377c0baf3ffbf0b1ec6998e8d1be2a40971005">
+<files psalm-version="4.8.1@f73f2299dbc59a3e6c4d66cff4605176e728ee69">
   <file src="lib/Controller/BookmarkController.php">
     <MissingDependency occurrences="3">
       <code>$this-&gt;rootFolder</code>
       <code>IRootFolder</code>
       <code>IRootFolder</code>
     </MissingDependency>
+  </file>
+  <file src="lib/Db/BookmarkMapper.php">
+    <InvalidThrow occurrences="2">
+      <code>throw $e;</code>
+      <code>throw $e;</code>
+    </InvalidThrow>
+    <UndefinedClass occurrences="2">
+      <code>\OC\DB\Exceptions\DbalException</code>
+      <code>\OC\DB\Exceptions\DbalException</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="1">
+      <code>\OC\DB\Exceptions\DbalException</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Db/PublicFolderMapper.php">
     <InvalidReturnType occurrences="1">
