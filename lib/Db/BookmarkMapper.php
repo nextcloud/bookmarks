@@ -481,8 +481,10 @@ class BookmarkMapper extends QBMapper {
 		$qb->select($bookmark_cols);
 		$qb->groupBy($bookmark_cols);
 
-		$this->_selectFolders($qb);
-		$this->_selectTags($qb);
+		if ($withGroupBy) {
+			$this->_selectFolders($qb);
+			$this->_selectTags($qb);
+		}
 
 		$qb
 			->from('bookmarks', 'b')
