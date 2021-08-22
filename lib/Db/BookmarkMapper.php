@@ -195,8 +195,9 @@ class BookmarkMapper extends QBMapper {
 	 * @return Entity[]
 	 *
 	 * @throws UrlParseError
+	 * @throws \OC\DB\Exceptions\DbalException
 	 */
-	public function findAll(string $userId, QueryParameters $params): array {
+	public function findAll(string $userId, QueryParameters $params, $withGroupBy = true): array {
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
 			return 'b.' . $c;
@@ -205,8 +206,10 @@ class BookmarkMapper extends QBMapper {
 		$qb->select($bookmark_cols);
 		$qb->groupBy($bookmark_cols);
 
-		$this->_selectFolders($qb);
-		$this->_selectTags($qb);
+		if ($withGroupBy) {
+			$this->_selectFolders($qb);
+			$this->_selectTags($qb);
+		}
 
 		$qb
 			->from('bookmarks', 'b')
@@ -234,7 +237,16 @@ class BookmarkMapper extends QBMapper {
 		$this->_filterSearch($qb, $params);
 		$this->_sortAndPaginate($qb, $params);
 
-		return $this->findEntities($qb);
+		try {
+			return $this->findEntities($qb);
+		} catch (\OC\DB\Exceptions\DbalException $e) {
+			if (!$withGroupBy) {
+				throw $e;
+			}
+			// If mysql sort_buffer_size is too small, the group by caused by selecting tags and folders can cause issues
+			// in this case, we repeat the query without groupBys and rely on the BookmarkController to add tags and folders entries
+			return $this->findAll($userId, $params, false);
+		}
 	}
 
 	/**
@@ -455,7 +467,7 @@ class BookmarkMapper extends QBMapper {
 	 *
 	 * @psalm-return array<array-key, Bookmark>
 	 */
-	public function findAllInPublicFolder(string $token, QueryParameters $params): array {
+	public function findAllInPublicFolder(string $token, QueryParameters $params, $withGroupBy = true): array {
 		/** @var PublicFolder $publicFolder */
 		$publicFolder = $this->publicMapper->find($token);
 		/** @var Folder $folder */
@@ -495,7 +507,16 @@ class BookmarkMapper extends QBMapper {
 		$this->_filterSearch($qb, $params);
 		$this->_sortAndPaginate($qb, $params);
 
-		return $this->findEntities($qb);
+		try {
+			return $this->findEntities($qb);
+		} catch (\OC\DB\Exceptions\DbalException $e) {
+			if (!$withGroupBy) {
+				throw $e;
+			}
+			// If mysql sort_buffer_size is too small, the group by caused by selecting tags and folders can cause issues
+			// in this case, we repeat the query without groupBys and rely on the BookmarkController to add tags and folders entries
+			return $this->findAllInPublicFolder($token, $params, false);
+		}
 	}
 
 	/**
