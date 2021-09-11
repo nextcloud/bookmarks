@@ -34,7 +34,7 @@
 		"copy-text-to-clipboard": "^3.0.1",
 		"humanize-duration": "^3.27.0",
 		"lodash": "^4.17.21",
-		"sanitize-html": "^2.3.2",
+		"sanitize-html": "^2.5.0",
 		"vue": "^2.6.12",
 		"vue-click-outside": "^1.1.0",
 		"vue-material-design-icons": "^4.11.0",
