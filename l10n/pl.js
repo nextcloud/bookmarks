@@ -58,7 +58,7 @@ OC.L10N.register(
     "Do you really want to delete these items?" : "Czy na pewno chcesz usunąć elementy?",
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["Zaznaczono %n zakładkę","Zaznaczono %n zakładki","Zaznaczono %n zakładek","Zaznaczono %n zakładek"],
     "_Selected %n folder_::_Selected %n folders_" : ["Wybrano %n katalog","Wybrano %n katalogi","Wybrano %n katalogów","Wybrano %n katalogów"],
-    "Go back" : "Wróć",
+    "Go back" : "Wstecz",
     "Share folder" : "Udostępnij katalog",
     "Select one or more tags" : "Wybierz jedną lub więcej etykiet",
     "New" : "Nowy",
