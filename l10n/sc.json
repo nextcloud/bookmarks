@@ -51,7 +51,7 @@
     "Edit tags of selection" : "Modìfica etichetas de seletzione",
     "Delete selection" : "Cantzella seletzione",
     "Select all" : "Seletziona totu",
-    "Cancel selection" : "Cantzella seletzione",
+    "Cancel selection" : "Annulla seletzione",
     "Selected {folders} folders and {bookmarks} bookmarks" : "Cartellas {folders} e signalibros {bookmarks} seletzionados",
     "Do you really want to delete these items?" : "A beru cheres cantzellare custos elementos?",
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["Signalibros %n seletzionados","Seletziona %n signalibros"],
