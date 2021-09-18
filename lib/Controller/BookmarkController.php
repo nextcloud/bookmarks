@@ -119,9 +119,13 @@ class BookmarkController extends ApiController {
 	 * @var IRootFolder
 	 */
 	private $rootFolder;
+	/**
+	 * @var \OCA\Bookmarks\Service\LockManager
+	 */
+	private $lockManager;
 
 	public function __construct(
-		$appName, $request, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, LoggerInterface $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders, IRootFolder $rootFolder
+		$appName, $request, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, LoggerInterface $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders, IRootFolder $rootFolder, \OCA\Bookmarks\Service\LockManager $lockManager
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
@@ -139,6 +143,7 @@ class BookmarkController extends ApiController {
 		$this->bookmarks = $bookmarks;
 		$this->folders = $folders;
 		$this->rootFolder = $rootFolder;
+		$this->lockManager = $lockManager;
 	}
 
 	/**
@@ -766,5 +771,55 @@ class BookmarkController extends ApiController {
 
 		$count = $this->bookmarkMapper->countArchived($this->authorizer->getUserId());
 		return new JSONResponse(['status' => 'success', 'item' => $count]);
+	}
+
+	/**
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function acquireLock(): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
+		}
+
+		try {
+			if ($this->lockManager->getLock($this->authorizer->getUserId()) === true) {
+				return new JSONResponse(['status' => 'error', 'data' => 'Resource is already locked'], Http::STATUS_LOCKED);
+			}
+
+			$this->lockManager->setLock($this->authorizer->getUserId(), true);
+		} catch (\Exception $e) {
+			$this->logger->error($e->getMessage());
+			return new JSONResponse(['status' => 'error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+		return new JSONResponse(['status' => 'success']);
+	}
+
+	/**
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function releaseLock(): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
+		}
+
+		try {
+			if ($this->lockManager->getLock($this->authorizer->getUserId()) === false) {
+				return new JSONResponse(['status' => 'success']);
+			}
+
+			$this->lockManager->setLock($this->authorizer->getUserId(), false);
+		} catch (\Exception $e) {
+			$this->logger->error($e->getMessage());
+			return new JSONResponse(['status' => 'error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+		return new JSONResponse(['status' => 'success']);
 	}
 }

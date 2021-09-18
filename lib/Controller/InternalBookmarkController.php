@@ -231,4 +231,22 @@ class InternalBookmarkController extends ApiController {
 	public function countArchived(): JSONResponse {
 		return $this->publicController->countArchived();
 	}
+
+	/**
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function acquireLock(): JSONResponse {
+		return $this->publicController->acquireLock();
+	}
+
+	/**
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function releaseLock(): JSONResponse {
+		return $this->publicController->releaseLock();
+	}
 }
