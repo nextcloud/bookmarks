@@ -44,12 +44,12 @@ jobs:
         image: selenium/hub:3.141.59-20200409
         ports:
           - 4444:4444
-      chrome:
-        image: selenium/node-chrome:3.141.59-20200409
+      firefox:
+        image: selenium/node-firefox:3.141.59-20200409
         env:
           HUB_HOST: hub
           HUB_PORT: 4444
-        options: -v /dev/shm:/dev/shm
+        options: --shm-size="2g"
       nextcloud:
         image: nextcloud:${{ matrix.server-versions }}
         env:
