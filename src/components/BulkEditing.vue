@@ -16,7 +16,7 @@
 				</template>
 				{{ t('bookmarks', 'Move selection') }}
 			</ActionButton>
-			<ActionButton close-after-click @click="onBulkCopy">
+			<ActionButton v-if="!selectedFolders.length" close-after-click @click="onBulkCopy">
 				<template #icon>
 					<ContentCopyIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
 				</template>
