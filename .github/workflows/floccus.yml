@@ -26,7 +26,8 @@ jobs:
       fail-fast: false
       matrix:
         floccus-ref: ['master', 'develop']
-        node-versions: [13.x]
+        node-versions: [14.x]
+        npm-versions: [7.x]
         server-versions: ['20']
         floccus-adapter:
           - nextcloud-folders
@@ -113,6 +114,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-versions }}
+
+      - name: List apps
+        shell: bash
+        run: |
+          npm install npm@${{ matrix.npm-versions }}
 
       - name: Install dependencies & build
         working-directory: floccus
