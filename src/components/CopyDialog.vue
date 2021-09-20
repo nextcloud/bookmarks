@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2021 Lavrukhin Artem <lavryha4590@gmail.com>
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
