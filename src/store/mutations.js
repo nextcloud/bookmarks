@@ -12,6 +12,7 @@ export const mutations = {
 	DISPLAY_NEW_BOOKMARK: 'DISPLAY_NEW_BOOKMARK',
 	DISPLAY_NEW_FOLDER: 'DISPLAY_NEW_FOLDER',
 	DISPLAY_MOVE_DIALOG: 'DISPLAY_MOVE_DIALOG',
+	DISPLAY_COPY_DIALOG: 'DISPLAY_COPY_DIALOG',
 	RESET_SELECTION: 'RESET_SELECTION',
 	REMOVE_SELECTION_BOOKMARK: 'REMOVE_SELECTION_BOOKMARK',
 	ADD_SELECTION_BOOKMARK: 'ADD_SELECTION_BOOKMARK',
@@ -108,6 +109,10 @@ export default {
 	},
 	[mutations.DISPLAY_MOVE_DIALOG](state, display) {
 		state.displayMoveDialog = display
+	},
+
+	[mutations.DISPLAY_COPY_DIALOG](state, display) {
+		state.displayCopyDialog = display
 	},
 
 	[mutations.RESET_SELECTION](state) {

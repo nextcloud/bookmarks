@@ -62,6 +62,13 @@
 				</template>
 				{{ t('bookmarks', 'Move') }}
 			</ActionButton>
+			<ActionButton :close-after-click="true" @click="onCopy">
+				<template #icon>
+					<FolderPlusIcon
+						:fill-color="colorMainText" />
+				</template>
+				{{ t('bookmarks', 'Add to folders') }}
+			</ActionButton>
 			<ActionButton
 				icon="icon-delete"
 				:close-after-click="true"
@@ -75,6 +82,7 @@
 import Item from './Item'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
+import FolderPlusIcon from 'vue-material-design-icons/FolderPlus'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
@@ -86,6 +94,7 @@ export default {
 		Item,
 		ActionButton,
 		ActionCheckbox,
+		FolderPlusIcon,
 		FolderMoveIcon,
 	},
 	props: {
@@ -201,6 +210,11 @@ export default {
 			this.$store.commit(mutations.RESET_SELECTION)
 			this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
+		},
+		onCopy() {
+			this.$store.commit(mutations.RESET_SELECTION)
+			this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
+			this.$store.commit(mutations.DISPLAY_COPY_DIALOG, true)
 		},
 		async onRename() {
 			this.renaming = true

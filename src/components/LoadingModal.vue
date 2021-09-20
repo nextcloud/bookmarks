@@ -20,6 +20,7 @@ export default {
 				deleteSelection: this.t('bookmarks', 'Deleting selection'),
 				importBookmarks: this.t('bookmarks', 'Importing bookmarks'),
 				moveSelection: this.t('bookmkarks', 'Moving selection'),
+				copySelection: this.t('bookmkarks', 'Copyng selection'),
 			},
 			showModal: false,
 			showTimeout: null,

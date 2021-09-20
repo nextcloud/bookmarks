@@ -16,6 +16,12 @@
 				</template>
 				{{ t('bookmarks', 'Move selection') }}
 			</ActionButton>
+			<ActionButton v-if="!selectedFolders.length" close-after-click @click="onBulkCopy">
+				<template #icon>
+					<FolderPlusIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+				</template>
+				{{ t('bookmarks', 'Add to folders') }}
+			</ActionButton>
 			<ActionInput
 				v-if="!selectedFolders.length"
 				:value="selectionTags"
@@ -48,13 +54,14 @@ import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
+import FolderPlusIcon from 'vue-material-design-icons/FolderPlus'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { actions, mutations } from '../store'
 import intersection from 'lodash/intersection'
 
 export default {
 	name: 'BulkEditing',
-	components: { ActionInput, ActionSeparator, FolderMoveIcon, ActionButton, Actions },
+	components: { ActionInput, ActionSeparator, FolderPlusIcon, FolderMoveIcon, ActionButton, Actions },
 	data() {
 		return {
 			selectionTags: [],
@@ -115,6 +122,9 @@ export default {
 		},
 		onBulkMove() {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
+		},
+		onBulkCopy() {
+			this.$store.commit(mutations.DISPLAY_COPY_DIALOG, true)
 		},
 		async onBulkTag(tags) {
 			const originalTags = this.selectionTags
