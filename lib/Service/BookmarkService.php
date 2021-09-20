@@ -233,6 +233,17 @@ class BookmarkService {
 		 * @var $bookmark Bookmark
 		 */
 		$bookmark = $this->bookmarkMapper->find($id);
+
+		// Guard for no-op changes
+
+		if (!isset($url) && !isset($title) && !isset($description) && !isset($tags) && !isset($folders)) {
+			return $bookmark;
+		}
+
+		if (!isset($tags) && !isset($folders) && $url === $bookmark->getUrl() && $title === $bookmark->getTitle() && $description === $bookmark->getDescription()) {
+			return $bookmark;
+		}
+
 		if ($url !== null) {
 			if ($url !== $bookmark->getUrl()) {
 				$bookmark->setAvailable(true);
