@@ -48,6 +48,17 @@
 					</Actions>
 				</div>
 				<div class="details__line">
+					<div class="folders">
+						<span v-for="folderId in bookmark.folders"
+							:key="folderId"
+							v-tooltip="getFolderPath(folderId)"
+							class="folders__folder"
+							@click="onOpenFolder(folderId)">
+							<FolderIcon :fill-color="colorMainText" /> {{ getFolder(folderId).title || t('bookmarks', 'Untitled folder') }}
+						</span>
+					</div>
+				</div>
+				<div class="details__line">
 					<span class="icon-tag" :aria-label="t('bookmarks', 'Tags')" :title="t('bookmarks', 'Tags')" />
 					<Multiselect
 						class="tags"
@@ -94,6 +105,7 @@ import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import RichContenteditable from '@nextcloud/vue/dist/Components/RichContenteditable'
 import FileDocumentIcon from 'vue-material-design-icons/FileDocument'
+import FolderIcon from 'vue-material-design-icons/Folder'
 
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
@@ -104,7 +116,7 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable, FileDocumentIcon },
+	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable, FileDocumentIcon, FolderIcon },
 	data() {
 		return {
 			title: '',
@@ -223,6 +235,19 @@ export default {
 				await this.$store.dispatch(actions.LOAD_TAGS)
 			}, 1000)
 		},
+		onOpenFolder(id) {
+			this.$router.push({ name: this.routes.FOLDER, params: { folder: id } })
+			this.onClose()
+		},
+		getFolder(id) {
+			const path = this.$store.getters.getFolder(id)
+			const folder = path[0]
+			return folder
+		},
+		getFolderPath(id) {
+			const path = this.$store.getters.getFolder(id).reverse().map(folder => folder.title)
+			return '/' + path.join('/')
+		},
 	},
 }
 </script>
@@ -286,5 +311,22 @@ export default {
 
 .sidebar .details__action {
 	flex-grow: 0;
+}
+
+.sidebar .folders {
+	display: flex;
+	align-items: flex-start;
+}
+
+.sidebar .folders__folder {
+	border: 1px solid var(--color-border);
+	padding: 2px 10px;
+	border-radius: var(--border-radius-large);
+	margin-right: 5px;
+	cursor: pointer;
+}
+
+.sidebar .folders__folder * {
+	cursor: pointer;
 }
 </style>
