@@ -13,7 +13,7 @@
 			'item--gridview': viewMode === 'grid'
 		}"
 		:style="{ background }"
-		:draggable="draggable"
+		:draggable="draggable && !renaming"
 		@dragstart="onDragStart">
 		<template v-if="!renaming">
 			<a
@@ -174,7 +174,7 @@ export default {
 			this.$emit('click', e)
 		},
 		async onDragStart(e) {
-			if (!this.draggable) {
+			if (!this.draggable || this.renaming) {
 				return
 			}
 			if (!this.selected) {
