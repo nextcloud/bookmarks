@@ -64,10 +64,10 @@
 			</ActionButton>
 			<ActionButton :close-after-click="true" @click="onCopy">
 				<template #icon>
-					<ContentCopyIcon
+					<FolderPlusIcon
 						:fill-color="colorMainText" />
 				</template>
-				{{ t('bookmarks', 'Copy') }}
+				{{ t('bookmarks', 'Add to folders') }}
 			</ActionButton>
 			<ActionButton
 				icon="icon-delete"
@@ -82,7 +82,7 @@
 import Item from './Item'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
-import ContentCopyIcon from 'vue-material-design-icons/ContentCopy'
+import FolderPlusIcon from 'vue-material-design-icons/FolderPlus'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
@@ -94,7 +94,7 @@ export default {
 		Item,
 		ActionButton,
 		ActionCheckbox,
-		ContentCopyIcon,
+		FolderPlusIcon,
 		FolderMoveIcon,
 	},
 	props: {

@@ -30,27 +30,11 @@ export default {
 			return this.$store.state.selection
 		},
 		title() {
-			if (this.selection.folders.length) {
-				if (this.selection.bookmarks.length) {
-					return n('bookmarks',
-						'Copyng %n folder and some bookmarks',
-						'Copyng %n folders and some bookmarks',
-						this.selection.folders.length
-					)
-				} else {
-					return n('bookmarks',
-						'Copyng %n folder',
-						'Copyng %n folders',
-						this.selection.folders.length
-					)
-				}
-			} else {
-				return n('bookmarks',
-					'Copyng %n bookmark',
-					'Copyng %n bookmarks',
-					this.selection.bookmarks.length
-				)
-			}
+			return n('bookmarks',
+				'Adding %n bookmark to new folder',
+				'Adding %n bookmarks to new folder',
+				this.selection.bookmarks.length
+			)
 		},
 	},
 	methods: {

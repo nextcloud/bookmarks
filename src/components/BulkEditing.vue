@@ -18,9 +18,9 @@
 			</ActionButton>
 			<ActionButton v-if="!selectedFolders.length" close-after-click @click="onBulkCopy">
 				<template #icon>
-					<ContentCopyIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+					<FolderPlusIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
 				</template>
-				{{ t('bookmarks', 'Copy selection') }}
+				{{ t('bookmarks', 'Add to folders') }}
 			</ActionButton>
 			<ActionInput
 				v-if="!selectedFolders.length"
@@ -54,14 +54,14 @@ import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
-import ContentCopyIcon from 'vue-material-design-icons/ContentCopy'
+import FolderPlusIcon from 'vue-material-design-icons/FolderPlus'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
 import { actions, mutations } from '../store'
 import intersection from 'lodash/intersection'
 
 export default {
 	name: 'BulkEditing',
-	components: { ActionInput, ActionSeparator, ContentCopyIcon, FolderMoveIcon, ActionButton, Actions },
+	components: { ActionInput, ActionSeparator, FolderPlusIcon, FolderMoveIcon, ActionButton, Actions },
 	data() {
 		return {
 			selectionTags: [],
