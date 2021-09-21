@@ -1,8 +1,23 @@
-# Changelog
+## Changelog
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [10.0.0] - 2021-09-21
+
+### New
+- Add "Add to folders" action for bookmarks
+- API: Implement locking
+
+### Fixed
+- Update browserlist
+- Update dependencies
+- BookmarkService: Don't update bookmark if there have been no changes
+- Disable drag-and-drop when renaming item 
+- SidebarBookmark: Show which folders a bookmark belongs to
+- Fix: Don't hide search behind bookmark details
+- Major version bump to v10 to fix release tags in accordance with semantic versioning
 
 ## [4.4.1] - 2021-08-22
 
@@ -600,6 +615,8 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+
+[10.0.0]: https://github.com/nextcloud/bookmarks/compare/v4.4.1...v10.0.0
 [4.4.1]: https://github.com/nextcloud/bookmarks/compare/v4.4.0...v4.4.1
 [4.4.0]: https://github.com/nextcloud/bookmarks/compare/v4.3.0...v4.4.0
 [4.3.0]: https://github.com/nextcloud/bookmarks/compare/v4.2.2...v4.3.0
