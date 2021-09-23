@@ -96,6 +96,7 @@ OC.L10N.register(
     "Deleting selection" : "Mazání výběru",
     "Importing bookmarks" : "Importování záložek",
     "Moving selection" : "Přesouvání vybraných",
+    "Adding selection to folders" : "Přidává se výběr do složek",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Přesouvá se %n složka a nějaké záložky","Přesouvají se %n složky a nějaké záložky","Přesouvá se %n složek a nějaké záložky","Přesouvají se %n složky a nějaké záložky"],
     "_Moving %n folder_::_Moving %n folders_" : ["Přesouvá se %n složka","Přesouvají se %n složky","Přesouvá se %n složek","Přesouvají se %n složky"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Přesouvá se %n záložka","Přesouvají se %n záložky","Přesouvá se %n záložek","Přesouvají se %n záložky"],

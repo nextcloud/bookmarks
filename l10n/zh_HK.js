@@ -96,6 +96,7 @@ OC.L10N.register(
     "Deleting selection" : "刪除選擇",
     "Importing bookmarks" : "匯入書籤",
     "Moving selection" : "移動選擇",
+    "Adding selection to folders" : "將所選項目添加到資料夾",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["正在移動%n資料夾和一些書籤"],
     "_Moving %n folder_::_Moving %n folders_" : ["移動%n個資料夾"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["正在移動%n個書籤"],

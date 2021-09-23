@@ -96,6 +96,7 @@ OC.L10N.register(
     "Deleting selection" : "Usuwanie zaznaczenia",
     "Importing bookmarks" : "Importowanie zakładek",
     "Moving selection" : "Przenoszenie zaznaczenia",
+    "Adding selection to folders" : "Dodawanie zaznaczenia do katalogu",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Przenoszenie %n katalogu i niektórych zakładek","Przenoszenie %n katalogów i niektórych zakładek","Przenoszenie %n katalogów i niektórych zakładek","Przenoszenie %n katalogów i niektórych zakładek"],
     "_Moving %n folder_::_Moving %n folders_" : ["Przenoszenie %n katalogu","Przenoszenie %n katalogów","Przenoszenie %n katalogów","Przenoszenie %n katalogów"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Przenoszenie %n zakładki","Przenoszenie %n zakładek","Przenoszenie %n zakładek","Przenoszenie %n zakładek"],
