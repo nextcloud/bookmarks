@@ -133,7 +133,7 @@ OC.L10N.register(
     "Please select \"Add to home screen\" in your browser menu" : "Bitte wählen Sie \"Zum Startbildschirm hinzufügen\" in Ihrem Browsermenü",
     "Title" : "Titel",
     "Link" : "Link",
-    "Untitled folder" : "Ordner ohne Namen",
+    "Untitled folder" : "Unbenannter Ordner",
     "Tags" : "Schlagworte",
     "Select tags and create new ones" : "Schlagworte wählen und erstellen",
     "Notes" : "Notizen",

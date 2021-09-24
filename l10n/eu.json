@@ -94,6 +94,7 @@
     "Deleting selection" : "Hautapena ezabatzen",
     "Importing bookmarks" : "Laster-markak inportatzen",
     "Moving selection" : "Hautapena mugitzen",
+    "Adding selection to folders" : "Hautapena karpetetara gehitzen",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Karpeta %n eta laster-marka batzuk mugitzen","%n karpeta eta laster-marka batzuk mugitzen"],
     "_Moving %n folder_::_Moving %n folders_" : ["Karpeta %n mugitzen","%n karpeta mugitzen"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Laster-marka %n mugitzen","%n laster-marka mugitzen"],

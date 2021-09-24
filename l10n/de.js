@@ -96,6 +96,7 @@ OC.L10N.register(
     "Deleting selection" : "Auswahl löschen",
     "Importing bookmarks" : "Lesezeichen importieren",
     "Moving selection" : "Auswahl verschieben",
+    "Adding selection to folders" : "Auswahl zu Ordnern hinzufügen",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Verschiebe %n Ordner und einige Lesezeichen","Verschiebe %n Ordner und einige Lesezeichen"],
     "_Moving %n folder_::_Moving %n folders_" : ["Verschiebe %n Ordner","Verschiebe %n Ordner"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Verschiebe %n Lesezeichen","Verschiebe %n Lesezeichen"],
