@@ -25,6 +25,7 @@ class InternalFoldersController extends ApiController {
 		if ($userId !== null) {
 			$authorizer->setUserId($userId);
 		}
+		$authorizer->setCORS(false);
 	}
 
 	/**
