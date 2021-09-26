@@ -16,6 +16,7 @@ use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IRequest;
@@ -148,6 +149,7 @@ class Authorizer {
 	 * @param int $folderId
 	 * @param IRequest $request
 	 * @return int
+	 * @throws UnauthenticatedError
 	 */
 	public function getPermissionsForFolder(int $folderId, IRequest $request): int {
 		$this->setCredentials($request);
@@ -156,6 +158,8 @@ class Authorizer {
 			$perms |= $this->getUserPermissionsForFolder($this->userId, $folderId);
 		} elseif (isset($this->token)) {
 			$perms |= $this->getTokenPermissionsForFolder($this->token, $folderId);
+		} else {
+			throw new UnauthenticatedError();
 		}
 		return $perms;
 	}
@@ -164,6 +168,7 @@ class Authorizer {
 	 * @param int $bookmarkId
 	 * @param IRequest $request
 	 * @return int
+	 * @throws UnauthenticatedError
 	 */
 	public function getPermissionsForBookmark(int $bookmarkId, IRequest $request): int {
 		$this->setCredentials($request);
@@ -172,6 +177,8 @@ class Authorizer {
 			$perms |= $this->getUserPermissionsForBookmark($this->userId, $bookmarkId);
 		} elseif (isset($this->token)) {
 			$perms |= $this->getTokenPermissionsForBookmark($this->token, $bookmarkId);
+		} else {
+			throw new UnauthenticatedError();
 		}
 		return $perms;
 	}
