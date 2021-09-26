@@ -311,7 +311,7 @@ class BookmarkController extends ApiController {
 
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null && $this->authorizer->getToken() === null) {
-			$res = new DataResponse(['status' => 'error', 'data' => 'Unauthenticated'], Http::STATUS_UNAUTHORIZED);
+			$res = new DataResponse(['status' => 'error', 'data' => 'Please authenticate first'], Http::STATUS_UNAUTHORIZED);
 			$res->addHeader('WWW-Authenticate', 'Basic realm="Nextcloud", charset="UTF-8"');
 			return $res;
 		}

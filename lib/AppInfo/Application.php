@@ -17,6 +17,7 @@ use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Flow\CreateBookmark;
 use OCA\Bookmarks\Hooks\UserGroupListener;
+use OCA\Bookmarks\Middleware\ExceptionMiddleware;
 use OCA\Bookmarks\Search\Provider;
 use OCA\Bookmarks\Service\TreeCacheManager;
 use OCP\AppFramework\App;
@@ -68,6 +69,7 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
 		$context->registerEventListener(UserAddedEvent::class, UserGroupListener::class);
 		$context->registerEventListener(UserRemovedEvent::class, UserGroupListener::class);
+		$context->registerMiddleware(ExceptionMiddleware::class);
 	}
 
 	public function boot(IBootContext $context): void {
