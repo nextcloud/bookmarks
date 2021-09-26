@@ -17,6 +17,7 @@ use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TagMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
+use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
@@ -323,9 +324,8 @@ class BookmarkControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->authorizer->setUserId(null);
-		$output = $this->publicController->getSingleBookmark($this->bookmark1Id);
-		$data = $output->getData();
-		$this->assertEquals('error', $data['status'], var_export($data, true));
+		$this->expectException(UnauthenticatedError::class);
+		$this->publicController->getSingleBookmark($this->bookmark1Id);
 	}
 
 	/**
@@ -519,7 +519,7 @@ class BookmarkControllerTest extends TestCase {
 		$output = $this->publicController->getSingleBookmark(987);
 		$data = $output->getData();
 		$this->assertSame('error', $data['status'], var_export($data, true));
-		$this->assertSame(404, $output->getStatus());
+		$this->assertSame(403, $output->getStatus());
 	}
 
 	/**

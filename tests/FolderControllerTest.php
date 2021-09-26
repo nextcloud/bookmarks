@@ -18,6 +18,7 @@ use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TagMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
+use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service\Authorizer;
@@ -491,9 +492,8 @@ class FolderControllerTest extends TestCase {
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
-		$output = $this->noauth->getFolder($this->folder1->getId());
-		$data = $output->getData();
-		$this->assertEquals('error', $data['status'], var_export($data, true));
+		$this->expectException(UnauthenticatedError::class);
+		$this->noauth->getFolder($this->folder1->getId());
 	}
 
 	/**
@@ -508,9 +508,8 @@ class FolderControllerTest extends TestCase {
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
-		$output = $this->noauth->addFolder('bla', $this->folder1->getId());
-		$data = $output->getData();
-		$this->assertEquals('error', $data['status'], var_export($data, true));
+		$this->expectException(UnauthenticatedError::class);
+		$this->noauth->addFolder('bla', $this->folder1->getId());
 	}
 
 	/**
@@ -526,14 +525,8 @@ class FolderControllerTest extends TestCase {
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
-		$output = $this->noauth->editFolder($this->folder2->getId(), 'blabla');
-		$data = $output->getData();
-		$this->assertEquals('error', $data['status'], var_export($data, true));
-		$this->authorizer->setUserId($this->userId);
-		$output = $this->controller->getFolder($this->folder2->getId());
-		$data = $output->getData();
-		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertEquals($this->folder2->getTitle(), $data['item']['title']); // nothing changed
+		$this->expectException(UnauthenticatedError::class);
+		$this->noauth->editFolder($this->folder2->getId(), 'blabla');
 	}
 
 	/**
@@ -549,13 +542,8 @@ class FolderControllerTest extends TestCase {
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
-		$output = $this->noauth->deleteFolder($this->folder1->getId());
-		$data = $output->getData();
-		$this->assertEquals('error', $data['status'], var_export($data, true));
-		$this->authorizer->setUserId($this->userId);
-		$output = $this->controller->getFolder($this->folder1->getId());
-		$data = $output->getData();
-		$this->assertEquals('success', $data['status'], var_export($data, true)); // nothing changed
+		$this->expectException(UnauthenticatedError::class);
+		$this->noauth->deleteFolder($this->folder1->getId());
 	}
 
 	/**
@@ -569,9 +557,8 @@ class FolderControllerTest extends TestCase {
 		$this->setupBookmarks();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
-		$output = $this->noauth->getFolderChildrenOrder($this->folder1->getId(), -1);
-		$data = $output->getData();
-		$this->assertEquals('error', $data['status'], var_export($data, true));
+		$this->expectException(UnauthenticatedError::class);
+		$this->noauth->getFolderChildrenOrder($this->folder1->getId(), -1);
 	}
 
 	/**
@@ -585,24 +572,11 @@ class FolderControllerTest extends TestCase {
 		$this->setupBookmarks();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
-		$output = $this->noauth->setFolderChildrenOrder($this->folder1->getId(), [
+		$this->expectException(UnauthenticatedError::class);
+		$this->noauth->setFolderChildrenOrder($this->folder1->getId(), [
 			['type' => 'noauth', 'id' => $this->bookmark1Id],
 			['type' => 'folder', 'id' => $this->folder2->getId()],
 		]);
-		$data = $output->getData();
-		$this->assertEquals('error', $data['status'], var_export($data, true));
-
-		$this->authorizer->setUserId($this->userId);
-		$output = $this->controller->getFolderChildrenOrder(-1, -1);
-		$data = $output->getData();
-		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertCount(1, $data['data']);
-		$this->assertEquals($this->folder1->getId(), $data['data'][0]['id']);
-		$this->assertCount(2, $data['data'][0]['children']);
-		$this->assertEquals($this->bookmark1Id, $data['data'][0]['children'][1]['id']);
-		$this->assertEquals($this->folder2->getId(), $data['data'][0]['children'][0]['id']);
-		$this->assertCount(1, $data['data'][0]['children'][0]['children']);
-		$this->assertEquals($this->bookmark2Id, $data['data'][0]['children'][0]['children'][0]['id']);
 	}
 
 	/**
@@ -616,9 +590,8 @@ class FolderControllerTest extends TestCase {
 		$this->setupBookmarks();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
-		$output = $this->noauth->getFolders($this->folder1->getId(), -1);
-		$data = $output->getData();
-		$this->assertEquals('error', $data['status'], var_export($data, true));
+		$this->expectException(UnauthenticatedError::class);
+		$this->noauth->getFolders($this->folder1->getId(), -1);
 	}
 
 	/**

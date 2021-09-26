@@ -225,7 +225,7 @@ class Authorizer {
 			/** @var Bookmark $bookmark */
 			$bookmark = $this->bookmarkMapper->find($bookmarkId);
 		} catch (DoesNotExistException $e) {
-			return self::PERM_EDIT;
+			return self::PERM_ALL;
 		} catch (MultipleObjectsReturnedException $e) {
 			return self::PERM_NONE;
 		}
@@ -248,15 +248,13 @@ class Authorizer {
 	 * @param int $bookmarkId
 	 *
 	 * @return int
-	 *
-	 * @psalm-return 0|1|2
 	 */
 	public function getTokenPermissionsForBookmark(string $token, int $bookmarkId): int {
 		try {
 			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicMapper->find($token);
 		} catch (DoesNotExistException $e) {
-			return self::PERM_EDIT;
+			return self::PERM_NONE;
 		} catch (MultipleObjectsReturnedException $e) {
 			return self::PERM_NONE;
 		}
@@ -303,14 +301,13 @@ class Authorizer {
 	 *
 	 * @return int
 	 *
-	 * @psalm-return 0|1|2
 	 */
 	public function getTokenPermissionsForFolder(string $token, int $folderId): int {
 		try {
 			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicMapper->find($token);
 		} catch (DoesNotExistException $e) {
-			return self::PERM_EDIT;
+			return self::PERM_NONE;
 		} catch (MultipleObjectsReturnedException $e) {
 			return self::PERM_NONE;
 		}
