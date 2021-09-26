@@ -96,6 +96,7 @@ OC.L10N.register(
     "Deleting selection" : "Seçim siliniyor",
     "Importing bookmarks" : "Yer imleri içe aktarılıyor",
     "Moving selection" : "Seçim taşınıyor",
+    "Adding selection to folders" : "Seçim klasörlere ekleniyor",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["%n klasör ve bazı yer imleri taşınıyor","%n klasör ve bazı yer imleri taşınıyor"],
     "_Moving %n folder_::_Moving %n folders_" : ["%n klasör taşınıyor","%n klasör taşınıyor"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["%n yer imi taşınıyor","%n yer imi taşınıyor"],
