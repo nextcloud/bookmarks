@@ -43,6 +43,7 @@ class InternalBookmarkController extends ApiController {
 		if ($this->userId !== null) {
 			$authorizer->setUserId($this->userId);
 		}
+		$authorizer->setCORS(false);
 	}
 
 	/**
@@ -173,7 +174,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @param int $id The id of the bookmark whose favicon shoudl be returned
 	 *
-	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse
+	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse|Http\DataResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -187,7 +188,7 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 * @param int $id The id of the bookmark whose image shoudl be returned
 	 *
-	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse
+	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse|Http\DataResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
