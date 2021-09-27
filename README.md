@@ -10,17 +10,15 @@
 
 This app provides you with a web interface for collecting and organizing bookmarks to the places on the web that are precious to you.
  
-- 📂 Browse and filter your bookmarks via tags and folders.
-- 📰 Write down additional notes
-- 🔍 Built-in search integrated into Nextcloud's unified search
+- 📂 Browse and filter your bookmarks via tags and folders and add personal notes
+- 🔍 Built-in full-text search integrated into Nextcloud's unified search
 - 👪 Share bookmarks with other users as well as publicly
-- ☠ Easily find broken links
-- 📔 Archive bookmarked files 
-- 📲 Access your bookmarks anywhere, via a built-in REST API
 - 💡 Keep track of changes in the activity stream
-- 💼 Includes a Dashboard widget
+- ☠ Easily find broken links
+- 📔 All your links are automatically archived for full-text search and in case they are depublished
+- 📲 Access your bookmarks anywhere, on desktop Browsers and on your phone, via a variety of sync clients
+- 💼 Built-in Dashboard widgets for frequent and recent links
 - ⚛ Easily generate public and private RSS feeds of your collections
-
 
 ## Third-party clients
 
