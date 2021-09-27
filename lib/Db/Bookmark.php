@@ -17,7 +17,6 @@ use OCP\AppFramework\Db\Entity;
  * @method setUrl(string $url)
  * @method string getTitle()
  * @method string getDescription()
- * @method setDescription(string $description)
  * @method int getLastmodified()
  * @method setLastmodified(int $lastmodified)
  * @method int getAdded()
@@ -100,5 +99,13 @@ class Bookmark extends Entity {
 			$title = mb_substr($title, 0, 1023) . '…';
 		}
 		$this->setter('title', [$title]);
+	}
+
+	public function setDescription(string $desc): void {
+		// Cap title length at 1024 because the DB doesn't have more space currently (4096 byte with utf8mb4)
+		if (mb_strlen($desc) > 1024) {
+			$desc = mb_substr($desc, 0, 1023) . '…';
+		}
+		$this->setter('description', [$desc]);
 	}
 }
