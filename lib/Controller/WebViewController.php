@@ -58,7 +58,7 @@ class WebViewController extends Controller {
 	 */
 	private $initialState;
 	/**
-	 * @var FoldersController
+	 * @var InternalFoldersController
 	 */
 	private $folderController;
 
