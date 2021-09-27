@@ -75,9 +75,9 @@ class WebViewController extends Controller {
 	 * @param FolderMapper $folderMapper
 	 * @param IURLGenerator $urlGenerator
 	 * @param \OCP\IInitialStateService $initialState
-	 * @param FoldersController $folderController
+	 * @param InternalFoldersController $folderController
 	 */
-	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, FolderMapper $folderMapper, IURLGenerator $urlGenerator, \OCP\IInitialStateService $initialState, \OCA\Bookmarks\Controller\FoldersController $folderController) {
+	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, FolderMapper $folderMapper, IURLGenerator $urlGenerator, \OCP\IInitialStateService $initialState, \OCA\Bookmarks\Controller\InternalFoldersController $folderController) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->l = $l;
