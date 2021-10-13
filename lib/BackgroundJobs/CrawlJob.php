@@ -18,8 +18,8 @@ use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 
 class CrawlJob extends TimedJob {
-	public const BATCH_SIZE = 120; // 120 bookmarks
-	public const INTERVAL = 30 * 60; // 30 minutes
+	public const BATCH_SIZE = 40; // 40 bookmarks
+	public const INTERVAL = 5 * 60; // 5 minutes
 
 	/**
 	 * @var BookmarkMapper
