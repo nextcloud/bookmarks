@@ -12,6 +12,11 @@
 		}"
 		@scroll="onScroll">
 		<div class="padding">
+			<div v-if="$route.name === routes.ARCHIVED && bookmarks.length" class="bookmarkslist__description">
+				{{
+					t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
+				}}
+			</div>
 			<CreateBookmark v-if="newBookmark" />
 			<CreateFolder v-if="newFolder" />
 			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
@@ -169,6 +174,14 @@ export default {
 .bookmarkslist__empty {
 	width: 200px;
 	margin: 200px auto;
+}
+
+.bookmarkslist__description {
+	width: 100%;
+	margin: 10px auto;
+	flex-grow: 1;
+	flex-shrink: 0;
+	text-align: center;
 }
 
 .bookmarkslist__loading {
