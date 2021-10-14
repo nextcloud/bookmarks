@@ -113,7 +113,6 @@ OC.L10N.register(
     "Import" : "Importeren",
     "Export" : "Exporteren",
     "Archive path" : "Archief pad",
-    "Enter the path of a folder where bookmarked files should be stored" : "Voer het pad in van een map waar de bladwijzers van de bestanden moeten worden opgeslagen",
     "Client apps" : "Client apps",
     "Also check out the collection of client apps that integrate with this app: " : "Bekijk ook de verzameling client-apps die met deze app kunnen worden geïntegreerd:",
     "Install web app on device" : "Installeer web-app op een toestel",

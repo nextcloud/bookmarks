@@ -101,7 +101,6 @@ OC.L10N.register(
     "Import" : "インポート",
     "Export" : "エクスポート",
     "Archive path" : "アーカイブパス",
-    "Enter the path of a folder where bookmarked files should be stored" : "ブックマークしたファイルの保存先のフォルダーパスを入力してください",
     "Client apps" : "クライアントアプリ",
     "Also check out the collection of client apps that integrate with this app: " : "このアプリと連携するクライアントアプリもご確認ください：",
     "Install on home screen" : "ホーム画面でインストール",

@@ -112,7 +112,6 @@ OC.L10N.register(
     "Import" : "Импортировать",
     "Export" : "Экспортировать",
     "Archive path" : "Путь к архиву",
-    "Enter the path of a folder where bookmarked files should be stored" : "Введите путь к каталогу, в который следует сохранить файлы с закладками",
     "Client apps" : "Клиентские приложения",
     "Also check out the collection of client apps that integrate with this app: " : "Так же попробуйте коллекцию клиентских приложений, которые могут интегрировать с этим приложением",
     "Install on home screen" : "Установить на главную страницу",

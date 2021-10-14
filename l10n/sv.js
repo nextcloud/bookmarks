@@ -113,7 +113,6 @@ OC.L10N.register(
     "Import" : "Importera",
     "Export" : "Exportera",
     "Archive path" : "Sökväg till arkiv",
-    "Enter the path of a folder where bookmarked files should be stored" : "Ange sökvägen till en mapp där bokmärkta filer ska lagras",
     "Client apps" : "Klientappar",
     "Also check out the collection of client apps that integrate with this app: " : "Kolla också in samlingen av klientappar som integrerar med den här appen: ",
     "Install web app on device" : "Installera webbapp på denna enhet",

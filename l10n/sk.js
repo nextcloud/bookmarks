@@ -117,7 +117,6 @@ OC.L10N.register(
     "Import" : "Import",
     "Export" : "Export",
     "Archive path" : "Archivovať cestu",
-    "Enter the path of a folder where bookmarked files should be stored" : "Vložte cestu k priečinku kde sa budú ukladať súbory v záložkách",
     "Client apps" : "Aplikácie klienta",
     "Also check out the collection of client apps that integrate with this app: " : "Pozrite si sadu klientskych aplikácií, ktoré sa integrujú do tejto aplikácie:",
     "Install web app on device" : "Nainštalovať webovú aplikáciu na zariadenie",

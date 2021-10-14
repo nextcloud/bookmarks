@@ -13,7 +13,6 @@ OC.L10N.register(
     "Recent" : "Nevez",
     "Broken links" : "Liammoù toret",
     "Import" : "Emporzhiañ ",
-    "Enter the path of a folder where bookmarked files should be stored" : "Lakait hent an teuliad lec'h ma vo enrollet ar restroù gant ur merket pajenn",
     "Clear data" : "Lemel ar roadennoù",
     "Link" : "Liamm",
     "Tags" : "Klavioù",

@@ -116,7 +116,6 @@ OC.L10N.register(
     "Import" : "导入",
     "Export" : "导出",
     "Archive path" : "归档路径",
-    "Enter the path of a folder where bookmarked files should be stored" : "指定文件夹路径，书签文件将会保存在这里。",
     "Client apps" : "客户端应用",
     "Also check out the collection of client apps that integrate with this app: " : "还可以查看与此应用集成的客户端应用集合：",
     "Install web app on device" : "在设备上安装 web 应用",

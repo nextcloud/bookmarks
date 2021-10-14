@@ -113,7 +113,6 @@ OC.L10N.register(
     "Import" : "Importar",
     "Export" : "Exportar",
     "Archive path" : "Ruta de archivo",
-    "Enter the path of a folder where bookmarked files should be stored" : "Introduce la ruta de una carpeta donde los archivos marcados deberían guardarse",
     "Client apps" : "Apps clientes",
     "Also check out the collection of client apps that integrate with this app: " : "Mira también la colección apps cliente que se integran con esta app:",
     "Install web app on device" : "Instalar aplicación web en el dispositivo",

@@ -117,7 +117,6 @@ OC.L10N.register(
     "Import" : "Importuj",
     "Export" : "Eksportuj",
     "Archive path" : "Ścieżka archiwum",
-    "Enter the path of a folder where bookmarked files should be stored" : "Podaj ścieżkę do katalogu, w którym powinny być przechowywane pliki z zakładkami",
     "Client apps" : "Aplikacje klienckie",
     "Also check out the collection of client apps that integrate with this app: " : "Sprawdź także kolekcję aplikacji klienckich, które integrują się z tą aplikacją: ",
     "Install web app on device" : "Zainstaluj aplikację internetową na urządzeniu",

@@ -117,7 +117,6 @@ OC.L10N.register(
     "Import" : "Inportatu",
     "Export" : "Esportatu",
     "Archive path" : "Artxibatu bidea",
-    "Enter the path of a folder where bookmarked files should be stored" : "Sartu karpeta baterako bidea laster-marketako fitxategiek biltegiratuta egon beharko luketen tokira",
     "Client apps" : "Bezero-aplikazioak",
     "Also check out the collection of client apps that integrate with this app: " : "Ikuskatu, baita, aplikazio honekin integratuta dagoen bezero aplikazioen bilduma",
     "Install web app on device" : "Instalatu web aplikazioa gailuan",

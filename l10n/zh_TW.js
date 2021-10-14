@@ -117,7 +117,6 @@ OC.L10N.register(
     "Import" : "匯入",
     "Export" : "匯出",
     "Archive path" : "封存路徑",
-    "Enter the path of a folder where bookmarked files should be stored" : "輸入儲存書籤檔案的資料夾路徑",
     "Client apps" : "客戶端應用程式",
     "Also check out the collection of client apps that integrate with this app: " : "還要檢查與此應用程式整合的客戶端應用程式集合：",
     "Install web app on device" : "在裝置上安裝網路應用程式",

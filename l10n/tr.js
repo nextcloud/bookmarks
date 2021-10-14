@@ -117,7 +117,6 @@ OC.L10N.register(
     "Import" : "İçe aktar",
     "Export" : "Dışa aktar",
     "Archive path" : "Arşiv yolu",
-    "Enter the path of a folder where bookmarked files should be stored" : "Yer imlerine eklenmiş dosyaların kaydedileceği klasör yolunu yazın",
     "Client apps" : "İstemci uygulamaları",
     "Also check out the collection of client apps that integrate with this app: " : "Ayrıca bu uygulama ile birlikte çalışan istemci uygulamalarına da bakın:",
     "Install web app on device" : "Web uygulamasını aygıta kur",

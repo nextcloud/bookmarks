@@ -116,7 +116,6 @@ OC.L10N.register(
     "Import" : "Tuo",
     "Export" : "Vie",
     "Archive path" : "Arkiston sijainti",
-    "Enter the path of a folder where bookmarked files should be stored" : "Syötä polku kansioon, johon kirjanmerkiksi lisätyt tiedostot tallennetaan",
     "Client apps" : "Asiakasohjelmat",
     "Also check out the collection of client apps that integrate with this app: " : "Katso kokoelma asiakassovelluksista, jotka toimivat tämän sovelluksen kanssa:",
     "Install web app on device" : "Asenna web-sovellus laitteelle",

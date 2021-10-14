@@ -113,7 +113,6 @@ OC.L10N.register(
     "Import" : "Importer",
     "Export" : "Exporter",
     "Archive path" : "Archiver le chemin d'accès",
-    "Enter the path of a folder where bookmarked files should be stored" : "Indiquez un dossier où enregistrer le fichier des favoris",
     "Client apps" : "Applications clientes",
     "Also check out the collection of client apps that integrate with this app: " : "Découvrez également une gamme d'applications client qui s'intègrent à cette application : ",
     "Install web app on device" : "Installer l’application web sur l’appareil",

@@ -81,7 +81,6 @@ OC.L10N.register(
     "Import" : "Importa",
     "Export" : "Exporta",
     "Archive path" : "Camí de l'arxiu",
-    "Enter the path of a folder where bookmarked files should be stored" : "Introduïu el camí d'una carpeta on s'han d'emmagatzemar els fitxers marcats",
     "Client apps" : "Aplicacions de client",
     "Also check out the collection of client apps that integrate with this app: " : "Feu també un cop d'hora al conjunt d'aplicacions client que s'integren amb aquesta aplicació: ",
     "Install on home screen" : "Instal·la a la pantalla d'inici",

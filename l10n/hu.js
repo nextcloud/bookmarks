@@ -117,7 +117,6 @@ OC.L10N.register(
     "Import" : "Importálás",
     "Export" : "Exportálás",
     "Archive path" : "Archívum elérési útvonala",
-    "Enter the path of a folder where bookmarked files should be stored" : "Adja meg egy mappa elérési útját, ahol a könyvjelzőket tárolni szeretné",
     "Client apps" : "Kliensalkalmazások",
     "Also check out the collection of client apps that integrate with this app: " : "Nézze meg az alkalmazással integrált ügyfélalkalmazások gyűjteményét is: ",
     "Install web app on device" : "Webalkalmazás telepítése az eszközre",
