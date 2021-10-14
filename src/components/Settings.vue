@@ -19,7 +19,7 @@
 
 		<label><h3>{{ t('bookmarks', 'Archive path') }}</h3>
 			<p>{{ t('bookmarks',
-				'Enter the path of a folder for your files where bookmarked files should be stored'
+				'Enter the path of a folder for your files where bookmarked files should be stored.'
 			) }}</p>
 			<input
 				:value="archivePath"
@@ -47,7 +47,7 @@
 
 		<label><h3>{{ t('bookmarks', 'Bookmarklet') }}</h3>
 			<p>{{ t('bookmarks',
-				'Drag this to your browser bookmarks and click it to quickly bookmark a webpage'
+				'Drag this to your browser bookmarks and click it to quickly bookmark a webpage.'
 			) }}</p>
 			<a
 				class="button"
