@@ -76,7 +76,6 @@ OC.L10N.register(
     "Also check out the collection of client apps that integrate with this app: " : "כדאי להציץ באוסף יישומוני הלקוח שמשתלבים עם היישומון הזה:",
     "Install on home screen" : "התקנה על מסך הבית",
     "Bookmarklet" : "יישומון סימנייה",
-    "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "יש לגרור זאת לדפדפן שלך וללחוץ על זה כדי להוסיף דף כלשהו כסימנייה",
     "Add to {instanceName}" : "הוספה אל {instanceName}",
     "Clear data" : "ניקוי מידע",
     "Permanently remove all bookmarks from your account." : "הסרת כל הסימניות מהחשבון שלך לצמיתות.",

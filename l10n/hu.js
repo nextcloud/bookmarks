@@ -123,7 +123,6 @@ OC.L10N.register(
     "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Telepítheti az alkalmazást az eszköze kezdőképernyőjére, hogy gyorsan elérje a könyvjelzőit a telefonján. Ha nem tetszik, akkor könnyedén el is távolítja az alkalmazást a kezdőképernyőjéről.",
     "Install on home screen" : "Telepítés a kezdőképernyőre",
     "Bookmarklet" : "Bookmarklet",
-    "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Húzza ezt a böngésző könyvjelzőihez, és kattintson rá a weboldal gyors elmentéséhez a könyvjelzők közé",
     "Add to {instanceName}" : "Hozzáadás ehhez: {instanceName}",
     "Clear data" : "Adatok törlése",
     "Permanently remove all bookmarks from your account." : "Véglegesen törölni fogja az összes könyvjelzőt a fiókjából.",

@@ -123,7 +123,6 @@ OC.L10N.register(
     "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Aplikazio hau gailuko hasierako pantailan instalatu dezakezu telefonoan laster-markak azkar sartzeko. Erraz ken dezakezu aplikazioa hasierako pantailatik, gustatzen ez bazaizu.",
     "Install on home screen" : "Instalatu hasierako pantailan",
     "Bookmarklet" : "Applet-marka",
-    "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Arrastatu hau zure nabigatzaileko laster-marken gunera eta egin klik  webgune baten laster-marka azkar-azkar egiteko",
     "Add to {instanceName}" : "Gehitu {instanceName} instantziari",
     "Clear data" : "Garbitu datuak",
     "Permanently remove all bookmarks from your account." : "Ezabatu betirako zure kontuko laster-marka guztiak.",

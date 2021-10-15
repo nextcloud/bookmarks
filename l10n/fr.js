@@ -119,7 +119,6 @@ OC.L10N.register(
     "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Vous pouvez installer cette application sur l’écran d’accueil de votre téléphone pour accéder rapidement à vos favoris. Vous pourrez facilement retirer cette application de votre écran si elle ne vous plaît pas.",
     "Install on home screen" : "Installer sur l'écran d'accueil",
     "Bookmarklet" : "Favelets",
-    "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Faites-le glisser dans les signets de votre navigateur et cliquez dessus pour ajouter rapidement une page Web à vos signets.",
     "Add to {instanceName}" : "Ajouter à {instanceName}",
     "Clear data" : "Effacer les données",
     "Permanently remove all bookmarks from your account." : "Supprimer de manière définitive tous les favoris de votre compte.",

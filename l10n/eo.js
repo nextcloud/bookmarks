@@ -33,7 +33,6 @@ OC.L10N.register(
     "Client apps" : "Klientaj aplikaĵoj",
     "Also check out the collection of client apps that integrate with this app: " : "Ankaŭ vidu la programojn, kiuj uzas tiun aplikaĵon:",
     "Bookmarklet" : "Legosignilo",
-    "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Ŝovu tion al via retumila legosignaro  kaj alklaku ĝin por rapide aldoni al viaj legosignoj retpaĝon",
     "Add to {instanceName}" : "Aldoni al {instanceName}",
     "Clear data" : "Forviŝi datumojn",
     "Delete all bookmarks" : "Forigi ĉiujn legosignojn",

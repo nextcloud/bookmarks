@@ -119,7 +119,6 @@ OC.L10N.register(
     "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Du kan installera denna appen på hemskärmen av din enhet för att snabbt komma åt dina bokmärken från din mobil. Du kan enkelt ta bort appen från hemskärmen igen ifall du inte gillar det.",
     "Install on home screen" : "Installera på hemskärmen",
     "Bookmarklet" : "Bookmarklet",
-    "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Dra till webbläsarens bokmärken och klicka på den för att snabbt bokmärka en webbplats",
     "Add to {instanceName}" : "Lägg till {instanceName}",
     "Clear data" : "Rensa data",
     "Permanently remove all bookmarks from your account." : "Ta bort alla bokmärken från ditt konto permanent.",

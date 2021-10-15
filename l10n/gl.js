@@ -91,7 +91,6 @@ OC.L10N.register(
     "Also check out the collection of client apps that integrate with this app: " : "Consulte tamén a colección de aplicacións de clientes que se integran con esta aplicación:",
     "Install on home screen" : "Instalar na pantalla de inicio",
     "Bookmarklet" : "Miniaplicación ligada",
-    "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Arrastre isto cara aos marcadores do seu navegador e prema para marcar rapidamente unha páxina web",
     "Add to {instanceName}" : "Engadir a {instanceName}",
     "Clear data" : "Limpar os datos",
     "Permanently remove all bookmarks from your account." : "Retirar de xeito permanente todos os marcadores da súa conta.",

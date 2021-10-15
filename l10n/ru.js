@@ -116,7 +116,6 @@ OC.L10N.register(
     "Also check out the collection of client apps that integrate with this app: " : "Так же попробуйте коллекцию клиентских приложений, которые могут интегрировать с этим приложением",
     "Install on home screen" : "Установить на главную страницу",
     "Bookmarklet" : "Приложение для панели закладок",
-    "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "Перетащите это в закладки вашего браузера и кликните на него, чтобы быстро добавить вебстраницу в закладки",
     "Add to {instanceName}" : "Добавить в {instanceName}",
     "Clear data" : "Очистить данные",
     "Permanently remove all bookmarks from your account." : "Безвозвратно удалить все закладки из Вашей учетной записи.",

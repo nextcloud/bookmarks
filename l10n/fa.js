@@ -32,7 +32,6 @@ OC.L10N.register(
     "Client apps" : "برنامه های مشتری",
     "Also check out the collection of client apps that integrate with this app: " : "همچنین مجموعه برنامه های مشتری که با این برنامه ادغام شده اند را بررسی کنید:",
     "Bookmarklet" : "نشانک",
-    "Drag this to your browser bookmarks and click it to quickly bookmark a webpage" : "این مورد را به نشانک های مرورگر خود بکشید و روی آن کلیک کنید تا سریع یک صفحه وب نشانک گذاری شود",
     "Add to {instanceName}" : "افزودن به {instanceName}",
     "Clear data" : "داده روشن",
     "Delete all bookmarks" : "حذف همه نشانک ها",
