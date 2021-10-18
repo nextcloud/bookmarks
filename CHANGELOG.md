@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.0.2] - 2021-10-18
+
+## Fixed
+- UX: Improve bookmarked files feature and increase CrawlJob frequency
+
 ## [10.0.1] - 2021-10-06
 
 ### Fixed
@@ -623,6 +628,7 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+[10.0.2]: https://github.com/nextcloud/bookmarks/compare/v10.0.1...v10.0.2
 [10.0.1]: https://github.com/nextcloud/bookmarks/compare/v10.0.0...v10.0.1
 [10.0.0]: https://github.com/nextcloud/bookmarks/compare/v4.4.1...v10.0.0
 [4.4.1]: https://github.com/nextcloud/bookmarks/compare/v4.4.0...v4.4.1
