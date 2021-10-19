@@ -38,6 +38,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 
 ### iOS
 - [Nextbookmark](https://gitlab.com/altepizza/nextbookmark) - A minimal client for iOS ([App Store entry](https://apps.apple.com/app/nextbookmark/id1500340092))
+- [Onion Browser](https://onionbrowser.com) - Tor browser support syncing ([App Store entry](https://apps.apple.com/app/onion-browser/id519296448))
 
 ### Other
 - [uMarks](https://open-store.io/app/umarks.ernesst) - App for Ubuntu touch
