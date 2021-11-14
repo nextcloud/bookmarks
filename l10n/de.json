@@ -184,7 +184,7 @@
     "Folder" : "Ordner",
     "Root Folder" : "Root-Ordner",
     "Save" : "Speichern",
-    "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Netzwerkzugriff ist standardmäßig deaktiviert. Gehen Sie zu den Administratoreinstellungen für die Lesezeichen-App, um das Abrufen von Vorschauen und Favicons zu erlauben.",
+    "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Netzwerkzugriff ist standardmäßig deaktiviert. Gehe zu den Administratoreinstellungen für die Lesezeichen-App, um das Abrufen von Vorschauen und Favicons zu erlauben.",
     "Failed to count unavailable bookmarks" : "Die nicht verfügbare Lesezeichen konnten nicht gezählt werden",
     "Failed to count archived bookmarks" : "Archivierte Lesezeichen konnten nicht gezählt werden",
     "Failed to load bookmark" : "Lesezeichen konnte nicht geladen werden",
