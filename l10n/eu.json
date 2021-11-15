@@ -47,6 +47,7 @@
     "Do you really want to delete this bookmark?" : "Ziur zaude laster-marka hau ezabatu nahi duzula?",
     "Content pending" : "Edukia betetzeke",
     "This content is being downloaded for offline use. Please check back later." : "Eduki hau deskargatzen ari da, offline erabili ahal izateko. Begiratu beranduago.",
+    "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Webean dauden fitxategien laster-markak, argazkiak edo PDFak bezala, automatikoki gordeko dira zure Nextcloud fitxategietan, nahiz eta orria lineaz kanpo egon aurki ditzazun.",
     "Open all selected" : "Ireki hautatutako guztiak",
     "Move selection" : "Mugitu hautapena",
     "Edit tags of selection" : "Editatu hautaturiko etiketak",
