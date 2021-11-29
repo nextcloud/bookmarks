@@ -92,6 +92,7 @@
     "Deleting selection" : "Brisanje izbora",
     "Importing bookmarks" : "Uvažanje zaznamkov",
     "Moving selection" : "Premikanje izbora",
+    "Adding selection to folders" : "Dodajanje izbire za mape",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Premikanje mape %n in nekaterih zaznamkov","Premikanje map %n in nekaterih zaznamkov","Premikanje map %n in nekaterih zaznamkov","Premikanje map %n in nekaterih zaznamkov"],
     "_Moving %n folder_::_Moving %n folders_" : ["Poteka premikanje %n mape","Poteka premikanje %n map","Poteka premikanje %n map","Poteka premikanje %n map"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Poteka premikanje %n zaznamka","Poteka premikanje %n zaznamkov","Poteka premikanje %n zaznamkov","Poteka premikanje %n zaznamkov"],
