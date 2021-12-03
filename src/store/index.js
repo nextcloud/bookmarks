@@ -116,7 +116,12 @@ export default {
 			for (let i = 0; i < path.length; i++) {
 				const shares = getters.getSharesOfFolder(path[i].id)
 				if (shares.length) {
-					return shares[0]
+					const userShares = shares.filter(share => share.type === 0 && share.participant === user.uid)
+					if (userShares.length) {
+						return userShares[0]
+					}
+					const groupShares = shares.filter(share => share.type === 1)
+					return groupShares[0]
 				}
 			}
 			return {}
