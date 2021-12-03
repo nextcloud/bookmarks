@@ -38,7 +38,7 @@ Requirements:
 		<php min-version="7.3" />
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="20" max-version="22" />
+		<nextcloud min-version="20" max-version="23" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>
