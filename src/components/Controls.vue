@@ -7,7 +7,7 @@
 <template>
 	<div :class="['controls', $store.state.public && 'wide']">
 		<div class="controls__left">
-			<Actions v-if="$route.name !== routes.HOME">
+			<Actions v-if="$route.name === routes.FOLDER">
 				<ActionButton @click="onClickBack">
 					<ArrowLeftIcon slot="icon" :size="18" :fill-color="colorMainText" />
 					{{ t('bookmarks', 'Go back') }}
