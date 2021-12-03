@@ -249,7 +249,11 @@ export default {
 	align-items: flex-end;
 }
 
-.item.dropTarget {
+.item.dropTarget--available {
+	background: var(--color-primary-light);
+}
+
+.item.dropTarget--active {
 	background: var(--color-primary-element-light);
 }
 

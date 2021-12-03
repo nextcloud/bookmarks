@@ -186,7 +186,11 @@ export default {
 	top: 4px;
 }
 
-.navigation .dropTarget {
+.navigation .dropTarget--available {
+	background: var(--color-primary-light);
+}
+
+.navigation .dropTarget--active {
 	background: var(--color-primary-element-light);
 }
 </style>

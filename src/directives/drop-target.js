@@ -17,7 +17,7 @@ export default {
 				dropTargetEntered++
 				e.dataTransfer.dropEffect = 'move'
 				if (dropTargetEntered === 1) {
-					el.classList.add('dropTarget')
+					el.classList.add('dropTarget--active')
 				}
 			}
 		})
@@ -31,13 +31,23 @@ export default {
 			// when this is 0, the dropTarget class is removed
 			dropTargetEntered = Math.max(0, dropTargetEntered - 1)
 			if (dropTargetEntered === 0) {
-				el.classList.remove('dropTarget')
+				el.classList.remove('dropTarget--active')
 			}
 		})
 		el.addEventListener('drop', (e) => {
 			dropTargetEntered = 0
 			drop(e)
-			el.classList.remove('dropTarget')
+			el.classList.remove('dropTarget--active')
+		})
+		window.document.body.addEventListener('dragstart', (e) => {
+			if (allowDrop(e)) {
+				el.classList.add('dropTarget--available')
+			}
+		})
+		window.document.body.addEventListener('dragend', (e) => {
+			if (allowDrop(e)) {
+				el.classList.remove('dropTarget--available')
+			}
 		})
 	},
 }
