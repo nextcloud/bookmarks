@@ -107,6 +107,9 @@ export default {
 		getPermissionsForFolder: (state, getters) => folderId => {
 			const path = getters.getFolder(folderId)
 			const user = getCurrentUser()
+			if (!path.length) {
+				return {}
+			}
 			if (user && path[0].userId === user.uid) {
 				return { canRead: true, canWrite: true, canShare: true }
 			}
@@ -123,7 +126,7 @@ export default {
 			if (!bookmark) {
 				return {}
 			}
-			return getters.getPermissionsForFolder(bookmark.folders[0])
+			return bookmark.folders.reduce((perms, folder) => ({ ...perms, ...getters.getPermissionsForFolder(folder) }), {})
 		},
 	},
 }
