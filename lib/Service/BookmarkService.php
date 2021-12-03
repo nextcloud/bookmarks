@@ -70,6 +70,7 @@ class BookmarkService {
 	 * @var TreeCacheManager
 	 */
 	private $hashManager;
+	private $urlNormalizer;
 
 	/**
 	 * BookmarksService constructor.
@@ -86,7 +87,7 @@ class BookmarkService {
 	 * @param IEventDispatcher $eventDispatcher
 	 * @param TreeCacheManager $hashManager
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager, UrlNormalizer $urlNormalizer) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
@@ -98,6 +99,7 @@ class BookmarkService {
 		$this->folders = $folders;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->hashManager = $hashManager;
+		$this->urlNormalizer = $urlNormalizer;
 	}
 
 	/**
@@ -158,12 +160,29 @@ class BookmarkService {
 	 * @throws UnsupportedOperation
 	 */
 	private function _addBookmark($userId, $url, string $title = null, $description = null, array $tags = null, array $folders = []): Bookmark {
+		$bookmark = null;
 		try {
 			$bookmark = $this->bookmarkMapper->findByUrl($userId, $url);
 		} catch (DoesNotExistException $e) {
+			$protocols = '/^(https?|s?ftp):\/\//i';
+			if (!preg_match($protocols, $url)) {
+				// if no allowed protocol is given, evaluate https and https
+				foreach (['https://', 'http://'] as $protocol) {
+					$testUrl = $this->urlNormalizer->normalize($protocol . $url);
+					try {
+						$bookmark = $this->bookmarkMapper->findByUrl($userId, $testUrl);
+						break;
+					} catch (DoesNotExistException $e) {
+						continue;
+					}
+				}
+			}
+		}
+
+		if (!isset($bookmark)) {
 			$bookmark = new Bookmark();
 
-			if (!isset($title,$description)) {
+			if (!isset($title, $description)) {
 				// Inspect web page (do some light scraping)
 				// allow only http(s) and (s)ftp
 				$protocols = '/^(https?|s?ftp)\:\/\//i';
@@ -185,9 +204,10 @@ class BookmarkService {
 			$title = $title ?? $data['basic']['title'] ?? $url;
 			$title = trim($title);
 			$description = $description ?? $data['basic']['description'] ?? '';
+
+			$bookmark->setUrl($url);
 		}
 
-		$bookmark->setUrl($url);
 		if (isset($title)) {
 			$bookmark->setTitle($title);
 		}
