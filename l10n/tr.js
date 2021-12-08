@@ -134,7 +134,7 @@ OC.L10N.register(
     "Please select \"Add to home screen\" in your browser menu" : "Lütfen web tarayıcınızın menüsünden \"Ana sayfaya ekle\" seçin",
     "Title" : "Başlık",
     "Link" : "Bağlantı",
-    "Untitled folder" : "Adlandırılmamış klasör",
+    "Untitled folder" : "Adsız klasör",
     "Tags" : "İşaretler",
     "Select tags and create new ones" : "Etiketleri seçin ve yenilerini ekleyin",
     "Notes" : "Notlar",
