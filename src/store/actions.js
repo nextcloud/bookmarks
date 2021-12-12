@@ -278,10 +278,6 @@ export default {
 				})
 				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
 			}
-			dispatch(actions.RELOAD_VIEW)
-
-			// open sidebar
-			return dispatch(actions.OPEN_BOOKMARK, bookmark.id)
 		} catch (err) {
 			console.error(err)
 			commit(mutations.FETCH_END, 'createBookmark')
