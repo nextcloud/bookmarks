@@ -359,6 +359,9 @@ class BookmarkController extends ApiController {
 			try {
 				/** @var Folder $folderEntity */
 				$folderEntity = $this->folderMapper->find($this->toInternalFolderId($folder));
+				// IMPORTANT:
+				// If we have this user's permission to see the contents of their folder, simply set the userID
+				// to theirs
 				$userId = $folderEntity->getUserId();
 			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
@@ -366,7 +369,7 @@ class BookmarkController extends ApiController {
 			$params->setFolder($this->toInternalFolderId($folder));
 		}
 
-		if ($this->authorizer->getUserId() !== null) {
+		if ($userId !== null) {
 			try {
 				$result = $this->bookmarkMapper->findAll($userId, $params);
 			} catch (UrlParseError $e) {

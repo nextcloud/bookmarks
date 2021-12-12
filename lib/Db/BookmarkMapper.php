@@ -24,6 +24,7 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use PDO;
+use Psr\Log\LoggerInterface;
 use function call_user_func;
 
 /**
@@ -84,7 +85,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param FolderMapper $folderMapper
 	 * @param ShareMapper $shareMapper
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, ITimeFactory $timeFactory, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\ShareMapper $shareMapper) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, ITimeFactory $timeFactory, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\ShareMapper $shareMapper, LoggerInterface $logger) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
@@ -220,6 +221,8 @@ class BookmarkMapper extends QBMapper {
 			->where(
 				$qb->expr()->andX(
 					$qb->expr()->orX(
+						// This is only really used, when not adding folder=XXX in the controller
+						// as that causes $userId to be set to the folder's owner
 						$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
 						$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
 						$qb->expr()->eq('sf2.user_id', $qb->createPositionalParameter($userId))
