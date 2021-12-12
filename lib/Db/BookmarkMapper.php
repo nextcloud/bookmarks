@@ -24,7 +24,6 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use PDO;
-use Psr\Log\LoggerInterface;
 use function call_user_func;
 
 /**
@@ -85,7 +84,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param FolderMapper $folderMapper
 	 * @param ShareMapper $shareMapper
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, ITimeFactory $timeFactory, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\ShareMapper $shareMapper, LoggerInterface $logger) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, ITimeFactory $timeFactory, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\ShareMapper $shareMapper) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
