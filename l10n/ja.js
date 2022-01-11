@@ -96,6 +96,7 @@ OC.L10N.register(
     "Files" : "ファイル",
     "Broken links" : "壊れたリンク",
     "New tag" : "新しいタグ",
+    "Search tags" : "タグを検索",
     "Untagged" : "タグなし",
     "{used} bookmarks of {available} available" : "利用可能ブックマーク数 {available} のうち{used} が使用済み ",
     "No bookmarked files" : "ブックマーク済みファイルがありません",
