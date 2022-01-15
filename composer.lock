@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "brick/math",
-            "version": "0.9.2",
+            "version": "0.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "dff976c2f3487d42c1db75a3b180e2b9f0e72ce0"
+                "reference": "ca57d18f028f84f777b2168cd1911b0dee2343ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/dff976c2f3487d42c1db75a3b180e2b9f0e72ce0",
-                "reference": "dff976c2f3487d42c1db75a3b180e2b9f0e72ce0",
+                "url": "https://api.github.com/repos/brick/math/zipball/ca57d18f028f84f777b2168cd1911b0dee2343ae",
+                "reference": "ca57d18f028f84f777b2168cd1911b0dee2343ae",
                 "shasum": ""
             },
             "require": {
@@ -27,7 +27,7 @@
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.2",
                 "phpunit/phpunit": "^7.5.15 || ^8.5 || ^9.0",
-                "vimeo/psalm": "4.3.2"
+                "vimeo/psalm": "4.9.2"
             },
             "type": "library",
             "autoload": {
@@ -52,15 +52,19 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.9.2"
+                "source": "https://github.com/brick/math/tree/0.9.3"
             },
             "funding": [
+                {
+                    "url": "https://github.com/BenMorel",
+                    "type": "github"
+                },
                 {
                     "url": "https://tidelift.com/funding/github/packagist/brick/math",
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-20T22:51:39+00:00"
+            "time": "2021-08-15T20:50:18+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -802,16 +806,16 @@
         },
         {
             "name": "rowbot/idna",
-            "version": "0.1.4",
+            "version": "0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/idna.git",
-                "reference": "bbf5607a9e17a149fbc6c2761b41b608cbd39795"
+                "reference": "02d94e4caa435547d2027086c57c69d34e6ed4fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/idna/zipball/bbf5607a9e17a149fbc6c2761b41b608cbd39795",
-                "reference": "bbf5607a9e17a149fbc6c2761b41b608cbd39795",
+                "url": "https://api.github.com/repos/TRowbotham/idna/zipball/02d94e4caa435547d2027086c57c69d34e6ed4fa",
+                "reference": "02d94e4caa435547d2027086c57c69d34e6ed4fa",
                 "shasum": ""
             },
             "require": {
@@ -821,19 +825,14 @@
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.5 || ^7.0",
-                "phpstan/phpstan": "^0.12.60",
-                "phpstan/phpstan-deprecation-rules": "^0.12.2",
-                "phpstan/phpstan-strict-rules": "^0.12.2",
+                "phpstan/phpstan": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
                 "squizlabs/php_codesniffer": "^3.5.1",
                 "symfony/cache": "^4.3 || ^5.0"
             },
             "type": "library",
-            "extra": {
-                "idna": {
-                    "unicode_version": "13.0.0"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Rowbot\\Idna\\": "src/",
@@ -861,22 +860,22 @@
             ],
             "support": {
                 "issues": "https://github.com/TRowbotham/idna/issues",
-                "source": "https://github.com/TRowbotham/idna/tree/0.1.4"
+                "source": "https://github.com/TRowbotham/idna/tree/0.1.5"
             },
-            "time": "2021-02-12T00:12:51+00:00"
+            "time": "2022-01-10T19:51:24+00:00"
         },
         {
             "name": "rowbot/punycode",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/punycode.git",
-                "reference": "2327f31c2f0703edf8bcb6f500d7b012c2722552"
+                "reference": "9e01548999895bab4f21894cc1b4a7e8a2d56de7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/punycode/zipball/2327f31c2f0703edf8bcb6f500d7b012c2722552",
-                "reference": "2327f31c2f0703edf8bcb6f500d7b012c2722552",
+                "url": "https://api.github.com/repos/TRowbotham/punycode/zipball/9e01548999895bab4f21894cc1b4a7e8a2d56de7",
+                "reference": "9e01548999895bab4f21894cc1b4a7e8a2d56de7",
                 "shasum": ""
             },
             "require": {
@@ -884,9 +883,9 @@
             },
             "require-dev": {
                 "ext-mbstring": "*",
-                "phpstan/phpstan": "^0.12.20",
-                "phpstan/phpstan-deprecation-rules": "^0.12.2",
-                "phpstan/phpstan-strict-rules": "^0.12.2",
+                "phpstan/phpstan": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
                 "squizlabs/php_codesniffer": "^3.5.1"
             },
@@ -915,22 +914,22 @@
             ],
             "support": {
                 "issues": "https://github.com/TRowbotham/punycode/issues",
-                "source": "https://github.com/TRowbotham/punycode/tree/1.0.2"
+                "source": "https://github.com/TRowbotham/punycode/tree/1.0.3"
             },
-            "time": "2020-07-15T21:39:12+00:00"
+            "time": "2022-01-10T19:43:31+00:00"
         },
         {
             "name": "rowbot/url",
-            "version": "3.1.4",
+            "version": "3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/URL-Parser.git",
-                "reference": "e50331ce2d7975022ede212a57323aee09c29404"
+                "reference": "ad2de536cd0187f9faef35e82ebb7b5e9d41d62f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/e50331ce2d7975022ede212a57323aee09c29404",
-                "reference": "e50331ce2d7975022ede212a57323aee09c29404",
+                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/ad2de536cd0187f9faef35e82ebb7b5e9d41d62f",
+                "reference": "ad2de536cd0187f9faef35e82ebb7b5e9d41d62f",
                 "shasum": ""
             },
             "require": {
@@ -942,9 +941,9 @@
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3 || ^7.0",
-                "phpstan/phpstan": "^0.12.93",
-                "phpstan/phpstan-deprecation-rules": "^0.12.2",
-                "phpstan/phpstan-strict-rules": "^0.12.2",
+                "phpstan/phpstan": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^7.5 || ^8.0 || ^9.0",
                 "slevomat/coding-standard": "^7.0.4",
                 "squizlabs/php_codesniffer": "^3.6",
@@ -979,9 +978,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TRowbotham/URL-Parser/issues",
-                "source": "https://github.com/TRowbotham/URL-Parser/tree/3.1.4"
+                "source": "https://github.com/TRowbotham/URL-Parser/tree/3.1.5"
             },
-            "time": "2021-07-28T03:16:32+00:00"
+            "time": "2022-01-10T19:31:13+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -1198,7 +1197,7 @@
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.23.0",
+            "version": "v1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
@@ -1262,7 +1261,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.23.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.24.0"
             },
             "funding": [
                 {
@@ -5694,5 +5693,5 @@
         "ext-pdo": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
