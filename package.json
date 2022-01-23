@@ -25,7 +25,7 @@
 		"@nextcloud/axios": "^1.9.0",
 		"@nextcloud/dialogs": "^3.1.2",
 		"@nextcloud/event-bus": "^1.2.0",
-		"@nextcloud/initial-state": "^1.2.0",
+		"@nextcloud/initial-state": "^1.2.1",
 		"@nextcloud/router": "^2.0.0",
 		"@nextcloud/vue": "^3.10.2",
 		"@nextcloud/vue-dashboard": "^2.0.1",
