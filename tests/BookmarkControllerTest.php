@@ -280,7 +280,7 @@ class BookmarkControllerTest extends TestCase {
 	public function setupBookmarksWithSharedFolder(): void {
 		$this->setupBookmarksWithPublicFolder();
 		$this->authorizer->setUserId($this->userId);
-		$this->folders->createShare($this->folder1->getId(), $this->otherUserId,\OCP\Share\IShare::TYPE_USER, true, false);
+		$this->folders->createShare($this->folder1->getId(), $this->otherUserId, \OCP\Share\IShare::TYPE_USER, true, false);
 	}
 
 	/**

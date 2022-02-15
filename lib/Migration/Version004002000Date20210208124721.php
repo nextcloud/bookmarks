@@ -92,7 +92,7 @@ class Version004002000Date20210208124721 extends SimpleMigrationStep {
 	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 		// Reset last_preview of all bookmarks to trigger re-visiting them
 		$qb = $this->db->getQueryBuilder();
-		$qb->update('bookmarks')->set('last_preview', $qb->createPositionalParameter(0,IQueryBuilder::PARAM_INT))->execute();
+		$qb->update('bookmarks')->set('last_preview', $qb->createPositionalParameter(0, IQueryBuilder::PARAM_INT))->execute();
 	}
 
 	protected function ensureColumnIsNullable(ISchemaWrapper $schema, string $tableName, string $columnName): bool {
