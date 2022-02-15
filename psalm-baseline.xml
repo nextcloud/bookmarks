@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.8.1@f73f2299dbc59a3e6c4d66cff4605176e728ee69">
+<files psalm-version="4.20.0@f82a70e7edfc6cf2705e9374c8a0b6a974a779ed">
+  <file src="lib/AppInfo/Application.php">
+    <InvalidArgument occurrences="11">
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+      <code>registerEventListener</code>
+    </InvalidArgument>
+  </file>
   <file src="lib/Controller/BookmarkController.php">
     <MissingDependency occurrences="3">
       <code>$this-&gt;rootFolder</code>
@@ -19,11 +34,6 @@
     <UndefinedDocblockClass occurrences="1">
       <code>\OC\DB\Exceptions\DbalException</code>
     </UndefinedDocblockClass>
-  </file>
-  <file src="lib/Db/PublicFolderMapper.php">
-    <InvalidReturnType occurrences="1">
-      <code>Entity</code>
-    </InvalidReturnType>
   </file>
   <file src="lib/Flow/CreateBookmark.php">
     <UndefinedClass occurrences="2">
