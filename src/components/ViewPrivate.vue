@@ -89,7 +89,9 @@ export default {
 		const currentUser = getCurrentUser()
 		if (currentUser.isAdmin) {
 			const scrapingEnabled = await this.getSettingValue('privacy.enableScraping')
-			if (scrapingEnabled !== 'true') {
+			const alreadyShown = window.localStorage && window.localStorage.getItem('bookmarks.scrapingNoteShown')
+			if (scrapingEnabled !== 'true' && alreadyShown !== 'true') {
+				window.localStorage && window.localStorage.setItem('bookmarks.scrapingNoteShown', 'true')
 				this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons.'))
 			}
 		}
