@@ -43,6 +43,7 @@ export const mutations = {
 	SET_SETTING: 'SET_SETTING',
 	SET_VIEW_MODE: 'SET_VIEW_MODE',
 	ADD_SHARE: 'ADD_SHARE',
+	ADD_SHARED_FOLDER: 'ADD_SHARED_FOLDER',
 	REMOVE_SHARE: 'REMOVE_SHARE',
 	ADD_PUBLIC_TOKEN: 'ADD_PUBLIC_TOKEN',
 	REMOVE_PUBLIC_TOKEN: 'REMOVE_PUBLIC_TOKEN',
@@ -217,6 +218,10 @@ export default {
 
 	[mutations.REACHED_END](state) {
 		Vue.set(state.fetchState, 'reachedEnd', true)
+	},
+
+	[mutations.ADD_SHARED_FOLDER](state, folder) {
+		Vue.set(state.sharedFoldersById, folder.id, folder)
 	},
 
 	[mutations.ADD_SHARE](state, share) {

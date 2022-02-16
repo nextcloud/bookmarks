@@ -7,6 +7,7 @@
 
 namespace OCA\Bookmarks\Controller;
 
+use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
@@ -162,6 +163,30 @@ class InternalFoldersController extends ApiController {
 	 */
 	public function getShares($folderId): DataResponse {
 		return $this->controller->getShares($folderId);
+	}
+
+	/**
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 * @throws UnauthenticatedError
+	 */
+	public function findSharedFolders(): DataResponse {
+		return $this->controller->findSharedFolders();
+	}
+
+	/**
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 * @throws UnauthenticatedError
+	 */
+	public function findShares(): DataResponse {
+		return $this->controller->findShares();
 	}
 
 	/**

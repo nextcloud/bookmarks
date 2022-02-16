@@ -208,11 +208,12 @@ export default {
 }
 
 .folder__icon.shared {
-	transform: scale(0.5);
+	transform: scale(0.4);
 	position: absolute;
 	top: 11px;
-	height:auto;
-	width:auto;
+	height: auto;
+	width: auto;
+	left: -2px;
 }
 
 .item--gridview .folder__icon {
@@ -225,7 +226,7 @@ export default {
 }
 
 .item--gridview .folder__icon.shared {
-	transform: translate(100%, 90%) scale(2);
+	transform: translate(87%, 110%) scale(1.5);
 }
 
 .folder__title {

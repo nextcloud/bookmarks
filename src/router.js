@@ -25,6 +25,7 @@ export const privateRoutes = {
 	UNAVAILABLE: 'UNAVAILABLE',
 	ARCHIVED: 'ARCHIVED',
 	BOOKMARKLET: 'bookmarklet',
+	SHARED_FOLDERS: 'SHARED_FOLDERS',
 }
 
 export const publicRoutes = {
@@ -85,6 +86,11 @@ export default new Router({
 		{
 			path: '/archived',
 			name: privateRoutes.ARCHIVED,
+			component: ViewPrivate,
+		},
+		{
+			path: '/shared',
+			name: privateRoutes.SHARED_FOLDERS,
 			component: ViewPrivate,
 		},
 		{

@@ -30,6 +30,7 @@ return [
 		['name' => 'web_view#index', 'url' => '/untagged', 'verb' => 'GET', 'postfix' => 'untagged'],
 		['name' => 'web_view#index', 'url' => '/unavailable', 'verb' => 'GET', 'postfix' => 'unavailable'],
 		['name' => 'web_view#index', 'url' => '/archived', 'verb' => 'GET', 'postfix' => 'archived'],
+		['name' => 'web_view#index', 'url' => '/shared', 'verb' => 'GET', 'postfix' => 'shared'],
 		['name' => 'web_view#index', 'url' => '/bookmarklet', 'verb' => 'GET', 'postfix' => 'bookmarklet'],
 		['name' => 'web_view#service_worker', 'url' => '/service-worker.js', 'verb' => 'GET'],
 		['name' => 'web_view#manifest', 'url' => '/manifest.webmanifest', 'verb' => 'GET'],
@@ -58,6 +59,7 @@ return [
 		['name' => 'internal_tags#rename_tag', 'url' => '/tag/{old_name}', 'verb' => 'PUT'],
 		['name' => 'internal_tags#delete_tag', 'url' => '/tag/{old_name}', 'verb' => 'DELETE'],
 		['name' => 'internal_folders#get_folders', 'url' => '/folder', 'verb' => 'GET'],
+		['name' => 'internal_folders#find_shared_folders', 'url' => '/folder/shared', 'verb' => 'GET'],
 		['name' => 'internal_folders#get_folder', 'url' => '/folder/{folderId}', 'verb' => 'GET'],
 		['name' => 'internal_folders#add_folder', 'url' => '/folder', 'verb' => 'POST'],
 		['name' => 'internal_folders#edit_folder', 'url' => '/folder/{folderId}', 'verb' => 'PUT'],
@@ -75,6 +77,7 @@ return [
 		['name' => 'internal_folders#get_shares', 'url' => '/folder/{folderId}/shares', 'verb' => 'GET'],
 		['name' => 'internal_folders#create_share', 'url' => '/folder/{folderId}/shares', 'verb' => 'POST'],
 		['name' => 'internal_folders#get_share', 'url' => '/share/{shareId}', 'verb' => 'GET'],
+		['name' => 'internal_folders#find_shares', 'url' => '/share', 'verb' => 'GET'],
 		['name' => 'internal_folders#edit_share', 'url' => '/share/{shareId}', 'verb' => 'PUT'],
 		['name' => 'internal_folders#delete_share', 'url' => '/share/{shareId}', 'verb' => 'DELETE'],
 

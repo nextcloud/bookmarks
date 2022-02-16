@@ -59,6 +59,7 @@ export const actions = {
 	FILTER_BY_ARCHIVED: 'FILTER_BY_ARCHIVED',
 	FILTER_BY_TAGS: 'FILTER_BY_TAGS',
 	FILTER_BY_FOLDER: 'FILTER_BY_FOLDER',
+	FILTER_BY_SHARED_FOLDERS: 'FILTER_BY_SHARED_FOLDERS',
 	FILTER_BY_SEARCH: 'FILTER_BY_SEARCH',
 	FETCH_PAGE: 'FETCH_PAGE',
 	FETCH_ALL: 'FETCH_ALL',
@@ -67,6 +68,7 @@ export const actions = {
 	LOAD_SETTING: 'LOAD_SETTING',
 	LOAD_SETTINGS: 'SLOAD_SETTINGS',
 
+	LOAD_SHARES: 'LOAD_SHARES',
 	LOAD_SHARES_OF_FOLDER: 'LOAD_SHARES_OF_FOLDER',
 	CREATE_SHARE: 'CREATE_SHARE',
 	EDIT_SHARE: 'EDIT_SHARE',
@@ -75,7 +77,7 @@ export const actions = {
 	LOAD_PUBLIC_LINK: 'LOAD_PUBLIC_LINK',
 	CREATE_PUBLIC_LINK: 'CREATE_PUBLIC_LINK',
 	DELETE_PUBLIC_LINK: 'DELETE_PUBLIC_LINK',
-
+	LOAD_SHARED_FOLDERS: 'LOAD_SHARED_FOLDERS',
 }
 
 export default {
@@ -1113,6 +1115,44 @@ export default {
 		)
 	},
 
+	[actions.LOAD_SHARES]({ commit, dispatch, state }) {
+		return axios
+			.get(url(state, '/share'))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				const shares = data
+				for (const share of shares) {
+					await commit(mutations.ADD_SHARE, share)
+				}
+			})
+			.catch(err => {
+				console.error(err)
+				// Don't set a notification as this is expected to happen for subfolders of shares that we don't have a RESHAR permission for
+				throw err
+			})
+	},
+	[actions.LOAD_SHARED_FOLDERS]({ commit, dispatch, state }) {
+		return axios
+			.get(url(state, '/folder/shared'))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				const folders = data
+				for (const folder of folders) {
+					await commit(mutations.ADD_SHARED_FOLDER, folder)
+				}
+			})
+			.catch(err => {
+				console.error(err)
+				// Don't set a notification as this is expected to happen for subfolders of shares that we don't have a RESHAR permission for
+				throw err
+			})
+	},
 	[actions.LOAD_SHARES_OF_FOLDER]({ commit, dispatch, state }, folderId) {
 		if (folderId === -1 || folderId === '-1') {
 			return Promise.resolve()

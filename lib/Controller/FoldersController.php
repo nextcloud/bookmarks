@@ -17,6 +17,7 @@ use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
+use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Service\Authorizer;
@@ -567,12 +568,55 @@ class FoldersController extends ApiController {
 	}
 
 	/**
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 * @throws UnauthenticatedError
+	 */
+	public function findSharedFolders(): DataResponse {
+		$permissions = $this->authorizer->getPermissionsForFolder(-1, $this->request);
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+		}
+
+		$shares = $this->shareMapper->findByUser($this->authorizer->getUserId());
+		return new Http\DataResponse(['status' => 'success', 'data' => array_map(function (Share $share) {
+			return [
+				'id' => $share->getFolderId(),
+			];
+		}, $shares)]);
+	}
+
+	/**
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 * @throws UnauthenticatedError
+	 */
+	public function findShares(): DataResponse {
+		$permissions = $this->authorizer->getPermissionsForFolder(-1, $this->request);
+		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+		}
+
+		$shares = $this->shareMapper->findByOwner($this->authorizer->getUserId());
+		return new Http\DataResponse(['status' => 'success', 'data' => array_map(function ($share) {
+			return $share->toArray();
+		}, $shares)]);
+	}
+
+	/**
 	 * @param int $folderId
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
 	public function getShares($folderId): DataResponse {
 		$permissions = $this->authorizer->getPermissionsForFolder($folderId, $this->request);

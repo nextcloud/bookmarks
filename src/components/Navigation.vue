@@ -32,6 +32,15 @@
 					{{ archivedBookmarksCount }}
 				</AppNavigationCounter>
 			</AppNavigationItem>
+			<AppNavigationItem v-if="sharedFoldersCount > 0"
+				key="menu-shared-folders"
+				:to="{ name: routes.SHARED_FOLDERS }"
+				:title="t('bookmarks', 'Shared with you')">
+				<ShareVariantIcon slot="icon" :size="18" :fill-color="colorMainText" />
+				<AppNavigationCounter slot="counter">
+					{{ sharedFoldersCount }}
+				</AppNavigationCounter>
+			</AppNavigationItem>
 			<AppNavigationItem v-if="unavailableBookmarksCount > 0"
 				key="menu-unavailable"
 				:to="{ name: routes.UNAVAILABLE }"
@@ -104,6 +113,7 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import HistoryIcon from 'vue-material-design-icons/History'
 import TagOffIcon from 'vue-material-design-icons/TagOff'
 import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff'
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant'
 import FileDocumentMultipleIcon from 'vue-material-design-icons/FileDocumentMultiple'
 import TagPlusIcon from 'vue-material-design-icons/TagPlus'
 import TagMultipleIcon from 'vue-material-design-icons/TagMultiple'
@@ -129,6 +139,7 @@ export default {
 		TagPlusIcon,
 		TagMultipleIcon,
 		FileDocumentMultipleIcon,
+		ShareVariantIcon,
 	},
 	data() {
 		return {}
@@ -146,6 +157,9 @@ export default {
 		},
 		unavailableBookmarksCount() {
 			return this.$store.state.unavailableCount
+		},
+		sharedFoldersCount() {
+			return Object.keys(this.$store.state.sharedFoldersById).length
 		},
 		archivedBookmarksCount() {
 			return this.$store.state.archivedCount
@@ -181,10 +195,6 @@ export default {
 }
 </script>
 <style>
-.navigation .material-design-icon {
-	position: relative;
-	top: 4px;
-}
 
 .navigation .dropTarget--available {
 	background: var(--color-primary-light);

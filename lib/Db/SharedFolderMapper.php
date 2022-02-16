@@ -189,12 +189,12 @@ class SharedFolderMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByShareAndUser(int $shareId, int $userId): Entity {
+	public function findByShareAndUser(int $shareId, string $userId): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
-			->from('bookmarks_shared_folder', 'p')
+			->from('bookmarks_shared_folders', 'p')
 			->leftJoin('p', 'bookmarks_shared_to_shares', 't', 't.shared_folder_id = p.id')
 			->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($shareId)))
 			->andWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));

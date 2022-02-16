@@ -50,6 +50,7 @@ export default {
 		bookmarks: [],
 		bookmarksById: {},
 		sharesById: {},
+		sharedFoldersById: {},
 		tags: [],
 		folders: [],
 		foldersById: {},

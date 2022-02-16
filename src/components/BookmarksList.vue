@@ -49,7 +49,11 @@
 				<NoBookmarks v-else-if="!loading" />
 			</template>
 			<!-- NON-FOLDER VIEW -->
-			<template v-else-if="bookmarks.length">
+			<template v-else-if="subFolders.length || bookmarks.length">
+				<Folder
+					v-for="folder in subFolders"
+					:key="'folder' + folder.id"
+					:folder="folder" />
 				<Bookmark
 					v-for="bookmark in bookmarks"
 					:key="'bookmark' + bookmark.id"
@@ -102,6 +106,10 @@ export default {
 			return this.$store.getters.getFolderChildren(folderId)
 		},
 		subFolders() {
+			if (this.$route.name === this.routes.SHARED_FOLDERS) {
+				return Object.keys(this.$store.state.sharedFoldersById)
+					.map(folderId => this.$store.getters.getFolder(folderId)[0])
+			}
 			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []
 			}

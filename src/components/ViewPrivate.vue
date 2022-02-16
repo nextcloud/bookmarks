@@ -83,6 +83,7 @@ export default {
 		await this.reloadSettings()
 		this.onRoute()
 		this.reloadFolders()
+		this.reloadSharedFolders()
 		this.reloadCount()
 		this.reloadTags()
 
@@ -117,6 +118,10 @@ export default {
 			case privateRoutes.ARCHIVED:
 				this.$store.dispatch(actions.FILTER_BY_ARCHIVED)
 				break
+			case privateRoutes.SHARED_FOLDERS:
+				await this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
+				this.$store.commit(mutations.FETCH_END, 'bookmarks')
+				break
 			case privateRoutes.BOOKMARK:
 				await this.$store.dispatch(actions.LOAD_BOOKMARK, route.params.bookmark)
 				this.$store.dispatch(actions.OPEN_BOOKMARK, route.params.bookmark)
@@ -144,6 +149,9 @@ export default {
 		},
 		async reloadFolders() {
 			return this.$store.dispatch(actions.LOAD_FOLDERS)
+		},
+		async reloadSharedFolders() {
+			return this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
 		},
 		async reloadSettings() {
 			return this.$store.dispatch(actions.LOAD_SETTINGS)
