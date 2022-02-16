@@ -6,16 +6,13 @@
 
 <template>
 	<div class="bookmarkslist__emptyBookmarks">
-		<EmptyContent v-if="$route.name === routes.ARCHIVED">
-			{{ t('bookmarks', 'No bookmarked files') }}
+		<EmptyContent icon="icon-favorite">
+			{{ t('bookmarks', 'Welcome to Bookmarks') }}
 			<template #desc>
-				{{ t('bookmarks', 'Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.') }}
-			</template>
-		</EmptyContent>
-		<EmptyContent v-else icon="icon-favorite">
-			{{ t('bookmarks', 'No bookmarks here') }}
-			<template v-if="!isPublic" #desc>
-				<p>{{ t('bookmarks', 'Add bookmarks manually or import bookmarks from a HTML file.') }}</p>
+				<p>{{ t('bookmarks', 'This app allows you to manage links to your favorite places on the web.') }}</p>
+				<p />
+				<p>{{ t('bookmarks', 'Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app.') }}</p>
+				<p />
 				<input ref="import"
 					type="file"
 					class="import"
@@ -27,6 +24,9 @@
 				<button @click="onImportOpen">
 					<span :class="{'icon-upload': !importing, 'icon-loading-small': importing}" /> {{ t('bookmarks', 'Import bookmarks') }}
 				</button>
+				<button @click="onSyncOpen">
+					<SyncIcon :fill-color="colorMainText" :size="18" :style="{opacity: 0.5}" /> {{ t('bookmarks', 'Sync with your browser') }}
+				</button>
 			</template>
 		</EmptyContent>
 	</div>
@@ -34,11 +34,13 @@
 
 <script>
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
-import { actions } from '../store'
+import { actions, mutations } from '../store'
 import { privateRoutes } from '../router'
+import SyncIcon from 'vue-material-design-icons/Sync'
+
 export default {
-	name: 'NoBookmarks',
-	components: { EmptyContent },
+	name: 'FirstRun',
+	components: { EmptyContent, SyncIcon },
 	data() {
 		return { importing: false }
 	},
@@ -49,10 +51,13 @@ export default {
 	},
 	methods: {
 		onCreateOpen() {
-			this.$store.commit(actions.CREATE_BOOKMARK, true)
+			this.$store.commit(mutations.DISPLAY_NEW_BOOKMARK, true)
 		},
 		onImportOpen() {
 			this.$refs.import.click()
+		},
+		onSyncOpen() {
+			window.open('https://floccus.org', '_blank')
 		},
 		async onImportSubmit(e) {
 			this.importing = true

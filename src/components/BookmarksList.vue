@@ -46,7 +46,8 @@
 							:bookmark="bookmark" />
 					</template>
 				</template>
-				<NoBookmarks v-else-if="!loading" />
+				<NoBookmarks v-else-if="!loading && allBookmarksCount > 0" />
+				<FirstRun v-else-if="!loading" />
 			</template>
 			<!-- NON-FOLDER VIEW -->
 			<template v-else-if="subFolders.length || bookmarks.length">
@@ -59,7 +60,8 @@
 					:key="'bookmark' + bookmark.id"
 					:bookmark="bookmark" />
 			</template>
-			<NoBookmarks v-else-if="!loading" />
+			<NoBookmarks v-else-if="!loading && allBookmarksCount > 0" />
+			<FirstRun v-else-if="!loading" />
 			<div v-if="showLoading" class="bookmarkslist__loading">
 				<figure class="icon-loading" />
 			</div>
@@ -74,10 +76,12 @@ import CreateBookmark from './CreateBookmark'
 import CreateFolder from './CreateFolder'
 import { actions } from '../store'
 import NoBookmarks from './NoBookmarks'
+import FirstRun from './FirstRun'
 
 export default {
 	name: 'BookmarksList',
 	components: {
+		FirstRun,
 		NoBookmarks,
 		Bookmark,
 		Folder,
@@ -97,6 +101,9 @@ export default {
 		}
 	},
 	computed: {
+		allBookmarksCount() {
+			return this.$store.state.countsByFolder[-1]
+		},
 		children() {
 			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []
