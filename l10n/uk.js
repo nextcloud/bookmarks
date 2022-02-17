@@ -11,6 +11,7 @@ OC.L10N.register(
     "Select all" : "Вибрати все",
     "New" : "Створити",
     "New folder" : "Нова тека",
+    "Add a bookmark" : "Додати закладку",
     "Submit" : "Гаразд",
     "Cancel" : "Скасувати",
     "Recent" : "Нещодавні",
@@ -30,7 +31,6 @@ OC.L10N.register(
     "Link copied" : "Посилання скопійовано",
     "Privacy" : "Конфіденційність",
     "Failed to save settings" : "Неможливо зберегти налаштування",
-    "Add a bookmark" : "Додати закладку",
     "This URL is already bookmarked! Overwrite?" : "Цей URL вже є в закладках! Перезаписати?",
     "Folder" : "Папка",
     "Save" : "Зберегти"

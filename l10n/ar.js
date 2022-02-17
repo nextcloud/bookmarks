@@ -9,6 +9,7 @@ OC.L10N.register(
     "Select all" : "تحديد الكل",
     "New" : "جديد",
     "New folder" : "مجلد جديد",
+    "Add a bookmark" : "إضافة فاصلة مرجعية",
     "Cancel" : "إلغاء",
     "Recent" : "الحديثة",
     "Import" : "استيراد",
@@ -26,7 +27,6 @@ OC.L10N.register(
     "Link copied" : "نُسِخ الرابط",
     "Privacy" : "الخصوصية",
     "Previews" : "المعاينات",
-    "Add a bookmark" : "إضافة فاصلة مرجعية",
     "Folder" : "مجلد",
     "Save" : "حفظ"
 },

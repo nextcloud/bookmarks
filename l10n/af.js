@@ -11,6 +11,7 @@ OC.L10N.register(
     "Select all" : "Kies alle",
     "New" : "Nuut",
     "New folder" : "Nuwe vouer",
+    "Add a bookmark" : "Voeg 'n boekmerk by",
     "Cancel" : "Kanselleer",
     "Recent" : "Onlangs",
     "Import" : "Voer In",
@@ -28,7 +29,6 @@ OC.L10N.register(
     "Link copied" : "Skakel gekopieer",
     "Privacy" : "Privaatheid",
     "Previews" : "Voorskoue",
-    "Add a bookmark" : "Voeg 'n boekmerk by",
     "This URL is already bookmarked! Overwrite?" : "'n Boekmerk van die URL bestaan reeds. Skryf oor?",
     "Folder" : "Vouer",
     "Save" : "Stoor"

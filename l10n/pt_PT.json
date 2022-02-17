@@ -7,6 +7,7 @@
     "Select all" : "Seleccionar todos",
     "New" : "Novo",
     "New folder" : "Nova pasta",
+    "Add a bookmark" : "Adicionar um marcador",
     "Submit" : "Submeter",
     "Cancel" : "Cancelar",
     "All bookmarks" : "Todos os marcadores",
@@ -26,7 +27,6 @@
     "Allow editing" : "Permitir edição",
     "Link copied" : "Link copiado",
     "Privacy" : "Privacidade",
-    "Add a bookmark" : "Adicionar um marcador",
     "Folder" : "Pasta",
     "Save" : "Guardar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

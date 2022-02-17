@@ -11,6 +11,7 @@ OC.L10N.register(
     "Select all" : "Seleccionar todo",
     "New" : "Nuevo",
     "New folder" : "Carpeta nueva",
+    "Add a bookmark" : "Agregar un marcador",
     "Submit" : "Enviar",
     "Cancel" : "Cancelar",
     "Recent" : "Reciente",
@@ -29,7 +30,6 @@ OC.L10N.register(
     "Allow editing" : "Permitir edición",
     "Link copied" : "Enlace copiado",
     "Privacy" : "Privacidad",
-    "Add a bookmark" : "Agregar un marcador",
     "This URL is already bookmarked! Overwrite?" : "¡Esta URL ya está marcada! ¿Quieres sobreescribirlo?",
     "Folder" : "Carpeta",
     "Save" : "Guardar"

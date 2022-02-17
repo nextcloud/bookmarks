@@ -11,6 +11,7 @@ OC.L10N.register(
     "Select all" : "ყველას არჩევა",
     "New" : "ახალი",
     "New folder" : "ახალი დირექტორია",
+    "Add a bookmark" : "სანიშნის დამატება",
     "Submit" : "გაგზავნა",
     "Cancel" : "უარყოფა",
     "Recent" : "ახალი",
@@ -28,7 +29,6 @@ OC.L10N.register(
     "Copy link" : "ბმულის კოპირება",
     "Allow editing" : "შეცვლის ნების დართვა",
     "Privacy" : "კონფიდენციალურობა",
-    "Add a bookmark" : "სანიშნის დამატება",
     "This URL is already bookmarked! Overwrite?" : "ეს URL უკვე მონიშნულია! გადავწეროთ?",
     "Folder" : "დირექტორია",
     "Save" : "შენახვა"

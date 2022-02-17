@@ -9,6 +9,7 @@ OC.L10N.register(
     "Select all" : "Seleccionar todos",
     "New" : "Novo",
     "New folder" : "Nova pasta",
+    "Add a bookmark" : "Adicionar um marcador",
     "Submit" : "Submeter",
     "Cancel" : "Cancelar",
     "All bookmarks" : "Todos os marcadores",
@@ -28,7 +29,6 @@ OC.L10N.register(
     "Allow editing" : "Permitir edição",
     "Link copied" : "Link copiado",
     "Privacy" : "Privacidade",
-    "Add a bookmark" : "Adicionar um marcador",
     "Folder" : "Pasta",
     "Save" : "Guardar"
 },
