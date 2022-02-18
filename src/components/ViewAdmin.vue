@@ -94,7 +94,7 @@
 			<h3>{{ t('bookmarks', 'Pageres CLI') }}</h3>
 			<p>
 				<a href="https://github.com/sindresorhus/pageres-cli" target="_blank">{{
-					t('bookmarks', 'Simply install the pageres cli on your server and bookmarks will find it.')
+					t('bookmarks', 'Simply install the Pageres CLI on your server and bookmarks will find it.')
 				}}</a>
 			</p>
 		</SettingsSection>
