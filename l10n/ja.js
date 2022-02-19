@@ -157,7 +157,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine APIキー",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "サーバーにpageres cliをインストールすれば、ブックマーク アプリが利用します。",
     "Failed to load settings" : "設定の読込に失敗しました",
     "Failed to save settings" : "設定の保存に失敗しました",
     "This URL is already bookmarked! Overwrite?" : "このURLはすでにブックマークされています! 上書きしますか?",

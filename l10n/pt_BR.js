@@ -176,7 +176,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Chave da API ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Basta instalar os pagers cli em seu servidor e os favoritos irão encontrá-lo.",
     "Failed to load settings" : "Erro ao carregar configurações",
     "Failed to save settings" : "Erro ao salvar configurações",
     "This URL is already bookmarked! Overwrite?" : "Esta URL já está nos seus favoritos. Sobrescrever?",

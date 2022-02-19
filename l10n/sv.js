@@ -168,7 +168,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API nyckel",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Installera pageres cli på din server och appen kommer att hitta den.",
     "Failed to load settings" : "Kunde inte läsa in inställningar",
     "Failed to save settings" : "Kunde inte spara inställningarna",
     "This URL is already bookmarked! Overwrite?" : "Den här webbadressen är redan bokmärkt! Skriva över?",

@@ -174,7 +174,6 @@
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Clau de l’API de ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Simplement instal·leu els pageres cli al vostre servidor i els marcadors el trobaran.",
     "Failed to load settings" : "Ha fallat carregar la configuració",
     "Failed to save settings" : "Ha fallat desar la configuració",
     "This URL is already bookmarked! Overwrite?" : "Ja teniu aquest URL a les adreces d'interès. Voleu sobreescriure'l?",

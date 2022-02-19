@@ -168,7 +168,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Crae ScreenshotMachine API ",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Installa in manera simpre sa lìnia de cumandu de pageres in su serbidore tuo e is signalibros l'ant a agatare.",
     "Failed to load settings" : "No at fatuu a carrigare is impostatziones",
     "Failed to save settings" : "No at fatu a sarvare is informatziones",
     "This URL is already bookmarked! Overwrite?" : "Custu URL est giai unu signalibru! Ddu cheres subraiscrìere?",

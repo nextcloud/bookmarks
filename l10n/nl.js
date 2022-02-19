@@ -176,7 +176,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API key",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Installeer gewoon de pageres cli op je server en de bladwijzers zullen het vinden.",
     "Failed to load settings" : "Kon instellingen niet laden",
     "Failed to save settings" : "Kon instellingen niet opslaan",
     "This URL is already bookmarked! Overwrite?" : "Deze URL is al als bladwijzer aangemerkt! Overschrijven?",

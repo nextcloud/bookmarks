@@ -159,7 +159,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API key",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Απλά εγκαταστήστε το pageres cli στο διακομιστή σας και οι σελιδοδείκτες θα το βρουν.",
     "Failed to load settings" : "Αποτυχία φόρτωσης ρυθμίσεων",
     "Failed to save settings" : "Αποτυχία αποθήκευσης ρυθμίσεων",
     "This URL is already bookmarked! Overwrite?" : "Υπάρχει ήδη σελιδοδείκτης με αυτή τη διεύθυνση URL! Αντικατάσταση;",

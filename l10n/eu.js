@@ -176,7 +176,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API-aren gakoa",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Instalatu pageres cli zerbitzarian eta laster-markak aurkituko ditu.",
     "Failed to load settings" : "Huts egin du ezarpenak kargatzean",
     "Failed to save settings" : "Huts egin du ezarpenak gordetzean",
     "This URL is already bookmarked! Overwrite?" : "URL hau dagoeneko laster-marketan dago. Gainidatzi nahi duzu?",

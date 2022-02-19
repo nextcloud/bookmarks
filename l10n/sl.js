@@ -171,7 +171,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Ključ vmesnika API ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Enostavno namestite vmesnik pozivnika cli na strežnik in program bo sam našel povezavo.",
     "Failed to load settings" : "Nalaganje nastavitev je spodletelo.",
     "Failed to save settings" : "Shranjevanje nastavitev je spodletelo",
     "This URL is already bookmarked! Overwrite?" : "Ta naslov URL je že dodan med zaznamke. Ali ga želite prepisati?",

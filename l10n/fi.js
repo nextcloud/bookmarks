@@ -176,7 +176,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachinen API-avain",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Asenna pageres-cli palvelimellesi ja sovellus löytää sen.",
     "Failed to load settings" : "Asetusten lataaminen epäonnistui",
     "Failed to save settings" : "Asetusten tallentaminen epäonnistui",
     "This URL is already bookmarked! Overwrite?" : "Osoite on jo lisätty kirjanmerkkeihin. Korvataanko se?",

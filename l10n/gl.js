@@ -131,7 +131,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Clave da API do ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the pageres cli on your server and bookmarks will find it." : "Simplemente instale o «pageres cli» no seu servidor e os marcadores atoparano.",
     "Failed to load settings" : "Produciuse un fallo ao cargar os axustes",
     "Failed to save settings" : "Produciuse un fallo ao gardar os axustes",
     "This URL is already bookmarked! Overwrite?" : "Este URL xa existe como marcador! Sobrescribilo?",
