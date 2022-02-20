@@ -6,6 +6,7 @@
 
 import Vue from 'vue'
 import axios from '@nextcloud/axios'
+import { findFolder } from './findFolder'
 
 export const mutations = {
 	SET_AUTH_TOKEN: 'SET_AUTH_TOKEN',
@@ -39,6 +40,7 @@ export const mutations = {
 	SET_ERROR: 'SET_ERROR',
 	SET_NOTIFICATION: 'SET_NOTIFICATION',
 	SET_FOLDERS: 'SET_FOLDERS',
+	MOVE_FOLDER: 'MOVE_FOLDER',
 	SET_SIDEBAR: 'SET_SIDEBAR',
 	SET_SETTING: 'SET_SETTING',
 	SET_VIEW_MODE: 'SET_VIEW_MODE',
@@ -74,6 +76,22 @@ export default {
 	},
 	[mutations.SET_FOLDERS](state, folders) {
 		state.folders = sortFolders(folders)
+	},
+	[mutations.MOVE_FOLDER](state, { folder, target }) {
+		const currentFolder = findFolder(folder, state.folders)[0]
+		const oldParent = findFolder(currentFolder.parent_folder, state.folders)[0]
+		const index = oldParent.children.indexOf(currentFolder)
+		oldParent.children.splice(index, 1)
+		const newParent = findFolder(target, state.folders)[0]
+		newParent.children.push(currentFolder)
+
+		if (state.childrenByFolder[oldParent.id]) {
+			const index = state.childrenByFolder[oldParent.id].findIndex(item => item.id === currentFolder.id)
+			state.childrenByFolder[oldParent.id].splice(index, 1)
+		}
+		if (state.childrenByFolder[newParent.id]) {
+			state.childrenByFolder[newParent.id].push({ type: 'folder', id: currentFolder.id })
+		}
 	},
 	[mutations.ADD_TAG](state, tag) {
 		state.tags.push({ name: tag, count: 0 })

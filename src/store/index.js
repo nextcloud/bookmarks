@@ -11,6 +11,7 @@ import Actions from './actions'
 import { privateRoutes, publicRoutes } from '../router'
 import { generateUrl } from '@nextcloud/router'
 import { getCurrentUser } from '@nextcloud/auth'
+import { findFolder } from './findFolder'
 
 Vue.use(Vuex)
 
@@ -53,7 +54,6 @@ export default {
 		sharedFoldersById: {},
 		tags: [],
 		folders: [],
-		foldersById: {},
 		childrenByFolder: {},
 		tokensByFolder: {},
 		countsByFolder: {},
@@ -135,25 +135,4 @@ export default {
 			return bookmark.folders.reduce((perms, folder) => ({ ...perms, ...getters.getPermissionsForFolder(folder) }), {})
 		},
 	},
-}
-
-/**
- * @param id
- * @param children
- */
-function findFolder(id, children) {
-	if (!children || !children.length) return []
-	const folders = children.filter(folder => Number(folder.id) === Number(id))
-	if (folders.length) {
-		return folders
-	} else {
-		for (const child of children) {
-			const folders = findFolder(id, child.children)
-			if (folders.length) {
-				folders.push(child)
-				return folders
-			}
-		}
-		return []
-	}
 }

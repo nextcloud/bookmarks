@@ -759,32 +759,28 @@ export default {
 					}
 					const oldParent = folder.parent_folder
 					folder.parent_folder = folderId
+					commit(mutations.MOVE_FOLDER, { folder: folder.id, target: folderId })
 					await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
-					await dispatch(
+					dispatch(
 						actions.LOAD_FOLDER_CHILDREN_ORDER,
 						oldParent
 					)
 				},
 				10
 			)
-			await Promise.all([
-				state.selection.folders.length
-					? dispatch(actions.LOAD_FOLDERS)
-					: Promise.resolve(),
-				Parallel.each(
-					state.selection.bookmarks,
-					bookmark => {
-						commit(mutations.REMOVE_BOOKMARK, bookmark.id)
-						return dispatch(actions.MOVE_BOOKMARK, {
-							oldFolder:
-							bookmark.folders[bookmark.folders.length - 1], // FIXME This is veeeery ugly and will cause issues. Inevitably.
-							newFolder: folderId,
-							bookmark: bookmark.id,
-						})
-					},
-					10
-				),
-			])
+			await Parallel.each(
+				state.selection.bookmarks,
+				bookmark => {
+					commit(mutations.REMOVE_BOOKMARK, bookmark.id)
+					return dispatch(actions.MOVE_BOOKMARK, {
+						oldFolder:
+						bookmark.folders[bookmark.folders.length - 1], // FIXME This is veeeery ugly and will cause issues. Inevitably.
+						newFolder: folderId,
+						bookmark: bookmark.id,
+					})
+				},
+				10
+			)
 
 			// Because we're possibly moving across share boundaries we need to recount
 			dispatch(actions.COUNT_BOOKMARKS, -1)
