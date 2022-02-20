@@ -34,7 +34,7 @@
 					</template>
 				</template>
 				<!-- FOLDER VIEW WITH NORMAL SORTING -->
-				<template v-else-if="(subFolders.length || bookmarks.length) && !loading">
+				<template v-else-if="(subFolders.length || bookmarks.length) && !showLoading">
 					<Folder
 						v-for="folder in subFolders"
 						:key="'folder' + folder.id"
@@ -46,8 +46,8 @@
 							:bookmark="bookmark" />
 					</template>
 				</template>
-				<NoBookmarks v-else-if="!loading && allBookmarksCount > 0" />
-				<FirstRun v-else-if="!loading" />
+				<NoBookmarks v-else-if="!showLoading && !loading && allBookmarksCount > 0" />
+				<FirstRun v-else-if="!showLoading && !loading" />
 			</template>
 			<!-- NON-FOLDER VIEW -->
 			<template v-else-if="subFolders.length || bookmarks.length">
@@ -60,8 +60,8 @@
 					:key="'bookmark' + bookmark.id"
 					:bookmark="bookmark" />
 			</template>
-			<NoBookmarks v-else-if="!loading && allBookmarksCount > 0" />
-			<FirstRun v-else-if="!loading" />
+			<NoBookmarks v-else-if="!showLoading && !loading && allBookmarksCount > 0" />
+			<FirstRun v-else-if="!showLoading && !loading" />
 			<div v-if="showLoading" class="bookmarkslist__loading">
 				<figure class="icon-loading" />
 			</div>
@@ -88,19 +88,16 @@ export default {
 		CreateBookmark,
 		CreateFolder,
 	},
-	props: {
-		bookmarks: {
-			type: Array,
-			required: true,
-		},
-	},
 	data() {
 		return {
-			showLoading: true,
+			showLoading: false,
 			loadingTimeout: null,
 		}
 	},
 	computed: {
+		bookmarks() {
+			return this.$store.state.bookmarks
+		},
 		allBookmarksCount() {
 			return this.$store.state.countsByFolder[-1]
 		},
