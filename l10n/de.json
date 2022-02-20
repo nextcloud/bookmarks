@@ -179,6 +179,7 @@
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine-API-Key",
     "Pageres CLI" : "Pageres-Komandozeile",
+    "Simply install the Pageres CLI on your server and bookmarks will find it." : "Installieren Sie einfach die Pageres-Komandozeile auf Deinem Server und Lesezeichen werden sie finden.",
     "Failed to load settings" : "Einstellungen konnten nicht geladen werden",
     "Failed to save settings" : "Einstellungen konnten nicht gespeichert werden",
     "This URL is already bookmarked! Overwrite?" : "Diese URL ist bereits als Lesezeichen gespeichert! Überschreiben?",

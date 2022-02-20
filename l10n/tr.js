@@ -181,6 +181,7 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API anahtarı",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and bookmarks will find it." : "Sunucunuza Pageres CLI komut satırı uygulamasını kurarsanız yer imleri uygulaması onu bulup kullanır.",
     "Failed to load settings" : "Ayarlar yüklenemedi",
     "Failed to save settings" : "Ayarlar kaydedilemedi",
     "This URL is already bookmarked! Overwrite?" : "Bu adres zaten yer imlerine eklenmiş! Üzerine yazılsın mı?",
