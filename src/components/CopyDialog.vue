@@ -42,7 +42,6 @@ export default {
 			this.$store.commit(mutations.DISPLAY_COPY_DIALOG, false)
 			await this.$store.dispatch(actions.COPY_SELECTION, folderId)
 			this.$store.commit(mutations.RESET_SELECTION)
-			this.$store.dispatch(actions.RELOAD_VIEW)
 		},
 		onClose() {
 			this.$store.commit(mutations.DISPLAY_COPY_DIALOG, false)

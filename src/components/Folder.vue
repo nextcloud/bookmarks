@@ -192,7 +192,6 @@ export default {
 			e.preventDefault()
 			await this.$store.dispatch(actions.MOVE_SELECTION, this.folder.id)
 			this.$store.commit(mutations.RESET_SELECTION)
-			await this.$store.dispatch(actions.RELOAD_VIEW)
 		},
 	},
 }

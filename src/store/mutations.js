@@ -153,6 +153,17 @@ export default {
 	[mutations.REMOVE_BOOKMARK](state, id) {
 		const index = state.bookmarks.findIndex(bookmark => bookmark.id === id)
 		if (index !== -1) {
+			const bookmark = state.bookmarks[index]
+			bookmark.folders.forEach(folderId => {
+				if (!state.childrenByFolder[folderId]) {
+					return
+				}
+				const index = state.childrenByFolder[folderId].findIndex(bookmark => bookmark.id === id)
+				if (index !== -1) {
+					return
+				}
+				state.childrenByFolder[folderId].splice(index, 1)
+			})
 			state.bookmarks.splice(index, 1)
 			Vue.delete(state.bookmarksById, id)
 		}

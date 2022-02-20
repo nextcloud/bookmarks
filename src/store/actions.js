@@ -768,7 +768,9 @@ export default {
 				10
 			)
 			await Promise.all([
-				dispatch(actions.LOAD_FOLDERS),
+				state.selection.folders.length
+					? dispatch(actions.LOAD_FOLDERS)
+					: Promise.resolve(),
 				Parallel.each(
 					state.selection.bookmarks,
 					bookmark => {
@@ -785,11 +787,12 @@ export default {
 			])
 
 			// Because we're possibly moving across share boundaries we need to recount
-			await dispatch(actions.COUNT_BOOKMARKS, -1)
+			dispatch(actions.COUNT_BOOKMARKS, -1)
 
 			commit(mutations.FETCH_END, 'moveSelection')
 		} catch (err) {
 			console.error(err)
+			console.error(err.list)
 			commit(mutations.FETCH_END, 'moveSelection')
 			commit(
 				mutations.SET_ERROR,
@@ -812,7 +815,7 @@ export default {
 					}
 					const oldParent = folder.parent_folder
 					folder.parent_folder = folderId
-					await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
+					await dispatch(actions.SAVE_FOLDER, folder.id) // _s children order for new parent
 					await dispatch(
 						actions.LOAD_FOLDER_CHILDREN_ORDER,
 						oldParent

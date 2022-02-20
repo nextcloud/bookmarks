@@ -9,7 +9,7 @@
 		<Navigation />
 		<AppContent>
 			<Controls />
-			<BookmarksList :bookmarks="bookmarks" />
+			<BookmarksList />
 		</AppContent>
 		<SidebarBookmark />
 		<SidebarFolder />
@@ -57,9 +57,6 @@ export default {
 		}
 	},
 	computed: {
-		bookmarks() {
-			return this.$store.state.bookmarks
-		},
 		folders() {
 			return this.$store.state.folders
 		},
