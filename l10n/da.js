@@ -51,6 +51,7 @@ OC.L10N.register(
     "Screeenly" : "Screeenly",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Screeenly API nøgle",
+    "Simply install the Pageres CLI on your server and bookmarks will find it." : "Du skal blot installere Pageres CLI på din server, så finder bogmærker den.",
     "Failed to load settings" : "Fejl ved indlæsning af indstillinger",
     "Failed to save settings" : "Kunne ikke gemme indstillinger",
     "This URL is already bookmarked! Overwrite?" : "Denne URL har allerede et bogmærke. Overskriv?",
