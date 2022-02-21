@@ -103,6 +103,7 @@
 
 <script>
 import SettingsSection from '@nextcloud/vue/dist/Components/SettingsSection'
+import { loadState } from '@nextcloud/initial-state'
 
 const SETTINGS = [
 	'previews.screenly.url',
@@ -117,8 +118,14 @@ export default {
 	name: 'ViewAdmin',
 	components: { SettingsSection },
 	data() {
+		const settings = loadState('bookmarks', 'adminSettings')
+		for (const setting of SETTINGS) {
+			if (['true', 'false'].includes(settings[setting])) {
+				settings[setting] = (settings[setting] === 'true')
+			}
+		}
 		return {
-			settings: SETTINGS.reduce((obj, key) => ({ ...obj, [key]: '' }), {}),
+			settings,
 			loading: false,
 			success: false,
 			error: '',
@@ -132,20 +139,6 @@ export default {
 			if (!error) return
 			OC.Notification.showTemporary(error)
 		},
-	},
-
-	async created() {
-		try {
-			for (const setting of SETTINGS) {
-				this.settings[setting] = await this.getValue(setting)
-				if (['true', 'false'].includes(this.settings[setting])) {
-					this.settings[setting] = (this.settings[setting] === 'true')
-				}
-			}
-		} catch (e) {
-			this.error = this.t('bookmarks', 'Failed to load settings')
-			throw e
-		}
 	},
 
 	methods: {

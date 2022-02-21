@@ -9,6 +9,7 @@ namespace OCA\Bookmarks\Settings;
 
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
+use OCP\IInitialStateService;
 use OCP\IL10N;
 use OCP\Settings\ISettings;
 
@@ -18,31 +19,56 @@ class AdminSettings implements ISettings {
 
 	/** @var IL10N */
 	private $l;
+	/**
+	 * @var IInitialStateService
+	 */
+	private $initialState;
+
+	/**
+	 * @var string
+	 */
+	private $appName;
+
+	public const SETTINGS = [
+		'previews.screenly.url',
+		'previews.screenly.token',
+		'previews.webshot.url',
+		'previews.screenshotmachine.key',
+		'privacy.enableScraping',
+		'performance.maxBookmarksperAccount',
+	];
 
 	/**
 	 * Admin constructor.
 	 *
 	 * @param IConfig $config
 	 * @param IL10N $l
+	 * @param IInitialStateService $initialState
 	 */
 	public function __construct(
+		$appName,
 		IConfig $config,
-		IL10N $l
+		IL10N   $l, IInitialStateService $initialState
 	) {
+		$this->appName = $appName;
 		$this->config = $config;
 		$this->l = $l;
+		$this->initialState = $initialState;
 	}
 
 	/**
 	 * @return TemplateResponse
 	 */
 	public function getForm() {
-		$parameters = [
-			'previews.screenly.url' => $this->config->getAppValue('bookmarks', 'previews.screenly.url', 'https://secure.screeenly.com/api/v1/fullsize'),
-			'previews.screenly.token' => $this->config->getAppValue('bookmarks', 'previews.screenly.token', ''),
-		];
+		$settings = [];
 
-		return new TemplateResponse('bookmarks', 'admin', $parameters);
+		foreach (self::SETTINGS as $settingId) {
+			$settings[$settingId] = $this->config->getAppValue('bookmarks', $settingId);
+		}
+
+		$this->initialState->provideInitialState($this->appName, 'adminSettings', $settings);
+
+		return new TemplateResponse('bookmarks', 'admin');
 	}
 
 	/**
