@@ -181,6 +181,7 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Klucz API ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it." : "Po prostu zainstaluj Pageres CLI na swoim serwerze, a Zakładki go znajdą.",
     "Failed to save settings" : "Nie udało się zapisać ustawień",
     "Failed to load settings" : "Nie udało się wczytać ustawień",
     "This URL is already bookmarked! Overwrite?" : "Ten URL jest już w zakładkach! Nadpisać?",
