@@ -179,6 +179,7 @@
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Kľúč k API služby ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it." : "Stačí nainštalovať Pageres CLI na server a Záložky si ho nájdu.",
     "Failed to save settings" : "Nepodarilo sa uložiť nastavenia",
     "Failed to load settings" : "Nepodarilo sa načítať nastavenia",
     "This URL is already bookmarked! Overwrite?" : "Táto webová adresa sa už v záložkách nachádza. Chcete ju prepísať?",
