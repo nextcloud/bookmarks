@@ -16,6 +16,7 @@ use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Flow\CreateBookmark;
+use OCA\Bookmarks\Hooks\BeforeTemplateRenderedListener;
 use OCA\Bookmarks\Hooks\UserGroupListener;
 use OCA\Bookmarks\Middleware\ExceptionMiddleware;
 use OCA\Bookmarks\Search\Provider;
@@ -24,6 +25,7 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
+use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
@@ -69,6 +71,9 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
 		$context->registerEventListener(UserAddedEvent::class, UserGroupListener::class);
 		$context->registerEventListener(UserRemovedEvent::class, UserGroupListener::class);
+
+		$context->registerEventListener(BeforeTemplateRenderedEvent::class, BeforeTemplateRenderedListener::class);
+
 		$context->registerMiddleware(ExceptionMiddleware::class);
 	}
 

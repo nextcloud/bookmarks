@@ -33,6 +33,7 @@
 		"clone-deep": "^4.0.1",
 		"copy-text-to-clipboard": "^3.0.1",
 		"humanize-duration": "^3.27.1",
+		"linkify-it": "^3.0.3",
 		"lodash": "^4.17.21",
 		"sanitize-html": "^2.7.0",
 		"vue": "^2.6.14",
