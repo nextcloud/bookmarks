@@ -17,8 +17,9 @@ This app provides you with a web interface for collecting and organizing bookmar
 - ☠ Easily find broken links
 - 📔 All your links are automatically archived for full-text search and in case they are depublished
 - 📲 Access your bookmarks anywhere, on desktop Browsers and on your phone, via a variety of sync clients
-- 💼 Built-in Dashboard widgets for frequent and recent links
 - ⚛ Easily generate public and private RSS feeds of your collections
+- 💬 Create new bookmarks directly from within Nextcloud 
+- 💼 Built-in Dashboard widgets for frequent and recent links
 
 ## Third-party clients
 
