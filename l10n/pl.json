@@ -208,6 +208,8 @@
     "Failed to load setting {key}" : "Nie udało się wczytać ustawienia {key}",
     "Failed to update share {shareId}" : "Nie udało się zaktualizować udostępnienia {shareId}",
     "Failed to delete share {shareId}" : "Nie udało się usunąć udostępnienia {shareId}",
+    "Create bookmarks for mentioned links" : "Utwórz zakładki dla wspomnianych linków",
+    "No links found in this message" : "Nie znaleziono linków w tej wiadomości",
     "Bookmarks feed" : "Kanał zakładek"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

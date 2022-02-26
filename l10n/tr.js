@@ -210,6 +210,8 @@ OC.L10N.register(
     "Failed to load setting {key}" : "{key} ayarı yüklenemedi",
     "Failed to update share {shareId}" : "{shareId} paylaşımı güncellenemedi",
     "Failed to delete share {shareId}" : "{shareId} paylaşımı silinemedi",
+    "Create bookmarks for mentioned links" : "Anılan bağlantılar için yer imleri oluşturulsun",
+    "No links found in this message" : "Bu iletide herhangi bir bağlantı bulunamadı",
     "Bookmarks feed" : "Yer imleri akışı"
 },
 "nplurals=2; plural=(n > 1);");

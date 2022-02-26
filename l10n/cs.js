@@ -210,6 +210,8 @@ OC.L10N.register(
     "Failed to load setting {key}" : "Nepodařilo se načíst nastavení {key}",
     "Failed to update share {shareId}" : "Nepodařilo se aktualizovat sdílení {shareId}",
     "Failed to delete share {shareId}" : "Nepodařilo se smazat sdílení {shareId}",
+    "Create bookmarks for mentioned links" : "Vytvořit záložky z uvedených odkazů",
+    "No links found in this message" : "V této zprávě nenalezeny žádné odkazy",
     "Bookmarks feed" : "Kanál záložek"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

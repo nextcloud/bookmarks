@@ -208,6 +208,8 @@
     "Failed to load setting {key}" : "Nepodarilo sa načítať nastavenie {key}",
     "Failed to update share {shareId}" : "Nepodarilo sa aktualizovať zdieľanie {shareId}",
     "Failed to delete share {shareId}" : "Nepodarilo sa zmazať zdieľanie {shareId}.",
+    "Create bookmarks for mentioned links" : "Vytvorte záložky pre uvedené odkazy",
+    "No links found in this message" : "V tejto správe sa nenašli žiadne odkazy",
     "Bookmarks feed" : "Kanál záložiek"
 },"pluralForm" :"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);"
 }
