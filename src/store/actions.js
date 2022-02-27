@@ -757,9 +757,9 @@ export default {
 					if (folderId === folder.id) {
 						throw new Error('Cannot move folder into itself')
 					}
+					commit(mutations.MOVE_FOLDER, { folder: folder.id, target: folderId })
 					const oldParent = folder.parent_folder
 					folder.parent_folder = folderId
-					commit(mutations.MOVE_FOLDER, { folder: folder.id, target: folderId })
 					await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
 					dispatch(
 						actions.LOAD_FOLDER_CHILDREN_ORDER,
