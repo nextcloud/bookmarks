@@ -177,7 +177,11 @@ export default {
 		onRightClick(e) {
 			if (this.$refs.actions) {
 				e.preventDefault()
-				this.$refs.actions.querySelector('button').click()
+				if (this.$refs.actions.openMenu) {
+					this.$refs.actions.openMenu()
+				} else if (this.$refs.actions.querySelector) {
+					this.$refs.actions.querySelector('button').click()
+				}
 			}
 		},
 		async onDragStart(e) {

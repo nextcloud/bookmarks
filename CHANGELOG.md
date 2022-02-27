@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### New
+- Integrate with Nextcloud Talk: Allow bookmarking mentioned links Marcel Klehr Today 16:53
+- Add FirstRun view
+- Implement Shared folders filter
+- Remember whether user has seen scraping settings notification
+- Support right click on items
+- Add option for setting Pageres ENV vars
+
+### Fixed
+- AdminSettings: Use initialState to load settings
+- BookmarkController: Remove hierarchy limit for public links
+- UX: Don't open details of newly created bookmark
+- Improve folder moving UX
+- Improve loading UX
+- Improve drag and drop UX
+
 ## [10.0.3] - 2021-12-04
 
 ### Fixed
