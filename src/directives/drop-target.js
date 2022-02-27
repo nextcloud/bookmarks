@@ -43,6 +43,12 @@ export default {
 				el.classList.remove('dropTarget--available')
 			})
 		})
+		window.document.body.addEventListener('dragend', (e) => {
+			const targets = document.querySelectorAll('.dropTarget--available')
+			targets.forEach(el => {
+				el.classList.remove('dropTarget--available')
+			})
+		})
 		window.document.body.addEventListener('dragstart', (e) => {
 			if (allowDrop(e)) {
 				el.classList.add('dropTarget--available')
