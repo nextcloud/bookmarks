@@ -21,7 +21,8 @@
 				class="item__clickLink"
 				tabindex="0"
 				target="_blank"
-				@click="onClick">
+				@click="onClick"
+				@contextmenu="onRightClick">
 				<div v-if="editable && selectable" ref="checkbox" class="item__checkbox">
 					<input :checked="selected" class="checkbox" type="checkbox"><label
 						v-tooltip="selectLabel"
@@ -39,7 +40,7 @@
 					ref="actions"
 					class="item__actions"
 					@click="$event.preventDefault(); $event.stopPropagation()">
-					<Actions>
+					<Actions ref="actions">
 						<slot name="actions" />
 					</Actions>
 				</div>
@@ -172,6 +173,12 @@ export default {
 				return
 			}
 			this.$emit('click', e)
+		},
+		onRightClick(e) {
+			if (this.$refs.actions) {
+				e.preventDefault()
+				this.$refs.actions.querySelector('button').click()
+			}
 		},
 		async onDragStart(e) {
 			if (!this.draggable || this.renaming) {
