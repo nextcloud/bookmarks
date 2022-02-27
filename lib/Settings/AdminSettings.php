@@ -34,6 +34,7 @@ class AdminSettings implements ISettings {
 		'previews.screenly.token',
 		'previews.webshot.url',
 		'previews.screenshotmachine.key',
+		'previews.pageres.env',
 		'privacy.enableScraping',
 		'performance.maxBookmarksperAccount',
 	];

@@ -94,8 +94,16 @@
 			<h3>{{ t('bookmarks', 'Pageres CLI') }}</h3>
 			<p>
 				<a href="https://github.com/sindresorhus/pageres-cli" target="_blank">{{
-					t('bookmarks', 'Simply install the Pageres CLI on your server and Bookmarks will find it.')
+					t('bookmarks', 'Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:')
 				}}</a>
+			</p>
+			<p>
+				<label>{{ t('bookmarks', 'Pageres ENV variables') }}
+					<input
+						v-model="settings['previews.pageres.env']"
+						placeholder="CHROMIUM_PATH=/usr/bin/chromium-browser PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false"
+						type="text"
+						@input="onChange"></label>
 			</p>
 		</SettingsSection>
 	</div>
@@ -110,6 +118,7 @@ const SETTINGS = [
 	'previews.screenly.token',
 	'previews.webshot.url',
 	'previews.screenshotmachine.key',
+	'previews.pageres.env',
 	'privacy.enableScraping',
 	'performance.maxBookmarksperAccount',
 ]
@@ -225,5 +234,9 @@ figure[class^='icon-'] {
 	width: 50%;
 	min-width: 300px;
 	display: block;
+}
+
+h3 {
+	font-weight: bold;
 }
 </style>

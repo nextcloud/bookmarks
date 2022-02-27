@@ -12,6 +12,7 @@ use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
+use OCP\IConfig;
 use Psr\Log\LoggerInterface;
 use OCP\ITempManager;
 
@@ -26,10 +27,15 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @var ITempManager
 	 */
 	private $tempManager;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
 
-	public function __construct(ITempManager $tempManager, LoggerInterface $logger) {
+	public function __construct(ITempManager $tempManager, LoggerInterface $logger, IConfig $config) {
 		$this->tempManager = $tempManager;
 		$this->logger = $logger;
+		$this->config = $config;
 	}
 
 	/**
@@ -67,8 +73,9 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 		$tempFile = basename($tempPath, '.png');
 		$command = $serverPath;
 		$escapedUrl = escapeshellarg($url);
+		$env = $this->config->getAppValue('bookmarks', 'previews.pageres.env');
 
-		$cmd = "cd {$tempDir} && {$command} {$escapedUrl} 1024x768" .
+		$cmd = "cd {$tempDir} && {$env} {$command} {$escapedUrl} 1024x768" .
 			' --delay=4 --filename=' . escapeshellarg($tempFile) . ' --crop --overwrite 2>&1';
 
 		$retries = 0;
@@ -82,6 +89,9 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 				unlink($tempPath);
 
 				return new Image('image/png', $content);
+			} else {
+				$this->logger->warning('Executing pageres failed');
+				$this->logger->warning(implode("\n", $output));
 			}
 
 			$retries++;
