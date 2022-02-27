@@ -276,11 +276,11 @@ export default {
 	display: inline-block;
 	flex: 1;
 	margin: auto 10px;
-	height: 20px;
+	height: 24px;
 	color: var(--color-text-lighter);
 	text-overflow: ellipsis;
 	overflow: hidden;
-	min-width: 20px;
+	min-width: 15px;
 }
 
 .bookmark__description figure {
