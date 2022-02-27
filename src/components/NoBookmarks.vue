@@ -34,7 +34,7 @@
 
 <script>
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
-import { actions } from '../store'
+import { actions, mutations } from '../store'
 import { privateRoutes } from '../router'
 export default {
 	name: 'NoBookmarks',
@@ -49,7 +49,7 @@ export default {
 	},
 	methods: {
 		onCreateOpen() {
-			this.$store.commit(actions.CREATE_BOOKMARK, true)
+			this.$store.commit(mutations.DISPLAY_NEW_BOOKMARK, true)
 		},
 		onImportOpen() {
 			this.$refs.import.click()
