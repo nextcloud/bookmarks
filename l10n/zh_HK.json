@@ -179,7 +179,6 @@
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the Pageres CLI on your server and Bookmarks will find it." : "只要在您的伺服器上安裝 Pageres CLI，然後書籤應用程式就會找到它。",
     "Failed to save settings" : "設定儲存失敗",
     "Failed to load settings" : "載入設定失敗",
     "This URL is already bookmarked! Overwrite?" : "此連結已存在，是否複寫？",

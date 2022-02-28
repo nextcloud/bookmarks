@@ -181,7 +181,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine-API-Key",
     "Pageres CLI" : "Pageres-Komandozeile",
-    "Simply install the Pageres CLI on your server and Bookmarks will find it." : "Installiere einfach die Pageres-Komandozeile auf Deinem Server und Lesezeichen wird es erkennen.",
     "Failed to save settings" : "Einstellungen konnten nicht gespeichert werden",
     "Failed to load settings" : "Einstellungen konnten nicht geladen werden",
     "This URL is already bookmarked! Overwrite?" : "Diese URL ist bereits als Lesezeichen gespeichert! Überschreiben?",

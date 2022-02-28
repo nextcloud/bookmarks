@@ -181,7 +181,6 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Chiave API ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
-    "Simply install the Pageres CLI on your server and Bookmarks will find it." : "Installa in modo semplice la riga di comando di Pageres sul tuo server e i segnalibri la troveranno.",
     "Failed to save settings" : "Salvataggio impostazioni non riuscito",
     "Failed to load settings" : "Caricamento impostazioni non riuscito",
     "This URL is already bookmarked! Overwrite?" : "Questo URL è già un segnalibro! Vuoi sovrascriverlo?",
