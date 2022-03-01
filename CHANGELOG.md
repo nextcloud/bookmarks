@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [10.1.0] - 2022-03-01
 
 ### New
 - Integrate with Nextcloud Talk: Allow bookmarking mentioned links Marcel Klehr Today 16:53
@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve folder moving UX
 - Improve loading UX
 - Improve drag and drop UX
+- UI: Polish bookmarks description in overview
+- Update marcelklehr/link-preview
 
 ## [10.0.3] - 2021-12-04
 
@@ -657,6 +659,7 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+[10.1.0]: https://github.com/nextcloud/bookmarks/compare/v10.0.3...v10.1.0
 [10.0.3]: https://github.com/nextcloud/bookmarks/compare/v10.0.2...v10.0.3
 [10.0.2]: https://github.com/nextcloud/bookmarks/compare/v10.0.1...v10.0.2
 [10.0.1]: https://github.com/nextcloud/bookmarks/compare/v10.0.0...v10.0.1
