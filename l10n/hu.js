@@ -181,6 +181,8 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API-kulcs",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Csak telepítse a Pageres CLI-t a kiszolgálón, és a Könyvjelzők meg fogja találni. További környezeti változókat adhat meg a pageresnek, például ahogy a helykitöltő mutatja:",
+    "Pageres ENV variables" : "Pageres környezeti változók",
     "Failed to save settings" : "A beállítások mentése sikertelen",
     "Failed to load settings" : "A beállítások betöltése sikertelen",
     "This URL is already bookmarked! Overwrite?" : "Ez a cím már könyvjelzőzve van. Felülírja?",

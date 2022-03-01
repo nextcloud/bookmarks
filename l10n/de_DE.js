@@ -181,6 +181,8 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine-API-Key",
     "Pageres CLI" : "Pageres-Komandozeile",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Installieren Sie einfach die Pageres-CLI auf Ihrem Server und Bookmarks wird sie erkennen. Sie können auch noch zusätzliche ENV-Variablen hinzufügen, die in Pageres verwandt werden, z.B. wie im Platzhalter angegeben:",
+    "Pageres ENV variables" : "Pageres ENV-Variablen",
     "Failed to save settings" : "Einstellungen konnten nicht gespeichert werden",
     "Failed to load settings" : "Einstellungen konnten nicht geladen werden",
     "This URL is already bookmarked! Overwrite?" : "Diese URL ist bereits als Lesezeichen gespeichert! Überschreiben?",

@@ -181,6 +181,8 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API key",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "只要在您的伺服器上安裝 Pageres CLI，書籤應用程式就會找到它。您仍然可以新增額外的 ENV 變數以提供給 pageres，例如在佔位字串中所示：",
+    "Pageres ENV variables" : "Pageres ENV 變數",
     "Failed to save settings" : "設定儲存失敗",
     "Failed to load settings" : "設定載入失敗",
     "This URL is already bookmarked! Overwrite?" : "此網址已被加入書籤！要覆寫嗎？",
@@ -209,6 +211,8 @@ OC.L10N.register(
     "Failed to load setting {key}" : "載入設定 {key} 失敗",
     "Failed to update share {shareId}" : "更新分享 {shareId} 失敗",
     "Failed to delete share {shareId}" : "刪除分享 {shareId} 失敗",
+    "Create bookmarks for mentioned links" : "為提到的連結建立書籤",
+    "No links found in this message" : "此訊息中找不到連結",
     "Bookmarks feed" : "書籤 feed"
 },
 "nplurals=1; plural=0;");

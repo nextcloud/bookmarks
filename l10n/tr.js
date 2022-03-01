@@ -181,6 +181,8 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API anahtarı",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Pageres CLI paketini sunucunuza kurmanız yeterlidir; Yer imleri onu bulur. Yine de, yer belirticide belirtildiği gibi pageres üzerine aktarılacak ek ENV değişkenleri ekleyebilirsiniz:",
+    "Pageres ENV variables" : "Pageres ENV değişkenleri",
     "Failed to save settings" : "Ayarlar kaydedilemedi",
     "Failed to load settings" : "Ayarlar yüklenemedi",
     "This URL is already bookmarked! Overwrite?" : "Bu adres zaten yer imlerine eklenmiş! Üzerine yazılsın mı?",

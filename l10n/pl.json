@@ -179,6 +179,8 @@
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Klucz API ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Po prostu zainstaluj interfejs Pageres CLI na swoim serwerze, a Zakładki go znajdą. Nadal możesz dodawać dodatkowe zmienne ENV, które mają być podawane na pagery, np. jak wskazano w symbolu zastępczym:",
+    "Pageres ENV variables" : "Zmienne Pageres ENV",
     "Failed to save settings" : "Nie udało się zapisać ustawień",
     "Failed to load settings" : "Nie udało się wczytać ustawień",
     "This URL is already bookmarked! Overwrite?" : "Ten URL jest już w zakładkach! Nadpisać?",

@@ -181,6 +181,8 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Klíč k API rozhraní služby ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Stačí jen nainstalovat na server Pageres CLI a aplikace Záložky si ji najde. I tak je možné přidat další proměnné prostředí, které předat pageres, např. jak je naznačeno ve výplňovém textu:",
+    "Pageres ENV variables" : "Proměnné prostředí pro pageres",
     "Failed to save settings" : "Nastavení se nepodařilo uložit",
     "Failed to load settings" : "Nepodařilo se načíst nastavení",
     "This URL is already bookmarked! Overwrite?" : "Adresa URL stánky už je v záložkách! Přepsat ?",
