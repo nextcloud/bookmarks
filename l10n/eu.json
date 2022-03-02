@@ -81,6 +81,9 @@
     "{folders} folders and {bookmarks} bookmarks" : "{folders} karpetak eta {bookmarks} laster-markak",
     "_%n bookmark_::_%n bookmarks_" : ["Laster-marka %n","%n laster-marka"],
     "_%n folder_::_%n folders_" : ["karpeta %n","%n karpeta"],
+    "Welcome to Bookmarks" : "Ongi etorri Laster-marketara",
+    "This app allows you to manage links to your favorite places on the web." : "Aplikazio honek sareko gogoko tokietarako estekak kudeatzeko aukera ematen dizu.",
+    "Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app." : "Ordenatu zure laster-markak karpetetan, etiketatu eta partekatu besteekin! Aplikazioak aldian-aldian zure esteka guztiak egiaztatuko ditu eta erabilgarri ez dauden estekak bistaratuko ditu. Webeko fitxategi bati esteka gehitzen baduzu, fitxategia automatikoki deskargatuko da zure Nextcloud Fitxategietara. Beste zerbitzu batzuetatik esportatutako laster-markak ere inporta ditzakezu edo zuzenean arakatzaile guztietako laster-markak sinkroniza ditzakezu aplikazio honekin.",
     "Add a bookmark" : "Gehitu laster-marka bat",
     "Import bookmarks" : "Inportatu laster-markak",
     "Sync with your browser" : "Sinkronizatu zure nabigatzailearekin",
@@ -105,6 +108,7 @@
     "All bookmarks" : "Laster-marka guztiak",
     "Recent" : "Azkenak",
     "Files" : "Fitxategiak",
+    "Shared with you" : "Zurekin partekatuta",
     "Broken links" : "Hautsitako estekak",
     "New tag" : "Etiketa berria",
     "Search tags" : "Bilatu etiketak",
@@ -113,6 +117,7 @@
     "No bookmarked files" : "Ez dago laster-marka fitxategirik",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Laster-marka guztiak betiko kendu dira zure kontutik",
     "No bookmarks here" : "Ez dago laster-markarik hemen",
+    "Add bookmarks manually or import bookmarks from a HTML file." : "Gehitu laster-markak eskuz edo inportatu HTML fitxategi batetik.",
     "Import" : "Inportatu",
     "Export" : "Esportatu",
     "Archive path" : "Artxibatu bidea",
@@ -174,6 +179,8 @@
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachine API-aren gakoa",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Instalatu Pageres CLI zure zerbitzarian eta Laster-makak-ek aurkituko du. ENV aldagai gehigarriak gehi ditzakezu Pageres elikatzeko, adibidez. leku-markak adierazten duen moduan:",
+    "Pageres ENV variables" : "Pageres ENV aldagaiak",
     "Failed to save settings" : "Huts egin du ezarpenak gordetzean",
     "Failed to load settings" : "Huts egin du ezarpenak kargatzean",
     "This URL is already bookmarked! Overwrite?" : "URL hau dagoeneko laster-marketan dago. Gainidatzi nahi duzu?",
@@ -202,6 +209,7 @@
     "Failed to load setting {key}" : "{key} ezarpena kargatzeak huts egin du",
     "Failed to update share {shareId}" : "{shareId} partekatzea eguneratzeak huts egin du",
     "Failed to delete share {shareId}" : "{shareId} partekatzea ezabatzeak huts egin du",
+    "Create bookmarks for mentioned links" : "Sortu laster-markak aipatutako esteketarako",
     "Bookmarks feed" : "Laster-marken jarioa"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
