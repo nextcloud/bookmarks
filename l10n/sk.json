@@ -179,6 +179,8 @@
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Kľúč k API služby ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Stačí nainštalovať Pageres CLI na váš server a Záložky si ho nájdu. Stále môžete pridať ďalšie premenné ENV, ktoré sa majú pridávať na stránky, napr. ako je uvedené v zástupnom symbole:",
+    "Pageres ENV variables" : "Premennné prostredia Pageres",
     "Failed to save settings" : "Nepodarilo sa uložiť nastavenia",
     "Failed to load settings" : "Nepodarilo sa načítať nastavenia",
     "This URL is already bookmarked! Overwrite?" : "Táto webová adresa sa už v záložkách nachádza. Chcete ju prepísať?",
