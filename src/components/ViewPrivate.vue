@@ -116,6 +116,7 @@ export default {
 				this.$store.dispatch(actions.FILTER_BY_ARCHIVED)
 				break
 			case privateRoutes.SHARED_FOLDERS:
+				this.$store.commit(mutations.REMOVE_ALL_BOOKMARKS)
 				await this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
 				this.$store.commit(mutations.FETCH_END, 'bookmarks')
 				break
