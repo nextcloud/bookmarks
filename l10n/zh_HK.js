@@ -211,6 +211,7 @@ OC.L10N.register(
     "Failed to load setting {key}" : "載入設定失敗 {key}",
     "Failed to update share {shareId}" : "更新分享失敗 {shareId}",
     "Failed to delete share {shareId}" : "無法刪除分享 {shareId}",
+    "Create bookmarks for mentioned links" : "為提到的連結建立書籤",
     "No links found in this message" : "此訊息中找不到連結",
     "Bookmarks feed" : "Bookmarks feed"
 },
