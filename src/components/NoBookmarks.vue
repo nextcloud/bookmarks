@@ -12,6 +12,18 @@
 				{{ t('bookmarks', 'Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.') }}
 			</template>
 		</EmptyContent>
+		<EmptyContent v-else-if="$route.name === routes.UNAVAILABLE">
+			{{ t('bookmarks', 'No broken links') }}
+			<template #desc>
+				{{ t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.') }}
+			</template>
+		</EmptyContent>
+		<EmptyContent v-else-if="$route.name === routes.SHARED_FOLDERS">
+			{{ t('bookmarks', 'No shared folders') }}
+			<template #desc>
+				{{ t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.') }}
+			</template>
+		</EmptyContent>
 		<EmptyContent v-else icon="icon-favorite">
 			{{ t('bookmarks', 'No bookmarks here') }}
 			<template v-if="!isPublic" #desc>

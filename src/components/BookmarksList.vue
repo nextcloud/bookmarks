@@ -17,6 +17,16 @@
 					t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
 				}}
 			</div>
+			<div v-if="$route.name === routes.UNAVAILABLE && bookmarks.length" class="bookmarkslist__description">
+				{{
+					t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')
+				}}
+			</div>
+			<div v-if="$route.name === routes.SHARED_FOLDERS && bookmarks.length" class="bookmarkslist__description">
+				{{
+					t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')
+				}}
+			</div>
 			<CreateBookmark v-if="newBookmark" />
 			<CreateFolder v-if="newFolder" />
 			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">

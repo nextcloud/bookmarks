@@ -32,7 +32,7 @@
 					{{ archivedBookmarksCount }}
 				</AppNavigationCounter>
 			</AppNavigationItem>
-			<AppNavigationItem v-if="sharedFoldersCount > 0"
+			<AppNavigationItem
 				key="menu-shared-folders"
 				:to="{ name: routes.SHARED_FOLDERS }"
 				:title="t('bookmarks', 'Shared with you')">
@@ -41,7 +41,7 @@
 					{{ sharedFoldersCount }}
 				</AppNavigationCounter>
 			</AppNavigationItem>
-			<AppNavigationItem v-if="unavailableBookmarksCount > 0"
+			<AppNavigationItem
 				key="menu-unavailable"
 				:to="{ name: routes.UNAVAILABLE }"
 				:title="t('bookmarks', 'Broken links')">
