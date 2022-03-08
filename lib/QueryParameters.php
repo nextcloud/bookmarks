@@ -22,6 +22,7 @@ class QueryParameters {
 	private $untagged = false;
 	private $unavailable = false;
 	private $archived = false;
+	private $duplicated = false;
 	private $search = [];
 	private $tags = [];
 
@@ -222,5 +223,22 @@ class QueryParameters {
 	public function setUntagged(bool $untagged): self {
 		$this->untagged = $untagged;
 		return $this;
+	}
+
+	/**
+	 * @param bool $duplicated
+	 *
+	 * @return static
+	 */
+	public function setDuplicated(bool $duplicated): self {
+		$this->duplicated = $duplicated;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getDuplicated(): bool {
+		return $this->duplicated;
 	}
 }

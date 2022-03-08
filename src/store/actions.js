@@ -20,6 +20,8 @@ export const actions = {
 	COUNT_BOOKMARKS: 'COUNT_BOOKMARKS',
 	COUNT_UNAVAILABLE: 'COUNT_UNAVAILABLE',
 	COUNT_ARCHIVED: 'COUNT_ARCHIVED',
+	COUNT_DUPLICATED: 'COUNT_DUPLICATED',
+
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	LOAD_BOOKMARK: 'LOAD_BOOKMARK',
@@ -57,6 +59,7 @@ export const actions = {
 	FILTER_BY_UNTAGGED: 'FILTER_BY_UNTAGGED',
 	FILTER_BY_UNAVAILABLE: 'FILTER_BY_UNAVAILABLE',
 	FILTER_BY_ARCHIVED: 'FILTER_BY_ARCHIVED',
+	FILTER_BY_DUPLICATED: 'FILTER_BY_DUPLICATED',
 	FILTER_BY_TAGS: 'FILTER_BY_TAGS',
 	FILTER_BY_FOLDER: 'FILTER_BY_FOLDER',
 	FILTER_BY_SHARED_FOLDERS: 'FILTER_BY_SHARED_FOLDERS',
@@ -128,6 +131,28 @@ export default {
 				AppGlobal.methods.t(
 					'bookmarks',
 					'Failed to count archived bookmarks'
+				)
+			)
+			throw err
+		}
+	},
+	async [actions.COUNT_DUPLICATED]({ commit, dispatch, state }) {
+		try {
+			const response = await axios.get(url(state, '/bookmark/duplicated'))
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_DUPLICATED_COUNT, count)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t(
+					'bookmarks',
+					'Failed to count duplicated bookmarks'
 				)
 			)
 			throw err
@@ -957,6 +982,10 @@ export default {
 	},
 	[actions.FILTER_BY_ARCHIVED]({ dispatch, commit }) {
 		commit(mutations.SET_QUERY, { archived: true })
+		return dispatch(actions.FETCH_PAGE)
+	},
+	[actions.FILTER_BY_DUPLICATED]({ dispatch, commit }) {
+		commit(mutations.SET_QUERY, { duplicated: true })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_FOLDER]({ dispatch, commit, state }, folder) {

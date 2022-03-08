@@ -26,6 +26,7 @@ export const privateRoutes = {
 	ARCHIVED: 'ARCHIVED',
 	BOOKMARKLET: 'bookmarklet',
 	SHARED_FOLDERS: 'SHARED_FOLDERS',
+	DUPLICATED: 'DUPLICATED',
 }
 
 export const publicRoutes = {
@@ -91,6 +92,11 @@ export default new Router({
 		{
 			path: '/shared',
 			name: privateRoutes.SHARED_FOLDERS,
+			component: ViewPrivate,
+		},
+		{
+			path: '/duplicated',
+			name: privateRoutes.DUPLICATED,
 			component: ViewPrivate,
 		},
 		{

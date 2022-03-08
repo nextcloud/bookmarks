@@ -22,6 +22,15 @@
 				<HistoryIcon slot="icon" :size="18" :fill-color="colorMainText" />
 			</AppNavigationItem>
 			<AppNavigationItem
+				key="menu-shared-folders"
+				:to="{ name: routes.SHARED_FOLDERS }"
+				:title="t('bookmarks', 'Shared with you')">
+				<ShareVariantIcon slot="icon" :size="18" :fill-color="colorMainText" />
+				<AppNavigationCounter v-show="Boolean(sharedFoldersCount)" slot="counter">
+					{{ sharedFoldersCount }}
+				</AppNavigationCounter>
+			</AppNavigationItem>
+			<AppNavigationItem
 				key="menu-archived"
 				:to="{ name: routes.ARCHIVED }"
 				:title="t('bookmarks', 'Files')">
@@ -33,12 +42,12 @@
 				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationItem
-				key="menu-shared-folders"
-				:to="{ name: routes.SHARED_FOLDERS }"
-				:title="t('bookmarks', 'Shared with you')">
-				<ShareVariantIcon slot="icon" :size="18" :fill-color="colorMainText" />
-				<AppNavigationCounter slot="counter">
-					{{ sharedFoldersCount }}
+				key="menu-duplicated"
+				:to="{ name: routes.DUPLICATED }"
+				:title="t('bookmarks', 'Duplicates')">
+				<VectorLinkIcon slot="icon" :size="18" :fill-color="colorMainText" />
+				<AppNavigationCounter v-show="Boolean(duplicatedBookmarksCount)" slot="counter">
+					{{ duplicatedBookmarksCount }}
 				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationItem
@@ -46,7 +55,7 @@
 				:to="{ name: routes.UNAVAILABLE }"
 				:title="t('bookmarks', 'Broken links')">
 				<LinkVariantOffIcon slot="icon" :size="18" :fill-color="colorMainText" />
-				<AppNavigationCounter slot="counter">
+				<AppNavigationCounter v-show="Boolean(unavailableBookmarksCount)" slot="counter">
 					{{ unavailableBookmarksCount }}
 				</AppNavigationCounter>
 			</AppNavigationItem>
@@ -117,6 +126,7 @@ import ShareVariantIcon from 'vue-material-design-icons/ShareVariant'
 import FileDocumentMultipleIcon from 'vue-material-design-icons/FileDocumentMultiple'
 import TagPlusIcon from 'vue-material-design-icons/TagPlus'
 import TagMultipleIcon from 'vue-material-design-icons/TagMultiple'
+import VectorLinkIcon from 'vue-material-design-icons/VectorLink'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings'
 import { actions, mutations } from '../store/'
@@ -140,6 +150,7 @@ export default {
 		TagMultipleIcon,
 		FileDocumentMultipleIcon,
 		ShareVariantIcon,
+		VectorLinkIcon,
 	},
 	data() {
 		return {}
@@ -163,6 +174,9 @@ export default {
 		},
 		archivedBookmarksCount() {
 			return this.$store.state.archivedCount
+		},
+		duplicatedBookmarksCount() {
+			return this.$store.state.duplicatedCount
 		},
 		bookmarksLimit() {
 			return this.$store.state.settings.limit

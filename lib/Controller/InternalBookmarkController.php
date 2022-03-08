@@ -58,6 +58,7 @@ class InternalBookmarkController extends ApiController {
 	 * @param string|null $url
 	 * @param bool|null $unavailable
 	 * @param bool|null $archived
+	 * @param bool|null $duplicated
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
@@ -73,9 +74,10 @@ class InternalBookmarkController extends ApiController {
 		$folder = null,
 		$url = null,
 		$unavailable = null,
-		$archived = null
+		$archived = null,
+		$duplicated = null
 	): DataResponse {
-		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived);
+		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived, $duplicated);
 	}
 
 	/**
@@ -231,6 +233,17 @@ class InternalBookmarkController extends ApiController {
 	 */
 	public function countArchived(): JSONResponse {
 		return $this->publicController->countArchived();
+	}
+
+	/**
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function countDuplicated(): JSONResponse {
+		return $this->publicController->countDuplicated();
 	}
 
 	/**

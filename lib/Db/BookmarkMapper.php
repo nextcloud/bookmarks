@@ -233,6 +233,7 @@ class BookmarkMapper extends QBMapper {
 		$this->_filterUrl($qb, $params);
 		$this->_filterArchived($qb, $params);
 		$this->_filterUnavailable($qb, $params);
+		$this->_filterDuplicated($qb, $params);
 		$this->_filterFolder($qb, $params);
 		$this->_filterTags($qb, $params);
 		$this->_filterUntagged($qb, $params);
@@ -364,6 +365,23 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param IQueryBuilder $qb
 	 * @param QueryParameters $params
+	 * @return void
+	 */
+	private function _filterDuplicated(IQueryBuilder $qb, QueryParameters $params) {
+		if ($params->getDuplicated()) {
+			$subQuery = $this->db->getQueryBuilder();
+			$subQuery->select('trdup.parent_folder')
+			->from('bookmarks_tree', 'trdup')
+				->where($subQuery->expr()->eq('b.id', 'trdup.id'))
+				->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tr.parent_folder'))
+				->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
+			$qb->andWhere($qb->createFunction('EXISTS('.$subQuery->getSQL().')'));
+		}
+	}
+
+	/**
+	 * @param IQueryBuilder $qb
+	 * @param QueryParameters $params
 	 */
 	private function _filterFolder(IQueryBuilder $qb, QueryParameters $params): void {
 		if ($params->getFolder() !== null) {
@@ -456,8 +474,38 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * 	 *
-	 *
+	 * @param string $userId
+	 * @return int
+	 */
+	public function countDuplicated(string $userId): int {
+		$qb = $this->db->getQueryBuilder();
+		$qb->selectDistinct($qb->func()->count('b.id'));
+
+		$qb
+			->from('bookmarks', 'b')
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
+			->where(
+				$qb->expr()->andX(
+					$qb->expr()->orX(
+						$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
+						$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
+					),
+					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($userId), [$userId])))
+				)
+			);
+		$subQuery = $this->db->getQueryBuilder();
+		$subQuery->select('trdup.parent_folder')
+			->from('bookmarks_tree', 'trdup')
+			->where($subQuery->expr()->eq('b.id', 'trdup.id'))
+			->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tr.parent_folder'))
+			->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
+		$qb->andWhere($qb->createFunction('EXISTS('.$subQuery->getSQL().')'));
+
+		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
+	}
+
+	/**
 	 * @param string $token
 	 * @param QueryParameters $params
 	 *
@@ -505,6 +553,7 @@ class BookmarkMapper extends QBMapper {
 		$this->_filterUrl($qb, $params);
 		$this->_filterArchived($qb, $params);
 		$this->_filterUnavailable($qb, $params);
+		$this->_filterDuplicated($qb, $params);
 		$this->_filterFolder($qb, $params);
 		$this->_filterTags($qb, $params);
 		$this->_filterUntagged($qb, $params);

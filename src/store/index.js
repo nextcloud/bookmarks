@@ -59,6 +59,7 @@ export default {
 		countsByFolder: {},
 		unavailableCount: 0,
 		archivedCount: 0,
+		duplicatedCount: 0,
 		selection: {
 			folders: [],
 			bookmarks: [],

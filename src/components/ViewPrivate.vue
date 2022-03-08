@@ -115,6 +115,9 @@ export default {
 			case privateRoutes.ARCHIVED:
 				this.$store.dispatch(actions.FILTER_BY_ARCHIVED)
 				break
+			case privateRoutes.DUPLICATED:
+				this.$store.dispatch(actions.FILTER_BY_DUPLICATED)
+				break
 			case privateRoutes.SHARED_FOLDERS:
 				this.$store.commit(mutations.REMOVE_ALL_BOOKMARKS)
 				await this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
@@ -159,6 +162,7 @@ export default {
 				this.$store.dispatch(actions.COUNT_BOOKMARKS, -1),
 				this.$store.dispatch(actions.COUNT_UNAVAILABLE),
 				this.$store.dispatch(actions.COUNT_ARCHIVED),
+				this.$store.dispatch(actions.COUNT_DUPLICATED),
 			])
 		},
 

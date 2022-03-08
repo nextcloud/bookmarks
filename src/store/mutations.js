@@ -26,6 +26,7 @@ export const mutations = {
 	SET_BOOKMARK_COUNT: 'SET_BOOKMARK_COUNT',
 	SET_UNAVAILABLE_COUNT: 'SET_UNAVAILABLE_COUNT',
 	SET_ARCHIVED_COUNT: 'SET_ARCHIVED_COUNT',
+	SET_DUPLICATED_COUNT: 'SET_DUPLICATED_COUNT',
 	ADD_TAG: 'ADD_TAG',
 	SET_TAGS: 'SET_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
@@ -201,6 +202,9 @@ export default {
 	},
 	[mutations.SET_ARCHIVED_COUNT](state, count) {
 		state.archivedCount = count
+	},
+	[mutations.SET_DUPLICATED_COUNT](state, count) {
+		state.duplicatedCount = count
 	},
 
 	[mutations.SET_SIDEBAR](state, sidebar) {

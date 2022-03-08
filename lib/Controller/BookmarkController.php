@@ -264,6 +264,7 @@ class BookmarkController extends ApiController {
 	 * @param string|null $url
 	 * @param bool|null $unavailable
 	 * @param bool|null $archived
+	 * @param bool|null $duplicated
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
@@ -282,7 +283,8 @@ class BookmarkController extends ApiController {
 		?int $folder = null,
 		?string $url = null,
 		?bool $unavailable = null,
-		?bool $archived = null
+		?bool $archived = null,
+		?bool $duplicated = null
 	): DataResponse {
 		$this->registerResponder('rss', function (DataResponse $res) {
 			if ($res->getData()['status'] === 'success') {
@@ -336,6 +338,9 @@ class BookmarkController extends ApiController {
 		}
 		if ($archived !== null) {
 			$params->setArchived($archived);
+		}
+		if ($duplicated !== null) {
+			$params->setDuplicated($duplicated);
 		}
 		$params->setTags($filterTag);
 		$params->setSearch($search);
@@ -775,6 +780,22 @@ class BookmarkController extends ApiController {
 		}
 
 		$count = $this->bookmarkMapper->countArchived($this->authorizer->getUserId());
+		return new JSONResponse(['status' => 'success', 'item' => $count]);
+	}
+
+	/**
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
+	 * @PublicPage
+	 */
+	public function countDuplicated(): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+		}
+
+		$count = $this->bookmarkMapper->countDuplicated($this->authorizer->getUserId());
 		return new JSONResponse(['status' => 'success', 'item' => $count]);
 	}
 
