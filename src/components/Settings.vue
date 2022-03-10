@@ -58,20 +58,6 @@
 					})
 				}}</a>
 		</label>
-
-		<label><h3>{{ t('bookmarks', 'Clear data') }}</h3>
-			<p>{{
-				t('bookmarks',
-					'Permanently remove all bookmarks from your account.'
-				)
-			}}</p>
-			<button
-				class="clear-data warning"
-				@click="onClearData">
-				<span :class="{'icon-delete': !deleting, 'icon-loading-small': deleting}" />
-				{{ t('bookmarks', 'Delete all bookmarks') }}
-			</button>
-		</label>
 	</div>
 </template>
 <script>
@@ -142,19 +128,6 @@ export default {
 				key: 'archivePath',
 				value: path,
 			})
-		},
-		async onClearData() {
-			if (
-				!confirm(
-					t('bookmarks', 'Do you really want to delete all your bookmarks?')
-				)
-			) {
-				return
-			}
-			this.deleting = true
-			await this.$store.dispatch(actions.DELETE_BOOKMARKS)
-			await this.$router.push({ name: this.routes.HOME })
-			this.deleting = false
 		},
 		clickAddToHomeScreen() {
 			if (!this.addToHomeScreen) {
