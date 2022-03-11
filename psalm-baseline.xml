@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.20.0@f82a70e7edfc6cf2705e9374c8a0b6a974a779ed">
+<files psalm-version="4.22.0@fc2c6ab4d5fa5d644d8617089f012f3bb84b8703">
   <file src="lib/AppInfo/Application.php">
     <InvalidArgument occurrences="12">
       <code>registerEventListener</code>
@@ -45,6 +45,23 @@
       <code>getSubject</code>
       <code>getSubject</code>
     </UndefinedMethod>
+  </file>
+  <file src="lib/Service/BackupManager.php">
+    <MissingDependency occurrences="6">
+      <code>$this-&gt;rootFolder</code>
+      <code>$this-&gt;rootFolder</code>
+      <code>$this-&gt;rootFolder</code>
+      <code>$this-&gt;rootFolder</code>
+      <code>IRootFolder</code>
+      <code>IRootFolder</code>
+    </MissingDependency>
+    <UndefinedDocblockClass occurrences="5">
+      <code>\OC\User\NoUserException</code>
+      <code>\OC\User\NoUserException</code>
+      <code>\OC\User\NoUserException</code>
+      <code>\OC\User\NoUserException</code>
+      <code>\OC\User\NoUserException</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/CrawlService.php">
     <MissingDependency occurrences="1">
