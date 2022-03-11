@@ -12,14 +12,14 @@ This app provides you with a web interface for collecting and organizing bookmar
  
 - 📂 Browse and filter your bookmarks via tags and folders and add personal notes
 - 🔍 Built-in full-text search integrated into Nextcloud's unified search
+- 📲 Access your bookmarks anywhere by syncing with all your Browsers and devices
 - 👪 Share bookmarks with other users as well as publicly
-- 💡 Keep track of changes in the activity stream
 - ☠ Easily find broken links
-- 📔 All your links are automatically archived for full-text search and in case they are depublished
-- 📲 Access your bookmarks anywhere, on desktop Browsers and on your phone, via a variety of sync clients
+- 📔 All your links are automatically archived in case they are depublished
+- 💡 Keep track of changes in the activity stream
 - ⚛ Easily generate public and private RSS feeds of your collections
-- 💬 Create new bookmarks directly from within Nextcloud 
 - 💼 Built-in Dashboard widgets for frequent and recent links
+- 💬 Create new bookmarks directly from within Nextcloud Talk
 
 ## Third-party clients
 
