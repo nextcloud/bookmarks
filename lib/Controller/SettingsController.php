@@ -171,4 +171,31 @@ class SettingsController extends ApiController {
 	public function setArchivePath(string $archivePath): JSONResponse {
 		return $this->setSetting('archive.filePath', $archivePath);
 	}
+
+	/**
+	 * get user-defined archive path
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function getBackupPath(): JSONResponse {
+		return $this->getSetting(
+			'backup.filePath',
+			'backupPath',
+			$this->l->t('Bookmarks Backups')
+		);
+	}
+
+	/**
+	 * set user-defined backup path
+	 *
+	 * @param string $backupPath
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function setBackupPath(string $backupPath): JSONResponse {
+		return $this->setSetting('backup.filePath', $backupPath);
+	}
 }

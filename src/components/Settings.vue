@@ -27,6 +27,16 @@
 				@click="onChangeArchivePath">
 		</label>
 
+		<label><h3>{{ t('bookmarks', 'Backup path') }}</h3>
+			<p>{{ t('bookmarks',
+				'Enter the path of a folder in your Files where your bookmarks backups will be stored.'
+			) }}</p>
+			<input
+				:value="backupPath"
+				:readonly="true"
+				@click="onChangeBackupPath">
+		</label>
+
 		<h3>{{ t('bookmarks', 'Client apps') }}</h3>
 		<p>
 			{{
@@ -74,7 +84,13 @@ export default {
 			importing: false,
 			deleting: false,
 			addToHomeScreen: null,
-			filePicker: getFilePickerBuilder(this.t('bookmarks', 'Archive path'))
+			archivePathPicker: getFilePickerBuilder(this.t('bookmarks', 'Archive path'))
+				.allowDirectories(true)
+				.setModal(true)
+				.setType(1)// CHOOSE
+				.setMultiSelect(false)
+				.build(),
+			backupPathPicker: getFilePickerBuilder(this.t('bookmarks', 'Backup path'))
 				.allowDirectories(true)
 				.setModal(true)
 				.setType(1)// CHOOSE
@@ -93,6 +109,9 @@ export default {
 		},
 		archivePath() {
 			return this.$store.state.settings.archivePath
+		},
+		backupPath() {
+			return this.$store.state.settings.backupPath
 		},
 	},
 	mounted() {
@@ -123,9 +142,16 @@ export default {
 					+ encodeURIComponent(getRequestToken())
 		},
 		async onChangeArchivePath(e) {
-			const path = await this.filePicker.pick()
+			const path = await this.archivePathPicker.pick()
 			await this.$store.dispatch(actions.SET_SETTING, {
 				key: 'archivePath',
+				value: path,
+			})
+		},
+		async onChangeBackupPath(e) {
+			const path = await this.backupPathPicker.pick()
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'backupPath',
 				value: path,
 			})
 		},

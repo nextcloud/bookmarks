@@ -1137,7 +1137,7 @@ export default {
 	},
 	[actions.LOAD_SETTINGS]({ commit, dispatch, state }) {
 		return Promise.all(
-			['sorting', 'viewMode', 'archivePath', 'limit'].map(key =>
+			['sorting', 'viewMode', 'archivePath', 'backupPath', 'limit'].map(key =>
 				dispatch(actions.LOAD_SETTING, key)
 			)
 		)
