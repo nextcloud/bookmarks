@@ -27,6 +27,11 @@
 					t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')
 				}}
 			</div>
+			<div v-if="$route.name === routes.DUPLICATED && bookmarks.length" class="bookmarkslist__description">
+				{{
+					t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')
+				}}
+			</div>
 			<CreateBookmark v-if="newBookmark" />
 			<CreateFolder v-if="newFolder" />
 			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">

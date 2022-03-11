@@ -24,6 +24,12 @@
 				{{ t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.') }}
 			</template>
 		</EmptyContent>
+		<EmptyContent v-else-if="$route.name === routes.DUPLICATED">
+			{{ t('bookmarks', 'No duplicated bookmarks') }}
+			<template #desc>
+				{{ t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.') }}
+			</template>
+		</EmptyContent>
 		<EmptyContent v-else icon="icon-favorite">
 			{{ t('bookmarks', 'No bookmarks here') }}
 			<template v-if="!isPublic" #desc>
