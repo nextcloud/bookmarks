@@ -90,8 +90,8 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 
 				return new Image('image/png', $content);
 			} else {
-				$this->logger->warning('Executing pageres failed');
-				$this->logger->warning(implode("\n", $output));
+				$this->logger->debug('Executing pageres failed');
+				$this->logger->debug(implode("\n", $output));
 			}
 
 			$retries++;

@@ -89,7 +89,7 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 			}
 			$body = $response->getBody();
 		} catch (Exception $e) {
-			$this->logger->warning($e->getMessage(), ['app' => 'bookmarks']);
+			$this->logger->debug($e->getMessage(), ['app' => 'bookmarks']);
 			return null;
 		}
 

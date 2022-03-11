@@ -92,7 +92,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 			]);
 			$body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
 		} catch (Exception $e) {
-			$this->logger->warning($e->getMessage(), ['app' => 'bookmarks']);
+			$this->logger->debug($e->getMessage(), ['app' => 'bookmarks']);
 			return null;
 		}
 
