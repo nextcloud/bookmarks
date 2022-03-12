@@ -38,7 +38,7 @@ jobs:
         browsers: ['firefox']
 
 
-    name: floccus@${{matrix.floccus-ref}} ${{matrix.floccus-adapter}}:${{ matrix.test-name}} ${{matrix.browsers}}
+    name: floccus@${{matrix.floccus-ref}} ${{matrix.floccus-adapter}}:${{ matrix.test-name}} ${{matrix.browsers}} nc@${{matrix.server-versions}}
 
     services:
       hub:
