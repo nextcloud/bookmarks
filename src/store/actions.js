@@ -965,7 +965,7 @@ export default {
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_SEARCH]({ dispatch, commit }, search) {
-		commit(mutations.SET_QUERY, { search: search.split(' ') })
+		commit(mutations.SET_QUERY, { search: search.split(' '), conjunction: 'and' })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_TAGS]({ dispatch, commit }, tags) {
