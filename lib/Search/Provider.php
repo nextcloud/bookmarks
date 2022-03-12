@@ -66,6 +66,7 @@ class Provider implements IProvider {
 		$params->setLimit($query->getLimit());
 		$params->setOffset($query->getCursor() ?? 0);
 		$params->setSearch(explode(' ', $query->getTerm()));
+		$params->setConjunction('and');
 		$bookmarks = $this->bookmarkMapper->findAll($user->getUID(), $params);
 
 		$results = array_map(function (Bookmark $bookmark) {
