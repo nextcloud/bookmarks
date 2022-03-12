@@ -15,7 +15,6 @@ OC.L10N.register(
     "Import" : "Import",
     "Export" : "Eksport",
     "Bookmarklet" : "Libër Shënues",
-    "Clear data" : "Pastroji të dhënat",
     "Title" : "Titulli",
     "Link" : "Lidhje",
     "Tags" : "Etiketat",

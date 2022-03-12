@@ -13,7 +13,6 @@ OC.L10N.register(
     "Recent" : "Hiljutised",
     "Import" : "Impordi",
     "Export" : "Ekspordi",
-    "Clear data" : "Tühjenda andmed",
     "Title" : "Pealkiri",
     "Link" : "Link",
     "Tags" : "Sildid",

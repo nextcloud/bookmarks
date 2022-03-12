@@ -12,7 +12,6 @@ OC.L10N.register(
     "Recent" : "Rezent",
     "Import" : "Importéieren",
     "Export" : "Exportéieren",
-    "Clear data" : "Donnéeë läschen",
     "Title" : "Titel",
     "Link" : "Link",
     "Tags" : "Tags",

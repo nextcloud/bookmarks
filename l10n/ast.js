@@ -13,7 +13,6 @@ OC.L10N.register(
     "Recent" : "Reciente",
     "Import" : "Importar",
     "Export" : "Esportar",
-    "Clear data" : "Llimpiar datos",
     "Title" : "Títulu",
     "Link" : "Link",
     "Tags" : "Etiquetes",

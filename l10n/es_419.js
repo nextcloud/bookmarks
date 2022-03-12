@@ -18,7 +18,6 @@ OC.L10N.register(
     "Import" : "Importar",
     "Export" : "Exportar",
     "Bookmarklet" : "Marcadores",
-    "Clear data" : "Borrar datos",
     "Title" : "Título",
     "Link" : "Liga",
     "Tags" : "Etiquetas",

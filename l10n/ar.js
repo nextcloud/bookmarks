@@ -14,7 +14,6 @@ OC.L10N.register(
     "Recent" : "الحديثة",
     "Import" : "استيراد",
     "Export" : "تصدير",
-    "Clear data" : "مسح البيانات",
     "Title" : "العنوان",
     "Link" : "الرابط",
     "Tags" : "الوسوم",

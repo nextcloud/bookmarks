@@ -10,7 +10,6 @@ OC.L10N.register(
     "New folder" : "Nova fascikla",
     "Cancel" : "Otkaži",
     "Import" : "Uvezi",
-    "Clear data" : "Očisti podatke",
     "Title" : "Naslov",
     "Link" : "Prečica",
     "Tags" : "Oznake",

@@ -36,8 +36,6 @@ OC.L10N.register(
     "Import" : "Impor",
     "Export" : "Ekspor",
     "Client apps" : "Aplikasi klien",
-    "Clear data" : "Bersihkan data",
-    "Delete all bookmarks" : "Hapus semua markah",
     "Title" : "Judul",
     "Link" : "Tautan",
     "Tags" : "Tag",

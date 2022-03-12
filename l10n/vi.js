@@ -17,7 +17,6 @@ OC.L10N.register(
     "Recent" : "Gần đây",
     "Import" : "Nhập vào",
     "Export" : "Xuất ra",
-    "Clear data" : "Xóa dữ liệu",
     "Title" : "Tên",
     "Link" : "Liên kết",
     "Tags" : "Thẻ",

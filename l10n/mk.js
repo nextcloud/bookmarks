@@ -14,7 +14,6 @@ OC.L10N.register(
     "Recent" : "Неодамнешни",
     "Import" : "Увези",
     "Export" : "Извези",
-    "Clear data" : "Исчисти податоци",
     "Title" : "Наслов",
     "Link" : "Линк",
     "Tags" : "Ознаки",

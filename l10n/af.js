@@ -17,7 +17,6 @@ OC.L10N.register(
     "Import" : "Voer In",
     "Export" : "Voer uit",
     "Bookmarklet" : "Boekmerkie",
-    "Delete all bookmarks" : "Skrap alle boekmerke",
     "Title" : "Titel",
     "Link" : "Skakel",
     "Tags" : "Merkers",

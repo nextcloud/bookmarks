@@ -18,7 +18,6 @@ OC.L10N.register(
     "Import" : "იმპორტი",
     "Export" : "ექსპორტი",
     "Bookmarklet" : "Bookmarklet-ი",
-    "Clear data" : "მონაცემების გასუფთავება",
     "Title" : "სათაური",
     "Link" : "ბმული",
     "Tags" : "ტეგები",

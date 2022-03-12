@@ -13,7 +13,6 @@ OC.L10N.register(
     "Recent" : "Nevez",
     "Broken links" : "Liammoù toret",
     "Import" : "Emporzhiañ ",
-    "Clear data" : "Lemel ar roadennoù",
     "Link" : "Liamm",
     "Tags" : "Klavioù",
     "Owner" : "Perc'henner",
