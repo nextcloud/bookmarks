@@ -28,7 +28,7 @@ export default {
 		},
 		show: {
 			type: Boolean,
-			required: true,
+			default: true,
 		},
 	},
 	computed: {
@@ -40,6 +40,7 @@ export default {
 	methods: {
 		onSelect(folderId) {
 			this.$emit('input', folderId)
+			this.$emit('select', folderId)
 			this.$emit('close')
 		},
 		onClose() {

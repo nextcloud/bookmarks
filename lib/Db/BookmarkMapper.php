@@ -178,7 +178,7 @@ class BookmarkMapper extends QBMapper {
 	 * @throws DoesNotExistException if not found
 	 * @throws MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $id): Entity {
+	public function find(int $id): Bookmark {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select(Bookmark::$columns)

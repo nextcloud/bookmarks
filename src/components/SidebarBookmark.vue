@@ -95,6 +95,15 @@
 				<a class="button" :href="archivedFile" target="_blank"><span class="icon-files-dark" /> {{ t('bookmarks', 'Open file location') }}</a>
 			</div>
 		</AppSidebarTab>
+		<AppSidebarTab id="bookmark-projects"
+			:name="t('bookmarks', 'Projects')"
+			icon="icon-projects"
+			:order="1">
+			<CollectionList v-if="bookmark"
+				:id="''+bookmark.id"
+				:name="bookmark.title"
+				type="bookmarks" />
+		</AppSidebarTab>
 	</AppSidebar>
 </template>
 <script>
@@ -106,6 +115,7 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import RichContenteditable from '@nextcloud/vue/dist/Components/RichContenteditable'
 import FileDocumentIcon from 'vue-material-design-icons/FileDocument'
 import FolderIcon from 'vue-material-design-icons/Folder'
+import { CollectionList } from 'nextcloud-vue-collections'
 
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
@@ -116,7 +126,7 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable, FileDocumentIcon, FolderIcon },
+	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable, FileDocumentIcon, FolderIcon, CollectionList },
 	data() {
 		return {
 			title: '',

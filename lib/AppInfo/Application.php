@@ -8,7 +8,10 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
+use Closure;
+use OC\EventDispatcher\SymfonyAdapter;
 use OCA\Bookmarks\Activity\ActivityPublisher;
+use OCA\Bookmarks\Collaboration\Resources\ResourceProvider;
 use OCA\Bookmarks\Dashboard\Frequent;
 use OCA\Bookmarks\Dashboard\Recent;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
@@ -26,6 +29,7 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
+use OCP\Collaboration\Resources\IProviderManager;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
@@ -33,6 +37,7 @@ use OCP\IRequest;
 use OCP\IUser;
 use OCP\IUserSession;
 use OCP\User\Events\BeforeUserDeletedEvent;
+use OCP\Util;
 
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'bookmarks';
@@ -77,8 +82,22 @@ class Application extends App implements IBootstrap {
 		$context->registerMiddleware(ExceptionMiddleware::class);
 	}
 
+	/**
+	 * @throws \Psr\Container\ContainerExceptionInterface
+	 * @throws \Psr\Container\NotFoundExceptionInterface
+	 * @throws \Throwable
+	 */
 	public function boot(IBootContext $context): void {
 		$container = $context->getServerContainer();
 		CreateBookmark::register($container->get(IEventDispatcher::class));
+		$context->injectFn(Closure::fromCallable([$this, 'registerCollaborationResources']));
+	}
+
+	protected function registerCollaborationResources(IProviderManager $resourceManager, SymfonyAdapter $symfonyAdapter): void {
+		$resourceManager->registerResourceProvider(ResourceProvider::class);
+
+		$symfonyAdapter->addListener('\OCP\Collaboration\Resources::loadAdditionalScripts', static function () {
+			Util::addScript('bookmarks', 'bookmarks-collections');
+		});
 	}
 }
