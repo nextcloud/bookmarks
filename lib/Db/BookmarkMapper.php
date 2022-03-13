@@ -234,7 +234,7 @@ class BookmarkMapper extends QBMapper {
 			->join('tr', '*PREFIX*bookmarks_shared_folders', 's', 's.id = tr.id AND tr.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE))
 			->join('s', '*PREFIX*bookmarks_folders', 'f', 's.folder_id = f.id');
 
-		$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type) AS ('.$baseCase->getSQL().' UNION DISTINCT '.$recursiveCase->getSQL().')';
+		$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type) AS ('.$baseCase->getSQL().' UNION DISTINCT '.$recursiveCase->getSQL().' UNION DISTINCT '.$recursiveCaseShares->getSQL().')';
 
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
@@ -265,8 +265,8 @@ class BookmarkMapper extends QBMapper {
 		$this->_sortAndPaginate($qb, $params);
 
 		$finalQuery = $withRecursiveQuery . ' ' . $qb->getSQL();
-		$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), /*$recursiveCaseShares->getParameters(),*/ $qb->getParameters());
-		$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), /*$recursiveCaseShares->getParameterTypes(),*/ $qb->getParameterTypes());
+		$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), $recursiveCaseShares->getParameters(), $qb->getParameters());
+		$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), $recursiveCaseShares->getParameterTypes(), $qb->getParameterTypes());
 
 		$this->logger->warning($finalQuery);
 		$this->logger->warning(var_export($params, true));
