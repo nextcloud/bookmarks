@@ -48,13 +48,14 @@
 					</Actions>
 				</div>
 				<div class="details__line">
+					<FolderIcon :fill-color="colorMainText" size="18" />
 					<div class="folders">
 						<span v-for="folderId in bookmark.folders"
 							:key="folderId"
 							v-tooltip="getFolderPath(folderId)"
 							class="folders__folder"
 							@click="onOpenFolder(folderId)">
-							<FolderIcon :fill-color="colorMainText" /> {{ getFolder(folderId).title || t('bookmarks', 'Untitled folder') }}
+							<FolderIcon :fill-color="colorMainText" /> {{ getFolder(folderId).title || (getFolder(folderId).parent_folder ? t('bookmarks', 'Untitled folder') : t('bookmarks', 'Root folder')) }}
 						</span>
 					</div>
 				</div>
@@ -274,10 +275,13 @@ export default {
 .sidebar .details__line > span[class^='icon-'],
 .sidebar .details__line > .material-design-icon {
 	display: inline-block;
-	position: relative;
-	top: 11px;
 	opacity: 0.5;
 	margin-right: 10px;
+}
+
+.sidebar .details__line > span[class^='icon-'] {
+	position: relative;
+	top: 11px;
 }
 
 .sidebar h3 {
