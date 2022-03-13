@@ -16,7 +16,6 @@ use OCP\Collaboration\Resources\IProvider;
 use OCP\Collaboration\Resources\IResource;
 use OCP\IURLGenerator;
 use OCP\IUser;
-use Psr\Log\LoggerInterface;
 
 class ResourceProvider implements IProvider {
 	public const RESOURCE_TYPE = 'bookmarks';
@@ -32,16 +31,11 @@ class ResourceProvider implements IProvider {
 	 * @var Authorizer
 	 */
 	private $authorizer;
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
 
-	public function __construct(BookmarkMapper $bookmarkMapper, IURLGenerator $url, Authorizer $authorizer, LoggerInterface $logger) {
+	public function __construct(BookmarkMapper $bookmarkMapper, IURLGenerator $url, Authorizer $authorizer) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->url = $url;
 		$this->authorizer = $authorizer;
-		$this->logger = $logger;
 	}
 
 	/**

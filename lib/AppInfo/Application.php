@@ -88,9 +88,9 @@ class Application extends App implements IBootstrap {
 	 * @throws \Throwable
 	 */
 	public function boot(IBootContext $context): void {
+		$context->injectFn(Closure::fromCallable([$this, 'registerCollaborationResources']));
 		$container = $context->getServerContainer();
 		CreateBookmark::register($container->get(IEventDispatcher::class));
-		$context->injectFn(Closure::fromCallable([$this, 'registerCollaborationResources']));
 	}
 
 	protected function registerCollaborationResources(IProviderManager $resourceManager, SymfonyAdapter $symfonyAdapter): void {
