@@ -15,6 +15,9 @@
       <code>registerEventListener</code>
       <code>registerEventListener</code>
     </InvalidArgument>
+    <UndefinedClass occurrences="1">
+      <code>SymfonyAdapter</code>
+    </UndefinedClass>
   </file>
   <file src="lib/Controller/BookmarkController.php">
     <MissingDependency occurrences="3">
@@ -78,5 +81,16 @@
     <UndefinedInterfaceMethod occurrences="1">
       <code>setMinimumImageDimensions</code>
     </UndefinedInterfaceMethod>
+  </file>
+  <file src="lib/Service/NotesService.php">
+    <UndefinedClass occurrences="1">
+      <code>OriginalNotesService</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="4">
+      <code>$note</code>
+      <code>$note</code>
+      <code>$note</code>
+      <code>Note[]</code>
+    </UndefinedDocblockClass>
   </file>
 </files>
