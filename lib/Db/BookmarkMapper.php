@@ -18,12 +18,14 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\DB\QueryBuilder\IQueryFunction;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use PDO;
+use Psr\Log\LoggerInterface;
 use function call_user_func;
 
 /**
@@ -71,6 +73,10 @@ class BookmarkMapper extends QBMapper {
 	 * @var ShareMapper
 	 */
 	private $shareMapper;
+	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
 
 	/**
 	 * BookmarkMapper constructor.
@@ -83,8 +89,9 @@ class BookmarkMapper extends QBMapper {
 	 * @param ITimeFactory $timeFactory
 	 * @param FolderMapper $folderMapper
 	 * @param ShareMapper $shareMapper
+	 * @param LoggerInterface $logger
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, ITimeFactory $timeFactory, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\ShareMapper $shareMapper) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, ITimeFactory $timeFactory, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\ShareMapper $shareMapper, LoggerInterface $logger) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
@@ -97,6 +104,7 @@ class BookmarkMapper extends QBMapper {
 		$this->time = $timeFactory;
 		$this->folderMapper = $folderMapper;
 		$this->shareMapper = $shareMapper;
+		$this->logger = $logger;
 	}
 
 	protected function getFindByUrlQuery(): IQueryBuilder {
@@ -196,8 +204,38 @@ class BookmarkMapper extends QBMapper {
 	 *
 	 * @throws UrlParseError
 	 * @throws \OC\DB\Exceptions\DbalException
+	 * @throws Exception
 	 */
-	public function findAll(string $userId, QueryParameters $params, $withGroupBy = true): array {
+	public function findAll(string $userId, QueryParameters $params, bool $withGroupBy = true): array {
+		$baseCase = $this->db->getQueryBuilder();
+		$baseCase
+			->selectAlias('r.folder_id', 'item_id')
+			->selectAlias($baseCase->createFunction('0'), 'parent_folder')
+			->selectAlias($baseCase->createFunction('cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as char(255))'), 'type')
+			->from('bookmarks_root_folders', 'r')
+			->where($baseCase->expr()->eq('r.user_id', $baseCase->createPositionalParameter($userId)));
+
+		$recursiveCase = $this->db->getQueryBuilder();
+		$recursiveCase->automaticTablePrefix(false);
+		$recursiveCase
+			->selectAlias('tr.id', 'item_id')
+			->selectAlias('tr.parent_folder', 'parent_folder')
+			->selectAlias('tr.type', 'type')
+			->from('*PREFIX*bookmarks_tree', 'tr')
+			->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+		$recursiveCaseShares = $this->db->getQueryBuilder();
+		$recursiveCaseShares->automaticTablePrefix(false);
+		$recursiveCaseShares
+			->selectAlias('f.id', 'item_id')
+			->addSelect('tr.parent_folder')
+			->selectAlias($recursiveCaseShares->createFunction($recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER)), 'type')
+			->from('*PREFIX*bookmarks_tree', 'tr')
+			->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER))
+			->join('tr', '*PREFIX*bookmarks_shared_folders', 's', 's.id = tr.id AND tr.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE))
+			->join('s', '*PREFIX*bookmarks_folders', 'f', 's.folder_id = f.id');
+
+		$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type) AS ('.$baseCase->getSQL().' UNION DISTINCT '.$recursiveCase->getSQL().')';
+
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
 			return 'b.' . $c;
@@ -210,25 +248,11 @@ class BookmarkMapper extends QBMapper {
 			$this->_selectFolders($qb);
 			$this->_selectTags($qb);
 		}
+		$qb->automaticTablePrefix(false);
 
 		$qb
-			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', 'tr.id = b.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
-			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->leftJoin('tr', 'bookmarks_tree', 'tr2', 'tr2.id = tr.parent_folder AND tr2.type = '. $qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
-			->leftJoin('tr2', 'bookmarks_shared_folders', 'sf2', $qb->expr()->eq('tr2.parent_folder', 'sf.folder_id'))
-			->where(
-				$qb->expr()->andX(
-					$qb->expr()->orX(
-						// This is only really used, when not adding folder=XXX in the controller
-						// as that causes $userId to be set to the folder's owner
-						$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
-						$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
-						$qb->expr()->eq('sf2.user_id', $qb->createPositionalParameter($userId))
-					),
-					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($userId), [$userId])))
-				)
-			);
+			->from('*PREFIX*bookmarks', 'b')
+			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 
 		$this->_filterUrl($qb, $params);
 		$this->_filterArchived($qb, $params);
@@ -240,16 +264,32 @@ class BookmarkMapper extends QBMapper {
 		$this->_filterSearch($qb, $params);
 		$this->_sortAndPaginate($qb, $params);
 
-		try {
-			return $this->findEntities($qb);
-		} catch (\OC\DB\Exceptions\DbalException $e) {
-			if (!$withGroupBy) {
-				throw $e;
-			}
-			// If mysql sort_buffer_size is too small, the group by caused by selecting tags and folders can cause issues
-			// in this case, we repeat the query without groupBys and rely on the BookmarkController to add tags and folders entries
-			return $this->findAll($userId, $params, false);
+		$finalQuery = $withRecursiveQuery . ' ' . $qb->getSQL();
+		$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), /*$recursiveCaseShares->getParameters(),*/ $qb->getParameters());
+		$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), /*$recursiveCaseShares->getParameterTypes(),*/ $qb->getParameterTypes());
+
+		$this->logger->warning($finalQuery);
+		$this->logger->warning(var_export($params, true));
+		$this->logger->warning(var_export($paramTypes, true));
+
+		return $this->findEntitiesWithRawQuery($finalQuery, $params, $paramTypes);
+	}
+
+	/**
+	 * @throws \OCP\DB\Exception
+	 */
+	protected function findEntitiesWithRawQuery(string $query, array $params, array $types) {
+		$cursor = $this->db->executeQuery($query, $params, $types);
+
+		$entities = [];
+
+		while ($row = $cursor->fetch()) {
+			$entities[] = $this->mapRowToEntity($row);
 		}
+
+		$cursor->closeCursor();
+
+		return $entities;
 	}
 
 	/**
@@ -371,7 +411,7 @@ class BookmarkMapper extends QBMapper {
 		if ($params->getDuplicated()) {
 			$subQuery = $this->db->getQueryBuilder();
 			$subQuery->select('trdup.parent_folder')
-			->from('bookmarks_tree', 'trdup')
+			->from('*PREFIX*bookmarks_tree', 'trdup')
 				->where($subQuery->expr()->eq('b.id', 'trdup.id'))
 				->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tr.parent_folder'))
 				->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
@@ -385,8 +425,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	private function _filterFolder(IQueryBuilder $qb, QueryParameters $params): void {
 		if ($params->getFolder() !== null) {
-			$qb->andWhere($qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($params->getFolder(), IQueryBuilder::PARAM_INT)))
-				->andWhere($qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
+			$qb->andWhere($qb->expr()->eq('tree.parent_folder', $qb->createPositionalParameter($params->getFolder(), IQueryBuilder::PARAM_INT)));
 		}
 	}
 
@@ -394,7 +433,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param IQueryBuilder $qb
 	 */
 	private function _selectTags(IQueryBuilder $qb): void {
-		$qb->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'));
+		$qb->leftJoin('b', '*PREFIX*bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'));
 		$qb->selectAlias($this->_getTagsColumn($qb), 'tags');
 	}
 
@@ -415,7 +454,7 @@ class BookmarkMapper extends QBMapper {
 	private function _filterTags(IQueryBuilder $qb, QueryParameters $params): void {
 		if (count($params->getTags())) {
 			foreach ($params->getTags() as $i => $tag) {
-				$qb->leftJoin('b', 'bookmarks_tags', 'tg'.$i, $qb->expr()->eq('tg'.$i.'.bookmark_id', 'b.id'));
+				$qb->leftJoin('b', '*PREFIX*bookmarks_tags', 'tg'.$i, $qb->expr()->eq('tg'.$i.'.bookmark_id', 'b.id'));
 				$qb->andWhere($qb->expr()->eq('tg'.$i.'.tag', $qb->createPositionalParameter($tag)));
 			}
 		}
@@ -717,11 +756,11 @@ class BookmarkMapper extends QBMapper {
 	 * @param IQueryBuilder $qb
 	 */
 	private function _selectFolders(IQueryBuilder $qb): void {
-		$qb->leftJoin('b', 'bookmarks_tree', 'tree', 'b.id =tree.id AND tree.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
+		$qb->leftJoin('b', 'bookmarks_tree', 'tr2', 'b.id = tr2.id AND tr2.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 		if ($this->getDbType() === 'pgsql') {
-			$folders = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tree.parent_folder') . "), ',')");
+			$folders = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tr2.parent_folder') . "), ',')");
 		} else {
-			$folders = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('tree.parent_folder') . ')');
+			$folders = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('tr2.parent_folder') . ')');
 		}
 		$qb->selectAlias($folders, 'folders');
 	}
