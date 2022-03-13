@@ -95,7 +95,8 @@
 				<a class="button" :href="archivedFile" target="_blank"><span class="icon-files-dark" /> {{ t('bookmarks', 'Open file location') }}</a>
 			</div>
 		</AppSidebarTab>
-		<AppSidebarTab id="bookmark-projects"
+		<AppSidebarTab v-if="!isPublic"
+			id="bookmark-projects"
 			:name="t('bookmarks', 'Projects')"
 			icon="icon-projects"
 			:order="1">

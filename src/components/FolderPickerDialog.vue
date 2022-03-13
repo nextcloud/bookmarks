@@ -39,11 +39,12 @@ export default {
 	created() {},
 	methods: {
 		onSelect(folderId) {
+			this.$root.$emit('select', folderId)
 			this.$emit('input', folderId)
-			this.$emit('select', folderId)
 			this.$emit('close')
 		},
 		onClose() {
+			this.$root.$emit('close')
 			this.$emit('close')
 		},
 	},

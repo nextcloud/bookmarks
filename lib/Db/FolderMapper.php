@@ -59,11 +59,11 @@ class FolderMapper extends QBMapper {
 
 	/**
 	 * @param int $id
-	 * @return Entity
+	 * @return Folder
 	 * @throws DoesNotExistException if not found
 	 * @throws MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $id): Entity {
+	public function find(int $id): Folder {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')

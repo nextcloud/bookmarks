@@ -11,7 +11,10 @@
 		:title="folder.title"
 		:active.sync="activeTab"
 		@close="onClose">
-		<AppSidebarTab id="folder-details" :name="t('bookmarks', 'Details')" icon="icon-info">
+		<AppSidebarTab id="folder-details"
+			:name="t('bookmarks', 'Details')"
+			icon="icon-info"
+			:order="0">
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
 			<UserBubble :user="folder.userId" :display-name="folder.userId" />
 			<h3>{{ t('bookmarks', 'Bookmarks') }}</h3>
@@ -20,7 +23,8 @@
 		<AppSidebarTab v-if="isSharable"
 			id="folder-sharing"
 			:name="t('bookmarks', 'Sharing')"
-			icon="icon-shared">
+			icon="icon-shared"
+			:order="1">
 			<div class="participant-select">
 				<figure :class="{'icon-user': true, 'share__avatar': true }" />
 				<Multiselect v-model="participant"
@@ -108,6 +112,16 @@
 				</div>
 			</div>
 		</AppSidebarTab>
+		<AppSidebarTab v-if="!isPublic"
+			id="bookmark-projects"
+			:name="t('bookmarks', 'Projects')"
+			icon="icon-projects"
+			:order="2">
+			<CollectionList v-if="folder"
+				:id="''+folder.id"
+				:name="folder.title"
+				type="bookmarks-folder" />
+		</AppSidebarTab>
 	</AppSidebar>
 </template>
 <script>
@@ -128,10 +142,11 @@ import { actions, mutations } from '../store/'
 import EyeIcon from 'vue-material-design-icons/Eye'
 import PencilIcon from 'vue-material-design-icons/Pencil'
 import ShareAllIcon from 'vue-material-design-icons/ShareAll'
+import { CollectionList } from 'nextcloud-vue-collections'
 
 export default {
 	name: 'SidebarFolder',
-	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble, ActionSeparator, EyeIcon, PencilIcon, ShareAllIcon },
+	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble, ActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, CollectionList },
 	data() {
 		return {
 			participantSearchResults: [],

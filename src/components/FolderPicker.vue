@@ -105,12 +105,7 @@ export default {
 
 .currentfolder h2 {
 	margin: 0;
-}
-
-.currentfolder h2 .material-design-icon {
-	position: relative;
-	top: 5px;
-	margin: 0 15px;
+	display: flex;
 }
 
 .treefolder__title .material-design-icon {

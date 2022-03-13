@@ -11,6 +11,7 @@ namespace OCA\Bookmarks\AppInfo;
 use Closure;
 use OC\EventDispatcher\SymfonyAdapter;
 use OCA\Bookmarks\Activity\ActivityPublisher;
+use OCA\Bookmarks\Collaboration\Resources\FolderResourceProvider;
 use OCA\Bookmarks\Collaboration\Resources\ResourceProvider;
 use OCA\Bookmarks\Dashboard\Frequent;
 use OCA\Bookmarks\Dashboard\Recent;
@@ -95,6 +96,7 @@ class Application extends App implements IBootstrap {
 
 	protected function registerCollaborationResources(IProviderManager $resourceManager, SymfonyAdapter $symfonyAdapter): void {
 		$resourceManager->registerResourceProvider(ResourceProvider::class);
+		$resourceManager->registerResourceProvider(FolderResourceProvider::class);
 
 		$symfonyAdapter->addListener('\OCP\Collaboration\Resources::loadAdditionalScripts', static function () {
 			Util::addScript('bookmarks', 'bookmarks-collections');
