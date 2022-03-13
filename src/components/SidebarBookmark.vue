@@ -32,7 +32,7 @@
 			<div>
 				<div v-if="!editingUrl" class="details__line">
 					<span class="icon-external" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
-					<span class="details__url">{{ bookmark.url }}</span>
+					<a class="details__url" :href="bookmark.url">{{ bookmark.url }}</a>
 					<Actions v-if="isEditable" class="details__action">
 						<ActionButton icon="icon-rename" @click="onEditUrl" />
 					</Actions>
