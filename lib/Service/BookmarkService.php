@@ -71,10 +71,15 @@ class BookmarkService {
 	 */
 	private $hashManager;
 	private $urlNormalizer;
+	/**
+	 * @var CrawlService
+	 */
+	private $crawler;
 
 	/**
 	 * BookmarksService constructor.
 	 *
+	 * @param CrawlService $crawler
 	 * @param BookmarkMapper $bookmarkMapper
 	 * @param FolderMapper $folderMapper
 	 * @param TagMapper $tagMapper
@@ -87,7 +92,7 @@ class BookmarkService {
 	 * @param IEventDispatcher $eventDispatcher
 	 * @param TreeCacheManager $hashManager
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager, UrlNormalizer $urlNormalizer) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager, UrlNormalizer $urlNormalizer, CrawlService $crawler) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
@@ -100,6 +105,7 @@ class BookmarkService {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->hashManager = $hashManager;
 		$this->urlNormalizer = $urlNormalizer;
+		$this->crawler = $crawler;
 	}
 
 	/**
@@ -141,8 +147,12 @@ class BookmarkService {
 			$bookmark = $this->_addBookmark($userId, $url, $title, $description, $tags, $ownFolders);
 		}
 		if ($bookmark === null) {
-			return $this->_addBookmark($userId, $url, $title, $description, $tags, [$this->folderMapper->findRootFolder($userId)->getId()]);
+			$bookmark = $this->_addBookmark($userId, $url, $title, $description, $tags, [$this->folderMapper->findRootFolder($userId)->getId()]);
 		}
+
+		// Crawl this bookmark directly
+		$this->crawler->crawl($bookmark);
+
 		return $bookmark;
 	}
 
