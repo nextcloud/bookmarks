@@ -25,7 +25,6 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use PDO;
-use Psr\Log\LoggerInterface;
 use function call_user_func;
 
 /**
@@ -73,10 +72,6 @@ class BookmarkMapper extends QBMapper {
 	 * @var ShareMapper
 	 */
 	private $shareMapper;
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
 
 	/**
 	 * BookmarkMapper constructor.
@@ -89,9 +84,8 @@ class BookmarkMapper extends QBMapper {
 	 * @param ITimeFactory $timeFactory
 	 * @param FolderMapper $folderMapper
 	 * @param ShareMapper $shareMapper
-	 * @param LoggerInterface $logger
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, ITimeFactory $timeFactory, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\ShareMapper $shareMapper, LoggerInterface $logger) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, UrlNormalizer $urlNormalizer, IConfig $config, PublicFolderMapper $publicMapper, ITimeFactory $timeFactory, \OCA\Bookmarks\Db\FolderMapper $folderMapper, \OCA\Bookmarks\Db\ShareMapper $shareMapper) {
 		parent::__construct($db, 'bookmarks', Bookmark::class);
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
@@ -104,7 +98,6 @@ class BookmarkMapper extends QBMapper {
 		$this->time = $timeFactory;
 		$this->folderMapper = $folderMapper;
 		$this->shareMapper = $shareMapper;
-		$this->logger = $logger;
 	}
 
 	protected function getFindByUrlQuery(): IQueryBuilder {
@@ -270,10 +263,6 @@ class BookmarkMapper extends QBMapper {
 		$finalQuery = $withRecursiveQuery . ' ' . $qb->getSQL();
 		$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), $recursiveCaseShares->getParameters(), $qb->getParameters());
 		$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), $recursiveCaseShares->getParameterTypes(), $qb->getParameterTypes());
-
-		$this->logger->warning($finalQuery);
-		$this->logger->warning(var_export($params, true));
-		$this->logger->warning(var_export($paramTypes, true));
 
 		return $this->findEntitiesWithRawQuery($finalQuery, $params, $paramTypes);
 	}
