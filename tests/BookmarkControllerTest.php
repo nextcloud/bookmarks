@@ -622,7 +622,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getBookmarks();
 		$data = $output->getData();
-		$this->assertCount(1, $data['data'], var_export($data, true)); // TODO: 1 level search Limit
+		$this->assertCount(2, $data['data'], var_export($data, true));
 	}
 
 	/**
