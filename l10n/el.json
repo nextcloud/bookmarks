@@ -24,7 +24,7 @@
     "%1$s unshared folder \"%2$s\" with you" : "Ο %1$s κατάργησε την κοινή χρήση του φακέλου «%2$s» μαζί σας",
     "Someone unshared folder \"%s\" with you" : "Κάποιος κατάργησε την κοινή χρήση του φακέλου «%s» μαζί σας",
     "No file provided for import" : "Κανένα αρχείο για εισαγωγή",
-    "Unsupported file type for import" : "Μη υποστηριζόμενος τύπος αρχείου",
+    "Unsupported file type for import" : "Μη υποστηριζόμενος τύπος αρχείου για εισαγωγή",
     "Bookmarks shared by %s" : "Σελιδοδείκτες σε κοινή χρήση από %s",
     "Frequent bookmarks" : "Συχνοί σελιδοδείκτες",
     "Recent bookmarks" : "Τελευταίοι σελιδοδείκτες",
