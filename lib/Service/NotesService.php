@@ -23,7 +23,6 @@ use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IUser;
 use OCP\IUserSession;
-use Psr\Log\LoggerInterface;
 
 class NotesService {
 	private const REGEX_URL = "%(https?|ftp)://(\S+(:\S*)?@|\d{1,3}(\.\d{1,3}){3}|(([a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(\.([a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(\.[a-z\x{00a1}-\x{ffff}]{2,6}))(:\d+)?([^\s]*)?%ium";
