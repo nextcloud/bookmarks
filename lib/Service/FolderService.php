@@ -93,6 +93,18 @@ class FolderService {
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
+	public function getRootFolder(string $userId) : Folder {
+		return $this->folderMapper->findRootFolder($userId);
+	}
+
+	/**
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function findById(int $id) : Folder {
+		return $this->folderMapper->find($id);
+	}
+
 	/**
 	 * @param $title
 	 * @param $parentFolderId

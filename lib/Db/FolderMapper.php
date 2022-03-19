@@ -78,7 +78,7 @@ class FolderMapper extends QBMapper {
 	 *
 	 * @return Entity
 	 */
-	public function findRootFolder(string $userId): Entity {
+	public function findRootFolder(string $userId): Folder {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select(array_map(static function ($col) {
