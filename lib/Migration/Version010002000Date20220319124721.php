@@ -10,7 +10,6 @@ namespace OCA\Bookmarks\Migration;
 use Closure;
 use DateTime;
 use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\DBAL\Types\Type;
 use OCA\Bookmarks\Db\Types;
 use OCP\DB\ISchemaWrapper;
 use OCP\IDBConnection;
@@ -41,8 +40,6 @@ class Version010002000Date20220319124721 extends SimpleMigrationStep {
 	public function preSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 		$qb = $this->db->getQueryBuilder();
 		$this->rootFolders = $qb->select('user_id', 'locked')->from('bookmarks_root_folders')->execute()->fetchAll();
-		$qb = $this->db->getQueryBuilder();
-		$qb->update('bookmarks_root_folders')->set('locked', $qb->createPositionalParameter(false, Types::BOOLEAN))->execute();
 	}
 
 	/**
@@ -59,7 +56,8 @@ class Version010002000Date20220319124721 extends SimpleMigrationStep {
 		$schema = $schemaClosure();
 		if ($schema->hasTable('bookmarks_root_folders')) {
 			$table = $schema->getTable('bookmarks_root_folders');
-			$table->changeColumn('locked', ['type' => Type::getType(Types::DATETIME)]);
+			$table->dropColumn('locked');
+			$table->addColumn('locked_time', Types::DATETIME, ['notnull' => false]);
 		}
 
 		return $schema;
@@ -79,7 +77,7 @@ class Version010002000Date20220319124721 extends SimpleMigrationStep {
 			}
 			$qb = $this->db->getQueryBuilder();
 			$qb->update('bookmarks_root_folders')
-				->set('locked', $qb->createPositionalParameter(new DateTime(), Types::DATETIME))
+				->set('locked_time', $qb->createPositionalParameter(new DateTime(), Types::DATETIME))
 				->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($rootFolder['user_id'])))
 				->execute();
 		}

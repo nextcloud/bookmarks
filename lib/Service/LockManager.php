@@ -38,7 +38,7 @@ class LockManager {
 		$value = $locked ? new DateTime() : new DateTime('@0'); // now or begin of UNIX time
 		$qb = $this->db->getQueryBuilder();
 		$qb->update('bookmarks_root_folders')
-			->set('locked', $qb->createNamedParameter($value, Types::DATETIME))
+			->set('locked_time', $qb->createNamedParameter($value, Types::DATETIME))
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
 			->execute();
 	}
@@ -50,7 +50,7 @@ class LockManager {
 	public function getLock(string $userId): bool {
 		$this->folderMapper->findRootFolder($userId);
 		$qb = $this->db->getQueryBuilder();
-		$lockedAt = $qb->select('locked')
+		$lockedAt = $qb->select('locked_time')
 			->from('bookmarks_root_folders')
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
 			->execute()
