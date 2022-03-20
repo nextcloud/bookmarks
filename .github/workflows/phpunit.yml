@@ -20,7 +20,7 @@ jobs:
       matrix:
         php-versions: ['7.4']
         databases: ['sqlite']
-        server-versions: ['stable20', 'stable21', 'stable22', 'stable23']
+        server-versions: ['stable21']
 
     name: php${{ matrix.php-versions }}-${{ matrix.databases }}-${{ matrix.server-versions }} + codecov
 
@@ -218,7 +218,7 @@ jobs:
       matrix:
         php-versions: ['7.4']
         databases: ['pgsql']
-        server-versions: ['stable20']
+        server-versions: ['stable20', 'stable21', 'stable22', 'stable23']
 
     name: php${{ matrix.php-versions }}-${{ matrix.databases }}-${{ matrix.server-versions }}
 
