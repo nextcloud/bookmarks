@@ -83,12 +83,11 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="lib/Service/NotesService.php">
-    <UndefinedClass occurrences="1">
+    <UndefinedClass occurrences="2">
+      <code>Note</code>
       <code>OriginalNotesService</code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="4">
-      <code>$note</code>
-      <code>$note</code>
+    <UndefinedDocblockClass occurrences="2">
       <code>$note</code>
       <code>Note[]</code>
     </UndefinedDocblockClass>
