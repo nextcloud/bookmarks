@@ -55,6 +55,9 @@ class LockManager {
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
 			->execute()
 			->fetch(\PDO::FETCH_COLUMN);
+		if ($lockedAt === null) {
+			return false;
+		}
 		try {
 			$dateTime = new DateTime($lockedAt);
 		} catch (\Exception $e) {
