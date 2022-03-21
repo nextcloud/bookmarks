@@ -38,6 +38,7 @@ OC.L10N.register(
     "Bookmark updated" : "Záložka aktualizována",
     "Create bookmark" : "Vytvořit záložku",
     "Takes a link and adds it to your collection of bookmarks." : "Vezme odkaz a přidá ho do vaší sbírky záložek.",
+    "Links from Notes" : "Odkazy z Poznámek",
     "A Bookmark manager for Nextcloud" : "Správce záložek pro Nextcloud",
     "Enter new title" : "Zadejte nový titulek",
     "Select bookmark" : "Vybrat záložku",
