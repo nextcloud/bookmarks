@@ -44,6 +44,7 @@ class TagMapperTest extends TestCase {
 		$this->bookmarkMapper = \OC::$server->get(Db\BookmarkMapper::class);
 		$this->tagMapper = \OC::$server->get(Db\TagMapper::class);
 		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
+		$this->treeMapper = \OC::$server->get(Db\TreeMapper::class);
 
 		$this->userManager = \OC::$server->get(IUserManager::class);
 		$this->user = 'test';
@@ -66,6 +67,7 @@ class TagMapperTest extends TestCase {
 		$bookmark->setUserId($this->userId);
 		$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
 		$this->tagMapper->addTo($tags, $bookmark->getId());
+		$this->treeMapper->addToFolders(Db\TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), [$this->folderMapper->findRootFolder($this->userId)->getId()]);
 
 		$actualTags = $this->tagMapper->findByBookmark($bookmark->getId());
 		foreach ($tags as $tag) {

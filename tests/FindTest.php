@@ -28,6 +28,11 @@ class FindTest extends TestCase {
 	private $folderMapper;
 
 	/**
+	 * @var Db\TreeMapper
+	 */
+	private $treeMapper;
+
+	/**
 	 * @var string
 	 */
 	private $userId;
@@ -54,6 +59,7 @@ class FindTest extends TestCase {
 		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
 		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
 		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
+		$this->treeMapper = \OC::$server->query(Db\TreeMapper::class);
 
 		$this->userManager = \OC::$server->getUserManager();
 		$this->user = 'test';
@@ -61,11 +67,13 @@ class FindTest extends TestCase {
 			$this->userManager->createUser($this->user, 'password');
 		}
 		$this->userId = $this->userManager->get($this->user)->getUID();
+		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
 
 		foreach ($this->singleBookmarksProvider() as $bookmarkEntry) {
 			$bookmarkEntry[1]->setUserId($this->userId);
 			$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmarkEntry[1]);
 			$this->tagMapper->addTo($bookmarkEntry[0], $bookmark->getId());
+			$this->treeMapper->addToFolders(Db\TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), [$rootFolder->getId()]);
 		}
 	}
 

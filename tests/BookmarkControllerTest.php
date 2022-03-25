@@ -232,6 +232,9 @@ class BookmarkControllerTest extends TestCase {
 		$this->tagMapper->addTo(['four'], $bookmark2->getId());
 		$this->bookmark1Id = $bookmark1->getId();
 		$this->bookmark2Id = $bookmark2->getId();
+		$rootFolderId = $this->folderMapper->findRootFolder($this->userId)->getId();
+		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $this->bookmark1Id, [$rootFolderId]);
+		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $this->bookmark2Id, [$rootFolderId]);
 	}
 
 	/**
@@ -250,6 +253,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->folder1->setTitle('foo');
 		$this->folder1->setUserId($this->userId);
 		$this->folderMapper->insert($this->folder1);
+		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder1->getId(), $this->folderMapper->findRootFolder($this->userId)->getId());
 
 		$this->folder2 = new Folder();
 		$this->folder2->setTitle('bar');
@@ -655,7 +659,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getBookmarks();
 		$data = $output->getData();
-		$this->assertCount(2, $data['data']); // TODO: 1 level search limit
+		$this->assertCount(3, $data['data']);
 	}
 
 	/**
