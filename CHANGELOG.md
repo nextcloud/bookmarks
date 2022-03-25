@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.0] - 2022-03-25
+
+### New
+
+- Implement bookmarks backup to Files
+- Feature: Show and count duplicates
+- Allow linking bookmarks and bookmark folders to projects
+- Automatically link bookmarks to notes that contain the URL
+- Search: Use AND conjunction
+- LockManager: Timeout locks automatically
+- UX: Directly crawl bookmark upon creation
+- Previewers: Set log level to debug
+- User settings: Remove 'clear all data'
+- UX: Add explainers for SHARED_FOLDERS and UNAVAILABLE routes
+- SidebarBookmark: Polish folder details
+- SidebarBookmark: Allow clicking link
+
+### Fixed
+- FoldersController#getFolders: Fix parent_folder values of root-level folders
+- Fix SHARED_FOLDERS view
+
 ## [10.1.0] - 2022-03-01
 
 ### New
@@ -659,6 +680,7 @@ Supported are NC 15 and 16, provided you are using PHP v7.1 and have gmp, intl a
 - FIX folder collapse css
 - FIX: Speed up findBookmarks SQL query
 
+[10.2.0]: https://github.com/nextcloud/bookmarks/compare/v10.1.0...v10.2.0
 [10.1.0]: https://github.com/nextcloud/bookmarks/compare/v10.0.3...v10.1.0
 [10.0.3]: https://github.com/nextcloud/bookmarks/compare/v10.0.2...v10.0.3
 [10.0.2]: https://github.com/nextcloud/bookmarks/compare/v10.0.1...v10.0.2
