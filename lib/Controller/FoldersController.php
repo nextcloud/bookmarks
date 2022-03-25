@@ -209,7 +209,7 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find parent folder'], Http::STATUS_BAD_REQUEST);
 		}
 
-		return new JSONResponse(['status' => 'success', 'item' => $this->_returnFolderAsArray(folder)]);
+		return new JSONResponse(['status' => 'success', 'item' => $this->_returnFolderAsArray($folder)]);
 	}
 
 	/**
