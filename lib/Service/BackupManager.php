@@ -17,7 +17,7 @@ use OCP\IConfig;
 use OCP\IL10N;
 
 class BackupManager {
-	public const COMMENT = '<-- Created by Nextcloud Bookmarks -->';
+	public const COMMENT = '<!-- Created by Nextcloud Bookmarks -->';
 
 	/**
 	 * @var IConfig
