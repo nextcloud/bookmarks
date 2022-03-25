@@ -18,6 +18,8 @@ use OCP\IL10N;
 
 class BackupManager {
 
+	public const COMMENT = '<-- Created by Nextcloud Bookmarks -->';
+
 	/**
 	 * @var IConfig
 	 */
@@ -91,7 +93,7 @@ class BackupManager {
 		}
 		$backupFilePath = $this->getBackupFilePathForDate($userId, $this->time->getDateTime()->getTimestamp());
 		$file = $userFolder->newFile($backupFilePath);
-		$file->putContent($exportedHTML);
+		$file->putContent($exportedHTML.self::COMMENT);
 	}
 
 	private function getBackupFolderPath(string $userId):string {
@@ -167,9 +169,16 @@ class BackupManager {
 			$matchingMonths = count(array_filter($monthsToKeep, function ($monthToKeep) use ($date) {
 				return abs($date->diff($monthToKeep)->days) < 6;
 			}));
-			if (!$matchingDays && !$matchingWeeks && !$matchingMonths) {
-				$node->delete();
+			if ($matchingDays || $matchingWeeks || $matchingMonths) {
+				continue;
 			}
+			if (!($contents = $node->getStorage()->file_get_contents($node->getPath()))) {
+				continue;
+			}
+			if (!str_contains($contents, self::COMMENT)) {
+				continue;
+			}
+			$node->delete();
 		}
 	}
 
