@@ -209,7 +209,7 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find parent folder'], Http::STATUS_BAD_REQUEST);
 		}
 
-		return new JSONResponse(['status' => 'success', 'item' => $folder->toArray()]);
+		return new JSONResponse(['status' => 'success', 'item' => $this->_returnFolderAsArray(folder)]);
 	}
 
 	/**
@@ -469,7 +469,7 @@ class FoldersController extends ApiController {
 		$internalRoot = $this->toInternalFolderId($root);
 		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers);
 		if ($root === -1 || $root === '-1') {
-			foreach ($folders as $folder) {
+			foreach ($folders as &$folder) {
 				$folder['parent_folder'] = -1;
 			}
 		}
