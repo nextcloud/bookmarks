@@ -17,7 +17,6 @@ use OCP\IConfig;
 use OCP\IL10N;
 
 class BackupManager {
-
 	public const COMMENT = '<-- Created by Nextcloud Bookmarks -->';
 
 	/**
@@ -172,7 +171,7 @@ class BackupManager {
 			if ($matchingDays || $matchingWeeks || $matchingMonths) {
 				continue;
 			}
-			if (!($contents = $node->getStorage()->file_get_contents($node->getPath()))) {
+			if (!($contents = $node->getStorage()->file_get_contents($node->getInternalPath()))) {
 				continue;
 			}
 			if (!str_contains($contents, self::COMMENT)) {
