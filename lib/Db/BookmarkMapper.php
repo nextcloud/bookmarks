@@ -217,7 +217,12 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias('tr.type', 'type')
 			->selectAlias('tr.index', 'idx')
 			->from('*PREFIX*bookmarks_tree', 'tr')
-			->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+			->join('tr', ($this->getDbType() === 'mysql' ? 'folder_tree' : 'inner_folder_tree'), 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+		$secondBaseCase = $this->db->getQueryBuilder();
+		$secondBaseCase->automaticTablePrefix(false);
+		$secondBaseCase
+			->select('item_id', 'parent_folder', 'type', 'idx')
+			->from('inner_folder_tree');
 		$recursiveCaseShares = $this->db->getQueryBuilder();
 		$recursiveCaseShares->automaticTablePrefix(false);
 		$recursiveCaseShares
@@ -230,7 +235,16 @@ class BookmarkMapper extends QBMapper {
 			->join('tr', '*PREFIX*bookmarks_shared_folders', 's', 's.id = tr.id AND tr.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE))
 			->join('s', '*PREFIX*bookmarks_folders', 'f', 's.folder_id = f.id');
 
-		$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ('.$baseCase->getSQL().' UNION ALL '.$recursiveCase->getSQL().' UNION ALL '.$recursiveCaseShares->getSQL().')';
+		if ($this->getDbType() === 'mysql') {
+			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() .
+				' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
+		} else {
+			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+				'WITH RECURSIVE inner_folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')' .
+				' UNION ALL ' . $secondBaseCase->getSQL() . ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
+		}
 
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
@@ -572,7 +586,12 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias('tr.type', 'type')
 			->selectAlias('tr.index', 'idx')
 			->from('*PREFIX*bookmarks_tree', 'tr')
-			->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+			->join('tr', ($this->getDbType() === 'mysql'? 'folder_tree' : 'inner_folder_tree'), 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+		$secondBaseCase = $this->db->getQueryBuilder();
+		$secondBaseCase->automaticTablePrefix(false);
+		$secondBaseCase
+			->select('item_id', 'parent_folder', 'type', 'idx')
+			->from('inner_folder_tree');
 		$recursiveCaseShares = $this->db->getQueryBuilder();
 		$recursiveCaseShares->automaticTablePrefix(false);
 		$recursiveCaseShares
@@ -585,8 +604,16 @@ class BookmarkMapper extends QBMapper {
 			->join('tr', '*PREFIX*bookmarks_shared_folders', 's', 's.id = tr.id AND tr.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE))
 			->join('s', '*PREFIX*bookmarks_folders', 'f', 's.folder_id = f.id');
 
-		$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ('.$baseCase->getSQL().' UNION ALL '.$recursiveCase->getSQL().' UNION ALL '.$recursiveCaseShares->getSQL().')';
-
+		if ($this->getDbType() === 'mysql') {
+			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() .
+				' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
+		} else {
+			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+				'WITH RECURSIVE inner_folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')' .
+				' UNION ALL ' . $secondBaseCase->getSQL() . ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
+		}
 
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
