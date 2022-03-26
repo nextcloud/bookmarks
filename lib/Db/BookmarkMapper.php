@@ -612,7 +612,7 @@ class BookmarkMapper extends QBMapper {
 			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
 				'WITH RECURSIVE inner_folder_tree(item_id, parent_folder, type, idx) AS ( ' .
 				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')' .
-				' UNION ALL ' . $secondBaseCase->getSQL() . ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
+				' ' . $secondBaseCase->getSQL() . ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
 		}
 
 		$qb = $this->db->getQueryBuilder();
