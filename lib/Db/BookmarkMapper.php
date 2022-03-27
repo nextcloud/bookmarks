@@ -203,9 +203,9 @@ class BookmarkMapper extends QBMapper {
 		$baseCase = $this->db->getQueryBuilder();
 		$baseCase
 			->selectAlias('r.folder_id', 'item_id')
-			->selectAlias($baseCase->createFunction('0'), 'parent_folder')
-			->selectAlias($baseCase->createFunction('cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as char(255))'), 'type')
-			->selectAlias($baseCase->createFunction('0'), 'idx')
+			->selectAlias($baseCase->createFunction('cast(0 as bigint)'), 'parent_folder')
+			->selectAlias($baseCase->createFunction('cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as text)'), 'type')
+			->selectAlias($baseCase->createFunction('cast(0 as bigint)'), 'idx')
 			->from('bookmarks_root_folders', 'r')
 			->where($baseCase->expr()->eq('r.user_id', $baseCase->createPositionalParameter($userId)));
 
@@ -571,10 +571,10 @@ class BookmarkMapper extends QBMapper {
 
 		$baseCase = $this->db->getQueryBuilder();
 		$baseCase
-			->selectAlias('r.folder_id', 'item_id')
-			->selectAlias($baseCase->createFunction('0'), 'parent_folder')
-			->selectAlias($baseCase->createFunction('cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as char(255))'), 'type')
-			->selectAlias($baseCase->createFunction('0'), 'idx')
+			->selectAlias('f.folder_id', 'item_id')
+			->selectAlias($baseCase->createFunction('cast(0 as bigint)'), 'parent_folder')
+			->selectAlias($baseCase->createFunction('cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as text)'), 'type')
+			->selectAlias($baseCase->createFunction('cast(0 as bigint)'), 'idx')
 			->from('bookmarks_folders', 'f')
 			->where($baseCase->expr()->eq('f.id', $baseCase->createPositionalParameter($folder->getId())));
 
