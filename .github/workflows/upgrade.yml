@@ -27,13 +27,6 @@ jobs:
           - prev-version: 'stable3'
             server-versions: 'stable23'
           - php-versions: '7.3'
-            prev-version: 'stable3'
-            server-versions: 'v24.0.0beta2'
-          - php-versions: '7.3'
-            prev-version: 'stable4'
-            server-versions: 'v24.0.0beta2'
-          - php-versions: '7.3'
-            prev-version: 'stable'
             server-versions: 'v24.0.0beta2'
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
