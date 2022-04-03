@@ -40,6 +40,9 @@ Requirements:
 		<lib>intl</lib>
 		<lib>mbstring</lib>
 		<nextcloud min-version="20" max-version="23" />
+		<database>sqlite</database>
+		<database>mysql</database>
+		<database>pgsql</database>
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>
