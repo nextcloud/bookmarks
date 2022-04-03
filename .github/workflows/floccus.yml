@@ -28,7 +28,7 @@ jobs:
         floccus-ref: ['master', 'develop']
         node-versions: [14.x]
         npm-versions: [7.x]
-        server-versions: ['20', '21', '22', '23']
+        server-versions: ['22']
         selenium-version: ['3']
         floccus-adapter:
           - nextcloud-bookmarks
