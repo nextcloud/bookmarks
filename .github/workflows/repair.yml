@@ -121,7 +121,7 @@ jobs:
       matrix:
         php-versions: ['7.4']
         databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable24']
+        server-versions: ['v24.0.0beta2']
 
     name: Repair step on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
