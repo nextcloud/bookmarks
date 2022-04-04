@@ -176,6 +176,8 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Chave da API ScreenshotMachine",
     "Pageres CLI" : "Pageres CLI",
+    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Basta instalar a CLI do Pageres em seu servidor e os Favoritos a encontrarão. Você ainda pode adicionar vars ENV adicionais para serem alimentados em pageres, por exemplo conforme indicado no espaço reservado:",
+    "Pageres ENV variables" : "Variáveis de ENV do Pageres",
     "Failed to save settings" : "Erro ao salvar configurações",
     "Failed to load settings" : "Erro ao carregar configurações",
     "This URL is already bookmarked! Overwrite?" : "Esta URL já está nos seus favoritos. Sobrescrever?",
@@ -204,6 +206,8 @@ OC.L10N.register(
     "Failed to load setting {key}" : "Erro ao carregar a configuração {key}",
     "Failed to update share {shareId}" : "Erro ao atualizar o compartilhamento {shareId}",
     "Failed to delete share {shareId}" : "Erro ao excluir o compartilhamento {shareId}",
+    "Create bookmarks for mentioned links" : "Crie marcadores para links mencionados",
+    "No links found in this message" : "Nenhum link encontrado nesta mensagem",
     "Bookmarks feed" : "Feed de favoritos"
 },
 "nplurals=2; plural=(n > 1);");
