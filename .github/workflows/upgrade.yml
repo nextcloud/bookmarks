@@ -93,7 +93,11 @@ jobs:
         run: |
           sleep 25
           mkdir data
+          git status
+          git show
+          git log
           ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$MYSQL_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
+          ./occ status
           ./occ app:enable -vvv -f ${{ env.APP_NAME }}
           php -S localhost:8080 &
 
