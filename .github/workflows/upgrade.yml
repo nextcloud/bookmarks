@@ -20,7 +20,7 @@ jobs:
       matrix:
         php-versions: ['7.3', '7.4']
         databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable20', 'stable21', 'stable22', 'stable23', 'bugfix/noid/add-missing-docs']
+        server-versions: ['stable20', 'stable21', 'stable22', 'stable23', 'v24.0.0beta2']
         prev-version: ['stable', 'stable4', 'stable3']
         exclude:
           - prev-version: 'stable3'
@@ -30,7 +30,7 @@ jobs:
           - prev-version: 'stable3'
             server-versions: 'stable23'
           - php-versions: '7.3'
-            server-versions: 'bugfix/noid/add-missing-docs'
+            server-versions: 'v24.0.0beta2'
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
