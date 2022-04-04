@@ -15,10 +15,10 @@ jobs:
       # do not stop on another job's failure
       fail-fast: false
       matrix:
-        php-versions: ['7.3', '7.4']
-        databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable20', 'stable21', 'stable22', 'stable23', 'bugfix/noid/add-missing-docs']
-        prev-version: ['stable', 'stable4', 'stable3']
+        php-versions: ['7.4']
+        databases: ['mysql']
+        server-versions: ['bugfix/noid/add-missing-docs']
+        prev-version: ['stable']
         exclude:
           - prev-version: 'stable3'
             server-versions: 'stable21'
