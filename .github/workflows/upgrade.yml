@@ -3,6 +3,9 @@ name: Upgrade
 on:
   pull_request:
   push:
+    branches:
+      - master
+      - stable*
 
 env:
   APP_NAME: bookmarks
