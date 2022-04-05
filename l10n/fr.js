@@ -201,4 +201,4 @@ OC.L10N.register(
     "Failed to delete share {shareId}" : "Impossible de supprimer le partage {shareId}",
     "Bookmarks feed" : "Flux de suivi"
 },
-"nplurals=2; plural=(n > 1);");
+"nplurals=3; plural=(n==0 || n==1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
