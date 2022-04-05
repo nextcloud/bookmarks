@@ -3,6 +3,9 @@ name: Repair step
 on:
   pull_request:
   push:
+    branches:
+      - master
+      - stable*
 
 env:
   APP_NAME: bookmarks
@@ -18,6 +21,110 @@ jobs:
         php-versions: ['7.3']
         databases: ['sqlite', 'mysql', 'pgsql']
         server-versions: ['stable20', 'stable21', 'stable22', 'stable23']
+
+    name: Repair step on ${{ matrix.databases }}-${{ matrix.server-versions }}
+
+    env:
+      MYSQL_PORT: 4444
+      PGSQL_PORT: 4445
+
+    services:
+      mysql:
+        image: mariadb:10.5
+        ports:
+          - 4444:3306/tcp
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+        options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
+      postgres:
+        image: postgres
+        ports:
+          - 4445:5432/tcp
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: rootpassword
+          POSTGRES_DB: nextcloud
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 2s --health-retries 5
+
+    steps:
+      - name: Checkout server
+        uses: actions/checkout@v2
+        with:
+          repository: nextcloud/server
+          ref: ${{ matrix.server-versions }}
+
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+
+      - name: Set up php ${{ matrix.php-versions }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: phpunit
+          extensions: mbstring, iconv, fileinfo, intl, sqlite, pdo_mysql, pdo_sqlite, pgsql, pdo_pgsql, gd, zip
+
+      - name: Checkout app
+        uses: actions/checkout@v2
+        with:
+          path: apps/${{ env.APP_NAME }}
+
+      - name: Install app
+        working-directory: apps/${{ env.APP_NAME }}
+        run: composer install --ignore-platform-req=php --no-dev
+
+      - name: Set up Nextcloud and install app
+        if: ${{ matrix.databases != 'pgsql'}}
+        run: |
+          sleep 25
+          mkdir data
+          ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$MYSQL_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
+          ./occ app:enable -vvv -f ${{ env.APP_NAME }}
+          php -S localhost:8080 &
+
+      - name: Set up Nextcloud and install app
+        if: ${{ matrix.databases == 'pgsql'}}
+        run: |
+          sleep 25
+          mkdir data
+          ./occ maintenance:install --verbose --database=${{ matrix.databases }} --database-name=nextcloud --database-host=127.0.0.1 --database-port=$PGSQL_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
+          ./occ app:enable -vvv -f ${{ env.APP_NAME }}
+          php -S localhost:8080 &
+
+      - name: Import bookmarks
+        run: |
+          cp ./apps/bookmarks/tests/res/import.file ./apps/bookmarks/tests/res/import.html
+          curl -u 'admin:password' -vvv --fail -F 'bm_import=@./apps/bookmarks/tests/res/import.html' http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/folder/-1/import
+
+      - name: Export bookmarks
+        run: |
+          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/export" > export.html
+
+      - name: Run update
+        run: |
+          ./occ maintenance:repair
+
+      - name: Export bookmarks
+        run: |
+          curl -u 'admin:password' -vvv --fail "http://localhost:8080/index.php/apps/bookmarks/public/rest/v2/bookmark/export" > export2.html
+
+      - name: Compare exports
+        run: |
+          diff export.html export2.html
+
+  nc24:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # do not stop on another job's failure
+      fail-fast: false
+      matrix:
+        php-versions: ['7.4']
+        databases: ['sqlite', 'mysql', 'pgsql']
+        server-versions: ['v24.0.0beta2']
 
     name: Repair step on ${{ matrix.databases }}-${{ matrix.server-versions }}
 

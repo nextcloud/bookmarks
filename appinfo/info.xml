@@ -37,12 +37,12 @@ Requirements:
 
 	<dependencies>
 		<php min-version="7.3" />
-		<lib>intl</lib>
-		<lib>mbstring</lib>
-		<nextcloud min-version="20" max-version="23" />
 		<database>sqlite</database>
 		<database>mysql</database>
 		<database>pgsql</database>
+		<lib>intl</lib>
+		<lib>mbstring</lib>
+		<nextcloud min-version="20" max-version="24" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>

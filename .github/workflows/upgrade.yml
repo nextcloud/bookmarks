@@ -3,6 +3,9 @@ name: Upgrade
 on:
   pull_request:
   push:
+    branches:
+      - master
+      - stable*
 
 env:
   APP_NAME: bookmarks
@@ -15,10 +18,10 @@ jobs:
       # do not stop on another job's failure
       fail-fast: false
       matrix:
-        php-versions: ['7.3']
+        php-versions: ['7.3', '7.4']
         databases: ['sqlite', 'mysql', 'pgsql']
         server-versions: ['stable20', 'stable21', 'stable22', 'stable23']
-        prev-version: ['stable4', 'stable3', 'stable']
+        prev-version: ['stable', 'stable4', 'stable3']
         exclude:
           - prev-version: 'stable3'
             server-versions: 'stable21'
@@ -26,6 +29,8 @@ jobs:
             server-versions: 'stable22'
           - prev-version: 'stable3'
             server-versions: 'stable23'
+          - php-versions: '7.3'
+            server-versions: 'v24.0.0beta2'
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
