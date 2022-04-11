@@ -34,6 +34,10 @@ class FileCache implements ICache {
 		$this->timeFactory = $timeFactory;
 	}
 
+	public static function isAvailable(): bool {
+		return true;
+	}
+
 	/**
 	 * @return ISimpleFolder
 	 * @throws NotPermittedException
