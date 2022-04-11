@@ -88,10 +88,10 @@ jobs:
         exclude:
           - server-versions: stable20
             php-versions: '8.0'
-          - server-versions: v24.0.0beta2
+          - server-versions: v24.0.0beta3
             php-versions: '7.3'
         include:
-          - server-versions: v24.0.0beta2
+          - server-versions: v24.0.0beta3
             databases: 'mysql'
             php-versions: '8.1'
 
