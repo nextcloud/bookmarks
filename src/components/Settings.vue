@@ -27,9 +27,10 @@
 				@click="onChangeArchivePath">
 		</label>
 
-		<label><h3>{{ t('bookmarks', 'Backup path') }}</h3>
+		<label><h3>{{ t('bookmarks', 'Backups') }}</h3>
+			<p><label><input type="checkbox" :value="backupEnabled" @input="onChangeBackupEnabled">{{ t('bookmarks', 'Enable bookmarks backups') }}</label></p>
 			<p>{{ t('bookmarks',
-				'Enter the path of a folder in your Files where your bookmarks backups will be stored.'
+				'Enter the path of a folder in your Files where backups will be stored.'
 			) }}</p>
 			<input
 				:value="backupPath"
@@ -104,7 +105,7 @@ export default {
 		},
 		bookmarklet() {
 			const bookmarkletUrl
-						= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
+					= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
 			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=650px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
 		archivePath() {
@@ -112,6 +113,9 @@ export default {
 		},
 		backupPath() {
 			return this.$store.state.settings.backupPath
+		},
+		backupEnabled() {
+			return Boolean(this.$store.state.settings.backupEnabled)
 		},
 	},
 	mounted() {
@@ -149,10 +153,19 @@ export default {
 			})
 		},
 		async onChangeBackupPath(e) {
+			if (!this.backupEnabled) {
+				return
+			}
 			const path = await this.backupPathPicker.pick()
 			await this.$store.dispatch(actions.SET_SETTING, {
 				key: 'backupPath',
 				value: path,
+			})
+		},
+		async onChangeBackupEnabled(e) {
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'backupEnabled',
+				value: !this.backupEnabled,
 			})
 		},
 		clickAddToHomeScreen() {
@@ -190,6 +203,13 @@ export default {
 .settings label a.button {
 	display: block;
 	width: 100%;
+}
+
+.settings input[type=checkbox] {
+	display: inline-block;
+	position: relative;
+	top: 0.5em;
+	width: 1.2em;
 }
 
 .settings label {

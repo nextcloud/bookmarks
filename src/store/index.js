@@ -47,6 +47,8 @@ export default {
 			viewMode: 'list',
 			sorting: 'lastmodified',
 			limit: 0,
+			backupPath: '',
+			backupEnabled: '1',
 		},
 		bookmarks: [],
 		bookmarksById: {},

@@ -69,7 +69,7 @@ export const actions = {
 
 	SET_SETTING: 'SET_SETTING',
 	LOAD_SETTING: 'LOAD_SETTING',
-	LOAD_SETTINGS: 'SLOAD_SETTINGS',
+	LOAD_SETTINGS: 'LOAD_SETTINGS',
 
 	LOAD_SHARES: 'LOAD_SHARES',
 	LOAD_SHARES_OF_FOLDER: 'LOAD_SHARES_OF_FOLDER',
@@ -1137,7 +1137,7 @@ export default {
 	},
 	[actions.LOAD_SETTINGS]({ commit, dispatch, state }) {
 		return Promise.all(
-			['sorting', 'viewMode', 'archivePath', 'backupPath', 'limit'].map(key =>
+			['sorting', 'viewMode', 'archivePath', 'backupPath', 'backupEnabled', 'limit'].map(key =>
 				dispatch(actions.LOAD_SETTING, key)
 			)
 		)

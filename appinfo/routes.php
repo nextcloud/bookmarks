@@ -136,6 +136,8 @@ return [
 		['name' => 'settings#get_archive_path', 'url' => '/settings/archivePath', 'verb' => 'GET'],
 		['name' => 'settings#set_backup_path', 'url' => '/settings/backupPath', 'verb' => 'POST'],
 		['name' => 'settings#get_backup_path', 'url' => '/settings/backupPath', 'verb' => 'GET'],
+		['name' => 'settings#set_backup_enabled', 'url' => '/settings/backupEnabled', 'verb' => 'POST'],
+		['name' => 'settings#get_backup_enabled', 'url' => '/settings/backupEnabled', 'verb' => 'GET'],
 		['name' => 'settings#get_limit', 'url' => '/settings/limit', 'verb' => 'GET'],
 
 		# public link web view

@@ -13,6 +13,7 @@ use OCP\BackgroundJob\TimedJob;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
+use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserManager;
 use Psr\Log\LoggerInterface;
@@ -50,9 +51,13 @@ class BackupJob extends TimedJob {
 	 * @var LoggerInterface
 	 */
 	private $logger;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
 
 	public function __construct(
-		BookmarkMapper $bookmarkMapper, ITimeFactory $timeFactory, IUserManager $userManager, BackupManager $backupManager, LoggerInterface $logger
+		BookmarkMapper $bookmarkMapper, ITimeFactory $timeFactory, IUserManager $userManager, BackupManager $backupManager, LoggerInterface $logger, IConfig $config
 	) {
 		parent::__construct($timeFactory);
 		$this->bookmarkMapper = $bookmarkMapper;
@@ -61,6 +66,7 @@ class BackupJob extends TimedJob {
 		$this->userManager = $userManager;
 		$this->backupManager = $backupManager;
 		$this->logger = $logger;
+		$this->config = $config;
 	}
 
 	protected function run($argument) {
@@ -77,6 +83,9 @@ class BackupJob extends TimedJob {
 			}
 			try {
 				if ($this->bookmarkMapper->countBookmarksOfUser($user) === 0) {
+					continue;
+				}
+				if (!$this->config->getUserValue($user, 'bookmarks', 'backup.enabled', true)) {
 					continue;
 				}
 				if ($this->backupManager->backupExistsForToday($user)) {

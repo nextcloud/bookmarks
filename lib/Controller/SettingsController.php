@@ -43,7 +43,7 @@ class SettingsController extends ApiController {
 		$this->l = $l;
 	}
 
-	private function getSetting(string $key, string $name, string $default): JSONResponse {
+	private function getSetting(string $key, string $name, $default): JSONResponse {
 		try {
 			$userValue = $this->config->getUserValue(
 				$this->userId,
@@ -170,6 +170,33 @@ class SettingsController extends ApiController {
 	 */
 	public function setArchivePath(string $archivePath): JSONResponse {
 		return $this->setSetting('archive.filePath', $archivePath);
+	}
+
+	/**
+	 * get user-defined archive path
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function getBackupEnabled(): JSONResponse {
+		return $this->getSetting(
+			'backup.enabled',
+			'backupEnabled',
+			(string) true
+		);
+	}
+
+	/**
+	 * set user-defined backup path
+	 *
+	 * @param string $backupEnabled
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function setBackupEnabled(bool $backupEnabled): JSONResponse {
+		return $this->setSetting('backup.enabled', (string) $backupEnabled);
 	}
 
 	/**
