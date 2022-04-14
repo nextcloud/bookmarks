@@ -132,6 +132,8 @@ OC.L10N.register(
     "Export" : "Export",
     "Archive path" : "Popis umístění archivu",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "Zadejte popis umístění složky ve svých Souborech, ve které by měly být uchovávány soubory, umístěné do záložek",
+    "Backups" : "Zálohy",
+    "Enable bookmarks backups" : "Zapnout zálohování záložek",
     "Client apps" : "Klientské aplikace",
     "Also check out the collection of client apps that integrate with this app: " : "Také se podívejte na sadu klientských aplikací, které napojují na tuto aplikaci:",
     "Install web app on device" : "Nainstalovat webovou aplikaci na zařízení",
