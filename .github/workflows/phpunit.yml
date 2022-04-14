@@ -84,14 +84,14 @@ jobs:
       matrix:
         php-versions: ['7.3', '7.4', '8.0']
         databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable20', 'stable21', 'stable22', 'stable23', 'v24.0.0beta3']
+        server-versions: ['stable20', 'stable21', 'stable22', 'stable23', 'stable24']
         exclude:
           - server-versions: stable20
             php-versions: '8.0'
-          - server-versions: v24.0.0beta3
+          - server-versions: stable24
             php-versions: '7.3'
         include:
-          - server-versions: v24.0.0beta3
+          - server-versions: stable24
             databases: 'mysql'
             php-versions: '8.1'
 
