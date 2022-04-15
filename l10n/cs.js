@@ -134,6 +134,7 @@ OC.L10N.register(
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "Zadejte popis umístění složky ve svých Souborech, ve které by měly být uchovávány soubory, umístěné do záložek",
     "Backups" : "Zálohy",
     "Enable bookmarks backups" : "Zapnout zálohování záložek",
+    "Enter the path of a folder in your Files where backups will be stored." : "Zadejte popis umístění složky ve svých Souborech, do kterého ukládat zálohy.",
     "Client apps" : "Klientské aplikace",
     "Also check out the collection of client apps that integrate with this app: " : "Také se podívejte na sadu klientských aplikací, které napojují na tuto aplikaci:",
     "Install web app on device" : "Nainstalovat webovou aplikaci na zařízení",

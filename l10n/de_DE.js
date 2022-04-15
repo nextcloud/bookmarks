@@ -132,6 +132,8 @@ OC.L10N.register(
     "Export" : "Exportieren",
     "Archive path" : "Archiv-Pfad",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "Geben Sie den Pfad eines Ordners an, in dem Ihre mit Lesezeichen versehene Dateien gespeichert werden sollen",
+    "Backups" : "Backups",
+    "Enable bookmarks backups" : "Lesezeichen-Backups aktivieren",
     "Client apps" : "Client-Apps",
     "Also check out the collection of client apps that integrate with this app: " : "Sehen Sie sich auch die Sammlung von Client-Apps an, welche diese App integrieren:",
     "Install web app on device" : "Web-App auf dem Gerät installieren",
