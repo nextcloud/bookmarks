@@ -7,7 +7,7 @@ source_dir=$(build_dir)/source
 sign_dir=$(build_dir)/sign
 package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
-version+=10.3.0
+version+=10.3.1
 
 all: dev-setup build-js-production composer-no-dev
 
