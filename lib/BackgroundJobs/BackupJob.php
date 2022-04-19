@@ -16,6 +16,7 @@ use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
 
 class BackupJob extends TimedJob {
@@ -55,9 +56,13 @@ class BackupJob extends TimedJob {
 	 * @var IConfig
 	 */
 	private $config;
+	/**
+	 * @var IUserSession
+	 */
+	private $session;
 
 	public function __construct(
-		BookmarkMapper $bookmarkMapper, ITimeFactory $timeFactory, IUserManager $userManager, BackupManager $backupManager, LoggerInterface $logger, IConfig $config
+		BookmarkMapper $bookmarkMapper, ITimeFactory $timeFactory, IUserManager $userManager, BackupManager $backupManager, LoggerInterface $logger, IConfig $config, IUserSession $session
 	) {
 		parent::__construct($timeFactory);
 		$this->bookmarkMapper = $bookmarkMapper;
@@ -67,12 +72,13 @@ class BackupJob extends TimedJob {
 		$this->backupManager = $backupManager;
 		$this->logger = $logger;
 		$this->config = $config;
+		$this->session = $session;
 	}
 
 	protected function run($argument) {
 		$users = [];
 		$this->userManager->callForSeenUsers(function (IUser $user) use (&$users) {
-			$users[] = $user->getUID();
+			$users[] = $user;
 		});
 
 		$processed = 0;
@@ -81,21 +87,23 @@ class BackupJob extends TimedJob {
 			if (!$user) {
 				return;
 			}
+			$userId = $user->getUID();
 			try {
-				if ($this->bookmarkMapper->countBookmarksOfUser($user) === 0) {
+				if ($this->bookmarkMapper->countBookmarksOfUser($userId) === 0) {
 					continue;
 				}
-				if (!$this->config->getUserValue($user, 'bookmarks', 'backup.enabled', true)) {
+				if (!$this->config->getUserValue($userId, 'bookmarks', 'backup.enabled', true)) {
 					continue;
 				}
-				if ($this->backupManager->backupExistsForToday($user)) {
+				$this->session->setUser($user);
+				if ($this->backupManager->backupExistsForToday($userId)) {
 					continue;
 				}
-				$this->backupManager->runBackup($user);
-				$this->backupManager->cleanupOldBackups($user);
+				$this->backupManager->runBackup($userId);
+				$this->backupManager->cleanupOldBackups($userId);
 				$processed++;
 			} catch (\Exception $e) {
-				$this->logger->warning('Bookmarks backup for user '.$user.'errored');
+				$this->logger->warning('Bookmarks backup for user '.$userId.'errored');
 				$this->logger->warning($e->getMessage());
 				continue;
 			}

@@ -28,7 +28,7 @@
 		</label>
 
 		<label><h3>{{ t('bookmarks', 'Backups') }}</h3>
-			<p><label><input type="checkbox" :value="backupEnabled" @input="onChangeBackupEnabled">{{ t('bookmarks', 'Enable bookmarks backups') }}</label></p>
+			<p><label><input type="checkbox" :checked="backupEnabled" @input="onChangeBackupEnabled">{{ t('bookmarks', 'Enable bookmarks backups') }}</label></p>
 			<p>{{ t('bookmarks',
 				'Enter the path of a folder in your Files where backups will be stored.'
 			) }}</p>
