@@ -10,6 +10,9 @@ on:
 env:
   APP_NAME: bookmarks
 
+permissions:
+  contents: read
+
 jobs:
   codecov:
     runs-on: ubuntu-latest

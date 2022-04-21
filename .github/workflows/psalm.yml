@@ -6,6 +6,9 @@ on:
       - master
       - stable*
 
+permissions:
+  contents: read
+
 jobs:
   static-psalm-analysis:
 
