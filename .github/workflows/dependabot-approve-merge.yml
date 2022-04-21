@@ -11,8 +11,13 @@ on:
       - master
       - stable*
 
+permissions:
+  contents: read
+
 jobs:
   auto-approve-merge:
+    permissions:
+      pull-requests: write  # for hmarr/auto-approve-action to approve PRs
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
 
