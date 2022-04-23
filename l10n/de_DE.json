@@ -121,7 +121,7 @@
     "{used} bookmarks of {available} available" : "{used} Lesezeichen von {available} verfügbaren",
     "No bookmarked files" : "Keine mit Lesezeichen versehenen Dateien",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Lesezeichen für Dateien wie Fotos oder PDFs werden automatisch in Ihren Nextcloud-Dateien gespeichert, sodass Sie sie auch dann finden können, wenn der Link nicht mehr erreichbar ist.",
-    "No broken links" : "Keine ungültige Links",
+    "No broken links" : "Keine ungültigen Links",
     "No shared folders" : "Keine geteilten Ordner",
     "No duplicated bookmarks" : "Keine doppelten Lesezeichen",
     "No bookmarks here" : "Keine Lesezeichen vorhanden",
