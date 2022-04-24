@@ -1,0 +1,28 @@
+{ "translations": {
+    "Details" : "ລາຍລະອຽດ",
+    "Rename" : "ປ່ຽນຊື່",
+    "Move" : "ຍ້າຍ",
+    "Delete" : "ລຶບ",
+    "Select all" : "ເລືອກທັງໝົດ",
+    "New folder" : "ໂຟນເດີໃຫມ່",
+    "Sort by created date" : "ຈັດລຽງຕາມລຳດັບວັນທີສ້າງ",
+    "Rename folder" : "ປ່ຽນຊືໂຟນເດີ",
+    "Delete folder" : "ລຶບໂຟນເດີ",
+    "Cancel" : "ຍົກເລີກ",
+    "Recent" : "ຫວ່າງບໍ່ດົນມາ ນີ້",
+    "Shared with you" : "ແບ່ງປັບກັບທ່ານ",
+    "Files" : "ຟາຍ",
+    "Link" : "ລິງ",
+    "Tags" : "ປ້າຍກຳກັບ",
+    "Owner" : "ເຈົ້າຂອງ",
+    "Sharing" : "ການແບ່ງປັນ",
+    "Share link" : "ແບ່ງປັນລິງ",
+    "Copy link" : "ສຳເນົາລິງ",
+    "Allow editing" : "ອະນຸຍາດໃຫ້ ແກ້ ໄຂໄດ້",
+    "Allow resharing" : "ອະນຸຍາດໃຫ້ ການແບ່ງປັນຄືນ",
+    "Link copied" : "ສຳເນົາລິງ",
+    "Privacy" : "ສ່ວນຕົວ",
+    "Folder" : "ໂຟນເດີ",
+    "Save" : "ບັນທຶກ"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

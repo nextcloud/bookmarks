@@ -8,6 +8,8 @@ OC.L10N.register(
     "New" : "﻿ಹೊಸ",
     "New folder" : "﻿ಹೊಸ ಕೋಶ",
     "Cancel" : "﻿ರದ್ದು",
+    "Shared with you" : "Shared with you",
+    "Files" : "ಕಡತಗಳು",
     "Import" : "ಆಮದು",
     "Export" : "ರಫ್ತು",
     "Title" : "ಶೀರ್ಷಿಕೆ",

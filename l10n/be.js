@@ -5,6 +5,8 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "Delete",
     "Cancel" : "Cancel",
+    "Shared with you" : "Shared with you",
+    "Files" : "Файлы",
     "Title" : "Title",
     "Link" : "Link",
     "Notes" : "Notes",

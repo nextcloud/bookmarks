@@ -9,6 +9,8 @@ OC.L10N.register(
     "New" : "Նոր",
     "New folder" : "Նոր պանակ",
     "Cancel" : "ընդհատել",
+    "Shared with you" : "Shared with you",
+    "Files" : "Ֆայլեր",
     "Import" : "Ներմուծում",
     "Export" : "Արտահանում",
     "Title" : "Վերնագիր",

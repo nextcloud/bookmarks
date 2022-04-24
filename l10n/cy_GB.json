@@ -3,10 +3,13 @@
     "Rename" : "Ailenwi",
     "Move" : "Symud",
     "Delete" : "Dileu",
+    "Go back" : "Nôl",
     "New" : "Newydd",
     "New folder" : "Ffolder newydd",
     "Cancel" : "Diddymu",
     "Recent" : "Diweddar",
+    "Shared with you" : "Shared with you",
+    "Files" : "Ffeiliau",
     "Import" : "Mewnforio",
     "Export" : "Allforio",
     "Title" : "Teitl",
@@ -16,6 +19,8 @@
     "Owner" : "Owner",
     "Share link" : "Rhannu dolen",
     "Copy link" : "Copïo dolen",
+    "Allow editing" : "Caniatáu golygu",
+    "Link copied" : "Dolen wedi'i gopïo",
     "Folder" : "Plygell",
     "Save" : "Cadw"
 },"pluralForm" :"nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;"
