@@ -71,7 +71,7 @@ jobs:
           fallbackNpm: '^6'
 
       - name: Set up node ${{ steps.versions.outputs.nodeVersion }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.versions.outputs.nodeVersion }}
 
@@ -104,7 +104,7 @@ jobs:
           fallbackNpm: '^6'
 
       - name: Set up node ${{ steps.versions.outputs.nodeVersion }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.versions.outputs.nodeVersion }}
 
