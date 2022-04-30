@@ -71,7 +71,7 @@ jobs:
         run: ./vendor/phpunit/phpunit/phpunit --coverage-clover coverage.xml -c tests/phpunit.xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           file: ./apps/${{ env.APP_NAME }}/coverage.xml
           fail_ci_if_error: true
