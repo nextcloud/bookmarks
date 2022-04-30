@@ -64,7 +64,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Read package.json node and npm engines version
-        uses: skjnldsv/read-package-engines-version-actions@v1.1
+        uses: skjnldsv/read-package-engines-version-actions@v1.2
         id: versions
         with:
           fallbackNode: '^12'
@@ -97,7 +97,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Read package.json node and npm engines version
-        uses: skjnldsv/read-package-engines-version-actions@v1.1
+        uses: skjnldsv/read-package-engines-version-actions@v1.2
         id: versions
         with:
           fallbackNode: '^12'
