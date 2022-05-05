@@ -83,6 +83,7 @@ OC.L10N.register(
     "{folders} folders and {bookmarks} bookmarks" : "{folders} dossiers et {bookmarks} favoris",
     "_%n bookmark_::_%n bookmarks_" : ["%n favori","%n favoris"],
     "_%n folder_::_%n folders_" : ["%n dossier","%n dossiers"],
+    "Welcome to Bookmarks" : "Bienvenu dans les favoris",
     "Add a bookmark" : "Ajouter un favori",
     "Import bookmarks" : "Importer des favoris",
     "Sync with your browser" : "Synchronisez avec votre navigateur",
@@ -116,7 +117,9 @@ OC.L10N.register(
     "{used} bookmarks of {available} available" : "{used} favoris sur {available} disponibles",
     "No bookmarked files" : "Aucun fichier en favori",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Les favoris vers des fichiers comme des photos ou des PDF seront automatiquement enregistrés dans vos fichiers Nextcloud, pour que vous puissiez y accéder même quand le lien est hors connexion.",
+    "No broken links" : "Aucun lien brisé",
     "No shared folders" : "Aucun dossier partagé",
+    "No duplicated bookmarks" : "Aucun favori en double",
     "No bookmarks here" : "Aucun favori ici",
     "Import" : "Importer",
     "Export" : "Exporter",
@@ -208,6 +211,7 @@ OC.L10N.register(
     "Failed to load setting {key}" : "Échec du chargement du paramètre {key}",
     "Failed to update share {shareId}" : "Impossible de mettre à jour le partage {shareId}",
     "Failed to delete share {shareId}" : "Impossible de supprimer le partage {shareId}",
+    "No links found in this message" : "Aucun lien trouvé dans ce message",
     "Bookmarks feed" : "Flux de suivi"
 },
 "nplurals=2; plural=(n > 1);");
