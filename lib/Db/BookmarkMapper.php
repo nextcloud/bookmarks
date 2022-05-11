@@ -572,9 +572,9 @@ class BookmarkMapper extends QBMapper {
 		$baseCase = $this->db->getQueryBuilder();
 		$baseCase
 			->selectAlias('f.folder_id', 'item_id')
-			->selectAlias($baseCase->createFunction('cast(0 as bigint)'), 'parent_folder')
-			->selectAlias($baseCase->createFunction('cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as text)'), 'type')
-			->selectAlias($baseCase->createFunction('cast(0 as bigint)'), 'idx')
+			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? '0' : 'cast(0 as bigint)'), 'parent_folder')
+			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? $baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER) : 'cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as text)'), 'type')
+			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? '0' : 'cast(0 as bigint)'), 'idx')
 			->from('bookmarks_folders', 'f')
 			->where($baseCase->expr()->eq('f.id', $baseCase->createPositionalParameter($folder->getId())));
 
