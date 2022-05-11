@@ -235,7 +235,7 @@ class BookmarkMapper extends QBMapper {
 			->join('tr', '*PREFIX*bookmarks_shared_folders', 's', 's.id = tr.id AND tr.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE))
 			->join('s', '*PREFIX*bookmarks_folders', 'f', 's.folder_id = f.id');
 
-		if ($this->getDbType() === 'mysql') {
+		if ($this->getDbType() === 'mysql' || $this->getDbType() === 'sqlite') {
 			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
 				$baseCase->getSQL() . ' UNION ALL (' . $recursiveCase->getSQL() .
 				' UNION ALL ' . $recursiveCaseShares->getSQL() . '))';
