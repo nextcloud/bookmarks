@@ -217,7 +217,7 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias('tr.type', 'type')
 			->selectAlias('tr.index', 'idx')
 			->from('*PREFIX*bookmarks_tree', 'tr')
-			->join('tr', $this->getDbType() === 'mysql' || $this->getDbType() === 'sqlite3'? 'folder_tree' : 'inner_folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+			->join('tr', $this->getDbType() === 'mysql'? 'folder_tree' : 'inner_folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
 
 		$recursiveCaseShares = $this->db->getQueryBuilder();
 		$recursiveCaseShares->automaticTablePrefix(false);
@@ -226,10 +226,10 @@ class BookmarkMapper extends QBMapper {
 			->addSelect('e.parent_folder')
 			->selectAlias($recursiveCaseShares->createFunction($recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER)), 'type')
 			->selectAlias('e.idx', 'idx')
-			->from(($this->getDbType() === 'mysql' || $this->getDbType() === 'sqlite3'? 'folder_tree' : 'second_folder_tree'), 'e')
+			->from(($this->getDbType() === 'mysql'? 'folder_tree' : 'second_folder_tree'), 'e')
 			->join('e', '*PREFIX*bookmarks_shared_folders', 's', 's.id = e.item_id AND e.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE));
 
-		if ($this->getDbType() === 'mysql' || $this->getDbType() === 'sqlite3') {
+		if ($this->getDbType() === 'mysql') {
 			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
 				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() .
 				' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
@@ -294,7 +294,7 @@ class BookmarkMapper extends QBMapper {
 		$this->_sortAndPaginate($qb, $params);
 
 		$finalQuery = $withRecursiveQuery . ' ' . $qb->getSQL();
-		if ($this->getDbType() === 'mysql' || $this->getDbType() === 'sqlite3') {
+		if ($this->getDbType() === 'mysql') {
 			$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), $recursiveCaseShares->getParameters(), $qb->getParameters());
 			$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), $recursiveCaseShares->getParameterTypes(), $qb->getParameterTypes());
 		} else {
