@@ -38,6 +38,9 @@
     <UndefinedDocblockClass occurrences="1">
       <code>\OC\DB\Exceptions\DbalException</code>
     </UndefinedDocblockClass>
+    <UndefinedDocblockClass occurrences="3">
+      <code>OCP\DB\Exception</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Flow/CreateBookmark.php">
     <UndefinedClass occurrences="2">
