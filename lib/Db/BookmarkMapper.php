@@ -218,32 +218,51 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias('tr.index', 'idx')
 			->from('*PREFIX*bookmarks_tree', 'tr')
 			->join('tr', ($this->getDbType() === 'mysql' || $this->getDbType() === 'sqlite3' ? 'folder_tree' : 'inner_folder_tree'), 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
-		$secondBaseCase = $this->db->getQueryBuilder();
-		$secondBaseCase->automaticTablePrefix(false);
-		$secondBaseCase
-			->select('item_id', 'parent_folder', 'type', 'idx')
-			->from('inner_folder_tree');
+
 		$recursiveCaseShares = $this->db->getQueryBuilder();
 		$recursiveCaseShares->automaticTablePrefix(false);
 		$recursiveCaseShares
-			->selectAlias('f.id', 'item_id')
-			->addSelect('tr.parent_folder')
+			->selectAlias('s.folder_id', 'item_id')
+			->addSelect('e.parent_folder')
 			->selectAlias($recursiveCaseShares->createFunction($recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER)), 'type')
-			->selectAlias('tr.index', 'idx')
-			->from('*PREFIX*bookmarks_tree', 'tr')
-			->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER))
-			->join('tr', '*PREFIX*bookmarks_shared_folders', 's', 's.id = tr.id AND tr.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE))
-			->join('s', '*PREFIX*bookmarks_folders', 'f', 's.folder_id = f.id');
+			->selectAlias('e.idx', 'idx')
+			->from(($this->getDbType() === 'mysql'? 'folder_tree' : 'second_folder_tree'), 'e')
+			->join('e', '*PREFIX*bookmarks_shared_folders', 's', 's.id = e.item_id AND e.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE));
 
-		if ($this->getDbType() === 'mysql' || $this->getDbType() === 'sqlite3') {
+		if ($this->getDbType() === 'mysql') {
 			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
 				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() .
 				' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
 		} else {
+			// Postgres loves us dearly and doesn't allow two recursive references in one CTE, aaah.
+			$secondBaseCase = $this->db->getQueryBuilder();
+			$secondBaseCase->automaticTablePrefix(false);
+			$secondBaseCase
+				->select('item_id', 'parent_folder', 'type', 'idx')
+				->from('inner_folder_tree');
+
+			$thirdBaseCase = $this->db->getQueryBuilder();
+			$thirdBaseCase->automaticTablePrefix(false);
+			$thirdBaseCase
+				->select('item_id', 'parent_folder', 'type', 'idx')
+				->from('second_folder_tree');
+
+			$secondRecursiveCase = $this->db->getQueryBuilder();
+			$secondRecursiveCase->automaticTablePrefix(false);
+			$secondRecursiveCase
+				->selectAlias('tr.id', 'item_id')
+				->selectAlias('tr.parent_folder', 'parent_folder')
+				->selectAlias('tr.type', 'type')
+				->selectAlias('tr.index', 'idx')
+				->from('*PREFIX*bookmarks_tree', 'tr')
+				->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$secondRecursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+
 			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
-				'WITH RECURSIVE inner_folder_tree(item_id, parent_folder, type, idx) AS ( ' .
-				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')' .
-				' ' . $secondBaseCase->getSQL() . ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
+				'WITH RECURSIVE second_folder_tree(item_id, parent_folder, type, idx) AS (' .
+					'WITH RECURSIVE inner_folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+					$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')' .
+				' ' . $secondBaseCase->getSQL() . ' UNION ALL '. $recursiveCaseShares->getSQL() .')'.
+				' ' . $thirdBaseCase->getSQL() . ' UNION ALL ' .  $secondRecursiveCase->getSQL(). ')';
 		}
 
 		$qb = $this->db->getQueryBuilder();
@@ -275,9 +294,14 @@ class BookmarkMapper extends QBMapper {
 		$this->_sortAndPaginate($qb, $params);
 
 		$finalQuery = $withRecursiveQuery . ' ' . $qb->getSQL();
-		$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), $recursiveCaseShares->getParameters(), $qb->getParameters());
-		$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), $recursiveCaseShares->getParameterTypes(), $qb->getParameterTypes());
-
+		if ($this->getDbType() === 'mysql') {
+			$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), $recursiveCaseShares->getParameters(), $qb->getParameters());
+			$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), $recursiveCaseShares->getParameterTypes(), $qb->getParameterTypes());
+		} else {
+			$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), $secondBaseCase->getParameters(), $recursiveCaseShares->getParameters(), $thirdBaseCase->getParameters(), $secondRecursiveCase->getParameters(), $qb->getParameters());
+			$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), $secondBaseCase->getParameterTypes(), $recursiveCaseShares->getParameterTypes(), $thirdBaseCase->getParameterTypes(), $secondRecursiveCase->getParameterTypes(), $qb->getParameterTypes());
+		}
+		print($finalQuery);
 		return $this->findEntitiesWithRawQuery($finalQuery, $params, $paramTypes);
 	}
 
@@ -586,7 +610,7 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias('tr.type', 'type')
 			->selectAlias('tr.index', 'idx')
 			->from('*PREFIX*bookmarks_tree', 'tr')
-			->join('tr', ($this->getDbType() === 'mysql'? 'folder_tree' : 'inner_folder_tree'), 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+			->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
 		$secondBaseCase = $this->db->getQueryBuilder();
 		$secondBaseCase->automaticTablePrefix(false);
 		$secondBaseCase
@@ -600,7 +624,7 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias($recursiveCaseShares->createFunction($recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER)), 'type')
 			->selectAlias('tr.index', 'idx')
 			->from('*PREFIX*bookmarks_tree', 'tr')
-			->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER))
+			->join('tr', ($this->getDbType() === 'mysql'? 'folder_tree' : 'inner_folder_tree'), 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER))
 			->join('tr', '*PREFIX*bookmarks_shared_folders', 's', 's.id = tr.id AND tr.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE))
 			->join('s', '*PREFIX*bookmarks_folders', 'f', 's.folder_id = f.id');
 
@@ -611,8 +635,8 @@ class BookmarkMapper extends QBMapper {
 		} else {
 			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
 				'WITH RECURSIVE inner_folder_tree(item_id, parent_folder, type, idx) AS ( ' .
-				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')' .
-				' ' . $secondBaseCase->getSQL() . ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
+				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')' .
+				' ' . $secondBaseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')';
 		}
 
 		$qb = $this->db->getQueryBuilder();
