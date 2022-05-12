@@ -301,7 +301,6 @@ class BookmarkMapper extends QBMapper {
 			$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), $secondBaseCase->getParameters(), $recursiveCaseShares->getParameters(), $thirdBaseCase->getParameters(), $secondRecursiveCase->getParameters(), $qb->getParameters());
 			$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), $secondBaseCase->getParameterTypes(), $recursiveCaseShares->getParameterTypes(), $thirdBaseCase->getParameterTypes(), $secondRecursiveCase->getParameterTypes(), $qb->getParameterTypes());
 		}
-		print($finalQuery);
 		return $this->findEntitiesWithRawQuery($finalQuery, $params, $paramTypes);
 	}
 
