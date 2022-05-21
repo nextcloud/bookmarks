@@ -110,6 +110,7 @@ OC.L10N.register(
     "Recent" : "Azkenak",
     "Shared with you" : "Zurekin partekatuta",
     "Files" : "Fitxategiak",
+    "Duplicates" : "Duplikatuak",
     "Broken links" : "Hautsitako estekak",
     "New tag" : "Etiketa berria",
     "Search tags" : "Bilatu etiketak",
