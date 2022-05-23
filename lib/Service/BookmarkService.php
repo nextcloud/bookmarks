@@ -7,6 +7,7 @@
 
 namespace OCA\Bookmarks\Service;
 
+use OCA\Bookmarks\BackgroundJobs\IndividualCrawlJob;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -23,6 +24,7 @@ use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\BackgroundJob\IJobList;
 use OCP\EventDispatcher\IEventDispatcher;
 
 class BookmarkService {
@@ -34,10 +36,7 @@ class BookmarkService {
 	 * @var TreeMapper
 	 */
 	private $treeMapper;
-	/**
-	 * @var Authorizer
-	 */
-	private $authorizer;
+
 	/**
 	 * @var LinkExplorer
 	 */
@@ -75,27 +74,31 @@ class BookmarkService {
 	 * @var CrawlService
 	 */
 	private $crawler;
+	/**
+	 * @var IJobList
+	 */
+	private $jobList;
 
 	/**
 	 * BookmarksService constructor.
 	 *
-	 * @param CrawlService $crawler
 	 * @param BookmarkMapper $bookmarkMapper
 	 * @param FolderMapper $folderMapper
 	 * @param TagMapper $tagMapper
 	 * @param TreeMapper $treeMapper
-	 * @param Authorizer $authorizer
 	 * @param LinkExplorer $linkExplorer
 	 * @param BookmarkPreviewer $bookmarkPreviewer
 	 * @param FaviconPreviewer $faviconPreviewer
 	 * @param FolderService $folders
 	 * @param IEventDispatcher $eventDispatcher
 	 * @param TreeCacheManager $hashManager
+	 * @param Authorizer $authorizer
+	 * @param CrawlService $crawler
+	 * @param IJobList $jobList
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, Authorizer $authorizer, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager, UrlNormalizer $urlNormalizer, CrawlService $crawler) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager, UrlNormalizer $urlNormalizer, CrawlService $crawler, IJobList $jobList) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
-		$this->authorizer = $authorizer;
 		$this->linkExplorer = $linkExplorer;
 		$this->folderMapper = $folderMapper;
 		$this->tagMapper = $tagMapper;
@@ -106,6 +109,7 @@ class BookmarkService {
 		$this->hashManager = $hashManager;
 		$this->urlNormalizer = $urlNormalizer;
 		$this->crawler = $crawler;
+		$this->jobList = $jobList;
 	}
 
 	/**
@@ -150,8 +154,8 @@ class BookmarkService {
 			$bookmark = $this->_addBookmark($userId, $url, $title, $description, $tags, [$this->folderMapper->findRootFolder($userId)->getId()]);
 		}
 
-		// Crawl this bookmark directly
-		$this->crawler->crawl($bookmark);
+		// Crawl this bookmark in a crawl job
+		$this->jobList->add(IndividualCrawlJob::class, $bookmark->getId());
 
 		return $bookmark;
 	}

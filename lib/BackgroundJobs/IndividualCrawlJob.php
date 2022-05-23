@@ -7,17 +7,16 @@
 
 namespace OCA\Bookmarks\BackgroundJobs;
 
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Utility\ITimeFactory;
-use OCP\BackgroundJob\TimedJob;
+use OCP\BackgroundJob\Job;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
-use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\CrawlService;
 use OCP\IConfig;
 
-class CrawlJob extends TimedJob {
-	public const BATCH_SIZE = 40; // 40 bookmarks
-	public const INTERVAL = 5 * 60; // 5 minutes
+class IndividualCrawlJob extends Job {
 
 	/**
 	 * @var BookmarkMapper
@@ -38,8 +37,6 @@ class CrawlJob extends TimedJob {
 		parent::__construct($timeFactory);
 		$this->settings = $settings;
 		$this->bookmarkMapper = $bookmarkMapper;
-
-		$this->setInterval(self::INTERVAL);
 		$this->crawler = $crawler;
 	}
 
@@ -48,10 +45,14 @@ class CrawlJob extends TimedJob {
 			return;
 		}
 
-		/** @var Bookmark[] $bookmarks */
-		$bookmarks = $this->bookmarkMapper->findPendingPreviews(self::BATCH_SIZE, BookmarkPreviewer::CACHE_TTL);
-		foreach ($bookmarks as $bookmark) {
-			$this->crawler->crawl($bookmark);
+		/** @var Bookmark $bookmarks */
+		try {
+			$bookmark = $this->bookmarkMapper->find($argument);
+		} catch (DoesNotExistException $e) {
+			return;
+		} catch (MultipleObjectsReturnedException $e) {
+			return;
 		}
+		$this->crawler->crawl($bookmark);
 	}
 }
