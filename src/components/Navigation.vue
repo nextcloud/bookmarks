@@ -13,7 +13,7 @@
 				:title="t('bookmarks', 'All bookmarks')"
 				:exact="true">
 				<AppNavigationCounter slot="counter">
-					{{ allBookmarksCount }}
+					{{ allBookmarksCount | largeNumbers }}
 				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationItem key="menu-recent"
@@ -27,7 +27,7 @@
 				:title="t('bookmarks', 'Shared with you')">
 				<ShareVariantIcon slot="icon" :size="18" :fill-color="colorMainText" />
 				<AppNavigationCounter v-show="Boolean(sharedFoldersCount)" slot="counter">
-					{{ sharedFoldersCount }}
+					{{ sharedFoldersCount | largeNumbers }}
 				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationItem
@@ -47,7 +47,7 @@
 				:title="t('bookmarks', 'Duplicates')">
 				<VectorLinkIcon slot="icon" :size="18" :fill-color="colorMainText" />
 				<AppNavigationCounter v-show="Boolean(duplicatedBookmarksCount)" slot="counter">
-					{{ duplicatedBookmarksCount }}
+					{{ duplicatedBookmarksCount | largeNumbers }}
 				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationItem
@@ -56,7 +56,7 @@
 				:title="t('bookmarks', 'Broken links')">
 				<LinkVariantOffIcon slot="icon" :size="18" :fill-color="colorMainText" />
 				<AppNavigationCounter v-show="Boolean(unavailableBookmarksCount)" slot="counter">
-					{{ unavailableBookmarksCount }}
+					{{ unavailableBookmarksCount | largeNumbers }}
 				</AppNavigationCounter>
 			</AppNavigationItem>
 			<AppNavigationSpacer />
@@ -82,7 +82,7 @@
 					:title="tag.name"
 					@update:title="onRenameTag(tag.name, $event)">
 					<AppNavigationCounter slot="counter">
-						{{ tag.count }}
+						{{ tag.count | largeNumbers }}
 					</AppNavigationCounter>
 					<template v-if="!isPublic" slot="actions">
 						<ActionButton icon="icon-delete" :close-after-click="true" @click="onDeleteTag(tag.name)">
@@ -151,6 +151,12 @@ export default {
 		FileDocumentMultipleIcon,
 		ShareVariantIcon,
 		VectorLinkIcon,
+	},
+
+	filters: {
+		largeNumbers(num) {
+			return num >= 1000 ? Math.round(num / 100) / 10 : num
+		},
 	},
 	data() {
 		return {}
