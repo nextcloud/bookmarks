@@ -199,10 +199,7 @@ class HtmlImporter {
 	 * @param array $bookmark
 	 * @param null|int $index
 	 * @return Bookmark|Entity
-	 * @throws UrlParseError
-	 * @throws AlreadyExistsError
-	 * @throws UnsupportedOperation
-	 * @throws UserLimitExceededError
+	 * @throws UrlParseError|AlreadyExistsError|UnsupportedOperation|UserLimitExceededError|MultipleObjectsReturnedException
 	 */
 	private function importBookmark(string $userId, int $folderId, array $bookmark, $index = null) {
 		$bm = new Bookmark();
