@@ -63,8 +63,8 @@ class ExtractFromNotesJob extends TimedJob {
 				$this->notes->extractBookmarksFromNotes($user);
 				$processed++;
 			} catch (\Exception|\Throwable $e) {
-				$this->logger->warning('Extracting notes from user '.$user->getUID().' errored');
-				$this->logger->warning($e->getMessage());
+				$this->logger->debug('Extracting notes from user '.$user->getUID().' errored');
+				$this->logger->debug($e->getMessage());
 				continue;
 			}
 		} while (count($users) > 0);
