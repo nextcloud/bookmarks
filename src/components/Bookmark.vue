@@ -55,6 +55,14 @@
 				@click="onRename">
 				{{ t('bookmarks', 'Rename') }}
 			</ActionButton>
+			<ActionButton
+				:close-after-click="true"
+				@click="onCopyUrl">
+				<template #icon>
+					<ContentCopyIcon :fill-color="colorMainText" />
+				</template>
+				{{ t('bookmarks', 'Copy link') }}
+			</ActionButton>
 			<ActionButton :close-after-click="true" @click="onMove">
 				<template #icon>
 					<FolderMoveIcon
@@ -84,9 +92,11 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
 import FolderPlusIcon from 'vue-material-design-icons/FolderPlus'
 import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
+import ContentCopyIcon from 'vue-material-design-icons/ContentCopy'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/'
+import copy from 'copy-text-to-clipboard'
 
 export default {
 	name: 'Bookmark',
@@ -96,6 +106,7 @@ export default {
 		ActionCheckbox,
 		FolderPlusIcon,
 		FolderMoveIcon,
+		ContentCopyIcon,
 	},
 	props: {
 		bookmark: {
@@ -240,6 +251,10 @@ export default {
 		},
 		onClick() {
 			this.$store.dispatch(actions.CLICK_BOOKMARK, this.bookmark)
+		},
+		onCopyUrl() {
+			copy(this.bookmark.url)
+			this.$store.commit(mutations.SET_NOTIFICATION, this.t('bookmarks', 'Link copied to clipboard'))
 		},
 	},
 }
