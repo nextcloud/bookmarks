@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.4.0] - 2022-06-08
+
+### New
+ - "Copy link" menu option for bookmarks
+
+### Fixed
+ - ExtractFomNotes: Change warning to debug log message
+ - Disable Backup by default
+ - Navigation: Display large numbers as "10.2K"
+ - Sync performance: BookmarkService#create: Don't crawl new bookmarks directly but add IndividualCrawlJob
+ - New translations from from transifex
+ - Update dependencies
+
 ## [10.3.1] - 2022-04-19
 
 ### Fixed
