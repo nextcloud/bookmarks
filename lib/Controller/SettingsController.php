@@ -183,7 +183,7 @@ class SettingsController extends ApiController {
 		return $this->getSetting(
 			'backup.enabled',
 			'backupEnabled',
-			(string) true
+			(string) false
 		);
 	}
 
