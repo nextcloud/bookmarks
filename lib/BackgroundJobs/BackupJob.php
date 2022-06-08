@@ -92,7 +92,7 @@ class BackupJob extends TimedJob {
 				if ($this->bookmarkMapper->countBookmarksOfUser($userId) === 0) {
 					continue;
 				}
-				if (!$this->config->getUserValue($userId, 'bookmarks', 'backup.enabled', false)) {
+				if ($this->config->getUserValue($userId, 'bookmarks', 'backup.enabled', (string) false) !== 'true') {
 					continue;
 				}
 				$this->session->setUser($user);
