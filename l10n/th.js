@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "รายละเอียด",
     "Rename" : "เปลี่ยนชื่อ",
+    "Copy link" : "คัดลอกลิงค์",
     "Move" : "Move",
     "Delete" : "ลบ",
     "Select all" : "เลือกทั้งหมด",
@@ -27,7 +28,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "แชร์ข้อมูล",
     "Share link" : "แชร์ลิงค์",
-    "Copy link" : "คัดลอกลิงค์",
     "Allow editing" : "อนุญาตให้แก้ไข",
     "Allow resharing" : "อนุญาตให้แชร์ซ้ำ",
     "Link copied" : "คัดลอกลิงก์แล้ว",

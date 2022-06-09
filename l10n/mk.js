@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Детали",
     "Rename" : "Преименувај",
+    "Copy link" : "Копирај линк",
     "Move" : "Премести",
     "Delete" : "Избриши",
     "Select all" : "Избери се",
@@ -30,7 +31,6 @@ OC.L10N.register(
     "Sharing" : "Споделување",
     "Select a user or group" : "Избери корисник или група",
     "Share link" : "Сподели линк",
-    "Copy link" : "Копирај линк",
     "Copy RSS feed" : "Копирај RSS канал",
     "Allow editing" : "Овозможи уредување",
     "Allow resharing" : "Дозволи повторно споделување",

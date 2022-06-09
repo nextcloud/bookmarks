@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "বিসতারিত",
     "Rename" : "পূনঃনামকরণ",
+    "Copy link" : "লিঙ্ক কপি করো",
     "Move" : "Move",
     "Delete" : "মুছে",
     "Go back" : "ফিরে যাও",
@@ -24,7 +25,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "ভাগাভাগিরত",
     "Share link" : "লিংক ভাগাভাগি করেন",
-    "Copy link" : "লিঙ্ক কপি করো",
     "Folder" : "ফোল্ডার",
     "Save" : "সংরক্ষণ"
 },

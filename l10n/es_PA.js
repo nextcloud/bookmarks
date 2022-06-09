@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detalles",
     "Rename" : "Renombrar",
+    "Copy link" : "Copiar liga",
     "Move" : "Mover",
     "Delete" : "Borrar",
     "Select all" : "Seleccionar todo",
@@ -27,7 +28,6 @@ OC.L10N.register(
     "Owner" : "Dueño",
     "Sharing" : "Compartiendo",
     "Share link" : "Compartir liga",
-    "Copy link" : "Copiar liga",
     "Allow editing" : "Permitir edición",
     "Allow resharing" : "Permitir volver a compartir",
     "Privacy" : "Privacidad",

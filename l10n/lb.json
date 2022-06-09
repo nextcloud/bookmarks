@@ -1,6 +1,7 @@
 { "translations": {
     "Details" : "Detailer",
     "Rename" : "Ëmbenennen",
+    "Copy link" : "Link kopéieren",
     "Move" : "Verschieben",
     "Delete" : "Läschen",
     "Select all" : "All auswielen",
@@ -23,7 +24,6 @@
     "Owner" : "Owner",
     "Sharing" : "Gedeelt",
     "Share link" : "Link deelen",
-    "Copy link" : "Link kopéieren",
     "Allow editing" : "Beaarbechten erlaben",
     "Allow resharing" : "Resharing erlaben",
     "Folder" : "Dossier",

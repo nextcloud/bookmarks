@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detalii",
     "Rename" : "Redenumire",
+    "Copy link" : "Copiază link",
     "Move" : "Mută",
     "Delete" : "Șterge",
     "Select all" : "Selectează tot",
@@ -29,7 +30,6 @@ OC.L10N.register(
     "Owner" : "Proprietar",
     "Sharing" : "Partajare",
     "Share link" : "Partajează link-ul",
-    "Copy link" : "Copiază link",
     "Allow editing" : "Permite editarea",
     "Allow resharing" : "Permite repartajarea",
     "Link copied" : "Link copiat",

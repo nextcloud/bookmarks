@@ -1,6 +1,7 @@
 { "translations": {
     "Details" : "معلومات",
     "Rename" : "نوم بدلول",
+    "Copy link" : "لېنک کاپي کول",
     "Move" : "انتقال",
     "Delete" : "ړنګول",
     "Select all" : "ټول ټاکل",
@@ -15,7 +16,6 @@
     "Notes" : "شسیب",
     "Open file" : "فایل پرانيستل",
     "Share link" : "د شرېکېدو لېنک",
-    "Copy link" : "لېنک کاپي کول",
     "Allow editing" : "د سمون اجازه ورکول",
     "Save" : "ساتل"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Manylion",
     "Rename" : "Ailenwi",
+    "Copy link" : "Copïo dolen",
     "Move" : "Symud",
     "Delete" : "Dileu",
     "Go back" : "Nôl",
@@ -20,7 +21,6 @@ OC.L10N.register(
     "Notes" : "Nodiadau",
     "Owner" : "Owner",
     "Share link" : "Rhannu dolen",
-    "Copy link" : "Copïo dolen",
     "Allow editing" : "Caniatáu golygu",
     "Link copied" : "Dolen wedi'i gopïo",
     "Folder" : "Plygell",

@@ -1,6 +1,7 @@
 { "translations": {
     "Details" : "Munudoù",
     "Rename" : "Adenvel",
+    "Copy link" : "Kopiañ al liamm",
     "Move" : "Diplasañ",
     "Delete" : "Dilemel",
     "Select all" : "Dibab pep tra",
@@ -23,7 +24,6 @@
     "Owner" : "Perc'henner",
     "Sharing" : "Rannan",
     "Share link" : "Rannan liamm",
-    "Copy link" : "Kopiañ al liamm",
     "Allow editing" : "Cheñchamentoù aotreet",
     "Allow resharing" : "Aotrea an adrannañ",
     "Link copied" : "Liamm eilet",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Munudoù",
     "Rename" : "Adenvel",
+    "Copy link" : "Kopiañ al liamm",
     "Move" : "Diplasañ",
     "Delete" : "Dilemel",
     "Select all" : "Dibab pep tra",
@@ -25,7 +26,6 @@ OC.L10N.register(
     "Owner" : "Perc'henner",
     "Sharing" : "Rannan",
     "Share link" : "Rannan liamm",
-    "Copy link" : "Kopiañ al liamm",
     "Allow editing" : "Cheñchamentoù aotreet",
     "Allow resharing" : "Aotrea an adrannañ",
     "Link copied" : "Liamm eilet",

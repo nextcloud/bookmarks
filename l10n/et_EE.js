@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Üksikasjad",
     "Rename" : "Nimeta ümber",
+    "Copy link" : "Kopeeri link",
     "Move" : "Liiguta",
     "Delete" : "Kustuta",
     "Delete selection" : "Kustuta valik",
@@ -27,7 +28,6 @@ OC.L10N.register(
     "Owner" : "Omanik",
     "Sharing" : "Jagamine",
     "Share link" : "Jaga link",
-    "Copy link" : "Kopeeri link",
     "Allow editing" : "Luba muutmine",
     "Allow resharing" : "Luba edasijagamine",
     "Link copied" : "Link kopeeritud",

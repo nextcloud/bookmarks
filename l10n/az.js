@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detallar",
     "Rename" : "Adı dəyiş",
+    "Copy link" : "linki nüsxələ",
     "Move" : "Move",
     "Delete" : "Sil",
     "Select all" : "Hamısıı seç",
@@ -22,7 +23,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "Paylaşılır",
     "Share link" : "Linki yayımla",
-    "Copy link" : "linki nüsxələ",
     "Allow resharing" : "Yenidən paylaşıma izin",
     "Folder" : "Qovluq",
     "Save" : "Saxla"

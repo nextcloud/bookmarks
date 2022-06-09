@@ -1,6 +1,7 @@
 { "translations": {
     "Details" : "বিসতারিত",
     "Rename" : "পূনঃনামকরণ",
+    "Copy link" : "লিঙ্ক কপি করো",
     "Move" : "Move",
     "Delete" : "মুছে",
     "Go back" : "ফিরে যাও",
@@ -22,7 +23,6 @@
     "Owner" : "Owner",
     "Sharing" : "ভাগাভাগিরত",
     "Share link" : "লিংক ভাগাভাগি করেন",
-    "Copy link" : "লিঙ্ক কপি করো",
     "Folder" : "ফোল্ডার",
     "Save" : "সংরক্ষণ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "ລາຍລະອຽດ",
     "Rename" : "ປ່ຽນຊື່",
+    "Copy link" : "ສຳເນົາລິງ",
     "Move" : "ຍ້າຍ",
     "Delete" : "ລຶບ",
     "Select all" : "ເລືອກທັງໝົດ",
@@ -19,7 +20,6 @@ OC.L10N.register(
     "Owner" : "ເຈົ້າຂອງ",
     "Sharing" : "ການແບ່ງປັນ",
     "Share link" : "ແບ່ງປັນລິງ",
-    "Copy link" : "ສຳເນົາລິງ",
     "Allow editing" : "ອະນຸຍາດໃຫ້ ແກ້ ໄຂໄດ້",
     "Allow resharing" : "ອະນຸຍາດໃຫ້ ການແບ່ງປັນຄືນ",
     "Link copied" : "ສຳເນົາລິງ",

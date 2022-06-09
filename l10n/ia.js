@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detalios",
     "Rename" : "Renominar",
+    "Copy link" : "Copiar ligamine",
     "Move" : "Mover",
     "Delete" : "Deler",
     "Select all" : "Selectionar toto",
@@ -25,7 +26,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "Compartente",
     "Share link" : "Compartir ligamine",
-    "Copy link" : "Copiar ligamine",
     "Allow editing" : "Permitter modificar",
     "Folder" : "Dossier",
     "Save" : "Salveguardar"

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Talqayt",
     "Rename" : "Beddel isem",
+    "Copy link" : "Nɣel aseɣwen",
     "Move" : "Senkez",
     "Delete" : "Kkes",
     "Select all" : "Fren akk",
@@ -16,7 +17,6 @@ OC.L10N.register(
     "Open file" : "Ldi afaylu",
     "Sharing" : "Beṭṭu",
     "Share link" : "Fren aseɣwen",
-    "Copy link" : "Nɣel aseɣwen",
     "Link copied" : "Aseɣwen yettwanɣel",
     "Privacy" : "Vie privée",
     "Save" : "Sekles"

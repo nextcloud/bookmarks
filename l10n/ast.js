@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detalles",
     "Rename" : "Renomar",
+    "Copy link" : "Copiar enllaz",
     "Move" : "Mover",
     "Delete" : "Desaniciar",
     "Select all" : "Esbillar too",
@@ -27,7 +28,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "Compartiendo",
     "Share link" : "Share link",
-    "Copy link" : "Copiar enllaz",
     "Allow editing" : "Permitir edición",
     "Allow resharing" : "Permitir re-compartición",
     "Folder" : "Carpeta",

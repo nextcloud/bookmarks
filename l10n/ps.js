@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "معلومات",
     "Rename" : "نوم بدلول",
+    "Copy link" : "لېنک کاپي کول",
     "Move" : "انتقال",
     "Delete" : "ړنګول",
     "Select all" : "ټول ټاکل",
@@ -17,7 +18,6 @@ OC.L10N.register(
     "Notes" : "شسیب",
     "Open file" : "فایل پرانيستل",
     "Share link" : "د شرېکېدو لېنک",
-    "Copy link" : "لېنک کاپي کول",
     "Allow editing" : "د سمون اجازه ورکول",
     "Save" : "ساتل"
 },

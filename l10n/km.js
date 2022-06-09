@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "ព័ត៌មាន​លម្អិត",
     "Rename" : "ប្ដូរ​ឈ្មោះ",
+    "Copy link" : "ចម្លងតំណ",
     "Move" : "Move",
     "Delete" : "លុប",
     "New" : "ថ្មី",
@@ -21,7 +22,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "ការ​ចែក​រំលែក",
     "Share link" : "Share link",
-    "Copy link" : "ចម្លងតំណ",
     "Allow resharing" : "អនុញ្ញាត​ការ​ចែក​រំលែក​ម្ដង​ទៀត",
     "Folder" : "ថត",
     "Save" : "រក្សាទុក"

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detailer",
     "Rename" : "Ëmbenennen",
+    "Copy link" : "Link kopéieren",
     "Move" : "Verschieben",
     "Delete" : "Läschen",
     "Select all" : "All auswielen",
@@ -25,7 +26,6 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "Gedeelt",
     "Share link" : "Link deelen",
-    "Copy link" : "Link kopéieren",
     "Allow editing" : "Beaarbechten erlaben",
     "Allow resharing" : "Resharing erlaben",
     "Folder" : "Dossier",

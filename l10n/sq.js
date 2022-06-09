@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detajet",
     "Rename" : "Rename",
+    "Copy link" : "Kopjo linkun",
     "Move" : "Zhvendos",
     "Delete" : "Fshij",
     "Select all" : "Zgjidhi të gjitha",
@@ -29,7 +30,6 @@ OC.L10N.register(
     "Owner" : "Zotëruesi",
     "Sharing" : "Ndarje",
     "Share link" : "Share link",
-    "Copy link" : "Kopjo linkun",
     "Allow editing" : "Lejo redaktimin",
     "Allow resharing" : "Lejo rindarje",
     "Link copied" : "Linku u kopjua",

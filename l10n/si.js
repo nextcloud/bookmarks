@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "විස්තර",
     "Rename" : "නැවත නම් කරන්න",
+    "Copy link" : "සබැඳිය පිටපත් කරන්න",
     "Select all" : "සියල්ල තෝරන්න",
     "Cancel selection" : "තේරීම අවලංගු කරන්න",
     "Go back" : "ආපසු යන්න",
@@ -17,7 +18,6 @@ OC.L10N.register(
     "Open file" : "ගොනුව විවෘත කරන්න",
     "Owner" : "හිමිකරු",
     "Select a user or group" : "පරිශීලකයෙකු හෝ සමූහයක් තෝරන්න",
-    "Copy link" : "සබැඳිය පිටපත් කරන්න",
     "Allow editing" : "සංස්කරණයට ඉඩ දෙන්න",
     "Allow resharing" : "නැවත බෙදා ගැනීමට ඉඩ දෙන්න",
     "Link copied" : "සබැඳිය පිටපත් කළා",

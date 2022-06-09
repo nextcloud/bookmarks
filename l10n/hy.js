@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Մանրամասներ",
     "Rename" : "Վերանվանել",
+    "Copy link" : "Պատճենել հղումը",
     "Move" : "Move",
     "Delete" : "հեռացնել",
     "Select all" : "Նշել բոլորը",
@@ -18,7 +19,6 @@ OC.L10N.register(
     "Notes" : "Notes",
     "Owner" : "Owner",
     "Share link" : "Կիսվել հղմամբ",
-    "Copy link" : "Պատճենել հղումը",
     "Allow editing" : "Թույլատրել խմբագրումը",
     "Folder" : "Պանակ",
     "Save" : "Պահպանել"

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Mion-fhiosrachadh",
     "Rename" : "Thoir ainm ùr air",
+    "Copy link" : "Dèan lethbhreac dhen cheangal",
     "Move" : "Gluais",
     "Delete" : "Sguab às",
     "Select all" : "Tagh na h-uile",
@@ -14,7 +15,6 @@ OC.L10N.register(
     "Notes" : "Nòtaichean",
     "Sharing" : "Co-roinneadh",
     "Share link" : "Ceangal co-roinnidh",
-    "Copy link" : "Dèan lethbhreac dhen cheangal",
     "Allow editing" : "Ceadaich deasachadh",
     "Allow resharing" : "Ceadaich co-roinneadh às ùr",
     "Link copied" : "Chaidh lethbhreac dhen cheangal a dhèanamh",

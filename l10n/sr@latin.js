@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detalji",
     "Rename" : "Rename",
+    "Copy link" : "Kopiraj vezu",
     "Move" : "Move",
     "Delete" : "Delete",
     "Select all" : "Označi sve",
@@ -21,7 +22,6 @@ OC.L10N.register(
     "Owner" : "Vlasnik",
     "Sharing" : "Deljenje",
     "Share link" : "Podeli vezu",
-    "Copy link" : "Kopiraj vezu",
     "Allow editing" : "Dozvoli uređivanje",
     "Link copied" : "Veza iskopirana",
     "Privacy" : "Privatnost",
