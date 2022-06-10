@@ -284,7 +284,7 @@ class BookmarkMapper extends QBMapper {
 		// The base case of the recursion is just the folder we're given
 		$baseCase = $this->db->getQueryBuilder();
 		$baseCase
-			->selectAlias($baseCase->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT), 'item_id')
+			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast('.$baseCase->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT).' as UNSIGNED)' : 'cast('.$baseCase->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT).' as BIGINT)'), 'item_id')
 			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast(0 as UNSIGNED)' : 'cast(0 as BIGINT)'), 'parent_folder')
 			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as CHAR(20))' : 'cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as TEXT)'), 'type')
 			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast(0 as UNSIGNED)' : 'cast(0 as BIGINT)'), 'idx');
