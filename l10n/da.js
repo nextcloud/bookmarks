@@ -49,6 +49,7 @@ OC.L10N.register(
     "Add to folders" : "Tilføj til mapper",
     "Delete" : "Slet",
     "Do you really want to delete this bookmark?" : "Vil du virkelig slette dette bogmærke?",
+    "Link copied to clipboard" : "Link kopieret til udklipsholder",
     "Content pending" : "Afventende indhold",
     "This content is being downloaded for offline use. Please check back later." : "Dette indhold downloades til offline-brug. Tjek venligst igen senere.",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Bogmærker til filer på internettet såsom billeder eller pdf'er vil automatisk blive gemt til dine Nextcloud-filer, så du stadig kan finde dem når forbindelsen går offline.",
