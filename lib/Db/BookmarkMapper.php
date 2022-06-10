@@ -191,7 +191,7 @@ class BookmarkMapper extends QBMapper {
 
 	/**
 	 * @param string $userId
-	 * @param QueryParameters $params
+	 * @param QueryParameters $queryParams
 	 *
 	 * @return Entity[]
 	 *
@@ -199,7 +199,7 @@ class BookmarkMapper extends QBMapper {
 	 * @throws \OC\DB\Exceptions\DbalException
 	 * @throws Exception
 	 */
-	public function findAll(string $userId, QueryParameters $params, bool $withGroupBy = true): array {
+	public function findAll(string $userId, QueryParameters $queryParams, bool $withGroupBy = true): array {
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		// gives us all bookmarks in this folder, recursively
 		[$cte, $params, $paramTypes] = $this->_generateCTE($rootFolder->getId());
@@ -222,15 +222,15 @@ class BookmarkMapper extends QBMapper {
 			->from('*PREFIX*bookmarks', 'b')
 			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 
-		$this->_filterUrl($qb, $params);
-		$this->_filterArchived($qb, $params);
-		$this->_filterUnavailable($qb, $params);
-		$this->_filterDuplicated($qb, $params);
-		$this->_filterFolder($qb, $params);
-		$this->_filterTags($qb, $params);
-		$this->_filterUntagged($qb, $params);
-		$this->_filterSearch($qb, $params);
-		$this->_sortAndPaginate($qb, $params);
+		$this->_filterUrl($qb, $queryParams);
+		$this->_filterArchived($qb, $queryParams);
+		$this->_filterUnavailable($qb, $queryParams);
+		$this->_filterDuplicated($qb, $queryParams);
+		$this->_filterFolder($qb, $queryParams);
+		$this->_filterTags($qb, $queryParams);
+		$this->_filterUntagged($qb, $queryParams);
+		$this->_filterSearch($qb, $queryParams);
+		$this->_sortAndPaginate($qb, $queryParams);
 
 		$finalQuery = $cte . ' ' . $qb->getSQL();
 
@@ -602,7 +602,7 @@ class BookmarkMapper extends QBMapper {
 
 	/**
 	 * @param string $token
-	 * @param QueryParameters $params
+	 * @param QueryParameters $queryParams
 	 *
 	 *
 	 * @return Entity[]
@@ -613,7 +613,7 @@ class BookmarkMapper extends QBMapper {
 	 *
 	 * @psalm-return array<array-key, Bookmark>
 	 */
-	public function findAllInPublicFolder(string $token, QueryParameters $params, $withGroupBy = true): array {
+	public function findAllInPublicFolder(string $token, QueryParameters $queryParams, $withGroupBy = true): array {
 		/** @var PublicFolder $publicFolder */
 		$publicFolder = $this->publicMapper->find($token);
 		/** @var Folder $folder */
@@ -640,15 +640,15 @@ class BookmarkMapper extends QBMapper {
 			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 
 
-		$this->_filterUrl($qb, $params);
-		$this->_filterArchived($qb, $params);
-		$this->_filterUnavailable($qb, $params);
-		$this->_filterDuplicated($qb, $params);
-		$this->_filterFolder($qb, $params);
-		$this->_filterTags($qb, $params);
-		$this->_filterUntagged($qb, $params);
-		$this->_filterSearch($qb, $params);
-		$this->_sortAndPaginate($qb, $params);
+		$this->_filterUrl($qb, $queryParams);
+		$this->_filterArchived($qb, $queryParams);
+		$this->_filterUnavailable($qb, $queryParams);
+		$this->_filterDuplicated($qb, $queryParams);
+		$this->_filterFolder($qb, $queryParams);
+		$this->_filterTags($qb, $queryParams);
+		$this->_filterUntagged($qb, $queryParams);
+		$this->_filterSearch($qb, $queryParams);
+		$this->_sortAndPaginate($qb, $queryParams);
 
 		$finalQuery = $cte . ' '. $qb->getSQL();
 		$params = array_merge($params, $qb->getParameters());
