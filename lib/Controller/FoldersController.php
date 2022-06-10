@@ -633,7 +633,7 @@ class FoldersController extends ApiController {
 				return $share->toArray();
 			}, $shares)]);
 		}
-		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
+		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions) && $this->authorizer->getUserId() !== null) {
 			try {
 				$this->folderMapper->find($folderId);
 				$share = $this->shareMapper->findByFolderAndUser($folderId, $this->authorizer->getUserId());
