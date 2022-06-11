@@ -27,7 +27,7 @@
 		"@nextcloud/event-bus": "^1.2.0",
 		"@nextcloud/initial-state": "^1.2.1",
 		"@nextcloud/router": "^2.0.0",
-		"@nextcloud/vue": "^3.10.2",
+		"@nextcloud/vue": "^5.3.1",
 		"@nextcloud/vue-dashboard": "^2.0.1",
 		"async-parallel": "^1.2.3",
 		"clone-deep": "^4.0.1",
