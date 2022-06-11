@@ -225,6 +225,7 @@ export default {
 	align-content: start;
 	gap: 10px;
 	padding: 0 10px;
+	padding-top: 10px;
 }
 
 .folder--gridview,

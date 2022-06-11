@@ -21,14 +21,11 @@
 				<HomeIcon :fill-color="colorMainText" />
 			</h2>
 		</div>
-		<div v-for="folder of items" :key="folder.id" class="treefolder">
-			<div class="treefolder__title" @click="folder.children && onSelect(folder.id)">
-				<h3>
-					<FolderIcon :fill-color="colorPrimaryElement" />
-					{{ folder.title }}
-				</h3>
-			</div>
-		</div>
+		<TreeFolder v-for="folder of items"
+			:key="folder.id"
+			:folder="folder"
+			:show-children="false"
+			@select="folder.children && onSelect(folder.id)" />
 		<div class="actions">
 			<button class="button" @click="onSubmit">
 				{{ t('bookmarks', 'Choose folder') }}
@@ -43,11 +40,17 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import FolderIcon from 'vue-material-design-icons/Folder'
 import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft'
 import HomeIcon from 'vue-material-design-icons/Home'
+import TreeFolder from './TreeFolder'
 
 export default {
 	name: 'FolderPicker',
 	components: {
-		Actions, ActionButton, FolderIcon, ArrowLeftIcon, HomeIcon,
+		TreeFolder,
+		Actions,
+		ActionButton,
+		FolderIcon,
+		ArrowLeftIcon,
+		HomeIcon,
 	},
 	props: {
 		title: {
@@ -105,39 +108,6 @@ export default {
 
 .currentfolder h2 {
 	margin: 0;
-	display: flex;
-}
-
-.treefolder__title .material-design-icon {
-	position: relative;
-	top: 1px;
-	margin: 0 15px;
-}
-
-.treefolder__title {
-	display: flex;
-	align-items: center;
-	padding: 0 10px;
-	margin: 0 -10px;
-	cursor: pointer;
-}
-
-.treefolder__title * {
-	cursor: pointer;
-}
-
-{
-	position: relative;
-	top: 4px;
-}
-
-.treefolder__title:hover,
-.treefolder__title:focus {
-	background: var(--color-background-dark);
-}
-
-.treefolder__title > h3 {
-	flex: 1;
 	display: flex;
 }
 

@@ -7,7 +7,10 @@
 <template>
 	<Content app-name="bookmarks">
 		<Navigation />
-		<AppContent>
+		<AppContent :show-details.sync="showDetails">
+			<template v-if="isFolderView && !smallScreen && folders.length" #list>
+				<FolderOverview :show-details.sync="showDetails" />
+			</template>
 			<Controls />
 			<BookmarksList />
 		</AppContent>
@@ -24,6 +27,7 @@
 import Content from '@nextcloud/vue/dist/Components/Content'
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import Navigation from './Navigation'
+import FolderOverview from './FolderOverview'
 import BookmarksList from './BookmarksList'
 import Controls from './Controls'
 import SidebarBookmark from './SidebarBookmark'
@@ -44,6 +48,7 @@ export default {
 		Navigation,
 		Content,
 		AppContent,
+		FolderOverview,
 		Controls,
 		BookmarksList,
 		SidebarBookmark,
@@ -54,6 +59,8 @@ export default {
 	data() {
 		return {
 			newBookmark: false,
+			showDetails: false,
+			smallScreen: false,
 		}
 	},
 	computed: {
@@ -63,6 +70,9 @@ export default {
 		tags() {
 			return this.$store.state.tags
 		},
+		isFolderView() {
+			return this.$route.name === privateRoutes.FOLDER || this.$route.name === privateRoutes.HOME
+		},
 	},
 
 	watch: {
@@ -70,6 +80,10 @@ export default {
 	},
 
 	async created() {
+		const mediaQuery = window.matchMedia('(max-width: 1024px)')
+		this.smallScreen = mediaQuery.matches
+		mediaQuery.addEventListener('change', this.onWindowFormatChange)
+
 	  if (OCA.Search) {
 	    // legacy search pre nc v20
 			this.search = new window.OCA.Search(this.onSearch, this.onResetSearch)
@@ -188,6 +202,10 @@ export default {
 			const dataEl = resDocument.querySelector('data')
 			return dataEl.firstElementChild.textContent
 		},
+
+		onWindowFormatChange(mediaQuery) {
+			this.smallScreen = mediaQuery.matches
+		},
 	},
 }
 </script>
@@ -197,7 +215,7 @@ export default {
 	min-width: 0;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 720px) {
 	#app-content {
 		max-width: 100%;
 	}

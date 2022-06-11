@@ -285,6 +285,7 @@ export default {
 	left: 0;
 	right: 0;
 	top: 0;
+	border-bottom: var(--color-border) 1px solid;
 }
 
 .controls h2 {
@@ -302,7 +303,11 @@ export default {
 
 .controls h2 > .material-design-icon {
 	position: relative;
-	top: 4px;
+	top: 3px;
+}
+
+.controls .action-item {
+	height: 45px;
 }
 
 .controls.wide {
