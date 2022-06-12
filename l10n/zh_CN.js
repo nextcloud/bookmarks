@@ -27,6 +27,7 @@ OC.L10N.register(
     "Someone unshared folder \"%s\" with you" : "有人取消了开放给您的%s文件夹共享",
     "No file provided for import" : "未提供导入文件",
     "Unsupported file type for import" : "不支持导入的文件类型",
+    "Bookmarks Backups" : "书签备份",
     "Bookmarks shared by %s" : "书签共享者 %s",
     "Frequent bookmarks" : "常用书签",
     "Recent bookmarks" : "近期书签",
