@@ -51,7 +51,7 @@ OC.L10N.register(
     "Do you really want to delete this bookmark?" : "Möchten Sie das neue Lesezeichen wirklich löschen?",
     "Link copied to clipboard" : "Link wurde in die Zwischenablage kopiert",
     "Content pending" : "Inhalt noch ausstehend",
-    "This content is being downloaded for offline use. Please check back later." : "Dieser Inhalt wurde zur Offline-Verwendung heruntergeladen. Bitte versuchen Sie es später erneut.",
+    "This content is being downloaded for offline use. Please check back later." : "Dieser Inhalt wird zur Offline-Verwendung heruntergeladen. Bitte versuchen Sie es später erneut.",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Lesezeichen für Dateien wie Fotos oder PDFs werden automatisch in Ihren Nextcloud-Dateien gespeichert, sodass Sie sie auch dann finden können, wenn der Link nicht mehr erreichbar ist.",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Lesezeichen-Links werden regelmäßig überprüft und diejenigen, die nicht erreicht werden können, werden hier aufgelistet.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Sie können Lesezeichenordner mit anderen teilen. Hier werden alle für Sie freigegebenen Ordner aufgelistet.",
