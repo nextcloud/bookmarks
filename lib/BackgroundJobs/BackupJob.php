@@ -92,16 +92,15 @@ class BackupJob extends TimedJob {
 				if ($this->bookmarkMapper->countBookmarksOfUser($userId) === 0) {
 					continue;
 				}
-				if ($this->config->getUserValue($userId, 'bookmarks', 'backup.enabled', (string) false) !== 'true') {
-					continue;
+				if ($this->config->getUserValue($userId, 'bookmarks', 'backup.enabled', (string) false) === (string) true) {
+					$this->session->setUser($user);
+					if ($this->backupManager->backupExistsForToday($userId)) {
+						continue;
+					}
+					$this->backupManager->runBackup($userId);
+					$this->backupManager->cleanupOldBackups($userId);
+					$processed++;
 				}
-				$this->session->setUser($user);
-				if ($this->backupManager->backupExistsForToday($userId)) {
-					continue;
-				}
-				$this->backupManager->runBackup($userId);
-				$this->backupManager->cleanupOldBackups($userId);
-				$processed++;
 			} catch (\Exception $e) {
 				$this->logger->warning('Bookmarks backup for user '.$userId.'errored');
 				$this->logger->warning($e->getMessage());
