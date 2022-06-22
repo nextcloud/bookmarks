@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.5.0] - 2022-06-22
+
+### New
+- Add ClearPreviews command
+- UI: Implement folder tree in AppContentList
+
+### Fixed
+- UI: Add "K" to bookmarks count
+- CrawlService: Make sure archived files always have a file ext
+- Fix BackupJob check
+- BookmarkMapper#findAll: Implement recursive query. Should fix some performance problems
+
 ## [10.4.0] - 2022-06-08
 
 ### New
