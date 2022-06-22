@@ -138,10 +138,14 @@ class CrawlService {
 				$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
 				$folderPath = $this->getArchivePath($bookmark, $userFolder);
 				$name = $bookmark->slugify('title');
-				$path = $folderPath . '/' . $name . '.' . $this->mimey->getExtension($contentType);
+				$extension = $this->mimey->getExtension($contentType);
+				if (!$extension || trim($extension) === '') {
+					$extension = 'txt';
+				}
+				$path = $folderPath . '/' . $name . '.' . $extension;
 				$i = 0;
 				while ($userFolder->nodeExists($path)) {
-					$path = $folderPath . '/' .$name . '_' . $i . '.' . $this->mimey->getExtension($contentType);
+					$path = $folderPath . '/' .$name . '_' . $i . '.' . $extension;
 					$i++;
 				}
 				$file = $userFolder->newFile($path);
