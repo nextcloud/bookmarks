@@ -86,4 +86,8 @@ Requirements:
 			<provider>OCA\Bookmarks\Activity\Provider</provider>
 		</providers>
 	</activity>
+
+	<commands>
+		<command>OCA\Bookmarks\Command\ClearPreviews</command>
+	</commands>
 </info>
