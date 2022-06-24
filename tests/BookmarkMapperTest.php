@@ -8,6 +8,7 @@ use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
+use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -19,16 +20,6 @@ class BookmarkMapperTest extends TestCase {
 	 * @var mixed|Db\BookmarkMapper
 	 */
 	private $bookmarkMapper;
-
-	/**
-	 * @var Db\TreeMapper
-	 */
-	private $treeMapper;
-
-	/**
-	 * @var Db\FolderMapper
-	 */
-	private $folderMapper;
 
 	/**
 	 * @var string
@@ -50,12 +41,7 @@ class BookmarkMapperTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		/**
-		 * @var Db\BookmarkMapper
-		 */
 		$this->bookmarkMapper = OC::$server->get(Db\BookmarkMapper::class);
-		$this->treeMapper = OC::$server->get(Db\TreeMapper::class);
-		$this->folderMapper = OC::$server->get(Db\FolderMapper::class);
 
 		$this->userManager = OC::$server->get(IUserManager::class);
 		$this->user = 'test';
@@ -99,7 +85,10 @@ class BookmarkMapperTest extends TestCase {
 		$bookmark->setUserId($this->userId);
 		$bookmark = $this->bookmarkMapper->insert($bookmark);
 
-		$entity = $this->bookmarkMapper->find($bookmark->getId());
+		$params = new QueryParameters();
+		$entities = $this->bookmarkMapper->findAll($this->userId, $params->setUrl($bookmark->getUrl()));
+		$this->assertCount(1, $entities);
+		$entity = $entities[0];
 		$entity->setTitle('foobar');
 		$this->bookmarkMapper->update($entity);
 		$foundEntity = $this->bookmarkMapper->find($entity->getId());
@@ -121,7 +110,11 @@ class BookmarkMapperTest extends TestCase {
 		$bookmark->setUserId($this->userId);
 		$bookmark = $this->bookmarkMapper->insert($bookmark);
 
-		$foundEntity = $this->bookmarkMapper->find($bookmark->getId());
+		$params = new QueryParameters();
+
+		$foundEntities = $this->bookmarkMapper->findAll($this->userId, $params->setUrl($bookmark->getUrl()));
+		$this->assertCount(1, $foundEntities);
+		$foundEntity = $foundEntities[0];
 		$this->bookmarkMapper->delete($foundEntity);
 		$this->expectException(DoesNotExistException::class);
 		$this->bookmarkMapper->find($foundEntity->getId());
