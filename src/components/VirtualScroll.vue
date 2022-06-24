@@ -109,7 +109,7 @@ export default {
 .bookmarkslist--gridview .container-window {
 	display: flex;
 	flex-direction: row;
-	flex-flow: wrap;
+	flex-wrap: wrap;
 	align-content: start;
 	gap: 10px;
 	padding: 0 10px;
