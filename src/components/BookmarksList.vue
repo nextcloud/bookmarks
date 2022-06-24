@@ -9,29 +9,28 @@
 		:class="{
 			bookmarkslist: true,
 			'bookmarkslist--gridview': viewMode === 'grid'
-		}"
-		@scroll="onScroll">
-		<div class="padding">
-			<div v-if="$route.name === routes.ARCHIVED && bookmarks.length" class="bookmarkslist__description">
-				{{
-					t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
-				}}
-			</div>
-			<div v-if="$route.name === routes.UNAVAILABLE && bookmarks.length" class="bookmarkslist__description">
-				{{
-					t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')
-				}}
-			</div>
-			<div v-if="$route.name === routes.SHARED_FOLDERS && bookmarks.length" class="bookmarkslist__description">
-				{{
-					t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')
-				}}
-			</div>
-			<div v-if="$route.name === routes.DUPLICATED && bookmarks.length" class="bookmarkslist__description">
-				{{
-					t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')
-				}}
-			</div>
+		}">
+		<div v-if="$route.name === routes.ARCHIVED && bookmarks.length" class="bookmarkslist__description">
+			{{
+				t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
+			}}
+		</div>
+		<div v-if="$route.name === routes.UNAVAILABLE && bookmarks.length" class="bookmarkslist__description">
+			{{
+				t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')
+			}}
+		</div>
+		<div v-if="$route.name === routes.SHARED_FOLDERS && bookmarks.length" class="bookmarkslist__description">
+			{{
+				t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')
+			}}
+		</div>
+		<div v-if="$route.name === routes.DUPLICATED && bookmarks.length" class="bookmarkslist__description">
+			{{
+				t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')
+			}}
+		</div>
+		<VirtualScroll :end-reached="reachedEnd" @load-more="loadMore">
 			<CreateBookmark v-if="newBookmark" />
 			<CreateFolder v-if="newFolder" />
 			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
@@ -61,8 +60,8 @@
 							:bookmark="bookmark" />
 					</template>
 				</template>
-				<NoBookmarks v-else-if="!showLoading && !loading && allBookmarksCount > 0" />
-				<FirstRun v-else-if="!showLoading && !loading" />
+				<NoBookmarks v-else-if="!loading && allBookmarksCount > 0" />
+				<FirstRun v-else-if="!loading" />
 			</template>
 			<!-- NON-FOLDER VIEW -->
 			<template v-else-if="subFolders.length || bookmarks.length">
@@ -75,12 +74,9 @@
 					:key="'bookmark' + bookmark.id"
 					:bookmark="bookmark" />
 			</template>
-			<NoBookmarks v-else-if="!showLoading && !loading && allBookmarksCount > 0" />
-			<FirstRun v-else-if="!showLoading && !loading" />
-			<div v-if="showLoading" class="bookmarkslist__loading">
-				<figure class="icon-loading" />
-			</div>
-		</div>
+			<NoBookmarks v-else-if="!loading && allBookmarksCount > 0" />
+			<FirstRun v-else-if="!loading" />
+		</VirtualScroll>
 	</div>
 </template>
 
@@ -89,29 +85,34 @@ import Bookmark from './Bookmark'
 import Folder from './Folder'
 import CreateBookmark from './CreateBookmark'
 import CreateFolder from './CreateFolder'
-import { actions } from '../store'
+import { actions, mutations } from '../store'
 import NoBookmarks from './NoBookmarks'
 import FirstRun from './FirstRun'
+import VirtualScroll from './VirtualScroll'
+import { privateRoutes } from '../router'
 
 export default {
 	name: 'BookmarksList',
 	components: {
+		CreateFolder,
+		CreateBookmark,
+		VirtualScroll,
 		FirstRun,
 		NoBookmarks,
 		Bookmark,
 		Folder,
-		CreateBookmark,
-		CreateFolder,
 	},
 	data() {
 		return {
-			showLoading: false,
 			loadingTimeout: null,
 		}
 	},
 	computed: {
 		bookmarks() {
 			return this.$store.state.bookmarks
+		},
+		reachedEnd() {
+			return this.$store.state.fetchState.reachedEnd
 		},
 		allBookmarksCount() {
 			return this.$store.state.countsByFolder[-1]
@@ -155,26 +156,13 @@ export default {
 			return this.$store.state.loading.bookmarks || this.$store.state.loading.folders
 		},
 	},
-	watch: {
-		loading(state, previous) {
-			if (state && !previous) {
-				this.loadingTimeout = setTimeout(() => {
-					this.showLoading = true
-				}, 500)
-			} else if (!state && previous) {
-				clearTimeout(this.loadingTimeout)
-				this.showLoading = false
-			}
-		},
-	},
 	methods: {
-		onScroll() {
-			if (
-				this.$el.scrollHeight
-					< this.$el.scrollTop + this.$el.clientHeight + 500
-			) {
-				this.$store.dispatch(actions.FETCH_PAGE)
+		loadMore() {
+			if (this.$route.name === privateRoutes.SHARED_FOLDERS) {
+				this.$store.commit(mutations.REACHED_END)
+				return
 			}
+			this.$store.dispatch(actions.FETCH_PAGE)
 		},
 		getFolder(id) {
 			return this.$store.getters.getFolder(id)[0]
@@ -186,46 +174,12 @@ export default {
 }
 </script>
 <style>
-.bookmarkslist {
-	/* 50px header; 50px breadcrumbs */
-	height: calc(100vh - 50px - 50px);
-	overflow-y: scroll;
-	position: relative;
-}
-
-.bookmarkslist .padding {
-	max-width: calc((250px + 10px + 10px) * 4);
-	margin: 0 auto;
-}
-
-.bookmarkslist__empty {
-	width: 200px;
-	margin: 200px auto;
-}
-
 .bookmarkslist__description {
 	width: 100%;
 	margin: 10px auto;
 	flex-grow: 1;
 	flex-shrink: 0;
 	text-align: center;
-}
-
-.bookmarkslist__loading {
-	width: 100%;
-	margin: 200px auto;
-	flex-grow: 1;
-	flex-shrink: 0;
-	text-align: center;
-}
-
-.bookmarkslist--gridview .padding {
-	display: flex;
-	flex-flow: wrap;
-	align-content: start;
-	gap: 10px;
-	padding: 0 10px;
-	padding-top: 10px;
 }
 
 .folder--gridview,
