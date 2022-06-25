@@ -242,7 +242,7 @@ export default {
 }
 
 .item__rename {
-	padding: 0 8px 0 10px;
+	padding: 0 8px 0 0;
 }
 
 .item--gridview  .item__rename {
@@ -293,7 +293,6 @@ export default {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	margin: 10px 0;
-	margin-left: 5px;
 }
 
 .item:not(.item--gridview) .item__rename input {
