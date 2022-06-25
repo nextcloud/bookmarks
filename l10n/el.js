@@ -49,6 +49,7 @@ OC.L10N.register(
     "Link copied to clipboard" : "Ο σύνδεσμος αντιγράφηκε στο πρόχειρο",
     "Open all selected" : "Άνοιγμα των επιλεγμένων",
     "Move selection" : "Μετακίνηση επιλογής",
+    "Edit tags of selection" : "Επεξεργασία ετικετών για τα επιλεγμένα",
     "Delete selection" : "Διαγραφή επιλογής",
     "Select all" : "Επιλογή όλων",
     "Cancel selection" : "Ακύρωση επιλογής",
