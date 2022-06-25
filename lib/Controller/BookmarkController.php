@@ -581,8 +581,7 @@ class BookmarkController extends ApiController {
 		try {
 			$image = $this->bookmarks->getImage($id);
 			if ($image === null) {
-				// Return a placeholder
-				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
+				return new DataResponse([], Http::STATUS_NOT_FOUND);
 			}
 			return $this->doImageResponse($image);
 		} catch (DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {

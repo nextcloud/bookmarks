@@ -97,6 +97,7 @@ import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/'
 import copy from 'copy-text-to-clipboard'
+import axios from '@nextcloud/axios'
 
 export default {
 	name: 'Bookmark',
@@ -118,6 +119,7 @@ export default {
 		return {
 			title: this.bookmark.title,
 			renaming: false,
+			backgroundImage: undefined,
 		}
 	},
 	computed: {
@@ -148,11 +150,6 @@ export default {
 					? '?token=' + this.$store.state.authToken
 					: '')
 			)
-		},
-		background() {
-			return this.viewMode === 'grid'
-				? `linear-gradient(0deg, var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${this.imageUrl}')`
-				: undefined
 		},
 		url() {
 			return this.bookmark.url
@@ -195,8 +192,13 @@ export default {
 		isActive() {
 			return this.isOpen || this.selected
 		},
+		background() {
+			return this.viewMode === 'grid' ? this.backgroundImage : undefined
+		},
 	},
-	created() {},
+	mounted() {
+		this.fetchBackgroundImage()
+	},
 	methods: {
 		onDelete() {
 			if (
@@ -255,6 +257,19 @@ export default {
 		onCopyUrl() {
 			copy(this.bookmark.url)
 			this.$store.commit(mutations.SET_NOTIFICATION, this.t('bookmarks', 'Link copied to clipboard'))
+		},
+		async fetchBackgroundImage() {
+			try {
+				const response = await axios.get(this.imageUrl, { responseType: 'blob' })
+				const url = URL.createObjectURL(response.data)
+				this.backgroundImage = `linear-gradient(0deg, var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${url})`
+			} catch (e) {
+				if (this.colorMainBackground === '#ffffff') {
+					this.backgroundImage = 'var(--icon-link-000) no-repeat center 25% / 50% !important'
+				} else {
+					this.backgroundImage = 'var(--icon-link-fff) no-repeat center 25% / 50% !important'
+				}
+			}
 		},
 	},
 }
