@@ -91,7 +91,7 @@ OC.L10N.register(
     "Sync with your browser" : "Synchronisez avec votre navigateur",
     "Select folder" : "Sélectionner un dossier",
     "Enter folder title" : "Saisissez le nom du dossier",
-    "Shared by {user}" : "Partagé par l'{user}",
+    "Shared by {user}" : "Partagé par {user}",
     "Rename folder" : "Renommer le dossier",
     "Move folder" : "Déplacer le dossier",
     "Delete folder" : "Supprimer le dossier",
