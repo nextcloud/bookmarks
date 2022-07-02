@@ -49,7 +49,6 @@ export default {
 	},
 	methods: {
 		onScroll() {
-			this.updateViewport()
 			this.scrollTop = this.$el.scrollTop
 			this.scrollHeight = this.$el.scrollHeight
 		},
