@@ -259,6 +259,11 @@ export default {
 			this.$store.commit(mutations.SET_NOTIFICATION, this.t('bookmarks', 'Link copied to clipboard'))
 		},
 		async fetchBackgroundImage() {
+			if (this.colorMainBackground === '#ffffff') {
+				this.backgroundImage = 'var(--icon-link-000) no-repeat center 25% / 50% !important'
+			} else {
+				this.backgroundImage = 'var(--icon-link-fff) no-repeat center 25% / 50% !important'
+			}
 			try {
 				const response = await axios.get(this.imageUrl, { responseType: 'blob' })
 				const url = URL.createObjectURL(response.data)
