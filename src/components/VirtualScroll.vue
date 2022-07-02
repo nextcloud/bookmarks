@@ -64,7 +64,7 @@ export default {
 			const viewport = this.$el.getBoundingClientRect()
 			itemHeight = this.viewMode === 'grid' ? GRID_ITEM_HEIGHT : LIST_ITEM_HEIGHT
 			itemsPerRow = this.viewMode === 'grid' ? Math.floor(viewport.width / GRID_ITEM_WIDTH) : 1
-			renderedItems = itemsPerRow * Math.floor((viewport.height + 2 * 500) / itemHeight)
+			renderedItems = itemsPerRow * (Math.floor((viewport.height) / itemHeight) + 2 * Math.floor(800 / itemHeight))
 			upperPaddingItems = itemsPerRow * Math.floor(Math.max(this.scrollTop - 500, 0) / itemHeight)
 			lowerPaddingItems = Math.max(this.$slots.default.length - renderedItems - upperPaddingItems, 0)
 			children = this.$slots.default.slice(upperPaddingItems, upperPaddingItems + renderedItems)
