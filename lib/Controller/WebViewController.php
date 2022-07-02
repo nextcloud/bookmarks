@@ -21,6 +21,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
@@ -61,6 +62,10 @@ class WebViewController extends Controller {
 	 * @var InternalFoldersController
 	 */
 	private $folderController;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
 
 
 	/**
@@ -76,8 +81,9 @@ class WebViewController extends Controller {
 	 * @param IURLGenerator $urlGenerator
 	 * @param \OCP\IInitialStateService $initialState
 	 * @param InternalFoldersController $folderController
+	 * @param IConfig $config
 	 */
-	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, FolderMapper $folderMapper, IURLGenerator $urlGenerator, \OCP\IInitialStateService $initialState, \OCA\Bookmarks\Controller\InternalFoldersController $folderController) {
+	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, FolderMapper $folderMapper, IURLGenerator $urlGenerator, \OCP\IInitialStateService $initialState, \OCA\Bookmarks\Controller\InternalFoldersController $folderController, IConfig $config) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->l = $l;
@@ -87,6 +93,7 @@ class WebViewController extends Controller {
 		$this->urlGenerator = $urlGenerator;
 		$this->initialState = $initialState;
 		$this->folderController = $folderController;
+		$this->config = $config;
 	}
 
 	/**
@@ -108,6 +115,12 @@ class WebViewController extends Controller {
 
 		// Provide complete folder hierarchy
 		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFolders()->getData()['data']);
+
+		$settings = [];
+		foreach (['sorting', 'viewMode'] as $setting) {
+			$settings[$setting] = $this->config->getUserValue($this->userId, $this->appName, $setting);
+		}
+		$this->initialState->provideInitialState($this->appName, 'settings', $settings);
 
 		return $res;
 	}
