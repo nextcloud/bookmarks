@@ -13,7 +13,7 @@ const LIST_ITEM_HEIGHT = 45 + 1
 export default {
 	name: 'VirtualScroll',
 	props: {
-		endReached: {
+		reachedEnd: {
 			type: Boolean,
 			required: true,
 		},
@@ -65,21 +65,19 @@ export default {
 		let lowerPaddingItems = 0
 		let itemHeight = 1
 		if (this.$slots.default) {
+			this.updateViewport()
 			itemHeight = this.viewMode === 'grid' ? GRID_ITEM_HEIGHT : LIST_ITEM_HEIGHT
 			itemsPerRow = this.viewMode === 'grid' ? Math.floor(this.viewport.width / GRID_ITEM_WIDTH) : 1
 			renderedItems = itemsPerRow * Math.ceil((this.viewport.height + 2 * 500) / itemHeight)
 			upperPaddingItems = itemsPerRow * Math.floor(Math.max(this.scrollTop - 500, 0) / itemHeight)
 			lowerPaddingItems = Math.max(this.$slots.default.length - renderedItems - upperPaddingItems, 0)
 			children = this.$slots.default.slice(upperPaddingItems, upperPaddingItems + renderedItems)
-
-			if (this.endReached && renderedItems > this.$slots.default.length) {
-				renderedItems = this.$slots.default.length
-			}
+			renderedItems = children.length
 
 			setImmediate(() => { this.$el.scrollTop = this.scrollTop })
 		}
 
-		if (!this.endReached && upperPaddingItems + renderedItems > (this.$slots.default ? this.$slots.default.length : 0)) {
+		if (!this.reachedEnd && upperPaddingItems + renderedItems > (this.$slots.default ? this.$slots.default.length : 0)) {
 			this.$emit('load-more')
 			children = [...children, ...Array(upperPaddingItems + renderedItems - (this.$slots.default ? this.$slots.default.length : 0)).fill(0).map(() =>
 				h(ItemSkeleton)

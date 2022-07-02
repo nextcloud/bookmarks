@@ -30,7 +30,7 @@
 				t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')
 			}}
 		</div>
-		<VirtualScroll :end-reached="reachedEnd" @load-more="loadMore">
+		<VirtualScroll :reached-end="reachedEnd" @load-more="loadMore">
 			<CreateBookmark v-if="newBookmark" />
 			<CreateFolder v-if="newFolder" />
 			<template v-if="$route.name === routes.FOLDER || $route.name === routes.HOME">
@@ -48,7 +48,7 @@
 					</template>
 				</template>
 				<!-- FOLDER VIEW WITH NORMAL SORTING -->
-				<template v-else-if="(subFolders.length || bookmarks.length) && !showLoading">
+				<template v-else-if="(subFolders.length || bookmarks.length) && !loading">
 					<Folder
 						v-for="folder in subFolders"
 						:key="'folder' + folder.id"
