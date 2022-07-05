@@ -15,6 +15,7 @@ use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolder;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
+use OCA\Bookmarks\Db\TrashMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
@@ -67,6 +68,7 @@ class FolderService {
 	 * @var IEventDispatcher
 	 */
 	private $eventDispatcher;
+	private TrashMapper $trash;
 
 	/**
 	 * FolderService constructor.
@@ -80,8 +82,9 @@ class FolderService {
 	 * @param HtmlImporter $htmlImporter
 	 * @param IL10N $l10n
 	 * @param IEventDispatcher $eventDispatcher
+	 * @param TrashMapper $trash
 	 */
-	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, HtmlImporter $htmlImporter, IL10N $l10n, IEventDispatcher $eventDispatcher) {
+	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, HtmlImporter $htmlImporter, IL10N $l10n, IEventDispatcher $eventDispatcher, TrashMapper $trash) {
 		$this->folderMapper = $folderMapper;
 		$this->treeMapper = $treeMapper;
 		$this->shareMapper = $shareMapper;
@@ -91,6 +94,7 @@ class FolderService {
 		$this->htmlImporter = $htmlImporter;
 		$this->l10n = $l10n;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->trash = $trash;
 	}
 
 	public function getRootFolder(string $userId) : Folder {
@@ -208,7 +212,6 @@ class FolderService {
 
 		// folder is subfolder of share
 		$this->treeMapper->trashEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
-		$this->folderMapper->delete($folder);
 	}
 
 	/**
@@ -395,5 +398,42 @@ class FolderService {
 	public function importFile(string $userId, $file, $folder): array {
 		$importFolderId = $folder;
 		return $this->htmlImporter->importFile($userId, $file, $importFolderId);
+	}
+
+	/**
+	 * @param $userId
+	 * @param $folderId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
+	public function deleteSharedFolderOrFolderPermanently($userId, $folderId): void {
+		$this->deleteSharedFolderOrFolder($userId, $folderId);
+		/**
+		 * @var $folder Folder
+		 */
+		$folder = $this->folderMapper->find($folderId);
+
+		if ($userId === null || $userId === $folder->getUserId()) {
+			$this->trash->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+			$this->folderMapper->delete($folder);
+			return;
+		}
+
+		try {
+			// folder is shared folder
+			/**
+			 * @var $sharedFolder SharedFolder
+			 */
+			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
+			$this->trash->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			return;
+		} catch (DoesNotExistException $e) {
+			// noop
+		}
+
+		// folder is subfolder of share
+		$this->trash->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+		$this->folderMapper->delete($folder);
 	}
 }
