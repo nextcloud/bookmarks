@@ -221,4 +221,25 @@ class InternalFoldersController extends ApiController {
 	public function deleteShare($shareId): DataResponse {
 		return $this->controller->deleteShare($shareId);
 	}
+
+	/**
+	 * @param int $folderId
+	 * @return DataResponse
+	 * @throws UnauthenticatedError
+	 * @NoAdminRequired
+	 */
+	public function restoreFolder(int $folderId) : DataResponse {
+		return $this->controller->restoreFolder($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @return DataResponse
+	 * @throws UnauthenticatedError
+	 * @NoAdminRequired
+	 */
+	public function restoreBookmark(int $folderId, int $bookmarkId) : DataResponse {
+		return $this->controller->restoreBookmark($folderId, $bookmarkId);
+	}
 }
