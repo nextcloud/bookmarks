@@ -19,6 +19,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
@@ -356,16 +357,6 @@ class TreeMapper extends QBMapper {
 			$folder = $this->folderMapper->find($id);
 			$descendantFolders[] = $folder;
 
-			// remove all bookmarks entries from this subtree
-			$qb = $this->db->getQueryBuilder();
-			$qb
-				->delete('bookmarks_tree')
-				->where($qb->expr()->eq('type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
-				->andWhere($qb->expr()->in('parent_folder', $qb->createPositionalParameter(array_map(static function ($folder) {
-					return $folder->getId();
-				}, $descendantFolders), IQueryBuilder::PARAM_INT_ARRAY)));
-			$qb->execute();
-
 			// remove all folder shares and public links from this subtree
 			foreach ($descendantFolders as $descendantFolder) {
 				$this->removeFolderTangibles($descendantFolder->getId());
@@ -537,9 +528,8 @@ class TreeMapper extends QBMapper {
 	 * @param string $type
 	 * @param int $itemId The bookmark reference
 	 * @param array $folders Set of folders ids to add the bookmark to
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
 	public function removeFromFolders(string $type, int $itemId, array $folders): void {
 		if ($type !== self::TYPE_BOOKMARK) {
