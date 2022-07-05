@@ -12,6 +12,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use PDO;
@@ -41,24 +42,11 @@ class TrashMapper extends QBMapper {
 
 	protected $entityColumns = [];
 
-	/**
-	 * @var BookmarkMapper
-	 */
-	protected $bookmarkMapper;
-
-	/**
-	 * @var FolderMapper
-	 */
-	protected $folderMapper;
-
-	/**
-	 * @var IQueryBuilder
-	 */
-	private $parentQuery;
-	/**
-	 * @var array
-	 */
-	private $getChildrenQuery;
+	protected BookmarkMapper $bookmarkMapper;
+	protected FolderMapper $folderMapper;
+	private IQueryBuilder $parentQuery;
+	private array $getChildrenQuery;
+	private IQueryBuilder $insertQuery;
 
 	/**
 	 * FolderMapper constructor.
@@ -79,6 +67,7 @@ class TrashMapper extends QBMapper {
 		];
 
 		$this->parentQuery = $this->getParentQuery();
+		$this->insertQuery = $this->getInsertQuery();
 		$this->getChildrenQuery = [
 			self::TYPE_BOOKMARK => $this->getFindChildrenQuery(self::TYPE_BOOKMARK),
 			self::TYPE_FOLDER => $this->getFindChildrenQuery(self::TYPE_FOLDER),
@@ -100,8 +89,8 @@ class TrashMapper extends QBMapper {
 
 
 	/**
-	 * 	 * Runs a sql query and returns an array of entities
-	 * 	 *
+	 * Runs a sql query and returns an array of entities
+	 *
 	 *
 	 * @param IQueryBuilder $query
 	 * @param string $type
@@ -163,6 +152,8 @@ class TrashMapper extends QBMapper {
 				'id' => $qb->createParameter('id'),
 				'parent_folder' => $qb->createParameter('parent_folder'),
 				'type' => $qb->createParameter('type'),
+				'deleted_at' => $qb->createParameter('deleted_at'),
+				'user_id' => $qb->createParameter('user_id'),
 			]);
 		return $qb;
 	}
@@ -176,23 +167,12 @@ class TrashMapper extends QBMapper {
 		return $qb;
 	}
 
-	protected function getGetChildrenOrderQuery(): IQueryBuilder {
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->select('id', 'type')
-			->from('bookmarks_trash')
-			->where($qb->expr()->eq('parent_folder', $qb->createParameter('parent_folder')))
-			->orderBy('index', 'ASC');
-		return $qb;
-	}
-
 	protected function getFindChildrenQuery(string $type): IQueryBuilder {
 		$qb = $this->selectFromType($type);
 		$qb
-				->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'i.id'))
-				->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
+				->join('i', 'bookmarks_trash', 't', $qb->expr()->eq('t.id', 'i.id'))
 				->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter($type)))
-				->orderBy('t.index', 'ASC');
+				->orderBy('t.deleted_at', 'DESC');
 		return $qb;
 	}
 
@@ -269,6 +249,7 @@ class TrashMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
 	public function deleteEntry(string $type, int $id, int $folderId = null): void {
 		if ($type === self::TYPE_FOLDER) {
@@ -278,9 +259,8 @@ class TrashMapper extends QBMapper {
 				$this->deleteEntry(self::TYPE_SHARE, $share->getId(), $id);
 			}
 
-			// then get all folders in this sub tree
+			// then get all folders in this sub-tree
 			$descendantFolders = $this->findByAncestorFolder(self::TYPE_FOLDER, $id);
-			/** @var Folder $folder */
 			$folder = $this->folderMapper->find($id);
 			$descendantFolders[] = $folder;
 
@@ -314,7 +294,9 @@ class TrashMapper extends QBMapper {
 			$qb->select('b.id')
 				->from('bookmarks', 'b')
 				->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND t.type = '.$qb->createPositionalParameter(self::TYPE_BOOKMARK))
-				->where($qb->expr()->isNull('t.id'));
+				->leftJoin('b', 'bookmarks_trash', 'tr', 'b.id = tr.id AND tr.type = '.$qb->createPositionalParameter(self::TYPE_BOOKMARK))
+				->where($qb->expr()->isNull('t.id'))
+				->andWhere($qb->expr()->isNull('tr.id'));
 			$orphanedBookmarks = $qb->execute();
 			while ($bookmark = $orphanedBookmarks->fetch(\PDO::FETCH_COLUMN)) {
 				$qb = $this->db->getQueryBuilder();
@@ -359,6 +341,7 @@ class TrashMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
 	public function removeFromFolders(string $type, int $itemId, array $folders): void {
 		if ($type !== self::TYPE_BOOKMARK) {
@@ -375,7 +358,7 @@ class TrashMapper extends QBMapper {
 				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
 			$qb->execute();
 		}
-		if ($foldersLeft <= 0 && $type === self::TYPE_BOOKMARK) {
+		if ($foldersLeft <= 0) {
 			$bm = $this->bookmarkMapper->find($itemId);
 			$this->bookmarkMapper->delete($bm);
 		}
@@ -394,6 +377,8 @@ class TrashMapper extends QBMapper {
 			throw new UnsupportedOperation('Only bookmarks can be in multiple folders');
 		}
 
+		$bookmark = $this->bookmarksMapper->find($itemId);
+
 		foreach ($folders as $folderId) {
 			$qb = $this->insertQuery;
 			$qb
@@ -401,6 +386,8 @@ class TrashMapper extends QBMapper {
 					'parent_folder' => $folderId,
 					'type' => $type,
 					'id' => $itemId,
+					'user_id' => $bookmark->getUserId(),
+					'deleted_at' => time(),
 				]);
 			$qb->execute();
 		}
@@ -409,10 +396,8 @@ class TrashMapper extends QBMapper {
 	/**
 	 * @param string $type
 	 * @param int $itemId
-	 * @param int $newParentFolderId
-	 * @param int|null $index
 	 * @throws MultipleObjectsReturnedException
-	 * @throws UnsupportedOperation
+	 * @throws UnsupportedOperation|Exception
 	 */
 	public function add(string $type, int $itemId): void {
 		if ($type === self::TYPE_BOOKMARK) {
@@ -423,14 +408,15 @@ class TrashMapper extends QBMapper {
 			/** @var Folder $currentParent */
 			$currentParent = $this->findParentOf($type, $itemId);
 
-			// Item currently has a parent => move.
+			// Item currently has a parent => move to trash.
 
-			$qb = $this->db->getQueryBuilder();
+			$qb = $this->insertQuery;
 			$qb
-				->update('bookmarks_trash')
-				->set('parent_folder', $qb->createPositionalParameter($currentParent, IQueryBuilder::PARAM_INT))
-				->where($qb->expr()->eq('id', $qb->createPositionalParameter($itemId, IQueryBuilder::PARAM_INT)))
-				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
+				->setParameter('parent_folder', $currentParent, IQueryBuilder::PARAM_INT)
+				->setParameter('id', $$itemId, IQueryBuilder::PARAM_INT)
+				->setParameter('type', $type)
+				->setParameter('deleted_at', time(), IQueryBuilder::PARAM_INT)
+				->setParameter('user_id', $currentParent->getUserId());
 			$qb->execute();
 		} catch (DoesNotExistException $e) {
 			// Item currently has no parent. Odd. We'll ignore it then.
@@ -442,10 +428,11 @@ class TrashMapper extends QBMapper {
 	 * @brief Count the items in the trash
 	 * @return mixed
 	 */
-	public function countTrash() {
+	public function countTrash(string $userId) {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select($qb->func()->count('id'))
+			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)))
 			->from('bookmarks_trash');
 		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
 	}

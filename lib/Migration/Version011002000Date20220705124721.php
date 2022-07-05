@@ -51,8 +51,20 @@ class Version011002000Date20220705124721 extends SimpleMigrationStep {
 				'notnull' => true,
 				'length' => 64,
 			]);
+			$table->addColumn('deleted_at', 'integer', [
+				'notnull' => true,
+				'length' => 4,
+				'default' => 0,
+				'unsigned' => true,
+			]);
+			$table->addColumn('user_id', 'string', [
+				'notnull' => true,
+				'length' => 64,
+				'default' => '',
+			]);
 			$table->setPrimaryKey(['id', 'type', 'parent_folder'], 'bookmarks_trash_pk');
 			$table->addIndex(['parent_folder'], 'bookmarks_trash_parent');
+			$table->addIndex(['user_id', 'deleted_at'], 'bookmarks_trash_user');
 		}
 
 		return $schema;
