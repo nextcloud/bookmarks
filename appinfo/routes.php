@@ -85,6 +85,8 @@ return [
 		['name' => 'internal_folders#find_shares', 'url' => '/share', 'verb' => 'GET'],
 		['name' => 'internal_folders#edit_share', 'url' => '/share/{shareId}', 'verb' => 'PUT'],
 		['name' => 'internal_folders#delete_share', 'url' => '/share/{shareId}', 'verb' => 'DELETE'],
+		['name' => 'trash#get_children', 'url' => '/trash/children', 'verb' => 'GET'],
+		['name' => 'trash#count', 'url' => '/trash/count', 'verb' => 'GET'],
 
 		// Public REST API
 		['name' => 'bookmark#get_bookmarks', 'url' => '/public/rest/v2/bookmark', 'verb' => 'GET'],

@@ -240,6 +240,53 @@ class TrashMapper extends QBMapper {
 		return $descendants;
 	}
 
+	/**
+	 * @return (int|mixed|string)[][]
+	 *
+	 * @psalm-return array<array-key, array<string, int|mixed|string>>
+	 */
+	public function getChildren(string $userId): array {
+		$qb = $this->getChildrenQuery[self::TYPE_BOOKMARK];
+		$this->selectFromType(self::TYPE_BOOKMARK, ['t.deleted_at', 't.type'], $qb);
+		$qb->andWhere($qb->expr()->eq('t.user_id', $qb->createNamedParameter($userId)));
+		$childBookmarks = $qb->execute()->fetchAll();
+
+		$qb = $this->getChildrenQuery[self::TYPE_FOLDER];
+		$this->selectFromType(self::TYPE_FOLDER, ['t.deleted_at', 't.type'], $qb);
+		$qb->andWhere($qb->expr()->eq('t.user_id', $qb->createNamedParameter($userId)));
+		$childFolders = $qb->execute()->fetchAll();
+
+		$qb = $this->getChildrenQuery[self::TYPE_SHARE];
+		$this->selectFromType(self::TYPE_SHARE, ['t.deleted_at', 't.type'], $qb);
+		$qb->andWhere($qb->expr()->eq('t.user_id', $qb->createNamedParameter($userId)));
+		$childShares = $qb->execute()->fetchAll();
+
+		$children = array_merge($childBookmarks, $childFolders, $childShares);
+		$dates = array_reverse(array_column($children, 'deleted_at'));
+		array_multisort($dates, $children);
+
+		$bookmark = new Bookmark();
+
+		$children = array_map(function ($child) use ($bookmark) {
+			$item = ['type' => $child['type'], 'id' => (int)$child['id'], 'title' => $child['title'], 'userId' => $child['user_id']];
+
+			if ($item['type'] === self::TYPE_SHARE) {
+				$item['type'] = self::TYPE_FOLDER;
+				$item['id'] = (int)$child['folder_id'];
+			}
+
+			if ($item['type'] === self::TYPE_BOOKMARK) {
+				foreach (Bookmark::$columns as $col) {
+					$item[$bookmark->columnToProperty($col)] = $child[$col];
+				}
+			}
+
+			return $item;
+		}, $children);
+
+		return $children;
+	}
+
 
 	/**
 	 * @param string $type
