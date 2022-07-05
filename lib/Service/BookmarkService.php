@@ -14,6 +14,7 @@ use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\TagMapper;
+use OCA\Bookmarks\Db\TrashMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
@@ -25,6 +26,7 @@ use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\BackgroundJob\IJobList;
+use OCP\DB\Exception;
 use OCP\EventDispatcher\IEventDispatcher;
 
 class BookmarkService {
@@ -78,6 +80,7 @@ class BookmarkService {
 	 * @var IJobList
 	 */
 	private $jobList;
+	private TrashMapper $trash;
 
 	/**
 	 * BookmarksService constructor.
@@ -95,8 +98,9 @@ class BookmarkService {
 	 * @param Authorizer $authorizer
 	 * @param CrawlService $crawler
 	 * @param IJobList $jobList
+	 * @param TrashMapper $trash
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager, UrlNormalizer $urlNormalizer, CrawlService $crawler, IJobList $jobList) {
+	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager, UrlNormalizer $urlNormalizer, CrawlService $crawler, IJobList $jobList, TrashMapper $trash) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->treeMapper = $treeMapper;
 		$this->linkExplorer = $linkExplorer;
@@ -110,6 +114,7 @@ class BookmarkService {
 		$this->urlNormalizer = $urlNormalizer;
 		$this->crawler = $crawler;
 		$this->jobList = $jobList;
+		$this->trash = $trash;
 	}
 
 	/**
@@ -494,5 +499,18 @@ class BookmarkService {
 		$this->bookmarkMapper->deleteAll($userId);
 		$this->hashManager->setInvalidationEnabled(true);
 		$this->hashManager->invalidateFolder($rootFolder->getId());
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws Exception
+	 */
+	public function removeFromFolderPermanently(int $folderId, int $bookmarkId) {
+		$this->removeFromFolder($folderId, $bookmarkId);
+		$this->trash->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
 	}
 }
