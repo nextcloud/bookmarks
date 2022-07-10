@@ -25,6 +25,9 @@ jobs:
         databases: ['sqlite', 'mysql', 'pgsql']
         server-versions: ['stable22', 'stable23', 'stable24']
         prev-version: ['stable', 'stable4']
+        exclude:
+          - prev-version: stable4
+            server-versions: stable24
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
