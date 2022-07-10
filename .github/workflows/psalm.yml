@@ -22,7 +22,7 @@ jobs:
           - ocp-version: 'v23.0.2'
             php-version: '8.0'
           - ocp-version: 'v24.0.0'
-              php-version: '8.1'
+            php-version: '8.1'
 
     name: Nextcloud ${{ matrix.ocp-version }}
 
