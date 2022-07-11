@@ -153,7 +153,7 @@ class BookmarksParser {
 					if (count($this->folderDepth) > 1) {
 						$this->closeFolder();
 					}
-					break;
+				break;
 				case 'a':
 					$this->addBookmark($entry);
 					break;
@@ -162,7 +162,7 @@ class BookmarksParser {
 					if ($entry->hasChildNodes()) {
 						$this->traverse($entry);
 					}
-					break;
+				break;
 				case 'h3':
 					$this->addFolder($entry);
 					break;

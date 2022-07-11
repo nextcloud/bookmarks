@@ -325,9 +325,9 @@ class BookmarkService {
 			if ($bookmark->getUserId() !== $userId) {
 				$currentInaccessibleOwnFolders = array_map(static function ($f) {
 					return $f->getId();
-				}, array_filter($currentOwnFolders, function ($folder) use ($userId) {
-					return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
-				})
+					}, array_filter($currentOwnFolders, function ($folder) use ($userId) {
+						return $this->folders->findShareByDescendantAndUser($folder, $userId) === null;
+					})
 				);
 			} else {
 				$currentInaccessibleOwnFolders = [];

@@ -520,9 +520,9 @@ class TreeMapper extends QBMapper {
 		$this->addToFolders($type, $itemId, $folders);
 		$this->removeFromFolders($type, $itemId, array_map(static function (Folder $f) {
 			return $f->getId();
-		}, array_filter($currentFolders, static function (Folder $folder) use ($folders) {
-			return !in_array($folder->getId(), $folders, true);
-		})));
+			}, array_filter($currentFolders, static function (Folder $folder) use ($folders) {
+				return !in_array($folder->getId(), $folders, true);
+			})));
 	}
 
 	/**
