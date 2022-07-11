@@ -202,13 +202,13 @@ class WebViewController extends Controller {
 				[
 					[
 						'src' => $this->urlGenerator->linkToRoute('theming.Icon.getTouchIcon',
-								['app' => 'bookmarks']),
+							['app' => 'bookmarks']),
 						'type' => 'image/png',
 						'sizes' => '512x512'
 					],
 					[
 						'src' => $this->urlGenerator->linkToRoute('theming.Icon.getFavicon',
-								['app' => 'bookmark']),
+							['app' => 'bookmark']),
 						'type' => 'image/svg+xml',
 						'sizes' => '128x128'
 					]

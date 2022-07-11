@@ -98,9 +98,9 @@ class SettingsController extends ApiController {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
 		}
 		return $this->setSetting(
-				'sorting',
-				$sorting
-			);
+			'sorting',
+			$sorting
+		);
 	}
 
 	/**
@@ -128,9 +128,9 @@ class SettingsController extends ApiController {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
 		}
 		return $this->setSetting(
-				'viewMode',
-				$viewMode
-			);
+			'viewMode',
+			$viewMode
+		);
 	}
 
 	/**
