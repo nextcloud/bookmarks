@@ -25,7 +25,7 @@
 					<span :class="{'icon-upload': !importing, 'icon-loading-small': importing}" /> {{ t('bookmarks', 'Import bookmarks') }}
 				</button>
 				<button @click="onSyncOpen">
-					<SyncIcon :fill-color="colorMainText" :size="18" :style="{opacity: 0.5}" /> {{ t('bookmarks', 'Sync with your browser') }}
+					<SyncIcon :fill-color="colorMainText" :size="18" :style="{opacity: 0.5, display: 'inline'}" /> {{ t('bookmarks', 'Sync with your browser') }}
 				</button>
 			</template>
 		</EmptyContent>
