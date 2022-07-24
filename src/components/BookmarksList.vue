@@ -60,7 +60,7 @@
 							:bookmark="bookmark" />
 					</template>
 				</template>
-				<NoBookmarks v-else-if="!loading && allBookmarksCount > 0" />
+				<NoBookmarks v-else-if="!loading && (allBookmarksCount > 0 || isPublic)" />
 				<FirstRun v-else-if="!loading" />
 			</template>
 			<!-- NON-FOLDER VIEW -->
@@ -74,7 +74,7 @@
 					:key="'bookmark' + bookmark.id"
 					:bookmark="bookmark" />
 			</template>
-			<NoBookmarks v-else-if="!loading && allBookmarksCount > 0" />
+			<NoBookmarks v-else-if="!loading && (allBookmarksCount > 0 || isPublic)" />
 			<FirstRun v-else-if="!loading" />
 		</VirtualScroll>
 	</div>
