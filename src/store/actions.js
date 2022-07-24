@@ -831,16 +831,9 @@ export default {
 			await Parallel.each(
 				state.selection.folders,
 				async folder => {
-					if (folderId === folder.id) {
-						throw new Error('Cannot copy folder into itself')
+					if (folder) {
+						throw new Error('Cannot copy folders')
 					}
-					const oldParent = folder.parent_folder
-					folder.parent_folder = folderId
-					await dispatch(actions.SAVE_FOLDER, folder.id) // _s children order for new parent
-					await dispatch(
-						actions.LOAD_FOLDER_CHILDREN_ORDER,
-						oldParent
-					)
 				},
 				10
 			)
@@ -849,7 +842,6 @@ export default {
 				Parallel.each(
 					state.selection.bookmarks,
 					bookmark => {
-						commit(mutations.REMOVE_BOOKMARK, bookmark.id)
 						return dispatch(actions.COPY_BOOKMARK, {
 							newFolder: folderId,
 							bookmark: bookmark.id,
