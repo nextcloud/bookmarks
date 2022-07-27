@@ -24,7 +24,7 @@ jobs:
         php-versions: ['7.3', '7.4']
         databases: ['sqlite', 'mysql', 'pgsql']
         server-versions: ['stable20', 'stable21', 'stable22', 'stable23']
-        prev-version: ['stable', 'stable4', 'stable3']
+        prev-version: ['stable10', 'stable4', 'stable3']
         exclude:
           - prev-version: 'stable3'
             server-versions: 'stable21'
