@@ -17,13 +17,13 @@
 - 💼 Built-in Dashboard widgets for frequent and recent links
 
 Requirements:
- - PHP v7.3+
+ - PHP v7.4+
  - PHP extensions:
    - intl: *
    - mbstring: *
- - Nextcloud v20+
+ - when using MySQL, use at least v8.0
 ]]></description>
-	<version>10.5.1</version>
+	<version>11.0.0</version>
 	<licence>agpl</licence>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
@@ -36,13 +36,13 @@ Requirements:
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
 
 	<dependencies>
-		<php min-version="7.3" />
+		<php min-version="7.4" />
 		<database>sqlite</database>
-		<database>mysql</database>
+		<database min-version="8.0">mysql</database>
 		<database>pgsql</database>
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="20" max-version="24" />
+		<nextcloud min-version="22" max-version="24" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>

@@ -831,16 +831,9 @@ export default {
 			await Parallel.each(
 				state.selection.folders,
 				async folder => {
-					if (folderId === folder.id) {
-						throw new Error('Cannot copy folder into itself')
+					if (folder) {
+						throw new Error('Cannot copy folders')
 					}
-					const oldParent = folder.parent_folder
-					folder.parent_folder = folderId
-					await dispatch(actions.SAVE_FOLDER, folder.id) // _s children order for new parent
-					await dispatch(
-						actions.LOAD_FOLDER_CHILDREN_ORDER,
-						oldParent
-					)
 				},
 				10
 			)
@@ -849,7 +842,6 @@ export default {
 				Parallel.each(
 					state.selection.bookmarks,
 					bookmark => {
-						commit(mutations.REMOVE_BOOKMARK, bookmark.id)
 						return dispatch(actions.COPY_BOOKMARK, {
 							newFolder: folderId,
 							bookmark: bookmark.id,
@@ -1136,10 +1128,24 @@ export default {
 			})
 	},
 	[actions.LOAD_SETTINGS]({ commit, dispatch, state }) {
-		return Promise.all(
-			['sorting', 'viewMode', 'archivePath', 'backupPath', 'backupEnabled', 'limit'].map(key =>
-				dispatch(actions.LOAD_SETTING, key)
-			)
+		const settings = loadState('bookmarks', 'settings')
+		for (const setting in settings) {
+			const key = setting
+			let value = settings[setting]
+			switch (key) {
+			case 'viewMode':
+				value = value || state.settings.viewMode
+				commit(mutations.SET_VIEW_MODE, value)
+				break
+			case 'sorting':
+				value = value || state.settings.sorting
+				commit(mutations.RESET_PAGE)
+				break
+			}
+			commit(mutations.SET_SETTING, { key, value })
+		}
+		['archivePath', 'backupPath', 'backupEnabled', 'limit'].forEach(key =>
+			dispatch(actions.LOAD_SETTING, key)
 		)
 	},
 

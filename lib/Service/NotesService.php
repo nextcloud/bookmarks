@@ -8,6 +8,7 @@
 namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Notes\Service\Note;
 use OCA\Notes\Service\NotesService as OriginalNotesService;
@@ -32,17 +33,22 @@ class NotesService {
 	 * @var IUserSession
 	 */
 	private $session;
+	private BookmarkMapper $bookmarkMapper;
 
-	public function __construct(BookmarkService $bookmarks, IManager $resourceManager, IUserSession $session) {
+	public function __construct(BookmarkService $bookmarks, IManager $resourceManager, IUserSession $session, BookmarkMapper $bookmarkMapper) {
 		$this->bookmarks = $bookmarks;
 		$this->resourceManager = $resourceManager;
 		$this->session = $session;
+		$this->bookmarkMapper = $bookmarkMapper;
 	}
 
 	/**
 	 * @throws \Exception
 	 */
 	public function extractBookmarksFromNotes(IUser $user) {
+		if ($this->bookmarkMapper->countAll($user->getUID()) === 0) {
+			return;
+		}
 		$notes = $this->getNotes($user);
 		foreach ($notes as $note) {
 			$noteContent = $note->getContent();

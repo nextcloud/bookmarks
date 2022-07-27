@@ -191,6 +191,7 @@ OC.L10N.register(
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "ScreenshotMachinen API-avain",
     "Pageres CLI" : "Pageres CLI",
+    "Pageres ENV variables" : "Pageresin ENV-muuttujat",
     "Failed to save settings" : "Asetusten tallentaminen epäonnistui",
     "Failed to load settings" : "Asetusten lataaminen epäonnistui",
     "This URL is already bookmarked! Overwrite?" : "Osoite on jo lisätty kirjanmerkkeihin. Korvataanko se?",

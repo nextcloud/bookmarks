@@ -3,8 +3,10 @@ OC.L10N.register(
     {
     "Details" : "Detaljar",
     "Rename" : "Gje nytt namn",
+    "Copy link" : "Kopier lenkje",
     "Move" : "Move",
     "Delete" : "Ta bort",
+    "Select all" : "Merk alt",
     "New" : "Ny",
     "New folder" : "Ny mappe",
     "Delete folder" : "Slett mappe",

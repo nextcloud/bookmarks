@@ -98,7 +98,7 @@ class Provider implements IProvider {
 						$subjectParameters['bookmark']
 					]));
 				}
-				break;
+			break;
 			case 'bookmark_deleted':
 				if ($isAuthor) {
 					$event->setParsedSubject($this->l->t('You deleted "%s"', [
@@ -114,7 +114,7 @@ class Provider implements IProvider {
 						$subjectParameters['bookmark']
 					]));
 				}
-				break;
+			break;
 			case 'folder_created':
 				if ($isAuthor) {
 					$event->setParsedSubject($this->l->t('You created folder "%s"', [
@@ -130,7 +130,7 @@ class Provider implements IProvider {
 						$subjectParameters['folder']
 					]));
 				}
-				break;
+			break;
 			case 'folder_moved':
 				if ($isAuthor) {
 					$event->setParsedSubject($this->l->t('You moved folder "%s"', [
@@ -146,7 +146,7 @@ class Provider implements IProvider {
 						$subjectParameters['folder']
 					]));
 				}
-				break;
+			break;
 			case 'folder_deleted':
 				if ($isAuthor) {
 					$event->setParsedSubject($this->l->t('You deleted folder "%s"', [
@@ -162,7 +162,7 @@ class Provider implements IProvider {
 						$subjectParameters['folder']
 					]));
 				}
-				break;
+			break;
 			case 'share_created':
 				if ($isAuthor && $shareeName !== null) {
 					$event->setParsedSubject($this->l->t('You shared folder "%1$s" with %2$s', [
@@ -183,7 +183,7 @@ class Provider implements IProvider {
 						$subjectParameters['folder']
 					]));
 				}
-				break;
+			break;
 			case 'share_deleted':
 				if ($isAuthor && $shareeName) {
 					$event->setParsedSubject($this->l->t('You unshared folder "%1$s" with %2$s', [
@@ -204,7 +204,7 @@ class Provider implements IProvider {
 						$subjectParameters['folder']
 					]));
 				}
-				break;
+			break;
 			default:
 				throw new InvalidArgumentException();
 		}
