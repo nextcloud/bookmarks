@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.0.0] - 2022-06-24
+
+### Changed
+
+- BookmarkMapper#findAll: Implement recursive query
+
+### Breaking changes
+- Breaks compatibility with MySQL 5.7, MySQL 8 is now required
+
+### New
+
+- Implement virtual scrolling
+- First load time improvement: Load settings using initial state
+- Bookmark: Show globe symbol while loading screenshot
+
+### Fixed
+- BgJob: Do not check notes if user has no bookmarks
+- UI: Better sizing of Bookmark fallback background
+- UI: Fix Item alignment in list view
+
 ## [10.5.1] - 2022-06-24
 
 ### Fixed
@@ -21,6 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CrawlService: Make sure archived files always have a file ext
 - Fix BackupJob check
 - BookmarkMapper#findAll: Implement recursive query. Should fix some performance problems
+- BookmarksList: Do not show FirstRun view when on public link
+- Fix COPY_SELECTION to not remove bookmark
+- FirstRun view: Fix button style
 
 ## [10.4.0] - 2022-06-08
 
