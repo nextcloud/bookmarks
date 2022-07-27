@@ -46,6 +46,10 @@ export default {
 	},
 	mounted() {
 		this.onScroll()
+		window.addEventListener('resize', this.onScroll)
+	},
+	destroyed() {
+		window.removeEventListener('resize', this.onScroll)
 	},
 	methods: {
 		onScroll() {
