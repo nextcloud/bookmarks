@@ -270,7 +270,7 @@ class BookmarkMapper extends QBMapper {
 			->from('bookmarks', 'b')
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
 
-		$count = $qb->execute()->fetch(PDO::FETCH_COLUMN)[0];
+		$count = $qb->execute()->fetch(PDO::FETCH_COLUMN);
 
 		return (int)$count;
 	}
