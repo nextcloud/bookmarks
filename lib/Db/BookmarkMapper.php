@@ -257,25 +257,6 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param $userId
-	 * @return int
-	 */
-	public function countAll($userId): int {
-		$qb = $this->db->getQueryBuilder();
-
-		$qb->select($qb->func()->count('b.id'));
-
-		// Finds bookmarks in 2-levels nested shares only
-		$qb
-			->from('bookmarks', 'b')
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
-
-		$count = $qb->execute()->fetch(PDO::FETCH_COLUMN)[0];
-
-		return (int)$count;
-	}
-
-	/**
 	 * Common table expression that lists all items in a given folder, recursively
 	 * @param int $folderId
 	 * @return array
@@ -719,7 +700,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function insert(Entity $entity): Entity {
 		// Enforce user limit
-		if ($this->limit > 0 && $this->limit <= $this->countAll($entity->getUserId())) {
+		if ($this->limit > 0 && $this->limit <= $this->countBookmarksOfUser($entity->getUserId())) {
 			throw new UserLimitExceededError('Exceeded user limit of ' . $this->limit . ' bookmarks');
 		}
 
