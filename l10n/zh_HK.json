@@ -37,7 +37,6 @@
     "Create bookmark" : "已建立書籤",
     "Takes a link and adds it to your collection of bookmarks." : "將連結添加到您的書籤收藏。",
     "A Bookmark manager for Nextcloud" : "Nextcloud上的書籤管理員",
-    "- 📂 Sort bookmarks into folders\n- 🏷 Add tags and personal notes\n- 🔍 Full-text search\n- 📲 Synchronize with all your browsers and devices\n- 👪 Share bookmarks with other users and publicly\n- ☠ Find broken links\n- ⚛ Generate RSS feeds of your collections\n- 📔 Read archived versions of your links in case they are depublished\n- 💬 Create new bookmarks directly from within Nextcloud Talk\n- 💼 Built-in Dashboard widgets for frequent and recent links\n\nRequirements:\n - PHP v7.3+\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - Nextcloud v20+" : "- 📂 將書籤分類到文件夾中\n- 🏷 添加標籤和個人筆記\n- 🔍全文搜索\n- 📲 與您的所有瀏覽器和設備同步\n- 👪 與其他用戶和公開分享書籤\n- ☠ 查找斷開的鏈接\n- ⚛ 生成收藏的 RSS 提要\n- 📔 閱讀鏈接的存檔版本，以防它們被取消發布\n- 💬 直接在 Nextcloud Talk 中創建新書籤\n- 💼 用於頻繁和最近鏈接的內置儀表板小部件\n\n要求：\n- PHP v7.3+\n- PHP 擴展：\n- 國際：*\n- mbstring：*\n- Nextcloud v20+",
     "Enter new title" : "輸入新的標題",
     "Select bookmark" : "選擇書籤",
     "Details" : "細節",
