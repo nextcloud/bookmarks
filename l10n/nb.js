@@ -27,6 +27,7 @@ OC.L10N.register(
     "Delete" : "Slett",
     "Select all" : "Velg alle",
     "Go back" : "Gå tilbake",
+    "Share folder" : "Del mappe",
     "Select one or more tags" : "Velg en eller flere merkelapper",
     "New" : "Ny",
     "New folder" : "Ny mappe",
