@@ -38,6 +38,7 @@ OC.L10N.register(
     "Link copied" : "Линкот е копиран",
     "Privacy" : "Приватност",
     "Failed to save settings" : "Неуспешно зачувување на параметрите",
+    "Failed to load settings" : "Неуспешно вчитување на параметрите",
     "Folder" : "Папка",
     "Save" : "Зачувај"
 },
