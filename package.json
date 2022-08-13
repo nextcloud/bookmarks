@@ -49,7 +49,7 @@
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@nextcloud/babel-config": "^1.0.0",
-    "@nextcloud/browserslist-config": "^2.2.0",
+    "@nextcloud/browserslist-config": "^2.3.0",
     "@nextcloud/eslint-config": "^6",
     "@nextcloud/stylelint-config": "^2",
     "@nextcloud/webpack-vue-config": "^4",
