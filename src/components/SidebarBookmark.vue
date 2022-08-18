@@ -96,7 +96,7 @@
 				<a class="button" :href="archivedFile" target="_blank"><span class="icon-files-dark" /> {{ t('bookmarks', 'Open file location') }}</a>
 			</div>
 		</AppSidebarTab>
-		<AppSidebarTab v-if="!isPublic"
+		<AppSidebarTab v-if="projectsEnabled && !isPublic"
 			id="bookmark-projects"
 			:name="t('bookmarks', 'Projects')"
 			icon="icon-projects"
@@ -121,6 +121,7 @@ import { CollectionList } from 'nextcloud-vue-collections'
 
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
+import { loadState } from '@nextcloud/initial-state'
 import humanizeDuration from 'humanize-duration'
 import { actions, mutations } from '../store/'
 
@@ -137,6 +138,7 @@ export default {
 			editingUrl: false,
 			activeTab: '',
 			showContentModal: false,
+			projectsEnabled: loadState('core', 'projects_enabled', false),
 		}
 	},
 	computed: {
