@@ -95,7 +95,7 @@ class CrawlService {
 				'read_timeout' => self::READ_TIMEOUT,
 				'http_errors' => false
 			]);
-			$available = $resp ? $resp->getStatusCode() !== 404 : false;
+			$available = $resp ? $resp->getStatusCode() < 400 : false;
 		} catch (Exception $e) {
 			$this->logger->warning($e->getMessage());
 			$available = false;
