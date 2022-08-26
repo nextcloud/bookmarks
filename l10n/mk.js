@@ -6,6 +6,7 @@ OC.L10N.register(
     "Copy link" : "Копирај линк",
     "Move" : "Премести",
     "Delete" : "Избриши",
+    "Delete selection" : "Избриши ги селектираните",
     "Select all" : "Избери се",
     "Go back" : "Назад",
     "Share folder" : "Сподели папка",
