@@ -955,16 +955,16 @@
         },
         {
             "name": "rowbot/url",
-            "version": "3.1.6",
+            "version": "3.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TRowbotham/URL-Parser.git",
-                "reference": "76066d69b48feb16397cb16edc6542521a5f8d97"
+                "reference": "4c5fc38a17400496581d22a1a76b8b084ce2ad8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/76066d69b48feb16397cb16edc6542521a5f8d97",
-                "reference": "76066d69b48feb16397cb16edc6542521a5f8d97",
+                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/4c5fc38a17400496581d22a1a76b8b084ce2ad8a",
+                "reference": "4c5fc38a17400496581d22a1a76b8b084ce2ad8a",
                 "shasum": ""
             },
             "require": {
@@ -1013,9 +1013,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TRowbotham/URL-Parser/issues",
-                "source": "https://github.com/TRowbotham/URL-Parser/tree/3.1.6"
+                "source": "https://github.com/TRowbotham/URL-Parser/tree/3.1.7"
             },
-            "time": "2022-08-17T00:32:30+00:00"
+            "time": "2022-08-27T00:02:42+00:00"
         },
         {
             "name": "symfony/css-selector",
