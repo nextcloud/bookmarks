@@ -34,7 +34,9 @@ const BookmarksApp = (global.Bookmarks = new Vue({
 }))
 
 if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register(generateUrl('/apps/bookmarks/service-worker.js'))
+	navigator.serviceWorker.register(generateUrl('/apps/bookmarks/service-worker.js', {}, {
+		noRewrite: true,
+	}))
 		.then(() => {
 			console.info('ServiceWorker registered')
 		})
