@@ -17,6 +17,7 @@ OC.L10N.register(
     "Tags" : "Tags",
     "Notes" : "Notes",
     "Owner" : "Owner",
+    "Sharing" : "Ulashish",
     "Share link" : "Share link",
     "Allow editing" : "Allow editing",
     "Save" : "Save"
