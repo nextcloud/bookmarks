@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: Checkout server
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: nextcloud/server
           ref: ${{ matrix.server-versions }}
@@ -71,7 +71,7 @@ jobs:
           extensions: mbstring, iconv, fileinfo, intl, sqlite, pdo_mysql, pdo_sqlite, pgsql, pdo_pgsql, gd, zip
 
       - name: Checkout app
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: apps/${{ env.APP_NAME }}
 
@@ -155,7 +155,7 @@ jobs:
 
     steps:
       - name: Checkout server
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: nextcloud/server
           ref: ${{ matrix.server-versions }}
@@ -175,7 +175,7 @@ jobs:
           extensions: mbstring, iconv, fileinfo, intl, sqlite, pdo_mysql, pdo_sqlite, pgsql, pdo_pgsql, gd, zip
 
       - name: Checkout app
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: apps/${{ env.APP_NAME }}
 
