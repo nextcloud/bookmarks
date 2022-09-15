@@ -11,6 +11,7 @@ OC.L10N.register(
     "Delete" : "Вилучити",
     "Select all" : "Вибрати все",
     "Go back" : "Повернутися назад",
+    "Share folder" : "Спільний доступ до папки",
     "New" : "Створити",
     "New folder" : "Нова тека",
     "Add a bookmark" : "Додати закладку",
