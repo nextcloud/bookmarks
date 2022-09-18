@@ -35,6 +35,9 @@ export default {
 		newFolder() {
 			return this.$store.state.displayNewFolder
 		},
+		fetching() {
+			return this.$store.state.loading.bookmarks
+		},
 	},
 	watch: {
 		newBookmark() {
@@ -66,24 +69,30 @@ export default {
 		let itemHeight = 1
 		const padding = GRID_ITEM_HEIGHT
 		if (this.$slots.default && this.$el) {
+			const childComponents = this.$slots.default.filter(child => !!child.componentOptions)
 			const viewport = this.$el.getBoundingClientRect()
 			itemHeight = this.viewMode === 'grid' ? GRID_ITEM_HEIGHT : LIST_ITEM_HEIGHT
 			itemsPerRow = this.viewMode === 'grid' ? Math.floor(viewport.width / GRID_ITEM_WIDTH) : 1
 			renderedItems = itemsPerRow * Math.floor((viewport.height + padding + padding) / itemHeight)
 			upperPaddingItems = itemsPerRow * Math.floor(Math.max(this.scrollTop - padding, 0) / itemHeight)
-			lowerPaddingItems = Math.max(this.$slots.default.length - renderedItems - upperPaddingItems, 0)
-			children = this.$slots.default
-				.filter(child => !!child.componentOptions)
-				.slice(upperPaddingItems, upperPaddingItems + renderedItems)
+			children = childComponents.slice(upperPaddingItems, upperPaddingItems + renderedItems)
 			renderedItems = children.length
+			lowerPaddingItems = Math.max(childComponents.length - upperPaddingItems - renderedItems, 0)
 		}
 
-		if (!this.reachedEnd && upperPaddingItems + renderedItems > (this.$slots.default ? this.$slots.default.length : 0)) {
-			this.$emit('load-more')
-			children = [...children, ...Array(upperPaddingItems + renderedItems - (this.$slots.default ? this.$slots.default.length : 0)).fill(0).map(() =>
+		if (!this.reachedEnd && lowerPaddingItems === 0) {
+			if (!this.fetching) {
+				this.$emit('load-more')
+			}
+			children = [...children, ...Array(40).fill(0).map(() =>
 				h(ItemSkeleton)
 			)]
 		}
+
+		const scrollTop = this.scrollTop
+		this.$nextTick(() => {
+			this.$el.scrollTop = scrollTop
+		})
 
 		return h('div', {
 			class: 'virtual-scroll',
