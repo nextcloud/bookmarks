@@ -48,5 +48,7 @@ export default {
 .app-content-list {
 	padding: 5px;
 	padding-top: 45px;
+	overflow-y: scroll;
+	height: calc(100vh - 50px);
 }
 </style>
