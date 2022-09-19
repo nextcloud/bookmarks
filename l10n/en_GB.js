@@ -14,6 +14,7 @@ OC.L10N.register(
     "Go back" : "Go back",
     "New" : "New",
     "New folder" : "New folder",
+    "This app allows you to manage links to your favorite places on the web." : "This app allows you to manage links to your favourite places on the web.",
     "Add a bookmark" : "Add a bookmark",
     "Rename folder" : "Rename folder",
     "Delete folder" : "Delete folder",
