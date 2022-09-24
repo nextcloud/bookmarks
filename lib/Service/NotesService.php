@@ -46,7 +46,7 @@ class NotesService {
 	 * @throws \Exception
 	 */
 	public function extractBookmarksFromNotes(IUser $user) {
-		if ($this->bookmarkMapper->countAll($user->getUID()) === 0) {
+		if ($this->bookmarkMapper->countBookmarksOfUser($user->getUID()) === 0) {
 			return;
 		}
 		$notes = $this->getNotes($user);

@@ -18,6 +18,7 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\DB\QueryBuilder\IQueryFunction;
 use OCP\EventDispatcher\IEventDispatcher;
@@ -190,14 +191,19 @@ class BookmarkMapper extends QBMapper {
 
 	/**
 	 * @param string $userId
-	 * @param QueryParameters $params
+	 * @param QueryParameters $queryParams
 	 *
 	 * @return Entity[]
 	 *
 	 * @throws UrlParseError
 	 * @throws \OC\DB\Exceptions\DbalException
+	 * @throws Exception
 	 */
-	public function findAll(string $userId, QueryParameters $params, $withGroupBy = true): array {
+	public function findAll(string $userId, QueryParameters $queryParams, bool $withGroupBy = true): array {
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		// gives us all bookmarks in this folder, recursively
+		[$cte, $params, $paramTypes] = $this->_generateCTE($rootFolder->getId());
+
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
 			return 'b.' . $c;
@@ -210,65 +216,136 @@ class BookmarkMapper extends QBMapper {
 			$this->_selectFolders($qb);
 			$this->_selectTags($qb);
 		}
+		$qb->automaticTablePrefix(false);
 
 		$qb
-			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', 'tr.id = b.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
-			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->leftJoin('tr', 'bookmarks_tree', 'tr2', 'tr2.id = tr.parent_folder AND tr2.type = '. $qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
-			->leftJoin('tr2', 'bookmarks_shared_folders', 'sf2', $qb->expr()->eq('tr2.parent_folder', 'sf.folder_id'))
-			->where(
-				$qb->expr()->andX(
-					$qb->expr()->orX(
-						// This is only really used, when not adding folder=XXX in the controller
-						// as that causes $userId to be set to the folder's owner
-						$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
-						$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
-						$qb->expr()->eq('sf2.user_id', $qb->createPositionalParameter($userId))
-					),
-					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($userId), [$userId])))
-				)
-			);
+			->from('*PREFIX*bookmarks', 'b')
+			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 
-		$this->_filterUrl($qb, $params);
-		$this->_filterArchived($qb, $params);
-		$this->_filterUnavailable($qb, $params);
-		$this->_filterDuplicated($qb, $params);
-		$this->_filterFolder($qb, $params);
-		$this->_filterTags($qb, $params);
-		$this->_filterUntagged($qb, $params);
-		$this->_filterSearch($qb, $params);
-		$this->_sortAndPaginate($qb, $params);
+		$this->_filterUrl($qb, $queryParams);
+		$this->_filterArchived($qb, $queryParams);
+		$this->_filterUnavailable($qb, $queryParams);
+		$this->_filterDuplicated($qb, $queryParams);
+		$this->_filterFolder($qb, $queryParams);
+		$this->_filterTags($qb, $queryParams);
+		$this->_filterUntagged($qb, $queryParams);
+		$this->_filterSearch($qb, $queryParams);
+		$this->_sortAndPaginate($qb, $queryParams);
 
-		try {
-			return $this->findEntities($qb);
-		} catch (\OC\DB\Exceptions\DbalException $e) {
-			if (!$withGroupBy) {
-				throw $e;
-			}
-			// If mysql sort_buffer_size is too small, the group by caused by selecting tags and folders can cause issues
-			// in this case, we repeat the query without groupBys and rely on the BookmarkController to add tags and folders entries
-			return $this->findAll($userId, $params, false);
-		}
+		$finalQuery = $cte . ' ' . $qb->getSQL();
+
+		$params = array_merge($params, $qb->getParameters());
+		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
+		return $this->findEntitiesWithRawQuery($finalQuery, $params, $paramTypes);
 	}
 
 	/**
-	 * @param $userId
-	 * @return int
+	 * @throws \OCP\DB\Exception
 	 */
-	public function countAll($userId): int {
-		$qb = $this->db->getQueryBuilder();
+	protected function findEntitiesWithRawQuery(string $query, array $params, array $types) {
+		$cursor = $this->db->executeQuery($query, $params, $types);
 
-		$qb->select($qb->func()->count('b.id'));
+		$entities = [];
 
-		// Finds bookmarks in 2-levels nested shares only
-		$qb
-			->from('bookmarks', 'b')
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
+		while ($row = $cursor->fetch()) {
+			$entities[] = $this->mapRowToEntity($row);
+		}
 
-		$count = $qb->execute()->fetch(PDO::FETCH_COLUMN)[0];
+		$cursor->closeCursor();
 
-		return (int)$count;
+		return $entities;
+	}
+
+	/**
+	 * Common table expression that lists all items in a given folder, recursively
+	 * @param int $folderId
+	 * @return array
+	 */
+	private function _generateCTE(int $folderId) : array {
+		// The base case of the recursion is just the folder we're given
+		$baseCase = $this->db->getQueryBuilder();
+		$baseCase
+			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast('.$baseCase->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT).' as UNSIGNED)' : 'cast('.$baseCase->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT).' as BIGINT)'), 'item_id')
+			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast(0 as UNSIGNED)' : 'cast(0 as BIGINT)'), 'parent_folder')
+			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as CHAR(20))' : 'cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as TEXT)'), 'type')
+			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast(0 as UNSIGNED)' : 'cast(0 as BIGINT)'), 'idx');
+
+		// The first recursive case lists all children of folders we've already found
+		$recursiveCase = $this->db->getQueryBuilder();
+		$recursiveCase->automaticTablePrefix(false);
+		$recursiveCase
+			->selectAlias('tr.id', 'item_id')
+			->selectAlias('tr.parent_folder', 'parent_folder')
+			->selectAlias('tr.type', 'type')
+			->selectAlias('tr.index', 'idx')
+			->from('*PREFIX*bookmarks_tree', 'tr')
+			->join('tr', $this->getDbType() === 'mysql'? 'folder_tree' : 'inner_folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+
+		// The second recursive case lists all children of shared folders we've already found
+		$recursiveCaseShares = $this->db->getQueryBuilder();
+		$recursiveCaseShares->automaticTablePrefix(false);
+		$recursiveCaseShares
+			->selectAlias('s.folder_id', 'item_id')
+			->addSelect('e.parent_folder')
+			->selectAlias($recursiveCaseShares->createFunction($recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER)), 'type')
+			->selectAlias('e.idx', 'idx')
+			->from(($this->getDbType() === 'mysql'? 'folder_tree' : 'second_folder_tree'), 'e')
+			->join('e', '*PREFIX*bookmarks_shared_folders', 's', 's.id = e.item_id AND e.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE));
+
+		if ($this->getDbType() === 'mysql') {
+			// For mysql we can just throw these three queries together in a CTE
+			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() .
+				' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
+		} else {
+			// Postgres loves us dearly and doesn't allow two recursive references in one CTE, aaah.
+			// So we nest them:
+
+			$secondBaseCase = $this->db->getQueryBuilder();
+			$secondBaseCase->automaticTablePrefix(false);
+			$secondBaseCase
+				->select('item_id', 'parent_folder', 'type', 'idx')
+				->from('inner_folder_tree');
+
+			$thirdBaseCase = $this->db->getQueryBuilder();
+			$thirdBaseCase->automaticTablePrefix(false);
+			$thirdBaseCase
+				->select('item_id', 'parent_folder', 'type', 'idx')
+				->from('second_folder_tree');
+
+			$secondRecursiveCase = $this->db->getQueryBuilder();
+			$secondRecursiveCase->automaticTablePrefix(false);
+			$secondRecursiveCase
+				->selectAlias('tr.id', 'item_id')
+				->selectAlias('tr.parent_folder', 'parent_folder')
+				->selectAlias('tr.type', 'type')
+				->selectAlias('tr.index', 'idx')
+				->from('*PREFIX*bookmarks_tree', 'tr')
+				->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$secondRecursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+
+			// First the base case together with the normal recurisve case
+			// Then the second helper base case together with the recursive shares case
+			// then we need another instance of the first recursive case, duplicated here as secondRecursive case
+			// to recurse into child folders of shared folders
+			// Note: This doesn't cover cases where a shared folder is inside a shared folder.
+			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+				'WITH RECURSIVE second_folder_tree(item_id, parent_folder, type, idx) AS (' .
+				'WITH RECURSIVE inner_folder_tree(item_id, parent_folder, type, idx) AS ( ' .
+				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')' .
+				' ' . $secondBaseCase->getSQL() . ' UNION ALL '. $recursiveCaseShares->getSQL() .')'.
+				' ' . $thirdBaseCase->getSQL() . ' UNION ALL ' .  $secondRecursiveCase->getSQL(). ')';
+		}
+
+		// Now we need to concatenate the params of all these queries for downstream assembly of the greater query
+		if ($this->getDbType() === 'mysql') {
+			$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), $recursiveCaseShares->getParameters());
+			$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), $recursiveCaseShares->getParameterTypes());
+		} else {
+			$params = array_merge($baseCase->getParameters(), $recursiveCase->getParameters(), $secondBaseCase->getParameters(), $recursiveCaseShares->getParameters(), $thirdBaseCase->getParameters(), $secondRecursiveCase->getParameters());
+			$paramTypes = array_merge($baseCase->getParameterTypes(), $recursiveCase->getParameterTypes(), $secondBaseCase->getParameterTypes(), $recursiveCaseShares->getParameterTypes(), $thirdBaseCase->getParameterTypes(), $secondRecursiveCase->getParameterTypes());
+		}
+
+		return [$withRecursiveQuery, $params, $paramTypes];
 	}
 
 	private function _sortAndPaginate(IQueryBuilder $qb, QueryParameters $params): void {
@@ -277,8 +354,8 @@ class BookmarkMapper extends QBMapper {
 		if ($sqlSortColumn === 'title') {
 			$qb->addOrderBy($qb->createFunction('UPPER(`b`.`title`)'), 'ASC');
 		} elseif ($sqlSortColumn === 'index') {
-			$qb->addOrderBy('tr.'.$sqlSortColumn, 'ASC');
-			$qb->addGroupBy('tr.'.$sqlSortColumn);
+			$qb->addOrderBy('tree.idx', 'ASC');
+			$qb->addGroupBy('tree.idx');
 		} else {
 			$qb->addOrderBy('b.'.$sqlSortColumn, 'DESC');
 		}
@@ -371,9 +448,9 @@ class BookmarkMapper extends QBMapper {
 		if ($params->getDuplicated()) {
 			$subQuery = $this->db->getQueryBuilder();
 			$subQuery->select('trdup.parent_folder')
-			->from('bookmarks_tree', 'trdup')
+			->from('*PREFIX*bookmarks_tree', 'trdup')
 				->where($subQuery->expr()->eq('b.id', 'trdup.id'))
-				->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tr.parent_folder'))
+				->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tree.parent_folder'))
 				->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
 			$qb->andWhere($qb->createFunction('EXISTS('.$subQuery->getSQL().')'));
 		}
@@ -385,8 +462,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	private function _filterFolder(IQueryBuilder $qb, QueryParameters $params): void {
 		if ($params->getFolder() !== null) {
-			$qb->andWhere($qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($params->getFolder(), IQueryBuilder::PARAM_INT)))
-				->andWhere($qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
+			$qb->andWhere($qb->expr()->eq('tree.parent_folder', $qb->createPositionalParameter($params->getFolder(), IQueryBuilder::PARAM_INT)));
 		}
 	}
 
@@ -394,7 +470,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param IQueryBuilder $qb
 	 */
 	private function _selectTags(IQueryBuilder $qb): void {
-		$qb->leftJoin('b', 'bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'));
+		$qb->leftJoin('b', '*PREFIX*bookmarks_tags', 't', $qb->expr()->eq('t.bookmark_id', 'b.id'));
 		$qb->selectAlias($this->_getTagsColumn($qb), 'tags');
 	}
 
@@ -415,7 +491,7 @@ class BookmarkMapper extends QBMapper {
 	private function _filterTags(IQueryBuilder $qb, QueryParameters $params): void {
 		if (count($params->getTags())) {
 			foreach ($params->getTags() as $i => $tag) {
-				$qb->leftJoin('b', 'bookmarks_tags', 'tg'.$i, $qb->expr()->eq('tg'.$i.'.bookmark_id', 'b.id'));
+				$qb->leftJoin('b', '*PREFIX*bookmarks_tags', 'tg'.$i, $qb->expr()->eq('tg'.$i.'.bookmark_id', 'b.id'));
 				$qb->andWhere($qb->expr()->eq('tg'.$i.'.tag', $qb->createPositionalParameter($tag)));
 			}
 		}
@@ -507,21 +583,25 @@ class BookmarkMapper extends QBMapper {
 
 	/**
 	 * @param string $token
-	 * @param QueryParameters $params
+	 * @param QueryParameters $queryParams
 	 *
 	 *
 	 * @return Entity[]
 	 *
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws Exception
 	 *
 	 * @psalm-return array<array-key, Bookmark>
 	 */
-	public function findAllInPublicFolder(string $token, QueryParameters $params, $withGroupBy = true): array {
+	public function findAllInPublicFolder(string $token, QueryParameters $queryParams, $withGroupBy = true): array {
 		/** @var PublicFolder $publicFolder */
 		$publicFolder = $this->publicMapper->find($token);
 		/** @var Folder $folder */
 		$folder = $this->folderMapper->find($publicFolder->getFolderId());
+
+		// gives us all bookmarks in this folder, recursively
+		[$cte, $params, $paramTypes] = $this->_generateCTE($folder->getId());
 
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
@@ -538,38 +618,24 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', 'tr.id = b.id AND tr.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
-			->leftJoin('tr', 'bookmarks_tree', 'tr2', 'tr2.id = tr.parent_folder AND tr2.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_FOLDER))
-			->where(
-				$qb->expr()->andX(
-					$qb->expr()->orX(
-						$qb->expr()->eq('tr.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId(), IQueryBuilder::PARAM_INT)),
-						$qb->expr()->eq('tr2.parent_folder', $qb->createPositionalParameter($publicFolder->getFolderId(), IQueryBuilder::PARAM_INT))
-					),
-					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($folder->getUserId()), [$folder->getUserId()])))
-				)
-			);
+			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 
-		$this->_filterUrl($qb, $params);
-		$this->_filterArchived($qb, $params);
-		$this->_filterUnavailable($qb, $params);
-		$this->_filterDuplicated($qb, $params);
-		$this->_filterFolder($qb, $params);
-		$this->_filterTags($qb, $params);
-		$this->_filterUntagged($qb, $params);
-		$this->_filterSearch($qb, $params);
-		$this->_sortAndPaginate($qb, $params);
 
-		try {
-			return $this->findEntities($qb);
-		} catch (\OC\DB\Exceptions\DbalException $e) {
-			if (!$withGroupBy) {
-				throw $e;
-			}
-			// If mysql sort_buffer_size is too small, the group by caused by selecting tags and folders can cause issues
-			// in this case, we repeat the query without groupBys and rely on the BookmarkController to add tags and folders entries
-			return $this->findAllInPublicFolder($token, $params, false);
-		}
+		$this->_filterUrl($qb, $queryParams);
+		$this->_filterArchived($qb, $queryParams);
+		$this->_filterUnavailable($qb, $queryParams);
+		$this->_filterDuplicated($qb, $queryParams);
+		$this->_filterFolder($qb, $queryParams);
+		$this->_filterTags($qb, $queryParams);
+		$this->_filterUntagged($qb, $queryParams);
+		$this->_filterSearch($qb, $queryParams);
+		$this->_sortAndPaginate($qb, $queryParams);
+
+		$finalQuery = $cte . ' '. $qb->getSQL();
+		$params = array_merge($params, $qb->getParameters());
+		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
+
+		return $this->findEntitiesWithRawQuery($finalQuery, $params, $paramTypes);
 	}
 
 	/**
@@ -634,7 +700,7 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function insert(Entity $entity): Entity {
 		// Enforce user limit
-		if ($this->limit > 0 && $this->limit <= $this->countAll($entity->getUserId())) {
+		if ($this->limit > 0 && $this->limit <= $this->countBookmarksOfUser($entity->getUserId())) {
 			throw new UserLimitExceededError('Exceeded user limit of ' . $this->limit . ' bookmarks');
 		}
 
@@ -717,11 +783,11 @@ class BookmarkMapper extends QBMapper {
 	 * @param IQueryBuilder $qb
 	 */
 	private function _selectFolders(IQueryBuilder $qb): void {
-		$qb->leftJoin('b', 'bookmarks_tree', 'tree', 'b.id =tree.id AND tree.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
+		$qb->leftJoin('b', 'bookmarks_tree', 'tr2', 'b.id = tr2.id AND tr2.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 		if ($this->getDbType() === 'pgsql') {
-			$folders = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tree.parent_folder') . "), ',')");
+			$folders = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tr2.parent_folder') . "), ',')");
 		} else {
-			$folders = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('tree.parent_folder') . ')');
+			$folders = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('tr2.parent_folder') . ')');
 		}
 		$qb->selectAlias($folders, 'folders');
 	}

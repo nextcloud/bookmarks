@@ -4,7 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [11.0.0] - 2022-06-24
+## [11.0.3] - 2022-09-24
+
+### Fixed
+
+ - Support Nextcloud 25
+ - ExtractFromNotesJob: decrease frequency to releave performance impact
+
+## [11.0.2] - 2022-09-19
+
+### Fixed
+ - FolderOverview: Make scrollable
+ - Fix VirtualScroll component
+
+## [11.0.1] - 2022-07-28
+
+### Fixed
+
+- Fixed Background job error "Trying to access array offset on value of type int"
+
+## [11.0.0] - 2022-07-27
 
 ### Changed
 

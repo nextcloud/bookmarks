@@ -15,7 +15,7 @@ use OCP\IUserManager;
 use Psr\Log\LoggerInterface;
 
 class ExtractFromNotesJob extends TimedJob {
-	public const INTERVAL = 5 * 60; // 5 minutes
+	public const INTERVAL = 24 * 60 * 60; // 24h
 	/**
 	 * @var IUserManager
 	 */

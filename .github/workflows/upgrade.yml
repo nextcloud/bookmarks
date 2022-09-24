@@ -23,11 +23,15 @@ jobs:
       matrix:
         php-versions: ['7.4']
         databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable22', 'stable23', 'stable24']
-        prev-version: ['stable', 'stable4']
+        server-versions: ['stable22', 'stable23', 'stable24', 'stable25']
+        prev-version: ['stable', 'stable10', 'stable4']
         exclude:
           - prev-version: stable4
             server-versions: stable24
+          - prev-version: stable4
+            server-versions: stable25
+          - prev-version: stable10
+            server-versions: stable25
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 

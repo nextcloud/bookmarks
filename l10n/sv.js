@@ -92,7 +92,7 @@ OC.L10N.register(
     "Delete folder" : "Ta bort mapp",
     "Do you really want to delete this folder?" : "Är du säker att du vill ta bort denna mappen?",
     "Choose folder" : "Välj mapp",
-    "Submit" : "Verkställ",
+    "Submit" : "Skicka",
     "Cancel" : "Avbryt",
     "Deleting bookmarks" : "Tar bort bokmärken",
     "Deleting selection" : "Tar bort urval",

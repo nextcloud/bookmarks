@@ -8,6 +8,7 @@ name: Dependabot
 on:
   pull_request_target:
     branches:
+      - main
       - master
       - stable*
 
@@ -16,10 +17,11 @@ permissions:
 
 jobs:
   auto-approve-merge:
-    permissions:
-      pull-requests: write  # for hmarr/auto-approve-action to approve PRs
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
+    permissions:
+      # for hmarr/auto-approve-action to approve PRs
+      pull-requests: write 
 
     steps:
       # Github actions bot approve
