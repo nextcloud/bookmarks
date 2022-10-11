@@ -22,6 +22,7 @@ class LinkExplorer {
 	private $logger;
 
 	private $config;
+
 	/**
 	 * @var string
 	 */
@@ -33,7 +34,7 @@ class LinkExplorer {
 		$this->linkPreview->getParser('general')->setMinimumImageDimensions(150, 550);
 		$this->logger = $logger;
 		$this->config = $config;
-		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', true);
+		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', 'false');
 	}
 
 	/**
