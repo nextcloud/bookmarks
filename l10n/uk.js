@@ -34,7 +34,7 @@ OC.L10N.register(
     "Owner" : "Власник",
     "Sharing" : "Поділитись",
     "Select a user or group" : "Виберіть користувача або групу",
-    "Share link" : "Поширити посилання",
+    "Share link" : "Поділитися посиланням",
     "Allow editing" : "Дозволити редагування",
     "Allow resharing" : "Можете ділитися",
     "Link copied" : "Посилання скопійовано",
