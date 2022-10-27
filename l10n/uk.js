@@ -32,7 +32,7 @@ OC.L10N.register(
     "Open file" : "Відкрити файл",
     "Projects" : "Проєкти",
     "Owner" : "Власник",
-    "Sharing" : "Поділитись",
+    "Sharing" : "Поділитися",
     "Select a user or group" : "Виберіть користувача або групу",
     "Share link" : "Поділитися посиланням",
     "Allow editing" : "Дозволити редагування",
