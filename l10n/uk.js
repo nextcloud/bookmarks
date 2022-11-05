@@ -15,6 +15,7 @@ OC.L10N.register(
     "Share folder" : "Спільний доступ до каталогу",
     "New" : "Створити",
     "New folder" : "Новий каталог",
+    "Sort by last modified" : "Впорядкувати за останніми змінами",
     "Add a bookmark" : "Додати закладку",
     "Rename folder" : "Перейменувати каталог",
     "Delete folder" : "Вилучити каталог",
