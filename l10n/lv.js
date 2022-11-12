@@ -42,6 +42,7 @@ OC.L10N.register(
     "Previews" : "Priekšskatījumi",
     "Screeenly API URL" : "Screeenly API saite",
     "Screeenly API key" : "Screeenly API atslēga",
+    "Failed to save settings" : "Neizdevās saglabāt iestatījumus",
     "This URL is already bookmarked! Overwrite?" : "Šī saite jau ir grāmatzīmēs! Vai pārrakstīt?",
     "Folder" : "Mape",
     "Save" : "Saglabāt",
