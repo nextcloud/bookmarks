@@ -170,7 +170,7 @@ OC.L10N.register(
     "Enable accessing and collecting information from the web pages you add" : "Activer l'accès et la collecte d'informations à partir des pages Web que vous enregistrez",
     "Performance" : "Performance",
     "In an installation with a lot of users it may be useful to restrict the number of bookmarks per account." : "Dans une installation avec un grand nombre d'utilisateurs, il peut être utile de restreindre le nombre de favoris par compte.",
-    "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "Nombre maximum de signets autorisés par compte (0 pour aucune limite ; par défaut, aucune limite)",
+    "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "Nombre maximum de signets autorisés par compte (0 pour aucune limite ; par défaut, aucune limite)",
     "Previews" : "Prévisualisations",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use third-party services to generate previews." : "Afin d'afficher de vrais captures d'écrans de vos sites favoris, Favoris peut utiliser des services tiers pour générer ces aperçus",
     "Screeenly" : "Screeenly",
