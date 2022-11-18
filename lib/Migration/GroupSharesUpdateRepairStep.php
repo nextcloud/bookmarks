@@ -107,9 +107,9 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 			}
 			$usersInGroup = array_filter(array_map(static function ($user) {
 				return $user->getUID();
-				}, $group->getUsers()), static function ($userId) use ($groupShare) {
-					return $userId !== $groupShare['owner'];
-				});
+			}, $group->getUsers()), static function ($userId) use ($groupShare) {
+				return $userId !== $groupShare['owner'];
+			});
 
 			$notInShareUsers = array_diff($usersInGroup, $usersInShare);
 			$notInGroupUsers = array_diff($usersInShare, $usersInGroup);
