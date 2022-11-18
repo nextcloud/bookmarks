@@ -7,9 +7,9 @@
 
 namespace OCA\Bookmarks\Service;
 
-use DateTime;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\Types;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 
 class LockManager {
@@ -23,10 +23,12 @@ class LockManager {
 	 * @var FolderMapper
 	 */
 	private $folderMapper;
+	private ITimeFactory $timeFactory;
 
-	public function __construct(IDBConnection $db, FolderMapper $folderMapper) {
+	public function __construct(IDBConnection $db, FolderMapper $folderMapper, ITimeFactory $timeFactory) {
 		$this->db = $db;
 		$this->folderMapper = $folderMapper;
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
@@ -35,7 +37,7 @@ class LockManager {
 	 */
 	public function setLock(string $userId, bool $locked): void {
 		$this->folderMapper->findRootFolder($userId);
-		$value = $locked ? new DateTime() : new DateTime('@0'); // now or begin of UNIX time
+		$value = $locked ? $this->timeFactory->getDateTime() : $this->timeFactory->getDateTime('@0'); // now or begin of UNIX time
 		$qb = $this->db->getQueryBuilder();
 		$qb->update('bookmarks_root_folders')
 			->set('locked_time', $qb->createNamedParameter($value, Types::DATETIME))
@@ -59,10 +61,10 @@ class LockManager {
 			return false;
 		}
 		try {
-			$dateTime = new DateTime($lockedAt);
+			$dateTime = $this->timeFactory->getDateTime($lockedAt);
 		} catch (\Exception $e) {
 			return false;
 		}
-		return time() - $dateTime->getTimestamp() < self::TIMEOUT;
+		return $this->timeFactory->getDateTime()->getTimestamp() - $dateTime->getTimestamp() < self::TIMEOUT;
 	}
 }
