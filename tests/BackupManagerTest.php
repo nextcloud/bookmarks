@@ -87,9 +87,9 @@ class BackupManagerTest extends TestCase {
 		$backups = array_filter($nodes, function ($node) {
 			return str_ends_with($node->getName(), '.html');
 		});
-		/*var_dump(array_map(function ($node) {
+		$message = var_export(array_map(function ($node) {
 			return $node->getName();
-		}, $backups));*/
-		$this->assertEqualsWithDelta(count($backups), 7 + 5 + 5, 2);
+		}, $backups), true);
+		$this->assertEqualsWithDelta(7 + 5 + 5, count($backups), 3, $message);
 	}
 }
