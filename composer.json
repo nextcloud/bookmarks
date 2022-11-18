@@ -16,7 +16,7 @@
 		"marcelklehr/readability.php": "^3.0"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^8.5",
+		"phpunit/phpunit": "^9.5.26",
 		"nextcloud/coding-standard": "^1.0.0",
 		"vimeo/psalm": "^4",
 		"christophwurst/nextcloud": "v24.0.0"

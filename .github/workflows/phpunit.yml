@@ -89,7 +89,7 @@ jobs:
         databases: ['sqlite', 'mysql', 'pgsql']
         server-versions: ['stable22', 'stable23', 'stable24', 'stable25']
         include:
-          - server-versions: stable24
+          - server-versions: stable25
             databases: 'mysql'
             php-versions: '8.1'
 
