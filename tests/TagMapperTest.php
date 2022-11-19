@@ -14,7 +14,6 @@ use OCP\IUserManager;
 use PHPUnit\Framework\TestCase;
 
 class TagMapperTest extends TestCase {
-
 	/**
 	 * @var Db\BookmarkMapper
 	 */
@@ -86,10 +85,10 @@ class TagMapperTest extends TestCase {
 		$this->assertContains('four', $allTags);
 
 		$allTagsWithCount = $this->tagMapper->findAllWithCount($this->userId);
-		$this->assertContains(['name' => 'one', 'count' => 3], $allTagsWithCount);
-		$this->assertContains(['name' => 'two', 'count' => 2], $allTagsWithCount);
-		$this->assertContains(['name' => 'three', 'count' => 1], $allTagsWithCount);
-		$this->assertContains(['name' => 'four', 'count' => 1], $allTagsWithCount);
+		$this->assertTrue(in_array(['name' => 'one', 'count' => 3], $allTagsWithCount));
+		$this->assertTrue(in_array(['name' => 'two', 'count' => 2], $allTagsWithCount));
+		$this->assertTrue(in_array(['name' => 'three', 'count' => 1], $allTagsWithCount));
+		$this->assertTrue(in_array(['name' => 'four', 'count' => 1], $allTagsWithCount));
 	}
 
 	/**
@@ -104,11 +103,11 @@ class TagMapperTest extends TestCase {
 		$this->assertNotContains('four', $allTags);
 
 		$allTagsWithCount = $this->tagMapper->findAllWithCount($this->userId);
-		$this->assertContains(['name' => 'one', 'count' => 3], $allTagsWithCount);
-		$this->assertContains(['name' => 'two', 'count' => 2], $allTagsWithCount);
-		$this->assertContains(['name' => 'three', 'count' => 1], $allTagsWithCount);
-		$this->assertNotContains(['name' => 'four', 'count' => 1], $allTagsWithCount);
-		$this->assertNotContains(['name' => 'four', 'count' => 0], $allTagsWithCount);
+		$this->assertTrue(in_array(['name' => 'one', 'count' => 3], $allTagsWithCount));
+		$this->assertTrue(in_array(['name' => 'two', 'count' => 2], $allTagsWithCount));
+		$this->assertTrue(in_array(['name' => 'three', 'count' => 1], $allTagsWithCount));
+		$this->assertFalse(in_array(['name' => 'four', 'count' => 1], $allTagsWithCount));
+		$this->assertFalse(in_array(['name' => 'four', 'count' => 0], $allTagsWithCount));
 	}
 
 	/**
@@ -122,8 +121,8 @@ class TagMapperTest extends TestCase {
 		$this->assertContains('three', $allTags);
 
 		$allTagsWithCount = $this->tagMapper->findAllWithCount($this->userId);
-		$this->assertContains(['name' => 'two', 'count' => 2], $allTagsWithCount);
-		$this->assertContains(['name' => 'three', 'count' => 1], $allTagsWithCount);
+		$this->assertTrue(in_array(['name' => 'two', 'count' => 2], $allTagsWithCount));
+		$this->assertTrue(in_array(['name' => 'three', 'count' => 1], $allTagsWithCount));
 	}
 
 	/**

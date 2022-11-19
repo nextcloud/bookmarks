@@ -16,7 +16,6 @@ use OCP\AppFramework\QueryException;
 use OCP\IUserManager;
 
 class HtmlImportExportTest extends TestCase {
-
 	/**
 	 * @var Db\BookmarkMapper
 	 */
@@ -148,7 +147,7 @@ class HtmlImportExportTest extends TestCase {
 		$this->assertCount(4, $rootFolders);
 		foreach ($rootFolders as $rootFolder) {
 			foreach ($this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $rootFolder->getId()) as $bookmark) {
-				$this->assertContains($bookmark->getUrl(), $exported);
+				$this->assertStringContainsString($bookmark->getUrl(), $exported);
 			}
 		}
 	}
