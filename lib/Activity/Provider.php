@@ -18,7 +18,6 @@ use OCP\IUserManager;
 use OCP\L10N\IFactory;
 
 class Provider implements IProvider {
-
 	/**
 	 * @var IFactory
 	 */

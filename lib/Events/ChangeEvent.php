@@ -10,7 +10,6 @@ namespace OCA\Bookmarks\Events;
 use OCP\EventDispatcher\Event;
 
 abstract class ChangeEvent extends Event {
-
 	/**
 	 * @var string
 	 */

@@ -22,7 +22,6 @@ use OCP\Util;
  * @package OCA\Bookmarks\Service
  */
 class HtmlExporter {
-
 	/**
 	 * @var BookmarkMapper
 	 */

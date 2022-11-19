@@ -20,7 +20,6 @@ use OCP\IDBConnection;
  * @package OCA\Bookmarks\Db
  */
 class FolderMapper extends QBMapper {
-
 	/**
 	 * @var BookmarkMapper
 	 */

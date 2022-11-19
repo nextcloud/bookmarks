@@ -19,7 +19,6 @@ use OCP\IUserManager;
 use OCP\Migration\IOutput;
 
 class OrphanedTreeItemsRepairStepTest extends TestCase {
-
 	/**
 	 * @var Db\BookmarkMapper
 	 */

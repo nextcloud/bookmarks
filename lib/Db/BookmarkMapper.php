@@ -33,7 +33,6 @@ use function call_user_func;
  * @package OCA\Bookmarks\Db
  */
 class BookmarkMapper extends QBMapper {
-
 	/** @var IConfig */
 	private $config;
 

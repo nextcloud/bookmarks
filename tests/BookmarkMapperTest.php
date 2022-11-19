@@ -14,7 +14,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IUserManager;
 
 class BookmarkMapperTest extends TestCase {
-
 	/**
 	 * @var mixed|Db\BookmarkMapper
 	 */

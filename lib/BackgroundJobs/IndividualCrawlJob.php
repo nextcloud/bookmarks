@@ -18,7 +18,6 @@ use OCA\Bookmarks\Service\CrawlService;
 use OCP\IConfig;
 
 class IndividualCrawlJob extends Job {
-
 	/**
 	 * @var BookmarkMapper
 	 */

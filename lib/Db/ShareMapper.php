@@ -19,7 +19,6 @@ use OCP\IDBConnection;
  * @package OCA\Bookmarks\Db
  */
 class ShareMapper extends QBMapper {
-
 	/**
 	 * @var IDBConnection
 	 */

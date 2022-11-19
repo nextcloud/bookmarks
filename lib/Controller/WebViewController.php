@@ -28,7 +28,6 @@ use OCP\IURLGenerator;
 use OCP\IUserManager;
 
 class WebViewController extends Controller {
-
 	/** @var string */
 	private $userId;
 

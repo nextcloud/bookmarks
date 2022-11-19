@@ -12,7 +12,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Utility\ITimeFactory;
 
 class BackupManagerTest extends TestCase {
-
 	/**
 	 * @var BookmarkService
 	 */

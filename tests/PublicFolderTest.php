@@ -10,7 +10,6 @@ use OCP\AppFramework\QueryException;
 use OCP\IUserManager;
 
 class PublicFolderTest extends TestCase {
-
 	/**
 	 * @var Db\FolderMapper
 	 */

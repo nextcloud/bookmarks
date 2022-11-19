@@ -18,7 +18,6 @@ use OCP\Search\ISearchQuery;
 use OCP\Search\SearchResult;
 
 class Provider implements IProvider {
-
 	/**
 	 * @var IL10N
 	 */

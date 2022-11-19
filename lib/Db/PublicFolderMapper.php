@@ -21,7 +21,6 @@ use RangeException;
  * @package OCA\Bookmarks\Db
  */
 class PublicFolderMapper extends QBMapper {
-
 	/**
 	 * @var IDBConnection
 	 */

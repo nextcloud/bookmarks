@@ -90,7 +90,6 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 		$groupShares = $qb->execute();
 
 		while ($groupShare = $groupShares->fetch()) {
-
 			// find users in share
 			$qb = $this->db->getQueryBuilder();
 			$qb->select('sf.user_id')

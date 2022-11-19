@@ -29,7 +29,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
  * @package OCA\Bookmarks\Service
  */
 class HtmlImporter {
-
 	/**
 	 * @var BookmarkMapper
 	 */

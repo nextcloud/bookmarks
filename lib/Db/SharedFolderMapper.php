@@ -21,7 +21,6 @@ use OCP\IDBConnection;
  * @package OCA\Bookmarks\Db
  */
 class SharedFolderMapper extends QBMapper {
-
 	/**
 	 * @var IDBConnection
 	 */

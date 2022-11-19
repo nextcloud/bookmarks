@@ -11,7 +11,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
 
 class FindTest extends TestCase {
-
 	/**
 	 * @var Db\BookmarkMapper
 	 */

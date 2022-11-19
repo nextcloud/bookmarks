@@ -17,7 +17,6 @@ use OCP\IConfig;
 use OCP\IL10N;
 
 class BackupManager {
-
 	/**
 	 * @var string
 	 */

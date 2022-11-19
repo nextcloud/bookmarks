@@ -20,7 +20,6 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 
 class InternalBookmarkController extends ApiController {
-
 	/**
 	 * @var BookmarkController
 	 */

@@ -17,7 +17,6 @@ use PDO;
  * @package OCA\Bookmarks\Db
  */
 class TagMapper {
-
 	/**
 	 * @var IDBConnection
 	 */
