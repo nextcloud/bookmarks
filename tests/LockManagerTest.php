@@ -12,12 +12,14 @@ use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Service\LockManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 
 class LockManagerTest extends TestCase {
 	public string $user;
 	public ITimeFactory $timeFactory;
 	public LockManager $lockManager;
 	public FolderMapper $folderMapper;
+	public InvocationMocker $timeStub;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -25,12 +27,14 @@ class LockManagerTest extends TestCase {
 		$this->folderMapper = OC::$server->get(FolderMapper::class);
 		$this->folderMapper->findRootFolder($this->user);
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
+		$this->timeStub = $this->timeFactory->expects($this->atLeastOnce())->method('getDateTime');
+		$this->timeStub->willReturnCallback(fn ($arg) => new \DateTime($arg));
 		$this->lockManager = new LockManager(OC::$server->get(IDBConnection::class), $this->folderMapper, $this->timeFactory);
 		$this->lockManager->setLock($this->user, false);
 	}
 
 	public function testLockUnlock(): void {
-		$this->timeFactory->expects($this->atLeastOnce())->method('getDateTime')->willReturnCallback(fn ($arg) => new \DateTime($arg));
+		$this->timeStub->willReturnCallback(fn ($arg) => new \DateTime($arg));
 		$this->assertFalse($this->lockManager->getLock($this->user), 'should not be locked');
 		$this->lockManager->setLock($this->user, true);
 		$this->assertTrue($this->lockManager->getLock($this->user), 'should be locked');
@@ -42,11 +46,10 @@ class LockManagerTest extends TestCase {
 		$this->assertFalse($this->lockManager->getLock($this->user), 'should not be locked');
 		$startTime = new \DateTime();
 		$startTime = $startTime->sub(new \DateInterval('PT31M'));
-		$stub = $this->timeFactory->expects($this->atLeastOnce())->method('getDateTime');
-		$stub->willReturnCallback(fn ($arg) => $startTime);
+		$this->timeStub->willReturnCallback(fn ($arg) => $startTime);
 		$this->lockManager->setLock($this->user, true);
 		$this->assertTrue($this->lockManager->getLock($this->user), 'should be locked');
-		$stub->willReturnCallback(fn ($arg) => new \DateTime($arg));
+		$this->timeStub->willReturnCallback(fn ($arg) => new \DateTime($arg));
 		$this->assertFalse($this->lockManager->getLock($this->user), 'lock should have timed out');
 	}
 }
