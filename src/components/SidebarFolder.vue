@@ -112,7 +112,7 @@
 				</div>
 			</div>
 		</AppSidebarTab>
-		<AppSidebarTab v-if="!isPublic"
+		<AppSidebarTab v-if="projectsEnabled && !isPublic"
 			id="bookmark-projects"
 			:name="t('bookmarks', 'Projects')"
 			icon="icon-projects"
@@ -136,6 +136,7 @@ import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
 import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
+import { loadState } from '@nextcloud/initial-state'
 import axios from '@nextcloud/axios'
 import copy from 'copy-text-to-clipboard'
 import { actions, mutations } from '../store/'
@@ -153,6 +154,7 @@ export default {
 			participant: null,
 			isSearching: false,
 			activeTab: '',
+			projectsEnabled: loadState('core', 'projects_enabled', false),
 		}
 	},
 	computed: {
