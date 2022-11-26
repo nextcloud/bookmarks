@@ -212,6 +212,7 @@ OC.L10N.register(
     "Failed to load setting {key}" : "Échec du chargement du paramètre {key}",
     "Failed to update share {shareId}" : "Impossible de mettre à jour le partage {shareId}",
     "Failed to delete share {shareId}" : "Impossible de supprimer le partage {shareId}",
+    "Create bookmarks for mentioned links" : "Créer des marque-pages pour les liens mentionnés",
     "No links found in this message" : "Aucun lien trouvé dans ce message",
     "Bookmarks feed" : "Flux de suivi"
 },
