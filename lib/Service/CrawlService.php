@@ -7,9 +7,9 @@
 
 namespace OCA\Bookmarks\Service;
 
-use marcelklehr\Readability\Configuration;
-use marcelklehr\Readability\ParseException;
-use marcelklehr\Readability\Readability;
+use fivefilters\Readability\Configuration;
+use fivefilters\Readability\ParseException;
+use fivefilters\Readability\Readability;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
