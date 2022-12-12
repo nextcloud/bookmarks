@@ -5,7 +5,7 @@
   -->
 
 <template>
-	<Content app-name="bookmarks">
+	<NcContent app-name="bookmarks">
 		<div class="bookmarklet">
 			<h2><figure :class="loading? 'icon-loading-small' : 'icon-link'" /> {{ t('bookmarks', 'Add a bookmark') }}</h2>
 			<div v-if="exists" class="bookmarklet__exists">
@@ -18,8 +18,7 @@
 				<input v-model="bookmark.url" type="text" :placeholder="t('bookmarks', 'Enter bookmark URL')">
 			</label>
 			<label><figure class="icon-tag" /> {{ t('bookmarks', 'Tags') }}
-				<Multiselect
-					class="sidebar__tags"
+				<NcMultiselect class="sidebar__tags"
 					:value="bookmark.tags"
 					:auto-limit="false"
 					:limit="7"
@@ -38,8 +37,7 @@
 				<FolderPickerDialog v-model="folder" :show="showPicker" @close="showPicker = false" />
 			</label>
 			<label>{{ t('bookmarks', 'Notes') }}</label>
-			<div
-				class="bookmarklet__notes"
+			<div class="bookmarklet__notes"
 				contenteditable
 				@input="onNotesChange">
 				{{ description }}
@@ -48,21 +46,20 @@
 				<span class="icon-confirm-white" />{{ t('bookmarks', 'Save') }}
 			</button>
 		</div>
-	</Content>
+	</NcContent>
 </template>
 
 <script>
-import Content from '@nextcloud/vue/dist/Components/Content'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import { actions } from '../store/'
-import FolderPickerDialog from './FolderPickerDialog'
+import { NcContent, NcMultiselect } from '@nextcloud/vue'
+import { actions } from '../store/index.js'
+import FolderPickerDialog from './FolderPickerDialog.vue'
 
 export default {
 	name: 'ViewBookmarklet',
 	components: {
 		FolderPickerDialog,
-		Content,
-		Multiselect,
+		NcContent,
+		NcMultiselect,
 	},
 	props: {
 		title: {

@@ -39,52 +39,69 @@
 			</div>
 		</template>
 		<template #actions>
-			<ActionButton icon="icon-info" :close-after-click="true" @click="onDetails">
+			<NcActionButton :close-after-click="true" @click="onDetails">
+				<template #icon>
+					<InformationVariantIcon />
+				</template>
 				{{ t('bookmarks', 'Details') }}
-			</ActionButton>
-			<ActionCheckbox @change="clickSelect">
+			</NcActionButton>
+			<NcActionCheckbox @change="clickSelect">
 				{{ t('bookmarks', 'Select folder') }}
-			</ActionCheckbox>
-			<ActionButton v-if="permissions.canShare"
+			</NcActionCheckbox>
+			<NcActionButton v-if="permissions.canShare"
 				icon="icon-share"
 				:close-after-click="true"
 				@click="onShare">
+				<template #icon>
+					<ShareVariantIcon />
+				</template>
 				{{ t('bookmarks', 'Share folder') }}
-			</ActionButton>
-			<ActionButton icon="icon-rename" :close-after-click="true" @click="onRename">
+			</NcActionButton>
+			<NcActionButton :close-after-click="true" @click="onRename">
+				<template #icon>
+					<PencilIcon />
+				</template>
 				{{ t('bookmarks', 'Rename folder') }}
-			</ActionButton>
-			<ActionButton :close-after-click="true" @click="onMove">
+			</NcActionButton>
+			<NcActionButton :close-after-click="true" @click="onMove">
 				<template #icon>
 					<FolderMoveIcon :fill-color="colorMainText" />
 				</template>
 				{{ t('bookmarks', 'Move folder') }}
-			</ActionButton>
-			<ActionButton icon="icon-delete" :close-after-click="true" @click="onDelete">
+			</NcActionButton>
+			<NcActionButton :close-after-click="true" @click="onDelete">
+				<template #icon>
+					<DeleteIcon />
+				</template>
 				{{ t('bookmarks', 'Delete folder') }}
-			</ActionButton>
+			</NcActionButton>
 		</template>
 	</Item>
 </template>
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
-import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
-import FolderIcon from 'vue-material-design-icons/Folder'
-import ShareVariantIcon from 'vue-material-design-icons/ShareVariant'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
-import { actions, mutations } from '../store/'
-import Item from './Item'
+import FolderMoveIcon from 'vue-material-design-icons/FolderMove.vue'
+import FolderIcon from 'vue-material-design-icons/Folder.vue'
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
+import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import PencilIcon from 'vue-material-design-icons/Pencil.vue'
+import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
+import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
+import { actions, mutations } from '../store/index.js'
+import Item from './Item.vue'
 
 export default {
 	name: 'Folder',
 	components: {
 		Item,
-		ActionButton,
-		ActionCheckbox,
+		NcActionButton,
+		NcActionCheckbox,
 		FolderIcon,
 		FolderMoveIcon,
 		ShareVariantIcon,
+		DeleteIcon,
+		PencilIcon,
+		InformationVariantIcon,
 	},
 	props: {
 		folder: {

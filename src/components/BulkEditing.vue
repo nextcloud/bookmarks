@@ -6,62 +6,77 @@
 
 <template>
 	<div class="bulkediting">
-		<Actions :primary="true" :menu-title="selectionDescription">
-			<ActionButton icon="icon-external" close-after-click @click="onBulkOpen">
-				{{ t('bookmarks', 'Open all selected') }}
-			</ActionButton>
-			<ActionButton close-after-click @click="onBulkMove">
+		<NcActions :primary="true" :menu-title="selectionDescription">
+			<NcActionButton close-after-click @click="onBulkOpen">
 				<template #icon>
-					<FolderMoveIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+					<OpenInNewIcon />
+				</template>
+				{{ t('bookmarks', 'Open all selected') }}
+			</NcActionButton>
+			<NcActionButton close-after-click @click="onBulkMove">
+				<template #icon>
+					<FolderMoveIcon />
 				</template>
 				{{ t('bookmarks', 'Move selection') }}
-			</ActionButton>
-			<ActionButton v-if="!selectedFolders.length" close-after-click @click="onBulkCopy">
+			</NcActionButton>
+			<NcActionButton v-if="!selectedFolders.length" close-after-click @click="onBulkCopy">
 				<template #icon>
-					<FolderPlusIcon :fill-color="colorMainText" class="action-button-mdi-icon" />
+					<FolderPlusIcon />
 				</template>
 				{{ t('bookmarks', 'Add to folders') }}
-			</ActionButton>
-			<ActionInput
-				v-if="!selectedFolders.length"
+			</NcActionButton>
+			<NcActionInput v-if="!selectedFolders.length"
 				:value="selectionTags"
-				icon="icon-tag"
 				type="multiselect"
 				:options="allTags"
 				:multiple="true"
 				:taggable="true"
 				@tag="onBulkTag([...selectionTags, $event])"
 				@input="onBulkTag">
+				<template #icon>
+					<TagIcon />
+				</template>
 				{{ t('bookmarks', 'Edit tags of selection') }}
-			</ActionInput>
-			<ActionButton icon="icon-delete" close-after-click @click="onBulkDelete">
+			</NcActionInput>
+			<NcActionButton close-after-click @click="onBulkDelete">
+				<template #icon>
+					<DeleteIcon />
+				</template>
 				{{ t('bookmarks', 'Delete selection') }}
-			</ActionButton>
-			<ActionSeparator />
-			<ActionButton icon="icon-checkmark" @click="onSelectAll">
+			</NcActionButton>
+			<NcActionSeparator />
+			<NcActionButton @click="onSelectAll">
+				<template #icon>
+					<SelectAllIcon />
+				</template>
 				{{ t('bookmarks', 'Select all') }}
-			</ActionButton>
-			<ActionButton icon="icon-close" @click="onCancelSelection">
+			</NcActionButton>
+			<NcActionButton @click="onCancelSelection">
+				<template #icon>
+					<SelectOffIcon />
+				</template>
 				{{ t('bookmarks', 'Cancel selection') }}
-			</ActionButton>
-		</Actions>
+			</NcActionButton>
+		</NcActions>
 	</div>
 </template>
 
 <script>
 
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
-import FolderPlusIcon from 'vue-material-design-icons/FolderPlus'
-import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
-import { actions, mutations } from '../store'
-import intersection from 'lodash/intersection'
+import { NcActions, NcActionSeparator, NcActionButton, NcActionInput } from '@nextcloud/vue'
+import FolderPlusIcon from 'vue-material-design-icons/FolderPlus.vue'
+import FolderMoveIcon from 'vue-material-design-icons/FolderMove.vue'
+import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
+import TagIcon from 'vue-material-design-icons/Tag.vue'
+import SelectAllIcon from 'vue-material-design-icons/SelectAll.vue'
+import SelectOffIcon from 'vue-material-design-icons/SelectOff.vue'
+import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import { actions, mutations } from '../store/index.js'
+import intersection from 'lodash/intersection.js'
 
 export default {
 	name: 'BulkEditing',
-	components: { ActionInput, ActionSeparator, FolderPlusIcon, FolderMoveIcon, ActionButton, Actions },
+	components: { NcActionInput, NcActionSeparator, FolderPlusIcon, FolderMoveIcon, NcActionButton, NcActions, OpenInNewIcon, TagIcon, SelectAllIcon, SelectOffIcon, DeleteIcon },
 	data() {
 		return {
 			selectionTags: [],
@@ -151,5 +166,6 @@ export default {
 	opacity: 1 !important;
 	padding: 0 !important;
 	margin-top: 1px;
+	min-width: 500px;
 }
 </style>

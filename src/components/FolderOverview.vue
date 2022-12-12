@@ -5,16 +5,16 @@
   -->
 
 <template>
-	<AppContentList :show-details="showDetails" @update:show-details="$emit('update:show-details', $event)">
+	<NcAppContentList :show-details="showDetails" @update:show-details="$emit('update:show-details', $event)">
 		<TreeFolder v-for="folder in rootFolder.children"
 			:key="folder.id"
 			:folder="folder"
 			@select="onSelect($event)" />
-	</AppContentList>
+	</NcAppContentList>
 </template>
 
 <script>
-import AppContentList from '@nextcloud/vue/dist/Components/AppContentList'
+import { NcAppContentList } from '@nextcloud/vue'
 import TreeFolder from './TreeFolder'
 import { privateRoutes } from '../router'
 
@@ -22,7 +22,7 @@ export default {
 	name: 'FolderOverview',
 	components: {
 		TreeFolder,
-		AppContentList,
+		NcAppContentList,
 	},
 	props: {
 		showDetails: {

@@ -5,8 +5,7 @@
   -->
 
 <template>
-	<Item
-		:title="bookmark.title"
+	<Item :title="bookmark.title"
 		:tags="bookmark.tags"
 		:rename-placeholder="t('bookmarks', 'Enter new title')"
 		:select-label="t('bookmarks', 'Select bookmark')"
@@ -26,76 +25,76 @@
 			<div class="bookmark__title">
 				<h3 :title="bookmark.title">
 					<span v-if="bookmark.preliminary" class="icon-loading-small bookmark__icon" />
-					<figure
-						v-else
+					<figure v-else
 						class="bookmark__icon"
 						:style="{ backgroundImage: 'url(' + iconUrl + ')' }" />
 					{{ bookmark.title }}
 				</h3>
-				<span
-					v-if="bookmark.description"
+				<span v-if="bookmark.description"
 					v-tooltip="bookmark.description"
 					class="bookmark__description"><figure class="icon-file" />
 					{{ bookmark.description }}</span>
 			</div>
 		</template>
 		<template #actions>
-			<ActionButton
-				icon="icon-info"
-				:close-after-click="true"
+			<NcActionButton :close-after-click="true"
 				@click="onDetails">
+				<template #icon>
+					<InformationVariantIcon />
+				</template>
 				{{ t('bookmarks', 'Details') }}
-			</ActionButton>
-			<ActionCheckbox @change="onSelect">
+			</NcActionButton>
+			<NcActionCheckbox @change="onSelect">
 				{{ t('bookmarks', 'Select bookmark') }}
-			</ActionCheckbox>
-			<ActionButton
-				icon="icon-rename"
-				:close-after-click="true"
+			</NcActionCheckbox>
+			<NcActionButton :close-after-click="true"
 				@click="onRename">
+				<template #icon>
+					<PencilIcon />
+				</template>
 				{{ t('bookmarks', 'Rename') }}
-			</ActionButton>
-			<ActionButton
-				:close-after-click="true"
+			</NcActionButton>
+			<NcActionButton :close-after-click="true"
 				@click="onCopyUrl">
 				<template #icon>
-					<ContentCopyIcon :fill-color="colorMainText" />
+					<ContentCopyIcon />
 				</template>
 				{{ t('bookmarks', 'Copy link') }}
-			</ActionButton>
-			<ActionButton :close-after-click="true" @click="onMove">
+			</NcActionButton>
+			<NcActionButton :close-after-click="true" @click="onMove">
 				<template #icon>
-					<FolderMoveIcon
-						:fill-color="colorMainText" />
+					<FolderMoveIcon />
 				</template>
 				{{ t('bookmarks', 'Move') }}
-			</ActionButton>
-			<ActionButton :close-after-click="true" @click="onCopy">
+			</NcActionButton>
+			<NcActionButton :close-after-click="true" @click="onCopy">
 				<template #icon>
-					<FolderPlusIcon
-						:fill-color="colorMainText" />
+					<FolderPlusIcon />
 				</template>
 				{{ t('bookmarks', 'Add to folders') }}
-			</ActionButton>
-			<ActionButton
-				icon="icon-delete"
-				:close-after-click="true"
+			</NcActionButton>
+			<NcActionButton :close-after-click="true"
 				@click="onDelete">
+				<template #icon>
+					<DeleteIcon />
+				</template>
 				{{ t('bookmarks', 'Delete') }}
-			</ActionButton>
+			</NcActionButton>
 		</template>
 	</Item>
 </template>
 <script>
-import Item from './Item'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
-import FolderPlusIcon from 'vue-material-design-icons/FolderPlus'
-import FolderMoveIcon from 'vue-material-design-icons/FolderMove'
-import ContentCopyIcon from 'vue-material-design-icons/ContentCopy'
+import Item from './Item.vue'
+import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
+import FolderPlusIcon from 'vue-material-design-icons/FolderPlus.vue'
+import FolderMoveIcon from 'vue-material-design-icons/FolderMove.vue'
+import ContentCopyIcon from 'vue-material-design-icons/ContentCopy.vue'
+import PencilIcon from 'vue-material-design-icons/Pencil.vue'
+import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
+import DeleteIcon from 'vue-material-design-icons/Delete.vue'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
-import { actions, mutations } from '../store/'
+import { actions, mutations } from '../store/index.js'
 import copy from 'copy-text-to-clipboard'
 import axios from '@nextcloud/axios'
 
@@ -103,11 +102,14 @@ export default {
 	name: 'Bookmark',
 	components: {
 		Item,
-		ActionButton,
-		ActionCheckbox,
+		NcActionButton,
+		NcActionCheckbox,
 		FolderPlusIcon,
 		FolderMoveIcon,
 		ContentCopyIcon,
+		PencilIcon,
+		InformationVariantIcon,
+		DeleteIcon,
 	},
 	props: {
 		bookmark: {

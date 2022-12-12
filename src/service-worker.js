@@ -6,8 +6,9 @@
 
 'use strict'
 
-import { version } from '../package.json'
+import PackageJson from '../package.json'
 
+const { version } = PackageJson
 const rev = '#1'
 
 const DYNAMIC_CACHE = `dynamic-cache-${version}` + rev

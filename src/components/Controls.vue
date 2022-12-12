@@ -7,24 +7,28 @@
 <template>
 	<div :class="['controls', $store.state.public && 'wide']">
 		<div class="controls__left">
-			<Actions v-if="$route.name === routes.FOLDER">
-				<ActionButton @click="onClickBack">
-					<ArrowLeftIcon slot="icon" :size="18" :fill-color="colorMainText" />
+			<NcActions v-if="$route.name === routes.FOLDER">
+				<NcActionButton @click="onClickBack">
+					<template #icon>
+						<ArrowLeftIcon />
+					</template>
 					{{ t('bookmarks', 'Go back') }}
-				</ActionButton>
-			</Actions>
+				</NcActionButton>
+			</NcActions>
 			<template v-if="$route.name === routes.FOLDER">
-				<h2><FolderIcon :size="18" :fill-color="colorMainText" /> <span>{{ folder.title }}</span></h2>
-				<Actions v-if="permissions.canShare">
-					<ActionButton icon="icon-share" :close-after-click="true" @click="onOpenFolderShare">
+				<h2><FolderIcon /> <span>{{ folder.title }}</span></h2>
+				<NcActions v-if="permissions.canShare">
+					<NcActionButton :close-after-click="true" @click="onOpenFolderShare">
+						<template #icon>
+							<ShareVariantIcon />
+						</template>
 						{{ t('bookmarks', 'Share folder') }}
-					</ActionButton>
-				</Actions>
+					</NcActionButton>
+				</NcActions>
 			</template>
 			<template v-if="$route.name === routes.TAGS">
-				<span class="icon-tag" />
-				<Multiselect
-					class="controls__tags"
+				<TagIcon />
+				<NcMultiselect class="controls__tags"
 					:value="tags"
 					:auto-limit="false"
 					:limit="7"
@@ -33,101 +37,102 @@
 					:placeholder="t('bookmarks', 'Select one or more tags')"
 					@input="onTagsChange" />
 			</template>
-			<Actions
-				v-if="!isPublic"
+			<NcActions v-if="!isPublic"
 				v-tooltip="t('bookmarks', 'New')"
-				:title="t('bookmarks', 'New')"
-				:default-icon="'icon-add'">
-				<ActionButton
-					icon="icon-link"
-					:close-after-click="true"
+				:title="t('bookmarks', 'New')">
+				<template #icon>
+					<PlusIcon />
+				</template>
+				<NcActionButton :close-after-click="true"
 					@click="onAddBookmark">
+					<template #icon>
+						<EarthIcon />
+					</template>
 					{{
 						t('bookmarks', 'New bookmark')
 					}}
-				</ActionButton>
-				<ActionButton
-					icon="icon-folder"
-					:close-after-click="true"
+				</NcActionButton>
+				<NcActionButton :close-after-click="true"
 					@click="onAddFolder">
+					<template #icon>
+						<FolderIcon />
+					</template>
 					{{ t('bookmarks', 'New folder') }}
-				</ActionButton>
-			</Actions>
+				</NcActionButton>
+			</NcActions>
 			<BulkEditing v-if="hasSelection" />
 		</div>
 		<div class="controls__right">
-			<Actions>
-				<ActionButton
-					:icon="
-						viewMode === 'list'
-							? 'icon-toggle-pictures'
-							: 'icon-toggle-filelist'
-					"
-					@click="onToggleViewMode">
+			<NcActions>
+				<NcActionButton @click="onToggleViewMode">
+					<template #icon>
+						<ViewListIcon v-if="viewMode !== 'list'" />
+						<ViewGridIcon v-else />
+					</template>
 					{{ viewMode === 'list' ? t('bookmarks', 'Change to grid view') : t('bookmarks', 'Change to list view') }}
-				</ActionButton>
-			</Actions>
-			<Actions v-tooltip="sortingOptions[sorting].description">
+				</NcActionButton>
+			</NcActions>
+			<NcActions v-tooltip="sortingOptions[sorting].description">
 				<template #icon>
 					<component :is="sortingOptions[sorting].icon" :size="20" :fill-color="colorMainText" />
 				</template>
-				<ActionButton v-for="(option, key) in sortingOptions"
+				<NcActionButton v-for="(option, key) in sortingOptions"
 					:key="key"
 					:close-after-click="true"
 					@click="onChangeSorting(key)">
 					<template #icon>
 						<component :is="option.icon"
-							:size="20"
 							:fill-color="key === sorting? colorPrimaryElement : colorMainText" />
 					</template>
 					{{ option.description }}
-				</ActionButton>
-			</Actions>
-			<Actions force-menu>
+				</NcActionButton>
+			</NcActions>
+			<NcActions force-menu>
 				<template #icon>
-					<RssIcon :fill-color="colorMainText" :size="20" class="action-button-mdi-icon" />
+					<RssIcon />
 				</template>
-				<ActionButton
-					:title="t('bookmarks', 'Copy RSS Feed of current view')"
+				<NcActionButton :title="t('bookmarks', 'Copy RSS Feed of current view')"
 					:close-after-click="true"
 					@click="copyRssUrl">
 					<template #icon>
-						<RssIcon :fill-color="colorMainText" :size="20" class="action-button-mdi-icon" />
+						<RssIcon />
 					</template>
 					{{ !$store.state.public? t('bookmarks', 'The RSS feed requires authentication with your Nextcloud credentials') : '' }}
-				</ActionButton>
-			</Actions>
+				</NcActionButton>
+			</NcActions>
 		</div>
 	</div>
 </template>
 <script>
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
-import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
-import FolderIcon from 'vue-material-design-icons/Folder'
-import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft'
-import RssIcon from 'vue-material-design-icons/Rss'
-import SortAlphabeticalAscendingIcon from 'vue-material-design-icons/SortAlphabeticalAscending'
-import SortBoolAscendingIcon from 'vue-material-design-icons/SortBoolAscending'
-import SortClockAscendingOutlineIcon from 'vue-material-design-icons/SortClockAscendingOutline'
-import SortCalendarAscendingIcon from 'vue-material-design-icons/SortCalendarAscending'
-import SortAscendingIcon from 'vue-material-design-icons/SortAscending'
-import { actions, mutations } from '../store/'
+import { NcMultiselect, NcActions, NcActionButton, NcActionInput, NcActionRouter } from '@nextcloud/vue'
+import EarthIcon from 'vue-material-design-icons/Earth.vue'
+import ViewGridIcon from 'vue-material-design-icons/ViewGrid.vue'
+import ViewListIcon from 'vue-material-design-icons/ViewList.vue'
+import PlusIcon from 'vue-material-design-icons/Plus.vue'
+import FolderIcon from 'vue-material-design-icons/Folder.vue'
+import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft.vue'
+import RssIcon from 'vue-material-design-icons/Rss.vue'
+import SortAlphabeticalAscendingIcon from 'vue-material-design-icons/SortAlphabeticalAscending.vue'
+import SortBoolAscendingIcon from 'vue-material-design-icons/SortBoolAscending.vue'
+import SortClockAscendingOutlineIcon from 'vue-material-design-icons/SortClockAscendingOutline.vue'
+import SortCalendarAscendingIcon from 'vue-material-design-icons/SortCalendarAscending.vue'
+import SortAscendingIcon from 'vue-material-design-icons/SortAscending.vue'
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
+import TagIcon from 'vue-material-design-icons/Tag.vue'
+import { actions, mutations } from '../store/index.js'
 import { generateUrl } from '@nextcloud/router'
-import BulkEditing from './BulkEditing'
+import BulkEditing from './BulkEditing.vue'
 import copy from 'copy-text-to-clipboard'
 
 export default {
 	name: 'Controls',
 	components: {
 		BulkEditing,
-		Multiselect,
-		Actions,
-		ActionButton,
-		ActionInput,
-		ActionRouter,
+		NcMultiselect,
+		NcActions,
+		NcActionButton,
+		NcActionInput,
+		NcActionRouter,
 		RssIcon,
 		SortAscendingIcon,
 		SortCalendarAscendingIcon,
@@ -136,6 +141,12 @@ export default {
 		SortBoolAscendingIcon,
 		FolderIcon,
 		ArrowLeftIcon,
+		PlusIcon,
+		ViewGridIcon,
+		ViewListIcon,
+		EarthIcon,
+		ShareVariantIcon,
+		TagIcon,
 	},
 	props: {},
 	data() {
@@ -277,7 +288,7 @@ export default {
 </script>
 <style>
 .controls {
-	padding: 0 8px 0 44px;
+	padding: 4px 8px 0 44px;
 	display: flex;
 	position: absolute;
 	z-index: 100;
@@ -291,19 +302,13 @@ export default {
 .controls h2 {
 	margin: 0;
 	margin-left: 10px;
+	margin-right: 10px;
 	display: flex;
-	position: relative;
-	top: -2px;
 	flex-shrink: 0;
 }
 
 .controls h2 :nth-child(2) {
 	margin-left: 5px;
-}
-
-.controls h2 > .material-design-icon {
-	position: relative;
-	top: 3px;
 }
 
 .controls .action-item {
@@ -332,12 +337,6 @@ export default {
 .controls__tags {
 	width: 300px;
 	flex: 1;
-}
-
-.controls__tags .multiselect__tags {
-	border-top: none !important;
-	border-left: none !important;
-	border-right: none !important;
 }
 
 .controls__right {

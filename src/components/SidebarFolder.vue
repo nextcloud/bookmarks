@@ -5,29 +5,29 @@
   -->
 
 <template>
-	<AppSidebar
+	<NcAppSidebar
 		v-if="isActive"
 		class="sidebar"
 		:title="folder.title"
 		:active.sync="activeTab"
 		@close="onClose">
-		<AppSidebarTab id="folder-details"
+		<NcAppSidebarTab id="folder-details"
 			:name="t('bookmarks', 'Details')"
 			icon="icon-info"
 			:order="0">
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
-			<UserBubble :user="folder.userId" :display-name="folder.userId" />
+			<NcUserBubble :user="folder.userId" :display-name="folder.userId" />
 			<h3>{{ t('bookmarks', 'Bookmarks') }}</h3>
 			{{ bookmarkCount }}
-		</AppSidebarTab>
-		<AppSidebarTab v-if="isSharable"
+		</NcAppSidebarTab>
+		<NcAppSidebarTab v-if="isSharable"
 			id="folder-sharing"
 			:name="t('bookmarks', 'Sharing')"
 			icon="icon-shared"
 			:order="1">
 			<div class="participant-select">
 				<figure :class="{'icon-user': true, 'share__avatar': true }" />
-				<Multiselect v-model="participant"
+				<NcMultiselect v-model="participant"
 					label="displayName"
 					track-by="user"
 					class="participant-select__selection"
@@ -52,27 +52,27 @@
 							:fill-color="colorMainText" />
 					</div>
 				</div>
-				<Actions class="share__actions">
+				<NcActions class="share__actions">
 					<template v-if="publicLink">
-						<ActionButton icon="icon-clippy" @click="onCopyPublicLink">
+						<NcActionButton icon="icon-clippy" @click="onCopyPublicLink">
 							{{ t('bookmarks', 'Copy link') }}
-						</ActionButton>
-						<ActionButton icon="icon-clippy" @click="onCopyRssLink">
+						</NcActionButton>
+						<NcActionButton icon="icon-clippy" @click="onCopyRssLink">
 							{{ t('bookmarks', 'Copy RSS feed') }}
-						</ActionButton>
-						<ActionSeparator />
-						<ActionButton icon="icon-delete" @click="onDeletePublicLink">
+						</NcActionButton>
+						<NcActionSeparator />
+						<NcActionButton icon="icon-delete" @click="onDeletePublicLink">
 							{{ t('bookmarks', 'Delete link') }}
-						</ActionButton>
+						</NcActionButton>
 					</template>
-					<ActionButton v-else icon="icon-add" @click="onAddPublicLink">
+					<NcActionButton v-else icon="icon-add" @click="onAddPublicLink">
 						{{ t('bookmarks', 'Create public link') }}
-					</ActionButton>
-				</Actions>
+					</NcActionButton>
+				</NcActions>
 			</div>
 			<div v-for="share of shares" :key="share.id">
 				<div class="share">
-					<Avatar :user="share.participant" class="share__avatar" :size="44" />
+					<NcAvatar :user="share.participant" class="share__avatar" :size="44" />
 					<h3 class="share__title">
 						{{ share.participant }}
 					</h3>
@@ -98,21 +98,21 @@
 								:fill-color="colorMainText" />
 						</div>
 					</div>
-					<Actions class="share__actions">
-						<ActionCheckbox :checked="share.canWrite" @update:checked="onEditShare(share.id, {canWrite: $event, canShare: share.canShare})">
+					<NcActions class="share__actions">
+						<NcActionCheckbox :checked="share.canWrite" @update:checked="onEditShare(share.id, {canWrite: $event, canShare: share.canShare})">
 							{{ t('bookmarks', 'Allow editing') }}
-						</ActionCheckbox>
-						<ActionCheckbox :checked="share.canShare" @update:checked="onEditShare(share.id, {canWrite: share.canWrite, canShare: $event})">
+						</NcActionCheckbox>
+						<NcActionCheckbox :checked="share.canShare" @update:checked="onEditShare(share.id, {canWrite: share.canWrite, canShare: $event})">
 							{{ t('bookmarks', 'Allow resharing') }}
-						</ActionCheckbox>
-						<ActionButton icon="icon-delete" @click="onDeleteShare(share.id)">
+						</NcActionCheckbox>
+						<NcActionButton icon="icon-delete" @click="onDeleteShare(share.id)">
 							{{ t('bookmarks', 'Remove share') }}
-						</ActionButton>
-					</Actions>
+						</NcActionButton>
+					</NcActions>
 				</div>
 			</div>
-		</AppSidebarTab>
-		<AppSidebarTab v-if="!isPublic"
+		</NcAppSidebarTab>
+		<NcAppSidebarTab v-if="!isPublic"
 			id="bookmark-projects"
 			:name="t('bookmarks', 'Projects')"
 			icon="icon-projects"
@@ -121,19 +121,11 @@
 				:id="''+folder.id"
 				:name="folder.title"
 				type="bookmarks-folder" />
-		</AppSidebarTab>
-	</AppSidebar>
+		</NcAppSidebarTab>
+	</NcAppSidebar>
 </template>
 <script>
-import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
-import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
-import Avatar from '@nextcloud/vue/dist/Components/Avatar'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ActionCheckbox from '@nextcloud/vue/dist/Components/ActionCheckbox'
-import ActionSeparator from '@nextcloud/vue/dist/Components/ActionSeparator'
-import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
+import { NcAppSidebar, NcUserBubble, NcActionSeparator, NcActionCheckbox, NcActionButton, NcActions, NcMultiselect, NcAvatar, NcAppSidebarTab } from '@nextcloud/vue'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
@@ -146,7 +138,7 @@ import { CollectionList } from 'nextcloud-vue-collections'
 
 export default {
 	name: 'SidebarFolder',
-	components: { AppSidebar, AppSidebarTab, Avatar, Multiselect, ActionButton, ActionCheckbox, Actions, UserBubble, ActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, CollectionList },
+	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcMultiselect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, CollectionList },
 	data() {
 		return {
 			participantSearchResults: [],

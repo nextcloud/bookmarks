@@ -5,25 +5,25 @@
   -->
 
 <template>
-	<Modal v-if="showModal" :title="title" @close="onClose">
+	<NcModal v-if="showNcModal" :title="title" @close="onClose">
 		<div class="copy-dialog">
 			<FolderPicker :title="title" :filter="filterFolders" @submit="onSubmit" />
 		</div>
-	</Modal>
+	</NcModal>
 </template>
 <script>
-import Modal from '@nextcloud/vue/dist/Components/Modal'
-import { actions, mutations } from '../store/'
-import FolderPicker from './FolderPicker'
+import { NcModal } from '@nextcloud/vue'
+import { actions, mutations } from '../store/index.js'
+import FolderPicker from './FolderPicker.vue'
 
 export default {
 	name: 'CopyDialog',
 	components: {
 		FolderPicker,
-		Modal,
+		NcModal,
 	},
 	computed: {
-		showModal() {
+		showNcModal() {
 			return this.$store.state.displayCopyDialog
 		},
 		selection() {
@@ -40,7 +40,7 @@ export default {
 	methods: {
 		async onSubmit(folderId) {
 			this.$store.commit(mutations.DISPLAY_COPY_DIALOG, false)
-			await this.$store.dispatch(actions.COPY_SELECTION, folderId)
+			await this.$store.dispatch(actions.NcNcModal, folderId)
 			this.$store.commit(mutations.RESET_SELECTION)
 		},
 		onClose() {

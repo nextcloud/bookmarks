@@ -8,14 +8,12 @@
 	<div id="bookmarks">
 		<figure v-if="loading" class="icon-loading loading" />
 		<figure v-if="!loading && success" class="icon-checkmark success" />
-		<SettingsSection
-			:title="t('bookmarks', 'Privacy')"
+		<NcSettingsSection :title="t('bookmarks', 'Privacy')"
 			:description="t('bookmarks',
 				'Bookmarks will try to access web pages that you add to automatically add information about them.'
 			)">
 			<p>
-				<input
-					id="enableScraping"
+				<input id="enableScraping"
 					v-model="settings['privacy.enableScraping']"
 					type="checkbox"
 					class="checkbox"
@@ -26,9 +24,8 @@
 					)
 				}}</label>
 			</p>
-		</SettingsSection>
-		<SettingsSection
-			:title="t('bookmarks', 'Performance') "
+		</NcSettingsSection>
+		<NcSettingsSection :title="t('bookmarks', 'Performance') "
 			:description="t('bookmarks',
 				'In an installation with a lot of users it may be useful to restrict the number of bookmarks per account.'
 			)">
@@ -46,9 +43,8 @@
 						step="1"
 						@input="onChange"></label>
 			</p>
-		</SettingsSection>
-		<SettingsSection
-			:title="t('bookmarks', 'Previews')"
+		</NcSettingsSection>
+		<NcSettingsSection :title="t('bookmarks', 'Previews')"
 			:description="t('bookmarks',
 				'In order to display real screenshots of your bookmarked websites, Bookmarks can use third-party services to generate previews.'
 			)">
@@ -62,32 +58,28 @@
 			</p>
 			<p>
 				<label>{{ t('bookmarks', 'Screeenly API URL') }}
-					<input
-						v-model="settings['previews.screenly.url']"
+					<input v-model="settings['previews.screenly.url']"
 						type="text"
 						placeholder="https://screeenly.example.com/api/v1/fullsize"
 						@input="onChange"></label>
 			</p>
 			<p>
 				<label>{{ t('bookmarks', 'Screeenly API key') }}
-					<input
-						v-model="settings['previews.screenly.token']"
+					<input v-model="settings['previews.screenly.token']"
 						type="text"
 						@input="onChange"></label>
 			</p>
 			<h3>{{ t('bookmarks', 'Webshot') }}</h3>
 			<p>
 				<label>{{ t('bookmarks', 'Webshot API URL') }}
-					<input
-						v-model="settings['previews.webshot.url']"
+					<input v-model="settings['previews.webshot.url']"
 						type="text"
 						@input="onChange"></label>
 			</p>
 			<h3>{{ t('bookmarks', 'ScreenshotMachine') }}</h3>
 			<p>
 				<label>{{ t('bookmarks', 'ScreenshotMachine API key') }}
-					<input
-						v-model="settings['previews.screenshotmachine.key']"
+					<input v-model="settings['previews.screenshotmachine.key']"
 						type="text"
 						@input="onChange"></label>
 			</p>
@@ -99,18 +91,17 @@
 			</p>
 			<p>
 				<label>{{ t('bookmarks', 'Pageres ENV variables') }}
-					<input
-						v-model="settings['previews.pageres.env']"
+					<input v-model="settings['previews.pageres.env']"
 						placeholder="CHROMIUM_PATH=/usr/bin/chromium-browser PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false"
 						type="text"
 						@input="onChange"></label>
 			</p>
-		</SettingsSection>
+		</NcSettingsSection>
 	</div>
 </template>
 
 <script>
-import SettingsSection from '@nextcloud/vue/dist/Components/SettingsSection'
+import { NcSettingsSection } from '@nextcloud/vue'
 import { loadState } from '@nextcloud/initial-state'
 
 const SETTINGS = [
@@ -125,7 +116,7 @@ const SETTINGS = [
 
 export default {
 	name: 'ViewAdmin',
-	components: { SettingsSection },
+	components: { NcSettingsSection },
 	data() {
 		const settings = loadState('bookmarks', 'adminSettings')
 		for (const setting of SETTINGS) {

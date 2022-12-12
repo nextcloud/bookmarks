@@ -13,26 +13,27 @@
 		</template>
 		<div v-else-if="bookmark.textContent" class="content" v-html="content" />
 		<div v-else>
-			<EmptyContent icon="icon-download">
-				{{ t('bookmarks', 'Content pending') }}
-				<template #desc>
-					{{ t('bookmarks', 'This content is being downloaded for offline use. Please check back later.') }}
+			<NcEmptyContent :title="t('bookmarks', 'Content pending')"
+				:description="t('bookmarks', 'This content is being downloaded for offline use. Please check back later.')">
+				<template #icon>
+					<DownloadIcon />
 				</template>
-			</EmptyContent>
+			</NcEmptyContent>
 		</div>
 	</div>
 </template>
 
 <script>
+import DownloadIcon from 'vue-material-design-icons/Download.vue'
 import sanitizeHtml from 'sanitize-html'
 import { generateUrl, generateRemoteUrl } from '@nextcloud/router'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+import { NcEmptyContent } from '@nextcloud/vue'
 
 const MIN_TEXT_LENGTH = 350
 
 export default {
 	name: 'BookmarkContent',
-	components: { EmptyContent },
+	components: { NcEmptyContent, DownloadIcon },
 	computed: {
 		isActive() {
 			if (!this.$store.state.sidebar) return false
@@ -68,7 +69,7 @@ export default {
 <style>
 .bookmark-content {
 	position: absolute;
-	top: 50px;/* nc header bar */
+	top: 0;
 	left: 0;
 	right: max( min(27vw, 500px), 300px); /* side bar */
 	bottom: 0;

@@ -5,25 +5,25 @@
   -->
 
 <template>
-	<Modal v-if="showModal" :title="title" @close="onClose">
+	<NcModal v-if="showNcModal" :title="title" @close="onClose">
 		<div class="move-dialog">
 			<FolderPicker :title="title" :filter="filterFolders" @submit="onSubmit" />
 		</div>
-	</Modal>
+	</NcModal>
 </template>
 <script>
-import Modal from '@nextcloud/vue/dist/Components/Modal'
-import { actions, mutations } from '../store/'
-import FolderPicker from './FolderPicker'
+import { NcModal } from '@nextcloud/vue'
+import { actions, mutations } from '../store/index.js'
+import FolderPicker from './FolderPicker.vue'
 
 export default {
 	name: 'MoveDialog',
 	components: {
 		FolderPicker,
-		Modal,
+		NcModal,
 	},
 	computed: {
-		showModal() {
+		showNcModal() {
 			return this.$store.state.displayMoveDialog
 		},
 		selection() {

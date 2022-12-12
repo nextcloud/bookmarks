@@ -1,17 +1,17 @@
 <template>
-	<Modal v-if="showModal" :can-close="false">
+	<NcModal v-if="showNcModal" :can-close="false">
 		<div class="loading icon-loading">
 			<h3>{{ title }}</h3>
 		</div>
-	</Modal>
+	</NcModal>
 </template>
 <script>
-import Modal from '@nextcloud/vue/dist/Components/Modal'
+import { NcModal } from '@nextcloud/vue'
 
 export default {
 	name: 'LoadingModal',
 	components: {
-		Modal,
+		NcModal,
 	},
 	data() {
 		return {
@@ -22,7 +22,7 @@ export default {
 				moveSelection: this.t('bookmkarks', 'Moving selection'),
 				copySelection: this.t('bookmkarks', 'Adding selection to folders'),
 			},
-			showModal: false,
+			showNcModal: false,
 			showTimeout: null,
 		}
 	},
@@ -43,11 +43,11 @@ export default {
 		state(newState, previous) {
 			if (this.state && !previous) {
 				this.showTimeout = setTimeout(() => {
-					this.showModal = true
+					this.showNcModal = true
 				}, 500)
 			} else if (!this.state && previous) {
 				clearTimeout(this.showTimeout)
-				this.showModal = false
+				this.showNcModal = false
 			}
 		},
 	},

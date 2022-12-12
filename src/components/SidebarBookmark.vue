@@ -5,8 +5,7 @@
   -->
 
 <template>
-	<AppSidebar
-		v-if="isActive"
+	<NcAppSidebar v-if="isActive"
 		class="sidebar"
 		:title="bookmark.title"
 		:title-editable="editingTitle"
@@ -19,50 +18,70 @@
 		@dismiss-editing="onEditTitleCancel"
 		@close="onClose">
 		<template v-if="!editingTitle" slot="secondary-actions">
-			<ActionButton icon="icon-rename" @click="onEditTitle" />
+			<NcActionButton @click="onEditTitle">
+				<template #icon>
+					<PencilIcon />
+				</template>
+			</NcActionButton>
 		</template>
 		<template v-if="editingTitle" slot="secondary-actions">
-			<ActionButton icon="icon-close" @click="onEditTitleCancel" />
+			<NcActionButton @click="onEditTitleCancel">
+				<template #icon>
+					<CloseIcon />
+				</template>
+			</NcActionButton>
 		</template>
-		<AppSidebarTab
-			id="bookmark-details"
+		<NcAppSidebarTab id="bookmark-details"
 			:name="t('bookmarks', 'Details')"
-			icon="icon-info"
 			:order="0">
+			<template #icon>
+				<InformationVariantIcon />
+			</template>
 			<div>
 				<div v-if="!editingUrl" class="details__line">
-					<span class="icon-external" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
+					<OpenInNewIcon :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
 					<a class="details__url" :href="bookmark.url">{{ bookmark.url }}</a>
-					<Actions v-if="isEditable" class="details__action">
-						<ActionButton icon="icon-rename" @click="onEditUrl" />
-					</Actions>
+					<NcActions v-if="isEditable" class="details__action">
+						<NcActionButton @click="onEditUrl">
+							<template #icon>
+								<PencilIcon />
+							</template>
+						</NcActionButton>
+					</NcActions>
 				</div>
 				<div v-else class="details__line">
-					<span class="icon-external" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
+					<OpenInNewIcon :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
 					<input v-model="url" class="details__url">
-					<Actions class="details__action">
-						<ActionButton icon="icon-confirm" @click="onEditUrlSubmit" />
-					</Actions>
-					<Actions class="details__action">
-						<ActionButton icon="icon-close" @click="onEditUrlCancel" />
-					</Actions>
+					<NcActions class="details__action">
+						<NcActionButton @click="onEditUrlSubmit">
+							<template #icon>
+								<ArrowRightIcon />
+							</template>
+						</NcActionButton>
+					</NcActions>
+					<NcActions class="details__action">
+						<NcActionButton @click="onEditUrlCancel">
+							<template #icon>
+								<CloseIcon />
+							</template>
+						</NcActionButton>
+					</NcActions>
 				</div>
 				<div class="details__line">
-					<FolderIcon :fill-color="colorMainText" size="18" />
+					<FolderIcon />
 					<div class="folders">
 						<span v-for="folderId in bookmark.folders"
 							:key="folderId"
 							v-tooltip="getFolderPath(folderId)"
 							class="folders__folder"
 							@click="onOpenFolder(folderId)">
-							<FolderIcon :fill-color="colorMainText" /> {{ getFolder(folderId).title || (getFolder(folderId).parent_folder ? t('bookmarks', 'Untitled folder') : t('bookmarks', 'Root folder')) }}
+							<FolderIcon /> {{ getFolder(folderId).title || (getFolder(folderId).parent_folder ? t('bookmarks', 'Untitled folder') : t('bookmarks', 'Root folder')) }}
 						</span>
 					</div>
 				</div>
 				<div class="details__line">
-					<span class="icon-tag" :aria-label="t('bookmarks', 'Tags')" :title="t('bookmarks', 'Tags')" />
-					<Multiselect
-						class="tags"
+					<TagIcon :aria-label="t('bookmarks', 'Tags')" :title="t('bookmarks', 'Tags')" />
+					<NcMultiselect class="tags"
 						:value="tags"
 						:auto-limit="false"
 						:limit="7"
@@ -76,12 +95,10 @@
 						@tag="onAddTag" />
 				</div>
 				<div class="details__line">
-					<span class="icon-edit"
-						role="figure"
+					<PencilBoxIcon role="figure"
 						:aria-label="t('bookmarks', 'Notes')"
 						:title="t('bookmarks', 'Notes')" />
-					<RichContenteditable
-						:value.sync="bookmark.description"
+					<NcRichContenteditable :value.sync="bookmark.description"
 						:contenteditable="isEditable"
 						:auto-complete="() => {}"
 						:placeholder="t('bookmarks', 'Notes for this bookmark …')"
@@ -95,40 +112,31 @@
 				<a class="button" :href="archivedFileUrl" target="_blank"><FileDocumentIcon :size="18" :fill-color="colorMainText" /> {{ t('bookmarks', 'Open file') }}</a>
 				<a class="button" :href="archivedFile" target="_blank"><span class="icon-files-dark" /> {{ t('bookmarks', 'Open file location') }}</a>
 			</div>
-		</AppSidebarTab>
-		<AppSidebarTab v-if="!isPublic"
-			id="bookmark-projects"
-			:name="t('bookmarks', 'Projects')"
-			icon="icon-projects"
-			:order="1">
-			<CollectionList v-if="bookmark"
-				:id="''+bookmark.id"
-				:name="bookmark.title"
-				type="bookmarks" />
-		</AppSidebarTab>
-	</AppSidebar>
+		</NcAppSidebarTab>
+	</NcAppSidebar>
 </template>
 <script>
-import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
-import AppSidebarTab from '@nextcloud/vue/dist/Components/AppSidebarTab'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import RichContenteditable from '@nextcloud/vue/dist/Components/RichContenteditable'
-import FileDocumentIcon from 'vue-material-design-icons/FileDocument'
-import FolderIcon from 'vue-material-design-icons/Folder'
-import { CollectionList } from 'nextcloud-vue-collections'
+import { NcAppSidebar, NcRichContenteditable, NcActionButton, NcActions, NcMultiselect, NcAppSidebarTab } from '@nextcloud/vue'
+import FileDocumentIcon from 'vue-material-design-icons/FileDocument.vue'
+import FolderIcon from 'vue-material-design-icons/Folder.vue'
+import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
+import PencilIcon from 'vue-material-design-icons/Pencil.vue'
+import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue'
+import TagIcon from 'vue-material-design-icons/Tag.vue'
+import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
+import PencilBoxIcon from 'vue-material-design-icons/PencilBox.vue'
 
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
-import { actions, mutations } from '../store/'
+import { actions, mutations } from '../store/index.js'
 
 const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { AppSidebar, AppSidebarTab, Multiselect, Actions, ActionButton, RichContenteditable, FileDocumentIcon, FolderIcon, CollectionList },
+	components: { NcAppSidebar, NcAppSidebarTab, NcMultiselect, NcActions, NcActionButton, NcRichContenteditable, FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon },
 	data() {
 		return {
 			title: '',

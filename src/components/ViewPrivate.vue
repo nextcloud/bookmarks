@@ -5,39 +5,38 @@
   -->
 
 <template>
-	<Content app-name="bookmarks">
+	<NcContent app-name="bookmarks">
 		<Navigation />
-		<AppContent :show-details.sync="showDetails">
+		<NcAppContent :show-details.sync="showDetails">
 			<template v-if="isFolderView && !smallScreen && folders.length" #list>
 				<FolderOverview :show-details.sync="showDetails" />
 			</template>
 			<Controls />
 			<BookmarksList />
-		</AppContent>
+		</NcAppContent>
 		<SidebarBookmark />
 		<SidebarFolder />
 		<MoveDialog />
 		<CopyDialog />
 		<LoadingModal />
 		<BookmarkContent />
-	</Content>
+	</NcContent>
 </template>
 
 <script>
-import Content from '@nextcloud/vue/dist/Components/Content'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import Navigation from './Navigation'
-import FolderOverview from './FolderOverview'
-import BookmarksList from './BookmarksList'
-import Controls from './Controls'
-import SidebarBookmark from './SidebarBookmark'
-import SidebarFolder from './SidebarFolder'
-import MoveDialog from './MoveDialog'
-import CopyDialog from './CopyDialog'
-import { privateRoutes } from '../router'
-import { actions, mutations } from '../store/'
-import LoadingModal from './LoadingModal'
-import BookmarkContent from './BookmarkContent'
+import { NcContent, NcAppContent } from '@nextcloud/vue'
+import Navigation from './Navigation.vue'
+import FolderOverview from './FolderOverview.vue'
+import BookmarksList from './BookmarksList.vue'
+import Controls from './Controls.vue'
+import SidebarBookmark from './SidebarBookmark.vue'
+import SidebarFolder from './SidebarFolder.vue'
+import MoveDialog from './MoveDialog.vue'
+import CopyDialog from './CopyDialog.vue'
+import { privateRoutes } from '../router.js'
+import { actions, mutations } from '../store/index.js'
+import LoadingModal from './LoadingModal.vue'
+import BookmarkContent from './BookmarkContent.vue'
 import { getCurrentUser } from '@nextcloud/auth'
 
 export default {
@@ -46,8 +45,8 @@ export default {
 		BookmarkContent,
 		LoadingModal,
 		Navigation,
-		Content,
-		AppContent,
+		NcContent,
+		NcAppContent,
 		FolderOverview,
 		Controls,
 		BookmarksList,
@@ -210,14 +209,7 @@ export default {
 }
 </script>
 <style>
-#app-content {
-	max-width: calc(100vw - 300px);
-	min-width: 0;
-}
-
-@media only screen and (max-width: 720px) {
-	#app-content {
-		max-width: 100%;
-	}
+.app-content {
+	position: relative !important;
 }
 </style>

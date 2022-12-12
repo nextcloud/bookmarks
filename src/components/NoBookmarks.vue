@@ -6,57 +6,79 @@
 
 <template>
 	<div class="bookmarkslist__emptyBookmarks">
-		<EmptyContent v-if="$route.name === routes.ARCHIVED">
-			{{ t('bookmarks', 'No bookmarked files') }}
-			<template #desc>
-				{{ t('bookmarks', 'Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.') }}
+		<NcEmptyContent v-if="$route.name === routes.ARCHIVED"
+			:title="t('bookmarks', 'No bookmarked files')"
+			:description="t('bookmarks', 'Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')">
+			<template #icon>
+				<FileDocumentMultipleIcon />
 			</template>
-		</EmptyContent>
-		<EmptyContent v-else-if="$route.name === routes.UNAVAILABLE">
-			{{ t('bookmarks', 'No broken links') }}
-			<template #desc>
-				{{ t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.') }}
+		</NcEmptyContent>
+		<NcEmptyContent v-else-if="$route.name === routes.UNAVAILABLE"
+			:title="t('bookmarks', 'No broken links')"
+			:description="t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')">
+			<template #icon>
+				<LinkVariantOffIcon />
 			</template>
-		</EmptyContent>
-		<EmptyContent v-else-if="$route.name === routes.SHARED_FOLDERS">
-			{{ t('bookmarks', 'No shared folders') }}
-			<template #desc>
-				{{ t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.') }}
+		</NcEmptyContent>
+		<NcEmptyContent v-else-if="$route.name === routes.SHARED_FOLDERS"
+			:title="t('bookmarks', 'No shared folders')"
+			:description="t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')">
+			<template #icon>
+				<ShareVariantIcon />
 			</template>
-		</EmptyContent>
-		<EmptyContent v-else-if="$route.name === routes.DUPLICATED">
-			{{ t('bookmarks', 'No duplicated bookmarks') }}
-			<template #desc>
-				{{ t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.') }}
+		</NcEmptyContent>
+		<NcEmptyContent v-else-if="$route.name === routes.DUPLICATED"
+			:title="t('bookmarks', 'No duplicated bookmarks')"
+			:description="t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')">
+			<template #icon>
+				<VectorLinkIcon />
 			</template>
-		</EmptyContent>
-		<EmptyContent v-else icon="icon-favorite">
-			{{ t('bookmarks', 'No bookmarks here') }}
-			<template v-if="!isPublic" #desc>
-				<p>{{ t('bookmarks', 'Add bookmarks manually or import bookmarks from a HTML file.') }}</p>
+		</NcEmptyContent>
+		<NcEmptyContent v-else
+			:title="t('bookmarks', 'No bookmarks here')"
+			:description="t('bookmarks', 'Add bookmarks manually or import bookmarks from a HTML file.')">
+			<template #icon>
+				<StarShootingIcon />
+			</template>
+			<template v-if="!isPublic" #action>
 				<input ref="import"
 					type="file"
 					class="import"
 					size="5"
 					@change="onImportSubmit">
-				<button @click="onCreateOpen">
+				<NcButton @click="onCreateOpen">
+					<template #icon>
+						<PlusIcon />
+					</template>
 					{{ t('bookmarks', 'Add a bookmark') }}
-				</button>
-				<button @click="onImportOpen">
-					<span :class="{'icon-upload': !importing, 'icon-loading-small': importing}" /> {{ t('bookmarks', 'Import bookmarks') }}
-				</button>
+				</NcButton>
+				<NcButton @click="onImportOpen">
+					<template #icon>
+						<UploadIcon v-if="!importing" />
+						<NcLoadingIcon v-else />
+					</template>
+					{{ t('bookmarks', 'Import bookmarks') }}
+				</NcButton>
 			</template>
-		</EmptyContent>
+		</NcEmptyContent>
 	</div>
 </template>
 
 <script>
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
-import { actions, mutations } from '../store'
-import { privateRoutes } from '../router'
+import { NcEmptyContent, NcButton, NcLoadingIcon } from '@nextcloud/vue'
+import { actions, mutations } from '../store/index.js'
+import { privateRoutes } from '../router.js'
+import StarShootingIcon from 'vue-material-design-icons/StarShooting.vue'
+import UploadIcon from 'vue-material-design-icons/Upload.vue'
+import PlusIcon from 'vue-material-design-icons/Plus.vue'
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
+import VectorLinkIcon from 'vue-material-design-icons/VectorLink.vue'
+import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff.vue'
+import FileDocumentMultipleIcon from 'vue-material-design-icons/FileDocumentMultiple.vue'
+
 export default {
 	name: 'NoBookmarks',
-	components: { EmptyContent },
+	components: { NcEmptyContent, StarShootingIcon, NcButton, NcLoadingIcon, UploadIcon, PlusIcon, ShareVariantIcon, VectorLinkIcon, LinkVariantOffIcon, FileDocumentMultipleIcon },
 	data() {
 		return { importing: false }
 	},
@@ -97,13 +119,7 @@ export default {
 	left: -1000px;
 }
 
-.material-design-icon {
-	position: relative;
-	top: 4px;
-	display: inline-flex;
-}
-
-p {
+button {
 	margin-bottom: 15px;
 }
 </style>

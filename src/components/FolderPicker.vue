@@ -8,12 +8,12 @@
 	<div class="folderpicker">
 		<h2>{{ title }}</h2>
 		<div class="currentfolder">
-			<Actions v-if="currentFolder.id !== -1">
-				<ActionButton @click="onSelect(currentFolder.parent_folder)">
+			<NcActions v-if="currentFolder.id !== -1">
+				<NcActionButton @click="onSelect(currentFolder.parent_folder)">
 					<ArrowLeftIcon slot="icon" :size="18" :fill-color="colorMainText" />
 					{{ t('bookmarks', 'Go back') }}
-				</ActionButton>
-			</Actions>
+				</NcActionButton>
+			</NcActions>
 			<h2 v-if="currentFolder.id !== -1">
 				<FolderIcon :fill-color="colorMainText" /><span>{{ currentFolder.title }}</span>
 			</h2>
@@ -35,19 +35,18 @@
 </template>
 
 <script>
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import FolderIcon from 'vue-material-design-icons/Folder'
-import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft'
-import HomeIcon from 'vue-material-design-icons/Home'
-import TreeFolder from './TreeFolder'
+import { NcActions, NcActionButton } from '@nextcloud/vue'
+import FolderIcon from 'vue-material-design-icons/Folder.vue'
+import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft.vue'
+import HomeIcon from 'vue-material-design-icons/Home.vue'
+import TreeFolder from './TreeFolder.vue'
 
 export default {
 	name: 'FolderPicker',
 	components: {
 		TreeFolder,
-		Actions,
-		ActionButton,
+		NcActions,
+		NcActionButton,
 		FolderIcon,
 		ArrowLeftIcon,
 		HomeIcon,

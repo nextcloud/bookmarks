@@ -5,21 +5,21 @@
   -->
 
 <template>
-	<Modal v-if="show" :title="t('bookmarks', 'Select folder')" @close="onClose">
+	<NcModal v-if="show" :title="t('bookmarks', 'Select folder')" @close="onClose">
 		<div class="folderpicker-dialog">
 			<FolderPicker :title="t('bookmarks', 'Select folder')" @submit="onSelect" />
 		</div>
-	</Modal>
+	</NcModal>
 </template>
 <script>
-import Modal from '@nextcloud/vue/dist/Components/Modal'
-import FolderPicker from './FolderPicker'
+import { NcModal } from '@nextcloud/vue'
+import FolderPicker from './FolderPicker.vue'
 
 export default {
 	name: 'FolderPickerDialog',
 	components: {
 		FolderPicker,
-		Modal,
+		NcModal,
 	},
 	props: {
 		value: {

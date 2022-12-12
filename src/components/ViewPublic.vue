@@ -5,29 +5,28 @@
   -->
 
 <template>
-	<Content app-name="bookmarks">
-		<AppContent>
+	<NcContent app-name="bookmarks">
+		<NcAppContent>
 			<Controls />
 			<BookmarksList :loading="!!loading.bookmarks" :bookmarks="bookmarks" />
-		</AppContent>
+		</NcAppContent>
 		<BookmarkContent />
-	</Content>
+	</NcContent>
 </template>
 
 <script>
-import Content from '@nextcloud/vue/dist/Components/Content'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import BookmarksList from './BookmarksList'
-import Controls from './Controls'
-import { actions, mutations } from '../store/'
-import BookmarkContent from './BookmarkContent'
+import { NcContent, NcAppContent } from '@nextcloud/vue'
+import BookmarksList from './BookmarksList.vue'
+import Controls from './Controls.vue'
+import { actions, mutations } from '../store/index.js'
+import BookmarkContent from './BookmarkContent.vue'
 
 export default {
 	name: 'ViewPublic',
 	components: {
 		BookmarkContent,
-		Content,
-		AppContent,
+		NcContent,
+		NcAppContent,
 		Controls,
 		BookmarksList,
 	},

@@ -5,8 +5,7 @@
   -->
 
 <template>
-	<div
-		v-drop-target="{allow: allowDrop, drop: (e) => $emit('drop', e)}"
+	<div v-drop-target="{allow: allowDrop, drop: (e) => $emit('drop', e)}"
 		:class="{
 			item: true,
 			active,
@@ -16,16 +15,14 @@
 		:draggable="draggable && !renaming"
 		@dragstart="onDragStart">
 		<template v-if="!renaming">
-			<a
-				:href="url"
+			<a :href="url"
 				class="item__clickLink"
 				tabindex="0"
 				target="_blank"
 				@click="onClick"
 				@contextmenu="onRightClick">
 				<div v-if="editable && selectable" ref="checkbox" class="item__checkbox">
-					<input :checked="selected" class="checkbox" type="checkbox"><label
-						v-tooltip="selectLabel"
+					<input :checked="selected" class="checkbox" type="checkbox"><label v-tooltip="selectLabel"
 						:aria-label="selectLabel"
 						@click="$event.preventDefault(); $event.stopImmediatePropagation(); $emit('select');" />
 				</div>
@@ -38,48 +35,46 @@
 				</div>
 				<div v-if="editable && !selected"
 					ref="actions"
-					class="item__actions"
+					class="item__NcActions"
 					@click="$event.preventDefault(); $event.stopPropagation()">
-					<Actions ref="actions">
+					<NcActions ref="actions">
 						<slot name="actions" />
-					</Actions>
+					</NcActions>
 				</div>
 			</a>
 		</template>
 		<div v-else class="item__rename">
 			<slot name="icon" />
-			<input
-				ref="input"
+			<input ref="input"
 				v-model="newTitle"
 				type="text"
 				:placeholder="renamePlaceholder"
 				@keyup.enter="onRenameSubmit">
-			<Actions>
-				<ActionButton icon="icon-checkmark" @click="onRenameSubmit">
+			<NcActions>
+				<NcActionButton icon="icon-checkmark" @click="onRenameSubmit">
 					{{ t('bookmarks', 'Submit') }}
-				</ActionButton>
-			</Actions>
-			<Actions>
-				<ActionButton icon="icon-close" @click="$emit('rename-cancel')">
+				</NcActionButton>
+			</NcActions>
+			<NcActions>
+				<NcActionButton icon="icon-close" @click="$emit('rename-cancel')">
 					{{ t('bookmarks', 'Cancel') }}
-				</ActionButton>
-			</Actions>
+				</NcActionButton>
+			</NcActions>
 		</div>
 	</div>
 </template>
 <script>
 import Vue from 'vue'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import TagLine from './TagLine'
-import DragImage from './DragImage'
-import { mutations } from '../store'
+import { NcActions, NcActionButton } from '@nextcloud/vue'
+import TagLine from './TagLine.vue'
+import DragImage from './DragImage.vue'
+import { mutations } from '../store/index.js'
 
 export default {
 	name: 'Item',
 	components: {
-		Actions,
-		ActionButton,
+		NcActions,
+		NcActionButton,
 		TagLine,
 	},
 	props: {
@@ -308,7 +303,7 @@ export default {
 	box-shadow: #aaa 0 0 3px inset;
 }
 
-.item__actions {
+.item__NcActions {
 	flex: 0;
 }
 
