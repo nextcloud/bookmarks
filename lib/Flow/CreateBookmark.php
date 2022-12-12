@@ -7,16 +7,22 @@
 
 namespace OCA\Bookmarks\Flow;
 
-use Exception;
 use OC;
-use OC\Files\View;
+use OCA\Bookmarks\Exception\AlreadyExistsError;
+use OCA\Bookmarks\Exception\UnsupportedOperation;
+use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\WorkflowEngine\Entity\File;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventDispatcher;
-use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
 use OCP\Files\Node;
+use OCP\Files\NotPermittedException;
 use OCP\IL10N;
+use OCP\Lock\LockedException;
 use Psr\Log\LoggerInterface;
 use OCP\IURLGenerator;
 use OCP\IUser;
@@ -50,13 +56,15 @@ class CreateBookmark implements IOperation {
 	 * @var LoggerInterface
 	 */
 	private $logger;
+	private IRootFolder $rootFolder;
 
-	public function __construct(IL10N $l, BookmarkService $bookmarks, IUserSession $session, IURLGenerator $urlGenerator, LoggerInterface $logger) {
+	public function __construct(IL10N $l, BookmarkService $bookmarks, IUserSession $session, IURLGenerator $urlGenerator, LoggerInterface $logger, IRootFolder $rootFolder) {
 		$this->l = $l;
 		$this->bookmarks = $bookmarks;
 		$this->session = $session;
 		$this->urlGenerator = $urlGenerator;
 		$this->logger = $logger;
+		$this->rootFolder = $rootFolder;
 	}
 
 	public static function register(IEventDispatcher $dispatcher): void {
@@ -123,7 +131,10 @@ class CreateBookmark implements IOperation {
 			$entity = $ruleMatcher->getEntity();
 
 			if ($entity instanceof File) {
-				$this->handleFile($eventName, $event, $user);
+				$node = current($this->rootFolder->getById($entity->exportContextIDs()['nodeId']));
+				if ($node !== null) {
+					$this->handleFile($node, $user);
+				}
 				continue;
 			}
 
@@ -134,31 +145,14 @@ class CreateBookmark implements IOperation {
 		}
 	}
 
-	private function handleFile(string $eventName, Event $event, IUser $user): void {
-		if ($eventName === '\OCP\Files::postRename') {
-			/** @var Node $node */
-			[, $node] = $event->getSubject();
-		} else {
-			$node = $event->getSubject();
-		}
-		/** @var Node $node */
-
-		// '', admin, 'files', 'path/to/file.txt'
-		[,$userId, $folder, $path] = explode('/', $node->getPath(), 4);
-		if ($folder !== 'files' || $node instanceof Folder) {
+	private function handleFile(Node $node, IUser $user): void {
+		if (!$node instanceof \OCP\Files\File) {
 			return;
 		}
-
-		// on convert text files
-		if ($node->getMimePart() !== 'text') {
-			return;
-		}
-
 
 		try {
-			$view = new View('/' . $userId . '/files');
-			$text = $view->file_get_contents($path);
-		} catch (Exception $e) {
+			$text = $node->getContent();
+		} catch (NotPermittedException|LockedException $e) {
 			return;
 		}
 
@@ -167,7 +161,11 @@ class CreateBookmark implements IOperation {
 		}
 
 		foreach ($matches[0] as $url) {
-			$this->bookmarks->create($user->getUID(), $url);
+			try {
+				$this->bookmarks->create($user->getUID(), $url);
+			} catch (AlreadyExistsError|UnsupportedOperation|UrlParseError|UserLimitExceededError|DoesNotExistException|MultipleObjectsReturnedException $e) {
+				return;
+			}
 		}
 	}
 }
