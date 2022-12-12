@@ -48,7 +48,6 @@ Requirements:
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>
 		<job>OCA\Bookmarks\BackgroundJobs\FileCacheGCJob</job>
 		<job>OCA\Bookmarks\BackgroundJobs\BackupJob</job>
-		<job>OCA\Bookmarks\BackgroundJobs\ExtractFromNotesJob</job>
 	</background-jobs>
 
 	<settings>
