@@ -17,7 +17,7 @@ If you have questions about how to install or use Nextcloud, please direct these
 
 Help us to maximize the effort we can spend fixing issues and adding new features, by not reporting duplicate issues.
 
-[template]: https://raw.github.com/nextcloud/server/master/issue_template.md
+[template]: https://github.com/nextcloud/bookmarks/blob/master/.github/ISSUE_TEMPLATE/bug_report.md
 [forum]: https://help.nextcloud.com/
 [irc]: https://webchat.freenode.net/?channels=nextcloud
 
