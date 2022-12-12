@@ -4,10 +4,10 @@
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
 import Vue from 'vue'
-import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
-import App from './components/ViewAdmin'
-import store from './store/'
-import AppGlobal from './mixins/AppGlobal'
+import { Tooltip } from '@nextcloud/vue'
+import App from './components/ViewAdmin.vue'
+import store from './store/index.js'
+import AppGlobal from './mixins/AppGlobal.js'
 import { Store } from 'vuex'
 
 Vue.mixin(AppGlobal)

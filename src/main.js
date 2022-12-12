@@ -5,12 +5,12 @@
  */
 import Vue from 'vue'
 import { Store } from 'vuex'
-import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
-import App from './App'
-import router from './router'
-import store from './store/'
-import AppGlobal from './mixins/AppGlobal'
-import DropTarget from './directives/drop-target'
+import { Tooltip } from '@nextcloud/vue'
+import App from './App.vue'
+import router from './router.js'
+import store from './store/index.js'
+import AppGlobal from './mixins/AppGlobal.js'
+import DropTarget from './directives/drop-target.js'
 import { subscribe } from '@nextcloud/event-bus'
 import { generateUrl } from '@nextcloud/router'
 

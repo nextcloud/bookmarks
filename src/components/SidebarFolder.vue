@@ -5,8 +5,7 @@
   -->
 
 <template>
-	<NcAppSidebar
-		v-if="isActive"
+	<NcAppSidebar v-if="isActive"
 		class="sidebar"
 		:title="folder.title"
 		:active.sync="activeTab"
@@ -47,8 +46,7 @@
 					<div v-if="publicLink"
 						v-tooltip="t('bookmarks', 'Reading allowed')"
 						:aria-label="t('bookmarks', 'Reading allowed')">
-						<EyeIcon
-							:size="20"
+						<EyeIcon :size="20"
 							:fill-color="colorMainText" />
 					</div>
 				</div>
@@ -80,21 +78,18 @@
 						<div v-if="share.canShare"
 							v-tooltip="t('bookmarks', 'Resharing allowed')"
 							:aria-label="t('bookmarks','Resharing allowed')">
-							<ShareAllIcon
-								:size="20"
+							<ShareAllIcon :size="20"
 								:fill-color="colorMainText" />
 						</div>
 						<div v-if="share.canWrite"
 							v-tooltip="t('bookmarks','Editing allowed')"
 							:aria-label="t('bookmarks','Editing allowed')">
-							<PencilIcon
-								:size="20"
+							<PencilIcon :size="20"
 								:fill-color="colorMainText" />
 						</div>
 						<div v-tooltip="t('bookmarks','Reading allowed')"
 							:aria-label="t('bookmarks', 'Reading allowed')">
-							<EyeIcon
-								:size="20"
+							<EyeIcon :size="20"
 								:fill-color="colorMainText" />
 						</div>
 					</div>
@@ -130,10 +125,10 @@ import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import copy from 'copy-text-to-clipboard'
-import { actions, mutations } from '../store/'
-import EyeIcon from 'vue-material-design-icons/Eye'
-import PencilIcon from 'vue-material-design-icons/Pencil'
-import ShareAllIcon from 'vue-material-design-icons/ShareAll'
+import { actions, mutations } from '../store/index.js'
+import EyeIcon from 'vue-material-design-icons/Eye.vue'
+import PencilIcon from 'vue-material-design-icons/Pencil.vue'
+import ShareAllIcon from 'vue-material-design-icons/ShareAll.vue'
 import { CollectionList } from 'nextcloud-vue-collections'
 
 export default {

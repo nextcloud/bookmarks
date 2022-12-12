@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import FolderIcon from 'vue-material-design-icons/Folder'
-import FolderOpenIcon from 'vue-material-design-icons/FolderOpen'
-import { privateRoutes } from '../router'
+import FolderIcon from 'vue-material-design-icons/Folder.vue'
+import FolderOpenIcon from 'vue-material-design-icons/FolderOpen.vue'
+import { privateRoutes } from '../router.js'
 export default {
 	name: 'TreeFolder',
 	components: { FolderIcon, FolderOpenIcon },

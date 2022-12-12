@@ -19,9 +19,9 @@
 	</Item>
 </template>
 <script>
-import EarthIcon from 'vue-material-design-icons/Earth'
-import Item from './Item'
-import { actions, mutations } from '../store/'
+import EarthIcon from 'vue-material-design-icons/Earth.vue'
+import Item from './Item.vue'
+import { actions, mutations } from '../store/index.js'
 
 export default {
 	name: 'CreateBookmark',

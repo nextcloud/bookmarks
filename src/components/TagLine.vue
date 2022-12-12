@@ -16,7 +16,7 @@
 	</div>
 </template>
 <script>
-import { privateRoutes, publicRoutes } from '../router'
+import { privateRoutes, publicRoutes } from '../router.js'
 
 export default {
 	name: 'TagLine',

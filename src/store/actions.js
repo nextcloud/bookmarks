@@ -7,11 +7,11 @@
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { loadState } from '@nextcloud/initial-state'
-import AppGlobal from '../mixins/AppGlobal'
-import { mutations } from './mutations'
+import AppGlobal from '../mixins/AppGlobal.js'
+import { mutations } from './mutations.js'
 import * as Parallel from 'async-parallel'
-import uniq from 'lodash/uniq'
-import difference from 'lodash/difference'
+import uniq from 'lodash/uniq.js'
+import difference from 'lodash/difference.js'
 
 const BATCH_SIZE = 42
 

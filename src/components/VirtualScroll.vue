@@ -4,7 +4,7 @@
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
 <script>
-import ItemSkeleton from './ItemSkeleton'
+import ItemSkeleton from './ItemSkeleton.vue'
 
 const GRID_ITEM_HEIGHT = 200 + 10
 const GRID_ITEM_WIDTH = 250 + 10

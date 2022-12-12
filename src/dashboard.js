@@ -5,11 +5,11 @@
  */
 
 import Vue from 'vue'
-import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
-import store from './store/'
-import AppGlobal from './mixins/AppGlobal'
+import { Tooltip } from '@nextcloud/vue'
+import store from './store/index.js'
+import AppGlobal from './mixins/AppGlobal.js'
 import DashboardRecent from './components/DashboardRecent.vue'
-import DashboardFrequent from './components/DashboardFrequent'
+import DashboardFrequent from './components/DashboardFrequent.vue'
 import { Store } from 'vuex'
 import deepClone from 'clone-deep'
 

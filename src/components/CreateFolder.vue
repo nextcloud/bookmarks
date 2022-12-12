@@ -19,9 +19,9 @@
 	</Item>
 </template>
 <script>
-import FolderIcon from 'vue-material-design-icons/Folder'
-import Item from './Item'
-import { actions, mutations } from '../store/'
+import FolderIcon from 'vue-material-design-icons/Folder.vue'
+import Item from './Item.vue'
+import { actions, mutations } from '../store/index.js'
 
 export default {
 	name: 'CreateFolder',

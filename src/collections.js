@@ -5,12 +5,12 @@
  */
 
 import Vue from 'vue'
-import FolderPickerDialog from './components/FolderPickerDialog'
+import FolderPickerDialog from './components/FolderPickerDialog.vue'
 import { Store } from 'vuex'
 import deepClone from 'clone-deep'
-import store, { actions } from './store'
-import AppGlobal from './mixins/AppGlobal'
-import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
+import store, { actions } from './store/index.js'
+import AppGlobal from './mixins/AppGlobal.js'
+import { Tooltip } from '@nextcloud/vue'
 
 // eslint-disable-next-line
 __webpack_nonce__ = btoa(OC.requestToken)

@@ -15,7 +15,7 @@
 <script>
 import { DashboardWidget } from '@nextcloud/vue-dashboard'
 import { generateUrl } from '@nextcloud/router'
-import { actions } from '../store'
+import { actions } from '../store/index.js'
 export default {
 	name: 'DashboardFrequent',
 	components: { DashboardWidget },

@@ -5,15 +5,13 @@
   -->
 
 <template>
-	<div
-		:class="{
+	<div :class="{
 			item: true,
 			'item--gridview': viewMode === 'grid'
 		}"
 		:style="{ background: '#efefef', height: viewMode !== 'grid'? '45px' : '' }">
 		<div class="item__labels" />
-		<div
-			class="item__actions" />
+		<div class="item__actions" />
 	</div>
 </template>
 <script>

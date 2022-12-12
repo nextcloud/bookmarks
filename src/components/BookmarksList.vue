@@ -5,11 +5,10 @@
   -->
 
 <template>
-	<div
-		:class="{
-			bookmarkslist: true,
-			'bookmarkslist--gridview': viewMode === 'grid'
-		}">
+	<div :class="{
+		bookmarkslist: true,
+		'bookmarkslist--gridview': viewMode === 'grid'
+	}">
 		<div v-if="$route.name === routes.ARCHIVED && bookmarks.length" class="bookmarkslist__description">
 			{{
 				t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
@@ -37,25 +36,21 @@
 				<!-- FOLDER VIEW WITH CUSTOM SORTING -->
 				<template v-if="sortOrder === 'index' && children.length">
 					<template v-for="item in children">
-						<Folder
-							v-if="item.type === 'folder' && getFolder(item.id)"
+						<Folder v-if="item.type === 'folder' && getFolder(item.id)"
 							:key="item.type + item.id"
 							:folder="getFolder(item.id)" />
-						<Bookmark
-							v-if="item.type === 'bookmark' && getBookmark(item.id)"
+						<Bookmark v-if="item.type === 'bookmark' && getBookmark(item.id)"
 							:key="item.type + item.id"
 							:bookmark="getBookmark(item.id)" />
 					</template>
 				</template>
 				<!-- FOLDER VIEW WITH NORMAL SORTING -->
 				<template v-else-if="(subFolders.length || bookmarks.length) && !loading">
-					<Folder
-						v-for="folder in subFolders"
+					<Folder v-for="folder in subFolders"
 						:key="'folder' + folder.id"
 						:folder="folder" />
 					<template v-if="bookmarks.length">
-						<Bookmark
-							v-for="bookmark in bookmarks"
+						<Bookmark v-for="bookmark in bookmarks"
 							:key="'bookmark' + bookmark.id"
 							:bookmark="bookmark" />
 					</template>
@@ -65,12 +60,10 @@
 			</template>
 			<!-- NON-FOLDER VIEW -->
 			<template v-else-if="subFolders.length || bookmarks.length">
-				<Folder
-					v-for="folder in subFolders"
+				<Folder v-for="folder in subFolders"
 					:key="'folder' + folder.id"
 					:folder="folder" />
-				<Bookmark
-					v-for="bookmark in bookmarks"
+				<Bookmark v-for="bookmark in bookmarks"
 					:key="'bookmark' + bookmark.id"
 					:bookmark="bookmark" />
 			</template>
@@ -81,15 +74,15 @@
 </template>
 
 <script>
-import Bookmark from './Bookmark'
-import Folder from './Folder'
-import CreateBookmark from './CreateBookmark'
-import CreateFolder from './CreateFolder'
-import { actions, mutations } from '../store'
-import NoBookmarks from './NoBookmarks'
-import FirstRun from './FirstRun'
-import VirtualScroll from './VirtualScroll'
-import { privateRoutes } from '../router'
+import Bookmark from './Bookmark.vue'
+import Folder from './Folder.vue'
+import CreateBookmark from './CreateBookmark.vue'
+import CreateFolder from './CreateFolder.vue'
+import { actions, mutations } from '../store/index.js'
+import NoBookmarks from './NoBookmarks.vue'
+import FirstRun from './FirstRun.vue'
+import VirtualScroll from './VirtualScroll.vue'
+import { privateRoutes } from '../router.js'
 
 export default {
 	name: 'BookmarksList',

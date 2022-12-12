@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mutations } from './store/'
+import { mutations } from './store/index.js'
 import { showError, showMessage } from '@nextcloud/dialogs'
 import { generateFilePath } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'

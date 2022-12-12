@@ -21,8 +21,7 @@
 			<p>{{ t('bookmarks',
 				'Enter the path of a folder in your Files where bookmarked files should be stored.'
 			) }}</p>
-			<input
-				:value="archivePath"
+			<input :value="archivePath"
 				:readonly="true"
 				@click="onChangeArchivePath">
 		</label>
@@ -32,8 +31,7 @@
 			<p>{{ t('bookmarks',
 				'Enter the path of a folder in your Files where backups will be stored.'
 			) }}</p>
-			<input
-				:value="backupPath"
+			<input :value="backupPath"
 				:readonly="true"
 				@click="onChangeBackupPath">
 		</label>
@@ -60,8 +58,7 @@
 			<p>{{ t('bookmarks',
 				'Drag this to your browser bookmarks and click it to quickly bookmark a webpage.'
 			) }}</p>
-			<a
-				class="button center"
+			<a class="button center"
 				:href="bookmarklet"
 				@click.prevent="void 0">{{
 					t('bookmarks', 'Add to {instanceName}', {
@@ -73,7 +70,7 @@
 </template>
 <script>
 import { generateUrl } from '@nextcloud/router'
-import { actions } from '../store/'
+import { actions } from '../store/index.js'
 import { getRequestToken } from '@nextcloud/auth'
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 

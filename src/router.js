@@ -8,9 +8,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import { generateUrl } from '@nextcloud/router'
 
-const ViewPrivate = () => import(/* webpackPreload: true */ './components/ViewPrivate')
-const ViewPublic = () => import(/* webpackPreload: true */'./components/ViewPublic')
-const ViewBookmarklet = () => import(/* webpackPreload: true */'./components/ViewBookmarklet')
+const ViewPrivate = () => import(/* webpackPreload: true */ './components/ViewPrivate.vue')
+const ViewPublic = () => import(/* webpackPreload: true */'./components/ViewPublic.vue')
+const ViewBookmarklet = () => import(/* webpackPreload: true */'./components/ViewBookmarklet.vue')
 
 Vue.use(Router)
 

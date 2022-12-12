@@ -6,18 +6,18 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Mutations from './mutations'
-import Actions from './actions'
-import { privateRoutes, publicRoutes } from '../router'
+import Mutations from './mutations.js'
+import Actions from './actions.js'
+import { privateRoutes, publicRoutes } from '../router.js'
 import { generateUrl } from '@nextcloud/router'
 import { getCurrentUser } from '@nextcloud/auth'
-import { findFolder } from './findFolder'
+import { findFolder } from './findFolder.js'
 
 Vue.use(Vuex)
 
-export { mutations } from './mutations'
+export { mutations } from './mutations.js'
 
-export { actions } from './actions'
+export { actions } from './actions.js'
 
 export default {
 	mutations: Mutations,

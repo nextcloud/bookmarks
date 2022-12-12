@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import FolderIcon from 'vue-material-design-icons/Folder'
-import EarthIcon from 'vue-material-design-icons/Earth'
+import FolderIcon from 'vue-material-design-icons/Folder.vue'
+import EarthIcon from 'vue-material-design-icons/Earth.vue'
 export default {
 	name: 'DragImage',
 	components: { FolderIcon, EarthIcon },
