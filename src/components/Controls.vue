@@ -100,11 +100,20 @@
 					{{ !$store.state.public? t('bookmarks', 'The RSS feed requires authentication with your Nextcloud credentials') : '' }}
 				</NcActionButton>
 			</NcActions>
+			<NcTextField v-if="isPublic"
+				:value.sync="search"
+				:label="t('bookmarks','Search')"
+				:placeholder="t('bookmarks','Search')"
+				class="inline-search"
+				@update:value="onSearch($event)">
+				<MagnifyIcon />
+			</NcTextField>
 		</div>
 	</div>
 </template>
 <script>
-import { NcMultiselect, NcActions, NcActionButton, NcActionInput, NcActionRouter } from '@nextcloud/vue'
+import { NcMultiselect, NcActions, NcActionButton, NcActionInput, NcActionRouter, NcTextField } from '@nextcloud/vue'
+import MagnifyIcon from 'vue-material-design-icons/Magnify.vue'
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import ViewGridIcon from 'vue-material-design-icons/ViewGrid.vue'
 import ViewListIcon from 'vue-material-design-icons/ViewList.vue'
@@ -147,6 +156,8 @@ export default {
 		EarthIcon,
 		ShareVariantIcon,
 		TagIcon,
+		NcTextField,
+		MagnifyIcon,
 	},
 	props: {},
 	data() {
@@ -271,6 +282,10 @@ export default {
 			})
 		},
 
+		onSearch(query) {
+			this.$router.push({ name: this.routes.SEARCH, params: { search: query } })
+		},
+
 		copyRssUrl() {
 			copy(this.rssURL)
 			this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'RSS feed copied'))
@@ -348,5 +363,11 @@ export default {
 
 .controls__right > * {
 	min-width: 30px;
+}
+
+.controls__right .inline-search {
+	max-width: 150px !important;
+	position: relative;
+	top: 4px;
 }
 </style>

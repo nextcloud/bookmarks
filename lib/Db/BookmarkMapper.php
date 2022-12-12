@@ -603,6 +603,7 @@ class BookmarkMapper extends QBMapper {
 		[$cte, $params, $paramTypes] = $this->_generateCTE($folder->getId());
 
 		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(false);
 		$bookmark_cols = array_map(static function ($c) {
 			return 'b.' . $c;
 		}, Bookmark::$columns);
@@ -616,7 +617,7 @@ class BookmarkMapper extends QBMapper {
 		}
 
 		$qb
-			->from('bookmarks', 'b')
+			->from('*PREFIX*bookmarks', 'b')
 			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 
 
@@ -782,7 +783,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param IQueryBuilder $qb
 	 */
 	private function _selectFolders(IQueryBuilder $qb): void {
-		$qb->leftJoin('b', 'bookmarks_tree', 'tr2', 'b.id = tr2.id AND tr2.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
+		$qb->leftJoin('b', '*PREFIX*bookmarks_tree', 'tr2', 'b.id = tr2.id AND tr2.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
 		if ($this->getDbType() === 'pgsql') {
 			$folders = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tr2.parent_folder') . "), ',')");
 		} else {
