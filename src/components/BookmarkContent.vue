@@ -5,13 +5,8 @@
   -->
 
 <template>
-	<div v-if="isActive && hasMinLength" class="bookmark-content">
-		<template v-if="archivedFile">
-			<div class="content iframe">
-				<iframe :src="archivedFileUrl" />
-			</div>
-		</template>
-		<div v-else-if="bookmark.textContent" class="content" v-html="content" />
+	<div v-if="isActive && hasMinLength && !archivedFile" class="bookmark-content">
+		<div v-if="bookmark.textContent" class="content" v-html="content" />
 		<div v-else>
 			<NcEmptyContent :title="t('bookmarks', 'Content pending')"
 				:description="t('bookmarks', 'This content is being downloaded for offline use. Please check back later.')">

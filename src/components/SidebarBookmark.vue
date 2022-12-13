@@ -106,17 +106,25 @@
 						class="notes"
 						@update:value="onNotesChange" />
 				</div>
-			</div>
-			<div v-if="archivedFile">
-				<h3><FileDocumentIcon slot="icon" :size="18" /> {{ t('bookmarks', 'Archived file') }}</h3>
-				<a class="button" :href="archivedFileUrl" target="_blank"><FileDocumentIcon :size="18" :fill-color="colorMainText" /> {{ t('bookmarks', 'Open file') }}</a>
-				<a class="button" :href="archivedFile" target="_blank"><span class="icon-files-dark" /> {{ t('bookmarks', 'Open file location') }}</a>
+				<div v-if="archivedFile" class="details__line">
+					<FileDocumentIcon role="figure"
+						:aria-label="t('bookmarks', 'Archived file')"
+						:title="t('bookmarks', 'Archived file')" />
+					<NcButton :href="archivedFileUrl" target="_blank" type="primary">
+						<template #icon>
+							<DownloadIcon :size="18" :fill-color="colorMainText" />
+						</template>{{ t('bookmarks', 'Download file') }}
+					</NcButton>
+					<NcButton :href="archivedFile" target="_blank">
+						{{ t('bookmarks', 'Open file location') }}
+					</NcButton>
+				</div>
 			</div>
 		</NcAppSidebarTab>
 	</NcAppSidebar>
 </template>
 <script>
-import { NcAppSidebar, NcRichContenteditable, NcActionButton, NcActions, NcMultiselect, NcAppSidebarTab } from '@nextcloud/vue'
+import { NcAppSidebar, NcRichContenteditable, NcActionButton, NcActions, NcMultiselect, NcAppSidebarTab, NcButton } from '@nextcloud/vue'
 import FileDocumentIcon from 'vue-material-design-icons/FileDocument.vue'
 import FolderIcon from 'vue-material-design-icons/Folder.vue'
 import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
@@ -126,6 +134,7 @@ import TagIcon from 'vue-material-design-icons/Tag.vue'
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
 import PencilBoxIcon from 'vue-material-design-icons/PencilBox.vue'
+import DownloadIcon from 'vue-material-design-icons/Download.vue'
 
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
@@ -136,7 +145,7 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { NcAppSidebar, NcAppSidebarTab, NcMultiselect, NcActions, NcActionButton, NcRichContenteditable, FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon },
+	components: { NcAppSidebar, NcAppSidebarTab, NcMultiselect, NcActions, NcActionButton, NcRichContenteditable, FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon, DownloadIcon, NcButton },
 	data() {
 		return {
 			title: '',
@@ -268,30 +277,19 @@ export default {
 			const path = this.$store.getters.getFolder(id).reverse().map(folder => folder.title)
 			return '/' + path.join('/')
 		},
+		openViewer() {
+			try {
+				OCA.Viewer.open({
+					path: '/' + this.bookmark.archivedFilePath.split('/').slice(2).join('/'),
+				})
+			} catch (e) {
+				this.$store.commit(mutations.SHOW_ERROR, e.message)
+			}
+		},
 	},
 }
 </script>
 <style>
-.sidebar span[class^='icon-'],
-.sidebar .material-design-icon {
-	display: inline-block;
-	position: relative;
-	top: 3px;
-	opacity: 0.5;
-}
-
-.sidebar .details__line > span[class^='icon-'],
-.sidebar .details__line > .material-design-icon {
-	display: inline-block;
-	opacity: 0.5;
-	margin-right: 10px;
-}
-
-.sidebar .details__line > span[class^='icon-'] {
-	position: relative;
-	top: 11px;
-}
-
 .sidebar h3 {
 	margin-top: 20px;
 }
@@ -347,6 +345,7 @@ export default {
 	border-radius: var(--border-radius-large);
 	margin-right: 5px;
 	cursor: pointer;
+	display: flex;
 }
 
 .sidebar .folders__folder * {
