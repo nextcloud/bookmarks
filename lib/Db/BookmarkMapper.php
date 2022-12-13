@@ -355,6 +355,8 @@ class BookmarkMapper extends QBMapper {
 		} elseif ($sqlSortColumn === 'index') {
 			$qb->addOrderBy('tree.idx', 'ASC');
 			$qb->addGroupBy('tree.idx');
+		} elseif ($sqlSortColumn === 'url') {
+			$qb->addOrderBy('b.url', 'ASC');
 		} else {
 			$qb->addOrderBy('b.'.$sqlSortColumn, 'DESC');
 		}

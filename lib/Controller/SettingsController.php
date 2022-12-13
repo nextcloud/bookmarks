@@ -92,7 +92,7 @@ class SettingsController extends ApiController {
 	 * @NoAdminRequired
 	 */
 	public function setSorting($sorting = ""): JSONResponse {
-		$legalArguments = ['title', 'added', 'clickcount', 'lastmodified', 'index'];
+		$legalArguments = ['title', 'added', 'clickcount', 'lastmodified', 'index', 'url'];
 		if (!in_array($sorting, $legalArguments)) {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
 		}

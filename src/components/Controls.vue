@@ -125,6 +125,7 @@ import SortAlphabeticalAscendingIcon from 'vue-material-design-icons/SortAlphabe
 import SortBoolAscendingIcon from 'vue-material-design-icons/SortBoolAscending.vue'
 import SortClockAscendingOutlineIcon from 'vue-material-design-icons/SortClockAscendingOutline.vue'
 import SortCalendarAscendingIcon from 'vue-material-design-icons/SortCalendarAscending.vue'
+import SortNumericAscendingIcon from 'vue-material-design-icons/SortNumericAscending.vue'
 import SortAscendingIcon from 'vue-material-design-icons/SortAscending.vue'
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
 import TagIcon from 'vue-material-design-icons/Tag.vue'
@@ -148,6 +149,7 @@ export default {
 		SortAlphabeticalAscendingIcon,
 		SortClockAscendingOutlineIcon,
 		SortBoolAscendingIcon,
+		SortNumericAscendingIcon,
 		FolderIcon,
 		ArrowLeftIcon,
 		PlusIcon,
@@ -170,6 +172,7 @@ export default {
 				title: { icon: 'SortAlphabeticalAscendingIcon', description: this.t('bookmarks', 'Sort by title') },
 				clickcount: { icon: 'SortBoolAscendingIcon', description: this.t('bookmarks', 'Sort by click count') },
 				index: { icon: 'SortAscendingIcon', description: this.t('bookmarks', 'Sort by manual order') },
+				url: { icon: 'SortNumericAscendingIcon', description: this.t('bookmarks', 'Sort by URL') },
 			},
 		}
 	},
