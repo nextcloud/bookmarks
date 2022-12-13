@@ -8,11 +8,13 @@
 	<NcContent app-name="bookmarks">
 		<Navigation />
 		<NcAppContent :show-details.sync="showDetails">
-			<template v-if="isFolderView && !smallScreen && folders.length" #list>
+			<template v-if="showFolderOverview" #list>
 				<FolderOverview :show-details.sync="showDetails" />
 			</template>
-			<Controls />
-			<BookmarksList />
+			<template #default>
+				<Controls />
+				<BookmarksList />
+			</template>
 		</NcAppContent>
 		<SidebarBookmark />
 		<SidebarFolder />
@@ -72,12 +74,24 @@ export default {
 		isFolderView() {
 			return this.$route.name === privateRoutes.FOLDER || this.$route.name === privateRoutes.HOME
 		},
+		showFolderOverview() {
+			return this.isFolderView && !this.smallScreen && this.folders.length
+		},
 	},
-
 	watch: {
 		$route: 'onRoute',
+		async showFolderOverview(value) {
+			// hack to make bookmarkslist rerender
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'viewMode',
+				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid',
+			})
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'viewMode',
+				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid',
+			})
+		},
 	},
-
 	async created() {
 		const mediaQuery = window.matchMedia('(max-width: 1024px)')
 		this.smallScreen = mediaQuery.matches
