@@ -10,15 +10,17 @@
 		<div class="currentfolder">
 			<NcActions v-if="currentFolder.id !== -1">
 				<NcActionButton @click="onSelect(currentFolder.parent_folder)">
-					<ArrowLeftIcon slot="icon" :size="18" :fill-color="colorMainText" />
+					<template #icon>
+						<ArrowLeftIcon />
+					</template>
 					{{ t('bookmarks', 'Go back') }}
 				</NcActionButton>
 			</NcActions>
 			<h2 v-if="currentFolder.id !== -1">
-				<FolderIcon :fill-color="colorMainText" /><span>{{ currentFolder.title }}</span>
+				<FolderIcon /><span>{{ currentFolder.title }}</span>
 			</h2>
 			<h2 v-else>
-				<HomeIcon :fill-color="colorMainText" />
+				<HomeIcon />
 			</h2>
 		</div>
 		<TreeFolder v-for="folder of items"

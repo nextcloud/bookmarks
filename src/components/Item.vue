@@ -51,12 +51,18 @@
 				:placeholder="renamePlaceholder"
 				@keyup.enter="onRenameSubmit">
 			<NcActions>
-				<NcActionButton icon="icon-checkmark" @click="onRenameSubmit">
+				<NcActionButton @click="onRenameSubmit">
+					<template #icon>
+						<CheckIcon />
+					</template>
 					{{ t('bookmarks', 'Submit') }}
 				</NcActionButton>
 			</NcActions>
 			<NcActions>
-				<NcActionButton icon="icon-close" @click="$emit('rename-cancel')">
+				<NcActionButton @click="$emit('rename-cancel')">
+					<template #icon>
+						<CloseIcon />
+					</template>
 					{{ t('bookmarks', 'Cancel') }}
 				</NcActionButton>
 			</NcActions>
@@ -69,6 +75,8 @@ import { NcActions, NcActionButton } from '@nextcloud/vue'
 import TagLine from './TagLine.vue'
 import DragImage from './DragImage.vue'
 import { mutations } from '../store/index.js'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
 
 export default {
 	name: 'Item',
@@ -76,6 +84,8 @@ export default {
 		NcActions,
 		NcActionButton,
 		TagLine,
+		CheckIcon,
+		CloseIcon,
 	},
 	props: {
 		title: {

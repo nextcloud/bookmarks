@@ -12,8 +12,10 @@
 		@close="onClose">
 		<NcAppSidebarTab id="folder-details"
 			:name="t('bookmarks', 'Details')"
-			icon="icon-info"
 			:order="0">
+			<template #icon>
+				<InformationVariantIcon />
+			</template>
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
 			<NcUserBubble :user="folder.userId" :display-name="folder.userId" />
 			<h3>{{ t('bookmarks', 'Bookmarks') }}</h3>
@@ -22,10 +24,12 @@
 		<NcAppSidebarTab v-if="isSharable"
 			id="folder-sharing"
 			:name="t('bookmarks', 'Sharing')"
-			icon="icon-shared"
 			:order="1">
+			<template #icon>
+				<ShareVariantIcon />
+			</template>
 			<div class="participant-select">
-				<figure :class="{'icon-user': true, 'share__avatar': true }" />
+				<AccountIcon :class="{'share__avatar': true }" />
 				<NcMultiselect v-model="participant"
 					label="displayName"
 					track-by="user"
@@ -38,7 +42,7 @@
 					@search-change="onParticipantSearch" />
 			</div>
 			<div class="share">
-				<figure :class="{'icon-public': true, 'share__avatar': true, active: publicLink }" />
+				<LinkIcon :class="{'share__avatar': true, active: publicLink }" />
 				<h3 class="share__title">
 					{{ t('bookmarks', 'Share link') }}
 				</h3>
@@ -52,18 +56,30 @@
 				</div>
 				<NcActions class="share__actions">
 					<template v-if="publicLink">
-						<NcActionButton icon="icon-clippy" @click="onCopyPublicLink">
+						<NcActionButton @click="onCopyPublicLink">
+							<template #icon>
+								<ClipboardIcon />
+							</template>
 							{{ t('bookmarks', 'Copy link') }}
 						</NcActionButton>
 						<NcActionButton icon="icon-clippy" @click="onCopyRssLink">
+							<template #icon>
+								<RssIcon />
+							</template>
 							{{ t('bookmarks', 'Copy RSS feed') }}
 						</NcActionButton>
 						<NcActionSeparator />
-						<NcActionButton icon="icon-delete" @click="onDeletePublicLink">
+						<NcActionButton @click="onDeletePublicLink">
+							<template #icon>
+								<DeleteIcon />
+							</template>
 							{{ t('bookmarks', 'Delete link') }}
 						</NcActionButton>
 					</template>
-					<NcActionButton v-else icon="icon-add" @click="onAddPublicLink">
+					<NcActionButton v-else @click="onAddPublicLink">
+						<template #icon>
+							<PlusIcon />
+						</template>
 						{{ t('bookmarks', 'Create public link') }}
 					</NcActionButton>
 				</NcActions>
@@ -107,16 +123,6 @@
 				</div>
 			</div>
 		</NcAppSidebarTab>
-		<NcAppSidebarTab v-if="!isPublic"
-			id="bookmark-projects"
-			:name="t('bookmarks', 'Projects')"
-			icon="icon-projects"
-			:order="2">
-			<CollectionList v-if="folder"
-				:id="''+folder.id"
-				:name="folder.title"
-				type="bookmarks-folder" />
-		</NcAppSidebarTab>
 	</NcAppSidebar>
 </template>
 <script>
@@ -129,11 +135,18 @@ import { actions, mutations } from '../store/index.js'
 import EyeIcon from 'vue-material-design-icons/Eye.vue'
 import PencilIcon from 'vue-material-design-icons/Pencil.vue'
 import ShareAllIcon from 'vue-material-design-icons/ShareAll.vue'
-import { CollectionList } from 'nextcloud-vue-collections'
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
+import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
+import ClipboardIcon from 'vue-material-design-icons/Clipboard.vue'
+import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import RssIcon from 'vue-material-design-icons/Rss.vue'
+import PlusIcon from 'vue-material-design-icons/Plus.vue'
+import LinkIcon from 'vue-material-design-icons/Link.vue'
+import AccountIcon from 'vue-material-design-icons/Account.vue'
 
 export default {
 	name: 'SidebarFolder',
-	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcMultiselect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, CollectionList },
+	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcMultiselect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon },
 	data() {
 		return {
 			participantSearchResults: [],
@@ -268,13 +281,6 @@ export default {
 }
 </script>
 <style>
-	.sidebar span[class^='icon-'] {
-		display: inline-block;
-		position: relative;
-		top: 3px;
-		opacity: 0.5;
-	}
-
 	.participant-select {
 		display: flex;
 	}
@@ -298,6 +304,7 @@ export default {
 		flex-grow: 0;
 		height: 44px;
 		width: 44px;
+		padding: 10px;
 	}
 
 	.share__avatar.active {
