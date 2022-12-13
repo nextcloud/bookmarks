@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.0.0] - 2022-12-13
+### Breaking changes
+ - Drop support for nc < v25
+ - Remove projects support
+
+### New
+ - Implement sorting by URL
+ - Fix archived files UX
+ - Fix bookmarkslist getting emptied when folderoverview is hidden/shown
+ - Make search available on public links
+ - Upgrade to new NC25 design
+
+### Fixed
+ - Remove ExtractFromNotesJob
+ - Fix WorkflowEngine integration
+ - ItemSkeleton: Fix background color on dark theme
+ - Update readability.php
+ - More translations
+
 ## [11.0.4] - 2022-10-10
 
 ### Fixed
