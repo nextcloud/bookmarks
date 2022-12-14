@@ -8,6 +8,7 @@ OC.L10N.register(
     "Delete" : "លុប",
     "New" : "ថ្មី",
     "New folder" : "ថត​ថ្មី",
+    "Search" : "ស្វែងរក",
     "Rename folder" : "ប្ដូរ​ឈ្មោះ​ថត",
     "Delete folder" : "លុប​ថត",
     "Cancel" : "បោះបង់",

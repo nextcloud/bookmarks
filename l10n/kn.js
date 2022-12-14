@@ -7,6 +7,7 @@ OC.L10N.register(
     "Select all" : "﻿ಎಲ್ಲಾ ಆಯ್ಕೆ ಮಾಡಿ",
     "New" : "﻿ಹೊಸ",
     "New folder" : "﻿ಹೊಸ ಕೋಶ",
+    "Search" : "Search",
     "Cancel" : "﻿ರದ್ದು",
     "Shared with you" : "Shared with you",
     "Files" : "ಕಡತಗಳು",

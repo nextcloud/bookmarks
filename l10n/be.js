@@ -4,6 +4,7 @@ OC.L10N.register(
     "Rename" : "Rename",
     "Move" : "Move",
     "Delete" : "Delete",
+    "Search" : "Search",
     "Cancel" : "Cancel",
     "Shared with you" : "Shared with you",
     "Files" : "Файлы",

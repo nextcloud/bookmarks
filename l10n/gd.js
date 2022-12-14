@@ -8,6 +8,7 @@ OC.L10N.register(
     "Delete" : "Sguab às",
     "Select all" : "Tagh na h-uile",
     "New folder" : "Pasgan ùr",
+    "Search" : "Lorg",
     "Cancel" : "Sguir dheth",
     "Files" : "Faidhlichean",
     "Link" : "Ceangal",

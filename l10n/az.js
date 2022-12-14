@@ -9,6 +9,7 @@ OC.L10N.register(
     "Select all" : "Hamısıı seç",
     "New" : "Yeni",
     "New folder" : "Yeni qovluq",
+    "Search" : "Axtarış",
     "Rename folder" : "Qovluğun adını dəyiş",
     "Delete folder" : "Qovluğu sil",
     "Cancel" : "Dayandır",

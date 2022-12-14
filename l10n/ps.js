@@ -16,7 +16,6 @@ OC.L10N.register(
     "Link" : "لېنک",
     "Tags" : "نښکې",
     "Notes" : "شسیب",
-    "Open file" : "فایل پرانيستل",
     "Share link" : "د شرېکېدو لېنک",
     "Allow editing" : "د سمون اجازه ورکول",
     "Save" : "ساتل"

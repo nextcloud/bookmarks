@@ -9,6 +9,7 @@ OC.L10N.register(
     "Select all" : "Նշել բոլորը",
     "New" : "Նոր",
     "New folder" : "Նոր պանակ",
+    "Search" : "Search",
     "Cancel" : "ընդհատել",
     "Shared with you" : "Shared with you",
     "Files" : "Ֆայլեր",

@@ -6,6 +6,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Delete" : "நீக்குக",
     "New" : "புதிய",
+    "Search" : "Search",
     "Delete folder" : "கோப்பை அழிக்க",
     "Cancel" : "இரத்து செய்க",
     "Shared with you" : "Shared with you",

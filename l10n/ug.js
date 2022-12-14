@@ -6,6 +6,7 @@ OC.L10N.register(
     "Delete" : "ئۆچۈر",
     "New" : "يېڭى",
     "New folder" : "يېڭى قىسقۇچ",
+    "Search" : "Search",
     "Rename folder" : "قىسقۇچ ئاتىنى ئۆزگەرت",
     "Delete folder" : "قىسقۇچ ئۆچۈر",
     "Cancel" : "ۋاز كەچ",

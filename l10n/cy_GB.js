@@ -9,6 +9,7 @@ OC.L10N.register(
     "Go back" : "Nôl",
     "New" : "Newydd",
     "New folder" : "Ffolder newydd",
+    "Search" : "Chwilio",
     "Cancel" : "Diddymu",
     "Recent" : "Diweddar",
     "Shared with you" : "Shared with you",
