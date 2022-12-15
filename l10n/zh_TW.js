@@ -82,6 +82,7 @@ OC.L10N.register(
     "Sort by title" : "按標題排序",
     "Sort by click count" : "按點擊次數排序",
     "Sort by manual order" : "手動排序",
+    "Sort by URL" : "按 URL 排序",
     "RSS feed copied" : "RSS feed 已複製",
     "_Adding %n bookmark to new folder_::_Adding %n bookmarks to new folder_" : ["正在新增 %n 書籤至新資料夾"],
     "Enter a link" : "輸入連結",

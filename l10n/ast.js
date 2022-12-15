@@ -25,6 +25,7 @@ OC.L10N.register(
     "Link" : "Link",
     "Tags" : "Etiquetes",
     "Notes" : "Notes",
+    "Download file" : "Baxar ficheru",
     "Owner" : "Owner",
     "Sharing" : "Compartiendo",
     "Share link" : "Share link",

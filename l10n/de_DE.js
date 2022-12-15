@@ -82,6 +82,7 @@ OC.L10N.register(
     "Sort by title" : "Nach Titel sortieren",
     "Sort by click count" : "Sortieren nach Klickanzahl",
     "Sort by manual order" : "Nach manueller Reihenfolge sortieren",
+    "Sort by URL" : "Nach URL sortieren",
     "RSS feed copied" : "RSS-Feed kopiert",
     "_Adding %n bookmark to new folder_::_Adding %n bookmarks to new folder_" : ["%n Lesezeichen dem neuen Ordner hinzugefügt","%n Lesezeichen dem neuen Ordner hinzugefügt"],
     "Enter a link" : "Link eingeben",

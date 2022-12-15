@@ -27,6 +27,7 @@ OC.L10N.register(
     "Link" : "الرابط",
     "Tags" : "الوسوم",
     "Notes" : "الملاحظات",
+    "Download file" : "تحميل ملف",
     "Owner" : "المالك",
     "Sharing" : "المشاركة",
     "Share link" : "مشاركة الرابط",

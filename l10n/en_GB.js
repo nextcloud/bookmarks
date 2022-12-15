@@ -82,6 +82,7 @@ OC.L10N.register(
     "Sort by title" : "Sort by title",
     "Sort by click count" : "Sort by click count",
     "Sort by manual order" : "Sort by manual order",
+    "Sort by URL" : "Sort by URL",
     "RSS feed copied" : "RSS feed copied",
     "_Adding %n bookmark to new folder_::_Adding %n bookmarks to new folder_" : ["Adding %n bookmark to new folder","Adding %n bookmarks to new folder"],
     "Enter a link" : "Enter a link",
