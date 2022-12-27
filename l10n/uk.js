@@ -30,7 +30,7 @@ OC.L10N.register(
     "Title" : "Назва",
     "Link" : "Посилання",
     "Tags" : "Позначки",
-    "Notes" : "Нотатки",
+    "Notes" : "Примітки",
     "Owner" : "Власник",
     "Sharing" : "Поділитися",
     "Select a user or group" : "Виберіть користувача або групу",
