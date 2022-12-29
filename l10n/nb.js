@@ -84,6 +84,7 @@ OC.L10N.register(
     "Link copied" : "Lenke kopiert",
     "Privacy" : "Personvern",
     "Performance" : "Ytelse",
+    "Previews" : "Forhåndsvisning",
     "Failed to save settings" : "Klarte ikke å lagre innstillinger",
     "Failed to load settings" : "Klarte ikke å laste inn innstillinger",
     "This URL is already bookmarked! Overwrite?" : "Denne lenken eksisterer allerede, ønsker du overskrive?",

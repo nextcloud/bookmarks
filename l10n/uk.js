@@ -9,6 +9,7 @@ OC.L10N.register(
     "Copy link" : "Скопіювати посилання",
     "Move" : "Перемістити",
     "Delete" : "Вилучити",
+    "This content is being downloaded for offline use. Please check back later." : "Вміст завантажується для використання в режимі офлайн. Будь ласка, перевірте пізніше.",
     "Delete selection" : "Прибрати виділення",
     "Select all" : "Вибрати все",
     "Go back" : "Повернутися назад",
