@@ -155,6 +155,7 @@ OC.L10N.register(
     "Notes" : "Notes",
     "Notes for this bookmark …" : "Notes per a aquesta adreça d'interès …",
     "Archived file" : "Obre el fitxer arxivat",
+    "Download file" : "Baixa el fitxer",
     "Open file location" : "Obre la ubicació del fitxer",
     "Created {time} ago" : "Creat fa {time}",
     "Created on {date}" : "Creat en {date}",

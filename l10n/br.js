@@ -22,6 +22,7 @@ OC.L10N.register(
     "Title" : "Titl",
     "Link" : "Liamm",
     "Tags" : "Klavioù",
+    "Download file" : "Pelkargañ restr",
     "Owner" : "Perc'henner",
     "Sharing" : "Rannan",
     "Share link" : "Rannan liamm",
