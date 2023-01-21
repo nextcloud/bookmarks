@@ -100,7 +100,7 @@ OC.L10N.register(
     "Enter folder title" : "Sartu karpetaren izenburua",
     "Shared by {user}" : "{user}(e)k partekatua",
     "Rename folder" : "Berrizendatu karpeta",
-    "Move folder" : "Mugitu karpeta",
+    "Move folder" : "Lekuz aldatu karpeta",
     "Delete folder" : "Ezabatu karpeta",
     "Do you really want to delete this folder?" : "Ziur zaude karpeta hau ezabatu nahi duzula?",
     "Choose folder" : "Aukeratu karpeta",
