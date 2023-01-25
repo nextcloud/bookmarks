@@ -26,14 +26,14 @@ OC.L10N.register(
     "Tags" : "แท็ก",
     "Notes" : "โน้ต",
     "Download file" : "ดาวน์โหลดไฟล์",
-    "Owner" : "Owner",
+    "Owner" : "เจ้าของ",
     "Sharing" : "การแชร์",
     "Share link" : "แชร์ลิงก์",
     "Allow editing" : "อนุญาตให้แก้ไข",
     "Allow resharing" : "อนุญาตให้แชร์ซ้ำ",
     "Link copied" : "คัดลอกลิงก์แล้ว",
     "Privacy" : "ความเป็นส่วนตัว",
-    "Folder" : "แฟ้มเอกสาร",
+    "Folder" : "โฟลเดอร์",
     "Save" : "บันทึก"
 },
 "nplurals=1; plural=0;");
