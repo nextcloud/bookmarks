@@ -23,6 +23,8 @@ export default {
 			viewport: { width: 0, height: 0 },
 			scrollTop: 0,
 			scrollHeight: 500,
+			initialLoadingSkeleton: false,
+			initialLoadingTimeout: null,
 		}
 	},
 	computed: {
@@ -63,7 +65,7 @@ export default {
 	render(h) {
 		let children = []
 		let itemsPerRow = 1
-		let renderedItems = 40
+		let renderedItems = 0
 		let upperPaddingItems = 0
 		let lowerPaddingItems = 0
 		let itemHeight = 1
@@ -84,9 +86,27 @@ export default {
 			if (!this.fetching) {
 				this.$emit('load-more')
 			}
+			if (upperPaddingItems + renderedItems + lowerPaddingItems === 0) {
+				if (!this.initialLoadingSkeleton) {
+					// The first 350ms don't display skeletons
+					this.initialLoadingTimeout = setTimeout(() => {
+						this.initialLoadingSkeleton = true
+						this.$forceUpdate()
+					}, 350)
+					return h('div', { class: 'virtual-scroll' })
+				}
+			}
+
 			children = [...children, ...Array(40).fill(0).map(() =>
 				h(ItemSkeleton)
 			)]
+		}
+
+		if (upperPaddingItems + renderedItems + lowerPaddingItems > 0) {
+			this.initialLoadingSkeleton = false
+			if (this.initialLoadingTimeout) {
+				clearTimeout(this.initialLoadingTimeout)
+			}
 		}
 
 		const scrollTop = this.scrollTop

@@ -95,11 +95,6 @@ export default {
 		Bookmark,
 		Folder,
 	},
-	data() {
-		return {
-			loadingTimeout: null,
-		}
-	},
 	computed: {
 		bookmarks() {
 			return this.$store.state.bookmarks
