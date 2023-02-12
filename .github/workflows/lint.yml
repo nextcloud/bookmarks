@@ -33,7 +33,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['7.4']
+        php-versions: ['8.1']
 
     name: cs php${{ matrix.php-versions }}
     steps:
@@ -57,7 +57,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [16.x]
 
     name: eslint node${{ matrix.node-version }}
     steps:
@@ -90,7 +90,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [16.x]
 
     name: stylelint node${{ matrix.node-version }}
     steps:
