@@ -130,7 +130,6 @@ import { NcAppSidebar, NcUserBubble, NcActionSeparator, NcActionCheckbox, NcActi
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import copy from 'copy-text-to-clipboard'
 import { actions, mutations } from '../store/index.js'
 import EyeIcon from 'vue-material-design-icons/Eye.vue'
 import PencilIcon from 'vue-material-design-icons/Pencil.vue'
@@ -203,14 +202,13 @@ export default {
 				window.location.origin
 					+ generateUrl(
 						'/apps/bookmarks/public/rest/v2/bookmark?'
-							+ new URLSearchParams(
-								Object.assign({}, this.$store.state.fetchState.query, {
-									format: 'rss',
-									page: -1,
-									token: this.token,
-								})
-							).toString()
-					)
+							+ new URLSearchParams({
+								format: 'rss',
+								folder: this.folder.id,
+								page: -1,
+								token: this.token,
+							})
+					).toString()
 			)
 		},
 		bookmarkCount() {
@@ -233,11 +231,11 @@ export default {
 			this.onCopyPublicLink()
 		},
 		onCopyPublicLink() {
-			copy(this.publicLink)
+			navigator.clipboard.writeText(this.publicLink)
 			this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'Link copied'))
 		},
 		onCopyRssLink() {
-			copy(this.rssLink)
+			navigator.clipboard.writeText(this.rssLink)
 			this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'RSS feed copied'))
 		},
 		async onDeletePublicLink() {

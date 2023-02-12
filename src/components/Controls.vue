@@ -132,7 +132,6 @@ import TagIcon from 'vue-material-design-icons/Tag.vue'
 import { actions, mutations } from '../store/index.js'
 import { generateUrl } from '@nextcloud/router'
 import BulkEditing from './BulkEditing.vue'
-import copy from 'copy-text-to-clipboard'
 
 export default {
 	name: 'Controls',
@@ -290,7 +289,7 @@ export default {
 		},
 
 		copyRssUrl() {
-			copy(this.rssURL)
+			navigator.clipboard.writeText(this.rssURL)
 			this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'RSS feed copied'))
 		},
 

@@ -95,7 +95,6 @@ import DeleteIcon from 'vue-material-design-icons/Delete.vue'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/index.js'
-import copy from 'copy-text-to-clipboard'
 import axios from '@nextcloud/axios'
 
 export default {
@@ -257,7 +256,7 @@ export default {
 			this.$store.dispatch(actions.CLICK_BOOKMARK, this.bookmark)
 		},
 		onCopyUrl() {
-			copy(this.bookmark.url)
+			navigator.clipboard.writeText(this.bookmark.url)
 			this.$store.commit(mutations.SET_NOTIFICATION, this.t('bookmarks', 'Link copied to clipboard'))
 		},
 		async fetchBackgroundImage() {
