@@ -19,7 +19,7 @@
 		"phpunit/phpunit": "^9.5.26",
 		"nextcloud/coding-standard": "^1.0.0",
 		"vimeo/psalm": "^4",
-		"nextcloud/ocp": "v25.0.0"
+		"nextcloud/ocp": "dev-stable25"
 	},
 	"config": {
 		"optimize-autoloader": true,
