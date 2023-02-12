@@ -14,14 +14,13 @@ use OCA\Bookmarks\Http\RequestFactory;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
-use phpUri;
+use Rowbot\URL\Exception\TypeError;
+use Rowbot\URL\URL;
 
 class LinkExplorer {
 	private $linkPreview;
 
 	private $logger;
-
-	private $config;
 
 	/**
 	 * @var string
@@ -33,7 +32,6 @@ class LinkExplorer {
 		$this->linkPreview = new LinkPreview(new Client($client), new RequestFactory());
 		$this->linkPreview->getParser('general')->setMinimumImageDimensions(150, 550);
 		$this->logger = $logger;
-		$this->config = $config;
 		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', 'false');
 	}
 
@@ -67,16 +65,36 @@ class LinkExplorer {
 		$data['url'] = (string)$preview->getUrl();
 		if (isset($data['image'])) {
 			if (isset($data['image']['small'])) {
-				$data['image']['small'] = phpUri::parse($data['url'])->join($data['image']['small']);
+				try {
+					$data['image']['small'] = $this->resolveUrl($data['image']['small'], $data['url']);
+				} catch (TypeError $e) {
+					// noop
+				}
 			}
 			if (isset($data['image']['large'])) {
-				$data['image']['large'] = phpUri::parse($data['url'])->join($data['image']['large']);
+				try {
+					$data['image']['large'] = $this->resolveUrl($data['image']['large'], $data['url']);
+				} catch (TypeError $e) {
+					// noop
+				}
 			}
 			if (isset($data['image']['favicon'])) {
-				$data['image']['favicon'] = phpUri::parse($data['url'])->join($data['image']['favicon']);
+				try {
+					$data['image']['favicon'] = $this->resolveUrl($data['image']['favicon'], $data['url']);
+				} catch (TypeError $e) {
+					// noop
+				}
 			}
 		}
 
 		return $data;
+	}
+
+	/**
+	 * @throws TypeError
+	 */
+	private function resolveUrl(string $link, string $base) : string {
+		$url = new URL($link, $base);
+		return $url->href;
 	}
 }
