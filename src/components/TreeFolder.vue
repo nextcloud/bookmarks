@@ -122,4 +122,24 @@ export default {
 .treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__title {
 	padding-left: 125px;
 }
+
+.treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
+	padding-left: 150px;
+}
+
+.treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
+	padding-left: 175px;
+}
+
+.treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
+	padding-left: 200px;
+}
+
+.treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
+	padding-left: 225px;
+}
+
+.treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
+	padding-left: 250px;
+}
 </style>
