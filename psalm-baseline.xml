@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.22.0@fc2c6ab4d5fa5d644d8617089f012f3bb84b8703">
+<files psalm-version="4.30.0@d0bc6e25d89f649e4f36a534f330f8bb4643dd69">
   <file src="lib/AppInfo/Application.php">
-    <InvalidArgument occurrences="12">
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-    </InvalidArgument>
     <UndefinedClass occurrences="1">
       <code>SymfonyAdapter</code>
     </UndefinedClass>
@@ -27,30 +13,23 @@
     </MissingDependency>
   </file>
   <file src="lib/Db/BookmarkMapper.php">
-    <InvalidThrow occurrences="2">
-      <code>throw $e;</code>
-      <code>throw $e;</code>
-    </InvalidThrow>
-    <UndefinedClass occurrences="2">
-      <code>\OC\DB\Exceptions\DbalException</code>
-      <code>\OC\DB\Exceptions\DbalException</code>
-    </UndefinedClass>
     <UndefinedDocblockClass occurrences="1">
       <code>\OC\DB\Exceptions\DbalException</code>
     </UndefinedDocblockClass>
-    <UndefinedDocblockClass occurrences="4">
-      <code>OCP\DB\Exception</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="lib/Flow/CreateBookmark.php">
+    <MissingDependency occurrences="3">
+      <code>$this-&gt;rootFolder</code>
+      <code>IRootFolder</code>
+      <code>IRootFolder</code>
+    </MissingDependency>
     <UndefinedClass occurrences="2">
+      <code>$entity</code>
       <code>File</code>
-      <code>View</code>
     </UndefinedClass>
-    <UndefinedMethod occurrences="2">
-      <code>getSubject</code>
-      <code>getSubject</code>
-    </UndefinedMethod>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>exportContextIDs</code>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="lib/Service/BackupManager.php">
     <MissingDependency occurrences="6">
@@ -84,15 +63,5 @@
     <UndefinedInterfaceMethod occurrences="1">
       <code>setMinimumImageDimensions</code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="lib/Service/NotesService.php">
-    <UndefinedClass occurrences="2">
-      <code>Note</code>
-      <code>OriginalNotesService</code>
-    </UndefinedClass>
-    <UndefinedDocblockClass occurrences="2">
-      <code>$note</code>
-      <code>Note[]</code>
-    </UndefinedDocblockClass>
   </file>
 </files>
