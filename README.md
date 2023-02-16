@@ -88,7 +88,8 @@ npm run build
 
 ## Configuration
 
-### Backup Job Frequency and batch size
+### Backup Job
+- To disable the bookmarks backup job(it is enabled by default), set `bookmarks.backupjob.enabled` to a boolean value of `false` in your `config.php`
 - To set the bookmarks backup job frequency, set `bookmarks.backupjob.interval` in your `config.php` to an integer value in seconds
   - The default frequency is 5 minutes i.e. 300 seconds
 - To set the bookmarks backup batch size, set `bookmarks.backupjob.batch_size` in your `config.php` to an integer value
