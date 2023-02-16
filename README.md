@@ -86,6 +86,15 @@ npm install
 npm run build
 ```
 
+## Configuration
+
+### Backup Job Frequency and batch size
+- To set the bookmarks backup job frequency, set `bookmarks.backupjob.interval` in your `config.php` to an integer value in seconds
+  - The default frequency is 5 minutes i.e. 300 seconds
+- To set the bookmarks backup batch size, set `bookmarks.backupjob.batch_size` in your `config.php` to an integer value
+  - The default batch size is 10 
+
+
 ## API
 
 This app exposes a public REST API that third-party clients can interface with.

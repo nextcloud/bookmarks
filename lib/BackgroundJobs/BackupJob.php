@@ -72,9 +72,9 @@ class BackupJob extends TimedJob {
 		parent::__construct($timeFactory);
 		$this->bookmarkMapper = $bookmarkMapper;
 
-		$interval = $this->config->getSystemValue('bookmarks.backupjob.interval', self::DEFAULT_INTERVAL);
+		$interval = (int) $this->config->getSystemValue('bookmarks.backupjob.interval', self::DEFAULT_INTERVAL);
 		$this->setInterval(self::INTERVAL);
-		$this->batchSize = $this->config->getSystemValue('bookmarks.backupjob.batch_size', self::DEFAULT_BATCH_SIZE);
+		$this->batchSize = (int) $this->config->getSystemValue('bookmarks.backupjob.batch_size', self::DEFAULT_BATCH_SIZE);
 		$this->userManager = $userManager;
 		$this->backupManager = $backupManager;
 		$this->logger = $logger;
@@ -109,6 +109,6 @@ class BackupJob extends TimedJob {
 				$this->logger->warning($e->getMessage());
 				continue;
 			}
-		} while ($processed < $this->batchSize);
+		} while ($processed < $this->batchSize && count($userIds) > 0);
 	}
 }
