@@ -73,7 +73,7 @@ class BackupJob extends TimedJob {
 		$this->bookmarkMapper = $bookmarkMapper;
 
 		$interval = (int) $this->config->getSystemValue('bookmarks.backupjob.interval', self::DEFAULT_INTERVAL);
-		$this->setInterval(self::INTERVAL);
+		$this->setInterval($interval);
 		$this->batchSize = (int) $this->config->getSystemValue('bookmarks.backupjob.batch_size', self::DEFAULT_BATCH_SIZE);
 		$this->userManager = $userManager;
 		$this->backupManager = $backupManager;
