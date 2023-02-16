@@ -21,8 +21,8 @@ use Psr\Log\LoggerInterface;
 
 class BackupJob extends TimedJob {
 	// MAX 2880 people's bookmarks can be backupped per day
-	public const BATCH_SIZE = 10; // 10 accounts
-	public const INTERVAL = 5 * 60; // 5 minutes
+	public const DEFAULT_BATCH_SIZE = 10; // 10 accounts
+	public const DEFAULT_INTERVAL = 5 * 60; // 5 minutes
 
 	/**
 	 * @var BookmarkMapper
@@ -61,13 +61,20 @@ class BackupJob extends TimedJob {
 	 */
 	private $session;
 
+	/**
+	 * @var int
+	 */
+	private $batchSize;
+
 	public function __construct(
 		BookmarkMapper $bookmarkMapper, ITimeFactory $timeFactory, IUserManager $userManager, BackupManager $backupManager, LoggerInterface $logger, IConfig $config, IUserSession $session
 	) {
 		parent::__construct($timeFactory);
 		$this->bookmarkMapper = $bookmarkMapper;
 
+		$interval = $this->config->getSystemValue('bookmarks.backupjob.interval', self::DEFAULT_INTERVAL);
 		$this->setInterval(self::INTERVAL);
+		$this->batchSize = $this->config->getSystemValue('bookmarks.backupjob.batch_size', self::DEFAULT_BATCH_SIZE);
 		$this->userManager = $userManager;
 		$this->backupManager = $backupManager;
 		$this->logger = $logger;
@@ -76,36 +83,32 @@ class BackupJob extends TimedJob {
 	}
 
 	protected function run($argument) {
-		$users = [];
-		$this->userManager->callForSeenUsers(function (IUser $user) use (&$users) {
-			$users[] = $user;
-		});
+		$userIds = $this->config->getUsersForUserValue('bookmarks', 'backup.enabled', (string) true);
 
 		$processed = 0;
 		do {
-			$user = array_pop($users);
+			$userId = array_pop($userIds);
+			$user = $this->userManager->get($userId);
 			if (!$user) {
-				return;
+				continue;
 			}
-			$userId = $user->getUID();
 			try {
 				if ($this->bookmarkMapper->countBookmarksOfUser($userId) === 0) {
 					continue;
 				}
-				if ($this->config->getUserValue($userId, 'bookmarks', 'backup.enabled', (string) false) === (string) true) {
-					$this->session->setUser($user);
-					if ($this->backupManager->backupExistsForToday($userId)) {
-						continue;
-					}
-					$this->backupManager->runBackup($userId);
-					$this->backupManager->cleanupOldBackups($userId);
-					$processed++;
+				$this->session->setUser($user);
+				if ($this->backupManager->backupExistsForToday($userId)) {
+					continue;
 				}
+				$this->backupManager->runBackup($userId);
+				$this->backupManager->cleanupOldBackups($userId);
+				$processed++;
+				
 			} catch (\Exception $e) {
 				$this->logger->warning('Bookmarks backup for user '.$userId.'errored');
 				$this->logger->warning($e->getMessage());
 				continue;
 			}
-		} while ($processed < self::BATCH_SIZE);
+		} while ($processed < $this->batchSize);
 	}
 }
