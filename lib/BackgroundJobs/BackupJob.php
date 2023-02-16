@@ -21,8 +21,8 @@ use Psr\Log\LoggerInterface;
 
 class BackupJob extends TimedJob {
 	// MAX 2880 people's bookmarks can be backupped per day
-	public const DEFAULT_BATCH_SIZE = 10; // 10 accounts
-	public const DEFAULT_INTERVAL = 5 * 60; // 5 minutes
+	private const DEFAULT_BATCH_SIZE = 10; // 10 accounts
+	private const DEFAULT_INTERVAL = 5 * 60; // 5 minutes
 
 	/**
 	 * @var BookmarkMapper
