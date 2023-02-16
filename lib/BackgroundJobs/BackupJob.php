@@ -89,6 +89,10 @@ class BackupJob extends TimedJob {
 		}
 
 		$userIds = $this->config->getUsersForUserValue('bookmarks', 'backup.enabled', (string) true);
+		if(empty($userIds)) {
+			return;
+		}
+		
 		$processed = 0;
 		do {
 			$userId = array_pop($userIds);
@@ -100,10 +104,11 @@ class BackupJob extends TimedJob {
 				if ($this->bookmarkMapper->countBookmarksOfUser($userId) === 0) {
 					continue;
 				}
-				$this->session->setUser($user);
 				if ($this->backupManager->backupExistsForToday($userId)) {
 					continue;
 				}
+
+				$this->session->setUser($user);
 				$this->backupManager->runBackup($userId);
 				$this->backupManager->cleanupOldBackups($userId);
 				$processed++;
@@ -113,6 +118,6 @@ class BackupJob extends TimedJob {
 				$this->logger->warning($e->getMessage());
 				continue;
 			}
-		} while ($processed < $this->batchSize && count($userIds) > 0);
+		} while ($processed < $this->batchSize && !empty($userIds));
 	}
 }
