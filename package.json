@@ -31,7 +31,7 @@
     "@nextcloud/vue-dashboard": "^2.0.1",
     "async-parallel": "^1.2.3",
     "clone-deep": "^4.0.1",
-    "humanize-duration": "^3.27.3",
+    "humanize-duration": "^3.28.0",
     "linkify-it": "^3.0.3",
     "lodash": "^4.17.21",
     "nextcloud-vue-collections": "^0.10.0",
