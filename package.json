@@ -32,7 +32,7 @@
     "async-parallel": "^1.2.3",
     "clone-deep": "^4.0.1",
     "humanize-duration": "^3.27.3",
-    "linkify-it": "^3.0.3",
+    "linkify-it": "^4.0.1",
     "lodash": "^4.17.21",
     "nextcloud-vue-collections": "^0.11.0",
     "sanitize-html": "^2.9.0",
