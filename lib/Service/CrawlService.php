@@ -30,7 +30,7 @@ use OCP\Lock\LockedException;
 use Psr\Log\LoggerInterface;
 
 class CrawlService {
-	public const MAX_BODY_LENGTH = 92160; // 90 MiB
+	public const MAX_BODY_LENGTH = 92160000; // 90 MB
 	public const TIMEOUT = 10;
 	public const CONNECT_TIMEOUT = 10;
 	public const READ_TIMEOUT = 10;
