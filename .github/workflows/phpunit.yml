@@ -28,6 +28,9 @@ jobs:
           - server-versions: stable25
             databases: 'mysql'
             php-versions: '8.1'
+          - server-versions: v26.0.0beta4
+            databases: 'mysql'
+            php-versions: '8.1'
 
     name: php${{ matrix.php-versions }}-${{ matrix.databases }}-${{ matrix.server-versions }}
 
