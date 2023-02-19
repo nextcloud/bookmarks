@@ -37,7 +37,6 @@ jobs:
           - nextcloud-bookmarks
         test-name:
           - 'test'
-          - 'benchmark root'
         browsers: ['firefox']
 
 
