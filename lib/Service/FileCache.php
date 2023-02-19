@@ -87,10 +87,10 @@ class FileCache implements ICache {
 	 * Returns the size of the stored/cached data
 	 *
 	 * @param string $key
-	 * @return int
-	 * @throws NotFoundException
+	 * @return int|float
+	 * @throws NotFoundException|NotPermittedException
 	 */
-	public function size($key): int {
+	public function size(string $key) {
 		$result = 0;
 		if ($this->hasKey($key)) {
 			$result = $this->getStorage()->getFile($key)->getSize();
