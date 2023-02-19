@@ -22,6 +22,7 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IUserManager;
 use PDO;
 use function call_user_func;
 
@@ -49,60 +50,28 @@ class TreeMapper extends QBMapper {
 
 	protected $entityColumns = [];
 
-	/** @var IEventDispatcher */
-	private $eventDispatcher;
+	private IEventDispatcher $eventDispatcher;
 
-	/**
-	 * @var BookmarkMapper
-	 */
-	protected $bookmarkMapper;
+	protected BookmarkMapper $bookmarkMapper;
 
-	/**
-	 * @var FolderMapper
-	 */
-	protected $folderMapper;
+	protected FolderMapper $folderMapper;
 
-	/**
-	 * @var TreeCacheManager
-	 */
-	protected $treeCache;
+	protected TreeCacheManager $treeCache;
 
-	/**
-	 * @var ShareMapper
-	 */
-	private $shareMapper;
-	/**
-	 * @var SharedFolderMapper
-	 */
-	private $sharedFolderMapper;
-	/**
-	 * @var TagMapper
-	 */
-	private $tagMapper;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var PublicFolderMapper
-	 */
-	private $publicFolderMapper;
-	/**
-	 * @var IQueryBuilder
-	 */
-	private $insertQuery;
-	/**
-	 * @var IQueryBuilder
-	 */
-	private $parentQuery;
-	/**
-	 * @var array
-	 */
-	private $getChildrenQuery;
-	/**
-	 * @var IQueryBuilder
-	 */
-	private $getChildrenOrderQuery;
+	private ShareMapper $shareMapper;
+
+	private SharedFolderMapper $sharedFolderMapper;
+
+	private PublicFolderMapper $publicFolderMapper;
+
+	private IQueryBuilder $insertQuery;
+
+	private IQueryBuilder $parentQuery;
+
+	private array $getChildrenQuery;
+
+	private IQueryBuilder $getChildrenOrderQuery;
+	private IUserManager $userManager;
 
 	/**
 	 * FolderMapper constructor.
@@ -117,8 +86,9 @@ class TreeMapper extends QBMapper {
 	 * @param IConfig $config
 	 * @param PublicFolderMapper $publicFolderMapper
 	 * @param TreeCacheManager $treeCache
+	 * @param IUserManager $userManager
 	 */
-	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, TagMapper $tagMapper, IConfig $config, \OCA\Bookmarks\Db\PublicFolderMapper $publicFolderMapper, TreeCacheManager $treeCache) {
+	public function __construct(IDBConnection $db, IEventDispatcher $eventDispatcher, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, TreeCacheManager $treeCache, IUserManager $userManager) {
 		parent::__construct($db, 'bookmarks_tree');
 		$this->eventDispatcher = $eventDispatcher;
 		$this->folderMapper = $folderMapper;
@@ -131,8 +101,6 @@ class TreeMapper extends QBMapper {
 			self::TYPE_FOLDER => Folder::$columns,
 			self::TYPE_BOOKMARK => Bookmark::$columns,
 		];
-		$this->tagMapper = $tagMapper;
-		$this->config = $config;
 		$this->publicFolderMapper = $publicFolderMapper;
 
 		$this->insertQuery = $this->getInsertQuery();
@@ -145,6 +113,7 @@ class TreeMapper extends QBMapper {
 		];
 
 		$this->treeCache = $treeCache;
+		$this->userManager = $userManager;
 	}
 
 	/**
@@ -712,6 +681,7 @@ class TreeMapper extends QBMapper {
 		}
 		$folders = array_map(function (Folder $folder) use ($layers, $folderId) {
 			$array = $folder->toArray();
+			$array['userDisplayName'] = $this->userManager->get($array['userId'])->getDisplayName();
 			$array['parent_folder'] = $folderId;
 			if ($layers !== 0) {
 				$array['children'] = $this->getSubFolders($folder->getId(), $layers - 1);
@@ -726,6 +696,7 @@ class TreeMapper extends QBMapper {
 			$array = $sharedFolder->toArray();
 			$array['id'] = $share->getFolderId();
 			$array['userId'] = $share->getOwner();
+			$array['userDisplayName'] = $this->userManager->get($array['userId'])->getDisplayName();
 			$array['parent_folder'] = $folderId;
 			if ($layers !== 0) {
 				$array['children'] = $this->getSubFolders($share->getFolderId(), $layers - 1);

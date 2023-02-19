@@ -38,9 +38,7 @@ class Folder extends Entity {
 	}
 
 	/**
-	 * @return array
-	 *
-	 * @psalm-return array{id: int, title: string, userId: string}
+	 * @return array{id: int, title: string, userId: string}
 	 */
 	public function toArray(): array {
 		return ['id' => $this->id, 'title' => $this->title, 'userId' => $this->userId];

@@ -13,7 +13,6 @@ use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolder;
-use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
@@ -30,52 +29,26 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IUserManager;
+use Psr\Log\LoggerInterface;
 
 class FoldersController extends ApiController {
-	private $userId;
+	private string $userId;
 
-	/** @var FolderMapper */
-	private $folderMapper;
+	private FolderMapper $folderMapper;
+	private PublicFolderMapper $publicFolderMapper;
 
-	/** @var PublicFolderMapper */
-	private $publicFolderMapper;
+	private ShareMapper $shareMapper;
 
-	/** @var SharedFolderMapper */
-	private $sharedFolderMapper;
+	private Authorizer $authorizer;
 
-	/** @var ShareMapper */
-	private $shareMapper;
-
-	/**
-	 * @var Authorizer
-	 */
-	private $authorizer;
-
-	/**
-	 * @var TreeMapper
-	 */
-	private $treeMapper;
-
-	/**
-	 * @var int|null
-	 */
-	private $rootFolderId;
-	/**
-	 * @var TreeCacheManager
-	 */
-	private $hashManager;
-	/**
-	 * @var FolderService
-	 */
-	private $folders;
-	/**
-	 * @var BookmarkService
-	 */
-	private $bookmarks;
-	/**
-	 * @var \Psr\Log\LoggerInterface
-	 */
-	private $logger;
+	private TreeMapper $treeMapper;
+	private ?int $rootFolderId = null;
+	private TreeCacheManager $hashManager;
+	private FolderService $folders;
+	private BookmarkService $bookmarks;
+	private LoggerInterface $logger;
+	private IUserManager $userManager;
 
 	/**
 	 * FoldersController constructor.
@@ -84,20 +57,19 @@ class FoldersController extends ApiController {
 	 * @param $request
 	 * @param FolderMapper $folderMapper
 	 * @param PublicFolderMapper $publicFolderMapper
-	 * @param SharedFolderMapper $sharedFolderMapper
 	 * @param ShareMapper $shareMapper
 	 * @param TreeMapper $treeMapper
 	 * @param Authorizer $authorizer
 	 * @param TreeCacheManager $hashManager
 	 * @param FolderService $folders
 	 * @param BookmarkService $bookmarks
-	 * @param \Psr\Log\LoggerInterface $logger
+	 * @param LoggerInterface $logger
+	 * @param IUserManager $userManager
 	 */
-	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, SharedFolderMapper $sharedFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, TreeCacheManager $hashManager, FolderService $folders, BookmarkService $bookmarks, \Psr\Log\LoggerInterface $logger) {
+	public function __construct($appName, $request, FolderMapper $folderMapper, PublicFolderMapper $publicFolderMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, Authorizer $authorizer, TreeCacheManager $hashManager, FolderService $folders, BookmarkService $bookmarks, LoggerInterface $logger, IUserManager $userManager) {
 		parent::__construct($appName, $request);
 		$this->folderMapper = $folderMapper;
 		$this->publicFolderMapper = $publicFolderMapper;
-		$this->sharedFolderMapper = $sharedFolderMapper;
 		$this->shareMapper = $shareMapper;
 		$this->treeMapper = $treeMapper;
 		$this->authorizer = $authorizer;
@@ -107,6 +79,7 @@ class FoldersController extends ApiController {
 		$this->logger = $logger;
 
 		$this->authorizer->setCORS(true);
+		$this->userManager = $userManager;
 	}
 
 	/**
@@ -166,6 +139,7 @@ class FoldersController extends ApiController {
 			$returnFolder = $folder->toArray();
 			$parent = $this->treeMapper->findParentOf(TreeMapper::TYPE_FOLDER, $folder->getId());
 			$returnFolder['parent_folder'] = $this->toExternalFolderId($parent->getId());
+			$returnFolder['userDisplayName'] = $this->userManager->get($returnFolder['userId'])->getDisplayName();
 			return $returnFolder;
 		}
 		if ($folder instanceof SharedFolder) {
@@ -175,9 +149,10 @@ class FoldersController extends ApiController {
 			$share = $this->shareMapper->findByFolderAndUser($folder->getFolderId(), $folder->getUserId());
 			$returnFolder = $folder->toArray();
 			$returnFolder['id'] = $folder->getFolderId();
-			$returnFolder['user_id'] = $share->getOwner();
+			$returnFolder['userId'] = $share->getOwner();
 			$parent = $this->treeMapper->findParentOf(TreeMapper::TYPE_SHARE, $folder->getId());
 			$returnFolder['parent_folder'] = $this->toExternalFolderId($parent->getId());
+			$returnFolder['userDisplayName'] = $this->userManager->get($returnFolder['userId'])->getDisplayName();
 			return $returnFolder;
 		}
 

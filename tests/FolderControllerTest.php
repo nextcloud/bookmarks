@@ -201,18 +201,15 @@ class FolderControllerTest extends TestCase {
 		$this->groupManager = OC::$server->get(IGroupManager::class);
 		$loggerInterface = OC::$server->get(LoggerInterface::class);
 
-		/** @var IUserManager */
-		$userManager = OC::$server->get(IUserManager::class);
-
 		$this->group = $this->groupManager->createGroup('foobar');
-		$this->group->addUser($userManager->get($this->otherUser));
+		$this->group->addUser($this->userManager->get($this->otherUser));
 
 		$this->authorizer = OC::$server->get(Authorizer::class);
 
-		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface);
-		$this->otherController = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface);
-		$this->public = new FoldersController('bookmarks', $this->publicRequest, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface);
-		$this->noauth = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->sharedFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface);
+		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface, $this->userManager);
+		$this->otherController = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface, $this->userManager);
+		$this->public = new FoldersController('bookmarks', $this->publicRequest, $this->folderMapper, $this->publicFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface, $this->userManager);
+		$this->noauth = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface, $this->userManager);
 	}
 
 	/**

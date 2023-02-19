@@ -17,7 +17,7 @@
 				<InformationVariantIcon />
 			</template>
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
-			<NcUserBubble :user="folder.userId" :display-name="folder.userId" />
+			<NcUserBubble :user="folder.userId" :display-name="folder.userDisplayName" />
 			<h3>{{ t('bookmarks', 'Bookmarks') }}</h3>
 			{{ bookmarkCount }}
 		</NcAppSidebarTab>

@@ -34,7 +34,7 @@
 		<template #tags>
 			<div class="folder__tags">
 				<div v-if="!isOwner && !isSharedPublicly" class="folder__tag">
-					{{ t('bookmarks', 'Shared by {user}', {user: folder.userId}) }}
+					{{ t('bookmarks', 'Shared by {user}', {user: folder.userDisplayName}) }}
 				</div>
 			</div>
 		</template>

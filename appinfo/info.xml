@@ -42,7 +42,7 @@ Requirements:
 		<database>pgsql</database>
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="25" max-version="25" />
+		<nextcloud min-version="25" max-version="26" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>
