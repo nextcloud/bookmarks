@@ -11,55 +11,21 @@ use OCA\Bookmarks\Service\BackupManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
 use OCA\Bookmarks\Db\BookmarkMapper;
-use OCP\Http\Client\IClient;
-use OCP\Http\Client\IClientService;
 use OCP\IConfig;
-use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
 
 class BackupJob extends TimedJob {
-	// MAX 2880 people's bookmarks can be backupped per day
-	public const BATCH_SIZE = 10; // 10 accounts
-	public const INTERVAL = 5 * 60; // 5 minutes
+	public const INTERVAL = 15 * 60; // 15 minutes
 
-	/**
-	 * @var BookmarkMapper
-	 */
-	private $bookmarkMapper;
-	/**
-	 * @var IClientService
-	 */
-	private $clientService;
-	/**
-	 * @var IClient
-	 */
-	private $client;
-	/**
-	 * @var ITimeFactory
-	 */
-	private $timeFactory;
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
-	/**
-	 * @var BackupManager
-	 */
-	private $backupManager;
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var IUserSession
-	 */
-	private $session;
+	private BookmarkMapper $bookmarkMapper;
+	private ITimeFactory $timeFactory;
+	private IUserManager $userManager;
+	private BackupManager $backupManager;
+	private LoggerInterface $logger;
+	private IConfig $config;
+	private IUserSession $session;
 
 	public function __construct(
 		BookmarkMapper $bookmarkMapper, ITimeFactory $timeFactory, IUserManager $userManager, BackupManager $backupManager, LoggerInterface $logger, IConfig $config, IUserSession $session
@@ -68,6 +34,7 @@ class BackupJob extends TimedJob {
 		$this->bookmarkMapper = $bookmarkMapper;
 
 		$this->setInterval(self::INTERVAL);
+		$this->timeFactory = $timeFactory;
 		$this->userManager = $userManager;
 		$this->backupManager = $backupManager;
 		$this->logger = $logger;
@@ -76,36 +43,34 @@ class BackupJob extends TimedJob {
 	}
 
 	protected function run($argument) {
-		$users = [];
-		$this->userManager->callForSeenUsers(function (IUser $user) use (&$users) {
-			$users[] = $user;
-		});
+		$userIds = $this->config->getUsersForUserValue('bookmarks', 'backup.enabled', (string) true);
+		if (empty($userIds)) {
+			return;
+		}
 
-		$processed = 0;
+		$startTime = $this->timeFactory->getTime();
 		do {
-			$user = array_pop($users);
+			$userId = array_pop($userIds);
+			$user = $this->userManager->get($userId);
 			if (!$user) {
-				return;
+				continue;
 			}
-			$userId = $user->getUID();
 			try {
 				if ($this->bookmarkMapper->countBookmarksOfUser($userId) === 0) {
 					continue;
 				}
-				if ($this->config->getUserValue($userId, 'bookmarks', 'backup.enabled', (string) false) === (string) true) {
-					$this->session->setUser($user);
-					if ($this->backupManager->backupExistsForToday($userId)) {
-						continue;
-					}
-					$this->backupManager->runBackup($userId);
-					$this->backupManager->cleanupOldBackups($userId);
-					$processed++;
+
+				if ($this->backupManager->backupExistsForToday($userId)) {
+					continue;
 				}
+				$this->session->setUser($user);
+				$this->backupManager->runBackup($userId);
+				$this->backupManager->cleanupOldBackups($userId);
 			} catch (\Exception $e) {
-				$this->logger->warning('Bookmarks backup for user '.$userId.'errored');
+				$this->logger->warning('Bookmarks backup for user '.$userId.' errored');
 				$this->logger->warning($e->getMessage());
 				continue;
 			}
-		} while ($processed < self::BATCH_SIZE);
+		} while ($startTime + self::INTERVAL < $this->timeFactory->getTime() && !empty($userIds));
 	}
 }
