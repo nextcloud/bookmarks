@@ -68,8 +68,8 @@ class BackupJob extends TimedJob {
 				$this->backupManager->runBackup($userId);
 				$this->backupManager->cleanupOldBackups($userId);
 			} catch (\Exception $e) {
-				$this->logger->warning('Bookmarks backup for user '.$userId.' errored');
-				$this->logger->warning($e->getMessage());
+				$this->logger->error('Bookmarks backup for user '.$userId.' errored');
+				$this->logger->error($e->getMessage());
 				continue;
 			}
 		} while ($startTime + self::MAX_RUN_TIME > $this->timeFactory->getTime() && !empty($userIds));
