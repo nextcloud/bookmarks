@@ -18,6 +18,7 @@ use Psr\Log\LoggerInterface;
 
 class BackupJob extends TimedJob {
 	public const INTERVAL = 15 * 60; // 15 minutes
+	public const MAX_RUN_TIME = 5 * 60; // 5 minutes
 
 	private BookmarkMapper $bookmarkMapper;
 	private ITimeFactory $timeFactory;
@@ -71,6 +72,6 @@ class BackupJob extends TimedJob {
 				$this->logger->warning($e->getMessage());
 				continue;
 			}
-		} while ($startTime + self::INTERVAL < $this->timeFactory->getTime() && !empty($userIds));
+		} while ($startTime + self::MAX_RUN_TIME > $this->timeFactory->getTime() && !empty($userIds));
 	}
 }
