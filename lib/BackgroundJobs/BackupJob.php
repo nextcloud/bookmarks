@@ -35,6 +35,7 @@ class BackupJob extends TimedJob {
 		$this->bookmarkMapper = $bookmarkMapper;
 
 		$this->setInterval(self::INTERVAL);
+		$this->setTimeSensitivity(self::TIME_INSENSITIVE);
 		$this->timeFactory = $timeFactory;
 		$this->userManager = $userManager;
 		$this->backupManager = $backupManager;
