@@ -49,6 +49,7 @@ OC.L10N.register(
     "Delete" : "Slett",
     "Do you really want to delete this bookmark?" : "Er du sikker på at du vil slette dette bokmerket?",
     "Link copied to clipboard" : "Lenke kopiert til utklippstavlen",
+    "Delete selection" : "Slett utvalg",
     "Select all" : "Velg alle",
     "Go back" : "Gå tilbake",
     "Share folder" : "Del mappe",
