@@ -57,6 +57,7 @@ OC.L10N.register(
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["Seleccionado %nmarcador","Seleccionados %n marcadores"],
     "_Selected %n folder_::_Selected %n folders_" : ["%n cartafol seleccionado"," %n cartafoles seleccionados"],
     "Go back" : "Volver",
+    "Share folder" : "Compartir cartafol",
     "Select one or more tags" : "Seleccione unha ou máis etiquetas",
     "New" : "Novo",
     "New bookmark" : "Novo marcador",
