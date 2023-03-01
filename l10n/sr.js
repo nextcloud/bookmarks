@@ -22,6 +22,7 @@ OC.L10N.register(
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["Одабрано %n обележивач","Одабрано %n обележивача","Одабрано %n обележивача"],
     "_Selected %n folder_::_Selected %n folders_" : ["Одабрана %n фасцикла","Одабране %n фасцикле","Одабрано %n фасцикли"],
     "Go back" : "Иди назад",
+    "Share folder" : "Дели фолдер",
     "Select one or more tags" : "Одаберите једну или више ознака",
     "New" : "Нов",
     "New bookmark" : "Нови обележивач",
