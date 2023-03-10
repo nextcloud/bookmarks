@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "الفواصل المرجعية",
+    "Unsupported file type for import" : "لايمكن استيراد ملفات من هذا النوع",
     "Details" : "التفاصيل",
     "Rename" : "إعادة التسمية",
     "Copy link" : "انسخ الرابط",
@@ -36,6 +37,7 @@ OC.L10N.register(
     "Link copied" : "نُسِخ الرابط",
     "Privacy" : "الخصوصية",
     "Previews" : "المعاينات",
+    "Failed to save settings" : "فشل حفظ الإعدادات",
     "Folder" : "مجلد",
     "Save" : "حفظ"
 },
