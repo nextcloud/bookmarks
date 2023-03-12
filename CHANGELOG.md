@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.1.0] - 2023-03-12
+
+### New
+- TreeFolder: Add more indentation layers
+- UX: Display loading skeletons only after 350ms
+
+### Fixed
+- chore(deps): Update dependencies
+- fix(ui): Use display names instead of ids
+- fix(CrawlService): Correct MAX_BODY_LENGTH from 90KB to 90 MB
+- fix(backups): refactor
+- fix(LinkExplorer): Replace phpUri with Rowbot\URL
+- Use built-in browser clipboard API
+- Fix(l10n): 🔠 Update translations from Transifex
+
 ## [12.0.0] - 2022-12-13
 ### Breaking changes
  - Drop support for nc < v25
