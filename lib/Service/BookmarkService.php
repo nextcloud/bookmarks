@@ -414,6 +414,18 @@ class BookmarkService {
 	}
 
 	/**
+	 * @param int $id
+	 * @return Bookmark|null
+	 */
+	public function findById(int $id) : ?Bookmark {
+		try {
+			return $this->bookmarkMapper->find($id);
+		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+			return null;
+		}
+	}
+
+	/**
 	 * @param $userId
 	 * @param string $url
 	 * @param string $userId

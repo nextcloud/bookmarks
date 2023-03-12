@@ -23,6 +23,7 @@ use OCA\Bookmarks\Flow\CreateBookmark;
 use OCA\Bookmarks\Hooks\BeforeTemplateRenderedListener;
 use OCA\Bookmarks\Hooks\UserGroupListener;
 use OCA\Bookmarks\Middleware\ExceptionMiddleware;
+use OCA\Bookmarks\Reference\BookmarkReferenceProvider;
 use OCA\Bookmarks\Search\Provider;
 use OCA\Bookmarks\Service\TreeCacheManager;
 use OCP\AppFramework\App;
@@ -30,6 +31,7 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
+use OCP\Collaboration\Reference\RenderReferenceEvent;
 use OCP\Collaboration\Resources\IProviderManager;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Group\Events\UserAddedEvent;
@@ -45,6 +47,14 @@ class Application extends App implements IBootstrap {
 
 	public function __construct() {
 		parent::__construct(self::APP_ID);
+
+		// TODO move this back to ::register after fixing the autoload issue
+		// (and use a listener class)
+		$container = $this->getContainer();
+		$eventDispatcher = $container->get(IEventDispatcher::class);
+		$eventDispatcher->addListener(RenderReferenceEvent::class, function () {
+			Util::addScript(self::APP_ID, self::APP_ID . '-references');
+		});
 	}
 
 	public function register(IRegistrationContext $context): void {
@@ -63,6 +73,8 @@ class Application extends App implements IBootstrap {
 		$context->registerSearchProvider(Provider::class);
 		$context->registerDashboardWidget(Recent::class);
 		$context->registerDashboardWidget(Frequent::class);
+
+		$context->registerReferenceProvider(BookmarkReferenceProvider::class);
 
 		$context->registerEventListener(CreateEvent::class, TreeCacheManager::class);
 		$context->registerEventListener(UpdateEvent::class, TreeCacheManager::class);
