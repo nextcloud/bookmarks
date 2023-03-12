@@ -104,7 +104,7 @@ class BookmarkReferenceProvider extends ADiscoverableReferenceProvider {
 			} catch (UrlParseError|DoesNotExistException $e) {
 				return null;
 			}
-		}else{
+		} else {
 			$bookmark = $this->bookmarkService->findById((int)$id);
 		}
 		if ($bookmark === null) {
