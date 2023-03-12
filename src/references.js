@@ -7,7 +7,7 @@
 // with nc/vue 7.8.0, if we remove this, nothing works...
 import {} from '@nextcloud/vue-richtext'
 
-import { registerWidget } from '@nextcloud/vue/dist/Components/NcRichText.js'
+import { registerWidget, registerCustomPickerElement, NcCustomPickerRenderResult } from '@nextcloud/vue/dist/Components/NcRichText.js'
 import Vue from 'vue'
 import BookmarkReferenceWidget from './components/BookmarkReferenceWidget.vue'
 
@@ -36,4 +36,20 @@ registerWidget('bookmarks-bookmark', (el, { richObjectType, richObject, accessib
 			accessible,
 		},
 	}).$mount(el)
+})
+
+registerCustomPickerElement('bookmarks-ref-bookmarks', async (el, { providerId, accessible }) => {
+	const { default: CustomPickerElement } = await import(/* webpackPrefetch: true */ './components/CustomPickerElement.vue')
+	Vue.mixin({ methods: { t, n } })
+
+	const Element = Vue.extend(CustomPickerElement)
+	const vueElement = new Element({
+		propsData: {
+			providerId,
+			accessible,
+		},
+	}).$mount(el)
+	return new NcCustomPickerRenderResult(vueElement.$el, vueElement)
+}, (el, renderResult) => {
+	renderResult.object.$destroy()
 })

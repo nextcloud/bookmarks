@@ -17,13 +17,12 @@ use OCA\Bookmarks\Service\BookmarkService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\Collaboration\Reference\ADiscoverableReferenceProvider;
 use OCP\Collaboration\Reference\IReference;
-use OCP\Collaboration\Reference\ISearchableReferenceProvider;
 use OCP\Collaboration\Reference\Reference;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use Psr\Log\LoggerInterface;
 
-class BookmarkReferenceProvider extends ADiscoverableReferenceProvider implements ISearchableReferenceProvider {
+class BookmarkReferenceProvider extends ADiscoverableReferenceProvider {
 	private ?string $userId;
 	private IL10N $l10n;
 	private IURLGenerator $urlGenerator;
@@ -67,16 +66,6 @@ class BookmarkReferenceProvider extends ADiscoverableReferenceProvider implement
 			$this->urlGenerator->imagePath(Application::APP_ID, 'bookmarks-black.svg')
 		);
 	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getSupportedSearchProviderIds(): array {
-		return [
-			'bookmarks',
-		];
-	}
-
 	/**
 	 * @inheritDoc
 	 */
