@@ -19,8 +19,6 @@ jobs:
         ocp-version: [ 'dev-stable26']
         php-version: [ '8.2' ]
         include:
-          - ocp-version: 'dev-stable25'
-            php-version: '8.2'
           - ocp-version: 'dev-master'
             php-version: '8.2'
 
