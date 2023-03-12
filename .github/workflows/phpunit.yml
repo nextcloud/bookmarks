@@ -21,14 +21,11 @@ jobs:
       # do not stop on another job's failure
       fail-fast: false
       matrix:
-        php-versions: ['7.4', '8.0']
+        php-versions: ['8.2']
         databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable25']
+        server-versions: ['stable26', 'master']
         include:
-          - server-versions: stable25
-            databases: 'mysql'
-            php-versions: '8.1'
-          - server-versions: v26.0.0beta4
+          - server-versions: stable26
             databases: 'mysql'
             php-versions: '8.1'
 
