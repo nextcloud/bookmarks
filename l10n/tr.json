@@ -50,6 +50,8 @@
     "Link copied to clipboard" : "Bağlantı panoya kopyalandı",
     "Content pending" : "İçerik bekliyor",
     "This content is being downloaded for offline use. Please check back later." : "İçerik çevrimdışı kullanım için indirildi. Lütfen bir süre sonra yeniden deneyin.",
+    "Bookmarked {time} ago" : "{time} önce yer imlerine eklenmiş",
+    "Bookmarked on {date}" : "{date} tarihinde yer imlerine eklenmiş",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Fotoğraf ya da PDF gibi web üzerindeki dosyaların yer imleri otomatik olarak Nextcloud dosyalarınıza kaydedilir. Böylece bağlantı çevrimdışı olsa bile bu dosyalara erişebilirsiniz.",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Yer imi bağlantıları düzenli olarak denetlenir ve erişilemeyen bağlantılar burada görüntülenir.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Yer imi klasörlerini başkalarıyla paylaşabilirsiniz. Sizinle paylaşılan tüm klasörler burada görüntülenir.",

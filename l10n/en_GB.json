@@ -50,6 +50,8 @@
     "Link copied to clipboard" : "Link copied to clipboard",
     "Content pending" : "Content pending",
     "This content is being downloaded for offline use. Please check back later." : "This content is being downloaded for offline use. Please check back later.",
+    "Bookmarked {time} ago" : "Bookmarked {time} ago",
+    "Bookmarked on {date}" : "Bookmarked on {date}",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Bookmarked links are checked regularly and the ones that cannot be reached are listed here.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "You can share bookmark folders with others. All folders shared with you are listed here.",

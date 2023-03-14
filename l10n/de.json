@@ -50,6 +50,8 @@
     "Link copied to clipboard" : "Link in die Zwischenablage kopiert",
     "Content pending" : "Inhalt noch ausstehend",
     "This content is being downloaded for offline use. Please check back later." : "Dieser Inhalt wird zur Offline-Verwendung heruntergeladen. Bitte versuche es später erneut.",
+    "Bookmarked {time} ago" : "Lesezeichen vor {time} erstellt",
+    "Bookmarked on {date}" : "Lesezeichen am {date} erstellt",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Lesezeichen für Dateien wie Fotos oder PDFs werden automatisch als Dateien in deiner Nextcloud gespeichert, sodass du sie auch dann finden kannst, wenn der Link nicht mehr erreichbar ist.",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Links in den Lesezeichen werden regelmäßig überprüft und diejenigen, die nicht erreicht werden können, werden hier aufgelistet.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Du kannst Lesezeichenordner mit anderen teilen. Hier werden alle für dich freigegebenen Ordner aufgelistet.",

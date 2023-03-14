@@ -52,6 +52,8 @@ OC.L10N.register(
     "Link copied to clipboard" : "Odkaz zkopírován do schánky",
     "Content pending" : "Obsah čeká na vyřízení",
     "This content is being downloaded for offline use. Please check back later." : "Tento obsah je stahován pro použití bez připojení. Vraťte se sem později.",
+    "Bookmarked {time} ago" : "Zařazeno do záložek před {time}",
+    "Bookmarked on {date}" : "Zařazeno do záložek {date}",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Soubory, jako jsou fotky či PDF dokumenty na webu budou automaticky uloženy mezi vaše soubory v Nextcloud, takže budou k dispozici i když cíl odkazu přestane být dostupný.",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Odkazy uložené do záložek jsou pravidelně kontrolovány a ty, které jsou nedosažitelné jsou uvedené zde.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Složky se záložkami je možné nasdílet ostatním. Veškeré vám nasdílené složky jsou vypsané zde.",

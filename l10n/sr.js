@@ -52,6 +52,8 @@ OC.L10N.register(
     "Link copied to clipboard" : "Веза копирана у оставу",
     "Content pending" : "Чека се на садржај",
     "This content is being downloaded for offline use. Please check back later." : "Овај садржај је преузет за коришћење ван мреже. Молимо вас да проверите касније.",
+    "Bookmarked {time} ago" : "Маркирано пре {time}",
+    "Bookmarked on {date}" : "Маркирано дана {date}",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Маркери на фајлове на вебу, као што су фотографије или PDF документи ће се аутоматски сачувати у ваше Nextcloud фајлове, тако да ћете моћи да их пронађете чак и када линк више не буде на мрежи.",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Марикирани линкови се редовно проверавају и овде су наведени они до којих не може да се дође.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Фолдере са маркерима можете да делите са осталима. Овде су наведени сви фолдери које је неко поделио са вама.",

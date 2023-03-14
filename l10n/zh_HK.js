@@ -52,6 +52,8 @@ OC.L10N.register(
     "Link copied to clipboard" : "已複製連結至剪貼板",
     "Content pending" : "內容待定",
     "This content is being downloaded for offline use. Please check back later." : "正在下載此內容以供離線使用。請稍後再檢查。",
+    "Bookmarked {time} ago" : "{time} 前加入書籤",
+    "Bookmarked on {date}" : "於 {date} 加入書籤",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "網絡上的檔案（如照片或 PDF）的書籤將自動保存到您的 Nextcloud 檔案中，因此即使連結離線，您也仍然可以找到它們。",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "已加入書籤的連結會定期檢查，無法存取的連結就會在此列出。",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "您可以與其他人分享書籤資料夾。此處列出了與您分享的所有資料夾。",

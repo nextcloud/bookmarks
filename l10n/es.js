@@ -52,6 +52,8 @@ OC.L10N.register(
     "Link copied to clipboard" : "Enlace copiado al portapapeles",
     "Content pending" : "Contenido pendiente",
     "This content is being downloaded for offline use. Please check back later." : "Este contenido se está descargando para usarlo offline. Por favor, comprueba de nuevo más tarde.",
+    "Bookmarked {time} ago" : "Se agregó como marcador hace {time}",
+    "Bookmarked on {date}" : "Se agregó como marcador en {date}",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Los marcadores de archivos en la web, como fotos o PDF, se guardarán automáticamente en sus archivos de Nextcloud, por lo que aún puede encontrarlos incluso cuando el enlace no esté disponible.",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Los enlaces con marcadores se comprueban regular mente y a los que no se puede llegar se listan aquí",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Puedes compartir carpetas de marcadores con otros. Todas las carpetas compartidas contigo se listan aquí",
