@@ -39,7 +39,7 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Berkas",
     "Untagged" : "Belum ada tag",
-    "No bookmarks here" : "Tidak ada markah disini",
+    "No bookmarks here" : "Tidak ada markah di sini",
     "Import" : "Impor",
     "Export" : "Ekspor",
     "Client apps" : "Aplikasi klien",

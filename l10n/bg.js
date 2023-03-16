@@ -52,6 +52,8 @@ OC.L10N.register(
     "Link copied to clipboard" : "Връзката е копирана в клипборда",
     "Content pending" : "Чака се съдържание",
     "This content is being downloaded for offline use. Please check back later." : "Това съдържание се изтегля за офлайн употреба. Моля, проверете отново по-късно.",
+    "Bookmarked {time} ago" : "Маркирано /отметнато/ преди {time}",
+    "Bookmarked on {date}" : "Маркирано /отметнато/ на {date}",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Отметките към файлове в мрежата, като снимки или PDF файлове, автоматично ще бъдат запазени във вашите Nextcloud файлове, така че все още ще можете да ги намерите, дори когато връзката е офлайн.",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Връзките с отметки се проверяват редовно и тези, които не могат да бъдат достигнати са изброени тук.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Можете да споделяте папки с отметки с другите. Всички папки, споделени с вас, са изброени тук.",
