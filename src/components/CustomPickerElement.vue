@@ -9,7 +9,8 @@
 		<h2>
 			{{ t('bookmarks', 'Bookmarks') }}
 		</h2>
-		<NcSearch :provider="{search_providers_ids: ['bookmarks'], title: t('bookmarks', 'Bookmarks')}"
+		<NcSearch ref="picker"
+			:provider="{search_providers_ids: ['bookmarks'], title: t('bookmarks', 'Bookmarks')}"
 			@cancel="cancelSearch"
 			@submit="submitLink" />
 	</div>
@@ -24,6 +25,11 @@ export default {
 	name: 'CustomPickerElement',
 	components: {
 		NcSearch,
+	},
+	mounted() {
+		setTimeout(() => {
+			this.$refs.picker?.focus()
+		}, 300)
 	},
 	methods: {
 		cancelSearch() {
