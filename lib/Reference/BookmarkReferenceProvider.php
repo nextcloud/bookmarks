@@ -20,7 +20,6 @@ use OCP\Collaboration\Reference\IReference;
 use OCP\Collaboration\Reference\Reference;
 use OCP\IL10N;
 use OCP\IURLGenerator;
-use Psr\Log\LoggerInterface;
 
 class BookmarkReferenceProvider extends ADiscoverableReferenceProvider {
 	private ?string $userId;
@@ -78,13 +77,11 @@ class BookmarkReferenceProvider extends ADiscoverableReferenceProvider {
 		$indexMatch = preg_match('/^' . preg_quote($startIndex, '/') . '\/bookmarks\/[0-9]+$/', $referenceText) === 1;
 
 		if ($noIndexMatch || $indexMatch) {
-			\OC::$server->get(LoggerInterface::class)->warning('MATCH BOOKMARK BY INTERNAL URL!');
 			return true;
 		}
 
 		try {
 			$this->bookmarkService->findByUrl($this->userId, $referenceText);
-			\OC::$server->get(LoggerInterface::class)->warning('MATCH BOOKMARK BY URL!');
 			return true;
 		} catch (UrlParseError|DoesNotExistException $e) {
 			return false;
