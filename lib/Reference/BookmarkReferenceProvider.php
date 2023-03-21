@@ -70,20 +70,21 @@ class BookmarkReferenceProvider extends ADiscoverableReferenceProvider {
 	 * @inheritDoc
 	 */
 	public function matchReference(string $referenceText): bool {
-		\OC::$server->get(LoggerInterface::class)->warning('MATCH REFERENCE');
 		$start = $this->urlGenerator->getAbsoluteURL('/apps/' . Application::APP_ID);
 		$startIndex = $this->urlGenerator->getAbsoluteURL('/index.php/apps/' . Application::APP_ID);
 
 		// link example: https://nextcloud.local/index.php/apps/deck/#/board/2/card/11
-		$noIndexMatch = preg_match('/^' . preg_quote($start, '/') . '\/bookmarks\/[0-9]+$/', $referenceText) !== false;
-		$indexMatch = preg_match('/^' . preg_quote($startIndex, '/') . '\/bookmarks\/[0-9]+$/', $referenceText) !== false;
+		$noIndexMatch = preg_match('/^' . preg_quote($start, '/') . '\/bookmarks\/[0-9]+$/', $referenceText) === 1;
+		$indexMatch = preg_match('/^' . preg_quote($startIndex, '/') . '\/bookmarks\/[0-9]+$/', $referenceText) === 1;
 
 		if ($noIndexMatch || $indexMatch) {
+			\OC::$server->get(LoggerInterface::class)->warning('MATCH BOOKMARK BY INTERNAL URL!');
 			return true;
 		}
 
 		try {
 			$this->bookmarkService->findByUrl($this->userId, $referenceText);
+			\OC::$server->get(LoggerInterface::class)->warning('MATCH BOOKMARK BY URL!');
 			return true;
 		} catch (UrlParseError|DoesNotExistException $e) {
 			return false;
