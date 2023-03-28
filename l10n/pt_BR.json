@@ -50,6 +50,8 @@
     "Link copied to clipboard" : "Link copiado para a área de transferência",
     "Content pending" : "Conteúdo pendente",
     "This content is being downloaded for offline use. Please check back later." : "Este conteúdo está sendo baixado para uso offline. Por favor, volte mais tarde.",
+    "Bookmarked {time} ago" : "Marcado {time} atrás",
+    "Bookmarked on {date}" : "Marcado em {date}",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Os favoritos para arquivos na web, como fotos ou PDFs, serão salvos automaticamente em seus arquivos Nextcloud, para que você ainda possa encontrá-los mesmo quando o link ficar offline. ",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Os links marcados são verificados regularmente e os que não podem ser acessados são listados aqui.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Você pode compartilhar pastas de favoritos com outras pessoas. Todas as pastas compartilhadas com você são listadas aqui.",

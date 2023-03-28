@@ -45,6 +45,7 @@ OC.L10N.register(
     "Owner" : "Owner",
     "Sharing" : "Partiment",
     "Share link" : "Partejar lo ligam",
+    "Editing allowed" : "Modificacion autorizada",
     "Allow editing" : "Permetre la modificacion",
     "Link copied" : "Ligam copiat",
     "Privacy" : "Confidencialitat",
