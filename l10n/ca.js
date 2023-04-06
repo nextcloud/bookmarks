@@ -52,6 +52,8 @@ OC.L10N.register(
     "Link copied to clipboard" : "Enllaç copiat al porta-retalls",
     "Content pending" : "Contingut pendent",
     "This content is being downloaded for offline use. Please check back later." : "Aquest contingut s'està baixant per utilitzar-lo fora de línia. Si us plau, torneu-ho a comprovar més tard.",
+    "Bookmarked {time} ago" : "Marcat fa {time}",
+    "Bookmarked on {date}" : "Marcat a {date}",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Els marcadors dels fitxers del web, com ara fotografies o PDF, es desaran automàticament als fitxers de Nextcloud, de manera que encara les podeu trobar fins i tot quan l'enllaç estigui desconnectat.",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Els enllaços marcats es revisen regularment i els que no es poden accedir s'enumeren aquí.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Podeu compartir carpetes d'adreces d'interès amb altres persones. Totes les carpetes compartides amb tu es mostren aquí.",
