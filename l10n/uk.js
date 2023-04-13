@@ -22,6 +22,7 @@ OC.L10N.register(
     "Sort by last modified" : "Впорядкувати за останніми змінами",
     "Enter a link" : "Зазначте посилання",
     "Add a bookmark" : "Додати закладку",
+    "Shared by {user}" : "Надано доступ {user}",
     "Rename folder" : "Перейменувати каталог",
     "Delete folder" : "Вилучити каталог",
     "Submit" : "Гаразд",
