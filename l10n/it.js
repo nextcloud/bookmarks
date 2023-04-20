@@ -201,6 +201,7 @@ OC.L10N.register(
     "Root Folder" : "Cartella radice",
     "Save" : "Salva",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "L'accesso alla rete è disattivato in modo predefinito. Vai alle impostazioni amministratore dell'applicazione Segnalibri per consentire il reperimento di anteprime e favicon.",
+    "Link to a bookmark folder" : "Collegamento a una cartella di segnalibri",
     "Failed to count unavailable bookmarks" : "Conteggio dei segnalibri non disponibili non riuscito",
     "Failed to count archived bookmarks" : "Conteggio dei segnalibri archiviati non riuscito",
     "Failed to count duplicated bookmarks" : "Impossibile contare i segnalibri duplicati",
