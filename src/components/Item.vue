@@ -266,7 +266,7 @@ export default {
 }
 
 .item.dropTarget--available {
-	background: var(--color-primary-light);
+	background: var(--color-primary-element-light);
 }
 
 .item.dropTarget--active {

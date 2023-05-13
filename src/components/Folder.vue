@@ -280,6 +280,6 @@ export default {
 	border-radius: var(--border-radius-pill);
 	padding: 5px 10px;
 	margin-right: 3px;
-	background-color: var(--color-primary-light);
+	background-color: var(--color-primary-element-light);
 }
 </style>

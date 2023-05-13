@@ -306,7 +306,7 @@ export default {
 	}
 
 	.share__avatar.active {
-		background-color: var(--color-primary-light);
+		background-color: var(--color-primary-element-light);
 		border-radius: 44px;
 	}
 

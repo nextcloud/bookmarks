@@ -219,7 +219,7 @@ export default {
 <style>
 
 .navigation .dropTarget--available {
-	background: var(--color-primary-light);
+	background: var(--color-primary-element-light);
 }
 
 .navigation .dropTarget--active {
