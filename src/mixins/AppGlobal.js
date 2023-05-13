@@ -20,7 +20,7 @@ export default {
 			return getComputedStyle(document.documentElement).getPropertyValue('--color-primary-element')
 		},
 		colorPrimaryText() {
-			return getComputedStyle(document.documentElement).getPropertyValue('--color-primary-text')
+			return getComputedStyle(document.documentElement).getPropertyValue('--color-primary-element-text')
 		},
 		colorMainText() {
 			return getComputedStyle(document.documentElement).getPropertyValue('--color-main-text')
