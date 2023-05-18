@@ -13,4 +13,5 @@ This documentation describes how to use this API.
    tag
    folder
    share
+   locking
    changes
