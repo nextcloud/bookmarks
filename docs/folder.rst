@@ -12,14 +12,18 @@ Folder model
    :param int id: The folder's unique id
    :param string title: The humanly-readable label for the folder
    :param int parent_folder: The folder's parent folder
+   :param string userId: The user ID of the nextcloud account that owns this folder
+   :param string userDisplayName: The name of the nextcloud account that owns this folder
+
+      .. versionadded:: 12.1.0
 
    .. note::
 
       The root folder has the magic id ``-1``, which is the same for every user.
 
 
-Get full hierarchy
-==================
+Get full folder hierarchy
+=========================
 
 .. get:: /public/rest/v2/folder
 
@@ -109,8 +113,8 @@ Create a folder
 
    .. versionadded:: 0.15.0
 
-   :<json string title: The title of the new folder
-   :<json int parent_folder: The id of the parent folder for the new folder
+   :<json string title: The title of the new folder, defaults to ""
+   :<json int parent_folder: The id of the parent folder for the new folder, defaults to -1
 
    :>json string status: ``success`` or ``error``
    :>json object item: The new folder
@@ -351,11 +355,14 @@ Get folder's content order
 
    .. versionadded:: 0.15.0
 
+   :query int layers: The number of tree layers to return, defaults to 0 which returns only the immediate children
+
    :>json string status: ``success`` or ``error``
    :>json array data: An ordered list of child items
 
    :>jsonarr string type: Either ``folder`` or ``bookmark``
    :>jsonarr string id: The id of the bookmark or folder
+   :>jsonarr array children: In case more than one layers are returned, folders will have a this additional property with an array containing more items (or none)
 
    **Example:**
 
@@ -376,6 +383,37 @@ Get folder's content order
         "status": "success",
         "data": [
           {"type": "folder", "id": 17},
+          {"type": "bookmark", "id": 204},
+          {"type": "bookmark", "id": 192},
+          {"type": "bookmark", "id": 210}
+        ]
+      }
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      GET /index.php/apps/bookmarks/public/rest/v2/folder/5/childorder?layers=1 HTTP/1.1
+      Host: example.com
+      Accept: application/json
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "success",
+        "data": [
+          {"type": "folder", "id": 17, "children": [
+              {"type": "bookmark", "id": 234},
+              {"type": "bookmark", "id": 492},
+              {"type": "bookmark", "id": 250},
+              {"type": "folder", "id": 18 }
+            ]
+          },
           {"type": "bookmark", "id": 204},
           {"type": "bookmark", "id": 192},
           {"type": "bookmark", "id": 210}
@@ -436,7 +474,7 @@ Get folder's contents
 
    .. versionadded:: 3.0.0
 
-   :query int layers: How many layers of descendants to return at max. By default only immediate children are returned.
+   :query int layers: How many layers of descendants to return at max. Defaults to 0, retuning only immediate children.
 
    :>json string status: ``success`` or ``error``
    :>json array data: An ordered list of child items
@@ -446,15 +484,12 @@ Get folder's contents
 
    If the type of the item is ``folder``
 
+   :>jsonarr int id: The id of the folder
    :>jsonarr string title: The title of the folder
    :>jsonarr string userId: The owner of the folder
    :>jsonarr array children: The children of the folder. This is only set, when the number of layers to return includes this folder.
 
-   If the type of the item is ``bookmark``
-
-   :>jsonarr string url: The URL of the bookmark
-   :>jsonarr string title: The title of the bookmark
-   :>jsonarr string description: Description of the bookmark
+   If the type of the item is ``bookmark`` it will have all properties of the Bookmark type (see :ref:`bookmark`).
 
    **Example:**
 
@@ -481,7 +516,7 @@ Get folder's contents
       }
 
 
-Get folder's contents
+Get folder's content count
 =====================
 
 .. get:: /public/rest/v2/folder/(int:folder_id)/count
@@ -518,7 +553,7 @@ Get public token
 
 .. get:: /public/rest/v2/folder/(int:folder_id)/publictoken
 
-   :synopsis: Retrieve the public token of a folder that has been shared via a public link
+   :synopsis: Retrieve the public token of a folder that has been shared via a public link. This will return a 404 if the folder has no public token yet.
 
    .. versionadded:: 3.0.0
 
@@ -547,7 +582,7 @@ Get public token
         "item": "dk3J8Qm"
       }
 
-Get public token
+Create public token
 ================
 
 .. post:: /public/rest/v2/folder/(int:folder_id)/publictoken
@@ -607,4 +642,55 @@ Delete public token
 
       {
         "status": "success",
+      }
+
+Import bookmarks into folder
+============================
+
+.. post:: /public/rest/v2/folder/(int:folder_id)/import
+
+   :synopsis: Import an HTML bookmarks file into a folder. Returns the newly created items.
+
+   .. versionadded:: 1.1.0
+
+   :formparam bm_import: The HTML file to be uploaded
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      POST /index.php/apps/bookmarks/public/rest/v2/folder/-1/import HTTP/1.1
+      Host: example.com
+      Content-Length: 5038
+      Content-Type: multipart/form-data; boundary=------------------------8c1687317cdae5bf
+
+      --------------------------8c1687317cdae5bf
+      Content-Disposition: form-data; name="bm_import"; filename="bookmarks.html"
+      Content-Type: text/html
+
+      <html>
+      ...
+
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "success",
+        "data": [
+          {"type": "folder", "id": "17", "title": "foo", "children": [
+              {"type": "folder", "id": 18, "title": "bla", "children": [] }
+              {"type": "bookmark", "id": 234, "title": "Gnome", "url": "https://www.gnome.org"},
+              {"type": "bookmark", "id": 492, "title": "kernel", "url": "https://www.kernel.org"},
+              {"type": "bookmark", "id": 250, "title": "Test", "url": "https://www.test.de"},
+              {"type": "folder", "id": 18, "title": "foobar" "children": [] }
+            ]
+          },
+          {"type": "bookmark", "id": "204", "title": "Nextcloud", "url": "https://nextcloud.com/"},
+          {"type": "bookmark", "id": "205", "title": "Google", "url": "https://google.com/"},
+        ]
       }

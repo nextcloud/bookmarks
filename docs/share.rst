@@ -26,6 +26,11 @@ Create a share
 
    .. versionadded:: 3.0.0
 
+   :<json string participant: the id of the sharee (mandatory)
+   :<json int type: the type of sharee (currently either ``1`` if it's a group, or ``0`` if it's a single user; mandatory)
+   :<json bool canWrite: Whether the participant has write access (optional; defaults to ``false``)
+   :<json bool canShare: Whether the sharee should be allowed to re-share the folder with others (optional; defaults to ``false``)
+
    :>json string status: ``success`` or ``error``
    :>json share item: The new share
 
@@ -98,45 +103,10 @@ Get folder's shares
         ]
       }
 
-
-Get public token
-================
-
-.. get:: /public/rest/v2/folder/(int:folder_id)/publictoken
-
-   :synopsis: Retrieve the public token of a folder that has been shared via a public link
-
-   .. versionadded:: 3.0.0
-
-   :>json string status: ``success`` or ``error``
-   :>json share item: The public token
-
-   To use the token either make API requests with it (see :ref:`authentication`). Or point your browser to ``https://yournextcloud.com/index.php/apps/bookmarks/public/{token}``
-
-   **Example:**
-
-   .. sourcecode:: http
-
-      GET /index.php/apps/bookmarks/public/rest/v2/folder/5/publictoken HTTP/1.1
-      Host: example.com
-      Accept: application/json
-
-   **Response:**
-
-   .. sourcecode:: http
-
-      HTTP/1.1 200 OK
-      Content-Type: application/json
-
-      {
-        "status": "success",
-        "item": "dk3J8Qm"
-      }
-
 Get share
 =========
 
-.. post:: /public/rest/v2/share/(int:share_id)
+.. get:: /public/rest/v2/share/(int:share_id)
 
    :synopsis: Get a share by id
 
@@ -149,7 +119,7 @@ Get share
 
    .. sourcecode:: http
 
-      POST /index.php/apps/bookmarks/public/rest/v2/share/17 HTTP/1.1
+      GET /index.php/apps/bookmarks/public/rest/v2/share/17 HTTP/1.1
       Host: example.com
       Accept: application/json
 
@@ -162,8 +132,7 @@ Get share
 
       {
         "status": "success"
-        "data": [
-            {
+        "item": {
                 "id": 17,
                 "folderId": 201,
                 "participant": "friends",
@@ -171,7 +140,6 @@ Get share
                 "canWrite": false,
                 "canShare": false
             }
-        ]
       }
 
 Edit share
@@ -179,9 +147,12 @@ Edit share
 
 .. put:: /public/rest/v2/share/(int:share_id)
 
-   :synopsis: Get a share by id
+   :synopsis: Edit a share
 
    .. versionadded:: 3.0.0
+
+   :<json bool canWrite: Whether the sharee should be allowed to edit the shared contents  (mandatory)
+   :<json bool canShare: Whether the sharee should be allowed to re-share the folder with others (mandatory)
 
    :>json string status: ``success`` or ``error``
    :>json share item: The requested share
@@ -208,8 +179,7 @@ Edit share
 
       {
         "status": "success"
-        "data": [
-            {
+        "item": {
                 "id": 17,
                 "folderId": 201,
                 "participant": "friends",
@@ -217,7 +187,6 @@ Edit share
                 "canWrite": true,
                 "canShare": false
             }
-        ]
       }
 
 Delete share
@@ -235,7 +204,7 @@ Delete share
 
    .. sourcecode:: http
 
-      POST /index.php/apps/bookmarks/public/rest/v2/share/17 HTTP/1.1
+      DELETE /index.php/apps/bookmarks/public/rest/v2/share/17 HTTP/1.1
       Host: example.com
       Accept: application/json
 

@@ -4,6 +4,8 @@ Bookmarks
 
 .. contents::
 
+.. _bookmark:
+
 Bookmark model
 ==============
 
@@ -15,8 +17,26 @@ A bookmark has at least the following properties
    :param string url: The Uniform Resource Locator that this bookmark represents
    :param string title: A short humanly readable label for the bookmark
    :param string description: A longer description or note on the bookmark
+   :param int added: The UNIX timestamp when this bookmark was created
+   :param string userId: The user ID of the nextcloud account that owns this bookmark
    :param array tags: A list of tags this bookmark is tagged with
    :param array folders: The folders this bookmark has been added to
+   :param int clickcount: The number of times this bookmark was opened
+   :param bool available: A boolean indicating whether the app could reach the bookmarked URL
+
+      .. versionadded:: 3.4.0
+
+   :param string|null htmlContent: The html content of the bookmarked web page
+
+      .. versionadded:: 4.2.0
+
+   :param string|null textContent: The html content of the bookmarked web page
+
+      .. versionadded:: 4.2.0
+
+   :param int|null archivedFile: The nextcloud file id, if this bookmark links to a non-HTML, non-plaintext file
+
+      .. versionadded:: 3.4.0
 
 
 Query bookmarks
@@ -36,8 +56,24 @@ Query bookmarks
    :query conjunction: Set to ``and`` to require all search terms to be present, ``or`` if one should suffice. Default: ``or``
    :query folder: Only return bookmarks that are direct children of the folder with the passed ID. The root folder has id ``-1``.
    :query url: Only return bookmarks with this URL. With this parameter you can test whether a URL exists in the user's bookmarks.
+
+      .. versionadded:: 1.0.0
+
    :query unavailable: Only return bookmarks that are dead links, i.e. return 404 status codes or similar.
-   :query archive: Only return bookmarks that whose contents have been archived.
+
+      .. versionadded:: 3.4.0
+
+   :query archived: Only return bookmarks that whose contents have been archived.
+
+      .. versionadded:: 3.4.0
+
+   :query untagged: Only return bookmarks that have no tags set
+
+      .. versionadded:: 0.12.0
+
+   :query duplicated: Only return bookmarks that are in multiple folders
+
+      .. versionadded:: 10.2.0
 
    :>json string status: ``success`` or ``error``
    :>json array data: The list of resulting bookmarks
@@ -73,11 +109,11 @@ Create a bookmark
 
    .. versionadded:: 0.11.0
 
-   :param id: the url of the new bookmark
-   :param array tags: Array of tags for this bookmark (these needn't exist and are created on-the-fly; this used to be `item[tags][]`, which is now deprecated)
-   :param string title: the title of the bookmark. If absent the title of the html site referenced by `url` is used
-   :param string description: A description for this bookmark
-   :param array folders: An array of IDs of the folders this bookmark should reside in.
+   :param url: the url of the new bookmark
+   :param array tags: Array of tags for this bookmark (these needn't exist and are created on-the-fly) (optional)
+   :param string title: the title of the bookmark. (optional; If absent the title of the html site referenced by `url` is used)
+   :param string description: A description for this bookmark (optional)
+   :param array folders: An array of IDs of the folders this bookmark should reside in. (optional; if absent the new bookmark will be put in the root folder)
 
    :>json string status: ``success`` or ``error``
    :>json object item: The created bookmark
@@ -165,11 +201,11 @@ Edit a bookmark
 
    .. versionadded:: 0.11.0
 
-   :param id: the url of the new bookmark
-   :param array tags: Array of tags for this bookmark (these needn't exist and are created on-the-fly; this used to be `item[tags][]`, which is now deprecated)
-   :param string title: the title of the bookmark. If absent the title of the html site referenced by `url` is used
-   :param string description: A description for this bookmark
-   :param array folders: An array of IDs of the folders this bookmark should reside in.
+   :param url: the url of the new bookmark (optional; if absent will not be changed)
+   :param array tags: Array of tags for this bookmark (these needn't exist and are created on-the-fly). (optional; if absent, will not be changed)
+   :param string title: the title of the bookmark. (optional; if absent, will not be changed)
+   :param string description: A description for this bookmark (optional; if absent, will not be changed)
+   :param array folders: An array of IDs of the folders this bookmark should reside in, the bookmark will be removed from all other folders it may have resided in (optional; if absent, will not be changed)
 
    :>json string status: ``success`` or ``error``
    :>json object item: The new bookmark after editing
@@ -209,7 +245,7 @@ Delete a bookmark
 
 .. delete:: /public/rest/v2/bookmark/(int:id)
 
-   :synopsis: Delete a bookmark
+   :synopsis: Delete a bookmark. Note: Often you only want to remove a bookmark from a folder, not delete it from all folders. There is a different endpoint for the former.
 
    .. versionadded:: 0.11.0
 
@@ -314,3 +350,31 @@ Export all bookmarks
       <html>
       ...
 
+Register that a bookmark was opened
+==================================
+
+.. post:: /public/rest/v2/bookmark/click
+
+   :synopsis: Delete a bookmark. Note: Often you only want to remove a bookmark from a folder, not delete it from all folders. There is a different endpoint for the former.
+
+   :query string url: The URL of the bookmark
+
+   **Example:**
+
+   .. sourcecode:: http
+
+      POST /index.php/apps/bookmarks/public/rest/v2/bookmark/click?url=https://nextcloud.com/ HTTP/1.1
+      Host: example.com
+      Accept: application/json
+
+
+   **Response:**
+
+   .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "success"
+      }
