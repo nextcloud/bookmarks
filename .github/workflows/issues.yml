@@ -1,0 +1,50 @@
+name: New issue workflow
+
+on:
+  issues:
+    types: [opened]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  assign_one_project:
+    runs-on: ubuntu-latest
+    name: Assign to One Project
+    steps:
+      - name: Assign new issues and pull requests to project 1 Backlog
+        uses: srggrs/assign-one-project-github-action@1.2.0
+        with:
+          project: 'https://github.com/nextcloud/bookmarks/projects/1'
+          column_name: 'Backlog'
+
+  first_comment:
+    runs-on: ubuntu-latest
+    name: Add first comment
+    steps:
+      - uses: ben-z/actions-comment-on-issue@1.0.2
+        with:
+          message: |
+            Hello :wave:
+            
+            Thank you for taking the time to open this issue with the bookmarks app. I know it's frustrating when software
+            causes problems. You have made the right choice to come here and open an issue to make sure your problem gets looked at
+            and if possible solved.
+            I'm Marcel and have been maintaining this software the last few years. I currently work for Nextcloud but maintain this app
+            in my free time, because it is not an official Nextcloud product. My day job at Nextcloud is pretty awesome but sadly leaves me with
+            less time for side projects like this one than I used to have.
+            I still try to answer all issues and if possible fix all bugs here, but it sometimes takes a while until I get to it.
+            Until then, please be patient. 
+            Note also that GitHub is a place where people meet to make software better *together*. Nobody here is under any obligation
+            to help you, solve your problems or deliver on any expectations or demands you may have, but if enough people come together we can
+            collaborate to make this software better. For everyone.
+            Thus, if you can, you could also look at other issues to see whether you can help other people with your knowledge
+            and experience. If you have coding experience it would also be awesome if you could step up to dive into the code and
+            try to fix the odd bug yourself. Everyone will be thankful for extra helping hands!
+            One last word: If you feel, at any point, like you need to vent, this is not the place for it; you can go to the forum,
+            to twitter or somewhere else. But this is a technical issue tracker, so please make sure to
+            focus on the tech and keep your opinions to yourself. (Also see our [Code of Conduct](https://nextcloud.com/contribute/code-of-conduct/). Really.)
+            
+            I look forward to working with you on this issue
+            Cheers :blue_heart:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
