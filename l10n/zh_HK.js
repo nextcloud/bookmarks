@@ -94,7 +94,7 @@ OC.L10N.register(
     "_%n bookmark_::_%n bookmarks_" : ["%n 書籤"],
     "_%n folder_::_%n folders_" : ["%n 個資料夾"],
     "Welcome to Bookmarks" : "歡迎來到 Bookmarks",
-    "This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app." : "此應用程式允許您管理網絡上您最喜歡的地方的連結。將您的書籤分類到資料夾中，用標籤標記它們並與他人分享！該應用程式將定期檢查您所有連結的可用性並顯示不可用的連結。如果您在網絡上添加指向檔案的連結，該檔案將自動下載到您的 Nextcloud Files 中。您還可以導入從其他服務導出的書籤，或直接將所有瀏覽器中的書籤與此應用程式同步。",
+    "This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app." : "此應用程式允許您管理網絡上您最喜歡的地方的連結。將您的書籤分類到資料夾中，用標籤標記它們並與他人分享！該應用程式將定期檢查您所有連結的空閒時間並顯示不可用的連結。如果您在網絡上添加指向檔案的連結，該檔案將自動下載到您的 Nextcloud Files 中。您還可以導入從其他服務導出的書籤，或直接將所有瀏覽器中的書籤與此應用程式同步。",
     "Add a bookmark" : "新增書籤",
     "Import bookmarks" : "匯入書籤",
     "Sync with your browser" : "與瀏覽器同步",
