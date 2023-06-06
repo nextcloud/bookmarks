@@ -34,6 +34,7 @@ OC.L10N.register(
     "Export" : "Експорт",
     "Title" : "Назва",
     "Link" : "Посилання",
+    "Root folder" : "Кореневий каталог",
     "Tags" : "Позначки",
     "Notes" : "Примітки",
     "Created {time} ago" : "Створено {time} тому",
