@@ -91,6 +91,7 @@ OC.L10N.register(
     "Failed to create folder" : "پوشه ایجاد نشد",
     "Failed to fetch bookmarks." : "واکشی نشانک ها انجام نشد.",
     "Failed to change setting" : "تنظیم تغییر نکرد",
+    "Failed to load setting {key}" : "شکست در بار کردن تنظیم {key}",
     "Bookmarks feed" : "بازخورد نشانک ها"
 },
 "nplurals=2; plural=(n > 1);");
