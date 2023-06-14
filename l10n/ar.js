@@ -38,6 +38,7 @@ OC.L10N.register(
     "Privacy" : "الخصوصية",
     "Previews" : "المعاينات",
     "Failed to save settings" : "فشل حفظ الإعدادات",
+    "Failed to load settings" : "إخفاق في تحميل الإعدادات",
     "Folder" : "مجلد",
     "Save" : "حفظ"
 },
