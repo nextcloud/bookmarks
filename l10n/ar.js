@@ -31,6 +31,7 @@ OC.L10N.register(
     "Download file" : "تحميل ملف",
     "Owner" : "المالك",
     "Sharing" : "المشاركة",
+    "Select a user or group" : "اختر مجموعة مستخدمين",
     "Share link" : "مشاركة الرابط",
     "Allow editing" : "السماح بالتعديلات",
     "Allow resharing" : "السماح بإعادة المشاركة ",
