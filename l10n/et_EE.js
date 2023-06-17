@@ -15,6 +15,7 @@ OC.L10N.register(
     "Rename folder" : "Nimeta kaust ümber",
     "Delete folder" : "Kustuta kaust",
     "Choose folder" : "Vali kaust",
+    "Submit" : "Saada",
     "Cancel" : "Loobu",
     "Recent" : "Hiljutised",
     "Shared with you" : "Sinuga jagatud",
