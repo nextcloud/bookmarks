@@ -10,6 +10,7 @@ OC.L10N.register(
     "Delete" : "حذف ",
     "Select all" : "تحديد الكل",
     "Go back" : "العودة",
+    "Share folder" : "مشاركة مُجلّد",
     "New" : "جديد",
     "New folder" : "مجلد جديد",
     "Search" : "البحث",
