@@ -50,6 +50,7 @@ OC.L10N.register(
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["선택된 %n 북마크들"],
     "_Selected %n folder_::_Selected %n folders_" : ["선택된 %n 폴더들"],
     "Go back" : "뒤로 가기",
+    "Share folder" : "폴더 공유",
     "New" : "새로 만들기",
     "New bookmark" : "새로운 북마크",
     "New folder" : "새 폴더",
