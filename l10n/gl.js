@@ -55,7 +55,7 @@ OC.L10N.register(
     "Bookmarked {time} ago" : "Marcado como favorito hai {time}",
     "Bookmarked on {date}" : "Marcado como favorito o {date}",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Os marcadores de ficheiros na web, como as fotos ou os PDF, gardaranse automaticamente nos seus ficheiros de Nextcloud, para que poida atopalos incluso cando a ligazón estea fóra de liña.",
-    "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "As ligazóns marcadas compróbanse regularmente e as que non se pode acceder están listadas aquí.",
+    "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "As ligazóns marcadas compróbanse regularmente e aá que non se pode acceder están listadas aquí.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Pode compartir cartafoles de marcadores con outras persoas. Todos os cartafoles compartidos con vostede amósanse aquí.",
     "One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience." : "Un marcador pode estar en varios cartafoles á vez. Ao actualizar, actualizaranse todas as copias. Todos os marcadores duplicados están listados aquí por comodidade.",
     "Open all selected" : "Abrir todos os seleccionados",

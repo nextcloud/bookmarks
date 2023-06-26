@@ -25,6 +25,7 @@ OC.L10N.register(
     "Sharing" : "Paylaşılır",
     "Share link" : "Linki yayımla",
     "Allow resharing" : "Yenidən paylaşıma izin",
+    "Link copied" : "Link kopyalandı",
     "Folder" : "Qovluq",
     "Save" : "Saxla"
 },
