@@ -91,7 +91,7 @@ OC.L10N.register(
     "Link copied" : "링크 복사됨",
     "Privacy" : "프라이버시",
     "Performance" : "성능",
-    "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "계정 당 최대 북마크 수 (0을 입력할 시 무제한이며 이는 기본값입니다)",
+    "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "계정 당 최대 북마크 수 (0을 입력할 시 무제한이며 이는 기본값입니다.)",
     "Previews" : "미리 보기",
     "Screeenly API URL" : "Screeenly API URL",
     "Screeenly API key" : "Screeenly API 키",
