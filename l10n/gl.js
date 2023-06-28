@@ -143,7 +143,7 @@ OC.L10N.register(
     "Client apps" : "Aplicacións cliente ",
     "Also check out the collection of client apps that integrate with this app: " : "Consulte tamén a colección de aplicacións de clientes que se integran con esta aplicación:",
     "Install web app on device" : "Instalar a aplicación web no dispositivo",
-    "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Pode instalar esta aplicación na pantalla de inicio do seu dispositivo para acceder rapidamente aos seus marcadores no seu teléfono. Pode eliminar facilmente a aplicación da pantalla de inicio, se non lle gusta.",
+    "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "Pode instalar esta aplicación na pantalla de inicio do seu dispositivo para acceder rapidamente aos seus marcadores no seu teléfono. Pode retirar doadamente a aplicación da pantalla de inicio, se non lle gusta.",
     "Install on home screen" : "Instalar na pantalla de inicio",
     "Bookmarklet" : "Miniaplicación ligada",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage." : "Arrastre isto cara aos marcadores do seu navegador e prema para marcar rapidamente unha páxina web",
