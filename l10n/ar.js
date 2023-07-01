@@ -15,6 +15,7 @@ OC.L10N.register(
     "New folder" : "مجلد جديد",
     "Search" : "البحث",
     "Sort by created date" : "فرز حسب تاريخ الإنشاء",
+    "Sort by title" : "ترتيب بحسب العنوان",
     "Add a bookmark" : "إضافة فاصلة مرجعية",
     "Rename folder" : "اعادة تسمية المجلد",
     "Delete folder" : "حذف المجلد",
