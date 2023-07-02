@@ -26,6 +26,7 @@ OC.L10N.register(
     "Files" : "الملفات",
     "Import" : "استيراد",
     "Export" : "تصدير",
+    "Bookmarklet" : "بريمج الإشارة المرجعية \"Bookmarklet\"",
     "Title" : "العنوان",
     "Link" : "الرابط",
     "Tags" : "الوسوم",
