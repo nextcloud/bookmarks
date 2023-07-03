@@ -2,7 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "الفواصل المرجعية",
+    "No file provided for import" : "لم يتم تقديم ملف للاستيراد",
     "Unsupported file type for import" : "لايمكن استيراد ملفات من هذا النوع",
+    "A Bookmark manager for Nextcloud" : "مدير الإشارات المرجعية لـ نكست كلود",
     "Details" : "التفاصيل",
     "Rename" : "إعادة التسمية",
     "Copy link" : "انسخ الرابط",
@@ -43,6 +45,7 @@ OC.L10N.register(
     "Previews" : "المعاينات",
     "Failed to save settings" : "فشل حفظ الإعدادات",
     "Failed to load settings" : "إخفاق في تحميل الإعدادات",
+    "This URL is already bookmarked! Overwrite?" : "تم بالفعل وضع إشارة مرجعية على عنوان محدد موقع الموارد المُوحّد \"URL\" هذا! استبدال؟",
     "Folder" : "مجلد",
     "Save" : "حفظ",
     "Failed to load tags" : "إخفاق في تحميل الوسوم"
