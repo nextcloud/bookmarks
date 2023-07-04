@@ -23,7 +23,7 @@ OC.L10N.register(
     "Sort by title" : "Сортувати за назвою",
     "Enter a link" : "Зазначте посилання",
     "Add a bookmark" : "Додати закладку",
-    "Shared by {user}" : "Надано доступ {user}",
+    "Shared by {user}" : "{user} надав(-ла) доступ",
     "Rename folder" : "Перейменувати каталог",
     "Delete folder" : "Вилучити каталог",
     "Submit" : "Гаразд",
