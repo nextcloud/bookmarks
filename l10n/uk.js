@@ -36,7 +36,7 @@ OC.L10N.register(
     "Title" : "Назва",
     "Link" : "Посилання",
     "Root folder" : "Кореневий каталог",
-    "Tags" : "Позначки",
+    "Tags" : "Мітки",
     "Notes" : "Примітки",
     "Created {time} ago" : "Створено {time} тому",
     "Owner" : "Власник",
@@ -53,6 +53,6 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Цей URL вже є в закладках! Перезаписати?",
     "Folder" : "Каталог",
     "Save" : "Зберегти",
-    "Failed to load tags" : "Не вдалося завантажити теги"
+    "Failed to load tags" : "Не вдалося завантажити мітки"
 },
 "nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);");
