@@ -88,6 +88,7 @@ OC.L10N.register(
     "Enter a title" : "أدخِل عنواناً",
     "No bookmarks found" : "لا توجد أي إشاراتٍ مرجعيةٍ",
     "{folders} folders and {bookmarks} bookmarks" : "{folders} مُجلّد، و {bookmarks} إشارة مرجِعية",
+    "_%n folder_::_%n folders_" : ["لا يوجد مجلدات %n","1 مجلد %n","مجلدين","عدد قليل من مجلدات %n","عدد كبير من مجلدات %n","مجلدات %n"],
     "Welcome to Bookmarks" : "أهلا بكم في تطبيق \"الإشارات المرجِعيّة\" Bookmarks",
     "This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app." : "يتيح لك هذا التطبيق إدارة الروابط إلى أماكنك المفضلة على الويب. قم بفرز إشاراتك المرجعية في مجلدات، وقم بوضع لاصقاتٍ labels عليها لتصنيفها، وشاركها مع الآخرين! \nسيتحقق التطبيق بانتظام من جميع الروابط الخاصة بك للتأكد من توفرها ويعرض الروابط غير المتاحة. \nإذا قمت بإضافة رابط إلى ملف على الويب، فسيتم تنزيل الملف تلقائيًا إلى ملفات نكست كلاود الخاصة بك. \nيمكنك أيضًا إستيراد الإشارات المرجعية المُصدّرة من خدمات أخرى، أو مزامنة الإشارات المرجعية مباشرةً من جميع المستعرضات الخاصة بك باستخدام هذا التطبيق.",
     "Add a bookmark" : "إضافة إشارة مرجعية bookmark",
