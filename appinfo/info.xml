@@ -17,7 +17,6 @@
 - 💼 Built-in Dashboard widgets for frequent and recent links
 
 Requirements:
- - PHP v7.4+
  - PHP extensions:
    - intl: *
    - mbstring: *
@@ -36,7 +35,7 @@ Requirements:
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
 
 	<dependencies>
-		<php min-version="7.4" />
+		<php min-version="8.0" />
 		<database>sqlite</database>
 		<database min-version="8.0">mysql</database>
 		<database>pgsql</database>
