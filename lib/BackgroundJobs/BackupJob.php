@@ -7,10 +7,10 @@
 
 namespace OCA\Bookmarks\BackgroundJobs;
 
+use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Service\BackupManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
-use OCA\Bookmarks\Db\BookmarkMapper;
 use OCP\IConfig;
 use OCP\IUserManager;
 use OCP\IUserSession;

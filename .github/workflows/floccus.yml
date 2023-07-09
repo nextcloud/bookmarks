@@ -15,6 +15,10 @@ env:
 permissions:
   contents: read
 
+concurrency:
+  group: bookmarks-floccus-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   php:
     runs-on: ubuntu-latest

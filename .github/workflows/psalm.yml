@@ -18,11 +18,8 @@ jobs:
 
     strategy:
       matrix:
-        ocp-version: [ 'dev-stable26']
+        ocp-version: [ 'v26.0.0', 'v27.0.0', 'dev-master']
         php-version: [ '8.2' ]
-        include:
-          - ocp-version: 'dev-master'
-            php-version: '8.2'
 
     name: Nextcloud ${{ matrix.ocp-version }}
 
@@ -37,10 +34,10 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer i
+        run: composer require --dev nextcloud/ocp:${{ matrix.ocp-version }}
 
       - name: Install dependencies
-        run: composer require --dev nextcloud/ocp:${{ matrix.ocp-version }}
+        run: composer i
 
       - name: Run coding standards check
         run: composer run psalm

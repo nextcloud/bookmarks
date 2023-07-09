@@ -7,9 +7,9 @@
 
 namespace OCA\Bookmarks\BackgroundJobs;
 
+use OCA\Bookmarks\Service\FileCache;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
-use OCA\Bookmarks\Service\FileCache;
 use OCP\Files\NotPermittedException;
 use Psr\Log\LoggerInterface;
 

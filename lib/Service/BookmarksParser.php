@@ -24,6 +24,8 @@ use const LIBXML_PARSEHUGE;
  * @author Pedro Rodrigues <relvas.rodrigues@gmail.com>
  */
 class BookmarksParser {
+	public const THOUSAND_YEARS = 60 * 60 * 24 * 365 * 1000;
+
 	/**
 	 * Netscape Bookmark File Format DOCTYPE
 	 */
@@ -266,7 +268,13 @@ class BookmarksParser {
 		if ($this->useDateTimeObjects) {
 			if (isset($attributes['add_date'])) {
 				$added = new DateTime();
-				$added->setTimestamp((int)$attributes['add_date']);
+				if (self::THOUSAND_YEARS < (int)$attributes['add_date']) {
+					// Google exports dates in miliseconds. This way we only lose the first year of UNIX Epoch.
+					// This is invalid once we hit 2970. So, quite a long time.
+					$added->setTimestamp((int) ($attributes['add_date'] / 1000));
+				} else {
+					$added->setTimestamp((int) $attributes['add_date']);
+				}
 				$attributes['add_date'] = $added;
 			}
 			if (isset($attributes['last_modified'])) {

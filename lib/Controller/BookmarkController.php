@@ -45,8 +45,8 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Files\IRootFolder;
 use OCP\IL10N;
-use Psr\Log\LoggerInterface;
 use OCP\IURLGenerator;
+use Psr\Log\LoggerInterface;
 
 class BookmarkController extends ApiController {
 	private const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;

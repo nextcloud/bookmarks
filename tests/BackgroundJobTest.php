@@ -2,8 +2,8 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use OCA\Bookmarks\BackgroundJobs\CrawlJob;
 use OC\BackgroundJob\JobList;
+use OCA\Bookmarks\BackgroundJobs\CrawlJob;
 use OCA\Bookmarks\BackgroundJobs\FileCacheGCJob;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;

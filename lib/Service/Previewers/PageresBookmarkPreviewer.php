@@ -13,8 +13,8 @@ use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
 use OCP\IConfig;
-use Psr\Log\LoggerInterface;
 use OCP\ITempManager;
+use Psr\Log\LoggerInterface;
 
 class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
