@@ -7,9 +7,9 @@
 
 namespace OCA\Bookmarks\Service;
 
+use Exception;
 use fivefilters\Readability\Configuration;
 use fivefilters\Readability\Readability;
-use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Mimey\MimeTypes;

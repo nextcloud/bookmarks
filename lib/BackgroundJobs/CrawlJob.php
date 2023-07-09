@@ -7,12 +7,12 @@
 
 namespace OCA\Bookmarks\BackgroundJobs;
 
-use OCP\AppFramework\Utility\ITimeFactory;
-use OCP\BackgroundJob\TimedJob;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Service\BookmarkPreviewer;
 use OCA\Bookmarks\Service\CrawlService;
+use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\BackgroundJob\TimedJob;
 use OCP\IConfig;
 
 class CrawlJob extends TimedJob {

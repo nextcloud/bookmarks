@@ -8,11 +8,11 @@
 namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\Db\BookmarkMapper;
+use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
-use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Exception\UnsupportedOperation;

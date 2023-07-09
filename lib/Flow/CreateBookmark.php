@@ -22,16 +22,16 @@ use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\Files\NotPermittedException;
 use OCP\IL10N;
-use OCP\Lock\LockedException;
-use Psr\Log\LoggerInterface;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
+use OCP\Lock\LockedException;
 use OCP\Util;
 use OCP\WorkflowEngine\EntityContext\IUrl;
 use OCP\WorkflowEngine\IManager;
 use OCP\WorkflowEngine\IOperation;
 use OCP\WorkflowEngine\IRuleMatcher;
+use Psr\Log\LoggerInterface;
 
 class CreateBookmark implements IOperation {
 	private const REGEX_URL = "%(https?|ftp)://(\S+(:\S*)?@|\d{1,3}(\.\d{1,3}){3}|(([a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(\.([a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(\.[a-z\x{00a1}-\x{ffff}]{2,6}))(:\d+)?([^\s]*)?%ium";

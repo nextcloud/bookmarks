@@ -9,9 +9,9 @@ namespace OCA\Bookmarks\Service;
 
 use DateTime;
 use DateTimeImmutable;
-use OCP\Files\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\IConfig;
 use OCP\IL10N;
