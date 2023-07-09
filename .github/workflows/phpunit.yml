@@ -24,12 +24,15 @@ jobs:
       fail-fast: false
       matrix:
         php-versions: ['8.2']
-        databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable26', 'master']
+        databases: ['sqlite']
+        server-versions: ['stable26', 'stable27', 'master']
         include:
           - server-versions: stable26
             databases: 'mysql'
-            php-versions: '8.1'
+            php-versions: '8.2'
+          - server-versions: stable26
+            databases: 'pgsql'
+            php-versions: '8.2'
 
     name: php${{ matrix.php-versions }}-${{ matrix.databases }}-${{ matrix.server-versions }}
 
