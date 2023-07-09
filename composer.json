@@ -32,6 +32,7 @@
 		"lint": "find . -name \\*.php -not -path './vendor/*' -print0 | xargs -0 -n1 php -l",
         "cs:check": "php-cs-fixer fix --dry-run --diff",
         "cs:fix": "php-cs-fixer fix",
+        "test:unit": "phpunit -c tests/phpunit.xml",
 		"psalm": "psalm  --output-format=github --no-progress --no-cache --use-baseline=psalm-baseline.xml",
 		"psalm-new-baseline": "psalm  --output-format=github --no-progress --no-cache --set-baseline=psalm-baseline.xml",
 		"psalm-ui": "psalm --no-cache"
