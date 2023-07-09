@@ -123,8 +123,9 @@ class CrawlService {
 			$readability = new Readability($config);
 			try {
 				$readability->parse($resp->getBody());
-			} catch (ParseException $e) {
+			} catch (\Throwable $e) {
 				$this->logger->debug(get_class($e)." ".$e->getMessage()."\r\n".$e->getTraceAsString());
+				return;
 			}
 			$bookmark->setHtmlContent($readability->getContent());
 			$bookmark->setTextContent(strip_tags($readability->getContent()));
