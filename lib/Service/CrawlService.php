@@ -8,7 +8,6 @@
 namespace OCA\Bookmarks\Service;
 
 use fivefilters\Readability\Configuration;
-use fivefilters\Readability\ParseException;
 use fivefilters\Readability\Readability;
 use Exception;
 use GuzzleHttp\Client;
