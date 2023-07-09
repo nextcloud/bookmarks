@@ -54,7 +54,7 @@
     "@nextcloud/eslint-config": "^8.2.1",
     "@nextcloud/stylelint-config": "^2",
     "@nextcloud/webpack-vue-config": "^5.4.0",
-    "@vue/test-utils": "^1.3.4"
+    "@vue/test-utils": "^1.3.6"
   },
   "engines": {
     "node": "^18.0.0",
