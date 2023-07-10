@@ -112,7 +112,12 @@ class CrawlService {
 	}
 
 	private function archiveContent(Bookmark $bookmark, Response $resp) : void {
-		$contentType = $resp->getHeader('Content-type')[0];
+		$header = $resp->getHeader('Content-type');
+		if(empty($header)) {
+			return;
+		}
+
+		$contentType = $header[0];
 		if ((bool)preg_match('#text/html#i', $contentType) === true && ($bookmark->getHtmlContent() === null || $bookmark->getHtmlContent() === '')) {
 			$config = new Configuration();
 			$config
@@ -132,7 +137,12 @@ class CrawlService {
 	}
 
 	private function archiveFile(Bookmark $bookmark, Response $resp) :void {
-		$contentType = $resp->getHeader('Content-type')[0];
+		$header = $resp->getHeader('Content-type');
+		if(empty($header)) {
+			return;
+		}
+
+		$contentType = $header[0];
 		if ((bool)preg_match('#text/html#i', $contentType) === false && $bookmark->getArchivedFile() === null && (int)$resp->getHeader('Content-length')[0] < self::MAX_BODY_LENGTH) {
 			try {
 				$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
