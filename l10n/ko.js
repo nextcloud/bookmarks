@@ -39,7 +39,6 @@ OC.L10N.register(
     "Create bookmark" : "북마크 생성",
     "Takes a link and adds it to your collection of bookmarks." : "링크를 북마크 목록에 추가하십시오.",
     "A Bookmark manager for Nextcloud" : "Nextcloud 북마크 관리자",
-    "- 📂 Sort bookmarks into folders\n- 🏷 Add tags and personal notes\n- 🔍 Full-text search\n- 📲 Synchronize with all your browsers and devices\n- 👪 Share bookmarks with other users and publicly\n- ☠ Find broken links\n- ⚛ Generate RSS feeds of your collections\n- 📔 Read archived versions of your links in case they are depublished\n- 💬 Create new bookmarks directly from within Nextcloud Talk\n- 💼 Built-in Dashboard widgets for frequent and recent links\n\nRequirements:\n - PHP v7.4+\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - when using MySQL, use at least v8.0" : "- 📂 ",
     "Select bookmark" : "북마크 선택",
     "Details" : "자세한 정보",
     "Rename" : "이름 바꾸기",

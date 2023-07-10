@@ -39,7 +39,6 @@ OC.L10N.register(
     "Create bookmark" : "创建书签",
     "Takes a link and adds it to your collection of bookmarks." : "获取一个链接并将其添加到您的书签中。",
     "A Bookmark manager for Nextcloud" : "适用于 Nextcloud 的书签管理",
-    "- 📂 Sort bookmarks into folders\n- 🏷 Add tags and personal notes\n- 🔍 Full-text search\n- 📲 Synchronize with all your browsers and devices\n- 👪 Share bookmarks with other users and publicly\n- ☠ Find broken links\n- ⚛ Generate RSS feeds of your collections\n- 📔 Read archived versions of your links in case they are depublished\n- 💬 Create new bookmarks directly from within Nextcloud Talk\n- 💼 Built-in Dashboard widgets for frequent and recent links\n\nRequirements:\n - PHP v7.4+\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - when using MySQL, use at least v8.0" : "- 📂 以文件夹分类书签\n- 🏷 添加标签和个人备注\n- 🔍 全文检索\n- 📲 在您的所有浏览器和设备之间同步\n- 👪 与其他用户或公开分享书签\n- ☠ 发现失效的链接\n- ⚛ 生成您收藏列表的RSS订阅源\n- 📔 当取消发布的时候，查阅链接的历史存档版本\n- 💬 直接在Nextcloud通话应用中创建新的书签\n- 💼 显示频繁访问和最近添加链接的内置仪表盘组件\n\n要求:\n - PHP 7.4版本以上\n - PHP扩展:\n   - intl: *\n   - mbstring: *\n - 使用MySQL时，至少要8.0版本",
     "Enter new title" : "输入新标题",
     "Select bookmark" : "选择书签",
     "Details" : "详情",
