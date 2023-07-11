@@ -39,6 +39,7 @@ OC.L10N.register(
     "Create bookmark" : "建立書籤",
     "Takes a link and adds it to your collection of bookmarks." : "取得連結並新增到您的書籤集合中。",
     "A Bookmark manager for Nextcloud" : "Nextcloud 上的書籤管理程式",
+    "- 📂 Sort bookmarks into folders\n- 🏷 Add tags and personal notes\n- 🔍 Full-text search\n- 📲 Synchronize with all your browsers and devices\n- 👪 Share bookmarks with other users and publicly\n- ☠ Find broken links\n- ⚛ Generate RSS feeds of your collections\n- 📔 Read archived versions of your links in case they are depublished\n- 💬 Create new bookmarks directly from within Nextcloud Talk\n- 💼 Built-in Dashboard widgets for frequent and recent links\n\nRequirements:\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - when using MySQL, use at least v8.0" : "- 📂 將書籤分類到資料夾中\n- 🏷 新增標籤與個人筆記\n- 🔍 全文搜尋\n- 📲 與您所有的瀏覽器及裝置同步\n- 👪 與其他使用者分享或是公開分享\n- ☠ 尋找壞掉的連結\n- ⚛ 產生您收藏的 RSS 摘要\n- 📔 若您的連結被取消發佈，您還是可以閱讀它們的封存版本\n- 💬 直接從 Nextcloud Talk 建立新書籤\n- 💼 用於經常造訪與最近新增連結的內建儀表板小工具\n\n系統需求：\n - PHP 擴充套件：\n   - intl: *\n   - mbstring: *\n - 若使用 MySQL，則至少需要 v8.0",
     "Enter new title" : "輸入新的標題",
     "Select bookmark" : "選擇書籤",
     "Details" : "細節",
