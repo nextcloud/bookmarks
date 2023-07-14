@@ -127,7 +127,10 @@ export default {
 			return this.$store.getters.getPermissionsForFolder(this.folder.id)
 		},
 		isEditable() {
-			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
+			return this.isOwner || (!this.isOwner && (this.isDirectShare || this.permissions.canWrite));
+		},
+		isDirectShare() {
+			return this.$store.state.sharedFoldersById[this.folder.id] !== undefined
 		},
 		shares() {
 			return this.$store.getters.getSharesOfFolder(this.folder.id)

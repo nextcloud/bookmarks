@@ -183,6 +183,21 @@ class FolderService {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
+	public function deleteSharedFolder($userId, $folderId): void {
+		/**
+		 * @var $sharedFolder SharedFolder
+		 */
+		$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId);
+		$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+	}
+
+	/**
+	 * @param $userId
+	 * @param $folderId
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 */
 	public function deleteSharedFolderOrFolder($userId, $folderId): void {
 		/**
 		 * @var $folder Folder
@@ -196,11 +211,7 @@ class FolderService {
 
 		try {
 			// folder is shared folder
-			/**
-			 * @var $sharedFolder SharedFolder
-			 */
-			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			$this->deleteSharedFolder($userId, $folderId);
 			return;
 		} catch (DoesNotExistException $e) {
 			// noop
@@ -232,27 +243,42 @@ class FolderService {
 	 * @throws UnsupportedOperation
 	 * @throws \OCA\Bookmarks\Exception\UrlParseError
 	 */
+	public function updateSharedFolder($userId, $folderId, $title = null, $parent_folder = null) {
+		// folder is shared folder
+		/**
+		 * @var $sharedFolder SharedFolder
+		 */
+		$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId);
+		if (isset($title)) {
+			$sharedFolder->setTitle($title);
+			$this->sharedFolderMapper->update($sharedFolder);
+		}
+		if (isset($parent_folder)) {
+			$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $parent_folder);
+		}
+		return $sharedFolder;
+	}
+
+	/**
+	 * @param string $userId
+	 * @param int $folderId
+	 * @param string $title
+	 * @param int $parent_folder
+	 * @return Folder|SharedFolder
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws \OCA\Bookmarks\Exception\UrlParseError
+	 */
 	public function updateSharedFolderOrFolder($userId, $folderId, $title = null, $parent_folder = null) {
 		/**
 		 * @var $folder Folder
 		 */
 		$folder = $this->folderMapper->find($folderId);
 
-		if ($userId !== null || $userId !== $folder->getUserId()) {
+		if ($userId !== null && $userId !== $folder->getUserId()) {
 			try {
-				// folder is shared folder
-				/**
-				 * @var $sharedFolder SharedFolder
-				 */
-				$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
-				if (isset($title)) {
-					$sharedFolder->setTitle($title);
-					$this->sharedFolderMapper->update($sharedFolder);
-				}
-				if (isset($parent_folder)) {
-					$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $parent_folder);
-				}
-				return $sharedFolder;
+				return $this->updateSharedFolder($userId, $folderId, $title, $parent_folder);
 			} catch (DoesNotExistException $e) {
 				// noop
 			}

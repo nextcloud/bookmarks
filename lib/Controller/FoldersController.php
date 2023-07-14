@@ -276,7 +276,8 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 */
 	public function deleteFolder($folderId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
+		$perms = $this->authorizer->getPermissionsForFolder($folderId, $this->request);
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $perms)) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 
@@ -285,7 +286,11 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'success']);
 		}
 		try {
-			$this->folders->deleteSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			if (Authorizer::hasPermission(Authorizer::PERM_EDIT, $perms)) {
+				$this->folders->deleteSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
+			} else {
+				$this->folders->deleteSharedFolder($this->authorizer->getUserId(), $folderId);
+			}
 			return new JSONResponse(['status' => 'success']);
 		} catch (UnsupportedOperation $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -308,14 +313,19 @@ class FoldersController extends ApiController {
 	 * @PupblicPage
 	 */
 	public function editFolder($folderId, $title = null, $parent_folder = null): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
+		$perms = $this->authorizer->getPermissionsForFolder($folderId, $this->request);
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $perms)) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 		if ($parent_folder !== null) {
 			$parent_folder = $this->toInternalFolderId($parent_folder);
 		}
 		try {
-			$folder = $this->folders->updateSharedFolderOrFolder($this->authorizer->getUserId(), $folderId, $title, $parent_folder);
+			if (Authorizer::hasPermission(Authorizer::PERM_EDIT, $perms)) {
+				$folder = $this->folders->updateSharedFolderOrFolder($this->authorizer->getUserId(), $folderId, $title, $parent_folder);
+			} else {
+				$folder = $this->folders->updateSharedFolder($this->authorizer->getUserId(), $folderId, $title, $parent_folder);
+			}
 			return new JSONResponse(['status' => 'success', 'item' => $this->_returnFolderAsArray($folder)]);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
