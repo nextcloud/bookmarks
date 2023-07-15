@@ -230,7 +230,13 @@ class FolderControllerTest extends TestCase {
 		$this->folder2->setUserId($this->userId);
 		$this->folderMapper->insert($this->folder2);
 
+		$this->folder3 = new Folder();
+		$this->folder3->setTitle('bar');
+		$this->folder3->setUserId($this->userId);
+		$this->folderMapper->insert($this->folder3);
+
 		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder1->getId(), $this->folderMapper->findRootFolder($this->userId)->getId());
+		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder3->getId(), $this->folderMapper->findRootFolder($this->userId)->getId());
 		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder2->getId(), $this->folder1->getId());
 
 		$bookmark1 = Bookmark::fromArray([
@@ -378,6 +384,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
+		// Edit title
 		$output = $this->controller->editFolder($this->folder1->getId(), 'blabla');
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -385,6 +392,24 @@ class FolderControllerTest extends TestCase {
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$this->assertEquals('blabla', $data['item']['title']);
+
+		$output = $this->controller->getFolders();
+		$topLevelFolders = array_map(fn ($item) => $item['id'], $output->getData()['data']);
+		$this->assertEquals([$this->folder1->getId(), $this->folder3->getId()], $topLevelFolders);
+
+		// Move folder
+		$output = $this->controller->editFolder($this->folder1->getId(), 'blabla', $this->folder3->getId());
+		$data = $output->getData();
+		$this->assertEquals('success', $data['status'], var_export($data, true));
+		$output = $this->controller->getFolder($this->folder1->getId());
+		$data = $output->getData();
+		$this->assertEquals('success', $data['status'], var_export($data, true));
+		$this->assertEquals('blabla', $data['item']['title']);
+		$this->assertEquals($this->folder3->getId(), $data['item']['parent_folder']);
+
+		$output = $this->controller->getFolders();
+		$topLevelFolders = array_map(fn ($item) => $item['id'], $output->getData()['data']);
+		$this->assertEquals([$this->folder3->getId()], $topLevelFolders);
 	}
 
 	/**
