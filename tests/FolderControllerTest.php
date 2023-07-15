@@ -235,9 +235,15 @@ class FolderControllerTest extends TestCase {
 		$this->folder3->setUserId($this->userId);
 		$this->folderMapper->insert($this->folder3);
 
+		$this->folder4 = new Folder();
+		$this->folder4->setTitle('bar');
+		$this->folder4->setUserId($this->otherUserId);
+		$this->folderMapper->insert($this->folder4);
+
 		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder1->getId(), $this->folderMapper->findRootFolder($this->userId)->getId());
-		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder3->getId(), $this->folderMapper->findRootFolder($this->userId)->getId());
 		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder2->getId(), $this->folder1->getId());
+		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder3->getId(), $this->folderMapper->findRootFolder($this->userId)->getId());
+		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder4->getId(), $this->folderMapper->findRootFolder($this->otherUserId)->getId());
 
 		$bookmark1 = Bookmark::fromArray([
 			'userId' => $this->userId,
@@ -419,6 +425,47 @@ class FolderControllerTest extends TestCase {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
+	public function testSharedEdit(): void {
+		$this->cleanUp();
+		$this->setupBookmarks();
+		$this->setupSharedFolder();
+		$this->authorizer->setUserId($this->otherUserId);
+		// Edit title
+		$output = $this->otherController->editFolder($this->folder1->getId(), 'blabla');
+		$data = $output->getData();
+		$this->assertEquals('success', $data['status'], var_export($data, true));
+
+		$output = $this->otherController->getFolder($this->folder1->getId());
+		$data = $output->getData();
+		$this->assertEquals('success', $data['status'], var_export($data, true));
+		$this->assertEquals('blabla', $data['item']['title']);
+
+		$output = $this->otherController->getFolders();
+		$topLevelFolders = array_map(fn ($item) => $item['id'], $output->getData()['data']);
+		$this->assertEquals([$this->folder4->getId(), $this->folder1->getId()], $topLevelFolders);
+
+		// Move folder
+		$output = $this->otherController->editFolder($this->folder1->getId(), 'blabla', $this->folder4->getId());
+		$data = $output->getData();
+		$this->assertEquals('success', $data['status'], var_export($data, true));
+		$output = $this->otherController->getFolder($this->folder1->getId());
+		$data = $output->getData();
+		$this->assertEquals('success', $data['status'], var_export($data, true));
+		$this->assertEquals('blabla', $data['item']['title']);
+		$this->assertEquals($this->folder4->getId(), $data['item']['parent_folder']);
+
+		$output = $this->otherController->getFolders();
+		$topLevelFolders = array_map(fn ($item) => $item['id'], $output->getData()['data']);
+		$this->assertEquals([$this->folder4->getId()], $topLevelFolders);
+	}
+
+	/**
+	 * @throws AlreadyExistsError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
 	public function testDelete(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
@@ -445,8 +492,9 @@ class FolderControllerTest extends TestCase {
 		$output = $this->controller->getFolderChildrenOrder(-1, -1);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertCount(1, $data['data']);
+		$this->assertCount(2, $data['data']);
 		$this->assertEquals($this->folder1->getId(), $data['data'][0]['id']);
+		$this->assertEquals($this->folder3->getId(), $data['data'][1]['id']);
 		$this->assertCount(2, $data['data'][0]['children']);
 		$this->assertEquals($this->folder2->getId(), $data['data'][0]['children'][0]['id']);
 		$this->assertEquals($this->bookmark1Id, $data['data'][0]['children'][1]['id']);
@@ -472,8 +520,9 @@ class FolderControllerTest extends TestCase {
 		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$output = $this->controller->getFolderChildrenOrder(-1, -1);
 		$data = $output->getData();
-		$this->assertCount(1, $data['data']);
+		$this->assertCount(2, $data['data']);
 		$this->assertEquals($this->folder1->getId(), $data['data'][0]['id']);
+		$this->assertEquals($this->folder3->getId(), $data['data'][1]['id']);
 		$this->assertCount(2, $data['data'][0]['children']);
 		$this->assertEquals($this->bookmark1Id, $data['data'][0]['children'][0]['id']);
 		$this->assertEquals($this->folder2->getId(), $data['data'][0]['children'][1]['id']);
@@ -494,9 +543,11 @@ class FolderControllerTest extends TestCase {
 		$output = $this->controller->getFolders(-1, -1);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertCount(1, $data['data']);
+		$this->assertCount(2, $data['data']);
 		$this->assertEquals('foo', $data['data'][0]['title']);
 		$this->assertCount(1, $data['data'][0]['children']);
+		$this->assertEquals('bar', $data['data'][1]['title']);
+		$this->assertCount(0, $data['data'][1]['children']);
 		$this->assertEquals('bar', $data['data'][0]['children'][0]['title']);
 		$this->assertCount(0, $data['data'][0]['children'][0]['children']);
 	}
@@ -737,6 +788,10 @@ class FolderControllerTest extends TestCase {
 	public function testSetFullHierarchyPublicFail(): void {
 		$this->cleanUp();
 		$this->setupBookmarks();
+
+		$this->authorizer->setUserId($this->userId);
+		$originalOutput = $this->controller->getFolderChildrenOrder(-1, -1)->getData();
+
 		$this->authorizer->setUserId(null);
 		$output = $this->public->setFolderChildrenOrder($this->folder1->getId(), [
 			['type' => 'bookmark', 'id' => $this->bookmark1Id],
@@ -747,16 +802,9 @@ class FolderControllerTest extends TestCase {
 
 		$this->authorizer->setUserId($this->userId);
 		$this->authorizer->setToken(null);
-		$output = $this->controller->getFolderChildrenOrder(-1, -1);
-		$data = $output->getData();
-		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertCount(1, $data['data']);
-		$this->assertEquals($this->folder1->getId(), $data['data'][0]['id']);
-		$this->assertCount(2, $data['data'][0]['children']);
-		$this->assertEquals($this->bookmark1Id, $data['data'][0]['children'][1]['id']);
-		$this->assertEquals($this->folder2->getId(), $data['data'][0]['children'][0]['id']);
-		$this->assertCount(1, $data['data'][0]['children'][0]['children']);
-		$this->assertEquals($this->bookmark2Id, $data['data'][0]['children'][0]['children'][0]['id']);
+		$afterOutput = $this->controller->getFolderChildrenOrder(-1, -1)->getData();
+		$this->assertEquals('success', $afterOutput['status'], var_export($afterOutput, true));
+		$this->assertEquals($originalOutput['data'], $afterOutput['data']);
 	}
 
 	/**
@@ -903,6 +951,7 @@ class FolderControllerTest extends TestCase {
 		$this->cleanUp();
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
+
 		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->setFolderChildrenOrder($this->folder1->getId(), [
 			['type' => 'bookmark', 'id' => $this->bookmark1Id],
@@ -910,11 +959,13 @@ class FolderControllerTest extends TestCase {
 		]);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
+
 		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getFolderChildrenOrder(-1, -1);
 		$data = $output->getData();
-		$this->assertCount(1, $data['data']);
+		$this->assertCount(2, $data['data']);
 		$this->assertEquals($this->folder1->getId(), $data['data'][0]['id']);
+		$this->assertEquals($this->folder3->getId(), $data['data'][1]['id']);
 		$this->assertCount(2, $data['data'][0]['children']);
 		$this->assertEquals($this->bookmark1Id, $data['data'][0]['children'][0]['id']);
 		$this->assertEquals($this->folder2->getId(), $data['data'][0]['children'][1]['id']);
