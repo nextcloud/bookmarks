@@ -254,7 +254,7 @@ class TreeMapper extends QBMapper {
 			'id' => $itemId,
 			'type' => $type,
 		]);
-		return $this->findEntityWithType($qb, $type);
+		return $this->findEntityWithType($qb, self::TYPE_FOLDER);
 	}
 
 	/**
