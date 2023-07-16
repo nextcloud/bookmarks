@@ -417,7 +417,7 @@ class BookmarkController extends ApiController {
 		foreach ($folders as $folder) {
 			$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->request);
 		}
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions) || $this->authorizer->getUserId() === null) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $permissions) || $this->authorizer->getUserId() === null) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 
@@ -472,7 +472,7 @@ class BookmarkController extends ApiController {
 				foreach ($folders as $folder) {
 					$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->request);
 				}
-				if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions)) {
+				if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $permissions)) {
 					return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
 				}
 			}
@@ -651,7 +651,7 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function importBookmark($folder = null): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folder ?? -1, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folder ?? -1, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 
@@ -806,7 +806,7 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function acquireLock(): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 
@@ -831,7 +831,7 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function releaseLock(): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 

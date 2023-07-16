@@ -170,7 +170,7 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 */
 	public function addFolder($title = '', $parent_folder = -1): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($parent_folder, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($parent_folder, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 		try {
@@ -222,7 +222,7 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 */
 	public function addToFolder($folderId, $bookmarkId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
+		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
 			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
@@ -247,7 +247,7 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 */
 	public function removeFromFolder($folderId, $bookmarkId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
+		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
 			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($bookmarkId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
@@ -415,7 +415,7 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 */
 	public function setFolderChildrenOrder($folderId, $data = []): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 		$folderId = $this->toInternalFolderId($folderId);
@@ -640,7 +640,7 @@ class FoldersController extends ApiController {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 		try {
-			$canWrite = $canWrite && Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions);
+			$canWrite = $canWrite && Authorizer::hasPermission(Authorizer::PERM_WRITE, $permissions);
 			$share = $this->folders->createShare($folderId, $participant, $type, $canWrite, $canShare);
 			return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
 		} catch (DoesNotExistException $e) {
@@ -675,8 +675,7 @@ class FoldersController extends ApiController {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 
-
-		$canWrite = $canWrite && Authorizer::hasPermission(Authorizer::PERM_EDIT, $permissions);
+		$canWrite = $canWrite && Authorizer::hasPermission(Authorizer::PERM_WRITE, $permissions);
 		$share->setCanWrite($canWrite);
 		$share->setCanShare($canShare);
 		$this->shareMapper->update($share);

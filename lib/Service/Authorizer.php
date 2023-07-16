@@ -24,9 +24,10 @@ use OCP\IUserSession;
 class Authorizer {
 	public const PERM_NONE = 0;
 	public const PERM_READ = 1;
-	public const PERM_EDIT = 2;
+	public const PERM_EDIT = 2; // Allows editing the direct item
 	public const PERM_RESHARE = 4;
-	public const PERM_ALL = 7;
+	public const PERM_WRITE = 8; // Allows adding and editing the item's descendants
+	public const PERM_ALL = 15;
 
 	private $userId;
 	private $token = null;
@@ -167,6 +168,7 @@ class Authorizer {
 		$perms = self::PERM_READ;
 		if ($canWrite) {
 			$perms |= self::PERM_EDIT;
+			$perms |= self::PERM_WRITE;
 		}
 		if ($canShare) {
 			$perms |= self::PERM_RESHARE;
@@ -261,7 +263,7 @@ class Authorizer {
 			if ($share->getFolderId() === $itemId && $type === TreeMapper::TYPE_FOLDER) {
 				// If the sought folder is the root folder of the share, we give EDIT permissions + optionally RESHARE
 				// because the user can edit the shared folder
-				$perms = $this->getMaskFromFlags(true, $share->getCanShare());
+				$perms = $this->getMaskFromFlags(true, $share->getCanShare()) | self::PERM_EDIT;
 			} elseif ($this->treeMapper->hasDescendant($share->getFolderId(), $type, $itemId)) {
 				$perms = $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
 			} else {
