@@ -10,7 +10,6 @@ namespace OCA\Bookmarks\Service;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
-use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolderMapper;
@@ -162,7 +161,7 @@ class Authorizer {
 	 *
 	 * @return int
 	 *
-	 * @psalm-return positive-int
+	 * @psalm-return 0|positive-int
 	 */
 	protected function getMaskFromFlags($canWrite, $canShare): int {
 		$perms = self::PERM_READ;
@@ -191,7 +190,8 @@ class Authorizer {
 	/**
 	 * @param string $userId
 	 * @param int $bookmarkId
-	 * @return positive-int
+	 * @return int
+	 * @psalm-return 0|positive-int
 	 */
 	public function getUserPermissionsForBookmark(string $userId, int $bookmarkId): int {
 		return $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_BOOKMARK, $bookmarkId);
@@ -201,11 +201,11 @@ class Authorizer {
 	 * @param string $token
 	 * @param int $bookmarkId
 	 *
-	 * @return positive-int
+	 * @return int
+	 * @psalm-return 0|positive-int
 	 */
 	public function getTokenPermissionsForBookmark(string $token, int $bookmarkId): int {
 		try {
-			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicMapper->find($token);
 		} catch (DoesNotExistException $e) {
 			return self::PERM_NONE;
@@ -221,7 +221,8 @@ class Authorizer {
 	/**
 	 * @param string $userId
 	 * @param int $folderId
-	 * @return positive-int
+	 * @return int
+	 * @psalm-return 0|positive-int
 	 */
 	public function getUserPermissionsForFolder(string $userId, int $folderId): int {
 		if ($folderId === -1) {
@@ -235,7 +236,7 @@ class Authorizer {
 	 * @param string $userId
 	 * @param string $type
 	 * @param int $itemId
-	 * @return positive-int
+	 * @return 0|positive-int
 	 */
 	private function findPermissionsByUserAndItem(string $userId, string $type, int $itemId): int {
 		try {
@@ -286,12 +287,12 @@ class Authorizer {
 	 * @param string $token
 	 * @param int $folderId
 	 *
-	 * @return positive-int
+	 * @return int
+	 * @psalm-return 0|positive-int
 	 *
 	 */
 	public function getTokenPermissionsForFolder(string $token, int $folderId): int {
 		try {
-			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicMapper->find($token);
 		} catch (DoesNotExistException $e) {
 			return self::PERM_NONE;
