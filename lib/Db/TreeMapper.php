@@ -243,7 +243,7 @@ class TreeMapper extends QBMapper {
 	 * @psalm-return list<E>
 	 */
 	public function findChildren(string $type, int $folderId): array {
-		$qb = $this->getChildrenQuery[$type];
+		$qb = $this->selectFromType($type, [], $this->getChildrenQuery[$type]);
 		$qb->setParameter('parent_folder', $folderId);
 		return $this->findEntitiesWithType($qb, $type);
 	}

@@ -18,11 +18,11 @@ use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use OCP\AppFramework\IAppContainer;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\ICache;
 use OCP\ICacheFactory;
+use Psr\Container\ContainerInterface;
 use UnexpectedValueException;
 
 class TreeCacheManager implements IEventListener {
@@ -61,10 +61,7 @@ class TreeCacheManager implements IEventListener {
 	 * @var ICache[]
 	 */
 	private $caches = [];
-	/**
-	 * @var IAppContainer
-	 */
-	private $appContainer;
+	private ContainerInterface $appContainer;
 	/**
 	 * @var \OCA\Bookmarks\Db\TagMapper
 	 */
@@ -78,10 +75,10 @@ class TreeCacheManager implements IEventListener {
 	 * @param ShareMapper $shareMapper
 	 * @param SharedFolderMapper $sharedFolderMapper
 	 * @param ICacheFactory $cacheFactory
-	 * @param IAppContainer $appContainer
+	 * @param ContainerInterface $appContainer
 	 * @param \OCA\Bookmarks\Db\TagMapper $tagMapper
 	 */
-	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, ICacheFactory $cacheFactory, IAppContainer $appContainer, \OCA\Bookmarks\Db\TagMapper $tagMapper) {
+	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, ICacheFactory $cacheFactory, ContainerInterface $appContainer, \OCA\Bookmarks\Db\TagMapper $tagMapper) {
 		$this->folderMapper = $folderMapper;
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->shareMapper = $shareMapper;

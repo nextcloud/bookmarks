@@ -29,7 +29,6 @@ use PHPUnit\Framework;
 
 class TestCase extends Framework\TestCase {
 	protected function cleanUp(): void {
-		parent::setUp();
 		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks');
 		$query->execute();
 		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_tags');
