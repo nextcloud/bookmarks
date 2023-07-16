@@ -19,6 +19,7 @@ use RangeException;
  * Class PublicFolderMapper
  *
  * @package OCA\Bookmarks\Db
+ * @template-extends QBMapper<PublicFolder>
  */
 class PublicFolderMapper extends QBMapper {
 	/**
@@ -38,11 +39,11 @@ class PublicFolderMapper extends QBMapper {
 
 	/**
 	 * @param string $id
-	 * @return Entity
+	 * @return PublicFolder
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function find(string $id): Entity {
+	public function find(string $id): PublicFolder {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -54,11 +55,11 @@ class PublicFolderMapper extends QBMapper {
 
 	/**
 	 * @param int $folderId
-	 * @return Entity
+	 * @return PublicFolder
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByFolder(int $folderId): Entity {
+	public function findByFolder(int $folderId): PublicFolder {
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select('*')
@@ -71,9 +72,9 @@ class PublicFolderMapper extends QBMapper {
 	/**
 	 * @param int $createdAt
 	 *
-	 * @return Entity[]
+	 * @return PublicFolder[]
 	 *
-	 * @psalm-return array<array-key, PublicFolder>
+	 * @psalm-return list<PublicFolder>
 	 */
 	public function findAllCreatedBefore(int $createdAt): array {
 		$qb = $this->db->getQueryBuilder();
@@ -87,11 +88,12 @@ class PublicFolderMapper extends QBMapper {
 
 	/**
 	 * @param Entity $entity
-	 * @return Entity
+	 * @psalm-param PublicFolder $entity
+	 * @return PublicFolder
 	 * @throws MultipleObjectsReturnedException
 	 * @throws Exception
 	 */
-	public function insert(Entity $entity): Entity {
+	public function insert(Entity $entity): PublicFolder {
 		try {
 			while (true) {
 				// 63^7 = 3 939 000 000 000 links -- I guess that's enough.
@@ -105,10 +107,11 @@ class PublicFolderMapper extends QBMapper {
 
 	/**
 	 * @param Entity $entity
-	 * @return Entity
+	 * @psalm-param PublicFolder $entity
+	 * @return PublicFolder
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function insertOrUpdate(Entity $entity): Entity {
+	public function insertOrUpdate(Entity $entity): PublicFolder {
 		try {
 			$this->find($entity->getId());
 		} catch (DoesNotExistException $e) {

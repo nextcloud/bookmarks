@@ -172,7 +172,6 @@ class HtmlImporter {
 		$folder = new Folder();
 		$folder->setUserId($userId);
 		$folder->setTitle($folderParams['title']);
-		/** @var Folder $folder */
 		$folder = $this->folderMapper->insert($folder);
 		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parentId, $index);
 		$newFolder = ['type' => 'folder', 'id' => $folder->getId(), 'title' => $folderParams['title'], 'children' => []];
@@ -211,7 +210,6 @@ class HtmlImporter {
 		}
 
 		// insert bookmark
-		/** @var Bookmark $bm */
 		$bm = $this->bookmarkMapper->insertOrUpdate($bm);
 		// add to folder
 		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bm->getId(), [$folderId], $index);

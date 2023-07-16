@@ -135,9 +135,6 @@ class FolderService {
 	 * @return Share|null
 	 */
 	public function findShareByDescendantAndUser(Folder $folder, $userId): ?Share {
-		/**
-		 * @var $shares Share[]
-		 */
 		$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $userId);
 		foreach ($shares as $share) {
 			if ($share->getFolderId() === $folder->getId() || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $folder->getId())) {
@@ -155,9 +152,6 @@ class FolderService {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function findSharedFolderOrFolder($userId, $folderId) {
-		/**
-		 * @var $folder Folder
-		 */
 		$folder = $this->folderMapper->find($folderId);
 		if ($userId === null || $userId === $folder->getUserId()) {
 			return $folder;

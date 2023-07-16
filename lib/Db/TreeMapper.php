@@ -348,7 +348,6 @@ class TreeMapper extends QBMapper {
 
 			// then get all folders in this sub tree
 			$descendantFolders = $this->findByAncestorFolder(self::TYPE_FOLDER, $id);
-			/** @var Folder $folder */
 			$folder = $this->folderMapper->find($id);
 			$descendantFolders[] = $folder;
 
@@ -446,7 +445,6 @@ class TreeMapper extends QBMapper {
 		}
 		try {
 			// Try to find current parent
-			/** @var Folder $currentParent */
 			$currentParent = $this->findParentOf($type, $itemId);
 
 			if ($this->hasDescendant($itemId, self::TYPE_FOLDER, $newParentFolderId)) {
@@ -711,9 +709,6 @@ class TreeMapper extends QBMapper {
 			return $array;
 		}, $this->findChildren(self::TYPE_FOLDER, $folderId));
 		$shares = array_map(function (SharedFolder $sharedFolder) use ($layers, $folderId) {
-			/**
-			 * @var $share Share
-			 */
 			$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
 			$array = $sharedFolder->toArray();
 			$array['id'] = $share->getFolderId();
@@ -881,12 +876,11 @@ class TreeMapper extends QBMapper {
 		$children = $this->getChildren($folder->getId());
 		foreach ($children as $child) {
 			if ($child['type'] === 'bookmark') {
-				/** @var Bookmark $bookmark */
+
 				$bookmark = $this->bookmarkMapper->find($child['id']);
 				$bookmark->setUserId($userId);
 				$this->bookmarkMapper->update($bookmark);
 			} elseif ($child['type'] === 'folder') {
-				/** @var Folder $folder */
 				$folder = $this->folderMapper->find($child['id']);
 				$this->changeFolderOwner($folder, $userId);
 			}
