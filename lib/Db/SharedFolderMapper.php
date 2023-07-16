@@ -12,6 +12,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\Exception;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IDBConnection;
 
@@ -19,6 +20,7 @@ use OCP\IDBConnection;
  * Class SharedFolderMapper
  *
  * @package OCA\Bookmarks\Db
+ * @template-extends QBMapper<SharedFolder>
  */
 class SharedFolderMapper extends QBMapper {
 	/**
@@ -44,11 +46,11 @@ class SharedFolderMapper extends QBMapper {
 
 	/**
 	 * @param int $id
-	 * @return Entity
+	 * @return SharedFolder
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function find(int $id): Entity {
+	public function find(int $id): SharedFolder {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(SharedFolder::$columns)
 			->from('bookmarks_shared_folders', 'sf')
@@ -58,7 +60,7 @@ class SharedFolderMapper extends QBMapper {
 
 	/**
 	 * @param int $shareId
-	 * @return Entity[]
+	 * @return SharedFolder[]
 	 */
 	public function findByShare(int $shareId): array {
 		$qb = $this->db->getQueryBuilder();
@@ -71,7 +73,7 @@ class SharedFolderMapper extends QBMapper {
 
 	/**
 	 * @param int $folderId
-	 * @return Entity[]
+	 * @return SharedFolder[]
 	 */
 	public function findByFolder(int $folderId): array {
 		$qb = $this->db->getQueryBuilder();
@@ -86,9 +88,9 @@ class SharedFolderMapper extends QBMapper {
 	/**
 	 * @param string $userId
 	 *
-	 * @return Entity[]
+	 * @return SharedFolder[]
 	 *
-	 * @psalm-return array<array-key, SharedFolder>
+	 * @psalm-return list<SharedFolder>
 	 */
 	public function findByOwner(string $userId): array {
 		$qb = $this->db->getQueryBuilder();
@@ -106,9 +108,9 @@ class SharedFolderMapper extends QBMapper {
 	 * @param int $type
 	 * @param string $participant
 	 *
-	 * @return Entity[]
+	 * @return SharedFolder[]
 	 *
-	 * @psalm-return array<array-key, SharedFolder>
+	 * @psalm-return list<SharedFolder>
 	 */
 	public function findByParticipant(int $type, string $participant): array {
 		$qb = $this->db->getQueryBuilder();
@@ -127,11 +129,11 @@ class SharedFolderMapper extends QBMapper {
 	 * @param int $folderId
 	 * @param int $type
 	 * @param string $participant
-	 * @return Entity
+	 * @return SharedFolder
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByFolderAndParticipant(int $folderId, int $type, string $participant): Entity {
+	public function findByFolderAndParticipant(int $folderId, int $type, string $participant): SharedFolder {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
@@ -148,11 +150,11 @@ class SharedFolderMapper extends QBMapper {
 	/**
 	 * @param int $folderId
 	 * @param string $userId
-	 * @return Entity
+	 * @return SharedFolder
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByFolderAndUser(int $folderId, string $userId): Entity {
+	public function findByFolderAndUser(int $folderId, string $userId): SharedFolder {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
@@ -166,11 +168,11 @@ class SharedFolderMapper extends QBMapper {
 	/**
 	 * @param string $owner
 	 * @param string $userId
-	 * @return Entity[]
+	 * @return SharedFolder[]
 	 */
 	public function findByOwnerAndUser(string $owner, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
-		$$qb->select(array_map(static function ($c) {
+		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared_folders', 'p')
@@ -184,11 +186,11 @@ class SharedFolderMapper extends QBMapper {
 	/**
 	 * @param int $shareId
 	 * @param int $userId
-	 * @return Entity
+	 * @return SharedFolder
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByShareAndUser(int $shareId, string $userId): Entity {
+	public function findByShareAndUser(int $shareId, string $userId): SharedFolder {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
@@ -201,7 +203,7 @@ class SharedFolderMapper extends QBMapper {
 	}
 
 	/**
-	 * @return Entity[]
+	 * @return SharedFolder[]
 	 *
 	 * @psalm-return array<array-key, SharedFolder>
 	 */
@@ -219,7 +221,7 @@ class SharedFolderMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function delete(Entity $entity): Entity {
+	public function delete(Entity $entity): SharedFolder {
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('bookmarks_shared_to_shares')
 			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($entity->getId())))
@@ -240,9 +242,10 @@ class SharedFolderMapper extends QBMapper {
 	}
 
 	/**
-	 * @return Entity[]
+	 * @return SharedFolder[]
 	 *
 	 * @psalm-return array<array-key, SharedFolder>
+	 * @throws Exception
 	 */
 	public function findByUser(string $userId): array {
 		$qb = $this->db->getQueryBuilder();

@@ -18,6 +18,7 @@ use OCP\IDBConnection;
  * Class FolderMapper
  *
  * @package OCA\Bookmarks\Db
+ * @template-extends QBMapper<Folder>
  */
 class FolderMapper extends QBMapper {
 	/**

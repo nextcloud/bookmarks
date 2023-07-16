@@ -31,6 +31,7 @@ use function call_user_func;
  * Class BookmarkMapper
  *
  * @package OCA\Bookmarks\Db
+ * @template-extends QBMapper<Bookmark>
  */
 class BookmarkMapper extends QBMapper {
 	/** @var IConfig */
@@ -174,7 +175,7 @@ class BookmarkMapper extends QBMapper {
 	 * Find a specific bookmark by Id
 	 *
 	 * @param int $id
-	 * @return Entity
+	 * @return Bookmark
 	 * @throws DoesNotExistException if not found
 	 * @throws MultipleObjectsReturnedException if more than one result
 	 */
