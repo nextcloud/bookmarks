@@ -77,7 +77,7 @@ OC.L10N.register(
     "Change to grid view" : "Cambiar á vista de grella",
     "Change to list view" : "Cambiar á vista de lista",
     "Copy RSS Feed of current view" : "Copiar a fonte RSS da vista actual",
-    "The RSS feed requires authentication with your Nextcloud credentials" : "A fonte RSS necesita a autenticación coas súas credenciais de Nextcloud",
+    "The RSS feed requires authentication with your Nextcloud credentials" : "A fonte RSS precisa a autenticación coas súas credenciais de Nextcloud",
     "Search" : "Buscar",
     "Sort by created date" : "Ordenar pola data de creación.",
     "Sort by last modified" : "Ordenar pola última modificación",
