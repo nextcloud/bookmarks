@@ -26,7 +26,9 @@
 						:aria-label="selectLabel"
 						@click="$event.preventDefault(); $event.stopImmediatePropagation(); $emit('select');" />
 				</div>
-				<slot name="icon" />
+				<div class="item__icon">
+					<slot name="icon" />
+				</div>
 				<div class="item__labels">
 					<slot name="title" />
 					<slot name="tags">
@@ -248,6 +250,15 @@ export default {
 
 .item__rename {
 	padding: 0 8px 0 0;
+}
+
+.item__icon {
+	position: relative;
+}
+
+.item--gridview .item__icon {
+	top: -155px;
+	left: 110px;
 }
 
 .item--gridview  .item__rename {

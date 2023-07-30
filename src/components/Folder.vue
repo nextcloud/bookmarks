@@ -232,7 +232,7 @@ export default {
 .folder__icon.shared {
 	transform: scale(0.4);
 	position: absolute;
-	top: 11px;
+	top: -1px;
 	height: auto;
 	width: auto;
 	left: -2px;
