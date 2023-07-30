@@ -331,7 +331,6 @@ class FolderService {
 			}
 			$this->shareMapper->insert($share);
 			$this->addSharedFolder($share, $folder, $participant);
-
 		} elseif ($type === IShare::TYPE_GROUP) {
 			$group = $this->groupManager->get($participant);
 			if ($group === null) {

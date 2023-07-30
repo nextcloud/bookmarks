@@ -460,7 +460,7 @@ class TreeMapper extends QBMapper {
 			// Make sure that the sharer of this share doesn't have a share of the target folder or one of its parents
 			// would make a share loop very probable, which would be very bad. Breaks the whole app.
 
-			if (!$this->isFolderSharedWithUser($newParentFolderId, $share->getOwner())) {
+			if ($this->isFolderSharedWithUser($newParentFolderId, $share->getOwner())) {
 				throw new UnsupportedOperation('Cannot nest a folder shared from user A inside a folder shared with user A');
 			}
 		}
@@ -913,7 +913,7 @@ class TreeMapper extends QBMapper {
 	public function isFolderSharedWithUser(int $folderId, string $userId): bool {
 		try {
 			$this->sharedFolderMapper->findByFolderAndUser($folderId, $userId);
-			return false;
+			return true;
 		} catch (DoesNotExistException) {
 			// noop
 		}
@@ -922,13 +922,13 @@ class TreeMapper extends QBMapper {
 		foreach ($ancestors as $ancestorFolder) {
 			try {
 				$this->sharedFolderMapper->findByFolderAndUser($ancestorFolder->getId(), $userId);
-				return false;
+				return true;
 			} catch (DoesNotExistException) {
 				// noop
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
