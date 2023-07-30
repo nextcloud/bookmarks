@@ -28,6 +28,8 @@ use OCP\IUserSession;
 use OCP\Lock\LockedException;
 use OCP\Util;
 use OCP\WorkflowEngine\EntityContext\IUrl;
+use OCP\WorkflowEngine\Events\RegisterEntitiesEvent;
+use OCP\WorkflowEngine\Events\RegisterOperationsEvent;
 use OCP\WorkflowEngine\IManager;
 use OCP\WorkflowEngine\IOperation;
 use OCP\WorkflowEngine\IRuleMatcher;
@@ -69,14 +71,14 @@ class CreateBookmark implements IOperation {
 
 	public static function register(IEventDispatcher $dispatcher): void {
 		if (interface_exists(IManager::class)) {
-			$dispatcher->addListener(IManager::EVENT_NAME_REG_OPERATION, static function ($event) {
+			$dispatcher->addListener(RegisterOperationsEvent::class, static function (RegisterOperationsEvent $event) {
 				$operation = OC::$server->query(CreateBookmark::class);
-				$event->getSubject()->registerOperation($operation);
+				$event->registerOperation($operation);
 				Util::addScript('bookmarks', 'flow');
 			});
-			$dispatcher->addListener(IManager::EVENT_NAME_REG_ENTITY, static function ($event) {
+			$dispatcher->addListener(RegisterEntitiesEvent::class, static function (RegisterEntitiesEvent $event) {
 				$entity = OC::$server->query(Bookmark::class);
-				$event->getSubject()->registerEntity($entity);
+				$event->registerEntity($entity);
 				Util::addScript('bookmarks', 'flow');
 			});
 		}
