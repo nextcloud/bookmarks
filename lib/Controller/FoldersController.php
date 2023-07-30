@@ -322,7 +322,7 @@ class FoldersController extends ApiController {
 		} catch (MultipleObjectsReturnedException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation: ' . $e->getMessage()], Http::STATUS_BAD_REQUEST);
 		} catch (UrlParseError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Error changing owner of a bookmark: UrlParseError'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}

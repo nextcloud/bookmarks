@@ -446,11 +446,30 @@ class TreeMapper extends QBMapper {
 		try {
 			// Try to find current parent
 			$currentParent = $this->findParentOf($type, $itemId);
+		} catch (DoesNotExistException $e) {
+			$currentParent = null;
+		}
 
-			if ($this->hasDescendant($itemId, self::TYPE_FOLDER, $newParentFolderId)) {
-				throw new UnsupportedOperation('Cannot nest a folder inside one of its descendants');
+		if ($type !== self::TYPE_SHARE) {
+			$folderId = $itemId;
+		} else {
+			$sharedFolder = $this->sharedFolderMapper->find($itemId);
+			$folderId = $sharedFolder->getFolderId();
+			$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
+
+			// Make sure that the sharer of this share doesn't have a share of the target folder or one of its parents
+			// would make a share loop very probable, which would be very bad. Breaks the whole app.
+
+			if (!$this->isFolderSharedWithUser($newParentFolderId, $share->getOwner())) {
+				throw new UnsupportedOperation('Cannot nest a folder shared from user A inside a folder shared with user A');
 			}
+		}
 
+		if ($this->hasDescendant($folderId, self::TYPE_FOLDER, $newParentFolderId)) {
+			throw new UnsupportedOperation('Cannot nest a folder inside one of its descendants');
+		}
+
+		if ($currentParent !== null) {
 			// Item currently has a parent => move.
 
 			$qb = $this->db->getQueryBuilder();
@@ -461,10 +480,8 @@ class TreeMapper extends QBMapper {
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($itemId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
 			$qb->execute();
-		} catch (DoesNotExistException $e) {
+		} else {
 			// Item currently has no parent => insert into tree.
-			$currentParent = null;
-
 			$qb = $this->insertQuery;
 			$qb
 				->setParameters(['id' => $itemId,
@@ -886,4 +903,69 @@ class TreeMapper extends QBMapper {
 			}
 		}
 	}
+
+	/**
+	 * @param int $folderId
+	 * @param Share $share
+	 * @return boolean
+	 *@throws MultipleObjectsReturnedException
+	 */
+	public function isFolderSharedWithUser(int $folderId, string $userId): bool {
+		try {
+			$this->sharedFolderMapper->findByFolderAndUser($folderId, $userId);
+			return false;
+		} catch (DoesNotExistException) {
+			// noop
+		}
+
+		$ancestors = $this->findParentsOf(self::TYPE_FOLDER, $folderId);
+		foreach ($ancestors as $ancestorFolder) {
+			try {
+				$this->sharedFolderMapper->findByFolderAndUser($ancestorFolder->getId(), $userId);
+				return false;
+			} catch (DoesNotExistException) {
+				// noop
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param Folder $folder
+	 * @param string $userId
+	 * @return boolean
+	 */
+	public function containsSharedFolderFromUser(Folder $folder, string $userId): bool {
+		$sharedFolders = $this->sharedFolderMapper->findByOwnerAndUser($userId, $folder->getUserId());
+
+		foreach ($sharedFolders as $sharedFolder) {
+			if ($this->hasDescendant($folder->getId(), self::TYPE_SHARE, $sharedFolder->getId())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param Folder $folder
+	 * @param string $userId
+	 * @return bool
+	 */
+	public function containsFoldersSharedToUser(Folder $folder, string $userId): bool {
+		$sharedFolders = $this->sharedFolderMapper->findByOwnerAndUser($folder->getUserId(), $userId);
+
+		foreach ($sharedFolders as $sharedFolder) {
+			if ($folder->getId() === $sharedFolder->getFolderId()) {
+				return true;
+			}
+			if ($this->hasDescendant($folder->getId(), self::TYPE_FOLDER, $sharedFolder->getFolderId())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }
