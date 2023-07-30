@@ -135,9 +135,6 @@ class FolderService {
 	 * @return Share|null
 	 */
 	public function findShareByDescendantAndUser(Folder $folder, $userId): ?Share {
-		/**
-		 * @var $shares Share[]
-		 */
 		$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $userId);
 		foreach ($shares as $share) {
 			if ($share->getFolderId() === $folder->getId() || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $folder->getId())) {
@@ -155,9 +152,6 @@ class FolderService {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function findSharedFolderOrFolder($userId, $folderId) {
-		/**
-		 * @var $folder Folder
-		 */
 		$folder = $this->folderMapper->find($folderId);
 		if ($userId === null || $userId === $folder->getUserId()) {
 			return $folder;
@@ -241,9 +235,6 @@ class FolderService {
 		if ($userId !== null || $userId !== $folder->getUserId()) {
 			try {
 				// folder is shared folder
-				/**
-				 * @var $sharedFolder SharedFolder
-				 */
 				$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
 				if (isset($title)) {
 					$sharedFolder->setTitle($title);
@@ -263,9 +254,11 @@ class FolderService {
 			$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
 		}
 		if (isset($parent_folder)) {
-			/** @var Folder $parentFolder */
 			$parentFolder = $this->folderMapper->find($parent_folder);
 			if ($parentFolder->getUserId() !== $folder->getUserId()) {
+				if ($this->treeMapper->containsFoldersSharedToUser($folder, $parentFolder->getUserId())) {
+					throw new UnsupportedOperation('Cannot move a folder by user A into a folder shared from user B if it already contains folders shared with B.');
+				}
 				$this->treeMapper->changeFolderOwner($folder, $parentFolder->getUserId());
 			}
 			$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parent_folder);
@@ -324,24 +317,26 @@ class FolderService {
 		$share->setFolderId($folderId);
 		$share->setOwner($folder->getUserId());
 		$share->setParticipant($participant);
-		if ($type !== IShare::TYPE_USER && $type !== IShare::TYPE_GROUP) {
-			throw new UnsupportedOperation('Only users and groups are allowed as participants');
-		}
 		$share->setType($type);
 		$share->setCanWrite($canWrite);
 		$share->setCanShare($canShare);
-		$this->shareMapper->insert($share);
 
 		if ($type === IShare::TYPE_USER) {
 			if ($participant === $folder->getUserId()) {
 				throw new UnsupportedOperation('Cannot share with oneself');
 			}
+			// If this folder already contains a share from this user, don't share it back. Would cause a loop.
+			if ($this->treeMapper->containsSharedFolderFromUser($folder, $participant)) {
+				throw new UnsupportedOperation('Cannot share this with user that shared some of its contents');
+			}
+			$this->shareMapper->insert($share);
 			$this->addSharedFolder($share, $folder, $participant);
 		} elseif ($type === IShare::TYPE_GROUP) {
 			$group = $this->groupManager->get($participant);
 			if ($group === null) {
 				throw new DoesNotExistException('Group does not exist');
 			}
+			$this->shareMapper->insert($share);
 			$users = $group->getUsers();
 			foreach ($users as $user) {
 				// If I'm part of the group, don't add it twice
@@ -349,16 +344,21 @@ class FolderService {
 					continue;
 				}
 				// If this folder is already shared with the user, don't add it twice.
-				try {
-					$this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $user->getUID());
+				if ($this->treeMapper->isFolderSharedWithUser($folder->getId(), $user->getUID())) {
 					continue;
-				} catch (DoesNotExistException $e) {
-					// do nothing
+				}
+
+				// If this folder already contains a share from this user, don't share it back. Would cause a loop.
+				if ($this->treeMapper->containsSharedFolderFromUser($folder, $user->getUID())) {
+					continue;
 				}
 
 				$this->addSharedFolder($share, $folder, $user->getUID());
 			}
+		} else {
+			throw new UnsupportedOperation('Only users and groups are allowed as participants');
 		}
+
 		return $share;
 	}
 

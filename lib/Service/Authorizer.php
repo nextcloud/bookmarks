@@ -7,13 +7,12 @@
 
 namespace OCA\Bookmarks\Service;
 
-use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
-use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Db\Share;
+use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\UnauthenticatedError;
@@ -25,52 +24,26 @@ use OCP\IUserSession;
 class Authorizer {
 	public const PERM_NONE = 0;
 	public const PERM_READ = 1;
-	public const PERM_EDIT = 2;
+	public const PERM_EDIT = 2; // Allows editing the direct item
 	public const PERM_RESHARE = 4;
-	public const PERM_ALL = 7;
-
-	/**
-	 * @var FolderMapper
-	 */
-	private $folderMapper;
-
-	/**
-	 * @var BookmarkMapper
-	 */
-	private $bookmarkMapper;
-
-	/**
-	 * @var ShareMapper
-	 */
-	private $shareMapper;
-
-
-	/**
-	 * @var PublicFolderMapper
-	 */
-	private $publicMapper;
+	public const PERM_WRITE = 8; // Allows adding and editing the item's descendants
+	public const PERM_ALL = 15;
 
 	private $userId;
 	private $token = null;
 
 	private $cors = false;
 
-	/**
-	 * @var TreeMapper
-	 */
-	private $treeMapper;
-	/**
-	 * @var IUserSession
-	 */
-	private $userSession;
 
-	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, PublicFolderMapper $publicMapper, ShareMapper $shareMapper, TreeMapper $treeMapper, IUserSession $userSession) {
-		$this->folderMapper = $folderMapper;
-		$this->bookmarkMapper = $bookmarkMapper;
-		$this->publicMapper = $publicMapper;
-		$this->shareMapper = $shareMapper;
-		$this->treeMapper = $treeMapper;
-		$this->userSession = $userSession;
+	public function __construct(
+		private FolderMapper $folderMapper,
+		private BookmarkMapper $bookmarkMapper,
+		private PublicFolderMapper $publicMapper,
+		private ShareMapper $shareMapper,
+		private TreeMapper $treeMapper,
+		private IUserSession $userSession,
+		private SharedFolderMapper $sharedFolderMapper
+	) {
 	}
 
 	/**
@@ -189,12 +162,13 @@ class Authorizer {
 	 *
 	 * @return int
 	 *
-	 * @psalm-return positive-int
+	 * @psalm-return 0|positive-int
 	 */
 	protected function getMaskFromFlags($canWrite, $canShare): int {
 		$perms = self::PERM_READ;
 		if ($canWrite) {
 			$perms |= self::PERM_EDIT;
+			$perms |= self::PERM_WRITE;
 		}
 		if ($canShare) {
 			$perms |= self::PERM_RESHARE;
@@ -219,28 +193,10 @@ class Authorizer {
 	 * @param string $userId
 	 * @param int $bookmarkId
 	 * @return int
+	 * @psalm-return 0|positive-int
 	 */
 	public function getUserPermissionsForBookmark(string $userId, int $bookmarkId): int {
-		try {
-			/** @var Bookmark $bookmark */
-			$bookmark = $this->bookmarkMapper->find($bookmarkId);
-		} catch (DoesNotExistException $e) {
-			return self::PERM_ALL;
-		} catch (MultipleObjectsReturnedException $e) {
-			return self::PERM_NONE;
-		}
-		if ($bookmark->getUserId() === $userId) {
-			return self::PERM_ALL;
-		}
-
-		/** @var Share[] $shares */
-		$shares = $this->shareMapper->findByOwnerAndUser($bookmark->getUserId(), $userId);
-		foreach ($shares as $share) {
-			if ($this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_BOOKMARK, $bookmarkId)) {
-				return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
-			}
-		}
-		return self::PERM_NONE;
+		return $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_BOOKMARK, $bookmarkId);
 	}
 
 	/**
@@ -248,10 +204,10 @@ class Authorizer {
 	 * @param int $bookmarkId
 	 *
 	 * @return int
+	 * @psalm-return 0|positive-int
 	 */
 	public function getTokenPermissionsForBookmark(string $token, int $bookmarkId): int {
 		try {
-			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicMapper->find($token);
 		} catch (DoesNotExistException $e) {
 			return self::PERM_NONE;
@@ -268,30 +224,64 @@ class Authorizer {
 	 * @param string $userId
 	 * @param int $folderId
 	 * @return int
+	 * @psalm-return 0|positive-int
 	 */
 	public function getUserPermissionsForFolder(string $userId, int $folderId): int {
 		if ($folderId === -1) {
 			return self::PERM_ALL;
 		}
+
+		return $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_FOLDER, $folderId);
+	}
+
+	/**
+	 * @param string $userId
+	 * @param string $type
+	 * @param int $itemId
+	 * @return 0|positive-int
+	 */
+	private function findPermissionsByUserAndItem(string $userId, string $type, int $itemId): int {
 		try {
-			/** @var Folder $folder */
-			$folder = $this->folderMapper->find($folderId);
-		} catch (DoesNotExistException $e) {
-			return self::PERM_EDIT;
-		} catch (MultipleObjectsReturnedException $e) {
+			if ($type === TreeMapper::TYPE_FOLDER) {
+				$item = $this->folderMapper->find($itemId);
+			} elseif ($type === TreeMapper::TYPE_BOOKMARK) {
+				$item = $this->bookmarkMapper->find($itemId);
+			} else {
+				$item = $this->sharedFolderMapper->find($itemId);
+			}
+		} catch (DoesNotExistException) {
+			return self::PERM_ALL;
+		} catch (MultipleObjectsReturnedException) {
 			return self::PERM_NONE;
 		}
-		if ($folder->getUserId() === $userId) {
+		if ($item->getUserId() === $userId) {
 			return self::PERM_ALL;
 		}
 
-		/** @var Share[] $shares */
-		$shares = $this->shareMapper->findByOwnerAndUser($folder->getUserId(), $userId);
+		$shares = $this->shareMapper->findByOwner($item->getUserId());
 		foreach ($shares as $share) {
-			if ($share->getFolderId() === $folderId || $this->treeMapper->hasDescendant($share->getFolderId(), TreeMapper::TYPE_FOLDER, $folderId)) {
-				return $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
+			if ($share->getFolderId() === $itemId && $type === TreeMapper::TYPE_FOLDER) {
+				// If the sought folder is the root folder of the share, we give EDIT permissions + optionally RESHARE
+				// because the user can edit the shared folder
+				$perms = $this->getMaskFromFlags(true, $share->getCanShare()) | self::PERM_EDIT;
+			} elseif ($this->treeMapper->hasDescendant($share->getFolderId(), $type, $itemId)) {
+				$perms = $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
+			} else {
+				continue;
+			}
+
+			$sharedFolders = $this->sharedFolderMapper->findByShare($share->getId());
+			foreach ($sharedFolders as $sharedFolder) {
+				if ($sharedFolder->getUserId() === $userId) {
+					return $perms;
+				}
+				$secondLevelPerms = $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+				if ($secondLevelPerms !== self::PERM_NONE) {
+					return $perms & $secondLevelPerms;
+				}
 			}
 		}
+
 		return self::PERM_NONE;
 	}
 
@@ -300,11 +290,11 @@ class Authorizer {
 	 * @param int $folderId
 	 *
 	 * @return int
+	 * @psalm-return 0|positive-int
 	 *
 	 */
 	public function getTokenPermissionsForFolder(string $token, int $folderId): int {
 		try {
-			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicMapper->find($token);
 		} catch (DoesNotExistException $e) {
 			return self::PERM_NONE;

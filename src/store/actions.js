@@ -785,7 +785,13 @@ export default {
 					commit(mutations.MOVE_FOLDER, { folder: folder.id, target: folderId })
 					const oldParent = folder.parent_folder
 					folder.parent_folder = folderId
-					await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
+					try {
+						await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
+					} catch (err) {
+						commit(mutations.MOVE_FOLDER, { folder: folder.id, target: oldParent })
+						folder.parent_folder = oldParent
+						throw err
+					}
 					dispatch(
 						actions.LOAD_FOLDER_CHILDREN_ORDER,
 						oldParent

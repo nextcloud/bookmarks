@@ -11,6 +11,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\Exception;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IDBConnection;
 
@@ -18,6 +19,7 @@ use OCP\IDBConnection;
  * Class FolderMapper
  *
  * @package OCA\Bookmarks\Db
+ * @template-extends QBMapper<Folder>
  */
 class FolderMapper extends QBMapper {
 	/**
@@ -75,7 +77,7 @@ class FolderMapper extends QBMapper {
 	/**
 	 * @param string $userId
 	 *
-	 * @return Entity
+	 * @return Folder
 	 */
 	public function findRootFolder(string $userId): Folder {
 		$qb = $this->db->getQueryBuilder();
@@ -112,16 +114,20 @@ class FolderMapper extends QBMapper {
 
 	/**
 	 * @param Entity $entity
-	 * @return Entity
+	 * @psalm-param Folder $entity
+	 * @return Folder
+	 * @throws Exception
 	 */
-	public function update(Entity $entity): Entity {
+	public function update(Entity $entity): Folder {
 		parent::update($entity);
 		return $entity;
 	}
 
 	/**
 	 * @param Entity $entity
-	 * @return Entity
+	 * @psalm-param Folder $entity
+	 * @return Folder
+	 * @throws Exception
 	 */
 	public function insert(Entity $entity): Entity {
 		parent::insert($entity);

@@ -56,8 +56,11 @@ export default {
 	methods: {
 		async onSubmit(folderId) {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, false)
-			await this.$store.dispatch(actions.MOVE_SELECTION, folderId)
-			this.$store.commit(mutations.RESET_SELECTION)
+			try {
+				await this.$store.dispatch(actions.MOVE_SELECTION, folderId)
+			} finally {
+				this.$store.commit(mutations.RESET_SELECTION)
+			}
 		},
 		onClose() {
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, false)

@@ -7,9 +7,7 @@
 
 namespace OCA\Bookmarks\Hooks;
 
-use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
-use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
@@ -132,17 +130,11 @@ class UserGroupListener implements IEventListener {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function postAddUser(IGroup $group, IUser $user): void {
-		/**
-		 * @var Share[] $shares
-		 */
 		$shares = $this->shareMapper->findByParticipant(IShare::TYPE_GROUP, $group->getGID());
 		foreach ($shares as $share) {
 			if ($share->getOwner() === $user->getUID()) {
 				continue;
 			}
-			/**
-			 * @var Folder $folder
-			 */
 			$folder = $this->folderMapper->find($share->getFolderId());
 			$this->folders->addSharedFolder($share, $folder, $user->getUID());
 		}

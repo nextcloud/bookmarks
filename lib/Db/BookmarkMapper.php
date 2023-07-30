@@ -31,6 +31,7 @@ use function call_user_func;
  * Class BookmarkMapper
  *
  * @package OCA\Bookmarks\Db
+ * @template-extends QBMapper<Bookmark>
  */
 class BookmarkMapper extends QBMapper {
 	/** @var IConfig */
@@ -120,11 +121,11 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param $userId
 	 * @param $url
-	 * @return Entity
+	 * @return Bookmark
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByUrl($userId, $url) {
+	public function findByUrl($userId, $url): Bookmark {
 		$qb = $this->findByUrlQuery;
 		$qb->setParameters([
 			'user_id' => $userId,
@@ -153,9 +154,9 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * Magic to use BookmarkWithTags if possible
 	 * @param array $row
-	 * @return Entity
+	 * @return Bookmark
 	 */
-	protected function mapRowToEntity(array $row): Entity {
+	protected function mapRowToEntity(array $row): Bookmark {
 		$hasTags = false;
 		foreach (array_keys($row) as $field) {
 			if (preg_match('#.*tag|folder.*#i', $field, $matches) === 1) { // 1 means it matches, 0 means it doesn't.
@@ -174,7 +175,7 @@ class BookmarkMapper extends QBMapper {
 	 * Find a specific bookmark by Id
 	 *
 	 * @param int $id
-	 * @return Entity
+	 * @return Bookmark
 	 * @throws DoesNotExistException if not found
 	 * @throws MultipleObjectsReturnedException if more than one result
 	 */
@@ -192,7 +193,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param string $userId
 	 * @param QueryParameters $queryParams
 	 *
-	 * @return Entity[]
+	 * @return Bookmark[]
 	 *
 	 * @throws UrlParseError
 	 * @throws \OC\DB\Exceptions\DbalException
@@ -587,7 +588,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param QueryParameters $queryParams
 	 *
 	 *
-	 * @return Entity[]
+	 * @return Bookmark[]
 	 *
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
@@ -644,7 +645,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param int $limit
 	 * @param int $stalePeriod
 	 *
-	 * @return Entity[]
+	 * @return Bookmark[]
 	 *
 	 * @psalm-return array<array-key, Bookmark>
 	 */
@@ -659,12 +660,13 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @psalm-param Bookmark $entity
 	 * @param Entity $entity
 	 *
-	 * @return Entity
+	 * @return Bookmark
 	 * @psalm-return Bookmark
 	 */
-	public function delete(Entity $entity): Entity {
+	public function delete(Entity $entity): Bookmark {
 		$this->eventDispatcher->dispatch(
 			BeforeDeleteEvent::class,
 			new BeforeDeleteEvent(TreeMapper::TYPE_BOOKMARK, $entity->getId())
@@ -682,11 +684,12 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @psalm-param Bookmark $entity
 	 * @param Entity $entity
-	 * @return Entity
+	 * @return Bookmark
 	 * @throws UrlParseError
 	 */
-	public function update(Entity $entity): Entity {
+	public function update(Entity $entity): Bookmark {
 		// normalize url
 		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		$entity->setLastmodified(time());
@@ -694,13 +697,14 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @psalm-param Bookmark $entity
 	 * @param Entity $entity
-	 * @return Entity
+	 * @return Bookmark
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function insert(Entity $entity): Entity {
+	public function insert(Entity $entity): Bookmark {
 		// Enforce user limit
 		if ($this->limit > 0 && $this->limit <= $this->countBookmarksOfUser($entity->getUserId())) {
 			throw new UserLimitExceededError('Exceeded user limit of ' . $this->limit . ' bookmarks');
@@ -729,13 +733,14 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @psalm-param Bookmark $entity
 	 * @param Entity $entity
-	 * @return Entity
+	 * @return Bookmark
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError|MultipleObjectsReturnedException
 	 */
-	public function insertOrUpdate(Entity $entity): Entity {
+	public function insertOrUpdate(Entity $entity): Bookmark {
 		try {
 			$newEntity = $this->insert($entity);
 		} catch (AlreadyExistsError $e) {

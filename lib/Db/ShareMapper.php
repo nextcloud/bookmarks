@@ -11,12 +11,14 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\Exception;
 use OCP\IDBConnection;
 
 /**
  * Class SharedFolderMapper
  *
  * @package OCA\Bookmarks\Db
+ * @template-extends QBMapper<Share>
  */
 class ShareMapper extends QBMapper {
 	/**
@@ -36,11 +38,11 @@ class ShareMapper extends QBMapper {
 
 	/**
 	 * @param int $shareId
-	 * @return Entity
+	 * @return Share
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function find(int $shareId): Entity {
+	public function find(int $shareId): Share {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Share::$columns)
 			->from('bookmarks_shares')
@@ -50,7 +52,7 @@ class ShareMapper extends QBMapper {
 
 	/**
 	 * @param int $folderId
-	 * @return Entity[]
+	 * @return Share[]
 	 */
 	public function findByFolder(int $folderId): array {
 		$qb = $this->db->getQueryBuilder();
@@ -63,9 +65,9 @@ class ShareMapper extends QBMapper {
 	/**
 	 * @param string $userId
 	 *
-	 * @return Entity[]
+	 * @return Share[]
 	 *
-	 * @psalm-return array<array-key, Share>
+	 * @psalm-return list<Share>
 	 */
 	public function findByOwner(string $userId): array {
 		$qb = $this->db->getQueryBuilder();
@@ -79,9 +81,9 @@ class ShareMapper extends QBMapper {
 	 * @param int $type
 	 * @param string $participant
 	 *
-	 * @return Entity[]
+	 * @return Share[]
 	 *
-	 * @psalm-return array<array-key, Share>
+	 * @psalm-return list<Share>
 	 */
 	public function findByParticipant(int $type, string $participant): array {
 		$qb = $this->db->getQueryBuilder();
@@ -96,11 +98,11 @@ class ShareMapper extends QBMapper {
 	 * @param int $folderId
 	 * @param int $type
 	 * @param string $participant
-	 * @return Entity
+	 * @return Share
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByFolderAndParticipant(int $folderId, int $type, string $participant): Entity {
+	public function findByFolderAndParticipant(int $folderId, int $type, string $participant): Share {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;
@@ -115,11 +117,11 @@ class ShareMapper extends QBMapper {
 	/**
 	 * @param int $folderId
 	 * @param string $userId
-	 * @return Entity
+	 * @return Share
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findByFolderAndUser(int $folderId, string $userId): Entity {
+	public function findByFolderAndUser(int $folderId, string $userId): Share {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;
@@ -135,7 +137,7 @@ class ShareMapper extends QBMapper {
 	/**
 	 * @param string $owner
 	 * @param string $userId
-	 * @return Entity[]
+	 * @return Share[]
 	 */
 	public function findByOwnerAndUser(string $owner, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
@@ -150,17 +152,29 @@ class ShareMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function insert(Entity $entity): Entity {
+	/**
+	 * @param Entity $entity
+	 * @psalm-param Share $entity
+	 * @return Share
+	 * @throws \OCP\DB\Exception
+	 */
+	public function insert(Entity $entity): Share {
 		$entity->setCreatedAt(time());
 		return parent::insert($entity);
 	}
 
-	public function insertOrUpdate(Entity $entity): Entity {
+	/**
+	 * @param Entity $entity
+	 * @psalm-param Share $entity
+	 * @return Share
+	 * @throws \OCP\DB\Exception
+	 */
+	public function insertOrUpdate(Entity $entity): Share {
 		$entity->setCreatedAt(time());
 		return parent::insertOrUpdate($entity);
 	}
 
-	public function findBySharedFolder(int $id): Entity {
+	public function findBySharedFolder(int $id): Share {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;
@@ -173,7 +187,8 @@ class ShareMapper extends QBMapper {
 
 	/**
 	 * @param string $userId
-	 * @return array
+	 * @return Share[]
+	 * @throws Exception
 	 */
 	public function findByUser(string $userId): array {
 		$qb = $this->db->getQueryBuilder();

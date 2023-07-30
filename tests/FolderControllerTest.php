@@ -149,6 +149,7 @@ class FolderControllerTest extends TestCase {
 			$this->shareMapper,
 			$this->treeMapper,
 			$userSession,
+			$this->sharedFolderMapper,
 		);
 
 		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface, $this->userManager);
@@ -377,7 +378,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
-	 * @dataProvider shareCanWriteProvider
+	 * @dataProvider shareCanWriteDataProvider
 	 */
 	public function testSharedEdit(bool $canWrite): void {
 		$this->setupBookmarks();
@@ -840,19 +841,30 @@ class FolderControllerTest extends TestCase {
 	 * @throws UserLimitExceededError
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @dataProvider shareCanWriteDataProvider
 	 */
-	public function testEditShared(): void {
-		
+	public function testEditShared(bool $canWrite): void {
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
+		$this->share->setCanWrite($canWrite);
+		$this->shareMapper->update($this->share);
+
 		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->editFolder($this->folder2->getId(), 'blabla');
 		$data = $output->getData();
-		$this->assertEquals('success', $data['status'], var_export($data, true));
+		if ($canWrite) {
+			$this->assertEquals('success', $data['status'], var_export($data, true));
+		} else {
+			$this->assertEquals('error', $data['status'], var_export($data, true)); // Didn't go through
+		}
 		$output = $this->otherController->getFolder($this->folder2->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertEquals('blabla', $data['item']['title']);
+		if ($canWrite) {
+			$this->assertEquals('blabla', $data['item']['title']);
+		} else {
+			$this->assertEquals('bar', $data['item']['title']); // didn't go through
+		}
 	}
 
 	/**
@@ -1108,7 +1120,7 @@ class FolderControllerTest extends TestCase {
 		];
 	}
 
-	public function shareCanWriteProvider(): array {
+	public function shareCanWriteDataProvider(): array {
 		return [
 			[false],
 			[true],
