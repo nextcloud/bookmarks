@@ -37,6 +37,7 @@
     "Create bookmark" : "Opret bogmærke",
     "Takes a link and adds it to your collection of bookmarks." : "Tager imod et link og føjer det til din bogmærkesamling.",
     "A Bookmark manager for Nextcloud" : "En app til at administrere bogmærker i Nextcloud",
+    "- 📂 Sort bookmarks into folders\n- 🏷 Add tags and personal notes\n- 🔍 Full-text search\n- 📲 Synchronize with all your browsers and devices\n- 👪 Share bookmarks with other users and publicly\n- ☠ Find broken links\n- ⚛ Generate RSS feeds of your collections\n- 📔 Read archived versions of your links in case they are depublished\n- 💬 Create new bookmarks directly from within Nextcloud Talk\n- 💼 Built-in Dashboard widgets for frequent and recent links\n\nRequirements:\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - when using MySQL, use at least v8.0" : "- 📂 Sortér bogmærker ind i mapper\n- 🏷 Tilføjer tags og personlige noter\n- 🔍 Fuldtekst-søgning\n- 📲 Synkronisér med alle dine browsere og enheder\n- 👪 Del bogmærker med andre brugere og offentligt\n- ☠ Find links som ikke virker\n- ⚛ Generér RSS-feeds fra dine samlinger\n- 📔 Læs arkiverede versioner af dine links i tilfælde af de afpubliceres\n- 💬 Opret nye bogmærker direkte fra Nextcloud Talk\n- 💼 Indbyggede panel widget til hyppige og seneste links\n\nSystemkrav:\n - PHP-udvidelser:\n   - intl: *\n   - mbstring: *\n - ved brug af MySQL, brug mindst v8.0",
     "Enter new title" : "Angiv ny titel",
     "Select bookmark" : "Vælg bogmærke",
     "Details" : "Detaljer",
