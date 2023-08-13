@@ -174,7 +174,7 @@ OC.L10N.register(
     "Resharing allowed" : "Permítese volver compartir",
     "Editing allowed" : "Permitido editar",
     "Allow editing" : "Permitir a edición",
-    "Allow resharing" : "Permitir compartir",
+    "Allow resharing" : "Permitir volver compartir",
     "Remove share" : "Retirar a compartición",
     "Link copied" : "Ligazón copiada",
     "Privacy" : "Privacidade",
