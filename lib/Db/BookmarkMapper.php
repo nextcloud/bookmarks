@@ -691,7 +691,9 @@ class BookmarkMapper extends QBMapper {
 	 */
 	public function update(Entity $entity): Bookmark {
 		// normalize url
-		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+		if ($entity->isWebLink()) {
+			$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+		}
 		$entity->setLastmodified(time());
 		return parent::update($entity);
 	}
@@ -711,7 +713,9 @@ class BookmarkMapper extends QBMapper {
 		}
 
 		// normalize url
-		$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+		if ($entity->isWebLink()) {
+			$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
+		}
 
 		if ($entity->getAdded() === null) {
 			$entity->setAdded(time());

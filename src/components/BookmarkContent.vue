@@ -5,7 +5,7 @@
   -->
 
 <template>
-	<div v-if="isActive && hasMinLength && !archivedFile" class="bookmark-content">
+	<div v-if="isActive && hasMinLength && !archivedFile && isWebLink" class="bookmark-content">
 		<div v-if="bookmark.textContent" class="content" v-html="content" />
 		<div v-else>
 			<NcEmptyContent :title="t('bookmarks', 'Content pending')"
@@ -33,6 +33,9 @@ export default {
 		isActive() {
 			if (!this.$store.state.sidebar) return false
 			return this.$store.state.sidebar.type === 'bookmark'
+		},
+		isWebLink() {
+			return this.bookmark.url.startsWith('http')
 		},
 		bookmark() {
 			if (!this.isActive) return

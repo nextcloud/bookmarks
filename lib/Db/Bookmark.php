@@ -57,6 +57,9 @@ class Bookmark extends Entity {
 	public static function fromArray($props): self {
 		$bookmark = new Bookmark();
 		foreach ($props as $prop => $val) {
+			if ($prop === 'target') {
+				$prop = 'url';
+			}
 			$bookmark->{'set' . $prop}($val);
 		}
 		return $bookmark;
@@ -80,6 +83,15 @@ class Bookmark extends Entity {
 	public function toArray(): array {
 		$array = [];
 		foreach (self::$fields as $field) {
+			if ($field === 'url') {
+				if (!preg_match('/^javascript:/i', $this->url)) {
+					$array['url'] = $this->url;
+				} else {
+					$array['url'] = '';
+				}
+				$array['target'] = $this->url;
+				continue;
+			}
 			$array[$field] = $this->{$field};
 		}
 		return $array;
@@ -107,5 +119,9 @@ class Bookmark extends Entity {
 			$desc = mb_substr($desc, 0, 1023) . '…';
 		}
 		$this->setter('description', [$desc]);
+	}
+
+	public function isWebLink() {
+		return (bool) preg_match('/^https?:/i', $this->getUrl());
 	}
 }

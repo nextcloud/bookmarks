@@ -38,11 +38,11 @@
 				<InformationVariantIcon />
 			</template>
 			<div>
-				<div v-if="!editingUrl" class="details__line">
+				<div v-if="!editingTarget" class="details__line">
 					<OpenInNewIcon :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
-					<a class="details__url" :href="bookmark.url">{{ bookmark.url }}</a>
+					<a class="details__url" :href="bookmark.target === bookmark.url ? bookmark.target : 'javascript:void(0)'">{{ bookmark.target }}</a>
 					<NcActions v-if="isEditable" class="details__action">
-						<NcActionButton @click="onEditUrl">
+						<NcActionButton @click="onEditTarget">
 							<template #icon>
 								<PencilIcon />
 							</template>
@@ -51,16 +51,16 @@
 				</div>
 				<div v-else class="details__line">
 					<OpenInNewIcon :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
-					<input v-model="url" class="details__url">
+					<input v-model="target" class="details__url">
 					<NcActions class="details__action">
-						<NcActionButton @click="onEditUrlSubmit">
+						<NcActionButton @click="onEditTargetSubmit">
 							<template #icon>
 								<ArrowRightIcon />
 							</template>
 						</NcActionButton>
 					</NcActions>
 					<NcActions class="details__action">
-						<NcActionButton @click="onEditUrlCancel">
+						<NcActionButton @click="onEditTargetCancel">
 							<template #icon>
 								<CloseIcon />
 							</template>
@@ -150,8 +150,8 @@ export default {
 		return {
 			title: '',
 			editingTitle: false,
-			url: '',
-			editingUrl: false,
+			target: '',
+			editingTarget: false,
 			activeTab: '',
 			showContentModal: false,
 		}
@@ -216,6 +216,8 @@ export default {
 	methods: {
 		onClose() {
 			this.$store.commit(mutations.SET_SIDEBAR, null)
+			this.editingTitle = false
+			this.editingTarget = false
 		},
 		onNotesChange(e) {
 			this.scheduleSave()
@@ -244,18 +246,18 @@ export default {
 			this.editingTitle = false
 			this.title = ''
 		},
-		onEditUrl() {
-			this.url = this.bookmark.url
-			this.editingUrl = true
+		onEditTarget() {
+			this.target = this.bookmark.target
+			this.editingTarget = true
 		},
-		onEditUrlSubmit() {
-			this.editingUrl = false
-			this.bookmark.url = this.url
+		onEditTargetSubmit() {
+			this.editingTarget = false
+			this.bookmark.target = this.target
 			this.scheduleSave()
 		},
-		onEditUrlCancel() {
-			this.editingUrl = false
-			this.url = ''
+		onEditTargetCancel() {
+			this.editingTarget = false
+			this.target = ''
 		},
 		scheduleSave() {
 			if (this.changeTimeout) clearTimeout(this.changeTimeout)

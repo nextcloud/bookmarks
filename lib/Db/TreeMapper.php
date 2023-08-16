@@ -824,9 +824,7 @@ class TreeMapper extends QBMapper {
 		$indices = array_column($children, 'index');
 		array_multisort($indices, $children);
 
-		$bookmark = new Bookmark();
-
-		$children = array_map(function ($child) use ($layers, $bookmark) {
+		$children = array_map(function ($child) use ($layers) {
 			$item = ['type' => $child['type'], 'id' => (int)$child['id'], 'title' => $child['title'], 'userId' => $child['user_id']];
 
 			if ($item['type'] === self::TYPE_SHARE) {
@@ -835,9 +833,7 @@ class TreeMapper extends QBMapper {
 			}
 
 			if ($item['type'] === self::TYPE_BOOKMARK) {
-				foreach (Bookmark::$columns as $col) {
-					$item[$bookmark->columnToProperty($col)] = $child[$col];
-				}
+				$item = array_merge($item, Bookmark::fromRow($child)->toArray());
 			}
 
 			if ($item['type'] === self::TYPE_FOLDER && $layers !== 0) {

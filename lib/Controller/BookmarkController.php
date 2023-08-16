@@ -404,6 +404,7 @@ class BookmarkController extends ApiController {
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
+	 * @param string $target
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -411,7 +412,7 @@ class BookmarkController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function newBookmark($url = '', $title = null, $description = null, $tags = null, $folders = []): JSONResponse {
+	public function newBookmark($url = '', $title = null, $description = null, $tags = null, $folders = [], $target = null): JSONResponse {
 		$permissions = Authorizer::PERM_ALL;
 		$this->authorizer->setCredentials($this->request);
 		foreach ($folders as $folder) {
@@ -425,7 +426,7 @@ class BookmarkController extends ApiController {
 			$folders = array_map(function ($folderId) {
 				return $this->toInternalFolderId($folderId);
 			}, $folders);
-			$bookmark = $this->bookmarks->create($this->authorizer->getUserId(), $url, $title, $description, $tags, $folders);
+			$bookmark = $this->bookmarks->create($this->authorizer->getUserId(), $target ?: $url, $title, $description, $tags, $folders);
 			return new JSONResponse(['item' => $this->_returnBookmarkAsArray($bookmark), 'status' => 'success']);
 		} catch (AlreadyExistsError $e) {
 			// This is really unlikely, as we make sure to use the existing one if it already exists
@@ -451,6 +452,7 @@ class BookmarkController extends ApiController {
 	 * @param string|null $description
 	 * @param array|null $tags
 	 * @param array|null $folders
+	 * @param string|null $target
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -458,7 +460,7 @@ class BookmarkController extends ApiController {
 	 * @CORS
 	 * @PublicPage
 	 */
-	public function editBookmark($id = null, $url = null, $title = null, $description = null, $tags = null, $folders = null): JSONResponse {
+	public function editBookmark($id = null, $url = null, $title = null, $description = null, $tags = null, $folders = null, $target = null): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
@@ -476,12 +478,13 @@ class BookmarkController extends ApiController {
 					return new JSONResponse(['status' => 'error', 'data' => ['Insufficient permissions']], Http::STATUS_FORBIDDEN);
 				}
 			}
-			$bookmark = $this->bookmarks->update($this->authorizer->getUserId(), $id, $url, $title, $description, $tags, $folders);
+			$bookmark = $this->bookmarks->update($this->authorizer->getUserId(), $id, $target ?: $url, $title, $description, $tags, $folders);
 			return new JSONResponse(['item' => $bookmark ? $this->_returnBookmarkAsArray($bookmark) : null, 'status' => 'success']);
 		} catch (AlreadyExistsError $e) {
 			// This is really unlikely, as we make sure to use the existing one if it already exists
 			return new JSONResponse(['status' => 'error', 'data' => 'Bookmark already exists'], Http::STATUS_BAD_REQUEST);
 		} catch (UrlParseError $e) {
+			$this->logger->error($e->getMessage(), ['exception' => $e]);
 			return new JSONResponse(['status' => 'error', 'data' => 'Invald URL'], Http::STATUS_BAD_REQUEST);
 		} catch (UserLimitExceededError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => 'User limit exceeded'], Http::STATUS_BAD_REQUEST);
