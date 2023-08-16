@@ -74,12 +74,12 @@ class CreateBookmark implements IOperation {
 			$dispatcher->addListener(RegisterOperationsEvent::class, static function (RegisterOperationsEvent $event) {
 				$operation = OC::$server->query(CreateBookmark::class);
 				$event->registerOperation($operation);
-				Util::addScript('bookmarks', 'flow');
+				Util::addScript('bookmarks', 'bookmarks-flow');
 			});
 			$dispatcher->addListener(RegisterEntitiesEvent::class, static function (RegisterEntitiesEvent $event) {
 				$entity = OC::$server->query(Bookmark::class);
 				$event->registerEntity($entity);
-				Util::addScript('bookmarks', 'flow');
+				Util::addScript('bookmarks', 'bookmarks-flow');
 			});
 		}
 	}
