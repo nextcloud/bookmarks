@@ -253,6 +253,9 @@ export default {
 			}
 		},
 		onClick() {
+			if (this.bookmark.url.startsWith('file:')) {
+				this.$store.commit(mutations.SET_ERROR, 'Most browsers will not allow clicking on file links. Try copying the URL')
+			}
 			this.$store.dispatch(actions.CLICK_BOOKMARK, this.bookmark)
 		},
 		onCopyUrl() {
