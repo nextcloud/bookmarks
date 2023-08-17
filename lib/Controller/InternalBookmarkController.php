@@ -95,12 +95,13 @@ class InternalBookmarkController extends ApiController {
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
+	 * @param string $target
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $title = null, $description = null, $tags = null, $folders = []): JSONResponse {
-		return $this->publicController->newBookmark($url, $title, $description, $tags, $folders);
+	public function newBookmark($url = "", $title = null, $description = null, $tags = null, $folders = [], $target = null): JSONResponse {
+		return $this->publicController->newBookmark($url, $title, $description, $tags, $folders, $target);
 	}
 
 	/**
@@ -110,12 +111,13 @@ class InternalBookmarkController extends ApiController {
 	 * @param string $description
 	 * @param array $tags
 	 * @param array|null $folders
+	 * @param string|null $target
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editBookmark($id = null, $url = null, $title = null, $description = "", $tags = [], $folders = null): JSONResponse {
-		return $this->publicController->editBookmark($id, $url, $title, $description, $tags, $folders);
+	public function editBookmark($id = null, $url = null, $title = null, $description = "", $tags = [], $folders = null, $target = null): JSONResponse {
+		return $this->publicController->editBookmark($id, $url, $title, $description, $tags, $folders, $target);
 	}
 
 	/**

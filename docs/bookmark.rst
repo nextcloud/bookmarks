@@ -14,7 +14,14 @@ A bookmark has at least the following properties
 .. object:: Bookmark
 
    :param int id: The bookmarks unique id
-   :param string url: The Uniform Resource Locator that this bookmark represents
+   :param string url: The Uniform Resource Locator that this bookmark represents, can be a http, ftp or (since v13.1.0) a file link
+
+      .. versionchanged:: 13.1.0
+
+   :param string target: The target of this bookmark, can be a http, ftp or file link or a javascript link
+
+      .. versionadded:: 13.1.0
+
    :param string title: A short humanly readable label for the bookmark
    :param string description: A longer description or note on the bookmark
    :param int added: The UNIX timestamp when this bookmark was created

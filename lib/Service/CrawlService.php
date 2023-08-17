@@ -82,6 +82,9 @@ class CrawlService {
 	 * @throws UrlParseError
 	 */
 	public function crawl(Bookmark $bookmark): void {
+		if (!$bookmark->isWebLink()) {
+			return;
+		}
 		try {
 			$client = new Client();
 			/** @var Response $resp */

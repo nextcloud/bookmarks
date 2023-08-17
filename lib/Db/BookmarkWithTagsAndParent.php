@@ -37,6 +37,15 @@ class BookmarkWithTagsAndParent extends Bookmark {
 				}
 				continue;
 			}
+			if ($field === 'url') {
+				if (!preg_match('/^javascript:/i', $this->url)) {
+					$array['url'] = $this->url;
+				} else {
+					$array['url'] = '';
+				}
+				$array['target'] = $this->url;
+				continue;
+			}
 			$array[$field] = $this->{$field};
 		}
 		return $array;

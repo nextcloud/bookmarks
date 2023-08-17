@@ -15,7 +15,8 @@
 		:draggable="draggable && !renaming"
 		@dragstart="onDragStart">
 		<template v-if="!renaming">
-			<a :href="url"
+			<component :is="url? 'a' : 'span'"
+				:href="url"
 				class="item__clickLink"
 				tabindex="0"
 				target="_blank"
@@ -43,7 +44,7 @@
 						<slot name="actions" />
 					</NcActions>
 				</div>
-			</a>
+			</component>
 		</template>
 		<div v-else class="item__rename">
 			<slot name="icon" />
@@ -177,6 +178,9 @@ export default {
 							&& (this.$refs.checkbox.contains(e.target) || this.$refs.checkbox === e.target)
 					)) {
 				e.stopImmediatePropagation()
+				return
+			}
+			if (!this.url) {
 				return
 			}
 			this.$emit('click', e)

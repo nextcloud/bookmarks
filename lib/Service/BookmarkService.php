@@ -28,6 +28,7 @@ use OCP\BackgroundJob\IJobList;
 use OCP\EventDispatcher\IEventDispatcher;
 
 class BookmarkService {
+	public const PROTOCOLS_REGEX = '/^(https?|s?ftp|file|javascript):/i';
 	/**
 	 * @var BookmarkMapper
 	 */
@@ -175,18 +176,18 @@ class BookmarkService {
 	 */
 	private function _addBookmark($userId, $url, string $title = null, $description = null, array $tags = null, array $folders = []): Bookmark {
 		$bookmark = null;
+
 		try {
 			$bookmark = $this->bookmarkMapper->findByUrl($userId, $url);
 		} catch (DoesNotExistException $e) {
-			$protocols = '/^(https?|s?ftp):\/\//i';
-			if (!preg_match($protocols, $url)) {
+			if (!preg_match(self::PROTOCOLS_REGEX, $url)) {
 				// if no allowed protocol is given, evaluate https and https
 				foreach (['https://', 'http://'] as $protocol) {
-					$testUrl = $this->urlNormalizer->normalize($protocol . $url);
 					try {
+						$testUrl = $this->urlNormalizer->normalize($protocol . $url);
 						$bookmark = $this->bookmarkMapper->findByUrl($userId, $testUrl);
 						break;
-					} catch (DoesNotExistException $e) {
+					} catch (UrlParseError|DoesNotExistException $e) {
 						continue;
 					}
 				}
@@ -199,19 +200,24 @@ class BookmarkService {
 			if (!isset($title, $description)) {
 				// Inspect web page (do some light scraping)
 				// allow only http(s) and (s)ftp
-				$protocols = '/^(https?|s?ftp)\:\/\//i';
-				if (preg_match($protocols, $url)) {
-					$data = $this->linkExplorer->get($url);
+				if (preg_match('/^https?:\/\//i', $url)) {
+					$testUrl = $this->urlNormalizer->normalize($url);
+					$data = $this->linkExplorer->get($testUrl);
 				} else {
 					// if no allowed protocol is given, evaluate https and https
-					foreach (['https://', 'http://'] as $protocol) {
+					foreach (['https://', 'http://', ''] as $protocol) {
 						$testUrl = $protocol . $url;
 						$data = $this->linkExplorer->get($testUrl);
 						if (isset($data['basic']['title'])) {
+							$url = $protocol . $url;
 							break;
 						}
 					}
 				}
+			}
+
+			if (!preg_match(self::PROTOCOLS_REGEX, $url)) {
+				throw new UrlParseError();
 			}
 
 			$url = $data['url'] ?? $url;
@@ -279,6 +285,9 @@ class BookmarkService {
 		}
 
 		if ($url !== null) {
+			if (!preg_match(self::PROTOCOLS_REGEX, $url)) {
+				throw new UrlParseError();
+			}
 			if ($url !== $bookmark->getUrl()) {
 				$bookmark->setAvailable(true);
 			}
@@ -322,6 +331,8 @@ class BookmarkService {
 			 * @var $currentOwnFolders Folder[]
 			 */
 			$currentOwnFolders = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId());
+			// Updating user may not be the owner of the bookmark
+			// We have to keep the bookmark in folders that are inaccessible to the current user
 			if ($bookmark->getUserId() !== $userId) {
 				$currentInaccessibleOwnFolders = array_map(static function ($f) {
 					return $f->getId();

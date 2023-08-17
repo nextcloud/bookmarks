@@ -72,6 +72,9 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 		if (!isset($bookmark)) {
 			return null;
 		}
+		if (!$bookmark->isWebLink()) {
+			return null;
+		}
 		$key = self::CACHE_PREFIX . '-' . md5($bookmark->getUrl());
 		// Try cache first
 		try {
