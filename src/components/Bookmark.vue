@@ -259,7 +259,7 @@ export default {
 			this.$store.dispatch(actions.CLICK_BOOKMARK, this.bookmark)
 		},
 		onCopyUrl() {
-			navigator.clipboard.writeText(this.bookmark.tar)
+			navigator.clipboard.writeText(this.bookmark.target)
 			this.$store.commit(mutations.SET_NOTIFICATION, this.t('bookmarks', 'Link copied to clipboard'))
 		},
 		async fetchBackgroundImage() {
