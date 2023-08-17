@@ -994,18 +994,18 @@ export default {
 		return dispatch(actions.FETCH_PAGE)
 	},
 
-	[actions.FETCH_PAGE]({ dispatch, commit, state }) {
+	async [actions.FETCH_PAGE]({ dispatch, commit, state }) {
 		if (state.fetchState.reachedEnd) return
 		if (state.loading.bookmarks) return
 		let canceled = false
 		const fetchedPage = state.fetchState.page
-		commit(mutations.FETCH_START, {
+		await commit(mutations.FETCH_START, {
 			type: 'bookmarks',
 			cancel() {
 				canceled = true
 			},
 		})
-		axios
+		return axios
 			.get(url(state, '/bookmark'), {
 				params: {
 					limit: BATCH_SIZE,
@@ -1133,7 +1133,7 @@ export default {
 				throw err
 			})
 	},
-	[actions.LOAD_SETTINGS]({ commit, dispatch, state }) {
+	async [actions.LOAD_SETTINGS]({ commit, dispatch, state }) {
 		const settings = loadState('bookmarks', 'settings')
 		for (const setting in settings) {
 			const key = setting
@@ -1141,14 +1141,14 @@ export default {
 			switch (key) {
 			case 'viewMode':
 				value = value || state.settings.viewMode
-				commit(mutations.SET_VIEW_MODE, value)
+				await commit(mutations.SET_VIEW_MODE, value)
 				break
 			case 'sorting':
 				value = value || state.settings.sorting
-				commit(mutations.RESET_PAGE)
+				await commit(mutations.RESET_PAGE)
 				break
 			}
-			commit(mutations.SET_SETTING, { key, value })
+			await commit(mutations.SET_SETTING, { key, value })
 		}
 		['archivePath', 'backupPath', 'backupEnabled', 'limit'].forEach(key =>
 			dispatch(actions.LOAD_SETTING, key)

@@ -66,6 +66,7 @@ export default {
 			showDetails: false,
 			smallScreen: false,
 			showWhatsnew: false,
+			initialLoad: false,
 		}
 	},
 	computed: {
@@ -85,18 +86,14 @@ export default {
 	watch: {
 		$route: 'onRoute',
 		async showFolderOverview(value) {
-			// hack to make bookmarkslist rerender
-			await this.$store.dispatch(actions.SET_SETTING, {
-				key: 'viewMode',
-				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid',
-			})
-			await this.$store.dispatch(actions.SET_SETTING, {
-				key: 'viewMode',
-				value: this.$store.state.viewMode === 'grid' ? 'list' : 'grid',
-			})
+			if (!this.initialLoad) {
+				// hack to make bookmarkslist rerender
+				await this.$store.dispatch(actions.RELOAD_VIEW)
+			}
 		},
 	},
 	async created() {
+		this.initialLoad = true
 		const mediaQuery = window.matchMedia('(max-width: 1024px)')
 		this.smallScreen = mediaQuery.matches
 		mediaQuery.addEventListener('change', this.onWindowFormatChange)
@@ -105,10 +102,12 @@ export default {
 	    // legacy search pre nc v20
 			this.search = new window.OCA.Search(this.onSearch, this.onResetSearch)
 		}
+
 		// set loading indicator
 		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
 
 		await this.reloadSettings()
+
 		this.onRoute()
 		this.reloadFolders()
 		this.reloadSharedFolders()
@@ -124,6 +123,7 @@ export default {
 				this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons.'))
 			}
 		}
+		this.initialLoad = false
 	},
 
 	methods: {

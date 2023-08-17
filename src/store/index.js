@@ -27,7 +27,10 @@ export default {
 		authToken: null,
 		fetchState: {
 			page: 0,
-			query: {},
+			query: {
+				// Set home filter to avoid trying to load *all* bookmark initially until onRoute is called
+				folder: -1,
+			},
 			reachedEnd: false,
 		},
 		loading: {
