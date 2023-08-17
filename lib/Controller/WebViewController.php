@@ -116,7 +116,7 @@ class WebViewController extends Controller {
 		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFolders()->getData()['data']);
 
 		$settings = [];
-		foreach (['sorting', 'viewMode'] as $setting) {
+		foreach (['sorting', 'viewMode', 'hasSeenWhatsnew'] as $setting) {
 			$settings[$setting] = $this->config->getUserValue($this->userId, $this->appName, $setting);
 		}
 		$this->initialState->provideInitialState($this->appName, 'settings', $settings);

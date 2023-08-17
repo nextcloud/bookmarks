@@ -49,6 +49,7 @@ export default {
 			limit: 0,
 			backupPath: '',
 			backupEnabled: '1',
+			hasSeenWhatsnew: '',
 		},
 		bookmarks: [],
 		bookmarksById: {},

@@ -224,4 +224,31 @@ class SettingsController extends ApiController {
 	public function setBackupPath(string $backupPath): JSONResponse {
 		return $this->setSetting('backup.filePath', $backupPath);
 	}
+
+	/**
+	 * get hasSeenWhatsnew
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function getWhatsnew(): JSONResponse {
+		return $this->getSetting(
+			'hasSeenWhatsnew',
+			'hasSeenWhatsnew',
+			'0'
+		);
+	}
+
+	/**
+	 * set hasSeenWhatsnew
+	 *
+	 * @param string $hasSeenWhatsnew
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function setWhatsnew(string $hasSeenWhatsnew): JSONResponse {
+		return $this->setSetting('hasSeenWhatsnew', $hasSeenWhatsnew);
+	}
 }

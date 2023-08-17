@@ -22,6 +22,7 @@
 		<CopyDialog />
 		<LoadingModal />
 		<BookmarkContent />
+		<WhatsnewModal />
 	</NcContent>
 </template>
 
@@ -39,6 +40,7 @@ import { privateRoutes } from '../router.js'
 import { actions, mutations } from '../store/index.js'
 import LoadingModal from './LoadingModal.vue'
 import BookmarkContent from './BookmarkContent.vue'
+import WhatsnewModal from './WhatsnewModal.vue'
 import { getCurrentUser } from '@nextcloud/auth'
 
 export default {
@@ -56,12 +58,14 @@ export default {
 		SidebarFolder,
 		MoveDialog,
 		CopyDialog,
+		WhatsnewModal,
 	},
 	data() {
 		return {
 			newBookmark: false,
 			showDetails: false,
 			smallScreen: false,
+			showWhatsnew: false,
 		}
 	},
 	computed: {
