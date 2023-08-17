@@ -73,6 +73,10 @@ export default {
 			type: String,
 			default: '',
 		},
+		folderId: {
+			type: String,
+			default: '',
+		},
 	},
 	data() {
 		return {
@@ -86,7 +90,7 @@ export default {
 			exists: false,
 			loading: true,
 			showPicker: false,
-			folder: -1,
+			folder: parseInt(this.folderId || -1),
 		}
 	},
 	computed: {

@@ -73,6 +73,7 @@ import { generateUrl } from '@nextcloud/router'
 import { actions } from '../store/index.js'
 import { getRequestToken } from '@nextcloud/auth'
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
+import { privateRoutes } from '../router.js'
 
 export default {
 	name: 'Settings',
@@ -103,7 +104,11 @@ export default {
 		bookmarklet() {
 			const bookmarkletUrl
 					= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
-			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e,'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=650px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
+			let queryStringExtension = ''
+			if (this.$route.name === privateRoutes.FOLDER) {
+				queryStringExtension = `+'&folderId=${this.$route.params.folder}'`
+			}
+			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e${queryStringExtension},'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=650px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
 		archivePath() {
 			return this.$store.state.settings.archivePath

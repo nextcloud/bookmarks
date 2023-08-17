@@ -103,7 +103,7 @@ export default new Router({
 			path: '/bookmarklet',
 			name: privateRoutes.BOOKMARKLET,
 			component: ViewBookmarklet,
-			props: (route) => ({ url: route.query.url, title: route.query.title }),
+			props: (route) => ({ url: route.query.url, title: route.query.title, folderId: route.query.folderId }),
 		},
 		{
 			path: '/public/:token',
