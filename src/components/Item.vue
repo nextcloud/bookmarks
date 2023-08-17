@@ -180,9 +180,6 @@ export default {
 				e.stopImmediatePropagation()
 				return
 			}
-			if (!this.url) {
-				return
-			}
 			this.$emit('click', e)
 		},
 		onRightClick(e) {
