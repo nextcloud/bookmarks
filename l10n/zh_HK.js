@@ -205,6 +205,7 @@ OC.L10N.register(
     "Root Folder" : "根資料夾",
     "Save" : "儲存",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "默認情況下，網絡存取處於停用狀態。轉到書籤應用程式的管理員設置，以啟用獲取預覽和網站圖標的功能。",
+    "What" : "甚麼",
     "Link to a bookmark folder" : "連結至書籤資料夾",
     "Failed to count unavailable bookmarks" : "無法點算不可用的書籤",
     "Failed to count archived bookmarks" : "無法點算已封存的書籤",

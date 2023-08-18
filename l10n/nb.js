@@ -56,6 +56,8 @@ OC.L10N.register(
     "Select one or more tags" : "Velg en eller flere merkelapper",
     "New" : "Ny",
     "New folder" : "Ny mappe",
+    "Change to grid view" : "Bytt til rutenettvisning",
+    "Change to list view" : "Bytt til listevisning",
     "Search" : "Søk",
     "Enter a link" : "Skriv inn et lenke",
     "Add a bookmark" : "Legg til bokmerke",

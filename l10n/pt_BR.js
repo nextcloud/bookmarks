@@ -205,6 +205,7 @@ OC.L10N.register(
     "Root Folder" : "Pasta raiz",
     "Save" : "Salvar",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "O acesso a rede é desabilitado por padrão. Vá nas configurações administrativas do aplicativo favoritos para permitir a alocação de prévias e favicons.",
+    "What" : "O que",
     "Link to a bookmark folder" : "Link para uma pasta de favoritos",
     "Failed to count unavailable bookmarks" : "Erro ao contar os favoritos indisponíveis",
     "Failed to count archived bookmarks" : "Erro ao contar os favoritos arquivados",

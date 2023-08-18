@@ -205,6 +205,7 @@ OC.L10N.register(
     "Root Folder" : "Kök klasör",
     "Save" : "Kaydet",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Ağ erişimi varsayılan olarak devre dışıdır. Yer imleri uygulamasının yönetici ayarlarına giderek, ön izleme ve favicon görsellerini alma seçeneğini etkinleştirin.",
+    "What" : "Ne",
     "Link to a bookmark folder" : "Bir yer imi klasörü bağlantısı",
     "Failed to count unavailable bookmarks" : "Kullanılamayan yer imlerinin sayısı hesaplanamadı",
     "Failed to count archived bookmarks" : "Arşivlenmiş yer imlerinin sayısı hesaplanamadı",
