@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [13.1.0] - 2023-0.8-17
+
+### New
+ - Add a changelog-style whatsnew modal
+ - Allow specifying default folder in bookmarklet URL
+ - Allow creating javascript and file links
+ - Create WRITE permission to signify the permission to edit children
+ - Folder.vue: Allow editing (direct) share roots even if they're from a non-writable share
+
+### Fixed
+ - UI: Streamline initial load
+ - Fix Bookmarklet UI
+ - Fix UI glitch in bookmark-content Marcel Klehr Yesterday 16:52
+ - Update @nextcloud/vue
+ - Fix flow.js script name
+ - UI: Always align shared icon with folder icon
+ - Backend: Avoid Share loops
+ - UI: Rollback moving folders after failure
+ - propagate permissions across multi-share boundaries 
+ - fix(TreeMapper#getParentOf): Select correct type
+ - Check for empty arrays before accessing them
+ - BookmarksParser: Distinguish between dates in ms and s
+ - fix(CrawlService): Catch whatever Readability might throw at us
+ - fix(composer): Don't use "classmap-authoritative"
+ - Use the color-primary-element* variables
+ - Fix(l10n): 🔠 Update translations from Transifex
+
 ## [13.0.1] - 2023-03-21
 
 ### Fixed
