@@ -205,6 +205,7 @@ OC.L10N.register(
     "Root Folder" : "Корена фасцикла",
     "Save" : "Сачувај",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Мрежни приступ је подразумевано искључен. Идите на администраторска подешавања апликације Маркери да дозволите добављање прегледа и favicon икона (икона веб сајта на адресној линији, испред адресе).",
+    "What's new in Bookmarks?" : "Шта је ново у Обележивачу?",
     "What" : "Шта",
     "Link to a bookmark folder" : "Линк на фолдер са маркерима",
     "Failed to count unavailable bookmarks" : "Није успело пребројавање недоступних маркера",
