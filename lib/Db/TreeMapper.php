@@ -833,7 +833,7 @@ class TreeMapper extends QBMapper {
 			}
 
 			if ($item['type'] === self::TYPE_BOOKMARK) {
-				$item = array_merge(Bookmark::fromRow(array_intersect_key(array_flip(Bookmark::$columns), $child))->toArray(), $item);
+				$item = array_merge(Bookmark::fromRow(array_intersect_key($child, array_flip(Bookmark::$columns)))->toArray(), $item);
 			}
 
 			if ($item['type'] === self::TYPE_FOLDER && $layers !== 0) {
