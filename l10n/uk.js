@@ -19,7 +19,7 @@ OC.L10N.register(
     "New folder" : "Новий каталог",
     "Search" : "Пошук",
     "Sort by last modified" : "Впорядкувати за останніми змінами",
-    "Sort by title" : "Сортувати за назвою",
+    "Sort by title" : "Впорядкувати за назвою",
     "Enter a link" : "Зазначте посилання",
     "Add a bookmark" : "Додати закладку",
     "Shared by {user}" : "{user} надав(-ла) доступ",
