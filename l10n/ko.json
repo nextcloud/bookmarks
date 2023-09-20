@@ -55,6 +55,7 @@
     "Search" : "검색",
     "Sort by created date" : "만들어진 순서로 정렬",
     "Enter a link" : "링크를 입력하시오.",
+    "_%n folder_::_%n folders_" : ["폴더 %n개"],
     "Add a bookmark" : "북마크 추가",
     "Select folder" : "폴더 선택",
     "Enter folder title" : "폴더명을 입력하시오.",
