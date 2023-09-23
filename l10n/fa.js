@@ -1,7 +1,7 @@
 OC.L10N.register(
     "bookmarks",
     {
-    "Bookmarks" : "Bookmarks",
+    "Bookmarks" : "نشانک‌ها",
     "You bookmarked \"%s\"" : "You bookmarked \"%s\"",
     "%1$s bookmarked \"%2$s\"" : "%1$s bookmarked \"%2$s\"",
     "Someone bookmarked \"%s\"" : "Someone bookmarked \"%s\"",
@@ -205,6 +205,7 @@ OC.L10N.register(
     "Root Folder" : "Root Folder",
     "Save" : "ذخیره",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons.",
+    "What's new in Bookmarks?" : "چه چیزی در نشانک‌ها جدید است؟",
     "What" : "What",
     "Link to a bookmark folder" : "Link to a bookmark folder",
     "Failed to count unavailable bookmarks" : "Failed to count unavailable bookmarks",
