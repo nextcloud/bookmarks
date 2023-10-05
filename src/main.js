@@ -34,7 +34,7 @@ const BookmarksApp = (global.Bookmarks = new Vue({
 }))
 
 if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register(generateUrl('/apps/bookmarks/service-worker.js', {}, {
+	navigator.serviceWorker.register(generateUrl('/apps/bookmarks/bookmarks-service-worker.js', {}, {
 		noRewrite: true,
 	}), {
 		scope: generateUrl('/apps/bookmarks'),
@@ -45,7 +45,7 @@ if ('serviceWorker' in navigator) {
 		.catch(er => console.error(er))
 
 	window.caches.open('js').then(async cache => {
-		const url = generateUrl('/apps/bookmarks/js/bookmarks.main.js')
+		const url = generateUrl('/apps/bookmarks/js/bookmarks-main.js')
 		cache.put(url, await fetch(url))
 	})
 } else {
