@@ -115,7 +115,7 @@ OC.L10N.register(
     "Recent" : "Nedávne",
     "Shared with you" : "Zdieľané s vami",
     "Files" : "Súbory",
-    "Duplicates" : "Duplikáty",
+    "Duplicates" : "Duplicity",
     "Broken links" : "Poškodené odkazy",
     "New tag" : "Nový štítok",
     "Search tags" : "Vyhľadať štítky",
