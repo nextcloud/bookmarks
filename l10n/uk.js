@@ -17,6 +17,8 @@ OC.L10N.register(
     "Select one or more tags" : "Виберіть одну або кілька міток",
     "New" : "Створити",
     "New folder" : "Новий каталог",
+    "Change to grid view" : "Перехід до перегляду у вигляді сітки",
+    "Change to list view" : "Перейдіть до перегляду у вигляді списку",
     "Search" : "Пошук",
     "Sort by last modified" : "Впорядкувати за останніми змінами",
     "Sort by title" : "Впорядкувати за назвою",
@@ -53,6 +55,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Цей URL вже є в закладках! Перезаписати?",
     "Folder" : "Каталог",
     "Save" : "Зберегти",
+    "What" : "Що?",
     "Failed to load tags" : "Не вдалося завантажити мітки"
 },
 "nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);");
