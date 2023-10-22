@@ -160,7 +160,7 @@ OC.L10N.register(
     "Created on {date}" : "Vytvorené {date}",
     "Owner" : "Majiteľ",
     "Sharing" : "Sprístupnenie",
-    "Select a user or group" : "Vybrať používateľa alebo skupinu",
+    "Select a user or group" : "Vyberte používateľa alebo skupinu",
     "Share link" : "Sprístupniť odkaz",
     "Reading allowed" : "Čítanie povolené",
     "Copy RSS feed" : "Kopírovať RSS kanál",
