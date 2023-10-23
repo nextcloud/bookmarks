@@ -58,7 +58,7 @@ OC.L10N.register(
     "Open all selected" : "Otvoriť všetky vybraté",
     "Move selection" : "Presun výberu",
     "Edit tags of selection" : "Editovať šťítky vybraných",
-    "Delete selection" : "Zmazanie výberu",
+    "Delete selection" : "Zmazať výberu",
     "Select all" : "Vybrať všetko",
     "Cancel selection" : "Zrušiť výber",
     "Selected {folders} folders and {bookmarks} bookmarks" : "Vybraté {folders} priečinky a {bookmarks} záložky",
