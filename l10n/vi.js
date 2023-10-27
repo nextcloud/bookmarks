@@ -9,6 +9,7 @@ OC.L10N.register(
     "Delete" : "Xóa",
     "Select all" : "Chọn tất cả",
     "Go back" : "Quay lại",
+    "Share folder" : "Chia sẻ thư mục",
     "Select one or more tags" : "Chọn một hoặc nhiều thẻ",
     "New" : "Tạo mới",
     "New folder" : "Tạo thư mục",
