@@ -34,6 +34,7 @@ OC.L10N.register(
     "Allow resharing" : "Permite repartajarea",
     "Link copied" : "Link copiat",
     "Privacy" : "Confindențialitate",
+    "Performance" : "Performanța",
     "Folder" : "Director",
     "Save" : "Salvează"
 },
