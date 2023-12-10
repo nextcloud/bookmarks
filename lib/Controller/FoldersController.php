@@ -79,7 +79,6 @@ class FoldersController extends ApiController {
 		$this->logger = $logger;
 
 		$this->authorizer->setCORS(true);
-		\OC_User::setIncognitoMode(true);
 		$this->userManager = $userManager;
 	}
 

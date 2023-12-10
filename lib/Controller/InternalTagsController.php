@@ -16,7 +16,6 @@ class InternalTagsController extends ApiController {
 	public function __construct($appName, $request, TagsController $publicController) {
 		parent::__construct($appName, $request);
 		$this->publicController = $publicController;
-		\OC_User::setIncognitoMode(false);
 	}
 
 	/**
