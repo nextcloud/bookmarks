@@ -29,7 +29,7 @@ export default {
 	},
 	computed: {
 		showModal() {
-			return this.$store.state.settings.hasSeenWhatsnew?.split('.').slice(0,2).join('.') !== packageJson.version.split('.').slice(0,2).join('.')
+			return this.$store.state.settings.hasSeenWhatsnew?.split('.').slice(0, 2).join('.') !== packageJson.version.split('.').slice(0, 2).join('.')
 		},
 	},
 	methods: {
