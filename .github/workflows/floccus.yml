@@ -120,7 +120,7 @@ jobs:
         if: matrix.floccus-adapter != 'fake'
 
       - name: Set up node ${{ matrix.node-versions }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-versions }}
 
