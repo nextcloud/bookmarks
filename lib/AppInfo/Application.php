@@ -8,11 +8,7 @@
 
 namespace OCA\Bookmarks\AppInfo;
 
-use Closure;
-use OC\EventDispatcher\SymfonyAdapter;
 use OCA\Bookmarks\Activity\ActivityPublisher;
-use OCA\Bookmarks\Collaboration\Resources\FolderResourceProvider;
-use OCA\Bookmarks\Collaboration\Resources\ResourceProvider;
 use OCA\Bookmarks\Dashboard\Frequent;
 use OCA\Bookmarks\Dashboard\Recent;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
@@ -32,7 +28,6 @@ use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
 use OCP\Collaboration\Reference\RenderReferenceEvent;
-use OCP\Collaboration\Resources\IProviderManager;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
@@ -101,17 +96,7 @@ class Application extends App implements IBootstrap {
 	 * @throws \Throwable
 	 */
 	public function boot(IBootContext $context): void {
-		$context->injectFn(Closure::fromCallable([$this, 'registerCollaborationResources']));
 		$container = $context->getServerContainer();
 		CreateBookmark::register($container->get(IEventDispatcher::class));
-	}
-
-	protected function registerCollaborationResources(IProviderManager $resourceManager, SymfonyAdapter $symfonyAdapter): void {
-		$resourceManager->registerResourceProvider(ResourceProvider::class);
-		$resourceManager->registerResourceProvider(FolderResourceProvider::class);
-
-		$symfonyAdapter->addListener('\OCP\Collaboration\Resources::loadAdditionalScripts', static function () {
-			Util::addScript('bookmarks', 'bookmarks-collections');
-		});
 	}
 }
