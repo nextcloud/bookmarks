@@ -35,8 +35,8 @@ jobs:
       fail-fast: false
       matrix:
         floccus-ref: ['master', 'develop']
-        node-versions: [14.x]
-        npm-versions: [7.x]
+        node-versions: [20.x]
+        npm-versions: [10.x]
         server-versions: ['26']
         selenium-version: ['3']
         floccus-adapter:
