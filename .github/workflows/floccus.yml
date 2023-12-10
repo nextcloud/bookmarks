@@ -39,6 +39,7 @@ jobs:
         with:
           path: floccus
           ref: ${{ matrix.floccus-branch }}
+          repository: floccusAddon/floccus
 
       - name: Set up node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -142,6 +143,14 @@ jobs:
           MYSQL_ROOT_PASSWORD: ${{env.MYSQL_PASSWORD}}
 
     steps:
+
+      - name: Set up node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Set up npm ${{ matrix.npm-version }}
+        run: npm i -g npm@"${{ matrix.npm-version }}"
 
       - name: Restore context
         uses: buildjet/cache/restore@v3
