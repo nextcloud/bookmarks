@@ -32,7 +32,7 @@ class TagsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 */
 	public function deleteTag($old_name = ""): JSONResponse {
 		if ($old_name === "") {
@@ -51,7 +51,7 @@ class TagsController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 */
 	public function renameTag($old_name = "", $new_name = "", $name = ''): JSONResponse {
 		if ($new_name === '') {
@@ -71,7 +71,7 @@ class TagsController extends ApiController {
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 */
 	public function fullTags($count = false): JSONResponse {
 		header("Cache-Control: no-cache, must-revalidate");

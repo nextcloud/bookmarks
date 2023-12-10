@@ -166,7 +166,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function addFolder($title = '', $parent_folder = -1): JSONResponse {
@@ -193,7 +193,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function getFolder($folderId): JSONResponse {
@@ -218,7 +218,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function addToFolder($folderId, $bookmarkId): JSONResponse {
@@ -243,7 +243,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function removeFromFolder($folderId, $bookmarkId): JSONResponse {
@@ -272,7 +272,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function deleteFolder($folderId): JSONResponse {
@@ -304,7 +304,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PupblicPage
 	 */
 	public function editFolder($folderId, $title = null, $parent_folder = null): JSONResponse {
@@ -335,7 +335,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function hashFolder($folderId, $fields = ['title', 'url']): JSONResponse {
@@ -367,7 +367,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function getFolderChildren($folderId, $layers = 0): JSONResponse {
@@ -389,7 +389,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function getFolderChildrenOrder($folderId, $layers = 0): JSONResponse {
@@ -411,7 +411,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function setFolderChildrenOrder($folderId, $data = []): JSONResponse {
@@ -433,7 +433,7 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 * @return JSONResponse
 	 */
@@ -459,7 +459,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function getFolderPublicToken($folderId): DataResponse {
@@ -481,7 +481,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function createFolderPublicToken($folderId): DataResponse {
@@ -503,7 +503,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function deleteFolderPublicToken($folderId): DataResponse {
@@ -525,7 +525,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function getShare($shareId): DataResponse {
@@ -546,7 +546,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
@@ -568,7 +568,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
@@ -589,7 +589,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
@@ -631,7 +631,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function createShare($folderId, $participant, int $type, $canWrite = false, $canShare = false): DataResponse {
@@ -659,7 +659,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function editShare($shareId, $canWrite = false, $canShare = false): Http\DataResponse {
@@ -688,7 +688,7 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function deleteShare($shareId): DataResponse {

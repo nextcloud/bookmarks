@@ -169,7 +169,7 @@ class InternalFoldersController extends ApiController {
 	 * @return DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
@@ -181,7 +181,7 @@ class InternalFoldersController extends ApiController {
 	 * @return DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */

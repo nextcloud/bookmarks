@@ -232,7 +232,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function getSingleBookmark($id): JSONResponse {
@@ -269,7 +269,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function getBookmarks(
@@ -409,7 +409,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function newBookmark($url = '', $title = null, $description = null, $tags = null, $folders = [], $target = null): JSONResponse {
@@ -457,7 +457,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function editBookmark($id = null, $url = null, $title = null, $description = null, $tags = null, $folders = null, $target = null): JSONResponse {
@@ -503,7 +503,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function deleteBookmark($id): JSONResponse {
@@ -535,7 +535,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function clickBookmark($url = ''): JSONResponse {
@@ -573,7 +573,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 * @return DataDisplayResponse|NotFoundResponse|RedirectResponse|DataResponse
 	 */
@@ -598,7 +598,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 * @return DataDisplayResponse|NotFoundResponse|RedirectResponse|DataResponse
 	 */
@@ -650,7 +650,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function importBookmark($folder = null): JSONResponse {
@@ -710,7 +710,7 @@ class BookmarkController extends ApiController {
 	 * @return ExportResponse|JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function exportBookmark() {
@@ -735,7 +735,7 @@ class BookmarkController extends ApiController {
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function countBookmarks(int $folder): JSONResponse {
@@ -757,7 +757,7 @@ class BookmarkController extends ApiController {
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function countUnavailable(): JSONResponse {
@@ -773,7 +773,7 @@ class BookmarkController extends ApiController {
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function countArchived(): JSONResponse {
@@ -789,7 +789,7 @@ class BookmarkController extends ApiController {
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function countDuplicated(): JSONResponse {
@@ -805,7 +805,7 @@ class BookmarkController extends ApiController {
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function acquireLock(): JSONResponse {
@@ -830,7 +830,7 @@ class BookmarkController extends ApiController {
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @CORS
+	 *
 	 * @PublicPage
 	 */
 	public function releaseLock(): JSONResponse {
