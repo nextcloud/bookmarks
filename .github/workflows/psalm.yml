@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        ocp-version: [ 'v26.0.0', 'v27.0.0', 'dev-master']
+        ocp-version: [ '26', '27', '28', 'dev-master']
         php-version: [ '8.2' ]
 
     name: Nextcloud ${{ matrix.ocp-version }}
