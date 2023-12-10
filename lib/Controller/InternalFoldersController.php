@@ -27,6 +27,7 @@ class InternalFoldersController extends ApiController {
 			$authorizer->setUserId($userId);
 		}
 		$authorizer->setCORS(false);
+		\OC_User::setIncognitoMode(false);
 	}
 
 	/**

@@ -136,6 +136,7 @@ class WebViewController extends Controller {
 	 * @PublicPage
 	 */
 	public function link(string $token) {
+		\OC_User::setIncognitoMode(true);
 		$title = 'No title found';
 		$userName = 'Unknown';
 		try {

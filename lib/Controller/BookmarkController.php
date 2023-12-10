@@ -146,6 +146,7 @@ class BookmarkController extends ApiController {
 		$this->lockManager = $lockManager;
 
 		$this->authorizer->setCORS(true);
+		\OC_User::setIncognitoMode(true);
 	}
 
 	/**

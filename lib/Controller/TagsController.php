@@ -24,6 +24,7 @@ class TagsController extends ApiController {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->tagMapper = $tagMapper;
+		\OC_User::setIncognitoMode(true);
 	}
 
 	/**
