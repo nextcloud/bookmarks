@@ -12,7 +12,7 @@ import store from './store/index.js'
 import AppGlobal from './mixins/AppGlobal.js'
 import DropTarget from './directives/drop-target.js'
 import { subscribe } from '@nextcloud/event-bus'
-import { generateUrl } from '@nextcloud/router'
+import { generateFilePath, generateUrl } from '@nextcloud/router'
 
 Vue.mixin(AppGlobal)
 Vue.directive('tooltip', Tooltip)
@@ -45,7 +45,7 @@ if ('serviceWorker' in navigator) {
 		.catch(er => console.error(er))
 
 	window.caches.open('js').then(async cache => {
-		const url = generateUrl('/apps/bookmarks/js/bookmarks-main.js')
+		const url = generateFilePath('bookmarks', '', 'js/bookmarks-main.js')
 		cache.put(url, await fetch(url))
 	})
 } else {
