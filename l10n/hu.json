@@ -204,7 +204,6 @@
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "A hálózati hozzáférés alapértelmezés szerint le van tiltva. Nyissa meg a könyvjelzők alkalmazás rendszergazdai beállításait, hogy engedélyezze az előnézetek és a kedvencek beolvasását.",
     "What's new in Bookmarks?" : "Milyen újdonságokat tartalmaz a Bookmarks?",
     "What" : "Mit",
-    "Link to a bookmark folder" : "Hivatkozás egy könyvjelzőmappához",
     "Failed to count unavailable bookmarks" : "Az elérhetetlen könyvjelzők megszámlálása sikertelen",
     "Failed to count archived bookmarks" : "Az archivált könyvjelzők megszámolása sikertelen",
     "Failed to count duplicated bookmarks" : "Az ismételt könyvjelzők megszámolása sikertelen",

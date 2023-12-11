@@ -207,7 +207,6 @@ OC.L10N.register(
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Netzwerkzugriff ist standardmäßig deaktiviert. Gehe zu den Administratoreinstellungen für die Lesezeichen-App, um das Abrufen von Vorschauen und Favicons zu erlauben.",
     "What's new in Bookmarks?" : "Was gibt es Neues bei der Lesezeichen-App?",
     "What" : "Was",
-    "Link to a bookmark folder" : "Link zu einem Lesezeichenordner",
     "Failed to count unavailable bookmarks" : "Die nicht verfügbare Lesezeichen konnten nicht gezählt werden",
     "Failed to count archived bookmarks" : "Archivierte Lesezeichen konnten nicht gezählt werden",
     "Failed to count duplicated bookmarks" : "Doppelte Lesezeichen konnten nicht gezählt werden",

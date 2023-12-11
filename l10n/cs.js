@@ -207,7 +207,6 @@ OC.L10N.register(
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Přístup k síti je ve výchozím stavu vypnut. Pokud chcete umožnit stahování náhledů a ikon webů, jděte do nastavení správy aplikace Záložky a zapněte ho tam.",
     "What's new in Bookmarks?" : "Co je v Záložkách nového?",
     "What" : "Co",
-    "Link to a bookmark folder" : "Propojit se složkou záložek",
     "Failed to count unavailable bookmarks" : "Nepodařilo se spočítat nedostupné záložky",
     "Failed to count archived bookmarks" : "Nepodařilo se spočítat archivované záložky",
     "Failed to count duplicated bookmarks" : "Nepodařilo se spočítat duplicitní záložky",

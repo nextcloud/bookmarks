@@ -207,7 +207,6 @@ OC.L10N.register(
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "L’accès au réseau est désactivé par défaut. Rendez-vous dans les paramètres administrateur de cette application pour autoriser le téléchargement de prévisualisations et de favicons.",
     "What's new in Bookmarks?" : "Quoi de neuf dans Favoris ?",
     "What" : "Quoi",
-    "Link to a bookmark folder" : "Lien vers un dossier de favoris",
     "Failed to count unavailable bookmarks" : "Impossible de compter les favoris indisponibles",
     "Failed to count archived bookmarks" : "Impossible de compter les favoris archivés",
     "Failed to count duplicated bookmarks" : "Impossible de compter les favoris dupliqués",

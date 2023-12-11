@@ -205,7 +205,6 @@ OC.L10N.register(
     "Root Folder" : "Carpeta arrel",
     "Save" : "Desa",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "L'accés a la xarxa està inhabilitat per defecte. Aneu als paràmetres de l'administrador de l'aplicació Adreces d'interès per permetre obtenir previsualitzacions i favicons.",
-    "Link to a bookmark folder" : "Enllaç a una carpeta de adreces d'interès",
     "Failed to count unavailable bookmarks" : "No s'han pogut comptar les adreces d'interès no disponibles",
     "Failed to count archived bookmarks" : "No s'han pogut comptar les adreces d'interès arxivades",
     "Failed to count duplicated bookmarks" : "No s'han pogut comptar les adreces d'interès duplicades",

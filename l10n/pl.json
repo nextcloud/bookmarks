@@ -205,7 +205,6 @@
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Dostęp do sieci jest domyślnie wyłączony. Przejdź do ustawień administratora aplikacji zakładek, aby umożliwić pobieranie podglądów i ikon favicon.",
     "What's new in Bookmarks?" : "Co nowego w Zakładkach?",
     "What" : "Co",
-    "Link to a bookmark folder" : "Link do katalogu zakładek",
     "Failed to count unavailable bookmarks" : "Nie udało się zliczyć niedostępnych zakładek",
     "Failed to count archived bookmarks" : "Nie udało się zliczyć zarchiwizowanych zakładek",
     "Failed to count duplicated bookmarks" : "Nie udało się zliczyć zduplikowanych zakładek",
