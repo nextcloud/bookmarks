@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [13.1.2] - 2023-12-14
+
+### Fixed
+
+* fix(Controls): Always show search bar
+* fix(SearchProvider): Handle url being null
+* fix(remove cors annotation) Fix user getting logged out on public links
+* fix(WhatsnewModal check) Only show for major or minor version bumps
+* fix(service worker)
+* fix: drop collaboration resources integration to be compatible with nc 28
+* Fix(l10n): Update translations from Transifex
+
 ## [13.1.1] - 2023-08-20
 
 ### Fixed

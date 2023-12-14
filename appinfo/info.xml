@@ -22,7 +22,7 @@ Requirements:
    - mbstring: *
  - when using MySQL, use at least v8.0
 ]]></description>
-	<version>13.1.1</version>
+	<version>13.1.2</version>
 	<licence>agpl</licence>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
