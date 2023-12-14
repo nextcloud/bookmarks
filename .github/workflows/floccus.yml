@@ -8,10 +8,9 @@ on:
       - stable*
     paths:
       - 'lib/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'webpack*'
-      - 'gulpfile.js'
+      - 'composer.json'
+      - 'composer.lock'
+      - '.github/workflows/floccus.yml'
 
 env:
   APP_NAME: bookmarks
