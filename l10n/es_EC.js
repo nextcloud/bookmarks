@@ -206,7 +206,6 @@ OC.L10N.register(
     "Save" : "Guardar",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "El acceso a la red está desactivado de forma predeterminada. Ve a la configuración del administrador de la aplicación de marcadores para permitir la obtención de vistas previas e iconos.",
     "What" : "Qué",
-    "Link to a bookmark folder" : "Enlace a una carpeta de marcadores",
     "Failed to count unavailable bookmarks" : "Error al contar marcadores no disponibles",
     "Failed to count archived bookmarks" : "Error al contar marcadores archivados",
     "Failed to count duplicated bookmarks" : "Error al contar marcadores duplicados",

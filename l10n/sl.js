@@ -205,7 +205,6 @@ OC.L10N.register(
     "Save" : "Shrani",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Omrežni dostop je onemogočen privzeto. Med skrbniškimi nastavitvami za program zaznamkov so zbrane možnosti pridobivanja predogleda in ikon.",
     "What" : "Dejanje",
-    "Link to a bookmark folder" : "Povezava do mape zaznamkov",
     "Failed to count unavailable bookmarks" : "Štetje nerazpoložljivih zaznamkov je spodletelo",
     "Failed to count archived bookmarks" : "Štetje arhiviranih zaznamkov je spodletelo",
     "Failed to count duplicated bookmarks" : "Preštevanje podvojenih zaznamkov je spodletelo",

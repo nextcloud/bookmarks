@@ -33,6 +33,8 @@ OC.L10N.register(
     "Allow resharing" : "อนุญาตให้แชร์ซ้ำ",
     "Link copied" : "คัดลอกลิงก์แล้ว",
     "Privacy" : "ความเป็นส่วนตัว",
+    "Failed to save settings" : "ไม่สามารถบันทึกการตั้งค่าได้",
+    "Failed to load settings" : "ไม่สามารถโหลดการตั้งค่าได้",
     "Folder" : "โฟลเดอร์",
     "Save" : "บันทึก"
 },

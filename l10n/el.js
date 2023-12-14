@@ -170,6 +170,7 @@ OC.L10N.register(
     "Root Folder" : "Αρχικός φάκελος",
     "Save" : "Αποθήκευση",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Η πρόσβαση στο δίκτυο είναι απενεργοποιημένη από προεπιλογή. Μεταβείτε στις ρυθμίσεις διαχειριστή για την εφαρμογή σελιδοδεικτών για να επιτρέψετε την ανάκτηση προεπισκοπήσεων και favicons.",
+    "What" : "Τι να κάνετε",
     "Failed to count unavailable bookmarks" : "Αποτυχία μέτρησης μη διαθέσιμων σελιδοδεικτών",
     "Failed to count archived bookmarks" : "Αποτυχία μέτρησης αρχειοθετημένων σελιδοδεικτών",
     "Failed to load bookmark" : "Αποτυχία φόρτωσης σελιδοδείκτη",

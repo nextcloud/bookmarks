@@ -1,43 +1,61 @@
+# This workflow is provided via the organization template repository
+#
+# https://github.com/nextcloud/.github
+# https://docs.github.com/en/actions/learn-github-actions/sharing-workflows-with-your-organization
+
 name: Static analysis
+
 on:
   pull_request:
   push:
     branches:
       - master
+      - main
       - stable*
-    paths:
-      - 'lib/**'
+
+concurrency:
+  group: psalm-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  static-psalm-analysis:
-
+  static-analysis:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        ocp-version: [ 'v26.0.0', 'v27.0.0', 'dev-master']
-        php-version: [ '8.2' ]
+        php-versions: [ '8.1', '8.2' ]
+        server-versions: [ 'v26.x.x', 'v27.1.x', 'dev-stable28', 'dev-master' ]
+        include:
+          - php-versions: '8.0'
+            server-versions: 'v26.x.x'
+          - php-versions: '8.0'
+            server-versions: 'v27.1.x'
+          - php-versions: '8.3'
+            server-versions: 'dev-stable28'
+          - php-versions: '8.3'
+            server-versions: 'dev-master'
 
-    name: Nextcloud ${{ matrix.ocp-version }}
-
+    name: Nextcloud ${{ matrix.server-versions }}
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
 
       - name: Set up php
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@c5fc0d8281aba02c7fda07d3a70cc5371548067d # v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: ${{ matrix.php-versions }}
           coverage: none
+          ini-file: development
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install dependencies
-        run: composer require --dev nextcloud/ocp:${{ matrix.ocp-version }}
-
-      - name: Install dependencies
-        run: composer i
+      - name: Install deps + nextcloud OCP
+        run: |
+          composer remove --dev nextcloud/ocp --update-with-all-dependencies
+          rm composer.lock
+          composer require --dev nextcloud/ocp:${{ matrix.server-versions }} --update-with-all-dependencies
 
       - name: Run coding standards check
         run: composer run psalm

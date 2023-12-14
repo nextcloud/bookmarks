@@ -22,7 +22,7 @@ Requirements:
    - mbstring: *
  - when using MySQL, use at least v8.0
 ]]></description>
-	<version>13.1.1</version>
+	<version>13.1.2</version>
 	<licence>agpl</licence>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
@@ -41,7 +41,7 @@ Requirements:
 		<database>pgsql</database>
 		<lib>intl</lib>
 		<lib>mbstring</lib>
-		<nextcloud min-version="26" max-version="28" />
+		<nextcloud min-version="26" max-version="29" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Bookmarks\BackgroundJobs\CrawlJob</job>

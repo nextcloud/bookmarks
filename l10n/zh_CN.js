@@ -204,7 +204,7 @@ OC.L10N.register(
     "Root Folder" : "根目录",
     "Save" : "保存",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "网络访问默认关闭。进入书签应用的管理员设置，允许获取预览和书签图标。 ",
-    "Link to a bookmark folder" : "连接到书签文件夹",
+    "What" : "是什么",
     "Failed to count unavailable bookmarks" : "无法计算不可用的书签",
     "Failed to count archived bookmarks" : "无法计算归档的书签",
     "Failed to count duplicated bookmarks" : "计算重复的书签失败",

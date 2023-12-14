@@ -71,7 +71,7 @@ class Provider implements IProvider {
 		$results = array_map(function (Bookmark $bookmark) {
 			$favicon = $this->url->linkToRouteAbsolute('bookmarks.internal_bookmark.get_bookmark_favicon', ['id' => $bookmark->getId()]);
 			$resourceUrl = $this->url->linkToRouteAbsolute('bookmarks.web_view.indexbookmark', ['bookmark' => $bookmark->getId()]);
-			return new SearchResultEntry($favicon, $bookmark->getTitle(), $bookmark->getUrl(), $resourceUrl);
+			return new SearchResultEntry($favicon, $bookmark->getTitle(), $bookmark->getUrl() ?? '', $resourceUrl);
 		}, $bookmarks);
 
 		return SearchResult::paginated($this->getName(), $results, $params->getLimit() + $params->getOffset());

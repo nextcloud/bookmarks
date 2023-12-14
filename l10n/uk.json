@@ -15,9 +15,11 @@
     "Select one or more tags" : "Виберіть одну або кілька міток",
     "New" : "Створити",
     "New folder" : "Новий каталог",
+    "Change to grid view" : "Перехід до перегляду у вигляді сітки",
+    "Change to list view" : "Перейдіть до перегляду у вигляді списку",
     "Search" : "Пошук",
     "Sort by last modified" : "Впорядкувати за останніми змінами",
-    "Sort by title" : "Сортувати за назвою",
+    "Sort by title" : "Впорядкувати за назвою",
     "Enter a link" : "Зазначте посилання",
     "Add a bookmark" : "Додати закладку",
     "Shared by {user}" : "{user} надав(-ла) доступ",
@@ -51,6 +53,7 @@
     "This URL is already bookmarked! Overwrite?" : "Цей URL вже є в закладках! Перезаписати?",
     "Folder" : "Каталог",
     "Save" : "Зберегти",
+    "What" : "Що?",
     "Failed to load tags" : "Не вдалося завантажити мітки"
 },"pluralForm" :"nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);"
 }
