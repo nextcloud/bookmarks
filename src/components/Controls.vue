@@ -100,7 +100,7 @@
 					{{ !$store.state.public? t('bookmarks', 'The RSS feed requires authentication with your Nextcloud credentials') : '' }}
 				</NcActionButton>
 			</NcActions>
-			<NcTextField v-if="isPublic"
+			<NcTextField
 				:value.sync="search"
 				:label="t('bookmarks','Search')"
 				:placeholder="t('bookmarks','Search')"
