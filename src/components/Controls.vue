@@ -100,8 +100,7 @@
 					{{ !$store.state.public? t('bookmarks', 'The RSS feed requires authentication with your Nextcloud credentials') : '' }}
 				</NcActionButton>
 			</NcActions>
-			<NcTextField
-				:value.sync="search"
+			<NcTextField :value.sync="search"
 				:label="t('bookmarks','Search')"
 				:placeholder="t('bookmarks','Search')"
 				class="inline-search"
