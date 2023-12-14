@@ -5,10 +5,9 @@ on:
   push:
     branches:
       - master
-      - develop
+      - stable*
     paths:
-      - 'src/**'
-      - 'test/**'
+      - 'lib/**'
       - 'package.json'
       - 'package-lock.json'
       - 'webpack*'
