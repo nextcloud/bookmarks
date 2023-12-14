@@ -204,6 +204,7 @@ OC.L10N.register(
     "Root Folder" : "Корневая папка",
     "Save" : "Сохранить",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "По умолчанию доступ к сети отключен. Перейдите в настройки администратора для приложения закладок, чтобы разрешить получение превью и значков.",
+    "What" : "Что",
     "Failed to count unavailable bookmarks" : "Не удалось определить число недоступных закладок",
     "Failed to count archived bookmarks" : "Не удалось определить число архивных закладок",
     "Failed to count duplicated bookmarks" : "Не удалось подсчитать дублирующиеся закладки",
