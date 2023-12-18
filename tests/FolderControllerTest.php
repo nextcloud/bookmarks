@@ -234,9 +234,9 @@ class FolderControllerTest extends TestCase {
 	 * @throws \OCA\Bookmarks\Exception\UnsupportedOperation
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException
 	 */
-	public function setupSharedFolder() {
+	public function setupSharedFolder($canWrite = true, $canShare = false) {
 		$this->authorizer->setUserId($this->userId);
-		$this->share = $this->folders->createShare($this->folder1->getId(), $this->otherUser, \OCP\Share\IShare::TYPE_USER, true, false);
+		$this->share = $this->folders->createShare($this->folder1->getId(), $this->otherUser, \OCP\Share\IShare::TYPE_USER, $canWrite, $canShare);
 	}
 
 	/**
@@ -247,7 +247,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testRead(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getFolder($this->folder1->getId());
@@ -322,7 +322,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testCreate(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->addFolder('foo', $this->folder1->getId());
@@ -424,7 +424,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testDelete(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->deleteFolder($this->folder1->getId());
@@ -442,7 +442,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFullHierarchy(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		// Using -1 here because this is the controller
@@ -466,7 +466,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testSetFullHierarchy(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->setFolderChildrenOrder($this->folder1->getId(), [
@@ -494,7 +494,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFolderHierarchy(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		$output = $this->controller->getFolders(-1, -1);
@@ -517,7 +517,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testReadNoauthFail(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
@@ -533,7 +533,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testCreateNoauthFail(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
@@ -550,7 +550,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testEditNoauthFail(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
@@ -567,7 +567,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testDeleteNoauthFail(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
@@ -583,7 +583,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFullHierarchyNoauthFail(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
@@ -598,7 +598,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testSetFullHierarchyNoauthFail(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
@@ -616,7 +616,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFolderHierarchyNoauth(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId(null);
 		$this->authorizer->setToken(null);
@@ -632,7 +632,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testReadPublic(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
@@ -681,7 +681,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testEditPublicFail(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
@@ -702,7 +702,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testDeletePublicFail(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
@@ -721,7 +721,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFullHierarchyPublic(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
@@ -770,7 +770,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFolderHierarchyPublic(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupPublicFolder();
 		$this->authorizer->setUserId(null);
@@ -789,7 +789,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testReadShared(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
 		$this->authorizer->setUserId($this->otherUserId);
@@ -807,7 +807,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testReadSharedFail(): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->otherUserId);
 		$output = $this->otherController->getFolder($this->folder1->getId());
@@ -823,7 +823,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testCreateShared(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
 		$this->authorizer->setUserId($this->otherUserId);
@@ -875,7 +875,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testDeleteShared(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
 		$this->authorizer->setUserId($this->otherUserId);
@@ -891,10 +891,31 @@ class FolderControllerTest extends TestCase {
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @dataProvider shareCanWriteDataProvider
+	 */
+	public function testDeleteFromSharedFolder(bool $canWrite): void {
+		$this->setupBookmarks();
+		$this->setupSharedFolder($canWrite);
+		$this->authorizer->setUserId($this->otherUserId);
+		$output = $this->otherController->removeFromFolder($this->folder1->getId(), $this->bookmark1Id);
+		$data = $output->getData();
+		if ($canWrite) {
+			$this->assertEquals('success', $data['status'], var_export($data, true));
+		} else {
+			$this->assertEquals('error', $data['status'], var_export($data, true));
+		}
+	}
+
+	/**
+	 * @throws AlreadyExistsError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFullHierarchyShared(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
 		$this->authorizer->setUserId($this->otherUserId);
@@ -915,7 +936,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testSetFullHierarchyShared(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
 
@@ -947,7 +968,7 @@ class FolderControllerTest extends TestCase {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function testGetFolderHierarchyShared(): void {
-		
+
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
 		$this->authorizer->setUserId($this->otherUserId);
@@ -971,7 +992,7 @@ class FolderControllerTest extends TestCase {
 	 * @dataProvider shareDataProvider
 	 */
 	public function testCreateShare($participant, $type, $canWrite, $canShare): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserid($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
@@ -992,7 +1013,7 @@ class FolderControllerTest extends TestCase {
 	 * @depends      testCreateShare
 	 */
 	public function testGetShare($participant, $type, $canWrite, $canShare): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
@@ -1020,7 +1041,7 @@ class FolderControllerTest extends TestCase {
 	 * @depends      testCreateShare
 	 */
 	public function testEditShare($participant, $type, $canWrite, $canShare): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
@@ -1056,7 +1077,7 @@ class FolderControllerTest extends TestCase {
 	 * @depends      testCreateShare
 	 */
 	public function testDeleteShareOwner($participant, $type, $canWrite, $canShare): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
@@ -1083,7 +1104,7 @@ class FolderControllerTest extends TestCase {
 	 * @depends      testCreateShare
 	 */
 	public function testDeleteShareSharee($participant, $type, $canWrite, $canShare): void {
-		
+
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
 		$res = $this->controller->createShare($this->folder1->getId(), $participant, $type, $canWrite, $canShare);
