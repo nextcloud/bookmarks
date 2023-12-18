@@ -263,7 +263,7 @@ class Authorizer {
 			if ($share->getFolderId() === $itemId && $type === TreeMapper::TYPE_FOLDER) {
 				// If the sought folder is the root folder of the share, we give EDIT permissions + optionally RESHARE
 				// because the user can edit the shared folder
-				$perms = $this->getMaskFromFlags(true, $share->getCanShare()) | self::PERM_EDIT;
+				$perms = $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare()) | self::PERM_EDIT;
 			} elseif ($this->treeMapper->hasDescendant($share->getFolderId(), $type, $itemId)) {
 				$perms = $this->getMaskFromFlags($share->getCanWrite(), $share->getCanShare());
 			} else {
