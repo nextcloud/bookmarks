@@ -7,6 +7,7 @@ OC.L10N.register(
     "_%n folder_::_%n folders_" : ["%n carpeta","%n folders"],
     "Submit" : "Unviar",
     "Cancel" : "Encaboxar",
+    "Shared with you" : "Compartióse contigo",
     "Tags" : "Etiquetes",
     "Notes" : "Notes",
     "Sharing" : "Comparticiñon",
