@@ -10,6 +10,7 @@ OC.L10N.register(
     "New" : "Yeni",
     "New folder" : "Yeni qovluq",
     "Search" : "Axtarış",
+    "Welcome to Bookmarks" : "Əlfəcinlərə xoş gəlmisiniz",
     "Rename folder" : "Qovluğun adını dəyiş",
     "Delete folder" : "Qovluğu sil",
     "Cancel" : "Dayandır",
