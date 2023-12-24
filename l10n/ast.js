@@ -8,6 +8,7 @@ OC.L10N.register(
     "Submit" : "Unviar",
     "Cancel" : "Encaboxar",
     "Shared with you" : "Compartióse contigo",
+    "Export" : "Esportar",
     "Tags" : "Etiquetes",
     "Notes" : "Notes",
     "Sharing" : "Comparticiñon",
