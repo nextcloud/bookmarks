@@ -74,6 +74,10 @@ class Authorizer {
 		if (!$this->cors && $this->userSession->isLoggedIn()) {
 			$this->setUserId($this->userSession->getUser()->getUID());
 		} elseif (isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+			if ($this->userSession->getUser() !== null) {
+				$this->setUserId($this->userSession->getUser()->getUID());
+				return;
+			}
 			if (false === $this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
 				return;
 			}
@@ -81,6 +85,10 @@ class Authorizer {
 		} elseif ($auth !== null && $auth !== '') {
 			[$type, $credentials] = explode(' ', $auth);
 			if (strtolower($type) === 'basic') {
+				if ($this->userSession->getUser() !== null) {
+					$this->setUserId($this->userSession->getUser()->getUID());
+					return;
+				}
 				[$username, $password] = explode(':', base64_decode($credentials));
 				if (false === $this->userSession->login($username, $password)) {
 					return;
