@@ -118,6 +118,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 		// repair
 		$output = $this->getMockBuilder(IOutput::class)->getMock();
 		$this->repairStep->run($output);
+		$this->treeCache->invalidateAll();
 
 		// check for 10 bookmarks
 		self::assertCount(10, $this->treeMapper->getChildren($rootFolder->getId()));
