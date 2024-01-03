@@ -302,4 +302,10 @@ class TreeCacheManager implements IEventListener {
 	public function setInvalidationEnabled(bool $enabled): void {
 		$this->enabled = $enabled;
 	}
+
+	public function invalidateAll() {
+		foreach($this->caches as $cache) {
+			$cache->clear();
+		}
+	}
 }

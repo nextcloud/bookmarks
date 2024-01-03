@@ -74,6 +74,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 		$this->repairStep = \OC::$server->get(OrphanedTreeItemsRepairStep::class);
 		$this->db = \OC::$server->get(\OCP\IDBConnection::class);
 		$this->treeMapper = \OC::$server->get(Db\TreeMapper::class);
+		$this->treeCache = \OC::$server->get(Service\TreeCacheManager::class);
 		$this->bookmarkMapper = \OC::$server->get(Db\BookmarkMapper::class);
 		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
 		$this->htmlImporter = \OC::$server->get(Service\HtmlImporter::class);
@@ -98,6 +99,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 	 * @throws \OCP\DB\Exception
 	 */
 	public function testRepairTreeGone(string $file): void {
+		$this->treeCache->invalidateAll();
 		$this->cleanUp();
 		$result = $this->htmlImporter->importFile($this->userId, $file);
 		/** @var Db\Folder $rootFolder */
@@ -108,6 +110,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 
 		// Remove tree structure
 		$this->db->executeQuery('DELETE FROM oc_bookmarks_tree');
+		$this->treeCache->invalidateAll();
 
 		// check for no children
 		self::assertCount(0, $this->treeMapper->getChildren($rootFolder->getId()));
@@ -132,6 +135,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 	 * @throws \OCP\DB\Exception
 	 */
 	public function testNoRepair(string $file): void {
+		$this->treeCache->invalidateAll();
 		$this->cleanUp();
 		$result = $this->htmlImporter->importFile($this->userId, $file);
 		/** @var Db\Folder $rootFolder */
@@ -163,6 +167,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 	 * @throws \OCP\DB\Exception
 	 */
 	public function testRepairRootFolderGone(string $file): void {
+		$this->treeCache->invalidateAll();
 		$this->cleanUp();
 		$result = $this->htmlImporter->importFile($this->userId, $file);
 		/** @var Db\Folder $rootFolder */
@@ -200,6 +205,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 	 * @throws \OCP\DB\Exception
 	 */
 	public function testRepairRootFolderGone2(string $file): void {
+		$this->treeCache->invalidateAll();
 		$this->cleanUp();
 		$result = $this->htmlImporter->importFile($this->userId, $file);
 		/** @var Db\Folder $rootFolder */
@@ -212,6 +218,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 		$this->folderMapper->delete($rootFolder);
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('bookmarks_root_folders', 'r')->where($qb->expr()->eq('r.folder_id', $qb->createNamedParameter($rootFolder->getId())));
+		$this->treeCache->invalidateAll();
 
 		// repair
 		$output = $this->getMockBuilder(IOutput::class)->getMock();
@@ -240,6 +247,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 	 * @throws \OCA\Bookmarks\Exception\UrlParseError
 	 */
 	public function testRepairFoldersGone(string $file): void {
+		$this->treeCache->invalidateAll();
 		$this->cleanUp();
 		$result = $this->htmlImporter->importFile($this->userId, $file);
 		/** @var Db\Folder $rootFolder */
@@ -252,6 +260,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 		$this->folderMapper->delete($rootFolder);
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('folders', 'r')->where($qb->expr()->neq('r.folder_id', $qb->createNamedParameter($rootFolder->getId())));
+		$this->treeCache->invalidateAll();
 
 		// repair
 		$output = $this->getMockBuilder(IOutput::class)->getMock();
@@ -279,6 +288,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 	 * @throws \OCP\DB\Exception
 	 */
 	public function testRepairBookmarksGone(string $file): void {
+		$this->treeCache->invalidateAll();
 		$this->cleanUp();
 		$result = $this->htmlImporter->importFile($this->userId, $file);
 		/** @var Db\Folder $rootFolder */
@@ -290,6 +300,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 		// delete root folder and root_folders entry
 		$this->bookmarkMapper->delete($this->bookmarkMapper->find($this->treeMapper->getChildren($rootFolder->getId(), -1)[0]['children'][0]['id']));
 		$this->bookmarkMapper->delete($this->bookmarkMapper->find($this->treeMapper->getChildren($rootFolder->getId(), -1)[5]['id']));
+		$this->treeCache->invalidateAll();
 
 		// repair
 		$output = $this->getMockBuilder(IOutput::class)->getMock();
@@ -317,6 +328,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 	 * @throws \OCP\DB\Exception
 	 */
 	public function testRepairFolderGone(string $file): void {
+		$this->treeCache->invalidateAll();
 		$this->cleanUp();
 		$result = $this->htmlImporter->importFile($this->userId, $file);
 		/** @var Db\Folder $rootFolder */
@@ -327,6 +339,7 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 
 		// delete root folder and root_folders entry
 		$this->folderMapper->delete($this->folderMapper->find($this->treeMapper->getChildren($rootFolder->getId())[0]['id']));
+		$this->treeCache->invalidateAll();
 
 		// repair
 		$output = $this->getMockBuilder(IOutput::class)->getMock();
