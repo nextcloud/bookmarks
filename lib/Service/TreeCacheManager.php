@@ -30,6 +30,7 @@ class TreeCacheManager implements IEventListener {
 	public const CATEGORY_SUBFOLDERS = 'subFolders';
 	public const CATEGORY_FOLDERCOUNT = 'folderCount';
 	public const CATEGORY_CHILDREN = 'children';
+	public const CATEGORY_CHILDREN_LAYER = 'children_layer';
 	public const CATEGORY_CHILDORDER = 'childOrder';
 
 	/**
@@ -87,6 +88,7 @@ class TreeCacheManager implements IEventListener {
 		$this->caches[self::CATEGORY_SUBFOLDERS] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_SUBFOLDERS);
 		$this->caches[self::CATEGORY_FOLDERCOUNT] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_FOLDERCOUNT);
 		$this->caches[self::CATEGORY_CHILDREN] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDREN);
+		$this->caches[self::CATEGORY_CHILDREN_LAYER] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDREN_LAYER);
 		$this->caches[self::CATEGORY_CHILDORDER] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDORDER);
 		$this->appContainer = $appContainer;
 		$this->tagMapper = $tagMapper;
@@ -133,9 +135,12 @@ class TreeCacheManager implements IEventListener {
 	 * @param string $type
 	 * @param int $id
 	 */
-	public function remove(string $type, int $id): void {
+	public function remove(string $type, int $id, array $previousFolders): void {
 		$key = $this->getCacheKey($type, $id);
-		foreach ($this->caches as $cache) {
+		foreach ($this->caches as $type => $cache) {
+			if (count($previousFolders) !== 0 && ($type === self::CATEGORY_CHILDORDER || $type === self::CATEGORY_CHILDREN_LAYER)) {
+				continue;
+			}
 			$cache->remove($key);
 		}
 	}
@@ -149,7 +154,7 @@ class TreeCacheManager implements IEventListener {
 			// In case we have run into a folder loop
 			return;
 		}
-		$this->remove(TreeMapper::TYPE_FOLDER, $folderId);
+		$this->remove(TreeMapper::TYPE_FOLDER, $folderId, $previousFolders);
 		$previousFolders[] = $folderId;
 
 		// Invalidate parent

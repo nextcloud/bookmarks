@@ -805,24 +805,31 @@ class TreeMapper extends QBMapper {
 		if ($children !== null) {
 			return $children;
 		}
-		$qb = $this->getChildrenQuery[self::TYPE_BOOKMARK];
-		$this->selectFromType(self::TYPE_BOOKMARK, ['t.index', 't.type'], $qb);
-		$qb->setParameter('parent_folder', $folderId);
-		$childBookmarks = $qb->execute()->fetchAll();
 
-		$qb = $this->getChildrenQuery[self::TYPE_FOLDER];
-		$this->selectFromType(self::TYPE_FOLDER, ['t.index', 't.type'], $qb);
-		$qb->setParameter('parent_folder', $folderId);
-		$childFolders = $qb->execute()->fetchAll();
+		$children = $this->treeCache->get(TreeCacheManager::CATEGORY_CHILDREN_LAYER, TreeMapper::TYPE_FOLDER, $folderId);
 
-		$qb = $this->getChildrenQuery[self::TYPE_SHARE];
-		$this->selectFromType(self::TYPE_SHARE, ['t.index', 't.type'], $qb);
-		$qb->setParameter('parent_folder', $folderId);
-		$childShares = $qb->execute()->fetchAll();
+		if ($children === null) {
+			$qb = $this->getChildrenQuery[self::TYPE_BOOKMARK];
+			$this->selectFromType(self::TYPE_BOOKMARK, ['t.index', 't.type'], $qb);
+			$qb->setParameter('parent_folder', $folderId);
+			$childBookmarks = $qb->execute()->fetchAll();
 
-		$children = array_merge($childBookmarks, $childFolders, $childShares);
-		$indices = array_column($children, 'index');
-		array_multisort($indices, $children);
+			$qb = $this->getChildrenQuery[self::TYPE_FOLDER];
+			$this->selectFromType(self::TYPE_FOLDER, ['t.index', 't.type'], $qb);
+			$qb->setParameter('parent_folder', $folderId);
+			$childFolders = $qb->execute()->fetchAll();
+
+			$qb = $this->getChildrenQuery[self::TYPE_SHARE];
+			$this->selectFromType(self::TYPE_SHARE, ['t.index', 't.type'], $qb);
+			$qb->setParameter('parent_folder', $folderId);
+			$childShares = $qb->execute()->fetchAll();
+
+			$children = array_merge($childBookmarks, $childFolders, $childShares);
+			$indices = array_column($children, 'index');
+			array_multisort($indices, $children);
+
+			$this->treeCache->set(TreeCacheManager::CATEGORY_CHILDREN_LAYER, TreeMapper::TYPE_FOLDER, $folderId, $children);
+		}
 
 		$children = array_map(function ($child) use ($layers) {
 			$item = ['type' => $child['type'], 'id' => (int)$child['id'], 'title' => $child['title'], 'userId' => $child['user_id']];
