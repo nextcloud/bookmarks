@@ -28,13 +28,9 @@ class BookmarkWithTagsAndParent extends Bookmark {
 					$array[$field] = $this->{$field} === '' ? [] : array_values(array_unique(explode(',', $this->{$field})));
 					continue;
 				}
-				if ($this->{$field} === null) {
-					$array[$field] = [];
-					continue;
-				}
 			}
 			if ($field === 'folders') {
-				if ($this->{$field} === '' || $this->{$field} === null) {
+				if ($this->{$field} === '') {
 					$array[$field] = [];
 				} else {
 					$array[$field] = array_values(array_unique(array_map(static function ($id) {
