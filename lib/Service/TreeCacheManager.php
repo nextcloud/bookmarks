@@ -135,7 +135,7 @@ class TreeCacheManager implements IEventListener {
 	 * @param string $type
 	 * @param int $id
 	 */
-	public function remove(string $type, int $id, array $previousFolders): void {
+	public function remove(string $type, int $id, array $previousFolders = []): void {
 		$key = $this->getCacheKey($type, $id);
 		foreach ($this->caches as $type => $cache) {
 			if (count($previousFolders) !== 0 && ($type === self::CATEGORY_CHILDORDER || $type === self::CATEGORY_CHILDREN_LAYER)) {
