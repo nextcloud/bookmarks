@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detalles",
     "Delete" : "Desaniciar",
+    "Select all" : "Seleicionar too",
     "New folder" : "Carpeta nueva",
     "Search" : "Buscar",
     "_%n folder_::_%n folders_" : ["%n carpeta","%n folders"],
