@@ -139,7 +139,7 @@ OC.L10N.register(
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "Inserisci il percorso di una cartella nei tuoi File dove conservare i file con segnalibro.",
     "Backups" : "Backup",
     "Enable bookmarks backups" : "Abilita i backup dei segnalibri",
-    "Enter the path of a folder in your Files where backups will be stored." : "Inserisci il percorso di una cartella File in cui saranno archiviati i backup.",
+    "Enter the path of a folder in your Files where backups will be stored." : "Inserisci il percorso di una cartella di File in cui saranno archiviati i backup.",
     "Client apps" : "Applicazioni client",
     "Also check out the collection of client apps that integrate with this app: " : "Controlla inoltre l'elenco delle applicazioni client che si integrano con questa applicazione:",
     "Install web app on device" : "Installa l'applicazione web sul dispositivo",

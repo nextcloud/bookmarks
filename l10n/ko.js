@@ -103,6 +103,7 @@ OC.L10N.register(
     "Folder" : "폴더",
     "Root Folder" : "최상위 폴더",
     "Save" : "저장",
+    "What" : "무엇을",
     "Bookmarks feed" : "북마크 피드"
 },
 "nplurals=1; plural=0;");
