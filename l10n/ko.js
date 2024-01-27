@@ -104,6 +104,7 @@ OC.L10N.register(
     "Root Folder" : "최상위 폴더",
     "Save" : "저장",
     "What" : "무엇을",
+    "Failed to load tags" : "태그 불러오기 실패",
     "Bookmarks feed" : "북마크 피드"
 },
 "nplurals=1; plural=0;");
