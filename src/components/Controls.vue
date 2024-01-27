@@ -162,6 +162,7 @@ export default {
 	props: {},
 	data() {
 		return {
+			searchTimeout: null,
 			url: '',
 			search: this.$route.params.search || '',
 			sortingOptions: {
@@ -284,7 +285,8 @@ export default {
 		},
 
 		onSearch(query) {
-			this.$router.push({ name: this.routes.SEARCH, params: { search: query } })
+			if (this.searchTimeout) clearTimeout(this.searchTimeout)
+			this.searchTimeout = setTimeout(() => this.$router.push({ name: this.routes.SEARCH, params: { search: query } }), 350)
 		},
 
 		copyRssUrl() {
