@@ -38,8 +38,8 @@
 					:options="participantSearchResults"
 					:loading="isSearching"
 					:placeholder="t('bookmarks', 'Select a user or group')"
-					@select="onAddShare"
-					@search-change="onParticipantSearch" />
+					@option:selected="onAddShare"
+					@search="onParticipantSearch" />
 			</div>
 			<div class="share">
 				<LinkIcon :class="{'share__avatar': true, active: publicLink }" />
