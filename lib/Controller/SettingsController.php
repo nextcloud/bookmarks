@@ -27,6 +27,11 @@ class SettingsController extends ApiController {
 		parent::__construct($appName, $request);
 	}
 
+	/**
+	 * @param string $key
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 */
 	public function getSetting(string $key): JSONResponse {
 		try {
 			$value = $this->userSettingsService->get($key);
@@ -37,6 +42,12 @@ class SettingsController extends ApiController {
 		return new JSONResponse([$key => $value], Http::STATUS_OK);
 	}
 
+	/**
+	 * @param string $key
+	 * @param string $value
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 */
 	public function setSetting(string $key, string $value): JSONResponse {
 		try {
 			$this->userSettingsService->set($key, $value);
