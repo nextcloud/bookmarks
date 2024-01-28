@@ -111,13 +111,13 @@ export default {
 			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e${queryStringExtension},'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=650px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
 		archivePath() {
-			return this.$store.state.settings.archivePath
+			return this.$store.state.settings['archive.filePath']
 		},
 		backupPath() {
-			return this.$store.state.settings.backupPath
+			return this.$store.state.settings['backup.filePath']
 		},
 		backupEnabled() {
-			return Boolean(this.$store.state.settings.backupEnabled)
+			return Boolean(this.$store.state.settings['backup.enabled'])
 		},
 	},
 	mounted() {
@@ -150,7 +150,7 @@ export default {
 		async onChangeArchivePath(e) {
 			const path = await this.archivePathPicker.pick()
 			await this.$store.dispatch(actions.SET_SETTING, {
-				key: 'archivePath',
+				key: 'archive.filePath',
 				value: path,
 			})
 		},
@@ -160,13 +160,13 @@ export default {
 			}
 			const path = await this.backupPathPicker.pick()
 			await this.$store.dispatch(actions.SET_SETTING, {
-				key: 'backupPath',
+				key: 'backup.filePath',
 				value: path,
 			})
 		},
 		async onChangeBackupEnabled(e) {
 			await this.$store.dispatch(actions.SET_SETTING, {
-				key: 'backupEnabled',
+				key: 'backup.enabled',
 				value: !this.backupEnabled,
 			})
 		},

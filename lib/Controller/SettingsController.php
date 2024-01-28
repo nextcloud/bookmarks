@@ -7,248 +7,46 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use Exception;
+use OCA\Bookmarks\Service\UserSettingsService;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IConfig;
-use OCP\IL10N;
 use OCP\IRequest;
 
 class SettingsController extends ApiController {
-	/** @var IConfig */
-	private $config;
-
-	/** @var string */
-	private $userId;
-	/**
-	 * @var IL10N
-	 */
-	private $l;
 
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
-	 * @param string $userId
-	 * @param IConfig $config
-	 * @param IL10N $l
+	 * @param UserSettingsService $userSettingsService
 	 */
 	public function __construct(
-		$appName, $request, $userId, IConfig $config, IL10N $l
+		$appName, $request,
+		private UserSettingsService $userSettingsService,
 	) {
 		parent::__construct($appName, $request);
-		$this->config = $config;
-		$this->userId = $userId;
-		$this->l = $l;
 	}
 
-	private function getSetting(string $key, string $name, $default): JSONResponse {
+	public function getSetting(string $key): JSONResponse {
 		try {
-			$userValue = $this->config->getUserValue(
-				$this->userId,
-				$this->appName,
-				$key,
-				$default
-			);
-		} catch (Exception $e) {
-			return new JSONResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
+			$value = $this->userSettingsService->get($key);
+		} catch (\UnexpectedValueException) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
-		return new JSONResponse([$name => $userValue], Http::STATUS_OK);
+		return new JSONResponse([$key => $value], Http::STATUS_OK);
 	}
 
-	private function setSetting(string $key, string $value): JSONResponse {
+	public function setSetting(string $key, string $value): JSONResponse {
 		try {
-			$this->config->setUserValue(
-				$this->userId,
-				$this->appName,
-				$key,
-				$value
-			);
-		} catch (Exception $e) {
-			return new JSONResponse(['status' => 'error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			$this->userSettingsService->set($key, $value);
+		} catch (\ValueError) {
+			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
+		} catch (\UnexpectedValueException) {
+			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
 		}
 
 		return new JSONResponse(['status' => 'success'], Http::STATUS_OK);
 	}
 
-	/**
-	 * get sorting option config value
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function getSorting(): JSONResponse {
-		return $this->getSetting('sorting', 'sorting', 'lastmodified');
-	}
-
-	/**
-	 * set sorting option config value
-	 *
-	 * @param string $sorting
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function setSorting($sorting = ""): JSONResponse {
-		$legalArguments = ['title', 'added', 'clickcount', 'lastmodified', 'index', 'url'];
-		if (!in_array($sorting, $legalArguments)) {
-			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
-		}
-		return $this->setSetting(
-			'sorting',
-			$sorting
-		);
-	}
-
-	/**
-	 * get view mode option config value
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function getViewMode(): JSONResponse {
-		return $this->getSetting('viewMode', 'viewMode', 'grid');
-	}
-
-	/**
-	 * set sorting option config value
-	 *
-	 * @param string $viewMode
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function setViewMode($viewMode = ""): JSONResponse {
-		$legalArguments = ['grid', 'list'];
-		if (!in_array($viewMode, $legalArguments)) {
-			return new JSONResponse(['status' => 'error'], Http::STATUS_BAD_REQUEST);
-		}
-		return $this->setSetting(
-			'viewMode',
-			$viewMode
-		);
-	}
-
-	/**
-	 * get per-user bookmarks limit
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function getLimit(): JSONResponse {
-		$limit = (int)$this->config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
-		return new JSONResponse(['limit' => $limit], Http::STATUS_OK);
-	}
-
-	/**
-	 * get user-defined archive path
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function getArchivePath(): JSONResponse {
-		return $this->getSetting(
-			'archive.filePath',
-			'archivePath',
-			$this->l->t('Bookmarks')
-		);
-	}
-
-	/**
-	 * set user-defined archive path
-	 *
-	 * @param string $archivePath
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function setArchivePath(string $archivePath): JSONResponse {
-		return $this->setSetting('archive.filePath', $archivePath);
-	}
-
-	/**
-	 * get user-defined archive path
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function getBackupEnabled(): JSONResponse {
-		return $this->getSetting(
-			'backup.enabled',
-			'backupEnabled',
-			(string) false
-		);
-	}
-
-	/**
-	 * set user-defined backup path
-	 *
-	 * @param string $backupEnabled
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function setBackupEnabled(bool $backupEnabled): JSONResponse {
-		return $this->setSetting('backup.enabled', (string) $backupEnabled);
-	}
-
-	/**
-	 * get user-defined archive path
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function getBackupPath(): JSONResponse {
-		return $this->getSetting(
-			'backup.filePath',
-			'backupPath',
-			$this->l->t('Bookmarks Backups')
-		);
-	}
-
-	/**
-	 * set user-defined backup path
-	 *
-	 * @param string $backupPath
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function setBackupPath(string $backupPath): JSONResponse {
-		return $this->setSetting('backup.filePath', $backupPath);
-	}
-
-	/**
-	 * get hasSeenWhatsnew
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function getWhatsnew(): JSONResponse {
-		return $this->getSetting(
-			'hasSeenWhatsnew',
-			'hasSeenWhatsnew',
-			'0'
-		);
-	}
-
-	/**
-	 * set hasSeenWhatsnew
-	 *
-	 * @param string $hasSeenWhatsnew
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function setWhatsnew(string $hasSeenWhatsnew): JSONResponse {
-		return $this->setSetting('hasSeenWhatsnew', $hasSeenWhatsnew);
-	}
 }

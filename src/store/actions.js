@@ -1092,13 +1092,13 @@ export default {
 		}
 		return axios
 			.post(url(state, `/settings/${key}`), {
-				[key]: value,
+				value: String(value),
 			})
 			.catch(err => {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to change setting')
+					AppGlobal.methods.t('bookmarks', 'Failed to store setting')
 				)
 				throw err
 			})
@@ -1150,9 +1150,6 @@ export default {
 			}
 			await commit(mutations.SET_SETTING, { key, value })
 		}
-		['archivePath', 'backupPath', 'backupEnabled', 'limit'].forEach(key =>
-			dispatch(actions.LOAD_SETTING, key)
-		)
 	},
 
 	[actions.LOAD_SHARES]({ commit, dispatch, state }) {

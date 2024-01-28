@@ -13,6 +13,7 @@ use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
+use OCA\Bookmarks\Service\UserSettingsService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -31,41 +32,6 @@ class WebViewController extends Controller {
 	/** @var string */
 	private $userId;
 
-	/**
-	 * @var IL10N
-	 */
-	private $l;
-
-	/**
-	 * @var PublicFolderMapper
-	 */
-	private $publicFolderMapper;
-
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
-	/**
-	 * @var FolderMapper
-	 */
-	private $folderMapper;
-	/**
-	 * @var IURLGenerator
-	 */
-	private $urlGenerator;
-	/**
-	 * @var \OCP\IInitialStateService
-	 */
-	private $initialState;
-	/**
-	 * @var InternalFoldersController
-	 */
-	private $folderController;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-
 
 	/**
 	 * WebViewController constructor.
@@ -82,17 +48,20 @@ class WebViewController extends Controller {
 	 * @param InternalFoldersController $folderController
 	 * @param IConfig $config
 	 */
-	public function __construct($appName, $request, $userId, IL10N $l, PublicFolderMapper $publicFolderMapper, IUserManager $userManager, FolderMapper $folderMapper, IURLGenerator $urlGenerator, \OCP\IInitialStateService $initialState, \OCA\Bookmarks\Controller\InternalFoldersController $folderController, IConfig $config) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		string $userId,
+		private IL10N $l,
+		private PublicFolderMapper $publicFolderMapper,
+		private IUserManager $userManager,
+		private FolderMapper $folderMapper,
+		private IURLGenerator $urlGenerator,
+		private \OCP\IInitialStateService $initialState,
+		private \OCA\Bookmarks\Controller\InternalFoldersController $folderController,
+		private UserSettingsService $userSettingsService) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
-		$this->l = $l;
-		$this->publicFolderMapper = $publicFolderMapper;
-		$this->userManager = $userManager;
-		$this->folderMapper = $folderMapper;
-		$this->urlGenerator = $urlGenerator;
-		$this->initialState = $initialState;
-		$this->folderController = $folderController;
-		$this->config = $config;
 	}
 
 	/**
@@ -115,10 +84,7 @@ class WebViewController extends Controller {
 		// Provide complete folder hierarchy
 		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFolders()->getData()['data']);
 
-		$settings = [];
-		foreach (['sorting', 'viewMode', 'hasSeenWhatsnew'] as $setting) {
-			$settings[$setting] = $this->config->getUserValue($this->userId, $this->appName, $setting);
-		}
+		$settings = $this->userSettingsService->toArray();
 		$this->initialState->provideInitialState($this->appName, 'settings', $settings);
 
 		return $res;
