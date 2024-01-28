@@ -9,59 +9,59 @@
 		<template #list>
 			<NcAppNavigationItem key="menu-home"
 				:to="{ name: routes.HOME }"
-				:title="t('bookmarks', 'All bookmarks')"
+				:name="t('bookmarks', 'All bookmarks')"
 				:exact="true">
 				<HomeIcon slot="icon" />
-				<NcAppNavigationCounter slot="counter">
+				<NcCounterBubble slot="counter">
 					{{ allBookmarksCount | largeNumbers }}
-				</NcAppNavigationCounter>
+				</NcCounterBubble>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem key="menu-recent"
 				:to="{ name: routes.RECENT }"
-				:title="t('bookmarks', 'Recent')">
+				:name="t('bookmarks', 'Recent')">
 				<HistoryIcon slot="icon" />
 			</NcAppNavigationItem>
 			<NcAppNavigationItem key="menu-shared-folders"
 				:to="{ name: routes.SHARED_FOLDERS }"
-				:title="t('bookmarks', 'Shared with you')">
+				:name="t('bookmarks', 'Shared with you')">
 				<ShareVariantIcon slot="icon" />
-				<NcAppNavigationCounter v-show="Boolean(sharedFoldersCount)" slot="counter">
+				<NcCounterBubble v-show="Boolean(sharedFoldersCount)" slot="counter">
 					{{ sharedFoldersCount | largeNumbers }}
-				</NcAppNavigationCounter>
+				</NcCounterBubble>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem key="menu-archived"
 				:to="{ name: routes.ARCHIVED }"
-				:title="t('bookmarks', 'Files')">
+				:name="t('bookmarks', 'Files')">
 				<FileDocumentMultipleIcon slot="icon" />
-				<NcAppNavigationCounter v-show="Boolean(archivedBookmarksCount)" slot="counter">
+				<NcCounterBubble v-show="Boolean(archivedBookmarksCount)" slot="counter">
 					{{ archivedBookmarksCount }}
-				</NcAppNavigationCounter>
+				</NcCounterBubble>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem key="menu-duplicated"
 				:to="{ name: routes.DUPLICATED }"
-				:title="t('bookmarks', 'Duplicates')">
+				:name="t('bookmarks', 'Duplicates')">
 				<VectorLinkIcon slot="icon" />
-				<NcAppNavigationCounter v-show="Boolean(duplicatedBookmarksCount)" slot="counter">
+				<NcCounterBubble v-show="Boolean(duplicatedBookmarksCount)" slot="counter">
 					{{ duplicatedBookmarksCount | largeNumbers }}
-				</NcAppNavigationCounter>
+				</NcCounterBubble>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem key="menu-unavailable"
 				:to="{ name: routes.UNAVAILABLE }"
-				:title="t('bookmarks', 'Broken links')">
+				:name="t('bookmarks', 'Broken links')">
 				<LinkVariantOffIcon slot="icon" />
-				<NcAppNavigationCounter v-show="Boolean(unavailableBookmarksCount)" slot="counter">
+				<NcCounterBubble v-show="Boolean(unavailableBookmarksCount)" slot="counter">
 					{{ unavailableBookmarksCount | largeNumbers }}
-				</NcAppNavigationCounter>
+				</NcCounterBubble>
 			</NcAppNavigationItem>
 			<NcAppNavigationSpacer />
 			<NcAppNavigationNewItem key="menu-new-tag"
-				:title="t('bookmarks', 'New tag')"
+				:name="t('bookmarks', 'New tag')"
 				@new-item="onNewTag">
 				<TagPlusIcon slot="icon" />
 			</NcAppNavigationNewItem>
 			<template v-if="Boolean(tags.length)">
 				<NcAppNavigationItem key="menu-tags"
-					:title="t('bookmarks', 'Search tags')"
+					:name="t('bookmarks', 'Search tags')"
 					@click="onSearchTags">
 					<TagMultipleIcon slot="icon" />
 				</NcAppNavigationItem>
@@ -72,12 +72,12 @@
 					:force-menu="true"
 					:edit-label="t('bookmarks', 'Rename')"
 					:editable="!isPublic"
-					:title="tag.name"
-					@update:title="onRenameTag(tag.name, $event)">
+					:name="tag.name"
+					@update:name="onRenameTag(tag.name, $event)">
 					<TagIcon slot="icon" />
-					<NcAppNavigationCounter slot="counter">
+					<NcCounterBubble slot="counter">
 						{{ tag.count | largeNumbers }}
-					</NcAppNavigationCounter>
+					</NcCounterBubble>
 					<template v-if="!isPublic" slot="actions">
 						<NcActionButton :close-after-click="true" @click="onDeleteTag(tag.name)">
 							<template #icon>
@@ -89,13 +89,13 @@
 				</NcAppNavigationItem>
 				<NcAppNavigationItem key="menu-untagged"
 					:to="{ name: routes.UNTAGGED }"
-					:title="t('bookmarks', 'Untagged')">
+					:name="t('bookmarks', 'Untagged')">
 					<TagOffIcon slot="icon" />
 				</NcAppNavigationItem>
 			</template>
 			<template v-if="Number(bookmarksLimit) > 0">
 				<NcAppNavigationSpacer />
-				<NcAppNavigationItem :pinned="true" :title="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
+				<NcAppNavigationItem :pinned="true" :name="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
 					<template #icon>
 						<GaugeIcon />
 					</template>
@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { NcActionButton, NcAppNavigation, NcAppNavigationItem, NcAppNavigationNewItem, NcAppNavigationCounter, NcAppNavigationSettings, NcAppNavigationSpacer } from '@nextcloud/vue'
+import { NcActionButton, NcAppNavigation, NcAppNavigationItem, NcAppNavigationNewItem, NcCounterBubble, NcAppNavigationSettings, NcAppNavigationSpacer } from '@nextcloud/vue'
 import HomeIcon from 'vue-material-design-icons/Home.vue'
 import HistoryIcon from 'vue-material-design-icons/History.vue'
 import TagOffIcon from 'vue-material-design-icons/TagOff.vue'
@@ -135,7 +135,7 @@ export default {
 		NcAppNavigation,
 		NcAppNavigationItem,
 		NcAppNavigationNewItem,
-		NcAppNavigationCounter,
+		NcCounterBubble,
 		NcAppNavigationSettings,
 		NcAppNavigationSpacer,
 		NcActionButton,

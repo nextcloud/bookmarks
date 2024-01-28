@@ -8,7 +8,7 @@
 	<div v-if="isActive && scrapingEnabled && archiveEnabled && hasMinLength && !archivedFile && isWebLink" class="bookmark-content">
 		<div v-if="bookmark.textContent" class="content" v-html="content" />
 		<div v-else>
-			<NcEmptyContent :title="t('bookmarks', 'Content pending')"
+			<NcEmptyContent :name="t('bookmarks', 'Content pending')"
 				:description="t('bookmarks', 'This content is being downloaded for offline use. Please check back later.')">
 				<template #icon>
 					<DownloadIcon />

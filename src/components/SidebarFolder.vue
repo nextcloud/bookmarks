@@ -7,7 +7,7 @@
 <template>
 	<NcAppSidebar v-if="isActive"
 		class="sidebar"
-		:title="folder.title"
+		:name="folder.title"
 		:active.sync="activeTab"
 		@close="onClose">
 		<NcAppSidebarTab id="folder-details"
@@ -30,7 +30,7 @@
 			</template>
 			<div class="participant-select">
 				<AccountIcon :class="{'share__avatar': true }" />
-				<NcMultiselect v-model="participant"
+				<NcSelect v-model="participant"
 					label="displayName"
 					track-by="user"
 					class="participant-select__selection"
@@ -126,7 +126,7 @@
 	</NcAppSidebar>
 </template>
 <script>
-import { NcAppSidebar, NcUserBubble, NcActionSeparator, NcActionCheckbox, NcActionButton, NcActions, NcMultiselect, NcAvatar, NcAppSidebarTab } from '@nextcloud/vue'
+import { NcAppSidebar, NcUserBubble, NcActionSeparator, NcActionCheckbox, NcActionButton, NcActions, NcSelect, NcAvatar, NcAppSidebarTab } from '@nextcloud/vue'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
@@ -145,7 +145,7 @@ import AccountIcon from 'vue-material-design-icons/Account.vue'
 
 export default {
 	name: 'SidebarFolder',
-	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcMultiselect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon },
+	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcSelect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon },
 	data() {
 		return {
 			participantSearchResults: [],

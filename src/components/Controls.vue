@@ -28,7 +28,7 @@
 			</template>
 			<template v-if="$route.name === routes.TAGS">
 				<TagIcon />
-				<NcMultiselect class="controls__tags"
+				<NcSelect class="controls__tags"
 					:value="tags"
 					:auto-limit="false"
 					:limit="7"
@@ -39,7 +39,7 @@
 			</template>
 			<NcActions v-if="!isPublic"
 				v-tooltip="t('bookmarks', 'New')"
-				:title="t('bookmarks', 'New')">
+				:name="t('bookmarks', 'New')">
 				<template #icon>
 					<PlusIcon />
 				</template>
@@ -111,7 +111,7 @@
 	</div>
 </template>
 <script>
-import { NcMultiselect, NcActions, NcActionButton, NcActionInput, NcActionRouter, NcTextField } from '@nextcloud/vue'
+import { NcSelect, NcActions, NcActionButton, NcActionInput, NcActionRouter, NcTextField } from '@nextcloud/vue'
 import MagnifyIcon from 'vue-material-design-icons/Magnify.vue'
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import ViewGridIcon from 'vue-material-design-icons/ViewGrid.vue'
@@ -136,7 +136,7 @@ export default {
 	name: 'Controls',
 	components: {
 		BulkEditing,
-		NcMultiselect,
+		NcSelect,
 		NcActions,
 		NcActionButton,
 		NcActionInput,
@@ -306,7 +306,7 @@ export default {
 </script>
 <style>
 .controls {
-	padding: 4px 8px 0 44px;
+	padding: 4px 8px 0 50px;
 	display: flex;
 	position: absolute;
 	z-index: 100;
@@ -371,6 +371,6 @@ export default {
 .controls__right .inline-search {
 	max-width: 150px !important;
 	position: relative;
-	top: 4px;
+	top: -4px;
 }
 </style>

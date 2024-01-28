@@ -6,7 +6,7 @@
 
 <template>
 	<div class="bulkediting">
-		<NcActions :primary="true" :menu-title="selectionDescription">
+		<NcActions :primary="true" :menu-name="selectionDescription">
 			<NcActionButton close-after-click @click="onBulkOpen">
 				<template #icon>
 					<OpenInNewIcon />

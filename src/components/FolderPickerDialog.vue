@@ -5,7 +5,7 @@
   -->
 
 <template>
-	<NcModal v-if="show" :title="t('bookmarks', 'Select folder')" @close="onClose">
+	<NcModal v-if="show" :name="t('bookmarks', 'Select folder')" @close="onClose">
 		<div class="folderpicker-dialog">
 			<FolderPicker :title="t('bookmarks', 'Select folder')" @submit="onSelect" />
 		</div>

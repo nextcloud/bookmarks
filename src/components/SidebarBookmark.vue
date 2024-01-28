@@ -7,14 +7,14 @@
 <template>
 	<NcAppSidebar v-if="isActive"
 		class="sidebar"
-		:title="bookmark.title"
-		:title-editable="editingTitle"
-		:title-placeholder="t('bookmarks', 'Title')"
+		:name="bookmark.title"
+		:name-editable="editingTitle"
+		:name-placeholder="t('bookmarks', 'Title')"
 		:subtitle="addedDate"
 		:background="background"
 		@update:active="activeTab = $event"
-		@update:title="onEditTitleUpdate"
-		@submit-title="onEditTitleSubmit"
+		@update:name="onEditTitleUpdate"
+		@submit-name="onEditTitleSubmit"
 		@dismiss-editing="onEditTitleCancel"
 		@close="onClose">
 		<template v-if="!editingTitle" slot="secondary-actions">
@@ -81,7 +81,7 @@
 				</div>
 				<div class="details__line">
 					<TagIcon :aria-label="t('bookmarks', 'Tags')" :title="t('bookmarks', 'Tags')" />
-					<NcMultiselect class="tags"
+					<NcSelect class="tags"
 						:value="tags"
 						:auto-limit="false"
 						:limit="7"
@@ -124,7 +124,7 @@
 	</NcAppSidebar>
 </template>
 <script>
-import { NcAppSidebar, NcRichContenteditable, NcActionButton, NcActions, NcMultiselect, NcAppSidebarTab, NcButton } from '@nextcloud/vue'
+import { NcAppSidebar, NcRichContenteditable, NcActionButton, NcActions, NcSelect, NcAppSidebarTab, NcButton } from '@nextcloud/vue'
 import FileDocumentIcon from 'vue-material-design-icons/FileDocument.vue'
 import FolderIcon from 'vue-material-design-icons/Folder.vue'
 import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
@@ -145,7 +145,7 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { NcAppSidebar, NcAppSidebarTab, NcMultiselect, NcActions, NcActionButton, NcRichContenteditable, FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon, DownloadIcon, NcButton },
+	components: { NcAppSidebar, NcAppSidebarTab, NcSelect, NcActions, NcActionButton, NcRichContenteditable, FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon, DownloadIcon, NcButton },
 	data() {
 		return {
 			title: '',

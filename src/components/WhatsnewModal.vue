@@ -5,7 +5,7 @@
   -->
 
 <template>
-	<NcModal v-if="showModal" :title="t('bookmarks', `What's new?`)" @close="onClose">
+	<NcModal v-if="showModal" :name="t('bookmarks', `What's new?`)" @close="onClose">
 		<div class="whatsnew">
 			<h3>✨ {{ t('bookmarks', 'What\'s new in Bookmarks?') }}</h3>
 			<ul>

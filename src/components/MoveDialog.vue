@@ -5,7 +5,7 @@
   -->
 
 <template>
-	<NcModal v-if="showNcModal" :title="title" @close="onClose">
+	<NcModal v-if="showNcModal" :name="title" @close="onClose">
 		<div class="move-dialog">
 			<FolderPicker :title="title" :filter="filterFolders" @submit="onSubmit" />
 		</div>

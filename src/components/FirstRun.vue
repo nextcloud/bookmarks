@@ -6,7 +6,7 @@
 
 <template>
 	<div class="bookmarkslist__emptyBookmarks">
-		<NcEmptyContent :title="t('bookmarks', 'Welcome to Bookmarks')" :description="t('bookmarks', 'This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app.')">
+		<NcEmptyContent :name="t('bookmarks', 'Welcome to Bookmarks')" :description="t('bookmarks', 'This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app.')">
 			<template #icon>
 				<StarShootingIcon />
 			</template>

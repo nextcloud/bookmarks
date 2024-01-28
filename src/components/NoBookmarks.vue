@@ -7,35 +7,35 @@
 <template>
 	<div class="bookmarkslist__emptyBookmarks">
 		<NcEmptyContent v-if="$route.name === routes.ARCHIVED"
-			:title="t('bookmarks', 'No bookmarked files')"
+			:name="t('bookmarks', 'No bookmarked files')"
 			:description="t('bookmarks', 'Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')">
 			<template #icon>
 				<FileDocumentMultipleIcon />
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else-if="$route.name === routes.UNAVAILABLE"
-			:title="t('bookmarks', 'No broken links')"
+			:name="t('bookmarks', 'No broken links')"
 			:description="t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')">
 			<template #icon>
 				<LinkVariantOffIcon />
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else-if="$route.name === routes.SHARED_FOLDERS"
-			:title="t('bookmarks', 'No shared folders')"
+			:name="t('bookmarks', 'No shared folders')"
 			:description="t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')">
 			<template #icon>
 				<ShareVariantIcon />
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else-if="$route.name === routes.DUPLICATED"
-			:title="t('bookmarks', 'No duplicated bookmarks')"
+			:name="t('bookmarks', 'No duplicated bookmarks')"
 			:description="t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')">
 			<template #icon>
 				<VectorLinkIcon />
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else
-			:title="t('bookmarks', 'No bookmarks here')"
+			:name="t('bookmarks', 'No bookmarks here')"
 			:description="t('bookmarks', 'Add bookmarks manually or import bookmarks from a HTML file.')">
 			<template #icon>
 				<StarShootingIcon />
@@ -110,6 +110,7 @@ export default {
 .bookmarkslist__emptyBookmarks {
 	width: 500px;
 	margin: 0 auto;
+	margin-top: 100px;
 }
 
 .import {
@@ -121,5 +122,10 @@ export default {
 
 button {
 	margin-bottom: 15px;
+}
+
+.empty-content {
+	display: flex;
+	height: 100%;
 }
 </style>
