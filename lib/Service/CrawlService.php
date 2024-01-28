@@ -35,46 +35,18 @@ class CrawlService {
 	public const READ_TIMEOUT = 10;
 	public const UA_FIREFOX = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:87.0) Gecko/20100101 Firefox/87.0';
 
-	/**
-	 * @var BookmarkMapper
-	 */
-	private $bookmarkMapper;
-	/**
-	 * @var BookmarkPreviewer
-	 */
-	private $bookmarkPreviewer;
-	/**
-	 * @var FaviconPreviewer
-	 */
-	private $faviconPreviewer;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	private $path;
-	private $rootFolder;
-	/**
-	 * @var IL10N
-	 */
-	private $l;
-	/**
-	 * @var MimeTypes
-	 */
-	private $mimey;
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
+	private MimeTypes $mimey;
 
-	public function __construct(BookmarkMapper $bookmarkMapper, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, IConfig $config, IRootFolder $rootFolder, IL10N $l, LoggerInterface $logger) {
-		$this->bookmarkMapper = $bookmarkMapper;
-		$this->bookmarkPreviewer = $bookmarkPreviewer;
-		$this->faviconPreviewer = $faviconPreviewer;
-		$this->config = $config;
-		$this->rootFolder = $rootFolder;
-		$this->l = $l;
+	public function __construct(
+		private BookmarkMapper $bookmarkMapper,
+		private BookmarkPreviewer $bookmarkPreviewer,
+		private FaviconPreviewer $faviconPreviewer,
+		private IConfig $config,
+		private IRootFolder $rootFolder,
+		private IL10N $l,
+		private LoggerInterface $logger,
+		private UserSettingsService $userSettingsService) {
 		$this->mimey = new MimeTypes;
-		$this->logger = $logger;
 	}
 
 	/**
@@ -104,8 +76,11 @@ class CrawlService {
 		}
 
 		if ($available) {
-			$this->archiveFile($bookmark, $resp);
-			$this->archiveContent($bookmark, $resp);
+			$this->userSettingsService->setUserId($bookmark->getUserId());
+			if (((boolean) $this->userSettingsService->get('archive.enabled')) === true) {
+				$this->archiveFile($bookmark, $resp);
+				$this->archiveContent($bookmark, $resp);
+			}
 			$this->bookmarkPreviewer->getImage($bookmark);
 			$this->faviconPreviewer->getImage($bookmark);
 		}

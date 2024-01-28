@@ -152,8 +152,7 @@ export default {
 			editingTitle: false,
 			target: '',
 			editingTarget: false,
-			activeTab: '',
-			showContentModal: false,
+			activeTab: ''
 		}
 	},
 	computed: {

@@ -17,14 +17,17 @@
 			<span class="icon-download" /> {{ t('bookmarks', 'Export') }}
 		</button>
 
-		<label><h3>{{ t('bookmarks', 'Archive path') }}</h3>
-			<p>{{ t('bookmarks',
-				'Enter the path of a folder in your Files where bookmarked files should be stored.'
-			) }}</p>
-			<input :value="archivePath"
-				:readonly="true"
-				@click="onChangeArchivePath">
-		</label>
+		<template v-if="scrapingEnabled">
+			<label><h3>{{ t('bookmarks', 'Archive path') }}</h3>
+				<p><label><input type="checkbox" :checked="archiveEnabled" @input="onChangeArchiveEnabled">{{ t('bookmarks', 'Enable bookmarks archiving to store the web contents of the links you bookmark') }}</label></p>
+				<p>{{ t('bookmarks',
+					'Enter the path of a folder in your Files where bookmarked files should be stored.'
+				) }}</p>
+				<input :value="archivePath"
+					:readonly="true"
+					@click="onChangeArchivePath">
+			</label>
+		</template>
 
 		<label><h3>{{ t('bookmarks', 'Backups') }}</h3>
 			<p><label><input type="checkbox" :checked="backupEnabled" @input="onChangeBackupEnabled">{{ t('bookmarks', 'Enable bookmarks backups') }}</label></p>
@@ -110,6 +113,12 @@ export default {
 			}
 			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e${queryStringExtension},'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=650px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
+		scrapingEnabled() {
+			return Boolean(this.$store.state.settings['privacy.enableScraping'])
+		},
+		archiveEnabled() {
+			return Boolean(this.$store.state.settings['archive.enabled'])
+		},
 		archivePath() {
 			return this.$store.state.settings['archive.filePath']
 		},
@@ -146,6 +155,12 @@ export default {
 			window.location
 				= 'bookmark/export?requesttoken='
 					+ encodeURIComponent(getRequestToken())
+		},
+		async onChangeArchiveEnabled(e) {
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'archive.enabled',
+				value: !this.archiveEnabled,
+			})
 		},
 		async onChangeArchivePath(e) {
 			const path = await this.archivePathPicker.pick()

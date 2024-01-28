@@ -5,7 +5,7 @@
   -->
 
 <template>
-	<div v-if="isActive && hasMinLength && !archivedFile && isWebLink" class="bookmark-content">
+	<div v-if="isActive && scrapingEnabled && archiveEnabled && hasMinLength && !archivedFile && isWebLink" class="bookmark-content">
 		<div v-if="bookmark.textContent" class="content" v-html="content" />
 		<div v-else>
 			<NcEmptyContent :title="t('bookmarks', 'Content pending')"
@@ -36,6 +36,12 @@ export default {
 		},
 		isWebLink() {
 			return this.bookmark.url.startsWith('http')
+		},
+		scrapingEnabled() {
+			return this.$store.state.settings['privacy.enableScraping']
+		},
+		archiveEnabled() {
+			return this.$store.state.settings['archive.enabled']
 		},
 		bookmark() {
 			if (!this.isActive) return

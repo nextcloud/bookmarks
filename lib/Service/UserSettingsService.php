@@ -12,7 +12,7 @@ use OCP\IL10N;
 
 class UserSettingsService {
 
-	public const KEYS = ['hasSeenWhatsnew', 'viewMode', 'archive.filePath', 'backup.enabled', 'backup.filePath', 'sorting'];
+	public const KEYS = ['hasSeenWhatsnew', 'viewMode', 'archive.enabled', 'archive.filePath', 'backup.enabled', 'backup.filePath', 'sorting'];
 
 	public function __construct(
 		private ?string $userId,
@@ -21,6 +21,10 @@ class UserSettingsService {
 		private IL10N $l,
 	) {
 
+	}
+
+	public function setUserId(?string $userId): void {
+		$this->userId = $userId;
 	}
 
 	/**
@@ -39,6 +43,12 @@ class UserSettingsService {
 		}
 		if ($key === 'limit') {
 			return $this->config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
+		}
+		if ($key === 'archive.enabled') {
+			$default = (string) true;
+		}
+		if ($key === 'privacy.enableScraping') {
+			return $this->config->getAppValue($this->appName, 'privacy.enableScraping', 'false');
 		}
 		if ($key === 'archive.filePath') {
 			$default = $this->l->t('Bookmarks');
