@@ -189,7 +189,6 @@
     "Failed to delete folder" : "No at fatu a cantzellare sa cartella",
     "Failed to create folder" : "No at fatu a creare sa cartella",
     "Failed to fetch bookmarks." : "No at fatu a recuperare is signalibros.",
-    "Failed to change setting" : "No at fatu a cambiare is impostatziones",
     "Failed to load setting {key}" : "No at fatu a carrigare is impostatziones {key}",
     "Failed to update share {shareId}" : "No at fatu a carrigare s'agiornamentu {shareId}",
     "Failed to delete share {shareId}" : "No at fatu a annullare sa cumpartzidura {shareId}",

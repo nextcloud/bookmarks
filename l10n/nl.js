@@ -203,7 +203,6 @@ OC.L10N.register(
     "Failed to delete folder" : "Kon map niet verwijderen",
     "Failed to create folder" : "Kon map niet aanmaken",
     "Failed to fetch bookmarks." : "Kon bladwijzer niet ophalen",
-    "Failed to change setting" : "Kon instellingen niet wijzigen",
     "Failed to load setting {key}" : "Kon instelling niet laden {key}",
     "Failed to update share {shareId}" : "Share uploaden mislukt {shareId}",
     "Failed to delete share {shareId}" : "Kan de share niet verwijderen {shareId}",

@@ -107,7 +107,6 @@ OC.L10N.register(
     "Failed to delete folder" : "Nepavyko ištrinti aplanko",
     "Failed to create folder" : "Nepavyko sukurti aplanko",
     "Failed to fetch bookmarks." : "Nepavyko gauti adresyno įrašų.",
-    "Failed to change setting" : "Nepavyko pakeisti nustatymo",
     "Failed to load setting {key}" : "Nepavyko įkelti nustatymo {key}",
     "Failed to update share {shareId}" : "Nepavyko atnaujinti viešinio {shareId}",
     "Failed to delete share {shareId}" : "Nepavyko ištrinti viešinio {shareId}",

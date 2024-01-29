@@ -185,7 +185,6 @@ OC.L10N.register(
     "Failed to delete folder" : "Απέτυχε η διαγραφή φακέλου",
     "Failed to create folder" : "Απέτυχε η δημιουργία φακέλου",
     "Failed to fetch bookmarks." : "Αποτυχία λήψης σελιδοδεικτών.",
-    "Failed to change setting" : "Αποτυχία αλλαγής επιλογών",
     "Failed to load setting {key}" : "Αποτυχία φόρτωσης ρυθμίσεων {key}",
     "Failed to update share {shareId}" : "Αποτυχία ενημέρωσης κοινόχρηστου {shareId}",
     "Failed to delete share {shareId}" : "Αποτυχία διαγραφής κοινόχρηστου {shareId}",

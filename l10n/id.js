@@ -77,7 +77,6 @@ OC.L10N.register(
     "Failed to delete folder" : "Gagal menghapus folder",
     "Failed to create folder" : "Gagal membuat folder",
     "Failed to fetch bookmarks." : "Gagal menampilkan markah",
-    "Failed to change setting" : "Gagal mengubah setelan",
     "Failed to load setting {key}" : "Gagal memuat setelan {key}",
     "Bookmarks feed" : "Umpan markah"
 },

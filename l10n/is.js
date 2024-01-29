@@ -100,7 +100,6 @@ OC.L10N.register(
     "Failed to delete folder" : "Mistókst að eyða möppu",
     "Failed to create folder" : "Mistókst að búa til möppu",
     "Failed to fetch bookmarks." : "Ekki tókst að sækja bókamerki.",
-    "Failed to change setting" : "Mistókst að breyta stillingu",
     "Failed to load setting {key}" : "Mistókst að hlaða inn {key} stillingunni",
     "Failed to update share {shareId}" : "Mistókst að uppfæra sameignina {shareId}",
     "Failed to delete share {shareId}" : "Mistókst að eyða sameigninni {shareId}",

@@ -199,7 +199,6 @@ OC.L10N.register(
     "Failed to delete folder" : "Brisanje mape nije uspjelo",
     "Failed to create folder" : "Stvaranje mape nije uspjelo",
     "Failed to fetch bookmarks." : "Dohvaćanje knjižnih oznaka nije uspjelo.",
-    "Failed to change setting" : "Promjena postavke nije uspjela",
     "Failed to load setting {key}" : "Učitavanje postavke {key} nije uspjelo",
     "Failed to update share {shareId}" : "Ažuriranje dijeljenja {shareId} nije uspjelo",
     "Failed to delete share {shareId}" : "Brisanje dijeljenja {shareId} nije uspjelo",

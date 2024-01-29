@@ -136,7 +136,6 @@ OC.L10N.register(
     "Failed to delete folder" : "מחיקת התיקייה נכשלה",
     "Failed to create folder" : "יצירת התיקייה נכשלה",
     "Failed to fetch bookmarks." : "קבלת הסימניות נכשלה.",
-    "Failed to change setting" : "שינוי ההגדרות נכשל",
     "Failed to load setting {key}" : "טעינת ההגדרה {key} נכשלה",
     "Failed to update share {shareId}" : "עדכון השיתוף {shareId} נכשל",
     "Failed to delete share {shareId}" : "מחיקת השיתוף {shareId} נכשלה",
