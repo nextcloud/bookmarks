@@ -19,7 +19,7 @@
 
 		<template v-if="scrapingEnabled">
 			<label><h3>{{ t('bookmarks', 'Archive path') }}</h3>
-				<p><label><input type="checkbox" :checked="archiveEnabled" @input="onChangeArchiveEnabled">{{ t('bookmarks', 'Enable bookmarks archiving to store the web contents of the links you bookmark') }}</label></p>
+				<p><label><input type="checkbox" :checked="archiveEnabled" @input="onChangeArchiveEnabled">{{ t('bookmarks', 'Enable bookmarks archiving to store the web contents of the links that you have bookmarked') }}</label></p>
 				<p>{{ t('bookmarks',
 					'Enter the path of a folder in your Files where bookmarked files should be stored.'
 				) }}</p>
