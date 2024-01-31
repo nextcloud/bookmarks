@@ -11,7 +11,7 @@
 			<NcEmptyContent :name="t('bookmarks', 'Content pending')"
 				:description="t('bookmarks', 'This content is being downloaded for offline use. Please check back later.')">
 				<template #icon>
-					<DownloadIcon />
+					<DownloadIcon :size="20" />
 				</template>
 			</NcEmptyContent>
 		</div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import DownloadIcon from 'vue-material-design-icons/Download.vue'
+import { DownloadIcon } from './Icons.js'
 import sanitizeHtml from 'sanitize-html'
 import { generateUrl, generateRemoteUrl } from '@nextcloud/router'
 import { NcEmptyContent } from '@nextcloud/vue'

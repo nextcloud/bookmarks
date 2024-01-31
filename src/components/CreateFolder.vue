@@ -14,12 +14,12 @@
 		@rename="submit"
 		@rename-cancel="cancel">
 		<template #icon>
-			<FolderIcon :fill-color="colorPrimaryElement" class="icon" />
+			<FolderIcon :size="20" :fill-color="colorPrimaryElement" class="icon" />
 		</template>
 	</Item>
 </template>
 <script>
-import FolderIcon from 'vue-material-design-icons/Folder.vue'
+import { FolderIcon } from './Icons.js'
 import Item from './Item.vue'
 import { actions, mutations } from '../store/index.js'
 

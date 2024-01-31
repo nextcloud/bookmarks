@@ -11,7 +11,7 @@
 				:to="{ name: routes.HOME }"
 				:name="t('bookmarks', 'All bookmarks')"
 				:exact="true">
-				<HomeIcon slot="icon" />
+				<HomeIcon :size="20" slot="icon" />
 				<NcCounterBubble slot="counter">
 					{{ allBookmarksCount | largeNumbers }}
 				</NcCounterBubble>
@@ -19,12 +19,12 @@
 			<NcAppNavigationItem key="menu-recent"
 				:to="{ name: routes.RECENT }"
 				:name="t('bookmarks', 'Recent')">
-				<HistoryIcon slot="icon" />
+				<HistoryIcon :size="20" slot="icon" />
 			</NcAppNavigationItem>
 			<NcAppNavigationItem key="menu-shared-folders"
 				:to="{ name: routes.SHARED_FOLDERS }"
 				:name="t('bookmarks', 'Shared with you')">
-				<ShareVariantIcon slot="icon" />
+				<ShareVariantIcon :size="20" slot="icon" />
 				<NcCounterBubble v-show="Boolean(sharedFoldersCount)" slot="counter">
 					{{ sharedFoldersCount | largeNumbers }}
 				</NcCounterBubble>
@@ -32,7 +32,7 @@
 			<NcAppNavigationItem key="menu-archived"
 				:to="{ name: routes.ARCHIVED }"
 				:name="t('bookmarks', 'Files')">
-				<FileDocumentMultipleIcon slot="icon" />
+				<FileDocumentMultipleIcon :size="20" slot="icon" />
 				<NcCounterBubble v-show="Boolean(archivedBookmarksCount)" slot="counter">
 					{{ archivedBookmarksCount }}
 				</NcCounterBubble>
@@ -40,7 +40,7 @@
 			<NcAppNavigationItem key="menu-duplicated"
 				:to="{ name: routes.DUPLICATED }"
 				:name="t('bookmarks', 'Duplicates')">
-				<VectorLinkIcon slot="icon" />
+				<VectorLinkIcon :size="20" slot="icon" />
 				<NcCounterBubble v-show="Boolean(duplicatedBookmarksCount)" slot="counter">
 					{{ duplicatedBookmarksCount | largeNumbers }}
 				</NcCounterBubble>
@@ -48,7 +48,7 @@
 			<NcAppNavigationItem key="menu-unavailable"
 				:to="{ name: routes.UNAVAILABLE }"
 				:name="t('bookmarks', 'Broken links')">
-				<LinkVariantOffIcon slot="icon" />
+				<LinkVariantOffIcon :size="20" slot="icon" />
 				<NcCounterBubble v-show="Boolean(unavailableBookmarksCount)" slot="counter">
 					{{ unavailableBookmarksCount | largeNumbers }}
 				</NcCounterBubble>
@@ -57,13 +57,13 @@
 			<NcAppNavigationNewItem key="menu-new-tag"
 				:name="t('bookmarks', 'New tag')"
 				@new-item="onNewTag">
-				<TagPlusIcon slot="icon" />
+				<TagPlusIcon :size="20" slot="icon" />
 			</NcAppNavigationNewItem>
 			<template v-if="Boolean(tags.length)">
 				<NcAppNavigationItem key="menu-tags"
 					:name="t('bookmarks', 'Search tags')"
 					@click="onSearchTags">
-					<TagMultipleIcon slot="icon" />
+					<TagMultipleIcon :size="20" slot="icon" />
 				</NcAppNavigationItem>
 				<NcAppNavigationItem v-for="tag in tags"
 					:key="'tag-'+tag.name"
@@ -74,14 +74,14 @@
 					:editable="!isPublic"
 					:name="tag.name"
 					@update:name="onRenameTag(tag.name, $event)">
-					<TagIcon slot="icon" />
+					<TagIcon :size="20" slot="icon" />
 					<NcCounterBubble slot="counter">
 						{{ tag.count | largeNumbers }}
 					</NcCounterBubble>
 					<template v-if="!isPublic" slot="actions">
 						<NcActionButton :close-after-click="true" @click="onDeleteTag(tag.name)">
 							<template #icon>
-								<DeleteIcon />
+								<DeleteIcon :size="20" />
 							</template>
 							{{ t('bookmarks', 'Delete') }}
 						</NcActionButton>
@@ -90,21 +90,21 @@
 				<NcAppNavigationItem key="menu-untagged"
 					:to="{ name: routes.UNTAGGED }"
 					:name="t('bookmarks', 'Untagged')">
-					<TagOffIcon slot="icon" />
+					<TagOffIcon :size="20" slot="icon" />
 				</NcAppNavigationItem>
 			</template>
 			<template v-if="Number(bookmarksLimit) > 0">
 				<NcAppNavigationSpacer />
 				<NcAppNavigationItem :pinned="true" :name="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
 					<template #icon>
-						<GaugeIcon />
+						<GaugeIcon :size="20" />
 					</template>
 					<ProgressBar :val="allBookmarksCount" :max="bookmarksLimit" />
 				</NcAppNavigationItem>
 			</template>
 		</template>
 		<template #footer>
-			<NcAppNavigationItem :name="t('bookmarks', 'Settings')" @click="settingsOpen = !settingsOpen"><template #icon><CogIcon /></template></NcAppNavigationItem>
+			<NcAppNavigationItem :name="t('bookmarks', 'Settings')" @click="settingsOpen = !settingsOpen"><template #icon><CogIcon :size="20" /></template></NcAppNavigationItem>
 			<Settings :settingsOpen.sync="settingsOpen" />
 		</template>
 	</NcAppNavigation>
@@ -112,19 +112,19 @@
 
 <script>
 import { NcActionButton, NcAppNavigation, NcAppNavigationItem, NcAppNavigationNewItem, NcCounterBubble, NcAppNavigationSettings, NcAppNavigationSpacer } from '@nextcloud/vue'
-import HomeIcon from 'vue-material-design-icons/Home.vue'
-import HistoryIcon from 'vue-material-design-icons/History.vue'
-import TagOffIcon from 'vue-material-design-icons/TagOff.vue'
-import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff.vue'
-import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
-import FileDocumentMultipleIcon from 'vue-material-design-icons/FileDocumentMultiple.vue'
-import TagPlusIcon from 'vue-material-design-icons/TagPlus.vue'
-import TagMultipleIcon from 'vue-material-design-icons/TagMultiple.vue'
-import VectorLinkIcon from 'vue-material-design-icons/VectorLink.vue'
-import TagIcon from 'vue-material-design-icons/Tag.vue'
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
-import GaugeIcon from 'vue-material-design-icons/Gauge.vue'
-import CogIcon from 'vue-material-design-icons/Cog.vue'
+import { HomeIcon } from './Icons.js'
+import { HistoryIcon } from './Icons.js'
+import { TagOffIcon } from './Icons.js'
+import { LinkVariantOffIcon } from './Icons.js'
+import { ShareVariantIcon } from './Icons.js'
+import { FileDocumentMultipleIcon } from './Icons.js'
+import { TagPlusIcon } from './Icons.js'
+import { TagMultipleIcon } from './Icons.js'
+import { VectorLinkIcon } from './Icons.js'
+import { TagIcon } from './Icons.js'
+import { DeleteIcon } from './Icons.js'
+import { GaugeIcon } from './Icons.js'
+import { CogIcon } from './Icons.js'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings.vue'
 import { actions, mutations } from '../store/index.js'

@@ -40,7 +40,7 @@
 			<NcActionButton :close-after-click="true"
 				@click="onDetails">
 				<template #icon>
-					<InformationVariantIcon />
+					<InformationVariantIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Details') }}
 			</NcActionButton>
@@ -50,33 +50,33 @@
 			<NcActionButton :close-after-click="true"
 				@click="onRename">
 				<template #icon>
-					<PencilIcon />
+					<PencilIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Rename') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true"
 				@click="onCopyUrl">
 				<template #icon>
-					<ContentCopyIcon />
+					<ContentCopyIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Copy link') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true" @click="onMove">
 				<template #icon>
-					<FolderMoveIcon />
+					<FolderMoveIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Move') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true" @click="onCopy">
 				<template #icon>
-					<FolderPlusIcon />
+					<FolderPlusIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Add to folders') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true"
 				@click="onDelete">
 				<template #icon>
-					<DeleteIcon />
+					<DeleteIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Delete') }}
 			</NcActionButton>
@@ -86,12 +86,12 @@
 <script>
 import Item from './Item.vue'
 import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
-import FolderPlusIcon from 'vue-material-design-icons/FolderPlus.vue'
-import FolderMoveIcon from 'vue-material-design-icons/FolderMove.vue'
-import ContentCopyIcon from 'vue-material-design-icons/ContentCopy.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import { FolderPlusIcon } from './Icons.js'
+import { FolderMoveIcon } from './Icons.js'
+import { ContentCopyIcon } from './Icons.js'
+import { PencilIcon } from './Icons.js'
+import { InformationVariantIcon } from './Icons.js'
+import { DeleteIcon } from './Icons.js'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/index.js'

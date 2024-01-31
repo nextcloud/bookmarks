@@ -9,19 +9,19 @@
 		<NcActions :primary="true" :menu-name="selectionDescription">
 			<NcActionButton close-after-click @click="onBulkOpen">
 				<template #icon>
-					<OpenInNewIcon />
+					<OpenInNewIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Open all selected') }}
 			</NcActionButton>
 			<NcActionButton close-after-click @click="onBulkMove">
 				<template #icon>
-					<FolderMoveIcon />
+					<FolderMoveIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Move selection') }}
 			</NcActionButton>
 			<NcActionButton v-if="!selectedFolders.length" close-after-click @click="onBulkCopy">
 				<template #icon>
-					<FolderPlusIcon />
+					<FolderPlusIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Add to folders') }}
 			</NcActionButton>
@@ -34,26 +34,26 @@
 				@tag="onBulkTag([...selectionTags, $event])"
 				@input="onBulkTag">
 				<template #icon>
-					<TagIcon />
+					<TagIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Edit tags of selection') }}
 			</NcActionInput>
 			<NcActionButton close-after-click @click="onBulkDelete">
 				<template #icon>
-					<DeleteIcon />
+					<DeleteIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Delete selection') }}
 			</NcActionButton>
 			<NcActionSeparator />
 			<NcActionButton @click="onSelectAll">
 				<template #icon>
-					<SelectAllIcon />
+					<SelectAllIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Select all') }}
 			</NcActionButton>
 			<NcActionButton @click="onCancelSelection">
 				<template #icon>
-					<SelectOffIcon />
+					<SelectOffIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Cancel selection') }}
 			</NcActionButton>
@@ -64,13 +64,13 @@
 <script>
 
 import { NcActions, NcActionSeparator, NcActionButton, NcActionInput } from '@nextcloud/vue'
-import FolderPlusIcon from 'vue-material-design-icons/FolderPlus.vue'
-import FolderMoveIcon from 'vue-material-design-icons/FolderMove.vue'
-import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
-import TagIcon from 'vue-material-design-icons/Tag.vue'
-import SelectAllIcon from 'vue-material-design-icons/SelectAll.vue'
-import SelectOffIcon from 'vue-material-design-icons/SelectOff.vue'
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import { FolderPlusIcon } from './Icons.js'
+import { FolderMoveIcon } from './Icons.js'
+import { OpenInNewIcon } from './Icons.js'
+import { TagIcon } from './Icons.js'
+import { SelectAllIcon } from './Icons.js'
+import { SelectOffIcon } from './Icons.js'
+import { DeleteIcon } from './Icons.js'
 import { actions, mutations } from '../store/index.js'
 import intersection from 'lodash/intersection.js'
 

@@ -14,7 +14,7 @@
 			:name="t('bookmarks', 'Details')"
 			:order="0">
 			<template #icon>
-				<InformationVariantIcon />
+				<InformationVariantIcon :size="20" />
 			</template>
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
 			<NcUserBubble :user="folder.userId" :display-name="folder.userDisplayName" />
@@ -26,10 +26,10 @@
 			:name="t('bookmarks', 'Sharing')"
 			:order="1">
 			<template #icon>
-				<ShareVariantIcon />
+				<ShareVariantIcon :size="20" />
 			</template>
 			<div class="participant-select">
-				<AccountIcon :class="{'share__avatar': true }" />
+				<AccountIcon :size="20" :class="{'share__avatar': true }" />
 				<NcSelect v-model="participant"
 					label="displayName"
 					track-by="user"
@@ -42,7 +42,7 @@
 					@search="onParticipantSearch" />
 			</div>
 			<div class="share">
-				<LinkIcon :class="{'share__avatar': true, active: publicLink }" />
+				<LinkIcon :size="20" :class="{'share__avatar': true, active: publicLink }" />
 				<h3 class="share__title">
 					{{ t('bookmarks', 'Share link') }}
 				</h3>
@@ -58,27 +58,27 @@
 					<template v-if="publicLink">
 						<NcActionButton @click="onCopyPublicLink">
 							<template #icon>
-								<ClipboardIcon />
+								<ClipboardIcon :size="20" />
 							</template>
 							{{ t('bookmarks', 'Copy link') }}
 						</NcActionButton>
 						<NcActionButton icon="icon-clippy" @click="onCopyRssLink">
 							<template #icon>
-								<RssIcon />
+								<RssIcon :size="20" />
 							</template>
 							{{ t('bookmarks', 'Copy RSS feed') }}
 						</NcActionButton>
 						<NcActionSeparator />
 						<NcActionButton @click="onDeletePublicLink">
 							<template #icon>
-								<DeleteIcon />
+								<DeleteIcon :size="20" />
 							</template>
 							{{ t('bookmarks', 'Delete link') }}
 						</NcActionButton>
 					</template>
 					<NcActionButton v-else @click="onAddPublicLink">
 						<template #icon>
-							<PlusIcon />
+							<PlusIcon :size="20" />
 						</template>
 						{{ t('bookmarks', 'Create public link') }}
 					</NcActionButton>
@@ -131,17 +131,17 @@ import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { actions, mutations } from '../store/index.js'
-import EyeIcon from 'vue-material-design-icons/Eye.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-import ShareAllIcon from 'vue-material-design-icons/ShareAll.vue'
-import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
-import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
-import ClipboardIcon from 'vue-material-design-icons/Clipboard.vue'
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
-import RssIcon from 'vue-material-design-icons/Rss.vue'
-import PlusIcon from 'vue-material-design-icons/Plus.vue'
-import LinkIcon from 'vue-material-design-icons/Link.vue'
-import AccountIcon from 'vue-material-design-icons/Account.vue'
+import { EyeIcon } from './Icons.js'
+import { PencilIcon } from './Icons.js'
+import { ShareAllIcon } from './Icons.js'
+import { ShareVariantIcon } from './Icons.js'
+import { InformationVariantIcon } from './Icons.js'
+import { ClipboardIcon } from './Icons.js'
+import { DeleteIcon } from './Icons.js'
+import { RssIcon } from './Icons.js'
+import { PlusIcon } from './Icons.js'
+import { LinkIcon } from './Icons.js'
+import { AccountIcon } from './Icons.js'
 
 export default {
 	name: 'SidebarFolder',

@@ -10,24 +10,24 @@
 			<NcActions v-if="$route.name === routes.FOLDER">
 				<NcActionButton @click="onClickBack">
 					<template #icon>
-						<ArrowLeftIcon />
+						<ArrowLeftIcon :size="20" />
 					</template>
 					{{ t('bookmarks', 'Go back') }}
 				</NcActionButton>
 			</NcActions>
 			<template v-if="$route.name === routes.FOLDER">
-				<h2><FolderIcon /> <span>{{ folder.title }}</span></h2>
+				<h2><FolderIcon :size="20" /> <span>{{ folder.title }}</span></h2>
 				<NcActions v-if="permissions.canShare">
 					<NcActionButton :close-after-click="true" @click="onOpenFolderShare">
 						<template #icon>
-							<ShareVariantIcon />
+							<ShareVariantIcon :size="20" />
 						</template>
 						{{ t('bookmarks', 'Share folder') }}
 					</NcActionButton>
 				</NcActions>
 			</template>
 			<template v-if="$route.name === routes.TAGS">
-				<TagIcon />
+				<TagIcon :size="20" />
 				<NcSelect class="controls__tags"
 					:value="tags"
 					:auto-limit="false"
@@ -41,12 +41,12 @@
 				v-tooltip="t('bookmarks', 'New')"
 				:name="t('bookmarks', 'New')">
 				<template #icon>
-					<PlusIcon />
+					<PlusIcon :size="20" />
 				</template>
 				<NcActionButton :close-after-click="true"
 					@click="onAddBookmark">
 					<template #icon>
-						<EarthIcon />
+						<EarthIcon :size="20" />
 					</template>
 					{{
 						t('bookmarks', 'New bookmark')
@@ -55,7 +55,7 @@
 				<NcActionButton :close-after-click="true"
 					@click="onAddFolder">
 					<template #icon>
-						<FolderIcon />
+						<FolderIcon :size="20" />
 					</template>
 					{{ t('bookmarks', 'New folder') }}
 				</NcActionButton>
@@ -66,15 +66,15 @@
 			<NcActions>
 				<NcActionButton @click="onToggleViewMode">
 					<template #icon>
-						<ViewListIcon v-if="viewMode !== 'list'" />
-						<ViewGridIcon v-else />
+						<ViewListIcon :size="20" v-if="viewMode !== 'list'" />
+						<ViewGridIcon :size="20" v-else />
 					</template>
 					{{ viewMode === 'list' ? t('bookmarks', 'Change to grid view') : t('bookmarks', 'Change to list view') }}
 				</NcActionButton>
 			</NcActions>
 			<NcActions v-tooltip="sortingOptions[sorting].description">
 				<template #icon>
-					<component :is="sortingOptions[sorting].icon" :size="20" :fill-color="colorMainText" />
+					<component :is="sortingOptions[sorting].icon" :fill-color="colorMainText" />
 				</template>
 				<NcActionButton v-for="(option, key) in sortingOptions"
 					:key="key"
@@ -89,13 +89,13 @@
 			</NcActions>
 			<NcActions force-menu>
 				<template #icon>
-					<RssIcon />
+					<RssIcon :size="20" />
 				</template>
 				<NcActionButton :title="t('bookmarks', 'Copy RSS Feed of current view')"
 					:close-after-click="true"
 					@click="copyRssUrl">
 					<template #icon>
-						<RssIcon />
+						<RssIcon :size="20" />
 					</template>
 					{{ !$store.state.public? t('bookmarks', 'The RSS feed requires authentication with your Nextcloud credentials') : '' }}
 				</NcActionButton>
@@ -105,29 +105,29 @@
 				:placeholder="t('bookmarks','Search')"
 				class="inline-search"
 				@update:value="onSearch($event)">
-				<MagnifyIcon />
+				<MagnifyIcon :size="20" />
 			</NcTextField>
 		</div>
 	</div>
 </template>
 <script>
 import { NcSelect, NcActions, NcActionButton, NcActionInput, NcActionRouter, NcTextField } from '@nextcloud/vue'
-import MagnifyIcon from 'vue-material-design-icons/Magnify.vue'
-import EarthIcon from 'vue-material-design-icons/Earth.vue'
-import ViewGridIcon from 'vue-material-design-icons/ViewGrid.vue'
-import ViewListIcon from 'vue-material-design-icons/ViewList.vue'
-import PlusIcon from 'vue-material-design-icons/Plus.vue'
-import FolderIcon from 'vue-material-design-icons/Folder.vue'
-import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft.vue'
-import RssIcon from 'vue-material-design-icons/Rss.vue'
-import SortAlphabeticalAscendingIcon from 'vue-material-design-icons/SortAlphabeticalAscending.vue'
-import SortBoolAscendingIcon from 'vue-material-design-icons/SortBoolAscending.vue'
-import SortClockAscendingOutlineIcon from 'vue-material-design-icons/SortClockAscendingOutline.vue'
-import SortCalendarAscendingIcon from 'vue-material-design-icons/SortCalendarAscending.vue'
-import SortNumericAscendingIcon from 'vue-material-design-icons/SortNumericAscending.vue'
-import SortAscendingIcon from 'vue-material-design-icons/SortAscending.vue'
-import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
-import TagIcon from 'vue-material-design-icons/Tag.vue'
+import { MagnifyIcon } from './Icons.js'
+import { EarthIcon } from './Icons.js'
+import { ViewGridIcon } from './Icons.js'
+import { ViewListIcon } from './Icons.js'
+import { PlusIcon } from './Icons.js'
+import { FolderIcon } from './Icons.js'
+import { ArrowLeftIcon } from './Icons.js'
+import { RssIcon } from './Icons.js'
+import { SortAlphabeticalAscendingIcon } from './Icons.js'
+import { SortBoolAscendingIcon } from './Icons.js'
+import { SortClockAscendingOutlineIcon } from './Icons.js'
+import { SortCalendarAscendingIcon } from './Icons.js'
+import { SortNumericAscendingIcon } from './Icons.js'
+import { SortAscendingIcon } from './Icons.js'
+import { ShareVariantIcon } from './Icons.js'
+import { TagIcon } from './Icons.js'
 import { actions, mutations } from '../store/index.js'
 import { generateUrl } from '@nextcloud/router'
 import BulkEditing from './BulkEditing.vue'

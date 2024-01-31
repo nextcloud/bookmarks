@@ -11,16 +11,16 @@
 			<NcActions v-if="currentFolder.id !== -1">
 				<NcActionButton @click="onSelect(currentFolder.parent_folder)">
 					<template #icon>
-						<ArrowLeftIcon />
+						<ArrowLeftIcon :size="20" />
 					</template>
 					{{ t('bookmarks', 'Go back') }}
 				</NcActionButton>
 			</NcActions>
 			<h2 v-if="currentFolder.id !== -1">
-				<FolderIcon /><span>{{ currentFolder.title }}</span>
+				<FolderIcon :size="20" /><span>{{ currentFolder.title }}</span>
 			</h2>
 			<h2 v-else>
-				<HomeIcon />
+				<HomeIcon :size="20" />
 			</h2>
 		</div>
 		<TreeFolder v-for="folder of items"
@@ -38,9 +38,9 @@
 
 <script>
 import { NcActions, NcActionButton } from '@nextcloud/vue'
-import FolderIcon from 'vue-material-design-icons/Folder.vue'
-import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft.vue'
-import HomeIcon from 'vue-material-design-icons/Home.vue'
+import { FolderIcon } from './Icons.js'
+import { ArrowLeftIcon } from './Icons.js'
+import { HomeIcon } from './Icons.js'
 import TreeFolder from './TreeFolder.vue'
 
 export default {

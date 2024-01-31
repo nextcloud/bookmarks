@@ -10,35 +10,35 @@
 			:name="t('bookmarks', 'No bookmarked files')"
 			:description="t('bookmarks', 'Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')">
 			<template #icon>
-				<FileDocumentMultipleIcon />
+				<FileDocumentMultipleIcon :size="20" />
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else-if="$route.name === routes.UNAVAILABLE"
 			:name="t('bookmarks', 'No broken links')"
 			:description="t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')">
 			<template #icon>
-				<LinkVariantOffIcon />
+				<LinkVariantOffIcon :size="20" />
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else-if="$route.name === routes.SHARED_FOLDERS"
 			:name="t('bookmarks', 'No shared folders')"
 			:description="t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')">
 			<template #icon>
-				<ShareVariantIcon />
+				<ShareVariantIcon :size="20" />
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else-if="$route.name === routes.DUPLICATED"
 			:name="t('bookmarks', 'No duplicated bookmarks')"
 			:description="t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')">
 			<template #icon>
-				<VectorLinkIcon />
+				<VectorLinkIcon :size="20" />
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else
 			:name="t('bookmarks', 'No bookmarks here')"
 			:description="t('bookmarks', 'Add bookmarks manually or import bookmarks from a HTML file.')">
 			<template #icon>
-				<StarShootingIcon />
+				<StarShootingIcon :size="20" />
 			</template>
 			<template v-if="!isPublic" #action>
 				<input ref="import"
@@ -48,14 +48,14 @@
 					@change="onImportSubmit">
 				<NcButton @click="onCreateOpen">
 					<template #icon>
-						<PlusIcon />
+						<PlusIcon :size="20" />
 					</template>
 					{{ t('bookmarks', 'Add a bookmark') }}
 				</NcButton>
 				<NcButton @click="onImportOpen">
 					<template #icon>
-						<UploadIcon v-if="!importing" />
-						<NcLoadingIcon v-else />
+						<UploadIcon :size="20" v-if="!importing" />
+						<NcLoadingIcon :size="20" v-else />
 					</template>
 					{{ t('bookmarks', 'Import bookmarks') }}
 				</NcButton>
@@ -68,13 +68,13 @@
 import { NcEmptyContent, NcButton, NcLoadingIcon } from '@nextcloud/vue'
 import { actions, mutations } from '../store/index.js'
 import { privateRoutes } from '../router.js'
-import StarShootingIcon from 'vue-material-design-icons/StarShooting.vue'
-import UploadIcon from 'vue-material-design-icons/Upload.vue'
-import PlusIcon from 'vue-material-design-icons/Plus.vue'
-import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
-import VectorLinkIcon from 'vue-material-design-icons/VectorLink.vue'
-import LinkVariantOffIcon from 'vue-material-design-icons/LinkVariantOff.vue'
-import FileDocumentMultipleIcon from 'vue-material-design-icons/FileDocumentMultiple.vue'
+import { StarShootingIcon } from './Icons.js'
+import { UploadIcon } from './Icons.js'
+import { PlusIcon } from './Icons.js'
+import { ShareVariantIcon } from './Icons.js'
+import { VectorLinkIcon } from './Icons.js'
+import { LinkVariantOffIcon } from './Icons.js'
+import { FileDocumentMultipleIcon } from './Icons.js'
 
 export default {
 	name: 'NoBookmarks',

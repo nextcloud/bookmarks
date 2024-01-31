@@ -14,12 +14,12 @@
 		@rename="submit"
 		@rename-cancel="cancel">
 		<template #icon>
-			<EarthIcon :fill-color="colorMainText" class="icon" />
+			<EarthIcon :size="20" :fill-color="colorMainText" class="icon" />
 		</template>
 	</Item>
 </template>
 <script>
-import EarthIcon from 'vue-material-design-icons/Earth.vue'
+import { EarthIcon } from './Icons.js'
 import Item from './Item.vue'
 import { actions, mutations } from '../store/index.js'
 

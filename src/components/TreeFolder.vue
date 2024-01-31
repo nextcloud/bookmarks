@@ -8,11 +8,11 @@
 	<div :class="{treefolder:true, active}">
 		<div class="treefolder__title" @click="$emit('select', folder.id)">
 			<h3>
-				<FolderIcon v-if="!childrenShown"
+				<FolderIcon :size="20" v-if="!childrenShown"
 					class="treefolder__icon-hover"
 					:fill-color="colorPrimaryElement"
 					@click.stop="folder.children.length && showChildren && (childrenShown = true)" />
-				<FolderOpenIcon v-else
+				<FolderOpenIcon :size="20" v-else
 					class="treefolder__icon-hover"
 					:fill-color="colorPrimaryElement"
 					@click.stop="folder.children.length && (childrenShown = false)" />
@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import FolderIcon from 'vue-material-design-icons/Folder.vue'
-import FolderOpenIcon from 'vue-material-design-icons/FolderOpen.vue'
+import { FolderIcon } from './Icons.js'
+import { FolderOpenIcon } from './Icons.js'
 import { privateRoutes } from '../router.js'
 export default {
 	name: 'TreeFolder',

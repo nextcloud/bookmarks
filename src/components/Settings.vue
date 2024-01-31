@@ -94,12 +94,12 @@ import { getRequestToken } from '@nextcloud/auth'
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import { privateRoutes } from '../router.js'
 import { NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField } from '@nextcloud/vue'
-import ImportIcon from 'vue-material-design-icons/Import.vue'
-import ArchiveIcon from 'vue-material-design-icons/Archive.vue'
-import BackupIcon from 'vue-material-design-icons/BackupRestore.vue'
-import LinkIcon from 'vue-material-design-icons/Link.vue'
-import ApplicationIcon from 'vue-material-design-icons/Application.vue'
-import ApplicationImportIcon from 'vue-material-design-icons/ApplicationImport.vue'
+import { ImportIcon } from './Icons.js'
+import { ArchiveIcon } from './Icons.js'
+import { BackupIcon } from './Icons.js'
+import { LinkIcon } from './Icons.js'
+import { ApplicationIcon } from './Icons.js'
+import { ApplicationImportIcon } from './Icons.js'
 
 export default {
 	name: 'Settings',
