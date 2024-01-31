@@ -132,7 +132,6 @@
     "Import" : "Importera",
     "Export" : "Exportera",
     "Archive path" : "Sökväg till arkiv",
-    "Enable bookmarks archiving to store the web contents of the links you bookmark" : "Aktivera arkivering av bokmärken för att spara webbinnehållet för de länkar du bokmärker.",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "Ange sökvägen till en mapp i dina filer där bokmärkta filer ska lagras.",
     "Backups" : "Säkerhetskopior",
     "Enable bookmarks backups" : "Aktivera säkerhetskopior",

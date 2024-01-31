@@ -136,7 +136,6 @@ OC.L10N.register(
     "Import" : "Importieren",
     "Export" : "Exportieren",
     "Archive path" : "Archiv-Pfad",
-    "Enable bookmarks archiving to store the web contents of the links you bookmark" : "Aktivieren Sie das Archivieren von Lesezeichen, um den Webinhalt der von Ihnen gesetzten Lesezeichen zu speichern.",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "Geben Sie den Pfad eines Ordners an, in dem Ihre mit Lesezeichen versehene Dateien gespeichert werden sollen",
     "Backups" : "Sicherungen",
     "Enable bookmarks backups" : "Lesezeichen-Sicherungen aktivieren",

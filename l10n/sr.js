@@ -136,7 +136,6 @@ OC.L10N.register(
     "Import" : "Увоз",
     "Export" : "Извоз",
     "Archive path" : "Путања архиве",
-    "Enable bookmarks archiving to store the web contents of the links you bookmark" : "Дозвољава да маркери чувају веб садржај линкова које маркирате",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "Унесите ппутању фолдера у вашим Фајловима где ће се чувати маркирани фајлови.",
     "Backups" : "Резервне копије",
     "Enable bookmarks backups" : "Укључи резервне копије маркера",

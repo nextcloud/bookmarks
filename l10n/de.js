@@ -223,6 +223,7 @@ OC.L10N.register(
     "Failed to delete folder" : "Ordner konnte nicht gelöscht werden",
     "Failed to create folder" : "Ordner konnte nicht erstellt werden",
     "Failed to fetch bookmarks." : "Lesezeichen konnten nicht abgerufen werden.",
+    "Failed to store setting" : "Einstellungen konnten nicht gespeichert werden.",
     "Failed to load setting {key}" : "Einstellung konnte nicht geladen werden {key}",
     "Failed to update share {shareId}" : "Aktualisierung der Freigabe fehlgeschlagen {shareId}",
     "Failed to delete share {shareId}" : "Freigabe konnte nicht gelöscht werden {shareId}",

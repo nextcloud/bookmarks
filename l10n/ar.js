@@ -136,7 +136,6 @@ OC.L10N.register(
     "Import" : "إستيراد",
     "Export" : "تصدير",
     "Archive path" : "مسار الأرشيف",
-    "Enable bookmarks archiving to store the web contents of the links you bookmark" : "قم بتمكين \"أرشفة الإشارات المرجعية\" لتخزين محتويات الويب للروابط التي سجلّتَ إشارتها المرجعية",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "أدخل مسار مجلد في ملفاتك Files حيث سيتم تخزين الملفات المُؤشّر عليها.",
     "Backups" : "نُسَخ احتياطية ",
     "Enable bookmarks backups" : "تمكين النُّسَخ الاحتياطية للإشارات المرجعية",

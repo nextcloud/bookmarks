@@ -136,7 +136,6 @@ OC.L10N.register(
     "Import" : "匯入",
     "Export" : "匯出",
     "Archive path" : "封存路徑",
-    "Enable bookmarks archiving to store the web contents of the links you bookmark" : "啟用書籤封存以儲存您加入書籤的網路內容",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "輸入要儲存書籤檔案的資料夾路徑。",
     "Backups" : "備份",
     "Enable bookmarks backups" : "啟用書籤備份",

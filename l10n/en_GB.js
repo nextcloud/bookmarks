@@ -223,6 +223,7 @@ OC.L10N.register(
     "Failed to delete folder" : "Failed to delete folder",
     "Failed to create folder" : "Failed to create folder",
     "Failed to fetch bookmarks." : "Failed to fetch bookmarks.",
+    "Failed to store setting" : "Failed to store setting",
     "Failed to load setting {key}" : "Failed to load setting {key}",
     "Failed to update share {shareId}" : "Failed to update share {shareId}",
     "Failed to delete share {shareId}" : "Failed to delete share {shareId}",
