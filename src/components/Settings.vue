@@ -5,62 +5,78 @@
   -->
 
 <template>
-	<div class="settings">
-		<input type="file"
-			class="import"
-			size="5"
-			@change="onImportSubmit">
-		<button @click="onImportOpen">
-			<span :class="{'icon-upload': !importing, 'icon-loading-small': importing}" />{{ t('bookmarks', 'Import') }}
-		</button>
-		<button @click="onExport">
-			<span class="icon-download" /> {{ t('bookmarks', 'Export') }}
-		</button>
+	<NcAppSettingsDialog :open.sync="settingsOpen" :show-navigation="true" :name="t('bookmarks', 'Bookmarks settings')" class="settings">
+		<NcAppSettingsSection id="importexport" :name="t('bookmarks', 'Import/Export')">
+			<template #icon>
+				<ImportIcon :size="20" />
+			</template>
+			<input type="file"
+				class="import"
+				size="5"
+				@change="onImportSubmit">
+			<button @click="onImportOpen">
+				<span :class="{'icon-upload': !importing, 'icon-loading-small': importing}" />{{ t('bookmarks', 'Import bookmarks') }}
+			</button>
+			<button @click="onExport">
+				<span class="icon-download" /> {{ t('bookmarks', 'Export bookmarks') }}
+			</button>
+		</NcAppSettingsSection>
 
-		<template v-if="scrapingEnabled">
-			<label><h3>{{ t('bookmarks', 'Archive path') }}</h3>
-				<p><label><input type="checkbox" :checked="archiveEnabled" @input="onChangeArchiveEnabled">{{ t('bookmarks', 'Enable bookmarks archiving to store the web contents of the links that you have bookmarked') }}</label></p>
-				<p>{{ t('bookmarks',
-					'Enter the path of a folder in your Files where bookmarked files should be stored.'
-				) }}</p>
-				<input :value="archivePath"
-					:readonly="true"
-					@click="onChangeArchivePath">
-			</label>
-		</template>
+		<NcAppSettingsSection v-if="scrapingEnabled" id="archive" :name="t('bookmarks', 'Auto-archiving')">
+			<template #icon>
+				<ArchiveIcon :size="20" />
+			</template>
+			<p>{{ t('bookmarks', 'The bookmarks app can automatically archive the web content of links you have bookmarked') }}</p>
+			<NcCheckboxRadioSwitch :checked="archiveEnabled" @update:checked="onChangeArchiveEnabled">{{ t('bookmarks', 'Enable archiving') }}</NcCheckboxRadioSwitch>
+			<NcTextField v-if="archiveEnabled" :label="t('bookmarks', 'Enter the path of a folder in your Files where bookmarked files should be stored.')" :value="archivePath"
+									 :readonly="true"
+									 @click="onChangeArchivePath" />
+		</NcAppSettingsSection>
 
-		<label><h3>{{ t('bookmarks', 'Backups') }}</h3>
-			<p><label><input type="checkbox" :checked="backupEnabled" @input="onChangeBackupEnabled">{{ t('bookmarks', 'Enable bookmarks backups') }}</label></p>
-			<p>{{ t('bookmarks',
-				'Enter the path of a folder in your Files where backups will be stored.'
-			) }}</p>
-			<input :value="backupPath"
+		<NcAppSettingsSection id="backup" :name="t('bookmarks', 'Auto-Backup')">
+			<template #icon>
+				<BackupIcon :size="20" />
+			</template>
+			<p>{{ t('bookmarks', 'The bookmarks app can automatically backup your bookmarks on a daily basis to prevent data loss when syncing bookmarks across devices.') }}</p>
+			<NcCheckboxRadioSwitch :checked="backupEnabled" @update:checked="onChangeBackupEnabled">{{ t('bookmarks', 'Enable backups') }}</NcCheckboxRadioSwitch>
+			<NcTextField v-if="backupEnabled" :label="t('bookmarks', 'Enter the path of a folder in your Files where backups will be stored.')" :value="backupPath"
 				:readonly="true"
-				@click="onChangeBackupPath">
-		</label>
+				@click="onChangeBackupPath" />
+		</NcAppSettingsSection>
 
-		<h3>{{ t('bookmarks', 'Client apps') }}</h3>
-		<p>
-			{{
-				t('bookmarks',
-					'Also check out the collection of client apps that integrate with this app: '
-				)
-			}}
-			<a href="https://github.com/nextcloud/bookmarks#third-party-clients">{{
-				t('bookmarks', 'Client apps')
-			}}</a>
-		</p>
+		<NcAppSettingsSection id="client-apps" :name="t('bookmarks', 'Client apps')">
+			<template #icon>
+				<ApplicationIcon :size="20" />
+			</template>
+			<p>
+				{{
+					t('bookmarks',
+						'Also check out the collection of client apps that integrate with this app: '
+					)
+				}}
+				<a href="https://github.com/nextcloud/bookmarks#third-party-clients" style="text-decoration: underline;">{{
+					t('bookmarks', 'Client apps')
+				}}</a>
+			</p>
+		</NcAppSettingsSection>
 
-		<label>
-			<h3>{{ t('bookmarks', 'Install web app on device') }}</h3>
+		<NcAppSettingsSection id="install" :name="t('bookmarks', 'Install web app')">
+			<template #icon>
+				<ApplicationImportIcon :size="20" />
+			</template>
 			<p>{{ t('bookmarks', 'You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don\'t like it.') }}</p>
 			<a class="button center" href="#" @click.prevent="clickAddToHomeScreen">{{ t('bookmarks', 'Install on home screen') }}</a>
-		</label>
+		</NcAppSettingsSection>
 
-		<label><h3>{{ t('bookmarks', 'Bookmarklet') }}</h3>
-			<p>{{ t('bookmarks',
-				'Drag this to your browser bookmarks and click it to quickly bookmark a webpage.'
-			) }}</p>
+		<NcAppSettingsSection id="bookmarklet" :name="t('bookmarks', 'Bookmarklet')">
+			<template #icon>
+				<LinkIcon :size="20" />
+			</template>
+			<p>
+				{{ t('bookmarks',
+					'Drag this to your browser bookmarks and click it to quickly bookmark a webpage.'
+				) }}
+			</p>
 			<a class="button center"
 				:href="bookmarklet"
 				@click.prevent="void 0">{{
@@ -68,8 +84,8 @@
 						instanceName: oc_defaults.name
 					})
 				}}</a>
-		</label>
-	</div>
+		</NcAppSettingsSection>
+	</NcAppSettingsDialog>
 </template>
 <script>
 import { generateUrl } from '@nextcloud/router'
@@ -77,10 +93,23 @@ import { actions } from '../store/index.js'
 import { getRequestToken } from '@nextcloud/auth'
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import { privateRoutes } from '../router.js'
+import { NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField } from '@nextcloud/vue'
+import ImportIcon from 'vue-material-design-icons/Import.vue'
+import ArchiveIcon from 'vue-material-design-icons/Archive.vue'
+import BackupIcon from 'vue-material-design-icons/BackupRestore.vue'
+import LinkIcon from 'vue-material-design-icons/Link.vue'
+import ApplicationIcon from 'vue-material-design-icons/Application.vue'
+import ApplicationImportIcon from 'vue-material-design-icons/ApplicationImport.vue'
 
 export default {
 	name: 'Settings',
-	components: {},
+	components: { NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField, ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon },
+	props: {
+		settingsOpen: {
+			type: Boolean,
+			required: true,
+		},
+	},
 	data() {
 		return {
 			importing: false,
@@ -106,7 +135,7 @@ export default {
 		},
 		bookmarklet() {
 			const bookmarkletUrl
-					= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
+		= window.location.origin + generateUrl('/apps/bookmarks/bookmarklet')
 			let queryStringExtension = ''
 			if (this.$route.name === privateRoutes.FOLDER) {
 				queryStringExtension = `+'&folderId=${this.$route.params.folder}'`
@@ -131,7 +160,7 @@ export default {
 	},
 	mounted() {
 		window.addEventListener('beforeinstallprompt', (e) => {
-			// Prevent Chrome 67 and earlier from automatically showing the prompt
+		// Prevent Chrome 67 and earlier from automatically showing the prompt
 			e.preventDefault()
 			// Stash the event so it can be triggered later.
 			this.addToHomeScreen = e
@@ -153,8 +182,8 @@ export default {
 		},
 		onExport() {
 			window.location
-				= 'bookmark/export?requesttoken='
-					+ encodeURIComponent(getRequestToken())
+		= 'bookmark/export?requesttoken='
+		+ encodeURIComponent(getRequestToken())
 		},
 		async onChangeArchiveEnabled(e) {
 			await this.$store.dispatch(actions.SET_SETTING, {
@@ -206,38 +235,10 @@ export default {
 }
 </script>
 <style>
-.import {
+	.import {
 	opacity: 0;
 	position: absolute;
 	top: 0;
 	left: -1000px;
-}
-
-.settings label,
-.settings input,
-.settings select,
-.settings button,
-.settings label a.button {
-	display: block;
-	width: 100%;
-}
-
-.settings input[type=checkbox] {
-	display: inline-block;
-	position: relative;
-	top: 0.5em;
-	width: 1.2em;
-}
-
-.settings label {
-	margin-top: 10px;
-}
-
-.settings h3 {
-	font-weight: bold;
-}
-
-.settings a:link:not(.button) {
-	text-decoration: underline;
-}
+	}
 </style>

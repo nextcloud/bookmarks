@@ -100,6 +100,7 @@ class UserSettingsService {
 			$array[$key] = $this->get($key);
 		}
 		$array['limit'] = $this->get('limit');
+		$array['privacy.enableScraping'] = $this->get('privacy.enableScraping');
 		return $array;
 	}
 }

@@ -104,9 +104,8 @@
 			</template>
 		</template>
 		<template #footer>
-			<NcAppNavigationSettings v-if="!isPublic">
-				<Settings />
-			</NcAppNavigationSettings>
+			<NcAppNavigationItem :name="t('bookmarks', 'Settings')" @click="settingsOpen = !settingsOpen"><template #icon><CogIcon /></template></NcAppNavigationItem>
+			<Settings :settingsOpen.sync="settingsOpen" />
 		</template>
 	</NcAppNavigation>
 </template>
@@ -125,6 +124,7 @@ import VectorLinkIcon from 'vue-material-design-icons/VectorLink.vue'
 import TagIcon from 'vue-material-design-icons/Tag.vue'
 import DeleteIcon from 'vue-material-design-icons/Delete.vue'
 import GaugeIcon from 'vue-material-design-icons/Gauge.vue'
+import CogIcon from 'vue-material-design-icons/Cog.vue'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings.vue'
 import { actions, mutations } from '../store/index.js'
@@ -136,7 +136,6 @@ export default {
 		NcAppNavigationItem,
 		NcAppNavigationNewItem,
 		NcCounterBubble,
-		NcAppNavigationSettings,
 		NcAppNavigationSpacer,
 		NcActionButton,
 		Settings,
@@ -153,6 +152,7 @@ export default {
 		TagIcon,
 		DeleteIcon,
 		GaugeIcon,
+		CogIcon,
 	},
 
 	filters: {
@@ -161,7 +161,9 @@ export default {
 		},
 	},
 	data() {
-		return {}
+		return {
+			settingsOpen: false,
+		}
 	},
 	computed: {
 		tags() {
