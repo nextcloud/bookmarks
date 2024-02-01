@@ -95,6 +95,7 @@ OC.L10N.register(
     "Enter bookmark title" : "Skriv inn tittel",
     "Folder" : "Mappe",
     "Save" : "Lagre",
+    "What" : "Hva",
     "Failed to create bookmark" : "Klarte ikke å opprette bokmerke",
     "Bookmarks feed" : "Bokmerker-strøm"
 },

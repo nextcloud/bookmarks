@@ -134,6 +134,7 @@
     "Import" : "إستيراد",
     "Export" : "تصدير",
     "Archive path" : "مسار الأرشيف",
+    "Enable bookmarks archiving to store the web contents of the links that you have bookmarked" : "قُم بتمكين أرشفة الإشارات المرجعية لتخزين محتويات الوب للروابط التي تمّ وضع إشارة مرجعية عليها.",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "أدخل مسار مجلد في ملفاتك Files حيث سيتم تخزين الملفات المُؤشّر عليها.",
     "Backups" : "نُسَخ احتياطية ",
     "Enable bookmarks backups" : "تمكين النُّسَخ الاحتياطية للإشارات المرجعية",

@@ -134,6 +134,7 @@
     "Import" : "Увоз",
     "Export" : "Извоз",
     "Archive path" : "Путања архиве",
+    "Enable bookmarks archiving to store the web contents of the links that you have bookmarked" : "Дозвољава да архивирање маркера чува веб садржај линкова које сте маркирали",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "Унесите ппутању фолдера у вашим Фајловима где ће се чувати маркирани фајлови.",
     "Backups" : "Резервне копије",
     "Enable bookmarks backups" : "Укључи резервне копије маркера",
