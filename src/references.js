@@ -3,6 +3,7 @@
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
+// eslint-disable-next-line
 import { registerWidget, registerCustomPickerElement, NcCustomPickerRenderResult } from '@nextcloud/vue/dist/Components/NcRichText.js'
 import Vue from 'vue'
 import BookmarkReferenceWidget from './components/BookmarkReferenceWidget.vue'

@@ -17,6 +17,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line
 import { NcSearch } from '@nextcloud/vue/dist/Components/NcRichText.js'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
