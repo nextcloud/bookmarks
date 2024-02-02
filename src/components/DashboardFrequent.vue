@@ -5,7 +5,7 @@
   -->
 
 <template>
-	<DashboardWidget :items="items"
+	<NcDashboardWidget :items="items"
 		:loading="loading"
 		:show-more-text="t('bookmarks', 'Bookmarks')"
 		:show-more-url="moreUrl"
@@ -13,12 +13,12 @@
 </template>
 
 <script>
-import { DashboardWidget } from '@nextcloud/vue-dashboard'
+import { NcDashboardWidget } from '@nextcloud/vue'
 import { generateUrl } from '@nextcloud/router'
 import { actions } from '../store/index.js'
 export default {
 	name: 'DashboardFrequent',
-	components: { DashboardWidget },
+	components: { NcDashboardWidget },
 	computed: {
 		loading() {
 			return Boolean(this.$store.state.loading.bookmarks)

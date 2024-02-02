@@ -3,11 +3,7 @@
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
-
-// with nc/vue 7.8.0, if we remove this, nothing works...
-import {} from '@nextcloud/vue-richtext'
-
-import { registerWidget, registerCustomPickerElement, NcCustomPickerRenderResult } from '@nextcloud/vue/dist/Components/NcRichText.mjs'
+import { registerWidget, registerCustomPickerElement, NcCustomPickerRenderResult } from '@nextcloud/vue/dist/Components/NcRichText.js'
 import Vue from 'vue'
 import BookmarkReferenceWidget from './components/BookmarkReferenceWidget.vue'
 
