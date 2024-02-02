@@ -6,7 +6,7 @@
 
 <template>
 	<NcAppSettingsDialog :open="settingsOpen"
-		@update:open="$trigger('update:settingsOpen', $event)"
+		@update:open="$emit('update:settingsOpen', $event)"
 		:show-navigation="true"
 		:name="t('bookmarks', 'Bookmarks settings')"
 		class="settings">
