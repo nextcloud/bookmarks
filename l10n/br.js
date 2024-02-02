@@ -18,7 +18,6 @@ OC.L10N.register(
     "Shared with you" : "Rannet ganeoc'h",
     "Files" : "Restroù",
     "Broken links" : "Liammoù toret",
-    "Import" : "Emporzhiañ ",
     "Title" : "Titl",
     "Link" : "Liamm",
     "Tags" : "Klavioù",

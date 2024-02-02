@@ -22,8 +22,6 @@ OC.L10N.register(
     "Recent" : "Onlangs",
     "Shared with you" : "Met u gedeel",
     "Files" : " Lêers",
-    "Import" : "Voer In",
-    "Export" : "Voer uit",
     "Bookmarklet" : "Boekmerkie",
     "Title" : "Titel",
     "Link" : "Skakel",

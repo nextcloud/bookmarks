@@ -11,6 +11,7 @@ OC.L10N.register(
     "Search" : "Lorg",
     "Cancel" : "Sguir dheth",
     "Files" : "Faidhlichean",
+    "Settings" : "Roghainnean",
     "Link" : "Ceangal",
     "Tags" : "Tagaichean",
     "Notes" : "Nòtaichean",

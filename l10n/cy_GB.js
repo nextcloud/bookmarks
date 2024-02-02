@@ -14,8 +14,6 @@ OC.L10N.register(
     "Recent" : "Diweddar",
     "Shared with you" : "Shared with you",
     "Files" : "Ffeiliau",
-    "Import" : "Mewnforio",
-    "Export" : "Allforio",
     "Title" : "Teitl",
     "Link" : "Dolen",
     "Tags" : "Tagiau",

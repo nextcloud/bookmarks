@@ -16,6 +16,7 @@ OC.L10N.register(
     "Recent" : "ຫວ່າງບໍ່ດົນມາ ນີ້",
     "Shared with you" : "ແບ່ງປັບກັບທ່ານ",
     "Files" : "ຟາຍ",
+    "Settings" : "ການຕັ້ງຄ່າ",
     "Link" : "ລິງ",
     "Tags" : "ປ້າຍກຳກັບ",
     "Download file" : "ດາວ ໂຫລດຟາຍ",

@@ -13,7 +13,7 @@ OC.L10N.register(
     "Cancel" : "Otkaži",
     "Shared with you" : "Shared with you",
     "Files" : "Фајлови",
-    "Import" : "Uvezi",
+    "Settings" : "Поставке",
     "Title" : "Naslov",
     "Link" : "Prečica",
     "Root folder" : "Korena fascikla",

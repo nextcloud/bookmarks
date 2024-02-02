@@ -11,6 +11,7 @@ OC.L10N.register(
     "Search" : "Gözlemek",
     "Cancel" : "ýatyrmak",
     "Files" : "Faýllar",
+    "Settings" : "Sazlamalar",
     "Link" : "Baglanyşyk",
     "Tags" : "Bellikler",
     "Sharing" : "Paýlaşmak",

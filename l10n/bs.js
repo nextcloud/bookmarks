@@ -13,8 +13,6 @@ OC.L10N.register(
     "Cancel" : "Otkaži",
     "Shared with you" : "Shared with you",
     "Files" : "Datoteke",
-    "Import" : "Uvoz",
-    "Export" : "Izvezi",
     "Title" : "Naslov",
     "Link" : "Veza",
     "Notes" : "Notes",

@@ -11,7 +11,6 @@ OC.L10N.register(
     "Cancel" : "Encaboxar",
     "Shared with you" : "Compartióse contigo",
     "Files" : "Ficheros",
-    "Export" : "Esportar",
     "Tags" : "Etiquetes",
     "Notes" : "Notes",
     "Sharing" : "Comparticiñon",

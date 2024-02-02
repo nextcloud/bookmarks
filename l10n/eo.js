@@ -37,8 +37,6 @@ OC.L10N.register(
     "Files" : "Dosieroj",
     "Untagged" : "Sen etikedo",
     "No bookmarks here" : "Neniu legosigno ĉi tie",
-    "Import" : "Importi",
-    "Export" : "Eksporti",
     "Client apps" : "Klientaj aplikaĵoj",
     "Also check out the collection of client apps that integrate with this app: " : "Ankaŭ vidu la programojn, kiuj uzas tiun aplikaĵon:",
     "Bookmarklet" : "Legosignilo",

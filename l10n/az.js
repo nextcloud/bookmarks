@@ -16,8 +16,6 @@ OC.L10N.register(
     "Cancel" : "Dayandır",
     "Shared with you" : "Shared with you",
     "Files" : "Fayllar",
-    "Import" : "Əlavə et",
-    "Export" : "Çıxarış",
     "Title" : "Başlıq",
     "Link" : "Link",
     "Tags" : "Işarələr",

@@ -22,8 +22,6 @@ OC.L10N.register(
     "Recent" : "Reciente",
     "Shared with you" : "Compartido con usted",
     "Files" : "Archivos",
-    "Import" : "Importar",
-    "Export" : "Exportar",
     "Bookmarklet" : "Marcadores",
     "Title" : "Título",
     "Link" : "Liga",
