@@ -78,7 +78,7 @@ class Authorizer {
 				$this->setUserId($this->userSession->getUser()->getUID());
 				return;
 			}
-			if (false === $this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+			if ($this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW']) === false) {
 				return;
 			}
 			$this->setUserId($this->userSession->getUser()->getUID());
@@ -90,7 +90,7 @@ class Authorizer {
 					return;
 				}
 				[$username, $password] = explode(':', base64_decode($credentials));
-				if (false === $this->userSession->login($username, $password)) {
+				if ($this->userSession->login($username, $password) === false) {
 					return;
 				}
 				$this->setUserId($this->userSession->getUser()->getUID());

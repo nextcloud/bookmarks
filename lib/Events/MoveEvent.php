@@ -19,7 +19,7 @@ class MoveEvent extends ChangeEvent {
 	 * @param int|null $oldParent
 	 * @param int|null $newParent
 	 */
-	public function __construct(string $type, int $id, int $oldParent = null, int $newParent = null) {
+	public function __construct(string $type, int $id, ?int $oldParent = null, ?int $newParent = null) {
 		parent::__construct($type, $id);
 		$this->oldParent = $oldParent;
 		$this->newParent = $newParent;

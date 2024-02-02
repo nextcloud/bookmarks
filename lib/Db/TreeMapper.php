@@ -178,7 +178,7 @@ class TreeMapper extends QBMapper {
 	 * @param IQueryBuilder|null $queryBuilder
 	 * @return IQueryBuilder
 	 */
-	protected function selectFromType(string $type, array $cols = [], IQueryBuilder $queryBuilder = null): IQueryBuilder {
+	protected function selectFromType(string $type, array $cols = [], ?IQueryBuilder $queryBuilder = null): IQueryBuilder {
 		$qb = $queryBuilder ?? $this->db->getQueryBuilder();
 		$qb->resetQueryPart('from');
 		$qb
@@ -318,7 +318,7 @@ class TreeMapper extends QBMapper {
 			$ancestors = array_flatten(array_map(function (Entity $ancestor) {
 				return $this->findParentsOf(self::TYPE_FOLDER, $ancestor->getId());
 			}, $ancestors));
-			if (0 === count($ancestors)) {
+			if (count($ancestors) === 0) {
 				return false;
 			}
 		}
@@ -336,7 +336,7 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function deleteEntry(string $type, int $id, int $folderId = null): void {
+	public function deleteEntry(string $type, int $id, ?int $folderId = null): void {
 		$this->eventDispatcher->dispatch(BeforeDeleteEvent::class, new BeforeDeleteEvent($type, $id));
 
 		if ($type === self::TYPE_FOLDER) {
@@ -439,7 +439,7 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function move(string $type, int $itemId, int $newParentFolderId, int $index = null): void {
+	public function move(string $type, int $itemId, int $newParentFolderId, ?int $index = null): void {
 		if ($type === self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Cannot move Bookmark');
 		}
@@ -515,7 +515,7 @@ class TreeMapper extends QBMapper {
 		if ($type !== self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Only bookmarks can be in multiple folders');
 		}
-		if (0 === count($folders)) {
+		if (count($folders) === 0) {
 			return;
 		}
 
@@ -537,7 +537,7 @@ class TreeMapper extends QBMapper {
 	 * @param int|null $index
 	 * @throws UnsupportedOperation|Exception
 	 */
-	public function addToFolders(string $type, int $itemId, array $folders, int $index = null): void {
+	public function addToFolders(string $type, int $itemId, array $folders, ?int $index = null): void {
 		if ($type !== self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Only bookmarks can be in multiple folders');
 		}

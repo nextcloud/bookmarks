@@ -7,7 +7,6 @@
 
 namespace OCA\Bookmarks\Middleware;
 
-use \OCP\AppFramework\Middleware;
 use OCA\Bookmarks\Controller\BookmarkController;
 use OCA\Bookmarks\Controller\FoldersController;
 use OCA\Bookmarks\Controller\InternalBookmarkController;
@@ -15,6 +14,7 @@ use OCA\Bookmarks\Controller\InternalFoldersController;
 use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Middleware;
 
 class ExceptionMiddleware extends Middleware {
 	public function afterException($controller, $methodName, \Exception $exception): DataResponse {

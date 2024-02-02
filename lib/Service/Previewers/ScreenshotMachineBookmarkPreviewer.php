@@ -84,7 +84,7 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 				]
 			);
 			// Some HTPP Error occured :/
-			if (200 !== $response->getStatusCode()) {
+			if ($response->getStatusCode() !== 200) {
 				return null;
 			}
 			$body = $response->getBody();

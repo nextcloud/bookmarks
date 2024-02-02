@@ -67,7 +67,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 		if (!isset($bookmark)) {
 			return null;
 		}
-		if ('' === $this->apiKey) {
+		if ($this->apiKey === '') {
 			return null;
 		}
 		$url = $bookmark->getUrl();
@@ -97,7 +97,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 		}
 
 		// Some HTPP Error occured :/
-		if (200 !== $response->getStatusCode()) {
+		if ($response->getStatusCode() !== 200) {
 			return null;
 		}
 

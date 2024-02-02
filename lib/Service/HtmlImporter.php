@@ -90,7 +90,7 @@ class HtmlImporter {
 	 * @throws UserLimitExceededError
 	 * @throws HtmlParseError
 	 */
-	public function importFile($userId, string $file, int $rootFolder = null): array {
+	public function importFile($userId, string $file, ?int $rootFolder = null): array {
 		$content = file_get_contents($file);
 		return $this->import($userId, $content, $rootFolder);
 	}
@@ -113,7 +113,7 @@ class HtmlImporter {
 	 *
 	 * @psalm-return array{imported: list<array>, errors: array<array-key, mixed|string>}
 	 */
-	public function import($userId, string $content, int $rootFolderId = null): array {
+	public function import($userId, string $content, ?int $rootFolderId = null): array {
 		$imported = [];
 		$errors = [];
 

@@ -93,7 +93,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 				'timeout' => self::HTTP_TIMEOUT,
 			]);
 			// Some HTPP Error occured :/
-			if (200 !== $response->getStatusCode()) {
+			if ($response->getStatusCode() !== 200) {
 				return null;
 			}
 			$data = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
@@ -101,7 +101,7 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 			// get it
 			$response = $this->client->get($this->apiUrl . $data->id);
 			// Some HTPP Error occured :/
-			if (200 !== $response->getStatusCode()) {
+			if ($response->getStatusCode() !== 200) {
 				return null;
 			}
 			$body = $response->getBody();

@@ -100,7 +100,7 @@ class QueryParameters {
 	 * @param array|null $columns
 	 * @return string|null
 	 */
-	public function getSortBy(string $default = null, array $columns = null): ?string {
+	public function getSortBy(?string $default = null, ?array $columns = null): ?string {
 		if (isset($default) && !isset($this->sortBy)) {
 			return $default;
 		}

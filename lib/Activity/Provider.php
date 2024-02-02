@@ -54,7 +54,7 @@ class Provider implements IProvider {
 	/**
 	 * @inheritDoc
 	 */
-	public function parse($language, IEvent $event, IEvent $previousEvent = null) {
+	public function parse($language, IEvent $event, ?IEvent $previousEvent = null) {
 		if ($event->getApp() !== 'bookmarks') {
 			throw new InvalidArgumentException();
 		}
