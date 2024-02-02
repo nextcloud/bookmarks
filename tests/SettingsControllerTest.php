@@ -58,11 +58,12 @@ class SettingsControllerTest extends TestCase {
 		/** @var IFactory $l10nFactory */
 		$l10nFactory = \OC::$server->get(IFactory::class);
 		$l = $l10nFactory->get('bookmarks');
-		$userSettings = \OC::$server->get(UserSettingsService::class);
+		$this->config = \OC::$server->get(IConfig::class);
+		$userSettings = new UserSettingsService($this->userId, $this->appName, $this->config, $l);
 		if (!$this->userManager->userExists($this->userId)) {
 			$this->userManager->createUser($this->userId, 'password');
 		}
-		$this->config = \OC::$server->get(IConfig::class);
+
 		$this->controller = new SettingsController('bookmarks', $this->request, $userSettings);
 	}
 
