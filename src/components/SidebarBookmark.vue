@@ -95,7 +95,8 @@
 						@tag="onAddTag" />
 				</div>
 				<div class="details__line">
-					<PencilBoxIcon :size="20" role="figure"
+					<PencilBoxIcon :size="20"
+						role="figure"
 						:aria-label="t('bookmarks', 'Notes')"
 						:title="t('bookmarks', 'Notes')" />
 					<NcRichContenteditable :value.sync="bookmark.description"
@@ -107,7 +108,8 @@
 						@update:value="onNotesChange" />
 				</div>
 				<div v-if="archivedFile" class="details__line">
-					<FileDocumentIcon :size="20" role="figure"
+					<FileDocumentIcon :size="20"
+						role="figure"
 						:aria-label="t('bookmarks', 'Archived file')"
 						:title="t('bookmarks', 'Archived file')" />
 					<NcButton :href="archivedFileUrl" target="_blank" type="primary">
@@ -125,16 +127,7 @@
 </template>
 <script>
 import { NcAppSidebar, NcRichContenteditable, NcActionButton, NcActions, NcSelect, NcAppSidebarTab, NcButton } from '@nextcloud/vue'
-import { FileDocumentIcon } from './Icons.js'
-import { FolderIcon } from './Icons.js'
-import { InformationVariantIcon } from './Icons.js'
-import { PencilIcon } from './Icons.js'
-import { ArrowRightIcon } from './Icons.js'
-import { TagIcon } from './Icons.js'
-import { OpenInNewIcon } from './Icons.js'
-import { CloseIcon } from './Icons.js'
-import { PencilBoxIcon } from './Icons.js'
-import { DownloadIcon } from './Icons.js'
+import { FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon, DownloadIcon } from './Icons.js'
 
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
@@ -152,7 +145,7 @@ export default {
 			editingTitle: false,
 			target: '',
 			editingTarget: false,
-			activeTab: ''
+			activeTab: '',
 		}
 	},
 	computed: {

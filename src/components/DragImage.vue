@@ -6,14 +6,13 @@
 
 <template>
 	<div class="dragImage">
-		<FolderIcon :size="20" v-if="$store.state.selection.folders.length" :fill-color="colorPrimaryElement" />
-		<EarthIcon :size="20" v-else :fill-color="colorPrimaryElement" /><span class="description">{{ selectionDescription }}</span>
+		<FolderIcon v-if="$store.state.selection.folders.length" :size="20" :fill-color="colorPrimaryElement" />
+		<EarthIcon v-else :size="20" :fill-color="colorPrimaryElement" /><span class="description">{{ selectionDescription }}</span>
 	</div>
 </template>
 
 <script>
-import { FolderIcon } from './Icons.js'
-import { EarthIcon } from './Icons.js'
+import { FolderIcon, EarthIcon } from './Icons.js'
 export default {
 	name: 'DragImage',
 	components: { FolderIcon, EarthIcon },

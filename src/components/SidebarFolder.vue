@@ -131,17 +131,7 @@ import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { actions, mutations } from '../store/index.js'
-import { EyeIcon } from './Icons.js'
-import { PencilIcon } from './Icons.js'
-import { ShareAllIcon } from './Icons.js'
-import { ShareVariantIcon } from './Icons.js'
-import { InformationVariantIcon } from './Icons.js'
-import { ClipboardIcon } from './Icons.js'
-import { DeleteIcon } from './Icons.js'
-import { RssIcon } from './Icons.js'
-import { PlusIcon } from './Icons.js'
-import { LinkIcon } from './Icons.js'
-import { AccountIcon } from './Icons.js'
+import { EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, DeleteIcon, RssIcon, PlusIcon, LinkIcon, AccountIcon } from './Icons.js'
 
 export default {
 	name: 'SidebarFolder',

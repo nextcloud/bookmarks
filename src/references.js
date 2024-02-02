@@ -7,7 +7,7 @@
 // with nc/vue 7.8.0, if we remove this, nothing works...
 import {} from '@nextcloud/vue-richtext'
 
-import { registerWidget, registerCustomPickerElement, NcCustomPickerRenderResult } from '@nextcloud/vue/dist/Components/NcRichText.js'
+import { registerWidget, registerCustomPickerElement, NcCustomPickerRenderResult } from '@nextcloud/vue/dist/Components/NcRichText.mjs'
 import Vue from 'vue'
 import BookmarkReferenceWidget from './components/BookmarkReferenceWidget.vue'
 

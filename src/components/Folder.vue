@@ -21,8 +21,12 @@
 		@rename-cancel="renaming = false"
 		@click="onSelect">
 		<template #icon>
-			<FolderIcon :size="20" :fill-color="colorPrimaryElement" :class="'folder__icon'" @click="onSelect" />
-			<ShareVariantIcon :size="20" v-if="(isShared || !isOwner) || isSharedPublicly"
+			<FolderIcon :size="20"
+				:fill-color="colorPrimaryElement"
+				:class="'folder__icon'"
+				@click="onSelect" />
+			<ShareVariantIcon v-if="(isShared || !isOwner) || isSharedPublicly"
+				:size="20"
 				:fill-color="colorPrimaryText"
 				:class="['folder__icon', 'shared']" />
 		</template>
@@ -80,12 +84,7 @@
 </template>
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
-import { FolderMoveIcon } from './Icons.js'
-import { FolderIcon } from './Icons.js'
-import { ShareVariantIcon } from './Icons.js'
-import { DeleteIcon } from './Icons.js'
-import { PencilIcon } from './Icons.js'
-import { InformationVariantIcon } from './Icons.js'
+import { FolderMoveIcon, FolderIcon, ShareVariantIcon, DeleteIcon, PencilIcon, InformationVariantIcon } from './Icons.js'
 import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
 import { actions, mutations } from '../store/index.js'
 import Item from './Item.vue'

@@ -78,8 +78,7 @@ import { NcActions, NcActionButton } from '@nextcloud/vue'
 import TagLine from './TagLine.vue'
 import DragImage from './DragImage.vue'
 import { mutations } from '../store/index.js'
-import { CheckIcon } from './Icons.js'
-import { CloseIcon } from './Icons.js'
+import { CheckIcon, CloseIcon } from './Icons.js'
 
 export default {
 	name: 'Item',

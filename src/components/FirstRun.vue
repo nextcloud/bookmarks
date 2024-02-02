@@ -24,7 +24,7 @@
 				</NcButton>
 				<NcButton @click="onImportOpen">
 					<template #icon>
-						<UploadIcon :size="20" v-if="!importing" />
+						<UploadIcon v-if="!importing" :size="20" />
 						<NcLoadingIcon v-else />
 					</template>
 					{{ t('bookmarks', 'Import bookmarks') }}
@@ -44,10 +44,7 @@
 import { NcEmptyContent, NcButton, NcLoadingIcon } from '@nextcloud/vue'
 import { actions, mutations } from '../store/index.js'
 import { privateRoutes } from '../router.js'
-import { SyncIcon } from './Icons.js'
-import { PlusIcon } from './Icons.js'
-import { UploadIcon } from './Icons.js'
-import { StarShootingIcon } from './Icons.js'
+import { SyncIcon, PlusIcon, UploadIcon, StarShootingIcon } from './Icons.js'
 
 export default {
 	name: 'FirstRun',

@@ -66,8 +66,8 @@
 			<NcActions>
 				<NcActionButton @click="onToggleViewMode">
 					<template #icon>
-						<ViewListIcon :size="20" v-if="viewMode !== 'list'" />
-						<ViewGridIcon :size="20" v-else />
+						<ViewListIcon v-if="viewMode !== 'list'" :size="20" />
+						<ViewGridIcon v-else :size="20" />
 					</template>
 					{{ viewMode === 'list' ? t('bookmarks', 'Change to grid view') : t('bookmarks', 'Change to list view') }}
 				</NcActionButton>
@@ -112,22 +112,7 @@
 </template>
 <script>
 import { NcSelect, NcActions, NcActionButton, NcActionInput, NcActionRouter, NcTextField } from '@nextcloud/vue'
-import { MagnifyIcon } from './Icons.js'
-import { EarthIcon } from './Icons.js'
-import { ViewGridIcon } from './Icons.js'
-import { ViewListIcon } from './Icons.js'
-import { PlusIcon } from './Icons.js'
-import { FolderIcon } from './Icons.js'
-import { ArrowLeftIcon } from './Icons.js'
-import { RssIcon } from './Icons.js'
-import { SortAlphabeticalAscendingIcon } from './Icons.js'
-import { SortBoolAscendingIcon } from './Icons.js'
-import { SortClockAscendingOutlineIcon } from './Icons.js'
-import { SortCalendarAscendingIcon } from './Icons.js'
-import { SortNumericAscendingIcon } from './Icons.js'
-import { SortAscendingIcon } from './Icons.js'
-import { ShareVariantIcon } from './Icons.js'
-import { TagIcon } from './Icons.js'
+import { MagnifyIcon, EarthIcon, ViewGridIcon, ViewListIcon, PlusIcon, FolderIcon, ArrowLeftIcon, RssIcon, SortAlphabeticalAscendingIcon, SortBoolAscendingIcon, SortClockAscendingOutlineIcon, SortCalendarAscendingIcon, SortNumericAscendingIcon, SortAscendingIcon, ShareVariantIcon, TagIcon } from './Icons.js'
 import { actions, mutations } from '../store/index.js'
 import { generateUrl } from '@nextcloud/router'
 import BulkEditing from './BulkEditing.vue'

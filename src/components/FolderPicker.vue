@@ -38,9 +38,7 @@
 
 <script>
 import { NcActions, NcActionButton } from '@nextcloud/vue'
-import { FolderIcon } from './Icons.js'
-import { ArrowLeftIcon } from './Icons.js'
-import { HomeIcon } from './Icons.js'
+import { FolderIcon, ArrowLeftIcon, HomeIcon } from './Icons.js'
 import TreeFolder from './TreeFolder.vue'
 
 export default {

@@ -64,13 +64,7 @@
 <script>
 
 import { NcActions, NcActionSeparator, NcActionButton, NcActionInput } from '@nextcloud/vue'
-import { FolderPlusIcon } from './Icons.js'
-import { FolderMoveIcon } from './Icons.js'
-import { OpenInNewIcon } from './Icons.js'
-import { TagIcon } from './Icons.js'
-import { SelectAllIcon } from './Icons.js'
-import { SelectOffIcon } from './Icons.js'
-import { DeleteIcon } from './Icons.js'
+import { FolderPlusIcon, FolderMoveIcon, OpenInNewIcon, TagIcon, SelectAllIcon, SelectOffIcon, DeleteIcon } from './Icons.js'
 import { actions, mutations } from '../store/index.js'
 import intersection from 'lodash/intersection.js'
 

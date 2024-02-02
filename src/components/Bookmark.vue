@@ -86,12 +86,7 @@
 <script>
 import Item from './Item.vue'
 import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
-import { FolderPlusIcon } from './Icons.js'
-import { FolderMoveIcon } from './Icons.js'
-import { ContentCopyIcon } from './Icons.js'
-import { PencilIcon } from './Icons.js'
-import { InformationVariantIcon } from './Icons.js'
-import { DeleteIcon } from './Icons.js'
+import { FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon } from './Icons.js'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/index.js'

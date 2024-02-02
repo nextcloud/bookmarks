@@ -5,7 +5,11 @@
   -->
 
 <template>
-	<NcAppSettingsDialog :open.sync="settingsOpen" :show-navigation="true" :name="t('bookmarks', 'Bookmarks settings')" class="settings">
+	<NcAppSettingsDialog :open="settingsOpen"
+		@update:open="$trigger('update:settingsOpen', $event)"
+		:show-navigation="true"
+		:name="t('bookmarks', 'Bookmarks settings')"
+		class="settings">
 		<NcAppSettingsSection id="importexport" :name="t('bookmarks', 'Import/Export')">
 			<template #icon>
 				<ImportIcon :size="20" />
@@ -27,10 +31,14 @@
 				<ArchiveIcon :size="20" />
 			</template>
 			<p>{{ t('bookmarks', 'The bookmarks app can automatically archive the web content of links you have bookmarked') }}</p>
-			<NcCheckboxRadioSwitch :checked="archiveEnabled" @update:checked="onChangeArchiveEnabled">{{ t('bookmarks', 'Enable archiving') }}</NcCheckboxRadioSwitch>
-			<NcTextField v-if="archiveEnabled" :label="t('bookmarks', 'Enter the path of a folder in your Files where bookmarked files should be stored.')" :value="archivePath"
-									 :readonly="true"
-									 @click="onChangeArchivePath" />
+			<NcCheckboxRadioSwitch :checked="archiveEnabled" @update:checked="onChangeArchiveEnabled">
+				{{ t('bookmarks', 'Enable archiving') }}
+			</NcCheckboxRadioSwitch>
+			<NcTextField v-if="archiveEnabled"
+				:label="t('bookmarks', 'Enter the path of a folder in your Files where bookmarked files should be stored.')"
+				:value="archivePath"
+				:readonly="true"
+				@click="onChangeArchivePath" />
 		</NcAppSettingsSection>
 
 		<NcAppSettingsSection id="backup" :name="t('bookmarks', 'Auto-Backup')">
@@ -38,8 +46,12 @@
 				<BackupIcon :size="20" />
 			</template>
 			<p>{{ t('bookmarks', 'The bookmarks app can automatically backup your bookmarks on a daily basis to prevent data loss when syncing bookmarks across devices.') }}</p>
-			<NcCheckboxRadioSwitch :checked="backupEnabled" @update:checked="onChangeBackupEnabled">{{ t('bookmarks', 'Enable backups') }}</NcCheckboxRadioSwitch>
-			<NcTextField v-if="backupEnabled" :label="t('bookmarks', 'Enter the path of a folder in your Files where backups will be stored.')" :value="backupPath"
+			<NcCheckboxRadioSwitch :checked="backupEnabled" @update:checked="onChangeBackupEnabled">
+				{{ t('bookmarks', 'Enable backups') }}
+			</NcCheckboxRadioSwitch>
+			<NcTextField v-if="backupEnabled"
+				:label="t('bookmarks', 'Enter the path of a folder in your Files where backups will be stored.')"
+				:value="backupPath"
 				:readonly="true"
 				@click="onChangeBackupPath" />
 		</NcAppSettingsSection>
@@ -94,12 +106,7 @@ import { getRequestToken } from '@nextcloud/auth'
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import { privateRoutes } from '../router.js'
 import { NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField } from '@nextcloud/vue'
-import { ImportIcon } from './Icons.js'
-import { ArchiveIcon } from './Icons.js'
-import { BackupIcon } from './Icons.js'
-import { LinkIcon } from './Icons.js'
-import { ApplicationIcon } from './Icons.js'
-import { ApplicationImportIcon } from './Icons.js'
+import { ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon } from './Icons.js'
 
 export default {
 	name: 'Settings',
@@ -236,9 +243,9 @@ export default {
 </script>
 <style>
 	.import {
-	opacity: 0;
-	position: absolute;
-	top: 0;
-	left: -1000px;
+		opacity: 0;
+		position: absolute;
+		top: 0;
+		left: -1000px;
 	}
 </style>
