@@ -62,7 +62,7 @@ export default {
 		active() {
 			return this.$route.params.folder === this.folder.id
 		},
-		bookmarksCount(){
+		bookmarksCount() {
 			return this.$store.state.countsByFolder[this.folder.id]
 		},
 	},
@@ -70,7 +70,7 @@ export default {
 		'$route'() {
 			if (this.$route.name === privateRoutes.FOLDER
 					&& (this.$route.params.folder === this.folder.id
-							|| this.folder.children.find(f => f.id === this.$route.params.folder))
+							|| this.folder.children.find(f => f.id === this.$route.params.folder)) && this.folder.children.length
 			) {
 				this.childrenShown = true
 			}
