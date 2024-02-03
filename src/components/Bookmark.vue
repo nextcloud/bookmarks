@@ -347,6 +347,7 @@ export default {
 	left: calc(45% - 20px);
 	transform: scale(2);
 	transform-origin: top left;
+	margin: 0 5px 0 8px;
 }
 
 .item--gridview .bookmark__description {
@@ -357,9 +358,5 @@ export default {
 	display: inline-block !important;
 	position: relative;
 	top: 5px;
-}
-
-.item--gridview .bookmark__icon {
-	margin: 0 5px 0 8px;
 }
 </style>
