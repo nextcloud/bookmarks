@@ -25,7 +25,7 @@
 				:to="{ name: routes.SHARED_FOLDERS }"
 				:name="t('bookmarks', 'Shared with you')">
 				<ShareVariantIcon slot="icon" :size="20" />
-				<NcCounterBubble v-show="Boolean(sharedFoldersCount)" slot="counter">
+				<NcCounterBubble slot="counter">
 					{{ sharedFoldersCount | largeNumbers }}
 				</NcCounterBubble>
 			</NcAppNavigationItem>
@@ -33,15 +33,15 @@
 				:to="{ name: routes.ARCHIVED }"
 				:name="t('bookmarks', 'Files')">
 				<FileDocumentMultipleIcon slot="icon" :size="20" />
-				<NcCounterBubble v-show="Boolean(archivedBookmarksCount)" slot="counter">
-					{{ archivedBookmarksCount }}
+				<NcCounterBubble slot="counter">
+					{{ archivedBookmarksCount | largeNumbers }}
 				</NcCounterBubble>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem key="menu-duplicated"
 				:to="{ name: routes.DUPLICATED }"
 				:name="t('bookmarks', 'Duplicates')">
 				<VectorLinkIcon slot="icon" :size="20" />
-				<NcCounterBubble v-show="Boolean(duplicatedBookmarksCount)" slot="counter">
+				<NcCounterBubble slot="counter">
 					{{ duplicatedBookmarksCount | largeNumbers }}
 				</NcCounterBubble>
 			</NcAppNavigationItem>
@@ -49,7 +49,7 @@
 				:to="{ name: routes.UNAVAILABLE }"
 				:name="t('bookmarks', 'Broken links')">
 				<LinkVariantOffIcon slot="icon" :size="20" />
-				<NcCounterBubble v-show="Boolean(unavailableBookmarksCount)" slot="counter">
+				<NcCounterBubble slot="counter">
 					{{ unavailableBookmarksCount | largeNumbers }}
 				</NcCounterBubble>
 			</NcAppNavigationItem>
