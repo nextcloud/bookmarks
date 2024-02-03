@@ -600,7 +600,7 @@ class BookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 *
 	 * @PublicPage
-	 * @return DataDisplayResponse|NotFoundResponse|RedirectResponse|DataResponse
+	 * @return DataDisplayResponse|NotFoundResponse|DataResponse
 	 */
 	public function getBookmarkFavicon($id) {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
@@ -609,8 +609,7 @@ class BookmarkController extends ApiController {
 		try {
 			$image = $this->bookmarks->getFavicon($id);
 			if ($image === null) {
-				// Return a placeholder
-				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
+				return new NotFoundResponse();
 			}
 			return $this->doImageResponse($image);
 		} catch (DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {
