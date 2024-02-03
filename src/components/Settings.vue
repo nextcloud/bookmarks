@@ -6,10 +6,10 @@
 
 <template>
 	<NcAppSettingsDialog :open="settingsOpen"
-		@update:open="$emit('update:settingsOpen', $event)"
 		:show-navigation="true"
 		:name="t('bookmarks', 'Bookmarks settings')"
-		class="settings">
+		class="settings"
+		@update:open="$emit('update:settingsOpen', $event)">
 		<NcAppSettingsSection id="importexport" :name="t('bookmarks', 'Import/Export')">
 			<template #icon>
 				<ImportIcon :size="20" />
