@@ -125,8 +125,20 @@ export default {
 		},
 		subFolders() {
 			if (this.$route.name === this.routes.SHARED_FOLDERS) {
+				// Show shared folders
 				return Object.keys(this.$store.state.sharedFoldersById)
 					.map(folderId => this.$store.getters.getFolder(folderId)[0])
+			}
+			if (this.$route.name === this.routes.SEARCH) {
+				// Search folders
+				const searchFolder = (folder) => {
+					const results = folder.children.flatMap(searchFolder)
+					if (this.$store.state.fetchState.query.search.some(term => term.trim() && folder.title.toLowerCase().includes(term.toLowerCase()))) {
+						results.push(folder)
+					}
+					return results
+				}
+				return this.$store.getters.getFolder(-1)[0].children.flatMap(searchFolder)
 			}
 			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []
