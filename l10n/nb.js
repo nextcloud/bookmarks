@@ -62,6 +62,7 @@ OC.L10N.register(
     "Enter a link" : "Skriv inn et lenke",
     "Add a bookmark" : "Legg til bokmerke",
     "Enter folder title" : "Skriv inn tittel",
+    "Shared by {user}" : "Delt av {user}",
     "Rename folder" : "Gi mappen nytt navn",
     "Delete folder" : "Slett mappe",
     "Choose folder" : "Velg mappe",

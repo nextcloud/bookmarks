@@ -125,6 +125,7 @@ OC.L10N.register(
     "Search tags" : "Търсене на етикети",
     "Untagged" : "Без отметки",
     "{used} bookmarks of {available} available" : " {used} отметки от {available} налични",
+    "Settings" : "Настройки",
     "No bookmarked files" : "Няма файлове с поставена отметка",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Отметките към файлове като снимки или PDF файлове автоматично ще бъдат запазени във вашите Nextcloud файлове, така че все още ще можете да ги намерите дори когато връзката е офлайн.",
     "No broken links" : "Няма повредени връзки",

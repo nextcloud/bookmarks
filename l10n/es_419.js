@@ -22,6 +22,7 @@ OC.L10N.register(
     "Recent" : "Reciente",
     "Shared with you" : "Compartido con usted",
     "Files" : "Archivos",
+    "Settings" : "Ajustes",
     "Bookmarklet" : "Marcadores",
     "Title" : "Título",
     "Link" : "Liga",

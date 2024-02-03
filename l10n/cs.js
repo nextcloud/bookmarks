@@ -126,6 +126,7 @@ OC.L10N.register(
     "Search tags" : "Hledat štítky",
     "Untagged" : "Neoštítkováno",
     "{used} bookmarks of {available} available" : "{used} záložek z {available} k dispozici",
+    "Settings" : "Nastavení",
     "No bookmarked files" : "Žádné záložky na soubory",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Soubory, jako jsou fotky či PDF dokumenty, na které odkaz míří, budou automaticky uloženy mezi vaše soubory v Nextcloud, takže budou k dispozici i když cíl odkazu přestane být dostupný.",
     "No broken links" : "Žádné nefunkční odkazy",

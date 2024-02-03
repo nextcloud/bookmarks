@@ -16,6 +16,7 @@ OC.L10N.register(
     "Recent" : "সাম্প্রতিক",
     "Shared with you" : "Shared with you",
     "Files" : "ফাইল",
+    "Settings" : "সেটিংস",
     "Title" : "শিরোনাম",
     "Link" : "Link",
     "Tags" : "ট্যাগ",

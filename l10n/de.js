@@ -126,6 +126,7 @@ OC.L10N.register(
     "Search tags" : "Schlagworte suchen",
     "Untagged" : "Kein Schlagwort",
     "{used} bookmarks of {available} available" : "{used} Lesezeichen von {available} verfügbaren",
+    "Settings" : "Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).",
     "No bookmarked files" : "Keine Lesezeichen zu Dateien vorahnden",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Lesezeichen für Dateien wie Fotos oder PDFs werden automatisch in deinen Nextcloud-Dateien gespeichert, sodass du sie auch dann finden kannst, wenn der Link nicht mehr erreichbar ist.",
     "No broken links" : "Keine ungültige Links",

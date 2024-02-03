@@ -13,6 +13,7 @@ OC.L10N.register(
     "Cancel" : "Otkaži",
     "Shared with you" : "Shared with you",
     "Files" : "Datoteke",
+    "Settings" : "Podešavanje",
     "Title" : "Naslov",
     "Link" : "Veza",
     "Notes" : "Notes",
