@@ -10,24 +10,32 @@
 		'bookmarkslist--gridview': viewMode === 'grid'
 	}">
 		<div v-if="$route.name === routes.ARCHIVED && bookmarks.length" class="bookmarkslist__description">
-			{{
-				t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
-			}}
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
+				}}
+			</NcNoteCard>
 		</div>
 		<div v-if="$route.name === routes.UNAVAILABLE && bookmarks.length" class="bookmarkslist__description">
-			{{
-				t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')
-			}}
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')
+				}}
+			</NcNoteCard>
 		</div>
 		<div v-if="$route.name === routes.SHARED_FOLDERS && bookmarks.length" class="bookmarkslist__description">
-			{{
-				t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')
-			}}
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')
+				}}
+			</NcNoteCard>
 		</div>
 		<div v-if="$route.name === routes.DUPLICATED && bookmarks.length" class="bookmarkslist__description">
-			{{
-				t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')
-			}}
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')
+				}}
+			</NcNoteCard>
 		</div>
 		<VirtualScroll :reached-end="reachedEnd" @load-more="loadMore">
 			<CreateBookmark v-if="newBookmark" />
@@ -74,6 +82,7 @@
 </template>
 
 <script>
+import { NcNoteCard } from '@nextcloud/vue'
 import Bookmark from './Bookmark.vue'
 import Folder from './Folder.vue'
 import CreateBookmark from './CreateBookmark.vue'
@@ -94,6 +103,7 @@ export default {
 		NoBookmarks,
 		Bookmark,
 		Folder,
+		NcNoteCard,
 	},
 	computed: {
 		bookmarks() {
@@ -162,14 +172,6 @@ export default {
 }
 </script>
 <style>
-.bookmarkslist__description {
-	width: 100%;
-	margin: 10px auto;
-	flex-grow: 1;
-	flex-shrink: 0;
-	text-align: center;
-}
-
 .folder--gridview,
 .bookmark--gridview,
 .bookmarkslist--gridview .create-folder,
