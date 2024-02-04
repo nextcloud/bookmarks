@@ -120,7 +120,7 @@ export default {
 		Bookmark,
 		Folder,
 		NcNoteCard,
-		MagnifyIcon
+		MagnifyIcon,
 	},
 	computed: {
 		bookmarks() {
@@ -130,7 +130,7 @@ export default {
 			return this.$store.state.fetchState.reachedEnd
 		},
 		descriptionShown() {
-			return this.$route.name === this.routes.ARCHIVED || (this.$route.name === this.routes.SEARCH && Number(this.$route.params.folder) !== -1)  || this.$route.name === this.routes.UNAVAILABLE || this.$route.name === this.routes.SHARED_FOLDERS || this. $route.name === this.routes.DUPLICATED
+			return this.$route.name === this.routes.ARCHIVED || (this.$route.name === this.routes.SEARCH && Number(this.$route.params.folder) !== -1) || this.$route.name === this.routes.UNAVAILABLE || this.$route.name === this.routes.SHARED_FOLDERS || this.$route.name === this.routes.DUPLICATED
 		},
 		allBookmarksCount() {
 			return this.$store.state.countsByFolder[-1]

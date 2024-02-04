@@ -20,7 +20,9 @@
 					@click.stop="folder.children.length && (childrenShown = false)" />
 				{{ folder.title }}
 			</h3>
-			<NcCounterBubble v-if="typeof bookmarksCount !== 'undefined'">{{ bookmarksCount | largeNumbers }}</NcCounterBubble>
+			<NcCounterBubble v-if="typeof bookmarksCount !== 'undefined'">
+				{{ bookmarksCount | largeNumbers }}
+			</NcCounterBubble>
 		</div>
 		<div v-if="showChildren && childrenShown" class="treefolder__children">
 			<TreeFolder v-for="f in folder.children"
