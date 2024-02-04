@@ -134,6 +134,10 @@ export default {
 	overflow-y: scroll;
 }
 
+.bookmarkslist--with-description .virtual-scroll {
+	height: calc(100vh - 50px - 50px - 130px);
+}
+
 .bookmarkslist--gridview .container-window {
 	display: flex;
 	flex-direction: row;

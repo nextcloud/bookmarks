@@ -7,13 +7,27 @@
 <template>
 	<div :class="{
 		bookmarkslist: true,
-		'bookmarkslist--gridview': viewMode === 'grid'
+		'bookmarkslist--gridview': viewMode === 'grid',
+		'bookmarkslist--with-description': descriptionShown,
 	}">
 		<div v-if="$route.name === routes.ARCHIVED && bookmarks.length" class="bookmarkslist__description">
 			<NcNoteCard type="info">
 				{{
 					t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
 				}}
+			</NcNoteCard>
+		</div>
+		<div v-if="$route.name === routes.SEARCH && (bookmarks.length || subFolders.length) && Number($route.params.folder) !== -1" class="bookmarkslist__description">
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'Searching in the current folder only.')
+				}}
+				<NcButton @click="onSearchGlobally">
+					<template #icon>
+						<MagnifyIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Repeat search in all folders') }}
+				</NcButton>
 			</NcNoteCard>
 		</div>
 		<div v-if="$route.name === routes.UNAVAILABLE && bookmarks.length" class="bookmarkslist__description">
@@ -82,7 +96,7 @@
 </template>
 
 <script>
-import { NcNoteCard } from '@nextcloud/vue'
+import { NcButton, NcNoteCard } from '@nextcloud/vue'
 import Bookmark from './Bookmark.vue'
 import Folder from './Folder.vue'
 import CreateBookmark from './CreateBookmark.vue'
@@ -92,10 +106,12 @@ import NoBookmarks from './NoBookmarks.vue'
 import FirstRun from './FirstRun.vue'
 import VirtualScroll from './VirtualScroll.vue'
 import { privateRoutes } from '../router.js'
+import { MagnifyIcon } from './Icons.js'
 
 export default {
 	name: 'BookmarksList',
 	components: {
+		NcButton,
 		CreateFolder,
 		CreateBookmark,
 		VirtualScroll,
@@ -104,6 +120,7 @@ export default {
 		Bookmark,
 		Folder,
 		NcNoteCard,
+		MagnifyIcon
 	},
 	computed: {
 		bookmarks() {
@@ -111,6 +128,9 @@ export default {
 		},
 		reachedEnd() {
 			return this.$store.state.fetchState.reachedEnd
+		},
+		descriptionShown() {
+			return this.$route.name === this.routes.ARCHIVED || (this.$route.name === this.routes.SEARCH && Number(this.$route.params.folder) !== -1)  || this.$route.name === this.routes.UNAVAILABLE || this.$route.name === this.routes.SHARED_FOLDERS || this. $route.name === this.routes.DUPLICATED
 		},
 		allBookmarksCount() {
 			return this.$store.state.countsByFolder[-1]
@@ -133,7 +153,7 @@ export default {
 				// Search folders
 				const searchFolder = (folder) => {
 					const results = folder.children.flatMap(searchFolder)
-					if (this.$store.state.fetchState.query.search.some(term => term.trim() && folder.title.toLowerCase().includes(term.toLowerCase()))) {
+					if (this.$store.state.fetchState.query.search.every(term => term.trim() && folder.title.toLowerCase().includes(term.toLowerCase()))) {
 						results.push(folder)
 					}
 					return results
@@ -179,6 +199,9 @@ export default {
 		},
 		getBookmark(id) {
 			return this.$store.getters.getBookmark(id)
+		},
+		onSearchGlobally() {
+			this.$router.push({ name: this.routes.SEARCH, params: { search: this.$route.params.search, folder: '-1' } })
 		},
 	},
 }

@@ -17,7 +17,15 @@
 			:name="t('bookmarks', 'Nothing found')"
 			:description="t('bookmarks', 'Your search yielded no results in the current folder.')">
 			<template #icon>
-				<StarShootingIcon :size="20" />
+				<StarShootingIcon />
+			</template>
+			<template v-if="Number($route.params.folder) !== -1" #action>
+				<NcButton @click="onSearchGlobally">
+					<template #icon>
+						<MagnifyIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Repeat search in all folders') }}
+				</NcButton>
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else-if="$route.name === routes.UNAVAILABLE"
@@ -75,11 +83,11 @@
 import { NcEmptyContent, NcButton, NcLoadingIcon } from '@nextcloud/vue'
 import { actions, mutations } from '../store/index.js'
 import { privateRoutes } from '../router.js'
-import { StarShootingIcon, UploadIcon, PlusIcon, ShareVariantIcon, VectorLinkIcon, LinkVariantOffIcon, FileDocumentMultipleIcon } from './Icons.js'
+import { StarShootingIcon, UploadIcon, PlusIcon, ShareVariantIcon, VectorLinkIcon, LinkVariantOffIcon, FileDocumentMultipleIcon, MagnifyIcon } from './Icons.js'
 
 export default {
 	name: 'NoBookmarks',
-	components: { NcEmptyContent, StarShootingIcon, NcButton, NcLoadingIcon, UploadIcon, PlusIcon, ShareVariantIcon, VectorLinkIcon, LinkVariantOffIcon, FileDocumentMultipleIcon },
+	components: { NcEmptyContent, StarShootingIcon, NcButton, NcLoadingIcon, UploadIcon, PlusIcon, ShareVariantIcon, VectorLinkIcon, LinkVariantOffIcon, FileDocumentMultipleIcon, MagnifyIcon },
 	data() {
 		return { importing: false }
 	},
@@ -103,6 +111,9 @@ export default {
 				console.warn(e)
 			}
 			this.importing = false
+		},
+		onSearchGlobally() {
+			this.$router.push({ name: this.routes.SEARCH, params: { search: this.$route.params.search, folder: '-1' } })
 		},
 	},
 }
