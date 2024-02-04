@@ -7,7 +7,7 @@
 <template>
 	<div :class="['controls', $store.state.public && 'wide']">
 		<div class="controls__left">
-			<NcActions v-if="$route.name === routes.FOLDER || ($route.name === routes.SEARCH && $route.params.folder !== -1)">
+			<NcActions v-if="$route.name === routes.FOLDER || ($route.name === routes.SEARCH && Number($route.params.folder) !== -1)">
 				<NcActionButton @click="onClickBack">
 					<template #icon>
 						<ArrowLeftIcon :size="20" />
@@ -15,7 +15,7 @@
 					{{ t('bookmarks', 'Go back') }}
 				</NcActionButton>
 			</NcActions>
-			<template v-if="$route.name === routes.FOLDER || ($route.name === routes.SEARCH && $route.params.folder !== -1)">
+			<template v-if="$route.name === routes.FOLDER || ($route.name === routes.SEARCH && Number($route.params.folder) !== -1)">
 				<h2><FolderIcon :size="20" /> <span>{{ folder.title }}</span></h2>
 				<NcActions v-if="permissions.canShare">
 					<NcActionButton :close-after-click="true" @click="onOpenFolderShare">
