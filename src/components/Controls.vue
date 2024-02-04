@@ -91,7 +91,7 @@
 				<template #icon>
 					<RssIcon :size="20" />
 				</template>
-				<NcActionButton :title="t('bookmarks', 'Copy RSS Feed of current view')"
+				<NcActionButton :name="t('bookmarks', 'Copy RSS Feed of current view')"
 					:close-after-click="true"
 					@click="copyRssUrl">
 					<template #icon>
