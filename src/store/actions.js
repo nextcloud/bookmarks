@@ -13,7 +13,7 @@ import * as Parallel from 'async-parallel'
 import uniq from 'lodash/uniq.js'
 import difference from 'lodash/difference.js'
 
-const BATCH_SIZE = 42
+const BATCH_SIZE = 100
 
 export const actions = {
 	ADD_ALL_BOOKMARKS: 'ADD_ALL_BOOKMARKS',
@@ -963,7 +963,7 @@ export default {
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_SEARCH]({ dispatch, commit }, { search, folder }) {
-		commit(mutations.SET_QUERY, { search: search.split(' '), conjunction: 'and', folder, recursive: true })
+		commit(mutations.SET_QUERY, { search: search.split(' '), conjunction: 'and', ...(Number(folder) !== -1 && { folder, recursive: true }) })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_TAGS]({ dispatch, commit }, tags) {
