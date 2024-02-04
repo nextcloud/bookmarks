@@ -364,7 +364,7 @@ export default {
 }
 
 .controls__right .inline-search {
-	max-width: 150px !important;
+	max-width: 200px !important;
 	position: relative;
 	top: -4px;
 }
