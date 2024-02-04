@@ -138,7 +138,7 @@ export default {
 					}
 					return results
 				}
-				return this.$store.getters.getFolder(-1)[0].children.flatMap(searchFolder)
+				return this.$store.getters.getFolder(this.$store.state.fetchState.query.folder)[0].children.flatMap(searchFolder)
 			}
 			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []

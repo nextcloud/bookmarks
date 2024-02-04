@@ -962,8 +962,8 @@ export default {
 		commit(mutations.SET_QUERY, { sortby: 'clickcount' })
 		return dispatch(actions.FETCH_PAGE)
 	},
-	[actions.FILTER_BY_SEARCH]({ dispatch, commit }, search) {
-		commit(mutations.SET_QUERY, { search: search.split(' '), conjunction: 'and' })
+	[actions.FILTER_BY_SEARCH]({ dispatch, commit }, { search, folder }) {
+		commit(mutations.SET_QUERY, { search: search.split(' '), conjunction: 'and', folder, recursive: true })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_TAGS]({ dispatch, commit }, tags) {

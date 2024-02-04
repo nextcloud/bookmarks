@@ -284,7 +284,8 @@ class BookmarkController extends ApiController {
 		?string $url = null,
 		?bool $unavailable = null,
 		?bool $archived = null,
-		?bool $duplicated = null
+		?bool $duplicated = null,
+		bool $recursive = false,
 	): DataResponse {
 		$this->registerResponder('rss', function (DataResponse $res) {
 			if ($res->getData()['status'] === 'success') {
@@ -372,6 +373,7 @@ class BookmarkController extends ApiController {
 				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
 			}
 			$params->setFolder($this->toInternalFolderId($folder));
+			$params->setRecursive($recursive);
 		}
 
 		if ($userId !== null) {

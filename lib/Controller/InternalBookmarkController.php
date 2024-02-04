@@ -74,9 +74,10 @@ class InternalBookmarkController extends ApiController {
 		$url = null,
 		$unavailable = null,
 		$archived = null,
-		$duplicated = null
+		$duplicated = null,
+		bool $recursive = false,
 	): DataResponse {
-		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived, $duplicated);
+		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived, $duplicated, $recursive);
 	}
 
 	/**

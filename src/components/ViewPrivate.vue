@@ -169,7 +169,7 @@ export default {
 				)
 				break
 			case privateRoutes.SEARCH:
-				this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search)
+				this.$store.dispatch(actions.FILTER_BY_SEARCH, { search: route.params.search, folder: route.params.folder || -1 })
 				break
 			default:
 				throw new Error('Nothing here. Move along.')

@@ -7,7 +7,7 @@
 <template>
 	<div :class="['controls', $store.state.public && 'wide']">
 		<div class="controls__left">
-			<NcActions v-if="$route.name === routes.FOLDER">
+			<NcActions v-if="$route.name === routes.FOLDER || ($route.name === routes.SEARCH && $route.params.folder !== -1)">
 				<NcActionButton @click="onClickBack">
 					<template #icon>
 						<ArrowLeftIcon :size="20" />
@@ -15,7 +15,7 @@
 					{{ t('bookmarks', 'Go back') }}
 				</NcActionButton>
 			</NcActions>
-			<template v-if="$route.name === routes.FOLDER">
+			<template v-if="$route.name === routes.FOLDER || ($route.name === routes.SEARCH && $route.params.folder !== -1)">
 				<h2><FolderIcon :size="20" /> <span>{{ folder.title }}</span></h2>
 				<NcActions v-if="permissions.canShare">
 					<NcActionButton :close-after-click="true" @click="onOpenFolderShare">
@@ -271,7 +271,17 @@ export default {
 
 		onSearch(query) {
 			if (this.searchTimeout) clearTimeout(this.searchTimeout)
-			this.searchTimeout = setTimeout(() => this.$router.push({ name: this.routes.SEARCH, params: { search: query } }), 350)
+			this.searchTimeout = setTimeout(() => {
+				if (query.trim()) {
+					this.$router.push({ name: this.routes.SEARCH, params: { search: query, folder: this.folder?.id || -1 } })
+				} else if (this.$route.name === this.routes.SEARCH) {
+					if (this.folder) {
+						this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
+					} else {
+						this.$router.push({ name: this.routes.HOME })
+					}
+				}
+			}, 350)
 		},
 
 		copyRssUrl() {

@@ -84,7 +84,7 @@ export default {
 					route.params.tags.split(',')
 				)
 			case this.routes.SEARCH:
-				return this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search)
+				return this.$store.dispatch(actions.FILTER_BY_SEARCH, { search: route.params.search, folder: route.params.folder || -1 })
 			default:
 				throw new Error('Nothing here. Move along.')
 			}

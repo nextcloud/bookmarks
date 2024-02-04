@@ -13,6 +13,13 @@
 				<FileDocumentMultipleIcon :size="20" />
 			</template>
 		</NcEmptyContent>
+		<NcEmptyContent v-else-if="$route.name === routes.SEARCH"
+			:name="t('bookmarks', 'Nothing found')"
+			:description="t('bookmarks', 'Your search yielded no results in the current folder.')">
+			<template #icon>
+				<StarShootingIcon :size="20" />
+			</template>
+		</NcEmptyContent>
 		<NcEmptyContent v-else-if="$route.name === routes.UNAVAILABLE"
 			:name="t('bookmarks', 'No broken links')"
 			:description="t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')">

@@ -25,6 +25,7 @@ class QueryParameters {
 	private $duplicated = false;
 	private $search = [];
 	private $tags = [];
+	private bool $recursive = false;
 
 	/**
 	 * @return array
@@ -240,5 +241,21 @@ class QueryParameters {
 	 */
 	public function getDuplicated(): bool {
 		return $this->duplicated;
+	}
+
+	/**
+	 * @param bool $recursive
+	 * @return static
+	 */
+	public function setRecursive(bool $recursive): self {
+		$this->recursive = $recursive;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getRecursive(): bool {
+		return $this->recursive;
 	}
 }
