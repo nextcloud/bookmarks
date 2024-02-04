@@ -23,14 +23,14 @@ use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
 use OCP\IConfig;
+use OCP\IInitialStateService;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
 
 class WebViewController extends Controller {
-	/** @var string */
-	private $userId;
+	private ?string $userId;
 
 
 	/**
@@ -38,20 +38,20 @@ class WebViewController extends Controller {
 	 *
 	 * @param string $appName
 	 * @param IRequest $request
-	 * @param $userId
+	 * @param string|null $userId
 	 * @param IL10N $l
 	 * @param PublicFolderMapper $publicFolderMapper
 	 * @param IUserManager $userManager
 	 * @param FolderMapper $folderMapper
 	 * @param IURLGenerator $urlGenerator
-	 * @param \OCP\IInitialStateService $initialState
+	 * @param IInitialStateService $initialState
 	 * @param InternalFoldersController $folderController
-	 * @param IConfig $config
+	 * @param UserSettingsService $userSettingsService
 	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
-		string $userId,
+		?string $userId,
 		private IL10N $l,
 		private PublicFolderMapper $publicFolderMapper,
 		private IUserManager $userManager,
