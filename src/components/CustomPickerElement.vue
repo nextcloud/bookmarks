@@ -6,9 +6,6 @@
 
 <template>
 	<div style="width: 100%">
-		<h2>
-			{{ t('bookmarks', 'Bookmarks') }}
-		</h2>
 		<NcSearch ref="picker"
 			:provider="{search_providers_ids: ['bookmarks'], title: t('bookmarks', 'Bookmarks')}"
 			@cancel="cancelSearch"
