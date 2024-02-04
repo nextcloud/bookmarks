@@ -9,7 +9,7 @@
 			item: true,
 			'item--gridview': viewMode === 'grid'
 		}"
-		:style="{ background: 'var(--color-placeholder-dark)', height: viewMode !== 'grid'? '45px' : '' }">
+		:style="{ margin: viewMode !== 'grid'? '0 15px' : 'inherit', background: 'var(--color-placeholder-light)', height: viewMode !== 'grid'? '45px' : '' }">
 		<div class="item__labels" />
 		<div class="item__actions" />
 	</div>
