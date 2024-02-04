@@ -46,8 +46,8 @@ class DefaultBookmarkPreviewer implements IBookmarkPreviewer {
 	 *
 	 * @return Image|null
 	 */
-	public function getImage($bookmark): ?IImage {
-		if (!isset($bookmark)) {
+	public function getImage($bookmark, $cacheOnly = false): ?IImage {
+		if (!isset($bookmark) || $cacheOnly) {
 			return null;
 		}
 		$site = $this->scrapeUrl($bookmark->getUrl());

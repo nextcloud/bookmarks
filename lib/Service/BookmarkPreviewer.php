@@ -71,7 +71,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 	 * @param Bookmark $bookmark
 	 * @return IImage
 	 */
-	public function getImage($bookmark): ?IImage {
+	public function getImage($bookmark, $cacheOnly = false): ?IImage {
 		if ($this->enabled === 'false') {
 			return null;
 		}
@@ -98,7 +98,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 			} catch (NotFoundException $e) {
 			} catch (NotPermittedException $e) {
 			}
-			$image = $previewer->getImage($bookmark);
+			$image = $previewer->getImage($bookmark, $cacheOnly);
 			if (isset($image)) {
 				$this->cache->set($key, $image->serialize(), self::CACHE_TTL);
 				return $image;

@@ -14,5 +14,5 @@ interface IBookmarkPreviewer {
 	 * @param Bookmark $bookmark
 	 * @return IImage|null
 	 */
-	public function getImage($bookmark): ?IImage;
+	public function getImage($bookmark, $cacheOnly = false): ?IImage;
 }

@@ -65,7 +65,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 	 *
 	 * @return Image|null
 	 */
-	public function getImage($bookmark): ?IImage {
+	public function getImage($bookmark, $cacheOnly = false): ?IImage {
 		if ($this->enabled === 'false') {
 			return null;
 		}
@@ -86,6 +86,10 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 			}
 		} catch (NotFoundException $e) {
 		} catch (NotPermittedException $e) {
+		}
+
+		if ($cacheOnly) {
+			return null;
 		}
 
 		$url = $bookmark->getUrl();

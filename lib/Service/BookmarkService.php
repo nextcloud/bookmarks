@@ -480,7 +480,7 @@ class BookmarkService {
 		 * @var $bookmark Bookmark
 		 */
 		$bookmark = $this->bookmarkMapper->find($id);
-		return $this->bookmarkPreviewer->getImage($bookmark);
+		return $this->bookmarkPreviewer->getImage($bookmark, true);
 	}
 
 	/**
@@ -494,7 +494,7 @@ class BookmarkService {
 		 * @var $bookmark Bookmark
 		 */
 		$bookmark = $this->bookmarkMapper->find($id);
-		return $this->faviconPreviewer->getImage($bookmark);
+		return $this->faviconPreviewer->getImage($bookmark, true);
 	}
 
 	/**

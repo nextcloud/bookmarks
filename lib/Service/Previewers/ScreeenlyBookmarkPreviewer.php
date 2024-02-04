@@ -63,11 +63,11 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	 *
 	 * @return Image|null
 	 */
-	public function getImage($bookmark): ?IImage {
+	public function getImage($bookmark, $cacheOnly = false): ?IImage {
 		if (!isset($bookmark)) {
 			return null;
 		}
-		if ($this->apiKey === '') {
+		if ($this->apiKey === '' || $cacheOnly) {
 			return null;
 		}
 		$url = $bookmark->getUrl();

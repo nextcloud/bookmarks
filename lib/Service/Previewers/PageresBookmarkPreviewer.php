@@ -43,13 +43,13 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 *
 	 * @return Image|null
 	 */
-	public function getImage($bookmark): ?IImage {
+	public function getImage($bookmark, $cacheOnly = false): ?IImage {
 		if (!isset($bookmark)) {
 			return null;
 		}
 
 		$serverPath = self::getPageresPath();
-		if ($serverPath === null) {
+		if ($serverPath === null || $cacheOnly) {
 			return null;
 		}
 
