@@ -9,10 +9,11 @@
 		<div class="whatsnew">
 			<h3>✨ {{ t('bookmarks', 'What\'s new in Bookmarks?') }}</h3>
 			<ul>
-				<li>📜 Support for javascript and file links</li>
-				<li>📂 Bookmarklet now allows putting new bookmarks in a certain folder by default<br><small>(by first navigating to the folder and then dragging the bookmarklet button to your bookmarks as usual)</small></li>
-				<li>🖊 Edit the title of shared folders even if you don't have edit permissions</li>
-				<li>🐛 Lots of small bug fixes</li>
+				<li>📂 You can now search for folders</li>
+				<li>🔍 Search is now scoped to the current folder only</li>
+				<li>🔧 new settings experience</li>
+				<li>🧮 The folders overview now shows the cumulative bookmarks counts for all folders</li>
+				<li>🐛 Lots of small bug fixes and performance improvements</li>
 			</ul>
 		</div>
 	</NcModal>

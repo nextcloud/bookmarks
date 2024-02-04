@@ -22,7 +22,6 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
-use OCP\IConfig;
 use OCP\IInitialStateService;
 use OCP\IL10N;
 use OCP\IRequest;
