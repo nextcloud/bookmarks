@@ -59,6 +59,7 @@ OC.L10N.register(
     "Change to grid view" : "Bytt til rutenettvisning",
     "Change to list view" : "Bytt til listevisning",
     "Search" : "Søk",
+    "Sort by title" : "Sorter etter tittel",
     "Enter a link" : "Skriv inn et lenke",
     "Add a bookmark" : "Legg til bokmerke",
     "Enter folder title" : "Skriv inn tittel",
