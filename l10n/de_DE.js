@@ -132,7 +132,7 @@ OC.L10N.register(
     "No bookmarked files" : "Keine mit Lesezeichen versehenen Dateien",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Lesezeichen für Dateien wie Fotos oder PDFs werden automatisch in Ihren Nextcloud-Dateien gespeichert, sodass Sie sie auch dann finden können, wenn der Link nicht mehr erreichbar ist.",
     "Nothing found" : "Nichts gefunden",
-    "Your search yielded no results in the current folder." : "Ihre Suche hat in dem aktuellen Ordner kein Ergebnis erbracht",
+    "Your search yielded no results in the current folder." : "Ihre Suche hat im aktuellen Ordner kein Ergebnis erbracht.",
     "No broken links" : "Keine ungültigen Links",
     "No shared folders" : "Keine geteilten Ordner",
     "No duplicated bookmarks" : "Keine doppelten Lesezeichen",
