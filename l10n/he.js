@@ -41,7 +41,7 @@ OC.L10N.register(
     "Cancel selection" : "ביטול בחירה",
     "Selected {folders} folders and {bookmarks} bookmarks" : "נבחרו {folders} תיקיות ו־{bookmarks} סימניות",
     "Do you really want to delete these items?" : "למחוק את הפריטים האלה?",
-    "_Selected %n bookmark_::_Selected %n bookmarks_" : ["סימנייה אחת נבחרה","%n סימניות נבחרו","%n סימניות נבחרו","%n סימניות נבחרו"],
+    "_Selected %n bookmark_::_Selected %n bookmarks_" : ["סימנייה אחת נבחרה","%n סימניות נבחרו","%n סימניות נבחרו"],
     "_Selected %n folder_::_Selected %n folders_" : ["נבחרה תיקייה %n","נבחרו %n תיקיות","נבחרו %n תיקיות","נבחרו %n תיקיות"],
     "Go back" : "חזרה",
     "Select one or more tags" : "יש לבחור תגית אחת או יותר",
@@ -141,4 +141,4 @@ OC.L10N.register(
     "Failed to delete share {shareId}" : "מחיקת השיתוף {shareId} נכשלה",
     "Bookmarks feed" : "ערוץ סימניות"
 },
-"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");
+"nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");
