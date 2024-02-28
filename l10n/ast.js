@@ -6,6 +6,8 @@ OC.L10N.register(
     "Move" : "Mover",
     "Delete" : "Desaniciar",
     "Select all" : "Seleicionar too",
+    "Go back" : "Dir p'atrás",
+    "New" : "Nuevu",
     "New folder" : "Carpeta nueva",
     "Search" : "Buscar",
     "_%n folder_::_%n folders_" : ["%n carpeta","%n folders"],
