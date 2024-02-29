@@ -20,6 +20,7 @@ OC.L10N.register(
     "Settings" : "Configuración",
     "Tags" : "Etiquetes",
     "Notes" : "Notes",
+    "Owner" : "Propietariu",
     "Sharing" : "Comparticiñon",
     "Privacy" : "Privacidá",
     "This URL is already bookmarked! Overwrite?" : "¡Esta URL xá ta en Marcadores! ¿Quies sobrescribila?",

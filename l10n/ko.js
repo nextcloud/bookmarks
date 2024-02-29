@@ -90,6 +90,7 @@ OC.L10N.register(
     "Link copied" : "링크 복사됨",
     "Privacy" : "프라이버시",
     "Performance" : "성능",
+    "In an installation with a lot of users it may be useful to restrict the number of bookmarks per account." : "계정이 대량으로 존재할 경우 계정 당 최대 북마크 수를 제한하는 것이 좋습니다.",
     "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "계정 당 최대 북마크 수 (0을 입력할 시 무제한이며 이는 기본값입니다.)",
     "Previews" : "미리 보기",
     "Screeenly API URL" : "Screeenly API URL",
