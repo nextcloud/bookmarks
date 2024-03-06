@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Details" : "Detalles",
     "Rename" : "Renomar",
+    "Copy link" : "Copiar l'enllaz",
     "Move" : "Mover",
     "Delete" : "Desaniciar",
     "Select all" : "Seleicionar too",
