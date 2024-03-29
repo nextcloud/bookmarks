@@ -28,6 +28,7 @@ OC.L10N.register(
     "Allow editing" : "Permitir la edición",
     "Link copied" : "Copióse l'enllaz",
     "Privacy" : "Privacidá",
+    "Performance" : "Rindimientu",
     "Failed to save settings" : "Nun se pue guardar la configuración",
     "Failed to load settings" : "Nun se pue cargar la configuración",
     "This URL is already bookmarked! Overwrite?" : "¡Esta URL xá ta en Marcadores! ¿Quies sobrescribila?",
