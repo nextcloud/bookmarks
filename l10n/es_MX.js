@@ -10,6 +10,7 @@ OC.L10N.register(
     "Copy link" : "Copiar liga",
     "Move" : "Mover",
     "Delete" : "Borrar",
+    "Delete selection" : "Borrar selección",
     "Select all" : "Seleccionar todo",
     "Go back" : "Regresar",
     "New" : "Nuevo",
