@@ -150,7 +150,7 @@ OC.L10N.register(
     "Link" : "Link",
     "Untitled folder" : "Unavngivet mappe",
     "Root folder" : "Rodmappe",
-    "Tags" : "Mærker",
+    "Tags" : "Tags",
     "Select tags and create new ones" : "Vælg tags og opret nye",
     "Notes" : "Noter",
     "Notes for this bookmark …" : "Noter til dette bogmærke...",
