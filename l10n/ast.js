@@ -6,6 +6,7 @@ OC.L10N.register(
     "Copy link" : "Copiar l'enllaz",
     "Move" : "Mover",
     "Delete" : "Desaniciar",
+    "Link copied to clipboard" : "L'enllaz copióse nel cartafueyu",
     "Delete selection" : "Desaniciar la seleición",
     "Select all" : "Seleicionar too",
     "Go back" : "Dir p'atrás",
