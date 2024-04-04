@@ -13,6 +13,7 @@ OC.L10N.register(
     "Delete selection" : "Borrar selección",
     "Select all" : "Seleccionar todo",
     "Go back" : "Regresar",
+    "Share folder" : "Compartir carpeta",
     "New" : "Nuevo",
     "New folder" : "Carpeta nueva ",
     "Search" : "Buscar",
