@@ -27,6 +27,7 @@ OC.L10N.register(
     "Share link" : "Link deelen",
     "Allow editing" : "Beaarbechten erlaben",
     "Allow resharing" : "Resharing erlaben",
+    "Link copied" : "Link kopéiert",
     "Folder" : "Dossier",
     "Save" : "Späicheren"
 },
