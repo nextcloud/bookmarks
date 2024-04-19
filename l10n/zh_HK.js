@@ -191,7 +191,7 @@ OC.L10N.register(
     "Bookmarks will try to access web pages that you add to automatically add information about them." : "書籤將嘗試存取您添加的網頁，以自動添加有關它們的信息。",
     "Enable accessing and collecting information from the web pages you add" : "從您增加的網頁啟用存取及收集資訊",
     "Performance" : "效能",
-    "In an installation with a lot of users it may be useful to restrict the number of bookmarks per account." : "在具有大量用戶的安裝中，限制每個賬戶的書籤數量可能很有用。",
+    "In an installation with a lot of users it may be useful to restrict the number of bookmarks per account." : "在具有大量用戶的安裝中，限制每個帳戶的書籤數量可能很有用。",
     "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "每個帳號可以允許的書籤最大數量。（0是無限制; 預設是無限制）",
     "Previews" : "預覽",
     "In order to display real screenshots of your bookmarked websites, Bookmarks can use third-party services to generate previews." : "為了顯示您添加了書籤的網站的真實螢幕截圖，Bookmarks 可以使用第三方服務來生成預覽。",
