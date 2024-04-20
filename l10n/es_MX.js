@@ -43,6 +43,7 @@ OC.L10N.register(
     "Privacy" : "Privacidad",
     "This URL is already bookmarked! Overwrite?" : "¡Esta URL ya está marcada! ¿Quieres sobreescribirlo?",
     "Folder" : "Carpeta",
-    "Save" : "Guardar"
+    "Save" : "Guardar",
+    "Failed to load tags" : "No se pudieron cargar las etiquetas"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
