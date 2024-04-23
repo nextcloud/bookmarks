@@ -54,6 +54,8 @@
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Los marcadores de archivos en la web, como fotos o PDFs, se guardarán automáticamente en sus archivos de Nextcloud, por lo que aún puede encontrarlos incluso cuando el enlace no esté disponible.",
     "Searching in the current folder only." : "Buscando únicamente en la carpeta actual.",
     "Repeat search in all folders" : "Repetir la búsqueda en todas las carpetas",
+    "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Los marcadores se comprueban regularmente y se listan aquellos que no se pueden alcanzar.",
+    "You can share bookmark folders with others. All folders shared with you are listed here." : "Puede compartir carpetas de marcadores con otros. Todas las carpetas que le han compartido se listan aquí.",
     "Open all selected" : "Abrir todos los seleccionados",
     "Move selection" : "Mover selección",
     "Edit tags of selection" : "Editar las etiquetas de la selección",
