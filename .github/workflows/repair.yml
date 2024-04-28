@@ -25,7 +25,7 @@ jobs:
       matrix:
         php-versions: ['8.1']
         databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable28']
+        server-versions: ['stable28', 'stable29']
 
     name: Repair step on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
