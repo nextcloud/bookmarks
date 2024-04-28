@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -74,9 +74,10 @@ class InternalBookmarkController extends ApiController {
 		$url = null,
 		$unavailable = null,
 		$archived = null,
-		$duplicated = null
+		$duplicated = null,
+		bool $recursive = false,
 	): DataResponse {
-		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived, $duplicated);
+		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived, $duplicated, $recursive);
 	}
 
 	/**

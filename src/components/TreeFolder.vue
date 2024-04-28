@@ -9,15 +9,20 @@
 		<div class="treefolder__title" @click="$emit('select', folder.id)">
 			<h3>
 				<FolderIcon v-if="!childrenShown"
+					:size="20"
 					class="treefolder__icon-hover"
 					:fill-color="colorPrimaryElement"
 					@click.stop="folder.children.length && showChildren && (childrenShown = true)" />
 				<FolderOpenIcon v-else
+					:size="20"
 					class="treefolder__icon-hover"
 					:fill-color="colorPrimaryElement"
 					@click.stop="folder.children.length && (childrenShown = false)" />
 				{{ folder.title }}
 			</h3>
+			<NcCounterBubble v-if="typeof bookmarksCount !== 'undefined'">
+				{{ bookmarksCount | largeNumbers }}
+			</NcCounterBubble>
 		</div>
 		<div v-if="showChildren && childrenShown" class="treefolder__children">
 			<TreeFolder v-for="f in folder.children"
@@ -29,12 +34,17 @@
 </template>
 
 <script>
-import FolderIcon from 'vue-material-design-icons/Folder.vue'
-import FolderOpenIcon from 'vue-material-design-icons/FolderOpen.vue'
+import { NcCounterBubble } from '@nextcloud/vue'
+import { FolderIcon, FolderOpenIcon } from './Icons.js'
 import { privateRoutes } from '../router.js'
 export default {
 	name: 'TreeFolder',
-	components: { FolderIcon, FolderOpenIcon },
+	components: { FolderIcon, FolderOpenIcon, NcCounterBubble },
+	filters: {
+		largeNumbers(num) {
+			return num >= 1000 ? (Math.round(num / 100) / 10) + 'K' : num
+		},
+	},
 	props: {
 		folder: {
 			type: Object,
@@ -54,12 +64,15 @@ export default {
 		active() {
 			return this.$route.params.folder === this.folder.id
 		},
+		bookmarksCount() {
+			return this.$store.state.countsByFolder[this.folder.id]
+		},
 	},
 	watch: {
 		'$route'() {
 			if (this.$route.name === privateRoutes.FOLDER
 					&& (this.$route.params.folder === this.folder.id
-							|| this.folder.children.find(f => f.id === this.$route.params.folder))
+							|| this.folder.children.find(f => f.id === this.$route.params.folder)) && this.folder.children.length
 			) {
 				this.childrenShown = true
 			}
@@ -86,6 +99,7 @@ export default {
 	padding: 0 10px;
 	margin: 0 -10px;
 	cursor: pointer;
+	justify-content: space-between;
 }
 
 .treefolder__title * {

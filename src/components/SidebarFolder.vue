@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
@@ -7,14 +7,14 @@
 <template>
 	<NcAppSidebar v-if="isActive"
 		class="sidebar"
-		:title="folder.title"
+		:name="folder.title"
 		:active.sync="activeTab"
 		@close="onClose">
 		<NcAppSidebarTab id="folder-details"
 			:name="t('bookmarks', 'Details')"
 			:order="0">
 			<template #icon>
-				<InformationVariantIcon />
+				<InformationVariantIcon :size="20" />
 			</template>
 			<h3>{{ t('bookmarks', 'Owner') }}</h3>
 			<NcUserBubble :user="folder.userId" :display-name="folder.userDisplayName" />
@@ -26,11 +26,11 @@
 			:name="t('bookmarks', 'Sharing')"
 			:order="1">
 			<template #icon>
-				<ShareVariantIcon />
+				<ShareVariantIcon :size="20" />
 			</template>
 			<div class="participant-select">
-				<AccountIcon :class="{'share__avatar': true }" />
-				<NcMultiselect v-model="participant"
+				<AccountIcon :size="20" :class="{'share__avatar': true }" />
+				<NcSelect v-model="participant"
 					label="displayName"
 					track-by="user"
 					class="participant-select__selection"
@@ -38,11 +38,11 @@
 					:options="participantSearchResults"
 					:loading="isSearching"
 					:placeholder="t('bookmarks', 'Select a user or group')"
-					@select="onAddShare"
-					@search-change="onParticipantSearch" />
+					@option:selected="onAddShare"
+					@search="onParticipantSearch" />
 			</div>
 			<div class="share">
-				<LinkIcon :class="{'share__avatar': true, active: publicLink }" />
+				<LinkIcon :size="20" :class="{'share__avatar': true, active: publicLink }" />
 				<h3 class="share__title">
 					{{ t('bookmarks', 'Share link') }}
 				</h3>
@@ -58,27 +58,27 @@
 					<template v-if="publicLink">
 						<NcActionButton @click="onCopyPublicLink">
 							<template #icon>
-								<ClipboardIcon />
+								<ClipboardIcon :size="20" />
 							</template>
 							{{ t('bookmarks', 'Copy link') }}
 						</NcActionButton>
 						<NcActionButton icon="icon-clippy" @click="onCopyRssLink">
 							<template #icon>
-								<RssIcon />
+								<RssIcon :size="20" />
 							</template>
 							{{ t('bookmarks', 'Copy RSS feed') }}
 						</NcActionButton>
 						<NcActionSeparator />
 						<NcActionButton @click="onDeletePublicLink">
 							<template #icon>
-								<DeleteIcon />
+								<DeleteIcon :size="20" />
 							</template>
 							{{ t('bookmarks', 'Delete link') }}
 						</NcActionButton>
 					</template>
 					<NcActionButton v-else @click="onAddPublicLink">
 						<template #icon>
-							<PlusIcon />
+							<PlusIcon :size="20" />
 						</template>
 						{{ t('bookmarks', 'Create public link') }}
 					</NcActionButton>
@@ -126,26 +126,16 @@
 	</NcAppSidebar>
 </template>
 <script>
-import { NcAppSidebar, NcUserBubble, NcActionSeparator, NcActionCheckbox, NcActionButton, NcActions, NcMultiselect, NcAvatar, NcAppSidebarTab } from '@nextcloud/vue'
+import { NcAppSidebar, NcUserBubble, NcActionSeparator, NcActionCheckbox, NcActionButton, NcActions, NcSelect, NcAvatar, NcAppSidebarTab } from '@nextcloud/vue'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { actions, mutations } from '../store/index.js'
-import EyeIcon from 'vue-material-design-icons/Eye.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-import ShareAllIcon from 'vue-material-design-icons/ShareAll.vue'
-import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
-import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
-import ClipboardIcon from 'vue-material-design-icons/Clipboard.vue'
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
-import RssIcon from 'vue-material-design-icons/Rss.vue'
-import PlusIcon from 'vue-material-design-icons/Plus.vue'
-import LinkIcon from 'vue-material-design-icons/Link.vue'
-import AccountIcon from 'vue-material-design-icons/Account.vue'
+import { EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, DeleteIcon, RssIcon, PlusIcon, LinkIcon, AccountIcon } from './Icons.js'
 
 export default {
 	name: 'SidebarFolder',
-	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcMultiselect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon },
+	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcSelect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon },
 	data() {
 		return {
 			participantSearchResults: [],

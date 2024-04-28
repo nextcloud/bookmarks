@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -23,9 +23,11 @@ class BookmarkWithTagsAndParent extends Bookmark {
 	public function toArray(): array {
 		$array = [];
 		foreach (self::$fields as $field) {
-			if ($field === 'tags' && is_string($this->{$field})) {
-				$array[$field] = $this->{$field} === ''? [] : array_values(array_unique(explode(',', $this->{$field})));
-				continue;
+			if ($field === 'tags') {
+				if (is_string($this->{$field})) {
+					$array[$field] = $this->{$field} === '' ? [] : array_values(array_unique(explode(',', $this->{$field})));
+					continue;
+				}
 			}
 			if ($field === 'folders') {
 				if ($this->{$field} === '') {

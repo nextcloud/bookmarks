@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -13,7 +13,7 @@ import * as Parallel from 'async-parallel'
 import uniq from 'lodash/uniq.js'
 import difference from 'lodash/difference.js'
 
-const BATCH_SIZE = 42
+const BATCH_SIZE = 100
 
 export const actions = {
 	ADD_ALL_BOOKMARKS: 'ADD_ALL_BOOKMARKS',
@@ -962,8 +962,8 @@ export default {
 		commit(mutations.SET_QUERY, { sortby: 'clickcount' })
 		return dispatch(actions.FETCH_PAGE)
 	},
-	[actions.FILTER_BY_SEARCH]({ dispatch, commit }, search) {
-		commit(mutations.SET_QUERY, { search: search.split(' '), conjunction: 'and' })
+	[actions.FILTER_BY_SEARCH]({ dispatch, commit }, { search, folder }) {
+		commit(mutations.SET_QUERY, { search: search.split(' '), conjunction: 'and', ...(Number(folder) !== -1 && { folder, recursive: true }) })
 		return dispatch(actions.FETCH_PAGE)
 	},
 	[actions.FILTER_BY_TAGS]({ dispatch, commit }, tags) {
@@ -1092,13 +1092,13 @@ export default {
 		}
 		return axios
 			.post(url(state, `/settings/${key}`), {
-				[key]: value,
+				value: String(value),
 			})
 			.catch(err => {
 				console.error(err)
 				commit(
 					mutations.SET_ERROR,
-					AppGlobal.methods.t('bookmarks', 'Failed to change setting')
+					AppGlobal.methods.t('bookmarks', 'Failed to store setting')
 				)
 				throw err
 			})
@@ -1150,9 +1150,6 @@ export default {
 			}
 			await commit(mutations.SET_SETTING, { key, value })
 		}
-		['archivePath', 'backupPath', 'backupEnabled', 'limit'].forEach(key =>
-			dispatch(actions.LOAD_SETTING, key)
-		)
 	},
 
 	[actions.LOAD_SHARES]({ commit, dispatch, state }) {

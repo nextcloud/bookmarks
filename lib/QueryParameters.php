@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -25,6 +25,7 @@ class QueryParameters {
 	private $duplicated = false;
 	private $search = [];
 	private $tags = [];
+	private bool $recursive = false;
 
 	/**
 	 * @return array
@@ -100,7 +101,7 @@ class QueryParameters {
 	 * @param array|null $columns
 	 * @return string|null
 	 */
-	public function getSortBy(string $default = null, array $columns = null): ?string {
+	public function getSortBy(?string $default = null, ?array $columns = null): ?string {
 		if (isset($default) && !isset($this->sortBy)) {
 			return $default;
 		}
@@ -240,5 +241,21 @@ class QueryParameters {
 	 */
 	public function getDuplicated(): bool {
 		return $this->duplicated;
+	}
+
+	/**
+	 * @param bool $recursive
+	 * @return static
+	 */
+	public function setRecursive(bool $recursive): self {
+		$this->recursive = $recursive;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getRecursive(): bool {
+		return $this->recursive;
 	}
 }

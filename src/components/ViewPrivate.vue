@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
@@ -169,7 +169,7 @@ export default {
 				)
 				break
 			case privateRoutes.SEARCH:
-				this.$store.dispatch(actions.FILTER_BY_SEARCH, route.params.search)
+				this.$store.dispatch(actions.FILTER_BY_SEARCH, { search: route.params.search, folder: route.params.folder || -1 })
 				break
 			default:
 				throw new Error('Nothing here. Move along.')

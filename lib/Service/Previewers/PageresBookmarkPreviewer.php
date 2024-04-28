@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -43,13 +43,13 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 *
 	 * @return Image|null
 	 */
-	public function getImage($bookmark): ?IImage {
+	public function getImage($bookmark, $cacheOnly = false): ?IImage {
 		if (!isset($bookmark)) {
 			return null;
 		}
 
 		$serverPath = self::getPageresPath();
-		if ($serverPath === null) {
+		if ($serverPath === null || $cacheOnly) {
 			return null;
 		}
 

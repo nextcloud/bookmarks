@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
@@ -19,7 +19,7 @@
 					<input v-model="bookmark.url" type="text" :placeholder="t('bookmarks', 'Enter bookmark URL')">
 				</label>
 				<label><figure class="icon-tag" /> {{ t('bookmarks', 'Tags') }}
-					<NcMultiselect class="sidebar__tags"
+					<NcSelect class="sidebar__tags"
 						:value="bookmark.tags"
 						:auto-limit="false"
 						:limit="7"
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { NcContent, NcAppContent, NcMultiselect } from '@nextcloud/vue'
+import { NcContent, NcAppContent, NcSelect } from '@nextcloud/vue'
 import { actions } from '../store/index.js'
 import FolderPickerDialog from './FolderPickerDialog.vue'
 
@@ -61,7 +61,7 @@ export default {
 	components: {
 		FolderPickerDialog,
 		NcContent,
-		NcMultiselect,
+		NcSelect,
 		NcAppContent,
 	},
 	props: {

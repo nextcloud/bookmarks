@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
@@ -21,13 +21,16 @@
 		@rename="onRenameSubmit"
 		@rename-cancel="renaming = false"
 		@click="onClick">
+		<template #icon>
+			<span v-if="bookmark.preliminary" class="icon-loading-small bookmark__icon" />
+			<BookmarksIcon v-else-if="!iconLoaded" :size="20" class="bookmark__icon" />
+			<figure v-else
+				class="bookmark__icon"
+				:style="{ backgroundImage: iconImage }" />
+		</template>
 		<template #title>
 			<div class="bookmark__title">
 				<h3 :title="bookmark.title">
-					<span v-if="bookmark.preliminary" class="icon-loading-small bookmark__icon" />
-					<figure v-else
-						class="bookmark__icon"
-						:style="{ backgroundImage: 'url(' + iconUrl + ')' }" />
 					{{ bookmark.title }}
 				</h3>
 				<span v-if="bookmark.description"
@@ -40,7 +43,7 @@
 			<NcActionButton :close-after-click="true"
 				@click="onDetails">
 				<template #icon>
-					<InformationVariantIcon />
+					<InformationVariantIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Details') }}
 			</NcActionButton>
@@ -50,33 +53,33 @@
 			<NcActionButton :close-after-click="true"
 				@click="onRename">
 				<template #icon>
-					<PencilIcon />
+					<PencilIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Rename') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true"
 				@click="onCopyUrl">
 				<template #icon>
-					<ContentCopyIcon />
+					<ContentCopyIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Copy link') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true" @click="onMove">
 				<template #icon>
-					<FolderMoveIcon />
+					<FolderMoveIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Move') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true" @click="onCopy">
 				<template #icon>
-					<FolderPlusIcon />
+					<FolderPlusIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Add to folders') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true"
 				@click="onDelete">
 				<template #icon>
-					<DeleteIcon />
+					<DeleteIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Delete') }}
 			</NcActionButton>
@@ -86,12 +89,7 @@
 <script>
 import Item from './Item.vue'
 import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
-import FolderPlusIcon from 'vue-material-design-icons/FolderPlus.vue'
-import FolderMoveIcon from 'vue-material-design-icons/FolderMove.vue'
-import ContentCopyIcon from 'vue-material-design-icons/ContentCopy.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import { FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon, BookmarksIcon } from './Icons.js'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/index.js'
@@ -109,6 +107,7 @@ export default {
 		PencilIcon,
 		InformationVariantIcon,
 		DeleteIcon,
+		BookmarksIcon,
 	},
 	props: {
 		bookmark: {
@@ -121,6 +120,8 @@ export default {
 			title: this.bookmark.title,
 			renaming: false,
 			backgroundImage: undefined,
+			iconImage: undefined,
+			iconLoaded: false,
 		}
 	},
 	computed: {
@@ -199,6 +200,7 @@ export default {
 	},
 	mounted() {
 		this.fetchBackgroundImage()
+		this.fetchIcon()
 	},
 	methods: {
 		onDelete() {
@@ -263,21 +265,28 @@ export default {
 			this.$store.commit(mutations.SET_NOTIFICATION, this.t('bookmarks', 'Link copied to clipboard'))
 		},
 		async fetchBackgroundImage() {
-			if (this.colorMainBackground === '#ffffff') {
-				this.backgroundImage = 'var(--icon-link-000) no-repeat center 25% / 50% !important'
-			} else {
-				this.backgroundImage = 'var(--icon-link-fff) no-repeat center 25% / 50% !important'
+			if (this.bookmark.lastPreview === 0) {
+				return
 			}
 			try {
 				const response = await axios.get(this.imageUrl, { responseType: 'blob' })
 				const url = URL.createObjectURL(response.data)
 				this.backgroundImage = `linear-gradient(0deg, var(--color-main-background) 25%, rgba(0, 212, 255, 0) 50%), url('${url}')`
 			} catch (e) {
-				if (this.colorMainBackground === '#ffffff') {
-					this.backgroundImage = 'var(--icon-link-000) no-repeat center 25% / 50% !important'
-				} else {
-					this.backgroundImage = 'var(--icon-link-fff) no-repeat center 25% / 50% !important'
-				}
+			}
+		},
+		async fetchIcon() {
+			this.iconLoaded = false
+			if (this.bookmark.lastPreview === 0) {
+				return
+			}
+			try {
+				const response = await axios.get(this.iconUrl, { responseType: 'blob' })
+				const url = URL.createObjectURL(response.data)
+				this.iconImage = `url('${url}')`
+				this.iconLoaded = true
+			} catch (e) {
+				this.iconLoaded = false
 			}
 		},
 	},
@@ -328,6 +337,17 @@ export default {
 
 .item--gridview .bookmark__title {
 	min-width: auto;
+	margin-left: 15px;
+}
+
+.item--gridview .bookmark__icon {
+	background-size: cover;
+	position: absolute;
+	top: 20%;
+	left: calc(45% - 20px);
+	transform: scale(2);
+	transform-origin: top left;
+	margin: 0 5px 0 8px;
 }
 
 .item--gridview .bookmark__description {
@@ -338,9 +358,5 @@ export default {
 	display: inline-block !important;
 	position: relative;
 	top: 5px;
-}
-
-.item--gridview .bookmark__icon {
-	margin: 0 5px 0 8px;
 }
 </style>

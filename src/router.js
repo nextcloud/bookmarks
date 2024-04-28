@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -55,7 +55,7 @@ export default new Router({
 			component: ViewPrivate,
 		},
 		{
-			path: '/search/:search',
+			path: '/folders/:folder/search/:search',
 			name: privateRoutes.SEARCH,
 			component: ViewPrivate,
 		},
@@ -116,7 +116,7 @@ export default new Router({
 			component: ViewPublic,
 		},
 		{
-			path: '/public/:token/search/:search',
+			path: '/public/:token/folder/:folder/search/:search',
 			name: publicRoutes.SEARCH,
 			component: ViewPublic,
 		},

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -131,7 +131,7 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function create(string $userId, string $url = '', string $title = null, string $description = null, array $tags = null, $folders = []): Bookmark {
+	public function create(string $userId, string $url = '', ?string $title = null, ?string $description = null, ?array $tags = null, $folders = []): Bookmark {
 		$bookmark = null;
 		$ownFolders = array_filter($folders, function ($folderId) use ($userId) {
 			/**
@@ -174,7 +174,7 @@ class BookmarkService {
 	 * @throws UserLimitExceededError
 	 * @throws UnsupportedOperation
 	 */
-	private function _addBookmark($userId, $url, string $title = null, $description = null, array $tags = null, array $folders = []): Bookmark {
+	private function _addBookmark($userId, $url, ?string $title = null, $description = null, ?array $tags = null, array $folders = []): Bookmark {
 		$bookmark = null;
 
 		try {
@@ -268,7 +268,7 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
 	 */
-	public function update(string $userId, $id, string $url = null, string $title = null, string $description = null, array $tags = null, array $folders = null): ?Bookmark {
+	public function update(string $userId, $id, ?string $url = null, ?string $title = null, ?string $description = null, ?array $tags = null, ?array $folders = null): ?Bookmark {
 		/**
 		 * @var $bookmark Bookmark
 		 */
@@ -480,7 +480,7 @@ class BookmarkService {
 		 * @var $bookmark Bookmark
 		 */
 		$bookmark = $this->bookmarkMapper->find($id);
-		return $this->bookmarkPreviewer->getImage($bookmark);
+		return $this->bookmarkPreviewer->getImage($bookmark, true);
 	}
 
 	/**
@@ -494,7 +494,7 @@ class BookmarkService {
 		 * @var $bookmark Bookmark
 		 */
 		$bookmark = $this->bookmarkMapper->find($id);
-		return $this->faviconPreviewer->getImage($bookmark);
+		return $this->faviconPreviewer->getImage($bookmark, true);
 	}
 
 	/**

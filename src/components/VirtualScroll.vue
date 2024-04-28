@@ -6,8 +6,8 @@
 <script>
 import ItemSkeleton from './ItemSkeleton.vue'
 
-const GRID_ITEM_HEIGHT = 200 + 10
-const GRID_ITEM_WIDTH = 250 + 10
+const GRID_ITEM_HEIGHT = 200 + 2 + 10
+const GRID_ITEM_WIDTH = 250 + 2 + 10
 const LIST_ITEM_HEIGHT = 45 + 1
 
 export default {
@@ -25,6 +25,7 @@ export default {
 			scrollHeight: 500,
 			initialLoadingSkeleton: false,
 			initialLoadingTimeout: null,
+			timeout: null,
 		}
 	},
 	computed: {
@@ -58,8 +59,10 @@ export default {
 	},
 	methods: {
 		onScroll() {
-			this.scrollTop = this.$el.scrollTop
-			this.scrollHeight = this.$el.scrollHeight
+			this.timeout ??= requestAnimationFrame(() => {
+				this.scrollTop = this.$el.scrollTop
+				this.timeout = null
+			})
 		},
 	},
 	render(h) {
@@ -69,13 +72,13 @@ export default {
 		let upperPaddingItems = 0
 		let lowerPaddingItems = 0
 		let itemHeight = 1
-		const padding = GRID_ITEM_HEIGHT
+		const padding = GRID_ITEM_HEIGHT * 5
 		if (this.$slots.default && this.$el) {
 			const childComponents = this.$slots.default.filter(child => !!child.componentOptions)
 			const viewport = this.$el.getBoundingClientRect()
 			itemHeight = this.viewMode === 'grid' ? GRID_ITEM_HEIGHT : LIST_ITEM_HEIGHT
 			itemsPerRow = this.viewMode === 'grid' ? Math.floor(viewport.width / GRID_ITEM_WIDTH) : 1
-			renderedItems = itemsPerRow * Math.floor((viewport.height + padding + padding) / itemHeight)
+			renderedItems = itemsPerRow * Math.ceil((viewport.height + padding + padding) / itemHeight)
 			upperPaddingItems = itemsPerRow * Math.floor(Math.max(this.scrollTop - padding, 0) / itemHeight)
 			children = childComponents.slice(upperPaddingItems, upperPaddingItems + renderedItems)
 			renderedItems = children.length
@@ -132,6 +135,10 @@ export default {
 	height: calc(100vh - 50px - 50px - 10px);
 	position: relative;
 	overflow-y: scroll;
+}
+
+.bookmarkslist--with-description .virtual-scroll {
+	height: calc(100vh - 50px - 50px - 130px);
 }
 
 .bookmarkslist--gridview .container-window {

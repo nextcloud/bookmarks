@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -54,7 +54,7 @@ class Provider implements IProvider {
 	/**
 	 * @inheritDoc
 	 */
-	public function parse($language, IEvent $event, IEvent $previousEvent = null) {
+	public function parse($language, IEvent $event, ?IEvent $previousEvent = null) {
 		if ($event->getApp() !== 'bookmarks') {
 			throw new InvalidArgumentException();
 		}

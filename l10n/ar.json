@@ -25,7 +25,6 @@
     "Someone unshared folder \"%s\" with you" : "أحدُهم ألغى مشاركة المجلد \"%s\" معك",
     "No file provided for import" : "لم يتم تقديم ملف للاستيراد",
     "Unsupported file type for import" : "لايمكن استيراد ملفات من هذا النوع",
-    "Bookmarks Backups" : "نُسَخ احتياطية من الإشارات المرجعية bookmarks",
     "Bookmarks shared by %s" : "إشارات مرجعية مُشارَكة مع %s",
     "Frequent bookmarks" : "إشارات مرجعية متكررة",
     "Recent bookmarks" : "آخر ما تمّ تأشيره",
@@ -36,6 +35,7 @@
     "Bookmark updated" : "تمً تعديل الإشارة المرجعية",
     "Create bookmark" : "إنشاء إشارة مرجعية bookmark",
     "Takes a link and adds it to your collection of bookmarks." : "تأخذ رابطاً و تضيفه إلى مجموعتك من الإشارات المرجعية",
+    "Bookmarks Backups" : "نُسَخ احتياطية من الإشارات المرجعية bookmarks",
     "A Bookmark manager for Nextcloud" : "مدير الإشارات المرجعية Bookmark manager لنكست كلود",
     "- 📂 Sort bookmarks into folders\n- 🏷 Add tags and personal notes\n- 🔍 Full-text search\n- 📲 Synchronize with all your browsers and devices\n- 👪 Share bookmarks with other users and publicly\n- ☠ Find broken links\n- ⚛ Generate RSS feeds of your collections\n- 📔 Read archived versions of your links in case they are depublished\n- 💬 Create new bookmarks directly from within Nextcloud Talk\n- 💼 Built-in Dashboard widgets for frequent and recent links\n\nRequirements:\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - when using MySQL, use at least v8.0" : "- 📂 ترتيب الإشارات المرجعية في مجلدات\n- 🏷 إضافة الوسوم والملاحظات الشخصية\n- 🔍 البحث عن نص كامل\n- 📲 المزامنة مع جميع المتصفحات والأجهزة الخاصة بك\n- 👪 مشاركة الإشارات المرجعية مع مستخدمين آخرين وبشكل عام\n- ☠ البحث عن الروابط المعطلة\n- ⚛ إنشاء موجزات RSS لمجموعاتك\n- 📔 قراءة النسخ المؤرشفة من الروابط الخاصة بك في حالة عدم نشرها\n- 💬 إنشاء إشارات مرجعية جديدة مباشرة من داخل تطبيق Nextcloud Talk\n- 💼 وَدْجَات widgets للوحة القيادة مدمجة للروابط المتكررة والحديثة\n\nالمتطلبات:\n- ملحقات PHP:\n- intl: *\n- mbstring: *\n- عند استخدام MySQL ، يجب استخدم الإصدار v8.0 على الأقل",
     "Enter new title" : "أدخِل عنواناً جديداً",
@@ -53,6 +53,8 @@
     "Bookmarked {time} ago" : "تمّ التأشير منذ {time} مضت",
     "Bookmarked on {date}" : "تمّ التأشير في {date}",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "سيتم حفظ الإشارات المرجعية إلى الملفات الموجودة على الويب مثل الصور أو ملفات PDF تلقائيًا في ملفات نكست كلاود الخاصة بك، بحيث يظل بإمكانك العثور عليها حتى عندما يكون الرابط غير متصل بالإنترنت.",
+    "Searching in the current folder only." : "البحث في المجلد الحالي فقط",
+    "Repeat search in all folders" : "أعِدِ البحث في جميع المجلدات",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "يتم فحص الروابط المرجعية بانتظام. و الروابط التي لا يمكن الوصول إليها يتم سردها هنا.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "يمكنك مشاركة مجلدات الإشارات مع الآخرين. جميع المجلدات التي تمت مشاركتها معك مدرجة هنا.",
     "One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience." : "يمكن أن تكون إشارة مرجعية واحدة في مجلدات متعددة في وقت واحد. سيؤدي تحديث الإشارة إلى تحديث جميع النسخ. جميع الإشارات المرجعية المكررة مدرجة هنا للتيسير.",
@@ -124,28 +126,36 @@
     "Search tags" : "البحث عن السِّمَات tags",
     "Untagged" : "بدون سِمة",
     "{used} bookmarks of {available} available" : "{used} إشارة مرجعية أُستُخدِمت من أصل {available} إشارة متاحة",
+    "Settings" : "الإعدادات",
     "No bookmarked files" : "لا توجد أي ملفات عليها إشارات مرجعية",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "سيتم حفظ الإشارات المرجعية إلى ملفات مثل الصور أو ملفات PDF تلقائيًا في ملفات نكست كلاود الخاصة بك، بحيث يمكنك العثور عليها حتى عندما ينتقل الرابط إلى وضع عدم الاتصال.",
+    "Nothing found" : "لم يُعثَر على شيءٍ",
+    "Your search yielded no results in the current folder." : "لم ينتج عن بحثك أي نتائج في المجلد الحالي",
     "No broken links" : "لا توجد روابط مقطوعة",
     "No shared folders" : "لا توجد مجلدات مُشارَكة",
     "No duplicated bookmarks" : "لا توجد إشارات مرجعية متكررة",
     "No bookmarks here" : "لا توجد إشارات مرجعية هنا",
     "Add bookmarks manually or import bookmarks from a HTML file." : "أضِف الإشارات المرجعية يدويّاً أو قم باستيرادها من ملفات HTML.",
-    "Import" : "إستيراد",
-    "Export" : "تصدير",
-    "Archive path" : "مسار الأرشيف",
+    "Bookmarks settings" : "إعدادات الإشارات المرجعية",
+    "Import/Export" : "إستيراد/تصدير",
+    "Export bookmarks" : "تصدير الإشارات المرجعية",
+    "Auto-archiving" : "الأرشفة التلقائية",
+    "The bookmarks app can automatically archive the web content of links you have bookmarked" : "يُمكن لتطبيق الإشارات المرجعية أن يقوم بالأرشفة التلقائية لمحتوى الوب للروابط التي قمت بوضع إشارة مرجعية عليها",
+    "Enable archiving" : "تمكين الأرشفة",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "أدخل مسار مجلد في ملفاتك Files حيث سيتم تخزين الملفات المُؤشّر عليها.",
-    "Backups" : "نُسَخ احتياطية ",
-    "Enable bookmarks backups" : "تمكين النُّسَخ الاحتياطية للإشارات المرجعية",
+    "Auto-Backup" : "النسخ الاحتياطي التلقائي",
+    "The bookmarks app can automatically backup your bookmarks on a daily basis to prevent data loss when syncing bookmarks across devices." : "يُمكن لتطبيق الإشارات المرجعية أن ينسخ احتياطيّاً و بشكل تلقائي إشاراتك المرجعية بشكل يومي لمنع فقدانها عند مزامنة الإشارات المرجعية بين أجهزتك المتعددة.",
+    "Enable backups" : "تمكين النسخ الاحتياطي",
     "Enter the path of a folder in your Files where backups will be stored." : "أدخل مسار مجلد في ملفاتك Files حيث سيتم تخزين النسخ الاحتياطية.",
     "Client apps" : "تطبيقات العميل",
     "Also check out the collection of client apps that integrate with this app: " : "تحقق أيضًا من مجموعة تطبيقات العميل التي تتكامل مع هذا التطبيق:",
-    "Install web app on device" : "قم بتنصيب تطبيق الويب على الجهاز",
+    "Install web app" : "تثبيت تطبيق وب",
     "You can install this app on your device home screen to quickly access your bookmarks on your phone. You can easily remove the app from your home screen again, if you don't like it." : "يمكنك تنصيب هذا التطبيق على الشاشة الرئيسية لجهازك للوصول بسرعة إلى إشاراتك المرجعية على هاتفك. يمكنك بسهولة إزالة التطبيق في أي وقت من شاشتك الرئيسية إذا لم تعجبك.",
     "Install on home screen" : "التنصيب على الشاشة الرئيسية",
     "Bookmarklet" : "بريمج الإشارة المرجعية \"Bookmarklet\"",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage." : "إسحب هذه إلى قسم الإشارات المرجعية في متصفحك للتأشير على صفحة الوب.",
     "Add to {instanceName}" : "أضِف إلى {instanceName}",
+    "Archive path" : "مسار الأرشيف",
     "Backup path" : "مسار النسخ الاحتياطي",
     "Please select \"Add to home screen\" in your browser menu" : "الرجاء تحديد \"إضافة إلى الشاشة الرئيسية\" Add to home screen في قائمة المتصفح",
     "Title" : "العنوان",
@@ -221,7 +231,7 @@
     "Failed to delete folder" : "تعذّر حذف المجلد",
     "Failed to create folder" : "تعذّر إنشاء المجلد",
     "Failed to fetch bookmarks." : "تعذّر جلب الإشارات المرجعية",
-    "Failed to change setting" : "تعذّر تغيير الإعداد",
+    "Failed to store setting" : "تعذّر حفظ الإعدادات",
     "Failed to load setting {key}" : "تعذّر تحميل الإعداد {key}",
     "Failed to update share {shareId}" : "تعذّر تحديث المُشارَكة {shareId}",
     "Failed to delete share {shareId}" : "تعذّر حذف المُشارَكة {shareId}",

@@ -17,8 +17,7 @@ OC.L10N.register(
     "Recent" : "Rezent",
     "Shared with you" : "Mat dir gedeelt",
     "Files" : "Fichieren",
-    "Import" : "Importéieren",
-    "Export" : "Exportéieren",
+    "Settings" : "Astellungen",
     "Title" : "Titel",
     "Link" : "Link",
     "Tags" : "Tags",
@@ -28,6 +27,7 @@ OC.L10N.register(
     "Share link" : "Link deelen",
     "Allow editing" : "Beaarbechten erlaben",
     "Allow resharing" : "Resharing erlaben",
+    "Link copied" : "Link kopéiert",
     "Folder" : "Dossier",
     "Save" : "Späicheren"
 },

@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
@@ -7,27 +7,27 @@
 <template>
 	<NcAppSidebar v-if="isActive"
 		class="sidebar"
-		:title="bookmark.title"
-		:title-editable="editingTitle"
-		:title-placeholder="t('bookmarks', 'Title')"
+		:name="bookmark.title"
+		:name-editable="editingTitle"
+		:name-placeholder="t('bookmarks', 'Title')"
 		:subtitle="addedDate"
 		:background="background"
 		@update:active="activeTab = $event"
-		@update:title="onEditTitleUpdate"
-		@submit-title="onEditTitleSubmit"
+		@update:name="onEditTitleUpdate"
+		@submit-name="onEditTitleSubmit"
 		@dismiss-editing="onEditTitleCancel"
 		@close="onClose">
 		<template v-if="!editingTitle" slot="secondary-actions">
 			<NcActionButton @click="onEditTitle">
 				<template #icon>
-					<PencilIcon />
+					<PencilIcon :size="20" />
 				</template>
 			</NcActionButton>
 		</template>
 		<template v-if="editingTitle" slot="secondary-actions">
 			<NcActionButton @click="onEditTitleCancel">
 				<template #icon>
-					<CloseIcon />
+					<CloseIcon :size="20" />
 				</template>
 			</NcActionButton>
 		</template>
@@ -35,53 +35,53 @@
 			:name="t('bookmarks', 'Details')"
 			:order="0">
 			<template #icon>
-				<InformationVariantIcon />
+				<InformationVariantIcon :size="20" />
 			</template>
 			<div>
 				<div v-if="!editingTarget" class="details__line">
-					<OpenInNewIcon :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
+					<OpenInNewIcon :size="20" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
 					<a class="details__url" :href="bookmark.target === bookmark.url ? bookmark.target : 'javascript:void(0)'">{{ bookmark.target }}</a>
 					<NcActions v-if="isEditable" class="details__action">
 						<NcActionButton @click="onEditTarget">
 							<template #icon>
-								<PencilIcon />
+								<PencilIcon :size="20" />
 							</template>
 						</NcActionButton>
 					</NcActions>
 				</div>
 				<div v-else class="details__line">
-					<OpenInNewIcon :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
+					<OpenInNewIcon :size="20" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
 					<input v-model="target" class="details__url">
 					<NcActions class="details__action">
 						<NcActionButton @click="onEditTargetSubmit">
 							<template #icon>
-								<ArrowRightIcon />
+								<ArrowRightIcon :size="20" />
 							</template>
 						</NcActionButton>
 					</NcActions>
 					<NcActions class="details__action">
 						<NcActionButton @click="onEditTargetCancel">
 							<template #icon>
-								<CloseIcon />
+								<CloseIcon :size="20" />
 							</template>
 						</NcActionButton>
 					</NcActions>
 				</div>
 				<div class="details__line">
-					<FolderIcon />
+					<FolderIcon :size="20" />
 					<div class="folders">
 						<span v-for="folderId in bookmark.folders"
 							:key="folderId"
 							v-tooltip="getFolderPath(folderId)"
 							class="folders__folder"
 							@click="onOpenFolder(folderId)">
-							<FolderIcon /> {{ getFolder(folderId).title || (getFolder(folderId).parent_folder ? t('bookmarks', 'Untitled folder') : t('bookmarks', 'Root folder')) }}
+							<FolderIcon :size="20" /> {{ getFolder(folderId).title || (getFolder(folderId).parent_folder ? t('bookmarks', 'Untitled folder') : t('bookmarks', 'Root folder')) }}
 						</span>
 					</div>
 				</div>
 				<div class="details__line">
-					<TagIcon :aria-label="t('bookmarks', 'Tags')" :title="t('bookmarks', 'Tags')" />
-					<NcMultiselect class="tags"
+					<TagIcon :size="20" :aria-label="t('bookmarks', 'Tags')" :title="t('bookmarks', 'Tags')" />
+					<NcSelect class="tags"
 						:value="tags"
 						:auto-limit="false"
 						:limit="7"
@@ -95,7 +95,8 @@
 						@tag="onAddTag" />
 				</div>
 				<div class="details__line">
-					<PencilBoxIcon role="figure"
+					<PencilBoxIcon :size="20"
+						role="figure"
 						:aria-label="t('bookmarks', 'Notes')"
 						:title="t('bookmarks', 'Notes')" />
 					<NcRichContenteditable :value.sync="bookmark.description"
@@ -107,7 +108,8 @@
 						@update:value="onNotesChange" />
 				</div>
 				<div v-if="archivedFile" class="details__line">
-					<FileDocumentIcon role="figure"
+					<FileDocumentIcon :size="20"
+						role="figure"
 						:aria-label="t('bookmarks', 'Archived file')"
 						:title="t('bookmarks', 'Archived file')" />
 					<NcButton :href="archivedFileUrl" target="_blank" type="primary">
@@ -124,17 +126,8 @@
 	</NcAppSidebar>
 </template>
 <script>
-import { NcAppSidebar, NcRichContenteditable, NcActionButton, NcActions, NcMultiselect, NcAppSidebarTab, NcButton } from '@nextcloud/vue'
-import FileDocumentIcon from 'vue-material-design-icons/FileDocument.vue'
-import FolderIcon from 'vue-material-design-icons/Folder.vue'
-import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-import ArrowRightIcon from 'vue-material-design-icons/ArrowRight.vue'
-import TagIcon from 'vue-material-design-icons/Tag.vue'
-import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
-import CloseIcon from 'vue-material-design-icons/Close.vue'
-import PencilBoxIcon from 'vue-material-design-icons/PencilBox.vue'
-import DownloadIcon from 'vue-material-design-icons/Download.vue'
+import { NcAppSidebar, NcRichContenteditable, NcActionButton, NcActions, NcSelect, NcAppSidebarTab, NcButton } from '@nextcloud/vue'
+import { FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon, DownloadIcon } from './Icons.js'
 
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
@@ -145,7 +138,7 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { NcAppSidebar, NcAppSidebarTab, NcMultiselect, NcActions, NcActionButton, NcRichContenteditable, FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon, DownloadIcon, NcButton },
+	components: { NcAppSidebar, NcAppSidebarTab, NcSelect, NcActions, NcActionButton, NcRichContenteditable, FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon, DownloadIcon, NcButton },
 	data() {
 		return {
 			title: '',
@@ -153,7 +146,6 @@ export default {
 			target: '',
 			editingTarget: false,
 			activeTab: '',
-			showContentModal: false,
 		}
 	},
 	computed: {

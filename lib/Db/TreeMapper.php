@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -178,7 +178,7 @@ class TreeMapper extends QBMapper {
 	 * @param IQueryBuilder|null $queryBuilder
 	 * @return IQueryBuilder
 	 */
-	protected function selectFromType(string $type, array $cols = [], IQueryBuilder $queryBuilder = null): IQueryBuilder {
+	protected function selectFromType(string $type, array $cols = [], ?IQueryBuilder $queryBuilder = null): IQueryBuilder {
 		$qb = $queryBuilder ?? $this->db->getQueryBuilder();
 		$qb->resetQueryPart('from');
 		$qb
@@ -318,7 +318,7 @@ class TreeMapper extends QBMapper {
 			$ancestors = array_flatten(array_map(function (Entity $ancestor) {
 				return $this->findParentsOf(self::TYPE_FOLDER, $ancestor->getId());
 			}, $ancestors));
-			if (0 === count($ancestors)) {
+			if (count($ancestors) === 0) {
 				return false;
 			}
 		}
@@ -336,7 +336,7 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function deleteEntry(string $type, int $id, int $folderId = null): void {
+	public function deleteEntry(string $type, int $id, ?int $folderId = null): void {
 		$this->eventDispatcher->dispatch(BeforeDeleteEvent::class, new BeforeDeleteEvent($type, $id));
 
 		if ($type === self::TYPE_FOLDER) {
@@ -439,7 +439,7 @@ class TreeMapper extends QBMapper {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 */
-	public function move(string $type, int $itemId, int $newParentFolderId, int $index = null): void {
+	public function move(string $type, int $itemId, int $newParentFolderId, ?int $index = null): void {
 		if ($type === self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Cannot move Bookmark');
 		}
@@ -515,7 +515,7 @@ class TreeMapper extends QBMapper {
 		if ($type !== self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Only bookmarks can be in multiple folders');
 		}
-		if (0 === count($folders)) {
+		if (count($folders) === 0) {
 			return;
 		}
 
@@ -537,7 +537,7 @@ class TreeMapper extends QBMapper {
 	 * @param int|null $index
 	 * @throws UnsupportedOperation|Exception
 	 */
-	public function addToFolders(string $type, int $itemId, array $folders, int $index = null): void {
+	public function addToFolders(string $type, int $itemId, array $folders, ?int $index = null): void {
 		if ($type !== self::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Only bookmarks can be in multiple folders');
 		}
@@ -805,24 +805,31 @@ class TreeMapper extends QBMapper {
 		if ($children !== null) {
 			return $children;
 		}
-		$qb = $this->getChildrenQuery[self::TYPE_BOOKMARK];
-		$this->selectFromType(self::TYPE_BOOKMARK, ['t.index', 't.type'], $qb);
-		$qb->setParameter('parent_folder', $folderId);
-		$childBookmarks = $qb->execute()->fetchAll();
 
-		$qb = $this->getChildrenQuery[self::TYPE_FOLDER];
-		$this->selectFromType(self::TYPE_FOLDER, ['t.index', 't.type'], $qb);
-		$qb->setParameter('parent_folder', $folderId);
-		$childFolders = $qb->execute()->fetchAll();
+		$children = $this->treeCache->get(TreeCacheManager::CATEGORY_CHILDREN_LAYER, TreeMapper::TYPE_FOLDER, $folderId);
 
-		$qb = $this->getChildrenQuery[self::TYPE_SHARE];
-		$this->selectFromType(self::TYPE_SHARE, ['t.index', 't.type'], $qb);
-		$qb->setParameter('parent_folder', $folderId);
-		$childShares = $qb->execute()->fetchAll();
+		if ($children === null) {
+			$qb = $this->getChildrenQuery[self::TYPE_BOOKMARK];
+			$this->selectFromType(self::TYPE_BOOKMARK, ['t.index', 't.type'], $qb);
+			$qb->setParameter('parent_folder', $folderId);
+			$childBookmarks = $qb->execute()->fetchAll();
 
-		$children = array_merge($childBookmarks, $childFolders, $childShares);
-		$indices = array_column($children, 'index');
-		array_multisort($indices, $children);
+			$qb = $this->getChildrenQuery[self::TYPE_FOLDER];
+			$this->selectFromType(self::TYPE_FOLDER, ['t.index', 't.type'], $qb);
+			$qb->setParameter('parent_folder', $folderId);
+			$childFolders = $qb->execute()->fetchAll();
+
+			$qb = $this->getChildrenQuery[self::TYPE_SHARE];
+			$this->selectFromType(self::TYPE_SHARE, ['t.index', 't.type'], $qb);
+			$qb->setParameter('parent_folder', $folderId);
+			$childShares = $qb->execute()->fetchAll();
+
+			$children = array_merge($childBookmarks, $childFolders, $childShares);
+			$indices = array_column($children, 'index');
+			array_multisort($indices, $children);
+
+			$this->treeCache->set(TreeCacheManager::CATEGORY_CHILDREN_LAYER, TreeMapper::TYPE_FOLDER, $folderId, $children);
+		}
 
 		$children = array_map(function ($child) use ($layers) {
 			$item = ['type' => $child['type'], 'id' => (int)$child['id'], 'title' => $child['title'], 'userId' => $child['user_id']];

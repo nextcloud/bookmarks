@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -284,7 +284,8 @@ class BookmarkController extends ApiController {
 		?string $url = null,
 		?bool $unavailable = null,
 		?bool $archived = null,
-		?bool $duplicated = null
+		?bool $duplicated = null,
+		bool $recursive = false,
 	): DataResponse {
 		$this->registerResponder('rss', function (DataResponse $res) {
 			if ($res->getData()['status'] === 'success') {
@@ -372,6 +373,7 @@ class BookmarkController extends ApiController {
 				return new DataResponse(['status' => 'error', 'data' => 'Not found'], Http::STATUS_BAD_REQUEST);
 			}
 			$params->setFolder($this->toInternalFolderId($folder));
+			$params->setRecursive($recursive);
 		}
 
 		if ($userId !== null) {
@@ -600,7 +602,7 @@ class BookmarkController extends ApiController {
 	 * @NoCSRFRequired
 	 *
 	 * @PublicPage
-	 * @return DataDisplayResponse|NotFoundResponse|RedirectResponse|DataResponse
+	 * @return DataDisplayResponse|NotFoundResponse|DataResponse
 	 */
 	public function getBookmarkFavicon($id) {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
@@ -609,8 +611,7 @@ class BookmarkController extends ApiController {
 		try {
 			$image = $this->bookmarks->getFavicon($id);
 			if ($image === null) {
-				// Return a placeholder
-				return new RedirectResponse($this->url->getAbsoluteURL('/index.php/svg/core/places/link?color=666666'));
+				return new NotFoundResponse();
 			}
 			return $this->doImageResponse($image);
 		} catch (DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {

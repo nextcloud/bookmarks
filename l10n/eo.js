@@ -36,9 +36,8 @@ OC.L10N.register(
     "Shared with you" : "Kunhavata kun vi",
     "Files" : "Dosieroj",
     "Untagged" : "Sen etikedo",
+    "Settings" : "Agordoj",
     "No bookmarks here" : "Neniu legosigno ĉi tie",
-    "Import" : "Importi",
-    "Export" : "Eksporti",
     "Client apps" : "Klientaj aplikaĵoj",
     "Also check out the collection of client apps that integrate with this app: " : "Ankaŭ vidu la programojn, kiuj uzas tiun aplikaĵon:",
     "Bookmarklet" : "Legosignilo",
@@ -81,7 +80,6 @@ OC.L10N.register(
     "Failed to delete folder" : "Forigo de la dosierujo malsukcesis",
     "Failed to create folder" : "Kreo de dosierujo malsukcesis",
     "Failed to fetch bookmarks." : "Ricevo de legosignoj malsukcesis.",
-    "Failed to change setting" : "Ŝanĝo de agordo malsukcesis",
     "Bookmarks feed" : "Fluo de legosignoj"
 },
 "nplurals=2; plural=(n != 1);");

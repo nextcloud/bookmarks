@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import BookmarksIcon from './icons/BookmarksIcon.vue'
+import { BookmarksIcon } from './Icons.js'
 import { generateUrl } from '@nextcloud/router'
 import humanizeDuration from 'humanize-duration'
 

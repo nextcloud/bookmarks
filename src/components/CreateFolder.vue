@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
@@ -14,12 +14,12 @@
 		@rename="submit"
 		@rename-cancel="cancel">
 		<template #icon>
-			<FolderIcon :fill-color="colorPrimaryElement" class="icon" />
+			<FolderIcon :size="20" :fill-color="colorPrimaryElement" class="icon" />
 		</template>
 	</Item>
 </template>
 <script>
-import FolderIcon from 'vue-material-design-icons/Folder.vue'
+import { FolderIcon } from './Icons.js'
 import Item from './Item.vue'
 import { actions, mutations } from '../store/index.js'
 

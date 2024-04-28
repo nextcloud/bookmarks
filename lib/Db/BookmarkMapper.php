@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -464,7 +464,13 @@ class BookmarkMapper extends QBMapper {
 	 */
 	private function _filterFolder(IQueryBuilder $qb, QueryParameters $params): void {
 		if ($params->getFolder() !== null) {
-			$qb->andWhere($qb->expr()->eq('tree.parent_folder', $qb->createPositionalParameter($params->getFolder(), IQueryBuilder::PARAM_INT)));
+			if ($params->getRecursive()) {
+				$childFolders = \OC::$server->get(TreeMapper::class)->findByAncestorFolder(TreeMapper::TYPE_FOLDER, $params->getFolder());
+				$ids = array_map(fn (Folder $folder) => $folder->getId(), $childFolders);
+				$qb->andWhere($qb->expr()->in('tree.parent_folder', $qb->createPositionalParameter($ids, IQueryBuilder::PARAM_INT_ARRAY)));
+			} else {
+				$qb->andWhere($qb->expr()->eq('tree.parent_folder', $qb->createPositionalParameter($params->getFolder(), IQueryBuilder::PARAM_INT)));
+			}
 		}
 	}
 
@@ -812,7 +818,7 @@ class BookmarkMapper extends QBMapper {
 		if ($dbType === 'pgsql') {
 			$tagsCol = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
 		} else {
-			$tagsCol = $qb->createFunction('GROUP_CONCAT(' . $qb->getColumnName('t.tag') . ')');
+			$tagsCol = $qb->createFunction('IFNULL(GROUP_CONCAT(' . $qb->getColumnName('t.tag') . '), "")');
 		}
 		return $tagsCol;
 	}

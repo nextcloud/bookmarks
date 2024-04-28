@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -63,11 +63,11 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	 *
 	 * @return Image|null
 	 */
-	public function getImage($bookmark): ?IImage {
+	public function getImage($bookmark, $cacheOnly = false): ?IImage {
 		if (!isset($bookmark)) {
 			return null;
 		}
-		if ('' === $this->apiKey) {
+		if ($this->apiKey === '' || $cacheOnly) {
 			return null;
 		}
 		$url = $bookmark->getUrl();
@@ -97,7 +97,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 		}
 
 		// Some HTPP Error occured :/
-		if (200 !== $response->getStatusCode()) {
+		if ($response->getStatusCode() !== 200) {
 			return null;
 		}
 

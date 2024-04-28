@@ -4,6 +4,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [14.0.0] - 2024-04-28
+
+### Breaking changes
+* Drop support for Nextclod < 28
+
+### New
+* enh(search): Always search in current folder + Allow searching globally with one click
+* enh(BookmarksList): Allow searching for folders
+* enh(TreeFolder): Show bookmarks count in Folders overview
+* enh(BookmarksList): Wrap bookmarkslist__description in NcNoteCard
+
+### Changes
+* overhaul settings: Use settings modal
+* migrate(nc-vue): Upgrade to v8.x
+* feat(disable archive): Allow disabling archive functionality
+
+### Fixed
+* fix(IBookmarkPreviewer): No more on-demand loading
+* fix(VirtualScroll): Try to make it smoother
+* fix(Controls): Don't show folder when searching in root
+* fix(ItemSkeleton): Make it more beautiful
+* fix(Controls): Correct title of rss feed button
+* fix(Search): Increase width of search field
+* fix(SharedFolderIcon)
+* fix(WebViewController): Fix public link
+* fix(CustomPickerElement): Remove heading
+* fix(TreeFolder): Don't set childrenShown if there's no child folders
+* fix(Bookmark): Fix fallback icon
+* fix(Navigation): Always show counters even if 0
+* fix(ui): Scale down icons to 20px
+* fix(SettingsController): NoAdminRequired
+* refactor(settings): Create a UserSettingsService and load all settings via initial state
+* fix(Controls): Debounce new search bar
+* fix(BookmarkMapper#_selectTags): Always return a string for tags column
+* fix(TreeMapper#getChildren): Add more aggressive per-layer caching
+* fix(BookmarkWithTagsAndParent): Avoid requerying tags if a bookmark has no tags
+* fix(Authorizer): Don't run login again if there is already a session based on basic auth
+* Fix(l10n): Update translations from Transifex
+
 ## [13.1.3] - 2023-12-18
 
 ### Fixes

@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
@@ -14,12 +14,12 @@
 		@rename="submit"
 		@rename-cancel="cancel">
 		<template #icon>
-			<EarthIcon :fill-color="colorMainText" class="icon" />
+			<EarthIcon :size="20" :fill-color="colorMainText" class="icon" />
 		</template>
 	</Item>
 </template>
 <script>
-import EarthIcon from 'vue-material-design-icons/Earth.vue'
+import { EarthIcon } from './Icons.js'
 import Item from './Item.vue'
 import { actions, mutations } from '../store/index.js'
 

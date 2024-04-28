@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
@@ -21,8 +21,12 @@
 		@rename-cancel="renaming = false"
 		@click="onSelect">
 		<template #icon>
-			<FolderIcon :fill-color="colorPrimaryElement" :class="'folder__icon'" @click="onSelect" />
+			<FolderIcon :size="20"
+				:fill-color="colorPrimaryElement"
+				:class="'folder__icon'"
+				@click="onSelect" />
 			<ShareVariantIcon v-if="(isShared || !isOwner) || isSharedPublicly"
+				:size="20"
 				:fill-color="colorPrimaryText"
 				:class="['folder__icon', 'shared']" />
 		</template>
@@ -41,7 +45,7 @@
 		<template #actions>
 			<NcActionButton :close-after-click="true" @click="onDetails">
 				<template #icon>
-					<InformationVariantIcon />
+					<InformationVariantIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Details') }}
 			</NcActionButton>
@@ -53,25 +57,25 @@
 				:close-after-click="true"
 				@click="onShare">
 				<template #icon>
-					<ShareVariantIcon />
+					<ShareVariantIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Share folder') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true" @click="onRename">
 				<template #icon>
-					<PencilIcon />
+					<PencilIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Rename folder') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true" @click="onMove">
 				<template #icon>
-					<FolderMoveIcon :fill-color="colorMainText" />
+					<FolderMoveIcon :size="20" :fill-color="colorMainText" />
 				</template>
 				{{ t('bookmarks', 'Move folder') }}
 			</NcActionButton>
 			<NcActionButton :close-after-click="true" @click="onDelete">
 				<template #icon>
-					<DeleteIcon />
+					<DeleteIcon :size="20" />
 				</template>
 				{{ t('bookmarks', 'Delete folder') }}
 			</NcActionButton>
@@ -80,12 +84,7 @@
 </template>
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
-import FolderMoveIcon from 'vue-material-design-icons/FolderMove.vue'
-import FolderIcon from 'vue-material-design-icons/Folder.vue'
-import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
+import { FolderMoveIcon, FolderIcon, ShareVariantIcon, DeleteIcon, PencilIcon, InformationVariantIcon } from './Icons.js'
 import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
 import { actions, mutations } from '../store/index.js'
 import Item from './Item.vue'
@@ -232,10 +231,10 @@ export default {
 .folder__icon.shared {
 	transform: scale(0.4);
 	position: absolute;
-	top: -1px;
+	top: 0;
 	height: auto;
 	width: auto;
-	left: -2px;
+	left: -1px;
 }
 
 .item--gridview .folder__icon {
@@ -248,7 +247,7 @@ export default {
 }
 
 .item--gridview .folder__icon.shared {
-	transform: translate(87%, 110%) scale(1.5);
+	transform: translate(100%, 130%) scale(1.5);
 }
 
 .folder__title {

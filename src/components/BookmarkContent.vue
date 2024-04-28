@@ -5,13 +5,13 @@
   -->
 
 <template>
-	<div v-if="isActive && hasMinLength && !archivedFile && isWebLink" class="bookmark-content">
+	<div v-if="isActive && scrapingEnabled && archiveEnabled && hasMinLength && !archivedFile && isWebLink" class="bookmark-content">
 		<div v-if="bookmark.textContent" class="content" v-html="content" />
 		<div v-else>
-			<NcEmptyContent :title="t('bookmarks', 'Content pending')"
+			<NcEmptyContent :name="t('bookmarks', 'Content pending')"
 				:description="t('bookmarks', 'This content is being downloaded for offline use. Please check back later.')">
 				<template #icon>
-					<DownloadIcon />
+					<DownloadIcon :size="20" />
 				</template>
 			</NcEmptyContent>
 		</div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import DownloadIcon from 'vue-material-design-icons/Download.vue'
+import { DownloadIcon } from './Icons.js'
 import sanitizeHtml from 'sanitize-html'
 import { generateUrl, generateRemoteUrl } from '@nextcloud/router'
 import { NcEmptyContent } from '@nextcloud/vue'
@@ -36,6 +36,12 @@ export default {
 		},
 		isWebLink() {
 			return this.bookmark.url.startsWith('http')
+		},
+		scrapingEnabled() {
+			return this.$store.state.settings['privacy.enableScraping']
+		},
+		archiveEnabled() {
+			return this.$store.state.settings['archive.enabled']
 		},
 		bookmark() {
 			if (!this.isActive) return

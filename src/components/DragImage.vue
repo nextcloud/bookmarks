@@ -6,14 +6,13 @@
 
 <template>
 	<div class="dragImage">
-		<FolderIcon v-if="$store.state.selection.folders.length" :fill-color="colorPrimaryElement" />
-		<EarthIcon v-else :fill-color="colorPrimaryElement" /><span class="description">{{ selectionDescription }}</span>
+		<FolderIcon v-if="$store.state.selection.folders.length" :size="20" :fill-color="colorPrimaryElement" />
+		<EarthIcon v-else :size="20" :fill-color="colorPrimaryElement" /><span class="description">{{ selectionDescription }}</span>
 	</div>
 </template>
 
 <script>
-import FolderIcon from 'vue-material-design-icons/Folder.vue'
-import EarthIcon from 'vue-material-design-icons/Earth.vue'
+import { FolderIcon, EarthIcon } from './Icons.js'
 export default {
 	name: 'DragImage',
 	components: { FolderIcon, EarthIcon },

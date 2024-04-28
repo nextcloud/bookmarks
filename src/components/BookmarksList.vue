@@ -1,5 +1,5 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
@@ -7,27 +7,49 @@
 <template>
 	<div :class="{
 		bookmarkslist: true,
-		'bookmarkslist--gridview': viewMode === 'grid'
+		'bookmarkslist--gridview': viewMode === 'grid',
+		'bookmarkslist--with-description': descriptionShown,
 	}">
 		<div v-if="$route.name === routes.ARCHIVED && bookmarks.length" class="bookmarkslist__description">
-			{{
-				t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
-			}}
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.')
+				}}
+			</NcNoteCard>
+		</div>
+		<div v-if="$route.name === routes.SEARCH && (bookmarks.length || subFolders.length) && Number($route.params.folder) !== -1" class="bookmarkslist__description">
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'Searching in the current folder only.')
+				}}
+				<NcButton @click="onSearchGlobally">
+					<template #icon>
+						<MagnifyIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Repeat search in all folders') }}
+				</NcButton>
+			</NcNoteCard>
 		</div>
 		<div v-if="$route.name === routes.UNAVAILABLE && bookmarks.length" class="bookmarkslist__description">
-			{{
-				t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')
-			}}
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'Bookmarked links are checked regularly and the ones that cannot be reached are listed here.')
+				}}
+			</NcNoteCard>
 		</div>
 		<div v-if="$route.name === routes.SHARED_FOLDERS && bookmarks.length" class="bookmarkslist__description">
-			{{
-				t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')
-			}}
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'You can share bookmark folders with others. All folders shared with you are listed here.')
+				}}
+			</NcNoteCard>
 		</div>
 		<div v-if="$route.name === routes.DUPLICATED && bookmarks.length" class="bookmarkslist__description">
-			{{
-				t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')
-			}}
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience.')
+				}}
+			</NcNoteCard>
 		</div>
 		<VirtualScroll :reached-end="reachedEnd" @load-more="loadMore">
 			<CreateBookmark v-if="newBookmark" />
@@ -74,6 +96,7 @@
 </template>
 
 <script>
+import { NcButton, NcNoteCard } from '@nextcloud/vue'
 import Bookmark from './Bookmark.vue'
 import Folder from './Folder.vue'
 import CreateBookmark from './CreateBookmark.vue'
@@ -83,10 +106,12 @@ import NoBookmarks from './NoBookmarks.vue'
 import FirstRun from './FirstRun.vue'
 import VirtualScroll from './VirtualScroll.vue'
 import { privateRoutes } from '../router.js'
+import { MagnifyIcon } from './Icons.js'
 
 export default {
 	name: 'BookmarksList',
 	components: {
+		NcButton,
 		CreateFolder,
 		CreateBookmark,
 		VirtualScroll,
@@ -94,6 +119,8 @@ export default {
 		NoBookmarks,
 		Bookmark,
 		Folder,
+		NcNoteCard,
+		MagnifyIcon,
 	},
 	computed: {
 		bookmarks() {
@@ -101,6 +128,9 @@ export default {
 		},
 		reachedEnd() {
 			return this.$store.state.fetchState.reachedEnd
+		},
+		descriptionShown() {
+			return this.$route.name === this.routes.ARCHIVED || (this.$route.name === this.routes.SEARCH && Number(this.$route.params.folder) !== -1) || this.$route.name === this.routes.UNAVAILABLE || this.$route.name === this.routes.SHARED_FOLDERS || this.$route.name === this.routes.DUPLICATED
 		},
 		allBookmarksCount() {
 			return this.$store.state.countsByFolder[-1]
@@ -115,8 +145,20 @@ export default {
 		},
 		subFolders() {
 			if (this.$route.name === this.routes.SHARED_FOLDERS) {
+				// Show shared folders
 				return Object.keys(this.$store.state.sharedFoldersById)
 					.map(folderId => this.$store.getters.getFolder(folderId)[0])
+			}
+			if (this.$route.name === this.routes.SEARCH) {
+				// Search folders
+				const searchFolder = (folder) => {
+					const results = folder.children.flatMap(searchFolder)
+					if (this.$store.state.fetchState.query.search.every(term => term.trim() && folder.title.toLowerCase().includes(term.toLowerCase()))) {
+						results.push(folder)
+					}
+					return results
+				}
+				return this.$store.getters.getFolder(this.$store.state.fetchState.query.folder || -1)[0].children.flatMap(searchFolder)
 			}
 			if (this.$route.name !== this.routes.HOME && this.$route.name !== this.routes.FOLDER) {
 				return []
@@ -158,18 +200,13 @@ export default {
 		getBookmark(id) {
 			return this.$store.getters.getBookmark(id)
 		},
+		onSearchGlobally() {
+			this.$router.push({ name: this.routes.SEARCH, params: { search: this.$route.params.search, folder: '-1' } })
+		},
 	},
 }
 </script>
 <style>
-.bookmarkslist__description {
-	width: 100%;
-	margin: 10px auto;
-	flex-grow: 1;
-	flex-shrink: 0;
-	text-align: center;
-}
-
 .folder--gridview,
 .bookmark--gridview,
 .bookmarkslist--gridview .create-folder,

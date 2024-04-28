@@ -6,9 +6,6 @@
 
 <template>
 	<div style="width: 100%">
-		<h2>
-			{{ t('bookmarks', 'Bookmarks') }}
-		</h2>
 		<NcSearch ref="picker"
 			:provider="{search_providers_ids: ['bookmarks'], title: t('bookmarks', 'Bookmarks')}"
 			@cancel="cancelSearch"
@@ -17,6 +14,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line
 import { NcSearch } from '@nextcloud/vue/dist/Components/NcRichText.js'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'

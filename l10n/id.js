@@ -39,9 +39,8 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Berkas",
     "Untagged" : "Belum ada tag",
+    "Settings" : "Setelan",
     "No bookmarks here" : "Tidak ada markah di sini",
-    "Import" : "Impor",
-    "Export" : "Ekspor",
     "Client apps" : "Aplikasi klien",
     "Title" : "Judul",
     "Link" : "Tautan",
@@ -77,7 +76,6 @@ OC.L10N.register(
     "Failed to delete folder" : "Gagal menghapus folder",
     "Failed to create folder" : "Gagal membuat folder",
     "Failed to fetch bookmarks." : "Gagal menampilkan markah",
-    "Failed to change setting" : "Gagal mengubah setelan",
     "Failed to load setting {key}" : "Gagal memuat setelan {key}",
     "Bookmarks feed" : "Umpan markah"
 },

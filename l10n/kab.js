@@ -12,6 +12,7 @@ OC.L10N.register(
     "Cancel" : "Sefsex",
     "Recent" : "Melmi kan",
     "Files" : "Ifuyla",
+    "Settings" : "Iɣewwaṛen",
     "Title" : "Azwel",
     "Link" : "Aseɣwen",
     "Tags" : "Tibzimin",

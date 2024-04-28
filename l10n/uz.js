@@ -14,6 +14,7 @@ OC.L10N.register(
     "Recent" : "Recent",
     "Shared with you" : "Shared with you",
     "Files" : "Files",
+    "Settings" : "Sozlamalar",
     "Link" : "Link",
     "Tags" : "Tags",
     "Notes" : "Notes",

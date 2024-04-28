@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -19,7 +19,7 @@ class MoveEvent extends ChangeEvent {
 	 * @param int|null $oldParent
 	 * @param int|null $newParent
 	 */
-	public function __construct(string $type, int $id, int $oldParent = null, int $newParent = null) {
+	public function __construct(string $type, int $id, ?int $oldParent = null, ?int $newParent = null) {
 		parent::__construct($type, $id);
 		$this->oldParent = $oldParent;
 		$this->newParent = $newParent;

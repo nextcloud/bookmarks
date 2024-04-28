@@ -1,11 +1,11 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
 
 <template>
-	<NcModal v-if="showNcModal" :title="title" @close="onClose">
+	<NcModal v-if="showNcModal" :name="title" @close="onClose">
 		<div class="move-dialog">
 			<FolderPicker :title="title" :filter="filterFolders" @submit="onSubmit" />
 		</div>

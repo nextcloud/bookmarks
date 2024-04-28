@@ -1,14 +1,14 @@
 <!--
-  - Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+  - Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
   -
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
 
 <template>
 	<div class="bookmarkslist__emptyBookmarks">
-		<NcEmptyContent :title="t('bookmarks', 'Welcome to Bookmarks')" :description="t('bookmarks', 'This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app.')">
+		<NcEmptyContent :name="t('bookmarks', 'Welcome to Bookmarks')" :description="t('bookmarks', 'This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app.')">
 			<template #icon>
-				<StarShootingIcon />
+				<StarShootingIcon :size="20" />
 			</template>
 			<template #action>
 				<input ref="import"
@@ -18,20 +18,20 @@
 					@change="onImportSubmit">
 				<NcButton @click="onCreateOpen">
 					<template #icon>
-						<PlusIcon />
+						<PlusIcon :size="20" />
 					</template>
 					{{ t('bookmarks', 'Add a bookmark') }}
 				</NcButton>
 				<NcButton @click="onImportOpen">
 					<template #icon>
-						<UploadIcon v-if="!importing" />
+						<UploadIcon v-if="!importing" :size="20" />
 						<NcLoadingIcon v-else />
 					</template>
 					{{ t('bookmarks', 'Import bookmarks') }}
 				</NcButton>
 				<NcButton @click="onSyncOpen">
 					<template #icon>
-						<SyncIcon />
+						<SyncIcon :size="20" />
 					</template>
 					{{ t('bookmarks', 'Sync with your browser') }}
 				</NcButton>
@@ -44,10 +44,7 @@
 import { NcEmptyContent, NcButton, NcLoadingIcon } from '@nextcloud/vue'
 import { actions, mutations } from '../store/index.js'
 import { privateRoutes } from '../router.js'
-import SyncIcon from 'vue-material-design-icons/Sync.vue'
-import PlusIcon from 'vue-material-design-icons/Plus.vue'
-import UploadIcon from 'vue-material-design-icons/Upload.vue'
-import StarShootingIcon from 'vue-material-design-icons/StarShooting.vue'
+import { SyncIcon, PlusIcon, UploadIcon, StarShootingIcon } from './Icons.js'
 
 export default {
 	name: 'FirstRun',

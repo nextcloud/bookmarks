@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -74,15 +74,23 @@ class Authorizer {
 		if (!$this->cors && $this->userSession->isLoggedIn()) {
 			$this->setUserId($this->userSession->getUser()->getUID());
 		} elseif (isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
-			if (false === $this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+			if ($this->userSession->getUser() !== null) {
+				$this->setUserId($this->userSession->getUser()->getUID());
+				return;
+			}
+			if ($this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW']) === false) {
 				return;
 			}
 			$this->setUserId($this->userSession->getUser()->getUID());
 		} elseif ($auth !== null && $auth !== '') {
 			[$type, $credentials] = explode(' ', $auth);
 			if (strtolower($type) === 'basic') {
+				if ($this->userSession->getUser() !== null) {
+					$this->setUserId($this->userSession->getUser()->getUID());
+					return;
+				}
 				[$username, $password] = explode(':', base64_decode($credentials));
-				if (false === $this->userSession->login($username, $password)) {
+				if ($this->userSession->login($username, $password) === false) {
 					return;
 				}
 				$this->setUserId($this->userSession->getUser()->getUID());

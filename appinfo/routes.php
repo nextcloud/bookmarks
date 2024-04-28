@@ -23,7 +23,7 @@ return [
 		//Web Template Route
 		['name' => 'web_view#index', 'url' => '/', 'verb' => 'GET'],
 		['name' => 'web_view#index', 'url' => '/recent', 'verb' => 'GET', 'postfix' => 'recent'],
-		['name' => 'web_view#index', 'url' => '/search/{search}', 'verb' => 'GET', 'postfix' => 'search'],
+		['name' => 'web_view#index', 'url' => '/folders/{folder}/search/{search}', 'verb' => 'GET', 'postfix' => 'search'],
 		['name' => 'web_view#index', 'url' => '/folders/{folder}', 'verb' => 'GET', 'postfix' => 'folder'],
 		['name' => 'web_view#index', 'url' => '/bookmarks/{bookmark}', 'verb' => 'GET', 'postfix' => 'bookmark'],
 		['name' => 'web_view#index', 'url' => '/tags/{tags}', 'verb' => 'GET', 'postfix' => 'tags'],
@@ -128,19 +128,8 @@ return [
 		['name' => 'folders#delete_share', 'url' => '/public/rest/v2/share/{shareId}', 'verb' => 'DELETE'],
 
 		//Settings
-		['name' => 'settings#set_sorting', 'url' => '/settings/sorting', 'verb' => 'POST'],
-		['name' => 'settings#get_sorting', 'url' => '/settings/sorting', 'verb' => 'GET'],
-		['name' => 'settings#set_view_mode', 'url' => '/settings/viewMode', 'verb' => 'POST'],
-		['name' => 'settings#get_view_mode', 'url' => '/settings/viewMode', 'verb' => 'GET'],
-		['name' => 'settings#set_archive_path', 'url' => '/settings/archivePath', 'verb' => 'POST'],
-		['name' => 'settings#get_archive_path', 'url' => '/settings/archivePath', 'verb' => 'GET'],
-		['name' => 'settings#set_backup_path', 'url' => '/settings/backupPath', 'verb' => 'POST'],
-		['name' => 'settings#get_backup_path', 'url' => '/settings/backupPath', 'verb' => 'GET'],
-		['name' => 'settings#set_backup_enabled', 'url' => '/settings/backupEnabled', 'verb' => 'POST'],
-		['name' => 'settings#get_backup_enabled', 'url' => '/settings/backupEnabled', 'verb' => 'GET'],
-		['name' => 'settings#set_whatsnew', 'url' => '/settings/hasSeenWhatsnew', 'verb' => 'POST'],
-		['name' => 'settings#get_whatsnew', 'url' => '/settings/hasSeenWhatsnew', 'verb' => 'GET'],
-		['name' => 'settings#get_limit', 'url' => '/settings/limit', 'verb' => 'GET'],
+		['name' => 'settings#set_setting', 'url' => '/settings/{key}', 'verb' => 'POST'],
+		['name' => 'settings#get_setting', 'url' => '/settings/{key}', 'verb' => 'GET'],
 
 		# public link web view
 		['name' => 'web_view#link', 'url' => '/public/{token}', 'verb' => 'GET'],

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020. The Nextcloud Bookmarks contributors.
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
  *
  * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
  */
@@ -65,7 +65,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 	 *
 	 * @return Image|null
 	 */
-	public function getImage($bookmark): ?IImage {
+	public function getImage($bookmark, $cacheOnly = false): ?IImage {
 		if ($this->enabled === 'false') {
 			return null;
 		}
@@ -86,6 +86,10 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 			}
 		} catch (NotFoundException $e) {
 		} catch (NotPermittedException $e) {
+		}
+
+		if ($cacheOnly) {
+			return null;
 		}
 
 		$url = $bookmark->getUrl();
@@ -134,7 +138,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 		$contentType = $response->getHeader('Content-Type');
 
 		// Some HTPP Error occured :/
-		if (200 !== $response->getStatusCode()) {
+		if ($response->getStatusCode() !== 200) {
 			return null;
 		}
 
