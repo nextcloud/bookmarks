@@ -11,7 +11,10 @@
 			<ul>
 				<li>📂 You can now search for folders</li>
 				<li>🔍 Search is now scoped to the current folder only</li>
-				<li>🔧 new settings experience</li>
+				<li>🔧 New settings experience</li>
+				<li>❇ New user interface design (Nextcloud Vue 8)</li>
+				<li>🤐 You can now disable archiving of files</li>
+				<li>📜 Improved virtual scrolling</li>
 				<li>🧮 The folders overview now shows the cumulative bookmarks counts for all folders</li>
 				<li>🐛 Lots of small bug fixes and performance improvements</li>
 			</ul>
