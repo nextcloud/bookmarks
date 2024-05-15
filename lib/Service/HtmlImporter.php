@@ -7,6 +7,8 @@
 
 namespace OCA\Bookmarks\Service;
 
+use OCA\Bookmarks\BackgroundJobs\IndividualAutoTaggingJob;
+use OCA\Bookmarks\BackgroundJobs\IndividualCrawlJob;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
@@ -22,6 +24,7 @@ use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\BackgroundJob\IJobList;
 
 /**
  * Class HtmlImporter
@@ -65,7 +68,9 @@ class HtmlImporter {
 	 * @param BookmarksParser $bookmarksParser
 	 * @param TreeCacheManager $hashManager
 	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser, \OCA\Bookmarks\Service\TreeCacheManager $hashManager) {
+	public function __construct(
+		private IJobList $jobList,
+		BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser, \OCA\Bookmarks\Service\TreeCacheManager $hashManager) {
 		$this->bookmarkMapper = $bookmarkMapper;
 		$this->folderMapper = $folderMapper;
 		$this->tagMapper = $tagMapper;
@@ -215,6 +220,10 @@ class HtmlImporter {
 		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bm->getId(), [$folderId], $index);
 		// add tags
 		$this->tagMapper->addTo($bookmark['tags'], $bm->getId());
+		// Crawl this bookmark in a crawl job
+		$this->jobList->add(IndividualCrawlJob::class, $bm->getId());
+		// Add AI tags in a bg job
+		$this->jobList->add(IndividualAutoTaggingJob::class, $bm->getId());
 
 		return $bm;
 	}

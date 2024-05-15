@@ -56,6 +56,16 @@
 				@click="onChangeBackupPath" />
 		</NcAppSettingsSection>
 
+		<NcAppSettingsSection id="tagging" :name="t('bookmarks', 'Auto-Tagging')">
+			<template #icon>
+				<AutoTaggingIcon :size="20" />
+			</template>
+			<p>{{ t('bookmarks', 'The bookmarks app can automatically tag your bookmarks with suitable tags based on their title and content.') }}</p>
+			<NcCheckboxRadioSwitch :checked="taggingEnabled" @update:checked="onChangeTagging">
+				{{ t('bookmarks', 'Enable Auto-Tagging') }}
+			</NcCheckboxRadioSwitch>
+		</NcAppSettingsSection>
+
 		<NcAppSettingsSection id="client-apps" :name="t('bookmarks', 'Client apps')">
 			<template #icon>
 				<ApplicationIcon :size="20" />
@@ -106,11 +116,11 @@ import { getRequestToken } from '@nextcloud/auth'
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import { privateRoutes } from '../router.js'
 import { NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField } from '@nextcloud/vue'
-import { ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon } from './Icons.js'
+import { ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon, AutoTaggingIcon } from './Icons.js'
 
 export default {
 	name: 'Settings',
-	components: { NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField, ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon },
+	components: { AutoTaggingIcon, NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField, ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon },
 	props: {
 		settingsOpen: {
 			type: Boolean,
@@ -164,6 +174,9 @@ export default {
 		backupEnabled() {
 			return Boolean(this.$store.state.settings['backup.enabled'])
 		},
+		taggingEnabled() {
+			return Boolean(this.$store.state.settings['tagging.enabled'])
+		}
 	},
 	mounted() {
 		window.addEventListener('beforeinstallprompt', (e) => {
@@ -219,6 +232,12 @@ export default {
 			await this.$store.dispatch(actions.SET_SETTING, {
 				key: 'backup.enabled',
 				value: !this.backupEnabled,
+			})
+		},
+		async onChangeTagging() {
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'tagging.enabled',
+				value: !this.taggingEnabled,
 			})
 		},
 		clickAddToHomeScreen() {

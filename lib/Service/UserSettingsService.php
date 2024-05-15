@@ -12,7 +12,7 @@ use OCP\IL10N;
 
 class UserSettingsService {
 
-	public const KEYS = ['hasSeenWhatsnew', 'viewMode', 'archive.enabled', 'archive.filePath', 'backup.enabled', 'backup.filePath', 'sorting'];
+	public const KEYS = ['hasSeenWhatsnew', 'viewMode', 'archive.enabled', 'archive.filePath', 'backup.enabled', 'backup.filePath', 'sorting', 'tagging.enabled'];
 
 	public function __construct(
 		private ?string $userId,
@@ -58,6 +58,9 @@ class UserSettingsService {
 		}
 		if ($key === 'backup.filePath') {
 			$default = $this->l->t('Bookmarks Backups');
+		}
+		if ($key === 'tagging.enabled') {
+			$default = (string) false;
 		}
 		return $this->config->getUserValue(
 			$this->userId,

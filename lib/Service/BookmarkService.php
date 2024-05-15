@@ -7,6 +7,7 @@
 
 namespace OCA\Bookmarks\Service;
 
+use OCA\Bookmarks\BackgroundJobs\IndividualAutoTaggingJob;
 use OCA\Bookmarks\BackgroundJobs\IndividualCrawlJob;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
@@ -157,6 +158,8 @@ class BookmarkService {
 
 		// Crawl this bookmark in a crawl job
 		$this->jobList->add(IndividualCrawlJob::class, $bookmark->getId());
+		// Add AI tags in a bg job
+		$this->jobList->add(IndividualAutoTaggingJob::class, $bookmark->getId());
 
 		return $bookmark;
 	}
