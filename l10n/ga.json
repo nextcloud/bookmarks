@@ -1,10 +1,13 @@
 { "translations": {
     "Rename" : "Athainmnigh",
+    "Move" : "Bog",
     "Delete" : "Scrios",
+    "New folder" : "Fillteán nua",
     "Search" : "Cuardach",
     "Rename folder" : "Athainmnigh fillteán",
     "Submit" : "Cuir isteach",
     "Cancel" : "Cealaigh",
+    "Files" : "Comhaid",
     "Settings" : "Socruithe",
     "Title" : "Teideal",
     "Root folder" : "Fillteán fréimhe",
