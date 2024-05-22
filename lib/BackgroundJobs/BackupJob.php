@@ -45,7 +45,9 @@ class BackupJob extends TimedJob {
 	}
 
 	protected function run($argument) {
-		$userIds = $this->config->getUsersForUserValue('bookmarks', 'backup.enabled', (string) true);
+		$userIds = $this->config->getUsersForUserValue('bookmarks', 'backup.enabled', (string) true); // if users have set this in older versions
+		$userIds += $this->config->getUsersForUserValue('bookmarks', 'backup.enabled', 'true');
+		$userIds = array_unique($userIds);
 		if (empty($userIds)) {
 			return;
 		}
