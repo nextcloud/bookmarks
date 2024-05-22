@@ -13,6 +13,7 @@ OC.L10N.register(
     "Settings" : "Socruithe",
     "Title" : "Teideal",
     "Root folder" : "Fillteán fréimhe",
+    "Sharing" : "Roinnt",
     "Select a user or group" : "Roghnaigh úsáideoir nó grúpa",
     "Privacy" : "Príobháideacht",
     "Save" : "Sábháil"
