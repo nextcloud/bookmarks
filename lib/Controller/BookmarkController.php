@@ -541,6 +541,7 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function clickBookmark($url = ''): JSONResponse {
+		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
 			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
