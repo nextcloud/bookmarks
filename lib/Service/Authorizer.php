@@ -90,6 +90,9 @@ class Authorizer {
 					return;
 				}
 				[$username, $password] = explode(':', base64_decode($credentials));
+				if (isset($username, $password) && $password !== '') {
+					return;
+				}
 				if ($this->userSession->login($username, $password) === false) {
 					return;
 				}
