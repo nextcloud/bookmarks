@@ -5,7 +5,7 @@
   -->
 
 <template>
-	<Item :title="bookmark.title"
+	<Item :title="bookmark.title || url"
 		:tags="bookmark.tags"
 		:rename-placeholder="t('bookmarks', 'Enter new title')"
 		:select-label="t('bookmarks', 'Select bookmark')"
