@@ -1,6 +1,7 @@
 OC.L10N.register(
     "bookmarks",
     {
+    "Details" : "Sonraí",
     "Rename" : "Athainmnigh",
     "Move" : "Bog",
     "Delete" : "Scrios",
@@ -15,6 +16,7 @@ OC.L10N.register(
     "Root folder" : "Fillteán fréimhe",
     "Sharing" : "Roinnt",
     "Select a user or group" : "Roghnaigh úsáideoir nó grúpa",
+    "Allow resharing" : "Ceadaigh athroinnt",
     "Privacy" : "Príobháideacht",
     "Save" : "Sábháil"
 },

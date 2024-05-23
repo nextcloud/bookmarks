@@ -89,6 +89,7 @@ OC.L10N.register(
     "Folder" : "Mappa",
     "Root Folder" : "Rótarmappa",
     "Save" : "Vista",
+    "What's new?" : "Hvað er nýtt á döfinni?",
     "Failed to find existing bookmark" : "Mistókst að finna fyrirliggjandi bókamerki",
     "Failed to create bookmark" : "Mistókst að búa til bókamerki",
     "Failed to save bookmark" : "Mistókst að vista bókamerki",

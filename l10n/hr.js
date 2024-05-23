@@ -183,6 +183,7 @@ OC.L10N.register(
     "Root Folder" : "Korijenska mapa",
     "Save" : "Spremi",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Pristup mreži je onemogućen sukladno zadanim postavkama. Otvorite administratorske postavke aplikacije za knjižne oznake kako biste omogućili dohvaćanje pretpregleda i favicona.",
+    "What's new?" : "Što je novog?",
     "Failed to count unavailable bookmarks" : "Brojanje nedostupnih knjižnih oznaka nije uspjelo",
     "Failed to count archived bookmarks" : "Brojanje arhiviranih knjižnih oznaka nije uspjelo",
     "Failed to load bookmark" : "Učitavanje knjižne oznake nije uspjelo",

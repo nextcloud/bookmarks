@@ -35,6 +35,7 @@ OC.L10N.register(
     "Failed to save settings" : "Failed to save settings",
     "Folder" : "Folder",
     "Save" : "Save",
+    "What's new?" : "What's new?",
     "Failed to load tags" : "Failed to load tags"
 },
 "nplurals=2; plural=(n!=1);");

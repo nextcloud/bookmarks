@@ -1,4 +1,5 @@
 { "translations": {
+    "Details" : "Sonraí",
     "Rename" : "Athainmnigh",
     "Move" : "Bog",
     "Delete" : "Scrios",
@@ -13,6 +14,7 @@
     "Root folder" : "Fillteán fréimhe",
     "Sharing" : "Roinnt",
     "Select a user or group" : "Roghnaigh úsáideoir nó grúpa",
+    "Allow resharing" : "Ceadaigh athroinnt",
     "Privacy" : "Príobháideacht",
     "Save" : "Sábháil"
 },"pluralForm" :"nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);"

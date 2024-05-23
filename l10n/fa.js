@@ -201,7 +201,7 @@ OC.L10N.register(
     "Root Folder" : "Root Folder",
     "Save" : "ذخیره",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons.",
-    "What's new in Bookmarks?" : "چه چیزی در نشانک‌ها جدید است؟",
+    "What's new?" : "What's new?",
     "What" : "What",
     "Failed to count unavailable bookmarks" : "Failed to count unavailable bookmarks",
     "Failed to count archived bookmarks" : "Failed to count archived bookmarks",

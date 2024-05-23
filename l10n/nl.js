@@ -186,6 +186,7 @@ OC.L10N.register(
     "Root Folder" : "Hoofdmap",
     "Save" : "Opslaan",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Netwerktoegang is standaard uitgeschakeld. Ga naar de beheerdersinstellingen voor de bladwijzer-app om het ophalen van voorbeelden en favicons toe te staan.",
+    "What's new?" : "Wat is nieuw?",
     "Failed to count unavailable bookmarks" : "Het tellen van niet-beschikbare bladwijzers is mislukt",
     "Failed to count archived bookmarks" : "Het tellen van gearchiveerde bladwijzers is mislukt",
     "Failed to load bookmark" : "Kan bladwijzer niet laden",

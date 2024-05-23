@@ -169,6 +169,7 @@ OC.L10N.register(
     "Root Folder" : "ルートフォルダー",
     "Save" : "保存",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "ネットワークアクセスはデフォルトで無効になっています。プレビューとfaviconの取得を許可するには、ブックマーク アプリの管理者設定を参照してください。",
+    "What's new?" : "新着情報？",
     "What" : "何を",
     "Failed to count unavailable bookmarks" : "利用不可ブックマークの数えに失敗しました",
     "Failed to count archived bookmarks" : "アーカイブ済みのブックマークの数えに失敗しました",

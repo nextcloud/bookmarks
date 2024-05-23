@@ -34,6 +34,7 @@ OC.L10N.register(
     "Link copied" : "Link copiado",
     "Privacy" : "Privacidad",
     "Folder" : "Carpeta",
-    "Save" : "Guardar"
+    "Save" : "Guardar",
+    "What's new?" : "¿Qué novedades hay?"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

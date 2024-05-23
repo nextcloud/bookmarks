@@ -215,7 +215,6 @@ OC.L10N.register(
     "Root Folder" : "المجلد الجذري root folder",
     "Save" : "حفظ",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "الوصول إلى الشبكة معطل بشكل تلقائي. إنتقل إلى إعدادات المشرف في تطبيق الإشارات المرجعية للسماح بجلب المعاينات previews و الأيقونات favicons.",
-    "What's new in Bookmarks?" : "ما الجديد في \"الإشارات المرجعية\"؟",
     "What" : "ماذا",
     "Failed to count unavailable bookmarks" : "تعذّر حصر الإشارات المرجعية غير المتاحة",
     "Failed to count archived bookmarks" : "تعذّر حصر الإشارات المرجعية المؤرشفة",

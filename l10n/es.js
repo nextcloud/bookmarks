@@ -215,7 +215,7 @@ OC.L10N.register(
     "Root Folder" : "Carpeta Raíz",
     "Save" : "Guardar",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "El acceso a la red está desactivado por defecto. Vaya a la configuración del administrador a por la configuración de la app Marcadores y permite la toma de previsualizaciones y favicons.",
-    "What's new in Bookmarks?" : "¿Qué hay de nuevo en Marcadores?",
+    "What's new?" : "¿Qué novedades hay?",
     "What" : "Qué",
     "Failed to count unavailable bookmarks" : "Fallo al contar los marcadores no disponibles",
     "Failed to count archived bookmarks" : "Fallo al contar los marcadores archivados",

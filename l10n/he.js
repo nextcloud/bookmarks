@@ -124,6 +124,7 @@ OC.L10N.register(
     "Enter bookmark URL" : "נא למלא כתובת סימנייה",
     "Folder" : "תיקייה",
     "Save" : "שמירה",
+    "What's new?" : "מה חדש?",
     "Failed to load bookmark" : "טעינת הסימנייה נכשלה",
     "Failed to find existing bookmark" : "איתור סימנייה קיימת נכשל",
     "Failed to create bookmark" : "יצירת סימנייה נכשלה",

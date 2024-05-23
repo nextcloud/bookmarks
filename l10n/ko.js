@@ -104,6 +104,7 @@ OC.L10N.register(
     "Folder" : "폴더",
     "Root Folder" : "최상위 폴더",
     "Save" : "저장",
+    "What's new?" : "새로운 항목",
     "What" : "무엇을",
     "Failed to load tags" : "태그 불러오기 실패",
     "Bookmarks feed" : "북마크 피드"

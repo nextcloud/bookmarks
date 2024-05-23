@@ -213,7 +213,7 @@ OC.L10N.register(
     "Root Folder" : "Rot mapp",
     "Save" : "Spara",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Nätverkstillgång är inaktiv som standard. Gå till administratör-inställningarna för bokmärkesappen för att tillåta hämtning av förhandsvisningar och ikoner.",
-    "What's new in Bookmarks?" : "Vad är nytt i Bokmärken?",
+    "What's new?" : "Vad är nytt?",
     "What" : "Vad",
     "Failed to count unavailable bookmarks" : "Det gick inte att räkna otillgängliga bokmärken",
     "Failed to count archived bookmarks" : "Det gick inte att räkna arkiverade bokmärken",

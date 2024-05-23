@@ -57,6 +57,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "Цей URL вже є в закладках! Перезаписати?",
     "Folder" : "Каталог",
     "Save" : "Зберегти",
+    "What's new?" : "Що нового?",
     "What" : "Що?",
     "Failed to load tags" : "Не вдалося завантажити мітки",
     "Failed to fetch bookmarks." : "Не вдалося отримати закладки."

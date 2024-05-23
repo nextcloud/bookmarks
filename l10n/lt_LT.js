@@ -95,6 +95,7 @@ OC.L10N.register(
     "Enter bookmark URL" : "Įveskite adresyno įrašo URL",
     "Folder" : "Aplankas",
     "Save" : "Įrašyti",
+    "What's new?" : "Kas naujo?",
     "Failed to find existing bookmark" : "Nepavyko rasti esamo adresyno įrašo",
     "Failed to create bookmark" : "Nepavyko sukurti adresyno įrašo",
     "Failed to save bookmark" : "Nepavyko įrašyti adresyno įrašo",

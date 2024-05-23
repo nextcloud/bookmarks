@@ -215,7 +215,7 @@ OC.L10N.register(
     "Root Folder" : "Erro-karpeta",
     "Save" : "Gorde",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Sarerako sarbidea desgaituta dago lehenespenez. Joan laster-marken aplikazioko administratzailearen ezarpenetara baimentzeko aurrebistak eta gogoko-ikonoak eskuratzea.",
-    "What's new in Bookmarks?" : "Zer dago berri laster-markak aplikazioan?",
+    "What's new?" : "Zer berri?",
     "What" : "Zer",
     "Failed to count unavailable bookmarks" : "Erabilgarri ez diren laster-marken kopuruak huts egin du",
     "Failed to count archived bookmarks" : "Artxibatutako laster-marken kopuruak huts egin du",

@@ -41,6 +41,7 @@ OC.L10N.register(
     "Failed to load settings" : "Неуспешно вчитување на параметрите",
     "Folder" : "Папка",
     "Save" : "Зачувај",
+    "What's new?" : "Што е ново",
     "Failed to load tags" : "Неуспешно вчитување на ознаки"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");
