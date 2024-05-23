@@ -19,7 +19,7 @@
 				<li>🐛 Lots of small bug fixes and performance improvements</li>
 			</ul>
 			<h3>💙 {{ t('bookmarks', 'Would you like to support this project?') }}</h3>
-			<p>{{ t('bookmarks', 'My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, please support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 ') }}</p>
+			<p>{{ t('bookmarks', 'My work on this Bookmarks app is fueled by a voluntary subscription model. If you think what I do is worthwhile, please support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 ') }}</p>
 			<ul>
 				<li><a href="https://github.com/sponsors/marcelklehr">GitHub Sponsors</a></li>
 				<li><a href="https://www.patreon.com/marcelklehr">Patreon</a></li>
