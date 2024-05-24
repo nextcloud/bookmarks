@@ -202,7 +202,7 @@ class BookmarkMapper extends QBMapper {
 	public function findAll(string $userId, QueryParameters $queryParams, bool $withGroupBy = true): array {
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		// gives us all bookmarks in this folder, recursively
-		[$cte, $params, $paramTypes] = $this->_generateCTE($rootFolder->getId());
+		[$cte, $params, $paramTypes] = $this->_generateCTE($rootFolder->getId(), $queryParams->getSoftDeleted());
 
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
@@ -261,7 +261,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param int $folderId
 	 * @return array
 	 */
-	private function _generateCTE(int $folderId) : array {
+	private function _generateCTE(int $folderId, bool $withSoftDeleted = false) : array {
 		// The base case of the recursion is just the folder we're given
 		$baseCase = $this->db->getQueryBuilder();
 		$baseCase
@@ -279,7 +279,7 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias('tr.type', 'type')
 			->selectAlias('tr.index', 'idx')
 			->from('*PREFIX*bookmarks_tree', 'tr')
-			->join('tr', $this->getDbType() === 'mysql'? 'folder_tree' : 'inner_folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+			->join('tr', $this->getDbType() === 'mysql'? 'folder_tree' : 'inner_folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER) . (!$withSoftDeleted ? ' AND e.soft_deleted_at is NULL' : ''));
 
 		// The second recursive case lists all children of shared folders we've already found
 		$recursiveCaseShares = $this->db->getQueryBuilder();
@@ -290,7 +290,7 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias($recursiveCaseShares->createFunction($recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER)), 'type')
 			->selectAlias('e.idx', 'idx')
 			->from(($this->getDbType() === 'mysql'? 'folder_tree' : 'second_folder_tree'), 'e')
-			->join('e', '*PREFIX*bookmarks_shared_folders', 's', 's.id = e.item_id AND e.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE));
+			->join('e', '*PREFIX*bookmarks_shared_folders', 's', 's.id = e.item_id AND e.type = '.$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE) . (!$withSoftDeleted ? ' AND e.soft_deleted_at is NULL' : ''));
 
 		if ($this->getDbType() === 'mysql') {
 			// For mysql we can just throw these three queries together in a CTE
@@ -321,7 +321,7 @@ class BookmarkMapper extends QBMapper {
 				->selectAlias('tr.type', 'type')
 				->selectAlias('tr.index', 'idx')
 				->from('*PREFIX*bookmarks_tree', 'tr')
-				->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$secondRecursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER));
+				->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = '.$secondRecursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER) . (!$withSoftDeleted ? ' AND e.soft_deleted_at is NULL' : ''));
 
 			// First the base case together with the normal recurisve case
 			// Then the second helper base case together with the recursive shares case
@@ -609,7 +609,7 @@ class BookmarkMapper extends QBMapper {
 		$folder = $this->folderMapper->find($publicFolder->getFolderId());
 
 		// gives us all bookmarks in this folder, recursively
-		[$cte, $params, $paramTypes] = $this->_generateCTE($folder->getId());
+		[$cte, $params, $paramTypes] = $this->_generateCTE($folder->getId(), false);
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(false);
