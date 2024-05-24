@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.30.0@d0bc6e25d89f649e4f36a534f330f8bb4643dd69">
   <file src="lib/AppInfo/Application.php">
-    <InvalidArgument occurrences="12">
+    <InvalidArgument occurrences="20">
+      <code>UsersGroupsCirclesListener::class</code>
+      <code>UsersGroupsCirclesListener::class</code>
+      <code>UsersGroupsCirclesListener::class</code>
+      <code>UsersGroupsCirclesListener::class</code>
+      <code>UsersGroupsCirclesListener::class</code>
+      <code>UsersGroupsCirclesListener::class</code>
+      <code>UsersGroupsCirclesListener::class</code>
+      <code>registerEventListener</code>
       <code>registerEventListener</code>
       <code>registerEventListener</code>
       <code>registerEventListener</code>
@@ -15,25 +23,23 @@
       <code>registerEventListener</code>
       <code>registerEventListener</code>
     </InvalidArgument>
-  </file>
-  <file src="lib/Controller/BookmarkController.php">
-    <MissingDependency occurrences="3">
-      <code>$this-&gt;rootFolder</code>
-      <code>IRootFolder</code>
-      <code>IRootFolder</code>
-    </MissingDependency>
+    <UndefinedClass occurrences="3">
+      <code>CircleDestroyedEvent</code>
+      <code>CircleMemberAddedEvent</code>
+      <code>CircleMemberRemovedEvent</code>
+    </UndefinedClass>
   </file>
   <file src="lib/Db/BookmarkMapper.php">
     <UndefinedDocblockClass occurrences="1">
       <code>\OC\DB\Exceptions\DbalException</code>
     </UndefinedDocblockClass>
   </file>
+  <file src="lib/Db/Share.php">
+    <UndefinedClass occurrences="1">
+      <code>\OCP\Server::get(CirclesService::class)-&gt;getCircle($participant)</code>
+    </UndefinedClass>
+  </file>
   <file src="lib/Flow/CreateBookmark.php">
-    <MissingDependency occurrences="3">
-      <code>$this-&gt;rootFolder</code>
-      <code>IRootFolder</code>
-      <code>IRootFolder</code>
-    </MissingDependency>
     <UndefinedClass occurrences="2">
       <code>$entity</code>
       <code>File</code>
@@ -42,15 +48,23 @@
       <code>exportContextIDs</code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="lib/Hooks/UsersGroupsCirclesListener.php">
+    <InvalidTemplateParam occurrences="1">
+      <code>IEventListener</code>
+    </InvalidTemplateParam>
+    <MoreSpecificImplementedParamType occurrences="1">
+      <code>$event</code>
+    </MoreSpecificImplementedParamType>
+    <UndefinedClass occurrences="3">
+      <code>$circle</code>
+      <code>$circle</code>
+      <code>CircleDestroyedEvent</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="1">
+      <code>UsersGroupsCirclesListener</code>
+    </UndefinedDocblockClass>
+  </file>
   <file src="lib/Service/BackupManager.php">
-    <MissingDependency occurrences="6">
-      <code>$this-&gt;rootFolder</code>
-      <code>$this-&gt;rootFolder</code>
-      <code>$this-&gt;rootFolder</code>
-      <code>$this-&gt;rootFolder</code>
-      <code>IRootFolder</code>
-      <code>IRootFolder</code>
-    </MissingDependency>
     <UndefinedDocblockClass occurrences="5">
       <code>\OC\User\NoUserException</code>
       <code>\OC\User\NoUserException</code>
@@ -59,15 +73,30 @@
       <code>\OC\User\NoUserException</code>
     </UndefinedDocblockClass>
   </file>
+  <file src="lib/Service/CirclesService.php">
+    <UndefinedClass occurrences="9">
+      <code>?Circle</code>
+      <code>Circle</code>
+      <code>CircleProbe</code>
+      <code>CirclesManager</code>
+      <code>CirclesManager</code>
+      <code>CirclesManager</code>
+      <code>Member</code>
+      <code>Member</code>
+      <code>Member</code>
+    </UndefinedClass>
+  </file>
   <file src="lib/Service/CrawlService.php">
-    <MissingDependency occurrences="1">
-      <code>IRootFolder</code>
-    </MissingDependency>
     <UndefinedClass occurrences="4">
       <code>$e</code>
       <code>$e</code>
       <code>Client</code>
       <code>NoUserException</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Service/FolderService.php">
+    <UndefinedClass occurrences="1">
+      <code>$circle</code>
     </UndefinedClass>
   </file>
   <file src="lib/Service/LinkExplorer.php">

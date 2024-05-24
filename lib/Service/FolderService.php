@@ -27,7 +27,6 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IGroupManager;
-use OCP\IL10N;
 use OCP\Share\IShare;
 
 class FolderService {
@@ -319,7 +318,7 @@ class FolderService {
 
 				$this->addSharedFolder($share, $folder, $user->getUID());
 			}
-		} else if ($type === IShare::TYPE_CIRCLE) {
+		} elseif ($type === IShare::TYPE_CIRCLE) {
 			$circle = $this->circlesService->getCircle($participant);
 			if ($circle === null) {
 				throw new DoesNotExistException('Circle does not exist');
