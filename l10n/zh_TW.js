@@ -216,6 +216,8 @@ OC.L10N.register(
     "Save" : "儲存",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "預設情況下停用網路存取。到管理設定中讓書籤應用程式可以擷取預覽與 favicon。",
     "What's new?" : "有什麼新鮮事？",
+    "Would you like to support this project?" : "您願意支援這個專案嗎？",
+    "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, please support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "我在這個書籤應用程式上的工作是由自願訂閱模式推動的。如果您覺得我的工作有價值，請支援我的工作。另外，請考慮在 Nextcloud 應用程式商店上對該應用程式進行評論。謝謝你💙",
     "What" : "什麼",
     "Failed to count unavailable bookmarks" : "計算不可用的書籤失敗",
     "Failed to count archived bookmarks" : "計算已封存的書籤失敗",

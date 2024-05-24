@@ -213,6 +213,9 @@
     "Root Folder" : "المجلد الجذري root folder",
     "Save" : "حفظ",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "الوصول إلى الشبكة معطل بشكل تلقائي. إنتقل إلى إعدادات المشرف في تطبيق الإشارات المرجعية للسماح بجلب المعاينات previews و الأيقونات favicons.",
+    "What's new?" : "مالجديد؟",
+    "Would you like to support this project?" : "هل ترغب في دعم هذا المشروع؟",
+    "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, please support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "عملي في هذا التطبيق \"الإشارات المرجعية\"  Bookmarks  هو عمل تطوعي. إذا كنت تعتقد أن ما أقوم به يستحق العناء، يرجى دعم عملي. يُرجى أيضًا التفكير في تقييم التطبيق على متجر تطبيقات نكست كلاود. و شكراً 💙",
     "What" : "ماذا",
     "Failed to count unavailable bookmarks" : "تعذّر حصر الإشارات المرجعية غير المتاحة",
     "Failed to count archived bookmarks" : "تعذّر حصر الإشارات المرجعية المؤرشفة",

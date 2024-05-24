@@ -39,6 +39,7 @@ OC.L10N.register(
     "This URL is already bookmarked! Overwrite?" : "¡Esta URL xá ta en Marcadores! ¿Quies sobrescribila?",
     "Folder" : "Carpeta",
     "Save" : "Guardar",
+    "What's new?" : "Novedaes",
     "Failed to count unavailable bookmarks" : "Nun se puen contar los marcadores que nun tán disponibles",
     "Failed to count archived bookmarks" : "Nun se puen contar los marcadores archivaos",
     "Failed to count duplicated bookmarks" : "Nun se puen contar los marcadores duplicaos",
