@@ -17,11 +17,14 @@ use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Flow\CreateBookmark;
 use OCA\Bookmarks\Hooks\BeforeTemplateRenderedListener;
-use OCA\Bookmarks\Hooks\UserGroupListener;
+use OCA\Bookmarks\Hooks\UsersGroupsCirclesListener;
 use OCA\Bookmarks\Middleware\ExceptionMiddleware;
 use OCA\Bookmarks\Reference\BookmarkReferenceProvider;
 use OCA\Bookmarks\Search\Provider;
 use OCA\Bookmarks\Service\TreeCacheManager;
+use OCA\Circles\Events\CircleDestroyedEvent;
+use OCA\Circles\Events\CircleMemberAddedEvent;
+use OCA\Circles\Events\CircleMemberRemovedEvent;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -29,6 +32,7 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
 use OCP\Collaboration\Reference\RenderReferenceEvent;
 use OCP\EventDispatcher\IEventDispatcher;
+use OCP\Group\Events\BeforeGroupDeletedEvent;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
 use OCP\IRequest;
@@ -81,9 +85,15 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(BeforeDeleteEvent::class, ActivityPublisher::class);
 		$context->registerEventListener(MoveEvent::class, ActivityPublisher::class);
 
-		$context->registerEventListener(BeforeUserDeletedEvent::class, UserGroupListener::class);
-		$context->registerEventListener(UserAddedEvent::class, UserGroupListener::class);
-		$context->registerEventListener(UserRemovedEvent::class, UserGroupListener::class);
+		$context->registerEventListener(BeforeUserDeletedEvent::class, UsersGroupsCirclesListener::class);
+		$context->registerEventListener(UserAddedEvent::class, UsersGroupsCirclesListener::class);
+		$context->registerEventListener(UserRemovedEvent::class, UsersGroupsCirclesListener::class);
+		$context->registerEventListener(BeforeGroupDeletedEvent::class, UsersGroupsCirclesListener::class);
+		if (class_exists('\OCA\Circles\Model\Circle')) {
+			$context->registerEventListener(CircleMemberAddedEvent::class, UsersGroupsCirclesListener::class);
+			$context->registerEventListener(CircleMemberRemovedEvent::class, UsersGroupsCirclesListener::class);
+			$context->registerEventListener(CircleDestroyedEvent::class, UsersGroupsCirclesListener::class);
+		}
 
 		$context->registerEventListener(BeforeTemplateRenderedEvent::class, BeforeTemplateRenderedListener::class);
 

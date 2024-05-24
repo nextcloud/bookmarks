@@ -59,6 +59,7 @@ import FolderIcon from 'vue-material-design-icons/Folder.vue'
 import FolderOpenIcon from 'vue-material-design-icons/FolderOpen.vue'
 import ImportIcon from 'vue-material-design-icons/Import.vue'
 import ApplicationImportIcon from 'vue-material-design-icons/ApplicationImport.vue'
+import CircleIcon from 'vue-material-design-icons/DotsCircle.vue'
 import BookmarksIcon from './icons/BookmarksIcon.vue'
 
 export {
@@ -117,5 +118,6 @@ export {
 	ClipboardIcon,
 	AccountIcon,
 	FolderOpenIcon,
+	CircleIcon,
 	BookmarksIcon,
 }

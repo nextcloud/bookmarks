@@ -31,42 +31,6 @@ use OCP\IL10N;
 use OCP\Share\IShare;
 
 class FolderService {
-	/**
-	 * @var FolderMapper
-	 */
-	private $folderMapper;
-	/**
-	 * @var TreeMapper
-	 */
-	private $treeMapper;
-	/**
-	 * @var ShareMapper
-	 */
-	private $shareMapper;
-	/**
-	 * @var SharedFolderMapper
-	 */
-	private $sharedFolderMapper;
-	/**
-	 * @var PublicFolderMapper
-	 */
-	private $publicFolderMapper;
-	/**
-	 * @var IGroupManager
-	 */
-	private $groupManager;
-	/**
-	 * @var HtmlImporter
-	 */
-	private $htmlImporter;
-	/**
-	 * @var IL10N
-	 */
-	private $l10n;
-	/**
-	 * @var IEventDispatcher
-	 */
-	private $eventDispatcher;
 
 	/**
 	 * FolderService constructor.
@@ -78,19 +42,19 @@ class FolderService {
 	 * @param PublicFolderMapper $publicFolderMapper
 	 * @param IGroupManager $groupManager
 	 * @param HtmlImporter $htmlImporter
-	 * @param IL10N $l10n
 	 * @param IEventDispatcher $eventDispatcher
 	 */
-	public function __construct(FolderMapper $folderMapper, TreeMapper $treeMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, PublicFolderMapper $publicFolderMapper, IGroupManager $groupManager, HtmlImporter $htmlImporter, IL10N $l10n, IEventDispatcher $eventDispatcher) {
-		$this->folderMapper = $folderMapper;
-		$this->treeMapper = $treeMapper;
-		$this->shareMapper = $shareMapper;
-		$this->sharedFolderMapper = $sharedFolderMapper;
-		$this->publicFolderMapper = $publicFolderMapper;
-		$this->groupManager = $groupManager;
-		$this->htmlImporter = $htmlImporter;
-		$this->l10n = $l10n;
-		$this->eventDispatcher = $eventDispatcher;
+	public function __construct(
+		private FolderMapper $folderMapper,
+		private TreeMapper $treeMapper,
+		private ShareMapper $shareMapper,
+		private SharedFolderMapper $sharedFolderMapper,
+		private PublicFolderMapper $publicFolderMapper,
+		private IGroupManager $groupManager,
+		private HtmlImporter $htmlImporter,
+		private IEventDispatcher $eventDispatcher,
+		private CirclesService $circlesService,
+	) {
 	}
 
 	public function getRootFolder(string $userId) : Folder {
@@ -355,8 +319,32 @@ class FolderService {
 
 				$this->addSharedFolder($share, $folder, $user->getUID());
 			}
+		} else if ($type === IShare::TYPE_CIRCLE) {
+			$circle = $this->circlesService->getCircle($participant);
+			if ($circle === null) {
+				throw new DoesNotExistException('Circle does not exist');
+			}
+			$this->shareMapper->insert($share);
+			$members = $circle->getMembers();
+			foreach ($members as $member) {
+				// If I'm part of the circle, don't add it twice
+				if ($member->getUserId() === $folder->getUserId()) {
+					continue;
+				}
+				// If this folder is already shared with the user, don't add it twice.
+				if ($this->treeMapper->isFolderSharedWithUser($folder->getId(), $member->getUserId())) {
+					continue;
+				}
+
+				// If this folder already contains a share from this user, don't share it back. Would cause a loop.
+				if ($this->treeMapper->containsSharedFolderFromUser($folder, $member->getUserId())) {
+					continue;
+				}
+
+				$this->addSharedFolder($share, $folder, $member->getUserId());
+			}
 		} else {
-			throw new UnsupportedOperation('Only users and groups are allowed as participants');
+			throw new UnsupportedOperation('Only users, groups and circles are allowed as participants');
 		}
 
 		return $share;

@@ -86,9 +86,13 @@
 			</div>
 			<div v-for="share of shares" :key="share.id">
 				<div class="share">
-					<NcAvatar :user="share.participant" class="share__avatar" :size="44" />
+					<NcAvatar v-if="share.type < 2"
+						:user="share.participant"
+						class="share__avatar"
+						:size="44" />
+					<CircleIcon v-if="share.type === 7" :size="20" class="share_avatar" />
 					<h3 class="share__title">
-						{{ share.participant }}
+						{{ share.participantDisplayName }}
 					</h3>
 					<div class="share__privs">
 						<div v-if="share.canShare"
@@ -131,11 +135,11 @@ import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { actions, mutations } from '../store/index.js'
-import { EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, DeleteIcon, RssIcon, PlusIcon, LinkIcon, AccountIcon } from './Icons.js'
+import { EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, DeleteIcon, RssIcon, PlusIcon, LinkIcon, AccountIcon, CircleIcon } from './Icons.js'
 
 export default {
 	name: 'SidebarFolder',
-	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcSelect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon },
+	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcSelect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon, CircleIcon },
 	data() {
 		return {
 			participantSearchResults: [],
@@ -236,13 +240,14 @@ export default {
 				return
 			}
 			this.isSearching = true
-			const { data: { ocs: { data, meta } } } = await axios.get(generateOcsUrl('apps/files_sharing/api/v1', 1) + `/sharees?format=json&itemType=folder&search=${searchTerm}&lookup=false&perPage=200&shareType[]=0&shareType[]=1`)
+			const { data: { ocs: { data, meta } } } = await axios.get(generateOcsUrl('apps/files_sharing/api/v1', 1) + `/sharees?format=json&itemType=folder&search=${searchTerm}&lookup=false&perPage=200&shareType[]=0&shareType[]=1&shareType[]=7`)
 			if (meta.status !== 'ok') {
 				this.participantSearchResults = []
 				return
 			}
 			const users = data.exact.users.concat(data.users)
 			const groups = data.exact.groups.concat(data.groups)
+			const circles = data.exact.circles.concat(data.circles)
 			this.participantSearchResults = users.map(result => ({
 				user: result.value.shareWith,
 				displayName: result.label,
@@ -253,11 +258,17 @@ export default {
 				displayName: result.label,
 				icon: 'icon-group',
 				isNoUser: true,
+			}))).concat(circles.map(result => ({
+				user: result.value.shareWith,
+				displayName: result.label,
+				icon: 'icon-circle',
+				isNoUser: true,
+				isCircle: true,
 			})))
 			this.isSearching = false
 		},
 		async onAddShare(user) {
-			await this.$store.dispatch(actions.CREATE_SHARE, { folderId: this.folder.id, participant: user.user, type: user.isNoUser ? 1 : 0 })
+			await this.$store.dispatch(actions.CREATE_SHARE, { folderId: this.folder.id, participant: user.user, type: user.isNoUser ? (user.isCircle ? 7 : 1) : 0 })
 		},
 		async onEditShare(shareId, { canWrite, canShare }) {
 			await this.$store.dispatch(actions.EDIT_SHARE, { shareId, canWrite, canShare })
@@ -292,7 +303,6 @@ export default {
 		flex-grow: 0;
 		height: 44px;
 		width: 44px;
-		padding: 10px;
 	}
 
 	.share__avatar.active {
