@@ -25,6 +25,7 @@ use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\DB\Exception;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IGroupManager;
 use OCP\Share\IShare;
@@ -269,8 +270,9 @@ class FolderService {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
-	public function createShare($folderId, $participant, int $type, $canWrite = false, $canShare = false): Share {
+	public function createShare($folderId, $participant, int $type, bool $canWrite = false, bool $canShare = false): Share {
 		/**
 		 * @var $folder Folder
 		 */
@@ -294,15 +296,43 @@ class FolderService {
 			}
 			$this->shareMapper->insert($share);
 			$this->addSharedFolder($share, $folder, $participant);
-		} elseif ($type === IShare::TYPE_GROUP) {
-			$group = $this->groupManager->get($participant);
-			if ($group === null) {
-				throw new DoesNotExistException('Group does not exist');
+		} else {
+			$this->addSharedFolderForParticipant($share, $folder, $type, $participant);
+		}
+
+
+		return $share;
+	}
+
+	/**
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws DoesNotExistException
+	 * @throws Exception
+	 */
+	public function addSharedFolderForParticipant(Share $share, Folder $folder, int $type, string $participant): void {
+		if ($type === IShare::TYPE_CIRCLE) {
+			$circle = $this->circlesService->getCircle($participant);
+			if ($circle === null) {
+				throw new DoesNotExistException('Circle does not exist');
 			}
 			$this->shareMapper->insert($share);
+
+			$members = $circle->getMembers();
+			foreach ($members as $member) {
+				$this->addSharedFolderForParticipant($share, $folder, $member->getUserType(), $member->getUserId());
+			}
+		}
+		if ($type === IShare::TYPE_GROUP) {
+			$group = $this->groupManager->get($participant);
+			if ($group === null) {
+				return;
+			}
+			$this->shareMapper->insert($share);
+
 			$users = $group->getUsers();
 			foreach ($users as $user) {
-				// If I'm part of the group, don't add it twice
+				// If owner is part of the group, don't add it twice
 				if ($user->getUID() === $folder->getUserId()) {
 					continue;
 				}
@@ -318,35 +348,26 @@ class FolderService {
 
 				$this->addSharedFolder($share, $folder, $user->getUID());
 			}
-		} elseif ($type === IShare::TYPE_CIRCLE) {
-			$circle = $this->circlesService->getCircle($participant);
-			if ($circle === null) {
-				throw new DoesNotExistException('Circle does not exist');
-			}
-			$this->shareMapper->insert($share);
-			$members = $circle->getMembers();
-			foreach ($members as $member) {
-				// If I'm part of the circle, don't add it twice
-				if ($member->getUserId() === $folder->getUserId()) {
-					continue;
-				}
-				// If this folder is already shared with the user, don't add it twice.
-				if ($this->treeMapper->isFolderSharedWithUser($folder->getId(), $member->getUserId())) {
-					continue;
-				}
-
-				// If this folder already contains a share from this user, don't share it back. Would cause a loop.
-				if ($this->treeMapper->containsSharedFolderFromUser($folder, $member->getUserId())) {
-					continue;
-				}
-
-				$this->addSharedFolder($share, $folder, $member->getUserId());
-			}
-		} else {
-			throw new UnsupportedOperation('Only users, groups and circles are allowed as participants');
 		}
+		if ($type === IShare::TYPE_USER) {
+			// User is already owner of folder
+			if ($participant === $folder->getUserId()) {
+				return;
+			}
+			// If this folder is already shared with the user, don't add it twice.
+			if ($this->treeMapper->isFolderSharedWithUser($folder->getId(), $participant)) {
+				return;
+			}
 
-		return $share;
+			// If this folder already contains a share from this user, don't share it back. Would cause a loop.
+			if ($this->treeMapper->containsSharedFolderFromUser($folder, $participant)) {
+				return;
+			}
+
+			$this->shareMapper->insert($share);
+
+			$this->addSharedFolder($share, $folder, $participant);
+		}
 	}
 
 	/**
