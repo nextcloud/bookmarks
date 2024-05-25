@@ -97,6 +97,16 @@
 					})
 				}}</a>
 		</NcAppSettingsSection>
+
+		<NcAppSettingsSection id="" :name="t('bookmarks', 'Need help?')">
+			<p><a href="https://github.com/nextcloud/bookmarks/issues/">{{ t('bookmarks', 'If you have problems with this Bookmarks app or have an idea about what could be improved, don\'t hesitate to get in touch by clicking here.')}}</a></p>
+		</NcAppSettingsSection>
+
+		<NcAppSettingsSection id="" :name="t('bookmarks', 'Support this project')">
+			<p>{{ t('bookmarks', 'My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 ') }}</p>
+			<p>&nbsp;</p>
+			<p><a href="https://github.com/sponsors/marcelklehr">GitHub Sponsors</a>, <a href="https://www.patreon.com/marcelklehr">Patreon</a>, <a href="https://liberapay.com/marcelklehr/donate">Liberapay</a>, <a href="https://ko-fi.com/marcelklehr">Ko-Fi</a>, <a href="https://www.paypal.me/marcelklehr1">PayPal</a></p>
+		</NcAppSettingsSection>
 	</NcAppSettingsDialog>
 </template>
 <script>
