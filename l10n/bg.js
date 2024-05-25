@@ -200,6 +200,7 @@ OC.L10N.register(
     "Root Folder" : "Основна Папка",
     "Save" : "Запиши",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Достъп до мрежата е деактивиран по подразбиране. Отидете в настройките на администратора за приложението на отметки, за да разрешите извличане на визуализации и аватари тип favicon.",
+    "What's new?" : "Какви са промените?",
     "What" : "Какво",
     "Failed to count unavailable bookmarks" : "Неуспешно преброяване на недостъпните отметки",
     "Failed to count archived bookmarks" : "Неуспешно преброяване на архивираните отметки",

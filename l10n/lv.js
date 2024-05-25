@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Bookmarks" : "Grāmatzīmes",
     "No file provided for import" : "Nav norādīta importējamā datne",
-    "Unsupported file type for import" : "Importam neatbalstīts datnes tips",
+    "Unsupported file type for import" : "Neatbalstīts datnes veids ievietošanai",
     "A Bookmark manager for Nextcloud" : "Nextcloud grāmatzīmju pārvaldnieks",
     "Details" : "Detaļas",
     "Rename" : "Pārsaukt",
