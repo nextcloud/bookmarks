@@ -18,7 +18,7 @@ class QueryParameters {
 	private $sortBy;
 	private $conjunction = self::CONJ_AND;
 	private $folder;
-	private string $url;
+	private ?string $url = null;
 	private bool $untagged = false;
 	private bool $unavailable = false;
 	private bool $archived = false;

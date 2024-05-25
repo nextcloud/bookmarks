@@ -776,7 +776,7 @@ class FolderControllerTest extends TestCase {
 		$this->authorizer->setUserId(null);
 		$output = $this->public->getFolders($this->folder1->getId(), -1);
 		$data = $output->getData();
-		$this->assertCount(1, $data['data']);
+		$this->assertCount(1, $data['data'], var_export($data['data'], true));
 		$this->assertEquals('bar', $data['data'][0]['title']);
 		$this->assertCount(0, $data['data'][0]['children']);
 	}

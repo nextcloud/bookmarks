@@ -193,7 +193,6 @@ class TreeMapper extends QBMapper {
 				'parent_folder' => $qb->createParameter('parent_folder'),
 				'type' => $qb->createParameter('type'),
 				'index' => $qb->createParameter('index'),
-				'soft_deleted_at' => null,
 			]);
 		return $qb;
 	}
@@ -245,13 +244,14 @@ class TreeMapper extends QBMapper {
 	 * @psalm-param T $type
 	 * @param int $folderId
 	 * @param bool $softDeleted
-	 * @return Entity
+	 * @return Entity[]
 	 * @psalm-return E[]
 	 * @psalm-template T as self::TYPE_*
 	 * @psalm-template E as (T is self::TYPE_FOLDER ? Folder : (T is self::TYPE_BOOKMARK ? Bookmark : SharedFolder))
 	 */
-	public function findChildren(string $type, int $folderId, bool $softDeleted = false): array {
-		$qb = $this->selectFromType($type, [], !$softDeleted ? $this->getChildrenQuery[$type] : $this->getSoftDeletedChildrenQuery[$type]);
+	public function findChildren(string $type, int $folderId, ?bool $softDeleted = null): array {
+		$listSoftDeleted = $softDeleted ?? $this->isEntrySoftDeleted($type, $folderId);
+		$qb = $this->selectFromType($type, [], !$listSoftDeleted ? $this->getChildrenQuery[$type] : $this->getSoftDeletedChildrenQuery[$type]);
 		$qb->setParameter('parent_folder', $folderId);
 		return $this->findEntitiesWithType($qb, $type);
 	}
@@ -826,14 +826,14 @@ class TreeMapper extends QBMapper {
 			->select('soft_deleted_at')
 			->from('bookmarks_tree')
 			->where($qb->expr()->eq('id', $qb->createPositionalParameter($id, IQueryBuilder::PARAM_INT)))
-			->where($qb->expr()->eq('type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_STR)))
+			->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_STR)))
 			->setMaxResults(1);
 		if ($folderId !== null) {
-			$qb->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)));
+			$qb->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)));
 		}
 		$result = $qb->executeQuery();
-		$softDeletedAt = $result->fetch(\PDO::FETCH_COLUMN);
-		return $softDeletedAt === null;
+		$results = $result->fetchAll();
+		return count($results) >= 1 && $results[0]['soft_deleted_at'] !== null;
 	}
 
 	/**
