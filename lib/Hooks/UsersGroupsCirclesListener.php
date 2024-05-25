@@ -21,6 +21,7 @@ use OCA\Circles\Events\CircleDestroyedEvent;
 use OCA\Circles\Events\CircleMemberAddedEvent;
 use OCA\Circles\Events\CircleMemberGenericEvent;
 use OCA\Circles\Events\CircleMemberRemovedEvent;
+use OCA\Circles\Model\Federated\FederatedEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\DB\Exception;
@@ -62,11 +63,27 @@ class UsersGroupsCirclesListener implements IEventListener {
 				foreach ($shares as $share) {
 					$this->addParticipantToShare($share, $event->getMember()->getUserType(), $event->getMember()->getUserId());
 				}
+				// propagate upward
+				foreach ($event->getCircle()->getMemberships() as $membership) {
+					$circle = $this->circlesService->getCircle($membership->getSingleId());
+					$federatedEvent = new FederatedEvent();
+					$federatedEvent->setCircle($circle);
+					$federatedEvent->setMember($event->getMember());
+					$this->handle(new CircleMemberAddedEvent($federatedEvent));
+				}
 			}
 			if ($event instanceof CircleMemberRemovedEvent) {
 				$shares = $this->shareMapper->findByParticipant(IShare::TYPE_CIRCLE, $event->getCircle()->getSingleId());
 				foreach ($shares as $share) {
 					$this->removeParticipantFromShare($share, $event->getMember()->getUserType(), $event->getMember()->getUserId());
+				}
+				// propagate upward
+				foreach ($event->getCircle()->getMemberships() as $membership) {
+					$circle = $this->circlesService->getCircle($membership->getSingleId());
+					$federatedEvent = new FederatedEvent();
+					$federatedEvent->setCircle($circle);
+					$federatedEvent->setMember($event->getMember());
+					$this->handle(new CircleMemberRemovedEvent($federatedEvent));
 				}
 			}
 		}
