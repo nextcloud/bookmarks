@@ -202,7 +202,7 @@ class BookmarkMapper extends QBMapper {
 	public function findAll(string $userId, QueryParameters $queryParams, bool $withGroupBy = true): array {
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		// gives us all bookmarks in this folder, recursively
-		[$cte, $params, $paramTypes] = $this->_generateCTE($rootFolder->getId(), $queryParams->getSoftDeleted());
+		[$cte, $params, $paramTypes] = $this->_generateCTE($rootFolder->getId(), $queryParams->getSoftDeletedFolders());
 
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
@@ -220,7 +220,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('*PREFIX*bookmarks', 'b')
-			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . (!$queryParams->getSoftDeleted() ? 'AND tree.soft_deleted_at is NULL' : ''));
+			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ($queryParams->getSoftDeleted() ? 'AND tree.soft_deleted_at is NOT NULL' : 'AND tree.soft_deleted_at is NULL'));
 
 		$this->_filterUrl($qb, $queryParams);
 		$this->_filterArchived($qb, $queryParams);

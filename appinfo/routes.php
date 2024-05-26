@@ -33,6 +33,7 @@ return [
 		['name' => 'web_view#index', 'url' => '/duplicated', 'verb' => 'GET', 'postfix' => 'duplicated'],
 		['name' => 'web_view#index', 'url' => '/shared', 'verb' => 'GET', 'postfix' => 'shared'],
 		['name' => 'web_view#index', 'url' => '/bookmarklet', 'verb' => 'GET', 'postfix' => 'bookmarklet'],
+		['name' => 'web_view#index', 'url' => '/trashbin', 'verb' => 'GET', 'postfix' => 'trashbin'],
 		['name' => 'web_view#service_worker', 'url' => '/service-worker.js', 'verb' => 'GET'],
 		['name' => 'web_view#manifest', 'url' => '/manifest.webmanifest', 'verb' => 'GET'],
 
@@ -45,6 +46,7 @@ return [
 		['name' => 'internal_bookmark#count_unavailable', 'url' => '/bookmark/unavailable', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#count_archived', 'url' => '/bookmark/archived', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#count_duplicated', 'url' => '/bookmark/duplicated', 'verb' => 'GET'],
+		['name' => 'internal_bookmark#get_deleted_bookmarks', 'url' => '/bookmark/deleted', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#edit_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'PUT'],
 		['name' => 'internal_bookmark#get_single_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'GET'],
 		['name' => 'internal_bookmark#delete_bookmark', 'url' => '/bookmark/{id}', 'verb' => 'DELETE'],
@@ -62,6 +64,7 @@ return [
 		['name' => 'internal_tags#delete_tag', 'url' => '/tag/{old_name}', 'verb' => 'DELETE'],
 		['name' => 'internal_folders#get_folders', 'url' => '/folder', 'verb' => 'GET'],
 		['name' => 'internal_folders#find_shared_folders', 'url' => '/folder/shared', 'verb' => 'GET'],
+		['name' => 'internal_folders#get_deleted_folders', 'url' => '/folder/deleted', 'verb' => 'GET'],
 		['name' => 'internal_folders#get_folder', 'url' => '/folder/{folderId}', 'verb' => 'GET'],
 		['name' => 'internal_folders#add_folder', 'url' => '/folder', 'verb' => 'POST'],
 		['name' => 'internal_folders#edit_folder', 'url' => '/folder/{folderId}', 'verb' => 'PUT'],

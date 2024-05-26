@@ -11,6 +11,7 @@ namespace OCA\Bookmarks\Controller;
 use DateInterval;
 use DateTime;
 use Exception;
+use OC\DB\Exceptions\DbalException;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -265,6 +266,8 @@ class BookmarkController extends ApiController {
 	 * @param bool|null $unavailable
 	 * @param bool|null $archived
 	 * @param bool|null $duplicated
+	 * @param bool|null $recursive
+	 * @param bool|null $deleted
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
@@ -286,6 +289,7 @@ class BookmarkController extends ApiController {
 		?bool $archived = null,
 		?bool $duplicated = null,
 		bool $recursive = false,
+		bool $deleted = false,
 	): DataResponse {
 		$this->registerResponder('rss', function (DataResponse $res) {
 			if ($res->getData()['status'] === 'success') {
@@ -343,6 +347,10 @@ class BookmarkController extends ApiController {
 		if ($duplicated !== null) {
 			$params->setDuplicated($duplicated);
 		}
+		// search soft deleted bookmarks
+		$params->setSoftDeleted($deleted);
+		// search bookmarks only in soft-deleted folders
+		$params->setSoftDeletedFolders($deleted);
 		$params->setTags($filterTag);
 		$params->setSearch($search);
 		$params->setConjunction($conjunction);
@@ -851,5 +859,26 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		return new JSONResponse(['status' => 'success']);
+	}
+
+	/**
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @PublicPage
+	 */
+	public function getDeletedBookmarks(): DataResponse {
+		$this->authorizer->setCredentials($this->request);
+		if ($this->authorizer->getUserId() === null) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+		}
+		try {
+			$bookmarks = $this->treeMapper->getSoftDeletedItems($this->authorizer->getUserId(), TreeMapper::TYPE_BOOKMARK);
+		} catch (UrlParseError|DbalException|\OCP\DB\Exception $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+
+		return new Http\DataResponse(['status' => 'success', 'data' => array_map(fn ($bookmark) => $this->_returnBookmarkAsArray($bookmark), $bookmarks)]);
 	}
 }

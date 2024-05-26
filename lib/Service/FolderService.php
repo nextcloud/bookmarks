@@ -135,20 +135,25 @@ class FolderService {
 	}
 
 	/**
-	 * @param $userId
-	 * @param $folderId
+	 * @param string $userId
+	 * @param int $folderId
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
-	public function deleteSharedFolderOrFolder($userId, $folderId): void {
+	public function deleteSharedFolderOrFolder(string $userId, int $folderId, bool $hardDelete): void {
 		/**
 		 * @var $folder Folder
 		 */
 		$folder = $this->folderMapper->find($folderId);
 
 		if ($userId === null || $userId === $folder->getUserId()) {
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+			if ($hardDelete) {
+				$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+			} else {
+				$this->treeMapper->softDeleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+			}
 			return;
 		}
 
@@ -158,15 +163,23 @@ class FolderService {
 			 * @var $sharedFolder SharedFolder
 			 */
 			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
-			$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			if ($hardDelete) {
+				$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			} else {
+				$this->treeMapper->softDeleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			}
 			return;
 		} catch (DoesNotExistException $e) {
 			// noop
 		}
 
 		// folder is subfolder of share
-		$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
-		$this->folderMapper->delete($folder);
+		if ($hardDelete) {
+			$this->treeMapper->deleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+			$this->folderMapper->delete($folder);
+		} else {
+			$this->treeMapper->softDeleteEntry(TreeMapper::TYPE_FOLDER, $folder->getId());
+		}
 	}
 
 	/**

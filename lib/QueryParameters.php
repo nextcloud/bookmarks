@@ -27,6 +27,7 @@ class QueryParameters {
 	private $tags = [];
 	private bool $recursive = false;
 	private bool $softDeleted = false;
+	private bool $softDeletedFolders = false;
 
 	/**
 	 * @return array
@@ -273,6 +274,22 @@ class QueryParameters {
 	 */
 	public function setSoftDeleted(bool $softDeleted): QueryParameters {
 		$this->softDeleted = $softDeleted;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getSoftDeletedFolders(): bool {
+		return $this->softDeletedFolders;
+	}
+
+	/**
+	 * @param bool $softDeletedFolders
+	 * @return $this
+	 */
+	public function setSoftDeletedFolders(bool $softDeletedFolders): QueryParameters {
+		$this->softDeletedFolders = $softDeletedFolders;
 		return $this;
 	}
 }

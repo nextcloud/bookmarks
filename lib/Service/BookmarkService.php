@@ -25,6 +25,7 @@ use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\BackgroundJob\IJobList;
+use OCP\DB\Exception;
 use OCP\EventDispatcher\IEventDispatcher;
 
 class BookmarkService {
@@ -374,9 +375,14 @@ class BookmarkService {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
-	public function removeFromFolder(int $folderId, int $bookmarkId): void {
-		$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
+	public function removeFromFolder(int $folderId, int $bookmarkId, bool $hardDelete = false): void {
+		if ($hardDelete) {
+			$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
+		} else {
+			$this->treeMapper->softDeleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmarkId, $folderId);
+		}
 	}
 
 	/**

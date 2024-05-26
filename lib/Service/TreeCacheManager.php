@@ -12,6 +12,7 @@ use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
+use OCA\Bookmarks\Db\TagMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\MoveEvent;
@@ -34,26 +35,6 @@ class TreeCacheManager implements IEventListener {
 	public const CATEGORY_CHILDORDER = 'childOrder';
 
 	/**
-	 * @var BookmarkMapper
-	 */
-	protected $bookmarkMapper;
-	/**
-	 * @var ShareMapper
-	 */
-	protected $shareMapper;
-	/**
-	 * @var SharedFolderMapper
-	 */
-	protected $sharedFolderMapper;
-	/**
-	 * @var TreeMapper
-	 */
-	protected $treeMapper;
-	/**
-	 * @var FolderMapper
-	 */
-	protected $folderMapper;
-	/**
 	 * @var bool
 	 */
 	private $enabled = true;
@@ -62,11 +43,6 @@ class TreeCacheManager implements IEventListener {
 	 * @var ICache[]
 	 */
 	private $caches = [];
-	private ContainerInterface $appContainer;
-	/**
-	 * @var \OCA\Bookmarks\Db\TagMapper
-	 */
-	private $tagMapper;
 
 	/**
 	 * FolderMapper constructor.
@@ -77,21 +53,23 @@ class TreeCacheManager implements IEventListener {
 	 * @param SharedFolderMapper $sharedFolderMapper
 	 * @param ICacheFactory $cacheFactory
 	 * @param ContainerInterface $appContainer
-	 * @param \OCA\Bookmarks\Db\TagMapper $tagMapper
+	 * @param TagMapper $tagMapper
 	 */
-	public function __construct(FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper, ShareMapper $shareMapper, SharedFolderMapper $sharedFolderMapper, ICacheFactory $cacheFactory, ContainerInterface $appContainer, \OCA\Bookmarks\Db\TagMapper $tagMapper) {
-		$this->folderMapper = $folderMapper;
-		$this->bookmarkMapper = $bookmarkMapper;
-		$this->shareMapper = $shareMapper;
-		$this->sharedFolderMapper = $sharedFolderMapper;
+	public function __construct(
+		protected FolderMapper $folderMapper,
+		protected BookmarkMapper $bookmarkMapper,
+		protected ShareMapper $shareMapper,
+		protected SharedFolderMapper $sharedFolderMapper,
+		protected ICacheFactory $cacheFactory,
+		protected ContainerInterface $appContainer,
+		protected TagMapper $tagMapper
+	) {
 		$this->caches[self::CATEGORY_HASH] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_HASH);
 		$this->caches[self::CATEGORY_SUBFOLDERS] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_SUBFOLDERS);
 		$this->caches[self::CATEGORY_FOLDERCOUNT] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_FOLDERCOUNT);
 		$this->caches[self::CATEGORY_CHILDREN] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDREN);
 		$this->caches[self::CATEGORY_CHILDREN_LAYER] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDREN_LAYER);
 		$this->caches[self::CATEGORY_CHILDORDER] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDORDER);
-		$this->appContainer = $appContainer;
-		$this->tagMapper = $tagMapper;
 	}
 
 

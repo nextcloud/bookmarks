@@ -221,4 +221,13 @@ class InternalFoldersController extends ApiController {
 	public function deleteShare($shareId): DataResponse {
 		return $this->controller->deleteShare($shareId);
 	}
+
+	/**
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function getDeletedFolders(): DataResponse {
+		return $this->controller->getDeletedFolders();
+	}
 }

@@ -58,6 +58,7 @@ class InternalBookmarkController extends ApiController {
 	 * @param bool|null $unavailable
 	 * @param bool|null $archived
 	 * @param bool|null $duplicated
+	 * @param bool|null $deleted
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
@@ -76,8 +77,9 @@ class InternalBookmarkController extends ApiController {
 		$archived = null,
 		$duplicated = null,
 		bool $recursive = false,
+		bool $deleted = false,
 	): DataResponse {
-		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived, $duplicated, $recursive);
+		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived, $duplicated, $recursive, $deleted);
 	}
 
 	/**
@@ -264,5 +266,14 @@ class InternalBookmarkController extends ApiController {
 	 */
 	public function releaseLock(): JSONResponse {
 		return $this->publicController->releaseLock();
+	}
+
+	/**
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function getDeletedBookmarks(): DataResponse {
+		return $this->publicController->getDeletedBookmarks();
 	}
 }
