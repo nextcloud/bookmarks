@@ -7,6 +7,10 @@
 <template>
 	<div :class="['controls', $store.state.public && 'wide']">
 		<div class="controls__left">
+			<TrashbinIcon v-if="isTrashbin" :size="20" />
+			<h2 v-if="isTrashbin">
+				{{ t('bookmarks', 'Trash Bin') }}
+			</h2>
 			<NcActions v-if="$route.name === routes.FOLDER || ($route.name === routes.SEARCH && Number($route.params.folder) !== -1)">
 				<NcActionButton @click="onClickBack">
 					<template #icon>
@@ -16,8 +20,8 @@
 				</NcActionButton>
 			</NcActions>
 			<template v-if="$route.name === routes.FOLDER || ($route.name === routes.SEARCH && Number($route.params.folder) !== -1)">
-				<h2><FolderIcon :size="20" /> <span>{{ folder.title }}</span></h2>
-				<NcActions v-if="permissions.canShare">
+				<h2><FolderIcon :size="20" /> <span :class="{strikethrough: isTrashbin}">{{ folder.title }}</span></h2>
+				<NcActions v-if="permissions.canShare && !isTrashbin">
 					<NcActionButton :close-after-click="true" @click="onOpenFolderShare">
 						<template #icon>
 							<ShareVariantIcon :size="20" />
@@ -37,7 +41,7 @@
 					:placeholder="t('bookmarks', 'Select one or more tags')"
 					@input="onTagsChange" />
 			</template>
-			<NcActions v-if="!isPublic"
+			<NcActions v-if="!isPublic && !isTrashbin"
 				v-tooltip="t('bookmarks', 'New')"
 				:name="t('bookmarks', 'New')">
 				<template #icon>
@@ -87,7 +91,7 @@
 					{{ option.description }}
 				</NcActionButton>
 			</NcActions>
-			<NcActions force-menu>
+			<NcActions v-if="!isTrashbin" force-menu>
 				<template #icon>
 					<RssIcon :size="20" />
 				</template>
@@ -100,7 +104,8 @@
 					{{ !$store.state.public? t('bookmarks', 'The RSS feed requires authentication with your Nextcloud credentials') : '' }}
 				</NcActionButton>
 			</NcActions>
-			<NcTextField :value.sync="search"
+			<NcTextField v-if="!isTrashbin"
+				:value.sync="search"
 				:label="t('bookmarks','Search')"
 				:placeholder="t('bookmarks','Search')"
 				class="inline-search"
@@ -112,7 +117,7 @@
 </template>
 <script>
 import { NcSelect, NcActions, NcActionButton, NcActionInput, NcActionRouter, NcTextField } from '@nextcloud/vue'
-import { MagnifyIcon, EarthIcon, ViewGridIcon, ViewListIcon, PlusIcon, FolderIcon, ArrowLeftIcon, RssIcon, SortAlphabeticalAscendingIcon, SortBoolAscendingIcon, SortClockAscendingOutlineIcon, SortCalendarAscendingIcon, SortNumericAscendingIcon, SortAscendingIcon, ShareVariantIcon, TagIcon } from './Icons.js'
+import { TrashbinIcon, MagnifyIcon, EarthIcon, ViewGridIcon, ViewListIcon, PlusIcon, FolderIcon, ArrowLeftIcon, RssIcon, SortAlphabeticalAscendingIcon, SortBoolAscendingIcon, SortClockAscendingOutlineIcon, SortCalendarAscendingIcon, SortNumericAscendingIcon, SortAscendingIcon, ShareVariantIcon, TagIcon } from './Icons.js'
 import { actions, mutations } from '../store/index.js'
 import { generateUrl } from '@nextcloud/router'
 import BulkEditing from './BulkEditing.vue'
@@ -121,6 +126,7 @@ export default {
 	name: 'Controls',
 	components: {
 		BulkEditing,
+		TrashbinIcon,
 		NcSelect,
 		NcActions,
 		NcActionButton,
@@ -161,9 +167,16 @@ export default {
 		}
 	},
 	computed: {
+		isTrashbin() {
+			return this.$route.name === this.routes.TRASHBIN || (this.$route.name === this.routes.FOLDER && this.folder && this.folder.softDeleted)
+		},
 		backLink() {
 			if (this.folder && this.folderPath.length > 1) {
 				return { name: this.routes.FOLDER, params: { folder: this.folder.parent_folder } }
+			}
+
+			if (this.isTrashbin) {
+				return { name: this.routes.TRASHBIN }
 			}
 
 			return { name: this.routes.HOME }
@@ -326,6 +339,10 @@ export default {
 
 .controls .action-item {
 	height: 45px;
+}
+
+.controls .strikethrough {
+	text-decoration: line-through;
 }
 
 .controls.wide {

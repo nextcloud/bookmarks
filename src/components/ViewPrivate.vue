@@ -79,8 +79,12 @@ export default {
 		isFolderView() {
 			return this.$route.name === privateRoutes.FOLDER || this.$route.name === privateRoutes.HOME
 		},
+		isTrashbin() {
+			const folder = this.$store.getters.getFolder(this.$route.params.folder || '-1')[0]
+			return this.$route.name === privateRoutes.TRASHBIN || (this.$route.name === privateRoutes.FOLDER && folder.softDeleted)
+		},
 		showFolderOverview() {
-			return this.isFolderView && !this.smallScreen && this.folders.length
+			return this.isFolderView && !this.smallScreen && this.folders.length && !this.isTrashbin
 		},
 	},
 	watch: {
@@ -108,11 +112,16 @@ export default {
 
 		await this.reloadSettings()
 
-		this.onRoute()
-		this.reloadFolders()
 		this.reloadSharedFolders()
 		this.reloadCount()
 		this.reloadTags()
+
+		await Promise.all([
+			this.reloadFolders(),
+			this.reloadDeletedFolders(),
+		])
+
+		this.onRoute()
 
 		const currentUser = getCurrentUser()
 		if (currentUser.isAdmin) {
@@ -132,7 +141,7 @@ export default {
 			this.$store.commit(mutations.RESET_SELECTION)
 			switch (route.name) {
 			case privateRoutes.HOME:
-				this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1')
+				this.$store.dispatch(actions.FILTER_BY_FOLDER, {folder: '-1'})
 				break
 			case privateRoutes.RECENT:
 				this.$store.dispatch(actions.FILTER_BY_RECENT)
@@ -149,6 +158,10 @@ export default {
 			case privateRoutes.DUPLICATED:
 				this.$store.dispatch(actions.FILTER_BY_DUPLICATED)
 				break
+			case privateRoutes.TRASHBIN:
+				await this.$store.dispatch(actions.LOAD_DELETED_BOOKMARKS)
+				await this.$store.dispatch(actions.LOAD_DELETED_FOLDERS)
+				break
 			case privateRoutes.SHARED_FOLDERS:
 				await this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
 				this.$store.commit(mutations.REMOVE_ALL_BOOKMARKS)
@@ -160,7 +173,9 @@ export default {
 				this.$store.commit(mutations.FETCH_END, 'bookmarks')
 				break
 			case privateRoutes.FOLDER:
-				this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder)
+				// eslint-disable-next-line no-case-declarations
+				const folder = this.$store.getters.getFolder(route.params.folder)[0]
+				this.$store.dispatch(actions.FILTER_BY_FOLDER, { folder: route.params.folder, softDeleted: folder.softDeleted })
 				break
 			case privateRoutes.TAGS:
 				this.$store.dispatch(
@@ -181,6 +196,9 @@ export default {
 		},
 		async reloadFolders() {
 			return this.$store.dispatch(actions.LOAD_FOLDERS)
+		},
+		async reloadDeletedFolders() {
+			return this.$store.dispatch(actions.LOAD_DELETED_FOLDERS)
 		},
 		async reloadSharedFolders() {
 			return this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)

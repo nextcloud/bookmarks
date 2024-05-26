@@ -43,48 +43,58 @@
 			</div>
 		</template>
 		<template #actions>
-			<NcActionButton :close-after-click="true" @click="onDetails">
-				<template #icon>
-					<InformationVariantIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Details') }}
-			</NcActionButton>
-			<NcActionCheckbox @change="clickSelect">
-				{{ t('bookmarks', 'Select folder') }}
-			</NcActionCheckbox>
-			<NcActionButton v-if="permissions.canShare"
-				icon="icon-share"
-				:close-after-click="true"
-				@click="onShare">
-				<template #icon>
-					<ShareVariantIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Share folder') }}
-			</NcActionButton>
-			<NcActionButton :close-after-click="true" @click="onRename">
-				<template #icon>
-					<PencilIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Rename folder') }}
-			</NcActionButton>
-			<NcActionButton :close-after-click="true" @click="onMove">
-				<template #icon>
-					<FolderMoveIcon :size="20" :fill-color="colorMainText" />
-				</template>
-				{{ t('bookmarks', 'Move folder') }}
-			</NcActionButton>
-			<NcActionButton :close-after-click="true" @click="onDelete">
-				<template #icon>
-					<DeleteIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Delete folder') }}
-			</NcActionButton>
+			<template v-if="!isTrashbin">
+				<NcActionButton :close-after-click="true" @click="onDetails">
+					<template #icon>
+						<InformationVariantIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Details') }}
+				</NcActionButton>
+				<NcActionCheckbox @change="clickSelect">
+					{{ t('bookmarks', 'Select folder') }}
+				</NcActionCheckbox>
+				<NcActionButton v-if="permissions.canShare"
+					icon="icon-share"
+					:close-after-click="true"
+					@click="onShare">
+					<template #icon>
+						<ShareVariantIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Share folder') }}
+				</NcActionButton>
+				<NcActionButton :close-after-click="true" @click="onRename">
+					<template #icon>
+						<PencilIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Rename folder') }}
+				</NcActionButton>
+				<NcActionButton :close-after-click="true" @click="onMove">
+					<template #icon>
+						<FolderMoveIcon :size="20" :fill-color="colorMainText" />
+					</template>
+					{{ t('bookmarks', 'Move folder') }}
+				</NcActionButton>
+			</template>
+			<template v-else>
+				<NcActionButton :close-after-click="true" @click="onDelete">
+					<template #icon>
+						<UndeleteIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Restore folder') }}
+				</NcActionButton>
+				<NcActionButton :close-after-click="true" @click="onDelete">
+					<template #icon>
+						<DeleteForeverIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Delete folder permanently') }}
+				</NcActionButton>
+			</template>
 		</template>
 	</Item>
 </template>
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
-import { FolderMoveIcon, FolderIcon, ShareVariantIcon, DeleteIcon, PencilIcon, InformationVariantIcon } from './Icons.js'
+import { UndeleteIcon, DeleteForeverIcon, FolderMoveIcon, FolderIcon, ShareVariantIcon, DeleteIcon, PencilIcon, InformationVariantIcon } from './Icons.js'
 import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
 import { actions, mutations } from '../store/index.js'
 import Item from './Item.vue'
@@ -99,6 +109,8 @@ export default {
 		FolderMoveIcon,
 		ShareVariantIcon,
 		DeleteIcon,
+		DeleteForeverIcon,
+		UndeleteIcon,
 		PencilIcon,
 		InformationVariantIcon,
 	},
@@ -121,6 +133,12 @@ export default {
 		isOwner() {
 			const currentUser = getCurrentUser()
 			return currentUser && this.folder.userId === currentUser.uid
+		},
+		containingFolder() {
+			return this.$store.getters.getFolder(this.$store.state.fetchState.query.folder)[0]
+		},
+		isTrashbin() {
+			return this.containingFolder.softDeleted || this.$route.name === this.routes.TRASHBIN
 		},
 		permissions() {
 			return this.$store.getters.getPermissionsForFolder(this.folder.id)

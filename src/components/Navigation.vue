@@ -104,6 +104,11 @@
 			</template>
 		</template>
 		<template #footer>
+			<NcAppNavigationItem key="menu-trashbin"
+													 :to="{ name: routes.TRASHBIN }"
+													 :name="t('bookmarks', 'Trash Bin')">
+				<TrashbinIcon slot="icon" :size="20" />
+			</NcAppNavigationItem>
 			<NcAppNavigationItem :name="t('bookmarks', 'Settings')" @click="settingsOpen = !settingsOpen">
 				<template #icon>
 					<CogIcon :size="20" />
@@ -116,7 +121,7 @@
 
 <script>
 import { NcActionButton, NcAppNavigation, NcAppNavigationItem, NcAppNavigationNewItem, NcCounterBubble, NcAppNavigationSpacer } from '@nextcloud/vue'
-import { HomeIcon, HistoryIcon, TagOffIcon, LinkVariantOffIcon, ShareVariantIcon, FileDocumentMultipleIcon, TagPlusIcon, TagMultipleIcon, VectorLinkIcon, TagIcon, DeleteIcon, GaugeIcon, CogIcon } from './Icons.js'
+import { TrashbinIcon, HomeIcon, HistoryIcon, TagOffIcon, LinkVariantOffIcon, ShareVariantIcon, FileDocumentMultipleIcon, TagPlusIcon, TagMultipleIcon, VectorLinkIcon, TagIcon, DeleteIcon, GaugeIcon, CogIcon } from './Icons.js'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings.vue'
 import { actions, mutations } from '../store/index.js'
@@ -145,6 +150,7 @@ export default {
 		DeleteIcon,
 		GaugeIcon,
 		CogIcon,
+		TrashbinIcon,
 	},
 
 	filters: {

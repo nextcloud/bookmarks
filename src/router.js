@@ -27,6 +27,7 @@ export const privateRoutes = {
 	BOOKMARKLET: 'bookmarklet',
 	SHARED_FOLDERS: 'SHARED_FOLDERS',
 	DUPLICATED: 'DUPLICATED',
+	TRASHBIN: 'TRASHBIN',
 }
 
 export const publicRoutes = {
@@ -97,6 +98,11 @@ export default new Router({
 		{
 			path: '/duplicated',
 			name: privateRoutes.DUPLICATED,
+			component: ViewPrivate,
+		},
+		{
+			path: '/trashbin',
+			name: privateRoutes.TRASHBIN,
 			component: ViewPrivate,
 		},
 		{

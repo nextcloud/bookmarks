@@ -40,56 +40,71 @@
 			</div>
 		</template>
 		<template #actions>
-			<NcActionButton :close-after-click="true"
-				@click="onDetails">
-				<template #icon>
-					<InformationVariantIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Details') }}
-			</NcActionButton>
-			<NcActionCheckbox @change="onSelect">
-				{{ t('bookmarks', 'Select bookmark') }}
-			</NcActionCheckbox>
-			<NcActionButton :close-after-click="true"
-				@click="onRename">
-				<template #icon>
-					<PencilIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Rename') }}
-			</NcActionButton>
-			<NcActionButton :close-after-click="true"
-				@click="onCopyUrl">
-				<template #icon>
-					<ContentCopyIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Copy link') }}
-			</NcActionButton>
-			<NcActionButton :close-after-click="true" @click="onMove">
-				<template #icon>
-					<FolderMoveIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Move') }}
-			</NcActionButton>
-			<NcActionButton :close-after-click="true" @click="onCopy">
-				<template #icon>
-					<FolderPlusIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Add to folders') }}
-			</NcActionButton>
-			<NcActionButton :close-after-click="true"
-				@click="onDelete">
-				<template #icon>
-					<DeleteIcon :size="20" />
-				</template>
-				{{ t('bookmarks', 'Delete') }}
-			</NcActionButton>
+			<template v-if="!isTrashbin">
+				<NcActionButton :close-after-click="true"
+					@click="onDetails">
+					<template #icon>
+						<InformationVariantIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Details') }}
+				</NcActionButton>
+				<NcActionCheckbox @change="onSelect">
+					{{ t('bookmarks', 'Select bookmark') }}
+				</NcActionCheckbox>
+				<NcActionButton :close-after-click="true"
+					@click="onRename">
+					<template #icon>
+						<PencilIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Rename') }}
+				</NcActionButton>
+				<NcActionButton :close-after-click="true"
+					@click="onCopyUrl">
+					<template #icon>
+						<ContentCopyIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Copy link') }}
+				</NcActionButton>
+				<NcActionButton :close-after-click="true" @click="onMove">
+					<template #icon>
+						<FolderMoveIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Move') }}
+				</NcActionButton>
+				<NcActionButton :close-after-click="true" @click="onCopy">
+					<template #icon>
+						<FolderPlusIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Add to folders') }}
+				</NcActionButton>
+				<NcActionButton :close-after-click="true" @click="onDelete">
+					<template #icon>
+						<DeleteIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Put bookmark into trash bin') }}
+				</NcActionButton>
+			</template>
+			<template v-else>
+				<NcActionButton :close-after-click="true" @click="onDelete">
+					<template #icon>
+						<UndeleteIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Restore bookmark') }}
+				</NcActionButton>
+				<NcActionButton :close-after-click="true" @click="onDelete">
+					<template #icon>
+						<DeleteForeverIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Delete bookmark permanently') }}
+				</NcActionButton>
+			</template>
 		</template>
 	</Item>
 </template>
 <script>
 import Item from './Item.vue'
 import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
-import { FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon, BookmarksIcon } from './Icons.js'
+import { UndeleteIcon, DeleteForeverIcon, FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon, BookmarksIcon } from './Icons.js'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/index.js'
@@ -107,6 +122,8 @@ export default {
 		PencilIcon,
 		InformationVariantIcon,
 		DeleteIcon,
+		DeleteForeverIcon,
+		UndeleteIcon,
 		BookmarksIcon,
 	},
 	props: {
@@ -196,6 +213,12 @@ export default {
 		},
 		background() {
 			return this.viewMode === 'grid' ? this.backgroundImage : undefined
+		},
+		folder() {
+			return this.$store.getters.getFolder(this.$store.state.fetchState.query.folder)[0]
+		},
+		isTrashbin() {
+			return this.folder.softDeleted || this.$route.name === this.routes.TRASHBIN
 		},
 	},
 	mounted() {

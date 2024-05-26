@@ -60,6 +60,7 @@ export default {
 		sharedFoldersById: {},
 		tags: [],
 		folders: [],
+		deletedFolders: [],
 		childrenByFolder: {},
 		tokensByFolder: {},
 		countsByFolder: {},
@@ -93,7 +94,11 @@ export default {
 			if (Number(id) === -1) {
 				return [{ id: -1, children: state.folders }]
 			}
-			return findFolder(id, state.folders)
+			const folders = findFolder(id, state.folders)
+			if (folders.length) {
+				return folders
+			}
+			return findFolder(id, state.deletedFolders, true)
 		},
 		getFolderChildren: state => id => {
 			return state.childrenByFolder[id] || []

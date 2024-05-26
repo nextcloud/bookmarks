@@ -51,6 +51,7 @@ export const mutations = {
 	ADD_PUBLIC_TOKEN: 'ADD_PUBLIC_TOKEN',
 	REMOVE_PUBLIC_TOKEN: 'REMOVE_PUBLIC_TOKEN',
 	SET_FOLDER_CHILDREN_ORDER: 'SET_FOLDER_CHILDREN_ORDER',
+	SET_DELETED_FOLDERS: 'SET_DELETED_FOLDERS',
 }
 export default {
 	[mutations.SET_AUTH_TOKEN](state, authToken) {
@@ -77,6 +78,9 @@ export default {
 	},
 	[mutations.SET_FOLDERS](state, folders) {
 		state.folders = sortFolders(folders)
+	},
+	[mutations.SET_DELETED_FOLDERS](state, folders) {
+		state.deletedFolders = sortFolders(folders)
 	},
 	[mutations.MOVE_FOLDER](state, { folder, target }) {
 		const currentFolder = findFolder(folder, state.folders)[0]
@@ -282,6 +286,9 @@ export default {
  * @param folders
  */
 function sortFolders(folders) {
+	if (!folders) {
+		return []
+	}
 	folders.forEach(folder => {
 		folder.children = sortFolders(folder.children)
 	})

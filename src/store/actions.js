@@ -33,12 +33,14 @@ export const actions = {
 	CLICK_BOOKMARK: 'CLICK_BOOKMARK',
 	IMPORT_BOOKMARKS: 'IMPORT_BOOKMARKS',
 	DELETE_BOOKMARKS: 'DELETE_BOOKMARKS',
+	LOAD_DELETED_BOOKMARKS: 'LOAD_DELETED_BOOKMARKS',
 
 	LOAD_TAGS: 'LOAD_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
 	DELETE_TAG: 'DELETE_TAG',
 
 	LOAD_FOLDERS: 'LOAD_FOLDERS',
+	LOAD_DELETED_FOLDERS: 'LOAD_DELETED_FOLDERS',
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
@@ -422,12 +424,12 @@ export default {
 	},
 	async [actions.DELETE_BOOKMARK](
 		{ commit, dispatch, state },
-		{ id, folder, avoidReload }
+		{ id, folder, avoidReload, hard }
 	) {
 		if (folder) {
 			try {
 				const response = await axios.delete(
-					url(state, `/folder/${folder}/bookmarks/${id}`)
+					url(state, `/folder/${folder}/bookmarks/${id}` + (hard ? '?hardDelete' : ''))
 				)
 				if (response.data.status !== 'success') {
 					throw new Error(response.data)
@@ -644,12 +646,79 @@ export default {
 			throw err
 		}
 	},
+
+	async [actions.LOAD_DELETED_FOLDERS]({ commit, dispatch, state }) {
+		let canceled = false
+		commit(mutations.FETCH_START, {
+			type: 'deleted_folders',
+			cancel: () => {
+				canceled = true
+			},
+		})
+		try {
+			const response = await axios.get(url(state, '/folder/deleted'), {
+				params: {},
+			})
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
+			const folders = data
+			commit(mutations.FETCH_END, 'folders')
+			return commit(mutations.SET_DELETED_FOLDERS, folders)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'folders')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load folders')
+			)
+			throw err
+		}
+	},
+
+	async [actions.LOAD_DELETED_BOOKMARKS]({ commit, dispatch, state }) {
+		let canceled = false
+		commit(mutations.FETCH_START, {
+			type: 'bookmarks',
+			cancel: () => {
+				canceled = true
+			},
+		})
+		try {
+			const response = await axios.get(url(state, '/bookmark/deleted'), {
+				params: {},
+			})
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
+			const bookmarks = data
+			commit(mutations.FETCH_END, 'bookmarks')
+			commit(mutations.REMOVE_ALL_BOOKMARKS)
+			for (const bookmark of bookmarks) {
+				commit(mutations.ADD_BOOKMARK, bookmark)
+			}
+			commit(mutations.REACHED_END)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'bookmarks')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load deleted bookmarks')
+			)
+			throw err
+		}
+	},
+
 	async [actions.DELETE_FOLDER](
 		{ commit, dispatch, state },
-		{ id, avoidReload }
+		{ id, avoidReload, hard }
 	) {
 		try {
-			const response = await axios.delete(url(state, `/folder/${id}`))
+			const response = await axios.delete(url(state, `/folder/${id}` + (hard ? '?hardDelete' : '')))
 			const {
 				data: { status },
 			} = response
@@ -986,8 +1055,8 @@ export default {
 		commit(mutations.SET_QUERY, { duplicated: true })
 		return dispatch(actions.FETCH_PAGE)
 	},
-	[actions.FILTER_BY_FOLDER]({ dispatch, commit, state }, folder) {
-		commit(mutations.SET_QUERY, { folder })
+	[actions.FILTER_BY_FOLDER]({ dispatch, commit, state }, { folder, softDeleted }) {
+		commit(mutations.SET_QUERY, { folder, deleted: softDeleted })
 		if (state.settings.sorting === 'index') {
 			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
 		}

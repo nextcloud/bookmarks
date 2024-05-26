@@ -51,6 +51,7 @@ import ShareVariantIcon from 'vue-material-design-icons/ShareVariant.vue'
 import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
 import ClipboardIcon from 'vue-material-design-icons/Clipboard.vue'
 import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import DeleteForeverIcon from 'vue-material-design-icons/DeleteForever.vue'
 import RssIcon from 'vue-material-design-icons/Rss.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import LinkIcon from 'vue-material-design-icons/Link.vue'
@@ -60,6 +61,8 @@ import FolderOpenIcon from 'vue-material-design-icons/FolderOpen.vue'
 import ImportIcon from 'vue-material-design-icons/Import.vue'
 import ApplicationImportIcon from 'vue-material-design-icons/ApplicationImport.vue'
 import CircleIcon from 'vue-material-design-icons/DotsCircle.vue'
+import TrashbinIcon from 'vue-material-design-icons/TrashCanOutline.vue'
+import UndeleteIcon from 'vue-material-design-icons/Restore.vue'
 import BookmarksIcon from './icons/BookmarksIcon.vue'
 
 export {
@@ -69,6 +72,7 @@ export {
 	PencilIcon,
 	InformationVariantIcon,
 	DeleteIcon,
+	DeleteForeverIcon,
 	DownloadIcon,
 	OpenInNewIcon,
 	TagIcon,
@@ -119,5 +123,7 @@ export {
 	AccountIcon,
 	FolderOpenIcon,
 	CircleIcon,
+	TrashbinIcon,
+	UndeleteIcon,
 	BookmarksIcon,
 }
