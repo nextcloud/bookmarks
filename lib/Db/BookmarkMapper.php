@@ -269,7 +269,7 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast(0 as UNSIGNED)' : 'cast(0 as BIGINT)'), 'parent_folder')
 			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as CHAR(20))' : 'cast('.$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER).' as TEXT)'), 'type')
 			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast(0 as UNSIGNED)' : 'cast(0 as BIGINT)'), 'idx')
-			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'NULL' : 'cast(NULL as timestamp)'), 'soft_deleted_at');
+			->selectAlias($baseCase->createFunction($this->getDbType() === 'mysql'? 'cast(NULL as DATETIME)' : 'cast(NULL as timestamp)'), 'soft_deleted_at');
 
 		// The first recursive case lists all children of folders we've already found
 		$recursiveCase = $this->db->getQueryBuilder();
