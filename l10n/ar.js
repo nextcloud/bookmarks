@@ -216,6 +216,8 @@ OC.L10N.register(
     "Save" : "حفظ",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "الوصول إلى الشبكة معطل بشكل تلقائي. إنتقل إلى إعدادات المشرف في تطبيق الإشارات المرجعية للسماح بجلب المعاينات previews و الأيقونات favicons.",
     "What's new?" : "مالجديد؟",
+    "Support this project?" : "هل ستدعم هذا المشروع؟",
+    "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "عملي في هذا التطبيق \"الإشارات المرجعية\" Bookmarks  يتم دعمه من خلال نموذج الاشتراك الطوعي. إذا كنت تعتقد أن ما أقوم به يستحق العناء، سأكون سعيداً إذا ساهمت في دعم عملي. كذلك، يُرجى تقييم التطبيق على متجر تطبيقات نكست كلاود. و شكراً 💙",
     "What" : "ماذا",
     "Failed to count unavailable bookmarks" : "تعذّر حصر الإشارات المرجعية غير المتاحة",
     "Failed to count archived bookmarks" : "تعذّر حصر الإشارات المرجعية المؤرشفة",

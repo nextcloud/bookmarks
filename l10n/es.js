@@ -216,6 +216,8 @@ OC.L10N.register(
     "Save" : "Guardar",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "El acceso a la red está desactivado por defecto. Vaya a la configuración del administrador a por la configuración de la app Marcadores y permite la toma de previsualizaciones y favicons.",
     "What's new?" : "¿Qué novedades hay?",
+    "Support this project?" : "¿Apoyar a este proyecto?",
+    "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "Mi trabajo en esta app de Marcadores está impulsado por un modelo de suscripción voluntario. Si cree que lo que hago vale la pena, me haría feliz que ud. pueda apoyar mi trabajo. Además, por favor considere dejar una opinión sobre la misma en el app store de Nextcloud. Gracias 💙",
     "What" : "Qué",
     "Failed to count unavailable bookmarks" : "Fallo al contar los marcadores no disponibles",
     "Failed to count archived bookmarks" : "Fallo al contar los marcadores archivados",
