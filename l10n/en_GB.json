@@ -214,6 +214,8 @@
     "Save" : "Save",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons.",
     "What's new?" : "What's new?",
+    "Support this project?" : "Support this project?",
+    "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 ",
     "What" : "What",
     "Failed to count unavailable bookmarks" : "Failed to count unavailable bookmarks",
     "Failed to count archived bookmarks" : "Failed to count archived bookmarks",

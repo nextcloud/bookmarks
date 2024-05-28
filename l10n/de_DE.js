@@ -217,7 +217,7 @@ OC.L10N.register(
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Netzwerkzugriff ist standardmäßig deaktiviert. Gehen Sie zu den Administratoreinstellungen für die Lesezeichen-App, um das Abrufen von Vorschauen und Favicons zu erlauben.",
     "What's new?" : "Was ist neu?",
     "Support this project?" : "Dieses Projekt unterstützen?",
-    "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "Meine Arbeit an dieser Lesezeichen-App basiert auf einem freiwilligen Abonnementmodell. Wenn Sie der Meinung sind, dass sich meine Arbeit lohnt, würde ich mich freuen, wenn Sie meine Arbeit unterstützen könnten. Bitte denken Sie auch darüber nach, die App im Nextcloud App Store zu bewerten. Danke 💙",
+    "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "Meine Arbeit an dieser Lesezeichen-App basiert auf einem freiwilligen Abonnementmodell. Wenn Sie von meiner Arbeit profitieren, würde ich mich über Ihre Unterstützung freuen. Bitte denken Sie auch daran, die App im Nextcloud App Store zu bewerten. Danke 💙",
     "What" : "Was",
     "Failed to count unavailable bookmarks" : "Die nicht verfügbare Lesezeichen konnten nicht gezählt werden",
     "Failed to count archived bookmarks" : "Archivierte Lesezeichen konnten nicht gezählt werden",
