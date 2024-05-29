@@ -111,7 +111,7 @@ class CrawlService {
 					$readability->parse($resp->getBody());
 					$bookmark->setHtmlContent($readability->getContent());
 					$bookmark->setTextContent(strip_tags($readability->getContent()));
-				} catch (Throwable $e) {
+				} catch (\Throwable $e) {
 					$this->logger->debug(get_class($e) . ' ' . $e->getMessage() . "\r\n" . $e->getTraceAsString());
 				}
 			}
