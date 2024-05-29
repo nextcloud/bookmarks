@@ -5,106 +5,118 @@
   -->
 
 <template>
-	<Item :title="bookmark.title || url"
-		:tags="bookmark.tags"
-		:rename-placeholder="t('bookmarks', 'Enter new title')"
-		:select-label="t('bookmarks', 'Select bookmark')"
-		:active="isActive"
-		:editable="isEditable"
-		:selected="selected"
-		:draggable="isEditable"
-		:renaming="renaming"
-		:background="background"
-		:url="url"
-		:selectable="selectable"
-		@select="onSelect"
-		@rename="onRenameSubmit"
-		@rename-cancel="renaming = false"
-		@click="onClick">
-		<template #icon>
-			<span v-if="bookmark.preliminary" class="icon-loading-small bookmark__icon" />
-			<BookmarksIcon v-else-if="!iconLoaded" :size="20" class="bookmark__icon" />
-			<figure v-else
-				class="bookmark__icon"
-				:style="{ backgroundImage: iconImage }" />
-		</template>
-		<template #title>
-			<div class="bookmark__title">
-				<h3 :title="bookmark.title">
-					{{ bookmark.title }}
-				</h3>
-				<span v-if="bookmark.description"
-					v-tooltip="bookmark.description"
-					class="bookmark__description"><figure class="icon-file" />
-					{{ bookmark.description }}</span>
+	<NcPopover popup-role="dialog" :shown="popoverShown">
+		<template #trigger>
+			<div @mouseenter="(![routes.FOLDER, routes.HOME].includes($route.name)) && (popoverShown = true)" @mouseleave="popoverShown = false">
+				<Item :title="bookmark.title || url"
+					:tags="bookmark.tags"
+					:rename-placeholder="t('bookmarks', 'Enter new title')"
+					:select-label="t('bookmarks', 'Select bookmark')"
+					:active="isActive"
+					:editable="isEditable"
+					:selected="selected"
+					:draggable="isDraggable"
+					:renaming="renaming"
+					:background="background"
+					:url="url"
+					:selectable="selectable"
+					@select="onSelect"
+					@rename="onRenameSubmit"
+					@rename-cancel="renaming = false"
+					@click="onClick">
+					<template #icon>
+						<span v-if="bookmark.preliminary" class="icon-loading-small bookmark__icon" />
+						<BookmarksIcon v-else-if="!iconLoaded" :size="20" class="bookmark__icon" />
+						<figure v-else
+							class="bookmark__icon"
+							:style="{ backgroundImage: iconImage }" />
+					</template>
+					<template #title>
+						<div class="bookmark__title">
+							<h3 :title="bookmark.title">
+								{{ bookmark.title }}
+							</h3>
+							<span v-if="bookmark.description"
+								v-tooltip="bookmark.description"
+								class="bookmark__description"><figure class="icon-file" />
+								{{ bookmark.description }}</span>
+						</div>
+					</template>
+					<template #actions>
+						<template v-if="!isTrashbin">
+							<NcActionButton :close-after-click="true"
+								@click="onDetails">
+								<template #icon>
+									<InformationVariantIcon :size="20" />
+								</template>
+								{{ t('bookmarks', 'Details') }}
+							</NcActionButton>
+							<NcActionCheckbox @change="onSelect">
+								{{ t('bookmarks', 'Select bookmark') }}
+							</NcActionCheckbox>
+							<NcActionButton :close-after-click="true"
+								@click="onRename">
+								<template #icon>
+									<PencilIcon :size="20" />
+								</template>
+								{{ t('bookmarks', 'Rename') }}
+							</NcActionButton>
+							<NcActionButton :close-after-click="true"
+								@click="onCopyUrl">
+								<template #icon>
+									<ContentCopyIcon :size="20" />
+								</template>
+								{{ t('bookmarks', 'Copy link') }}
+							</NcActionButton>
+							<NcActionButton :close-after-click="true" @click="onMove">
+								<template #icon>
+									<FolderMoveIcon :size="20" />
+								</template>
+								{{ t('bookmarks', 'Move') }}
+							</NcActionButton>
+							<NcActionButton :close-after-click="true" @click="onCopy">
+								<template #icon>
+									<FolderPlusIcon :size="20" />
+								</template>
+								{{ t('bookmarks', 'Add to folders') }}
+							</NcActionButton>
+							<NcActionButton :close-after-click="true" @click="onDelete(false)">
+								<template #icon>
+									<DeleteIcon :size="20" />
+								</template>
+								{{ t('bookmarks', 'Put bookmark into trash bin') }}
+							</NcActionButton>
+						</template>
+						<template v-else>
+							<NcActionButton :close-after-click="true" @click="onUndelete">
+								<template #icon>
+									<UndeleteIcon :size="20" />
+								</template>
+								{{ t('bookmarks', 'Restore bookmark') }}
+							</NcActionButton>
+							<NcActionButton :close-after-click="true" @click="onDelete(true)">
+								<template #icon>
+									<DeleteForeverIcon :size="20" />
+								</template>
+								{{ t('bookmarks', 'Delete bookmark permanently') }}
+							</NcActionButton>
+						</template>
+					</template>
+				</Item>
 			</div>
 		</template>
-		<template #actions>
-			<template v-if="!isTrashbin">
-				<NcActionButton :close-after-click="true"
-					@click="onDetails">
-					<template #icon>
-						<InformationVariantIcon :size="20" />
-					</template>
-					{{ t('bookmarks', 'Details') }}
-				</NcActionButton>
-				<NcActionCheckbox @change="onSelect">
-					{{ t('bookmarks', 'Select bookmark') }}
-				</NcActionCheckbox>
-				<NcActionButton :close-after-click="true"
-					@click="onRename">
-					<template #icon>
-						<PencilIcon :size="20" />
-					</template>
-					{{ t('bookmarks', 'Rename') }}
-				</NcActionButton>
-				<NcActionButton :close-after-click="true"
-					@click="onCopyUrl">
-					<template #icon>
-						<ContentCopyIcon :size="20" />
-					</template>
-					{{ t('bookmarks', 'Copy link') }}
-				</NcActionButton>
-				<NcActionButton :close-after-click="true" @click="onMove">
-					<template #icon>
-						<FolderMoveIcon :size="20" />
-					</template>
-					{{ t('bookmarks', 'Move') }}
-				</NcActionButton>
-				<NcActionButton :close-after-click="true" @click="onCopy">
-					<template #icon>
-						<FolderPlusIcon :size="20" />
-					</template>
-					{{ t('bookmarks', 'Add to folders') }}
-				</NcActionButton>
-				<NcActionButton :close-after-click="true" @click="onDelete(false)">
-					<template #icon>
-						<DeleteIcon :size="20" />
-					</template>
-					{{ t('bookmarks', 'Put bookmark into trash bin') }}
-				</NcActionButton>
-			</template>
-			<template v-else>
-				<NcActionButton :close-after-click="true" @click="onUndelete">
-					<template #icon>
-						<UndeleteIcon :size="20" />
-					</template>
-					{{ t('bookmarks', 'Restore bookmark') }}
-				</NcActionButton>
-				<NcActionButton :close-after-click="true" @click="onDelete(true)">
-					<template #icon>
-						<DeleteForeverIcon :size="20" />
-					</template>
-					{{ t('bookmarks', 'Delete bookmark permanently') }}
-				</NcActionButton>
-			</template>
-		</template>
-	</Item>
+		<ul class="bookmark__folder-tooltip">
+			<li v-for="folderId in bookmark.folders"
+				:key="folderId">
+				<FolderIcon :size="20" /> {{ getFolderPath(folderId) }}
+			</li>
+		</ul>
+	</NcPopover>
 </template>
 <script>
 import Item from './Item.vue'
-import { NcActionButton, NcActionCheckbox } from '@nextcloud/vue'
-import { UndeleteIcon, DeleteForeverIcon, FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon, BookmarksIcon } from './Icons.js'
+import { NcActionButton, NcActionCheckbox, NcPopover } from '@nextcloud/vue'
+import { FolderIcon, UndeleteIcon, DeleteForeverIcon, FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon, BookmarksIcon } from './Icons.js'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/index.js'
@@ -118,6 +130,7 @@ export default {
 		NcActionCheckbox,
 		FolderPlusIcon,
 		FolderMoveIcon,
+		FolderIcon,
 		ContentCopyIcon,
 		PencilIcon,
 		InformationVariantIcon,
@@ -125,6 +138,7 @@ export default {
 		DeleteForeverIcon,
 		UndeleteIcon,
 		BookmarksIcon,
+		NcPopover,
 	},
 	props: {
 		bookmark: {
@@ -139,6 +153,7 @@ export default {
 			backgroundImage: undefined,
 			iconImage: undefined,
 			iconLoaded: false,
+			popoverShown: false,
 		}
 	},
 	computed: {
@@ -191,8 +206,11 @@ export default {
 				this.bookmark.id
 			)
 		},
+		isDraggable() {
+			return this.isEditable && !this.isTrashbin
+		},
 		isEditable() {
-			return !this.isTrashbin && (this.isOwner || (!this.isOwner && this.permissions.canWrite))
+			return (this.isOwner || (!this.isOwner && this.permissions.canWrite))
 		},
 		selectedBookmarks() {
 			return this.$store.state.selection.bookmarks
@@ -218,7 +236,7 @@ export default {
 			return this.$store.getters.getFolder(this.$store.state.fetchState.query.folder)[0]
 		},
 		isTrashbin() {
-			return this.folder.softDeleted || this.$route.name === this.routes.TRASHBIN
+			return (this.folder && this.folder.softDeleted) || this.$route.name === this.routes.TRASHBIN
 		},
 	},
 	mounted() {
@@ -226,6 +244,10 @@ export default {
 		this.fetchIcon()
 	},
 	methods: {
+		getFolderPath(id) {
+			const path = this.$store.getters.getFolder(id).reverse().map(folder => folder.title)
+			return '/' + path.join('/')
+		},
 		onDelete(hard) {
 			if (
 				hard && !confirm(
@@ -412,5 +434,14 @@ export default {
 	display: inline-block !important;
 	position: relative;
 	top: 5px;
+}
+
+.bookmark__folder-tooltip {
+	padding: 10px;
+	min-width: 150px;
+}
+
+.bookmark__folder-tooltip li {
+	display: flex;
 }
 </style>

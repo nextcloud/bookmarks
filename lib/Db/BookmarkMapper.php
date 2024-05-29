@@ -213,14 +213,14 @@ class BookmarkMapper extends QBMapper {
 		$qb->groupBy($bookmark_cols);
 
 		if ($withGroupBy) {
-			$this->_selectFolders($qb);
+			$this->_selectFolders($qb, $queryParams->getSoftDeleted());
 			$this->_selectTags($qb);
 		}
 		$qb->automaticTablePrefix(false);
 
 		$qb
 			->from('*PREFIX*bookmarks', 'b')
-			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ($queryParams->getSoftDeleted() ? 'AND tree.soft_deleted_at is NOT NULL' : 'AND tree.soft_deleted_at is NULL'));
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ($queryParams->getSoftDeleted() ? ' AND tree.soft_deleted_at is NOT NULL' : ' AND tree.soft_deleted_at is NULL'));
 
 		$this->_filterUrl($qb, $queryParams);
 		$this->_filterArchived($qb, $queryParams);
@@ -261,7 +261,7 @@ class BookmarkMapper extends QBMapper {
 	 * @param int $folderId
 	 * @return array
 	 */
-	private function _generateCTE(int $folderId, bool $withSoftDeleted = false) : array {
+	private function _generateCTE(int $folderId, bool $withSoftDeleted) : array {
 		// The base case of the recursion is just the folder we're given
 		$baseCase = $this->db->getQueryBuilder();
 		$baseCase
@@ -625,7 +625,7 @@ class BookmarkMapper extends QBMapper {
 		$qb->groupBy($bookmark_cols);
 
 		if ($withGroupBy) {
-			$this->_selectFolders($qb);
+			$this->_selectFolders($qb, false);
 			$this->_selectTags($qb);
 		}
 
@@ -803,8 +803,8 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param IQueryBuilder $qb
 	 */
-	private function _selectFolders(IQueryBuilder $qb): void {
-		$qb->leftJoin('b', '*PREFIX*bookmarks_tree', 'tr2', 'b.id = tr2.id AND tr2.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK));
+	private function _selectFolders(IQueryBuilder $qb, bool $isSoftDeleted): void {
+		$qb->leftJoin('b', '*PREFIX*bookmarks_tree', 'tr2', 'b.id = tr2.id AND tr2.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ($isSoftDeleted ? ' AND tr2.soft_deleted_at is NOT NULL' : ' AND tr2.soft_deleted_at is NULL'));
 		if ($this->getDbType() === 'pgsql') {
 			$folders = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('tr2.parent_folder') . "), ',')");
 		} else {
