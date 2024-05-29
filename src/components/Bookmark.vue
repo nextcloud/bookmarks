@@ -77,7 +77,7 @@
 					</template>
 					{{ t('bookmarks', 'Add to folders') }}
 				</NcActionButton>
-				<NcActionButton :close-after-click="true" @click="onDelete">
+				<NcActionButton :close-after-click="true" @click="onDelete(false)">
 					<template #icon>
 						<DeleteIcon :size="20" />
 					</template>
@@ -85,13 +85,13 @@
 				</NcActionButton>
 			</template>
 			<template v-else>
-				<NcActionButton :close-after-click="true" @click="onDelete">
+				<NcActionButton :close-after-click="true" @click="onUndelete">
 					<template #icon>
 						<UndeleteIcon :size="20" />
 					</template>
 					{{ t('bookmarks', 'Restore bookmark') }}
 				</NcActionButton>
-				<NcActionButton :close-after-click="true" @click="onDelete">
+				<NcActionButton :close-after-click="true" @click="onDelete(true)">
 					<template #icon>
 						<DeleteForeverIcon :size="20" />
 					</template>
@@ -226,9 +226,9 @@ export default {
 		this.fetchIcon()
 	},
 	methods: {
-		onDelete() {
+		onDelete(hard) {
 			if (
-				!confirm(
+				hard && !confirm(
 					t(
 						'bookmarks',
 						'Do you really want to delete this bookmark?'
@@ -237,10 +237,32 @@ export default {
 			) {
 				return
 			}
-			this.$store.dispatch(actions.DELETE_BOOKMARK, {
-				id: this.bookmark.id,
-				folder: this.$store.state.fetchState.query.folder,
-			})
+			if ((this.$route.name === this.routes.FOLDER || this.$route.name === this.routes.HOME) && this.$store.state.fetchState.query.folder) {
+				this.$store.dispatch(actions.DELETE_BOOKMARK, {
+					id: this.bookmark.id,
+					folder: this.$store.state.fetchState.query.folder,
+					hard,
+				})
+			} else {
+				this.bookmark.folders.forEach((folder) => this.$store.dispatch(actions.DELETE_BOOKMARK, {
+					id: this.bookmark.id,
+					folder,
+					hard,
+				}))
+			}
+		},
+		onUndelete() {
+			if (this.$route.name === this.routes.FOLDER && this.$store.state.fetchState.query.folder) {
+				this.$store.dispatch(actions.UNDELETE_BOOKMARK, {
+					id: this.bookmark.id,
+					folder: this.$store.state.fetchState.query.folder,
+				})
+			} else {
+				this.bookmark.folders.forEach((folder) => this.$store.dispatch(actions.UNDELETE_BOOKMARK, {
+					id: this.bookmark.id,
+					folder,
+				}))
+			}
 		},
 		onDetails() {
 			this.$store.dispatch(actions.OPEN_BOOKMARK, this.bookmark.id)

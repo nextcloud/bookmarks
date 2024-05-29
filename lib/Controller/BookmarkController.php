@@ -874,7 +874,7 @@ class BookmarkController extends ApiController {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
 		}
 		try {
-			$bookmarks = $this->treeMapper->getSoftDeletedItems($this->authorizer->getUserId(), TreeMapper::TYPE_BOOKMARK);
+			$bookmarks = $this->treeMapper->getSoftDeletedRootItems($this->authorizer->getUserId(), TreeMapper::TYPE_BOOKMARK);
 		} catch (UrlParseError|DbalException|\OCP\DB\Exception $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}

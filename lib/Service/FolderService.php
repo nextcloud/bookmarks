@@ -189,7 +189,7 @@ class FolderService {
 	/**
 	 * @throws UnsupportedOperation
 	 * @throws MultipleObjectsReturnedException
-	 * @throws DoesNotExistException
+	 * @throws DoesNotExistException|Exception
 	 */
 	public function undelete(?string $userId, int $folderId): void {
 		$folder = $this->folderMapper->find($folderId);

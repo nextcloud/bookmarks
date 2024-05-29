@@ -421,18 +421,6 @@ class TreeMapper extends QBMapper {
 	public function softDeleteEntry(string $type, int $id, ?int $folderId = null): void {
 		$this->eventDispatcher->dispatchTyped(new BeforeSoftDeleteEvent($type, $id));
 
-		// set entry as deleted
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->update('bookmarks_tree')
-			->set('soft_deleted_at', $qb->createPositionalParameter($this->timeFactory->getDateTime(), IQueryBuilder::PARAM_DATE))
-			->where($qb->expr()->eq('id', $qb->createPositionalParameter($id, IQueryBuilder::PARAM_INT)))
-			->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
-		if ($folderId !== null) {
-			$qb->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)));
-		}
-		$qb->executeStatement();
-
 		if ($type === self::TYPE_FOLDER) {
 			// First get all shares out of the way
 			$descendantShares = $this->findByAncestorFolder(self::TYPE_SHARE, $id);
@@ -443,24 +431,46 @@ class TreeMapper extends QBMapper {
 			// then get all folders in this sub tree
 			$descendantFolders = $this->findByAncestorFolder(self::TYPE_FOLDER, $id);
 			$folder = $this->folderMapper->find($id);
-			$descendantFoldersPlusThisFolder = $descendantFolders + [$folder];
+			$descendantFoldersPlusThisFolder = [...$descendantFolders, $folder];
 
 			// soft delete all descendant bookmarks entries from this subtree
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->update('bookmarks_tree')
-				->set('soft_deleted_at', $qb->createPositionalParameter($this->timeFactory->getDateTime(), IQueryBuilder::PARAM_DATE))
-				->where($qb->expr()->eq('type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
-				->andWhere($qb->expr()->in('parent_folder', $qb->createPositionalParameter(array_map(static function ($folder) {
+				->set('soft_deleted_at', $qb->createNamedParameter($this->timeFactory->getDateTime(), IQueryBuilder::PARAM_DATE))
+				->where($qb->expr()->eq('type', $qb->createNamedParameter(self::TYPE_BOOKMARK)))
+				->andWhere($qb->expr()->in('parent_folder', $qb->createNamedParameter(array_map(static function ($folder) {
 					return $folder->getId();
 				}, $descendantFoldersPlusThisFolder), IQueryBuilder::PARAM_INT_ARRAY)));
 			$qb->execute();
 
 			// soft delete all folder entries from this subtree
-			foreach ($descendantFolders as $descendantFolder) {
-				$this->softDeleteEntry(self::TYPE_FOLDER, $descendantFolder->getId());
+			foreach ($descendantFoldersPlusThisFolder as $descendantFolder) {
+				// set entry as deleted
+				// this has to come last, because otherwise findByAncestorFolder doesn't work anymore
+				$qb = $this->db->getQueryBuilder();
+				$qb
+					->update('bookmarks_tree')
+					->set('soft_deleted_at', $qb->createNamedParameter($this->timeFactory->getDateTime(), IQueryBuilder::PARAM_DATE))
+					->where($qb->expr()->eq('id', $qb->createNamedParameter($descendantFolder->getId(), IQueryBuilder::PARAM_INT)))
+					->andWhere($qb->expr()->eq('type', $qb->createNamedParameter($type)));
+				$qb->executeStatement();
 			}
+
+			return;
 		}
+
+		// set entry as deleted
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->update('bookmarks_tree')
+			->set('soft_deleted_at', $qb->createNamedParameter($this->timeFactory->getDateTime(), IQueryBuilder::PARAM_DATE))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('type', $qb->createNamedParameter($type)));
+		if ($folderId !== null) {
+			$qb->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($folderId, IQueryBuilder::PARAM_INT)));
+		}
+		$qb->executeStatement();
 	}
 
 	/**
@@ -472,22 +482,10 @@ class TreeMapper extends QBMapper {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
 	public function softUndeleteEntry(string $type, int $id, ?int $folderId = null): void {
 		$this->eventDispatcher->dispatchTyped(new BeforeSoftUndeleteEvent($type, $id));
-
-		// set entry as deleted
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->update('bookmarks_tree')
-			->set('soft_deleted_at', $qb->createPositionalParameter(null))
-			->where($qb->expr()->eq('id', $qb->createPositionalParameter($id, IQueryBuilder::PARAM_INT)))
-			->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
-		if ($folderId !== null) {
-			$qb->set('index', $qb->createPositionalParameter($this->countChildren($folderId)));
-			$qb->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)));
-		}
-		$qb->execute();
 
 		if ($type === self::TYPE_FOLDER) {
 			// First get all shares out of the way
@@ -499,24 +497,50 @@ class TreeMapper extends QBMapper {
 			// then get all folders in this sub tree
 			$descendantFolders = $this->findByAncestorFolder(self::TYPE_FOLDER, $id);
 			$folder = $this->folderMapper->find($id);
-			$descendantFoldersPlusThisFolder = $descendantFolders + [$folder];
+			$descendantFoldersPlusThisFolder = [...$descendantFolders, $folder];
 
-			// soft delete all descendant bookmarks entries from this subtree
+			$foldersToUndeleteFrom = array_map(static function ($folder) {
+				return $folder->getId();
+			}, $descendantFoldersPlusThisFolder);
+
+			// undelete all descendant bookmarks entries from this subtree
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->update('bookmarks_tree')
-				->set('soft_deleted_at', $qb->createPositionalParameter(null))
-				->where($qb->expr()->eq('type', $qb->createPositionalParameter(self::TYPE_BOOKMARK)))
-				->andWhere($qb->expr()->in('parent_folder', $qb->createPositionalParameter(array_map(static function ($folder) {
-					return $folder->getId();
-				}, $descendantFoldersPlusThisFolder), IQueryBuilder::PARAM_INT_ARRAY)));
-			$qb->execute();
+				->set('soft_deleted_at', $qb->createNamedParameter(null, IQueryBuilder::PARAM_DATE))
+				->where($qb->expr()->eq('type', $qb->createNamedParameter(self::TYPE_BOOKMARK)))
+				->andWhere($qb->expr()->in('parent_folder', $qb->createNamedParameter($foldersToUndeleteFrom, IQueryBuilder::PARAM_INT_ARRAY)));
+			$qb->executeStatement();
 
 			// soft delete all folder entries from this subtree
-			foreach ($descendantFolders as $descendantFolder) {
-				$this->softUndeleteEntry(self::TYPE_FOLDER, $descendantFolder->getId());
+			foreach ($descendantFoldersPlusThisFolder as $descendantFolder) {
+				// set entry as not deleted
+				$qb = $this->db->getQueryBuilder();
+				$qb
+					->update('bookmarks_tree')
+					->set('soft_deleted_at', $qb->createNamedParameter(null, IQueryBuilder::PARAM_DATE))
+					->where($qb->expr()->eq('id', $qb->createNamedParameter($descendantFolder->getId(), IQueryBuilder::PARAM_INT)))
+					->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(self::TYPE_FOLDER, IQueryBuilder::PARAM_STR)));
+				$qb->executeStatement();
 			}
+
+			return;
 		}
+
+		// set entry as not deleted
+		// has to come last to not break findByAncestorFolder
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->update('bookmarks_tree')
+			->set('soft_deleted_at', $qb->createNamedParameter(null, IQueryBuilder::PARAM_DATE))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('type', $qb->createNamedParameter($type, IQueryBuilder::PARAM_STR)));
+		if ($folderId !== null) {
+			$qb->set('index', $qb->createNamedParameter($this->countChildren($folderId)));
+			$qb->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($folderId, IQueryBuilder::PARAM_INT)));
+		}
+		$qb->executeStatement();
+
 	}
 
 	/**
@@ -852,10 +876,10 @@ class TreeMapper extends QBMapper {
 	 */
 	public function getSubFolders(int $folderId, $layers = 0, ?bool $isSoftDeleted = null): array {
 		$folders = $this->treeCache->get(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId);
-		if ($folders !== null) {
+		$isSoftDeleted = $isSoftDeleted ?? $this->isEntrySoftDeleted(self::TYPE_FOLDER, $folderId);
+		if ($folders !== null && !$isSoftDeleted) {
 			return $folders;
 		}
-		$isSoftDeleted = $isSoftDeleted ?? $this->isEntrySoftDeleted(self::TYPE_FOLDER, $folderId);
 		$folders = array_map(function (Folder $folder) use ($layers, $folderId, $isSoftDeleted) {
 			$array = $folder->toArray();
 			$array['userDisplayName'] = $this->userManager->get($array['userId'])->getDisplayName();
@@ -880,7 +904,7 @@ class TreeMapper extends QBMapper {
 		if (count($shares) > 0) {
 			array_push($folders, ...$shares);
 		}
-		if ($layers < 0) {
+		if ($layers < 0 && !$isSoftDeleted) {
 			$this->treeCache->set(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId, $folders);
 		}
 		return $folders;
@@ -896,7 +920,7 @@ class TreeMapper extends QBMapper {
 	 * @psalm-template E as (T is self::TYPE_FOLDER ? Folder : (T is self::TYPE_BOOKMARK ? Bookmark : SharedFolder))
 	 * @throws UrlParseError|DbalException|Exception
 	 */
-	public function getSoftDeletedItems(string $userId, string $type): array {
+	public function getSoftDeletedRootItems(string $userId, string $type): array {
 		if ($type === self::TYPE_FOLDER || $type === self::TYPE_SHARE) {
 			$qb = $this->selectFromType($type);
 			$qb
@@ -917,7 +941,7 @@ class TreeMapper extends QBMapper {
 
 			foreach ($items as $folder1) {
 				foreach ($items as $folder2) {
-					if ($folder1->getId() !== $folder2->getId() && $this->hasDescendant($folder1, self::TYPE_FOLDER, $folder2->getId())) {
+					if ($folder1->getId() !== $folder2->getId() && $this->hasDescendant($folder1->getId(), self::TYPE_FOLDER, $folder2->getId())) {
 						$topmostFolders[$folder2->getId()] = false;
 					}
 				}

@@ -83,11 +83,11 @@ export default {
 		state.deletedFolders = sortFolders(folders)
 	},
 	[mutations.MOVE_FOLDER](state, { folder, target }) {
-		const currentFolder = findFolder(folder, state.folders)[0]
-		const oldParent = findFolder(currentFolder.parent_folder, state.folders)[0]
+		const currentFolder = this.getters.getFolder(folder)[0]
+		const oldParent = this.getters.getFolder(currentFolder.parent_folder)[0]
 		const index = oldParent.children.indexOf(currentFolder)
 		oldParent.children.splice(index, 1)
-		const newParent = findFolder(target, state.folders)[0]
+		const newParent = this.getters.getFolder(target)[0]
 		newParent.children.push(currentFolder)
 
 		if (state.childrenByFolder[oldParent.id]) {

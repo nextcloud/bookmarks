@@ -26,6 +26,7 @@ export const actions = {
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	LOAD_BOOKMARK: 'LOAD_BOOKMARK',
 	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
+	UNDELETE_BOOKMARK: 'UNDELETE_BOOKMARK',
 	OPEN_BOOKMARK: 'OPEN_BOOKMARK',
 	SAVE_BOOKMARK: 'SAVE_BOOKMARK',
 	MOVE_BOOKMARK: 'MOVE_BOOKMARK',
@@ -43,6 +44,7 @@ export const actions = {
 	LOAD_DELETED_FOLDERS: 'LOAD_DELETED_FOLDERS',
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
+	MOVE_FOLDER: 'MOVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
 	UNDELETE_FOLDER: 'UNDELETE_FOLDER',
 	LOAD_FOLDER_CHILDREN_ORDER: 'LOAD_FOLDER_CHILDREN_ORDER',
@@ -358,14 +360,16 @@ export default {
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
-			const response2 = await axios.delete(
-				url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`)
-			)
-			if (response2.data.status !== 'success') {
-				throw new Error(response2.data)
+			if (oldFolder) {
+				const response2 = await axios.delete(
+					url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`)
+				)
+				if (response2.data.status !== 'success') {
+					throw new Error(response2.data)
+				}
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldFolder)
 			}
 			commit(mutations.FETCH_END, 'moveBookmark')
-			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldFolder)
 			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, newFolder)
 		} catch (err) {
 			console.error(err)
@@ -453,6 +457,7 @@ export default {
 			}
 			return
 		}
+
 		try {
 			const response = await axios.delete(url(state, `/bookmark/${id}`))
 			if (response.data.status !== 'success') {
@@ -465,6 +470,38 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete bookmark')
+			)
+			throw err
+		}
+	},
+	async [actions.UNDELETE_BOOKMARK](
+		{ commit, dispatch, state, getters },
+		{ id, folder, avoidReload }
+	) {
+		try {
+			const response = await axios.post(
+				url(state, `/folder/${folder}/bookmarks/${id}/undelete`)
+			)
+			if (response.data.status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.REMOVE_BOOKMARK, id)
+			if (!avoidReload) {
+				await dispatch(actions.COUNT_BOOKMARKS, -1)
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+			}
+			const folderItem = getters.getFolder(folder)[0]
+			if (folderItem.softDeleted) {
+				await dispatch(actions.MOVE_BOOKMARK, { bookmark: id, newFolder: -1 })
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t(
+					'bookmarks',
+					'Failed to restore bookmark'
+				)
 			)
 			throw err
 		}
@@ -743,11 +780,42 @@ export default {
 			throw err
 		}
 	},
+	async [actions.MOVE_FOLDER](
+		{ commit, dispatch, state },
+		{ folderId, targetFolderId }
+	) {
+		try {
+			const folder = this.getters.getFolder(folderId)[0]
+			commit(mutations.MOVE_FOLDER, { folder: folderId, target: targetFolderId })
+			const oldParent = folder.parent_folder
+			folder.parent_folder = targetFolderId
+			try {
+				await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
+				dispatch(
+					actions.LOAD_FOLDER_CHILDREN_ORDER,
+					oldParent
+				)
+			} catch (err) {
+				commit(mutations.MOVE_FOLDER, { folder: folder.id, target: oldParent })
+				folder.parent_folder = oldParent
+				throw err
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to move folder')
+			)
+			throw err
+		}
+	},
 	async [actions.UNDELETE_FOLDER](
 		{ commit, dispatch, state },
 		{ id, avoidReload }
 	) {
 		try {
+			const parentFolderId = this.getters.getFolder(id)[0].parent_folder
+			const parentFolderItem = this.getters.getFolder(parentFolderId)[0]
 			const response = await axios.post(url(state, `/folder/${id}/undelete`))
 			const {
 				data: { status },
@@ -755,11 +823,13 @@ export default {
 			if (status !== 'success') {
 				throw new Error(response.data)
 			}
-			const parentFolder = this.getters.getFolder(id)[0].parent_folder
+			if (parentFolderItem && parentFolderItem.softDeleted) {
+				await dispatch(actions.MOVE_FOLDER, { folderId: id, targetFolderId: '-1' })
+			}
 			if (!avoidReload) {
 				await dispatch(
 					actions.LOAD_FOLDER_CHILDREN_ORDER,
-					parentFolder
+					parentFolderId
 				)
 				await dispatch(actions.LOAD_FOLDERS)
 				await dispatch(actions.LOAD_DELETED_FOLDERS)
@@ -879,23 +949,7 @@ export default {
 			await Parallel.each(
 				state.selection.folders,
 				async folder => {
-					if (folderId === folder.id) {
-						throw new Error('Cannot move folder into itself')
-					}
-					commit(mutations.MOVE_FOLDER, { folder: folder.id, target: folderId })
-					const oldParent = folder.parent_folder
-					folder.parent_folder = folderId
-					try {
-						await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
-					} catch (err) {
-						commit(mutations.MOVE_FOLDER, { folder: folder.id, target: oldParent })
-						folder.parent_folder = oldParent
-						throw err
-					}
-					dispatch(
-						actions.LOAD_FOLDER_CHILDREN_ORDER,
-						oldParent
-					)
+					await dispatch(actions.MOVE_FOLDER, { folderId: folder.id, targetFolderId: folderId })
 				},
 				10
 			)
@@ -985,12 +1039,24 @@ export default {
 			)
 			await Parallel.each(
 				state.selection.bookmarks,
-				bookmark =>
-					dispatch(actions.DELETE_BOOKMARK, {
-						id: bookmark.id,
-						folder,
-						avoidReload: true,
-					}),
+				(bookmark) => {
+					if (folder) {
+						return dispatch(actions.DELETE_BOOKMARK, {
+							id: bookmark.id,
+							folder,
+							avoidReload: true,
+						})
+					} else {
+						// soft delete all occurences instead of hard deleting the bookmark itself
+						return Promise.all(bookmark.folders.map((folder) => {
+							return dispatch(actions.DELETE_BOOKMARK, {
+								id: bookmark.id,
+								folder,
+								avoidReload: true,
+							})
+						}))
+					}
+				},
 				10
 			)
 			dispatch(actions.RELOAD_VIEW)

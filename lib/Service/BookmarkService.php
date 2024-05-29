@@ -414,6 +414,17 @@ class BookmarkService {
 	}
 
 	/**
+	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @throws DoesNotExistException|MultipleObjectsReturnedException|UnsupportedOperation|Exception
+	 */
+	public function undeleteInFolder(int $folderId, int $bookmarkId): void {
+		$this->folderMapper->find($folderId);
+		$this->bookmarkMapper->find($bookmarkId);
+		$this->treeMapper->softUndeleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmarkId, $folderId);
+	}
+
+	/**
 	 * @param int $id
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException

@@ -107,6 +107,17 @@ class InternalFoldersController extends ApiController {
 
 	/**
 	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function undeleteFromFolder(int $folderId, int $bookmarkId): JSONResponse {
+		return $this->controller->undeleteFromFolder($folderId, $bookmarkId);
+	}
+
+	/**
+	 * @param int $folderId
 	 * @param string|null $title
 	 * @param int|null $parent_folder
 	 * @return JSONResponse
