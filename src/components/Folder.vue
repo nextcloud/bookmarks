@@ -7,7 +7,7 @@
 <template>
 	<Item :active="selected"
 		:editable="isEditable"
-		:draggable="isEditable"
+		:draggable="isDraggable"
 		:selected="selected"
 		:title="folder.title"
 		:renaming="renaming"
@@ -153,7 +153,10 @@ export default {
 			return this.$store.state.sharedFoldersById[this.folder.id] !== undefined
 		},
 		isEditable() {
-			return !this.isTrashbin && (this.isOwner || this.isDirectShare || this.permissions.canWrite)
+			return this.isOwner || this.isDirectShare || this.permissions.canWrite
+		},
+		isDraggable() {
+			return this.isEditable && !this.isTrashbin
 		},
 		shares() {
 			return this.$store.getters.getSharesOfFolder(this.folder.id)
