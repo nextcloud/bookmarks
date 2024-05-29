@@ -89,59 +89,68 @@ class CrawlService {
 		$this->bookmarkMapper->update($bookmark);
 	}
 
-	private function archiveContent(Bookmark $bookmark, Response $resp) : void {
-		$header = $resp->getHeader('Content-type');
-		if(empty($header)) {
+	private function archiveContent(Bookmark $bookmark, Response $resp): void {
+		$header = $resp->getHeader('Content-Type');
+
+		if (empty($header)) {
 			return;
 		}
 
-		$contentType = $header[0];
-		if ((bool)preg_match('#text/html#i', $contentType) === true && ($bookmark->getHtmlContent() === null || $bookmark->getHtmlContent() === '')) {
-			$config = new Configuration();
-			$config
-				->setFixRelativeURLs(true)
-				->setOriginalURL($bookmark->getUrl())
-				->setSubstituteEntities(true);
-			$readability = new Readability($config);
-			try {
-				$readability->parse($resp->getBody());
-			} catch (\Throwable $e) {
-				$this->logger->debug(get_class($e)." ".$e->getMessage()."\r\n".$e->getTraceAsString());
-				return;
+		$contentType = $header[0] ?? null;
+
+		if ($contentType !== null && str_contains($contentType, 'text/html')) {
+			if ($bookmark->getHtmlContent() === null || $bookmark->getHtmlContent() === '') {
+				$config = new Configuration();
+				$config
+					->setFixRelativeURLs(true)
+					->setOriginalURL($bookmark->getUrl())
+					->setSubstituteEntities(true);
+				$readability = new Readability($config);
+
+				try {
+					$readability->parse($resp->getBody());
+					$bookmark->setHtmlContent($readability->getContent());
+					$bookmark->setTextContent(strip_tags($readability->getContent()));
+				} catch (\Throwable $e) {
+					$this->logger->debug(get_class($e) . ' ' . $e->getMessage() . "\r\n" . $e->getTraceAsString());
+				}
 			}
-			$bookmark->setHtmlContent($readability->getContent());
-			$bookmark->setTextContent(strip_tags($readability->getContent()));
 		}
 	}
 
-	private function archiveFile(Bookmark $bookmark, Response $resp) :void {
-		$header = $resp->getHeader('Content-type');
-		if(empty($header)) {
+	private function archiveFile(Bookmark $bookmark, Response $resp): void {
+		$header = $resp->getHeader('Content-Type');
+
+		if (empty($header)) {
 			return;
 		}
 
-		$contentType = $header[0];
-		if ((bool)preg_match('#text/html#i', $contentType) === false && $bookmark->getArchivedFile() === null && (int)$resp->getHeader('Content-length')[0] < self::MAX_BODY_LENGTH) {
-			try {
-				$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
-				$folderPath = $this->getArchivePath($bookmark, $userFolder);
-				$name = $bookmark->slugify('title');
-				$extension = $this->mimey->getExtension($contentType);
-				if (!$extension || trim($extension) === '') {
-					$extension = 'txt';
+		$contentType = $header[0] ?? null;
+
+		if ($contentType !== null && !str_contains($contentType, 'text/html') && $bookmark->getArchivedFile() === null) {
+			$contentLengthHeader = $resp->getHeader('Content-Length');
+			$contentLength = isset($contentLengthHeader[0]) ? (int)$contentLengthHeader[0] : 0;
+
+			if ($contentLength < self::MAX_BODY_LENGTH) {
+				try {
+					$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
+					$folderPath = $this->getArchivePath($bookmark, $userFolder);
+					$name = $bookmark->slugify('title');
+					$extension = $this->mimey->getExtension($contentType) ?? 'txt';
+
+					$i = 0;
+					do {
+						$path = $folderPath . '/' . $name . ($i > 0 ? '_' . $i : '') . '.' . $extension;
+						$i++;
+					} while ($userFolder->nodeExists($path));
+
+					$file = $userFolder->newFile($path);
+					$file->putContent($resp->getBody());
+					$bookmark->setArchivedFile($file->getId());
+					$this->bookmarkMapper->update($bookmark);
+				} catch (NotPermittedException | NoUserException | GenericFileException | LockedException | UrlParseError | InvalidPathException | NotFoundException $e) {
+					$this->logger->debug(get_class($e) . ' ' . $e->getMessage() . "\r\n" . $e->getTraceAsString());
 				}
-				$path = $folderPath . '/' . $name . '.' . $extension;
-				$i = 0;
-				while ($userFolder->nodeExists($path)) {
-					$path = $folderPath . '/' .$name . '_' . $i . '.' . $extension;
-					$i++;
-				}
-				$file = $userFolder->newFile($path);
-				$file->putContent($resp->getBody());
-				$bookmark->setArchivedFile($file->getId());
-				$this->bookmarkMapper->update($bookmark);
-			} catch (NotPermittedException | NoUserException | GenericFileException | LockedException | UrlParseError | InvalidPathException | NotFoundException $e) {
-				$this->logger->debug(get_class($e)." ".$e->getMessage()."\r\n".$e->getTraceAsString());
 			}
 		}
 	}
