@@ -44,6 +44,7 @@ export const actions = {
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
+	UNDELETE_FOLDER: 'UNDELETE_FOLDER',
 	LOAD_FOLDER_CHILDREN_ORDER: 'LOAD_FOLDER_CHILDREN_ORDER',
 	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
 	OPEN_FOLDER_SHARING: 'OPEN_FOLDER_SHARING',
@@ -738,6 +739,36 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
+			)
+			throw err
+		}
+	},
+	async [actions.UNDELETE_FOLDER](
+		{ commit, dispatch, state },
+		{ id, avoidReload }
+	) {
+		try {
+			const response = await axios.post(url(state, `/folder/${id}/undelete`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			const parentFolder = this.getters.getFolder(id)[0].parent_folder
+			if (!avoidReload) {
+				await dispatch(
+					actions.LOAD_FOLDER_CHILDREN_ORDER,
+					parentFolder
+				)
+				await dispatch(actions.LOAD_FOLDERS)
+				await dispatch(actions.LOAD_DELETED_FOLDERS)
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to restore folder')
 			)
 			throw err
 		}

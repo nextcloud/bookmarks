@@ -74,15 +74,21 @@
 					</template>
 					{{ t('bookmarks', 'Move folder') }}
 				</NcActionButton>
+				<NcActionButton :close-after-click="true" @click="onDelete(false)">
+					<template #icon>
+						<DeleteIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Put folder into trashbin') }}
+				</NcActionButton>
 			</template>
 			<template v-else>
-				<NcActionButton :close-after-click="true" @click="onDelete">
+				<NcActionButton :close-after-click="true" @click="onUndelete">
 					<template #icon>
 						<UndeleteIcon :size="20" />
 					</template>
 					{{ t('bookmarks', 'Restore folder') }}
 				</NcActionButton>
-				<NcActionButton :close-after-click="true" @click="onDelete">
+				<NcActionButton :close-after-click="true" @click="onDelete(true)">
 					<template #icon>
 						<DeleteForeverIcon :size="20" />
 					</template>
@@ -186,11 +192,14 @@ export default {
 		onShare() {
 			this.$store.dispatch(actions.OPEN_FOLDER_SHARING, this.folder.id)
 		},
-		onDelete() {
-			if (!confirm(t('bookmarks', 'Do you really want to delete this folder?'))) {
+		onDelete(hard) {
+			if (hard && !confirm(t('bookmarks', 'Do you really want to permanently delete this folder?'))) {
 				return
 			}
 			this.$store.dispatch(actions.DELETE_FOLDER, { id: this.folder.id })
+		},
+		onUndelete() {
+			this.$store.dispatch(actions.UNDELETE_FOLDER, { id: this.folder.id })
 		},
 		onMove() {
 			this.$store.commit(mutations.RESET_SELECTION)
