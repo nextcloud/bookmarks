@@ -6,6 +6,8 @@ OC.L10N.register(
     "Copy link" : "Cóipeáil an nasc",
     "Move" : "Bog",
     "Delete" : "Scrios",
+    "Select all" : "Roghnú go léir",
+    "New" : "Nua",
     "New folder" : "Fillteán nua",
     "Search" : "Cuardach",
     "Rename folder" : "Athainmnigh fillteán",
