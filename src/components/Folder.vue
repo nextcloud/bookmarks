@@ -153,7 +153,7 @@ export default {
 			return this.$store.state.sharedFoldersById[this.folder.id] !== undefined
 		},
 		isEditable() {
-			return this.isOwner || this.isDirectShare || this.permissions.canWrite
+			return !this.isTrashbin && (this.isOwner || this.isDirectShare || this.permissions.canWrite)
 		},
 		shares() {
 			return this.$store.getters.getSharesOfFolder(this.folder.id)
@@ -202,6 +202,9 @@ export default {
 			this.$store.dispatch(actions.UNDELETE_FOLDER, { id: this.folder.id })
 		},
 		onMove() {
+			if (this.isTrashbin) {
+				return
+			}
 			this.$store.commit(mutations.RESET_SELECTION)
 			this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
@@ -220,19 +223,17 @@ export default {
 			this.renaming = false
 		},
 		clickSelect(e) {
+			if (this.isTrashbin) {
+				return
+			}
 			if (!this.selected) {
 				this.$store.commit(mutations.ADD_SELECTION_FOLDER, this.folder)
 			} else {
 				this.$store.commit(mutations.REMOVE_SELECTION_FOLDER, this.folder)
 			}
 		},
-		onEnter(e) {
-			if (e.key === 'Enter') {
-				this.onSelect(e)
-			}
-		},
 		allowDrop() {
-			return !this.$store.state.selection.folders.includes(this.folder) && (this.$store.state.selection.folders.length || this.$store.state.selection.bookmarks.length)
+			return !this.isTrashbin && !this.$store.state.selection.folders.includes(this.folder) && (this.$store.state.selection.folders.length || this.$store.state.selection.bookmarks.length)
 		},
 		async onDrop(e) {
 			e.preventDefault()

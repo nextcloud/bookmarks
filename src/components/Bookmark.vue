@@ -192,15 +192,15 @@ export default {
 			)
 		},
 		isEditable() {
-			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
+			return !this.isTrashbin && (this.isOwner || (!this.isOwner && this.permissions.canWrite))
 		},
 		selectedBookmarks() {
 			return this.$store.state.selection.bookmarks
 		},
 		selectable() {
 			return Boolean(
-				this.$store.state.selection.bookmarks.length
-					|| this.$store.state.selection.folders.length
+				(this.$store.state.selection.bookmarks.length
+					|| this.$store.state.selection.folders.length) && !this.isTrashbin
 			)
 		},
 		selected() {
@@ -268,11 +268,17 @@ export default {
 			this.$store.dispatch(actions.OPEN_BOOKMARK, this.bookmark.id)
 		},
 		onMove() {
+			if (this.isTrashbin) {
+				return
+			}
 			this.$store.commit(mutations.RESET_SELECTION)
 			this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
 			this.$store.commit(mutations.DISPLAY_MOVE_DIALOG, true)
 		},
 		onCopy() {
+			if (this.isTrashbin) {
+				return
+			}
 			this.$store.commit(mutations.RESET_SELECTION)
 			this.$store.commit(mutations.ADD_SELECTION_BOOKMARK, this.bookmark)
 			this.$store.commit(mutations.DISPLAY_COPY_DIALOG, true)
@@ -287,6 +293,9 @@ export default {
 			this.renaming = false
 		},
 		onSelect() {
+			if (this.isTrashbin) {
+				return
+			}
 			if (!this.selected) {
 				this.$store.commit(
 					mutations.ADD_SELECTION_BOOKMARK,
