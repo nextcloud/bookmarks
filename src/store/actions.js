@@ -95,7 +95,17 @@ export default {
 		}
 	},
 
-	async [actions.COUNT_UNAVAILABLE]({ commit, dispatch, state }, folderId) {
+	async [actions.COUNT_UNAVAILABLE]({ commit, dispatch, state }) {
+		if (state.unavailableCount === null) {
+			try {
+				const count = loadState('bookmarks', 'unavailableCount')
+				return commit(mutations.SET_UNAVAILABLE_COUNT, count)
+			} catch (e) {
+				console.warn(
+					'Could not load initial unavailable bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		try {
 			const response = await axios.get(
 				url(state, '/bookmark/unavailable')
@@ -119,7 +129,17 @@ export default {
 			throw err
 		}
 	},
-	async [actions.COUNT_ARCHIVED]({ commit, dispatch, state }, folderId) {
+	async [actions.COUNT_ARCHIVED]({ commit, dispatch, state }) {
+		if (state.archivedCount === null) {
+			try {
+				const count = loadState('bookmarks', 'archivedCount')
+				return commit(mutations.SET_ARCHIVED_COUNT, count)
+			} catch (e) {
+				console.warn(
+					'Could not load initial archived bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		try {
 			const response = await axios.get(url(state, '/bookmark/archived'))
 			const {
@@ -142,6 +162,16 @@ export default {
 		}
 	},
 	async [actions.COUNT_DUPLICATED]({ commit, dispatch, state }) {
+		if (state.duplicatedCount === null) {
+			try {
+				const count = loadState('bookmarks', 'duplicatedCount')
+				return commit(mutations.SET_DUPLICATED_COUNT, count)
+			} catch (e) {
+				console.warn(
+					'Could not load initial duplicated bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		try {
 			const response = await axios.get(url(state, '/bookmark/duplicated'))
 			const {
@@ -164,6 +194,17 @@ export default {
 		}
 	},
 	async [actions.COUNT_BOOKMARKS]({ commit, dispatch, state }, folderId) {
+		if (String(folderId) === String(-1) && typeof state.countsByFolder[folderId] === 'undefined') {
+			try {
+				const count = loadState('bookmarks', 'allCount')
+				return commit(mutations.SET_BOOKMARK_COUNT, { folderId, count })
+			} catch (e) {
+				console.warn(e)
+				console.warn(
+					'Could not load initial bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		try {
 			const response = await axios.get(
 				url(state, `/folder/${folderId}/count`)
@@ -600,6 +641,17 @@ export default {
 		}
 	},
 	[actions.LOAD_TAGS]({ commit, dispatch, state }) {
+		if (state.tags === null) {
+			try {
+				const tags = loadState('bookmarks', 'tags')
+				return commit(mutations.SET_TAGS, tags)
+			} catch (e) {
+				console.warn(e)
+				console.warn(
+					'Could not load initial bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		commit(mutations.FETCH_START, { type: 'tags' })
 		return axios
 			.get(url(state, '/tag'), { params: { count: true } })
@@ -686,6 +738,16 @@ export default {
 	},
 
 	async [actions.LOAD_DELETED_FOLDERS]({ commit, dispatch, state }) {
+		if (state.deletedFolders === null) {
+			try {
+				const count = loadState('bookmarks', 'deletedFolders')
+				return commit(mutations.SET_DELETED_FOLDERS, count)
+			} catch (e) {
+				console.warn(
+					'Could not load initial deleted folders state, continuing with HTTP request'
+				)
+			}
+		}
 		let canceled = false
 		commit(mutations.FETCH_START, {
 			type: 'deleted_folders',
