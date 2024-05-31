@@ -877,10 +877,17 @@ class TreeMapper extends QBMapper {
 	 * @psalm-return list<array{parent_folder: int, id: int, userId: string, userDisplayName: string, children?: array}>
 	 */
 	public function getSubFolders(int $folderId, $layers = 0, ?bool $isSoftDeleted = null): array {
-		$folders = $this->treeCache->get(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId);
 		$isSoftDeleted = $isSoftDeleted ?? $this->isEntrySoftDeleted(self::TYPE_FOLDER, $folderId);
-		if ($folders !== null && !$isSoftDeleted) {
-			return $folders;
+		if (!$isSoftDeleted) {
+			$folders = $this->treeCache->get(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId);
+			if ($folders !== null) {
+				return $folders;
+			}
+		} else {
+			$folders = $this->treeCache->get(TreeCacheManager::CATEGORY_DELETED_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId);
+			if ($folders !== null) {
+				return $folders;
+			}
 		}
 		$folders = array_map(function (Folder $folder) use ($layers, $folderId, $isSoftDeleted) {
 			$array = $folder->toArray();
@@ -906,8 +913,12 @@ class TreeMapper extends QBMapper {
 		if (count($shares) > 0) {
 			array_push($folders, ...$shares);
 		}
-		if ($layers < 0 && !$isSoftDeleted) {
-			$this->treeCache->set(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId, $folders);
+		if ($layers < 0) {
+			if (!$isSoftDeleted) {
+				$this->treeCache->set(TreeCacheManager::CATEGORY_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId, $folders);
+			} else {
+				$this->treeCache->set(TreeCacheManager::CATEGORY_DELETED_SUBFOLDERS, TreeMapper::TYPE_FOLDER, $folderId, $folders);
+			}
 		}
 		return $folders;
 	}
