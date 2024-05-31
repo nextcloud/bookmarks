@@ -29,6 +29,7 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IDBConnection;
 use OCP\IUserManager;
 use PDO;
+use Psr\Log\LoggerInterface;
 use function call_user_func;
 
 /**
@@ -90,6 +91,7 @@ class TreeMapper extends QBMapper {
 		private TreeCacheManager $treeCache,
 		private IUserManager $userManager,
 		private ITimeFactory $timeFactory,
+		private LoggerInterface $logger,
 	) {
 		parent::__construct($db, 'bookmarks_tree');
 
@@ -1184,6 +1186,35 @@ class TreeMapper extends QBMapper {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param int $limit
+	 * @param float|int $maxAge
+	 * @return void
+	 */
+	public function deleteOldTrashbinItems(int $limit, float|int $maxAge): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('type', 'id', 'parent_folder')->from('bookmarks_tree');
+		$qb->where($qb->expr()->neq('type', $qb->createNamedParameter(self::TYPE_SHARE, IQueryBuilder::PARAM_STR)));
+		$cutoffDate = $this->timeFactory->getDateTime();
+		$cutoffDate->modify('- ' . $maxAge . ' seconds');
+		$qb->andWhere($qb->expr()->lt('soft_deleted_at', $qb->createNamedParameter($cutoffDate, IQueryBuilder::PARAM_DATE)));
+		$qb->setMaxResults($limit);
+		try {
+			$result = $qb->executeQuery();
+		} catch (Exception $e) {
+			$this->logger->error('Could not query for old trash bin items', ['exception' => $e]);
+		}
+		while($row = $result->fetch()) {
+			try {
+				$this->deleteEntry($row['type'], $row['id'], $row['parent_folder']);
+			} catch (DoesNotExistException $e) {
+				// noop
+			} catch (UnsupportedOperation|MultipleObjectsReturnedException $e) {
+				$this->logger->error('Could not delete old trash bin item: ' . var_export($row, true), ['exception' => $e]);
+			}
+		}
 	}
 
 }
