@@ -27,6 +27,7 @@ use Psr\Container\ContainerInterface;
 use UnexpectedValueException;
 
 class TreeCacheManager implements IEventListener {
+	public const TTL = 60 * 60 * 24 * 30; // one month
 	public const CATEGORY_HASH = 'hashes';
 	public const CATEGORY_SUBFOLDERS = 'subFolders';
 	public const CATEGORY_DELETED_SUBFOLDERS = 'deletedSubFolders';
@@ -108,7 +109,7 @@ class TreeCacheManager implements IEventListener {
 	 */
 	public function set(string $category, string $type, int $id, $data) {
 		$key = $this->getCacheKey($type, $id);
-		return $this->caches[$category]->set($key, $data, 60 * 60 * 24);
+		return $this->caches[$category]->set($key, $data, self::TTL);
 	}
 
 	/**
