@@ -427,7 +427,7 @@ class FolderControllerTest extends TestCase {
 
 		$this->setupBookmarks();
 		$this->authorizer->setUserId($this->userId);
-		$output = $this->controller->deleteFolder($this->folder1->getId());
+		$output = $this->controller->deleteFolder($this->folder1->getId(), true);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$output = $this->controller->getFolder($this->folder1->getId());
@@ -879,7 +879,7 @@ class FolderControllerTest extends TestCase {
 		$this->setupBookmarks();
 		$this->setupSharedFolder();
 		$this->authorizer->setUserId($this->otherUserId);
-		$output = $this->otherController->deleteFolder($this->folder1->getId());
+		$output = $this->otherController->deleteFolder($this->folder1->getId(), true);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$output = $this->otherController->getFolder($this->folder1->getId());
