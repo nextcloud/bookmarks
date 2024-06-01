@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.1.0] - 2024-06-01
+
+### New
+
+- Allow sharing with Circles
+- Add trash bin to restore deleted items (Removes trash bin items after two months)
+- Add help and project support sections to settings
+
+### Fixed
+
+* fix(BookmarkMapper#_filterFolder): Include current folder in search Marcel Klehr 2 minutes ago
+* perf(TreeCacheManager): Increase cache lifetime to improve sync performance
+* perf: speed up getSubFolders for deleted folders
+* perf: speed up initial page load
+* Fix(Bookmark): Display URL if title is empty
+* fix(Authorizer): Don't throw HTTP 500 on malformed credentials
+* fix(l10n): word typo
+* fix: Fix backups
+
 ## [14.0.2] - 2024-04-29
 
 ### New
