@@ -1024,7 +1024,7 @@ class TreeMapper extends QBMapper {
 	/**
 	 * @return array
 	 *
-	 * @psalm-return list<array{type: 'bookmark'|'folder', id: int, children?: array}>
+	 * @psalm-return list<array{children?: list<array{children?: array<array-key, mixed>, id: int, type: 'bookmark'|'folder'}>, id: int, title: mixed, type: 'folder'|'bookmark', userId: string, ...<array-key, mixed>}>
 	 */
 	public function getChildren(int $folderId, int $layers = 0): array {
 		$children = $this->treeCache->get(TreeCacheManager::CATEGORY_CHILDREN, TreeMapper::TYPE_FOLDER, $folderId);
