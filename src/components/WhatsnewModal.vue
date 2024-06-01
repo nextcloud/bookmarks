@@ -9,13 +9,8 @@
 		<div class="whatsnew">
 			<h3>✨ {{ t('bookmarks', 'What\'s new?') }}</h3>
 			<ul>
-				<li>📂 You can now search for folders</li>
-				<li>🔍 Search is now scoped to the current folder only</li>
-				<li>🔧 New settings experience</li>
-				<li>❇ New user interface design (Nextcloud Vue 8)</li>
-				<li>🤐 You can now disable archiving of files</li>
-				<li>📜 Improved virtual scrolling</li>
-				<li>🧮 The folders overview now shows the cumulative bookmarks counts for all folders</li>
+				<li>⭕ You can now share bookmarks with Circles</li>
+				<li>🗑 You can now get back deleted items from the trash bin</li>
 				<li>🐛 Lots of small bug fixes and performance improvements</li>
 			</ul>
 			<p>&nbsp;</p>
