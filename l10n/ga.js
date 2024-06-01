@@ -29,6 +29,7 @@ OC.L10N.register(
     "Sharing" : "Roinnt",
     "Select a user or group" : "Roghnaigh úsáideoir nó grúpa",
     "Share link" : "Comhroinn nasc",
+    "Allow editing" : "Allow editing",
     "Allow resharing" : "Ceadaigh athroinnt",
     "Link copied" : "Cóipeáladh an nasc",
     "Privacy" : "Príobháideacht",
