@@ -25,6 +25,7 @@ use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\BackgroundJob\IJobList;
+use OCP\DB\Exception;
 use OCP\EventDispatcher\IEventDispatcher;
 
 class BookmarkService {
@@ -374,9 +375,14 @@ class BookmarkService {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
-	public function removeFromFolder(int $folderId, int $bookmarkId): void {
-		$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
+	public function removeFromFolder(int $folderId, int $bookmarkId, bool $hardDelete = false): void {
+		if ($hardDelete) {
+			$this->treeMapper->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
+		} else {
+			$this->treeMapper->softDeleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmarkId, $folderId);
+		}
 	}
 
 	/**
@@ -405,6 +411,17 @@ class BookmarkService {
 			$tags = $this->tagMapper->findByBookmark($bookmarkId);
 			$this->_addBookmark($folder->getUserId(), $bookmark->getUrl(), $bookmark->getTitle(), $bookmark->getDescription(), $tags, [$folder->getId()]);
 		}
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @throws DoesNotExistException|MultipleObjectsReturnedException|UnsupportedOperation|Exception
+	 */
+	public function undeleteInFolder(int $folderId, int $bookmarkId): void {
+		$this->folderMapper->find($folderId);
+		$this->bookmarkMapper->find($bookmarkId);
+		$this->treeMapper->softUndeleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmarkId, $folderId);
 	}
 
 	/**

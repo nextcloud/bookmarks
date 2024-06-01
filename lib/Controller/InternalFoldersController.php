@@ -69,8 +69,18 @@ class InternalFoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function deleteFolder($folderId): JSONResponse {
+	public function deleteFolder(int $folderId): JSONResponse {
 		return $this->controller->deleteFolder($folderId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function undeleteFolder(int $folderId): JSONResponse {
+		return $this->controller->undeleteFolder($folderId);
 	}
 
 	/**
@@ -93,6 +103,17 @@ class InternalFoldersController extends ApiController {
 	 */
 	public function removeFromFolder($folderId, $bookmarkId): JSONResponse {
 		return $this->controller->removeFromFolder($folderId, $bookmarkId);
+	}
+
+	/**
+	 * @param int $folderId
+	 * @param int $bookmarkId
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 */
+	public function undeleteFromFolder(int $folderId, int $bookmarkId): JSONResponse {
+		return $this->controller->undeleteFromFolder($folderId, $bookmarkId);
 	}
 
 	/**
@@ -220,5 +241,14 @@ class InternalFoldersController extends ApiController {
 	 */
 	public function deleteShare($shareId): DataResponse {
 		return $this->controller->deleteShare($shareId);
+	}
+
+	/**
+	 * @return DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function getDeletedFolders(): DataResponse {
+		return $this->controller->getDeletedFolders();
 	}
 }

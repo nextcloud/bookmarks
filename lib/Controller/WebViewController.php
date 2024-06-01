@@ -45,6 +45,7 @@ class WebViewController extends Controller {
 	 * @param IURLGenerator $urlGenerator
 	 * @param IInitialStateService $initialState
 	 * @param InternalFoldersController $folderController
+	 * @param InternalBookmarkController $bookmarkController
 	 * @param UserSettingsService $userSettingsService
 	 */
 	public function __construct(
@@ -58,6 +59,8 @@ class WebViewController extends Controller {
 		private IURLGenerator $urlGenerator,
 		private \OCP\IInitialStateService $initialState,
 		private \OCA\Bookmarks\Controller\InternalFoldersController $folderController,
+		private \OCA\Bookmarks\Controller\InternalBookmarkController $bookmarkController,
+		private \OCA\Bookmarks\Controller\InternalTagsController $tagsController,
 		private UserSettingsService $userSettingsService) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
@@ -80,8 +83,13 @@ class WebViewController extends Controller {
 		$policy->addAllowedFrameDomain("'self'");
 		$res->setContentSecurityPolicy($policy);
 
-		// Provide complete folder hierarchy
 		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFolders()->getData()['data']);
+		$this->initialState->provideInitialState($this->appName, 'deletedFolders', $this->folderController->getDeletedFolders()->getData()['data']);
+		$this->initialState->provideInitialState($this->appName, 'duplicatedCount', $this->bookmarkController->countArchived()->getData()['item']);
+		$this->initialState->provideInitialState($this->appName, 'archivedCount', $this->bookmarkController->countDuplicated()->getData()['item']);
+		$this->initialState->provideInitialState($this->appName, 'unavailableCount', $this->bookmarkController->countUnavailable()->getData()['item']);
+		$this->initialState->provideInitialState($this->appName, 'allCount', $this->bookmarkController->countBookmarks(-1)->getData()['item']);
+		$this->initialState->provideInitialState($this->appName, 'tags', $this->tagsController->fullTags(true)->getData());
 
 		$settings = $this->userSettingsService->toArray();
 		$this->initialState->provideInitialState($this->appName, 'settings', $settings);

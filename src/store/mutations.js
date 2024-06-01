@@ -6,7 +6,6 @@
 
 import Vue from 'vue'
 import axios from '@nextcloud/axios'
-import { findFolder } from './findFolder.js'
 
 export const mutations = {
 	SET_AUTH_TOKEN: 'SET_AUTH_TOKEN',
@@ -51,6 +50,7 @@ export const mutations = {
 	ADD_PUBLIC_TOKEN: 'ADD_PUBLIC_TOKEN',
 	REMOVE_PUBLIC_TOKEN: 'REMOVE_PUBLIC_TOKEN',
 	SET_FOLDER_CHILDREN_ORDER: 'SET_FOLDER_CHILDREN_ORDER',
+	SET_DELETED_FOLDERS: 'SET_DELETED_FOLDERS',
 }
 export default {
 	[mutations.SET_AUTH_TOKEN](state, authToken) {
@@ -78,12 +78,15 @@ export default {
 	[mutations.SET_FOLDERS](state, folders) {
 		state.folders = sortFolders(folders)
 	},
+	[mutations.SET_DELETED_FOLDERS](state, folders) {
+		state.deletedFolders = sortFolders(folders)
+	},
 	[mutations.MOVE_FOLDER](state, { folder, target }) {
-		const currentFolder = findFolder(folder, state.folders)[0]
-		const oldParent = findFolder(currentFolder.parent_folder, state.folders)[0]
+		const currentFolder = this.getters.getFolder(folder)[0]
+		const oldParent = this.getters.getFolder(currentFolder.parent_folder)[0]
 		const index = oldParent.children.indexOf(currentFolder)
 		oldParent.children.splice(index, 1)
-		const newParent = findFolder(target, state.folders)[0]
+		const newParent = this.getters.getFolder(target)[0]
 		newParent.children.push(currentFolder)
 
 		if (state.childrenByFolder[oldParent.id]) {
@@ -282,6 +285,9 @@ export default {
  * @param folders
  */
 function sortFolders(folders) {
+	if (!folders) {
+		return []
+	}
 	folders.forEach(folder => {
 		folder.children = sortFolders(folder.children)
 	})

@@ -153,7 +153,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @return ((int|mixed)[]|mixed)[]
 	 *
-	 * @psalm-return array{folders: array<array-key, int>, tags: array|mixed}
+	 * @psalm-return array{folders: array<array-key, int>, tags: array<array-key, mixed>|mixed, archivedFilePath?: mixed|string, archivedFileType?: mixed|string, ...<array-key, mixed>}
 	 */
 	private function _returnBookmarkAsArray(Bookmark $bookmark): array {
 		$array = $bookmark->toArray();
@@ -265,6 +265,8 @@ class BookmarkController extends ApiController {
 	 * @param bool|null $unavailable
 	 * @param bool|null $archived
 	 * @param bool|null $duplicated
+	 * @param bool|null $recursive
+	 * @param bool|null $deleted
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
@@ -286,6 +288,7 @@ class BookmarkController extends ApiController {
 		?bool $archived = null,
 		?bool $duplicated = null,
 		bool $recursive = false,
+		bool $deleted = false,
 	): DataResponse {
 		$this->registerResponder('rss', function (DataResponse $res) {
 			if ($res->getData()['status'] === 'success') {
@@ -302,7 +305,9 @@ class BookmarkController extends ApiController {
 				'description' => $description,
 				'bookmarks' => $bookmarks,
 			], '');
-			$response->setHeaders($res->getHeaders());
+			/** @var array<string, mixed> $headers */
+			$headers = $res->getHeaders();
+			$response->setHeaders($headers);
 			$response->setStatus($res->getStatus());
 			if (stripos($this->request->getHeader('accept'), 'application/rss+xml') !== false) {
 				$response->addHeader('Content-Type', 'application/rss+xml');
@@ -343,6 +348,10 @@ class BookmarkController extends ApiController {
 		if ($duplicated !== null) {
 			$params->setDuplicated($duplicated);
 		}
+		// search soft deleted bookmarks
+		$params->setSoftDeleted($deleted);
+		// search bookmarks only in soft-deleted folders
+		$params->setSoftDeletedFolders($deleted);
 		$params->setTags($filterTag);
 		$params->setSearch($search);
 		$params->setConjunction($conjunction);
@@ -851,5 +860,26 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		return new JSONResponse(['status' => 'success']);
+	}
+
+	/**
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @PublicPage
+	 */
+	public function getDeletedBookmarks(): DataResponse {
+		$this->authorizer->setCredentials($this->request);
+		if ($this->authorizer->getUserId() === null) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+		}
+		try {
+			$bookmarks = $this->treeMapper->getSoftDeletedRootItems($this->authorizer->getUserId(), TreeMapper::TYPE_BOOKMARK);
+		} catch (UrlParseError|\OCP\DB\Exception $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+
+		return new Http\DataResponse(['status' => 'success', 'data' => array_map(fn ($bookmark) => $this->_returnBookmarkAsArray($bookmark), $bookmarks)]);
 	}
 }

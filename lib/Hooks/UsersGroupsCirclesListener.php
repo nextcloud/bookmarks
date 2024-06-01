@@ -143,7 +143,7 @@ class UsersGroupsCirclesListener implements IEventListener {
 		} elseif ($type === IShare::TYPE_USER) {
 			try {
 				$sharedFoldersToDelete = $this->sharedFolderMapper->findByShareAndUser($share->getId(), $participant);
-			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 				return;
 			}
 			foreach ($sharedFoldersToDelete as $sharedFolder) {
@@ -180,7 +180,7 @@ class UsersGroupsCirclesListener implements IEventListener {
 				$this->sharedFolderMapper->findByShareAndUser($share->getId(), $participant);
 				// if this does not throw, the user already has this folder
 				return;
-			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 				// noop
 			}
 			try {

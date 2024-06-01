@@ -279,7 +279,7 @@ class BookmarksParser {
 			}
 			if (isset($attributes['last_modified'])) {
 				$modified = new DateTime();
-				$modified->setTimestamp((int)$attributes['last_modified']);
+				$modified->setTimestamp($attributes['last_modified'] instanceof DateTime ? $attributes['last_modified']->getTimestamp() : (int)$attributes['last_modified']);
 				$attributes['last_modified'] = $modified;
 			}
 		}

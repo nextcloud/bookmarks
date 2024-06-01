@@ -26,6 +26,7 @@ export const actions = {
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
 	LOAD_BOOKMARK: 'LOAD_BOOKMARK',
 	DELETE_BOOKMARK: 'DELETE_BOOKMARK',
+	UNDELETE_BOOKMARK: 'UNDELETE_BOOKMARK',
 	OPEN_BOOKMARK: 'OPEN_BOOKMARK',
 	SAVE_BOOKMARK: 'SAVE_BOOKMARK',
 	MOVE_BOOKMARK: 'MOVE_BOOKMARK',
@@ -33,15 +34,19 @@ export const actions = {
 	CLICK_BOOKMARK: 'CLICK_BOOKMARK',
 	IMPORT_BOOKMARKS: 'IMPORT_BOOKMARKS',
 	DELETE_BOOKMARKS: 'DELETE_BOOKMARKS',
+	LOAD_DELETED_BOOKMARKS: 'LOAD_DELETED_BOOKMARKS',
 
 	LOAD_TAGS: 'LOAD_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
 	DELETE_TAG: 'DELETE_TAG',
 
 	LOAD_FOLDERS: 'LOAD_FOLDERS',
+	LOAD_DELETED_FOLDERS: 'LOAD_DELETED_FOLDERS',
 	CREATE_FOLDER: 'CREATE_FOLDER',
 	SAVE_FOLDER: 'SAVE_FOLDER',
+	MOVE_FOLDER: 'MOVE_FOLDER',
 	DELETE_FOLDER: 'DELETE_FOLDER',
+	UNDELETE_FOLDER: 'UNDELETE_FOLDER',
 	LOAD_FOLDER_CHILDREN_ORDER: 'LOAD_FOLDER_CHILDREN_ORDER',
 	OPEN_FOLDER_DETAILS: 'OPEN_FOLDER_DETAILS',
 	OPEN_FOLDER_SHARING: 'OPEN_FOLDER_SHARING',
@@ -90,7 +95,17 @@ export default {
 		}
 	},
 
-	async [actions.COUNT_UNAVAILABLE]({ commit, dispatch, state }, folderId) {
+	async [actions.COUNT_UNAVAILABLE]({ commit, dispatch, state }) {
+		if (state.unavailableCount === null) {
+			try {
+				const count = loadState('bookmarks', 'unavailableCount')
+				return commit(mutations.SET_UNAVAILABLE_COUNT, count)
+			} catch (e) {
+				console.warn(
+					'Could not load initial unavailable bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		try {
 			const response = await axios.get(
 				url(state, '/bookmark/unavailable')
@@ -114,7 +129,17 @@ export default {
 			throw err
 		}
 	},
-	async [actions.COUNT_ARCHIVED]({ commit, dispatch, state }, folderId) {
+	async [actions.COUNT_ARCHIVED]({ commit, dispatch, state }) {
+		if (state.archivedCount === null) {
+			try {
+				const count = loadState('bookmarks', 'archivedCount')
+				return commit(mutations.SET_ARCHIVED_COUNT, count)
+			} catch (e) {
+				console.warn(
+					'Could not load initial archived bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		try {
 			const response = await axios.get(url(state, '/bookmark/archived'))
 			const {
@@ -137,6 +162,16 @@ export default {
 		}
 	},
 	async [actions.COUNT_DUPLICATED]({ commit, dispatch, state }) {
+		if (state.duplicatedCount === null) {
+			try {
+				const count = loadState('bookmarks', 'duplicatedCount')
+				return commit(mutations.SET_DUPLICATED_COUNT, count)
+			} catch (e) {
+				console.warn(
+					'Could not load initial duplicated bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		try {
 			const response = await axios.get(url(state, '/bookmark/duplicated'))
 			const {
@@ -159,6 +194,17 @@ export default {
 		}
 	},
 	async [actions.COUNT_BOOKMARKS]({ commit, dispatch, state }, folderId) {
+		if (String(folderId) === String(-1) && typeof state.countsByFolder[folderId] === 'undefined') {
+			try {
+				const count = loadState('bookmarks', 'allCount')
+				return commit(mutations.SET_BOOKMARK_COUNT, { folderId, count })
+			} catch (e) {
+				console.warn(e)
+				console.warn(
+					'Could not load initial bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		try {
 			const response = await axios.get(
 				url(state, `/folder/${folderId}/count`)
@@ -355,14 +401,16 @@ export default {
 			if (response.data.status !== 'success') {
 				throw new Error(response.data)
 			}
-			const response2 = await axios.delete(
-				url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`)
-			)
-			if (response2.data.status !== 'success') {
-				throw new Error(response2.data)
+			if (oldFolder) {
+				const response2 = await axios.delete(
+					url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`)
+				)
+				if (response2.data.status !== 'success') {
+					throw new Error(response2.data)
+				}
+				dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldFolder)
 			}
 			commit(mutations.FETCH_END, 'moveBookmark')
-			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, oldFolder)
 			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, newFolder)
 		} catch (err) {
 			console.error(err)
@@ -422,12 +470,12 @@ export default {
 	},
 	async [actions.DELETE_BOOKMARK](
 		{ commit, dispatch, state },
-		{ id, folder, avoidReload }
+		{ id, folder, avoidReload, hard }
 	) {
 		if (folder) {
 			try {
 				const response = await axios.delete(
-					url(state, `/folder/${folder}/bookmarks/${id}`)
+					url(state, `/folder/${folder}/bookmarks/${id}` + (hard ? '?hardDelete' : ''))
 				)
 				if (response.data.status !== 'success') {
 					throw new Error(response.data)
@@ -450,6 +498,7 @@ export default {
 			}
 			return
 		}
+
 		try {
 			const response = await axios.delete(url(state, `/bookmark/${id}`))
 			if (response.data.status !== 'success') {
@@ -462,6 +511,38 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete bookmark')
+			)
+			throw err
+		}
+	},
+	async [actions.UNDELETE_BOOKMARK](
+		{ commit, dispatch, state, getters },
+		{ id, folder, avoidReload }
+	) {
+		try {
+			const response = await axios.post(
+				url(state, `/folder/${folder}/bookmarks/${id}/undelete`)
+			)
+			if (response.data.status !== 'success') {
+				throw new Error(response.data)
+			}
+			commit(mutations.REMOVE_BOOKMARK, id)
+			if (!avoidReload) {
+				await dispatch(actions.COUNT_BOOKMARKS, -1)
+				await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
+			}
+			const folderItem = getters.getFolder(folder)[0]
+			if (folderItem.softDeleted) {
+				await dispatch(actions.MOVE_BOOKMARK, { bookmark: id, newFolder: -1 })
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t(
+					'bookmarks',
+					'Failed to restore bookmark'
+				)
 			)
 			throw err
 		}
@@ -560,6 +641,17 @@ export default {
 		}
 	},
 	[actions.LOAD_TAGS]({ commit, dispatch, state }) {
+		if (state.tags === null) {
+			try {
+				const tags = loadState('bookmarks', 'tags')
+				return commit(mutations.SET_TAGS, tags)
+			} catch (e) {
+				console.warn(e)
+				console.warn(
+					'Could not load initial bookmarks count state, continuing with HTTP request'
+				)
+			}
+		}
 		commit(mutations.FETCH_START, { type: 'tags' })
 		return axios
 			.get(url(state, '/tag'), { params: { count: true } })
@@ -644,12 +736,89 @@ export default {
 			throw err
 		}
 	},
+
+	async [actions.LOAD_DELETED_FOLDERS]({ commit, dispatch, state }) {
+		if (state.deletedFolders === null) {
+			try {
+				const count = loadState('bookmarks', 'deletedFolders')
+				return commit(mutations.SET_DELETED_FOLDERS, count)
+			} catch (e) {
+				console.warn(
+					'Could not load initial deleted folders state, continuing with HTTP request'
+				)
+			}
+		}
+		let canceled = false
+		commit(mutations.FETCH_START, {
+			type: 'deleted_folders',
+			cancel: () => {
+				canceled = true
+			},
+		})
+		try {
+			const response = await axios.get(url(state, '/folder/deleted'), {
+				params: {},
+			})
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
+			const folders = data
+			commit(mutations.FETCH_END, 'folders')
+			return commit(mutations.SET_DELETED_FOLDERS, folders)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'folders')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load folders')
+			)
+			throw err
+		}
+	},
+
+	async [actions.LOAD_DELETED_BOOKMARKS]({ commit, dispatch, state }) {
+		let canceled = false
+		commit(mutations.FETCH_START, {
+			type: 'bookmarks',
+			cancel: () => {
+				canceled = true
+			},
+		})
+		try {
+			const response = await axios.get(url(state, '/bookmark/deleted'), {
+				params: {},
+			})
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
+			const bookmarks = data
+			commit(mutations.FETCH_END, 'bookmarks')
+			commit(mutations.REMOVE_ALL_BOOKMARKS)
+			for (const bookmark of bookmarks) {
+				commit(mutations.ADD_BOOKMARK, bookmark)
+			}
+			commit(mutations.REACHED_END)
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'bookmarks')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to load deleted bookmarks')
+			)
+			throw err
+		}
+	},
+
 	async [actions.DELETE_FOLDER](
 		{ commit, dispatch, state },
-		{ id, avoidReload }
+		{ id, avoidReload, hard }
 	) {
 		try {
-			const response = await axios.delete(url(state, `/folder/${id}`))
+			const response = await axios.delete(url(state, `/folder/${id}` + (hard ? '?hardDelete' : '')))
 			const {
 				data: { status },
 			} = response
@@ -669,6 +838,69 @@ export default {
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to delete folder')
+			)
+			throw err
+		}
+	},
+	async [actions.MOVE_FOLDER](
+		{ commit, dispatch, state },
+		{ folderId, targetFolderId }
+	) {
+		try {
+			const folder = this.getters.getFolder(folderId)[0]
+			commit(mutations.MOVE_FOLDER, { folder: folderId, target: targetFolderId })
+			const oldParent = folder.parent_folder
+			folder.parent_folder = targetFolderId
+			try {
+				await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
+				dispatch(
+					actions.LOAD_FOLDER_CHILDREN_ORDER,
+					oldParent
+				)
+			} catch (err) {
+				commit(mutations.MOVE_FOLDER, { folder: folder.id, target: oldParent })
+				folder.parent_folder = oldParent
+				throw err
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to move folder')
+			)
+			throw err
+		}
+	},
+	async [actions.UNDELETE_FOLDER](
+		{ commit, dispatch, state },
+		{ id, avoidReload }
+	) {
+		try {
+			const parentFolderId = this.getters.getFolder(id)[0].parent_folder
+			const parentFolderItem = this.getters.getFolder(parentFolderId)[0]
+			const response = await axios.post(url(state, `/folder/${id}/undelete`))
+			const {
+				data: { status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(response.data)
+			}
+			if (parentFolderItem && parentFolderItem.softDeleted) {
+				await dispatch(actions.MOVE_FOLDER, { folderId: id, targetFolderId: '-1' })
+			}
+			if (!avoidReload) {
+				await dispatch(
+					actions.LOAD_FOLDER_CHILDREN_ORDER,
+					parentFolderId
+				)
+				await dispatch(actions.LOAD_FOLDERS)
+				await dispatch(actions.LOAD_DELETED_FOLDERS)
+			}
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t('bookmarks', 'Failed to restore folder')
 			)
 			throw err
 		}
@@ -779,23 +1011,7 @@ export default {
 			await Parallel.each(
 				state.selection.folders,
 				async folder => {
-					if (folderId === folder.id) {
-						throw new Error('Cannot move folder into itself')
-					}
-					commit(mutations.MOVE_FOLDER, { folder: folder.id, target: folderId })
-					const oldParent = folder.parent_folder
-					folder.parent_folder = folderId
-					try {
-						await dispatch(actions.SAVE_FOLDER, folder.id) // reloads children order for new parent
-					} catch (err) {
-						commit(mutations.MOVE_FOLDER, { folder: folder.id, target: oldParent })
-						folder.parent_folder = oldParent
-						throw err
-					}
-					dispatch(
-						actions.LOAD_FOLDER_CHILDREN_ORDER,
-						oldParent
-					)
+					await dispatch(actions.MOVE_FOLDER, { folderId: folder.id, targetFolderId: folderId })
 				},
 				10
 			)
@@ -885,12 +1101,24 @@ export default {
 			)
 			await Parallel.each(
 				state.selection.bookmarks,
-				bookmark =>
-					dispatch(actions.DELETE_BOOKMARK, {
-						id: bookmark.id,
-						folder,
-						avoidReload: true,
-					}),
+				(bookmark) => {
+					if (folder) {
+						return dispatch(actions.DELETE_BOOKMARK, {
+							id: bookmark.id,
+							folder,
+							avoidReload: true,
+						})
+					} else {
+						// soft delete all occurences instead of hard deleting the bookmark itself
+						return Promise.all(bookmark.folders.map((folder) => {
+							return dispatch(actions.DELETE_BOOKMARK, {
+								id: bookmark.id,
+								folder,
+								avoidReload: true,
+							})
+						}))
+					}
+				},
 				10
 			)
 			dispatch(actions.RELOAD_VIEW)
@@ -986,8 +1214,8 @@ export default {
 		commit(mutations.SET_QUERY, { duplicated: true })
 		return dispatch(actions.FETCH_PAGE)
 	},
-	[actions.FILTER_BY_FOLDER]({ dispatch, commit, state }, folder) {
-		commit(mutations.SET_QUERY, { folder })
+	[actions.FILTER_BY_FOLDER]({ dispatch, commit, state }, { folder, softDeleted }) {
+		commit(mutations.SET_QUERY, { folder, deleted: softDeleted })
 		if (state.settings.sorting === 'index') {
 			dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, folder)
 		}

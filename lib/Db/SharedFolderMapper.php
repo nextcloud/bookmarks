@@ -185,10 +185,11 @@ class SharedFolderMapper extends QBMapper {
 
 	/**
 	 * @param int $shareId
-	 * @param int $userId
+	 * @param string $userId
 	 * @return SharedFolder
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws Exception
 	 */
 	public function findByShareAndUser(int $shareId, string $userId): SharedFolder {
 		$qb = $this->db->getQueryBuilder();

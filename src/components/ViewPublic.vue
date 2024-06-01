@@ -71,13 +71,13 @@ export default {
 			const route = this.$route
 			switch (route.name) {
 			case this.routes.HOME:
-				return this.$store.dispatch(actions.FILTER_BY_FOLDER, '-1')
+				return this.$store.dispatch(actions.FILTER_BY_FOLDER, { folder: '-1' })
 			case this.routes.RECENT:
 				return this.$store.dispatch(actions.FILTER_BY_RECENT)
 			case this.routes.UNTAGGED:
 				return this.$store.dispatch(actions.FILTER_BY_UNTAGGED)
 			case this.routes.FOLDER:
-				return this.$store.dispatch(actions.FILTER_BY_FOLDER, route.params.folder)
+				return this.$store.dispatch(actions.FILTER_BY_FOLDER, { folder: route.params.folder })
 			case this.routes.TAGS:
 				return this.$store.dispatch(
 					actions.FILTER_BY_TAGS,

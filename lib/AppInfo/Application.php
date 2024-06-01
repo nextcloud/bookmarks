@@ -12,6 +12,8 @@ use OCA\Bookmarks\Activity\ActivityPublisher;
 use OCA\Bookmarks\Dashboard\Frequent;
 use OCA\Bookmarks\Dashboard\Recent;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\BeforeSoftDeleteEvent;
+use OCA\Bookmarks\Events\BeforeSoftUndeleteEvent;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
@@ -79,6 +81,8 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(UpdateEvent::class, TreeCacheManager::class);
 		$context->registerEventListener(BeforeDeleteEvent::class, TreeCacheManager::class);
 		$context->registerEventListener(MoveEvent::class, TreeCacheManager::class);
+		$context->registerEventListener(BeforeSoftDeleteEvent::class, TreeCacheManager::class);
+		$context->registerEventListener(BeforeSoftUndeleteEvent::class, TreeCacheManager::class);
 
 		$context->registerEventListener(CreateEvent::class, ActivityPublisher::class);
 		$context->registerEventListener(UpdateEvent::class, ActivityPublisher::class);

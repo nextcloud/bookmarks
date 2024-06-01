@@ -14,7 +14,7 @@ use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\SharedFolder;
 use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\TreeMapper;
-use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\BeforeSoftDeleteEvent;
 use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\CreateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
@@ -26,6 +26,9 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IL10N;
 
+/**
+ * @psalm-implements IEventListener<ChangeEvent>
+ */
 class ActivityPublisher implements IEventListener {
 	/**
 	 * @var IManager
@@ -117,7 +120,7 @@ class ActivityPublisher implements IEventListener {
 
 		if ($event instanceof CreateEvent) {
 			$activity->setSubject('share_created', ['folder' => $sharedFolder->getTitle(), 'sharee' => $sharedFolder->getUserId()]);
-		} elseif ($event instanceof BeforeDeleteEvent) {
+		} elseif ($event instanceof BeforeSoftDeleteEvent) {
 			$activity->setSubject('share_deleted', ['folder' => $sharedFolder->getTitle(), 'sharee' => $sharedFolder->getUserId()]);
 		} else {
 			return;
@@ -151,7 +154,7 @@ class ActivityPublisher implements IEventListener {
 		$activity->setObject(TreeMapper::TYPE_FOLDER, $folder->getId());
 		if ($event instanceof CreateEvent) {
 			$activity->setSubject('folder_created', ['folder' => $folder->getTitle()]);
-		} elseif ($event instanceof BeforeDeleteEvent) {
+		} elseif ($event instanceof BeforeSoftDeleteEvent) {
 			$activity->setSubject('folder_deleted', ['folder' => $folder->getTitle()]);
 		} elseif ($event instanceof MoveEvent) {
 			$activity->setSubject('folder_moved', ['folder' => $folder->getTitle()]);
@@ -203,7 +206,7 @@ class ActivityPublisher implements IEventListener {
 
 		if ($event instanceof CreateEvent) {
 			$activity->setSubject('bookmark_created', ['bookmark' => $bookmark->getTitle()]);
-		} elseif ($event instanceof BeforeDeleteEvent) {
+		} elseif ($event instanceof BeforeSoftDeleteEvent) {
 			$activity->setSubject('bookmark_deleted', ['bookmark' => $bookmark->getTitle()]);
 		} else {
 			return;

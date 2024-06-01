@@ -13,19 +13,21 @@ class QueryParameters {
 	public const CONJ_AND = 'and';
 	public const CONJ_OR = 'or';
 
-	private $limit = 10;
-	private $offset = 0;
+	private int $limit = 10;
+	private int $offset = 0;
 	private $sortBy;
 	private $conjunction = self::CONJ_AND;
 	private $folder;
-	private $url;
-	private $untagged = false;
-	private $unavailable = false;
-	private $archived = false;
-	private $duplicated = false;
+	private ?string $url = null;
+	private bool $untagged = false;
+	private bool $unavailable = false;
+	private bool $archived = false;
+	private bool $duplicated = false;
 	private $search = [];
 	private $tags = [];
 	private bool $recursive = false;
+	private bool $softDeleted = false;
+	private bool $softDeletedFolders = false;
 
 	/**
 	 * @return array
@@ -257,5 +259,37 @@ class QueryParameters {
 	 */
 	public function getRecursive(): bool {
 		return $this->recursive;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getSoftDeleted(): bool {
+		return $this->softDeleted;
+	}
+
+	/**
+	 * @param bool $softDeleted
+	 * @return $this
+	 */
+	public function setSoftDeleted(bool $softDeleted): QueryParameters {
+		$this->softDeleted = $softDeleted;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getSoftDeletedFolders(): bool {
+		return $this->softDeletedFolders;
+	}
+
+	/**
+	 * @param bool $softDeletedFolders
+	 * @return $this
+	 */
+	public function setSoftDeletedFolders(bool $softDeletedFolders): QueryParameters {
+		$this->softDeletedFolders = $softDeletedFolders;
+		return $this;
 	}
 }

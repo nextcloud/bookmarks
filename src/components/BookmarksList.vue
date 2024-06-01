@@ -10,6 +10,13 @@
 		'bookmarkslist--gridview': viewMode === 'grid',
 		'bookmarkslist--with-description': descriptionShown,
 	}">
+		<div v-if="$route.name === routes.TRASHBIN && (bookmarks.length || subFolders.length)" class="bookmarkslist__description">
+			<NcNoteCard type="info">
+				{{
+					t('bookmarks', 'These are your deleted items.')
+				}}
+			</NcNoteCard>
+		</div>
 		<div v-if="$route.name === routes.ARCHIVED && bookmarks.length" class="bookmarkslist__description">
 			<NcNoteCard type="info">
 				{{
@@ -148,6 +155,10 @@ export default {
 				// Show shared folders
 				return Object.keys(this.$store.state.sharedFoldersById)
 					.map(folderId => this.$store.getters.getFolder(folderId)[0])
+			}
+			if (this.$route.name === this.routes.TRASHBIN) {
+				// Show deleted folders
+				return this.$store.state.deletedFolders
 			}
 			if (this.$route.name === this.routes.SEARCH) {
 				// Search folders

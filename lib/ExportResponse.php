@@ -12,6 +12,11 @@ use OC;
 use OC\HintException;
 use OCP\AppFramework\Http\Response;
 
+/**
+ * @psalm-template S of int
+ * @psalm-template H of array<string, mixed>
+ * @psalm-extends Response<S,H>
+ */
 class ExportResponse extends Response {
 	private $returnstring;
 

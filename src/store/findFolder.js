@@ -1,8 +1,9 @@
 /**
  * @param id
  * @param children
+ * @param softDeleted
  */
-export function findFolder(id, children) {
+export function findFolder(id, children, softDeleted = false) {
 	if (!children) {
 		return []
 	} else if (Number(id) === -1) {
@@ -12,10 +13,11 @@ export function findFolder(id, children) {
 	}
 	const folders = children.filter(folder => Number(folder.id) === Number(id))
 	if (folders.length) {
+		folders.forEach(item => { item.softDeleted = softDeleted })
 		return folders
 	} else {
 		for (const child of children) {
-			const folders = findFolder(id, child.children)
+			const folders = findFolder(id, child.children, softDeleted)
 			if (folders.length) {
 				folders.push(child)
 				return folders

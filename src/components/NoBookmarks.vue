@@ -49,6 +49,13 @@
 				<VectorLinkIcon :size="20" />
 			</template>
 		</NcEmptyContent>
+		<NcEmptyContent v-else-if="$route.name === routes.TRASHBIN"
+			:name="t('bookmarks', 'No deleted bookmarks')"
+			:description="t('bookmarks', 'You haven\'t deleted anything yet.')">
+			<template #icon>
+				<TrashbinIcon :size="20" />
+			</template>
+		</NcEmptyContent>
 		<NcEmptyContent v-else
 			:name="t('bookmarks', 'No bookmarks here')"
 			:description="t('bookmarks', 'Add bookmarks manually or import bookmarks from a HTML file.')">
@@ -83,11 +90,11 @@
 import { NcEmptyContent, NcButton, NcLoadingIcon } from '@nextcloud/vue'
 import { actions, mutations } from '../store/index.js'
 import { privateRoutes } from '../router.js'
-import { StarShootingIcon, UploadIcon, PlusIcon, ShareVariantIcon, VectorLinkIcon, LinkVariantOffIcon, FileDocumentMultipleIcon, MagnifyIcon } from './Icons.js'
+import { TrashbinIcon, StarShootingIcon, UploadIcon, PlusIcon, ShareVariantIcon, VectorLinkIcon, LinkVariantOffIcon, FileDocumentMultipleIcon, MagnifyIcon } from './Icons.js'
 
 export default {
 	name: 'NoBookmarks',
-	components: { NcEmptyContent, StarShootingIcon, NcButton, NcLoadingIcon, UploadIcon, PlusIcon, ShareVariantIcon, VectorLinkIcon, LinkVariantOffIcon, FileDocumentMultipleIcon, MagnifyIcon },
+	components: { TrashbinIcon, NcEmptyContent, StarShootingIcon, NcButton, NcLoadingIcon, UploadIcon, PlusIcon, ShareVariantIcon, VectorLinkIcon, LinkVariantOffIcon, FileDocumentMultipleIcon, MagnifyIcon },
 	data() {
 		return { importing: false }
 	},
