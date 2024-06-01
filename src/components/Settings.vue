@@ -99,7 +99,7 @@
 		</NcAppSettingsSection>
 
 		<NcAppSettingsSection id="" :name="t('bookmarks', 'Need help?')">
-			<p><a href="https://github.com/nextcloud/bookmarks/issues/">{{ t('bookmarks', 'If you have problems with this Bookmarks app or have an idea about what could be improved, don\'t hesitate to get in touch by clicking here.')}}</a></p>
+			<p><a href="https://github.com/nextcloud/bookmarks/issues/">{{ t('bookmarks', 'If you have problems with this Bookmarks app or have an idea about what could be improved, don\'t hesitate to get in touch by clicking here.') }}</a></p>
 		</NcAppSettingsSection>
 
 		<NcAppSettingsSection id="" :name="t('bookmarks', 'Support this project')">

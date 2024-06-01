@@ -105,8 +105,8 @@
 		</template>
 		<template #footer>
 			<NcAppNavigationItem key="menu-trashbin"
-													 :to="{ name: routes.TRASHBIN }"
-													 :name="t('bookmarks', 'Trash Bin')">
+				:to="{ name: routes.TRASHBIN }"
+				:name="t('bookmarks', 'Trash Bin')">
 				<TrashbinIcon slot="icon" :size="20" />
 			</NcAppNavigationItem>
 			<NcAppNavigationItem :name="t('bookmarks', 'Settings')" @click="settingsOpen = !settingsOpen">

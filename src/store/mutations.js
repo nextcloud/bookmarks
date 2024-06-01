@@ -6,7 +6,6 @@
 
 import Vue from 'vue'
 import axios from '@nextcloud/axios'
-import { findFolder } from './findFolder.js'
 
 export const mutations = {
 	SET_AUTH_TOKEN: 'SET_AUTH_TOKEN',

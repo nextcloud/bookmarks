@@ -141,7 +141,7 @@ export default {
 			this.$store.commit(mutations.RESET_SELECTION)
 			switch (route.name) {
 			case privateRoutes.HOME:
-				this.$store.dispatch(actions.FILTER_BY_FOLDER, {folder: '-1'})
+				this.$store.dispatch(actions.FILTER_BY_FOLDER, { folder: '-1' })
 				break
 			case privateRoutes.RECENT:
 				this.$store.dispatch(actions.FILTER_BY_RECENT)

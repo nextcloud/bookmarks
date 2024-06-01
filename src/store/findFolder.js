@@ -1,6 +1,7 @@
 /**
  * @param id
  * @param children
+ * @param softDeleted
  */
 export function findFolder(id, children, softDeleted = false) {
 	if (!children) {
