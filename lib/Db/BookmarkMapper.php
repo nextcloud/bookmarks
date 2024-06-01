@@ -90,7 +90,7 @@ class BookmarkMapper extends QBMapper {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->urlNormalizer = $urlNormalizer;
 		$this->config = $config;
-		$this->limit = (int)$config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
+		$this->limit = (int)$config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', '0');
 		$this->publicMapper = $publicMapper;
 
 		$this->deleteTagsQuery = $this->getDeleteTagsQuery();

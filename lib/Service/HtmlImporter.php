@@ -77,7 +77,7 @@ class HtmlImporter {
 	/**
 	 * @brief Import Bookmarks from html formatted file
 	 *
-	 * @param int $userId
+	 * @param string $userId
 	 * @param string $file
 	 * @param int|null $rootFolder
 	 *
@@ -90,7 +90,7 @@ class HtmlImporter {
 	 * @throws UserLimitExceededError
 	 * @throws HtmlParseError
 	 */
-	public function importFile($userId, string $file, ?int $rootFolder = null): array {
+	public function importFile(string $userId, string $file, ?int $rootFolder = null): array {
 		$content = file_get_contents($file);
 		return $this->import($userId, $content, $rootFolder);
 	}
@@ -98,7 +98,7 @@ class HtmlImporter {
 	/**
 	 * @brief Import Bookmarks from html
 	 *
-	 * @param int $userId
+	 * @param string $userId
 	 * @param string $content
 	 * @param int|null $rootFolderId
 	 *
@@ -109,11 +109,11 @@ class HtmlImporter {
 	 * @throws HtmlParseError
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
-	 * @throws UserLimitExceededError
+	 * @throws UserLimitExceededError|UnsupportedOperation
 	 *
 	 * @psalm-return array{imported: list<array>, errors: array<array-key, mixed|string>}
 	 */
-	public function import($userId, string $content, ?int $rootFolderId = null): array {
+	public function import(string $userId, string $content, ?int $rootFolderId = null): array {
 		$imported = [];
 		$errors = [];
 

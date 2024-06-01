@@ -57,14 +57,14 @@ class HtmlExporter {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param string $userId
 	 * @param int $folderId
 	 * @return string
 	 * @throws UnauthorizedAccessError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function exportFolder($userId, int $folderId): string {
+	public function exportFolder(string $userId, int $folderId): string {
 		$file = '<!DOCTYPE NETSCAPE-Bookmark-file-1>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 <TITLE>Bookmarks</TITLE>';
@@ -75,7 +75,7 @@ class HtmlExporter {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param string $userId
 	 * @param int $id
 	 * @param bool $onlyContent
 	 * @return string
@@ -83,7 +83,7 @@ class HtmlExporter {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
 	 */
-	protected function serializeFolder($userId, int $id, bool $onlyContent = false): string {
+	protected function serializeFolder(string $userId, int $id, bool $onlyContent = false): string {
 		if ($onlyContent) {
 			$output = '';
 		} else {

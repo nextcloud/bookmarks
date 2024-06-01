@@ -61,7 +61,7 @@ class Share extends Entity {
 	/**
 	 * @return array
 	 *
-	 * @psalm-return array{id: mixed, folderId: mixed, owner: mixed, participant: mixed, type: mixed, canWrite: mixed, canShare: mixed, createdAt: mixed}
+	 * @psalm-return array{id: mixed, folderId: mixed, owner: mixed, participant: mixed, type: mixed, canWrite: mixed, canShare: mixed, createdAt: mixed, participantDisplayName: string}
 	 */
 	public function toArray(): array {
 		return [

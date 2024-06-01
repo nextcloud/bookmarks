@@ -42,7 +42,7 @@ class UserSettingsService {
 			$default = 'grid';
 		}
 		if ($key === 'limit') {
-			return $this->config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', 0);
+			return $this->config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', '0');
 		}
 		if ($key === 'archive.enabled') {
 			$default = (string) true;

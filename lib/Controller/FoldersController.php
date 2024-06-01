@@ -7,7 +7,6 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use OC\DB\Exceptions\DbalException;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
@@ -783,7 +782,7 @@ class FoldersController extends ApiController {
 				$array['children'] = $this->treeMapper->getSubFolders($folder->getId(), -1, true);
 				return $array;
 			}, $folders);
-		} catch (UrlParseError|DbalException|Exception $e) {
+		} catch (UrlParseError|Exception $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 

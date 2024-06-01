@@ -11,7 +11,6 @@ namespace OCA\Bookmarks\Controller;
 use DateInterval;
 use DateTime;
 use Exception;
-use OC\DB\Exceptions\DbalException;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -154,7 +153,7 @@ class BookmarkController extends ApiController {
 	 *
 	 * @return ((int|mixed)[]|mixed)[]
 	 *
-	 * @psalm-return array{folders: array<array-key, int>, tags: array|mixed}
+	 * @psalm-return array{folders: array<array-key, int>, tags: array<array-key, mixed>|mixed, archivedFilePath?: mixed|string, archivedFileType?: mixed|string, ...<array-key, mixed>}
 	 */
 	private function _returnBookmarkAsArray(Bookmark $bookmark): array {
 		$array = $bookmark->toArray();
@@ -306,7 +305,9 @@ class BookmarkController extends ApiController {
 				'description' => $description,
 				'bookmarks' => $bookmarks,
 			], '');
-			$response->setHeaders($res->getHeaders());
+			/** @var array<string, mixed> $headers */
+			$headers = $res->getHeaders();
+			$response->setHeaders($headers);
 			$response->setStatus($res->getStatus());
 			if (stripos($this->request->getHeader('accept'), 'application/rss+xml') !== false) {
 				$response->addHeader('Content-Type', 'application/rss+xml');
@@ -875,7 +876,7 @@ class BookmarkController extends ApiController {
 		}
 		try {
 			$bookmarks = $this->treeMapper->getSoftDeletedRootItems($this->authorizer->getUserId(), TreeMapper::TYPE_BOOKMARK);
-		} catch (UrlParseError|DbalException|\OCP\DB\Exception $e) {
+		} catch (UrlParseError|\OCP\DB\Exception $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 

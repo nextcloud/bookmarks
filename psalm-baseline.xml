@@ -1,107 +1,143 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.30.0@d0bc6e25d89f649e4f36a534f330f8bb4643dd69">
+<files psalm-version="5.24.0@462c80e31c34e58cc4f750c656be3927e80e550e">
+  <file src="lib/Activity/ActivityPublisher.php">
+    <MissingTemplateParam>
+      <code><![CDATA[IEventListener]]></code>
+    </MissingTemplateParam>
+  </file>
   <file src="lib/AppInfo/Application.php">
-    <InvalidArgument occurrences="20">
-      <code>UsersGroupsCirclesListener::class</code>
-      <code>UsersGroupsCirclesListener::class</code>
-      <code>UsersGroupsCirclesListener::class</code>
-      <code>UsersGroupsCirclesListener::class</code>
-      <code>UsersGroupsCirclesListener::class</code>
-      <code>UsersGroupsCirclesListener::class</code>
-      <code>UsersGroupsCirclesListener::class</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
-      <code>registerEventListener</code>
+    <InvalidArgument>
+      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
+      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
+      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
+      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
+      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
+      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
+      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
     </InvalidArgument>
-    <UndefinedClass occurrences="3">
-      <code>CircleDestroyedEvent</code>
-      <code>CircleMemberAddedEvent</code>
-      <code>CircleMemberRemovedEvent</code>
+    <UndefinedClass>
+      <code><![CDATA[CircleDestroyedEvent]]></code>
+      <code><![CDATA[CircleMemberAddedEvent]]></code>
+      <code><![CDATA[CircleMemberRemovedEvent]]></code>
     </UndefinedClass>
   </file>
+  <file src="lib/AugmentedTemplateResponse.php">
+    <MissingTemplateParam>
+      <code><![CDATA[AugmentedTemplateResponse]]></code>
+    </MissingTemplateParam>
+  </file>
   <file src="lib/Db/BookmarkMapper.php">
-    <UndefinedDocblockClass occurrences="1">
-      <code>\OC\DB\Exceptions\DbalException</code>
+    <UndefinedDocblockClass>
+      <code><![CDATA[\OC\DB\Exceptions\DbalException]]></code>
     </UndefinedDocblockClass>
   </file>
   <file src="lib/Db/Share.php">
-    <UndefinedClass occurrences="1">
-      <code>\OCP\Server::get(CirclesService::class)-&gt;getCircle($participant)</code>
+    <UndefinedClass>
+      <code><![CDATA[\OCP\Server::get(CirclesService::class)->getCircle($participant)]]></code>
     </UndefinedClass>
+  </file>
+  <file src="lib/Db/TreeMapper.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[$this->bookmarkMapper->findAll($userId, $params)]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[E[]]]></code>
+      <code><![CDATA[Folder]]></code>
+    </InvalidReturnType>
+    <MissingTemplateParam>
+      <code><![CDATA[TreeMapper]]></code>
+    </MissingTemplateParam>
+    <NoValue>
+      <code><![CDATA[$folder]]></code>
+      <code><![CDATA[$folder1]]></code>
+      <code><![CDATA[$folder2]]></code>
+      <code><![CDATA[return $this->findEntityWithType($qb, TreeMapper::TYPE_FOLDER);]]></code>
+    </NoValue>
+    <ReservedWord>
+      <code><![CDATA[Entity]]></code>
+      <code><![CDATA[Folder]]></code>
+      <code><![CDATA[SharedFolder]]></code>
+    </ReservedWord>
+  </file>
+  <file src="lib/ExportResponse.php">
+    <MissingTemplateParam>
+      <code><![CDATA[ExportResponse]]></code>
+    </MissingTemplateParam>
   </file>
   <file src="lib/Flow/CreateBookmark.php">
-    <UndefinedClass occurrences="2">
-      <code>$entity</code>
-      <code>File</code>
+    <UndefinedClass>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[File]]></code>
     </UndefinedClass>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>exportContextIDs</code>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[exportContextIDs]]></code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="lib/Hooks/BeforeTemplateRenderedListener.php">
+    <MissingTemplateParam>
+      <code><![CDATA[IEventListener]]></code>
+    </MissingTemplateParam>
+  </file>
   <file src="lib/Hooks/UsersGroupsCirclesListener.php">
-    <InvalidTemplateParam occurrences="1">
-      <code>IEventListener</code>
+    <InvalidTemplateParam>
+      <code><![CDATA[IEventListener]]></code>
     </InvalidTemplateParam>
-    <MoreSpecificImplementedParamType occurrences="1">
-      <code>$event</code>
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$event]]></code>
     </MoreSpecificImplementedParamType>
-    <UndefinedClass occurrences="3">
-      <code>$circle</code>
-      <code>$circle</code>
-      <code>CircleDestroyedEvent</code>
+    <UndefinedClass>
+      <code><![CDATA[$circle]]></code>
+      <code><![CDATA[$circle]]></code>
+      <code><![CDATA[CircleDestroyedEvent]]></code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="1">
-      <code>UsersGroupsCirclesListener</code>
+    <UndefinedDocblockClass>
+      <code><![CDATA[UsersGroupsCirclesListener]]></code>
+      <code><![CDATA[UsersGroupsCirclesListener]]></code>
     </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/BackupManager.php">
-    <UndefinedDocblockClass occurrences="5">
-      <code>\OC\User\NoUserException</code>
-      <code>\OC\User\NoUserException</code>
-      <code>\OC\User\NoUserException</code>
-      <code>\OC\User\NoUserException</code>
-      <code>\OC\User\NoUserException</code>
+    <UndefinedDocblockClass>
+      <code><![CDATA[\OC\User\NoUserException]]></code>
+      <code><![CDATA[\OC\User\NoUserException]]></code>
+      <code><![CDATA[\OC\User\NoUserException]]></code>
+      <code><![CDATA[\OC\User\NoUserException]]></code>
+      <code><![CDATA[\OC\User\NoUserException]]></code>
     </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/CirclesService.php">
-    <UndefinedClass occurrences="9">
-      <code>?Circle</code>
-      <code>Circle</code>
-      <code>CircleProbe</code>
-      <code>CirclesManager</code>
-      <code>CirclesManager</code>
-      <code>CirclesManager</code>
-      <code>Member</code>
-      <code>Member</code>
-      <code>Member</code>
+    <UndefinedClass>
+      <code><![CDATA[?Circle]]></code>
+      <code><![CDATA[Circle]]></code>
+      <code><![CDATA[CircleProbe]]></code>
+      <code><![CDATA[CirclesManager]]></code>
+      <code><![CDATA[CirclesManager]]></code>
+      <code><![CDATA[CirclesManager]]></code>
+      <code><![CDATA[Member]]></code>
+      <code><![CDATA[Member]]></code>
+      <code><![CDATA[Member]]></code>
     </UndefinedClass>
   </file>
   <file src="lib/Service/CrawlService.php">
-    <UndefinedClass occurrences="4">
-      <code>$e</code>
-      <code>$e</code>
-      <code>Client</code>
-      <code>NoUserException</code>
+    <UndefinedClass>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[Client]]></code>
+      <code><![CDATA[NoUserException]]></code>
     </UndefinedClass>
   </file>
   <file src="lib/Service/FolderService.php">
-    <UndefinedClass occurrences="1">
-      <code>$circle</code>
+    <UndefinedClass>
+      <code><![CDATA[$circle]]></code>
     </UndefinedClass>
   </file>
   <file src="lib/Service/LinkExplorer.php">
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>setMinimumImageDimensions</code>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[setMinimumImageDimensions]]></code>
     </UndefinedInterfaceMethod>
+  </file>
+  <file src="lib/Service/TreeCacheManager.php">
+    <MissingTemplateParam>
+      <code><![CDATA[IEventListener]]></code>
+    </MissingTemplateParam>
   </file>
 </files>
