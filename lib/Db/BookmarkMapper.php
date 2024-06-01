@@ -470,7 +470,7 @@ class BookmarkMapper extends QBMapper {
 		if ($params->getFolder() !== null) {
 			if ($params->getRecursive()) {
 				$childFolders = \OC::$server->get(TreeMapper::class)->findByAncestorFolder(TreeMapper::TYPE_FOLDER, $params->getFolder());
-				$ids = array_map(fn (Folder $folder) => $folder->getId(), $childFolders);
+				$ids = [...array_map(fn (Folder $folder) => $folder->getId(), $childFolders), $params->getFolder()];
 				$qb->andWhere($qb->expr()->in('tree.parent_folder', $qb->createPositionalParameter($ids, IQueryBuilder::PARAM_INT_ARRAY)));
 			} else {
 				$qb->andWhere($qb->expr()->eq('tree.parent_folder', $qb->createPositionalParameter($params->getFolder(), IQueryBuilder::PARAM_INT)));
