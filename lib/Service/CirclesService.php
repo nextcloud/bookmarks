@@ -10,10 +10,6 @@ declare(strict_types=1);
 
 namespace OCA\Bookmarks\Service;
 
-use OCA\Circles\CirclesManager;
-use OCA\Circles\Model\Circle;
-use OCA\Circles\Model\Member;
-use OCA\Circles\Model\Probes\CircleProbe;
 use OCP\App\IAppManager;
 use OCP\Server;
 use Throwable;
@@ -23,6 +19,8 @@ use Throwable;
  * having the app disabled is properly handled
  */
 class CirclesService {
+	public const TYPE = 1;
+	public const LEVEL_MEMBER = 1;
 	private bool $circlesEnabled;
 
 	private $userCircleCache = [];
@@ -35,7 +33,7 @@ class CirclesService {
 		return $this->circlesEnabled;
 	}
 
-	public function getCircle(string $circleId): ?Circle {
+	public function getCircle(string $circleId) {
 		if (!$this->circlesEnabled) {
 			return null;
 		}
@@ -43,7 +41,7 @@ class CirclesService {
 		try {
 
 			// Enforce current user condition since we always want the full list of members
-			$circlesManager = Server::get(CirclesManager::class);
+			$circlesManager = Server::get('OCA\Circles\CirclesManager');
 			$circlesManager->startSuperSession();
 			return $circlesManager->getCircle($circleId);
 		} catch (Throwable $e) {
@@ -61,12 +59,12 @@ class CirclesService {
 		}
 
 		try {
-			$circlesManager = Server::get(CirclesManager::class);
-			$federatedUser = $circlesManager->getFederatedUser($userId, Member::TYPE_USER);
+			$circlesManager = Server::get('OCA\Circles\CirclesManager');
+			$federatedUser = $circlesManager->getFederatedUser($userId, self::TYPE);
 			$circlesManager->startSession($federatedUser);
 			$circle = $circlesManager->getCircle($circleId);
 			$member = $circle->getInitiator();
-			$isUserInCircle = $member !== null && $member->getLevel() >= Member::LEVEL_MEMBER;
+			$isUserInCircle = $member !== null && $member->getLevel() >= self::LEVEL_MEMBER;
 
 			if (!isset($this->userCircleCache[$circleId])) {
 				$this->userCircleCache[$circleId] = [];
@@ -89,12 +87,13 @@ class CirclesService {
 		}
 
 		try {
-			$circlesManager = Server::get(CirclesManager::class);
-			$federatedUser = $circlesManager->getFederatedUser($userId, Member::TYPE_USER);
+			$circlesManager = Server::get('OCA\Circles\CirclesManager');
+			$federatedUser = $circlesManager->getFederatedUser($userId, self::TYPE);
 			$circlesManager->startSession($federatedUser);
-			$probe = new CircleProbe();
+			$circleProbe = 'OCA\Circles\Model\Probes\CircleProbe';
+			$probe = new $circleProbe();
 			$probe->mustBeMember();
-			return array_map(function (Circle $circle) {
+			return array_map(function ($circle) {
 				return $circle->getSingleId();
 			}, $circlesManager->getCircles($probe));
 		} catch (Throwable $e) {

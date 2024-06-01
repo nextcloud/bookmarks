@@ -24,9 +24,6 @@ use OCA\Bookmarks\Middleware\ExceptionMiddleware;
 use OCA\Bookmarks\Reference\BookmarkReferenceProvider;
 use OCA\Bookmarks\Search\Provider;
 use OCA\Bookmarks\Service\TreeCacheManager;
-use OCA\Circles\Events\CircleDestroyedEvent;
-use OCA\Circles\Events\CircleMemberAddedEvent;
-use OCA\Circles\Events\CircleMemberRemovedEvent;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -93,11 +90,9 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(UserAddedEvent::class, UsersGroupsCirclesListener::class);
 		$context->registerEventListener(UserRemovedEvent::class, UsersGroupsCirclesListener::class);
 		$context->registerEventListener(BeforeGroupDeletedEvent::class, UsersGroupsCirclesListener::class);
-		if (class_exists('\OCA\Circles\Model\Circle')) {
-			$context->registerEventListener(CircleMemberAddedEvent::class, UsersGroupsCirclesListener::class);
-			$context->registerEventListener(CircleMemberRemovedEvent::class, UsersGroupsCirclesListener::class);
-			$context->registerEventListener(CircleDestroyedEvent::class, UsersGroupsCirclesListener::class);
-		}
+		$context->registerEventListener('\OCA\Circles\Events\CircleMemberAddedEvent', UsersGroupsCirclesListener::class);
+		$context->registerEventListener('\OCA\Circles\Events\CircleMemberRemovedEvent', UsersGroupsCirclesListener::class);
+		$context->registerEventListener('\OCA\Circles\Events\CircleDestroyedEvent', UsersGroupsCirclesListener::class);
 
 		$context->registerEventListener(BeforeTemplateRenderedEvent::class, BeforeTemplateRenderedListener::class);
 
