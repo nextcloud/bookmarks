@@ -47,7 +47,6 @@ OC.L10N.register(
     "Copy link" : "إنسخ الرابط",
     "Move" : "نقل",
     "Add to folders" : "أضِف إلى المجلدت",
-    "Delete" : "حذف ",
     "Do you really want to delete this bookmark?" : "هل ترغب حقاً في حذف الإشارة المرجعية؟",
     "Link copied to clipboard" : "تمّ نسخ الرابط إلى الحافظة",
     "Content pending" : "المحتوى مُعلّق pending",
@@ -105,8 +104,6 @@ OC.L10N.register(
     "Shared by {user}" : "تمتّ مشاركتها من قِبَل {user}",
     "Rename folder" : "تغيير تسمية المجلد",
     "Move folder" : "أنقُل المُجلّد",
-    "Delete folder" : "حذف المجلد",
-    "Do you really want to delete this folder?" : "هل ترغب حقّاً في حذف هذا المُجلّد؟",
     "Choose folder" : "إختَر مُجلّداً",
     "Submit" : "إرسال ",
     "Cancel" : "إلغاء",
@@ -126,6 +123,7 @@ OC.L10N.register(
     "Broken links" : "الروابط المقطوعة",
     "New tag" : "سِمة tag جديدة",
     "Search tags" : "البحث عن السِّمَات tags",
+    "Delete" : "حذف ",
     "Untagged" : "بدون سِمة",
     "{used} bookmarks of {available} available" : "{used} إشارة مرجعية أُستُخدِمت من أصل {available} إشارة متاحة",
     "Settings" : "الإعدادات",
@@ -157,6 +155,7 @@ OC.L10N.register(
     "Bookmarklet" : "بريمج الإشارة المرجعية \"Bookmarklet\"",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage." : "إسحب هذه إلى قسم الإشارات المرجعية في متصفحك للتأشير على صفحة الوب.",
     "Add to {instanceName}" : "أضِف إلى {instanceName}",
+    "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "عملي في هذا التطبيق \"الإشارات المرجعية\" Bookmarks  يتم دعمه من خلال نموذج الاشتراك الطوعي. إذا كنت تعتقد أن ما أقوم به يستحق العناء، سأكون سعيداً إذا ساهمت في دعم عملي. كذلك، يُرجى تقييم التطبيق على متجر تطبيقات نكست كلاود. و شكراً 💙",
     "Archive path" : "مسار الأرشيف",
     "Backup path" : "مسار النسخ الاحتياطي",
     "Please select \"Add to home screen\" in your browser menu" : "الرجاء تحديد \"إضافة إلى الشاشة الرئيسية\" Add to home screen في قائمة المتصفح",
@@ -216,8 +215,6 @@ OC.L10N.register(
     "Save" : "حفظ",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "الوصول إلى الشبكة معطل بشكل تلقائي. إنتقل إلى إعدادات المشرف في تطبيق الإشارات المرجعية للسماح بجلب المعاينات previews و الأيقونات favicons.",
     "What's new?" : "مالجديد؟",
-    "Support this project?" : "هل ستدعم هذا المشروع؟",
-    "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "عملي في هذا التطبيق \"الإشارات المرجعية\" Bookmarks  يتم دعمه من خلال نموذج الاشتراك الطوعي. إذا كنت تعتقد أن ما أقوم به يستحق العناء، سأكون سعيداً إذا ساهمت في دعم عملي. كذلك، يُرجى تقييم التطبيق على متجر تطبيقات نكست كلاود. و شكراً 💙",
     "What" : "ماذا",
     "Failed to count unavailable bookmarks" : "تعذّر حصر الإشارات المرجعية غير المتاحة",
     "Failed to count archived bookmarks" : "تعذّر حصر الإشارات المرجعية المؤرشفة",

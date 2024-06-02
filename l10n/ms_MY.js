@@ -3,12 +3,12 @@ OC.L10N.register(
     {
     "Rename" : "Namakan",
     "Move" : "Move",
-    "Delete" : "Padam",
     "New" : "Baru",
     "Search" : "Search",
     "Cancel" : "Batal",
     "Shared with you" : "Shared with you",
     "Files" : "Fail",
+    "Delete" : "Padam",
     "Settings" : "Tetapan",
     "Title" : "Judul",
     "Link" : "Link",
