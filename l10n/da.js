@@ -141,6 +141,7 @@ OC.L10N.register(
     "Bookmarklet" : "Bookmarklet",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage." : "Træk dette til dine browserbogmærker, og klik på det for hurtigt at bogmærke en webside.",
     "Add to {instanceName}" : "Tilføj til {instanceName}",
+    "Need help?" : "Brug for hjælp?",
     "Archive path" : "Arkivsti",
     "Backup path" : "Backup sti",
     "Please select \"Add to home screen\" in your browser menu" : "Vælg venligst \"Tilføj til startskærmen\" i din browsermenu",

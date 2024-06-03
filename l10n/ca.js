@@ -142,6 +142,7 @@ OC.L10N.register(
     "Bookmarklet" : "Miniaplicació d'adreces d'interès",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage." : "Arrossegueu-lo a les adreces d'interès del navegador i feu-hi clic per afegir ràpidament una pàgina web a les adreces d'interès.",
     "Add to {instanceName}" : "Afegeix a {instanceName}",
+    "Need help?" : "Necessiteu ajuda?",
     "Archive path" : "Camí de l'arxiu",
     "Backup path" : "Camí de la còpia de seguretat",
     "Please select \"Add to home screen\" in your browser menu" : "Seleccioneu «Afegeix a la pantalla d'inici» en el menú del vostre navegador",

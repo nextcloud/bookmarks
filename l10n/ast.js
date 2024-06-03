@@ -22,6 +22,7 @@ OC.L10N.register(
     "Delete" : "Desaniciar",
     "Settings" : "Configuración",
     "Bookmarklet" : "Bookmarklet",
+    "Need help?" : "¿Precises ayuda?",
     "Title" : "Tñitulu",
     "Link" : "Enllaz",
     "Tags" : "Etiquetes",

@@ -155,6 +155,7 @@ OC.L10N.register(
     "Bookmarklet" : "Bookmarklet",
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage." : "Ziehe dies in deine Browser-Lesezeichen und klicke darauf, um schnell ein Lesezeichen für eine Webseite zu setzen",
     "Add to {instanceName}" : "Hinzufügen zu {instanceName}",
+    "Need help?" : "Benötigst du Hilfe?",
     "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "Meine Arbeit an dieser Bookmarks-App wird durch ein freiwilliges Abonnementmodell finanziert. Wenn du meinst, dass meine Arbeit lohnenswert ist, unterstütze mich bitte. Bitte denke auch daran, die App im Nextcloud-App-Store zu bewerten. Vielen Dank 💙",
     "Archive path" : "Archiv-Pfad",
     "Backup path" : "Pfad für Sicherungekopien",

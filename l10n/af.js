@@ -23,6 +23,7 @@ OC.L10N.register(
     "Delete" : "Skrap",
     "Settings" : "Instellings",
     "Bookmarklet" : "Boekmerkie",
+    "Need help?" : "Hulp nodig?",
     "Title" : "Titel",
     "Link" : "Skakel",
     "Tags" : "Merkers",

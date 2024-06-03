@@ -18,6 +18,7 @@ OC.L10N.register(
     "Broken links" : "Liammoù toret",
     "Delete" : "Dilemel",
     "Settings" : "Arventennoù",
+    "Need help?" : "Sikour o po ?",
     "Title" : "Titl",
     "Link" : "Liamm",
     "Tags" : "Klavioù",
