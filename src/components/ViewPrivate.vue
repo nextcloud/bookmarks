@@ -90,7 +90,7 @@ export default {
 	watch: {
 		$route: 'onRoute',
 		async showFolderOverview(value) {
-			if (!this.initialLoad) {
+			if (!this.initialLoad && value) {
 				// hack to make bookmarkslist rerender
 				await this.$store.dispatch(actions.RELOAD_VIEW)
 			}
@@ -139,6 +139,9 @@ export default {
 		async onRoute() {
 			const route = this.$route
 			this.$store.commit(mutations.RESET_SELECTION)
+			if (typeof this.$store.state.loading.bookmarks === 'function') {
+				this.$store.state.loading.bookmarks()
+			}
 			switch (route.name) {
 			case privateRoutes.HOME:
 				this.$store.dispatch(actions.FILTER_BY_FOLDER, { folder: '-1' })
@@ -159,13 +162,14 @@ export default {
 				this.$store.dispatch(actions.FILTER_BY_DUPLICATED)
 				break
 			case privateRoutes.TRASHBIN:
+				this.$store.commit(mutations.FETCH_END, 'bookmarks')
 				await this.$store.dispatch(actions.LOAD_DELETED_BOOKMARKS)
 				await this.$store.dispatch(actions.LOAD_DELETED_FOLDERS)
 				break
 			case privateRoutes.SHARED_FOLDERS:
-				await this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
 				this.$store.commit(mutations.REMOVE_ALL_BOOKMARKS)
 				this.$store.commit(mutations.FETCH_END, 'bookmarks')
+				await this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
 				break
 			case privateRoutes.BOOKMARK:
 				await this.$store.dispatch(actions.LOAD_BOOKMARK, route.params.bookmark)
