@@ -8,7 +8,7 @@
 	<NcPopover popup-role="dialog" :shown="popoverShown">
 		<template #trigger>
 			<div @mouseenter="(![routes.FOLDER, routes.HOME].includes($route.name)) && (popoverShown = true)" @mouseleave="popoverShown = false">
-				<Item :title="bookmark.title || url"
+				<Item :title="bookmark.title"
 					:tags="bookmark.tags"
 					:rename-placeholder="t('bookmarks', 'Enter new title')"
 					:select-label="t('bookmarks', 'Select bookmark')"
@@ -33,8 +33,8 @@
 					</template>
 					<template #title>
 						<div class="bookmark__title">
-							<h3 :title="bookmark.title">
-								{{ bookmark.title }}
+							<h3 :title="displayTitle">
+								{{ displayTitle }}
 							</h3>
 							<span v-if="bookmark.description"
 								v-tooltip="bookmark.description"
@@ -187,6 +187,9 @@ export default {
 		},
 		url() {
 			return this.bookmark.url
+		},
+		displayTitle() {
+			return this.bookmark.title || this.bookmark.url
 		},
 		isOpen() {
 			return this.$store.state.sidebar
