@@ -100,6 +100,11 @@ export default {
 	width: auto;
 }
 
+.bookmark-content .empty-content {
+	margin: 150px auto;
+	width: 600px;
+}
+
 .bookmark-content .content iframe {
 	height: 100%;
 	width: 100%;

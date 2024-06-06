@@ -7,7 +7,7 @@
 <template>
 	<NcAppSidebar v-if="isActive"
 		class="sidebar"
-		:name="bookmark.title"
+		:name="bookmark.title || t('bookmarks', '(Empty title)')"
 		:name-editable="editingTitle"
 		:name-placeholder="t('bookmarks', 'Title')"
 		:subtitle="addedDate"
@@ -37,7 +37,7 @@
 			<template #icon>
 				<InformationVariantIcon :size="20" />
 			</template>
-			<div>
+			<div class="sidebar">
 				<div v-if="!editingTarget" class="details__line">
 					<OpenInNewIcon :size="20" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
 					<a class="details__url" :href="bookmark.target === bookmark.url ? bookmark.target : 'javascript:void(0)'">{{ bookmark.target }}</a>
@@ -305,6 +305,7 @@ export default {
 
 .sidebar .details__line > * {
 	flex-grow: 0;
+	margin-right: 10px;
 }
 
 .sidebar .details__line > :nth-child(2) {
