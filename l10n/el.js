@@ -115,6 +115,7 @@ OC.L10N.register(
     "Install on home screen" : "Εγκατάσταση στην αρχική οθόνη",
     "Bookmarklet" : "Εφαρμογίδιο Σελιδοδεικτών",
     "Add to {instanceName}" : "Προσθήκη στο {instanceName}",
+    "Need help?" : "Θέλετε βοήθεια;",
     "Archive path" : "Διαδρομή φακέλου αρχειοθέτησης",
     "Please select \"Add to home screen\" in your browser menu" : "Παρακαλούμε επιλέξτε «Προσθήκη στην αρχική οθόνη» από το μενού του περιηγητή",
     "Title" : "Τίτλος",

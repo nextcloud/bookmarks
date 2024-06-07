@@ -23,6 +23,7 @@ OC.L10N.register(
     "Delete" : "Borrar",
     "Settings" : "Ajustes",
     "Bookmarklet" : "Marcadores",
+    "Need help?" : "¿Necesitas ayuda?",
     "Title" : "Título",
     "Link" : "Liga",
     "Tags" : "Etiquetas",
