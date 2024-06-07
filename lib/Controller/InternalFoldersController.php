@@ -65,12 +65,13 @@ class InternalFoldersController extends ApiController {
 
 	/**
 	 * @param int $folderId
+	 * @param bool $hardDelete
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function deleteFolder(int $folderId): JSONResponse {
-		return $this->controller->deleteFolder($folderId);
+	public function deleteFolder(int $folderId, bool $hardDelete = false): JSONResponse {
+		return $this->controller->deleteFolder($folderId, $hardDelete);
 	}
 
 	/**
@@ -97,12 +98,13 @@ class InternalFoldersController extends ApiController {
 	/**
 	 * @param int $folderId
 	 * @param int $bookmarkId
+	 * @param $hardDelete
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 */
-	public function removeFromFolder($folderId, $bookmarkId): JSONResponse {
-		return $this->controller->removeFromFolder($folderId, $bookmarkId);
+	public function removeFromFolder($folderId, $bookmarkId, bool $hardDelete = false): JSONResponse {
+		return $this->controller->removeFromFolder($folderId, $bookmarkId, $hardDelete);
 	}
 
 	/**

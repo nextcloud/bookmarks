@@ -475,7 +475,7 @@ export default {
 		if (folder) {
 			try {
 				const response = await axios.delete(
-					url(state, `/folder/${folder}/bookmarks/${id}` + (hard ? '?hardDelete' : ''))
+					url(state, `/folder/${folder}/bookmarks/${id}` + (hard ? '?hardDelete=true' : ''))
 				)
 				if (response.data.status !== 'success') {
 					throw new Error(response.data)
@@ -818,7 +818,7 @@ export default {
 		{ id, avoidReload, hard }
 	) {
 		try {
-			const response = await axios.delete(url(state, `/folder/${id}` + (hard ? '?hardDelete' : '')))
+			const response = await axios.delete(url(state, `/folder/${id}` + (hard ? '?hardDelete=true' : '')))
 			const {
 				data: { status },
 			} = response
