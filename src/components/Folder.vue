@@ -199,7 +199,7 @@ export default {
 			if (hard && !confirm(t('bookmarks', 'Do you really want to permanently delete this folder?'))) {
 				return
 			}
-			this.$store.dispatch(actions.DELETE_FOLDER, { id: this.folder.id })
+			this.$store.dispatch(actions.DELETE_FOLDER, { id: this.folder.id, hard })
 		},
 		onUndelete() {
 			this.$store.dispatch(actions.UNDELETE_FOLDER, { id: this.folder.id })

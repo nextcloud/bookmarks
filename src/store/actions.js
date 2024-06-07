@@ -832,6 +832,7 @@ export default {
 					parentFolder
 				)
 				await dispatch(actions.LOAD_FOLDERS)
+				await dispatch(actions.LOAD_DELETED_FOLDERS)
 			}
 		} catch (err) {
 			console.error(err)
