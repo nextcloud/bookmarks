@@ -216,6 +216,7 @@ export default {
 				this.$store.dispatch(actions.COUNT_UNAVAILABLE),
 				this.$store.dispatch(actions.COUNT_ARCHIVED),
 				this.$store.dispatch(actions.COUNT_DUPLICATED),
+				this.$store.dispatch(actions.COUNT_ALL_CLICKS),
 			])
 		},
 

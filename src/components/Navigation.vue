@@ -155,7 +155,7 @@ export default {
 
 	filters: {
 		largeNumbers(num) {
-			return num >= 1000 ? (Math.round(num / 100) / 10) + 'K' : num
+			return num > 10000 ? Math.round(num / 1000) + 'K' :  num >= 1000 ? (Math.round(num / 100) / 10) + 'K' : num
 		},
 	},
 	data() {

@@ -36,6 +36,9 @@
 						<TagLine :tags="tags" />
 					</slot>
 				</div>
+				<div class="item__rating">
+					<slot name="rating" />
+				</div>
 				<div v-if="editable && !selected"
 					ref="actions"
 					class="item__NcActions"
@@ -254,6 +257,22 @@ export default {
 
 .item__icon {
 	position: relative;
+}
+
+.item--gridview .item__rating {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: var(--color-main-background);
+	border-radius: var(--border-radius-large);
+}
+
+.item__rating .material-design-icon {
+	display: inline-block;
+}
+
+.item--gridview .item__rating .material-design-icon {
+	display: flex;
 }
 
 .item--gridview .item__icon {

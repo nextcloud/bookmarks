@@ -276,4 +276,8 @@ class InternalBookmarkController extends ApiController {
 	public function getDeletedBookmarks(): DataResponse {
 		return $this->publicController->getDeletedBookmarks();
 	}
+
+	public function countAllClicks(): DataResponse {
+		return $this->publicController->countAllClicks();
+	}
 }

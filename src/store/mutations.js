@@ -26,6 +26,7 @@ export const mutations = {
 	SET_UNAVAILABLE_COUNT: 'SET_UNAVAILABLE_COUNT',
 	SET_ARCHIVED_COUNT: 'SET_ARCHIVED_COUNT',
 	SET_DUPLICATED_COUNT: 'SET_DUPLICATED_COUNT',
+	SET_ALL_CLICKS_COUNT: 'SET_ALL_CLICKS_COUNT',
 	ADD_TAG: 'ADD_TAG',
 	SET_TAGS: 'SET_TAGS',
 	RENAME_TAG: 'RENAME_TAG',
@@ -51,6 +52,7 @@ export const mutations = {
 	REMOVE_PUBLIC_TOKEN: 'REMOVE_PUBLIC_TOKEN',
 	SET_FOLDER_CHILDREN_ORDER: 'SET_FOLDER_CHILDREN_ORDER',
 	SET_DELETED_FOLDERS: 'SET_DELETED_FOLDERS',
+	CLICK_BOOKMARK: 'CLICK_BOOKMARK',
 }
 export default {
 	[mutations.SET_AUTH_TOKEN](state, authToken) {
@@ -172,6 +174,12 @@ export default {
 			Vue.set(state.bookmarksById, bookmark.id, bookmark)
 		}
 	},
+	[mutations.CLICK_BOOKMARK](state, bookmark) {
+		const existingBookmark = state.bookmarksById[bookmark.id]
+		if (existingBookmark) {
+			existingBookmark.clickcount += 1
+		}
+	},
 	[mutations.REMOVE_BOOKMARK](state, id) {
 		const index = state.bookmarks.findIndex(bookmark => bookmark.id === id)
 		if (index !== -1) {
@@ -208,6 +216,9 @@ export default {
 	},
 	[mutations.SET_DUPLICATED_COUNT](state, count) {
 		state.duplicatedCount = count
+	},
+	[mutations.SET_ALL_CLICKS_COUNT](state, count) {
+		state.allClicksCount = count
 	},
 
 	[mutations.SET_SIDEBAR](state, sidebar) {

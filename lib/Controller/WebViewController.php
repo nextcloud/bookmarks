@@ -89,6 +89,7 @@ class WebViewController extends Controller {
 		$this->initialState->provideInitialState($this->appName, 'archivedCount', $this->bookmarkController->countDuplicated()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'unavailableCount', $this->bookmarkController->countUnavailable()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'allCount', $this->bookmarkController->countBookmarks(-1)->getData()['item']);
+		$this->initialState->provideInitialState($this->appName, 'allClicksCount', $this->bookmarkController->countAllClicks()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'tags', $this->tagsController->fullTags(true)->getData());
 
 		$settings = $this->userSettingsService->toArray();

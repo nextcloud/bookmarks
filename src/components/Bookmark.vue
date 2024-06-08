@@ -42,6 +42,20 @@
 								{{ bookmark.description }}</span>
 						</div>
 					</template>
+					<template #rating>
+						<template v-if="hotness === 0">
+							<div :title="t('bookmarks', 'You have never clicked this link')"><HotnessZero :size="20" /></div>
+						</template>
+						<template v-if="hotness === 1">
+							<div :title="t('bookmarks', 'You have clicked this link {count} times', {count: largeNumbers(bookmark.clickcount)})"><Hotness :size="20" /></div>
+						</template>
+						<template v-if="hotness === 2">
+							<div :title="t('bookmarks', 'You have clicked this link {count} times', {count: largeNumbers(bookmark.clickcount)})"><Hotness :size="20" /><Hotness :size="20" /></div>
+						</template>
+						<template v-if="hotness === 3">
+							<div :title="t('bookmarks', 'You have clicked this link {count} times', {count: largeNumbers(bookmark.clickcount)})"><Hotness :size="20" /><Hotness :size="20" /><Hotness :size="20" /></div>
+						</template>
+					</template>
 					<template #actions>
 						<template v-if="!isTrashbin">
 							<NcActionButton :close-after-click="true"
@@ -116,7 +130,7 @@
 <script>
 import Item from './Item.vue'
 import { NcActionButton, NcActionCheckbox, NcPopover } from '@nextcloud/vue'
-import { FolderIcon, UndeleteIcon, DeleteForeverIcon, FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon, BookmarksIcon } from './Icons.js'
+import { Hotness, HotnessZero, FolderIcon, UndeleteIcon, DeleteForeverIcon, FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon, BookmarksIcon } from './Icons.js'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/index.js'
@@ -139,6 +153,8 @@ export default {
 		UndeleteIcon,
 		BookmarksIcon,
 		NcPopover,
+		Hotness,
+		HotnessZero,
 	},
 	props: {
 		bookmark: {
@@ -241,12 +257,19 @@ export default {
 		isTrashbin() {
 			return (this.folder && this.folder.softDeleted) || this.$route.name === this.routes.TRASHBIN
 		},
+		hotness() {
+			const totalClicks = this.$store.state.allClicksCount > 100 ? this.$store.state.allClicksCount : 100
+			return this.bookmark.clickcount <= 0 ? 0 : this.bookmark.clickcount < totalClicks * 0.25 ? 1 : this.bookmark.clickcount < totalClicks * 0.5 ? 2 : 3
+		},
 	},
 	mounted() {
 		this.fetchBackgroundImage()
 		this.fetchIcon()
 	},
 	methods: {
+		largeNumbers(num) {
+			return num > 10000 ? Math.round(num / 1000) + 'K' : num >= 1000 ? (Math.round(num / 100) / 10) + 'K' : num
+		},
 		getFolderPath(id) {
 			const path = this.$store.getters.getFolder(id).reverse().map(folder => folder.title)
 			return '/' + path.join('/')

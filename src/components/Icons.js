@@ -63,6 +63,8 @@ import ApplicationImportIcon from 'vue-material-design-icons/ApplicationImport.v
 import CircleIcon from 'vue-material-design-icons/DotsCircle.vue'
 import TrashbinIcon from 'vue-material-design-icons/TrashCanOutline.vue'
 import UndeleteIcon from 'vue-material-design-icons/Restore.vue'
+import HotnessZero from 'vue-material-design-icons/Minus.vue'
+import Hotness from 'vue-material-design-icons/Fire.vue'
 import BookmarksIcon from './icons/BookmarksIcon.vue'
 
 export {
@@ -125,5 +127,7 @@ export {
 	CircleIcon,
 	TrashbinIcon,
 	UndeleteIcon,
+	HotnessZero,
+	Hotness,
 	BookmarksIcon,
 }

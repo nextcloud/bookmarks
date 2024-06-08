@@ -67,6 +67,7 @@ export default {
 		unavailableCount: null,
 		archivedCount: null,
 		duplicatedCount: null,
+		allClicksCount: 0,
 		selection: {
 			folders: [],
 			bookmarks: [],

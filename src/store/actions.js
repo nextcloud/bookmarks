@@ -21,6 +21,7 @@ export const actions = {
 	COUNT_UNAVAILABLE: 'COUNT_UNAVAILABLE',
 	COUNT_ARCHIVED: 'COUNT_ARCHIVED',
 	COUNT_DUPLICATED: 'COUNT_DUPLICATED',
+	COUNT_ALL_CLICKS: 'COUNT_ALL_CLICKS',
 
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
@@ -192,6 +193,17 @@ export default {
 			)
 			throw err
 		}
+	},
+	async [actions.COUNT_ALL_CLICKS]({ commit, dispatch, state }) {
+		try {
+			const count = loadState('bookmarks', 'allClicksCount')
+			return commit(mutations.SET_ALL_CLICKS_COUNT, count)
+		} catch (e) {
+			console.warn(
+				'Could not load initial duplicated bookmarks count state, continuing with HTTP request'
+			)
+		}
+
 	},
 	async [actions.COUNT_BOOKMARKS]({ commit, dispatch, state }, folderId) {
 		if (String(folderId) === String(-1) && typeof state.countsByFolder[folderId] === 'undefined') {
@@ -450,6 +462,7 @@ export default {
 		}
 	},
 	async [actions.CLICK_BOOKMARK]({ commit, dispatch, state }, bookmark) {
+		commit(mutations.CLICK_BOOKMARK, bookmark)
 		commit(mutations.FETCH_START, { type: 'clickBookmark' })
 		try {
 			const response = await axios.post(url(state, '/bookmark/click'), {
