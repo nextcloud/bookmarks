@@ -795,7 +795,7 @@ export default {
 			commit(mutations.FETCH_END, 'folders')
 			commit(
 				mutations.SET_ERROR,
-				AppGlobal.methods.t('bookmarks', 'Failed to load folders'),
+				AppGlobal.methods.t('bookmarks', 'Failed to load deleted folders'),
 			)
 			throw err
 		}
