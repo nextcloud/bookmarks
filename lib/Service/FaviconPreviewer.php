@@ -95,8 +95,6 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 		$url = $bookmark->getUrl();
 		$site = $this->scrapeUrl($url);
 
-		var_dump($site);
-
 		if (isset($site['image']['favicon'])) {
 			$image = $this->fetchImage($site['image']['favicon']);
 			if ($image !== null) {
