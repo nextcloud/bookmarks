@@ -35,20 +35,20 @@ export default {
 					return n('bookmarks',
 						'Moving %n folder and some bookmarks',
 						'Moving %n folders and some bookmarks',
-						this.selection.folders.length
+						this.selection.folders.length,
 					)
 				} else {
 					return n('bookmarks',
 						'Moving %n folder',
 						'Moving %n folders',
-						this.selection.folders.length
+						this.selection.folders.length,
 					)
 				}
 			} else {
 				return n('bookmarks',
 					'Moving %n bookmark',
 					'Moving %n bookmarks',
-					this.selection.bookmarks.length
+					this.selection.bookmarks.length,
 				)
 			}
 		},

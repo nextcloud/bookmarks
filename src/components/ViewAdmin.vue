@@ -169,7 +169,7 @@ export default {
 					OCP.AppConfig.setValue('bookmarks', setting, value, {
 						success: resolve,
 						error: reject,
-					})
+					}),
 				)
 			} catch (e) {
 				this.error = this.t('bookmarks', 'Failed to save settings')
@@ -183,7 +183,7 @@ export default {
 					OCP.AppConfig.getValue('bookmarks', setting, null, {
 						success: resolve,
 						error: reject,
-					})
+					}),
 				)
 				if (resDocument.querySelector('status').textContent !== 'ok') {
 					this.error = this.t('bookmarks', 'Failed to load settings')

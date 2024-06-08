@@ -232,7 +232,7 @@ export default {
 				window.location.origin
 					+ generateUrl(
 						'/apps/bookmarks/public/rest/v2/bookmark?'
-							+ params.toString()
+							+ params.toString(),
 					)
 			)
 		},
@@ -265,13 +265,13 @@ export default {
 		onAddFolder() {
 			this.$store.commit(
 				mutations.DISPLAY_NEW_FOLDER,
-				!this.$store.state.displayNewFolder
+				!this.$store.state.displayNewFolder,
 			)
 		},
 		onAddBookmark() {
 			this.$store.commit(
 				mutations.DISPLAY_NEW_BOOKMARK,
-				!this.$store.state.displayNewBookmark
+				!this.$store.state.displayNewBookmark,
 			)
 		},
 

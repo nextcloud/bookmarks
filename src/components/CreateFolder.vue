@@ -42,7 +42,7 @@ export default {
 		cancel() {
 			this.$store.commit(
 				mutations.DISPLAY_NEW_FOLDER,
-				false
+				false,
 			)
 		},
 	},

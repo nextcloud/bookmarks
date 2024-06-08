@@ -44,16 +44,24 @@
 					</template>
 					<template #rating>
 						<template v-if="hotness === 0">
-							<div :title="t('bookmarks', 'You have never clicked this link')"><HotnessZero :size="20" /></div>
+							<div :title="t('bookmarks', 'You have never clicked this link')">
+								<HotnessZero :size="20" />
+							</div>
 						</template>
 						<template v-if="hotness === 1">
-							<div :title="t('bookmarks', 'You have clicked this link {count} times', {count: largeNumbers(bookmark.clickcount)})"><Hotness :size="20" /></div>
+							<div :title="t('bookmarks', 'You have clicked this link {count} times', {count: largeNumbers(bookmark.clickcount)})">
+								<Hotness :size="20" />
+							</div>
 						</template>
 						<template v-if="hotness === 2">
-							<div :title="t('bookmarks', 'You have clicked this link {count} times', {count: largeNumbers(bookmark.clickcount)})"><Hotness :size="20" /><Hotness :size="20" /></div>
+							<div :title="t('bookmarks', 'You have clicked this link {count} times', {count: largeNumbers(bookmark.clickcount)})">
+								<Hotness :size="20" /><Hotness :size="20" />
+							</div>
 						</template>
 						<template v-if="hotness === 3">
-							<div :title="t('bookmarks', 'You have clicked this link {count} times', {count: largeNumbers(bookmark.clickcount)})"><Hotness :size="20" /><Hotness :size="20" /><Hotness :size="20" /></div>
+							<div :title="t('bookmarks', 'You have clicked this link {count} times', {count: largeNumbers(bookmark.clickcount)})">
+								<Hotness :size="20" /><Hotness :size="20" /><Hotness :size="20" />
+							</div>
 						</template>
 					</template>
 					<template #actions>
@@ -222,7 +230,7 @@ export default {
 		},
 		permissions() {
 			return this.$store.getters.getPermissionsForBookmark(
-				this.bookmark.id
+				this.bookmark.id,
 			)
 		},
 		isDraggable() {
@@ -237,7 +245,7 @@ export default {
 		selectable() {
 			return Boolean(
 				(this.$store.state.selection.bookmarks.length
-					|| this.$store.state.selection.folders.length) && !this.isTrashbin
+					|| this.$store.state.selection.folders.length) && !this.isTrashbin,
 			)
 		},
 		selected() {
@@ -284,8 +292,8 @@ export default {
 				hard && !confirm(
 					t(
 						'bookmarks',
-						'Do you really want to delete this bookmark?'
-					)
+						'Do you really want to delete this bookmark?',
+					),
 				)
 			) {
 				return
@@ -352,12 +360,12 @@ export default {
 			if (!this.selected) {
 				this.$store.commit(
 					mutations.ADD_SELECTION_BOOKMARK,
-					this.bookmark
+					this.bookmark,
 				)
 			} else {
 				this.$store.commit(
 					mutations.REMOVE_SELECTION_BOOKMARK,
-					this.bookmark
+					this.bookmark,
 				)
 			}
 		},

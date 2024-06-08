@@ -201,7 +201,7 @@ export default {
 								folder: this.folder.id,
 								page: -1,
 								token: this.token,
-							})
+							}),
 					).toString()
 			)
 		},

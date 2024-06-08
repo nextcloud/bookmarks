@@ -154,7 +154,7 @@ export default {
 		Vue.set(
 			state.selection,
 			'bookmarks',
-			state.selection.bookmarks.filter(s => !(s.id === item.id))
+			state.selection.bookmarks.filter(s => !(s.id === item.id)),
 		)
 	},
 	[mutations.ADD_SELECTION_FOLDER](state, item) {
@@ -164,7 +164,7 @@ export default {
 		Vue.set(
 			state.selection,
 			'folders',
-			state.selection.folders.filter(s => !(s.id === item.id))
+			state.selection.folders.filter(s => !(s.id === item.id)),
 		)
 	},
 

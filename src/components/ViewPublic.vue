@@ -81,7 +81,7 @@ export default {
 			case this.routes.TAGS:
 				return this.$store.dispatch(
 					actions.FILTER_BY_TAGS,
-					route.params.tags.split(',')
+					route.params.tags.split(','),
 				)
 			case this.routes.SEARCH:
 				return this.$store.dispatch(actions.FILTER_BY_SEARCH, { search: route.params.search, folder: route.params.folder || -1 })

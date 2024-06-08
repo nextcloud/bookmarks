@@ -107,7 +107,7 @@ export default {
 		},
 		getSharesOfFolder: state => folderId => {
 			return Object.values(state.sharesById).filter(
-				share => share.folderId === folderId
+				share => share.folderId === folderId,
 			)
 		},
 		getTokenOfFolder: state => folderId => {

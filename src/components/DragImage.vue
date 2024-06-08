@@ -21,7 +21,7 @@ export default {
 			if (this.$store.state.selection.bookmarks.length !== 0 && this.$store.state.selection.folders.length !== 0) {
 				return this.t('bookmarks',
 					'{folders} folders and {bookmarks} bookmarks',
-					{ folders: this.$store.state.selection.folders.length, bookmarks: this.$store.state.selection.bookmarks.length }
+					{ folders: this.$store.state.selection.folders.length, bookmarks: this.$store.state.selection.bookmarks.length },
 				)
 			}
 			if (this.$store.state.selection.bookmarks.length !== 0) {
@@ -31,7 +31,7 @@ export default {
 				return this.n('bookmarks',
 					'%n bookmark',
 					'%n bookmarks',
-					this.$store.state.selection.bookmarks.length
+					this.$store.state.selection.bookmarks.length,
 				)
 			}
 			if (this.$store.state.selection.folders.length !== 0) {
@@ -41,7 +41,7 @@ export default {
 				return this.n('bookmarks',
 					'%n folder',
 					'%n folders',
-					this.$store.state.selection.folders.length
+					this.$store.state.selection.folders.length,
 				)
 			}
 			return ''

@@ -33,7 +33,7 @@ export default {
 			return n('bookmarks',
 				'Adding %n bookmark to new folder',
 				'Adding %n bookmarks to new folder',
-				this.selection.bookmarks.length
+				this.selection.bookmarks.length,
 			)
 		},
 	},

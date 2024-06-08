@@ -102,11 +102,6 @@ export default {
 		this.smallScreen = mediaQuery.matches
 		mediaQuery.addEventListener('change', this.onWindowFormatChange)
 
-	  if (OCA.Search) {
-	    // legacy search pre nc v20
-			this.search = new window.OCA.Search(this.onSearch, this.onResetSearch)
-		}
-
 		// set loading indicator
 		this.$store.commit(mutations.FETCH_START, { type: 'bookmarks' })
 
@@ -184,7 +179,7 @@ export default {
 			case privateRoutes.TAGS:
 				this.$store.dispatch(
 					actions.FILTER_BY_TAGS,
-					route.params.tags.split(',')
+					route.params.tags.split(','),
 				)
 				break
 			case privateRoutes.SEARCH:
@@ -234,7 +229,7 @@ export default {
 				OCP.AppConfig.getValue('bookmarks', setting, null, {
 					success: resolve,
 					error: reject,
-				})
+				}),
 			)
 			if (resDocument.querySelector('status').textContent !== 'ok') {
 				console.error('Failed request', resDocument)

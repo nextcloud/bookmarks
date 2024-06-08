@@ -101,7 +101,7 @@ export default {
 			}
 
 			children = [...children, ...Array(40).fill(0).map(() =>
-				h(ItemSkeleton)
+				h(ItemSkeleton),
 			)]
 		}
 
