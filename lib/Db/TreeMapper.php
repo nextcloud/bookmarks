@@ -957,7 +957,7 @@ class TreeMapper extends QBMapper {
 				}
 			}
 
-			return array_filter(array_values($topmostFolders), fn ($value) => $value !== false);
+			return array_values(array_filter(array_values($topmostFolders), fn ($value) => $value !== false));
 		}
 		if ($type === TreeMapper::TYPE_BOOKMARK) {
 			$params = new QueryParameters();
