@@ -280,4 +280,8 @@ class InternalBookmarkController extends ApiController {
 	public function countAllClicks(): DataResponse {
 		return $this->publicController->countAllClicks();
 	}
+
+	public function countWithClicks(): DataResponse {
+		return $this->publicController->countWithClicks();
+	}
 }

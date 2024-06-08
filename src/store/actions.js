@@ -22,6 +22,7 @@ export const actions = {
 	COUNT_ARCHIVED: 'COUNT_ARCHIVED',
 	COUNT_DUPLICATED: 'COUNT_DUPLICATED',
 	COUNT_ALL_CLICKS: 'COUNT_ALL_CLICKS',
+	COUNT_WITH_CLICKS: 'COUNT_WITH_CLICKS',
 
 	CREATE_BOOKMARK: 'CREATE_BOOKMARK',
 	FIND_BOOKMARK: 'FIND_BOOKMARK',
@@ -200,10 +201,19 @@ export default {
 			return commit(mutations.SET_ALL_CLICKS_COUNT, count)
 		} catch (e) {
 			console.warn(
-				'Could not load initial duplicated bookmarks count state, continuing with HTTP request'
+				'Could not load initial all clicks count state'
 			)
 		}
-
+	},
+	async [actions.COUNT_WITH_CLICKS]({ commit, dispatch, state }) {
+		try {
+			const count = loadState('bookmarks', 'withClicksCount')
+			return commit(mutations.SET_WITH_CLICKS_COUNT, count)
+		} catch (e) {
+			console.warn(
+				'Could not load initial bookmarks with clicks count state'
+			)
+		}
 	},
 	async [actions.COUNT_BOOKMARKS]({ commit, dispatch, state }, folderId) {
 		if (String(folderId) === String(-1) && typeof state.countsByFolder[folderId] === 'undefined') {

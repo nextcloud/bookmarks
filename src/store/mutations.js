@@ -53,6 +53,7 @@ export const mutations = {
 	SET_FOLDER_CHILDREN_ORDER: 'SET_FOLDER_CHILDREN_ORDER',
 	SET_DELETED_FOLDERS: 'SET_DELETED_FOLDERS',
 	CLICK_BOOKMARK: 'CLICK_BOOKMARK',
+	SET_WITH_CLICKS_COUNT: 'SET_WITH_CLICKS_COUNT',
 }
 export default {
 	[mutations.SET_AUTH_TOKEN](state, authToken) {
@@ -219,6 +220,9 @@ export default {
 	},
 	[mutations.SET_ALL_CLICKS_COUNT](state, count) {
 		state.allClicksCount = count
+	},
+	[mutations.SET_WITH_CLICKS_COUNT](state, count) {
+		state.withClicksCount = count
 	},
 
 	[mutations.SET_SIDEBAR](state, sidebar) {

@@ -895,4 +895,17 @@ class BookmarkController extends ApiController {
 			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	public function countWithClicks(): DataResponse {
+		$this->authorizer->setCredentials($this->request);
+		if ($this->authorizer->getUserId() === null) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+		}
+		try {
+			$count = $this->bookmarkMapper->countWithClicks($this->authorizer->getUserId());
+			return new DataResponse(['status' => 'success', 'item' => $count]);
+		} catch (\OCP\DB\Exception $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+	}
 }

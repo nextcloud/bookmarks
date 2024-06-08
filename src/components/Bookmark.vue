@@ -258,8 +258,13 @@ export default {
 			return (this.folder && this.folder.softDeleted) || this.$route.name === this.routes.TRASHBIN
 		},
 		hotness() {
-			const totalClicks = this.$store.state.allClicksCount > 100 ? this.$store.state.allClicksCount : 100
-			return this.bookmark.clickcount <= 0 ? 0 : this.bookmark.clickcount < totalClicks * 0.25 ? 1 : this.bookmark.clickcount < totalClicks * 0.5 ? 2 : 3
+			const avgClickCount = this.$store.state.allClicksCount / this.$store.state.withClicksCount
+			if (this.$store.state.allClicksCount < 100) {
+				const totalClicks = this.$store.state.allClicksCount
+				return this.bookmark.clickcount <= 0 ? 0 : this.bookmark.clickcount < totalClicks * 0.25 ? 1 : this.bookmark.clickcount < totalClicks * 0.5 ? 2 : 3
+			}
+			const avgClicksLog = Math.log10(avgClickCount)
+			return this.bookmark.clickcount <= 0 ? 0 : Math.log10(this.bookmark.clickcount) < avgClicksLog * 0.5 ? 1 : Math.log10(this.bookmark.clickcount) < avgClicksLog * 1.5 ? 2 : 3
 		},
 	},
 	mounted() {
