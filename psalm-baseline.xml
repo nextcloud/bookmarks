@@ -15,11 +15,6 @@
       <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
       <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
     </InvalidArgument>
-    <UndefinedClass>
-      <code><![CDATA[CircleDestroyedEvent]]></code>
-      <code><![CDATA[CircleMemberAddedEvent]]></code>
-      <code><![CDATA[CircleMemberRemovedEvent]]></code>
-    </UndefinedClass>
   </file>
   <file src="lib/AugmentedTemplateResponse.php">
     <MissingTemplateParam>
@@ -30,11 +25,6 @@
     <UndefinedDocblockClass>
       <code><![CDATA[\OC\DB\Exceptions\DbalException]]></code>
     </UndefinedDocblockClass>
-  </file>
-  <file src="lib/Db/Share.php">
-    <UndefinedClass>
-      <code><![CDATA[\OCP\Server::get(CirclesService::class)->getCircle($participant)]]></code>
-    </UndefinedClass>
   </file>
   <file src="lib/Db/TreeMapper.php">
     <InvalidReturnStatement>
@@ -86,8 +76,6 @@
       <code><![CDATA[$event]]></code>
     </MoreSpecificImplementedParamType>
     <UndefinedClass>
-      <code><![CDATA[$circle]]></code>
-      <code><![CDATA[$circle]]></code>
       <code><![CDATA[CircleDestroyedEvent]]></code>
     </UndefinedClass>
     <UndefinedDocblockClass>
@@ -106,15 +94,7 @@
   </file>
   <file src="lib/Service/CirclesService.php">
     <UndefinedClass>
-      <code><![CDATA[?Circle]]></code>
-      <code><![CDATA[Circle]]></code>
-      <code><![CDATA[CircleProbe]]></code>
-      <code><![CDATA[CirclesManager]]></code>
-      <code><![CDATA[CirclesManager]]></code>
-      <code><![CDATA[CirclesManager]]></code>
-      <code><![CDATA[Member]]></code>
-      <code><![CDATA[Member]]></code>
-      <code><![CDATA[Member]]></code>
+      <code><![CDATA[$circleProbe]]></code>
     </UndefinedClass>
   </file>
   <file src="lib/Service/CrawlService.php">
@@ -123,11 +103,6 @@
       <code><![CDATA[$e]]></code>
       <code><![CDATA[Client]]></code>
       <code><![CDATA[NoUserException]]></code>
-    </UndefinedClass>
-  </file>
-  <file src="lib/Service/FolderService.php">
-    <UndefinedClass>
-      <code><![CDATA[$circle]]></code>
     </UndefinedClass>
   </file>
   <file src="lib/Service/LinkExplorer.php">
