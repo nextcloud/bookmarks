@@ -98,11 +98,17 @@
 				}}</a>
 		</NcAppSettingsSection>
 
-		<NcAppSettingsSection id="" :name="t('bookmarks', 'Need help?')">
+		<NcAppSettingsSection id="need-help" :name="t('bookmarks', 'Need help?')">
+			<template #icon>
+				<LifebuoyIcon :size="20" />
+			</template>
 			<p><a href="https://github.com/nextcloud/bookmarks/issues/">{{ t('bookmarks', 'If you have problems with this Bookmarks app or have an idea about what could be improved, don\'t hesitate to get in touch by clicking here.') }}</a></p>
 		</NcAppSettingsSection>
 
-		<NcAppSettingsSection id="" :name="t('bookmarks', 'Support this project')">
+		<NcAppSettingsSection id="support-project" :name="t('bookmarks', 'Support this project')">
+			<template #icon>
+				<HeartIcon :size="20" />
+			</template>
 			<p>{{ t('bookmarks', 'My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 ') }}</p>
 			<p>&nbsp;</p>
 			<p><a href="https://github.com/sponsors/marcelklehr">GitHub Sponsors</a>, <a href="https://www.patreon.com/marcelklehr">Patreon</a>, <a href="https://liberapay.com/marcelklehr/donate">Liberapay</a>, <a href="https://ko-fi.com/marcelklehr">Ko-Fi</a>, <a href="https://www.paypal.me/marcelklehr1">PayPal</a></p>
@@ -117,10 +123,12 @@ import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import { privateRoutes } from '../router.js'
 import { NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField } from '@nextcloud/vue'
 import { ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon } from './Icons.js'
+import HeartIcon from 'vue-material-design-icons/Heart.vue'
+import LifebuoyIcon from 'vue-material-design-icons/Lifebuoy.vue'
 
 export default {
 	name: 'Settings',
-	components: { NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField, ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon },
+	components: { LifebuoyIcon, HeartIcon, NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField, ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon },
 	props: {
 		settingsOpen: {
 			type: Boolean,
