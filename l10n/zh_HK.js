@@ -173,6 +173,7 @@ OC.L10N.register(
     "Archive path" : "封存路徑",
     "Backup path" : "備份路徑",
     "Please select \"Add to home screen\" in your browser menu" : "請在瀏覽器菜單中選擇“添加到主螢幕”",
+    "(Empty title)" : "（空的標題）",
     "Title" : "標題",
     "Link" : "連結",
     "Untitled folder" : "未命名資料夾",

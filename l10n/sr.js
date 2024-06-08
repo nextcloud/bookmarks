@@ -173,6 +173,7 @@ OC.L10N.register(
     "Archive path" : "Путања архиве",
     "Backup path" : "Путања резервне копије",
     "Please select \"Add to home screen\" in your browser menu" : "Молимо вас да у менију вашег прегледача изаберете „Додај на почетни екран",
+    "(Empty title)" : "(Без наслова)",
     "Title" : "Наслов",
     "Link" : "Веза",
     "Untitled folder" : "Неименовани фолдер",

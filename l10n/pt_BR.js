@@ -173,6 +173,7 @@ OC.L10N.register(
     "Archive path" : "Caminho do arquivamento",
     "Backup path" : "Caminho do backup",
     "Please select \"Add to home screen\" in your browser menu" : "Selecione \"Adicionar à tela inicial\" no menu do navegador",
+    "(Empty title)" : "(Título vazio)",
     "Title" : "Título",
     "Link" : "Link",
     "Untitled folder" : "Pasta sem título",

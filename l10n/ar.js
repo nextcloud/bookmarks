@@ -173,6 +173,7 @@ OC.L10N.register(
     "Archive path" : "مسار الأرشيف",
     "Backup path" : "مسار النسخ الاحتياطي",
     "Please select \"Add to home screen\" in your browser menu" : "الرجاء تحديد \"إضافة إلى الشاشة الرئيسية\" Add to home screen في قائمة المتصفح",
+    "(Empty title)" : "(عنوان فارغ)",
     "Title" : "العنوان",
     "Link" : "الرابط",
     "Untitled folder" : "مجلّد بلا عنوان Untitled ",

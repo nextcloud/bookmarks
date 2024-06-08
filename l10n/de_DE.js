@@ -173,6 +173,7 @@ OC.L10N.register(
     "Archive path" : "Archiv-Pfad",
     "Backup path" : "Sicherungspfad",
     "Please select \"Add to home screen\" in your browser menu" : "Bitte wählen Sie \"Zum Startbildschirm hinzufügen\" in Ihrem Browsermenü",
+    "(Empty title)" : "(Leerer Titel)",
     "Title" : "Titel",
     "Link" : "Link",
     "Untitled folder" : "Unbenannter Ordner",

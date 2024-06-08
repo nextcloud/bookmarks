@@ -173,6 +173,7 @@ OC.L10N.register(
     "Archive path" : "Archive path",
     "Backup path" : "Backup path",
     "Please select \"Add to home screen\" in your browser menu" : "Please select \"Add to home screen\" in your browser menu",
+    "(Empty title)" : "(Empty title)",
     "Title" : "Title",
     "Link" : "Link",
     "Untitled folder" : "Untitled folder",
