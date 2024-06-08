@@ -17,7 +17,7 @@ use OCP\ITempManager;
 use Psr\Log\LoggerInterface;
 
 class PageresBookmarkPreviewer implements IBookmarkPreviewer {
-	public const CACHE_PREFIX = 'bookmarks.WebshotPreviewService';
+	public const CACHE_PREFIX = 'bookmarks.PageresPreviewService';
 	public const CAPTURE_MAX_RETRIES = 3;
 
 	/** @var LoggerInterface */
@@ -104,9 +104,10 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @return null|string
 	 */
 	public static function getPageresPath(): ?string {
-		$serverPath = @exec('which pageres');
-		if (!empty($serverPath) && is_readable($serverPath)) {
-			return $serverPath;
+		@exec('which pageres', $serverPath);
+		$path = trim(implode("\n", $serverPath));
+		if (!empty($path) && is_readable($path)) {
+			return $path;
 		}
 
 		return null;
