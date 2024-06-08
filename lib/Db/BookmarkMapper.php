@@ -558,7 +558,7 @@ class BookmarkMapper extends QBMapper {
 				)
 			);
 
-		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
+		return $qb->execute()->fetch(PDO::FETCH_COLUMN) ?? 0;
 	}
 
 	/**
