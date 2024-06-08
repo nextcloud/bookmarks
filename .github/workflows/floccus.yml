@@ -91,7 +91,6 @@ jobs:
         floccus-branch: ['master', 'develop']
         floccus-adapter:
           - nextcloud-bookmarks
-          - nextcloud-bookmarks-old
         test-name:
           - test
         browsers:
