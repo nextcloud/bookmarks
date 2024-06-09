@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.2.0] - 2024-06-08
+
+### New
+
+* feat: Visualize click count
+
+### Fixed
+
+* fix: Soft-deleting multiple folders breaks interface
+* fix(Settings): Add icons for need-help and support-project sections
+* fix(PageresBookmarkPreviewer)
+* fix(FaviconPreviewer): Correctly use inferred favicon from scraper
+* fix: Improve virtual scroll
+* fix: Fix hard deletion of folders
+* fix: Fix hard deletion of bookmarks
+* fix: Small visual fixes 
+* fix: Display URL if title is empty
 
 ## [14.1.2] - 2024-06-01
 

@@ -9,8 +9,7 @@
 		<div class="whatsnew">
 			<h3>✨ {{ t('bookmarks', 'What\'s new?') }}</h3>
 			<ul>
-				<li>⭕ You can now share bookmarks with Circles</li>
-				<li>🗑 You can now get back deleted items from the trash bin</li>
+				<li>🔥 Visualized click count</li>
 				<li>🐛 Lots of small bug fixes and performance improvements</li>
 			</ul>
 			<p>&nbsp;</p>
