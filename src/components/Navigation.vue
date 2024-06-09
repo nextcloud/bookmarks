@@ -93,17 +93,16 @@
 					<TagOffIcon slot="icon" :size="20" />
 				</NcAppNavigationItem>
 			</template>
+		</template>
+		<template #footer>
 			<template v-if="Number(bookmarksLimit) > 0">
-				<NcAppNavigationSpacer />
-				<NcAppNavigationItem :pinned="true" :name="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
+				<NcAppNavigationItem :name="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})" key="menu-limit">
 					<template #icon>
 						<GaugeIcon :size="20" />
 					</template>
-					<ProgressBar :val="allBookmarksCount" :max="bookmarksLimit" />
+					<ProgressBar :val="allBookmarksCount >= bookmarksLimit ? 100 : (allBookmarksCount / bookmarksLimit) * 100" />
 				</NcAppNavigationItem>
 			</template>
-		</template>
-		<template #footer>
 			<NcAppNavigationItem key="menu-trashbin"
 				:to="{ name: routes.TRASHBIN }"
 				:name="t('bookmarks', 'Trash Bin')">
