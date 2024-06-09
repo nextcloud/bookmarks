@@ -170,6 +170,7 @@ OC.L10N.register(
     "Archive path" : "Sökväg till arkiv",
     "Backup path" : "Sökväg till säkerhetskopior",
     "Please select \"Add to home screen\" in your browser menu" : "Vänligen välj \"Lägg till hemskärm\" i din webbläsarmeny",
+    "(Empty title)" : "(Tom titel)",
     "Title" : "Titel",
     "Link" : "Länk",
     "Untitled folder" : "Namnlös mapp",
