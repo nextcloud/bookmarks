@@ -164,7 +164,7 @@ export default {
 				// Search folders
 				const searchFolder = (folder) => {
 					const results = folder.children.flatMap(searchFolder)
-					if (this.$store.state.fetchState.query.search.every(term => term.trim() && folder.title.toLowerCase().includes(term.toLowerCase()))) {
+					if (folder.title && this.$store.state.fetchState.query.search && this.$store.state.fetchState.query.search.every(term => term.trim() && folder.title.toLowerCase().includes(term.toLowerCase()))) {
 						results.push(folder)
 					}
 					return results

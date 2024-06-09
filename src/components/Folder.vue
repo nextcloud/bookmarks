@@ -144,7 +144,7 @@ export default {
 			return this.$store.getters.getFolder(this.$store.state.fetchState.query.folder)[0]
 		},
 		isTrashbin() {
-			return this.containingFolder.softDeleted || this.$route.name === this.routes.TRASHBIN
+			return (this.containingFolder && this.containingFolder.softDeleted) || this.$route.name === this.routes.TRASHBIN
 		},
 		permissions() {
 			return this.$store.getters.getPermissionsForFolder(this.folder.id)
