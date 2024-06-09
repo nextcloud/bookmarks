@@ -96,7 +96,7 @@
 		</template>
 		<template #footer>
 			<template v-if="Number(bookmarksLimit) > 0">
-				<NcAppNavigationItem :name="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})" key="menu-limit">
+				<NcAppNavigationItem key="menu-limit" :name="t('bookmarks', '{used} bookmarks of {available} available', {used: allBookmarksCount, available: bookmarksLimit})">
 					<template #icon>
 						<GaugeIcon :size="20" />
 					</template>

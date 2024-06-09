@@ -70,7 +70,7 @@
 						@input="onChange"></label>
 			</p>
 			<figure class="test-screenshot">
-				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/screeenly?date=${testDate}`)" alt="Screeenly test screenshot" />
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/screeenly?date=${testDate}`)" alt="Screeenly test screenshot">
 				<figcaption>Test screenshot of nextcloud.com with current Screeenly configuration.</figcaption>
 			</figure>
 			<h3>{{ t('bookmarks', 'ScreenshotMachine') }}</h3>
@@ -81,7 +81,7 @@
 						@input="onChange"></label>
 			</p>
 			<figure class="test-screenshot">
-				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/screenshotmachine?date=${testDate}`)" alt="ScreenshotMachine test screenshot" />
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/screenshotmachine?date=${testDate}`)" alt="ScreenshotMachine test screenshot">
 				<figcaption>Test screenshot of nextcloud.com with current ScreenshotMachine configuration.</figcaption>
 			</figure>
 			<h3>{{ t('bookmarks', 'Webshot') }}</h3>
@@ -92,7 +92,7 @@
 						@input="onChange"></label>
 			</p>
 			<figure class="test-screenshot">
-				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/webshot?date=${testDate}`)" alt="Webshot test screenshot" />
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/webshot?date=${testDate}`)" alt="Webshot test screenshot">
 				<figcaption>Test screenshot of nextcloud.com with current Webshot configuration.</figcaption>
 			</figure>
 			<h3>{{ t('bookmarks', 'Generic screenshot API') }}</h3>
@@ -108,7 +108,7 @@
 						@input="onChange"></label>
 			</p>
 			<figure class="test-screenshot">
-				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/url?date=${testDate}`)" alt="Generic API test screenshot" />
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/url?date=${testDate}`)" alt="Generic API test screenshot">
 				<figcaption>Test screenshot of nextcloud.com with current generic API configuration.</figcaption>
 			</figure>
 			<h3>{{ t('bookmarks', 'Pageres CLI') }}</h3>
@@ -125,7 +125,7 @@
 						@input="onChange"></label>
 			</p>
 			<figure class="test-screenshot">
-				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/pageres?date=${testDate}`)" alt="Pageres test screenshot" />
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/pageres?date=${testDate}`)" alt="Pageres test screenshot">
 				<figcaption>Test screenshot of nextcloud.com with current Pageres CLI configuration.</figcaption>
 			</figure>
 		</NcSettingsSection>
