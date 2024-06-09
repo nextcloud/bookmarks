@@ -8,9 +8,9 @@
 	<div id="bookmarks">
 		<figure v-if="loading" class="icon-loading loading" />
 		<figure v-if="!loading && success" class="icon-checkmark success" />
-		<NcSettingsSection :title="t('bookmarks', 'Privacy')"
+		<NcSettingsSection :name="t('bookmarks', 'Privacy')"
 			:description="t('bookmarks',
-				'Bookmarks will try to access web pages that you add to automatically add information about them.'
+				'The app will try to access web pages that you add to automatically add information about them.'
 			)">
 			<p>
 				<input id="enableScraping"
@@ -25,7 +25,7 @@
 				}}</label>
 			</p>
 		</NcSettingsSection>
-		<NcSettingsSection :title="t('bookmarks', 'Performance') "
+		<NcSettingsSection :name="t('bookmarks', 'Performance') "
 			:description="t('bookmarks',
 				'In an installation with a lot of users it may be useful to restrict the number of bookmarks per account.'
 			)">
@@ -44,9 +44,9 @@
 						@input="onChange"></label>
 			</p>
 		</NcSettingsSection>
-		<NcSettingsSection :title="t('bookmarks', 'Previews')"
+		<NcSettingsSection :name="t('bookmarks', 'Previews')"
 			:description="t('bookmarks',
-				'In order to display real screenshots of your bookmarked websites, Bookmarks can use third-party services to generate previews.'
+				'In order to display real screenshots of your bookmarked websites, the app can use third-party services to generate previews.'
 			)">
 			<h3>{{ t('bookmarks', 'Screeenly') }}</h3>
 			<p>
@@ -69,13 +69,10 @@
 						type="text"
 						@input="onChange"></label>
 			</p>
-			<h3>{{ t('bookmarks', 'Webshot') }}</h3>
-			<p>
-				<label>{{ t('bookmarks', 'Webshot API URL') }}
-					<input v-model="settings['previews.webshot.url']"
-						type="text"
-						@input="onChange"></label>
-			</p>
+			<figure class="test-screenshot">
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/screeenly?date=${testDate}`)" alt="Screeenly test screenshot" />
+				<figcaption>Test screenshot of nextcloud.com with current Screeenly configuration.</figcaption>
+			</figure>
 			<h3>{{ t('bookmarks', 'ScreenshotMachine') }}</h3>
 			<p>
 				<label>{{ t('bookmarks', 'ScreenshotMachine API key') }}
@@ -83,10 +80,41 @@
 						type="text"
 						@input="onChange"></label>
 			</p>
+			<figure class="test-screenshot">
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/screenshotmachine?date=${testDate}`)" alt="ScreenshotMachine test screenshot" />
+				<figcaption>Test screenshot of nextcloud.com with current ScreenshotMachine configuration.</figcaption>
+			</figure>
+			<h3>{{ t('bookmarks', 'Webshot') }}</h3>
+			<p>
+				<label>{{ t('bookmarks', 'Webshot API URL') }}
+					<input v-model="settings['previews.webshot.url']"
+						type="text"
+						@input="onChange"></label>
+			</p>
+			<figure class="test-screenshot">
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/webshot?date=${testDate}`)" alt="Webshot test screenshot" />
+				<figcaption>Test screenshot of nextcloud.com with current Webshot configuration.</figcaption>
+			</figure>
+			<h3>{{ t('bookmarks', 'Generic screenshot API') }}</h3>
+			<p>
+				{{
+					t('bookmarks', 'Sign up with any of the screenshot API providers and put the API URL below. Use the variable {url} as a placeholder for the URL to screenshot. The API must return only the image directly.')
+				}}
+			</p>
+			<p>
+				<label>{{ t('bookmarks', 'Generic API URL') }}
+					<input v-model="settings['previews.generic.url']"
+						type="text"
+						@input="onChange"></label>
+			</p>
+			<figure class="test-screenshot">
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/url?date=${testDate}`)" alt="Generic API test screenshot" />
+				<figcaption>Test screenshot of nextcloud.com with current generic API configuration.</figcaption>
+			</figure>
 			<h3>{{ t('bookmarks', 'Pageres CLI') }}</h3>
 			<p>
 				<a href="https://github.com/sindresorhus/pageres-cli" target="_blank">{{
-					t('bookmarks', 'Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:')
+					t('bookmarks', 'Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:')
 				}}</a>
 			</p>
 			<p>
@@ -96,23 +124,32 @@
 						type="text"
 						@input="onChange"></label>
 			</p>
+			<figure class="test-screenshot">
+				<img :src="generateUrl(`/apps/bookmarks/admin/previewers/pageres?date=${testDate}`)" alt="Pageres test screenshot" />
+				<figcaption>Test screenshot of nextcloud.com with current Pageres CLI configuration.</figcaption>
+			</figure>
 		</NcSettingsSection>
 	</div>
 </template>
 
 <script>
 import { NcSettingsSection } from '@nextcloud/vue'
+import axios from '@nextcloud/axios'
 import { loadState } from '@nextcloud/initial-state'
+import { generateUrl } from '@nextcloud/router'
 
 const SETTINGS = [
 	'previews.screenly.url',
 	'previews.screenly.token',
 	'previews.webshot.url',
 	'previews.screenshotmachine.key',
+	'previews.generic.url',
 	'previews.pageres.env',
 	'privacy.enableScraping',
 	'performance.maxBookmarksperAccount',
 ]
+
+const BOOLEAN_SETTINGS = ['privacy.enableScraping']
 
 export default {
 	name: 'ViewAdmin',
@@ -130,6 +167,8 @@ export default {
 			success: false,
 			error: '',
 			timeout: null,
+			testDate: Date.now(),
+			generateUrl,
 		}
 	},
 
@@ -154,44 +193,45 @@ export default {
 		async submit() {
 			this.loading = true
 			for (const setting in this.settings) {
-				this.setValue(setting, this.settings[setting])
+				await this.setValue(setting, this.settings[setting])
 			}
 			this.loading = false
 			this.success = true
+			this.testDate = Date.now()
 			setTimeout(() => {
 				this.success = false
 			}, 3000)
 		},
 
+		async loadValue(setting) {
+			this.settings[setting] = await this.getValue(setting)
+			if (BOOLEAN_SETTINGS.includes(setting)) {
+				this.settings[setting] = JSON.parse(this.settings[setting])
+			}
+		},
 		async setValue(setting, value) {
 			try {
-				await new Promise((resolve, reject) =>
-					OCP.AppConfig.setValue('bookmarks', setting, value, {
-						success: resolve,
-						error: reject,
-					}),
-				)
+				if (BOOLEAN_SETTINGS.includes(setting)) {
+					value = JSON.stringify(value)
+				}
+				await axios.put(generateUrl(`/apps/bookmarks/admin/settings/${setting}`), {
+					value,
+				})
 			} catch (e) {
-				this.error = this.t('bookmarks', 'Failed to save settings')
+				this.error = this.t('recognize', 'Failed to save settings')
 				throw e
 			}
 		},
 
 		async getValue(setting) {
 			try {
-				const resDocument = await new Promise((resolve, reject) =>
-					OCP.AppConfig.getValue('bookmarks', setting, null, {
-						success: resolve,
-						error: reject,
-					}),
-				)
-				if (resDocument.querySelector('status').textContent !== 'ok') {
+				const res = await axios.get(generateUrl(`/apps/bookmarks/admin/settings/${setting}`))
+				if (res.status !== 200) {
 					this.error = this.t('bookmarks', 'Failed to load settings')
-					console.error('Failed request', resDocument)
+					console.error('Failed request', res)
 					return
 				}
-				const dataEl = resDocument.querySelector('data')
-				return dataEl.firstElementChild.textContent
+				return res.data.value
 			} catch (e) {
 				this.error = this.t('bookmarks', 'Failed to load settings')
 				throw e
@@ -229,5 +269,20 @@ figure[class^='icon-'] {
 
 h3 {
 	font-weight: bold;
+}
+
+.test-screenshot {
+	border: 1px solid black;
+	width: 200px;
+	margin: 10px 0;
+}
+
+.test-screenshot figcaption {
+	padding: 5px;
+}
+
+.test-screenshot img {
+	width: 200px;
+	color: #ebebeb;
 }
 </style>

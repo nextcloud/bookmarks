@@ -7,67 +7,31 @@
 
 namespace OCA\Bookmarks\Settings;
 
+use OCA\Bookmarks\Service\SettingsService;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\IConfig;
 use OCP\IInitialStateService;
-use OCP\IL10N;
 use OCP\Settings\ISettings;
 
 class AdminSettings implements ISettings {
-	/** @var IConfig */
-	private $config;
-
-	/** @var IL10N */
-	private $l;
-	/**
-	 * @var IInitialStateService
-	 */
-	private $initialState;
-
-	/**
-	 * @var string
-	 */
-	private $appName;
-
-	public const SETTINGS = [
-		'previews.screenly.url',
-		'previews.screenly.token',
-		'previews.webshot.url',
-		'previews.screenshotmachine.key',
-		'previews.pageres.env',
-		'privacy.enableScraping',
-		'performance.maxBookmarksperAccount',
-	];
-
 	/**
 	 * Admin constructor.
 	 *
-	 * @param IConfig $config
-	 * @param IL10N $l
+	 * @param $appName
+	 * @param SettingsService $settingsService
 	 * @param IInitialStateService $initialState
 	 */
 	public function __construct(
-		$appName,
-		IConfig $config,
-		IL10N   $l, IInitialStateService $initialState
+		private $appName,
+		private SettingsService $settingsService,
+		private IInitialStateService $initialState
 	) {
-		$this->appName = $appName;
-		$this->config = $config;
-		$this->l = $l;
-		$this->initialState = $initialState;
 	}
 
 	/**
 	 * @return TemplateResponse
 	 */
 	public function getForm() {
-		$settings = [];
-
-		foreach (self::SETTINGS as $settingId) {
-			$settings[$settingId] = $this->config->getAppValue('bookmarks', $settingId);
-		}
-
-		$this->initialState->provideInitialState($this->appName, 'adminSettings', $settings);
+		$this->initialState->provideInitialState($this->appName, 'adminSettings', $this->settingsService->getAll());
 
 		return new TemplateResponse('bookmarks', 'admin');
 	}
