@@ -78,7 +78,6 @@ OC.L10N.register(
     "Remove share" : "Šalinti viešinį",
     "Link copied" : "Nuoroda nukopijuota",
     "Privacy" : "Privatumas",
-    "Bookmarks will try to access web pages that you add to automatically add information about them." : "Adresynas bandys apsilankyti jūsų pridedamose internetinėse svetainėse, kad automatiškai pridėtų informaciją apie jas.",
     "Enable accessing and collecting information from the web pages you add" : "Leisti apsilankyti ir rinkti iš saityno informaciją apie jūsų pridedamus internetinius puslapius",
     "Performance" : "Našumas",
     "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "Didžiausias, vienai paskyrai leidžiamas, adresyno įrašų skaičius. (0, kad būtų neribojama; pagal numatymą yra neribojama)",

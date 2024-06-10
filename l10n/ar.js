@@ -42,6 +42,8 @@ OC.L10N.register(
     "- 📂 Sort bookmarks into folders\n- 🏷 Add tags and personal notes\n- 🔍 Full-text search\n- 📲 Synchronize with all your browsers and devices\n- 👪 Share bookmarks with other users and publicly\n- ☠ Find broken links\n- ⚛ Generate RSS feeds of your collections\n- 📔 Read archived versions of your links in case they are depublished\n- 💬 Create new bookmarks directly from within Nextcloud Talk\n- 💼 Built-in Dashboard widgets for frequent and recent links\n\nRequirements:\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - when using MySQL, use at least v8.0" : "- 📂 ترتيب الإشارات المرجعية في مجلدات\n- 🏷 إضافة الوسوم والملاحظات الشخصية\n- 🔍 البحث عن نص كامل\n- 📲 المزامنة مع جميع المتصفحات والأجهزة الخاصة بك\n- 👪 مشاركة الإشارات المرجعية مع مستخدمين آخرين وبشكل عام\n- ☠ البحث عن الروابط المعطلة\n- ⚛ إنشاء موجزات RSS لمجموعاتك\n- 📔 قراءة النسخ المؤرشفة من الروابط الخاصة بك في حالة عدم نشرها\n- 💬 إنشاء إشارات مرجعية جديدة مباشرة من داخل تطبيق Nextcloud Talk\n- 💼 وَدْجَات widgets للوحة القيادة مدمجة للروابط المتكررة والحديثة\n\nالمتطلبات:\n- ملحقات PHP:\n- intl: *\n- mbstring: *\n- عند استخدام MySQL ، يجب استخدم الإصدار v8.0 على الأقل",
     "Enter new title" : "أدخِل عنواناً جديداً",
     "Select bookmark" : "إختر إشارةً مرجعيةً bookmark",
+    "You have never clicked this link" : "لم يسبق لك أن نقرت هذا الرابط",
+    "You have clicked this link {count} times" : "أنت قمت بنقر هذا الرابط {count} مرة",
     "Details" : "التفاصيل",
     "Rename" : "إعادة التسمية",
     "Copy link" : "إنسخ الرابط",
@@ -202,23 +204,20 @@ OC.L10N.register(
     "Remove share" : "إحذف المُشارَكة",
     "Link copied" : "تمّ نسخ الرابط",
     "Privacy" : "الخصوصية",
-    "Bookmarks will try to access web pages that you add to automatically add information about them." : "ستحاول الإشارات المرجعية الوصول إلى صفحات الويب التي تضيفها لإضافة معلومات عنها تلقائيًا.",
     "Enable accessing and collecting information from the web pages you add" : "قم بتمكين الوصول إلى المعلومات وجمعها من صفحات الويب التي تضيفها",
     "Performance" : "سرعة الأداء",
     "In an installation with a lot of users it may be useful to restrict the number of bookmarks per account." : "في الحالات التي يكون فيها عدد المستخدمين كبيراً جدّاً، قد يكون من المفيد تقييد عدد الإشارات المرجعية لكل حساب.",
     "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "العدد الأقصى المسموح به من الإشارات المرجعية لكل حساب. (0 بلا حدود؛ وهو الافتراضي)",
     "Previews" : "المعاينات",
-    "In order to display real screenshots of your bookmarked websites, Bookmarks can use third-party services to generate previews." : "من أجل عرض معاينات لشاشات مواقعك المُؤشّرة، يمكن للإشارات المرجعية استخدام خدمات الجهات الخارجية لإنشاء المعاينات.",
     "Screeenly" : "\"سكرينلي\" Screeenly خدمة خارجية لتوليد معاينات لصور شاشات المواقع المُؤشّرة",
     "You can either sign up for free at screeenly.com or setup your own server." : "يمكنك إما التسجيل مجانًا في screeenly.com أو إعداد الخادوم الخاص بك.",
     "Screeenly API URL" : "عنوان واجهة برمجة التطبيقات في \"سكرينلي\" Screeenly API URL",
     "Screeenly API key" : "مفتاح واجهة برمجة التطبيقات في \"سكرينلي\" Screeenly API URL",
-    "Webshot" : "\"ويب شوت\" webshot خدمة خارجية لتوليد معاينات لصور شاشات المواقع المُؤشّرة",
-    "Webshot API URL" : "عنوان واجهة برمجة التطبيقات في \"ويب شوت\" Webshot API URL",
     "ScreenshotMachine" : "\"سكرين شوت ماشين\" ScreenshotMachine خدمة خارجية لتوليد معاينات لصور شاشات المواقع المُؤشّرة",
     "ScreenshotMachine API key" : "عنوان واجهة برمجة التطبيقات في \"سكرين شوت ماشين\" ScreenshotMachine API URL",
+    "Webshot" : "\"ويب شوت\" webshot خدمة خارجية لتوليد معاينات لصور شاشات المواقع المُؤشّرة",
+    "Webshot API URL" : "عنوان واجهة برمجة التطبيقات في \"ويب شوت\" Webshot API URL",
     "Pageres CLI" : "تطبيق واجهة سطر الأوامر \"بيجرز \"Pageres CLI",
-    "Simply install the Pageres CLI on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "ما عليك سوى تنصيب تطبيق واجهة سطر الأوامر \"بيجرز \"Pageres CLI على خادومك و سوف تجده الإشارات المرجعية. لا يزال بإمكانك إضافة متغيرات ENV إضافية ليتم تغذيتها على أجهزة pagers ، على سبيل المثال كما هو مبين في العنصر النائب placeholder:",
     "Pageres ENV variables" : "مُتغيِّرات بيئة \"بيجرز\" Pageres ENV variables",
     "Failed to save settings" : "فشل حفظ الإعدادات",
     "Failed to load settings" : "إخفاق في تحميل الإعدادات",
@@ -244,6 +243,7 @@ OC.L10N.register(
     "Failed to rename tag" : "تعذّر تغيير تسمية السِّمَة tag",
     "Failed to load tags" : "إخفاق في تحميل الوسوم",
     "Failed to load folders" : "تعذّر تحميل المجلد",
+    "Failed to load deleted folders" : "يتعذّر تحميل المجلدات المحذوفة",
     "Failed to load deleted bookmarks" : "تعذّر تحميل الإشارات المرجعية المحذوفة",
     "Failed to delete folder" : "تعذّر حذف المجلد",
     "Failed to move folder" : "تعذّر نقل المجلد",

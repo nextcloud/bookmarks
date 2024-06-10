@@ -70,7 +70,6 @@
     "Remove share" : "Fjarlægja sameign",
     "Link copied" : "Tengill afritaður",
     "Privacy" : "Gagnaleynd",
-    "Bookmarks will try to access web pages that you add to automatically add information about them." : "Bókamerkjaforritið mun reyna að fá aðgang að þeim síðum sem þú bætir við til að sækja sjálfvirkt upplýsingar um þær.",
     "Enable accessing and collecting information from the web pages you add" : "Virkja aðgang og söfnun upplýsinga af vefsíðunum sem þú bætir við",
     "Performance" : "Afköst",
     "Maximum allowed number of bookmarks per account. (0 for no limit; default is no limit)" : "Leyfður hámarksföldi bókamerkja á hvern notandaaðgang. (0 fyrir engin takmörk; það er sjálfgefið)",
