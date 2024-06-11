@@ -121,7 +121,7 @@ class FolderControllerTest extends TestCase {
 		$emptyCache->method('remove')->willReturn(true);
 		$emptyCache->method('clear')->willReturn(true);
 		$this->cacheFactory = $this->createMock(ICacheFactory::class);
-		$this->cacheFactory->method('createLocal')->willReturn($this->emptyCache);
+		$this->cacheFactory->method('createDistributed')->willReturn($this->emptyCache);
 		$this->hashManager = new TreeCacheManager(
 			$this->folderMapper,
 			$this->bookmarkMapper,
@@ -267,10 +267,10 @@ class FolderControllerTest extends TestCase {
 	public function testHash(bool $useCache): void {
 		if ($useCache) {
 			$this->cacheFactory = $this->createMock(ICacheFactory::class);
-			$this->cacheFactory->method('createLocal')
+			$this->cacheFactory->method('createDistributed')
 				->willReturnCallback(fn ()
 				  => OC::$server->get(ICacheFactory::class)
-					->createLocal(time() . '' . random_int(0, 1000000))
+					->createDistributed(time() . '' . random_int(0, 1000000))
 				);
 		}
 

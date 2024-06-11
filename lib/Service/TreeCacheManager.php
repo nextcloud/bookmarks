@@ -69,13 +69,13 @@ class TreeCacheManager implements IEventListener {
 		protected ContainerInterface $appContainer,
 		protected TagMapper $tagMapper
 	) {
-		$this->caches[self::CATEGORY_HASH] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_HASH);
-		$this->caches[self::CATEGORY_SUBFOLDERS] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_SUBFOLDERS);
-		$this->caches[self::CATEGORY_DELETED_SUBFOLDERS] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_DELETED_SUBFOLDERS);
-		$this->caches[self::CATEGORY_FOLDERCOUNT] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_FOLDERCOUNT);
-		$this->caches[self::CATEGORY_CHILDREN] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDREN);
-		$this->caches[self::CATEGORY_CHILDREN_LAYER] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDREN_LAYER);
-		$this->caches[self::CATEGORY_CHILDORDER] = $cacheFactory->createLocal('bookmarks:'.self::CATEGORY_CHILDORDER);
+		$this->caches[self::CATEGORY_HASH] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_HASH);
+		$this->caches[self::CATEGORY_SUBFOLDERS] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_SUBFOLDERS);
+		$this->caches[self::CATEGORY_DELETED_SUBFOLDERS] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_DELETED_SUBFOLDERS);
+		$this->caches[self::CATEGORY_FOLDERCOUNT] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_FOLDERCOUNT);
+		$this->caches[self::CATEGORY_CHILDREN] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_CHILDREN);
+		$this->caches[self::CATEGORY_CHILDREN_LAYER] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_CHILDREN_LAYER);
+		$this->caches[self::CATEGORY_CHILDORDER] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_CHILDORDER);
 	}
 
 
