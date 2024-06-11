@@ -40,7 +40,7 @@ class AdminController extends Controller {
 		parent::__construct($appName, $request);
 		$this->previewers = [
 			'url' => $urlPreviewer,
-			'screeenly' =>  $screeenlyPreviewer,
+			'screeenly' => $screeenlyPreviewer,
 			'screenshotmachine' => $screenshotMachinePreviewer,
 			'webshot' => $webshotPreviewer,
 			'pageres' => $pageresPreviewer,
@@ -73,7 +73,7 @@ class AdminController extends Controller {
 
 	/**
 	 * @param string $previewer
-	 * @return JSONResponse
+	 * @return Http\Response
 	 */
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\Route(Http\Attribute\Route::TYPE_FRONTPAGE, 'GET', '/admin/previewers/{previewer}')]

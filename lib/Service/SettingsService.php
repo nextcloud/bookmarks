@@ -9,15 +9,7 @@ declare(strict_types=1);
 
 namespace OCA\Bookmarks\Service;
 
-use OCA\Recognize\BackgroundJobs\SchedulerJob;
-use OCA\Recognize\Classifiers\Audio\MusicnnClassifier;
-use OCA\Recognize\Classifiers\Images\ClusteringFaceClassifier;
-use OCA\Recognize\Classifiers\Images\ImagenetClassifier;
-use OCA\Recognize\Classifiers\Images\LandmarksClassifier;
-use OCA\Recognize\Classifiers\Video\MovinetClassifier;
-use OCA\Recognize\Exception\Exception;
 use OCP\AppFramework\Services\IAppConfig;
-use OCP\BackgroundJob\IJobList;
 
 class SettingsService {
 	/** @var array<string,string>  */
