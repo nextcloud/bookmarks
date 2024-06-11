@@ -9,15 +9,17 @@
 > Bookmarks app for Nextcloud
 
 This app provides you with a web interface for collecting and organizing bookmarks to the places on the web that are precious to you.
- 
+
 - 📂 Sort bookmarks into folders
 - 🏷 Add tags and personal notes
-- 🔍 Full-text search 
+- 🔍 Full-text search on site contents
 - 📲 Synchronize with all your browsers and devices
-- 👪 Share bookmarks with other users and publicly
-- ☠ Find broken links
+- 👪 Share bookmarks with other users and with public links
+- ☠ Find broken links and duplicates
 - ⚛ Generate RSS feeds of your collections
-- 📔 Read archived versions of your links in case they are depublished
+- 📈 Stats on how often you access which links
+- 📔 Store archived versions of your links in case they are depublished
+- 🔒 Automatic backups of your bookmarks
 - 💬 Create new bookmarks directly from within Nextcloud Talk
 - 💼 Built-in Dashboard widgets for frequent and recent links
 
