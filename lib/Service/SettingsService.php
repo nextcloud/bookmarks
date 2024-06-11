@@ -33,7 +33,7 @@ class SettingsService {
 	 * @return string
 	 */
 	public function getSetting(string $key): string {
-		return $this->config->getAppValueString($key, self::DEFAULTS[$key]);
+		return $this->config->getAppValue($key, self::DEFAULTS[$key]);
 	}
 
 	/**
@@ -45,7 +45,7 @@ class SettingsService {
 		if (!array_key_exists($key, self::DEFAULTS)) {
 			throw new \Exception('Unknown settings key '.$key);
 		}
-		$this->config->setAppValueString($key, $value);
+		$this->config->setAppValue($key, $value);
 	}
 
 	/**
