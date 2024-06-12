@@ -53,7 +53,7 @@ OC.L10N.register(
     "Delete bookmark permanently" : "Ta bort bokmärke permanent",
     "Do you really want to delete this bookmark?" : "Är du säker att du vill ta bort detta bokmärket?",
     "Link copied to clipboard" : "Länken kopierad till urklipp",
-    "Content pending" : "Innehåll förestår",
+    "Content pending" : "Väntar på innehåll",
     "This content is being downloaded for offline use. Please check back later." : "Detta innehåll laddas ner för offlineanvändning. Vänligen försök igen senare.",
     "Bookmarked {time} ago" : "Sparad för {time} sedan",
     "Bookmarked on {date}" : "Sparad den {date}",
