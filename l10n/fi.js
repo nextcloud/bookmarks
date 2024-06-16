@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Luo kirjanmerkki",
     "Takes a link and adds it to your collection of bookmarks." : "Poimii linkin ja lisää sen kirjanmerkkikokoelmaasi",
     "Bookmarks Backups" : "Kirjanmerkkien varmuuskopiot",
-    "A Bookmark manager for Nextcloud" : "Kirjanmerkkien hallinta Nextcloudille",
     "Enter new title" : "Syötä uusi nimi",
     "Select bookmark" : "Valitse kirjanmerkki",
     "Details" : "Tiedot",

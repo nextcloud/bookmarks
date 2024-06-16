@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Crear un marcador",
     "Takes a link and adds it to your collection of bookmarks." : "Faga unha ligazón e engádaa á súa colección de marcadores",
     "Bookmarks Backups" : "Copia de seguranza dos marcadores",
-    "A Bookmark manager for Nextcloud" : "Un xestor de marcadores para Nextcloud",
     "Enter new title" : "Introduza un novo título",
     "Select bookmark" : "Seleccionar marcador",
     "Details" : "Detalles",

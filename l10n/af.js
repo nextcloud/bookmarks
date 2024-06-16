@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Boekmerke",
     "No file provided for import" : "Geen lêer verskaf om in te voer nie ",
-    "A Bookmark manager for Nextcloud" : "'n Boekmerkbestuurder vir Nextcloud",
     "Details" : "Besonderhede",
     "Rename" : "Hernoem",
     "Copy link" : "Kopieer skakel",

@@ -25,7 +25,6 @@ OC.L10N.register(
     "Bookmark updated" : "סימנייה עודכנה",
     "Create bookmark" : "יצירת סימנייה",
     "Takes a link and adds it to your collection of bookmarks." : "לוקח קישור ומוסיף אותו לאוסף הסימניות שלך.",
-    "A Bookmark manager for Nextcloud" : "מנהל סימניות ל־Nextcloud",
     "Enter new title" : "נא למלא כותרת חדשה",
     "Select bookmark" : "בחירת סימנייה",
     "Details" : "פרטים",

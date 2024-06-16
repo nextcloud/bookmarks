@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Lesezeichen erstellen",
     "Takes a link and adds it to your collection of bookmarks." : "Nimmt einen Link und fügt ihn deiner Lesezeichen-Sammlung hinzu.",
     "Bookmarks Backups" : "Lesezeichen-Sicherungekopien",
-    "A Bookmark manager for Nextcloud" : "Eine Lesezeichenverwaltung für Nextcloud",
     "Enter new title" : "Neuen Titel eingeben",
     "Select bookmark" : "Lesezeichen wählen",
     "Details" : "Details",

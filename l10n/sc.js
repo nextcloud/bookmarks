@@ -37,7 +37,6 @@ OC.L10N.register(
     "Bookmark updated" : "Signalibru assignadu",
     "Create bookmark" : "Crea unu signalibru",
     "Takes a link and adds it to your collection of bookmarks." : "Pigat unu ligòngiu e dd'agiunghet a sa colletzione tua de signalibros.",
-    "A Bookmark manager for Nextcloud" : "Unu gestore de signalibru pro Nextcloud",
     "Enter new title" : "Inserta unu tìtulu nou",
     "Select bookmark" : "Seletziona signalibru",
     "Details" : "Detàllios",

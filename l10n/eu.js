@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Sortu laster-marka",
     "Takes a link and adds it to your collection of bookmarks." : "Esteka bat hartu eta laster-bildumara gehitzen du.",
     "Bookmarks Backups" : "Laster-markak babeskopiak",
-    "A Bookmark manager for Nextcloud" : "Nextclouderako laster-marka kudeatzailea ",
     "Enter new title" : "Sartu izenburu berria",
     "Select bookmark" : "Hautatu laster-marka",
     "Details" : "Xehetasunak",

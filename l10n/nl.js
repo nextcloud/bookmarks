@@ -37,7 +37,6 @@ OC.L10N.register(
     "Bookmark updated" : "Bookmark bijgewerkt",
     "Create bookmark" : "Maak bookmark aan",
     "Takes a link and adds it to your collection of bookmarks." : "Neemt een link en voegt deze toe aan je verzameling van bookmarks.",
-    "A Bookmark manager for Nextcloud" : "Een Bookmark-beheerder voor Nextcloud",
     "Enter new title" : "Voer nieuwe titel in",
     "Select bookmark" : "Selecteer bookmark",
     "Details" : "Details",

@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Könyvjelző létrehozása",
     "Takes a link and adds it to your collection of bookmarks." : "Fog egy hivatkozást, és hozzáadja a könyvjelzők gyűjteményéhez.",
     "Bookmarks Backups" : "Könyvjelzők biztonsági mentése",
-    "A Bookmark manager for Nextcloud" : "Könyvjelzőkezelő a Nextcloudhoz",
     "Enter new title" : "Adja meg a címet",
     "Select bookmark" : "Válasszon könyvjelzőt",
     "Details" : "Részletek",

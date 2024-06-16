@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Ustvari zaznamek",
     "Takes a link and adds it to your collection of bookmarks." : "Prevzame povezavo in jo doda v zbirko zaznamkov.",
     "Bookmarks Backups" : "Varnostne kopije zaznamkov",
-    "A Bookmark manager for Nextcloud" : "Upravljalnik zaznamkov za Nextcloud",
     "Enter new title" : "Vpis novega naslova",
     "Select bookmark" : "Izbor zaznamka",
     "Details" : "Podrobnosti",

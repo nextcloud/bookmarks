@@ -37,7 +37,6 @@ OC.L10N.register(
     "Bookmark updated" : "Ο σελιδοδείκτης ενημερώθηκε",
     "Create bookmark" : "Δημιουργία σελιδοδείκτη",
     "Takes a link and adds it to your collection of bookmarks." : "Αυτή η ενέργεια, παίρνει έναν σύνδεσμο και τον προσθέτει στη συλλογή των σελιδοδεικτών σας.",
-    "A Bookmark manager for Nextcloud" : "Διαχειριστής σελιδοδεικτών του Nextcloud",
     "Enter new title" : "Εισάγετε νέο τίτλο",
     "Select bookmark" : "Επιλογή σελιδοδείκτη",
     "Details" : "Λεπτομέρειες",

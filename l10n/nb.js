@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Opprett bokmerke",
     "Takes a link and adds it to your collection of bookmarks." : "Tar en lenke å legger den til i den i bokmerke-samlingen din.",
     "Bookmarks Backups" : "Sikkerhetskopi av bokmerker",
-    "A Bookmark manager for Nextcloud" : "En bokmerkebehandler for Nextcloud",
     "Enter new title" : "Skriv inn en ny tittel",
     "Select bookmark" : "Velg bokmerke",
     "Details" : "Detaljer",

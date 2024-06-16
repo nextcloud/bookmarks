@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Opret bogmærke",
     "Takes a link and adds it to your collection of bookmarks." : "Tager imod et link og føjer det til din bogmærkesamling.",
     "Bookmarks Backups" : "Backup af bogmærker",
-    "A Bookmark manager for Nextcloud" : "En app til at administrere bogmærker i Nextcloud",
     "Enter new title" : "Angiv ny titel",
     "Select bookmark" : "Vælg bogmærke",
     "Details" : "Detaljer",

@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Create bookmark",
     "Takes a link and adds it to your collection of bookmarks." : "Takes a link and adds it to your collection of bookmarks.",
     "Bookmarks Backups" : "Bookmarks Backups",
-    "A Bookmark manager for Nextcloud" : "یک مدیر نشانک برای نکست کلود",
     "Enter new title" : "Enter new title",
     "Select bookmark" : "نشانک را انتخاب کنید",
     "Details" : "جزئیات",

@@ -38,7 +38,6 @@ OC.L10N.register(
     "Create bookmark" : "Skapa bokmärke",
     "Takes a link and adds it to your collection of bookmarks." : "Tar en länk och lägger till den i dina bokmärken.",
     "Bookmarks Backups" : "Bokmärken säkerhetskopior",
-    "A Bookmark manager for Nextcloud" : "En bokmärkeshanterare för Nextcloud",
     "Enter new title" : "Ange ny titel",
     "Select bookmark" : "Välj bokmärke",
     "You have never clicked this link" : "Du har aldrig klickat på den här länken",
