@@ -140,8 +140,8 @@ return [
 
 		// admin
 		['name' => 'admin#check_previewer', 'url' => '/admin/previewers/{previewer}', 'verb' => 'GET'],
-		['name' => 'settings#set_setting', 'url' => '/admin/settings/{setting}', 'verb' => 'PUT'],
-		['name' => 'settings#get_setting', 'url' => '/admin/settings/{setting}', 'verb' => 'GET'],
+		['name' => 'admin#set_setting', 'url' => '/admin/settings/{setting}', 'verb' => 'PUT'],
+		['name' => 'admin#get_setting', 'url' => '/admin/settings/{setting}', 'verb' => 'GET'],
 
 		# public link web view
 		['name' => 'web_view#link', 'url' => '/public/{token}', 'verb' => 'GET'],
