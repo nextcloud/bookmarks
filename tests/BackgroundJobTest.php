@@ -181,7 +181,7 @@ class BackgroundJobTest extends TestCase {
 	 */
 	public function singleBookmarksProvider() {
 		return array_map(function ($props) {
-			return Bookmark::fromArray([...$props, 'userId' => 'test']);
+			return Bookmark::fromArray($props + ['userId' => 'test']);
 		}, [
 			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
 			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
