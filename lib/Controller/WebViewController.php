@@ -105,9 +105,8 @@ class WebViewController extends Controller {
 	 * @return NotFoundResponse|PublicTemplateResponse
 	 *
 	 * @NoAdminRequired
-	 *
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=link)
 	 * @PublicPage
 	 */
 	public function link(string $token) {
@@ -127,10 +126,10 @@ class WebViewController extends Controller {
 			if ($user !== null) {
 				$userName = $user->getDisplayName();
 			}
-		} catch (DoesNotExistException $e) {
-			return new NotFoundResponse();
-		} catch (MultipleObjectsReturnedException $e) {
-			return new NotFoundResponse();
+		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+			$res = new NotFoundResponse();
+			$res->throttle();
+			return $res;
 		}
 
 		$res = new PublicTemplateResponse($this->appName, 'main', []);

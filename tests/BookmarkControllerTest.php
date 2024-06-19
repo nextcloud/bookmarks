@@ -523,7 +523,7 @@ class BookmarkControllerTest extends TestCase {
 		$output = $this->publicController->getSingleBookmark(987);
 		$data = $output->getData();
 		$this->assertSame('error', $data['status'], var_export($data, true));
-		$this->assertSame(403, $output->getStatus());
+		$this->assertSame(404, $output->getStatus());
 	}
 
 	/**
@@ -541,7 +541,7 @@ class BookmarkControllerTest extends TestCase {
 		$output = $this->publicController->getBookmarks(-1, null, 'or', '', [], 10, false, $this->folder2->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertCount(1, $data['data']); // TODO: 1-level search Limit!
+		$this->assertCount(1, $data['data']);
 	}
 
 	/**
@@ -591,7 +591,8 @@ class BookmarkControllerTest extends TestCase {
 		$this->authorizer->setUserId(null);
 
 		$res = $this->publicController->deleteBookmark($this->bookmark1Id);
-		$this->assertEquals('error', $res->getData()['status'], var_export($res->getData(), true));
+		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
+		$this->bookmarkMapper->find($this->bookmark1Id);
 	}
 
 	/**

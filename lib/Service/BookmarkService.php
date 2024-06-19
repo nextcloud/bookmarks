@@ -131,6 +131,7 @@ class BookmarkService {
 	 * @throws UnsupportedOperation
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
+	 * @throws Exception
 	 */
 	public function create(string $userId, string $url = '', ?string $title = null, ?string $description = null, ?array $tags = null, $folders = []): Bookmark {
 		$bookmark = null;
@@ -163,19 +164,21 @@ class BookmarkService {
 	}
 
 	/**
-	 * @param $title
-	 * @param $url
-	 * @param $description
 	 * @param $userId
-	 * @param $tags
-	 * @param $folders
+	 * @param $url
+	 * @param string|null $title
+	 * @param string|null $description
+	 * @param array|null $tags
+	 * @param array $folders
 	 * @return Bookmark
 	 * @throws AlreadyExistsError
+	 * @throws Exception
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
-	 * @throws UnsupportedOperation
 	 */
-	private function _addBookmark($userId, $url, ?string $title = null, $description = null, ?array $tags = null, array $folders = []): Bookmark {
+	private function _addBookmark($userId, $url, ?string $title = null, ?string $description = null, ?array $tags = null, array $folders = []): Bookmark {
 		$bookmark = null;
 
 		try {
@@ -268,8 +271,9 @@ class BookmarkService {
 	 * @throws UnsupportedOperation
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
+	 * @throws Exception
 	 */
-	public function update(string $userId, $id, ?string $url = null, ?string $title = null, ?string $description = null, ?array $tags = null, ?array $folders = null): ?Bookmark {
+	public function update(string $userId, int $id, ?string $url = null, ?string $title = null, ?string $description = null, ?array $tags = null, ?array $folders = null): ?Bookmark {
 		/**
 		 * @var $bookmark Bookmark
 		 */
@@ -395,15 +399,10 @@ class BookmarkService {
 	 * @throws UnsupportedOperation
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
+	 * @throws Exception
 	 */
 	public function addToFolder(int $folderId, int $bookmarkId): void {
-		/**
-		 * @var $folder Folder
-		 */
 		$folder = $this->folderMapper->find($folderId);
-		/**
-		 * @var $bookmark Bookmark
-		 */
 		$bookmark = $this->bookmarkMapper->find($bookmarkId);
 		if ($folder->getUserId() === $bookmark->getUserId()) {
 			$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmarkId, [$folderId]);
@@ -454,17 +453,17 @@ class BookmarkService {
 	}
 
 	/**
-	 * @param $userId
-	 * @param string $url
 	 * @param string $userId
 	 *
+	 * @param string $url
 	 * @return Bookmark
 	 *
-	 * @throws DoesNotExistException|UrlParseError
+	 * @throws DoesNotExistException
+	 * @throws Exception
+	 * @throws UrlParseError
 	 */
 	public function findByUrl(string $userId, string $url = ''): Bookmark {
 		$params = new QueryParameters();
-		/** @var Bookmark[] $bookmarks */
 		$bookmarks = $this->bookmarkMapper->findAll($userId, $params->setUrl($url));
 		if (isset($bookmarks[0])) {
 			return $bookmarks[0];
@@ -480,7 +479,6 @@ class BookmarkService {
 	 * @throws UrlParseError
 	 */
 	public function click(int $id): void {
-		/** @var Bookmark $bookmark */
 		$bookmark = $this->bookmarkMapper->find($id);
 		$bookmark->incrementClickcount();
 		$this->bookmarkMapper->update($bookmark);
@@ -493,9 +491,6 @@ class BookmarkService {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function getImage(int $id): ?IImage {
-		/**
-		 * @var $bookmark Bookmark
-		 */
 		$bookmark = $this->bookmarkMapper->find($id);
 		return $this->bookmarkPreviewer->getImage($bookmark, true);
 	}
@@ -507,9 +502,6 @@ class BookmarkService {
 	 * @throws MultipleObjectsReturnedException
 	 */
 	public function getFavicon(int $id): ?IImage {
-		/**
-		 * @var $bookmark Bookmark
-		 */
 		$bookmark = $this->bookmarkMapper->find($id);
 		return $this->faviconPreviewer->getImage($bookmark, true);
 	}

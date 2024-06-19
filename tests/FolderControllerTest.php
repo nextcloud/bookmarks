@@ -708,7 +708,7 @@ class FolderControllerTest extends TestCase {
 		$this->authorizer->setUserId(null);
 		$output = $this->public->deleteFolder($this->folder1->getId());
 		$data = $output->getData();
-		$this->assertEquals('error', $data['status'], var_export($data, true));
+		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$output = $this->public->getFolder($this->folder1->getId());
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
@@ -1118,7 +1118,8 @@ class FolderControllerTest extends TestCase {
 		if ($canShare) {
 			$this->assertEquals('success', $data['status'], var_export($data, true));
 		} else {
-			$this->assertEquals('error', $data['status'], var_export($data, true));
+			$this->assertEquals('success', $data['status'], var_export($data, true));
+			$this->shareMapper->find($shareId);
 		}
 	}
 

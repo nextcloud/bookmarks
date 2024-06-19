@@ -68,6 +68,7 @@ class ShareMapper extends QBMapper {
 	 * @return Share[]
 	 *
 	 * @psalm-return list<Share>
+	 * @throws Exception
 	 */
 	public function findByOwner(string $userId): array {
 		$qb = $this->db->getQueryBuilder();

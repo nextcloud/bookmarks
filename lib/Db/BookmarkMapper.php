@@ -192,12 +192,11 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param string $userId
 	 * @param QueryParameters $queryParams
-	 *
+	 * @param bool $withGroupBy
 	 * @return Bookmark[]
 	 *
-	 * @throws UrlParseError
-	 * @throws \OC\DB\Exceptions\DbalException
 	 * @throws Exception
+	 * @throws UrlParseError
 	 */
 	public function findAll(string $userId, QueryParameters $queryParams, bool $withGroupBy = true): array {
 		$rootFolder = $this->folderMapper->findRootFolder($userId);

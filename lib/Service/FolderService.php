@@ -76,11 +76,9 @@ class FolderService {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
 	public function create($title, $parentFolderId): Folder {
-		/**
-		 * @var $parentFolder Folder
-		 */
 		$parentFolder = $this->folderMapper->find($parentFolderId);
 		$folder = new Folder();
 		$folder->setTitle($title);
@@ -89,7 +87,7 @@ class FolderService {
 		$this->folderMapper->insert($folder);
 		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $folder->getId(), $parentFolderId);
 
-		$this->eventDispatcher->dispatch(CreateEvent::class, new CreateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
+		$this->eventDispatcher->dispatchTyped(new CreateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
 		return $folder;
 	}
 
@@ -115,16 +113,13 @@ class FolderService {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function findSharedFolderOrFolder($userId, $folderId) {
+	public function findSharedFolderOrFolder($userId, $folderId): Folder|SharedFolder {
 		$folder = $this->folderMapper->find($folderId);
 		if ($userId === null || $userId === $folder->getUserId()) {
 			return $folder;
 		}
 
 		try {
-			/**
-			 * @var $sharedFolder SharedFolder
-			 */
 			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);
 			return $sharedFolder;
 		} catch (DoesNotExistException $e) {
@@ -142,7 +137,7 @@ class FolderService {
 	 * @throws UnsupportedOperation
 	 * @throws Exception
 	 */
-	public function deleteSharedFolderOrFolder(string $userId, int $folderId, bool $hardDelete): void {
+	public function deleteSharedFolderOrFolder(?string $userId, int $folderId, bool $hardDelete): void {
 		$folder = $this->folderMapper->find($folderId);
 
 		if ($userId === null || $userId === $folder->getUserId()) {
@@ -181,6 +176,7 @@ class FolderService {
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
+	 * @throws Exception
 	 */
 	public function deleteShare($shareId): void {
 		$this->treeMapper->deleteShare($shareId);
@@ -212,7 +208,7 @@ class FolderService {
 	}
 
 	/**
-	 * @param string $userId
+	 * @param string|null $userId
 	 * @param int $folderId
 	 * @param string $title
 	 * @param int $parent_folder
@@ -221,11 +217,9 @@ class FolderService {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnsupportedOperation
 	 * @throws \OCA\Bookmarks\Exception\UrlParseError
+	 * @throws Exception
 	 */
-	public function updateSharedFolderOrFolder($userId, $folderId, $title = null, $parent_folder = null) {
-		/**
-		 * @var $folder Folder
-		 */
+	public function updateSharedFolderOrFolder(?string $userId, int $folderId, ?string $title = null, ?int $parent_folder = null) {
 		$folder = $this->folderMapper->find($folderId);
 
 		if ($userId !== null || $userId !== $folder->getUserId()) {
@@ -247,7 +241,7 @@ class FolderService {
 		if (isset($title)) {
 			$folder->setTitle($title);
 			$this->folderMapper->update($folder);
-			$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
+			$this->eventDispatcher->dispatchTyped(new UpdateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
 		}
 		if (isset($parent_folder)) {
 			$parentFolder = $this->folderMapper->find($parent_folder);
@@ -272,7 +266,6 @@ class FolderService {
 	public function createFolderPublicToken($folderId): string {
 		$this->folderMapper->find($folderId);
 		try {
-			/** @var PublicFolder $publicFolder */
 			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 		} catch (DoesNotExistException $e) {
 			$publicFolder = new PublicFolder();
@@ -286,6 +279,7 @@ class FolderService {
 	 * @param $folderId
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws Exception
 	 */
 	public function deleteFolderPublicToken($folderId): void {
 		$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
@@ -305,9 +299,6 @@ class FolderService {
 	 * @throws Exception
 	 */
 	public function createShare($folderId, $participant, int $type, bool $canWrite = false, bool $canShare = false): Share {
-		/**
-		 * @var $folder Folder
-		 */
 		$folder = $this->folderMapper->find($folderId);
 
 		$share = new Share();

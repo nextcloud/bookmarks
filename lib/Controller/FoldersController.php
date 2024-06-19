@@ -15,10 +15,12 @@ use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolder;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\ChildrenOrderValidationError;
 use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
+use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
@@ -131,9 +133,6 @@ class FoldersController extends ApiController {
 			return $returnFolder;
 		}
 		if ($folder instanceof SharedFolder) {
-			/**
-			 * @var $share Share
-			 */
 			$share = $this->shareMapper->findByFolderAndUser($folder->getFolderId(), $folder->getUserId());
 			$returnFolder = $folder->toArray();
 			$returnFolder['id'] = $folder->getFolderId();
@@ -154,22 +153,27 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#addFolder)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function addFolder($title = '', $parent_folder = -1): JSONResponse {
+	public function addFolder(string $title = '', int $parent_folder = -1): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($parent_folder, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find parent folder']], Http::STATUS_BAD_REQUEST);
+			$res->throttle();
+			return $res;
 		}
 		try {
 			$parent_folder = $this->toInternalFolderId($parent_folder);
 			$folder = $this->folders->create($title, $parent_folder);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple parent folders found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Multiple parent folders found']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_BAD_REQUEST);
 		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find parent folder'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Could not find parent folder']], Http::STATUS_BAD_REQUEST);
+		} catch (Exception $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
 		return new JSONResponse(['status' => 'success', 'item' => $this->_returnFolderAsArray($folder)]);
@@ -181,21 +185,26 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#addFolder)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
 	public function getFolder($folderId): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
+			$res->throttle();
+			return $res;
 		}
 		$folderId = $this->toInternalFolderId($folderId);
 		try {
 			$folder = $this->folders->findSharedFolderOrFolder($this->authorizer->getUserId(), $folderId);
 			return new JSONResponse(['status' => 'success', 'item' => $this->_returnFolderAsArray($folder)]);
 		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (UnsupportedOperation $e) {
+			return new JSONResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -206,19 +215,32 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#addToFolder)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
 	public function addToFolder($folderId, $bookmarkId): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
 			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		}
 		$folderId = $this->toInternalFolderId($folderId);
 		try {
 			$this->bookmarks->addToFolder($folderId, $bookmarkId);
 		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_BAD_REQUEST);
+		} catch (AlreadyExistsError $e) {
+			// noop
+		} catch (UrlParseError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Malformed URL']], Http::STATUS_BAD_REQUEST);
+		} catch (UserLimitExceededError $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['User limit exceeded']], Http::STATUS_BAD_REQUEST);
+		} catch (DoesNotExistException $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+		} catch (MultipleObjectsReturnedException|Exception $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
 		return new JSONResponse(['status' => 'success']);
@@ -231,25 +253,28 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#removeFromFolder)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
 	public function removeFromFolder($folderId, $bookmarkId, bool $hardDelete = false): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) ||
 			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+			$res->throttle();
+			return $res;
 		}
 		try {
 			$folderId = $this->toInternalFolderId($folderId);
 			$this->bookmarks->removeFromFolder($folderId, $bookmarkId, $hardDelete);
 		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_BAD_REQUEST);
 		} catch (Exception $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
 		return new JSONResponse(['status' => 'success']);
@@ -262,30 +287,31 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(actions: 'bookmarks#undeleteFromFolder')
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
 	public function undeleteFromFolder(int $folderId, int $bookmarkId): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) ||
 			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
+			$res->throttle();
+			return $res;
 		}
 		try {
 			$folderId = $this->toInternalFolderId($folderId);
 			$this->bookmarks->undeleteInFolder($folderId, $bookmarkId);
 			return new JSONResponse(['status' => 'success']);
 		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_NOT_FOUND);
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_BAD_REQUEST);
 		} catch (Exception $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_BAD_REQUEST);
 		}
 	}
-
-
 
 
 	/**
@@ -297,10 +323,13 @@ class FoldersController extends ApiController {
 	 * @NoCSRFRequired
 	 *
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
 	public function deleteFolder(int $folderId, bool $hardDelete = false): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'success']);
+			$res->throttle();
+			return $res;
 		}
 
 		$folderId = $this->toInternalFolderId($folderId);
@@ -311,11 +340,11 @@ class FoldersController extends ApiController {
 			$this->folders->deleteSharedFolderOrFolder($this->authorizer->getUserId(), $folderId, $hardDelete);
 			return new JSONResponse(['status' => 'success']);
 		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'success']);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -325,12 +354,15 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#undeleteFolder)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
 	public function undeleteFolder(int $folderId): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'success']);
+			$res->throttle();
+			return $res;
 		}
 
 		$folderId = $this->toInternalFolderId($folderId);
@@ -338,13 +370,13 @@ class FoldersController extends ApiController {
 			$this->folders->undelete($this->authorizer->getUserId(), $folderId);
 			return new JSONResponse(['status' => 'success']);
 		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_NOT_FOUND);
+			return new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (Exception $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -356,12 +388,15 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#editFolder)
 	 * @PupblicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function editFolder($folderId, $title = null, $parent_folder = null): JSONResponse {
+	public function editFolder(int $folderId, ?string $title = null, ?int $parent_folder = null): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		}
 		if ($parent_folder !== null) {
 			$parent_folder = $this->toInternalFolderId($parent_folder);
@@ -370,13 +405,13 @@ class FoldersController extends ApiController {
 			$folder = $this->folders->updateSharedFolderOrFolder($this->authorizer->getUserId(), $folderId, $title, $parent_folder);
 			return new JSONResponse(['status' => 'success', 'item' => $this->_returnFolderAsArray($folder)]);
 		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+		} catch (MultipleObjectsReturnedException|Exception $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation: ' . $e->getMessage()], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_BAD_REQUEST);
 		} catch (UrlParseError $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Error changing owner of a bookmark: UrlParseError'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Error changing owner of a bookmark: UrlParseError']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -387,12 +422,15 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=hashFolder)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function hashFolder($folderId, $fields = ['title', 'url']): JSONResponse {
+	public function hashFolder(int $folderId, array $fields = ['title', 'url']): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
+			$res->throttle();
+			return $res;
 		}
 		try {
 			$folderId = $this->toInternalFolderId($folderId);
@@ -402,13 +440,13 @@ class FoldersController extends ApiController {
 			$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
 			return $res;
 		} catch (DoesNotExistException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Multiple objects found'], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_BAD_REQUEST);
 		} catch (\JsonException $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unsupported operation: '.$e->getMessage()], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_BAD_REQUEST);
 		}
 	}
 
@@ -421,12 +459,18 @@ class FoldersController extends ApiController {
 	 * @NoCSRFRequired
 	 *
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function getFolderChildren($folderId, $layers = 0): JSONResponse {
+	public function getFolderChildren(int $folderId, int $layers = 0): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		}
 		$folderId = $this->toInternalFolderId($folderId);
+		if ($folderId === null) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+		}
 		$children = $this->treeMapper->getChildren($folderId, $layers);
 		$res = new JSONResponse(['status' => 'success', 'data' => $children]);
 		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
@@ -441,15 +485,25 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#getFolderChildrenOrder)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function getFolderChildrenOrder($folderId, $layers = 0): JSONResponse {
+	public function getFolderChildrenOrder(int $folderId, int $layers = 0): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		}
 		$folderId = $this->toInternalFolderId($folderId);
-		$children = $this->treeMapper->getChildrenOrder($folderId, $layers);
+		if ($folderId === null) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+		}
+		try {
+			$children = $this->treeMapper->getChildrenOrder($folderId, $layers);
+		} catch (Exception $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
 		$res = new JSONResponse(['status' => 'success', 'data' => $children]);
 		$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
 		$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
@@ -465,17 +519,23 @@ class FoldersController extends ApiController {
 	 * @NoCSRFRequired
 	 *
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function setFolderChildrenOrder($folderId, $data = []): JSONResponse {
+	public function setFolderChildrenOrder(int $folderId, array $data = []): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		}
 		$folderId = $this->toInternalFolderId($folderId);
+		if ($folderId === null) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+		}
 		try {
 			$this->treeMapper->setChildrenOrder($folderId, $data);
 			return new JSONResponse(['status' => 'success']);
 		} catch (ChildrenOrderValidationError $e) {
-			return new JSONResponse(['status' => 'error', 'data' => 'invalid children order: ' . $e->getMessage()], Http::STATUS_BAD_REQUEST);
+			return new JSONResponse(['status' => 'error', 'data' => ['invalid children order: ' . $e->getMessage()]], Http::STATUS_BAD_REQUEST);
 		}
 	}
 
@@ -485,15 +545,21 @@ class FoldersController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#getFolders)
 	 * @PublicPage
 	 * @return JSONResponse
+	 * @throws UnauthenticatedError
 	 */
-	public function getFolders($root = -1, $layers = -1): JSONResponse {
+	public function getFolders(int $root = -1, int $layers = -1): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($root, $this->request))) {
-			return new JSONResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		}
 		$internalRoot = $this->toInternalFolderId($root);
+		if ($internalRoot === null) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+		}
 		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers, $root === -1 ? false : null);
 		if ($root === -1 || $root === '-1') {
 			foreach ($folders as &$folder) {
@@ -511,19 +577,22 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#getFolderPublicToken)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function getFolderPublicToken($folderId): DataResponse {
+	public function getFolderPublicToken(int $folderId): DataResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		}
 		try {
 			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 		} catch (DoesNotExistException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_NOT_FOUND);
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Multiple objects returned'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		return new Http\DataResponse(['status' => 'success', 'item' => $publicFolder->getId()]);
 	}
@@ -533,20 +602,23 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#createFolderPublicToken)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function createFolderPublicToken($folderId): DataResponse {
+	public function createFolderPublicToken(int $folderId): DataResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		}
 		try {
 			$token = $this->folders->createFolderPublicToken($folderId);
 			return new Http\DataResponse(['status' => 'success', 'item' => $token]);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new DataResponse(['status' => 'error', 'data' => 'Multiple objects returned'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new DataResponse(['status' => 'error', 'data' => ['Multiple objects returned']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (DoesNotExistException $e) {
-			return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			return new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 		}
 	}
 
@@ -555,20 +627,23 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#deleteFolderPublicToken)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function deleteFolderPublicToken($folderId): DataResponse {
+	public function deleteFolderPublicToken(int $folderId): DataResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+			$res->throttle();
+			return $res;
 		}
 		try {
 			$this->folders->deleteFolderPublicToken($folderId);
 			return new Http\DataResponse(['status' => 'success']);
 		} catch (DoesNotExistException $e) {
-			return new Http\DataResponse(['status' => 'success']);
-		} catch (MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_BAD_REQUEST);
+			return new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+		} catch (MultipleObjectsReturnedException|Exception $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_BAD_REQUEST);
 		}
 	}
 
@@ -577,19 +652,24 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#getShare)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
 	public function getShare($shareId): DataResponse {
 		try {
 			$share = $this->shareMapper->find($shareId);
 		} catch (DoesNotExistException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		} catch (MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => ['Mutliple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request))) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
 		}
 		return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
 	}
@@ -598,17 +678,23 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#findSharedFolders))
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
 	public function findSharedFolders(): DataResponse {
 		$permissions = $this->authorizer->getPermissionsForFolder(-1, $this->request);
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
+			$res->throttle();
+			return $res;
 		}
 
-		$shares = $this->shareMapper->findByUser($this->authorizer->getUserId());
+		try {
+			$shares = $this->shareMapper->findByUser($this->authorizer->getUserId());
+		} catch (Exception $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
 		return new Http\DataResponse(['status' => 'success', 'data' => array_map(function (Share $share) {
 			return [
 				'id' => $share->getFolderId(),
@@ -620,17 +706,23 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#findShares)
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
 	public function findShares(): DataResponse {
 		$permissions = $this->authorizer->getPermissionsForFolder(-1, $this->request);
 		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
+			$res->throttle();
+			return $res;
 		}
 
-		$shares = $this->shareMapper->findByOwner($this->authorizer->getUserId());
+		try {
+			$shares = $this->shareMapper->findByOwner($this->authorizer->getUserId());
+		} catch (Exception $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
 		return new Http\DataResponse(['status' => 'success', 'data' => array_map(function ($share) {
 			return $share->toArray();
 		}, $shares)]);
@@ -641,19 +733,21 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#getShares)
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
-	public function getShares($folderId): DataResponse {
+	public function getShares(int $folderId): DataResponse {
 		$permissions = $this->authorizer->getPermissionsForFolder($folderId, $this->request);
 		if (Authorizer::hasPermission(Authorizer::PERM_RESHARE, $permissions)) {
 			try {
 				$this->folderMapper->find($folderId);
 			} catch (MultipleObjectsReturnedException $e) {
-				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			} catch (DoesNotExistException $e) {
-				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+				$res = new DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
+				$res->throttle();
+				return $res;
 			}
 			$shares = $this->shareMapper->findByFolder($folderId);
 			return new Http\DataResponse(['status' => 'success', 'data' => array_map(static function (Share $share) {
@@ -665,13 +759,17 @@ class FoldersController extends ApiController {
 				$this->folderMapper->find($folderId);
 				$share = $this->shareMapper->findByFolderAndUser($folderId, $this->authorizer->getUserId());
 			} catch (MultipleObjectsReturnedException $e) {
-				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_INTERNAL_SERVER_ERROR);
+				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			} catch (DoesNotExistException $e) {
-				return new DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+				$res = new DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
+				$res->throttle();
+				return $res;
 			}
-			return new Http\DataResponse(['status' => 'success', 'data' => [$share->toArray()]]);
+			return new Http\DataResponse(['status' => 'success', 'data' => $share->toArray()]);
 		}
-		return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+		$res = new DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
+		$res->throttle();
+		return $res;
 	}
 
 	/**
@@ -683,22 +781,25 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#createShare)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function createShare($folderId, $participant, int $type, $canWrite = false, $canShare = false): DataResponse {
+	public function createShare(int $folderId, string $participant, int $type, bool $canWrite = false, bool $canShare = false): DataResponse {
 		$permissions = $this->authorizer->getPermissionsForFolder($folderId, $this->request);
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $permissions)) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
+			$res->throttle();
+			return $res;
 		}
 		try {
 			$canWrite = $canWrite && Authorizer::hasPermission(Authorizer::PERM_WRITE, $permissions);
 			$share = $this->folders->createShare($folderId, $participant, $type, $canWrite, $canShare);
 			return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
 		} catch (DoesNotExistException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Could not find folder'], Http::STATUS_BAD_REQUEST);
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Multiple objects returned'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Multiple objects returned']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
 		}
@@ -711,26 +812,34 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#editShare)
 	 * @PublicPage
 	 */
-	public function editShare($shareId, $canWrite = false, $canShare = false): Http\DataResponse {
+	public function editShare(int $shareId, bool $canWrite = false, bool $canShare = false): Http\DataResponse {
 		try {
 			$share = $this->shareMapper->find($shareId);
 		} catch (DoesNotExistException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+			$res->throttle();
+			return $res;
 		} catch (MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		$permissions = $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request);
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $permissions)) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
+			$res->throttle();
+			return $res;
 		}
 
 		$canWrite = $canWrite && Authorizer::hasPermission(Authorizer::PERM_WRITE, $permissions);
 		$share->setCanWrite($canWrite);
 		$share->setCanShare($canShare);
-		$this->shareMapper->update($share);
+		try {
+			$this->shareMapper->update($share);
+		} catch (Exception $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
 
 		return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
 	}
@@ -740,25 +849,28 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#deleteShare)
 	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
-	public function deleteShare($shareId): DataResponse {
+	public function deleteShare(int $shareId): DataResponse {
 		try {
 			$share = $this->shareMapper->find($shareId);
 		} catch (DoesNotExistException $e) {
 			return new Http\DataResponse(['status' => 'success']);
 		} catch (MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => ['Multiple objects found']], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request))) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new Http\DataResponse(['status' => 'success']);
+			$res->throttle();
+			return $res;
 		}
 
 		try {
 			$this->folders->deleteShare($shareId);
-		} catch (UnsupportedOperation | DoesNotExistException | MultipleObjectsReturnedException $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unsupported operation'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		} catch (UnsupportedOperation | DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		return new Http\DataResponse(['status' => 'success']);
 	}
@@ -767,13 +879,15 @@ class FoldersController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 *
+	 * @BruteForceProtection(action=bookmarks#getDeletedFolders)
 	 * @PublicPage
 	 */
 	public function getDeletedFolders(): DataResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Unauthorized'], Http::STATUS_FORBIDDEN);
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
+			$res->throttle();
+			return $res;
 		}
 		try {
 			$folders = $this->treeMapper->getSoftDeletedRootItems($this->authorizer->getUserId(), TreeMapper::TYPE_FOLDER);
@@ -783,7 +897,7 @@ class FoldersController extends ApiController {
 				return $array;
 			}, $folders);
 		} catch (UrlParseError|Exception $e) {
-			return new Http\DataResponse(['status' => 'error', 'data' => 'Internal error'], Http::STATUS_INTERNAL_SERVER_ERROR);
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
 		return new Http\DataResponse(['status' => 'success', 'data' => $folderItems]);
