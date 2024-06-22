@@ -34,7 +34,7 @@
     "humanize-duration": "^3.32.1",
     "linkify-it": "^3.0.3",
     "lodash": "^4.17.21",
-    "nextcloud-vue-collections": "^0.11.0",
+    "nextcloud-vue-collections": "^0.13.0",
     "sanitize-html": "^2.13.0",
     "vue": "^2.6.14",
     "vue-click-outside": "^1.1.0",
