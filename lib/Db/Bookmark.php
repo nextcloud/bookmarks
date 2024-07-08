@@ -107,16 +107,16 @@ class Bookmark extends Entity {
 
 	public function setTitle(string $title): void {
 		// Cap title length at 1024 because the DB doesn't have more space currently (4096 byte with utf8mb4)
-		if (mb_strlen($title) > 1024) {
-			$title = mb_substr($title, 0, 1023) . '…';
+		if (strlen($title) > 1024) {
+			$title = substr($title, 0, 1020) . '…';
 		}
 		$this->setter('title', [$title]);
 	}
 
 	public function setDescription(string $desc): void {
 		// Cap title length at 1024 because the DB doesn't have more space currently (4096 byte with utf8mb4)
-		if (mb_strlen($desc) > 1024) {
-			$desc = mb_substr($desc, 0, 1023) . '…';
+		if (strlen($desc) > 1024) {
+			$desc = substr($desc, 0, 1020) . '…';
 		}
 		$this->setter('description', [$desc]);
 	}
