@@ -1214,6 +1214,7 @@ class TreeMapper extends QBMapper {
 			$result = $qb->executeQuery();
 		} catch (Exception $e) {
 			$this->logger->error('Could not query for old trash bin items', ['exception' => $e]);
+			return;
 		}
 		while($row = $result->fetch()) {
 			try {
@@ -1225,5 +1226,4 @@ class TreeMapper extends QBMapper {
 			}
 		}
 	}
-
 }
