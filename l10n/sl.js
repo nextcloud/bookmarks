@@ -100,6 +100,7 @@ OC.L10N.register(
     "Shared by {user}" : "V skupni rabi z {user}",
     "Rename folder" : "Preimenuj mapo",
     "Move folder" : "Premakni mapo",
+    "Delete folder permanently" : "Izbriši mapo trajno",
     "Choose folder" : "Izbor mape",
     "Submit" : "Pošlji",
     "Cancel" : "Prekliči",
