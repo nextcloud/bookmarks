@@ -211,7 +211,6 @@ class InternalBookmarkController extends ApiController {
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 */
 	public function countBookmarks(int $folder): JSONResponse {
 		return $this->publicController->countBookmarks($folder);
@@ -222,7 +221,6 @@ class InternalBookmarkController extends ApiController {
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 */
 	public function countUnavailable(): JSONResponse {
 		return $this->publicController->countUnavailable();
@@ -233,7 +231,6 @@ class InternalBookmarkController extends ApiController {
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 */
 	public function countArchived(): JSONResponse {
 		return $this->publicController->countArchived();
@@ -244,7 +241,6 @@ class InternalBookmarkController extends ApiController {
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 */
 	public function countDuplicated(): JSONResponse {
 		return $this->publicController->countDuplicated();
@@ -253,7 +249,6 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 * @return JSONResponse
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 */
 	public function acquireLock(): JSONResponse {
 		return $this->publicController->acquireLock();
@@ -262,7 +257,6 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 * @return JSONResponse
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 */
 	public function releaseLock(): JSONResponse {
 		return $this->publicController->releaseLock();
@@ -271,16 +265,31 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 */
 	public function getDeletedBookmarks(): DataResponse {
 		return $this->publicController->getDeletedBookmarks();
 	}
 
+	/**
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 */
+	public function emptyTrashbin(): DataResponse {
+		return $this->publicController->emptyTrashbin();
+	}
+
+	/**
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 */
 	public function countAllClicks(): DataResponse {
 		return $this->publicController->countAllClicks();
 	}
 
+	/**
+	 * @return Http\DataResponse
+	 * @NoAdminRequired
+	 */
 	public function countWithClicks(): DataResponse {
 		return $this->publicController->countWithClicks();
 	}

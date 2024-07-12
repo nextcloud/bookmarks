@@ -112,12 +112,20 @@
 				@update:value="onSearch($event)">
 				<MagnifyIcon :size="20" />
 			</NcTextField>
+			<template v-if="isTrashbinRoot">
+				<NcButton @click="onEmptyTrashbin">
+					<template #icon>
+						<DeleteForeverIcon :size="20" />
+					</template>
+					{{ t('bookmarks', 'Empty trash bin') }}
+				</NcButton>
+			</template>
 		</div>
 	</div>
 </template>
 <script>
-import { NcSelect, NcActions, NcActionButton, NcActionInput, NcActionRouter, NcTextField } from '@nextcloud/vue'
-import { TrashbinIcon, MagnifyIcon, EarthIcon, ViewGridIcon, ViewListIcon, PlusIcon, FolderIcon, ArrowLeftIcon, RssIcon, SortAlphabeticalAscendingIcon, SortBoolAscendingIcon, SortClockAscendingOutlineIcon, SortCalendarAscendingIcon, SortNumericAscendingIcon, SortAscendingIcon, ShareVariantIcon, TagIcon } from './Icons.js'
+import { NcButton, NcSelect, NcActions, NcActionButton, NcActionInput, NcActionRouter, NcTextField } from '@nextcloud/vue'
+import { DeleteForeverIcon, TrashbinIcon, MagnifyIcon, EarthIcon, ViewGridIcon, ViewListIcon, PlusIcon, FolderIcon, ArrowLeftIcon, RssIcon, SortAlphabeticalAscendingIcon, SortBoolAscendingIcon, SortClockAscendingOutlineIcon, SortCalendarAscendingIcon, SortNumericAscendingIcon, SortAscendingIcon, ShareVariantIcon, TagIcon } from './Icons.js'
 import { actions, mutations } from '../store/index.js'
 import { generateUrl } from '@nextcloud/router'
 import BulkEditing from './BulkEditing.vue'
@@ -125,7 +133,9 @@ import BulkEditing from './BulkEditing.vue'
 export default {
 	name: 'Controls',
 	components: {
+		NcButton,
 		BulkEditing,
+		DeleteForeverIcon,
 		TrashbinIcon,
 		NcSelect,
 		NcActions,
@@ -169,6 +179,9 @@ export default {
 	computed: {
 		isTrashbin() {
 			return this.$route.name === this.routes.TRASHBIN || (this.$route.name === this.routes.FOLDER && this.folder && this.folder.softDeleted)
+		},
+		isTrashbinRoot() {
+			return this.$route.name === this.routes.TRASHBIN
 		},
 		backLink() {
 			if (this.folder && this.folderPath.length > 1) {
@@ -309,6 +322,10 @@ export default {
 			})
 			await this.$store.dispatch(actions.FETCH_PAGE)
 		},
+
+		async onEmptyTrashbin() {
+			await this.$store.dispatch(actions.EMPTY_TRASHBIN)
+		}
 	},
 }
 </script>

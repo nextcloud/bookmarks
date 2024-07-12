@@ -13,7 +13,7 @@
 		<div v-if="$route.name === routes.TRASHBIN && (bookmarks.length || subFolders.length)" class="bookmarkslist__description">
 			<NcNoteCard type="info">
 				{{
-					t('bookmarks', 'These are your deleted items.')
+					t('bookmarks', 'These are your deleted items. Items will be deleted permanently after two months.')
 				}}
 			</NcNoteCard>
 		</div>

@@ -54,6 +54,7 @@ export const mutations = {
 	SET_DELETED_FOLDERS: 'SET_DELETED_FOLDERS',
 	CLICK_BOOKMARK: 'CLICK_BOOKMARK',
 	SET_WITH_CLICKS_COUNT: 'SET_WITH_CLICKS_COUNT',
+	EMPTY_TRASHBIN: 'EMPTY_TRASHBIN',
 }
 export default {
 	[mutations.SET_AUTH_TOKEN](state, authToken) {
@@ -83,6 +84,9 @@ export default {
 	},
 	[mutations.SET_DELETED_FOLDERS](state, folders) {
 		state.deletedFolders = sortFolders(folders)
+	},
+	[mutations.EMPTY_TRASHBIN](state) {
+		state.deletedFolders = []
 	},
 	[mutations.MOVE_FOLDER](state, { folder, target }) {
 		const currentFolder = this.getters.getFolder(folder)[0]

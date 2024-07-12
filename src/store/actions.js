@@ -88,6 +88,8 @@ export const actions = {
 	CREATE_PUBLIC_LINK: 'CREATE_PUBLIC_LINK',
 	DELETE_PUBLIC_LINK: 'DELETE_PUBLIC_LINK',
 	LOAD_SHARED_FOLDERS: 'LOAD_SHARED_FOLDERS',
+
+	EMPTY_TRASHBIN: 'EMPTY_TRASHBIN',
 }
 
 export default {
@@ -1614,6 +1616,53 @@ export default {
 				)
 				throw err
 			})
+	},
+	async [actions.EMPTY_TRASHBIN]({ commit, dispatch, state }) {
+		if (state.loading.emptyTrashbin) return
+		await commit(mutations.FETCH_START, {
+			type: 'emptyTrashbin',
+		})
+		try {
+			await Parallel.each(
+				state.deletedFolders,
+				folder =>
+					dispatch(actions.DELETE_FOLDER, {
+						id: folder.id,
+						avoidReload: true,
+						hard: true,
+					}),
+				10,
+			)
+			await Parallel.each(
+				state.bookmarks,
+				(bookmark) => {
+					// soft delete all occurences instead of hard deleting the bookmark itself
+					return Promise.all(bookmark.folders.map((folder) => {
+						return dispatch(actions.DELETE_BOOKMARK, {
+							id: bookmark.id,
+							folder,
+							avoidReload: true,
+							hard: true,
+						})
+					}))
+				},
+				10,
+			)
+			dispatch(actions.RELOAD_VIEW)
+			dispatch(actions.LOAD_DELETED_FOLDERS)
+			commit(mutations.FETCH_END, 'emptyTrashbin')
+		} catch (err) {
+			console.error(err)
+			commit(mutations.FETCH_END, 'emptyTrashbin')
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t(
+					'bookmarks',
+					'Failed to permanently delete parts of trash bin',
+				),
+			)
+			throw err
+		}
 	},
 }
 
