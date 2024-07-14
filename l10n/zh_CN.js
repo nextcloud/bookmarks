@@ -76,6 +76,7 @@ OC.L10N.register(
     "Copy RSS Feed of current view" : "复制当前视图的 RSS 订阅源",
     "The RSS feed requires authentication with your Nextcloud credentials" : "此 RSS 订阅源需要使用 Nextcloud 凭据进行身份验证",
     "Search" : "搜索",
+    "Empty trash bin" : "清空回收站",
     "Sort by created date" : "按创建日期排序 ",
     "Sort by last modified" : "按最后更改排序",
     "Sort by title" : "按标题排序",

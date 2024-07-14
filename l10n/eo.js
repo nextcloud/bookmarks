@@ -19,6 +19,7 @@ OC.L10N.register(
     "New" : "Nova",
     "New folder" : "Nova dosierujo",
     "Search" : "Serĉi",
+    "Empty trash bin" : "Malpleni rubujon",
     "Enter a link" : "Entajpu ligilon",
     "Add a bookmark" : "Aldoni legosignon",
     "Enter folder title" : "Entajpu titolon de la dosierujo",

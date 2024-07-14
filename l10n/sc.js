@@ -68,6 +68,7 @@ OC.L10N.register(
     "Copy RSS Feed of current view" : "Còpia fonte RSS de sa bista atuale",
     "The RSS feed requires authentication with your Nextcloud credentials" : "Sa fonte RSS rechedet s'autenticatzione cun is credentziales de Nextcloud",
     "Search" : "Chirca",
+    "Empty trash bin" : "Bòida s'àliga",
     "Sort by created date" : "Assenta segunu data de creatzione",
     "Sort by last modified" : "Assenta segundu ùrtima modìfica",
     "Sort by title" : "Assenta segundu tìtulu",

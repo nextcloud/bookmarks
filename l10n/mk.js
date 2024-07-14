@@ -12,6 +12,7 @@ OC.L10N.register(
     "New" : "Ново",
     "New folder" : "Нова папка",
     "Search" : "Барај",
+    "Empty trash bin" : "Испразни ја корпата со отпадоци",
     "RSS feed copied" : "RSS канал копиран",
     "Rename folder" : "Преименувај папка",
     "Submit" : "Испрати",

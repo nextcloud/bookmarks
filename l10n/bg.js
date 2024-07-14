@@ -76,6 +76,7 @@ OC.L10N.register(
     "Copy RSS Feed of current view" : "Копиране на RSS емисия на текущ изглед",
     "The RSS feed requires authentication with your Nextcloud credentials" : "RSS емисия изисква удостоверяване с вашите идентификационни данни в Nextcloud",
     "Search" : "Търсене",
+    "Empty trash bin" : "Изпразване на кошчето за боклук",
     "Sort by created date" : "Сортиране по дата на създаване",
     "Sort by last modified" : "Сортиране по последна промяна",
     "Sort by title" : "Сортиране по заглавие",

@@ -8,6 +8,7 @@ OC.L10N.register(
     "Select all" : "ເລືອກທັງໝົດ",
     "New folder" : "ໂຟນເດີໃຫມ່",
     "Search" : "ຄົ້ນຫາ",
+    "Empty trash bin" : "ລ້າງຖັງຂີ້ເຫຍື່ອ",
     "Sort by created date" : "ຈັດລຽງຕາມລຳດັບວັນທີສ້າງ",
     "Rename folder" : "ປ່ຽນຊືໂຟນເດີ",
     "Cancel" : "ຍົກເລີກ",

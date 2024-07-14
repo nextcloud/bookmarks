@@ -47,6 +47,7 @@ OC.L10N.register(
     "New bookmark" : "סימנייה חדשה",
     "New folder" : "תיקייה חדשה",
     "Search" : "חיפוש",
+    "Empty trash bin" : "פינוי סל האשפה",
     "Enter a link" : "נא למלא קישור",
     "Enter a title" : "נא למלא כותרת",
     "No bookmarks found" : "לא נמצאו סימניות",

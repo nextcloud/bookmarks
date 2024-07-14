@@ -11,6 +11,7 @@ OC.L10N.register(
     "New" : "ใหม่",
     "New folder" : "โฟลเดอร์ใหม่",
     "Search" : "ค้นหา",
+    "Empty trash bin" : "ล้างข้อมูลในถังขยะ",
     "Rename folder" : "เปลี่ยนชื่อโฟลเดอร์",
     "Submit" : "ส่ง",
     "Cancel" : "ยกเลิก",

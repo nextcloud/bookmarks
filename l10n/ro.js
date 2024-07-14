@@ -11,6 +11,7 @@ OC.L10N.register(
     "New" : "Nou",
     "New folder" : "Director nou",
     "Search" : "Caută",
+    "Empty trash bin" : "Golește coșul de gunoi",
     "Rename folder" : "Redenumește dosar",
     "Submit" : "Trimite",
     "Cancel" : "Anulează",

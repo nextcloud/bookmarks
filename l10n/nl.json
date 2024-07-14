@@ -68,6 +68,7 @@
     "Copy RSS Feed of current view" : "Kopieer RSS feed van huidige weergave",
     "The RSS feed requires authentication with your Nextcloud credentials" : "De RSS-feed vereist authenticatie met je Nextcloud-inloggegevens",
     "Search" : "Zoeken",
+    "Empty trash bin" : "Prullenbak legen",
     "Sort by created date" : "Sorteer op aanmaakdatum",
     "Sort by last modified" : "Op wijzigingsdatum sorteren",
     "Sort by title" : "Sorteer op titel",

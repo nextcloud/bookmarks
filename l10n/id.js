@@ -23,6 +23,7 @@ OC.L10N.register(
     "New bookmark" : "Markah baru",
     "New folder" : "Folder baru",
     "Search" : "Cari",
+    "Empty trash bin" : "Kosongkan tempat sampah",
     "RSS feed copied" : "Umpan RSS tersalin",
     "Add a bookmark" : "Tambahkan markah",
     "Select folder" : "Pilih folder",

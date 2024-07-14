@@ -10,6 +10,7 @@ OC.L10N.register(
     "New" : "Nei",
     "New folder" : "Neien Dossier",
     "Search" : "Search",
+    "Empty trash bin" : "Eidel Dreckskëscht",
     "Rename folder" : "Dossier ëmbenennen",
     "Cancel" : "Ofbriechen",
     "Recent" : "Rezent",

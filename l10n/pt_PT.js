@@ -13,6 +13,7 @@ OC.L10N.register(
     "New" : "Novo",
     "New folder" : "Nova pasta",
     "Search" : "Pesquisa sobre",
+    "Empty trash bin" : "Esvaziar a reciclagem",
     "Add a bookmark" : "Adicionar um marcador",
     "Rename folder" : "Renomear pasta",
     "Choose folder" : "Escolher pasta",

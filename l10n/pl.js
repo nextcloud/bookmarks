@@ -78,6 +78,7 @@ OC.L10N.register(
     "Copy RSS Feed of current view" : "Kopiuj kanał RSS bieżącego widoku",
     "The RSS feed requires authentication with your Nextcloud credentials" : "Źródło RSS wymaga uwierzytelnienia za pomocą poświadczeń Nextcloud",
     "Search" : "Szukaj",
+    "Empty trash bin" : "Opróżnij kosz",
     "Sort by created date" : "Sortuj według daty utworzenia",
     "Sort by last modified" : "Sortuj według ostatniej modyfikacji",
     "Sort by title" : "Sortuj według tytułu",

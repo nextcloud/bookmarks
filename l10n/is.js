@@ -25,6 +25,7 @@ OC.L10N.register(
     "New bookmark" : "Nýtt bókamerki",
     "New folder" : "Ný mappa",
     "Search" : "Search",
+    "Empty trash bin" : "Tæma ruslið",
     "Sort by created date" : "Sort by created date",
     "RSS feed copied" : "RSS-fréttastreymi afritað",
     "Enter a link" : "Settu inn slóð",

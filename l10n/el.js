@@ -64,6 +64,7 @@ OC.L10N.register(
     "Change to grid view" : "Αλλαγή σε προβολή πλέγματος",
     "Change to list view" : "Αλλαγή σε προβολή λίστας",
     "Search" : "Αναζήτηση",
+    "Empty trash bin" : "Άδειασμα κάδου",
     "Sort by created date" : "Ταξινόμηση κατά ημερομηνία δημιουργίας",
     "Sort by last modified" : "Ταξινόμηση κατά τελευταία τροποποίηση",
     "Sort by title" : "Ταξινόμηση κατά τίτλο",

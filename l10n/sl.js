@@ -76,6 +76,7 @@ OC.L10N.register(
     "Copy RSS Feed of current view" : "Kopiraj vir RSS trenutnega pogleda",
     "The RSS feed requires authentication with your Nextcloud credentials" : "Vir RSS zahteva overitev z vašimi poverili Nextcloud",
     "Search" : "Poišči",
+    "Empty trash bin" : "Izprazni smeti",
     "Sort by created date" : "Razvrsti po datumu ustvarjanja",
     "Sort by last modified" : "Razvrsti po datumu spremembe",
     "Sort by title" : "Razvrsti po naslovu",

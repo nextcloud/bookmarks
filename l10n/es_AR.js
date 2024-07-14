@@ -10,6 +10,7 @@ OC.L10N.register(
     "New" : "Nuevo",
     "New folder" : "Carpeta nueva",
     "Search" : "Buscar",
+    "Empty trash bin" : "Vaciar la papelera",
     "Rename folder" : "Renombrar carpeta",
     "Choose folder" : "Elegir carpeta",
     "Submit" : "Enviar",

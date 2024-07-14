@@ -13,6 +13,7 @@ OC.L10N.register(
     "New" : "Tạo mới",
     "New folder" : "Tạo thư mục",
     "Search" : "Tìm kiếm",
+    "Empty trash bin" : "Dọn thùng rác",
     "Add a bookmark" : "Thêm một bookmark",
     "Enter folder title" : "Nhập tiêu đề thư mục",
     "Rename folder" : "Đổi tên thư mục",

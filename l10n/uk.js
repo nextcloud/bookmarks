@@ -20,6 +20,7 @@ OC.L10N.register(
     "Change to grid view" : "Подання сіткою",
     "Change to list view" : "Подання списком",
     "Search" : "Пошук",
+    "Empty trash bin" : "Очистити кошик",
     "Sort by last modified" : "Впорядкувати за останніми змінами",
     "Sort by title" : "Впорядкувати за назвою",
     "Enter a link" : "Зазначте посилання",

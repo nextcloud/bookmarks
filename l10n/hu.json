@@ -74,6 +74,7 @@
     "Copy RSS Feed of current view" : "Az aktuális nézet RSS-hírcsatornájának másolása",
     "The RSS feed requires authentication with your Nextcloud credentials" : "Az RSS-hírcsatorna hitelesítést igényel a Nextcloud hitelesítő adataival",
     "Search" : "Keresés",
+    "Empty trash bin" : "Kuka ürítése",
     "Sort by created date" : "Rendezés létrehozás dátuma szerint",
     "Sort by last modified" : "Rendezés módosítás dátuma szerint",
     "Sort by title" : "Rendezés cím szerint",

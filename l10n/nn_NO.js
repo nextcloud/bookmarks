@@ -9,6 +9,7 @@ OC.L10N.register(
     "New" : "Ny",
     "New folder" : "Ny mappe",
     "Search" : "Søk",
+    "Empty trash bin" : "Tøm søppel korg",
     "Choose folder" : "Vel mappe",
     "Cancel" : "Avbryt",
     "Shared with you" : "Shared with you",

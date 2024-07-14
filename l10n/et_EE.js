@@ -11,6 +11,7 @@ OC.L10N.register(
     "New" : "Uus",
     "New folder" : "Uus kaust",
     "Search" : "Otsi",
+    "Empty trash bin" : "Tühjenda prügikast",
     "Rename folder" : "Nimeta kaust ümber",
     "Choose folder" : "Vali kaust",
     "Submit" : "Saada",

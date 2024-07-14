@@ -35,6 +35,7 @@ OC.L10N.register(
     "Change to grid view" : "Keisti į tinklelio rodinį",
     "Change to list view" : "Keisti į sąrašo rodinį",
     "Search" : "Ieškoti",
+    "Empty trash bin" : "Išvalyti šiukšlinę",
     "RSS feed copied" : "RSS kanalas nukopijuotas",
     "Enter a link" : "Įveskite nuorodą",
     "Add a bookmark" : "Pridėti adresyno įrašą",

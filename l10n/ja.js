@@ -66,6 +66,7 @@ OC.L10N.register(
     "Change to grid view" : "グリッド表示へ変更する",
     "Change to list view" : "リスト表示へ変更する",
     "Search" : "検索",
+    "Empty trash bin" : "ゴミ箱を空にする",
     "Sort by created date" : "作成日時順",
     "Sort by last modified" : "最終変更日時順",
     "Sort by title" : "タイトル順",
