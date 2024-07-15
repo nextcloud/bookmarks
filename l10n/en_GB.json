@@ -56,6 +56,7 @@
     "This content is being downloaded for offline use. Please check back later." : "This content is being downloaded for offline use. Please check back later.",
     "Bookmarked {time} ago" : "Bookmarked {time} ago",
     "Bookmarked on {date}" : "Bookmarked on {date}",
+    "These are your deleted items. Items will be deleted permanently after two months." : "These are your deleted items. Items will be deleted permanently after two months.",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.",
     "Searching in the current folder only." : "Searching in the current folder only.",
     "Repeat search in all folders" : "Repeat search in all folders",

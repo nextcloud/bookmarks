@@ -58,6 +58,7 @@ OC.L10N.register(
     "This content is being downloaded for offline use. Please check back later." : "Este contido estase descargando para usar sen conexión. Volva comprobar máis tarde.",
     "Bookmarked {time} ago" : "Marcado como favorito hai {time}",
     "Bookmarked on {date}" : "Marcado como favorito o {date}",
+    "These are your deleted items. Items will be deleted permanently after two months." : "Estes son os elementos eliminados. Os elementos eliminaranse definitivamente após dous meses.",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Os marcadores de ficheiros na web, como as fotos ou os PDF, gardaranse automaticamente nos seus ficheiros de Nextcloud, para que poida atopalos incluso cando a ligazón estea fóra de liña.",
     "Searching in the current folder only." : "Buscando só no cartafol actual.",
     "Repeat search in all folders" : "Repetir a busca en todos os cartafoles",

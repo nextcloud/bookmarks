@@ -86,6 +86,7 @@ OC.L10N.register(
     "Copy RSS Feed of current view" : "نسخ تغذية RSS للعرض الحالي",
     "The RSS feed requires authentication with your Nextcloud credentials" : "تغذية RSS تتطلب المصادقة باستخدام حيثيّاتك credentials للدخول إلى نكست كلاود",
     "Search" : "البحث",
+    "Empty trash bin" : "تفريغ سلة المهملات",
     "Sort by created date" : "ترتيب بحسب تاريخ الإنشاء",
     "Sort by last modified" : "الترتيب بحسب تاريخ آخر تعديل",
     "Sort by title" : "ترتيب بحسب العنوان",

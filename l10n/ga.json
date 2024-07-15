@@ -56,6 +56,7 @@
     "This content is being downloaded for offline use. Please check back later." : "Tá an t-ábhar seo á íoslódáil le haghaidh úsáide as líne. Seiceáil ar ais ar ball le do thoil.",
     "Bookmarked {time} ago" : "Leabharmharcáilte {time} ó shin",
     "Bookmarked on {date}" : "Leabharmharcáilte ar {date}",
+    "These are your deleted items. Items will be deleted permanently after two months." : "Seo iad do chuid míreanna scriosta. Scriosfar na míreanna go buan tar éis dhá mhí.",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Sábhálfar leabharmharcanna chuig comhaid ar an ngréasán cosúil le grianghraif nó PDFanna go huathoibríoch chuig do chomhaid Nextcloud, ionas gur féidir leat iad a aimsiú fiú nuair a théann an nasc as líne.",
     "Searching in the current folder only." : "Ag cuardach san fhillteán reatha amháin.",
     "Repeat search in all folders" : "Déan cuardach arís i ngach fillteán",
