@@ -56,6 +56,7 @@
     "This content is being downloaded for offline use. Please check back later." : "تمّ تنزيل المحتوى تحضيراً للعمل دون اتصالٍ بالإنترنت. يرجى التحقق مرة أخرى في وقت لاحق.",
     "Bookmarked {time} ago" : "تمّ التأشير منذ {time} مضت",
     "Bookmarked on {date}" : "تمّ التأشير في {date}",
+    "These are your deleted items. Items will be deleted permanently after two months." : "هذه هي عناصرك المحذوفة. سوف يتم حذفها بشكل نهائي بعد شهرين.",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "سيتم حفظ الإشارات المرجعية إلى الملفات الموجودة على الويب مثل الصور أو ملفات PDF تلقائيًا في ملفات نكست كلاود الخاصة بك، بحيث يظل بإمكانك العثور عليها حتى عندما يكون الرابط غير متصل بالإنترنت.",
     "Searching in the current folder only." : "البحث في المجلد الحالي فقط",
     "Repeat search in all folders" : "أعِدِ البحث في جميع المجلدات",

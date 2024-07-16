@@ -58,6 +58,7 @@ OC.L10N.register(
     "This content is being downloaded for offline use. Please check back later." : "此內容已下載供離線使用。請稍後再檢查。",
     "Bookmarked {time} ago" : "{time} 前加入書籤",
     "Bookmarked on {date}" : "於 {date} 加入書籤",
+    "These are your deleted items. Items will be deleted permanently after two months." : "這是您已刪除的項目。項目將會在兩個月後永久刪除。",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "網路上的檔案（如照片或 PDF 等）的書籤將會自動儲存到您的 Nextcloud 檔案中，因此即便連結離線，您也仍然可以找到它們。",
     "Searching in the current folder only." : "僅在目前資料夾中搜尋。",
     "Repeat search in all folders" : "在所有資料夾中重複搜尋",

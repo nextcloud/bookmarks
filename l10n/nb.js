@@ -58,6 +58,7 @@ OC.L10N.register(
     "This content is being downloaded for offline use. Please check back later." : "Dette innholdet lastes ned for frakoblet bruk. Kom tilbake senere.",
     "Bookmarked {time} ago" : "Bokmerke lagt til {time} siden",
     "Bookmarked on {date}" : "Bokmerket den {date}",
+    "These are your deleted items. Items will be deleted permanently after two months." : "Dette er de slettede elementene dine. Elementer slettes permanent etter to måneder.",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Bokmerker til filer på nettet som bilder eller PDF-filer lagres automatisk i Nextcloud-filene dine, slik at du fortsatt kan finne dem selv når lenken går i frakoblet modus.",
     "Searching in the current folder only." : "Søker kun i den gjeldende mappen.",
     "Repeat search in all folders" : "Gjenta søk i alle mapper",

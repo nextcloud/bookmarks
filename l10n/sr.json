@@ -56,6 +56,7 @@
     "This content is being downloaded for offline use. Please check back later." : "Овај садржај је преузет за коришћење ван мреже. Молимо вас да проверите касније.",
     "Bookmarked {time} ago" : "Маркирано пре {time}",
     "Bookmarked on {date}" : "Маркирано дана {date}",
+    "These are your deleted items. Items will be deleted permanently after two months." : "Ово су ставке које сте обрисали. Након два месеца, обрисаће се неповратно.",
     "Bookmarks to files on the web like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Маркери на фајлове на вебу, као што су фотографије или PDF документи ће се аутоматски сачувати у ваше Nextcloud фајлове, тако да ћете моћи да их пронађете чак и када линк више не буде на мрежи.",
     "Searching in the current folder only." : "Претрага се врши само у текућем фолдеру.",
     "Repeat search in all folders" : "Понови претрагу по свим фолдерима",
