@@ -5,6 +5,7 @@ OC.L10N.register(
     "Rename" : "Renombrar",
     "Copy link" : "Copiar enlace",
     "Move" : "Mover",
+    "Link copied to clipboard" : "Enlace copiado al portapapeles",
     "Select all" : "Seleccionar todo",
     "Go back" : "Regresar",
     "New" : "Nuevo",
