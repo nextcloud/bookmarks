@@ -5,6 +5,7 @@ OC.L10N.register(
     "Rename" : "Преименувај",
     "Copy link" : "Копирај линк",
     "Move" : "Премести",
+    "Link copied to clipboard" : "Линкот е копиран во клипборд",
     "Delete selection" : "Избриши ги селектираните",
     "Select all" : "Избери се",
     "Go back" : "Назад",
