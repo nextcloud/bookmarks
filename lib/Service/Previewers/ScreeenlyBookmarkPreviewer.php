@@ -52,7 +52,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	private $apiUrl;
 
 	public function __construct(IConfig $config, IClientService $clientService, LoggerInterface $logger) {
-		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'http://screeenly.com/api/v1/fullsize');
+		$this->apiUrl = $config->getAppValue('bookmarks', 'previews.screenly.url', 'https://secure.screeenly.com/api/v1/fullsize');
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenly.token', '');
 		$this->client = $clientService->newClient();
 		$this->logger = $logger;
