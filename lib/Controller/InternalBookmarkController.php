@@ -274,14 +274,6 @@ class InternalBookmarkController extends ApiController {
 	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 */
-	public function emptyTrashbin(): DataResponse {
-		return $this->publicController->emptyTrashbin();
-	}
-
-	/**
-	 * @return Http\DataResponse
-	 * @NoAdminRequired
-	 */
 	public function countAllClicks(): DataResponse {
 		return $this->publicController->countAllClicks();
 	}
