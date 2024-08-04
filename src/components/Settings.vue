@@ -26,19 +26,24 @@
 			</button>
 		</NcAppSettingsSection>
 
-		<NcAppSettingsSection v-if="scrapingEnabled" id="archive" :name="t('bookmarks', 'Auto-archiving')">
+		<NcAppSettingsSection id="archive" :name="t('bookmarks', 'Auto-archiving')">
 			<template #icon>
 				<ArchiveIcon :size="20" />
 			</template>
 			<p>{{ t('bookmarks', 'The bookmarks app can automatically archive the web content of links you have bookmarked') }}</p>
-			<NcCheckboxRadioSwitch :checked="archiveEnabled" @update:checked="onChangeArchiveEnabled">
-				{{ t('bookmarks', 'Enable archiving') }}
-			</NcCheckboxRadioSwitch>
-			<NcTextField v-if="archiveEnabled"
-				:label="t('bookmarks', 'Enter the path of a folder in your Files where bookmarked files should be stored.')"
-				:value="archivePath"
-				:readonly="true"
-				@click="onChangeArchivePath" />
+			<template v-if="scrapingEnabled">
+				<NcCheckboxRadioSwitch :checked="archiveEnabled" @update:checked="onChangeArchiveEnabled">
+					{{ t('bookmarks', 'Enable archiving') }}
+				</NcCheckboxRadioSwitch>
+				<NcTextField v-if="archiveEnabled"
+					:label="t('bookmarks', 'Enter the path of a folder in your Files where bookmarked files should be stored.')"
+					:value="archivePath"
+					:readonly="true"
+					@click="onChangeArchivePath" />
+			</template>
+			<template v-else>
+				<p>{{ t('bookmarks', 'Currently your administrator has disabled network access for this app, however, which is why Auto-archiving is disabled at the moment.') }}</p>
+			</template>
 		</NcAppSettingsSection>
 
 		<NcAppSettingsSection id="backup" :name="t('bookmarks', 'Auto-Backup')">
@@ -168,10 +173,10 @@ export default {
 			return `javascript:(function(){var a=window,b=document,c=encodeURIComponent,e=c(document.title),d=a.open('${bookmarkletUrl}?url='+c(b.location)+'&title='+e${queryStringExtension},'bkmk_popup','left='+((a.screenX||a.screenLeft)+10)+',top='+((a.screenY||a.screenTop)+10)+',height=650px,width=550px,resizable=1,alwaysRaised=1');a.setTimeout(function(){d.focus()},300);})();`
 		},
 		scrapingEnabled() {
-			return Boolean(this.$store.state.settings['privacy.enableScraping'])
+			return this.$store.state.settings['privacy.enableScraping'] === 'true'
 		},
 		archiveEnabled() {
-			return Boolean(this.$store.state.settings['archive.enabled'])
+			return this.$store.state.settings['archive.enabled'] === 'true'
 		},
 		archivePath() {
 			return this.$store.state.settings['archive.filePath']
@@ -180,7 +185,7 @@ export default {
 			return this.$store.state.settings['backup.filePath']
 		},
 		backupEnabled() {
-			return Boolean(this.$store.state.settings['backup.enabled'])
+			return this.$store.state.settings['backup.enabled'] === 'true'
 		},
 	},
 	mounted() {
@@ -213,7 +218,7 @@ export default {
 		async onChangeArchiveEnabled(e) {
 			await this.$store.dispatch(actions.SET_SETTING, {
 				key: 'archive.enabled',
-				value: !this.archiveEnabled,
+				value: String(!this.archiveEnabled),
 			})
 		},
 		async onChangeArchivePath(e) {
@@ -236,7 +241,7 @@ export default {
 		async onChangeBackupEnabled(e) {
 			await this.$store.dispatch(actions.SET_SETTING, {
 				key: 'backup.enabled',
-				value: !this.backupEnabled,
+				value: String(!this.backupEnabled),
 			})
 		},
 		clickAddToHomeScreen() {
