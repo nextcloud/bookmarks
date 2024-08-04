@@ -214,6 +214,9 @@ export default {
 		},
 		onSelect(e) {
 			this.$router.push({ name: this.routes.FOLDER, params: { folder: this.folder.id } })
+			if (this.$store.state.sidebar && this.$store.state.sidebar.type === 'folder') {
+				this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
+			}
 			e.preventDefault()
 		},
 		async onRename() {

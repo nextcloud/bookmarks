@@ -29,6 +29,14 @@
 						{{ t('bookmarks', 'Share folder') }}
 					</NcActionButton>
 				</NcActions>
+				<NcActions v-if="!isTrashbin">
+					<NcActionButton :close-after-click="true" @click="onOpenFolderDetails">
+						<template #icon>
+							<InformationVariantIcon :size="20" />
+						</template>
+						{{ t('bookmarks', 'Open folder details') }}
+					</NcActionButton>
+				</NcActions>
 			</template>
 			<template v-if="$route.name === routes.TAGS">
 				<TagIcon :size="20" />
@@ -127,7 +135,7 @@
 </template>
 <script>
 import { NcButton, NcSelect, NcActions, NcActionButton, NcActionInput, NcActionRouter, NcTextField } from '@nextcloud/vue'
-import { DeleteForeverIcon, TrashbinIcon, MagnifyIcon, EarthIcon, ViewGridIcon, ViewListIcon, PlusIcon, FolderIcon, ArrowLeftIcon, RssIcon, SortAlphabeticalAscendingIcon, SortBoolAscendingIcon, SortClockAscendingOutlineIcon, SortCalendarAscendingIcon, SortNumericAscendingIcon, SortAscendingIcon, ShareVariantIcon, TagIcon } from './Icons.js'
+import { InformationVariantIcon, DeleteForeverIcon, TrashbinIcon, MagnifyIcon, EarthIcon, ViewGridIcon, ViewListIcon, PlusIcon, FolderIcon, ArrowLeftIcon, RssIcon, SortAlphabeticalAscendingIcon, SortBoolAscendingIcon, SortClockAscendingOutlineIcon, SortCalendarAscendingIcon, SortNumericAscendingIcon, SortAscendingIcon, ShareVariantIcon, TagIcon } from './Icons.js'
 import { actions, mutations } from '../store/index.js'
 import { generateUrl } from '@nextcloud/router'
 import BulkEditing from './BulkEditing.vue'
@@ -161,6 +169,7 @@ export default {
 		TagIcon,
 		NcTextField,
 		MagnifyIcon,
+		InformationVariantIcon,
 	},
 	props: {},
 	data() {
@@ -275,6 +284,10 @@ export default {
 
 		onOpenFolderShare() {
 			this.$store.dispatch(actions.OPEN_FOLDER_SHARING, this.folder.id)
+		},
+
+		onOpenFolderDetails() {
+			this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, this.folder.id)
 		},
 
 		onAddFolder() {

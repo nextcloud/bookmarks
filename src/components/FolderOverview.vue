@@ -17,6 +17,7 @@
 import { NcAppContentList } from '@nextcloud/vue'
 import TreeFolder from './TreeFolder.vue'
 import { privateRoutes } from '../router.js'
+import { actions } from '../store'
 
 export default {
 	name: 'FolderOverview',
@@ -38,6 +39,9 @@ export default {
 	methods: {
 		onSelect(folder) {
 			this.$router.push({ name: privateRoutes.FOLDER, params: { folder } })
+			if (this.$store.state.sidebar && this.$store.state.sidebar.type === 'folder') {
+				this.$store.dispatch(actions.OPEN_FOLDER_DETAILS, folder)
+			}
 			this.$emit('update:show-details', true)
 		},
 	},
