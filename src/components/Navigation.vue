@@ -29,7 +29,8 @@
 					{{ sharedFoldersCount | largeNumbers }}
 				</NcCounterBubble>
 			</NcAppNavigationItem>
-			<NcAppNavigationItem key="menu-archived"
+			<NcAppNavigationItem v-if="scrapingEnabled && archiveEnabled"
+				key="menu-archived"
 				:to="{ name: routes.ARCHIVED }"
 				:name="t('bookmarks', 'Files')">
 				<FileDocumentMultipleIcon slot="icon" :size="20" />
@@ -187,6 +188,12 @@ export default {
 		},
 		bookmarksLimit() {
 			return this.$store.state.settings.limit
+		},
+		scrapingEnabled() {
+			return this.$store.state.settings['privacy.enableScraping'] === 'true'
+		},
+		archiveEnabled() {
+			return this.$store.state.settings['archive.enabled'] === 'true'
 		},
 	},
 
