@@ -21,7 +21,10 @@
 		"nextcloud/ocp": "dev-master"
 	},
 	"config": {
-		"optimize-autoloader": true
+		"optimize-autoloader": true,
+		"platform": {
+			"php": "8.0.0"
+		}
 	},
 	"autoload": {
 		"psr-4": {

@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.2.3] - 2024-08-04
+
+* fix(TreeMapper#deleteOldTrashbinItems)
+* feat(Trash bin): Add "empty trash bin" button
+* fix(Bookmark): Use strlen instead of mb_strlen to count bytes in string
+* fix(CrawlService): Increase timeout
+* fix(BackupJob): use array_merge instead of +
+* fix: php 8.0 support
+* fix: refactor API endpoints
+* Fix(l10n): Update translations from Transifex
+* Fix php 8.0 support
+* fix(Settings): Archiving and Backup options were not working
+* fix(previews): use secure version of screeenly (Thanks to Stefan Zweifel)
+
 ## [14.2.2] - 2024-06-17
 
 ### Fixed
