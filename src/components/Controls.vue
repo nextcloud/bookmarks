@@ -325,7 +325,7 @@ export default {
 
 		async onEmptyTrashbin() {
 			await this.$store.dispatch(actions.EMPTY_TRASHBIN)
-		}
+		},
 	},
 }
 </script>
