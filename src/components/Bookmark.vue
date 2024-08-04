@@ -433,6 +433,8 @@ export default {
 
 .bookmark__title > h3 {
 	margin: 0;
+	font-size: 1rem;
+	font-weight: normal;
 }
 
 .bookmark__description {

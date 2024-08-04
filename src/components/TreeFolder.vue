@@ -115,6 +115,9 @@ export default {
 .treefolder__title > h3 {
 	flex: 1;
 	display: flex;
+	font-weight: normal;
+	font-size: 1em;
+	margin: 10px 0;
 }
 
 .treefolder__children .treefolder__title {

@@ -345,6 +345,7 @@ export default {
 
 .item__NcActions {
 	flex: 0;
+	margin: 3px;
 }
 
 .item--gridview .tagline {

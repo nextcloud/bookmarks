@@ -288,6 +288,8 @@ export default {
 	white-space: nowrap;
 	cursor: pointer;
 	margin: 0;
+	font-size: 1em;
+	font-weight: normal;
 }
 
 .item--gridview .folder__title {

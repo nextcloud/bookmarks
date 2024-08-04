@@ -31,5 +31,8 @@ export default {
 		colorPlaceholderDark() {
 			return getComputedStyle(document.documentElement).getPropertyValue('--color-placeholder-dark')
 		},
+		defaultClickableArea() {
+			return getComputedStyle(document.documentElement).getPropertyValue('--default-clickable-area')
+		},
 	},
 }
