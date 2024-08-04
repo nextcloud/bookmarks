@@ -300,6 +300,9 @@ export default {
 		onSearch(query) {
 			if (this.searchTimeout) clearTimeout(this.searchTimeout)
 			this.searchTimeout = setTimeout(() => {
+				if (query.trim().length < 3) {
+					return
+				}
 				if (query.trim()) {
 					this.$router.push({ name: this.routes.SEARCH, params: { search: query, folder: this.folder?.id || -1 } })
 				} else if (this.$route.name === this.routes.SEARCH) {
