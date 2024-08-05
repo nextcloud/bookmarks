@@ -688,9 +688,14 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => $result['errors']]);
 		}
 
+		if (empty($full_input['tmp_name']) || $full_input['error']) {
+			$result['errors'][] = $this->l10n->t('Failed to upload file');
+			return new JSONResponse(['status' => 'error', 'data' => $result['errors']]);
+		}
+
 		$file = $full_input['tmp_name'];
-		if ($full_input['type'] !== 'text/html') {
-			$result['errors'][] = $this->l10n->t('Unsupported file type for import');
+		if ($full_input['type'] !== 'text/html' && $full_input['type'] !== 'application/html') {
+			$result['errors'][] = $this->l10n->t('Unsupported file type for import: ' . $full_input['type']);
 			return new JSONResponse(['status' => 'error', 'data' => $result['errors']]);
 		}
 
