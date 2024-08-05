@@ -16,7 +16,6 @@ OC.L10N.register(
     "Shared with you" : "Compartite con te",
     "Files" : "Files",
     "Delete" : "Deler",
-    "Settings" : "Configurationes",
     "Title" : "Titulo",
     "Link" : "Ligamine",
     "Tags" : "Etiquettas",

@@ -8,7 +8,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Файлы",
     "Delete" : "Delete",
-    "Settings" : "Налады",
     "Title" : "Title",
     "Link" : "Link",
     "Notes" : "Notes",

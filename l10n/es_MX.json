@@ -136,7 +136,6 @@
     "Delete" : "Borrar",
     "Untagged" : "Sin etiquetar",
     "{used} bookmarks of {available} available" : "{used} marcadores de {available} disponibles",
-    "Settings" : "Ajustes",
     "No bookmarked files" : "No hay archivos con marcadores",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Los marcadores a archivos como fotos o PDFs se guardarán automáticamente en sus archivos de Nextcloud, para que pueda encontrarlos incluso cuando el enlace esté fuera de línea.",
     "Nothing found" : "Nada encontrado",

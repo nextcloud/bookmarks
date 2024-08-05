@@ -105,7 +105,6 @@ OC.L10N.register(
     "Delete" : "Διαγραφή",
     "Untagged" : "Χωρίς ετικέτα",
     "{used} bookmarks of {available} available" : "Διαθέσιμοι  {available} σελιδοδείκτες από {used}",
-    "Settings" : "Ρυθμίσεις",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Οι σελιδοδείκτες σε αρχεία όπως φωτογραφίες ή PDF θα αποθηκευτούν αυτόματα στα αρχεία Nextcloud, ώστε να μπορείτε να τα βρείτε ακόμα και όταν ο σύνδεσμος είναι εκτός σύνδεσης.",
     "No bookmarks here" : "Δεν υπάρχουν σελιδοδείκτες εδώ",
     "Client apps" : "Εφαρμογές πελάτη",

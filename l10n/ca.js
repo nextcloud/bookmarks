@@ -123,7 +123,6 @@ OC.L10N.register(
     "Delete" : "Suprimeix",
     "Untagged" : "Sense etiqueta",
     "{used} bookmarks of {available} available" : "{used} Adreces d'interès de {available} disponibles",
-    "Settings" : "Paràmetres",
     "No bookmarked files" : "No hi ha fitxers marcats",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Les adreces d'interès a fitxers com ara fotos o PDF es desaran automàticament als fitxers Nextcloud, de manera que encara els podeu trobar fins i tot quan l'enllaç es desconnecti.",
     "No broken links" : "No hi ha enllaços trencats",

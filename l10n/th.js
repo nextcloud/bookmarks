@@ -19,7 +19,6 @@ OC.L10N.register(
     "Shared with you" : "แชร์กับคุณ",
     "Files" : "ไฟล์",
     "Delete" : "ลบ",
-    "Settings" : "การตั้งค่า",
     "Need help?" : "ต้องการความช่วยเหลือ?",
     "Title" : "ชื่อเรื่อง",
     "Link" : "ลิงก์",

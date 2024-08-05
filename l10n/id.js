@@ -38,7 +38,6 @@ OC.L10N.register(
     "Files" : "Berkas",
     "Delete" : "Hapus",
     "Untagged" : "Belum ada tag",
-    "Settings" : "Setelan",
     "No bookmarks here" : "Tidak ada markah di sini",
     "Client apps" : "Aplikasi klien",
     "Need help?" : "Butuh bantuan?",

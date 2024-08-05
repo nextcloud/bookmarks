@@ -35,7 +35,6 @@ OC.L10N.register(
     "Shared with you" : "Partejat amb vos",
     "Files" : "Fichièrs",
     "Delete" : "Suprimir",
-    "Settings" : "Paramètres",
     "Need help?" : "Besonh d’ajuda ?",
     "Title" : "Títol",
     "Link" : "Ligam",

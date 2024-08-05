@@ -134,7 +134,6 @@ OC.L10N.register(
     "Delete" : "Poista",
     "Untagged" : "Ilman tunnistetta",
     "{used} bookmarks of {available} available" : "{used}/{available} kirjanmerkkiä käytettävissä",
-    "Settings" : "Asetukset",
     "No bookmarked files" : "Ei kirjanmerkiksi lisättyjä tiedostoja",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Kirjanmerkit tiedostoihin, kuten kuviin tai PDF-tiedostoihin tallennetaan automaattisesti Nextcloudin tiedostoihin, joten löydät ne vaikka linkki ei olisi käytössä.",
     "Nothing found" : "Mitään ei löytynyt",

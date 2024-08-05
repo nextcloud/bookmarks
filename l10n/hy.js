@@ -13,7 +13,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Ֆայլեր",
     "Delete" : "հեռացնել",
-    "Settings" : "Կարգավորումներ",
     "Title" : "Վերնագիր",
     "Link" : "Հղում",
     "Notes" : "Notes",

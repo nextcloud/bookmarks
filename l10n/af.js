@@ -20,7 +20,6 @@ OC.L10N.register(
     "Shared with you" : "Met u gedeel",
     "Files" : " Lêers",
     "Delete" : "Skrap",
-    "Settings" : "Instellings",
     "Bookmarklet" : "Boekmerkie",
     "Need help?" : "Hulp nodig?",
     "Title" : "Titel",

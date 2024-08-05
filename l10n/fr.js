@@ -133,7 +133,6 @@ OC.L10N.register(
     "Delete" : "Supprimer",
     "Untagged" : "Sans étiquette",
     "{used} bookmarks of {available} available" : "{used} favoris sur {available} disponibles",
-    "Settings" : "Paramètres",
     "No bookmarked files" : "Aucun fichier en favori",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Les favoris vers des fichiers comme des photos ou des PDF seront automatiquement enregistrés dans vos fichiers Nextcloud, pour que vous puissiez y accéder même quand le lien est hors connexion.",
     "Nothing found" : "Aucun résultat",

@@ -121,7 +121,6 @@
     "Delete" : "Törlés",
     "Untagged" : "Nem címkézett",
     "{used} bookmarks of {available} available" : "{used} könyvjelző / {available} elérhető",
-    "Settings" : "Beállítások",
     "No bookmarked files" : "Nincsenek könyvjelzőzött fájlok",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "A fájlok, például a fényképek vagy a PDF-ek könyvjelzőit automatikusan menti az Ön Nextcloud fájljaiba, így akkor is megtalálhatja őket, ha a kapcsolat offline állapotban van.",
     "No broken links" : "Nincsenek törött hivatkozások",

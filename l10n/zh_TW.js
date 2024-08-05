@@ -138,7 +138,6 @@ OC.L10N.register(
     "Delete" : "刪除",
     "Untagged" : "無標籤",
     "{used} bookmarks of {available} available" : "{used} 書籤，可用 {available}",
-    "Settings" : "設定",
     "No bookmarked files" : "沒有已加入書籤的檔案",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "照片或 PDF 等檔案的書籤將會自動儲存到您的 Nextcloud 檔案中，因此即便連結離線，您也仍然可以找到它們。",
     "Nothing found" : "找不到東西",

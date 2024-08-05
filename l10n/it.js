@@ -125,7 +125,6 @@ OC.L10N.register(
     "Delete" : "Elimina",
     "Untagged" : "Non etichettati",
     "{used} bookmarks of {available} available" : "{used} segnalibri di {available} disponibili",
-    "Settings" : "Impostazioni",
     "No bookmarked files" : "Nessun file come segnalibro",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "I segnalibri per file come foto o PDF saranno automaticamente salvati nei tuoi file di Nextcloud, in modo che tu possa trovarli anche quando non sei in linea.",
     "Nothing found" : "Nessun risultato",

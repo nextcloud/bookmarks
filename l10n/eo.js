@@ -35,7 +35,6 @@ OC.L10N.register(
     "Files" : "Dosieroj",
     "Delete" : "Forigi",
     "Untagged" : "Sen etikedo",
-    "Settings" : "Agordoj",
     "No bookmarks here" : "Neniu legosigno ĉi tie",
     "Client apps" : "Klientaj aplikaĵoj",
     "Also check out the collection of client apps that integrate with this app: " : "Ankaŭ vidu la programojn, kiuj uzas tiun aplikaĵon:",

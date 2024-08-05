@@ -123,7 +123,6 @@
     "Delete" : "Usuń",
     "Untagged" : "Bez etykiety",
     "{used} bookmarks of {available} available" : "{used} zakładki z {available} dostępnych",
-    "Settings" : "Ustawienia",
     "No bookmarked files" : "Brak plików zakładek",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Zakładki do plików, takich jak zdjęcia lub pliki PDF, zostaną automatycznie zapisane w Twoich plikach Nextcloud, więc możesz je nadal znaleźć, nawet gdy link przejdzie w tryb offline.",
     "Nothing found" : "Nic nie znaleziono",

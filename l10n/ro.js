@@ -19,7 +19,6 @@ OC.L10N.register(
     "Shared with you" : "Partajat cu tine",
     "Files" : "Fișiere",
     "Delete" : "Șterge",
-    "Settings" : "Setări",
     "Need help?" : "Ai nevoie de ajutor?",
     "Title" : "Titlu",
     "Link" : "Legătură",

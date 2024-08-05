@@ -12,7 +12,6 @@ OC.L10N.register(
     "Recent" : "Melmi kan",
     "Files" : "Ifuyla",
     "Delete" : "Kkes",
-    "Settings" : "Iɣewwaṛen",
     "Need help?" : "Tesriḍ tallelt?",
     "Title" : "Azwel",
     "Link" : "Aseɣwen",

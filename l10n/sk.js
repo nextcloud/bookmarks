@@ -125,7 +125,6 @@ OC.L10N.register(
     "Delete" : "Zmazať",
     "Untagged" : "Bez štítku",
     "{used} bookmarks of {available} available" : "{used} záložky z {available} dostupných",
-    "Settings" : "Nastavenia",
     "No bookmarked files" : "Žiadne záložky súborov",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Záložky súborov, ako sú fotografie alebo PDF, sa automaticky uložia do vašich súborov Nextcloud, takže ich stále nájdete, aj keď je odkaz offline.",
     "Nothing found" : "Nič sa nenašlo",

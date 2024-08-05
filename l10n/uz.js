@@ -13,7 +13,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Files",
     "Delete" : "Delete",
-    "Settings" : "Sozlamalar",
     "Need help?" : "Need help?",
     "Link" : "Link",
     "Tags" : "Tags",

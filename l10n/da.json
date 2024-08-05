@@ -121,7 +121,6 @@
     "Delete" : "Slet",
     "Untagged" : "Fravalgt",
     "{used} bookmarks of {available} available" : "{used} bogmærker af {available} tilgængelige",
-    "Settings" : "Indstillinger",
     "No bookmarked files" : "Ingen bogmærkede filer",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Bogmærker til filer som fotos eller PDF'er gemmes automatisk i dine Nextcloud-filer, så du stadig kan finde dem, selv når linket går offline.",
     "No broken links" : "Ingen ødelagte links",

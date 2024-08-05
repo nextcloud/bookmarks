@@ -138,7 +138,6 @@ OC.L10N.register(
     "Delete" : "Scrios",
     "Untagged" : "Gan chlib",
     "{used} bookmarks of {available} available" : "leabharmharcanna {úsáidte} de {ar fáil} ar fáil",
-    "Settings" : "Socruithe",
     "No bookmarked files" : "Níl aon chomhaid leabharmharcáilte",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Sábhálfar leabharmharcanna chuig comhaid ar nós grianghraif nó PDFanna go huathoibríoch chuig do chomhaid Nextcloud, ionas gur féidir leat iad a aimsiú fiú nuair a théann an nasc as líne.",
     "Nothing found" : "Ní bhfuarthas aon rud",

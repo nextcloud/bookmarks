@@ -11,7 +11,6 @@ OC.L10N.register(
     "Cancel" : "ýatyrmak",
     "Files" : "Faýllar",
     "Delete" : "Pozmak",
-    "Settings" : "Sazlamalar",
     "Link" : "Baglanyşyk",
     "Tags" : "Bellikler",
     "Sharing" : "Paýlaşmak",

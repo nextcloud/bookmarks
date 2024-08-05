@@ -15,7 +15,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Filer",
     "Delete" : "Ta bort",
-    "Settings" : "Innstillingar",
     "Need help?" : "Treng du hjelp?",
     "Title" : "Tittel",
     "Link" : "Lenkje",

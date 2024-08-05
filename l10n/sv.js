@@ -136,7 +136,6 @@ OC.L10N.register(
     "Delete" : "Ta bort",
     "Untagged" : "Inte taggad",
     "{used} bookmarks of {available} available" : "{used} bokmärken av {available} tillgängliga",
-    "Settings" : "Inställningar",
     "No bookmarked files" : "Inga bokmärkta filer",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Bokmärken till filer som foton eller PDF-filer sparas automatiskt i ditt Nextcloud så att du fortfarande kan hitta dem även när länken går offline.",
     "Nothing found" : "Inget hittades",

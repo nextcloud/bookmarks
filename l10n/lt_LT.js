@@ -55,7 +55,6 @@ OC.L10N.register(
     "New tag" : "Nauja žymė",
     "Delete" : "Ištrinti",
     "Untagged" : "Be žymių",
-    "Settings" : "Nustatymai",
     "No bookmarks here" : "Čia adresyno įrašų nėra",
     "Client apps" : "Kliento programėlės",
     "Add to {instanceName}" : "Pridėti į {instanceName}",

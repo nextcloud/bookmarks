@@ -135,7 +135,6 @@ OC.L10N.register(
     "Delete" : "Sil",
     "Untagged" : "Etiketlenmemiş",
     "{used} bookmarks of {available} available" : "{used} yer imi {available} kullanılabilir",
-    "Settings" : "Ayarlar",
     "No bookmarked files" : "Yer imlerine eklenmiş bir dosya yok",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Fotoğraf ya da PDF gibi dosyaların yer imleri otomatik olarak Nextcloud dosyalarınıza kaydedilir. Böylece bağlantı çevrim dışı olsa bile bu dosyalara erişebilirsiniz.",
     "Nothing found" : "Herhangi bir şey bulunamadı",

@@ -75,7 +75,6 @@ OC.L10N.register(
     "Delete" : "מחיקה",
     "Untagged" : "ללא תגית",
     "{used} bookmarks of {available} available" : "{used} סימניות מתוך {available} זמינות",
-    "Settings" : "הגדרות",
     "No bookmarks here" : "אין כאן סימניות",
     "Client apps" : "יישומוני לקוח",
     "Also check out the collection of client apps that integrate with this app: " : "כדאי להציץ באוסף יישומוני הלקוח שמשתלבים עם היישומון הזה:",

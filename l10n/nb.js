@@ -138,7 +138,6 @@ OC.L10N.register(
     "Delete" : "Slett",
     "Untagged" : "Ikke merket",
     "{used} bookmarks of {available} available" : "{used} bokmerker av {available} tilgjengelige",
-    "Settings" : "Innstillinger",
     "No bookmarked files" : "Ingen bokmerkede filer",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Bokmerker til filer som bilder eller PDF-filer lagres automatisk i Nextcloud-filene dine, slik at du fortsatt kan finne dem selv når lenken går i frakoblet modus.",
     "Nothing found" : "Ingenting funnet",

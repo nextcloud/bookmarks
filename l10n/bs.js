@@ -12,7 +12,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Datoteke",
     "Delete" : "Obriši",
-    "Settings" : "Podešavanje",
     "Title" : "Naslov",
     "Link" : "Veza",
     "Notes" : "Notes",

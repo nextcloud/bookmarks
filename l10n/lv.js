@@ -24,7 +24,6 @@ OC.L10N.register(
     "Shared with you" : "Koplietots ar jums",
     "Files" : "Datnes",
     "Delete" : "Dzēst",
-    "Settings" : "Iestatījumi",
     "Bookmarklet" : "Grāmatzīme",
     "Need help?" : "Vajadzīga palīdzība?",
     "Title" : "Amats",

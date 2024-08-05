@@ -21,7 +21,6 @@ OC.L10N.register(
     "Shared with you" : "Compartido con usted",
     "Files" : "Archivos",
     "Delete" : "Borrar",
-    "Settings" : "Ajustes",
     "Bookmarklet" : "Marcadores",
     "Need help?" : "¿Necesitas ayuda?",
     "Title" : "Título",

@@ -109,7 +109,6 @@ OC.L10N.register(
     "Search tags" : "Шукати мітки",
     "Delete" : "Вилучити",
     "Untagged" : "Без мітки",
-    "Settings" : "Налаштування",
     "No bookmarked files" : "Відсутні закладки з файлами",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Закладки на файли, такі як світлини або файли PDF, буде автоматично збережено до ваших файлів у хмарі Nextcloud. Таким чином ви зможете завжди їх знаходити, навіть якщо посилання будуть недоступні.",
     "Nothing found" : "Нічого не знайдено",

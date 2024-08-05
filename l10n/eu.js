@@ -137,7 +137,6 @@ OC.L10N.register(
     "Delete" : "Ezabatu",
     "Untagged" : "Etiketatu gabe",
     "{used} bookmarks of {available} available" : "{available} laster-marketatik {used} erabilita",
-    "Settings" : "Ezarpenak",
     "No bookmarked files" : "Ez dago laster-marka fitxategirik",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Laster-marka guztiak betiko kendu dira zure kontutik",
     "Nothing found" : "Ez da ezer aurkitu",

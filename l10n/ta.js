@@ -10,7 +10,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "கோப்புகள்",
     "Delete" : "நீக்குக",
-    "Settings" : "அமைப்புகள்",
     "Title" : "தலைப்பு",
     "Link" : "Link",
     "Tags" : "சீட்டுகள்",

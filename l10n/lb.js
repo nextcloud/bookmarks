@@ -17,7 +17,6 @@ OC.L10N.register(
     "Shared with you" : "Mat dir gedeelt",
     "Files" : "Fichieren",
     "Delete" : "Läschen",
-    "Settings" : "Astellungen",
     "Title" : "Titel",
     "Link" : "Link",
     "Tags" : "Tags",

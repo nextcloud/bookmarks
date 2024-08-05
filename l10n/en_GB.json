@@ -136,7 +136,6 @@
     "Delete" : "Delete",
     "Untagged" : "Untagged",
     "{used} bookmarks of {available} available" : "{used} bookmarks of {available} available",
-    "Settings" : "Settings",
     "No bookmarked files" : "No bookmarked files",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.",
     "Nothing found" : "Nothing found",

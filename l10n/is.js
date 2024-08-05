@@ -47,7 +47,6 @@ OC.L10N.register(
     "Delete" : "Eyða",
     "Untagged" : "Ómerkt",
     "{used} bookmarks of {available} available" : "{used} bókamerki af {available} tiltækum",
-    "Settings" : "Stillingar",
     "No bookmarks here" : "Engin bókamerki hér",
     "Client apps" : "Biðlaraforrit",
     "Also check out the collection of client apps that integrate with this app: " : "Skoðaðu einnig úrval þeirra biðlaraforrita sem samþættast þessu forriti:",

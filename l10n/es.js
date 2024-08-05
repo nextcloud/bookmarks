@@ -125,7 +125,6 @@ OC.L10N.register(
     "Delete" : "Eliminar",
     "Untagged" : "Sin etiquetar",
     "{used} bookmarks of {available} available" : "{used} marcadores de {available} disponibles",
-    "Settings" : "Ajustes",
     "No bookmarked files" : "Sin archivos marcadores",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Marcar archivos como fotos o PDF harán que se guarden automáticamente en tus archivos de Nextcloud, para que puedas encontrarlos incluso cuando el enlace queda fuera de línea.",
     "Nothing found" : "No se encontró nada",

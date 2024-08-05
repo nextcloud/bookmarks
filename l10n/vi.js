@@ -23,7 +23,6 @@ OC.L10N.register(
     "Shared with you" : "Đã chia sẻ với bạn",
     "Files" : "Tệp",
     "Delete" : "Xóa",
-    "Settings" : "Cài đặt",
     "Need help?" : "Cần hỗ trợ ?",
     "Title" : "Tên",
     "Link" : "Liên kết",

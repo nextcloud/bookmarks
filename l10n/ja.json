@@ -104,7 +104,6 @@
     "Delete" : "削除",
     "Untagged" : "タグなし",
     "{used} bookmarks of {available} available" : "利用可能ブックマーク数 {available} のうち{used} が使用済み ",
-    "Settings" : "設定",
     "No bookmarked files" : "ブックマーク済みファイルがありません",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "写真やPDFといったファイルへのブックマークは、自動的にNextcloudファイルとして保存されるため、リンクがオフラインになっても見つけることができます。",
     "No broken links" : "壊れたリンクなし",

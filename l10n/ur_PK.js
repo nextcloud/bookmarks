@@ -7,7 +7,6 @@ OC.L10N.register(
     "Cancel" : "منسوخ کریں",
     "Shared with you" : "Shared with you",
     "Delete" : "حذف کریں",
-    "Settings" : "سیٹینگز",
     "Title" : "عنوان",
     "Link" : "Link",
     "Notes" : "Notes",

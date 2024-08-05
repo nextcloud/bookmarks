@@ -18,7 +18,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "ფაილები",
     "Delete" : "Delete",
-    "Settings" : "Settings",
     "Bookmarklet" : "Bookmarklet",
     "Need help?" : "Need help?",
     "Link" : "Link",

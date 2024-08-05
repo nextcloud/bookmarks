@@ -138,7 +138,6 @@ OC.L10N.register(
     "Delete" : "Обриши",
     "Untagged" : "Неозначени",
     "{used} bookmarks of {available} available" : "Искоришћено {used} од {available} доступних обележивача",
-    "Settings" : "Поставке",
     "No bookmarked files" : "Нема маркираних фајлова",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Маркери на фајлове као што су фотографије или PDF документи ће се аутоматски сачувати у ваше Nextcloud фајлове, тако да ћете моћи да им приступите чак и онда када се линк уклони са мреже.",
     "Nothing found" : "Ништа није пронађено",

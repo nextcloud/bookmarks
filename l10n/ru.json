@@ -121,7 +121,6 @@
     "Delete" : "Удалить",
     "Untagged" : "Без меток",
     "{used} bookmarks of {available} available" : "{used} закладок из {available} возможных",
-    "Settings" : "Настройки",
     "No bookmarked files" : "Нет файлов в закладках",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "При сохранении ссылок на фотографии, PDF-файлы и т.д., сами файлы также будут автоматически сохраняться в Nextcloud. Поэтому Вы всегда будете иметь к ним доступ, даже если ссылка не работает.",
     "No broken links" : "Нет нерабочих ссылок",

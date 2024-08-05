@@ -22,7 +22,6 @@ OC.L10N.register(
     "Shared with you" : "გაზიარებული თქვენთან",
     "Files" : "ფაილები",
     "Delete" : "წაშლა",
-    "Settings" : "პარამეტრები",
     "Bookmarklet" : "Bookmarklet-ი",
     "Need help?" : "გესაჭიროებათ დახმარება?",
     "Title" : "სათაური",

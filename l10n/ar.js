@@ -138,7 +138,6 @@ OC.L10N.register(
     "Delete" : "حذف ",
     "Untagged" : "بدون سِمة",
     "{used} bookmarks of {available} available" : "{used} إشارة مرجعية أُستُخدِمت من أصل {available} إشارة متاحة",
-    "Settings" : "الإعدادات",
     "No bookmarked files" : "لا توجد أي ملفات عليها إشارات مرجعية",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "سيتم حفظ الإشارات المرجعية إلى ملفات مثل الصور أو ملفات PDF تلقائيًا في ملفات نكست كلاود الخاصة بك، بحيث يمكنك العثور عليها حتى عندما ينتقل الرابط إلى وضع عدم الاتصال.",
     "Nothing found" : "لم يُعثَر على شيءٍ",

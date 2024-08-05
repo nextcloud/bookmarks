@@ -123,7 +123,6 @@ OC.L10N.register(
     "Delete" : "حذف",
     "Untagged" : "غیرقابل تشخیص",
     "{used} bookmarks of {available} available" : "{used} bookmarks of {available} available",
-    "Settings" : "تنظیمات",
     "No bookmarked files" : "No bookmarked files",
     "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline." : "Bookmarks to files like photos or PDFs will automatically be saved to your Nextcloud files, so you can still find them even when the link goes offline.",
     "No broken links" : "No broken links",
