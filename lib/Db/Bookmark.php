@@ -30,9 +30,7 @@ use OCP\AppFramework\Db\Entity;
  * @method int getArchivedFile()
  * @method setArchivedFile(int $fileId)
  * @method string getTextContent()
- * @method setTextContent(string $content)
  * @method string getHtmlContent()
- * @method setHtmlContent(string $content)
  * @method string getUserId()
  * @method setUserId(string $userId)
  */
@@ -92,7 +90,7 @@ class Bookmark extends Entity {
 				$array['target'] = $this->url;
 				continue;
 			}
-			$array[$field] = $this->{$field};
+			$array[$field] = $this->{'get' . $field}();
 		}
 		return $array;
 	}
@@ -110,6 +108,8 @@ class Bookmark extends Entity {
 		if (strlen($title) > 1024) {
 			$title = substr($title, 0, 1020) . '…';
 		}
+		// Remove non-utf-8 characters from string: https://stackoverflow.com/questions/1401317/remove-non-utf8-characters-from-string
+		$title = mb_convert_encoding($title, 'UTF-8', 'UTF-8');
 		$this->setter('title', [$title]);
 	}
 
@@ -118,7 +118,35 @@ class Bookmark extends Entity {
 		if (strlen($desc) > 1024) {
 			$desc = substr($desc, 0, 1020) . '…';
 		}
+		// Remove non-utf-8 characters from string: https://stackoverflow.com/questions/1401317/remove-non-utf8-characters-from-string
+		$desc = mb_convert_encoding($desc, 'UTF-8', 'UTF-8');
 		$this->setter('description', [$desc]);
+	}
+
+	public function setTextContent(?string $content): void {
+		if ($content !== null) {
+			// Remove non-utf-8 characters from string: https://stackoverflow.com/questions/1401317/remove-non-utf8-characters-from-string
+			$content = mb_convert_encoding($content, 'UTF-8', 'UTF-8');
+		}
+		$this->setter('textContent', [$content]);
+	}
+
+	public function getTextContent(): string {
+		// Remove non-utf-8 characters from string: https://stackoverflow.com/questions/1401317/remove-non-utf8-characters-from-string
+		return (string) mb_convert_encoding($this->textContent, 'UTF-8', 'UTF-8');
+	}
+
+	public function setHtmlContent(?string $content): void {
+		if ($content !== null) {
+			// Remove non-utf-8 characters from string: https://stackoverflow.com/questions/1401317/remove-non-utf8-characters-from-string
+			$content = mb_convert_encoding($content, 'UTF-8', 'UTF-8');
+		}
+		$this->setter('htmlContent', [$content]);
+	}
+
+	public function getHtmlContent(): string {
+		// Remove non-utf-8 characters from string: https://stackoverflow.com/questions/1401317/remove-non-utf8-characters-from-string
+		return (string) mb_convert_encoding($this->htmlContent, 'UTF-8', 'UTF-8');
 	}
 
 	public function isWebLink() {
