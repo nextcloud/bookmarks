@@ -21,6 +21,7 @@ export default {
 				importBookmarks: this.t('bookmarks', 'Importing bookmarks'),
 				moveSelection: this.t('bookmkarks', 'Moving selection'),
 				copySelection: this.t('bookmkarks', 'Adding selection to folders'),
+				emptyTrashbin: this.t('bookmkarks', 'Emptying trashbin'),
 			},
 			showNcModal: false,
 			showTimeout: null,
