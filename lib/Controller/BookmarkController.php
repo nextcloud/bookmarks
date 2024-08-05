@@ -775,11 +775,6 @@ class BookmarkController extends ApiController {
 			return $res;
 		}
 
-		if ($folder === -1 && $this->authorizer->getUserId() !== null) {
-			$count = $this->bookmarkMapper->countBookmarksOfUser($this->authorizer->getUserId());
-			return new JSONResponse(['status' => 'success', 'item' => $count]);
-		}
-
 		$folder = $this->toInternalFolderId($folder);
 		if ($folder === null) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
