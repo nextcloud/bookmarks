@@ -934,33 +934,21 @@ class TreeMapper extends QBMapper {
 		if ($type === TreeMapper::TYPE_FOLDER || $type === TreeMapper::TYPE_SHARE) {
 			$qb = $this->selectFromType($type);
 			$qb
-				->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'i.id'))
+				->innerJoin('i', 'bookmarks_tree', 't', $qb->expr()->eq('i.id', 't.id'))
+				->leftJoin('t', 'bookmarks_tree', 't2', $qb->expr()->eq('t.parent_folder', 't2.id'))
+				->leftJoin('t', 'bookmarks_root_folders', 'r', $qb->expr()->eq('t.parent_folder', 'r.folder_id'))
 				->where($qb->expr()->isNotNull('t.soft_deleted_at'))
 				->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_STR)))
-				->andWhere($qb->expr()->eq('i.user_id', $qb->createPositionalParameter($userId, IQueryBuilder::PARAM_STR)));
-			$items = $this->findEntitiesWithType($qb, $type);
-
-			if ($type === TreeMapper::TYPE_SHARE) {
-				return $items;
-			}
-
-			$topmostFolders = [];
-			foreach ($items as $folder) {
-				$topmostFolders[$folder->getId()] = $folder;
-			}
-
-			foreach ($items as $folder1) {
-				foreach ($items as $folder2) {
-					if ($folder1->getId() !== $folder2->getId() && $this->hasDescendant($folder1->getId(), TreeMapper::TYPE_FOLDER, $folder2->getId())) {
-						$topmostFolders[$folder2->getId()] = false;
-					}
-				}
-			}
-
-			return array_values(array_filter(array_values($topmostFolders), fn ($value) => $value !== false));
+				->andWhere($qb->expr()->eq('i.user_id', $qb->createPositionalParameter($userId, IQueryBuilder::PARAM_STR)))
+				->andWhere($qb->expr()->orX(
+					$qb->expr()->isNull('t2.soft_deleted_at'),
+					$qb->expr()->isNotNull('r.folder_id'),
+				));
+			return $this->findEntitiesWithType($qb, $type);
 		}
 		if ($type === TreeMapper::TYPE_BOOKMARK) {
 			$params = new QueryParameters();
+			$params->setLimit(-1);
 			$params->setSoftDeleted(true);
 			$params->setSoftDeletedFolders(false);
 			return $this->bookmarkMapper->findAll($userId, $params);
