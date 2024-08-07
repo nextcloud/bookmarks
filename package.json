@@ -1,6 +1,6 @@
 {
   "name": "bookmarks",
-  "version": "14.2.3",
+  "version": "14.2.4",
   "main": "js/index.js",
   "scripts": {
     "build": "webpack --node-env production --progress --config webpack.js",

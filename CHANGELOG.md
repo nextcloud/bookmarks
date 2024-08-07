@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.2.4] - 2024-08-07
+
+### Fixed
+
+* fix(TreeMapper#getSoftDeletedRootItems): Avoid O(n^2) algorithm
+* fix(LoadingModal): Show spinner while emptying trashbin
+* fix(BookmarkController#import): Give more meanigful error message when upload failed
+* fix(WebviewController): Fix Copypasta
+* feat(BookmarkController#countBookmarks): Fix root folder count
+* feat(Settings): Link to app store
+* feat(ux): Sync folder sidebar with opening folders
+* fix(Navigation): Don't display Files menu entry if feature is not enabled
+* fix(Search): Only search after >2 characters have been entered
+
 ## [14.2.3] - 2024-08-04
 
 * fix(TreeMapper#deleteOldTrashbinItems)
