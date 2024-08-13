@@ -184,7 +184,7 @@ OC.L10N.register(
     "Allow editing" : "Povoliť úpravy",
     "Allow resharing" : "Povoliť sprístupňovanie ďalej",
     "Remove share" : "Odstrániť zdieľanie",
-    "Link copied" : "Odkaz skopírovaný",
+    "Link copied" : "Odkaz bol skopírovaný",
     "Privacy" : "Súkromie",
     "Enable accessing and collecting information from the web pages you add" : "Povoľte prístup a zhromažďovanie informácií z pridaných webových stránok",
     "Performance" : "Výkon",
