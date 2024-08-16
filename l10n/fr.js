@@ -73,6 +73,7 @@ OC.L10N.register(
     "Trash Bin" : "Corbeille",
     "Go back" : "Revenir en arrière",
     "Share folder" : "Partager ce dossier",
+    "Open folder details" : "Ouvrir les détails du dossier",
     "Select one or more tags" : "Sélectionnez une ou plusieurs étiquettes",
     "New" : "Créer",
     "New bookmark" : "Nouveau favori",
