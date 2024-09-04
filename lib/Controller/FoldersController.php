@@ -765,7 +765,7 @@ class FoldersController extends ApiController {
 				$res->throttle();
 				return $res;
 			}
-			return new Http\DataResponse(['status' => 'success', 'data' => $share->toArray()]);
+			return new Http\DataResponse(['status' => 'success', 'data' => [$share->toArray()]]);
 		}
 		$res = new DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
 		$res->throttle();
