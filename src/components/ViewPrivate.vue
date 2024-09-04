@@ -79,12 +79,15 @@ export default {
 		isFolderView() {
 			return this.$route.name === privateRoutes.FOLDER || this.$route.name === privateRoutes.HOME
 		},
+		isSharedWithYou() {
+			return this.$route.name === privateRoutes.SHARED_FOLDERS
+		},
 		isTrashbin() {
 			const folder = this.$store.getters.getFolder(this.$route.params.folder || '-1')[0]
 			return this.$route.name === privateRoutes.TRASHBIN || (this.$route.name === privateRoutes.FOLDER && folder.softDeleted)
 		},
 		showFolderOverview() {
-			return this.isFolderView && !this.smallScreen && this.folders.length && !this.isTrashbin
+			return this.isFolderView && !this.smallScreen && this.folders.length && !this.isTrashbin && !this.isSharedWithYou
 		},
 	},
 	watch: {
@@ -162,9 +165,9 @@ export default {
 				await this.$store.dispatch(actions.LOAD_DELETED_FOLDERS)
 				break
 			case privateRoutes.SHARED_FOLDERS:
-				this.$store.commit(mutations.REMOVE_ALL_BOOKMARKS)
-				this.$store.commit(mutations.FETCH_END, 'bookmarks')
-				await this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
+				this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
+				await this.$store.dispatch(actions.RELOAD_VIEW)
+				await this.$store.commit(mutations.REMOVE_ALL_BOOKMARKS)
 				break
 			case privateRoutes.BOOKMARK:
 				await this.$store.dispatch(actions.LOAD_BOOKMARK, route.params.bookmark)
