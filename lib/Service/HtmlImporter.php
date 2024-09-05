@@ -29,6 +29,9 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
  * @package OCA\Bookmarks\Service
  */
 class HtmlImporter {
+	// Taken from https://stackoverflow.com/questions/33126595/what-is-the-actual-range-of-a-mysql-int-column-in-this-situation
+	public const DB_MAX_INT = 2147483647;
+
 	/**
 	 * @var BookmarkMapper
 	 */
@@ -206,7 +209,11 @@ class HtmlImporter {
 		$bm->setTitle($bookmark['title']);
 		$bm->setDescription($bookmark['description']);
 		if (isset($bookmark['add_date'])) {
-			$bm->setAdded($bookmark['add_date']->getTimestamp());
+			if ($bookmark['add_date']->getTimestamp() < self::DB_MAX_INT && $bookmark['add_date']->getTimestamp() > -self::DB_MAX_INT) {
+				$bm->setAdded($bookmark['add_date']->getTimestamp());
+			} else {
+				$bm->setAdded(time());
+			}
 		}
 
 		// insert bookmark
