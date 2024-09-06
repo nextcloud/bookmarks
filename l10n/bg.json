@@ -24,7 +24,6 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$sпрекрати споделянето на папка „%2$s“ с вас",
     "Someone unshared folder \"%s\" with you" : "Някой прекрати споделянето на папка „%s“ с вас",
     "No file provided for import" : "Няма избран файл за внасяне",
-    "Unsupported file type for import" : "Типът на файла за внасяне не се поддържа",
     "Bookmarks shared by %s" : "Отметки, споделени от %s",
     "Frequent bookmarks" : "Чести отметки",
     "Recent bookmarks" : "Скорошни отметки",

@@ -26,7 +26,7 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s 已取消與您共用的資料夾 \"%2$s\" ",
     "Someone unshared folder \"%s\" with you" : "某人已取消與你共用的資料夾 \"%s\"",
     "No file provided for import" : "無匯入檔案",
-    "Unsupported file type for import" : "匯入不支援的檔案格式",
+    "Failed to upload file" : "上傳檔案失敗",
     "Bookmarks shared by %s" : "由 %s 共用的書籤",
     "Frequent bookmarks" : "常用書籤",
     "Recent bookmarks" : "最近使用的書籤",

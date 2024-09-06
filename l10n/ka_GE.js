@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "სანიშნეები",
     "No file provided for import" : "იმპორტისთვის ფაილი არაა მოწოდებული",
-    "Unsupported file type for import" : "იმპორტისთვის მხარდაუჭერელი ფაილის სახეობა",
     "Details" : "დეტალები",
     "Rename" : "სახელის შეცვლა",
     "Copy link" : "ბმულის კოპირება",

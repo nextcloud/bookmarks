@@ -26,7 +26,6 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s megszüntette a(z) „%2$s” mappa megosztását Önnel",
     "Someone unshared folder \"%s\" with you" : "Valaki megszüntette a(z) „%s” mappa megosztását Önnel",
     "No file provided for import" : "Nincs fájl megadva az importáláshoz",
-    "Unsupported file type for import" : "Nem támogatott fájltípus az importáláshoz",
     "Bookmarks shared by %s" : "%s által megosztott könyvjelzők",
     "Frequent bookmarks" : "Gyakori könyvjelzők",
     "Recent bookmarks" : "Legújabb könyvjelzők",

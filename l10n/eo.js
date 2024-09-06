@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Legosignaro",
     "No file provided for import" : "Neniu dosiero provizita por enporto",
-    "Unsupported file type for import" : "Nesubtenita dosiertipo por enporto",
     "Select bookmark" : "Elekti legosignon",
     "Details" : "Detaloj",
     "Rename" : "Alinomi",

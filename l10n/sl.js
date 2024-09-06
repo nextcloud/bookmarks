@@ -26,7 +26,7 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s vam onemogoči souporabo mape »%2$s«",
     "Someone unshared folder \"%s\" with you" : "Nekdo vam onemogoči souporabo mape »%s«",
     "No file provided for import" : "Ni navedenih datotek za uvoz",
-    "Unsupported file type for import" : "Nepodprta vrsta datoteke za uvoz",
+    "Failed to upload file" : "Pošiljanje datoteke je spodletelo",
     "Bookmarks shared by %s" : "Zaznamki v souporabi z %s",
     "Frequent bookmarks" : "Pogosti zaznamki",
     "Recent bookmarks" : "Nedavni zaznamki",

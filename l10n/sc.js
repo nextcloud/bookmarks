@@ -26,7 +26,7 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s nch'at bogadu sa cumpartzidura de sa cartella \"%2$s\" cun tegus",
     "Someone unshared folder \"%s\" with you" : "Calicunu nch'at bogadu sa cumpartzidura de sa cartella \"%s\" cun tegus",
     "No file provided for import" : "Perunu archìviu est frunidu pro s'importatzione",
-    "Unsupported file type for import" : "Genia de archìviu non suportadu pro s'importatzione",
+    "Failed to upload file" : "No at fatu a carrigare su documentu",
     "Bookmarks shared by %s" : "Signalibros cumpartzidos dae %s",
     "Frequent bookmarks" : "Signalibros frecuentes",
     "Recent bookmarks" : "Signalibros reghentes",

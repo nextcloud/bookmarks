@@ -26,7 +26,6 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s s vami zrušil zdieľanie priečinka „%2$s“",
     "Someone unshared folder \"%s\" with you" : "Niekto s vami zrušil zdieľanie priečinka „%s“",
     "No file provided for import" : "Nie je k dispozícii žiadny súbor na import",
-    "Unsupported file type for import" : "Nepodporovaný typ súboru na import",
     "Bookmarks shared by %s" : "Záložky, ktoré zdieľa %s",
     "Frequent bookmarks" : "Časté záložky",
     "Recent bookmarks" : "Aktuálne záložky",

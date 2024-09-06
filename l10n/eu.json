@@ -24,7 +24,7 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s(e)k \"%2$s\" karpeta zurekin partekatzeari utzi dio",
     "Someone unshared folder \"%s\" with you" : "Norbaitek \"%s\" karpeta zurekin partekatzeari utzi dio",
     "No file provided for import" : "Ez da inportatzeko fitxategirik hornitu",
-    "Unsupported file type for import" : "Inportatzeko fitxategi mota ez onartua",
+    "Failed to upload file" : "Fitxategia kargatzeak huts egin du",
     "Bookmarks shared by %s" : "Laster-markak %s(r)engatik partekatuak",
     "Frequent bookmarks" : "Maiz erabilitako laster-markak",
     "Recent bookmarks" : "Azken laster-markak",

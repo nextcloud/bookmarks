@@ -26,7 +26,6 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s le ha dejado de compartir la carpeta \"%2$s\"",
     "Someone unshared folder \"%s\" with you" : "Alguien le ha dejado de compartir la carpeta \"%s\"",
     "No file provided for import" : "No se especificó un archivo para importar",
-    "Unsupported file type for import" : "Tipo de archivo no soportado para importar",
     "Bookmarks shared by %s" : "Marcadores compartidos por %s ",
     "Frequent bookmarks" : "Marcadores frecuentes",
     "Recent bookmarks" : "Marcadores recientes",

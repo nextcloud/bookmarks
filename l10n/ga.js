@@ -26,7 +26,6 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s fillteán neamhroinnte \"%2$s\" leat",
     "Someone unshared folder \"%s\" with you" : "Dhíroinnte duine éigin fillteán \"%s\" leat",
     "No file provided for import" : "Níor soláthraíodh aon chomhad le hiompórtáil",
-    "Unsupported file type for import" : "Cineál comhaid nach dtacaítear leis le hiompórtáil",
     "Bookmarks shared by %s" : "Leabharmharcanna roinnte ag %s",
     "Frequent bookmarks" : "Leabharmharcanna go minic",
     "Recent bookmarks" : "Leabharmharcanna le déanaí",

@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Marcadores",
     "No file provided for import" : "No se especificó un archivo para importar",
-    "Unsupported file type for import" : "Tipo de archivo no soportado para importar",
     "Details" : "Detalles",
     "Rename" : "Renombrar",
     "Copy link" : "Copiar liga",

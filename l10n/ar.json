@@ -24,7 +24,6 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s ألغى مشاركة المجلد \"%2$s\" معك",
     "Someone unshared folder \"%s\" with you" : "أحدُهم ألغى مشاركة المجلد \"%s\" معك",
     "No file provided for import" : "لم يتم تقديم ملف للاستيراد",
-    "Unsupported file type for import" : "لايمكن استيراد ملفات من هذا النوع",
     "Bookmarks shared by %s" : "إشارات مرجعية مُشارَكة مع %s",
     "Frequent bookmarks" : "إشارات مرجعية متكررة",
     "Recent bookmarks" : "آخر ما تمّ تأشيره",

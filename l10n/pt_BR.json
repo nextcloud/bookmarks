@@ -24,7 +24,7 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s removeu o compartilhamento da pasta \"%2$s\" com você",
     "Someone unshared folder \"%s\" with you" : "Alguém removeu o compartilhamento da pasta \"%s\" com você",
     "No file provided for import" : "Nenhum arquivo para importar",
-    "Unsupported file type for import" : "O tipo de arquivo não é suportado",
+    "Failed to upload file" : "Falha ao enviar o arquivo ",
     "Bookmarks shared by %s" : "Favoritos compartilhados por %s",
     "Frequent bookmarks" : "Favoritos frequentes ",
     "Recent bookmarks" : "Favoritos recentes",

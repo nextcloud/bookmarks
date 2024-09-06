@@ -26,7 +26,6 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s님이 폴더 \"%2$s\"에 대한 공유를 해제함",
     "Someone unshared folder \"%s\" with you" : "누군가 \"%s\"에 대한 공유를 해제함",
     "No file provided for import" : "가져올 파일을 지정하지 않았음",
-    "Unsupported file type for import" : "지원하지 않는 가져오기 파일 형식",
     "Bookmarks shared by %s" : "%s님이 공유한 북마크 ",
     "Frequent bookmarks" : "자주 방문한 북마크",
     "Recent bookmarks" : "최근 북마크",

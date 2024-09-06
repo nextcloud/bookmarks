@@ -24,7 +24,7 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s zatrzymał Tobie udostępnianie katalogu \"%2$s\"",
     "Someone unshared folder \"%s\" with you" : "Ktoś zatrzymał Tobie udostępnianie katalogu \"%s\"",
     "No file provided for import" : "Brak pliku do importu",
-    "Unsupported file type for import" : "Nieobsługiwany typ pliku do importu",
+    "Failed to upload file" : "Nie udało się wysłać pliku",
     "Bookmarks shared by %s" : "Zakładki udostępnione przez %s",
     "Frequent bookmarks" : "Częste zakładki",
     "Recent bookmarks" : "Najnowsze zakładki",

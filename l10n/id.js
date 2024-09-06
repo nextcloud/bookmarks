@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Markah",
     "No file provided for import" : "Berkas untuk impor tidak tersedia",
-    "Unsupported file type for import" : "Tipe berkas untuk impor tidak didukung",
     "Bookmarks shared by %s" : "Markah dibagikan oleh %s",
     "Select bookmark" : "Pilih markah",
     "Details" : "Detil",

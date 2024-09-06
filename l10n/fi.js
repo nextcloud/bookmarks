@@ -26,7 +26,6 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s lopetti kansion \"%2$s\" jakamisen kanssasi",
     "Someone unshared folder \"%s\" with you" : "Joku lopetti kansion \"%s\" jaon kanssasi",
     "No file provided for import" : "Tuotavaa tiedostoa ei ole valittu",
-    "Unsupported file type for import" : "Tiedoston tyyppi ei ole tuotavaa muotoa",
     "Bookmarks shared by %s" : "Henkilön %s jakamat kirjanmerkit",
     "Frequent bookmarks" : "Usein käytetyt kirjanmerkit",
     "Recent bookmarks" : "Viimeisimmät kirjanmerkit",

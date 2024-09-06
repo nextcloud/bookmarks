@@ -24,7 +24,7 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s heeft zijn map \"%2$s\" niet meer met jou gedeeld",
     "Someone unshared folder \"%s\" with you" : "Iemand heeft zijn map \"%s\" niet meer met jou gedeeld",
     "No file provided for import" : "Geen bestand aangeboden om te importeren",
-    "Unsupported file type for import" : "Bestandstype wordt niet ondersteund voor importeren",
+    "Failed to upload file" : "Kon bestand niet uploaden",
     "Bookmarks shared by %s" : "Bookmarks gedeeld door %s",
     "Frequent bookmarks" : "frequente bookmarks",
     "Recent bookmarks" : "Recente bookmarks",

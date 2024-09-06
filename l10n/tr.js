@@ -26,7 +26,7 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s, \"%2$s\" klasörünün sizinle paylaşımını kaldırdı",
     "Someone unshared folder \"%s\" with you" : "Biri \"%s\" klasörünün sizinle paylaşımını kaldırdı",
     "No file provided for import" : "İçe aktarılacak bir dosya seçilmemiş",
-    "Unsupported file type for import" : "İçe aktarılacak dosya türü desteklenmiyor",
+    "Failed to upload file" : "Dosya yüklenemedi",
     "Bookmarks shared by %s" : "%s tarafından paylaşılan yer imleri",
     "Frequent bookmarks" : "Sık kullanılan yer imleri",
     "Recent bookmarks" : "Son kullanılan yer imleri",

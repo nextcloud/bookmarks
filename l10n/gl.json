@@ -24,7 +24,7 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s deixou de compartir o cartafol «%2$s» con Vde.",
     "Someone unshared folder \"%s\" with you" : "Alguén deixou de compartir o cartafol «%s» con Vde.",
     "No file provided for import" : "Non forneceu ningún ficheiro para importar",
-    "Unsupported file type for import" : "Tipo de ficheiro non admitido para importar",
+    "Failed to upload file" : "Produciuse un fallo ao enviar o ficheiro",
     "Bookmarks shared by %s" : "Marcador compartido por %s",
     "Frequent bookmarks" : "Marcadores frecuentes",
     "Recent bookmarks" : "Marcadores recentes",

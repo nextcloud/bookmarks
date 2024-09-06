@@ -26,7 +26,7 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s закрыл доступ к папке \"%2$s\" для вас",
     "Someone unshared folder \"%s\" with you" : "Кто-то закрыл доступ к папке \"%s\" для вас",
     "No file provided for import" : "Не указан файл для импорта",
-    "Unsupported file type for import" : "Неподдерживаемый тип файла для импорта",
+    "Failed to upload file" : "Не удалось загрузить файл",
     "Bookmarks shared by %s" : "Закладки предоставлены пользователем %s ",
     "Frequent bookmarks" : "Частые закладки",
     "Recent bookmarks" : "Последние закладки",

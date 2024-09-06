@@ -24,7 +24,6 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s ha deixat de compartir la carpeta \"%2$s\" amb vostè",
     "Someone unshared folder \"%s\" with you" : "Algú ha deixat de compartir la carpeta \"%s\" amb tu",
     "No file provided for import" : "No s'ha proporcionat cap fitxer per importació",
-    "Unsupported file type for import" : "El tipus de fitxer que es importar no és compatible",
     "Bookmarks shared by %s" : "Adreces d'interès compartides per %s",
     "Frequent bookmarks" : "Adreces d'interès freqüents",
     "Recent bookmarks" : "Adreces d'interès recents",

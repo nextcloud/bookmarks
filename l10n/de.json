@@ -24,7 +24,7 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s hat die Freigabe des Ordners \"%2$s\" aufgehoben",
     "Someone unshared folder \"%s\" with you" : "Jemand hat die Freigabe des Ordners \"%s\" aufgehoben",
     "No file provided for import" : "Keine Datei zum Importieren ausgewählt",
-    "Unsupported file type for import" : "Ein Import von Dateien dieses Typs wird nicht unterstützt",
+    "Failed to upload file" : "Benötigt keine Übersetzung. Für Android wird nur die formelle Übersetzung verwendet (de_DE).",
     "Bookmarks shared by %s" : "Lesezeichen geteilt von %s",
     "Frequent bookmarks" : "Häufige Lesezeichen",
     "Recent bookmarks" : "Neueste Lesezeichen",

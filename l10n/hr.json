@@ -24,7 +24,6 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s više ne dijeli mapu „%2$s“ s vama",
     "Someone unshared folder \"%s\" with you" : "Netko više ne dijeli mapu „%s“ s vama",
     "No file provided for import" : "Nije navedena datoteka za uvoz",
-    "Unsupported file type for import" : "Nepodržana vrsta datoteke za uvoz",
     "Bookmarks shared by %s" : "Knjižne oznake dijeljene s %s",
     "Frequent bookmarks" : "Česte knjižne oznake",
     "Recent bookmarks" : "Nedavne knjižne oznake",

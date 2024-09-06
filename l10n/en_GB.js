@@ -26,7 +26,6 @@ OC.L10N.register(
     "%1$s unshared folder \"%2$s\" with you" : "%1$s unshared folder \"%2$s\" with you",
     "Someone unshared folder \"%s\" with you" : "Someone unshared folder \"%s\" with you",
     "No file provided for import" : "No file provided for import",
-    "Unsupported file type for import" : "Unsupported file type for import",
     "Bookmarks shared by %s" : "Bookmarks shared by %s",
     "Frequent bookmarks" : "Frequent bookmarks",
     "Recent bookmarks" : "Recent bookmarks",

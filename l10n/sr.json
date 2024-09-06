@@ -24,7 +24,6 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s је прекинуо дељење фолдера %2$s” са вама",
     "Someone unshared folder \"%s\" with you" : "Неко је прекинуо дељење фолдера %s” са вама",
     "No file provided for import" : "није дат фајл за увоз",
-    "Unsupported file type for import" : "врста фајла за увоз није подржана",
     "Bookmarks shared by %s" : "%s поделио обележиваче",
     "Frequent bookmarks" : "Чести маркери",
     "Recent bookmarks" : "Скорашњи маркери",

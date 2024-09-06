@@ -24,7 +24,6 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s slutade dela mappen \"%2$s\" med dig",
     "Someone unshared folder \"%s\" with you" : "Någon slutade  dela mappen \"%s\" med dig",
     "No file provided for import" : "Inga filer given för importering",
-    "Unsupported file type for import" : "Ogiltig filtyp för import",
     "Bookmarks shared by %s" : "Bokmärken delas av %s",
     "Frequent bookmarks" : "Vanliga bokmärken",
     "Recent bookmarks" : "Senaste bokmärken",

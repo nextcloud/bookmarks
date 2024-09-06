@@ -24,7 +24,7 @@
     "%1$s unshared folder \"%2$s\" with you" : "%1$s zrušil(a) sdílení složky „%2$s“ vám",
     "Someone unshared folder \"%s\" with you" : "Někdo zrušil sdílení složky „%s“ vám",
     "No file provided for import" : "Nezadali jste soubor k importu",
-    "Unsupported file type for import" : "Nepodporovaný typ souboru pro import",
+    "Failed to upload file" : "Nepodařilo se nahrát soubor",
     "Bookmarks shared by %s" : "Záložky, které sdílí %s",
     "Frequent bookmarks" : "Často využívané záložky",
     "Recent bookmarks" : "Nedávné záložky",

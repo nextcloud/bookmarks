@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Grāmatzīmes",
     "No file provided for import" : "Nav norādīta importējamā datne",
-    "Unsupported file type for import" : "Neatbalstīts datnes veids ievietošanai",
     "Bookmark" : "Grāmatzīme",
     "Details" : "Detaļas",
     "Rename" : "Pārsaukt",
