@@ -22,7 +22,6 @@ OC.L10N.register(
     "Shared with you" : "Споделено со вас",
     "Files" : "Датотеки",
     "Delete" : "Избриши",
-    "Settings" : "Параметри",
     "Need help?" : "Ви треба помош?",
     "Title" : "Наслов",
     "Link" : "Линк",

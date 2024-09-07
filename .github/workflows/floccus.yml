@@ -95,7 +95,6 @@ jobs:
           - test
         browsers:
           - firefox
-          - chrome
 
     name: ${{ matrix.browsers }} floccus@${{ matrix.floccus-branch }} ${{ matrix.floccus-adapter }}:${{ matrix.test-name}}
 

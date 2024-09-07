@@ -24,7 +24,6 @@ OC.L10N.register(
     "Shared with you" : "Partilhado consigo",
     "Files" : "Ficheiros",
     "Delete" : "Apagar",
-    "Settings" : "Definições",
     "Need help?" : "Precisa de ajuda?",
     "Title" : "Título",
     "Link" : "Link",

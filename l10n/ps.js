@@ -13,7 +13,6 @@ OC.L10N.register(
     "Shared with you" : "تاسې سره شريک شوي",
     "Files" : "فایلونه",
     "Delete" : "ړنګول",
-    "Settings" : "سمونې",
     "Link" : "لېنک",
     "Tags" : "نښکې",
     "Notes" : "شسیب",

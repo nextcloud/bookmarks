@@ -66,38 +66,56 @@
 				<template v-if="sortOrder === 'index' && children.length">
 					<template v-for="item in children">
 						<Folder v-if="item.type === 'folder' && getFolder(item.id)"
-							:key="item.type + item.id"
+							:key="'customsort' + item.type + item.id"
 							:folder="getFolder(item.id)" />
 						<Bookmark v-if="item.type === 'bookmark' && getBookmark(item.id)"
-							:key="item.type + item.id"
+							:key="'nosort' + item.type + item.id"
 							:bookmark="getBookmark(item.id)" />
+						<template v-if="!children.length">
+							<NoBookmarks v-if="!loading && (allBookmarksCount > 0 || isPublic)" />
+							<FirstRun v-else-if="!loading" />
+						</template>
 					</template>
 				</template>
 				<!-- FOLDER VIEW WITH NORMAL SORTING -->
-				<template v-else-if="(subFolders.length || bookmarks.length) && !loading">
+				<template v-else-if="subFolders.length !== 0 || bookmarks.length !== 0">
 					<Folder v-for="folder in subFolders"
-						:key="'folder' + folder.id"
+						:key="'normalsort' + 'folder' + folder.id"
 						:folder="folder" />
 					<template v-if="bookmarks.length">
 						<Bookmark v-for="bookmark in bookmarks"
-							:key="'bookmark' + bookmark.id"
+							:key="'nosort' + 'bookmark' + bookmark.id"
 							:bookmark="bookmark" />
 					</template>
+					<template v-if="!subFolders.length && !bookmarks.length">
+						<NoBookmarks v-if="!loading && (allBookmarksCount > 0 || isPublic)" />
+						<FirstRun v-else-if="!loading" />
+					</template>
 				</template>
-				<NoBookmarks v-else-if="!loading && (allBookmarksCount > 0 || isPublic)" />
-				<FirstRun v-else-if="!loading" />
+			</template>
+			<!-- SHARED_FOLDERS VIEW -->
+			<template v-else-if="$route.name === routes.SHARED_FOLDERS">
+				<Folder v-for="folder in subFolders"
+					:key=" 'sharedfolders' + 'folder' + folder.id"
+					:folder="folder" />
+				<template v-if="subFolders.length === 0">
+					<NoBookmarks v-if="!loading && (allBookmarksCount > 0 || isPublic)" />
+					<FirstRun v-else-if="!loading" />
+				</template>
 			</template>
 			<!-- NON-FOLDER VIEW -->
-			<template v-else-if="subFolders.length || bookmarks.length">
+			<template v-else>
 				<Folder v-for="folder in subFolders"
-					:key="'folder' + folder.id"
+					:key=" 'nosort' + 'folder' + folder.id"
 					:folder="folder" />
 				<Bookmark v-for="bookmark in bookmarks"
-					:key="'bookmark' + bookmark.id"
+					:key="'nosort' + 'bookmark' + bookmark.id"
 					:bookmark="bookmark" />
+				<template v-if="!subFolders.length && !bookmarks.length">
+					<NoBookmarks v-if="!loading && (allBookmarksCount > 0 || isPublic)" />
+					<FirstRun v-else-if="!loading" />
+				</template>
 			</template>
-			<NoBookmarks v-else-if="!loading && (allBookmarksCount > 0 || isPublic)" />
-			<FirstRun v-else-if="!loading" />
 		</VirtualScroll>
 	</div>
 </template>
@@ -155,6 +173,7 @@ export default {
 				// Show shared folders
 				return Object.keys(this.$store.state.sharedFoldersById)
 					.map(folderId => this.$store.getters.getFolder(folderId)[0])
+					.filter(Boolean)
 			}
 			if (this.$route.name === this.routes.TRASHBIN) {
 				// Show deleted folders

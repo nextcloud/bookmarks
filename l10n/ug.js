@@ -11,7 +11,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "ھۆججەتلەر",
     "Delete" : "ئۆچۈر",
-    "Settings" : "تەڭشەكلەر",
     "Title" : "ماۋزۇ",
     "Link" : "Link",
     "Tags" : "بەلگەلەر",

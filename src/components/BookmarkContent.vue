@@ -78,7 +78,7 @@ export default {
 	right: max( min(27vw, 500px), 300px); /* side bar */
 	bottom: 0;
 	background: var(--color-main-background);
-	z-index: 1499;
+	z-index: 1801;
 	display: flex;
 	overflow: scroll;
 	flex-direction: column;

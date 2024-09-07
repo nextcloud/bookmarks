@@ -75,15 +75,16 @@
 			<BulkEditing v-if="hasSelection" />
 		</div>
 		<div class="controls__right">
-			<NcActions>
-				<NcActionButton @click="onToggleViewMode">
-					<template #icon>
-						<ViewListIcon v-if="viewMode !== 'list'" :size="20" />
-						<ViewGridIcon v-else :size="20" />
-					</template>
-					{{ viewMode === 'list' ? t('bookmarks', 'Change to grid view') : t('bookmarks', 'Change to list view') }}
-				</NcActionButton>
-			</NcActions>
+			<div>
+				<NcActions>
+					<NcActionButton :name="viewMode === 'list' ? t('bookmarks', 'Change to grid view') : t('bookmarks', 'Change to list view')" @click="onToggleViewMode">
+						<template #icon>
+							<ViewListIcon v-if="viewMode !== 'list'" :size="20" />
+							<ViewGridIcon v-else :size="20" />
+						</template>
+					</NcActionButton>
+				</NcActions>
+			</div>
 			<NcActions v-tooltip="sortingOptions[sorting].description">
 				<template #icon>
 					<component :is="sortingOptions[sorting].icon" :fill-color="colorMainText" />
@@ -94,6 +95,7 @@
 					@click="onChangeSorting(key)">
 					<template #icon>
 						<component :is="option.icon"
+							:size="20"
 							:fill-color="key === sorting? colorPrimaryElement : colorMainText" />
 					</template>
 					{{ option.description }}
@@ -341,13 +343,13 @@ export default {
 
 		async onEmptyTrashbin() {
 			await this.$store.dispatch(actions.EMPTY_TRASHBIN)
-		}
+		},
 	},
 }
 </script>
 <style>
 .controls {
-	padding: 4px 8px 0 50px;
+	padding: 5px 8px 0 50px;
 	display: flex;
 	position: absolute;
 	z-index: 100;
@@ -356,6 +358,7 @@ export default {
 	right: 0;
 	top: 0;
 	border-bottom: var(--color-border) 1px solid;
+	height: 46px;
 }
 
 .controls h2 {
@@ -364,14 +367,11 @@ export default {
 	margin-right: 10px;
 	display: flex;
 	flex-shrink: 0;
+	font-size: 1.1rem;
 }
 
 .controls h2 :nth-child(2) {
 	margin-left: 5px;
-}
-
-.controls .action-item {
-	height: 45px;
 }
 
 .controls .strikethrough {
@@ -380,11 +380,6 @@ export default {
 
 .controls.wide {
 	padding: 0 8px;
-}
-
-.controls .custom-button:hover,
-.controls .custom-button:active {
-	background-color: var(--color-background-hover);
 }
 
 .controls + * {
@@ -414,7 +409,7 @@ export default {
 }
 
 .controls__right .inline-search {
-	max-width: 200px !important;
+	max-width: 300px !important;
 	position: relative;
 	top: -4px;
 }

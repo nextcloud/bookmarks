@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Bókamerki",
     "No file provided for import" : "Engin skrá valin til innflutnings",
-    "Unsupported file type for import" : "Ekki er hægt að flytja inn þessa tegund af bókamerki",
     "Bookmarks shared by %s" : "Bókamerki deilt af %s",
     "Select bookmark" : "Veldu bókamerki",
     "Details" : "Nánar",
@@ -47,7 +46,6 @@ OC.L10N.register(
     "Delete" : "Eyða",
     "Untagged" : "Ómerkt",
     "{used} bookmarks of {available} available" : "{used} bókamerki af {available} tiltækum",
-    "Settings" : "Stillingar",
     "No bookmarks here" : "Engin bókamerki hér",
     "Client apps" : "Biðlaraforrit",
     "Also check out the collection of client apps that integrate with this app: " : "Skoðaðu einnig úrval þeirra biðlaraforrita sem samþættast þessu forriti:",

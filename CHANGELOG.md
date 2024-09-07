@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [15.0.0] - 2024-09-07
+
+### Breaking changes
+
+- Dropped support for Nextcloud < 30
+
+### New
+
+* New Nextcloud 30 UI Design
+* feat(Settings): Link to app store
+* feat(ux): Sync folder sidebar with opening folders
+
+### Fixed
+
+* fix(Db\Bookmark): Fix UTF-8 encoding of user-facing content
+* fix(HtmlImport): Don't fail if add_date int is too large
+* fix: Shared with you view was broken
+* fix(TreeMapper#getSoftDeletedRootItems): Avoid O(n^2) algorithm
+* fix(LoadingModal): Show spinner while emptying trashbin
+* fix(BookmarkController#import): Give more meanigful error message when upload failed
+* fix(WebviewController): Fix Copypasta
+* fix(BookmarkController#countBookmarks): Fix root folder count
+* fix(Navigation): Don't display Files menu entry if feature is not enabled
+* fix(Search): Only search after >2 characters have been entered
+
+
 ## [14.2.4] - 2024-08-07
 
 ### Fixed
@@ -19,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * fix(Search): Only search after >2 characters have been entered
 
 ## [14.2.3] - 2024-08-04
+
+### Fixed
 
 * fix(TreeMapper#deleteOldTrashbinItems)
 * feat(Trash bin): Add "empty trash bin" button

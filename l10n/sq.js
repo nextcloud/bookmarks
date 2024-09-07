@@ -19,7 +19,6 @@ OC.L10N.register(
     "Files" : "Skedarët",
     "Delete" : "Fshij",
     "Untagged" : "E paetiketuar",
-    "Settings" : "Rregullimet",
     "Bookmarklet" : "Libër Shënues",
     "Need help?" : "Ju duhet ndihmë?",
     "Title" : "Titulli",

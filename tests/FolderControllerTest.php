@@ -270,7 +270,7 @@ class FolderControllerTest extends TestCase {
 			$this->cacheFactory->method('createDistributed')
 				->willReturnCallback(fn ()
 				  => OC::$server->get(ICacheFactory::class)
-					->createDistributed(time() . '' . random_int(0, 1000000))
+				  	->createDistributed(time() . '' . random_int(0, 1000000))
 				);
 		}
 

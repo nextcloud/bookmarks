@@ -15,7 +15,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "ফাইল",
     "Delete" : "মুছে",
-    "Settings" : "সেটিংস",
     "Title" : "শিরোনাম",
     "Link" : "Link",
     "Tags" : "ট্যাগ",

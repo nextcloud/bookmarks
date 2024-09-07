@@ -12,7 +12,6 @@ OC.L10N.register(
     "Cancel" : "Sguir dheth",
     "Files" : "Faidhlichean",
     "Delete" : "Sguab às",
-    "Settings" : "Roghainnean",
     "Link" : "Ceangal",
     "Tags" : "Tagaichean",
     "Notes" : "Nòtaichean",

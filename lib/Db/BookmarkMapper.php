@@ -453,7 +453,7 @@ class BookmarkMapper extends QBMapper {
 		if ($params->getDuplicated()) {
 			$subQuery = $this->db->getQueryBuilder();
 			$subQuery->select('trdup.parent_folder')
-			->from('*PREFIX*bookmarks_tree', 'trdup')
+				->from('*PREFIX*bookmarks_tree', 'trdup')
 				->where($subQuery->expr()->eq('b.id', 'trdup.id'))
 				->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tree.parent_folder'))
 				->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));

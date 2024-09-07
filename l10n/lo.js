@@ -16,7 +16,6 @@ OC.L10N.register(
     "Shared with you" : "ແບ່ງປັບກັບທ່ານ",
     "Files" : "ຟາຍ",
     "Delete" : "ລຶບ",
-    "Settings" : "ການຕັ້ງຄ່າ",
     "Need help?" : "ຕ້ອງການຄວາມຊ່ວຍເຫຼືອ?",
     "Link" : "ລິງ",
     "Tags" : "ປ້າຍກຳກັບ",

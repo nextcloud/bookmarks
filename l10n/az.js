@@ -15,7 +15,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Fayllar",
     "Delete" : "Sil",
-    "Settings" : "Quraşdırmalar",
     "Title" : "Başlıq",
     "Link" : "Link",
     "Tags" : "Işarələr",

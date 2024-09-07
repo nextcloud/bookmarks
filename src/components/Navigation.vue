@@ -109,7 +109,7 @@
 				:name="t('bookmarks', 'Trash Bin')">
 				<TrashbinIcon slot="icon" :size="20" />
 			</NcAppNavigationItem>
-			<NcAppNavigationItem :name="t('bookmarks', 'Settings')" @click="settingsOpen = !settingsOpen">
+			<NcAppNavigationItem :name="t('bookmarks', 'Bookmarks Settings')" @click="settingsOpen = !settingsOpen">
 				<template #icon>
 					<CogIcon :size="20" />
 				</template>

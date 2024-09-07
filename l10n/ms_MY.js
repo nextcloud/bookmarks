@@ -9,7 +9,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Fail",
     "Delete" : "Padam",
-    "Settings" : "Tetapan",
     "Title" : "Judul",
     "Link" : "Link",
     "Notes" : "Nota",

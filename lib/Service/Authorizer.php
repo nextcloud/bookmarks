@@ -197,7 +197,7 @@ class Authorizer {
 	 * @return boolean
 	 */
 	public static function hasPermission(int $perm, int $perms): bool {
-		return (boolean)($perms & $perm);
+		return (bool)($perms & $perm);
 	}
 
 	/**

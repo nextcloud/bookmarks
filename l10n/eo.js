@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Bookmarks" : "Legosignaro",
     "No file provided for import" : "Neniu dosiero provizita por enporto",
-    "Unsupported file type for import" : "Nesubtenita dosiertipo por enporto",
     "Select bookmark" : "Elekti legosignon",
     "Details" : "Detaloj",
     "Rename" : "Alinomi",
@@ -35,7 +34,6 @@ OC.L10N.register(
     "Files" : "Dosieroj",
     "Delete" : "Forigi",
     "Untagged" : "Sen etikedo",
-    "Settings" : "Agordoj",
     "No bookmarks here" : "Neniu legosigno ĉi tie",
     "Client apps" : "Klientaj aplikaĵoj",
     "Also check out the collection of client apps that integrate with this app: " : "Ankaŭ vidu la programojn, kiuj uzas tiun aplikaĵon:",

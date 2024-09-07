@@ -16,7 +16,7 @@
 			<h3>💙 {{ t('bookmarks', 'Support this project') }}</h3>
 			<p>{{ t('bookmarks', 'My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 ') }}</p>
 			<p>&nbsp;</p>
-			<p><a href="https://github.com/sponsors/marcelklehr">GitHub Sponsors</a>, <a href="https://www.patreon.com/marcelklehr">Patreon</a>, <a href="https://liberapay.com/marcelklehr/donate">Liberapay</a>, <a href="https://ko-fi.com/marcelklehr">Ko-Fi</a>, <a href="https://www.paypal.me/marcelklehr1">PayPal</a></p>
+			<p><a href="https://github.com/sponsors/marcelklehr">GitHub Sponsors</a>, <a href="https://www.patreon.com/marcelklehr">Patreon</a>, <a href="https://liberapay.com/marcelklehr/donate">Liberapay</a>, <a href="https://ko-fi.com/marcelklehr">Ko-Fi</a>, <a href="https://www.paypal.com/donate/?hosted_button_id=VESJWWBEZ9V6J">PayPal</a></p>
 			<p><a href="https://apps.nextcloud.com/apps/bookmarks">{{ t('bookmarks', 'Leave a rating on the Nextcloud App Store') }}</a></p>
 		</div>
 	</NcModal>

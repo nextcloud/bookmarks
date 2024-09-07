@@ -28,7 +28,6 @@ OC.L10N.register(
     "Shared with you" : "тантай хуваалцсан",
     "Files" : "файлууд",
     "Delete" : "Устгах",
-    "Settings" : "Тохиргоо",
     "Title" : "Цол/Албан тушаал",
     "Link" : "Холбоос",
     "Tags" : "Tag-үүд",

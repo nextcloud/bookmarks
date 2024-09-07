@@ -21,7 +21,6 @@ OC.L10N.register(
     "Shared with you" : "Compartióse contigo",
     "Files" : "Ficheros",
     "Delete" : "Desaniciar",
-    "Settings" : "Configuración",
     "Bookmarklet" : "Bookmarklet",
     "Need help?" : "¿Precises ayuda?",
     "Title" : "Tñitulu",

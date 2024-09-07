@@ -11,7 +11,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "ಕಡತಗಳು",
     "Delete" : "﻿ಅಳಿಸಿ",
-    "Settings" : "ಆಯ್ಕೆ",
     "Title" : "ಶೀರ್ಷಿಕೆ",
     "Link" : "ಸಂಪರ್ಕ ಕೊಂಡಿ",
     "Notes" : "Notes",

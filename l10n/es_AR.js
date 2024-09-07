@@ -20,7 +20,6 @@ OC.L10N.register(
     "Shared with you" : "Compartido con usted",
     "Files" : "Archivos",
     "Delete" : "Eliminar",
-    "Settings" : "Ajustes",
     "Bookmarklet" : "Marcador a código",
     "Need help?" : "¿Necesita ayuda?",
     "Title" : "Título",

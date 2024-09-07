@@ -13,7 +13,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "ឯកសារ",
     "Delete" : "លុប",
-    "Settings" : "ការកំណត់",
     "Title" : "ចំណងជើង",
     "Link" : "Link",
     "Tags" : "ស្លាក",

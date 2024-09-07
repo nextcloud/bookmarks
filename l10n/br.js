@@ -18,7 +18,6 @@ OC.L10N.register(
     "Files" : "Restroù",
     "Broken links" : "Liammoù toret",
     "Delete" : "Dilemel",
-    "Settings" : "Arventennoù",
     "Need help?" : "Sikour o po ?",
     "Title" : "Titl",
     "Link" : "Liamm",

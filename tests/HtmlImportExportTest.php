@@ -103,7 +103,7 @@ class HtmlImportExportTest extends TestCase {
 		$this->assertCount(1, $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $result['imported'][4]['id']));
 
 		/**
-		 * @var $firstBookmark Db\Bookmark
+		 * @var Db\Bookmark $firstBookmark
 		 */
 		$firstBookmark = $this->bookmarkMapper->find($result['imported'][0]['children'][0]['id']);
 		$this->assertSame('Title 0', $firstBookmark->getTitle());

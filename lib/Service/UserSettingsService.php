@@ -45,7 +45,7 @@ class UserSettingsService {
 			return $this->config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', '0');
 		}
 		if ($key === 'archive.enabled') {
-			$default = (string) true;
+			$default = (string)true;
 		}
 		if ($key === 'privacy.enableScraping') {
 			return $this->config->getAppValue($this->appName, 'privacy.enableScraping', 'false');
@@ -54,7 +54,7 @@ class UserSettingsService {
 			$default = $this->l->t('Bookmarks');
 		}
 		if ($key === 'backup.enabled') {
-			$default = (string) false;
+			$default = (string)false;
 		}
 		if ($key === 'backup.filePath') {
 			$default = $this->l->t('Bookmarks Backups');
@@ -96,7 +96,7 @@ class UserSettingsService {
 	 */
 	public function toArray(): array {
 		$array = [];
-		foreach(self::KEYS as $key) {
+		foreach (self::KEYS as $key) {
 			$array[$key] = $this->get($key);
 		}
 		$array['limit'] = $this->get('limit');

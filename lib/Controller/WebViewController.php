@@ -114,11 +114,11 @@ class WebViewController extends Controller {
 		$userName = 'Unknown';
 		try {
 			/**
-			 * @var $publicFolder PublicFolder
+			 * @var PublicFolder $publicFolder
 			 */
 			$publicFolder = $this->publicFolderMapper->find($token);
 			/**
-			 * @var $folder Folder
+			 * @var Folder $folder
 			 */
 			$folder = $this->folderMapper->find($publicFolder->getFolderId());
 			$title = $folder->getTitle();

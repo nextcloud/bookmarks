@@ -15,7 +15,6 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Ffeiliau",
     "Delete" : "Dileu",
-    "Settings" : "Gosodiadau",
     "Title" : "Teitl",
     "Link" : "Dolen",
     "Tags" : "Tagiau",

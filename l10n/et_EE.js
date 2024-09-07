@@ -20,7 +20,6 @@ OC.L10N.register(
     "Shared with you" : "Sinuga jagatud",
     "Files" : "Failid",
     "Delete" : "Kustuta",
-    "Settings" : "Seaded",
     "Need help?" : "Vajad abi?",
     "Title" : "Pealkiri",
     "Link" : "Link",
