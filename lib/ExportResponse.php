@@ -33,10 +33,10 @@ class ExportResponse extends Response {
 		$dateTime = OC::$server->getDateTimeFormatter();
 
 		$export_name = '"' . $productName . ' Bookmarks (' . $userName . ') (' . $dateTime->formatDate(time()) . ').html"';
-		$this->addHeader("Cache-Control", "private");
-		$this->addHeader("Content-Type", " application/stream");
-		$this->addHeader("Content-Length", strlen($returnstring));
-		$this->addHeader("Content-Disposition", "attachment; filename=" . $export_name);
+		$this->addHeader('Cache-Control', 'private');
+		$this->addHeader('Content-Type', ' application/stream');
+		$this->addHeader('Content-Length', strlen($returnstring));
+		$this->addHeader('Content-Disposition', 'attachment; filename=' . $export_name);
 		$this->returnstring = $returnstring;
 	}
 

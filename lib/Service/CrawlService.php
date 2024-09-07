@@ -77,7 +77,7 @@ class CrawlService {
 
 		if ($available) {
 			$this->userSettingsService->setUserId($bookmark->getUserId());
-			if (((boolean) $this->userSettingsService->get('archive.enabled')) === true) {
+			if (((bool)$this->userSettingsService->get('archive.enabled')) === true) {
 				$this->archiveFile($bookmark, $resp);
 				$this->archiveContent($bookmark, $resp);
 			}
@@ -148,7 +148,7 @@ class CrawlService {
 					$file->putContent($resp->getBody());
 					$bookmark->setArchivedFile($file->getId());
 					$this->bookmarkMapper->update($bookmark);
-				} catch (NotPermittedException | NoUserException | GenericFileException | LockedException | UrlParseError | InvalidPathException | NotFoundException $e) {
+				} catch (NotPermittedException|NoUserException|GenericFileException|LockedException|UrlParseError|InvalidPathException|NotFoundException $e) {
 					$this->logger->debug(get_class($e) . ' ' . $e->getMessage() . "\r\n" . $e->getTraceAsString());
 				}
 			}

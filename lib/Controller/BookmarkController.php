@@ -193,11 +193,11 @@ class BookmarkController extends ApiController {
 		if ($this->authorizer->getToken() !== null) {
 			try {
 				/**
-				 * @var $publicFolder PublicFolder
+				 * @var PublicFolder $publicFolder
 				 */
 				$publicFolder = $this->publicFolderMapper->find($this->authorizer->getToken());
 				$this->rootFolderId = $publicFolder->getFolderId();
-			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 				$this->logger->error($e->getMessage()."\n".$e->getMessage());
 			}
 		}
@@ -242,7 +242,7 @@ class BookmarkController extends ApiController {
 		}
 		try {
 			/**
-			 * @var $bm Bookmark
+			 * @var Bookmark $bm
 			 */
 			$bm = $this->bookmarkMapper->find($id);
 		} catch (DoesNotExistException $e) {
@@ -379,7 +379,7 @@ class BookmarkController extends ApiController {
 				// If we have this user's permission to see the contents of their folder, simply set the userID
 				// to theirs
 				$userId = $folderEntity->getUserId();
-			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 			}
 			$params->setFolder($this->toInternalFolderId($folder));
@@ -395,7 +395,7 @@ class BookmarkController extends ApiController {
 		} else {
 			try {
 				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $params);
-			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 			}
 		}
@@ -527,7 +527,7 @@ class BookmarkController extends ApiController {
 
 		try {
 			$this->bookmarkMapper->find($id);
-		} catch (DoesNotExistException | MultipleObjectsReturnedException) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException) {
 			return new JSONResponse(['status' => 'success']);
 		}
 
@@ -606,7 +606,7 @@ class BookmarkController extends ApiController {
 				return new NotFoundResponse();
 			}
 			return $this->doImageResponse($image);
-		} catch (DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 			return new NotFoundResponse();
 		}
 	}
@@ -633,7 +633,7 @@ class BookmarkController extends ApiController {
 				return new NotFoundResponse();
 			}
 			return $this->doImageResponse($image);
-		} catch (DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 			return new NotFoundResponse();
 		}
 	}

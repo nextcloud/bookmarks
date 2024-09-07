@@ -137,7 +137,7 @@ class BookmarkService {
 		$bookmark = null;
 		$ownFolders = array_filter($folders, function ($folderId) use ($userId) {
 			/**
-			 * @var $folder Folder
+			 * @var Folder $folder
 			 */
 			$folder = $this->folderMapper->find($folderId);
 			return $folder->getUserId() === $userId;
@@ -145,7 +145,7 @@ class BookmarkService {
 		$foreignFolders = array_diff($folders, $ownFolders);
 		foreach ($foreignFolders as $folderId) {
 			/**
-			 * @var $folder Folder
+			 * @var Folder $folder
 			 */
 			$folder = $this->folderMapper->find($folderId);
 			$bookmark = $this->_addBookmark($folder->getUserId(), $url, $title, $description, $tags, [$folder->getId()]);
@@ -275,7 +275,7 @@ class BookmarkService {
 	 */
 	public function update(string $userId, int $id, ?string $url = null, ?string $title = null, ?string $description = null, ?array $tags = null, ?array $folders = null): ?Bookmark {
 		/**
-		 * @var $bookmark Bookmark
+		 * @var Bookmark $bookmark
 		 */
 		$bookmark = $this->bookmarkMapper->find($id);
 
@@ -333,7 +333,7 @@ class BookmarkService {
 			}
 
 			/**
-			 * @var $currentOwnFolders Folder[]
+			 * @var Folder[] $currentOwnFolders
 			 */
 			$currentOwnFolders = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId());
 			// Updating user may not be the owner of the bookmark

@@ -145,7 +145,7 @@ class TreeCacheManager implements IEventListener {
 		try {
 			$parentFolder = $this->getTreeMapper()->findParentOf(TreeMapper::TYPE_FOLDER, $folderId);
 			$this->invalidateFolder($parentFolder->getId(), $previousFolders);
-		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 			return;
 		}
 
@@ -155,7 +155,7 @@ class TreeCacheManager implements IEventListener {
 			try {
 				$parentFolder = $this->getTreeMapper()->findParentOf(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
 				$this->invalidateFolder($parentFolder->getId(), $previousFolders);
-			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 				continue;
 			}
 		}
@@ -288,7 +288,7 @@ class TreeCacheManager implements IEventListener {
 	}
 
 	public function invalidateAll() {
-		foreach($this->caches as $cache) {
+		foreach ($this->caches as $cache) {
 			$cache->clear();
 		}
 	}

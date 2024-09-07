@@ -29,8 +29,6 @@ use OCP\AppFramework\Db\Entity;
  * @method setAvailable(boolean $available)
  * @method int getArchivedFile()
  * @method setArchivedFile(int $fileId)
- * @method string getTextContent()
- * @method string getHtmlContent()
  * @method string getUserId()
  * @method setUserId(string $userId)
  */
@@ -133,7 +131,7 @@ class Bookmark extends Entity {
 
 	public function getTextContent(): string {
 		// Remove non-utf-8 characters from string: https://stackoverflow.com/questions/1401317/remove-non-utf8-characters-from-string
-		return (string) mb_convert_encoding($this->textContent, 'UTF-8', 'UTF-8');
+		return (string)mb_convert_encoding($this->textContent, 'UTF-8', 'UTF-8');
 	}
 
 	public function setHtmlContent(?string $content): void {
@@ -146,10 +144,10 @@ class Bookmark extends Entity {
 
 	public function getHtmlContent(): string {
 		// Remove non-utf-8 characters from string: https://stackoverflow.com/questions/1401317/remove-non-utf8-characters-from-string
-		return (string) mb_convert_encoding($this->htmlContent, 'UTF-8', 'UTF-8');
+		return (string)mb_convert_encoding($this->htmlContent, 'UTF-8', 'UTF-8');
 	}
 
 	public function isWebLink() {
-		return (bool) preg_match('/^https?:/i', $this->getUrl());
+		return (bool)preg_match('/^https?:/i', $this->getUrl());
 	}
 }
