@@ -34,7 +34,6 @@ Requirements:
 	<bugs>https://github.com/nextcloud/bookmarks/issues</bugs>
 	<repository type="git">https://github.com/nextcloud/bookmarks.git</repository>
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
-	<donation type="paypal">https://www.paypal.com/donate/?hosted_button_id=VESJWWBEZ9V6J</donation>
 
 	<dependencies>
 		<php min-version="8.1" />
