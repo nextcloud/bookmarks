@@ -12,7 +12,7 @@ namespace OCA\Bookmarks\Service;
 use OCP\AppFramework\Services\IAppConfig;
 
 class SettingsService {
-	/** @var array<string,string>  */
+	/** @var array<string,string> */
 	public const DEFAULTS = [
 		'previews.screenly.url' => '',
 		'previews.screenly.token' => '',

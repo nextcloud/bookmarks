@@ -300,7 +300,7 @@ class BookmarkControllerTest extends TestCase {
 		$output = $this->controller->getSingleBookmark($this->bookmark2Id);
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
-		$this->assertEquals("https://9gag.com/", $data['item']['url']);
+		$this->assertEquals('https://9gag.com/', $data['item']['url']);
 	}
 
 	/**
@@ -685,7 +685,7 @@ class BookmarkControllerTest extends TestCase {
 
 		$bookmark = $this->bookmarkMapper->find($id);
 		$this->assertEquals('https://www.heise.de/', $bookmark->getUrl()); // normalized URL
-		$this->assertEquals("", $bookmark->getTitle());
+		$this->assertEquals('', $bookmark->getTitle());
 	}
 
 	/**

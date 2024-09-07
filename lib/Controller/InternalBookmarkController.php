@@ -66,8 +66,8 @@ class InternalBookmarkController extends ApiController {
 	public function getBookmarks(
 		$page = 0,
 		$tags = [],
-		$conjunction = "or",
-		$sortby = "",
+		$conjunction = 'or',
+		$sortby = '',
 		$search = [],
 		$limit = 10,
 		$untagged = false,
@@ -103,7 +103,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function newBookmark($url = "", $title = null, $description = null, $tags = null, $folders = [], $target = null): JSONResponse {
+	public function newBookmark($url = '', $title = null, $description = null, $tags = null, $folders = [], $target = null): JSONResponse {
 		return $this->publicController->newBookmark($url, $title, $description, $tags, $folders, $target);
 	}
 
@@ -119,7 +119,7 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function editBookmark($id = null, $url = null, $title = null, $description = "", $tags = [], $folders = null, $target = null): JSONResponse {
+	public function editBookmark($id = null, $url = null, $title = null, $description = '', $tags = [], $folders = null, $target = null): JSONResponse {
 		return $this->publicController->editBookmark($id, $url, $title, $description, $tags, $folders, $target);
 	}
 
@@ -141,7 +141,7 @@ class InternalBookmarkController extends ApiController {
 	public function deleteAllBookmarks(): DataResponse {
 		try {
 			$this->bookmarks->deleteAll($this->userId);
-		} catch (UnsupportedOperation | DoesNotExistException | MultipleObjectsReturnedException $e) {
+		} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException $e) {
 			return new DataResponse(['status' => 'error', 'data' => ['Internal server error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		return new DataResponse(['status' => 'success']);
@@ -153,7 +153,7 @@ class InternalBookmarkController extends ApiController {
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 */
-	public function clickBookmark($url = ""): JSONResponse {
+	public function clickBookmark($url = ''): JSONResponse {
 		return $this->publicController->clickBookmark($url);
 	}
 

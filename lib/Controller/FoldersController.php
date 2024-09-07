@@ -85,11 +85,11 @@ class FoldersController extends ApiController {
 		if ($this->authorizer->getToken() !== null) {
 			try {
 				/**
-				 * @var $publicFolder PublicFolder
+				 * @var PublicFolder $publicFolder
 				 */
 				$publicFolder = $this->publicFolderMapper->find($this->authorizer->getToken());
 				$this->rootFolderId = $publicFolder->getFolderId();
-			} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 				$this->logger->error($e->getMessage()."\n".$e->getMessage());
 			}
 		}
@@ -869,7 +869,7 @@ class FoldersController extends ApiController {
 
 		try {
 			$this->folders->deleteShare($shareId);
-		} catch (UnsupportedOperation | DoesNotExistException | MultipleObjectsReturnedException | Exception $e) {
+		} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		return new Http\DataResponse(['status' => 'success']);

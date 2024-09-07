@@ -106,7 +106,7 @@ class ActivityPublisher implements IEventListener {
 		$activity->setTimestamp(time());
 
 		/**
-		 * @var $sharedFolder SharedFolder
+		 * @var SharedFolder $sharedFolder
 		 */
 		try {
 			$sharedFolder = $this->sharedFolderMapper->find($event->getId());
@@ -141,7 +141,7 @@ class ActivityPublisher implements IEventListener {
 		$activity->setTimestamp(time());
 
 		/**
-		 * @var $folder Folder
+		 * @var Folder $folder
 		 */
 		try {
 			$folder = $this->folderMapper->find($event->getId());
@@ -163,7 +163,7 @@ class ActivityPublisher implements IEventListener {
 		}
 
 		/**
-		 * @var $shares SharedFolder[]
+		 * @var SharedFolder[] $shares
 		 */
 		$shares = $this->sharedFolderMapper->findByOwner($this->authorizer->getUserId());
 		$shares = array_merge($shares, $this->sharedFolderMapper->findByUser($this->authorizer->getUserId()));
@@ -193,7 +193,7 @@ class ActivityPublisher implements IEventListener {
 		$activity->setTimestamp(time());
 
 		/**
-		 * @var $bookmark Bookmark
+		 * @var Bookmark $bookmark
 		 */
 		try {
 			$bookmark = $this->bookmarkMapper->find($event->getId());
@@ -213,7 +213,7 @@ class ActivityPublisher implements IEventListener {
 		}
 
 		/**
-		 * @var $shares SharedFolder[]
+		 * @var SharedFolder[] $shares
 		 */
 		$shares = $this->sharedFolderMapper->findByOwner($this->authorizer->getUserId());
 		$shares = array_merge($shares, $this->sharedFolderMapper->findByUser($this->authorizer->getUserId()));

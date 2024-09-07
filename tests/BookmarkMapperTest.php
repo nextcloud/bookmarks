@@ -79,8 +79,8 @@ class BookmarkMapperTest extends TestCase {
 		$bookmark = $this->bookmarkMapper->insert($bookmark);
 		$foundEntity = $this->bookmarkMapper->find($bookmark->getId());
 		$this->assertSame($bookmark->getUrl(), $foundEntity->getUrl());
-		$this->assertSame((string) $bookmark->getTitle(), (string) $foundEntity->getTitle());
-		$this->assertSame((string) $bookmark->getDescription(), (string) $foundEntity->getDescription());
+		$this->assertSame((string)$bookmark->getTitle(), (string)$foundEntity->getTitle());
+		$this->assertSame((string)$bookmark->getDescription(), (string)$foundEntity->getDescription());
 	}
 
 	/**
@@ -102,7 +102,7 @@ class BookmarkMapperTest extends TestCase {
 		$entity->setTitle('foobar');
 		$this->bookmarkMapper->update($entity);
 		$foundEntity = $this->bookmarkMapper->find($entity->getId());
-		$this->assertSame((string) $entity->getTitle(), (string) $foundEntity->getTitle());
+		$this->assertSame((string)$entity->getTitle(), (string)$foundEntity->getTitle());
 	}
 
 	/**

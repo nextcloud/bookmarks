@@ -131,7 +131,7 @@ class FileCache implements ICache {
 	 * @throws NotPermittedException
 	 */
 	public function remove($key) {
-		return (boolean) $this->getStorage()->getFile($key)->delete();
+		return (bool)$this->getStorage()->getFile($key)->delete();
 	}
 
 	/**

@@ -54,7 +54,7 @@ class AdminController extends Controller {
 	 */
 	public function setSetting(string $setting, float|bool|int|string $value): JSONResponse {
 		try {
-			$this->settingsService->setSetting($setting, (string) $value);
+			$this->settingsService->setSetting($setting, (string)$value);
 			return new JSONResponse([], Http::STATUS_OK);
 		} catch (\Exception $e) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);

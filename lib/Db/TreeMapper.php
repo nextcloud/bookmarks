@@ -221,11 +221,11 @@ class TreeMapper extends QBMapper {
 	protected function getFindChildrenQuery(string $type): IQueryBuilder {
 		$qb = $this->selectFromType($type);
 		$qb
-				->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'i.id'))
-				->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
-				->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter($type)))
-				->andWhere($qb->expr()->isNull('t.soft_deleted_at'))
-				->orderBy('t.index', 'ASC');
+			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.id', 'i.id'))
+			->where($qb->expr()->eq('t.parent_folder', $qb->createParameter('parent_folder')))
+			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter($type)))
+			->andWhere($qb->expr()->isNull('t.soft_deleted_at'))
+			->orderBy('t.index', 'ASC');
 		return $qb;
 	}
 
@@ -1125,7 +1125,7 @@ class TreeMapper extends QBMapper {
 	 * @param int $folderId
 	 * @param Share $share
 	 * @return boolean
-	 *@throws MultipleObjectsReturnedException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function isFolderSharedWithUser(int $folderId, string $userId): bool {
 		try {
@@ -1204,7 +1204,7 @@ class TreeMapper extends QBMapper {
 			$this->logger->error('Could not query for old trash bin items', ['exception' => $e]);
 			return;
 		}
-		while($row = $result->fetch()) {
+		while ($row = $result->fetch()) {
 			try {
 				$this->deleteEntry($row['type'], $row['id'], $row['parent_folder']);
 			} catch (DoesNotExistException $e) {
