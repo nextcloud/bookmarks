@@ -197,7 +197,7 @@ OC.L10N.register(
     "Owner" : "Propietario",
     "Sharing" : "Compartindo",
     "Select a user or group" : "Seleccionar un usuario ou grupo",
-    "Share link" : "Compartir ligazón",
+    "Share link" : "Ligazón para compartir",
     "Reading allowed" : "Permitida a lectura",
     "Copy RSS feed" : "Copiar a fonte RSS",
     "Delete link" : "Eliminar ligazón",
