@@ -11,7 +11,6 @@ OC.L10N.register(
     "New folder" : "New folder",
     "Search" : "Search",
     "Empty trash bin" : "Empty trash bin",
-    "_%n folder_::_%n folders_" : ["%n folder","%n folders"],
     "Submit" : "Submit",
     "Cancel" : "Cancel",
     "Recent" : "Recent",
