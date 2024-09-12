@@ -23,7 +23,7 @@ Requirements:
    - mbstring: *
  - when using MySQL, use at least v8.0
 ]]></description>
-	<version>15.0.0</version>
+	<version>15.0.1</version>
 	<licence>agpl</licence>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
@@ -34,7 +34,6 @@ Requirements:
 	<bugs>https://github.com/nextcloud/bookmarks/issues</bugs>
 	<repository type="git">https://github.com/nextcloud/bookmarks.git</repository>
 	<screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks-small.png">https://raw.githubusercontent.com/nextcloud/bookmarks/master/screenshots/Bookmarks.png</screenshot>
-	<donation type="paypal">https://www.paypal.com/donate/?hosted_button_id=VESJWWBEZ9V6J</donation>
 
 	<dependencies>
 		<php min-version="8.1" />

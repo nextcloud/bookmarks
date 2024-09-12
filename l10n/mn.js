@@ -20,7 +20,6 @@ OC.L10N.register(
     "New" : "Шинэ",
     "New folder" : "Шинэ хавтас",
     "Search" : "Хайх",
-    "_%n folder_::_%n folders_" : ["%n хавтас","%n хавтас"],
     "Choose folder" : "Хавтас сонгого уу",
     "Submit" : "мэдэгдэх",
     "Cancel" : "болиулах",
