@@ -29,7 +29,7 @@ class BackupJob extends TimedJob {
 	private IUserSession $session;
 
 	public function __construct(
-		BookmarkMapper $bookmarkMapper, ITimeFactory $timeFactory, IUserManager $userManager, BackupManager $backupManager, LoggerInterface $logger, IConfig $config, IUserSession $session
+		BookmarkMapper $bookmarkMapper, ITimeFactory $timeFactory, IUserManager $userManager, BackupManager $backupManager, LoggerInterface $logger, IConfig $config, IUserSession $session,
 	) {
 		parent::__construct($timeFactory);
 		$this->bookmarkMapper = $bookmarkMapper;
@@ -71,7 +71,7 @@ class BackupJob extends TimedJob {
 				$this->backupManager->runBackup($userId);
 				$this->backupManager->cleanupOldBackups($userId);
 			} catch (\Exception $e) {
-				$this->logger->error('Bookmarks backup for user '.$userId.' errored');
+				$this->logger->error('Bookmarks backup for user ' . $userId . ' errored');
 				$this->logger->error($e->getMessage());
 				continue;
 			}

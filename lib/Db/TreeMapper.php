@@ -381,7 +381,7 @@ class TreeMapper extends QBMapper {
 			$qb = $this->db->getQueryBuilder();
 			$qb->select('b.id')
 				->from('bookmarks', 'b')
-				->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND t.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+				->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND t.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 				->where($qb->expr()->isNull('t.id'));
 			$orphanedBookmarks = $qb->execute();
 			while ($bookmark = $orphanedBookmarks->fetchColumn()) {
@@ -754,7 +754,7 @@ class TreeMapper extends QBMapper {
 		$existingChildren = $this->getChildrenOrder($folderId);
 		foreach ($existingChildren as $child) {
 			if (!in_array($child, $newChildrenOrder, false)) {
-				throw new ChildrenOrderValidationError('A child is missing: '.$child['type'].':'.$child['id']);
+				throw new ChildrenOrderValidationError('A child is missing: ' . $child['type'] . ':' . $child['id']);
 			}
 			if (!isset($child['id'], $child['type'])) {
 				throw new ChildrenOrderValidationError('A child item is missing properties');

@@ -45,7 +45,8 @@ class CrawlService {
 		private IRootFolder $rootFolder,
 		private IL10N $l,
 		private LoggerInterface $logger,
-		private UserSettingsService $userSettingsService) {
+		private UserSettingsService $userSettingsService,
+	) {
 		$this->mimey = new MimeTypes;
 	}
 

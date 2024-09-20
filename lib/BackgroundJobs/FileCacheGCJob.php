@@ -26,7 +26,7 @@ class FileCacheGCJob extends TimedJob {
 	private $logger;
 
 	public function __construct(
-		FileCache $fileCache, LoggerInterface $logger, ITimeFactory $timeFactory
+		FileCache $fileCache, LoggerInterface $logger, ITimeFactory $timeFactory,
 	) {
 		parent::__construct($timeFactory);
 		$this->setInterval(self::INTERVAL);
@@ -38,7 +38,7 @@ class FileCacheGCJob extends TimedJob {
 		try {
 			$this->fileCache->gc();
 		} catch (NotPermittedException $e) {
-			$this->logger->error('Could not collect garbage: '.$e->getMessage());
+			$this->logger->error('Could not collect garbage: ' . $e->getMessage());
 		}
 	}
 }

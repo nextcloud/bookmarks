@@ -33,7 +33,7 @@ class InternalBookmarkController extends ApiController {
 	private $bookmarks;
 
 	public function __construct(
-		$appName, $request, $userId, BookmarkController $publicController, BookmarkService $bookmarks, Authorizer $authorizer
+		$appName, $request, $userId, BookmarkController $publicController, BookmarkService $bookmarks, Authorizer $authorizer,
 	) {
 		parent::__construct($appName, $request);
 		$this->publicController = $publicController;

@@ -36,7 +36,7 @@ class IndividualCrawlJob extends Job {
 	private $jobList;
 
 	public function __construct(
-		IConfig $settings, BookmarkMapper $bookmarkMapper, CrawlService $crawler, ITimeFactory $timeFactory, IJobList $jobList
+		IConfig $settings, BookmarkMapper $bookmarkMapper, CrawlService $crawler, ITimeFactory $timeFactory, IJobList $jobList,
 	) {
 		parent::__construct($timeFactory);
 		$this->settings = $settings;

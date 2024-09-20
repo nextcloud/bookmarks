@@ -90,7 +90,7 @@ class FoldersController extends ApiController {
 				$publicFolder = $this->publicFolderMapper->find($this->authorizer->getToken());
 				$this->rootFolderId = $publicFolder->getFolderId();
 			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
-				$this->logger->error($e->getMessage()."\n".$e->getMessage());
+				$this->logger->error($e->getMessage() . "\n" . $e->getMessage());
 			}
 		}
 		return $this->rootFolderId;

@@ -95,7 +95,7 @@ class BackupManager {
 		}
 		$backupFilePath = $this->getBackupFilePathForDate($userId, $this->time->getDateTime()->getTimestamp());
 		$file = $userFolder->newFile($backupFilePath);
-		$file->putContent($exportedHTML.self::COMMENT);
+		$file->putContent($exportedHTML . self::COMMENT);
 	}
 
 	private function getBackupFolderPath(string $userId):string {
@@ -146,15 +146,15 @@ class BackupManager {
 		$monthsToKeep = [];
 		// 7 days
 		for ($i = 0; $i < 7; $i++) {
-			$daysToKeep[] = $today->sub(new \DateInterval('P'.$i.'D'));
+			$daysToKeep[] = $today->sub(new \DateInterval('P' . $i . 'D'));
 		}
 		// 5 weeks
 		for ($i = 1; $i < 5; $i++) {
-			$weeksToKeep[] = $today->modify('Monday this week')->sub(new \DateInterval('P'.$i.'W'));
+			$weeksToKeep[] = $today->modify('Monday this week')->sub(new \DateInterval('P' . $i . 'W'));
 		}
 		// 6 months
 		for ($i = 1; $i < 6; $i++) {
-			$monthsToKeep[] = $today->modify('first day of')->sub(new \DateInterval('P'.$i.'M'));
+			$monthsToKeep[] = $today->modify('first day of')->sub(new \DateInterval('P' . $i . 'M'));
 		}
 		$nodes = $backupFolder->getDirectoryListing();
 		foreach ($nodes as $node) {

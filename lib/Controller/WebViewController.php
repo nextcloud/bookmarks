@@ -61,7 +61,8 @@ class WebViewController extends Controller {
 		private \OCA\Bookmarks\Controller\InternalFoldersController $folderController,
 		private \OCA\Bookmarks\Controller\InternalBookmarkController $bookmarkController,
 		private \OCA\Bookmarks\Controller\InternalTagsController $tagsController,
-		private UserSettingsService $userSettingsService) {
+		private UserSettingsService $userSettingsService,
+	) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 	}
@@ -147,7 +148,7 @@ class WebViewController extends Controller {
 	 * @return StreamResponse
 	 */
 	public function serviceWorker(): StreamResponse {
-		$response = new StreamResponse(__DIR__.'/../../js/bookmarks-service-worker.js');
+		$response = new StreamResponse(__DIR__ . '/../../js/bookmarks-service-worker.js');
 		$response->setHeaders(['Content-Type' => 'application/javascript']);
 		$policy = new ContentSecurityPolicy();
 		$policy->addAllowedWorkerSrcDomain("'self'");
