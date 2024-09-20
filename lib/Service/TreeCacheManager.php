@@ -165,7 +165,7 @@ class TreeCacheManager implements IEventListener {
 		$this->remove(TreeMapper::TYPE_BOOKMARK, $bookmarkId);
 
 		// Invalidate parent
-		$parentFolders = $this->getTreeMapper()->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmarkId);
+		$parentFolders = $this->getTreeMapper()->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmarkId, true);
 		foreach ($parentFolders as $parentFolder) {
 			$this->invalidateFolder($parentFolder->getId());
 		}
