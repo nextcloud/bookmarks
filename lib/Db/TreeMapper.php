@@ -1151,14 +1151,18 @@ class TreeMapper extends QBMapper {
 			// noop
 		}
 
-		$ancestors = $this->findParentsOf(TreeMapper::TYPE_FOLDER, $folderId);// FIXME: This will not find ancestors
-		foreach ($ancestors as $ancestorFolder) {
-			try {
-				$this->sharedFolderMapper->findByFolderAndUser($ancestorFolder->getId(), $userId);
-				return true;
-			} catch (DoesNotExistException) {
-				// noop
+		try {
+			while ($ancestorFolder = $this->findParentOf(TreeMapper::TYPE_FOLDER, $folderId)) {
+				try {
+					$this->sharedFolderMapper->findByFolderAndUser($ancestorFolder->getId(), $userId);
+					return true;
+				} catch (DoesNotExistException) {
+					// noop
+				}
+				$folderId = $ancestorFolder->getId();
 			}
+		} catch (DoesNotExistException $e) {
+			// noop
 		}
 
 		return false;
