@@ -139,7 +139,7 @@ class PublicFolderMapper extends QBMapper {
 	 */
 	public static function randomString(
 		int $length = 64,
-		string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+		string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
 	): string {
 		if ($length < 1) {
 			throw new RangeException('Length must be a positive integer');

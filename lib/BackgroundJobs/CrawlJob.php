@@ -33,7 +33,7 @@ class CrawlJob extends TimedJob {
 	private $crawler;
 
 	public function __construct(
-		IConfig $settings, BookmarkMapper $bookmarkMapper, CrawlService $crawler, ITimeFactory $timeFactory
+		IConfig $settings, BookmarkMapper $bookmarkMapper, CrawlService $crawler, ITimeFactory $timeFactory,
 	) {
 		parent::__construct($timeFactory);
 		$this->settings = $settings;

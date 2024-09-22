@@ -67,15 +67,15 @@ class TreeCacheManager implements IEventListener {
 		protected SharedFolderMapper $sharedFolderMapper,
 		protected ICacheFactory $cacheFactory,
 		protected ContainerInterface $appContainer,
-		protected TagMapper $tagMapper
+		protected TagMapper $tagMapper,
 	) {
-		$this->caches[self::CATEGORY_HASH] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_HASH);
-		$this->caches[self::CATEGORY_SUBFOLDERS] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_SUBFOLDERS);
-		$this->caches[self::CATEGORY_DELETED_SUBFOLDERS] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_DELETED_SUBFOLDERS);
-		$this->caches[self::CATEGORY_FOLDERCOUNT] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_FOLDERCOUNT);
-		$this->caches[self::CATEGORY_CHILDREN] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_CHILDREN);
-		$this->caches[self::CATEGORY_CHILDREN_LAYER] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_CHILDREN_LAYER);
-		$this->caches[self::CATEGORY_CHILDORDER] = $cacheFactory->createDistributed('bookmarks:'.self::CATEGORY_CHILDORDER);
+		$this->caches[self::CATEGORY_HASH] = $cacheFactory->createDistributed('bookmarks:' . self::CATEGORY_HASH);
+		$this->caches[self::CATEGORY_SUBFOLDERS] = $cacheFactory->createDistributed('bookmarks:' . self::CATEGORY_SUBFOLDERS);
+		$this->caches[self::CATEGORY_DELETED_SUBFOLDERS] = $cacheFactory->createDistributed('bookmarks:' . self::CATEGORY_DELETED_SUBFOLDERS);
+		$this->caches[self::CATEGORY_FOLDERCOUNT] = $cacheFactory->createDistributed('bookmarks:' . self::CATEGORY_FOLDERCOUNT);
+		$this->caches[self::CATEGORY_CHILDREN] = $cacheFactory->createDistributed('bookmarks:' . self::CATEGORY_CHILDREN);
+		$this->caches[self::CATEGORY_CHILDREN_LAYER] = $cacheFactory->createDistributed('bookmarks:' . self::CATEGORY_CHILDREN_LAYER);
+		$this->caches[self::CATEGORY_CHILDORDER] = $cacheFactory->createDistributed('bookmarks:' . self::CATEGORY_CHILDORDER);
 	}
 
 
@@ -89,7 +89,7 @@ class TreeCacheManager implements IEventListener {
 	 * @return string
 	 */
 	private function getCacheKey(string $type, int $folderId) : string {
-		return $type . ':'. $folderId;
+		return $type . ':' . $folderId;
 	}
 
 	/**
@@ -165,7 +165,7 @@ class TreeCacheManager implements IEventListener {
 		$this->remove(TreeMapper::TYPE_BOOKMARK, $bookmarkId);
 
 		// Invalidate parent
-		$parentFolders = $this->getTreeMapper()->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmarkId);
+		$parentFolders = $this->getTreeMapper()->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmarkId, true);
 		foreach ($parentFolders as $parentFolder) {
 			$this->invalidateFolder($parentFolder->getId());
 		}
@@ -245,7 +245,7 @@ class TreeCacheManager implements IEventListener {
 			try {
 				$bookmark[$field] = $entity->{'get' . $field}();
 			} catch (\BadFunctionCallException $e) {
-				throw new UnsupportedOperation('Field '.$field.' does not exist');
+				throw new UnsupportedOperation('Field ' . $field . ' does not exist');
 			}
 		}
 		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

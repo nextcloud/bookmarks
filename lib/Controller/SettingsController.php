@@ -21,7 +21,8 @@ class SettingsController extends ApiController {
 	 * @param UserSettingsService $userSettingsService
 	 */
 	public function __construct(
-		$appName, $request,
+		$appName,
+		$request,
 		private UserSettingsService $userSettingsService,
 	) {
 		parent::__construct($appName, $request);

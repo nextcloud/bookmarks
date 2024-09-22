@@ -42,7 +42,7 @@ class Authorizer {
 		private ShareMapper $shareMapper,
 		private TreeMapper $treeMapper,
 		private IUserSession $userSession,
-		private SharedFolderMapper $sharedFolderMapper
+		private SharedFolderMapper $sharedFolderMapper,
 	) {
 	}
 

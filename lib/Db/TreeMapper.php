@@ -57,6 +57,7 @@ class TreeMapper extends QBMapper {
 	private IQueryBuilder $insertQuery;
 
 	private IQueryBuilder $parentQuery;
+	private IQueryBuilder $parentQueryWithoutSoftDeletions;
 
 	private array $getChildrenQuery;
 	private array $getSoftDeletedChildrenQuery;
@@ -100,6 +101,7 @@ class TreeMapper extends QBMapper {
 
 		$this->insertQuery = $this->getInsertQuery();
 		$this->parentQuery = $this->getParentQuery();
+		$this->parentQueryWithoutSoftDeletions = $this->getParentQueryWithoutSoftDeletions();
 		$this->getChildrenOrderQuery = $this->getGetChildrenOrderQuery();
 		$this->getChildrenQuery = [
 			TreeMapper::TYPE_BOOKMARK => $this->getFindChildrenQuery(TreeMapper::TYPE_BOOKMARK),
@@ -198,6 +200,16 @@ class TreeMapper extends QBMapper {
 		return $qb;
 	}
 
+	protected function getParentQueryWithoutSoftDeletions(): IQueryBuilder {
+		$qb = $this->selectFromType(TreeMapper::TYPE_FOLDER);
+		$qb
+			->join('i', 'bookmarks_tree', 't', $qb->expr()->eq('t.parent_folder', 'i.id'))
+			->where($qb->expr()->eq('t.id', $qb->createParameter('id')))
+			->andWhere($qb->expr()->eq('t.type', $qb->createParameter('type')))
+			->andWhere($qb->expr()->isNull('t.soft_deleted_at'));
+		return $qb;
+	}
+
 	protected function getParentQuery(): IQueryBuilder {
 		$qb = $this->selectFromType(TreeMapper::TYPE_FOLDER);
 		$qb
@@ -283,8 +295,12 @@ class TreeMapper extends QBMapper {
 	 * @return Entity[]
 	 * @psalm-return list<Folder>
 	 */
-	public function findParentsOf(string $type, int $itemId): array {
-		$qb = $this->parentQuery;
+	public function findParentsOf(string $type, int $itemId, $withSoftDeletions = false): array {
+		if ($withSoftDeletions === true) {
+			$qb = $this->parentQuery;
+		} else {
+			$qb = $this->parentQueryWithoutSoftDeletions;
+		}
 		$qb->setParameters([
 			'id' => $itemId,
 			'type' => $type,
@@ -320,12 +336,12 @@ class TreeMapper extends QBMapper {
 	 * @return bool
 	 */
 	public function hasDescendant(int $folderId, string $type, int $descendantId): bool {
-		$ancestors = $this->findParentsOf($type, $descendantId);
+		$ancestors = $this->findParentsOf($type, $descendantId, true);
 		while (!in_array($folderId, array_map(static function (Entity $ancestor) {
 			return $ancestor->getId();
 		}, $ancestors), true)) {
 			$ancestors = array_flatten(array_map(function (Entity $ancestor) {
-				return $this->findParentsOf(TreeMapper::TYPE_FOLDER, $ancestor->getId());
+				return $this->findParentsOf(TreeMapper::TYPE_FOLDER, $ancestor->getId(), true);
 			}, $ancestors));
 			if (count($ancestors) === 0) {
 				return false;
@@ -381,7 +397,7 @@ class TreeMapper extends QBMapper {
 			$qb = $this->db->getQueryBuilder();
 			$qb->select('b.id')
 				->from('bookmarks', 'b')
-				->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND t.type = '.$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+				->leftJoin('b', 'bookmarks_tree', 't', 'b.id = t.id AND t.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
 				->where($qb->expr()->isNull('t.id'));
 			$orphanedBookmarks = $qb->execute();
 			while ($bookmark = $orphanedBookmarks->fetchColumn()) {
@@ -688,7 +704,7 @@ class TreeMapper extends QBMapper {
 		}
 		$currentFolders = array_map(static function (Folder $f) {
 			return $f->getId();
-		}, $this->findParentsOf($type, $itemId));
+		}, $this->findParentsOf($type, $itemId, true));
 
 		$folders = array_filter($folders, static function ($folderId) use ($currentFolders) {
 			return !in_array($folderId, $currentFolders, true);
@@ -722,7 +738,7 @@ class TreeMapper extends QBMapper {
 		if ($type !== TreeMapper::TYPE_BOOKMARK) {
 			throw new UnsupportedOperation('Only bookmarks can be in multiple folders');
 		}
-		$foldersLeft = count($this->findParentsOf($type, $itemId));
+		$foldersLeft = count($this->findParentsOf($type, $itemId, true));
 
 		foreach ($folders as $folderId) {
 			$qb = $this->db->getQueryBuilder();
@@ -754,7 +770,7 @@ class TreeMapper extends QBMapper {
 		$existingChildren = $this->getChildrenOrder($folderId);
 		foreach ($existingChildren as $child) {
 			if (!in_array($child, $newChildrenOrder, false)) {
-				throw new ChildrenOrderValidationError('A child is missing: '.$child['type'].':'.$child['id']);
+				throw new ChildrenOrderValidationError('A child is missing: ' . $child['type'] . ':' . $child['id']);
 			}
 			if (!isset($child['id'], $child['type'])) {
 				throw new ChildrenOrderValidationError('A child item is missing properties');
@@ -1135,14 +1151,18 @@ class TreeMapper extends QBMapper {
 			// noop
 		}
 
-		$ancestors = $this->findParentsOf(TreeMapper::TYPE_FOLDER, $folderId);
-		foreach ($ancestors as $ancestorFolder) {
-			try {
-				$this->sharedFolderMapper->findByFolderAndUser($ancestorFolder->getId(), $userId);
-				return true;
-			} catch (DoesNotExistException) {
-				// noop
+		try {
+			while ($ancestorFolder = $this->findParentOf(TreeMapper::TYPE_FOLDER, $folderId)) {
+				try {
+					$this->sharedFolderMapper->findByFolderAndUser($ancestorFolder->getId(), $userId);
+					return true;
+				} catch (DoesNotExistException) {
+					// noop
+				}
+				$folderId = $ancestorFolder->getId();
 			}
+		} catch (DoesNotExistException $e) {
+			// noop
 		}
 
 		return false;

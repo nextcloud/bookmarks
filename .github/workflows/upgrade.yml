@@ -25,8 +25,8 @@ jobs:
       matrix:
         php-versions: ['8.1']
         databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable28']
-        prev-version: ['stable13']
+        server-versions: ['stable30']
+        prev-version: ['stable14']
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 

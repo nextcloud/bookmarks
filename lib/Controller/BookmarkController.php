@@ -126,7 +126,7 @@ class BookmarkController extends ApiController {
 	private $lockManager;
 
 	public function __construct(
-		$appName, $request, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, LoggerInterface $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders, IRootFolder $rootFolder, \OCA\Bookmarks\Service\LockManager $lockManager
+		$appName, $request, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, LoggerInterface $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders, IRootFolder $rootFolder, \OCA\Bookmarks\Service\LockManager $lockManager,
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
@@ -198,7 +198,7 @@ class BookmarkController extends ApiController {
 				$publicFolder = $this->publicFolderMapper->find($this->authorizer->getToken());
 				$this->rootFolderId = $publicFolder->getFolderId();
 			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
-				$this->logger->error($e->getMessage()."\n".$e->getMessage());
+				$this->logger->error($e->getMessage() . "\n" . $e->getMessage());
 			}
 		}
 		return $this->rootFolderId;

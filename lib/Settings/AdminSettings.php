@@ -23,7 +23,7 @@ class AdminSettings implements ISettings {
 	public function __construct(
 		private $appName,
 		private SettingsService $settingsService,
-		private IInitialStateService $initialState
+		private IInitialStateService $initialState,
 	) {
 	}
 
