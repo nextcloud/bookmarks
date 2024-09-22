@@ -177,6 +177,7 @@ class BookmarkService {
 	 * @throws UnsupportedOperation
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError
+	 * @throws DoesNotExistException
 	 */
 	private function _addBookmark($userId, $url, ?string $title = null, ?string $description = null, ?array $tags = null, array $folders = []): Bookmark {
 		$bookmark = null;
@@ -247,6 +248,9 @@ class BookmarkService {
 		}
 
 		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folders);
+		foreach ($folders as $folderId) {
+			$this->treeMapper->softUndeleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folderId);
+		}
 		$this->eventDispatcher->dispatch(CreateEvent::class,
 			new CreateEvent(TreeMapper::TYPE_BOOKMARK, $bookmark->getId())
 		);
@@ -354,6 +358,10 @@ class BookmarkService {
 			if (count($ownFolders) === 0) {
 				$this->bookmarkMapper->delete($bookmark);
 				return null;
+			} else {
+				foreach ($ownFolders as $folderId) {
+					$this->treeMapper->softUndeleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folderId);
+				}
 			}
 		}
 
@@ -431,7 +439,7 @@ class BookmarkService {
 	 */
 	public function delete(int $id): void {
 		$bookmark = $this->bookmarkMapper->find($id);
-		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id);
+		$parents = $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id, true);
 		foreach ($parents as $parent) {
 			$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $parent->getId());
 		}
