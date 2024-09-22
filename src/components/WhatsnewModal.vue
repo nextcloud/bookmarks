@@ -26,6 +26,8 @@ import { NcModal } from '@nextcloud/vue'
 import { actions } from '../store/index.js'
 import packageJson from '../../package.json'
 
+const ENABLED = false
+
 export default {
 	name: 'WhatsnewModal',
 	components: {
@@ -33,7 +35,7 @@ export default {
 	},
 	computed: {
 		showModal() {
-			return this.$store.state.settings.hasSeenWhatsnew?.split('.').slice(0, 2).join('.') !== packageJson.version.split('.').slice(0, 2).join('.')
+			return ENABLED && this.$store.state.settings.hasSeenWhatsnew?.split('.').slice(0, 2).join('.') !== packageJson.version.split('.').slice(0, 2).join('.')
 		},
 	},
 	methods: {
