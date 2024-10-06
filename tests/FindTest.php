@@ -90,14 +90,14 @@ class FindTest extends TestCase {
 
 		$params = new QueryParameters();
 		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['.com']));
-		$this->assertCount(2, $bookmarks);
+		$this->assertCount(3, $bookmarks);
 	}
 
 
 	public function testFindAllWithOr() {
 		$params = new QueryParameters();
 		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['wikipedia', 'nextcloud'])->setConjunction(QueryParameters::CONJ_OR));
-		$this->assertCount(2, $bookmarks);
+		$this->assertCount(3, $bookmarks);
 	}
 
 	public function testFindByTags() {
@@ -123,6 +123,7 @@ class FindTest extends TestCase {
 			[['two'], ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud', 'description' => '']],
 			[['three', 'one'], ['url' => 'https://php.net/', 'title' => '', 'description' => '']],
 			[['two', 'four', 'one'], ['url' => 'https://de.wikipedia.org/wiki/%C3%9C', 'title' => '', 'description' => '']],
+			[[],['url' => 'https://github.com/nextcloud/bookmarks/projects/1', 'title' => '', 'description' => '']],
 		]);
 	}
 }
