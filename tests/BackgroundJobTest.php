@@ -181,13 +181,13 @@ class BackgroundJobTest extends TestCase {
 	 */
 	public function singleBookmarksProvider() {
 		return array_map(function ($props) {
-			return Bookmark::fromArray($props + ['userId' => 'test']);
+			return Bookmark::fromArray(array_merge($props, ['userId' => 'test']));
 		}, [
 			'Simple URL with title and description' => ['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
-			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
-			'Simple URL' => ['url' => 'https://php.net/'],
-			'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
-			'Non-existent URL' => ['url' => 'https://http://www.bllaala.com/'],
+			'Simple URL with title' => ['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud', 'description' => ''],
+			'Simple URL' => ['url' => 'https://php.net/', 'title' => '', 'description' => ''],
+			'URL with unicode' => ['url' => 'https://de.wikipedia.org/wiki/%C3%9C', 'title' => '', 'description' => ''],
+			'Non-existent URL' => ['url' => 'https://http://www.bllaala.com/', 'title' => '', 'description' => ''],
 		]);
 	}
 }
