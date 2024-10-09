@@ -542,20 +542,21 @@ class TreeMapper extends QBMapper {
 			return;
 		}
 
-		// set entry as not deleted
-		// has to come last to not break findByAncestorFolder
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->update('bookmarks_tree')
-			->set('soft_deleted_at', $qb->createNamedParameter(null, IQueryBuilder::PARAM_DATE))
-			->where($qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT)))
-			->andWhere($qb->expr()->eq('type', $qb->createNamedParameter($type, IQueryBuilder::PARAM_STR)));
-		if ($folderId !== null) {
-			$qb->set('index', $qb->createNamedParameter($this->countChildren($folderId)));
-			$qb->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($folderId, IQueryBuilder::PARAM_INT)));
+		if ($this->isEntrySoftDeleted($type, $id, $folderId)) {
+			// set entry as not deleted
+			// has to come last to not break findByAncestorFolder
+			$qb = $this->db->getQueryBuilder();
+			$qb
+				->update('bookmarks_tree')
+				->set('soft_deleted_at', $qb->createNamedParameter(null, IQueryBuilder::PARAM_DATE))
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT)))
+				->andWhere($qb->expr()->eq('type', $qb->createNamedParameter($type, IQueryBuilder::PARAM_STR)));
+			if ($folderId !== null) {
+				$qb->set('index', $qb->createNamedParameter($this->countChildren($folderId)));
+				$qb->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($folderId, IQueryBuilder::PARAM_INT)));
+			}
+			$qb->executeStatement();
 		}
-		$qb->executeStatement();
-
 	}
 
 	/**
