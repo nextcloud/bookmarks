@@ -131,7 +131,7 @@ jobs:
           MYSQL_HOST: mysql
           NEXTCLOUD_TRUSTED_DOMAINS: nextcloud
         volumes:
-          - /home/runner/work/bookmarks/bookmarks/apps:/var/www/html/custom_apps
+          - /home/runner/work/bookmarks/bookmarks/apps:/var/www/html/apps
         options: --name nextcloud
       mysql:
         image: mariadb:10.5 # see https://github.com/nextcloud/docker/issues/1536
