@@ -102,14 +102,33 @@ class FindTest extends TestCase {
 
 	public function testFindByTags() {
 		$params = new QueryParameters();
-		$bookmarks = $this->bookmarkMapper->findALl($this->userId, $params->setTags(['one', 'three']));
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setTags(['one', 'three']));
 		$this->assertCount(1, $bookmarks);
 	}
 
 	public function testFindByTagsAndSearch() {
 		$params = new QueryParameters();
-		$bookmarks = $this->bookmarkMapper->findALl($this->userId, $params->setTags(['one'])->setSearch(['php']));
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setTags(['one'])->setSearch(['php']));
 		$this->assertCount(1, $bookmarks);
+	}
+
+	public function testFindByFolderSortTitle() {
+		$rootFolder = $this->folderMapper->findRootFolder($this->userId);
+		$params = new QueryParameters();
+		$bookmarks = $this->bookmarkMapper->findAll($this->userId,
+			$params
+				->setFolder($rootFolder->getId())
+				->setSortBy('title')
+				->setSoftDeleted(false)
+				->setSoftDeletedFolders(false)
+				->setConjunction('or')
+				->setLimit(100)
+				->setOffset(0)
+				->setUntagged(false)
+				->setTags([])
+				->setSearch([])
+		);
+		$this->assertCount(5, $bookmarks);
 	}
 
 	/**
