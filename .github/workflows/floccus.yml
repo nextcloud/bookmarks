@@ -131,7 +131,7 @@ jobs:
           MYSQL_HOST: mysql
           NEXTCLOUD_TRUSTED_DOMAINS: nextcloud
         volumes:
-          - /home/runner/work/bookmarks/bookmarks/apps:/var/www/html/custom_apps
+          - /home/runner/actions-runner/_work/bookmarks/bookmarks/apps:/var/www/html/apps
         options: --name nextcloud
       mysql:
         image: mariadb:10.5 # see https://github.com/nextcloud/docker/issues/1536
@@ -159,14 +159,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: ${{ env.APP_NAME }}
-        if: matrix.floccus-adapter == 'nextcloud-bookmarks' || matrix.floccus-adapter == 'nextcloud-bookmarks-old'
 
       - name: Install bookmarks app
         shell: bash
         run: |
+          pwd
           cd ${{ env.APP_NAME }}
           composer install --ignore-platform-req=php --no-dev
-        if: matrix.floccus-adapter == 'nextcloud-bookmarks' || matrix.floccus-adapter == 'nextcloud-bookmarks-old'
 
       - name: Enable bookmarks app
         shell: bash
@@ -177,7 +176,6 @@ jobs:
               sleep $(( NEXT_WAIT_TIME++ ))
           done
           [ $NEXT_WAIT_TIME -lt 25 ]
-        if: matrix.floccus-adapter == 'nextcloud-bookmarks' || matrix.floccus-adapter == 'nextcloud-bookmarks-old'
 
       - name: Enable APCu
         run: |
@@ -186,7 +184,6 @@ jobs:
               sleep $(( NEXT_WAIT_TIME++ ))
           done
           [ $NEXT_WAIT_TIME -lt 25 ]
-        if: matrix.floccus-adapter != 'fake'
 
       - name: Wait for Selenium
         run: |
