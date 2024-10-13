@@ -124,7 +124,7 @@ OC.L10N.register(
     "Recent" : "Останні",
     "Shared with you" : "Спільні",
     "Files" : "Файли",
-    "Duplicates" : "Повторювання",
+    "Duplicates" : "Повторювані",
     "Broken links" : "Загублені посилання",
     "New tag" : "Нова мітка",
     "Search tags" : "Шукати мітки",
