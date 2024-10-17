@@ -49,7 +49,7 @@ OC.L10N.register(
     "Rename" : "إعادة التسمية",
     "Copy link" : "إنسخ الرابط",
     "Move" : "نقل",
-    "Add to folders" : "أضِف إلى المجلدت",
+    "Add to folders" : "إضافة إلى المجلدت",
     "Put bookmark into trash bin" : "ضع الإشارة المرجعية في سلة المهملات",
     "Restore bookmark" : "استعادة الإشارة المرجعية",
     "Delete bookmark permanently" : "حذف الإشارة المرجعية نهائيّاً",
