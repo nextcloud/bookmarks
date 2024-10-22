@@ -84,8 +84,8 @@ OC.L10N.register(
     "New folder" : "مجلد جديد",
     "Change to grid view" : "بدّل إلى العرض الشبكي grid view",
     "Change to list view" : "بدّل إلى عرض القائمة list view",
-    "Copy RSS Feed of current view" : "نسخ تغذية RSS للعرض الحالي",
-    "The RSS feed requires authentication with your Nextcloud credentials" : "تغذية RSS تتطلب المصادقة باستخدام بيانات تسجيل الدخول الخاصة بك إلى نكست كلاود",
+    "Copy RSS Feed of current view" : "نسخ موجز RSS للعرض الحالي",
+    "The RSS feed requires authentication with your Nextcloud credentials" : "موجز RSS تتطلب المصادقة باستخدام بيانات تسجيل الدخول الخاصة بك إلى نكست كلاود",
     "Search" : "البحث",
     "Empty trash bin" : "تفريغ سلة المهملات",
     "Sort by created date" : "ترتيب بحسب تاريخ الإنشاء",
@@ -94,7 +94,7 @@ OC.L10N.register(
     "Sort by click count" : "الترتيب بحسب عدد النقرات clicks",
     "Sort by manual order" : "الترتيب بحسب الفرز اليدوي",
     "Sort by URL" : "الترتيب بحسب العنوان URL",
-    "RSS feed copied" : "تمّ نسخ تغذية RSS ",
+    "RSS feed copied" : "تمّ نسخ موجز RSS ",
     "Enter a link" : "أدخِل رابطاً",
     "Enter a title" : "أدخِل عنواناً",
     "No bookmarks found" : "لا توجد أي إشاراتٍ مرجعيةٍ",
@@ -191,7 +191,7 @@ OC.L10N.register(
     "Select a user or group" : "إختر مستخدِماً أو مجموعةً",
     "Share link" : "مشاركة الرابط",
     "Reading allowed" : "مسموحٌ بالقراءة",
-    "Copy RSS feed" : "نسخ تغذية RSS",
+    "Copy RSS feed" : "نسخ موجز RSS",
     "Delete link" : "حذف الرابط",
     "Create public link" : "إنشاء رابط عمومي",
     "Resharing allowed" : "مسموحٌ بإعادة المشاركة",
@@ -259,6 +259,6 @@ OC.L10N.register(
     "Failed to delete share {shareId}" : "تعذّر حذف المشاركة {shareId}",
     "Create bookmarks for mentioned links" : "إنشاء إشارات مرجعية للروابط المذكورة",
     "No links found in this message" : "لا يوجد أي روابط في هذه الرسالة",
-    "Bookmarks feed" : "تعذية الإشارات المرجعية bookmarls feed"
+    "Bookmarks feed" : "تعذية الإشارات المرجعية Bookmarks feed"
 },
 "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;");
