@@ -209,7 +209,7 @@ OC.L10N.register(
     "Previews" : "المعاينات",
     "In order to display real screenshots of your bookmarked websites, the app can use third-party services to generate previews." : "من أجل عرض لقطات شاشة حقيقية لمواقع الويب التي تم وضع إشارة مرجعية عليها، يمكن للتطبيق استخدام خدمة من طرف ثالث لإنشاء معاينات.",
     "Screeenly" : "\"سكرينلي\" Screeenly خدمة خارجية لتوليد معاينات لصور شاشات المواقع المُؤشّرة",
-    "You can either sign up for free at screeenly.com or setup your own server." : "يمكنك إما التسجيل مجانًا في screeenly.com أو إعداد الخادوم الخاص بك.",
+    "You can either sign up for free at screeenly.com or setup your own server." : "يمكنك إما التسجيل مجانًا في screeenly.com أو إعداد الخادم الخاص بك.",
     "Screeenly API URL" : "عنوان واجهة برمجة التطبيقات في \"سكرينلي\" Screeenly API URL",
     "Screeenly API key" : "مفتاح واجهة برمجة التطبيقات في \"سكرينلي\" Screeenly API URL",
     "ScreenshotMachine" : "\"سكرين شوت ماشين\" ScreenshotMachine خدمة خارجية لتوليد معاينات لصور شاشات المواقع المُؤشّرة",
