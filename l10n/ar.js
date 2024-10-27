@@ -182,7 +182,7 @@ OC.L10N.register(
     "Notes" : "الملاحظات",
     "Notes for this bookmark …" : "ملاحظات على هذه الإشارة المرجعية ...",
     "Archived file" : "ملف مؤرشف",
-    "Download file" : "تحميل ملف",
+    "Download file" : "تنزيل ملف",
     "Open file location" : "إفتح موضع الملف",
     "Created {time} ago" : "أُنشِيءَ منذ {time} مضت",
     "Created on {date}" : "أُنشِيءَ في {date}",
