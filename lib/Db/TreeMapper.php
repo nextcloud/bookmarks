@@ -418,7 +418,12 @@ class TreeMapper extends QBMapper {
 		}
 
 		if ($type === TreeMapper::TYPE_BOOKMARK) {
-			$this->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $id, [$folderId]);
+			if ($folderId === null) {
+				$folders = array_map(fn (Folder $folder) => $folder->getId(), $this->findParentsOf(TreeMapper::TYPE_BOOKMARK, $id, true));
+			} else {
+				$folders = [$folderId];
+			}
+			$this->removeFromFolders(TreeMapper::TYPE_BOOKMARK, $id, $folders);
 		}
 	}
 
