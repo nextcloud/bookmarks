@@ -70,7 +70,7 @@ class PublicFolderTest extends TestCase {
 		$this->folder = Db\Folder::fromParams(['title' => 'test', 'userId' => $this->userId]);
 		$this->folderMapper->insert($this->folder);
 
-		$this->publicFolder = Db\PublicFolder::fromParams(['folderId' => $this->folder->getId()]);
+		$this->publicFolder = Db\PublicFolder::fromParams(['folderId' => $this->folder->getId(), 'description' => '']);
 		$this->folderPublicMapper->insert($this->publicFolder);
 	}
 

@@ -230,7 +230,7 @@ OC.L10N.register(
     "Folder" : "Klasör",
     "Root Folder" : "Kök klasör",
     "Save" : "Kaydet",
-    "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Ağ erişimi varsayılan olarak devre dışıdır. Yer imleri uygulamasının yönetici ayarlarına giderek, ön izleme ve favicon görsellerini alma seçeneğini etkinleştirin.",
+    "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Ağ erişimi varsayılan olarak kullanımdan kaldırılmıştır. Yer imleri uygulamasının yönetici ayarlarına giderek, ön izleme ve favicon görsellerini alma seçeneğini kullanıma alın.",
     "What's new?" : "Yenilikler neler?",
     "Leave a rating on the Nextcloud App Store" : "Nextcloud uygulama mağazasında değerlendirin",
     "What" : "Ne",

@@ -221,6 +221,7 @@ class FolderControllerTest extends TestCase {
 	public function setupPublicFolder(): void {
 		$this->authorizer->setUserId($this->userId);
 		$this->publicFolder = new PublicFolder();
+		$this->publicFolder->setDescription('');
 		$this->publicFolder->setFolderId($this->folder1->getId());
 		$this->publicFolderMapper->insert($this->publicFolder);
 

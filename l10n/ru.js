@@ -65,7 +65,7 @@ OC.L10N.register(
     "Repeat search in all folders" : "Повторить поиск во всех папках",
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "Ссылки, добавленные в закладки, регулярно проверяются, и здесь перечислены те, которые недоступны.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "Вы можете поделиться папками с закладками с другими пользователями. Здесь перечислены все папки, к которым у вас есть доступ.",
-    "One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience." : "Одна закладка может находиться сразу в нескольких папках. Обновление его приведет к обновлению всех копий. Все дублированные закладки перечислены здесь для удобства.",
+    "One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience." : "Одна закладка может находиться сразу в нескольких папках. Обновление закладки обновит все её копии. Все дублирующиеся закладки перечислены здесь для удобства.",
     "Open all selected" : "Открыть выбранные",
     "Move selection" : "Переместить выбранное",
     "Edit tags of selection" : "Редактировать теги выделенного",

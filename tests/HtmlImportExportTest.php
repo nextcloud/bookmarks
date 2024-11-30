@@ -166,10 +166,10 @@ class HtmlImportExportTest extends TestCase {
 				return Db\Bookmark::fromArray($props);
 			}, [
 				['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
-				['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud'],
-				['url' => 'https://php.net/'],
-				['url' => 'https://de.wikipedia.org/wiki/%C3%9C'],
-				['url' => 'https://github.com/nextcloud/bookmarks/projects/1'],
+				['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud', 'description' => ''],
+				['url' => 'https://php.net/', 'title' => '', 'description' => ''],
+				['url' => 'https://de.wikipedia.org/wiki/%C3%9C', 'title' => '', 'description' => ''],
+				['url' => 'https://github.com/nextcloud/bookmarks/projects/1', 'title' => '', 'description' => ''],
 			]),
 		];
 	}

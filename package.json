@@ -1,6 +1,6 @@
 {
   "name": "bookmarks",
-  "version": "15.0.2",
+  "version": "15.0.3",
   "main": "js/index.js",
   "scripts": {
     "build": "webpack --node-env production --progress --config webpack.js",
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/nextcloud/bookmarks#readme",
   "dependencies": {
     "@nextcloud/auth": "^2.1.0",
-    "@nextcloud/axios": "^2.3.0",
+    "@nextcloud/axios": "^2.5.1",
     "@nextcloud/dialogs": "4.x",
     "@nextcloud/event-bus": "^3.1.0",
     "@nextcloud/initial-state": "^2.0.0",

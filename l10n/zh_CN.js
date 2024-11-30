@@ -149,7 +149,7 @@ OC.L10N.register(
     "Open file location" : "打开文件位置 ",
     "Created {time} ago" : "创建于 {time} 之前",
     "Created on {date}" : "创建于 {date}",
-    "Owner" : "拥有者",
+    "Owner" : "所有者",
     "Sharing" : "正在共享",
     "Select a user or group" : "选择用户或分组",
     "Share link" : "共享链接",

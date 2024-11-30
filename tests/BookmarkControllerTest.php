@@ -262,6 +262,7 @@ class BookmarkControllerTest extends TestCase {
 		$this->treeMapper->move(TreeMapper::TYPE_FOLDER, $this->folder2->getId(), $this->folder1->getId());
 
 		$this->publicFolder = new PublicFolder();
+		$this->publicFolder->setDescription('');
 		$this->publicFolder->setFolderId($this->folder1->getId());
 		$this->publicFolderMapper->insert($this->publicFolder);
 

@@ -294,6 +294,16 @@ class BookmarkService {
 		}
 
 		if ($url !== null) {
+			try {
+				$oldBookmark = $this->bookmarkMapper->findByUrl($userId, $url);
+				if (count($this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $oldBookmark->getId(), false)) === 0) {
+					$this->treeMapper->deleteEntry(TreeMapper::TYPE_BOOKMARK, $oldBookmark->getId());
+				} elseif ($oldBookmark->getId() !== $bookmark->getId()) {
+					throw new AlreadyExistsError('Bookmark already exists');
+				}
+			} catch (DoesNotExistException $e) {
+				// pass
+			}
 			if (!preg_match(self::PROTOCOLS_REGEX, $url)) {
 				throw new UrlParseError();
 			}

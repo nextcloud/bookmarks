@@ -9,6 +9,7 @@ OC.L10N.register(
     "New" : "Nov",
     "New folder" : "Nova fascikla",
     "Search" : "Traži",
+    "Empty trash bin" : "Isprazni kantu",
     "Cancel" : "Otkaži",
     "Shared with you" : "Shared with you",
     "Files" : "Фајлови",
