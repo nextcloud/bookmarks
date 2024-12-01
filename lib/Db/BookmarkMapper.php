@@ -220,7 +220,8 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('*PREFIX*bookmarks', 'b')
-			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ($queryParams->getSoftDeleted() ? ' AND tree.soft_deleted_at is NOT NULL' : ' AND tree.soft_deleted_at is NULL'));
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) .
+				($queryParams->getSoftDeleted() ? ' AND tree.soft_deleted_at is NOT NULL' : ' AND tree.soft_deleted_at is NULL'));
 
 		$this->_filterUrl($qb, $queryParams);
 		$this->_filterArchived($qb, $queryParams);
@@ -519,7 +520,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where(
 				$qb->expr()->andX(
@@ -546,7 +547,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where(
 				$qb->expr()->andX(
@@ -572,7 +573,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where(
 				$qb->expr()->andX(
@@ -599,7 +600,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where(
 				$qb->expr()->andX(
@@ -625,7 +626,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('bookmarks', 'b')
-			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
 			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
 			->where(
 				$qb->expr()->andX(
@@ -633,7 +634,7 @@ class BookmarkMapper extends QBMapper {
 						$qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)),
 						$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId))
 					),
-					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($userId), [$userId])))
+					$qb->expr()->in('b.user_id', array_map([$qb, 'createPositionalParameter'], array_merge($this->_findSharersFor($userId), [$userId]))),
 				)
 			);
 		$subQuery = $this->db->getQueryBuilder();
@@ -685,7 +686,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('*PREFIX*bookmarks', 'b')
-			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . 'AND tree.soft_deleted_at is NULL');
+			->join('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL');
 
 
 		$this->_filterUrl($qb, $queryParams);
