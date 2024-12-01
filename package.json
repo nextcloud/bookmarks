@@ -1,6 +1,6 @@
 {
   "name": "bookmarks",
-  "version": "15.0.3",
+  "version": "15.0.2",
   "main": "js/index.js",
   "scripts": {
     "build": "webpack --node-env production --progress --config webpack.js",
@@ -22,13 +22,13 @@
   "homepage": "https://github.com/nextcloud/bookmarks#readme",
   "dependencies": {
     "@nextcloud/auth": "^2.1.0",
-    "@nextcloud/axios": "^2.5.1",
+    "@nextcloud/axios": "^2.3.0",
     "@nextcloud/dialogs": "4.x",
     "@nextcloud/event-bus": "^3.1.0",
     "@nextcloud/initial-state": "^2.0.0",
     "@nextcloud/l10n": "^2.1.0",
     "@nextcloud/router": "^2.1.2",
-    "@nextcloud/vue": "8.x",
+    "@nextcloud/vue": "8.18.x",
     "async-parallel": "^1.2.3",
     "clone-deep": "^4.0.1",
     "humanize-duration": "^3.32.1",
@@ -36,12 +36,12 @@
     "lodash": "^4.17.21",
     "nextcloud-vue-collections": "^0.11.0",
     "sanitize-html": "^2.13.0",
-    "vue": "^2.7.15",
+    "vue": "^2.6.14",
     "vue-click-outside": "^1.1.0",
-    "vue-material-design-icons": "^5.3.1",
+    "vue-material-design-icons": "^5.2.0",
     "vue-router": "^3.6.5",
     "vue-simple-progress": "^1.1.1",
-    "vue-template-compiler": "^2.7.15",
+    "vue-template-compiler": "^2.6.14",
     "vuex": "^3.6.2",
     "vuex-router-sync": "^5.0.0"
   },
@@ -56,7 +56,7 @@
   },
   "engines": {
     "node": "20.x",
-    "npm": "10.x"
+    "npm": "9.x"
   },
   "browserslist": [
     "extends @nextcloud/browserslist-config"
