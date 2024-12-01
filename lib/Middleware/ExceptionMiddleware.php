@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2021. The Nextcloud Bookmarks contributors.
  *
