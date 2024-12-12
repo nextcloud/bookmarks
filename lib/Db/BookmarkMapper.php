@@ -875,7 +875,7 @@ class BookmarkMapper extends QBMapper {
 		if ($dbType === 'pgsql') {
 			$tagsCol = $qb->createFunction('array_to_string(array_agg(' . $qb->getColumnName('t.tag') . "), ',')");
 		} else {
-			$tagsCol = $qb->createFunction('IFNULL(GROUP_CONCAT(' . $qb->getColumnName('t.tag') . '), "")');
+			$tagsCol = $qb->createFunction('IFNULL(GROUP_CONCAT(' . $qb->getColumnName('t.tag') . "), '')");
 		}
 		return $tagsCol;
 	}
