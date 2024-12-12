@@ -17,7 +17,7 @@
 import { NcAppContentList } from '@nextcloud/vue'
 import TreeFolder from './TreeFolder.vue'
 import { privateRoutes } from '../router.js'
-import { actions } from '../store'
+import { actions } from '../store/index.js'
 
 export default {
 	name: 'FolderOverview',

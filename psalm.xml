@@ -11,6 +11,7 @@
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     errorBaseline="psalm-baseline.xml"
+    phpVersion="8.1"
 >
     <stubs>
         <file name="tests/stub.phpstub" preloadClasses="true"/>

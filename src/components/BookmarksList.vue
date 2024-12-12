@@ -71,10 +71,10 @@
 						<Bookmark v-if="item.type === 'bookmark' && getBookmark(item.id)"
 							:key="'nosort' + item.type + item.id"
 							:bookmark="getBookmark(item.id)" />
-						<template v-if="!children.length">
-							<NoBookmarks v-if="!loading && (allBookmarksCount > 0 || isPublic)" />
-							<FirstRun v-else-if="!loading" />
-						</template>
+					</template>
+					<template v-if="!children.length">
+						<NoBookmarks v-if="!loading && (allBookmarksCount > 0 || isPublic)" />
+						<FirstRun v-else-if="!loading" />
 					</template>
 				</template>
 				<!-- FOLDER VIEW WITH NORMAL SORTING -->

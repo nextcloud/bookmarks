@@ -280,7 +280,7 @@ export default {
 }
 </script>
 <style>
-  .sidebar h3 {
+	.sidebar h3 {
 		font-size: 1em;
 		font-weight: normal;
 	}
