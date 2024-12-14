@@ -84,7 +84,7 @@ OC.L10N.register(
     "New folder" : "新增資料夾",
     "Change to grid view" : "切換至網格檢視",
     "Change to list view" : "切換到列表視圖",
-    "Copy RSS Feed of current view" : "複製當前視圖的RSS Feed",
+    "Copy RSS Feed of current view" : "複製目前視圖的RSS Feed",
     "The RSS feed requires authentication with your Nextcloud credentials" : "RSS feed 需要使用您的 Nextcloud 身份驗證進行驗證",
     "Search" : "搜尋",
     "Empty trash bin" : "清空回收桶",
