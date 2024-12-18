@@ -8,6 +8,7 @@ OC.L10N.register(
     "Select all" : "Hemmesini saýlaň",
     "New folder" : "Täze papka döretmek",
     "Search" : "Gözlemek",
+    "Empty trash bin" : "Boşadylan zibil",
     "Cancel" : "ýatyrmak",
     "Files" : "Faýllar",
     "Delete" : "Pozmak",
