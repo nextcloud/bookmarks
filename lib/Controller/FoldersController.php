@@ -220,7 +220,7 @@ class FoldersController extends ApiController {
 	 * @throws UnauthenticatedError
 	 */
 	public function addToFolder($folderId, $bookmarkId): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) &&
+		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request)) ||
 			!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
 			$res->throttle();
