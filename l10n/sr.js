@@ -250,7 +250,7 @@ OC.L10N.register(
     "Failed to load deleted folders" : "Није успело учитавање обрисаних фолдера",
     "Failed to load deleted bookmarks" : "Није успело учитавање обрисаних маркера",
     "Failed to delete folder" : "Грешка при брисању фасцикле",
-    "Failed to move folder" : "Није успело премеђтање фолдера",
+    "Failed to move folder" : "Није успело премештање фолдера",
     "Failed to create folder" : "Грешка при креирању фасцикле",
     "Failed to fetch bookmarks." : "Грешка при дохватању обележивача.",
     "Failed to store setting" : "Није успело чување подешавања",
