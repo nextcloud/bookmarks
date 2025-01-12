@@ -212,9 +212,8 @@ export default {
 			this.importing = false
 		},
 		onExport() {
-			window.location
-		= 'bookmark/export?requesttoken='
-		+ encodeURIComponent(getRequestToken())
+
+			window.location = generateUrl(`/apps/bookmarks/bookmark/export?requesttoken=${encodeURIComponent(getRequestToken())}`)
 		},
 		async onChangeArchiveEnabled(e) {
 			await this.$store.dispatch(actions.SET_SETTING, {
