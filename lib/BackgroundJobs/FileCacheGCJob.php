@@ -39,7 +39,7 @@ class FileCacheGCJob extends TimedJob {
 		try {
 			$this->fileCache->gc();
 		} catch (NotPermittedException $e) {
-			$this->logger->error('Could not collect garbage: ' . $e->getMessage());
+			$this->logger->warning('Could not collect garbage: Missing permissions: ' . $e->getMessage());
 		}
 	}
 }
