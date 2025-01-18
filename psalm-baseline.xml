@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.24.0@462c80e31c34e58cc4f750c656be3927e80e550e">
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
   <file src="lib/Activity/ActivityPublisher.php">
     <MissingTemplateParam>
       <code><![CDATA[IEventListener]]></code>
@@ -21,10 +21,14 @@
       <code><![CDATA[AugmentedTemplateResponse]]></code>
     </MissingTemplateParam>
   </file>
-  <file src="lib/Db/BookmarkMapper.php">
-    <UndefinedDocblockClass>
-      <code><![CDATA[\OC\DB\Exceptions\DbalException]]></code>
-    </UndefinedDocblockClass>
+  <file src="lib/Controller/WebViewController.php">
+    <UndefinedMethod>
+      <code><![CDATA[$this->bookmarkController->countArchived()->getData()]]></code>
+      <code><![CDATA[$this->bookmarkController->countBookmarks(-1)->getData()]]></code>
+      <code><![CDATA[$this->bookmarkController->countDuplicated()->getData()]]></code>
+      <code><![CDATA[$this->bookmarkController->countUnavailable()->getData()]]></code>
+      <code><![CDATA[$this->folderController->getFolders()->getData()]]></code>
+    </UndefinedMethod>
   </file>
   <file src="lib/Db/TreeMapper.php">
     <InvalidReturnStatement>
@@ -38,9 +42,6 @@
       <code><![CDATA[TreeMapper]]></code>
     </MissingTemplateParam>
     <NoValue>
-      <code><![CDATA[$folder]]></code>
-      <code><![CDATA[$folder1]]></code>
-      <code><![CDATA[$folder2]]></code>
       <code><![CDATA[return $this->findEntityWithType($qb, TreeMapper::TYPE_FOLDER);]]></code>
     </NoValue>
     <ReservedWord>
