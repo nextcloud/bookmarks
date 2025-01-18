@@ -63,7 +63,7 @@ OC.L10N.register(
     "Owner" : "Savininkas",
     "Sharing" : "Bendrinimas",
     "Select a user or group" : "Pasirinkti naudotoją ar grupę",
-    "Share link" : "Bendrinimo nuoroda",
+    "Share link" : "Viešinio nuoroda",
     "Copy RSS feed" : "Kopijuoti RSS kanalą",
     "Delete link" : "Ištrinti nuorodą",
     "Create public link" : "Sukurti viešąją nuorodą",
