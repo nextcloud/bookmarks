@@ -595,9 +595,12 @@ export default {
 						: response.data.data,
 				)
 			}
-			await dispatch(actions.COUNT_BOOKMARKS, -1)
-			await dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1)
-			await dispatch(actions.RELOAD_VIEW)
+			await Promise.all([
+				dispatch(actions.COUNT_BOOKMARKS, -1),
+			    dispatch(actions.LOAD_FOLDER_CHILDREN_ORDER, -1),
+			    dispatch(actions.RELOAD_VIEW),
+			    dispatch(actions.LOAD_FOLDERS, true),
+			])
 			commit(mutations.FETCH_END, 'importBookmarks')
 			return commit(
 				mutations.SET_NOTIFICATION,
