@@ -177,7 +177,7 @@ export default {
 			return this.$store.state.settings['privacy.enableScraping'] === 'true'
 		},
 		archiveEnabled() {
-			return this.$store.state.settings['archive.enabled'] === 'true'
+			return this.$store.state.settings['archive.enabled'] && this.$store.state.settings['privacy.enableScraping'] === 'true'
 		},
 		archivePath() {
 			return this.$store.state.settings['archive.filePath']
@@ -212,9 +212,8 @@ export default {
 			this.importing = false
 		},
 		onExport() {
-			window.location
-		= 'bookmark/export?requesttoken='
-		+ encodeURIComponent(getRequestToken())
+
+			window.location = generateUrl(`/apps/bookmarks/bookmark/export?requesttoken=${encodeURIComponent(getRequestToken())}`)
 		},
 		async onChangeArchiveEnabled(e) {
 			await this.$store.dispatch(actions.SET_SETTING, {

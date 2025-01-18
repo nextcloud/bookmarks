@@ -122,6 +122,7 @@ OC.L10N.register(
     "No bookmarks here" : "Ingen bogmærker her",
     "Add bookmarks manually or import bookmarks from a HTML file." : "Tilføj bogmærker manuelt eller importer bogmærker fra en HTML-fil.",
     "Enter the path of a folder in your Files where bookmarked files should be stored." : "Indtast stien til en mappe i dine filer, hvor bogmærkede filer skal gemmes.",
+    "The bookmarks app can automatically backup your bookmarks on a daily basis to prevent data loss when syncing bookmarks across devices." : "Bogmærkeapp'en kan automatisk tage backup af dine bogmærker på en daglig basis, for at forhindre datatab når der synkroniseres bogmærker på tværs af apparater.",
     "Enter the path of a folder in your Files where backups will be stored." : "Indtast stien til en mappe i dine filer, hvor sikkerhedskopier vil blive gemt.",
     "Client apps" : "Klient apps",
     "Also check out the collection of client apps that integrate with this app: " : "Tjek også samlingen af klientapps, der integreres med denne app:",

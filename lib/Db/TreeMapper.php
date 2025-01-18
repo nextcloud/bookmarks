@@ -264,7 +264,7 @@ class TreeMapper extends QBMapper {
 	 * @psalm-template E as (T is TreeMapper::TYPE_FOLDER ? Folder : (T is TreeMapper::TYPE_BOOKMARK ? Bookmark : SharedFolder))
 	 */
 	public function findChildren(string $type, int $folderId, ?bool $softDeleted = null): array {
-		$listSoftDeleted = $softDeleted ?? $this->isEntrySoftDeleted($type, $folderId);
+		$listSoftDeleted = $softDeleted ?? $this->isEntrySoftDeleted(self::TYPE_FOLDER, $folderId);
 		$qb = $this->selectFromType($type, [], !$listSoftDeleted ? $this->getChildrenQuery[$type] : $this->getSoftDeletedChildrenQuery[$type]);
 		$qb->setParameter('parent_folder', $folderId);
 		return $this->findEntitiesWithType($qb, $type);

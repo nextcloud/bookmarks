@@ -7,6 +7,7 @@ OC.L10N.register(
     "Copy link" : "Copiar hiperligação",
     "Move" : "Mover",
     "Link copied to clipboard" : "Ligação copiada para a área de transferência",
+    "This content is being downloaded for offline use. Please check back later." : "Este conteúdo está a ser transferido para utilização ''off-line''. Por favor, volte mais tarde.",
     "Select all" : "Seleccionar todos",
     "Go back" : "Voltar",
     "Share folder" : "Partilhar pasta",
