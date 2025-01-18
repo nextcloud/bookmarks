@@ -177,7 +177,7 @@ export default {
 			return this.$store.state.settings['privacy.enableScraping'] === 'true'
 		},
 		archiveEnabled() {
-			return this.$store.state.settings['archive.enabled'] === 'true'
+			return this.$store.state.settings['archive.enabled'] && this.$store.state.settings['privacy.enableScraping'] === 'true'
 		},
 		archivePath() {
 			return this.$store.state.settings['archive.filePath']

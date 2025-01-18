@@ -38,7 +38,7 @@ export default {
 			return this.bookmark.url.startsWith('http')
 		},
 		scrapingEnabled() {
-			return this.$store.state.settings['privacy.enableScraping']
+			return this.$store.state.settings['privacy.enableScraping'] === 'true'
 		},
 		archiveEnabled() {
 			return this.$store.state.settings['archive.enabled']
