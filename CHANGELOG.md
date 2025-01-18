@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [15.0.5] - 2025-01-18
+
+### Fixed
+
+* fix(FileCacheGCJob): Turn error into a warning and make it clearer what's needed to fix it
+* fix(archival): Properly interpret setting value
+* fix(IMPORT_BOOKMARKS): Properly reload folders after import
+* fix(TreeMapper#findChildren): Don't mix up type of children vs type of folder
+* fix: Make export work in non-root pages
+* Build(deps): Bump sanitize-html from 2.13.1 to 2.14.0
+* Build(deps): Bump @nextcloud/vue from 8.21.0 to 8.22.0
+* fix(FoldersController): Refactor addToFolder
+* Fix(l10n): Update translations from Transifex
+
 ## [15.0.4] - 2024-12-12
 
 ### Fixed
