@@ -148,13 +148,11 @@ export default {
 			addToHomeScreen: null,
 			archivePathPicker: getFilePickerBuilder(this.t('bookmarks', 'Archive path'))
 				.allowDirectories(true)
-				.setModal(true)
 				.setType(1)// CHOOSE
 				.setMultiSelect(false)
 				.build(),
 			backupPathPicker: getFilePickerBuilder(this.t('bookmarks', 'Backup path'))
 				.allowDirectories(true)
-				.setModal(true)
 				.setType(1)// CHOOSE
 				.setMultiSelect(false)
 				.build(),
@@ -177,7 +175,7 @@ export default {
 			return this.$store.state.settings['privacy.enableScraping'] === 'true'
 		},
 		archiveEnabled() {
-			return this.$store.state.settings['archive.enabled'] && this.$store.state.settings['privacy.enableScraping'] === 'true'
+			return this.$store.state.settings['archive.enabled'] === 'true' && this.$store.state.settings['privacy.enableScraping'] === 'true'
 		},
 		archivePath() {
 			return this.$store.state.settings['archive.filePath']
