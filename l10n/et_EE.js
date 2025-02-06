@@ -5,6 +5,7 @@ OC.L10N.register(
     "Rename" : "Nimeta ümber",
     "Copy link" : "Kopeeri link",
     "Move" : "Liiguta",
+    "Link copied to clipboard" : "Link on lõikelauale kopeeritud",
     "Delete selection" : "Kustuta valik",
     "Select all" : "Vali kõik",
     "Go back" : "Mine tagasi",
