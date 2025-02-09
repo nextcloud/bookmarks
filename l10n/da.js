@@ -71,7 +71,7 @@ OC.L10N.register(
     "Change to grid view" : "Skift til gittervisning",
     "Change to list view" : "Skift til listevisning",
     "Copy RSS Feed of current view" : "Kopier RSS-feed af den aktuelle visning",
-    "The RSS feed requires authentication with your Nextcloud credentials" : "RSS-feedet kræver godkendelse med dine Nextcloud-legitimationsoplysninger",
+    "The RSS feed requires authentication with your Nextcloud credentials" : "RSS-feedet kræver godkendelse med dine Nextcloud legitimationsoplysninger",
     "Search" : "Søg",
     "Empty trash bin" : "Tøm papirkurv",
     "Sort by created date" : "Sorter efter oprettelsesdato",
