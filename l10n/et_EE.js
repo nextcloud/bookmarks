@@ -21,6 +21,7 @@ OC.L10N.register(
     "Shared with you" : "Sinuga jagatud",
     "Files" : "Failid",
     "Delete" : "Kustuta",
+    "Add to {instanceName}" : "Lisa {instanceName}-sse",
     "Need help?" : "Vajad abi?",
     "Title" : "Pealkiri",
     "Link" : "Link",
