@@ -187,6 +187,7 @@ OC.L10N.register(
     "Root Folder" : "Rodmappe",
     "Save" : "Gem",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Netværksadgang er deaktiveret som standard. Gå til administratorindstillinger for bogmærke-appen for at tillade hentning af forhåndsvisninger og favicons.",
+    "What's new?" : "Hvad er nyt?",
     "What" : "Hvad",
     "Failed to count unavailable bookmarks" : "Kunne ikke tælle utilgængelige bogmærker",
     "Failed to count archived bookmarks" : "Kunne ikke tælle arkiverede bogmærker",
