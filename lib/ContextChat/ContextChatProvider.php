@@ -20,10 +20,14 @@ use OCA\ContextChat\Public\ContentManager;
 use OCA\ContextChat\Public\IContentProvider;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventDispatcher;
+use OCP\EventDispatcher\IEventListener;
 use OCP\IUser;
 use OCP\IUserManager;
 
-class ContextChatProvider implements IContentProvider {
+/**
+ * @implements IEventListener<Event>
+ */
+class ContextChatProvider implements IContentProvider, IEventListener {
 
 	public function __construct(
 		private BookmarkService $bookmarkService,
