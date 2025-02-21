@@ -97,6 +97,8 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(BeforeTemplateRenderedEvent::class, BeforeTemplateRenderedListener::class);
 
 		$context->registerMiddleware(ExceptionMiddleware::class);
+
+		$context->registerEventListener('OCA\ContextChat\Event\ContentProviderRegisterEvent', 'OCA\Bookmarks\ContextChat\ContextChatProvider');
 	}
 
 	/**
