@@ -480,7 +480,7 @@ class BookmarkService {
 
 	/**
 	 * @param string $userId
-	 * @return \Generator<void, array-key, Bookmark>
+	 * @return \Generator<void, Bookmark>
 	 */
 	public function getIterator(string $userId): \Generator {
 		return $this->bookmarkMapper->getIterator($userId, new QueryParameters());
