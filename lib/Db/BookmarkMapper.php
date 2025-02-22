@@ -9,6 +9,8 @@
 namespace OCA\Bookmarks\Db;
 
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\InsertEvent;
+use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
@@ -788,7 +790,9 @@ class BookmarkMapper extends QBMapper {
 			$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		}
 		$entity->setLastmodified(time());
-		return parent::update($entity);
+		parent::update($entity);
+		$this->eventDispatcher->dispatchTyped(new ManipulateEvent('bookmark', $entity->getId()));
+		return $entity;
 	}
 
 	/**
@@ -821,6 +825,7 @@ class BookmarkMapper extends QBMapper {
 			$this->findByUrl($entity->getUserId(), $entity->getUrl());
 		} catch (DoesNotExistException $e) {
 			parent::insert($entity);
+			$this->eventDispatcher->dispatchTyped(new InsertEvent('bookmark', $entity->getId()));
 			return $entity;
 		} catch (MultipleObjectsReturnedException $e) {
 			// noop
