@@ -100,7 +100,7 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 	 * @since 1.1.0
 	 */
 	public function getItemUrl(string $id): string {
-		return $this->bookmarkService->findById(intval($id))->getUrl();
+		return $this->bookmarkService->findById(intval($id))?->getUrl() ?? '';
 	}
 
 	/**
