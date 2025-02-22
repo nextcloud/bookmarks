@@ -12,6 +12,8 @@ use OCA\Bookmarks\AppInfo\Application;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\InsertEvent;
+use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\ContextChat\Event\ContentProviderRegisterEvent;
@@ -39,10 +41,10 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 
 	public function handle(Event $event): void {
 		if ($event instanceof ContentProviderRegisterEvent) {
-			$this->register($event);
+			$this->register();
 			return;
 		}
-		if ($event instanceof CreateEvent || $event instanceof UpdateEvent) {
+		if ($event instanceof InsertEvent || $event instanceof ManipulateEvent) {
 			if ($event->getType() !== TreeMapper::TYPE_BOOKMARK) {
 				return;
 			}
@@ -70,8 +72,8 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 
 	public function register(): void {
 		$this->contentManager->registerContentProvider($this->getAppId(), $this->getId(), self::class);
-		$this->eventDispatcher->addServiceListener(CreateEvent::class, self::class);
-		$this->eventDispatcher->addServiceListener(UpdateEvent::class, self::class);
+		$this->eventDispatcher->addServiceListener(InsertEvent::class, self::class);
+		$this->eventDispatcher->addServiceListener(ManipulateEvent::class, self::class);
 		$this->eventDispatcher->addServiceListener(BeforeDeleteEvent::class, self::class);
 	}
 
