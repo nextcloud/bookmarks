@@ -102,12 +102,7 @@ class Application extends App implements IBootstrap {
 
 		$context->registerMiddleware(ExceptionMiddleware::class);
 
-		if (class_exists(ContentProviderRegisterEvent::class)) {
-			$context->registerEventListener(InsertEvent::class, ContextChatProvider::class);
-			$context->registerEventListener(ManipulateEvent::class, ContextChatProvider::class);
-			$context->registerEventListener(BeforeDeleteEvent::class, ContextChatProvider::class);
-			$context->registerEventListener(ContentProviderRegisterEvent::class, ContextChatProvider::class);
-		}
+		$context->registerEventListener(ContentProviderRegisterEvent::class, ContextChatProvider::class);
 	}
 
 	/**
@@ -118,6 +113,10 @@ class Application extends App implements IBootstrap {
 	public function boot(IBootContext $context): void {
 		if (class_exists(ContentProviderRegisterEvent::class)) {
 			$this->getContainer()->get(ContextChatProvider::class)->register();
+			$eventDispatcher = $this->getContainer()->get(IEventDispatcher::class);
+			$eventDispatcher->addServiceListener(InsertEvent::class, ContextChatProvider::class);
+			$eventDispatcher->addServiceListener(ManipulateEvent::class, ContextChatProvider::class);
+			$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, ContextChatProvider::class);
 		}
 		$container = $context->getServerContainer();
 		CreateBookmark::register($container->get(IEventDispatcher::class));
