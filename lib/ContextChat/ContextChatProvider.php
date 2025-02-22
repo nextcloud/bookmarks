@@ -72,9 +72,6 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 
 	public function register(): void {
 		$this->contentManager->registerContentProvider($this->getAppId(), $this->getId(), self::class);
-		$this->eventDispatcher->addServiceListener(InsertEvent::class, self::class);
-		$this->eventDispatcher->addServiceListener(ManipulateEvent::class, self::class);
-		$this->eventDispatcher->addServiceListener(BeforeDeleteEvent::class, self::class);
 	}
 
 	/**
