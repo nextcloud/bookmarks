@@ -181,7 +181,7 @@ interface IContentProvider {
 }
 
 class ContentManager {
-    public function registerContentProvider(string $providerClass);
+    public function registerContentProvider(string, $appId, string $providerId, string $providerClass);
     public function submitContent(string $appId, array $items);
     public function deleteContent(string $appId, string $providerId, array $itemIds);
 }
@@ -200,7 +200,7 @@ class ContentItem {
 }
 
 namespace OCA\ContextChat\Event {
-class ContentProviderRegisterEvent {
+class ContentProviderRegisterEvent extends \OCP\EventDispatcher\Event {
     public function registerContentProvider(string $appId, string $provider, string $class);
 }
 }
