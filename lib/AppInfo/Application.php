@@ -98,7 +98,7 @@ class Application extends App implements IBootstrap {
 
 		$context->registerMiddleware(ExceptionMiddleware::class);
 
-		$context->registerEventListener('OCA\ContextChat\Event\ContentProviderRegisterEvent', 'OCA\Bookmarks\ContextChat\ContextChatProvider');
+		$context->registerEventListener(\OCA\ContextChat\Event\ContentProviderRegisterEvent::class, \OCA\Bookmarks\ContextChat\ContextChatProvider::class);	
 	}
 
 	/**
@@ -107,6 +107,7 @@ class Application extends App implements IBootstrap {
 	 * @throws \Throwable
 	 */
 	public function boot(IBootContext $context): void {
+		$this->getContainer()->get(\OCA\Bookmarks\ContextChat\ContextChatProvider::class)->register();
 		$container = $context->getServerContainer();
 		CreateBookmark::register($container->get(IEventDispatcher::class));
 	}
