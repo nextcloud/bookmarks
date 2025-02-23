@@ -16,7 +16,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 - 📲 Synchronize with all your browsers and devices
 - 📔 Store archived versions of your links in case they are depublished
 - 🔍 Full-text search on site contents
-- 👪 Share bookmarks with other users and via public links
+- 👪 Share bookmarks with other users, groups and teams or via public links
 - ⚛ Generate RSS feeds of your collections
 - 📈 Stats on how often you access which links
 - 🔒 Automatic backups of your bookmarks collection

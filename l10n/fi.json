@@ -209,6 +209,7 @@
     "Save" : "Tallenna",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Kirjanmerkkisovelluksen verkkokäyttö on oletuksena pois käytöstä. Avaa ylläpidon asetuksista sovelluksen asetukset ottaaksesi käyttöön esikatseluiden ja suosikkikuvakkeiden haut.",
     "What's new?" : "Mitä uutta?",
+    "What" : "Mitä",
     "Failed to count unavailable bookmarks" : "Käytöstä poissa olevien kirjanmerkkien laskeminen epäonnistui",
     "Failed to count archived bookmarks" : "Arkistoitujen kirjanmerkkien laskeminen epäonnistui",
     "Failed to count duplicated bookmarks" : "Kaksoiskappaleiden laskenta epäonnistui",

@@ -97,7 +97,7 @@ OC.L10N.register(
     "RSS feed copied" : "Fonte RSS copiada",
     "Enter a link" : "Introduza unha ligazón.",
     "Enter a title" : "Introduza o título",
-    "No bookmarks found" : "Non se atoparon marcadores",
+    "No bookmarks found" : "Non se atopou ningún marcador",
     "{folders} folders and {bookmarks} bookmarks" : "{folders} cartafoles e {bookmarks} marcadores",
     "Welcome to Bookmarks" : "Dámoslle a benvida aos marcadores",
     "This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app." : "Esta aplicación permítelle xestionar ligazóns aos seus lugares favoritos na web. Ordenar os seus marcadores en cartafoles, etiquetalos con etiquetas e compártilos con outros! A aplicación comprobará regularmente a dispoñibilidade de todas as súas ligazóns e amosará as que non estean dispoñíbeis. Se engade unha ligazón a un ficheiro na web, o ficheiro descargarase automaticamente nos seus ficheiros de Nextcloud. Tamén pode importar marcadores exportados doutros servizos ou sincronizar directamente os marcadores de todos os seus navegadores con esta aplicación.",
@@ -258,7 +258,7 @@ OC.L10N.register(
     "Failed to update share {shareId}" : "Produciuse un fallo ao actualizar a compartición {shareId}",
     "Failed to delete share {shareId}" : "Produciuse un fallo ao eliminar a compartición {shareId}",
     "Create bookmarks for mentioned links" : "Crear marcadores para as ligazóns mencionadas",
-    "No links found in this message" : "Non se atoparon ligazóns nesta mensaxe",
+    "No links found in this message" : "Non se atopou ningunha ligazón nesta mensaxe",
     "Bookmarks feed" : "Fonte de marcadores"
 },
 "nplurals=2; plural=(n != 1);");
