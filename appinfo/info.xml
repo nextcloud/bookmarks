@@ -11,7 +11,7 @@
 - 📲 Synchronize with all your browsers and devices
 - 📔 Store archived versions of your links in case they are depublished
 - 🔍 Full-text search on site contents
-- 👪 Share bookmarks with other users and via public links
+- 👪 Share bookmarks with other users, groups and teams or via public links
 - ⚛ Generate RSS feeds of your collections
 - 📈 Stats on how often you access which links
 - 🔒 Automatic backups of your bookmarks collection
@@ -23,7 +23,7 @@ Requirements:
    - mbstring: *
  - when using MySQL, use at least v8.0
 ]]></description>
-	<version>15.0.5</version>
+	<version>15.1.0</version>
 	<licence>agpl</licence>
 	<author mail="mklehr@gmx.net">Marcel Klehr</author>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
