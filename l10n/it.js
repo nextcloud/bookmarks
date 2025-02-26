@@ -27,6 +27,7 @@ OC.L10N.register(
     "Someone unshared folder \"%s\" with you" : "Qualcuno ha rimosso la condivisione della cartella \"%s\" con te",
     "No file provided for import" : "Nessun file fornito per l'importazione",
     "Failed to upload file" : "Invio del file non riuscito",
+    "Unsupported file type for import: " : "Tipo di file non supportato per l'importazione:",
     "Bookmarks shared by %s" : "Segnalibri condivisi da %s",
     "Frequent bookmarks" : "Segnalibri frequenti",
     "Recent bookmarks" : "Segnalibri recenti",

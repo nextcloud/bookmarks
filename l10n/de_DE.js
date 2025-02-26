@@ -230,7 +230,7 @@ OC.L10N.register(
     "Folder" : "Ordner",
     "Root Folder" : "Root-Ordner",
     "Save" : "Speichern",
-    "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Netzwerkzugriff ist standardmäßig deaktiviert. Gehen Sie zu den Administratoreinstellungen für die Lesezeichen-App, um das Abrufen von Vorschauen und Favicons zu erlauben.",
+    "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Netzwerkzugriff ist standardmäßig deaktiviert. Gehen Sie zu den Administrationseinstellungen für die Lesezeichen-App, um das Abrufen von Vorschauen und Favicons zu erlauben.",
     "What's new?" : "Was ist neu?",
     "Leave a rating on the Nextcloud App Store" : "Hinterlassen Sie eine Bewertung im Nextcloud App Store",
     "What" : "Was",
