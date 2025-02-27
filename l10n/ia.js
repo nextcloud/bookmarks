@@ -10,6 +10,7 @@ OC.L10N.register(
     "New" : "Nove",
     "New folder" : "Nove dossier",
     "Search" : "Cercar",
+    "_%n folder_::_%n folders_" : ["%n dossier","%n dossiers"],
     "Rename folder" : "Renominar dossier",
     "Cancel" : "Cancellar",
     "Recent" : "Recente",

@@ -16,10 +16,10 @@ OC.L10N.register(
     "Title" : "Azwel",
     "Link" : "Aseɣwen",
     "Tags" : "Tibzimin",
+    "Link copied" : "Aseɣwen yettwanɣel",
     "Owner" : "Bab",
     "Sharing" : "Beṭṭu",
     "Share link" : "Fren aseɣwen",
-    "Link copied" : "Aseɣwen yettwanɣel",
     "Privacy" : "Vie privée",
     "Save" : "Sekles"
 },

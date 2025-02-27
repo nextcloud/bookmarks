@@ -8,6 +8,7 @@ OC.L10N.register(
     "Select all" : "ټول ټاکل",
     "New" : "نوی",
     "New folder" : "نوی فولډر",
+    "_%n folder_::_%n folders_" : ["%n فولډر","%n فولډرونه"],
     "Cancel" : "پرېښول",
     "Recent" : "وروستي",
     "Shared with you" : "تاسې سره شريک شوي",

@@ -15,11 +15,11 @@ OC.L10N.register(
     "Link" : "Ceangal",
     "Tags" : "Tagaichean",
     "Notes" : "Nòtaichean",
+    "Link copied" : "Chaidh lethbhreac dhen cheangal a dhèanamh",
     "Sharing" : "Co-roinneadh",
     "Share link" : "Ceangal co-roinnidh",
     "Allow editing" : "Ceadaich deasachadh",
     "Allow resharing" : "Ceadaich co-roinneadh às ùr",
-    "Link copied" : "Chaidh lethbhreac dhen cheangal a dhèanamh",
     "Privacy" : "Prìobhaideachd",
     "Save" : "Sàbhail"
 },

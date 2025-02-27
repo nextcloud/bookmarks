@@ -7,6 +7,7 @@ OC.L10N.register(
     "New" : "﻿ಹೊಸ",
     "New folder" : "﻿ಹೊಸ ಕೋಶ",
     "Search" : "Search",
+    "_%n folder_::_%n folders_" : ["%n ಕೋಶ(ಗಳು)","%n ಕೋಶ(ಗಳು)"],
     "Cancel" : "﻿ರದ್ದು",
     "Shared with you" : "Shared with you",
     "Files" : "ಕಡತಗಳು",

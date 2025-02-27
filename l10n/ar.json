@@ -39,6 +39,8 @@
     "Bookmarks Backups" : "نُسَخ احتياطية من الإشارات المرجعية bookmarks",
     "Collect and manage bookmarks, synced with all your devices" : "تجميع و إدارة الإشارات المرحعية bookmarks و مزامنتها عبر أجهزتك المتعددة",
     "- 📂 Sort bookmarks into folders\n- 🏷 Add tags and personal notes\n- ☠ Find broken links and duplicates\n- 📲 Synchronize with all your browsers and devices\n- 📔 Store archived versions of your links in case they are depublished\n- 🔍 Full-text search on site contents\n- 👪 Share bookmarks with other users, groups and teams or via public links\n- ⚛ Generate RSS feeds of your collections\n- 📈 Stats on how often you access which links\n- 🔒 Automatic backups of your bookmarks collection\n- 💼 Built-in Dashboard widgets for frequent and recent links\n\nRequirements:\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - when using MySQL, use at least v8.0" : "- 📂 فرز الإشارات المرجعية إلى مجلدات \n- 🏷 إضافة علامات وملاحظات شخصية \n- ☠ البحث عن الروابط المعطلة والمكررة \n- 📲 المزامنة مع جميع متصفحاتك وأجهزتك \n- 📔 تخزين الإصدارات المؤرشفة من الروابط الخاصة بك في حالة إلغاء نشرها \n- 🔍 البحث عن النص الكامل في محتويات الموقع \n- 👪 مشاركة الإشارات المرجعية مع مستخدمين ومجموعات وفرق أخرى أو عبر الروابط العامة \n- ⚛ إنشاء موجزات RSS لمجموعاتك \n- 📈 إحصائيات حول عدد مرات وصولك إلى الروابط \n- 🔒 نسخ احتياطية تلقائية لمجموعة الإشارات المرجعية الخاصة بك \n- 💼 أدوات لوحة معلومات مدمجة للروابط المتكررة والحديثة \n\nالمتطلبات: \n- ملحقات PHP: - intl: * \n- mbstring: * \n- عند استخدام MySQL، استخدم الإصدار v8.0 على الأقل",
+    "Do you really want to delete this bookmark?" : "هل ترغب حقاً في حذف الإشارة المرجعية؟",
+    "Link copied to clipboard" : "تمّ نسخ الرابط إلى الحافظة",
     "Enter new title" : "أدخِل عنواناً جديداً",
     "Select bookmark" : "إختر إشارةً مرجعيةً bookmark",
     "You have never clicked this link" : "لم يسبق لك أن نقرت هذا الرابط",
@@ -51,8 +53,6 @@
     "Put bookmark into trash bin" : "ضع الإشارة المرجعية في سلة المهملات",
     "Restore bookmark" : "استعادة الإشارة المرجعية",
     "Delete bookmark permanently" : "حذف الإشارة المرجعية نهائيّاً",
-    "Do you really want to delete this bookmark?" : "هل ترغب حقاً في حذف الإشارة المرجعية؟",
-    "Link copied to clipboard" : "تمّ نسخ الرابط إلى الحافظة",
     "Content pending" : "المحتوى مُعلّق pending",
     "This content is being downloaded for offline use. Please check back later." : "تمّ تنزيل المحتوى تحضيراً للعمل دون اتصالٍ بالإنترنت. يرجى التحقق مرة أخرى في وقت لاحق.",
     "Bookmarked {time} ago" : "تمّ التأشير منذ {time} مضت",
@@ -64,14 +64,21 @@
     "Bookmarked links are checked regularly and the ones that cannot be reached are listed here." : "يتم فحص الروابط المرجعية بانتظام. و الروابط التي لا يمكن الوصول إليها يتم سردها هنا.",
     "You can share bookmark folders with others. All folders shared with you are listed here." : "يمكنك مشاركة مجلدات الإشارات مع الآخرين. جميع المجلدات التي تمت مشاركتها معك مدرجة هنا.",
     "One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience." : "يمكن أن تكون إشارة مرجعية واحدة في مجلدات متعددة في وقت واحد. سيؤدي تحديث الإشارة إلى تحديث جميع النسخ. جميع الإشارات المرجعية المكررة مدرجة هنا للتيسير.",
+    "Selected {folders} folders and {bookmarks} bookmarks" : "تمّ تحديد {folders} مجلدات، و {bookmarks} إشارات مرجعية",
+    "Do you really want to delete these items?" : "هل ترغب حقّاً في حذف هذه العناصر؟",
     "Open all selected" : "فتح جميع المحدد",
     "Move selection" : "أنقُل ما تمّ تحديده",
     "Edit tags of selection" : "تحرير الوسوم للمحدد",
     "Delete selection" : "حذف ما تمّ تحديده",
     "Select all" : "تحديد الكل",
     "Cancel selection" : "إلغاء التحديد",
-    "Selected {folders} folders and {bookmarks} bookmarks" : "تمّ تحديد {folders} مجلدات، و {bookmarks} إشارات مرجعية",
-    "Do you really want to delete these items?" : "هل ترغب حقّاً في حذف هذه العناصر؟",
+    "Sort by created date" : "ترتيب بحسب تاريخ الإنشاء",
+    "Sort by last modified" : "الترتيب بحسب تاريخ آخر تعديل",
+    "Sort by title" : "ترتيب بحسب العنوان",
+    "Sort by click count" : "الترتيب بحسب عدد النقرات clicks",
+    "Sort by manual order" : "الترتيب بحسب الفرز اليدوي",
+    "Sort by URL" : "الترتيب بحسب العنوان URL",
+    "RSS feed copied" : "تمّ نسخ موجز RSS ",
     "Trash Bin" : "سلة المهملات",
     "Go back" : "عودة",
     "Share folder" : "مشاركة مُجلّد",
@@ -86,13 +93,6 @@
     "The RSS feed requires authentication with your Nextcloud credentials" : "موجز RSS تتطلب المصادقة باستخدام بيانات تسجيل الدخول الخاصة بك إلى نكست كلاود",
     "Search" : "البحث",
     "Empty trash bin" : "تفريغ سلة المهملات",
-    "Sort by created date" : "ترتيب بحسب تاريخ الإنشاء",
-    "Sort by last modified" : "الترتيب بحسب تاريخ آخر تعديل",
-    "Sort by title" : "ترتيب بحسب العنوان",
-    "Sort by click count" : "الترتيب بحسب عدد النقرات clicks",
-    "Sort by manual order" : "الترتيب بحسب الفرز اليدوي",
-    "Sort by URL" : "الترتيب بحسب العنوان URL",
-    "RSS feed copied" : "تمّ نسخ موجز RSS ",
     "Enter a link" : "أدخِل رابطاً",
     "Enter a title" : "أدخِل عنواناً",
     "No bookmarks found" : "لا توجد أي إشاراتٍ مرجعيةٍ",
@@ -102,6 +102,7 @@
     "Add a bookmark" : "إضافة إشارة مرجعية bookmark",
     "Import bookmarks" : "إستيراد إشارات مرجعية",
     "Sync with your browser" : "زامن مع متصفحك",
+    "Do you really want to permanently delete this folder?" : "هل أنت حقاً ترغب في حذف هذا المجلد نهائيّاً؟",
     "Select folder" : "إختر مجلداً",
     "Enter folder title" : "أدخل عنوان المجلد",
     "Shared by {user}" : "تمتّ مشاركتها من قِبَل {user}",
@@ -110,7 +111,6 @@
     "Put folder into trashbin" : "ضع المجلد في سلة المهملات",
     "Restore folder" : "استعادة المجلد من سلة المهملات",
     "Delete folder permanently" : "حذف المجلد نهائيّاً",
-    "Do you really want to permanently delete this folder?" : "هل أنت حقاً ترغب في حذف هذا المجلد نهائيّاً؟",
     "Choose folder" : "إختَر مُجلّداً",
     "Submit" : "إرسال ",
     "Cancel" : "إلغاء",
@@ -143,6 +143,9 @@
     "You haven't deleted anything yet." : "أنت لم تقم بحذف شيءٍ بعد.",
     "No bookmarks here" : "لا توجد إشارات مرجعية هنا",
     "Add bookmarks manually or import bookmarks from a HTML file." : "أضِف الإشارات المرجعية يدويّاً أو قم باستيرادها من ملفات HTML.",
+    "Archive path" : "مسار الأرشيف",
+    "Backup path" : "مسار النسخ الاحتياطي",
+    "Please select \"Add to home screen\" in your browser menu" : "الرجاء تحديد \"إضافة إلى الشاشة الرئيسية\" Add to home screen في قائمة المتصفح",
     "Bookmarks settings" : "إعدادات الإشارات المرجعية",
     "Import/Export" : "إستيراد/تصدير",
     "Export bookmarks" : "تصدير الإشارات المرجعية",
@@ -167,9 +170,6 @@
     "If you have problems with this Bookmarks app or have an idea about what could be improved, don't hesitate to get in touch by clicking here." : "إذا واجهتك أي مشاكل مع تطبيق \"الإشارات المرجعية\" هذا أو كان لديك أي مقترح لتطويره, نرجوك ألّا تتتردد في التواصل معنا بالنقر هنا.",
     "Support this project" : "إدعَم هذا المشروع",
     "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "عملي في هذا التطبيق \"الإشارات المرجعية\" Bookmarks  يتم دعمه من خلال نموذج الاشتراك الطوعي. إذا كنت تعتقد أن ما أقوم به يستحق العناء، سأكون سعيداً إذا ساهمت في دعم عملي. كذلك، يُرجى تقييم التطبيق على متجر تطبيقات نكست كلاود. و شكراً 💙",
-    "Archive path" : "مسار الأرشيف",
-    "Backup path" : "مسار النسخ الاحتياطي",
-    "Please select \"Add to home screen\" in your browser menu" : "الرجاء تحديد \"إضافة إلى الشاشة الرئيسية\" Add to home screen في قائمة المتصفح",
     "(Empty title)" : "(عنوان فارغ)",
     "Title" : "العنوان",
     "Link" : "الرابط",
@@ -182,8 +182,7 @@
     "Archived file" : "ملف مؤرشف",
     "Download file" : "تنزيل ملف",
     "Open file location" : "فتح موقع الملف",
-    "Created {time} ago" : "أُنشِيءَ منذ {time} مضت",
-    "Created on {date}" : "أُنشِيءَ في {date}",
+    "Link copied" : "تمّ نسخ الرابط",
     "Owner" : "المالك",
     "Sharing" : "المشاركة",
     "Select a user or group" : "إختر مستخدِماً أو مجموعةً",
@@ -197,7 +196,8 @@
     "Allow editing" : "السّماح بالتعديل",
     "Allow resharing" : "السّماح بإعادة المشاركة ",
     "Remove share" : "حذف المشاركة",
-    "Link copied" : "تمّ نسخ الرابط",
+    "Failed to save settings" : "فشل حفظ الإعدادات",
+    "Failed to load settings" : "فشل في تحميل الإعدادات",
     "Privacy" : "الخصوصية",
     "The app will try to access web pages that you add to automatically add information about them." : "سيحاول التطبيق الوصول إلى صفحات الويب التي تضيفها لإضافة معلومات عنها تلقائيًا",
     "Enable accessing and collecting information from the web pages you add" : "قم بتمكين الوصول إلى المعلومات وجمعها من صفحات الويب التي تضيفها",
@@ -220,8 +220,6 @@
     "Pageres CLI" : "تطبيق واجهة سطر الأوامر \"بيجرز \"Pageres CLI",
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "ما عليك سوى تثبيت Pageres CLI من Sindre Sorhus على خادمك و ستجده الإشارات المرجعية. لا يزال بإمكانك إضافة متغيرات ENV إضافية ليتم تغذيتها إلى الصفحات، على سبيل المثال. كما هو موضح في العنصر النائب:",
     "Pageres ENV variables" : "مُتغيِّرات بيئة \"بيجرز\" Pageres ENV variables",
-    "Failed to save settings" : "فشل حفظ الإعدادات",
-    "Failed to load settings" : "فشل في تحميل الإعدادات",
     "This URL is already bookmarked! Overwrite?" : "تمّ سلفاً وضع إشارة مرجعية bookmark على عنوان URL هذا! هل ترغب في استبدالها؟",
     "Enter bookmark title" : "أدخِل تسمية title الإشارة المرجعية",
     "Enter bookmark URL" : "أدخِل عنوان URL للإشارة المرجعية",

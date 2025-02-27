@@ -19,10 +19,10 @@ OC.L10N.register(
     "Link" : "Dolen",
     "Tags" : "Tagiau",
     "Notes" : "Nodiadau",
+    "Link copied" : "Dolen wedi'i gopïo",
     "Owner" : "Owner",
     "Share link" : "Rhannu dolen",
     "Allow editing" : "Caniatáu golygu",
-    "Link copied" : "Dolen wedi'i gopïo",
     "Folder" : "Plygell",
     "Save" : "Cadw"
 },

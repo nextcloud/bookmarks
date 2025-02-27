@@ -8,6 +8,7 @@ OC.L10N.register(
     "New" : "New",
     "New folder" : "New folder",
     "Search" : "Search",
+    "_%n folder_::_%n folders_" : ["%n papkalar"],
     "Cancel" : "Cancel",
     "Recent" : "Recent",
     "Shared with you" : "Shared with you",

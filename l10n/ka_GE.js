@@ -12,6 +12,7 @@ OC.L10N.register(
     "New" : "ახალი",
     "New folder" : "ახალი დირექტორია",
     "Search" : "ძიება",
+    "_%n folder_::_%n folders_" : ["%n დირექტორია","%n დირექტორია"],
     "Add a bookmark" : "სანიშნის დამატება",
     "Rename folder" : "ფოლდერის სახელის გადარქმევა",
     "Choose folder" : "აირჩიეთ დირექტორია",

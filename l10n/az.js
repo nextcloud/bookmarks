@@ -19,11 +19,11 @@ OC.L10N.register(
     "Link" : "Link",
     "Tags" : "Işarələr",
     "Notes" : "Qeydlər",
+    "Link copied" : "Link kopyalandı",
     "Owner" : "Owner",
     "Sharing" : "Paylaşılır",
     "Share link" : "Linki yayımla",
     "Allow resharing" : "Yenidən paylaşıma izin",
-    "Link copied" : "Link kopyalandı",
     "Folder" : "Qovluq",
     "Save" : "Saxla"
 },
