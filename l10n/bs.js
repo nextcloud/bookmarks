@@ -7,6 +7,7 @@ OC.L10N.register(
     "New" : "Novo",
     "New folder" : "Nova fascikla",
     "Search" : "Search",
+    "_%n folder_::_%n folders_" : ["direktorij","direktoriji","direktoriji"],
     "Rename folder" : "Preimenuj fasciklu",
     "Cancel" : "Otkaži",
     "Shared with you" : "Shared with you",

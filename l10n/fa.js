@@ -89,6 +89,7 @@ OC.L10N.register(
     "No bookmarks found" : "No bookmarks found",
     "{folders} folders and {bookmarks} bookmarks" : "{folders} folders and {bookmarks} bookmarks",
     "_%n bookmark_::_%n bookmarks_" : ["%n نشانک","%n نشانک"],
+    "_%n folder_::_%n folders_" : ["%n folder","%n folders"],
     "Welcome to Bookmarks" : "Welcome to Bookmarks",
     "This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app." : "This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app.",
     "Add a bookmark" : "یک نشانک اضافه کنید",

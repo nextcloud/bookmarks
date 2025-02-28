@@ -11,6 +11,7 @@ OC.L10N.register(
     "New folder" : "Heuliad nevez",
     "Search" : "Klask",
     "Empty trash bin" : "Pod-lastez goullo",
+    "_%n folder_::_%n folders_" : ["%nteuliad","%n deuliad","teuliadoù zo","an darn vrasañ eus an teuliadoù","%n teuliad"],
     "Submit" : "Kinnig",
     "Cancel" : "Arrest",
     "Recent" : "Nevez",

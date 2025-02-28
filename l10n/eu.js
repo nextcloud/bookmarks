@@ -102,6 +102,7 @@ OC.L10N.register(
     "No bookmarks found" : "Ez da laster-markarik aurkitu",
     "{folders} folders and {bookmarks} bookmarks" : "{folders} karpetak eta {bookmarks} laster-markak",
     "_%n bookmark_::_%n bookmarks_" : ["Laster-marka %n","%n laster-marka"],
+    "_%n folder_::_%n folders_" : ["karpeta %n","%n karpeta"],
     "Welcome to Bookmarks" : "Ongi etorri Laster-marketara",
     "This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app." : "Aplikazio honek sarean gogoko dituzun tokietarako estekak kudeatzeko aukera ematen dizu. Ordenatu zure laster-markak karpetetan, etiketatu eta partekatu besteekin! Aplikazioak aldian-aldian zure esteka guztiak egiaztatuko ditu erabilgarritasuna eta erabilgarri ez dauden estekak bistaratuko ditu. Webeko fitxategi bati esteka gehitzen badiozu, fitxategia automatikoki deskargatuko da zure Nextcloud Fitxategietara. Beste zerbitzu batzuetatik esportatutako laster-markak ere inporta ditzakezu edo zure arakatzaile guztietako laster-markak zuzenean sinkroniza ditzakezu aplikazio honekin.",
     "Add a bookmark" : "Gehitu laster-marka bat",

@@ -9,6 +9,7 @@ OC.L10N.register(
     "New folder" : "Pasgan ùr",
     "Search" : "Lorg",
     "Empty trash bin" : "Falamhaich an sgudal",
+    "_%n folder_::_%n folders_" : ["%n phasgan","%n phasgan","%n pasganan","%n pasgan"],
     "Cancel" : "Sguir dheth",
     "Files" : "Faidhlichean",
     "Delete" : "Sguab às",

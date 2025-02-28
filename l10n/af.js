@@ -12,6 +12,7 @@ OC.L10N.register(
     "New" : "Nuut",
     "New folder" : "Nuwe vouer",
     "Search" : "Soek",
+    "_%n folder_::_%n folders_" : ["%n gids","%n gidse"],
     "Add a bookmark" : "Voeg 'n boekmerk by",
     "Choose folder" : "Kies vouer",
     "Submit" : "Dien in",

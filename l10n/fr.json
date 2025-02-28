@@ -100,6 +100,7 @@
     "No bookmarks found" : "Aucun favori",
     "{folders} folders and {bookmarks} bookmarks" : "{folders} dossiers et {bookmarks} favoris",
     "_%n bookmark_::_%n bookmarks_" : ["%n favori","%n favoris","%n favoris"],
+    "_%n folder_::_%n folders_" : ["%n dossier","%n dossiers","%n dossiers"],
     "Welcome to Bookmarks" : "Bienvenu dans les favoris",
     "This app allows you to manage links to your favorite places on the web. Sort your bookmarks into folders, label them with tags and share them with others! The app will regularly check all your links for availability and display unavailable links. If you add a link to a file on the web, the file will be automatically downloaded to your Nextcloud Files. You can also import bookmarks exported from other services or directly sync bookmarks from all your browsers with this app." : "Cette application vous permet de gérer les liens vers vos sites préférés sur le Web ? Classez vos marques pages dans des dossiers, marquez-les avec des étiquettes et partagez-les ! L'application vérifiera régulièrement le fonctionnement des liens et affichera ceux indisponibles. Si vous ajoutez un lien vers un fichier sur le Web, ce dernier sera automatiquement téléchargé vers vos fichiers Nextcloud. Vous pouvez également importer des marques pages exportés depuis d'autres services, ou directement synchroniser vos marques pages depuis tous vos navigateurs avec cette application.",
     "Add a bookmark" : "Ajouter un favori",

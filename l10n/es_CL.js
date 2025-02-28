@@ -13,6 +13,7 @@ OC.L10N.register(
     "New folder" : "Carpeta nueva",
     "Search" : "Buscar",
     "Empty trash bin" : "Vaciar papelera de reciclaje",
+    "_%n folder_::_%n folders_" : ["%n carpeta","%n carpetas","%n carpetas"],
     "Add a bookmark" : "Agregar un marcador",
     "Choose folder" : "Seleccioanr carpeta",
     "Submit" : "Enviar",

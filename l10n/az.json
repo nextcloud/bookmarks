@@ -7,6 +7,7 @@
     "New" : "Yeni",
     "New folder" : "Yeni qovluq",
     "Search" : "Axtarış",
+    "_%n folder_::_%n folders_" : ["%n qovluq","%n qovluqlar"],
     "Welcome to Bookmarks" : "Əlfəcinlərə xoş gəlmisiniz",
     "Rename folder" : "Qovluğun adını dəyiş",
     "Cancel" : "Dayandır",

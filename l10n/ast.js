@@ -13,6 +13,7 @@ OC.L10N.register(
     "New folder" : "Carpeta nueva",
     "Search" : "Buscar",
     "Empty trash bin" : "Balerar la papelera",
+    "_%n folder_::_%n folders_" : ["%n carpeta","%n carpetes"],
     "Rename folder" : "Renomar la carpeta",
     "Submit" : "Unviar",
     "Cancel" : "Encaboxar",

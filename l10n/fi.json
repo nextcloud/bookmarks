@@ -95,6 +95,7 @@
     "No bookmarks found" : "Kirjanmerkkejä ei löytynyt",
     "{folders} folders and {bookmarks} bookmarks" : "{folders} kansiota ja {bookmarks} kirjanmerkkiä",
     "_%n bookmark_::_%n bookmarks_" : ["%n kirjanmerkki","%n kirjanmerkkiä"],
+    "_%n folder_::_%n folders_" : ["%n kansio","%n kansiota"],
     "Welcome to Bookmarks" : "Tervetuloa kirjanmerkkeihin",
     "Add a bookmark" : "Lisää kirjanmerkki",
     "Import bookmarks" : "Tuo kirjanmerkit",
