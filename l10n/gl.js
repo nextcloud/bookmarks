@@ -137,7 +137,7 @@ OC.L10N.register(
     "Duplicates" : "Duplicados",
     "Broken links" : "Ligazóns rachadas",
     "New tag" : "Nova etiqueta",
-    "Search tags" : "Buscar etiquetas",
+    "Search tags" : "Etiquetas de busca",
     "Delete" : "Eliminar",
     "Untagged" : "Sen etiquetar",
     "{used} bookmarks of {available} available" : "{used} marcadores de {available} disponíbeis",
