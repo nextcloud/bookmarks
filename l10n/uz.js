@@ -3,11 +3,13 @@ OC.L10N.register(
     {
     "Details" : "Details",
     "Rename" : "Rename",
+    "Copy link" : "Havolani nusxalash",
     "Move" : "Move",
     "Select all" : "Select all",
     "New" : "New",
     "New folder" : "New folder",
     "Search" : "Search",
+    "Empty trash bin" : "Axlat qutisini bo'shatish",
     "_%n folder_::_%n folders_" : ["%n papkalar"],
     "Cancel" : "Cancel",
     "Recent" : "Recent",
