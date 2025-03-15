@@ -25,6 +25,8 @@ OC.L10N.register(
     "Sharing" : "Ulashish",
     "Share link" : "Share link",
     "Allow editing" : "Allow editing",
+    "Failed to save settings" : "Sozlamalarni saqlab bo'lmadi",
+    "Failed to load settings" : "Sozlamalarni yuklab bo'lmadi",
     "Save" : "Save"
 },
 "nplurals=1; plural=0;");
