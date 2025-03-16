@@ -21,6 +21,7 @@ OC.L10N.register(
     "Tags" : "Tags",
     "Notes" : "Notes",
     "Download file" : "Download file",
+    "Link copied" : "Havola nusxalandi",
     "Owner" : "Owner",
     "Sharing" : "Ulashish",
     "Share link" : "Share link",
