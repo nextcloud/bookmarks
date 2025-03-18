@@ -16,7 +16,9 @@ OC.L10N.register(
     "Shared with you" : "Shared with you",
     "Files" : "Files",
     "Delete" : "Delete",
+    "Add to {instanceName}" : " {instanceName}ni qo`shish",
     "Need help?" : "Need help?",
+    "Title" : "Sarlavha",
     "Link" : "Link",
     "Tags" : "Tags",
     "Notes" : "Notes",
@@ -26,6 +28,7 @@ OC.L10N.register(
     "Sharing" : "Ulashish",
     "Share link" : "Share link",
     "Allow editing" : "Allow editing",
+    "Allow resharing" : "Qayta almashishga ruxsat bering",
     "Failed to save settings" : "Sozlamalarni saqlab bo'lmadi",
     "Failed to load settings" : "Sozlamalarni yuklab bo'lmadi",
     "Save" : "Save"
