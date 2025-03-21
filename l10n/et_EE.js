@@ -89,6 +89,7 @@ OC.L10N.register(
     "Privacy" : "Privaatsus",
     "Folder" : "Kaust",
     "Save" : "Salvesta",
+    "What's new?" : "Mida on uut?",
     "Failed to delete bookmark" : "Järjehoidja kustutamine ebaõnnestus",
     "Failed to delete folder" : "Kausta kustutamine ebaõnnestus"
 },
