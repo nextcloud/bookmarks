@@ -26,6 +26,7 @@ OC.L10N.register(
     "Move selection" : "Perkelti žymėjimą",
     "Delete selection" : "Ištrinti žymėjimą",
     "Select all" : "Pažymėti viską",
+    "Sort by title" : "Rikiuoti pagal sąveiką",
     "RSS feed copied" : "RSS kanalas nukopijuotas",
     "Go back" : "Grįžti",
     "Share folder" : "Bendrinti aplanką",
