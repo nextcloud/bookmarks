@@ -38,6 +38,7 @@ OC.L10N.register(
     "Edit tags of selection" : "Muuda valiku silte",
     "Delete selection" : "Kustuta valik",
     "Select all" : "Vali kõik",
+    "Sort by title" : "Järjesta pealkirja järgi",
     "Go back" : "Mine tagasi",
     "Share folder" : "Jaga kausta",
     "Open folder details" : "Ava kausta üksikasjad",
