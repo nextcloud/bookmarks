@@ -8,7 +8,7 @@ OC.L10N.register(
     "Select all" : "Dibab pep tra",
     "Sort by created date" : "Renkañ dre deizat krouidigezh",
     "New" : "Nevez",
-    "New folder" : "Heuliad nevez",
+    "New folder" : "Teuliad nevez",
     "Search" : "Klask",
     "Empty trash bin" : "Pod-lastez goullo",
     "_%n folder_::_%n folders_" : ["%nteuliad","%n deuliad","teuliadoù zo","an darn vrasañ eus an teuliadoù","%n teuliad"],
