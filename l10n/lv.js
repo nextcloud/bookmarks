@@ -13,7 +13,7 @@ OC.L10N.register(
     "New" : "Jauns",
     "New folder" : "Jauna mape",
     "Search" : "Meklēt",
-    "Empty trash bin" : "Izdzēst miskastes saturu",
+    "Empty trash bin" : "Iztīrīt atkritni",
     "_%n folder_::_%n folders_" : ["%n mapes","%n mape","%n mapes"],
     "Add a bookmark" : "Pievienot grāmatzīmi",
     "Rename folder" : "Pārdēvēt mapi",
