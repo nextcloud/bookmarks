@@ -107,6 +107,7 @@ OC.L10N.register(
     "Save" : "Salvesta",
     "What's new?" : "Mida on uut?",
     "Failed to delete bookmark" : "Järjehoidja kustutamine ebaõnnestus",
+    "Failed to load tags" : "Siltide laadimine ei õnnestu",
     "Failed to delete folder" : "Kausta kustutamine ebaõnnestus"
 },
 "nplurals=2; plural=(n != 1);");
