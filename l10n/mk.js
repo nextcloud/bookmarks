@@ -35,6 +35,7 @@ OC.L10N.register(
     "Select a user or group" : "Избери корисник или група",
     "Share link" : "Сподели линк",
     "Copy RSS feed" : "Копирај RSS канал",
+    "Create public link" : "Креирај јавен линк",
     "Allow editing" : "Овозможи уредување",
     "Allow resharing" : "Дозволи повторно споделување",
     "Remove share" : "Отстрани споделување",
