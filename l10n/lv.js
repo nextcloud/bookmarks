@@ -39,6 +39,7 @@ OC.L10N.register(
     "Allow editing" : "Atļaut labošanu",
     "Allow resharing" : "Atļaut atkārtotu koplietošanu",
     "Failed to save settings" : "Neizdevās saglabāt iestatījumus",
+    "Failed to load settings" : "Neizdevās ielādēt iestatījumus",
     "Privacy" : "Privātums",
     "Previews" : "Priekšskatījumi",
     "Screeenly API URL" : "Screeenly API saite",
