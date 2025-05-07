@@ -33,7 +33,7 @@ OC.L10N.register(
     "Share link" : "Partajează link-ul",
     "Allow editing" : "Permite editarea",
     "Allow resharing" : "Permite repartajarea",
-    "Privacy" : "Confindențialitate",
+    "Privacy" : "Confidențialitate",
     "Performance" : "Performanța",
     "Folder" : "Director",
     "Save" : "Salvează",
