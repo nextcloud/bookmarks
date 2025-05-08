@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Grāmatzīmes",
+    "You bookmarked \"%s\"" : "Tu pievienoji \"%s\" grāmatzīmēm",
     "No file provided for import" : "Nav norādīta importējamā datne",
     "Bookmark" : "Grāmatzīme",
     "Details" : "Detaļas",
@@ -24,6 +25,7 @@ OC.L10N.register(
     "Shared with you" : "Koplietots ar jums",
     "Files" : "Datnes",
     "Delete" : "Dzēst",
+    "The bookmarks app can automatically archive the web content of links you have bookmarked" : "Grāmatzīmju lietotne var automātiski arhivēt saglabāto saišu tīmekļa saturu",
     "Bookmarklet" : "Grāmatzīme",
     "Need help?" : "Vajadzīga palīdzība?",
     "Title" : "Amats",
