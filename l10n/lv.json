@@ -36,6 +36,7 @@
     "Owner" : "Īpašnieks",
     "Sharing" : "Koplietošana",
     "Share link" : "Koplietot saiti",
+    "Create public link" : "Izveidot publisku saiti",
     "Allow editing" : "Atļaut labošanu",
     "Allow resharing" : "Atļaut atkārtotu koplietošanu",
     "Failed to save settings" : "Neizdevās saglabāt iestatījumus",
@@ -47,6 +48,12 @@
     "This URL is already bookmarked! Overwrite?" : "Šī saite jau ir grāmatzīmēs! Vai pārrakstīt?",
     "Folder" : "Mape",
     "Save" : "Saglabāt",
+    "Failed to delete bookmark" : "Neizdevās izdzēst grāmatzīmi",
+    "Failed to load deleted folders" : "Neizdevās ielādēt izdzēstās mapes",
+    "Failed to load deleted bookmarks" : "Neizdevās ielādēt izdzēstās grāmatzīmes",
+    "Failed to delete folder" : "Neizdevās izdzēst mapi",
+    "Failed to delete share {shareId}" : "Neizdevās izdzēst koplietojumu {shareId}",
+    "Create bookmarks for mentioned links" : "Izveidot grāmatzīmes pieminētajām saitēm",
     "Bookmarks feed" : "Grāmatzīmju plūsma"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);"
 }
