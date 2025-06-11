@@ -8,7 +8,6 @@
 
 namespace OCA\Bookmarks\Db;
 
-use InvalidArgumentException;
 use OCP\IDBConnection;
 use PDO;
 

@@ -27,7 +27,6 @@ use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\Lock\LockedException;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 class CrawlService {
