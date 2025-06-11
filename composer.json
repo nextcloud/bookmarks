@@ -5,11 +5,7 @@
 		"ext-json": "*",
 		"ext-libxml": "*",
 		"ext-pdo": "*",
-		"guzzlehttp/psr7": "^2",
 		"marcelklehr/link-preview": "^3.0.5",
-		"psr/http-client": "^1.0",
-		"psr/http-factory": "^1.0",
-		"psr/http-message": "^1.0",
 		"rowbot/url": "^3.0",
 		"xantios/mimey": "^2.1",
 		"fivefilters/readability.php": "^3.1"
