@@ -14,23 +14,23 @@ use OCP\AppFramework\Db\Entity;
  * Class Bookmark
  *
  * @package OCA\Bookmarks\Db
- * @method string getUrl()
+ * @method getUrl(): string
  * @method setUrl(string $url)
- * @method string getTitle()
- * @method string getDescription()
- * @method int getLastmodified()
+ * @method getTitle():string
+ * @method getDescription(): string
+ * @method getLastmodified(): int
  * @method setLastmodified(int $lastmodified)
- * @method int getAdded()
+ * @method getAdded(): int
  * @method setAdded(int $added)
- * @method int getClickcount
+ * @method getClickcount(): int
  * @method setClickcount(int $count)
- * @method int getLastPreview()
+ * @method getLastPreview(): int
  * @method setLastPreview(int $lastpreview)
- * @method bool getAvailable()
+ * @method getAvailable():bool
  * @method setAvailable(boolean $available)
- * @method int getArchivedFile()
+ * @method getArchivedFile(): int
  * @method setArchivedFile(int $fileId)
- * @method string getUserId()
+ * @method getUserId(): string
  * @method setUserId(string $userId)
  */
 class Bookmark extends Entity {

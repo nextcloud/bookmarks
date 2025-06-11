@@ -223,7 +223,7 @@ class FolderService {
 	public function updateSharedFolderOrFolder(?string $userId, int $folderId, ?string $title = null, ?int $parent_folder = null) {
 		$folder = $this->folderMapper->find($folderId);
 
-		if ($userId !== null || $userId !== $folder->getUserId()) {
+		if ($userId !== null && $userId !== $folder->getUserId()) {
 			try {
 				// folder is shared folder
 				$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $userId);

@@ -12,9 +12,9 @@ use OC;
 use OCP\AppFramework\Http\TemplateResponse;
 
 /**
- * @psalm-template S of int
- * @psalm-template H of array<string, mixed>
- * @psalm-implements TemplateResponse<S,H>
+ * @template S of \OCP\AppFramework\Http::STATUS_*
+ * @template H of array<string, mixed>
+ * @template-extends TemplateResponse<S,H>
  */
 class AugmentedTemplateResponse extends TemplateResponse {
 	public function render() {

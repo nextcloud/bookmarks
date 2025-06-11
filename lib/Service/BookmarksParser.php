@@ -272,7 +272,7 @@ class BookmarksParser {
 				if ((int)$attributes['add_date'] > self::THOUSAND_YEARS) {
 					// Google exports dates in miliseconds. This way we only lose the first year of UNIX Epoch.
 					// This is invalid once we hit 2970. So, quite a long time.
-					$added->setTimestamp((int)($attributes['add_date'] / 1000));
+					$added->setTimestamp(((int)($attributes['add_date']) / 1000));
 				} else {
 					$added->setTimestamp((int)$attributes['add_date']);
 				}

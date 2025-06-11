@@ -64,7 +64,7 @@ class Provider implements IProvider {
 	public function search(IUser $user, ISearchQuery $query): SearchResult {
 		$params = new QueryParameters();
 		$params->setLimit($query->getLimit());
-		$params->setOffset($query->getCursor() ?? 0);
+		$params->setOffset(((int)($query->getCursor() ?? 0)));
 		$params->setSearch(explode(' ', $query->getTerm()));
 		$params->setConjunction('and');
 		$bookmarks = $this->bookmarkMapper->findAll($user->getUID(), $params);

@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
-  <file src="lib/Activity/ActivityPublisher.php">
-    <MissingTemplateParam>
-      <code><![CDATA[IEventListener]]></code>
-    </MissingTemplateParam>
-  </file>
+<files psalm-version="6.12.0@cf420941d061a57050b6c468ef2c778faf40aee2">
   <file src="lib/AppInfo/Application.php">
     <InvalidArgument>
       <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
@@ -17,9 +12,9 @@
     </InvalidArgument>
   </file>
   <file src="lib/AugmentedTemplateResponse.php">
-    <MissingTemplateParam>
+    <InvalidTemplateParam>
       <code><![CDATA[AugmentedTemplateResponse]]></code>
-    </MissingTemplateParam>
+    </InvalidTemplateParam>
   </file>
   <file src="lib/Controller/WebViewController.php">
     <UndefinedMethod>
@@ -30,7 +25,52 @@
       <code><![CDATA[$this->folderController->getFolders()->getData()]]></code>
     </UndefinedMethod>
   </file>
+  <file src="lib/Db/BookmarkMapper.php">
+    <ImplicitToStringCast>
+      <code><![CDATA[$baseCase->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)]]></code>
+      <code><![CDATA[$baseCase->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)]]></code>
+      <code><![CDATA[$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
+      <code><![CDATA[$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
+      <code><![CDATA[$qb->createFunction($qb->getColumnName($col))]]></code>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+      <code><![CDATA[$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
+      <code><![CDATA[$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
+      <code><![CDATA[$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE)]]></code>
+      <code><![CDATA[$secondRecursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
+      <code><![CDATA[$tagsCol]]></code>
+    </ImplicitToStringCast>
+    <InvalidDocblock>
+      <code><![CDATA[public function countBookmarksOfUser(string $userId) : int {]]></code>
+    </InvalidDocblock>
+  </file>
+  <file src="lib/Db/BookmarkWithTagsAndParent.php">
+    <InvalidDocblock>
+      <code><![CDATA[BookmarkWithTagsAndParent]]></code>
+    </InvalidDocblock>
+  </file>
+  <file src="lib/Db/PublicFolderMapper.php">
+    <InvalidScalarArgument>
+      <code><![CDATA[$entity->getId()]]></code>
+      <code><![CDATA[$entity->getId()]]></code>
+    </InvalidScalarArgument>
+  </file>
+  <file src="lib/Db/TagMapper.php">
+    <ImplicitToStringCast>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+    </ImplicitToStringCast>
+  </file>
   <file src="lib/Db/TreeMapper.php">
+    <ImplicitToStringCast>
+      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
+    </ImplicitToStringCast>
     <InvalidReturnStatement>
       <code><![CDATA[$this->bookmarkMapper->findAll($userId, $params)]]></code>
     </InvalidReturnStatement>
@@ -38,9 +78,6 @@
       <code><![CDATA[E[]]]></code>
       <code><![CDATA[Folder]]></code>
     </InvalidReturnType>
-    <MissingTemplateParam>
-      <code><![CDATA[TreeMapper]]></code>
-    </MissingTemplateParam>
     <NoValue>
       <code><![CDATA[return $this->findEntityWithType($qb, TreeMapper::TYPE_FOLDER);]]></code>
     </NoValue>
@@ -51,9 +88,9 @@
     </ReservedWord>
   </file>
   <file src="lib/ExportResponse.php">
-    <MissingTemplateParam>
+    <InvalidTemplateParam>
       <code><![CDATA[ExportResponse]]></code>
-    </MissingTemplateParam>
+    </InvalidTemplateParam>
   </file>
   <file src="lib/Flow/CreateBookmark.php">
     <UndefinedClass>
@@ -63,11 +100,6 @@
     <UndefinedInterfaceMethod>
       <code><![CDATA[exportContextIDs]]></code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="lib/Hooks/BeforeTemplateRenderedListener.php">
-    <MissingTemplateParam>
-      <code><![CDATA[IEventListener]]></code>
-    </MissingTemplateParam>
   </file>
   <file src="lib/Hooks/UsersGroupsCirclesListener.php">
     <InvalidTemplateParam>
@@ -84,6 +116,30 @@
       <code><![CDATA[UsersGroupsCirclesListener]]></code>
     </UndefinedDocblockClass>
   </file>
+  <file src="lib/Http/Client.php">
+    <UndefinedClass>
+      <code><![CDATA[Psr7\Utils]]></code>
+      <code><![CDATA[Response]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Http/RequestFactory.php">
+    <UndefinedClass>
+      <code><![CDATA[Request]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Migration/OrphanedTreeItemsRepairStep.php">
+    <ImplicitToStringCast>
+      <code><![CDATA[$qb->createPositionalParameter('bookmark')]]></code>
+    </ImplicitToStringCast>
+  </file>
+  <file src="lib/Service/Authorizer.php">
+    <NoInterfaceProperties>
+      <code><![CDATA[$request->server]]></code>
+    </NoInterfaceProperties>
+    <RedundantCondition>
+      <code><![CDATA[$auth !== null]]></code>
+    </RedundantCondition>
+  </file>
   <file src="lib/Service/BackupManager.php">
     <UndefinedDocblockClass>
       <code><![CDATA[\OC\User\NoUserException]]></code>
@@ -93,6 +149,11 @@
       <code><![CDATA[\OC\User\NoUserException]]></code>
     </UndefinedDocblockClass>
   </file>
+  <file src="lib/Service/BookmarksParser.php">
+    <InvalidScalarArgument>
+      <code><![CDATA[(int)($attributes['add_date']) / 1000]]></code>
+    </InvalidScalarArgument>
+  </file>
   <file src="lib/Service/CirclesService.php">
     <UndefinedClass>
       <code><![CDATA[$circleProbe]]></code>
@@ -100,20 +161,36 @@
   </file>
   <file src="lib/Service/CrawlService.php">
     <UndefinedClass>
-      <code><![CDATA[$e]]></code>
-      <code><![CDATA[$e]]></code>
       <code><![CDATA[Client]]></code>
-      <code><![CDATA[NoUserException]]></code>
+      <code><![CDATA[Response]]></code>
+      <code><![CDATA[Response]]></code>
     </UndefinedClass>
+    <UndefinedDocblockClass>
+      <code><![CDATA[$resp]]></code>
+      <code><![CDATA[$resp]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Service/FaviconPreviewer.php">
+    <TypeDoesNotContainNull>
+      <code><![CDATA[!isset($contentType)]]></code>
+    </TypeDoesNotContainNull>
+  </file>
+  <file src="lib/Service/FolderService.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[$publicFolder->getId()]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidReturnType>
   </file>
   <file src="lib/Service/LinkExplorer.php">
     <UndefinedInterfaceMethod>
       <code><![CDATA[setMinimumImageDimensions]]></code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="lib/Service/TreeCacheManager.php">
-    <MissingTemplateParam>
-      <code><![CDATA[IEventListener]]></code>
-    </MissingTemplateParam>
+  <file src="lib/Service/Previewers/DefaultBookmarkPreviewer.php">
+    <TypeDoesNotContainNull>
+      <code><![CDATA[!isset($contentType)]]></code>
+    </TypeDoesNotContainNull>
   </file>
 </files>

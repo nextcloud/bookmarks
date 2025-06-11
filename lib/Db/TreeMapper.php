@@ -33,7 +33,7 @@ use Psr\Log\LoggerInterface;
 use function call_user_func;
 
 /**
- * @psalm-extends QBMapper<Bookmark|Folder|SharedFolder>
+ * @extends QBMapper<Bookmark|Folder|SharedFolder>
  */
 class TreeMapper extends QBMapper {
 	public const TYPE_SHARE = 'share';
@@ -848,7 +848,7 @@ class TreeMapper extends QBMapper {
 		$qb = $this->getChildrenQuery[TreeMapper::TYPE_SHARE];
 		$this->selectFromType(TreeMapper::TYPE_SHARE, ['t.index'], $qb);
 		$qb->setParameter('parent_folder', $folderId);
-		$childShares = $qb->execute()->fetchAll() ?? [];
+		$childShares = $qb->execute()->fetchAll();
 
 		$children = array_map(function ($child) use ($layers, $childShares) {
 			$item = ['type' => $child['type'], 'id' => (int)$child['id']];
@@ -1222,7 +1222,7 @@ class TreeMapper extends QBMapper {
 		$qb->select('type', 'id', 'parent_folder')->from('bookmarks_tree');
 		$qb->where($qb->expr()->neq('type', $qb->createNamedParameter(TreeMapper::TYPE_SHARE, IQueryBuilder::PARAM_STR)));
 		$cutoffDate = $this->timeFactory->getDateTime();
-		$cutoffDate->modify('- ' . $maxAge . ' seconds');
+		$cutoffDate->modify('- ' . ((string)$maxAge) . ' seconds');
 		$qb->andWhere($qb->expr()->lt('soft_deleted_at', $qb->createNamedParameter($cutoffDate, IQueryBuilder::PARAM_DATE)));
 		$qb->setMaxResults($limit);
 		try {

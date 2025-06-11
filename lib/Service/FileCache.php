@@ -137,13 +137,14 @@ class FileCache implements ICache {
 
 	/**
 	 * @param string $prefix
-	 * @return void
+	 * @return bool
 	 * @throws NotPermittedException
 	 */
 	public function clear($prefix = '') {
 		foreach ($this->getStorage()->getDirectoryListing() as $file) {
 			$file->delete();
 		}
+		return true;
 	}
 
 	/**

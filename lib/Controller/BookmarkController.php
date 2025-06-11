@@ -228,7 +228,7 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @param string $id
+	 * @param string|int $id
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
@@ -237,14 +237,14 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 */
 	public function getSingleBookmark($id): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark((int)$id, $this->request))) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
 		}
 		try {
 			/**
 			 * @var Bookmark $bm
 			 */
-			$bm = $this->bookmarkMapper->find($id);
+			$bm = $this->bookmarkMapper->find((int)$id);
 		} catch (DoesNotExistException $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
 		} catch (MultipleObjectsReturnedException $e) {
@@ -266,8 +266,8 @@ class BookmarkController extends ApiController {
 	 * @param bool|null $unavailable
 	 * @param bool|null $archived
 	 * @param bool|null $duplicated
-	 * @param bool|null $recursive
-	 * @param bool|null $deleted
+	 * @param bool $recursive
+	 * @param bool $deleted
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
@@ -931,7 +931,6 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @BruteForceProtection(action=bookmarks#countAllClicks)
@@ -953,7 +952,6 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @return Http\DataResponse
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @BruteForceProtection(action=bookmarks#countWithClicks)
