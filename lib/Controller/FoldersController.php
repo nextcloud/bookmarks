@@ -562,7 +562,7 @@ class FoldersController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
 		}
 		$folders = $this->treeMapper->getSubFolders($internalRoot, $layers, $root === -1 ? false : null);
-		if ($root === -1 || $root === '-1') {
+		if ($root === -1) {
 			foreach ($folders as &$folder) {
 				$folder['parent_folder'] = -1;
 			}

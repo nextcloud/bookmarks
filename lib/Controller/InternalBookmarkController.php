@@ -58,7 +58,8 @@ class InternalBookmarkController extends ApiController {
 	 * @param bool|null $unavailable
 	 * @param bool|null $archived
 	 * @param bool|null $duplicated
-	 * @param bool|null $deleted
+	 * @param bool $recursive
+	 * @param bool $deleted
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired

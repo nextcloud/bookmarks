@@ -41,7 +41,7 @@ class Client implements ClientInterface {
 	 *
 	 * @param RequestInterface $request
 	 *
-	 * @return Response
+	 * @return ResponseInterface
 	 *
 	 * @throws Exception
 	 */

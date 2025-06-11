@@ -28,7 +28,7 @@ use Psr\Container\ContainerInterface;
 use UnexpectedValueException;
 
 /**
- * @psalm-implements IEventListener<ChangeEvent>
+ * @implements IEventListener<ChangeEvent>
  */
 class TreeCacheManager implements IEventListener {
 	public const TTL = 60 * 60 * 24 * 30; // one month

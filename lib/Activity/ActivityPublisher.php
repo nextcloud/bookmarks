@@ -28,7 +28,7 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\IL10N;
 
 /**
- * @psalm-implements IEventListener<ChangeEvent>
+ * @implements IEventListener<ChangeEvent>
  */
 class ActivityPublisher implements IEventListener {
 	/**

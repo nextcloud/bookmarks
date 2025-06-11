@@ -123,11 +123,6 @@ class TagMapper {
 	 * @param int $bookmarkId
 	 */
 	public function addTo(array $tags, int $bookmarkId): void {
-		if (is_string($tags)) {
-			$tags = [$tags];
-		} elseif (!is_array($tags)) {
-			throw new InvalidArgumentException('$tag must be string or array of strings');
-		}
 		if (count($tags) === 0) {
 			return;
 		}
