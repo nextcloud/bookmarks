@@ -150,10 +150,10 @@
     "No deleted bookmarks" : "Keine gelöschten Lesezeichen",
     "You haven't deleted anything yet." : "Du hast bislang noch nichts gelöscht.",
     "No bookmarks here" : "Keine Lesezeichen vorhanden",
-    "Add bookmarks manually or import bookmarks from a HTML file." : "Füge Lesezeichen manuell oder importiere sie mit eine HTML-Datei",
+    "Add bookmarks manually or import bookmarks from a HTML file." : "Lesezeichen manuell hinzufügen oder aus einer HTML-Datei importieren",
     "Archive path" : "Archiv-Pfad",
     "Backup path" : "Pfad für Sicherungekopien",
-    "Please select \"Add to home screen\" in your browser menu" : "Bitte wähle \"Zum Startbildschirm hinzufügen\" in deinem Browsermenü",
+    "Please select \"Add to home screen\" in your browser menu" : "Bitte \"Zum Startbildschirm hinzufügen\" im Browsermenü auswählen",
     "Bookmarks settings" : "Lesezeichen-Einstellungen",
     "Import/Export" : "Import/Export",
     "Export bookmarks" : "Lesezeichen exportieren",
@@ -236,7 +236,7 @@
     "Save" : "Speichern",
     "Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons." : "Netzwerkzugriff ist standardmäßig deaktiviert. Gehe zu den Administrationseinstellungen für die Lesezeichen-App, um das Abrufen von Vorschauen und Favicons zu erlauben.",
     "What's new?" : "Was ist neu?",
-    "Leave a rating on the Nextcloud App Store" : "Hinterlasse eine Bewertung im Nextcloud App Store.",
+    "Leave a rating on the Nextcloud App Store" : "Im Nextcloud App-Store bewerten.",
     "What" : "Was",
     "Failed to count unavailable bookmarks" : "Die nicht verfügbare Lesezeichen konnten nicht gezählt werden",
     "Failed to count archived bookmarks" : "Archivierte Lesezeichen konnten nicht gezählt werden",
@@ -262,7 +262,7 @@
     "Failed to update share {shareId}" : "Aktualisierung der Freigabe fehlgeschlagen {shareId}",
     "Failed to delete share {shareId}" : "Freigabe konnte nicht gelöscht werden {shareId}",
     "Create bookmarks for mentioned links" : "Lesezeichen für erwähnte Links erstellen",
-    "No links found in this message" : "In dieser Nachricht wurden keine Links gefunden",
+    "No links found in this message" : "Keine Links in dieser Nachricht gefunden",
     "Bookmarks feed" : "Lesezeichen-Feed"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
