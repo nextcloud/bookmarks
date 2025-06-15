@@ -3,17 +3,21 @@ OC.L10N.register(
     {
     "Details" : "Maelezo ya kina",
     "Copy link" : "Nakili kiungio",
+    "Go back" : "Rudi nyuma",
+    "New folder" : "Kisanduku kipya",
     "Search" : "Tafuta",
     "Empty trash bin" : "Weka tupu chombo cha takataka",
     "Shared by {user}" : "Imeshirikishwa na{user}",
     "Submit" : "Wasilisha",
     "Cancel" : "Cancel",
     "Shared with you" : "Imeshirikiwa na wewe",
+    "Files" : "Mafaili",
     "Delete" : "Futa",
     "Tags" : "Maoni",
     "Owner" : "Mmiliki",
     "Sharing" : "inashirikisha",
     "Share link" : "Shirikisha kiungo",
+    "Folder" : "Kisanduku",
     "Save" : "Hifadhi"
 },
 "nplurals=2; plural=(n != 1);");
