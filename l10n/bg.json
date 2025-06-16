@@ -80,7 +80,7 @@
     "Copy RSS Feed of current view" : "Копиране на RSS емисия на текущ изглед",
     "The RSS feed requires authentication with your Nextcloud credentials" : "RSS емисия изисква удостоверяване с вашите идентификационни данни в Nextcloud",
     "Search" : "Търсене",
-    "Empty trash bin" : "Изпразване на кошчето за боклук",
+    "Empty trash bin" : "Изпразни кошчето",
     "_Adding %n bookmark to new folder_::_Adding %n bookmarks to new folder_" : ["Добавяне на %n отметки към нова папка","Добавяне на %n отметки към нова папка"],
     "Enter a link" : "Въведете връзка",
     "Enter a title" : "Въведете заглавие",
