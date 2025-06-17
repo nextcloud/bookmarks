@@ -45,7 +45,7 @@ OC.L10N.register(
     "Rename" : "Преименувай",
     "Copy link" : "Копирай връзката",
     "Move" : "Преместване",
-    "Add to folders" : "Добавяне към папки",
+    "Add to folders" : "Добави към папки",
     "Content pending" : "Чака се съдържание",
     "This content is being downloaded for offline use. Please check back later." : "Това съдържание се изтегля за офлайн употреба. Моля, проверете отново по-късно.",
     "Bookmarked {time} ago" : "Маркирано /отметнато/ преди {time}",
