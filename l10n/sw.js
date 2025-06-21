@@ -19,6 +19,7 @@ OC.L10N.register(
     "Shared with you" : "Imeshirikiwa na wewe",
     "Files" : "Mafaili",
     "Delete" : "Futa",
+    "Need help?" : "Unahitaji masaada?",
     "Tags" : "Maoni",
     "Owner" : "Mmiliki",
     "Sharing" : "inashirikisha",
