@@ -116,13 +116,12 @@ class BookmarkService {
 	}
 
 	/**
-	 * @param $userId
+	 * @param string $userId
 	 * @param string $url
 	 * @param string $title
 	 * @param string $description
 	 * @param array $tags
 	 * @param array $folders
-	 * @param string $userId
 	 *
 	 * @return Bookmark
 	 *
@@ -259,14 +258,13 @@ class BookmarkService {
 	}
 
 	/**
-	 * @param $userId
-	 * @param null $id
+	 * @param string $userId
+	 * @param int $id
 	 * @param string|null $url
 	 * @param string|null $title
 	 * @param string|null $description
 	 * @param array|null $tags
 	 * @param array|null $folders
-	 * @param string $userId
 	 *
 	 * @return Bookmark
 	 *

@@ -15,7 +15,7 @@ use OCP\IRequest;
 use OCP\Util;
 
 /**
- * @psalm-implements IEventListener<BeforeTemplateRenderedEvent>
+ * @implements IEventListener<BeforeTemplateRenderedEvent>
  */
 class BeforeTemplateRenderedListener implements IEventListener {
 	private $request;
