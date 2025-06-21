@@ -11,6 +11,7 @@ OC.L10N.register(
     "New folder" : "Carpeta nueva",
     "Search" : "Buscar",
     "Empty trash bin" : "Vaciar la papelera de reciclaje",
+    "_%n folder_::_%n folders_" : ["%n carpeta","%n carpetas","%n carpetas"],
     "Choose folder" : "Seleccioanr carpeta",
     "Submit" : "Enviar",
     "Cancel" : "Cancelar",

@@ -21,19 +21,19 @@ use Psr\Container\NotFoundExceptionInterface;
  *
  * @package OCA\Bookmarks\Db
  *
- * @method int getFolderId()
+ * @method getFolderId(): int
  * @method setFolderId(int $folderId)
- * @method string getOwner()
+ * @method getOwner(): string
  * @method setOwner(string $owner)
- * @method string getParticipant
+ * @method getParticipant(): string
  * @method setParticipant(string $participant)
- * @method string getType()
- * @method setType(string $type)
- * @method bool getCanWrite()
+ * @method getType(): int
+ * @method setType(int $type)
+ * @method getCanWrite(): bool
  * @method setCanWrite(bool $canWrite)
- * @method bool getCanShare()
+ * @method getCanShare(): bool
  * @method setCanShare(bool $canShare)
- * @method int getCreatedAt()
+ * @method getCreatedAt(): int
  * @method setCreatedAt(int $createdAt)
  */
 class Share extends Entity {

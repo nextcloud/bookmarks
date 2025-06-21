@@ -15,12 +15,12 @@ use OCP\AppFramework\Db\Entity;
  *
  * @package OCA\Bookmarks\Db
  *
- * @method string getId()
- * @method int getFolderId()
+ * @method getId():string
+ * @method getFolderId():int
  * @method setFolderId(int $folderId)
- * @method string getDescription()
+ * @method getDescription():string
  * @method setDescription(string $description)
- * @method int getCreatedAt()
+ * @method getCreatedAt():int
  * @method setCreatedAt(int $createdAt)
  */
 class PublicFolder extends Entity {

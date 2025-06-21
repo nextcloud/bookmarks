@@ -10,6 +10,7 @@ OC.L10N.register(
     "New" : "Nuevo",
     "New folder" : "Carpeta nueva",
     "Search" : "Buscar",
+    "_%n folder_::_%n folders_" : ["%n carpeta","%n carpetas","%n carpetas"],
     "Choose folder" : "Seleccioanr carpeta",
     "Submit" : "Enviar",
     "Cancel" : "Cancelar",

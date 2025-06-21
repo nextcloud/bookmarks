@@ -14,11 +14,11 @@ OC.L10N.register(
     "Delete" : "Pozmak",
     "Link" : "Baglanyşyk",
     "Tags" : "Bellikler",
+    "Link copied" : "Link-yň nusgasy alyndy",
     "Sharing" : "Paýlaşmak",
     "Share link" : "Baglanyşyk paýlaş",
     "Allow editing" : "Redaktirlemäge rugsat beriň",
     "Allow resharing" : "Täzeden paýlaşmaga rugsat beriň",
-    "Link copied" : "Link-yň nusgasy alyndy",
     "Privacy" : "Gizlinlik",
     "Save" : "Saklamak"
 },
