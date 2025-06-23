@@ -23,10 +23,13 @@ OC.L10N.register(
     "Add to {instanceName}" : "Ongeza kwenye {instanceName}",
     "Need help?" : "Unahitaji masaada?",
     "Title" : "Kichwa cha habari",
+    "Link" : "Kiungio",
     "Tags" : "Maoni",
+    "Notes" : "Madokezo",
     "Owner" : "Mmiliki",
     "Sharing" : "inashirikisha",
     "Share link" : "Shirikisha kiungo",
+    "Privacy" : "Faragha",
     "Folder" : "Kisanduku",
     "Save" : "Hifadhi"
 },
