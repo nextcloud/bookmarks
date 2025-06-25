@@ -17,6 +17,7 @@ OC.L10N.register(
     "Empty trash bin" : "Esvaziar a reciclagem",
     "_%n folder_::_%n folders_" : ["%n pasta","%n pastas","%n pastas"],
     "Add a bookmark" : "Adicionar um marcador",
+    "Shared by {user}" : "Shared by {user}",
     "Rename folder" : "Renomear pasta",
     "Choose folder" : "Escolher pasta",
     "Submit" : "Submeter",
@@ -42,6 +43,7 @@ OC.L10N.register(
     "Allow resharing" : "Permitir repartilha",
     "Failed to save settings" : "Erro ao gravar as definições",
     "Privacy" : "Privacidade",
+    "Performance" : "Performance",
     "Folder" : "Pasta",
     "Save" : "Guardar"
 },
