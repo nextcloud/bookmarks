@@ -7,7 +7,7 @@ OC.L10N.register(
     "Bookmark" : "Grāmatzīme",
     "Details" : "Detaļas",
     "Rename" : "Pārdēvēt",
-    "Copy link" : "Kopēt saiti",
+    "Copy link" : "Ievietot saiti starpliktuvē",
     "Move" : "Pārvietot",
     "Select all" : "Atzīmēt visu",
     "Go back" : "Atpakaļ",
