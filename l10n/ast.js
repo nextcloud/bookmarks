@@ -50,6 +50,7 @@ OC.L10N.register(
     "Failed to move bookmark" : "Nun se pue mover el marcador",
     "Failed to copy bookmark" : "Nun se pue copiar el maracador",
     "Failed to delete bookmark" : "Nun se pue desaniciar el marcador",
+    "Import successful" : "La importación foi correuta",
     "Failed to rename tag" : "Nun se pue renomar la etiqueta",
     "Failed to load tags" : "Nun se puen cargar les etiquetes",
     "Failed to load folders" : "Nun se puen cargar les carpetes",

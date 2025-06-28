@@ -142,6 +142,8 @@ OC.L10N.register(
     "Drag this to your browser bookmarks and click it to quickly bookmark a webpage." : "Завлечете това в отметките на браузъра си и щракнете върху него, за да поставте бързо отметка на уеб страница.",
     "Add to {instanceName}" : "Добавяне към {instanceName}",
     "Need help?" : "Нуждаете се от помощ?",
+    "Created {time} ago" : "Създаден {time} преди",
+    "Created on {date}" : "Създаден на {date}",
     "Title" : "Име",
     "Link" : "Връзка",
     "Untitled folder" : "Папка без заглавие",

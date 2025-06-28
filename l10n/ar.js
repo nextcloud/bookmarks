@@ -180,6 +180,8 @@ OC.L10N.register(
     "If you have problems with this Bookmarks app or have an idea about what could be improved, don't hesitate to get in touch by clicking here." : "إذا واجهتك أي مشاكل مع تطبيق \"الإشارات المرجعية\" هذا أو كان لديك أي مقترح لتطويره, نرجوك ألّا تتتردد في التواصل معنا بالنقر هنا.",
     "Support this project" : "إدعَم هذا المشروع",
     "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "عملي في هذا التطبيق \"الإشارات المرجعية\" Bookmarks  يتم دعمه من خلال نموذج الاشتراك الطوعي. إذا كنت تعتقد أن ما أقوم به يستحق العناء، سأكون سعيداً إذا ساهمت في دعم عملي. كذلك، يُرجى تقييم التطبيق على متجر تطبيقات نكست كلاود. و شكراً 💙",
+    "Created {time} ago" : "أُنشِيءَ منذ {time} مضت",
+    "Created on {date}" : "أُنشِيءَ في {date}",
     "(Empty title)" : "(عنوان فارغ)",
     "Title" : "العنوان",
     "Link" : "الرابط",
@@ -250,6 +252,7 @@ OC.L10N.register(
     "Failed to move bookmark" : "تعذّر نقل الإشارة المرجعية",
     "Failed to copy bookmark" : "تعذّر نسخ الإشارة المرجعية",
     "Failed to delete bookmark" : "تعذّر حذف الإشارة المرجعية",
+    "Import successful" : "تمّ الاستيراد بنجاحٍ",
     "Failed to rename tag" : "فشل في تغيير تسمية الوسم",
     "Failed to load tags" : "فشل في تحميل الوسوم",
     "Failed to load folders" : "تعذّر تحميل المجلد",

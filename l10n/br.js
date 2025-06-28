@@ -20,6 +20,7 @@ OC.L10N.register(
     "Broken links" : "Liammoù toret",
     "Delete" : "Dilemel",
     "Need help?" : "Sikour o po ?",
+    "Created on {date}" : "Krouet da  {date}",
     "Title" : "Titl",
     "Link" : "Liamm",
     "Tags" : "Klavioù",

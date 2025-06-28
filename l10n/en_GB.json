@@ -179,6 +179,7 @@
     "Support this project" : "Support this project",
     "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 ",
     "Created {time} ago" : "Created {time} ago",
+    "Created on {date}" : "Created on {date}",
     "(Empty title)" : "(Empty title)",
     "Title" : "Title",
     "Link" : "Link",

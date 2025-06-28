@@ -118,6 +118,7 @@ OC.L10N.register(
     "Add to {instanceName}" : "Προσθήκη στο {instanceName}",
     "Need help?" : "Θέλετε βοήθεια;",
     "Created {time} ago" : "Δημιουργήθηκε πριν {time}",
+    "Created on {date}" : "Δημιουργήθηκε στις {date}",
     "Title" : "Τίτλος",
     "Link" : "Σύνδεσμος",
     "Root folder" : "Αρχικός φάκελος",

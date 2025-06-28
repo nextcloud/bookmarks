@@ -41,6 +41,7 @@ OC.L10N.register(
     "Bookmarklet" : "Legosignilo",
     "Add to {instanceName}" : "Aldoni al {instanceName}",
     "Need help?" : "Ĉu necesas helpo?",
+    "Created on {date}" : "Kreita je {date}",
     "Title" : "Titolo",
     "Link" : "Ligilo",
     "Root folder" : "Radika dosierujo",

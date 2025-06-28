@@ -180,6 +180,7 @@ OC.L10N.register(
     "Support this project" : "Apoya este proyecto",
     "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "Mi trabajo en esta app de Marcadores está impulsado por un modelo de suscripción voluntario. Si cree que lo que hago vale la pena, me haría feliz que ud. pueda apoyar mi trabajo. Además, por favor considere dejar una opinión sobre la misma en el app store de Nextcloud. Gracias 💙",
     "Created {time} ago" : "Creado hace {time}",
+    "Created on {date}" : "Creado el {date}",
     "(Empty title)" : "(Título vacío)",
     "Title" : "Título",
     "Link" : "Enlace",
