@@ -257,6 +257,7 @@ OC.L10N.register(
     "Failed to delete folder" : "Ha fallat suprimir la carpeta",
     "Failed to move folder" : "No s'ha pogut moure la carpeta",
     "Failed to create folder" : "Ha fallat crear la carpeta",
+    "Failed to move parts of selection" : "Ha fallat moure les parts de la selecció.",
     "Failed to fetch bookmarks." : "Ha fallat obtenir les adreces d'interès.",
     "Failed to store setting" : "No s'ha pogut desar el paràmetre",
     "Failed to load setting {key}" : "No s'ha pogut carregar el paràmetre {key}",

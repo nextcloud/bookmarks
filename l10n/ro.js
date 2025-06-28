@@ -21,6 +21,7 @@ OC.L10N.register(
     "Files" : "Fișiere",
     "Delete" : "Șterge",
     "Need help?" : "Ai nevoie de ajutor?",
+    "Created on {date}" : "Creat la {date}",
     "Title" : "Titlu",
     "Link" : "Legătură",
     "Root folder" : "Folder principal",

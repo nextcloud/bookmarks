@@ -14,6 +14,7 @@ OC.L10N.register(
     "Shared with you" : "تاسې سره شريک شوي",
     "Files" : "فایلونه",
     "Delete" : "ړنګول",
+    "Created on {date}" : "په {date} جوړ شوی",
     "Link" : "لېنک",
     "Tags" : "نښکې",
     "Notes" : "شسیب",

@@ -24,6 +24,7 @@ OC.L10N.register(
     "Files" : "Датотеки",
     "Delete" : "Избриши",
     "Need help?" : "Ви треба помош?",
+    "Created on {date}" : "Креиран на {date}",
     "Title" : "Наслов",
     "Link" : "Линк",
     "Tags" : "Ознаки",

@@ -172,6 +172,8 @@ OC.L10N.register(
     "If you have problems with this Bookmarks app or have an idea about what could be improved, don't hesitate to get in touch by clicking here." : "이 북마크 앱에 문제가 있거나 개선할 수 있는 사항에 대한 아이디어가 있는 경우 주저하지 말고 여기를 클릭하여 문의하세요.",
     "Support this project" : "이 프로젝트에 기여해주세요",
     "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "이 북마크 앱에 대한 작업은 자발적인 구독 모델에 힘입어 이루어졌습니다. 해당 작업이 가치 있다고 생각하신다면, 서포트 해 주시면 기쁘겠습니다. 또한 Nextcloud 앱 스토어에서 앱에 대한 리뷰를 제공하는 것을 고려해 보세요. 감사합니다💙 ",
+    "Created {time} ago" : "{time} 전에 생성됨",
+    "Created on {date}" : "{date}에 생성됨",
     "(Empty title)" : "(빈 제목)",
     "Title" : "직위",
     "Link" : "링크",

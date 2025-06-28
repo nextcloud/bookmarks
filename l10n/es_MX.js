@@ -176,6 +176,8 @@ OC.L10N.register(
     "If you have problems with this Bookmarks app or have an idea about what could be improved, don't hesitate to get in touch by clicking here." : "Si tiene problemas con la aplicación de Marcadores o tiene una idea de cómo se podría mejorar, no dude en ponerse en contacto haciendo clic aquí.",
     "Support this project" : "Apoye este proyecto",
     "My work on this Bookmarks app is fuelled by a voluntary subscription model. If you think what I do is worthwhile, I would be happy if you could support my work. Also, please consider giving the app a review on the Nextcloud app store. Thank you 💙 " : "Mi trabajo en esta aplicación de Marcadores está impulsado por un modelo de suscripción voluntario. Si cree que lo que hago vale la pena, me haría muy feliz si pudiera apoyar mi trabajo. Además, por favor considere dejar una opinión sobre la misma en la tienda de aplicaciones de Nextcloud. Gracias 💙",
+    "Created {time} ago" : "Creado hace {time}",
+    "Created on {date}" : "Creado el {date}",
     "(Empty title)" : "(Título vacío)",
     "Title" : "Título",
     "Link" : "Liga",

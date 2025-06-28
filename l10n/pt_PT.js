@@ -28,6 +28,7 @@ OC.L10N.register(
     "Files" : "Ficheiros",
     "Delete" : "Apagar",
     "Need help?" : "Precisa de ajuda?",
+    "Created on {date}" : "Criado em {date}",
     "Title" : "Título",
     "Link" : "Link",
     "Root folder" : "Pasta raiz",
