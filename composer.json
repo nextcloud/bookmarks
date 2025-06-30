@@ -6,7 +6,7 @@
 		"ext-libxml": "*",
 		"ext-pdo": "*",
 		"marcelklehr/link-preview": "^3.0.5",
-		"rowbot/url": "^3.0",
+		"rowbot/url": "^4.0",
 		"xantios/mimey": "^2.1",
 		"fivefilters/readability.php": "^3.1"
 	},
