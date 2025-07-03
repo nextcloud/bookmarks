@@ -8,6 +8,7 @@ OC.L10N.register(
     "Delete selection" : "Futa machaguo",
     "Select all" : "Chagua zote",
     "Go back" : "Rudi nyuma",
+    "Share folder" : "Shirikisha folda",
     "New" : "Mpya",
     "New folder" : "Kisanduku kipya",
     "Search" : "Tafuta",
