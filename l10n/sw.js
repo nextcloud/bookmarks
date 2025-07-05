@@ -30,6 +30,7 @@ OC.L10N.register(
     "Owner" : "Mmiliki",
     "Sharing" : "inashirikisha",
     "Share link" : "Shirikisha kiungo",
+    "Failed to save settings" : "Failed to save settings",
     "Privacy" : "Faragha",
     "Folder" : "Kisanduku",
     "Save" : "Hifadhi"
