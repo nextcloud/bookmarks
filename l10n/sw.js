@@ -33,6 +33,7 @@ OC.L10N.register(
     "Failed to save settings" : "Failed to save settings",
     "Privacy" : "Faragha",
     "Folder" : "Kisanduku",
-    "Save" : "Hifadhi"
+    "Save" : "Hifadhi",
+    "What's new?" : "What's new?"
 },
 "nplurals=2; plural=(n != 1);");
