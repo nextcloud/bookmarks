@@ -5,7 +5,7 @@ OC.L10N.register(
     "You bookmarked \"%s\"" : "Tu pievienoji \"%s\" grāmatzīmēm",
     "No file provided for import" : "Nav norādīta importējamā datne",
     "Bookmark" : "Grāmatzīme",
-    "Details" : "Detaļas",
+    "Details" : "Informācija",
     "Rename" : "Pārdēvēt",
     "Copy link" : "Ievietot saiti starpliktuvē",
     "Move" : "Pārvietot",
