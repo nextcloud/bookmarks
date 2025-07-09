@@ -13,7 +13,8 @@
 	"require-dev": {
 		"phpunit/phpunit": "^9.5.26",
 		"nextcloud/coding-standard": "^1.0.0",
-		"vimeo/psalm": "6.x"
+		"vimeo/psalm": "6.x",
+		"nextcloud/ocp": "dev-master"
 	},
 	"config": {
 		"optimize-autoloader": true,
