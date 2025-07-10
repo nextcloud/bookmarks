@@ -67,7 +67,7 @@ class GenericUrlBookmarkPreviewer implements IBookmarkPreviewer {
 		if (!isset($bookmark)) {
 			return null;
 		}
-		if ($this->apiKey === '' || $cacheOnly) {
+		if ($this->apiUrl === '' || $cacheOnly) {
 			return null;
 		}
 		$url = $bookmark->getUrl();
