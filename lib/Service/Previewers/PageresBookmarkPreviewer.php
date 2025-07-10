@@ -76,8 +76,8 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 		$escapedUrl = escapeshellarg($url);
 		$env = $this->config->getAppValue('bookmarks', 'previews.pageres.env');
 
-		$cmd = "cd {$tempDir} && {$env} {$command} {$escapedUrl} 1024x768" .
-			' --delay=4 --filename=' . escapeshellarg($tempFile) . ' --crop --overwrite 2>&1';
+		$cmd = "cd {$tempDir} && {$env} {$command} {$escapedUrl} 1024x768"
+			. ' --delay=4 --filename=' . escapeshellarg($tempFile) . ' --crop --overwrite 2>&1';
 
 		$retries = 0;
 		$output = [];

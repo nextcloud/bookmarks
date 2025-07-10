@@ -3,7 +3,6 @@
 namespace OCA\Bookmarks\Tests;
 
 use OC;
-use OCA\Bookmarks\Controller\BookmarkController;
 use OCA\Bookmarks\Controller\FoldersController;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;

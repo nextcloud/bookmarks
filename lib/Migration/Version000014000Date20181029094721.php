@@ -90,8 +90,8 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 
 			$children = array_merge($childFolders, $childBookmarks);
 			$children = array_map(static function ($child) {
-				return $child['bookmark_id'] ?
-					['type' => 'bookmark', 'id' => $child['bookmark_id']]
+				return $child['bookmark_id']
+					? ['type' => 'bookmark', 'id' => $child['bookmark_id']]
 					: ['type' => 'folder', 'id' => $child['id']];
 			}, $children);
 			if (count($children) > 0) {

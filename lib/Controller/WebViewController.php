@@ -172,8 +172,8 @@ class WebViewController extends Controller {
 			'name' => $this->l->t('Bookmarks'),
 			'short_name' => $this->l->t('Bookmarks'),
 			'start_url' => $this->urlGenerator->linkToRouteAbsolute('bookmarks.web_view.index'),
-			'icons' =>
-				[
+			'icons'
+				=> [
 					[
 						'src' => $this->urlGenerator->linkToRoute('theming.Icon.getTouchIcon',
 							['app' => 'bookmarks']),
