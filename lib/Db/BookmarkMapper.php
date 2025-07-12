@@ -725,11 +725,23 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @return void
+	 * @throws Exception
+	 */
+	public function clearLastPreviews(): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb->update('bookmarks');
+		$qb->set('last_preview', $qb->createNamedParameter(0));
+		$qb->executeStatement();
+	}
+
+	/**
 	 * @psalm-param Bookmark $entity
 	 * @param Entity $entity
 	 *
 	 * @return Bookmark
 	 * @psalm-return Bookmark
+	 * @throws Exception
 	 */
 	public function delete(Entity $entity): Bookmark {
 		$this->eventDispatcher->dispatch(
