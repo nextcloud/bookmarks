@@ -88,12 +88,14 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 			} catch (NotFoundException $e) {
 			} catch (NotPermittedException $e) {
 			}
+			if ($cacheOnly) {
+				continue;
+			}
 			$image = $previewer->getImage($bookmark, $cacheOnly);
 			if (isset($image)) {
 				$this->cache->set($key, $image->serialize(), self::CACHE_TTL);
 				return $image;
 			}
-
 			$this->cache->set($key, 'null', self::CACHE_TTL);
 		}
 

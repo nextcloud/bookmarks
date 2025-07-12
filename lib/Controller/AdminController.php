@@ -78,9 +78,9 @@ class AdminController extends Controller {
 		if (!isset($this->previewers[$previewer])) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
-		$previewer = $this->previewers[$previewer];
+		$previewerImp = $this->previewers[$previewer];
 		$test = new Bookmark();
 		$test->setUrl('https://nextcloud.com/');
-		return new Http\DataDisplayResponse($previewer->getImage($test)?->getData() ?? '');
+		return new Http\DataDisplayResponse($previewerImp->getImage($test)?->getData() ?? '');
 	}
 }
