@@ -79,7 +79,7 @@ class CrawlService {
 
 		if ($available) {
 			$this->userSettingsService->setUserId($bookmark->getUserId());
-			if (((bool)$this->userSettingsService->get('archive.enabled')) === true) {
+			if ($this->userSettingsService->get('archive.enabled') === 'true') {
 				$this->archiveFile($bookmark, $resp);
 				$this->archiveContent($bookmark, $resp);
 			}
