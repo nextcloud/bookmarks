@@ -122,6 +122,8 @@ OC.L10N.register(
     "Bookmarklet" : "Bookmarklet",
     "Add to {instanceName}" : "Agiunghe a {instanceName}",
     "Need help?" : "Boles agiudu?",
+    "Created {time} ago" : "Creadu {time} a immoe",
+    "Created on {date}" : "Creadu su {date}",
     "Title" : "Tìtulu",
     "Link" : "Ligòngiu",
     "Root folder" : "Cartella sorgente",

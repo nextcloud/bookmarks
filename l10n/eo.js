@@ -41,6 +41,7 @@ OC.L10N.register(
     "Bookmarklet" : "Legosignilo",
     "Add to {instanceName}" : "Aldoni al {instanceName}",
     "Need help?" : "Ĉu necesas helpo?",
+    "Created on {date}" : "Kreita je {date}",
     "Title" : "Titolo",
     "Link" : "Ligilo",
     "Root folder" : "Radika dosierujo",
@@ -78,6 +79,8 @@ OC.L10N.register(
     "Failed to load folders" : "Ŝargo de la dosierujoj malsukcesis",
     "Failed to delete folder" : "Forigo de la dosierujo malsukcesis",
     "Failed to create folder" : "Kreo de dosierujo malsukcesis",
+    "Failed to move parts of selection" : "Movo de partoj de la elekto malsukcesis",
+    "Failed to delete parts of selection" : "Malsukceso forigi partojn de elekto",
     "Failed to fetch bookmarks." : "Ricevo de legosignoj malsukcesis.",
     "Bookmarks feed" : "Fluo de legosignoj"
 },

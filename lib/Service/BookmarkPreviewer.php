@@ -13,6 +13,7 @@ use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
+use OCA\Bookmarks\Service\Previewers\GenericUrlBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\PageresBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreeenlyBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreenshotMachineBookmarkPreviewer;
@@ -23,46 +24,28 @@ use OCP\IConfig;
 class BookmarkPreviewer implements IBookmarkPreviewer {
 	// Cache for one month
 	public const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
+	private string $enabled;
+	private FileCache $cache;
+	private DefaultBookmarkPreviewer $defaultPreviewer;
+	private ScreeenlyBookmarkPreviewer $screeenlyPreviewer;
+	private ScreenshotMachineBookmarkPreviewer $screenshotMachinePreviewer;
+	private PageresBookmarkPreviewer $pageresPreviewer;
+	private Previewers\GenericUrlBookmarkPreviewer $genericUrlPreviewer;
 
-	/**
-	 * @var string
-	 */
-	private $enabled;
-	/**
-	 * @var DefaultBookmarkPreviewer
-	 */
-	private $defaultPreviewer;
-	/**
-	 * @var ScreeenlyBookmarkPreviewer
-	 */
-	private $screeenlyPreviewer;
-
-	/**
-	 * @var FileCache
-	 */
-	private $cache;
-	/**
-	 * @var Previewers\ScreenshotMachineBookmarkPreviewer
-	 */
-	private $screenshotMachinePreviewer;
-	/**
-	 * @var Previewers\PageresBookmarkPreviewer
-	 */
-	private $pageresPreviewer;
-
-	/**
-	 * @param IConfig $config
-	 * @param ScreeenlyBookmarkPreviewer $screeenlyPreviewer
-	 * @param DefaultBookmarkPreviewer $defaultPreviewer
-	 * @param FileCache $cache
-	 * @param Previewers\ScreenshotMachineBookmarkPreviewer $screenshotMachinePreviewer
-	 * @param Previewers\PageresBookmarkPreviewer $pageresPreviewer
-	 */
-	public function __construct(IConfig $config, ScreeenlyBookmarkPreviewer $screeenlyPreviewer, DefaultBookmarkPreviewer $defaultPreviewer, FileCache $cache, ScreenshotMachineBookmarkPreviewer $screenshotMachinePreviewer, PageresBookmarkPreviewer $pageresPreviewer) {
+	public function __construct(
+		IConfig $config,
+		ScreeenlyBookmarkPreviewer $screeenlyPreviewer,
+		DefaultBookmarkPreviewer $defaultPreviewer,
+		FileCache $cache,
+		ScreenshotMachineBookmarkPreviewer $screenshotMachinePreviewer,
+		PageresBookmarkPreviewer $pageresPreviewer,
+		GenericUrlBookmarkPreviewer $genericUrlPreviewer,
+	) {
 		$this->screeenlyPreviewer = $screeenlyPreviewer;
 		$this->defaultPreviewer = $defaultPreviewer;
 		$this->screenshotMachinePreviewer = $screenshotMachinePreviewer;
 		$this->pageresPreviewer = $pageresPreviewer;
+		$this->genericUrlPreviewer = $genericUrlPreviewer;
 
 		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', 'false');
 		$this->cache = $cache;
@@ -85,7 +68,13 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 			return null;
 		}
 
-		$previewers = [$this->screeenlyPreviewer, $this->screenshotMachinePreviewer, $this->pageresPreviewer, $this->defaultPreviewer];
+		$previewers = [
+			$this->screeenlyPreviewer,
+			$this->screenshotMachinePreviewer,
+			$this->pageresPreviewer,
+			$this->genericUrlPreviewer,
+			$this->defaultPreviewer,
+		];
 		foreach ($previewers as $previewer) {
 			$key = $previewer::CACHE_PREFIX . '-' . md5($bookmark->getUrl());
 			// Try cache first
@@ -99,12 +88,14 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 			} catch (NotFoundException $e) {
 			} catch (NotPermittedException $e) {
 			}
+			if ($cacheOnly) {
+				continue;
+			}
 			$image = $previewer->getImage($bookmark, $cacheOnly);
 			if (isset($image)) {
 				$this->cache->set($key, $image->serialize(), self::CACHE_TTL);
 				return $image;
 			}
-
 			$this->cache->set($key, 'null', self::CACHE_TTL);
 		}
 

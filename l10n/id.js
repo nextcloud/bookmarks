@@ -41,6 +41,7 @@ OC.L10N.register(
     "No bookmarks here" : "Tidak ada markah di sini",
     "Client apps" : "Aplikasi klien",
     "Need help?" : "Butuh bantuan?",
+    "Created on {date}" : "Terbuat pada {date}",
     "Title" : "Judul",
     "Link" : "Tautan",
     "Root folder" : "Folder akar",
@@ -74,6 +75,8 @@ OC.L10N.register(
     "Failed to load folders" : "Gagal memuat folder",
     "Failed to delete folder" : "Gagal menghapus folder",
     "Failed to create folder" : "Gagal membuat folder",
+    "Failed to move parts of selection" : "Gagal memindahkan sebagai pilihan",
+    "Failed to delete parts of selection" : "Gagal menghapus sebagian pilihan",
     "Failed to fetch bookmarks." : "Gagal menampilkan markah",
     "Failed to load setting {key}" : "Gagal memuat setelan {key}",
     "Bookmarks feed" : "Umpan markah"

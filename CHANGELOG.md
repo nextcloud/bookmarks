@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [15.1.2] - 2025-07-13
+
+### Fixed
+
+* fix(CrawlService): archive.enabled check would always be true Marcel Klehr 8 minutes ago
+* feat(ClearPreviews command): Clear last_preview column in addition to cache
+* fix(BookmarkPreviewer): Do not store guaranteed null responses in cache
+* fix(GenericUrlBookmarkPreviewer): Check URL not API key & Add generic previewer to previewers list
+* Build(deps): Update rowbot/url requirement from ^3.0 to ^4.0
+* fix(l10n): Update translations from Transifex
+
 ## [15.1.1] - 2025-06-21
 
 ### Fixed

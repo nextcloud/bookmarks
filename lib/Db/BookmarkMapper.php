@@ -220,8 +220,8 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('*PREFIX*bookmarks', 'b')
-			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) .
-				($queryParams->getSoftDeleted() ? ' AND tree.soft_deleted_at is NOT NULL' : ' AND tree.soft_deleted_at is NULL'));
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)
+				. ($queryParams->getSoftDeleted() ? ' AND tree.soft_deleted_at is NOT NULL' : ' AND tree.soft_deleted_at is NULL'));
 
 		$this->_filterUrl($qb, $queryParams);
 		$this->_filterArchived($qb, $queryParams);
@@ -298,9 +298,9 @@ class BookmarkMapper extends QBMapper {
 
 		if ($this->getDbType() === 'mysql') {
 			// For mysql we can just throw these three queries together in a CTE
-			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx, soft_deleted_at) AS ( ' .
-				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() .
-				' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
+			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx, soft_deleted_at) AS ( '
+				. $baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL()
+				. ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')';
 		} else {
 			// Postgres loves us dearly and doesn't allow two recursive references in one CTE, aaah.
 			// So we nest them:
@@ -333,12 +333,12 @@ class BookmarkMapper extends QBMapper {
 			// then we need another instance of the first recursive case, duplicated here as secondRecursive case
 			// to recurse into child folders of shared folders
 			// Note: This doesn't cover cases where a shared folder is inside a shared folder.
-			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx, soft_deleted_at) AS ( ' .
-				'WITH RECURSIVE second_folder_tree(item_id, parent_folder, type, idx, soft_deleted_at) AS (' .
-				'WITH RECURSIVE inner_folder_tree(item_id, parent_folder, type, idx, soft_deleted_at) AS ( ' .
-				$baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')' .
-				' ' . $secondBaseCase->getSQL() . ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')' .
-				' ' . $thirdBaseCase->getSQL() . ' UNION ALL ' . $secondRecursiveCase->getSQL() . ')';
+			$withRecursiveQuery = 'WITH RECURSIVE folder_tree(item_id, parent_folder, type, idx, soft_deleted_at) AS ( '
+				. 'WITH RECURSIVE second_folder_tree(item_id, parent_folder, type, idx, soft_deleted_at) AS ('
+				. 'WITH RECURSIVE inner_folder_tree(item_id, parent_folder, type, idx, soft_deleted_at) AS ( '
+				. $baseCase->getSQL() . ' UNION ALL ' . $recursiveCase->getSQL() . ')'
+				. ' ' . $secondBaseCase->getSQL() . ' UNION ALL ' . $recursiveCaseShares->getSQL() . ')'
+				. ' ' . $thirdBaseCase->getSQL() . ' UNION ALL ' . $secondRecursiveCase->getSQL() . ')';
 		}
 
 		// Now we need to concatenate the params of all these queries for downstream assembly of the greater query
@@ -725,11 +725,23 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * @return void
+	 * @throws Exception
+	 */
+	public function clearLastPreviews(): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb->update('bookmarks');
+		$qb->set('last_preview', $qb->createNamedParameter(0));
+		$qb->executeStatement();
+	}
+
+	/**
 	 * @psalm-param Bookmark $entity
 	 * @param Entity $entity
 	 *
 	 * @return Bookmark
 	 * @psalm-return Bookmark
+	 * @throws Exception
 	 */
 	public function delete(Entity $entity): Bookmark {
 		$this->eventDispatcher->dispatch(
