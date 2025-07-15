@@ -1,6 +1,7 @@
 OC.L10N.register(
     "bookmarks",
     {
+    "Link copied to clipboard" : "Kiungo kimenakiliwa kwenye ubao wakunakilia",
     "Details" : "Maelezo ya kina",
     "Rename" : "Ipe jina jipya",
     "Copy link" : "Nakili kiungio",
