@@ -31,88 +31,21 @@ use OCP\EventDispatcher\IEventDispatcher;
 
 class BookmarkService {
 	public const PROTOCOLS_REGEX = '/^(https?|s?ftp|file|javascript):/i';
-	/**
-	 * @var BookmarkMapper
-	 */
-	private $bookmarkMapper;
-	/**
-	 * @var TreeMapper
-	 */
-	private $treeMapper;
 
-	/**
-	 * @var LinkExplorer
-	 */
-	private $linkExplorer;
-	/**
-	 * @var FolderMapper
-	 */
-	private $folderMapper;
-	/**
-	 * @var TagMapper
-	 */
-	private $tagMapper;
-	/**
-	 * @var BookmarkPreviewer
-	 */
-	private $bookmarkPreviewer;
-	/**
-	 * @var FaviconPreviewer
-	 */
-	private $faviconPreviewer;
-	/**
-	 * @var FolderService
-	 */
-	private $folders;
-	/**
-	 * @var IEventDispatcher
-	 */
-	private $eventDispatcher;
-	/**
-	 * @var TreeCacheManager
-	 */
-	private $hashManager;
-	private $urlNormalizer;
-	/**
-	 * @var CrawlService
-	 */
-	private $crawler;
-	/**
-	 * @var IJobList
-	 */
-	private $jobList;
-
-	/**
-	 * BookmarksService constructor.
-	 *
-	 * @param BookmarkMapper $bookmarkMapper
-	 * @param FolderMapper $folderMapper
-	 * @param TagMapper $tagMapper
-	 * @param TreeMapper $treeMapper
-	 * @param LinkExplorer $linkExplorer
-	 * @param BookmarkPreviewer $bookmarkPreviewer
-	 * @param FaviconPreviewer $faviconPreviewer
-	 * @param FolderService $folders
-	 * @param IEventDispatcher $eventDispatcher
-	 * @param TreeCacheManager $hashManager
-	 * @param Authorizer $authorizer
-	 * @param CrawlService $crawler
-	 * @param IJobList $jobList
-	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, LinkExplorer $linkExplorer, BookmarkPreviewer $bookmarkPreviewer, FaviconPreviewer $faviconPreviewer, FolderService $folders, IEventDispatcher $eventDispatcher, \OCA\Bookmarks\Service\TreeCacheManager $hashManager, UrlNormalizer $urlNormalizer, CrawlService $crawler, IJobList $jobList) {
-		$this->bookmarkMapper = $bookmarkMapper;
-		$this->treeMapper = $treeMapper;
-		$this->linkExplorer = $linkExplorer;
-		$this->folderMapper = $folderMapper;
-		$this->tagMapper = $tagMapper;
-		$this->bookmarkPreviewer = $bookmarkPreviewer;
-		$this->faviconPreviewer = $faviconPreviewer;
-		$this->folders = $folders;
-		$this->eventDispatcher = $eventDispatcher;
-		$this->hashManager = $hashManager;
-		$this->urlNormalizer = $urlNormalizer;
-		$this->crawler = $crawler;
-		$this->jobList = $jobList;
+	public function __construct(
+		private BookmarkMapper $bookmarkMapper,
+		private FolderMapper $folderMapper,
+		private TagMapper $tagMapper,
+		private TreeMapper $treeMapper,
+		private LinkExplorer $linkExplorer,
+		private BookmarkPreviewer $bookmarkPreviewer,
+		private FaviconPreviewer $faviconPreviewer,
+		private FolderService $folders,
+		private IEventDispatcher $eventDispatcher,
+		private \OCA\Bookmarks\Service\TreeCacheManager $hashManager,
+		private UrlNormalizer $urlNormalizer,
+		private IJobList $jobList,
+	) {
 	}
 
 	/**
@@ -543,5 +476,13 @@ class BookmarkService {
 		$this->bookmarkMapper->deleteAll($userId);
 		$this->hashManager->setInvalidationEnabled(true);
 		$this->hashManager->invalidateFolder($rootFolder->getId());
+	}
+
+	/**
+	 * @param string $userId
+	 * @return \Generator<void, Bookmark>
+	 */
+	public function getIterator(string $userId): \Generator {
+		return $this->bookmarkMapper->getIterator($userId, new QueryParameters());
 	}
 }
