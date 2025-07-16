@@ -935,7 +935,7 @@ class TreeMapper extends QBMapper {
 			}
 			return $array;
 		}, $this->findChildren(TreeMapper::TYPE_SHARE, $folderId, $isSoftDeleted));
-		$shares = array_values(array_filter($shares, fn($data) => $data !== null));
+		$shares = array_values(array_filter($shares, fn ($data) => $data !== null));
 		if (count($shares) > 0) {
 			array_push($folders, ...$shares);
 		}
