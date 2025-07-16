@@ -10,6 +10,7 @@ namespace OCA\Bookmarks\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
@@ -77,7 +78,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 			$qb
 				->select('id', 'title', 'parent_folder')
 				->from('bookmarks_folders')
-				->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folder)))
+				->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folder, IQueryBuilder::PARAM_INT)))
 				->orderBy('title', 'DESC');
 			$childFolders = $qb->execute()->fetchAll();
 
@@ -85,7 +86,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 			$qb
 				->select('bookmark_id')
 				->from('bookmarks_folders_bookmarks')
-				->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder)));
+				->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder, IQueryBuilder::PARAM_INT)));
 			$childBookmarks = $qb->execute()->fetchAll();
 
 			$children = array_merge($childFolders, $childBookmarks);
@@ -103,7 +104,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 					$qb = $this->db->getQueryBuilder();
 					$qb
 						->update('bookmarks_folders_bookmarks')
-						->set('index', $qb->createPositionalParameter($i))
+						->set('index', $qb->createPositionalParameter($i, IQueryBuilder::PARAM_INT))
 						->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($child['id'])))
 						->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder)));
 					$qb->execute();

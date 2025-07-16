@@ -185,7 +185,7 @@ class BookmarkMapper extends QBMapper {
 		$qb
 			->select(Bookmark::$columns)
 			->from('bookmarks')
-			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
 
 		return $this->findEntity($qb);
 	}
@@ -718,7 +718,7 @@ class BookmarkMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Bookmark::$columns);
 		$qb->from('bookmarks', 'b');
-		$qb->where($qb->expr()->lt('last_preview', $qb->createPositionalParameter($this->time->getTime() - $stalePeriod)));
+		$qb->where($qb->expr()->lt('last_preview', $qb->createPositionalParameter($this->time->getTime() - $stalePeriod, IQueryBuilder::PARAM_INT)));
 		$qb->orWhere($qb->expr()->isNull('last_preview'));
 		$qb->setMaxResults($limit);
 		return $this->findEntities($qb);
@@ -731,7 +731,7 @@ class BookmarkMapper extends QBMapper {
 	public function clearLastPreviews(): void {
 		$qb = $this->db->getQueryBuilder();
 		$qb->update('bookmarks');
-		$qb->set('last_preview', $qb->createNamedParameter(0));
+		$qb->set('last_preview', $qb->createNamedParameter(0, IQueryBuilder::PARAM_INT));
 		$qb->executeStatement();
 	}
 
