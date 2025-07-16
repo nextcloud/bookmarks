@@ -219,7 +219,7 @@ class SharedFolderMapper extends QBMapper {
 			->leftJoin('p', 'bookmarks_shared_to_shares', 't', 't.shared_folder_id = p.id')
 			->leftJoin('t', 'bookmarks_shares', 's', 't.share_id = s.id')
 			->where($qb->expr()->eq('s.participant', $qb->createPositionalParameter($participant)))
-			->andWhere($qb->expr()->eq('s.type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_INTy)))
+			->andWhere($qb->expr()->eq('s.type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntities($qb);
 	}

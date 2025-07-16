@@ -48,7 +48,7 @@ class ShareMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Share::$columns)
 			->from('bookmarks_shares')
-			->where($qb->expr()->eq('id', $qb->createPositionalParameter($shareId, IQueryBuilder::PARAM_INT)));;
+			->where($qb->expr()->eq('id', $qb->createPositionalParameter($shareId, IQueryBuilder::PARAM_INT)));
 		return $this->findEntity($qb);
 	}
 
@@ -60,7 +60,7 @@ class ShareMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Share::$columns)
 			->from('bookmarks_shares')
-			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)));;
+			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)));
 		return $this->findEntities($qb);
 	}
 
