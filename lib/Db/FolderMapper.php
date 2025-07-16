@@ -13,6 +13,7 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\Exception;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IDBConnection;
 
@@ -70,7 +71,7 @@ class FolderMapper extends QBMapper {
 		$qb
 			->select('*')
 			->from('bookmarks_folders')
-			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
 
 		return $this->findEntity($qb);
 	}
@@ -102,7 +103,7 @@ class FolderMapper extends QBMapper {
 				->insert('bookmarks_root_folders')
 				->values([
 					'user_id' => $qb->createPositionalParameter($userId),
-					'folder_id' => $qb->createPositionalParameter($rootFolder->getId()),
+					'folder_id' => $qb->createPositionalParameter($rootFolder->getId(), IQueryBuilder::PARAM_INT),
 				])
 				->execute();
 		} catch (MultipleObjectsReturnedException $e) {

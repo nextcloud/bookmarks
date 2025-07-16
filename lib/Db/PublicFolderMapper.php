@@ -13,6 +13,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use RangeException;
 
@@ -65,7 +66,7 @@ class PublicFolderMapper extends QBMapper {
 		$qb
 			->select('*')
 			->from('bookmarks_folders_public')
-			->where($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId)));
+			->where($qb->expr()->eq('folder_id', $qb->createNamedParameter($folderId, IQueryBuilder::PARAM_INT)));
 
 		return $this->findEntity($qb);
 	}
@@ -82,7 +83,7 @@ class PublicFolderMapper extends QBMapper {
 		$qb
 			->select('*')
 			->from('bookmarks_folders_public')
-			->where($qb->expr()->lt('created_at', $qb->createNamedParameter($createdAt)));
+			->where($qb->expr()->lt('created_at', $qb->createNamedParameter($createdAt, IQueryBuilder::PARAM_INT)));
 
 		return $this->findEntities($qb);
 	}

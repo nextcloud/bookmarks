@@ -8,6 +8,7 @@
 
 namespace OCA\Bookmarks\Migration;
 
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -50,14 +51,14 @@ class OrphanedSharesRepairStep implements IRepairStep {
 			$folders = $qb->select('f.id')
 				->from('bookmarks_shared_folders', 'f')
 				->join('f', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('f.id', 't.shared_folder_id'))
-				->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($share)))
+				->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($share, IQueryBuilder::PARAM_INT)))
 				->execute()
 				->fetchAll(PDO::FETCH_COLUMN);
 			foreach ($folders as $folderId) {
 				$qb = $this->db->getQueryBuilder();
 				$qb->delete('bookmarks_tree')
 					->where($qb->expr()->eq('type', $qb->createPositionalParameter('share')))
-					->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($folderId)))
+					->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
 					->execute();
 			}
 			$this->db->executeQuery('DELETE sf FROM *PREFIX*bookmarks_shared_folders sf JOIN *PREFIX*bookmarks_shared_to_shares t ON sf.id = t.shared_folder_id WHERE t.share_id = ?', [$share]);

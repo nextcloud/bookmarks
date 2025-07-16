@@ -8,6 +8,7 @@
 
 namespace OCA\Bookmarks\Db;
 
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use PDO;
 
@@ -86,7 +87,7 @@ class TagMapper {
 
 		$qb
 			->from('bookmarks_tags', 't')
-			->where($qb->expr()->eq('t.bookmark_id', $qb->createPositionalParameter($bookmarkId)));
+			->where($qb->expr()->eq('t.bookmark_id', $qb->createPositionalParameter($bookmarkId, IQueryBuilder::PARAM_INT)));
 
 		return $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
 	}

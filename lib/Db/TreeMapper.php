@@ -644,7 +644,7 @@ class TreeMapper extends QBMapper {
 			$qb
 				->update('bookmarks_tree')
 				->set('parent_folder', $qb->createPositionalParameter($newParentFolderId, IQueryBuilder::PARAM_INT))
-				->set('index', $qb->createPositionalParameter($index ?? $this->countChildren($newParentFolderId)))
+				->set('index', $qb->createPositionalParameter($index ?? $this->countChildren($newParentFolderId), IQueryBuilder::PARAM_INT))
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($itemId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
 			$qb->execute();
@@ -930,6 +930,7 @@ class TreeMapper extends QBMapper {
 			}
 			return $array;
 		}, $this->findChildren(TreeMapper::TYPE_SHARE, $folderId, $isSoftDeleted));
+		$shares = array_values(array_filter($shares, fn($data) => $data !== null));
 		if (count($shares) > 0) {
 			array_push($folders, ...$shares);
 		}
