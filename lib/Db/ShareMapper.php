@@ -177,6 +177,11 @@ class ShareMapper extends QBMapper {
 		return parent::insertOrUpdate($entity);
 	}
 
+	/**
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws Exception
+	 */
 	public function findBySharedFolder(int $id): Share {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {

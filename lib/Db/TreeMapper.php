@@ -919,7 +919,12 @@ class TreeMapper extends QBMapper {
 			return $array;
 		}, $this->findChildren(TreeMapper::TYPE_FOLDER, $folderId, $isSoftDeleted));
 		$shares = array_map(function (SharedFolder $sharedFolder) use ($layers, $folderId, $isSoftDeleted) {
-			$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
+			try {
+				$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
+			} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+				$this->logger->error('Failed to load a shared folder', ['exception' => $e]);
+				return null;
+			}
 			$array = $sharedFolder->toArray();
 			$array['id'] = $share->getFolderId();
 			$array['userId'] = $share->getOwner();
