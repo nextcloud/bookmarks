@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Rename" : "Перайменаваць",
     "Move" : "Перамясціць",
+    "Go back" : "Назад",
     "New" : "Новы",
     "New folder" : "Новая папка",
     "Search" : "Пошук",
