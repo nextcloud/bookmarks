@@ -31,6 +31,7 @@ OC.L10N.register(
     "Link copied" : "Kiungo kimenakiliwa",
     "Owner" : "Mmiliki",
     "Sharing" : "inashirikisha",
+    "Select a user or group" : "Select a user or group",
     "Share link" : "Shirikisha kiungo",
     "Create public link" : "Tengeneza kiungo cha umma",
     "Allow editing" : "Ruhusu kuhariri",

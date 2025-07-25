@@ -2,20 +2,20 @@ OC.L10N.register(
     "bookmarks",
     {
     "Details" : "Details",
-    "Rename" : "Rename",
+    "Rename" : "Nomini o'zgartirish",
     "Copy link" : "Havolani nusxalash",
     "Move" : "Move",
     "Select all" : "Select all",
     "New" : "New",
     "New folder" : "New folder",
-    "Search" : "Search",
+    "Search" : "Qidirish",
     "Empty trash bin" : "Axlat qutisini bo'shatish",
     "_%n folder_::_%n folders_" : ["%n papkalar"],
-    "Cancel" : "Cancel",
+    "Cancel" : "Bekor qilish",
     "Recent" : "Recent",
     "Shared with you" : "Shared with you",
-    "Files" : "Files",
-    "Delete" : "Delete",
+    "Files" : "Fayllar",
+    "Delete" : "O'chirish",
     "Add to {instanceName}" : " {instanceName}ni qo`shish",
     "Need help?" : "Need help?",
     "Title" : "Sarlavha",
@@ -31,6 +31,6 @@ OC.L10N.register(
     "Allow resharing" : "Qayta almashishga ruxsat bering",
     "Failed to save settings" : "Sozlamalarni saqlab bo'lmadi",
     "Failed to load settings" : "Sozlamalarni yuklab bo'lmadi",
-    "Save" : "Save"
+    "Save" : "Saqlash"
 },
 "nplurals=1; plural=0;");
