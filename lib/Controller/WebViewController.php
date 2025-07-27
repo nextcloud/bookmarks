@@ -13,6 +13,7 @@ use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
+use OCA\Bookmarks\Service\SettingsService;
 use OCA\Bookmarks\Service\UserSettingsService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -22,7 +23,6 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
-use OCP\IInitialStateService;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
@@ -31,22 +31,8 @@ use OCP\IUserManager;
 class WebViewController extends Controller {
 	private ?string $userId;
 
-
 	/**
 	 * WebViewController constructor.
-	 *
-	 * @param string $appName
-	 * @param IRequest $request
-	 * @param string|null $userId
-	 * @param IL10N $l
-	 * @param PublicFolderMapper $publicFolderMapper
-	 * @param IUserManager $userManager
-	 * @param FolderMapper $folderMapper
-	 * @param IURLGenerator $urlGenerator
-	 * @param IInitialStateService $initialState
-	 * @param InternalFoldersController $folderController
-	 * @param InternalBookmarkController $bookmarkController
-	 * @param UserSettingsService $userSettingsService
 	 */
 	public function __construct(
 		$appName,
@@ -62,6 +48,7 @@ class WebViewController extends Controller {
 		private \OCA\Bookmarks\Controller\InternalBookmarkController $bookmarkController,
 		private \OCA\Bookmarks\Controller\InternalTagsController $tagsController,
 		private UserSettingsService $userSettingsService,
+		private SettingsService $settings,
 	) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
@@ -71,8 +58,6 @@ class WebViewController extends Controller {
 	 * @NoAdminRequired
 	 *
 	 * @NoCSRFRequired
-	 *
-	 * @return AugmentedTemplateResponse
 	 */
 	public function index(): AugmentedTemplateResponse {
 		$res = new AugmentedTemplateResponse($this->appName, 'main', ['url' => $this->urlGenerator]);
@@ -95,6 +80,7 @@ class WebViewController extends Controller {
 		$this->initialState->provideInitialState($this->appName, 'tags', $this->tagsController->fullTags(true)->getData());
 
 		$settings = $this->userSettingsService->toArray();
+		$settings['shareapi_allow_links'] = $this->settings->getLinkSharingAllowed();
 		$this->initialState->provideInitialState($this->appName, 'settings', $settings);
 
 		return $res;

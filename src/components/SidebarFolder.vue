@@ -41,7 +41,7 @@
 					@option:selected="onAddShare"
 					@search="onParticipantSearch" />
 			</div>
-			<div class="share">
+			<div class="share" v-if="publicLinksAllowed">
 				<LinkIcon :size="20" :class="{'share__avatar': true, active: publicLink }" />
 				<h3 class="share__title">
 					{{ t('bookmarks', 'Share link') }}
@@ -171,6 +171,9 @@ export default {
 		},
 		permissions() {
 			return this.$store.getters.getPermissionsForFolder(this.folder.id)
+		},
+		publicLinksAllowed() {
+			return this.$store.state.settings.shareapi_allow_links
 		},
 		isSharable() {
 			if (!this.folder) return
