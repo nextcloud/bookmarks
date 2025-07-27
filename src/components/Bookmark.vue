@@ -380,7 +380,7 @@ export default {
 			this.$store.commit(mutations.SET_NOTIFICATION, this.t('bookmarks', 'Link copied to clipboard'))
 		},
 		async fetchBackgroundImage() {
-			if (this.bookmark.lastPreview === 0) {
+			if (!this.bookmark.lastPreview) {
 				return
 			}
 			try {
@@ -392,7 +392,7 @@ export default {
 		},
 		async fetchIcon() {
 			this.iconLoaded = false
-			if (this.bookmark.lastPreview === 0) {
+			if (!this.bookmark.lastPreview) {
 				return
 			}
 			try {

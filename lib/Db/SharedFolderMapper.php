@@ -14,6 +14,7 @@ use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\Exception;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IDBConnection;
 
@@ -55,7 +56,7 @@ class SharedFolderMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(SharedFolder::$columns)
 			->from('bookmarks_shared_folders', 'sf')
-			->where($qb->expr()->eq('sf.id', $qb->createPositionalParameter($id)));
+			->where($qb->expr()->eq('sf.id', $qb->createPositionalParameter($id, IQueryBuilder::PARAM_INT)));
 		return $this->findEntity($qb);
 	}
 
@@ -68,7 +69,7 @@ class SharedFolderMapper extends QBMapper {
 		$qb->select(SharedFolder::$columns)
 			->from('bookmarks_shared_folders', 'sf')
 			->join('sf', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('sf.id', 't.shared_folder_id'))
-			->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($shareId)));
+			->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($shareId, IQueryBuilder::PARAM_INT)));
 		return $this->findEntities($qb);
 	}
 
@@ -82,7 +83,7 @@ class SharedFolderMapper extends QBMapper {
 			return 'sf.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared_folders', 'sf')
-			->where($qb->expr()->eq('sf.folder_id', $qb->createPositionalParameter($folderId)));
+			->where($qb->expr()->eq('sf.folder_id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)));
 		return $this->findEntities($qb);
 	}
 
@@ -122,7 +123,7 @@ class SharedFolderMapper extends QBMapper {
 			->leftJoin('p', 'bookmarks_shared_to_shares', 't', 'p.id = t.shared_folder_id')
 			->leftJoin('t', 'bookmarks_shares', 's', 't.share_id = s.id')
 			->where($qb->expr()->eq('s.participant', $qb->createPositionalParameter($participant)))
-			->andWhere($qb->expr()->eq('s.type', $qb->createPositionalParameter($type)));
+			->andWhere($qb->expr()->eq('s.type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_INT)));
 		return $this->findEntities($qb);
 	}
 
@@ -142,7 +143,7 @@ class SharedFolderMapper extends QBMapper {
 			->from('bookmarks_shared_folders', 'p')
 			->leftJoin('p', 'bookmarks_shared_to_shares', 't', 't.shared_folder_id = p.id')
 			->leftJoin('t', 'bookmarks_shares', 's', 't.share_id = s.id')
-			->where($qb->expr()->eq('p.folder_id', $qb->createPositionalParameter($folderId)))
+			->where($qb->expr()->eq('p.folder_id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('participant', $qb->createPositionalParameter($participant)))
 			->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
 		return $this->findEntity($qb);
@@ -161,7 +162,7 @@ class SharedFolderMapper extends QBMapper {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared_folders', 'p')
-			->where($qb->expr()->eq('p.folder_id', $qb->createPositionalParameter($folderId)))
+			->where($qb->expr()->eq('p.folder_id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntity($qb);
 	}
@@ -199,7 +200,7 @@ class SharedFolderMapper extends QBMapper {
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared_folders', 'p')
 			->leftJoin('p', 'bookmarks_shared_to_shares', 't', 't.shared_folder_id = p.id')
-			->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($shareId)))
+			->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($shareId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntity($qb);
 	}
@@ -218,7 +219,7 @@ class SharedFolderMapper extends QBMapper {
 			->leftJoin('p', 'bookmarks_shared_to_shares', 't', 't.shared_folder_id = p.id')
 			->leftJoin('t', 'bookmarks_shares', 's', 't.share_id = s.id')
 			->where($qb->expr()->eq('s.participant', $qb->createPositionalParameter($participant)))
-			->andWhere($qb->expr()->eq('s.type', $qb->createPositionalParameter($type)))
+			->andWhere($qb->expr()->eq('s.type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
 		return $this->findEntities($qb);
 	}
@@ -226,7 +227,7 @@ class SharedFolderMapper extends QBMapper {
 	public function delete(Entity $entity): SharedFolder {
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('bookmarks_shared_to_shares')
-			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($entity->getId())))
+			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($entity->getId(), IQueryBuilder::PARAM_INT)))
 			->execute();
 		return parent::delete($entity);
 	}
@@ -235,7 +236,7 @@ class SharedFolderMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->insert('bookmarks_shared_to_shares')->values([
 			'shared_folder_id' => $qb->createPositionalParameter($id),
-			'share_id' => $qb->createPositionalParameter($share_id)
+			'share_id' => $qb->createPositionalParameter($share_id, IQueryBuilder::PARAM_INT)
 		])->execute();
 		$this->eventDispatcher->dispatch(CreateEvent::class, new CreateEvent(
 			TreeMapper::TYPE_SHARE,

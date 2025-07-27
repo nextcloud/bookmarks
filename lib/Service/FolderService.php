@@ -55,6 +55,7 @@ class FolderService {
 		private HtmlImporter $htmlImporter,
 		private IEventDispatcher $eventDispatcher,
 		private CirclesService $circlesService,
+		private SettingsService $settings,
 	) {
 	}
 
@@ -261,16 +262,19 @@ class FolderService {
 	/**
 	 * @param $folderId
 	 * @return string
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
+	 * @throws DoesNotExistException|MultipleObjectsReturnedException|UnsupportedOperation
 	 */
 	public function createFolderPublicToken($folderId): string {
+		if (!$this->settings->getLinkSharingAllowed()) {
+			throw new UnsupportedOperation('Link sharing is not enabled');
+		}
 		$this->folderMapper->find($folderId);
 		try {
 			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 		} catch (DoesNotExistException $e) {
 			$publicFolder = new PublicFolder();
 			$publicFolder->setFolderId($folderId);
+			$publicFolder->setDescription('');
 			$this->publicFolderMapper->insert($publicFolder);
 		}
 		return $publicFolder->getId();

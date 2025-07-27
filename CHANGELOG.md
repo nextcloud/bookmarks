@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [15.1.3] - 2025-07-27
+
+### Fixed
+
+* fix(FolderService): Always make sure description is set
+* chore: Update nextcloud/vue Marcel Klehr 2 minutes ago
+* fix(UNDELETE_FOLDER): Make sure to reload childrenOrder of -1
+* fix(BookmarkMapper): Fix duplicated filter
+* fix(CopyDialog): Fix onSubmit action
+* fix(PublicFolders): Do not allow sharing publicly if disabled in global settings
+* fix(FileCache): Make sure to always create cache folder
+* fix(SidebarFolder) Debounce participants search
+* fix(Bookmark): Prevent more 404 errors
+* fix(ShareMapper#findBySharedFolder): Make sure exceptions are caught
+* fix: Make db queries more typesafe
+* fix(l10n): Update translations from Transifex
+
 ## [15.1.2] - 2025-07-13
 
 ### Fixed

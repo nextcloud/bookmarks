@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OCA\Bookmarks\Service;
 
 use OCP\AppFramework\Services\IAppConfig;
+use OCP\IConfig;
 
 class SettingsService {
 	/** @var array<string,string> */
@@ -26,6 +27,7 @@ class SettingsService {
 
 	public function __construct(
 		private IAppConfig $config,
+		private IConfig $globalConfig,
 	) {
 	}
 
@@ -58,5 +60,9 @@ class SettingsService {
 			$settings[$key] = $this->getSetting($key);
 		}
 		return $settings;
+	}
+
+	public function getLinkSharingAllowed(): bool {
+		return $this->globalConfig->getAppValue('core', 'shareapi_allow_links', 'yes') === 'yes';
 	}
 }

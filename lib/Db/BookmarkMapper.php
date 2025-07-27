@@ -185,7 +185,7 @@ class BookmarkMapper extends QBMapper {
 		$qb
 			->select(Bookmark::$columns)
 			->from('bookmarks')
-			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
 
 		return $this->findEntity($qb);
 	}
@@ -454,9 +454,10 @@ class BookmarkMapper extends QBMapper {
 	private function _filterDuplicated(IQueryBuilder $qb, QueryParameters $params) {
 		if ($params->getDuplicated()) {
 			$subQuery = $this->db->getQueryBuilder();
+			$subQuery->automaticTablePrefix(false);
 			$subQuery->select('trdup.parent_folder')
-				->from('*PREFIX*bookmarks_tree', 'trdup')
-				->where($subQuery->expr()->eq('b.id', 'trdup.id'))
+				->from('folder_tree', 'trdup')
+				->where($subQuery->expr()->eq('b.id', 'trdup.item_id'))
 				->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tree.parent_folder'))
 				->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
 			$qb->andWhere($qb->createFunction('EXISTS(' . $subQuery->getSQL() . ')'));
@@ -718,7 +719,7 @@ class BookmarkMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(Bookmark::$columns);
 		$qb->from('bookmarks', 'b');
-		$qb->where($qb->expr()->lt('last_preview', $qb->createPositionalParameter($this->time->getTime() - $stalePeriod)));
+		$qb->where($qb->expr()->lt('last_preview', $qb->createPositionalParameter($this->time->getTime() - $stalePeriod, IQueryBuilder::PARAM_INT)));
 		$qb->orWhere($qb->expr()->isNull('last_preview'));
 		$qb->setMaxResults($limit);
 		return $this->findEntities($qb);
@@ -731,7 +732,7 @@ class BookmarkMapper extends QBMapper {
 	public function clearLastPreviews(): void {
 		$qb = $this->db->getQueryBuilder();
 		$qb->update('bookmarks');
-		$qb->set('last_preview', $qb->createNamedParameter(0));
+		$qb->set('last_preview', $qb->createNamedParameter(0, IQueryBuilder::PARAM_INT));
 		$qb->executeStatement();
 	}
 

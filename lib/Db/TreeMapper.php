@@ -644,7 +644,7 @@ class TreeMapper extends QBMapper {
 			$qb
 				->update('bookmarks_tree')
 				->set('parent_folder', $qb->createPositionalParameter($newParentFolderId, IQueryBuilder::PARAM_INT))
-				->set('index', $qb->createPositionalParameter($index ?? $this->countChildren($newParentFolderId)))
+				->set('index', $qb->createPositionalParameter($index ?? $this->countChildren($newParentFolderId), IQueryBuilder::PARAM_INT))
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($itemId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type)));
 			$qb->execute();
@@ -919,7 +919,12 @@ class TreeMapper extends QBMapper {
 			return $array;
 		}, $this->findChildren(TreeMapper::TYPE_FOLDER, $folderId, $isSoftDeleted));
 		$shares = array_map(function (SharedFolder $sharedFolder) use ($layers, $folderId, $isSoftDeleted) {
-			$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
+			try {
+				$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
+			} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+				$this->logger->error('Failed to load a shared folder', ['exception' => $e]);
+				return null;
+			}
 			$array = $sharedFolder->toArray();
 			$array['id'] = $share->getFolderId();
 			$array['userId'] = $share->getOwner();
@@ -930,6 +935,7 @@ class TreeMapper extends QBMapper {
 			}
 			return $array;
 		}, $this->findChildren(TreeMapper::TYPE_SHARE, $folderId, $isSoftDeleted));
+		$shares = array_values(array_filter($shares, fn ($data) => $data !== null));
 		if (count($shares) > 0) {
 			array_push($folders, ...$shares);
 		}
