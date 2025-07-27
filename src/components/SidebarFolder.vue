@@ -142,6 +142,7 @@ export default {
 	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcSelect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon, CircleIcon },
 	data() {
 		return {
+			participantSearchTimeout: null,
 			participantSearchResults: [],
 			participant: null,
 			isSearching: false,
@@ -239,33 +240,45 @@ export default {
 			if (!searchTerm) {
 				return
 			}
-			this.isSearching = true
-			const { data: { ocs: { data, meta } } } = await axios.get(generateOcsUrl('apps/files_sharing/api/v1', 1) + `/sharees?format=json&itemType=folder&search=${searchTerm}&lookup=false&perPage=200&shareType[]=0&shareType[]=1&shareType[]=7`)
-			if (meta.status !== 'ok') {
-				this.participantSearchResults = []
-				return
+			if (this.participantSearchTimeout) {
+				clearTimeout(this.participantSearchTimeout)
 			}
-			const users = data.exact.users.concat(data.users)
-			const groups = data.exact.groups.concat(data.groups)
-			const circles = data.exact.circles.concat(data.circles)
-			this.participantSearchResults = users.map(result => ({
-				user: result.value.shareWith,
-				displayName: result.label,
-				icon: 'icon-user',
-				isNoUser: false,
-			})).concat(groups.map(result => ({
-				user: result.value.shareWith,
-				displayName: result.label,
-				icon: 'icon-group',
-				isNoUser: true,
-			}))).concat(circles.map(result => ({
-				user: result.value.shareWith,
-				displayName: result.label,
-				icon: 'icon-circle',
-				isNoUser: true,
-				isCircle: true,
-			})))
-			this.isSearching = false
+			this.isSearching = true
+			this.participantSearchTimeout = setTimeout(async () => {
+				const {
+					data: {
+						ocs: {
+							data,
+							meta,
+						},
+					},
+				} = await axios.get(generateOcsUrl('apps/files_sharing/api/v1', 1) + `/sharees?format=json&itemType=folder&search=${searchTerm}&lookup=false&perPage=200&shareType[]=0&shareType[]=1&shareType[]=7`)
+				if (meta.status !== 'ok') {
+					this.participantSearchResults = []
+					return
+				}
+				const users = data.exact.users.concat(data.users)
+				const groups = data.exact.groups.concat(data.groups)
+				const circles = data.exact.circles.concat(data.circles)
+				this.participantSearchResults = users.map(result => ({
+					user: result.value.shareWith,
+					displayName: result.label,
+					icon: 'icon-user',
+					isNoUser: false,
+				})).concat(groups.map(result => ({
+					user: result.value.shareWith,
+					displayName: result.label,
+					icon: 'icon-group',
+					isNoUser: true,
+				}))).concat(circles.map(result => ({
+					user: result.value.shareWith,
+					displayName: result.label,
+					icon: 'icon-circle',
+					isNoUser: true,
+					isCircle: true,
+				})))
+				this.isSearching = false
+			}, 300)
 		},
 		async onAddShare(user) {
 			await this.$store.dispatch(actions.CREATE_SHARE, { folderId: this.folder.id, participant: user.user, type: user.isNoUser ? (user.isCircle ? 7 : 1) : 0 })
