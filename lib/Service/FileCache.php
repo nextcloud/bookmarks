@@ -50,9 +50,9 @@ class FileCache implements ICache {
 		try {
 			$this->storage = $this->appData->getFolder('cache');
 		} catch (NotFoundException $e) {
-			// noop
+			$this->storage = $this->appData->newFolder('cache');
 		}
-		if ($this->storage === null || !$this->storage->fileExists('/')) {
+		if (!$this->storage->fileExists('/')) {
 			$this->storage = $this->appData->newFolder('cache');
 		}
 		if (!$this->storage->fileExists('CACHEDIR.TAG')) {
