@@ -274,6 +274,7 @@ class FolderService {
 		} catch (DoesNotExistException $e) {
 			$publicFolder = new PublicFolder();
 			$publicFolder->setFolderId($folderId);
+			$publicFolder->setDescription('');
 			$this->publicFolderMapper->insert($publicFolder);
 		}
 		return $publicFolder->getId();
