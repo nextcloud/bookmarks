@@ -920,7 +920,7 @@ export default {
 			if (!avoidReload) {
 				await dispatch(
 					actions.LOAD_FOLDER_CHILDREN_ORDER,
-					parentFolderId,
+					parentFolderItem ? parentFolderId : '-1',
 				)
 				await dispatch(actions.LOAD_FOLDERS)
 				await dispatch(actions.LOAD_DELETED_FOLDERS)
