@@ -40,7 +40,7 @@ export default {
 	methods: {
 		async onSubmit(folderId) {
 			this.$store.commit(mutations.DISPLAY_COPY_DIALOG, false)
-			await this.$store.dispatch(actions.NcNcModal, folderId)
+			await this.$store.dispatch(actions.COPY_SELECTION, folderId)
 			this.$store.commit(mutations.RESET_SELECTION)
 		},
 		onClose() {
