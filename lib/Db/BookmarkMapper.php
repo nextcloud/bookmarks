@@ -9,6 +9,8 @@
 namespace OCA\Bookmarks\Db;
 
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\InsertEvent;
+use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Exception\UserLimitExceededError;
@@ -255,6 +257,21 @@ class BookmarkMapper extends QBMapper {
 		$cursor->closeCursor();
 
 		return $entities;
+	}
+
+	/**
+	 * @throws \OCP\DB\Exception
+	 */
+	protected function getIteratorWithRawQuery(string $query, array $params, array $types): \Generator {
+		$cursor = $this->db->executeQuery($query, $params, $types);
+
+		$entities = [];
+
+		while ($row = $cursor->fetch()) {
+			yield $this->mapRowToEntity($row);
+		}
+
+		$cursor->closeCursor();
 	}
 
 	/**
@@ -773,7 +790,9 @@ class BookmarkMapper extends QBMapper {
 			$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		}
 		$entity->setLastmodified(time());
-		return parent::update($entity);
+		parent::update($entity);
+		$this->eventDispatcher->dispatchTyped(new ManipulateEvent('bookmark', $entity->getId()));
+		return $entity;
 	}
 
 	/**
@@ -806,6 +825,7 @@ class BookmarkMapper extends QBMapper {
 			$this->findByUrl($entity->getUserId(), $entity->getUrl());
 		} catch (DoesNotExistException $e) {
 			parent::insert($entity);
+			$this->eventDispatcher->dispatchTyped(new InsertEvent('bookmark', $entity->getId()));
 			return $entity;
 		} catch (MultipleObjectsReturnedException $e) {
 			// noop
@@ -903,5 +923,42 @@ class BookmarkMapper extends QBMapper {
 		return array_map(static function (Share $share) {
 			return  $share->getOwner();
 		}, $this->shareMapper->findByUser($userId));
+	}
+
+	public function getIterator(string $userId, QueryParameters $queryParams): \Generator {
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		// gives us all bookmarks in this folder, recursively
+		[$cte, $params, $paramTypes] = $this->_generateCTE($rootFolder->getId(), $queryParams->getSoftDeletedFolders());
+
+		$qb = $this->db->getQueryBuilder();
+		$bookmark_cols = array_map(static function ($c) {
+			return 'b.' . $c;
+		}, Bookmark::$columns);
+
+		$qb->select($bookmark_cols);
+		$qb->groupBy($bookmark_cols);
+
+		$qb->automaticTablePrefix(false);
+
+		$qb
+			->from('*PREFIX*bookmarks', 'b')
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)
+				. ($queryParams->getSoftDeleted() ? ' AND tree.soft_deleted_at is NOT NULL' : ' AND tree.soft_deleted_at is NULL'));
+
+		$this->_filterUrl($qb, $queryParams);
+		$this->_filterArchived($qb, $queryParams);
+		$this->_filterUnavailable($qb, $queryParams);
+		$this->_filterDuplicated($qb, $queryParams);
+		$this->_filterFolder($qb, $queryParams);
+		$this->_filterTags($qb, $queryParams);
+		$this->_filterUntagged($qb, $queryParams);
+		$this->_filterSearch($qb, $queryParams);
+		$this->_sortAndPaginate($qb, $queryParams);
+
+		$finalQuery = $cte . ' ' . $qb->getSQL();
+
+		$params = array_merge($params, $qb->getParameters());
+		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
+		return $this->getIteratorWithRawQuery($finalQuery, $params, $paramTypes);
 	}
 }

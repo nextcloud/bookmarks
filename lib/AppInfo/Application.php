@@ -9,12 +9,15 @@
 namespace OCA\Bookmarks\AppInfo;
 
 use OCA\Bookmarks\Activity\ActivityPublisher;
+use OCA\Bookmarks\ContextChat\ContextChatProvider;
 use OCA\Bookmarks\Dashboard\Frequent;
 use OCA\Bookmarks\Dashboard\Recent;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\BeforeSoftDeleteEvent;
 use OCA\Bookmarks\Events\BeforeSoftUndeleteEvent;
 use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\InsertEvent;
+use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
 use OCA\Bookmarks\Flow\CreateBookmark;
@@ -24,6 +27,7 @@ use OCA\Bookmarks\Middleware\ExceptionMiddleware;
 use OCA\Bookmarks\Reference\BookmarkReferenceProvider;
 use OCA\Bookmarks\Search\Provider;
 use OCA\Bookmarks\Service\TreeCacheManager;
+use OCA\ContextChat\Event\ContentProviderRegisterEvent;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -97,6 +101,8 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(BeforeTemplateRenderedEvent::class, BeforeTemplateRenderedListener::class);
 
 		$context->registerMiddleware(ExceptionMiddleware::class);
+
+		$context->registerEventListener(ContentProviderRegisterEvent::class, ContextChatProvider::class);
 	}
 
 	/**
@@ -105,6 +111,15 @@ class Application extends App implements IBootstrap {
 	 * @throws \Throwable
 	 */
 	public function boot(IBootContext $context): void {
+		// Register with ContextChat
+		if (class_exists(ContentProviderRegisterEvent::class)) {
+			$this->getContainer()->get(ContextChatProvider::class)->register();
+			$eventDispatcher = $this->getContainer()->get(IEventDispatcher::class);
+			$eventDispatcher->addServiceListener(InsertEvent::class, ContextChatProvider::class);
+			$eventDispatcher->addServiceListener(ManipulateEvent::class, ContextChatProvider::class);
+			$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, ContextChatProvider::class);
+		}
+		// Register with Nextcloud Flow
 		$container = $context->getServerContainer();
 		CreateBookmark::register($container->get(IEventDispatcher::class));
 	}
