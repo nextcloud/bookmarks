@@ -55,6 +55,10 @@ class ContextChatIndexJob extends QueuedJob {
 				continue;
 			}
 			$this->contentManager->submitContent(Application::APP_ID, $items);
+			$items = [];
+		}
+		if (count($items) > 0) {
+			$this->contentManager->submitContent(Application::APP_ID, $items);
 		}
 	}
 }
