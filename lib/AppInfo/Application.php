@@ -111,6 +111,7 @@ class Application extends App implements IBootstrap {
 	 * @throws \Throwable
 	 */
 	public function boot(IBootContext $context): void {
+		// Register with ContextChat
 		if (class_exists(ContentProviderRegisterEvent::class)) {
 			$this->getContainer()->get(ContextChatProvider::class)->register();
 			$eventDispatcher = $this->getContainer()->get(IEventDispatcher::class);
@@ -118,6 +119,7 @@ class Application extends App implements IBootstrap {
 			$eventDispatcher->addServiceListener(ManipulateEvent::class, ContextChatProvider::class);
 			$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, ContextChatProvider::class);
 		}
+		// Register with Nextcloud Flow
 		$container = $context->getServerContainer();
 		CreateBookmark::register($container->get(IEventDispatcher::class));
 	}

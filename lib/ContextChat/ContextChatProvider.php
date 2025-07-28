@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\ContextChat;
 
 use OCA\Bookmarks\AppInfo\Application;
+use OCA\Bookmarks\BackgroundJobs\ContextChatIndexJob;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\InsertEvent;
@@ -18,8 +19,8 @@ use OCA\ContextChat\Event\ContentProviderRegisterEvent;
 use OCA\ContextChat\Public\ContentItem;
 use OCA\ContextChat\Public\ContentManager;
 use OCA\ContextChat\Public\IContentProvider;
+use OCP\BackgroundJob\IJobList;
 use OCP\EventDispatcher\Event;
-use OCP\EventDispatcher\IEventDispatcher;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -32,12 +33,15 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 	public function __construct(
 		private BookmarkService $bookmarkService,
 		private IUserManager $userManager,
-		private ContentManager $contentManager,
-		private IEventDispatcher $eventDispatcher,
+		private ?ContentManager $contentManager,
+		private IJobList $jobList,
 	) {
 	}
 
 	public function handle(Event $event): void {
+		if ($this->contentManager === null) {
+			return;
+		}
 		if ($event instanceof ContentProviderRegisterEvent) {
 			$this->register();
 			return;
@@ -47,6 +51,9 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 				return;
 			}
 			$bookmark = $this->bookmarkService->findById($event->getId());
+			if ($bookmark === null) {
+				return;
+			}
 			$item = new ContentItem(
 				(string)$event->getId(),
 				$this->getId(),
@@ -76,17 +83,15 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 	 * The ID of the provider
 	 *
 	 * @return string
-	 * @since 1.1.0
 	 */
 	public function getId(): string {
 		return 'bookmarks';
 	}
 
 	/**
-	 * The ID of the app making the provider avaialble
+	 * The ID of the app making the provider available
 	 *
 	 * @return string
-	 * @since 1.1.0
 	 */
 	public function getAppId(): string {
 		return Application::APP_ID;
@@ -97,7 +102,6 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 	 *
 	 * @param string $id
 	 * @return string
-	 * @since 1.1.0
 	 */
 	public function getItemUrl(string $id): string {
 		return $this->bookmarkService->findById(intval($id))?->getUrl() ?? '';
@@ -107,26 +111,10 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 	 * Starts the initial import of content items into content chat
 	 *
 	 * @return void
-	 * @since 1.1.0
 	 */
 	public function triggerInitialImport(): void {
 		$this->userManager->callForAllUsers(function (IUser $user) {
-			$items = [];
-			foreach ($this->bookmarkService->getIterator($user->getUID()) as $bookmark) {
-				$items[] = new ContentItem(
-					(string)$bookmark->getId(),
-					$this->getId(),
-					$bookmark->getTitle(),
-					$bookmark->getTextContent(),
-					'Website',
-					new \DateTime('@' . $bookmark->getLastmodified()),
-					[$user->getUID()]
-				);
-				if (count($items) < 25) {
-					continue;
-				}
-				$this->contentManager->submitContent($this->getAppId(), $items);
-			}
+			$this->jobList->add(ContextChatIndexJob::class, [$user->getUID()]);
 		});
 	}
 }
