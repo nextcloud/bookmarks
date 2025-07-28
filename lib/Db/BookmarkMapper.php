@@ -942,8 +942,8 @@ class BookmarkMapper extends QBMapper {
 
 		$qb
 			->from('*PREFIX*bookmarks', 'b')
-			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) .
-				($queryParams->getSoftDeleted() ? ' AND tree.soft_deleted_at is NOT NULL' : ' AND tree.soft_deleted_at is NULL'));
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)
+				. ($queryParams->getSoftDeleted() ? ' AND tree.soft_deleted_at is NOT NULL' : ' AND tree.soft_deleted_at is NULL'));
 
 		$this->_filterUrl($qb, $queryParams);
 		$this->_filterArchived($qb, $queryParams);
