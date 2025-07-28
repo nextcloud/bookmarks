@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\BackgroundJobs;
 
 use OCA\Bookmarks\AppInfo\Application;
+use OCA\Bookmarks\ContextChat\ContextChatProvider;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\ContextChat\Public\ContentItem;
 use OCA\ContextChat\Public\ContentManager;
@@ -23,6 +24,7 @@ class ContextChatIndexJob extends QueuedJob {
 		private BookmarkService $bookmarkService,
 		private ?ContentManager $contentManager,
 		private IUserManager $userManager,
+		private ContextChatProvider $provider,
 	) {
 		parent::__construct($timeFactory);
 	}
@@ -42,7 +44,7 @@ class ContextChatIndexJob extends QueuedJob {
 		foreach ($this->bookmarkService->getIterator($user->getUID()) as $bookmark) {
 			$items[] = new ContentItem(
 				(string)$bookmark->getId(),
-				$this->getId(),
+				$this->provider->getId(),
 				$bookmark->getTitle(),
 				$bookmark->getTextContent(),
 				'Website',
