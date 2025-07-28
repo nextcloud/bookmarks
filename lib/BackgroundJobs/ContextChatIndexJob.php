@@ -11,6 +11,7 @@ namespace OCA\Bookmarks\BackgroundJobs;
 use OCA\Bookmarks\AppInfo\Application;
 use OCA\Bookmarks\ContextChat\ContextChatProvider;
 use OCA\Bookmarks\Service\BookmarkService;
+use OCA\Bookmarks\Service\UserSettingsService;
 use OCA\ContextChat\Public\ContentItem;
 use OCA\ContextChat\Public\ContentManager;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -25,6 +26,7 @@ class ContextChatIndexJob extends QueuedJob {
 		private ?ContentManager $contentManager,
 		private IUserManager $userManager,
 		private ContextChatProvider $provider,
+		private UserSettingsService $userSettings,
 	) {
 		parent::__construct($timeFactory);
 	}
@@ -38,6 +40,10 @@ class ContextChatIndexJob extends QueuedJob {
 		}
 		$user = $this->userManager->get($argument['user']);
 		if ($user === null) {
+			return;
+		}
+		$this->userSettings->setUserId($user->getUID());
+		if ($this->userSettings->get('contextchat.enabled') !== 'true') {
 			return;
 		}
 		$items = [];

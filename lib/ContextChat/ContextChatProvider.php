@@ -12,9 +12,11 @@ use OCA\Bookmarks\AppInfo\Application;
 use OCA\Bookmarks\BackgroundJobs\ContextChatIndexJob;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\InsertEvent;
 use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Service\BookmarkService;
+use OCA\Bookmarks\Service\UserSettingsService;
 use OCA\ContextChat\Event\ContentProviderRegisterEvent;
 use OCA\ContextChat\Public\ContentItem;
 use OCA\ContextChat\Public\ContentManager;
@@ -35,6 +37,7 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 		private IUserManager $userManager,
 		private ?ContentManager $contentManager,
 		private IJobList $jobList,
+		private UserSettingsService $userSettings,
 	) {
 	}
 
@@ -44,6 +47,12 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 		}
 		if ($event instanceof ContentProviderRegisterEvent) {
 			$this->register();
+			return;
+		}
+		if (!$event instanceof ChangeEvent) {
+			return;
+		}
+		if ($this->userSettings->get('contextchat.enabled') !== 'true') {
 			return;
 		}
 		if ($event instanceof InsertEvent || $event instanceof ManipulateEvent) {
@@ -114,7 +123,7 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 	 */
 	public function triggerInitialImport(): void {
 		$this->userManager->callForAllUsers(function (IUser $user) {
-			$this->jobList->add(ContextChatIndexJob::class, [$user->getUID()]);
+			$this->jobList->add(ContextChatIndexJob::class, ['user' => $user->getUID()]);
 		});
 	}
 }

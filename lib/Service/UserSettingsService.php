@@ -8,18 +8,21 @@
 
 namespace OCA\Bookmarks\Service;
 
+use OCA\Bookmarks\BackgroundJobs\ContextChatIndexJob;
+use OCP\BackgroundJob\IJobList;
 use OCP\IConfig;
 use OCP\IL10N;
 
 class UserSettingsService {
 
-	public const KEYS = ['hasSeenWhatsnew', 'viewMode', 'archive.enabled', 'archive.filePath', 'backup.enabled', 'backup.filePath', 'sorting'];
+	public const KEYS = ['hasSeenWhatsnew', 'viewMode', 'archive.enabled', 'archive.filePath', 'backup.enabled', 'backup.filePath', 'sorting', 'contextchat.enabled'];
 
 	public function __construct(
 		private ?string $userId,
 		private string $appName,
 		private IConfig $config,
 		private IL10N $l,
+		private IJobList $jobList,
 	) {
 
 	}
@@ -46,7 +49,7 @@ class UserSettingsService {
 			return $this->config->getAppValue('bookmarks', 'performance.maxBookmarksperAccount', '0');
 		}
 		if ($key === 'archive.enabled') {
-			$default = (string)true;
+			$default = 'true';
 		}
 		if ($key === 'privacy.enableScraping') {
 			return $this->config->getAppValue($this->appName, 'privacy.enableScraping', 'false');
@@ -55,10 +58,16 @@ class UserSettingsService {
 			$default = $this->l->t('Bookmarks');
 		}
 		if ($key === 'backup.enabled') {
-			$default = (string)false;
+			$default = 'false';
 		}
 		if ($key === 'backup.filePath') {
 			$default = $this->l->t('Bookmarks Backups');
+		}
+		if ($key === 'contextchat.enabled') {
+			$default = 'false';
+			if ($this->get('archive.enabled') !== 'true') {
+				return 'false';
+			}
 		}
 		return $this->config->getUserValue(
 			$this->userId,
@@ -83,6 +92,9 @@ class UserSettingsService {
 		}
 		if ($key === 'sorting' && !in_array($value, ['title', 'added', 'clickcount', 'lastmodified', 'index', 'url'], true)) {
 			throw new \ValueError();
+		}
+		if ($key === 'contextchat.enabled' && $value === 'true' && $this->get('contextchat.enabled') !== 'true' && $this->get('archive.enabled') === 'true') {
+			$this->jobList->add(ContextChatIndexJob::class, ['user' => $this->userId]);
 		}
 		$this->config->setUserValue(
 			$this->userId,

@@ -61,6 +61,19 @@
 				@click="onChangeBackupPath" />
 		</NcAppSettingsSection>
 
+		<NcAppSettingsSection v-if="contextChatInstalled || isAdmin && appStoreEnabled" id="contextchat" :name="t('bookmarks', 'Context Chat integration')">
+			<template #icon>
+				<ContextChatIcon :size="20" />
+			</template>
+			<p>{{ t('bookmarks', 'The bookmarks app can automatically make available the textual contents of the websites you bookmark to Context Chat, which allows asking questions about and getting answers based on those contents. This is only available if auto-archiving is enabled.') }}</p>
+			<p v-if="isAdmin && !contextChatInstalled">
+				{{ t('bookmarks', 'Context chat is currently not installed, but is required for this feature.') }}
+			</p>
+			<NcCheckboxRadioSwitch :checked="contextChatEnabled" :disabled="!archiveEnabled" @update:checked="onChangeContextChatEnabled">
+				{{ t('bookmarks', 'Enable Context Chat integration') }}
+			</NcCheckboxRadioSwitch>
+		</NcAppSettingsSection>
+
 		<NcAppSettingsSection id="client-apps" :name="t('bookmarks', 'Client apps')">
 			<template #icon>
 				<ApplicationIcon :size="20" />
@@ -124,17 +137,18 @@
 <script>
 import { generateUrl } from '@nextcloud/router'
 import { actions } from '../store/index.js'
-import { getRequestToken } from '@nextcloud/auth'
+import { getRequestToken, getCurrentUser } from '@nextcloud/auth'
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import { privateRoutes } from '../router.js'
 import { NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField } from '@nextcloud/vue'
-import { ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon } from './Icons.js'
+import { ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon, ContextChatIcon } from './Icons.js'
 import HeartIcon from 'vue-material-design-icons/Heart.vue'
 import LifebuoyIcon from 'vue-material-design-icons/Lifebuoy.vue'
+import { loadState } from '@nextcloud/initial-state'
 
 export default {
 	name: 'Settings',
-	components: { LifebuoyIcon, HeartIcon, NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField, ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon },
+	components: { ContextChatIcon, LifebuoyIcon, HeartIcon, NcAppSettingsSection, NcAppSettingsDialog, NcCheckboxRadioSwitch, NcTextField, ImportIcon, ArchiveIcon, BackupIcon, LinkIcon, ApplicationIcon, ApplicationImportIcon },
 	props: {
 		settingsOpen: {
 			type: Boolean,
@@ -186,6 +200,18 @@ export default {
 		backupEnabled() {
 			return this.$store.state.settings['backup.enabled'] === 'true'
 		},
+		contextChatEnabled() {
+			return this.$store.state.settings['contextchat.enabled'] === 'true'
+		},
+		contextChatInstalled() {
+			return loadState('bookmarks', 'contextChatInstalled')
+		},
+		isAdmin() {
+			return getCurrentUser()?.isAdmin
+		},
+		appStoreEnabled() {
+			return loadState('bookmarks', 'appStoreEnabled')
+		},
 	},
 	mounted() {
 		window.addEventListener('beforeinstallprompt', (e) => {
@@ -217,6 +243,12 @@ export default {
 			await this.$store.dispatch(actions.SET_SETTING, {
 				key: 'archive.enabled',
 				value: String(!this.archiveEnabled),
+			})
+		},
+		async onChangeContextChatEnabled(e) {
+			await this.$store.dispatch(actions.SET_SETTING, {
+				key: 'contextchat.enabled',
+				value: String(!this.contextChatEnabled),
 			})
 		},
 		async onChangeArchivePath(e) {
