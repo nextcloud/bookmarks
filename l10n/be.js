@@ -1,6 +1,7 @@
 OC.L10N.register(
     "bookmarks",
     {
+    "Link copied to clipboard" : "Спасылка скапіявана ў буфер абмену",
     "Rename" : "Перайменаваць",
     "Move" : "Перамясціць",
     "Go back" : "Назад",
@@ -17,6 +18,7 @@ OC.L10N.register(
     "Link" : "Спасылка",
     "Tags" : "Тэгі",
     "Notes" : "Нататкі",
+    "Link copied" : "Спасылка скапіявана",
     "Owner" : "Уладальнік",
     "Share link" : "Абагуліць спасылку",
     "Allow editing" : "Дазволіць рэдагаванне",
