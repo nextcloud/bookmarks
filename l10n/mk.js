@@ -15,6 +15,7 @@ OC.L10N.register(
     "New folder" : "Нова папка",
     "Search" : "Барај",
     "Empty trash bin" : "Испразни ја корпата со отпадоци",
+    "Enter a link" : "Внеси линк",
     "_%n folder_::_%n folders_" : ["%n папка","%n папки"],
     "Rename folder" : "Преименувај папка",
     "Submit" : "Испрати",
