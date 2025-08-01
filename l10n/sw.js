@@ -37,6 +37,7 @@ OC.L10N.register(
     "Share link" : "Shirikisha kiungo",
     "Create public link" : "Tengeneza kiungo cha umma",
     "Allow editing" : "Ruhusu kuhariri",
+    "Allow resharing" : "Allow resharing",
     "Failed to save settings" : "Failed to save settings",
     "Failed to load settings" : "Failed to load settings",
     "Privacy" : "Faragha",

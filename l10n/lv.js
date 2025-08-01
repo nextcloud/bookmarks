@@ -10,6 +10,7 @@ OC.L10N.register(
     "Copy link" : "Ievietot saiti starpliktuvē",
     "Move" : "Pārvietot",
     "Select all" : "Atzīmēt visu",
+    "Sort by last modified" : "Kārtot pēc pēdējās izmainīšanas",
     "Go back" : "Atpakaļ",
     "New" : "Jauns",
     "New folder" : "Jauna mape",
