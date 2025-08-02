@@ -18,6 +18,7 @@ OC.L10N.register(
     "Enter a link" : "Внеси линк",
     "_%n folder_::_%n folders_" : ["%n папка","%n папки"],
     "Rename folder" : "Преименувај папка",
+    "Move folder" : "Премести папка",
     "Submit" : "Испрати",
     "Cancel" : "Откажи",
     "Recent" : "Неодамнешни",
