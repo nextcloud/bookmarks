@@ -120,7 +120,7 @@
 			<p>
 				<label>{{ t('bookmarks', 'Pageres ENV variables') }}
 					<input v-model="settings['previews.pageres.env']"
-						placeholder="CHROMIUM_PATH=/usr/bin/chromium-browser PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false"
+						placeholder="PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser"
 						type="text"
 						@input="onChange"></label>
 			</p>
