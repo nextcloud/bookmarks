@@ -4,7 +4,7 @@ OC.L10N.register(
     "Bookmarks" : "Grāmatzīmes",
     "You bookmarked \"%s\"" : "Tu pievienoji \"%s\" grāmatzīmēm",
     "You created folder \"%s\"" : "Tu izveidoji mapi \"%s\"",
-    "No file provided for import" : "Nav norādīta importējamā datne",
+    "No file provided for import" : "Ievietošanai nav norādīta neviena datne",
     "Bookmark" : "Grāmatzīme",
     "Details" : "Informācija",
     "Rename" : "Pārdēvēt",
