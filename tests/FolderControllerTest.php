@@ -32,6 +32,7 @@ use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\Security\ICrypto;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -149,6 +150,8 @@ class FolderControllerTest extends TestCase {
 			$this->treeMapper,
 			$userSession,
 			$this->sharedFolderMapper,
+			OC::$server->get(ICrypto::class),
+			$this->userManager,
 		);
 
 		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface, $this->userManager);
