@@ -181,9 +181,9 @@ class TreeCacheManager implements IEventListener {
 	 * @throws MultipleObjectsReturnedException|\JsonException
 	 * @throws UnsupportedOperation
 	 */
-	public function hashFolder($userId, int $folderId, array $fields = ['title', 'url'], string $hasFn = 'sha256') : string {
+	public function hashFolder($userId, int $folderId, array $fields = ['title', 'url'], string $hashFn = 'sha256') : string {
 		$hash = $this->get(self::CATEGORY_HASH, TreeMapper::TYPE_FOLDER, $folderId);
-		$selector = $hasFn . ':' . $userId . ':' . implode(',', $fields);
+		$selector = $hashFn . ':' . $userId . ':' . implode(',', $fields);
 		if (isset($hash[$selector])) {
 			return $hash[$selector];
 		}
@@ -195,7 +195,7 @@ class TreeCacheManager implements IEventListener {
 		$entity = $this->folderMapper->find($folderId);
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		$children = $this->getTreeMapper()->getChildrenOrder($folderId);
-		$childHashes = array_map(function ($item) use ($fields, $entity) {
+		$childHashes = array_map(function ($item) use ($fields, $entity, $hashFn) {
 			switch ($item['type']) {
 				case TreeMapper::TYPE_BOOKMARK:
 					return $this->hashBookmark($item['id'], $fields, $hashFn);
