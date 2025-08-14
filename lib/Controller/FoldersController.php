@@ -427,15 +427,18 @@ class FoldersController extends ApiController {
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
-	public function hashFolder(int $folderId, array $fields = ['title', 'url']): JSONResponse {
+	public function hashFolder(int $folderId, array $fields = ['title', 'url'], string $hashFn = 'sha256'): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
 			$res->throttle();
 			return $res;
 		}
+		if (!in_array($hashFn, ['sha256', 'murmur3a', 'xxh32'], true)) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Unsupported hash function']], Http::STATUS_BAD_REQUEST);
+		}
 		try {
 			$folderId = $this->toInternalFolderId($folderId);
-			$hash = $this->hashManager->hashFolder($this->authorizer->getUserId(), $folderId, $fields);
+			$hash = $this->hashManager->hashFolder($this->authorizer->getUserId(), $folderId, $fields, $hashFn);
 			$res = new JSONResponse(['status' => 'success', 'data' => $hash]);
 			$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
 			$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');

@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\AppInfo;
 
 use OCA\Bookmarks\Activity\ActivityPublisher;
+use OCA\Bookmarks\Capabilities;
 use OCA\Bookmarks\ContextChat\ContextChatProvider;
 use OCA\Bookmarks\Dashboard\Frequent;
 use OCA\Bookmarks\Dashboard\Recent;
@@ -71,6 +72,8 @@ class Application extends App implements IBootstrap {
 		$context->registerService('request', static function ($c) {
 			return $c->get(IRequest::class);
 		});
+
+		$context->registerCapability(Capabilities::class);
 
 		$context->registerSearchProvider(Provider::class);
 		$context->registerDashboardWidget(Recent::class);

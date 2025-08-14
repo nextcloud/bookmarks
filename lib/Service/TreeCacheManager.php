@@ -181,9 +181,9 @@ class TreeCacheManager implements IEventListener {
 	 * @throws MultipleObjectsReturnedException|\JsonException
 	 * @throws UnsupportedOperation
 	 */
-	public function hashFolder($userId, int $folderId, array $fields = ['title', 'url']) : string {
+	public function hashFolder($userId, int $folderId, array $fields = ['title', 'url'], string $hasFn = 'sha256') : string {
 		$hash = $this->get(self::CATEGORY_HASH, TreeMapper::TYPE_FOLDER, $folderId);
-		$selector = $userId . ':' . implode(',', $fields);
+		$selector = $hasFn . ':' . $userId . ':' . implode(',', $fields);
 		if (isset($hash[$selector])) {
 			return $hash[$selector];
 		}
@@ -198,9 +198,9 @@ class TreeCacheManager implements IEventListener {
 		$childHashes = array_map(function ($item) use ($fields, $entity) {
 			switch ($item['type']) {
 				case TreeMapper::TYPE_BOOKMARK:
-					return $this->hashBookmark($item['id'], $fields);
+					return $this->hashBookmark($item['id'], $fields, $hashFn);
 				case TreeMapper::TYPE_FOLDER:
-					return $this->hashFolder($entity->getUserId(), $item['id'], $fields);
+					return $this->hashFolder($entity->getUserId(), $item['id'], $fields, $hashFn);
 				default:
 					throw new UnexpectedValueException('Expected bookmark or folder, but not ' . $item['type']);
 			}
@@ -212,7 +212,7 @@ class TreeCacheManager implements IEventListener {
 			$folder['title'] = $entity->getTitle();
 		}
 		$folder['children'] = $childHashes;
-		$hash[$selector] = hash('sha256', json_encode($folder, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$hash[$selector] = hash($hashFn, json_encode($folder, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
 		$this->set(self::CATEGORY_HASH, TreeMapper::TYPE_FOLDER, $folderId, $hash);
 		return $hash[$selector];
@@ -226,9 +226,9 @@ class TreeCacheManager implements IEventListener {
 	 * @throws MultipleObjectsReturnedException|\JsonException
 	 * @throws UnsupportedOperation
 	 */
-	public function hashBookmark(int $bookmarkId, array $fields = ['title', 'url']): string {
+	public function hashBookmark(int $bookmarkId, array $fields = ['title', 'url'], string $hashFn = 'sha256'): string {
 		$hash = $this->get(self::CATEGORY_HASH, TreeMapper::TYPE_BOOKMARK, $bookmarkId);
-		$selector = implode(',', $fields);
+		$selector = $hashFn . ':' . implode(',', $fields);
 		if (isset($hash[$selector])) {
 			return $hash[$selector];
 		}
@@ -249,7 +249,7 @@ class TreeCacheManager implements IEventListener {
 				throw new UnsupportedOperation('Field ' . $field . ' does not exist');
 			}
 		}
-		$hash[$selector] = hash('sha256', json_encode($bookmark, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$hash[$selector] = hash($hashFn, json_encode($bookmark, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		$this->set(self::CATEGORY_HASH, TreeMapper::TYPE_BOOKMARK, $bookmarkId, $hash);
 		return $hash[$selector];
 	}
