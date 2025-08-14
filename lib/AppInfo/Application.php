@@ -25,6 +25,7 @@ use OCA\Bookmarks\Flow\CreateBookmark;
 use OCA\Bookmarks\Hooks\BeforeTemplateRenderedListener;
 use OCA\Bookmarks\Hooks\UsersGroupsCirclesListener;
 use OCA\Bookmarks\Middleware\ExceptionMiddleware;
+use OCA\Bookmarks\Middleware\TicketMiddleware;
 use OCA\Bookmarks\Reference\BookmarkReferenceProvider;
 use OCA\Bookmarks\Search\Provider;
 use OCA\Bookmarks\Service\TreeCacheManager;
@@ -104,6 +105,7 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(BeforeTemplateRenderedEvent::class, BeforeTemplateRenderedListener::class);
 
 		$context->registerMiddleware(ExceptionMiddleware::class);
+		$context->registerMiddleware(TicketMiddleware::class);
 
 		$context->registerEventListener(ContentProviderRegisterEvent::class, ContextChatProvider::class);
 	}
