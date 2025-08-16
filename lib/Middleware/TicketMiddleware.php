@@ -10,11 +10,6 @@ namespace OCA\Bookmarks\Middleware;
 
 use OCA\Bookmarks\Controller\BookmarkController;
 use OCA\Bookmarks\Controller\FoldersController;
-use OCA\Bookmarks\Controller\InternalBookmarkController;
-use OCA\Bookmarks\Controller\InternalFoldersController;
-use OCA\Bookmarks\Controller\TagsController;
-use OCA\Bookmarks\Db\Folder;
-use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -24,11 +19,14 @@ use OCP\AppFramework\Middleware;
 
 class TicketMiddleware extends Middleware {
 
-	public function __construct(private Authorizer $authorizer, private \OCP\IRequest $request) {
+	public function __construct(
+		private Authorizer $authorizer,
+		private \OCP\IRequest $request,
+	) {
 	}
 
 	public function afterController(Controller $controller, string $methodName, Response $response): Response {
-		if ($controller instanceof FoldersController ||  $controller instanceof BookmarkController) {
+		if ($controller instanceof FoldersController || $controller instanceof BookmarkController) {
 			if ($this->authorizer->getUserId() !== null && !str_starts_with($this->request->getHeader('Authorization'), 'Bearer')) {
 				if ($response instanceof DataResponse || $response instanceof Http\JSONResponse) {
 					$data = $response->getData();
