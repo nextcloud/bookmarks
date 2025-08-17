@@ -30,6 +30,7 @@ OC.L10N.register(
     "Root folder" : "Root folder",
     "Tags" : "Maoni",
     "Notes" : "Madokezo",
+    "Download file" : "Pakua faili",
     "Link copied" : "Kiungo kimenakiliwa",
     "Owner" : "Mmiliki",
     "Sharing" : "inashirikisha",
