@@ -42,6 +42,7 @@ OC.L10N.register(
     "Failed to save settings" : "Failed to save settings",
     "Failed to load settings" : "Failed to load settings",
     "Privacy" : "Faragha",
+    "Performance" : "Performance",
     "Folder" : "Kisanduku",
     "Save" : "Hifadhi",
     "What's new?" : "What's new?"
