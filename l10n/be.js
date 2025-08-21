@@ -9,6 +9,7 @@ OC.L10N.register(
     "New folder" : "Новая папка",
     "Search" : "Пошук",
     "_%n folder_::_%n folders_" : ["%n папка","%n папкі","%n папак","%n папак"],
+    "Move folder" : "Перамясціць папку",
     "Cancel" : "Скасаваць",
     "Recent" : "Нядаўнія",
     "Shared with you" : "Абагулена з вамі",
