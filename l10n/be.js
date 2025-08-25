@@ -16,6 +16,7 @@ OC.L10N.register(
     "Shared with you" : "Абагулена з вамі",
     "Files" : "Файлы",
     "Delete" : "Выдаліць",
+    "Need help?" : "Патрэбна дапамога?",
     "Title" : "Загаловак",
     "Link" : "Спасылка",
     "Tags" : "Тэгі",
