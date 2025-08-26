@@ -28,7 +28,9 @@ OC.L10N.register(
     "Share link" : "Абагуліць спасылку",
     "Create public link" : "Стварыць публічную спасылку",
     "Allow editing" : "Дазволіць рэдагаванне",
+    "Failed to save settings" : "Не ўдалося захаваць налады",
     "Privacy" : "Прыватнасць",
+    "Performance" : "Прадукцыйнасць",
     "Folder" : "Папка",
     "Save" : "Захаваць"
 },
