@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Link copied to clipboard" : "Спасылка скапіявана ў буфер абмену",
     "Rename" : "Перайменаваць",
+    "Copy link" : "Скапіяваць спасылку",
     "Move" : "Перамясціць",
     "Go back" : "Назад",
     "New" : "Новы",
