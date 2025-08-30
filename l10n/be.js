@@ -7,6 +7,7 @@ OC.L10N.register(
     "Copy link" : "Скапіяваць спасылку",
     "Move" : "Перамясціць",
     "Delete selection" : "Выдаліць выбранае",
+    "Select all" : "Выбраць усе",
     "Go back" : "Назад",
     "New" : "Новы",
     "New folder" : "Новая папка",
