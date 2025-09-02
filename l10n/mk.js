@@ -17,6 +17,7 @@ OC.L10N.register(
     "Empty trash bin" : "Испразни ја корпата со отпадоци",
     "Enter a link" : "Внеси линк",
     "_%n folder_::_%n folders_" : ["%n папка","%n папки"],
+    "Shared by {user}" : "Споделено од {user}",
     "Rename folder" : "Преименувај папка",
     "Move folder" : "Премести папка",
     "Submit" : "Испрати",
