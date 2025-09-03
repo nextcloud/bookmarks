@@ -8,6 +8,7 @@ on:
       - stable*
     paths:
       - 'lib/**'
+      - '.github/workflows/upgrade.yml'
 
 env:
   APP_NAME: bookmarks

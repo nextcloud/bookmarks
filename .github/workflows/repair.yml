@@ -8,6 +8,7 @@ on:
       - stable*
     paths:
       - 'lib/**'
+      - '.github/workflows/repair.yml'
 
 env:
   APP_NAME: bookmarks
