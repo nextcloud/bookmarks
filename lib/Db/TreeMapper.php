@@ -258,8 +258,8 @@ class TreeMapper extends QBMapper {
 	 * @psalm-param T $type
 	 * @param int $folderId
 	 * @param bool $softDeleted
-	 * @return Entity[]
-	 * @psalm-return E[]
+	 * @return list<Entity>
+	 * @psalm-return list<E>
 	 * @psalm-template T as TreeMapper::TYPE_*
 	 * @psalm-template E as (T is TreeMapper::TYPE_FOLDER ? Folder : (T is TreeMapper::TYPE_BOOKMARK ? Bookmark : SharedFolder))
 	 */
@@ -313,21 +313,41 @@ class TreeMapper extends QBMapper {
 	 * @param string $type
 	 * @psalm-param T $type
 	 * @param int $folderId
-	 * @return Entity[]
-	 * @psalm-return E[]
+	 * @return list<Entity>
+	 * @psalm-return list<E>
 	 * @psalm-template T as TreeMapper::TYPE_*
 	 * @psalm-template E as (T is TreeMapper::TYPE_FOLDER ? Folder : (T is TreeMapper::TYPE_BOOKMARK ? Bookmark : SharedFolder))
 	 */
 	public function findByAncestorFolder(string $type, int $folderId): array {
-		$descendants = [];
-		$newDescendants = $this->findChildren($type, $folderId);
-		do {
-			array_push($descendants, ...$newDescendants);
-			$newDescendants = array_merge(...array_map(function (Entity $descendant) use ($type) {
-				return $this->findChildren($type, $descendant->getId());
-			}, $newDescendants));
-		} while (count($newDescendants) > 0);
-		return $descendants;
+		if ($type === TreeMapper::TYPE_FOLDER) {
+			$descendants = [];
+			$newDescendants = $this->findChildren(TreeMapper::TYPE_FOLDER, $folderId);
+			do {
+				array_push($descendants, ...$newDescendants);
+				$newDescendants = array_merge(...array_map(function (Folder $folder): array {
+					return $this->findChildren(TreeMapper::TYPE_FOLDER, $folder->getId());
+				}, $newDescendants));
+			} while (count($newDescendants) > 0);
+			return $descendants;
+		}
+
+		if ($type === TreeMapper::TYPE_SHARE) {
+			$descendantFolders = $this->findChildren(TreeMapper::TYPE_FOLDER, $folderId);
+			$descendants = array_merge(...array_map(function (Folder $folder): array {
+				return $this->findChildren(TreeMapper::TYPE_SHARE, $folder->getId());
+			}, $descendantFolders));
+			return $descendants;
+		}
+
+		if ($type === TreeMapper::TYPE_BOOKMARK) {
+			$descendantFolders = $this->findChildren(TreeMapper::TYPE_FOLDER, $folderId);
+			$descendants = array_merge(...array_map(function (Folder $folder): array {
+				return $this->findChildren(TreeMapper::TYPE_BOOKMARK, $folder->getId());
+			}, $descendantFolders));
+			return $descendants;
+		}
+
+		throw new \InvalidArgumentException('Invalid type');
 	}
 
 	/**
