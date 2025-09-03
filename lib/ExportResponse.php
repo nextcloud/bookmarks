@@ -10,7 +10,9 @@ namespace OCA\Bookmarks;
 
 use OC;
 use OC\HintException;
+use OCA\Theming\ThemingDefaults;
 use OCP\AppFramework\Http\Response;
+use OCP\IDateTimeFormatter;
 
 /**
  * @psalm-template S of int
@@ -29,8 +31,9 @@ class ExportResponse extends Response {
 		}
 
 		$userName = $user->getDisplayName();
-		$productName = OC::$server->getThemingDefaults()->getName();
-		$dateTime = OC::$server->getDateTimeFormatter();
+		$themingDefaults = \OCP\Server::get(ThemingDefaults::class);
+		$dateTime = \OCP\Server::get(IDateTimeFormatter::class);
+		$productName = $themingDefaults->getName();
 
 		$export_name = '"' . $productName . ' Bookmarks (' . $userName . ') (' . $dateTime->formatDate(time()) . ').html"';
 		$this->addHeader('Cache-Control', 'private');
