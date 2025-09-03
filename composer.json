@@ -13,7 +13,7 @@
 		"rowbot/url": "^3.0",
 		"xantios/mimey": "^2.1",
 		"fivefilters/readability.php": "^3.1",
-		"illuminate/support": "5.8.x"
+		"illuminate/support": "5.x"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^9.5.26",
