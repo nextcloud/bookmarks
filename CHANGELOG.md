@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [15.2.0] - 2025-09-03
+
+### New
+* feat: Add a ContextChat provider (opt-in)
+* feat(Capabilities): Expose capabilities
+* feat(auth): Implement stateless auth ticket system to speed up API requests
+* feat: Add faster hash functions
+
+### Fixed
+* fix(ExportResponse): Don't use deprecated APIs
+* fix(TreeMapper): Replace removed array_flatten function
+* fix(Bookmark): Remove mb_convert_encoding warning
+* fix: Update marcelklehr/linkpreview
+* fix: use new puppeteer browser env variable (Thanks to Michael Gast)
+* fix(l10n): Update translations from Transifex
+
 ## [15.1.3] - 2025-07-27
 
 ### Fixed
