@@ -8,6 +8,7 @@ on:
       - stable*
     paths:
       - 'lib/**'
+      - '.github/workflows/upgrade.yml'
 
 env:
   APP_NAME: bookmarks
@@ -136,3 +137,7 @@ jobs:
         run: |
           diff export.html export2.html
 
+      - name: Check logs
+        if: always()
+        run: |
+          cat data/nextcloud.log

@@ -66,8 +66,10 @@ import UndeleteIcon from 'vue-material-design-icons/Restore.vue'
 import HotnessZero from 'vue-material-design-icons/Minus.vue'
 import Hotness from 'vue-material-design-icons/Fire.vue'
 import BookmarksIcon from './icons/BookmarksIcon.vue'
+import ContextChatIcon from 'vue-material-design-icons/ClipboardSearchOutline.vue'
 
 export {
+	ContextChatIcon,
 	FolderPlusIcon,
 	FolderMoveIcon,
 	ContentCopyIcon,

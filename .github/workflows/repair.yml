@@ -8,6 +8,7 @@ on:
       - stable*
     paths:
       - 'lib/**'
+      - '.github/workflows/repair.yml'
 
 env:
   APP_NAME: bookmarks
@@ -119,3 +120,8 @@ jobs:
       - name: Compare exports
         run: |
           diff export.html export2.html
+
+      - name: Check logs
+        if: always()
+        run: |
+          cat data/nextcloud.log

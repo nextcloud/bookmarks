@@ -20,7 +20,9 @@ use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IRequest;
+use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\Security\ICrypto;
 
 class Authorizer {
 	public const PERM_NONE = 0;
@@ -44,6 +46,8 @@ class Authorizer {
 		private TreeMapper $treeMapper,
 		private IUserSession $userSession,
 		private SharedFolderMapper $sharedFolderMapper,
+		private ICrypto $crypto,
+		private IUserManager $userManager,
 	) {
 	}
 
@@ -68,6 +72,12 @@ class Authorizer {
 		if ($auth !== null && $auth !== '') {
 			[$type, $credentials] = explode(' ', $auth);
 			if (strtolower($type) === 'bearer') {
+				$userFromTicket = $this->checkTicket($credentials);
+				if ($userFromTicket !== null) {
+					$this->userSession->setUser($this->userManager->get($userFromTicket));
+					$this->setUserId($userFromTicket);
+					return;
+				}
 				$this->setToken($credentials);
 			}
 		}
@@ -312,5 +322,25 @@ class Authorizer {
 			return self::PERM_READ;
 		}
 		return self::PERM_NONE;
+	}
+
+	public function generateTicket(string $userId): string {
+		return $this->crypto->encrypt(json_encode(['userId' => $userId, 'timestamp' => time()]));
+	}
+
+	public function checkTicket(string $ticket): ?string {
+		try {
+			$data = json_decode($this->crypto->decrypt($ticket), true);
+		} catch (\Exception $e) {
+			return null;
+		}
+		if (!isset($data['userId'], $data['timestamp'])) {
+			return null;
+		}
+		if (time() > $data['timestamp'] + 3600) {
+			return null;
+		}
+
+		return $data['userId'];
 	}
 }

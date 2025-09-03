@@ -15,6 +15,7 @@ use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Service\SettingsService;
 use OCA\Bookmarks\Service\UserSettingsService;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -23,6 +24,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
@@ -49,6 +51,8 @@ class WebViewController extends Controller {
 		private \OCA\Bookmarks\Controller\InternalTagsController $tagsController,
 		private UserSettingsService $userSettingsService,
 		private SettingsService $settings,
+		private IAppManager $appManager,
+		private IConfig $config,
 	) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
@@ -78,6 +82,8 @@ class WebViewController extends Controller {
 		$this->initialState->provideInitialState($this->appName, 'allClicksCount', $this->bookmarkController->countAllClicks()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'withClicksCount', $this->bookmarkController->countWithClicks()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'tags', $this->tagsController->fullTags(true)->getData());
+		$this->initialState->provideInitialState($this->appName, 'contextChatInstalled', $this->appManager->isEnabledForUser('context_chat'));
+		$this->initialState->provideInitialState($this->appName, 'appStoreEnabled', $this->config->getSystemValueBool('appstoreenabled', true));
 
 		$settings = $this->userSettingsService->toArray();
 		$settings['shareapi_allow_links'] = $this->settings->getLinkSharingAllowed();
