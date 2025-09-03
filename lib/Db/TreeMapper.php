@@ -323,7 +323,7 @@ class TreeMapper extends QBMapper {
 		$newDescendants = $this->findChildren($type, $folderId);
 		do {
 			array_push($descendants, ...$newDescendants);
-			$newDescendants = array_flatten(array_map(function (Entity $descendant) use ($type) {
+			$newDescendants = array_merge(...array_map(function (Entity $descendant) use ($type) {
 				return $this->findChildren($type, $descendant->getId());
 			}, $newDescendants));
 		} while (count($newDescendants) > 0);
@@ -341,7 +341,7 @@ class TreeMapper extends QBMapper {
 		while (!in_array($folderId, array_map(static function (Entity $ancestor) {
 			return $ancestor->getId();
 		}, $ancestors), true)) {
-			$ancestors = array_flatten(array_map(function (Entity $ancestor) {
+			$ancestors = array_merge(...array_map(function (Entity $ancestor) {
 				return $this->findParentsOf(TreeMapper::TYPE_FOLDER, $ancestor->getId(), true);
 			}, $ancestors));
 			if (count($ancestors) === 0) {
