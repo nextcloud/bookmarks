@@ -1,6 +1,10 @@
 OC.L10N.register(
     "bookmarks",
     {
+    "You unshared folder \"%1$s\" with %2$s" : "Вы скасавалі абагульванне папкі \"%1$s\" з %2$s",
+    "You unshared folder \"%s\" with someone" : "Вы скасавалі абагульванне папкі \"%s\" з кімсьці",
+    "%1$s unshared folder \"%2$s\" with you" : "%1$s скасаваў(-ла) абагульванне папкі \"%2$s\" з вамі",
+    "Someone unshared folder \"%s\" with you" : "Хтосьці скасаваў абагульванне папкі \"%s\" з вамі",
     "Link copied to clipboard" : "Спасылка скапіявана ў буфер абмену",
     "Details" : "Падрабязнасці",
     "Rename" : "Перайменаваць",
