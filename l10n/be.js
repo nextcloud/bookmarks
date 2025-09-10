@@ -17,6 +17,7 @@ OC.L10N.register(
     "New folder" : "Новая папка",
     "Search" : "Пошук",
     "_%n folder_::_%n folders_" : ["%n папка","%n папкі","%n папак","%n папак"],
+    "Select folder" : "Выберыце папку",
     "Rename folder" : "Перайменаваць папку",
     "Move folder" : "Перамясціць папку",
     "Submit" : "Адправіць",
