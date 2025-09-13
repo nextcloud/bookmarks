@@ -32,6 +32,7 @@ OC.L10N.register(
     "Link" : "Спасылка",
     "Tags" : "Тэгі",
     "Notes" : "Нататкі",
+    "Download file" : "Спампаваць файл",
     "Link copied" : "Спасылка скапіявана",
     "Owner" : "Уладальнік",
     "Sharing" : "Абагульванне",
