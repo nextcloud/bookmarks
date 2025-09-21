@@ -66,7 +66,7 @@
     "One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience." : "Un marcador pode estar en varios cartafoles á vez. Ao actualizar, actualizaranse todas as copias. Todos os marcadores duplicados están listados aquí por comodidade.",
     "Selected {folders} folders and {bookmarks} bookmarks" : "Seleccionados {folders} cartafoles e {bookmarks} marcadores",
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["Seleccionado %n marcador","Seleccionados %n marcadores"],
-    "_Selected %n folder_::_Selected %n folders_" : ["%n cartafol seleccionado"," %n cartafoles seleccionados"],
+    "_Selected %n folder_::_Selected %n folders_" : ["%n cartafol seleccionado","%n cartafoles seleccionados"],
     "Do you really want to delete these items?" : "Confirma que quere eliminar estes elementos?",
     "Open all selected" : "Abrir todos os seleccionados",
     "Move selection" : "Mover a selección",
