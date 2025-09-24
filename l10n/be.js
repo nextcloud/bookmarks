@@ -18,6 +18,7 @@ OC.L10N.register(
     "Search" : "Пошук",
     "_%n folder_::_%n folders_" : ["%n папка","%n папкі","%n папак","%n папак"],
     "Select folder" : "Выберыце папку",
+    "Shared by {user}" : "Абагуліў(-ла) {user}",
     "Rename folder" : "Перайменаваць папку",
     "Move folder" : "Перамясціць папку",
     "Submit" : "Адправіць",
