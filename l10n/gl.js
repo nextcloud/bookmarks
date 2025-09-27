@@ -169,7 +169,7 @@ OC.L10N.register(
     "Enable backups" : "Activar as copias de seguranza",
     "Enter the path of a folder in your Files where backups will be stored." : "Introduza a ruta dun cartafol en Ficheiros onde se debe almacenar as copias de seguranza.",
     "Context Chat integration" : "Integración da Parola de contexto",
-    "The bookmarks app can automatically make available the textual contents of the websites you bookmark to Context Chat, which allows asking questions about and getting answers based on those contents. This is only available if auto-archiving is enabled." : "A aplicación de marcadores pode poñer automaticamente a disposición da Parola de contexto o contido textual dos sitios web que marque como favoritos, o que lle permite facer preguntas e obter respostas baseadas neses contidos. Isto só está dispoñible se o arquivo automático está activado.",
+    "The bookmarks app can automatically make available the textual contents of the websites you bookmark to Context Chat, which allows asking questions about and getting answers based on those contents. This is only available if auto-archiving is enabled." : "A aplicación de marcadores pode poñer automaticamente a disposición da Parola de contexto o contido textual dos sitios web que marque como favoritos, o que lle permite facer preguntas e obter respostas baseadas neses contidos. Isto só está dispoñíbel se o arquivo automático está activado.",
     "Context chat is currently not installed, but is required for this feature." : "A Parola de contexto non está instalada actualmente, mais é necesaria para esta funcionalidade.",
     "Enable Context Chat integration" : "Activar a integración da Parola de contexto",
     "Client apps" : "Aplicacións cliente ",
