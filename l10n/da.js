@@ -282,7 +282,7 @@ OC.L10N.register(
     "Failed to create public link for folder {folderId}" : "Kunne ikke oprette offentligt link for mappen {folderId}",
     "Failed to delete public link for folder {folderId}" : "Kunne ikke slette offentligt link til mappen {folderId}",
     "Failed to permanently delete parts of trash bin" : "Kunne ikke permanent slette dele af skraldespanden",
-    "Create bookmarks for mentioned links" : "Opret bogmærker til nævnte links",
+    "Create bookmarks for mentioned links" : "Opret bogmærker til omtalte links",
     "No links found in this message" : "Ingen links fundet i denne besked",
     "Bookmarks feed" : "Bogmærkefeed"
 },
