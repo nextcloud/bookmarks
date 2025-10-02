@@ -60,7 +60,7 @@
 				@new-item="onNewTag">
 				<TagPlusIcon slot="icon" :size="20" />
 			</NcAppNavigationNewItem>
-			<template v-if="Boolean(tags.length)">
+			<template v-if="tags && Boolean(tags.length)">
 				<NcAppNavigationItem key="menu-tags"
 					:name="t('bookmarks', 'Search tags')"
 					@click="onSearchTags">
@@ -165,11 +165,13 @@ export default {
 	},
 	computed: {
 		tags() {
-			return this.$store.state.tags.map(tag => ({
-				route: { name: this.routes.TAGS, params: { tags: tag.name } },
-				name: tag.name,
-				count: tag.count,
-			}))
+			return this.$store.state.tags
+				? this.$store.state.tags.map(tag => ({
+					route: { name: this.routes.TAGS, params: { tags: tag.name } },
+					name: tag.name,
+					count: tag.count,
+				}))
+				: null
 		},
 		allBookmarksCount() {
 			return this.$store.state.countsByFolder[-1]
