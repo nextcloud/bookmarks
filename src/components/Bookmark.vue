@@ -26,7 +26,7 @@
 					@click="onClick">
 					<template #icon>
 						<span v-if="bookmark.preliminary" class="icon-loading-small bookmark__icon" />
-						<BookmarksIcon v-else-if="!iconLoaded" :size="20" class="bookmark__icon" />
+						<StarIcon v-else-if="!iconLoaded" :size="20" class="bookmark__icon" />
 						<figure v-else
 							class="bookmark__icon"
 							:style="{ backgroundImage: iconImage }" />
@@ -138,7 +138,7 @@
 <script>
 import Item from './Item.vue'
 import { NcActionButton, NcActionCheckbox, NcPopover } from '@nextcloud/vue'
-import { Hotness, HotnessZero, FolderIcon, UndeleteIcon, DeleteForeverIcon, FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon, BookmarksIcon } from './Icons.js'
+import { Hotness, HotnessZero, FolderIcon, UndeleteIcon, DeleteForeverIcon, FolderPlusIcon, FolderMoveIcon, ContentCopyIcon, PencilIcon, InformationVariantIcon, DeleteIcon, StarIcon } from './Icons.js'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { actions, mutations } from '../store/index.js'
@@ -159,7 +159,7 @@ export default {
 		DeleteIcon,
 		DeleteForeverIcon,
 		UndeleteIcon,
-		BookmarksIcon,
+		StarIcon,
 		NcPopover,
 		Hotness,
 		HotnessZero,
