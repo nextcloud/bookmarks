@@ -156,10 +156,9 @@ jobs:
           path: ./
 
       - name: Checkout bookmarks app
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: ${{ env.APP_NAME }}
-          ref: ${{ github.ref_name }}
 
       - name: Install bookmarks app
         shell: bash
