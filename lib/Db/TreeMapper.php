@@ -1071,7 +1071,7 @@ class TreeMapper extends QBMapper {
 
 		$children = $this->treeCache->get(TreeCacheManager::CATEGORY_CHILDREN_LAYER, TreeMapper::TYPE_FOLDER, $folderId);
 
-		if ($children === null && is_array($children)) {
+		if ($children === null || !is_array($children)) {
 			$qb = $this->getChildrenQuery[TreeMapper::TYPE_BOOKMARK];
 			$this->selectFromType(TreeMapper::TYPE_BOOKMARK, ['t.index', 't.type'], $qb);
 			$qb->setParameter('parent_folder', $folderId);
