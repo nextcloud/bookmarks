@@ -6,8 +6,11 @@ OC.L10N.register(
     "Copy link" : "Nɣel aseɣwen",
     "Move" : "Senkez",
     "Select all" : "Fren akk",
+    "Go back" : "Tuɣalin",
+    "New" : "Amaynut",
     "New folder" : "Akaram amaynut",
     "Search" : "Nadi",
+    "_%n folder_::_%n folders_" : ["%n n ukaram","%n n ikaramen"],
     "Cancel" : "Sefsex",
     "Recent" : "Melmi kan",
     "Files" : "Ifuyla",
@@ -21,6 +24,7 @@ OC.L10N.register(
     "Sharing" : "Beṭṭu",
     "Share link" : "Fren aseɣwen",
     "Privacy" : "Vie privée",
+    "Folder" : "Akaram",
     "Save" : "Sekles"
 },
 "nplurals=2; plural=(n != 1);");

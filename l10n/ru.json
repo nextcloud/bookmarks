@@ -167,6 +167,7 @@
     "Enable backups" : "Включить резервное копирование",
     "Enter the path of a folder in your Files where backups will be stored." : "Введите путь к папке в ваших файлах, где будут храниться резервные копии.",
     "Context Chat integration" : "Интеграция контекста чата",
+    "The bookmarks app can automatically make available the textual contents of the websites you bookmark to Context Chat, which allows asking questions about and getting answers based on those contents. This is only available if auto-archiving is enabled." : "Приложение \"Закладки\" может автоматически предоставлять доступ к текстовому содержимому веб-сайтов, добавленных в закладки в \"Context Chat\", что позволяет задавать вопросы и получать ответы на основе этого содержимого. Эта функция доступна только при включенной функции автоматического архивирования.",
     "Context chat is currently not installed, but is required for this feature." : "Контекст чата не установлен, но необходим для данного функционала.",
     "Enable Context Chat integration" : "Включить интеграцию контекста чата",
     "Client apps" : "Клиентские приложения",

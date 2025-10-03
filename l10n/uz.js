@@ -11,6 +11,7 @@ OC.L10N.register(
     "Search" : "Qidirish",
     "Empty trash bin" : "Axlat qutisini bo'shatish",
     "_%n folder_::_%n folders_" : ["%n papkalar"],
+    "Submit" : "Submit",
     "Cancel" : "Bekor qilish",
     "Recent" : "Recent",
     "Shared with you" : "Shared with you",
