@@ -27,7 +27,7 @@
 				@click="onSelect" />
 			<ShareVariantIcon v-if="(isShared || !isOwner) || isSharedPublicly"
 				:size="20"
-				:fill-color="colorPrimaryText"
+				:fill-color="colorPrimaryElement"
 				:class="['folder__icon', 'shared']" />
 		</template>
 		<template #title>
@@ -265,7 +265,7 @@ export default {
 .folder__icon.shared {
 	transform: scale(0.4);
 	position: absolute;
-	top: 0;
+	top: 1px;
 	height: auto;
 	width: auto;
 	left: -1px;
@@ -281,7 +281,7 @@ export default {
 }
 
 .item--gridview .folder__icon.shared {
-	transform: translate(100%, 130%) scale(1.5);
+	transform: translate(100%, 135%) scale(1.5);
 }
 
 .folder__title {
