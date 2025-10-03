@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * fix(FolderService): Always make sure description is set
-* chore: Update nextcloud/vue Marcel Klehr 2 minutes ago
+* chore: Update nextcloud/vue
 * fix(UNDELETE_FOLDER): Make sure to reload childrenOrder of -1
 * fix(BookmarkMapper): Fix duplicated filter
 * fix(CopyDialog): Fix onSubmit action

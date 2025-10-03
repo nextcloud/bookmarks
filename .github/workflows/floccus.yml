@@ -87,7 +87,7 @@ jobs:
       matrix:
         node-version: [20.x]
         npm-version: [10.x]
-        server-version: ['30']
+        server-version: ['32']
         floccus-branch: ['master', 'develop']
         floccus-adapter:
           - nextcloud-bookmarks
@@ -156,7 +156,7 @@ jobs:
           path: ./
 
       - name: Checkout bookmarks app
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: ${{ env.APP_NAME }}
 
