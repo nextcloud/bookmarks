@@ -433,11 +433,11 @@ class FoldersController extends ApiController {
 		}
 		if ($parent_folder !== null) {
 			$parent_folder = $this->toInternalFolderId($parent_folder);
-		}
-		if ($parent_folder === null) {
-			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
-			return $res;
+			if ($parent_folder === null) {
+				$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+				$res->throttle();
+				return $res;
+			}
 		}
 		try {
 			$folder = $this->folders->updateSharedFolderOrFolder($this->authorizer->getUserId(), $folderId, $title, $parent_folder);
