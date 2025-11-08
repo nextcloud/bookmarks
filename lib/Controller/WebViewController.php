@@ -99,7 +99,7 @@ class WebViewController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @BruteForceProtection(action=link)
+	 * @BruteForceProtection
 	 * @PublicPage
 	 */
 	public function link(string $token) {
