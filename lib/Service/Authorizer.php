@@ -74,9 +74,13 @@ class Authorizer {
 			if (strtolower($type) === 'bearer') {
 				$userFromTicket = $this->checkTicket($credentials);
 				if ($userFromTicket !== null) {
-					$this->userSession->setUser($this->userManager->get($userFromTicket));
 					$this->setUserId($userFromTicket);
 					return;
+				}
+				try {
+					$this->publicMapper->find($credentials);
+				} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+					throw new UnauthenticatedError();
 				}
 				$this->setToken($credentials);
 			}
@@ -330,7 +334,12 @@ class Authorizer {
 
 	public function checkTicket(string $ticket): ?string {
 		try {
-			$data = json_decode($this->crypto->decrypt($ticket), true);
+			$json = $this->crypto->decrypt($ticket);
+		} catch (\Exception $e) {
+			return null;
+		}
+		try {
+			$data = json_decode($json, true);
 		} catch (\Exception $e) {
 			return null;
 		}
