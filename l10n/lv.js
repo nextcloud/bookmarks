@@ -36,6 +36,7 @@ OC.L10N.register(
     "Notes" : "Piezīmes",
     "Notes for this bookmark …" : "Šīs grāmatzīmes piezīmes …",
     "Download file" : "Lejupielādēt datni",
+    "Open file location" : "Atvērt datnes atrašanās vietu",
     "Link copied" : "Saite nokopēta",
     "Owner" : "Īpašnieks",
     "Sharing" : "Koplietošana",
