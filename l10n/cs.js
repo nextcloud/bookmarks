@@ -193,7 +193,7 @@ OC.L10N.register(
     "Tags" : "Štítky",
     "Select tags and create new ones" : "Vybírejte štítky a vytvářejte nové",
     "Notes" : "Poznámky",
-    "Notes for this bookmark …" : "Poznámky k této záložce…",
+    "Notes for this bookmark …" : "Poznámky k této záložce …",
     "Archived file" : "Archivovaný soubor",
     "Download file" : "Stáhnout si soubor",
     "Open file location" : "Otevřít umístění souboru",
