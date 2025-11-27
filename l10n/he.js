@@ -16,6 +16,7 @@ OC.L10N.register(
     "Someone moved folder \"%s\"" : "התיקייה „%s” הועברה על ידי מישהו",
     "You deleted folder \"%s\"" : "מחקת את התיקייה „%s”",
     "No file provided for import" : "לא סופק קובץ לייבוא",
+    "Failed to upload file" : "כשלון בהעלאת קובץ",
     "Bookmarks shared by %s" : "סימניות שמשותפות על ידי %s",
     "Bookmark" : "סימנייה",
     "Bookmark deleted" : "סימנייה נמחקה",
