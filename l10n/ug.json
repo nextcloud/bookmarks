@@ -234,7 +234,7 @@
     "Pageres CLI" : "Pageres CLI",
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Sindre Sorhus نىڭ Pageres CLI نى مۇلازىمېتىرىڭىزغا قاچىلاڭ ، Bookmarks ئۇنى تاپالايدۇ. قەغەزگە بېقىش ئۈچۈن يەنىلا قوشۇمچە ENV ۋاراقلىرىنى قوشالايسىز ، مەسىلەن. ئورۇن ئىگىسىدە كۆرسىتىلگەندەك:",
     "Pageres ENV variables" : "Pageres ENV ئۆزگەرگۈچى مىقدار",
-    "This URL is already bookmarked! Overwrite?" : "بۇ URL ئاللىقاچان خەتكۈچلەنگەن! Overwrite?",
+    "This URL is already bookmarked! Overwrite?" : "بۇ URL ئاللىقاچان خەتكۈچلەنگەن! ئۆزگەرتەمسىز؟",
     "Enter bookmark title" : "خەتكۈچ نامىنى كىرگۈزۈڭ",
     "Enter bookmark URL" : "خەتكۈچ ئادرېسىنى كىرگۈزۈڭ",
     "Folder" : "قىسقۇچ",
