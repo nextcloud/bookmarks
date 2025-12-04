@@ -194,7 +194,7 @@ OC.L10N.register(
     "Tags" : "Étiquettes",
     "Select tags and create new ones" : "Sélectionner des étiquettes ou en créer de nouvelles",
     "Notes" : "Notes",
-    "Notes for this bookmark …" : "Notes pour ce favori ...",
+    "Notes for this bookmark …" : "Notes pour ce favori...",
     "Archived file" : "Fichier archivé",
     "Download file" : "Télécharger le fichier",
     "Open file location" : "Ouvrir l’emplacement du fichier",
