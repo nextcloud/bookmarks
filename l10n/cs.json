@@ -66,7 +66,7 @@
     "One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience." : "Jedna záložka se může nacházet ve vícero složkách naráz. Její aktualizace se propíše do všech výskytů. Pro snadnou dosažitelnost jsou veškeré duplicitní záložky vypsány zde.",
     "Selected {folders} folders and {bookmarks} bookmarks" : "Vybráno {folders} složek a {bookmarks} záložek",
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["Vybrána %n záložka","Vybrány %n záložky","Vybráno %n záložek","Vybrány %n záložky"],
-    "_Selected %n folder_::_Selected %n folders_" : ["Vybrat %n složku","Vybrat %n složky","Vybrat %n složek","Vybrat %n složky"],
+    "_Selected %n folder_::_Selected %n folders_" : ["Vybrána %n složka","Vybrány %n složky","Vybráno %n složek","Vybrány %n složky"],
     "Do you really want to delete these items?" : "Opravdu chcete tyto položky smazat?",
     "Open all selected" : "Otevřít vše vybrané",
     "Move selection" : "Přesunout vybrané",
