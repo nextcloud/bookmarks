@@ -142,7 +142,7 @@ class BookmarkService {
 					$testUrl = $this->urlNormalizer->normalize($url);
 					$data = $this->linkExplorer->get($testUrl);
 				} else {
-					// if no allowed protocol is given, evaluate https and https
+					// if no allowed protocol is given, evaluate https and http
 					foreach (['https://', 'http://', ''] as $protocol) {
 						$testUrl = $protocol . $url;
 						$data = $this->linkExplorer->get($testUrl);
@@ -154,11 +154,12 @@ class BookmarkService {
 				}
 			}
 
-			if (!preg_match(self::PROTOCOLS_REGEX, $url)) {
-				throw new UrlParseError();
-			}
-
 			$url = $data['url'] ?? $url;
+			if (!preg_match(self::PROTOCOLS_REGEX, $url)) {
+				$url = 'http://' . $url;
+			}
+			$url = $this->urlNormalizer->normalize($url);
+
 			$title = $title ?? $data['basic']['title'] ?? $url;
 			$title = trim($title);
 			$description = $description ?? $data['basic']['description'] ?? '';
