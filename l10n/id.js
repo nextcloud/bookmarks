@@ -69,6 +69,7 @@ OC.L10N.register(
     "Folder" : "Folder",
     "Root Folder" : "Folder Akar",
     "Save" : "Simpan",
+    "What's new?" : "Apa yang baru?",
     "Failed to find existing bookmark" : "Gagal mencari markah eksis",
     "Failed to create bookmark" : "Gagal membuat markah",
     "Failed to save bookmark" : "Gagal menyimpan markah",
