@@ -42,7 +42,7 @@
     "vue-router": "^3.6.5",
     "vue-simple-progress": "^1.1.1",
     "vue-template-compiler": "^2.6.14",
-    "vuex": "^3.6.2",
+    "vuex": "^4.1.0",
     "vuex-router-sync": "^5.0.0"
   },
   "license": "AGPL-3.0-or-later",
