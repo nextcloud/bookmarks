@@ -191,8 +191,8 @@
     "Previews" : "Anteprime",
     "Screeenly" : "Screeenly",
     "You can either sign up for free at screeenly.com or setup your own server." : "Puoi registrarti gratuitamente su screeenly.com o configurare il tuo server.",
-    "Screeenly API URL" : "URL API di Screenly",
-    "Screeenly API key" : "Chiave API di Screenly",
+    "Screeenly API URL" : "URL API di Screeenly",
+    "Screeenly API key" : "Chiave API di Screeenly",
     "ScreenshotMachine" : "ScreenshotMachine",
     "ScreenshotMachine API key" : "Chiave API ScreenshotMachine",
     "Webshot" : "Webshot",
@@ -232,7 +232,7 @@
     "Failed to update share {shareId}" : "Aggiornamento della condivisione {shareId} non riuscito",
     "Failed to delete share {shareId}" : "Eliminazione della condivisione {shareId} non riuscita",
     "Create bookmarks for mentioned links" : "Crea segnalibri per i collegamenti menzionati",
-    "No links found in this message" : "Nessun link trovato in questo messaggio",
+    "No links found in this message" : "Nessun collegamento trovato in questo messaggio",
     "Bookmarks feed" : "Fonte dei segnalibri"
 },"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }
