@@ -109,7 +109,7 @@ class BookmarkMapper extends QBMapper {
 			->select('*')
 			->from('bookmarks')
 			->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')))
-			->andWhere($qb->expr()->eq('url', $qb->createParameter('url')));
+			->andWhere($qb->expr()->eq('url_hash', $qb->createParameter('url_hash')));
 		return $qb;
 	}
 
@@ -132,7 +132,7 @@ class BookmarkMapper extends QBMapper {
 		$qb = $this->findByUrlQuery;
 		$qb->setParameters([
 			'user_id' => $userId,
-			'url' => $url
+			'url_hash' => md5($url),
 		]);
 		return $this->findEntity($qb);
 	}
@@ -399,7 +399,7 @@ class BookmarkMapper extends QBMapper {
 	private function _filterUrl(IQueryBuilder $qb, QueryParameters $params): void {
 		if (($url = $params->getUrl()) !== null) {
 			$normalized = $this->urlNormalizer->normalize($url);
-			$qb->andWhere($qb->expr()->eq('b.url', $qb->createPositionalParameter($normalized)));
+			$qb->andWhere($qb->expr()->eq('b.url_hash', $qb->createPositionalParameter(md5($normalized))));
 		}
 	}
 
@@ -844,6 +844,7 @@ class BookmarkMapper extends QBMapper {
 		if ($entity->isWebLink()) {
 			$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		}
+		$entity->setUrlHash(md5($entity->getUrl()));
 
 		if ($entity->getAdded() === null) {
 			$entity->setAdded(time());

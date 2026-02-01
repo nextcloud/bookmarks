@@ -32,6 +32,8 @@ use OCP\AppFramework\Db\Entity;
  * @method setArchivedFile(int $fileId)
  * @method getUserId(): string
  * @method setUserId(string $userId)
+ * @method setUrlHash(string $urlHash)
+ * @method getUrlHash():string
  */
 class Bookmark extends Entity {
 	protected $url;
@@ -47,9 +49,10 @@ class Bookmark extends Entity {
 	protected $archivedFile;
 	protected $textContent;
 	protected $htmlContent;
+	protected $urlHash;
 
-	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id', 'text_content', 'html_content'];
-	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId', 'textContent','htmlContent'];
+	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id', 'text_content', 'html_content', 'url_hash'];
+	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId', 'textContent','htmlContent', 'urlHash'];
 
 	public static function fromArray($props): self {
 		$bookmark = new Bookmark();
@@ -75,6 +78,7 @@ class Bookmark extends Entity {
 		$this->addType('lastPreview', 'integer');
 		$this->addType('available', 'boolean');
 		$this->addType('archivedFile', 'integer');
+		$this->addType('urlHash', 'string');
 	}
 
 	public function toArray(): array {
@@ -87,6 +91,9 @@ class Bookmark extends Entity {
 					$array['url'] = '';
 				}
 				$array['target'] = $this->url;
+				continue;
+			}
+			if ($field === 'urlHash') {
 				continue;
 			}
 			$array[$field] = $this->{'get' . $field}();
