@@ -34,7 +34,7 @@ use OCP\IDBConnection;
 class HtmlImporter {
 	// Taken from https://stackoverflow.com/questions/33126595/what-is-the-actual-range-of-a-mysql-int-column-in-this-situation
 	public const DB_MAX_INT = 2147483647;
-	
+
 	private int $transactionCounter = 0;
 
 
