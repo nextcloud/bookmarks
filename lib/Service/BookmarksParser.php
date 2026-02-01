@@ -73,12 +73,7 @@ class BookmarksParser {
 	 * @var bool
 	 */
 	private $ignorePersonalToolbarFolder = true;
-	/**
-	 * If tags should be included
-	 *
-	 * @var bool
-	 */
-	private $includeFolderTags = true;
+
 
 	/**
 	 * Constructor
@@ -105,14 +100,13 @@ class BookmarksParser {
 	 *
 	 * @param string $input A Netscape Bookmark File Format HTML string
 	 * @param bool $ignorePersonalToolbarFolder If we should ignore the personal toolbar bookmark folder
-	 * @param bool $includeFolderTags If we should include folter tags
 	 * @param bool $useDateTimeObjects If we should return \DateTime objects
 	 *
 	 * @return mixed A PHP value
 	 *
 	 * @throws HtmlParseError
 	 */
-	public function parse($input, $ignorePersonalToolbarFolder = true, $includeFolderTags = true, $useDateTimeObjects = true) {
+	public function parse($input, $ignorePersonalToolbarFolder = true, $useDateTimeObjects = true) {
 		$document = new DOMDocument();
 		$document->preserveWhiteSpace = false;
 		if (empty($input)) {
@@ -123,7 +117,6 @@ class BookmarksParser {
 		}
 		$this->xpath = new DOMXPath($document);
 		$this->ignorePersonalToolbarFolder = $ignorePersonalToolbarFolder;
-		$this->includeFolderTags = $includeFolderTags;
 		$this->useDateTimeObjects = $useDateTimeObjects;
 
 		// set root folder
@@ -217,12 +210,6 @@ class BookmarksParser {
 			'tags' => [],
 		];
 		$bookmark = array_merge($bookmark, $this->getAttributes($node));
-		if ($this->includeFolderTags) {
-			$tags = $this->getCurrentFolderTags();
-			if (!empty($tags)) {
-				$bookmark['tags'] = $tags;
-			}
-		}
 		$this->currentFolder['bookmarks'][] = & $bookmark;
 		$this->bookmarks[] = & $bookmark;
 	}
@@ -288,20 +275,5 @@ class BookmarksParser {
 			$attributes['tags'] = explode(',', $attributes['tags']);
 		}
 		return $attributes;
-	}
-
-	/**
-	 * Get current folder tags
-	 *
-	 * @return array
-	 */
-	private function getCurrentFolderTags(): array {
-		$tags = [];
-		array_walk_recursive($this->currentFolder, static function ($tag, $key) use (&$tags) {
-			if ($key === 'name') {
-				$tags[] = $tag;
-			}
-		});
-		return $tags;
 	}
 }
