@@ -160,7 +160,7 @@ class Version000014000Date20181002094721 extends SimpleMigrationStep {
 	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 		$query = $this->db->getQueryBuilder();
 		$query->select('id', 'user_id')->from('bookmarks');
-		$bookmarks = $query->execute()->fetchAll();
+		$bookmarks = $query->executeQuery()->fetchAll();
 		foreach ($bookmarks as $i => $bookmark) {
 			$query = $this->db->getQueryBuilder();
 			$query->select('bookmark_id')
@@ -168,7 +168,7 @@ class Version000014000Date20181002094721 extends SimpleMigrationStep {
 				->where(
 					$query->expr()->eq('bookmark_id', $query->createPositionalParameter($bookmark['id']))
 				);
-			if (count($query->execute()->fetchAll()) > 0) {
+			if (count($query->executeQuery()->fetchAll()) > 0) {
 				continue;
 			}
 			$query = $this->db->getQueryBuilder();
@@ -178,7 +178,7 @@ class Version000014000Date20181002094721 extends SimpleMigrationStep {
 					'folder_id' => $query->createNamedParameter(-1),
 					'bookmark_id' => $query->createNamedParameter($bookmark['id']),
 				]);
-			$query->execute();
+			$query->executeStatement();
 		}
 	}
 }

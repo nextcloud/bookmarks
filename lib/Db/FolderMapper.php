@@ -80,6 +80,7 @@ class FolderMapper extends QBMapper {
 	 * @param string $userId
 	 *
 	 * @return Folder
+	 * @throws Exception
 	 */
 	public function findRootFolder(string $userId): Folder {
 		$qb = $this->db->getQueryBuilder();
@@ -105,7 +106,7 @@ class FolderMapper extends QBMapper {
 					'user_id' => $qb->createPositionalParameter($userId),
 					'folder_id' => $qb->createPositionalParameter($rootFolder->getId(), IQueryBuilder::PARAM_INT),
 				])
-				->execute();
+				->executeStatement();
 		} catch (MultipleObjectsReturnedException $e) {
 			$rootFolders = $this->findEntities($qb);
 			return $rootFolders[0];

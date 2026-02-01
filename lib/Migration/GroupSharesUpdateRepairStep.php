@@ -88,7 +88,7 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 		$qb->select('s.id', 's.participant', 's.folder_id', 's.owner')
 			->from('bookmarks_shares', 's')
 			->where($qb->expr()->eq('s.type', $qb->createPositionalParameter(IShare::TYPE_GROUP)));
-		$groupShares = $qb->execute();
+		$groupShares = $qb->executeQuery();
 
 		while ($groupShare = $groupShares->fetch()) {
 			// find users in share
@@ -97,7 +97,7 @@ class GroupSharesUpdateRepairStep implements IRepairStep {
 				->from('bookmarks_shared_folders', 'sf')
 				->join('sf', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('t.shared_folder_id', 'sf.id'))
 				->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($groupShare['id'])));
-			$usersInShare = $qb->execute()->fetchAll(PDO::FETCH_COLUMN);
+			$usersInShare = $qb->executeQuery()->fetchAll(PDO::FETCH_COLUMN);
 
 			$group = $this->groupManager->get($groupShare['participant']);
 			if ($group === null) {

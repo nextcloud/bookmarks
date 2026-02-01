@@ -141,17 +141,19 @@ class BookmarkMapper extends QBMapper {
 	 * @param string $userId
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
+	 * @throws Exception
 	 */
 	public function deleteAll(string $userId): void {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('b.id')
 			->from('bookmarks', 'b')
 			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
-		$orphanedBookmarks = $qb->execute();
-		while ($bookmark = $orphanedBookmarks->fetchColumn()) {
+		$result = $qb->executeQuery();
+		while ($bookmark = $result->fetchOne()) {
 			$bm = $this->find($bookmark);
 			$this->delete($bm);
 		}
+		$result->closeCursor();
 	}
 
 	/**
@@ -804,7 +806,7 @@ class BookmarkMapper extends QBMapper {
 
 		$qb = $this->deleteTagsQuery;
 		$qb->setParameter('id', $id);
-		$qb->execute();
+		$qb->executeStatement();
 
 		return $returnedEntity;
 	}
@@ -890,10 +892,7 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * @param $userId
-	 * @param string $userId
-	 *
-	 * @return int
+	 * @throws Exception
 	 */
 	public function countBookmarksOfUser(string $userId) : int {
 		$qb = $this->db->getQueryBuilder();
@@ -901,7 +900,10 @@ class BookmarkMapper extends QBMapper {
 			->select($qb->func()->count('id'))
 			->from('bookmarks')
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
-		return $qb->execute()->fetch(PDO::FETCH_COLUMN);
+		$result = $qb->executeQuery();
+		$count = $result->fetchOne();
+		$result->closeCursor();
+		return $count;
 	}
 
 	/**

@@ -40,7 +40,7 @@ class Version010002000Date20220319124721 extends SimpleMigrationStep {
 	 */
 	public function preSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 		$qb = $this->db->getQueryBuilder();
-		$this->rootFolders = $qb->select('user_id', 'locked')->from('bookmarks_root_folders')->execute()->fetchAll();
+		$this->rootFolders = $qb->select('user_id', 'locked')->from('bookmarks_root_folders')->executeQuery()->fetchAll();
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Version010002000Date20220319124721 extends SimpleMigrationStep {
 			$qb->update('bookmarks_root_folders')
 				->set('locked_time', $qb->createPositionalParameter(new DateTime(), Types::DATETIME))
 				->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($rootFolder['user_id'])))
-				->execute();
+				->executeStatement();
 		}
 	}
 }

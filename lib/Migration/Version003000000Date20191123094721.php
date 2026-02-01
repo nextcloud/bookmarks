@@ -190,14 +190,14 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->selectDistinct('user_id')->from('bookmarks');
-		$usersQuery = $qb->execute();
-		while ($user = $usersQuery->fetchColumn()) {
+		$usersQuery = $qb->executeQuery();
+		while ($user = $usersQuery->fetch(\PDO::FETCH_COLUMN)) {
 			$qb = $this->db->getQueryBuilder();
 			$rootFolderId = $qb->select('folder_id')
 				->from('bookmarks_root_folders')
 				->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($user)))
-				->execute()
-				->fetchColumn();
+				->executeQuery()
+				->fetchOne();
 			if ($rootFolderId === false) {
 				// Create root folders
 				$qb = $this->db->getQueryBuilder();
@@ -205,7 +205,7 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 					'title' => $qb->createPositionalParameter(''),
 					'user_id' => $qb->createPositionalParameter($user),
 				]);
-				$qb->execute();
+				$qb->executeStatement();
 
 				$rootFolderId = $qb->getLastInsertId();
 				$qb = $this->db->getQueryBuilder();
@@ -213,14 +213,14 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 					'folder_id' => $qb->createPositionalParameter($rootFolderId, IQueryBuilder::PARAM_INT),
 					'user_id' => $qb->createPositionalParameter($user),
 				]);
-				$qb->execute();
+				$qb->executeStatement();
 			}
 
 			$qb = $this->db->getQueryBuilder();
 			$qb->select('id', 'parent_folder', 'index')
 				->from('bookmarks_folders')
 				->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($user)));
-			$foldersQuery = $qb->execute();
+			$foldersQuery = $qb->executeQuery();
 			while ($folder = $foldersQuery->fetch()) {
 				if ((string)$folder['id'] === (string)$rootFolderId || $folder['parent_folder'] === null) {
 					continue;
@@ -232,8 +232,8 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 						$qb->expr()->eq('id', $qb->createPositionalParameter($folder['id'], IQueryBuilder::PARAM_INT)),
 						$qb->expr()->eq('type', $qb->createPositionalParameter('folder'))
 					)
-					->execute()
-					->fetchColumn();
+					->executeQuery()
+					->fetchOne();
 				if ($folderId === false) {
 					$qb = $this->db->getQueryBuilder();
 					$qb->insert('bookmarks_tree')
@@ -242,7 +242,7 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 							'type' => $qb->createPositionalParameter('folder'),
 							'parent_folder' => $qb->createPositionalParameter(($folder['parent_folder'] === '-1' || $folder['parent_folder'] === -1) ? $rootFolderId : $folder['parent_folder'], IQueryBuilder::PARAM_INT),
 							'index' => $qb->createPositionalParameter($folder['index'], IQueryBuilder::PARAM_INT),
-						])->execute();
+						])->executeStatement();
 				}
 			}
 			$qb = $this->db->getQueryBuilder();
@@ -250,7 +250,7 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 				->from('bookmarks_folders_bookmarks', 'f')
 				->leftJoin('f', 'bookmarks', 'b', $qb->expr()->eq('b.id', 'f.bookmark_id'))
 				->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($user)));
-			$bookmarksQuery = $qb->execute();
+			$bookmarksQuery = $qb->executeQuery();
 			while ($bookmark = $bookmarksQuery->fetch()) {
 				$qb = $this->db->getQueryBuilder();
 				$parentFolder = ($bookmark['folder_id'] === '-1' || $bookmark['folder_id'] === -1) ? $rootFolderId : $bookmark['folder_id'];
@@ -261,8 +261,8 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 						$qb->expr()->eq('type', $qb->createPositionalParameter('bookmark')),
 						$qb->expr()->eq('parent_folder', $qb->createPositionalParameter($parentFolder, IQueryBuilder::PARAM_INT))
 					)
-					->execute()
-					->fetchColumn();
+					->executeQuery()
+					->fetchOne();
 				if ($bookmarkId === false) {
 					$qb = $this->db->getQueryBuilder();
 					$qb->insert('bookmarks_tree')->values([
@@ -270,7 +270,7 @@ class Version003000000Date20191123094721 extends SimpleMigrationStep {
 						'type' => $qb->createPositionalParameter('bookmark'),
 						'parent_folder' => $qb->createPositionalParameter($parentFolder, IQueryBuilder::PARAM_INT),
 						'index' => $qb->createPositionalParameter($bookmark['index']),
-					])->execute();
+					])->executeStatement();
 				}
 			}
 		}

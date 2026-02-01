@@ -11,6 +11,7 @@ namespace OCA\Bookmarks\Service;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\Types;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\DB\Exception;
 use OCP\IDBConnection;
 
 class LockManager {
@@ -43,12 +44,13 @@ class LockManager {
 		$qb->update('bookmarks_root_folders')
 			->set('locked_time', $qb->createNamedParameter($value, Types::DATETIME))
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
-			->execute();
+			->executeStatement();
 	}
 
 	/**
 	 * @param string $userId
 	 * @return bool
+	 * @throws Exception
 	 */
 	public function getLock(string $userId): bool {
 		$this->folderMapper->findRootFolder($userId);
@@ -56,7 +58,7 @@ class LockManager {
 		$lockedAt = $qb->select('locked_time')
 			->from('bookmarks_root_folders')
 			->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)))
-			->execute()
+			->executeQuery()
 			->fetch(\PDO::FETCH_COLUMN);
 		if ($lockedAt === null) {
 			return false;

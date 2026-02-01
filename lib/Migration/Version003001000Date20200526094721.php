@@ -85,7 +85,7 @@ class Version003001000Date20200526094721 extends SimpleMigrationStep {
 		$sharedFolders = $qb->select('sf.share_id', 'sf.id', 's.folder_id', 'sf.user_id')
 			->from('bookmarks_shared_folders', 'sf')
 			->leftJoin('sf', 'bookmarks_shares', 's', $qb->expr()->eq('sf.share_id', 's.id'))
-			->execute();
+			->executeQuery();
 		while ($sharedFolder = $sharedFolders->fetch()) {
 			// Find a shared folder with folder_id already set. This is gonna be the only one we will have for this folder from now on.
 			$qb = $this->db->getQueryBuilder();
@@ -93,7 +93,7 @@ class Version003001000Date20200526094721 extends SimpleMigrationStep {
 				->from('bookmarks_shared_folders', 'sf')
 				->where($qb->expr()->eq('sf.folder_id', $qb->createPositionalParameter($sharedFolder['folder_id'])))
 				->andWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($sharedFolder['user_id'])))
-				->execute()
+				->executeQuery()
 				->fetch();
 			if (!$canonicalSharedFolder) {
 				// If there's no canonical shared folder, we make this one it.
@@ -101,14 +101,14 @@ class Version003001000Date20200526094721 extends SimpleMigrationStep {
 				$qb->update('bookmarks_shared_folders')
 					->set('folder_id', $qb->createPositionalParameter($sharedFolder['folder_id']))
 					->where($qb->expr()->eq('id', $qb->createPositionalParameter($sharedFolder['id'])))
-					->execute();
+					->executeStatement();
 				$canonicalSharedFolder = $sharedFolder;
 			} else {
 				// ...otherwise delete this shared folder.
 				$qb = $this->db->getQueryBuilder();
 				$qb->delete('bookmarks_shared_folders')
 					->where($qb->expr()->eq('id', $qb->createPositionalParameter($sharedFolder['id'])))
-					->execute();
+					->executeStatement();
 			}
 
 			// Insert into pivot table
@@ -118,7 +118,7 @@ class Version003001000Date20200526094721 extends SimpleMigrationStep {
 					'shared_folder_id' => $qb->createPositionalParameter($canonicalSharedFolder['id']),
 					'share_id' => $qb->createPositionalParameter($sharedFolder['share_id'])
 				])
-				->execute();
+				->executeStatement();
 		}
 	}
 }
