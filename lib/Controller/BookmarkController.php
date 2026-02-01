@@ -170,7 +170,7 @@ class BookmarkController extends ApiController {
 		if (!isset($array['tags'])) {
 			$array['tags'] = $this->tagMapper->findByBookmark($bookmark->getId());
 		}
-		if ($array['archivedFile'] !== 0) {
+		if ($array['archivedFile'] !== 0 && $this->authorizer->getUserId() === $bookmark->getUserId()) {
 			$results = $this->rootFolder->getById($array['archivedFile']);
 			if (count($results)) {
 				$array['archivedFilePath'] = $results[0]->getPath();
