@@ -104,7 +104,7 @@ class HtmlImporter {
 			}
 		}
 
-		$this->bookmarksParser->parse($content, false);
+		$this->bookmarksParser->parse($content, false, useDateTimeObjects: false);
 
 		// Disable invalidation, since we're going to add a bunch of new data to the tree at a single point
 		$this->hashManager->setInvalidationEnabled(false);
@@ -115,9 +115,11 @@ class HtmlImporter {
 			foreach ($this->bookmarksParser->currentFolder['children'] as $folder) {
 				$imported[] = $this->importFolder($userId, $folder, $rootFolder->getId(), $errors);
 			}
+			// Might not start at 0 because this folder already exists
+			$index = $this->treeMapper->countChildren($rootFolder->getId());
 			foreach ($this->bookmarksParser->currentFolder['bookmarks'] as $bookmark) {
 				try {
-					$bm = $this->importBookmark($userId, $rootFolder->getId(), $bookmark);
+					$bm = $this->importBookmark($userId, $rootFolder->getId(), $bookmark, $index++);
 				} catch (UrlParseError $e) {
 					$errors[] = 'Failed to parse URL: ' . $bookmark['href'];
 					continue;
@@ -190,8 +192,8 @@ class HtmlImporter {
 		$bm->setTitle($bookmark['title']);
 		$bm->setDescription($bookmark['description']);
 		if (isset($bookmark['add_date'])) {
-			if ($bookmark['add_date']->getTimestamp() < self::DB_MAX_INT && $bookmark['add_date']->getTimestamp() > -self::DB_MAX_INT) {
-				$bm->setAdded($bookmark['add_date']->getTimestamp());
+			if ($bookmark['add_date'] < self::DB_MAX_INT && $bookmark['add_date'] > -self::DB_MAX_INT) {
+				$bm->setAdded($bookmark['add_date']);
 			} else {
 				$bm->setAdded(time());
 			}

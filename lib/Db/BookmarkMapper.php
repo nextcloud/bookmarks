@@ -853,16 +853,15 @@ class BookmarkMapper extends QBMapper {
 		$entity->setClickcount(0);
 
 		try {
-			$this->findByUrl($entity->getUserId(), $entity->getUrl());
-		} catch (DoesNotExistException $e) {
 			parent::insert($entity);
 			$this->eventDispatcher->dispatchTyped(new InsertEvent('bookmark', $entity->getId()));
 			return $entity;
-		} catch (MultipleObjectsReturnedException $e) {
-			// noop
+		} catch (Exception $e) {
+			if ($e->getReason() === Exception::REASON_UNIQUE_CONSTRAINT_VIOLATION) {
+				throw new AlreadyExistsError('A bookmark with this URL already exists');
+			}
+			throw $e;
 		}
-
-		throw new AlreadyExistsError('A bookmark with this URL already exists');
 	}
 
 	/**
@@ -877,9 +876,13 @@ class BookmarkMapper extends QBMapper {
 		try {
 			$newEntity = $this->insert($entity);
 		} catch (AlreadyExistsError $e) {
-			$bookmark = $this->findByUrl($entity->getUserId(), $entity->getUrl());
-			$entity->setId($bookmark->getId());
-			$newEntity = $this->update($entity);
+			try {
+				$bookmark = $this->findByUrl($entity->getUserId(), $entity->getUrl());
+				$entity->setId($bookmark->getId());
+				$newEntity = $this->update($entity);
+			} catch (DoesNotExistException $e) {
+				$newEntity = $this->insert($entity);
+			}
 		}
 
 		return $newEntity;
