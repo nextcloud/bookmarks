@@ -744,7 +744,7 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => ['Could not import all bookmarks: User limit Exceeded']], Http::STATUS_BAD_REQUEST);
 		} catch (AlreadyExistsError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Could not import all bookmarks: Already exists']], Http::STATUS_BAD_REQUEST);
-		} catch (UnsupportedOperation $e) {
+		} catch (UnsupportedOperation|\OCP\DB\Exception $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Internal server error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		if (count($result['errors']) !== 0) {
