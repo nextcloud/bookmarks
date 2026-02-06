@@ -129,7 +129,7 @@ class BackgroundJobTest extends TestCase {
 		// generate cached previews
 		$this->previewsJob->setId(1);
 		$this->previewsJob->setLastRun(0);
-		$this->previewsJob->execute($this->jobList);
+		$this->previewsJob->start($this->jobList);
 
 		$folder = $this->appData->getFolder('cache');
 		$newCacheSize = count($folder->getDirectoryListing());
@@ -151,7 +151,7 @@ class BackgroundJobTest extends TestCase {
 		// generate cached previews
 		$this->previewsJob->setId(1);
 		$this->previewsJob->setLastRun(0);
-		$this->previewsJob->execute($this->jobList);
+		$this->previewsJob->start($this->jobList);
 
 		$folder = $this->appData->getFolder('cache');
 		$cacheSize = count($folder->getDirectoryListing());
@@ -169,7 +169,7 @@ class BackgroundJobTest extends TestCase {
 		// run GC job
 		$this->gcJob->setId(3);
 		$this->gcJob->setLastRun(0);
-		$this->gcJob->execute($this->jobList);
+		$this->gcJob->start($this->jobList);
 
 		$newCacheSize = count($folder->getDirectoryListing());
 		// should have cleaned up the pending cache entries
