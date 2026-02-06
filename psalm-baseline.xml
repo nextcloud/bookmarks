@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="6.13.1@1e3b7f0a8ab32b23197b91107adc0a7ed8a05b51">
+<files psalm-version="6.14.2@bbd217fc98c0daa0a13aea2a7f119d03ba3fc9a0">
   <file src="lib/AppInfo/Application.php">
     <InvalidArgument>
       <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
@@ -25,53 +25,7 @@
       <code><![CDATA[$this->folderController->getFolders()->getData()]]></code>
     </UndefinedMethod>
   </file>
-  <file src="lib/Db/BookmarkMapper.php">
-    <ImplicitToStringCast>
-      <code><![CDATA[$baseCase->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)]]></code>
-      <code><![CDATA[$baseCase->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)]]></code>
-      <code><![CDATA[$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
-      <code><![CDATA[$baseCase->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
-      <code><![CDATA[$qb->createFunction($qb->getColumnName($col))]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
-      <code><![CDATA[$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
-      <code><![CDATA[$recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE)]]></code>
-      <code><![CDATA[$secondRecursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER)]]></code>
-      <code><![CDATA[$tagsCol]]></code>
-    </ImplicitToStringCast>
-    <InvalidDocblock>
-      <code><![CDATA[public function countBookmarksOfUser(string $userId) : int {]]></code>
-    </InvalidDocblock>
-  </file>
-  <file src="lib/Db/BookmarkWithTagsAndParent.php">
-    <InvalidDocblock>
-      <code><![CDATA[BookmarkWithTagsAndParent]]></code>
-    </InvalidDocblock>
-  </file>
-  <file src="lib/Db/PublicFolderMapper.php">
-    <InvalidScalarArgument>
-      <code><![CDATA[$entity->getId()]]></code>
-      <code><![CDATA[$entity->getId()]]></code>
-    </InvalidScalarArgument>
-  </file>
-  <file src="lib/Db/TagMapper.php">
-    <ImplicitToStringCast>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-    </ImplicitToStringCast>
-  </file>
   <file src="lib/Db/TreeMapper.php">
-    <ImplicitToStringCast>
-      <code><![CDATA[$qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)]]></code>
-    </ImplicitToStringCast>
     <InvalidReturnStatement>
       <code><![CDATA[$this->bookmarkMapper->findAll($userId, $params)]]></code>
     </InvalidReturnStatement>
@@ -133,19 +87,6 @@
       <code><![CDATA[Request]]></code>
     </UndefinedClass>
   </file>
-  <file src="lib/Migration/OrphanedTreeItemsRepairStep.php">
-    <ImplicitToStringCast>
-      <code><![CDATA[$qb->createPositionalParameter('bookmark')]]></code>
-    </ImplicitToStringCast>
-  </file>
-  <file src="lib/Service/Authorizer.php">
-    <NoInterfaceProperties>
-      <code><![CDATA[$request->server]]></code>
-    </NoInterfaceProperties>
-    <RedundantCondition>
-      <code><![CDATA[$auth !== null]]></code>
-    </RedundantCondition>
-  </file>
   <file src="lib/Service/BackupManager.php">
     <UndefinedDocblockClass>
       <code><![CDATA[\OC\User\NoUserException]]></code>
@@ -160,11 +101,6 @@
       <code><![CDATA[$bookmark]]></code>
       <code><![CDATA[$folder]]></code>
     </NoValue>
-  </file>
-  <file src="lib/Service/BookmarksParser.php">
-    <InvalidScalarArgument>
-      <code><![CDATA[(int)($attributes['add_date']) / 1000]]></code>
-    </InvalidScalarArgument>
   </file>
   <file src="lib/Service/CirclesService.php">
     <UndefinedClass>
@@ -181,11 +117,6 @@
       <code><![CDATA[$resp]]></code>
       <code><![CDATA[$resp]]></code>
     </UndefinedDocblockClass>
-  </file>
-  <file src="lib/Service/FaviconPreviewer.php">
-    <TypeDoesNotContainNull>
-      <code><![CDATA[!isset($contentType)]]></code>
-    </TypeDoesNotContainNull>
   </file>
   <file src="lib/Service/FolderService.php">
     <InvalidReturnStatement>
@@ -205,10 +136,5 @@
     <UndefinedInterfaceMethod>
       <code><![CDATA[setMinimumImageDimensions]]></code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="lib/Service/Previewers/DefaultBookmarkPreviewer.php">
-    <TypeDoesNotContainNull>
-      <code><![CDATA[!isset($contentType)]]></code>
-    </TypeDoesNotContainNull>
   </file>
 </files>

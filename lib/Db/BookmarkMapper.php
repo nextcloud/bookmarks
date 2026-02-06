@@ -902,8 +902,11 @@ class BookmarkMapper extends QBMapper {
 			->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
 		$result = $qb->executeQuery();
 		$count = $result->fetchOne();
+		if ($count === false) {
+			$count = 0;
+		}
 		$result->closeCursor();
-		return $count;
+		return (int)$count;
 	}
 
 	/**
