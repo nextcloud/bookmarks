@@ -30,12 +30,14 @@ OC.L10N.register(
     "Owner" : "เจ้าของ",
     "Sharing" : "การแชร์",
     "Share link" : "แชร์ลิงก์",
+    "Create public link" : "สร้างลิงค์สาธารณะ",
     "Allow editing" : "อนุญาตให้แก้ไข",
     "Allow resharing" : "อนุญาตให้แชร์ซ้ำ",
     "Failed to save settings" : "ไม่สามารถบันทึกการตั้งค่าได้",
     "Failed to load settings" : "ไม่สามารถโหลดการตั้งค่าได้",
     "Privacy" : "ความเป็นส่วนตัว",
     "Folder" : "โฟลเดอร์",
-    "Save" : "บันทึก"
+    "Save" : "บันทึก",
+    "What's new?" : "มีอะไรใหม่บ้าง?"
 },
 "nplurals=1; plural=0;");
