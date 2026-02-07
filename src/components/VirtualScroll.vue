@@ -43,6 +43,9 @@ export default {
 		fetching() {
 			return this.$store.state.loading.bookmarks
 		},
+		sidebar() {
+			return this.$store.state.sidebar
+		},
 	},
 	watch: {
 		newBookmark() {
@@ -60,6 +63,11 @@ export default {
 		itemWidth() {
 			this.recalculateVisibleItems()
 		},
+		sidebar() {
+			this.$nextTick(() => {
+				this.onScroll()
+			})
+		},
 	},
 	mounted() {
 		this.$nextTick(() => {
@@ -73,6 +81,8 @@ export default {
 	},
 	methods: {
 		onViewModeChange() {
+			this.viewport.width = this.$el.clientWidth
+			this.viewport.height = this.$el.clientHeight
 			if (this.viewMode === 'grid') {
 				this.itemHeight = GRID_ITEM_HEIGHT
 				this.itemWidth = GRID_ITEM_WIDTH
@@ -158,7 +168,7 @@ export default {
 								style: {
 									position: 'absolute',
 									top: `${x * this.itemHeight}px`,
-									left: `${y * this.itemWidth + 10}px`,
+									left: `${y * this.itemWidth + (itemsPerRow === 1 ? 0 : 10)}px`,
 									height: `${this.itemHeight}px`,
 									width: `${this.itemWidth}px`,
 								},
