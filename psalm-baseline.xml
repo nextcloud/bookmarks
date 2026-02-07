@@ -20,6 +20,7 @@
     <UndefinedMethod>
       <code><![CDATA[$this->bookmarkController->countArchived()->getData()]]></code>
       <code><![CDATA[$this->bookmarkController->countBookmarks(-1)->getData()]]></code>
+      <code><![CDATA[$this->bookmarkController->countDeleted()->getData()]]></code>
       <code><![CDATA[$this->bookmarkController->countDuplicated()->getData()]]></code>
       <code><![CDATA[$this->bookmarkController->countUnavailable()->getData()]]></code>
       <code><![CDATA[$this->folderController->getFolders()->getData()]]></code>

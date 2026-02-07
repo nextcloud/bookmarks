@@ -41,7 +41,7 @@
 					@option:selected="onAddShare"
 					@search="onParticipantSearch" />
 			</div>
-			<div class="share" v-if="publicLinksAllowed">
+			<div v-if="publicLinksAllowed" class="share">
 				<LinkIcon :size="20" :class="{'share__avatar': true, active: publicLink }" />
 				<h3 class="share__title">
 					{{ t('bookmarks', 'Share link') }}
