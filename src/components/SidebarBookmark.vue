@@ -193,7 +193,7 @@ export default {
 		},
 		archivedFile() {
 			if (this.bookmark.archivedFile) {
-				return generateUrl(`/apps/files/?fileid=${this.bookmark.archivedFile}`)
+				return generateUrl(`/f/${this.bookmark.archivedFile}`)
 			}
 			return null
 		},
