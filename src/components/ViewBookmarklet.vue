@@ -190,7 +190,7 @@ figure[class^=icon-] {
 }
 
 .bookmarklet label :last-child {
-	margin-left: 10px;
+	margin-inline-start: 10px;
 }
 
 .bookmarklet input {

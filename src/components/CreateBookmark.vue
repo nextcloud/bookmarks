@@ -68,7 +68,7 @@ export default {
 	background-size: cover;
 	position: absolute;
 	top: 20%;
-	left: calc(45% - 50px);
+	inset-inline-start: calc(45% - 50px);
 	transform: scale(4);
 	transform-origin: top left;
 }

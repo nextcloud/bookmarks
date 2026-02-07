@@ -61,7 +61,7 @@ export default {
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius-pill);
 	padding: 5px 10px;
-	margin-right: 3px;
+	margin-inline-end: 3px;
 	background-color: var(--color-main-background);
 	cursor: pointer;
 }

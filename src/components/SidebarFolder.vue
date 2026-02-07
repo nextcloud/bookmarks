@@ -339,12 +339,12 @@ export default {
 	}
 
 	.share__privs > * {
-		padding-right: 5px;
+		padding-inline-end: 5px;
 	}
 
 	.share__title {
 		flex: 1;
-		padding-left: 10px;
+		padding-inline-start: 10px;
 		margin: 0 !important;
 	}
 

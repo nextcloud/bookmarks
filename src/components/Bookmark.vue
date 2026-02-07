@@ -454,14 +454,14 @@ export default {
 
 .item--gridview .bookmark__title {
 	min-width: auto;
-	margin-left: 15px;
+	margin-inline-start: 15px;
 }
 
 .item--gridview .bookmark__icon {
 	background-size: cover;
 	position: absolute;
 	top: 20%;
-	left: calc(45% - 20px);
+	inset-inline-start: calc(45% - 20px);
 	transform: scale(2);
 	transform-origin: top left;
 	margin: 0 5px 0 8px;

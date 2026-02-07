@@ -305,7 +305,7 @@ export default {
 
 .sidebar .details__line > * {
 	flex-grow: 0;
-	margin-right: 10px;
+	margin-inline-end: 10px;
 }
 
 .sidebar .details__line > :nth-child(2) {
@@ -338,7 +338,7 @@ export default {
 	border: 1px solid var(--color-border);
 	padding: 2px 10px;
 	border-radius: var(--border-radius-large);
-	margin-right: 5px;
+	margin-inline-end: 5px;
 	cursor: pointer;
 	display: flex;
 }

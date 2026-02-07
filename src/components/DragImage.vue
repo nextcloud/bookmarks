@@ -69,6 +69,6 @@ export default {
 	flex-grow: 1;
 	height: 1.5em;
 	display: inline-block;
-	margin-left: 3px;
+	margin-inline-start: 3px;
 }
 </style>
