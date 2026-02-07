@@ -72,10 +72,6 @@
 							:key="'nosort' + item.type + item.id"
 							:bookmark="getBookmark(item.id)" />
 					</template>
-					<template v-if="!children.length">
-						<NoBookmarks v-if="!loading && (allBookmarksCount > 0 || isPublic)" />
-						<FirstRun v-else-if="!loading" />
-					</template>
 				</template>
 				<!-- FOLDER VIEW WITH NORMAL SORTING -->
 				<template v-else-if="subFolders.length !== 0 || bookmarks.length !== 0">
@@ -87,10 +83,10 @@
 							:key="'nosort' + 'bookmark' + bookmark.id"
 							:bookmark="bookmark" />
 					</template>
-					<template v-if="!subFolders.length && !bookmarks.length">
-						<NoBookmarks v-if="!loading && (allBookmarksCount > 0 || isPublic)" />
-						<FirstRun v-else-if="!loading" />
-					</template>
+				</template>
+				<template v-else-if="!subFolders.length && !bookmarks.length && !children.length">
+					<NoBookmarks v-if="!loading && (allBookmarksCount > 0 || isPublic)" />
+					<FirstRun v-else-if="!loading" />
 				</template>
 			</template>
 			<!-- SHARED_FOLDERS VIEW -->

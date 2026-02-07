@@ -234,6 +234,9 @@ export default {
 					error: reject,
 				}),
 			)
+			if (typeof resDocument.data !== 'undefined') {
+				return resDocument.data
+			}
 			if (resDocument.querySelector('status').textContent !== 'ok') {
 				console.error('Failed request', resDocument)
 				return
