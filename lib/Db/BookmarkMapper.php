@@ -531,6 +531,38 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @param string $userId
 	 * @return int
+	 * @throws Exception
+	 */
+	public function countDeleted(string $userId): int {
+		$qb = $this->db->getQueryBuilder();
+		$qb->selectAlias($qb->func()->count('b.id'), 'count');
+		$qb
+			->from('bookmarks', 'b')
+			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
+			->andWhere($qb->expr()->isNotNull('tr.soft_deleted_at'));
+		$result = $qb->executeQuery();
+		$userOwnerDeletedCount = $result->fetch(PDO::FETCH_COLUMN);
+		$result->closeCursor();
+
+		$qb = $this->db->getQueryBuilder();
+		$qb->selectAlias($qb->func()->count('b.id'), 'count');
+		$qb
+			->from('bookmarks', 'b')
+			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
+			->innerJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
+			->where($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
+			->andWhere($qb->expr()->isNotNull('tr.soft_deleted_at'));
+		$result = $qb->executeQuery();
+		$foreignDeletedCount = $result->fetch(PDO::FETCH_COLUMN);
+		$result->closeCursor();
+
+		return $userOwnerDeletedCount + $foreignDeletedCount;
+	}
+
+	/**
+	 * @param string $userId
+	 * @return int
 	 */
 	public function countArchived(string $userId): int {
 		$qb = $this->db->getQueryBuilder();

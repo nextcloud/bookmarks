@@ -286,4 +286,13 @@ class InternalBookmarkController extends ApiController {
 	public function countWithClicks(): DataResponse {
 		return $this->publicController->countWithClicks();
 	}
+
+	/**
+	 * @return JSONResponse
+	 * @throws \OCA\Bookmarks\Exception\UnauthenticatedError
+	 * @NoAdminRequired
+	 */
+	public function countDeleted() {
+		return $this->publicController->countDeleted();
+	}
 }

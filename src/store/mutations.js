@@ -55,250 +55,273 @@ export const mutations = {
 	CLICK_BOOKMARK: 'CLICK_BOOKMARK',
 	SET_WITH_CLICKS_COUNT: 'SET_WITH_CLICKS_COUNT',
 	EMPTY_TRASHBIN: 'EMPTY_TRASHBIN',
+	SET_DELETED_COUNT: 'SET_DELETED_COUNT',
 }
 export default {
 	[mutations.SET_AUTH_TOKEN](state, authToken) {
 		if (authToken) {
-			state.public = true
+			state.public = true;
 		}
-		state.authToken = authToken
+		state.authToken = authToken;
 		axios.defaults.headers = {
 			requesttoken: OC.requesttoken,
 			Authorization: 'bearer ' + authToken,
-		}
+		};
 	},
 	[mutations.SET_VIEW_MODE](state, viewMode) {
-		state.viewMode = viewMode
+		state.viewMode = viewMode;
 	},
 	[mutations.SET_ERROR](state, error) {
-		state.error = error
+		state.error = error;
 	},
 	[mutations.SET_NOTIFICATION](state, msg) {
-		state.notification = msg
+		state.notification = msg;
 	},
 	[mutations.SET_SETTING](state, { key, value }) {
-		Vue.set(state.settings, key, value)
+		Vue.set(state.settings, key, value);
 	},
 	[mutations.SET_FOLDERS](state, folders) {
-		state.folders = sortFolders(folders)
+		state.folders = sortFolders(folders);
 	},
 	[mutations.SET_DELETED_FOLDERS](state, folders) {
-		state.deletedFolders = sortFolders(folders)
+		state.deletedFolders = sortFolders(folders);
 	},
 	[mutations.EMPTY_TRASHBIN](state) {
-		state.deletedFolders = []
+		state.deletedFolders = [];
 	},
 	[mutations.MOVE_FOLDER](state, { folder, target }) {
-		const currentFolder = this.getters.getFolder(folder)[0]
-		const oldParent = this.getters.getFolder(currentFolder.parent_folder)[0]
-		const index = oldParent.children.indexOf(currentFolder)
-		oldParent.children.splice(index, 1)
-		const newParent = this.getters.getFolder(target)[0]
-		newParent.children.push(currentFolder)
+		const currentFolder = this.getters.getFolder(folder)[0];
+		const oldParent = this.getters.getFolder(
+			currentFolder.parent_folder
+		)[0];
+		const index = oldParent.children.indexOf(currentFolder);
+		oldParent.children.splice(index, 1);
+		const newParent = this.getters.getFolder(target)[0];
+		newParent.children.push(currentFolder);
 
 		if (state.childrenByFolder[oldParent.id]) {
-			const index = state.childrenByFolder[oldParent.id].findIndex(item => item.id === currentFolder.id)
-			state.childrenByFolder[oldParent.id].splice(index, 1)
+			const index = state.childrenByFolder[oldParent.id].findIndex(
+				(item) => item.id === currentFolder.id
+			);
+			state.childrenByFolder[oldParent.id].splice(index, 1);
 		}
 		if (state.childrenByFolder[newParent.id]) {
-			state.childrenByFolder[newParent.id].push({ type: 'folder', id: currentFolder.id })
+			state.childrenByFolder[newParent.id].push({
+				type: 'folder',
+				id: currentFolder.id,
+			});
 		}
 	},
 	[mutations.ADD_TAG](state, tag) {
-		state.tags.push({ name: tag, count: 0 })
+		state.tags.push({ name: tag, count: 0 });
 	},
 	[mutations.SET_TAGS](state, tags) {
-		state.tags = tags
+		state.tags = tags;
 	},
 	[mutations.RENAME_TAG](state, { oldName, newName }) {
 		state.bookmarks.forEach((bookmark) => {
-			Vue.set(bookmark, 'tags', bookmark.tags.map((tag) => {
-				if (tag === oldName) return newName
-				return tag
-			}))
-		})
+			Vue.set(
+				bookmark,
+				'tags',
+				bookmark.tags.map((tag) => {
+					if (tag === oldName) return newName;
+					return tag;
+				})
+			);
+		});
 	},
 	[mutations.REMOVE_TAG](state, oldTag) {
 		state.bookmarks.forEach((bookmark) => {
-			Vue.set(bookmark, 'tags', bookmark.tags.filter((tag) => {
-				return tag !== oldTag
-			}))
-		})
+			Vue.set(
+				bookmark,
+				'tags',
+				bookmark.tags.filter((tag) => {
+					return tag !== oldTag;
+				})
+			);
+		});
 	},
 	[mutations.DISPLAY_NEW_BOOKMARK](state, display) {
-		state.displayNewBookmark = display
+		state.displayNewBookmark = display;
 		if (display) {
-			state.displayNewFolder = false
+			state.displayNewFolder = false;
 		}
 	},
 	[mutations.DISPLAY_NEW_FOLDER](state, display) {
-		state.displayNewFolder = display
+		state.displayNewFolder = display;
 		if (display) {
-			state.displayNewBookmark = false
+			state.displayNewBookmark = false;
 		}
 	},
 	[mutations.DISPLAY_MOVE_DIALOG](state, display) {
-		state.displayMoveDialog = display
+		state.displayMoveDialog = display;
 	},
 
 	[mutations.DISPLAY_COPY_DIALOG](state, display) {
-		state.displayCopyDialog = display
+		state.displayCopyDialog = display;
 	},
 
 	[mutations.RESET_SELECTION](state) {
-		state.selection = { folders: [], bookmarks: [] }
+		state.selection = { folders: [], bookmarks: [] };
 	},
 	[mutations.ADD_SELECTION_BOOKMARK](state, item) {
-		if (state.selection.bookmarks.find(b => item.id === b.id)) {
-			return
+		if (state.selection.bookmarks.find((b) => item.id === b.id)) {
+			return;
 		}
-		state.selection.bookmarks.push(item)
+		state.selection.bookmarks.push(item);
 	},
 	[mutations.REMOVE_SELECTION_BOOKMARK](state, item) {
 		Vue.set(
 			state.selection,
 			'bookmarks',
-			state.selection.bookmarks.filter(s => !(s.id === item.id)),
-		)
+			state.selection.bookmarks.filter((s) => !(s.id === item.id))
+		);
 	},
 	[mutations.ADD_SELECTION_FOLDER](state, item) {
-		state.selection.folders.push(item)
+		state.selection.folders.push(item);
 	},
 	[mutations.REMOVE_SELECTION_FOLDER](state, item) {
 		Vue.set(
 			state.selection,
 			'folders',
-			state.selection.folders.filter(s => !(s.id === item.id)),
-		)
+			state.selection.folders.filter((s) => !(s.id === item.id))
+		);
 	},
 
 	[mutations.ADD_BOOKMARK](state, bookmark) {
-		const existingBookmark = state.bookmarksById[bookmark.id]
+		const existingBookmark = state.bookmarksById[bookmark.id];
 		if (!existingBookmark) {
-			state.bookmarks.push(bookmark)
-			Vue.set(state.bookmarksById, bookmark.id, bookmark)
+			state.bookmarks.push(bookmark);
+			Vue.set(state.bookmarksById, bookmark.id, bookmark);
 		}
 	},
 	[mutations.CLICK_BOOKMARK](state, bookmark) {
-		const existingBookmark = state.bookmarksById[bookmark.id]
+		const existingBookmark = state.bookmarksById[bookmark.id];
 		if (existingBookmark) {
-			existingBookmark.clickcount += 1
+			existingBookmark.clickcount += 1;
 		}
 	},
 	[mutations.REMOVE_BOOKMARK](state, id) {
-		const index = state.bookmarks.findIndex(bookmark => bookmark.id === id)
+		const index = state.bookmarks.findIndex(
+			(bookmark) => bookmark.id === id
+		);
 		if (index !== -1) {
-			const bookmark = state.bookmarks[index]
-			bookmark.folders.forEach(folderId => {
+			const bookmark = state.bookmarks[index];
+			bookmark.folders.forEach((folderId) => {
 				if (!state.childrenByFolder[folderId]) {
-					return
+					return;
 				}
-				const index = state.childrenByFolder[folderId].findIndex(bookmark => bookmark.id === id)
+				const index = state.childrenByFolder[folderId].findIndex(
+					(bookmark) => bookmark.id === id
+				);
 				if (index !== -1) {
-					return
+					return;
 				}
-				state.childrenByFolder[folderId].splice(index, 1)
-			})
-			state.bookmarks.splice(index, 1)
-			Vue.delete(state.bookmarksById, id)
+				state.childrenByFolder[folderId].splice(index, 1);
+			});
+			state.bookmarks.splice(index, 1);
+			Vue.delete(state.bookmarksById, id);
 		}
 	},
 	[mutations.REMOVE_ALL_BOOKMARKS](state) {
-		state.bookmarks = []
-		state.bookmarksById = {}
+		state.bookmarks = [];
+		state.bookmarksById = {};
 	},
 	[mutations.SORT_BOOKMARKS](state, column) {
-		state.bookmarks.sort((a, b) => b[column] - a[column])
+		state.bookmarks.sort((a, b) => b[column] - a[column]);
 	},
 	[mutations.SET_BOOKMARK_COUNT](state, { folderId, count }) {
-		Vue.set(state.countsByFolder, folderId, count)
+		Vue.set(state.countsByFolder, folderId, count);
 	},
 	[mutations.SET_UNAVAILABLE_COUNT](state, count) {
-		state.unavailableCount = count
+		state.unavailableCount = count;
 	},
 	[mutations.SET_ARCHIVED_COUNT](state, count) {
-		state.archivedCount = count
+		state.archivedCount = count;
+	},
+	[mutations.SET_DELETED_COUNT](state, count) {
+		state.deletedCount = count;
 	},
 	[mutations.SET_DUPLICATED_COUNT](state, count) {
-		state.duplicatedCount = count
+		state.duplicatedCount = count;
 	},
 	[mutations.SET_ALL_CLICKS_COUNT](state, count) {
-		state.allClicksCount = count
+		state.allClicksCount = count;
 	},
 	[mutations.SET_WITH_CLICKS_COUNT](state, count) {
-		state.withClicksCount = count
+		state.withClicksCount = count;
 	},
 
 	[mutations.SET_SIDEBAR](state, sidebar) {
-		state.sidebar = sidebar
+		state.sidebar = sidebar;
 	},
 
 	[mutations.INCREMENT_PAGE](state) {
-		Vue.set(state.fetchState, 'page', state.fetchState.page + 1)
+		Vue.set(state.fetchState, 'page', state.fetchState.page + 1);
 	},
 	[mutations.RESET_PAGE](state) {
-		state.bookmarks = []
-		state.bookmarksById = {}
-		Vue.set(state.fetchState, 'page', 0)
-		Vue.set(state.fetchState, 'reachedEnd', false)
+		state.bookmarks = [];
+		state.bookmarksById = {};
+		Vue.set(state.fetchState, 'page', 0);
+		Vue.set(state.fetchState, 'reachedEnd', false);
 	},
 	[mutations.SET_QUERY](state, query) {
 		if (JSON.stringify(query) !== JSON.stringify(state.fetchState.query)) {
 			// when the query doesn't change, we're likely reloading the view, which looks better
 			// when we don't remove bookmarks until the new set is loaded
 			// FETCH_PAGE will remove bookmarks upon retrieving the new set when page === 0
-			state.bookmarks = []
-			state.bookmarksById = {}
+			state.bookmarks = [];
+			state.bookmarksById = {};
 		}
-		Vue.set(state.fetchState, 'page', 0)
-		Vue.set(state.fetchState, 'reachedEnd', false)
-		Vue.set(state.fetchState, 'query', query)
+		Vue.set(state.fetchState, 'page', 0);
+		Vue.set(state.fetchState, 'reachedEnd', false);
+		Vue.set(state.fetchState, 'query', query);
 
 		// cancel currently running request
 		if (typeof state.loading.bookmarks === 'function') {
-			state.loading.bookmarks()
+			state.loading.bookmarks();
 		}
 		// stop loading
-		Vue.set(state.loading, 'bookmarks', false)
+		Vue.set(state.loading, 'bookmarks', false);
 	},
 	[mutations.FETCH_START](state, event) {
 		if (typeof state.loading[event.type] === 'function') {
-			state.loading[event.type]()
+			state.loading[event.type]();
 		}
-		Vue.set(state.loading, event.type, event.cancel || true)
+		Vue.set(state.loading, event.type, event.cancel || true);
 	},
 	[mutations.FETCH_END](state, type) {
-		Vue.set(state.loading, type, false)
+		Vue.set(state.loading, type, false);
 	},
 
 	[mutations.REACHED_END](state) {
-		Vue.set(state.fetchState, 'reachedEnd', true)
+		Vue.set(state.fetchState, 'reachedEnd', true);
 	},
 
 	[mutations.ADD_SHARED_FOLDER](state, folder) {
-		Vue.set(state.sharedFoldersById, folder.id, folder)
+		Vue.set(state.sharedFoldersById, folder.id, folder);
 	},
 
 	[mutations.ADD_SHARE](state, share) {
-		Vue.set(state.sharesById, share.id, share)
+		Vue.set(state.sharesById, share.id, share);
 	},
 	[mutations.REMOVE_SHARE](state, id) {
 		if (!state.sharesById[id]) {
-			return
+			return;
 		}
-		Vue.delete(state.sharesById, id)
+		Vue.delete(state.sharesById, id);
 	},
 
 	[mutations.ADD_PUBLIC_TOKEN](state, { folderId, token }) {
-		Vue.set(state.tokensByFolder, folderId, token)
+		Vue.set(state.tokensByFolder, folderId, token);
 	},
 	[mutations.REMOVE_PUBLIC_TOKEN](state, { folderId }) {
-		Vue.delete(state.tokensByFolder, folderId)
+		Vue.delete(state.tokensByFolder, folderId);
 	},
 	[mutations.SET_FOLDER_CHILDREN_ORDER](state, { folderId, children }) {
-		Vue.set(state.childrenByFolder, folderId, children)
+		Vue.set(state.childrenByFolder, folderId, children);
 	},
-}
+};
 
 /**
  * @param folders

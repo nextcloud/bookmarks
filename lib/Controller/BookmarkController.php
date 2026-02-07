@@ -882,6 +882,25 @@ class BookmarkController extends ApiController {
 	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
+	public function countDeleted(): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
+			$res->throttle();
+			return $res;
+		}
+
+		$count = $this->bookmarkMapper->countDeleted($this->authorizer->getUserId());
+		return new JSONResponse(['status' => 'success', 'item' => $count]);
+	}
+
+	/**
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @BruteForceProtection
+	 * @PublicPage
+	 * @throws UnauthenticatedError
+	 */
 	public function acquireLock(): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
