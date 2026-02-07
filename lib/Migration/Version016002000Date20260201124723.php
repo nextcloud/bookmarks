@@ -62,7 +62,14 @@ class Version016002000Date20260201124723 extends SimpleMigrationStep {
 		$setQb->update('bookmarks')
 			->set('url_hash', $qb->createParameter('url_hash'))
 			->where($qb->expr()->eq('id', $qb->createParameter('id')));
+		$i = 0;
 		while ($row = $result->fetch()) {
+			if ($i++ % 1000 === 0) {
+				if ($i > 0) {
+					$this->db->commit();
+				}
+				$this->db->beginTransaction();
+			}
 			$setQb->setParameter('url_hash', md5($row['url']));
 			$setQb->setParameter('id', $row['id']);
 			$setQb->executeStatement();
