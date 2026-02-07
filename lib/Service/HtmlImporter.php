@@ -23,6 +23,8 @@ use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\DB\Exception;
+use OCP\IDBConnection;
 
 /**
  * Class HtmlImporter
@@ -33,49 +35,18 @@ class HtmlImporter {
 	// Taken from https://stackoverflow.com/questions/33126595/what-is-the-actual-range-of-a-mysql-int-column-in-this-situation
 	public const DB_MAX_INT = 2147483647;
 
-	/**
-	 * @var BookmarkMapper
-	 */
-	protected $bookmarkMapper;
+	private int $transactionCounter = 0;
 
-	/**
-	 * @var FolderMapper
-	 */
-	protected $folderMapper;
 
-	/**
-	 * @var TagMapper
-	 */
-	protected $tagMapper;
-
-	/** @var BookmarksParser */
-	private $bookmarksParser;
-	/**
-	 * @var TreeMapper
-	 */
-	private $treeMapper;
-	/**
-	 * @var TreeCacheManager
-	 */
-	private $hashManager;
-
-	/**
-	 * ImportService constructor.
-	 *
-	 * @param BookmarkMapper $bookmarkMapper
-	 * @param FolderMapper $folderMapper
-	 * @param TagMapper $tagMapper
-	 * @param TreeMapper $treeMapper
-	 * @param BookmarksParser $bookmarksParser
-	 * @param TreeCacheManager $hashManager
-	 */
-	public function __construct(BookmarkMapper $bookmarkMapper, FolderMapper $folderMapper, TagMapper $tagMapper, TreeMapper $treeMapper, BookmarksParser $bookmarksParser, \OCA\Bookmarks\Service\TreeCacheManager $hashManager) {
-		$this->bookmarkMapper = $bookmarkMapper;
-		$this->folderMapper = $folderMapper;
-		$this->tagMapper = $tagMapper;
-		$this->treeMapper = $treeMapper;
-		$this->bookmarksParser = $bookmarksParser;
-		$this->hashManager = $hashManager;
+	public function __construct(
+		private BookmarkMapper $bookmarkMapper,
+		private FolderMapper $folderMapper,
+		private TagMapper $tagMapper,
+		private TreeMapper $treeMapper,
+		private BookmarksParser $bookmarksParser,
+		private \OCA\Bookmarks\Service\TreeCacheManager $hashManager,
+		private IDBConnection $connection,
+	) {
 	}
 
 	/**
@@ -87,12 +58,14 @@ class HtmlImporter {
 	 *
 	 * @return array
 	 *
+	 * @throws AlreadyExistsError
 	 * @throws DoesNotExistException
+	 * @throws Exception
+	 * @throws HtmlParseError
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
-	 * @throws AlreadyExistsError
+	 * @throws UnsupportedOperation
 	 * @throws UserLimitExceededError
-	 * @throws HtmlParseError
 	 */
 	public function importFile(string $userId, string $file, ?int $rootFolder = null): array {
 		$content = file_get_contents($file);
@@ -114,6 +87,7 @@ class HtmlImporter {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
 	 * @throws UserLimitExceededError|UnsupportedOperation
+	 * @throws Exception
 	 *
 	 * @psalm-return array{imported: list<array>, errors: array<array-key, mixed|string>}
 	 */
@@ -130,22 +104,30 @@ class HtmlImporter {
 			}
 		}
 
-		$this->bookmarksParser->parse($content, false);
+		$this->bookmarksParser->parse($content, false, useDateTimeObjects: false);
 
 		// Disable invalidation, since we're going to add a bunch of new data to the tree at a single point
 		$this->hashManager->setInvalidationEnabled(false);
 
-		foreach ($this->bookmarksParser->currentFolder['children'] as $folder) {
-			$imported[] = $this->importFolder($userId, $folder, $rootFolder->getId(), $errors);
-		}
-		foreach ($this->bookmarksParser->currentFolder['bookmarks'] as $bookmark) {
-			try {
-				$bm = $this->importBookmark($userId, $rootFolder->getId(), $bookmark);
-			} catch (UrlParseError $e) {
-				$errors[] = 'Failed to parse URL: ' . $bookmark['href'];
-				continue;
+		$this->connection->beginTransaction();
+		$this->transactionCounter = 0;
+		try {
+			foreach ($this->bookmarksParser->currentFolder['children'] as $folder) {
+				$imported[] = $this->importFolder($userId, $folder, $rootFolder->getId(), $errors);
 			}
-			$imported[] = ['type' => 'bookmark', 'id' => $bm->getId(), 'title' => $bookmark['title'], 'url' => $bookmark['href']];
+			// Might not start at 0 because this folder already exists
+			$index = $this->treeMapper->countChildren($rootFolder->getId());
+			foreach ($this->bookmarksParser->currentFolder['bookmarks'] as $bookmark) {
+				try {
+					$bm = $this->importBookmark($userId, $rootFolder->getId(), $bookmark, $index++);
+				} catch (UrlParseError $e) {
+					$errors[] = 'Failed to parse URL: ' . $bookmark['href'];
+					continue;
+				}
+				$imported[] = ['type' => 'bookmark', 'id' => $bm->getId(), 'title' => $bookmark['title'], 'url' => $bookmark['href']];
+			}
+		} finally {
+			$this->connection->commit();
 		}
 
 		$this->hashManager->setInvalidationEnabled(true);
@@ -201,7 +183,7 @@ class HtmlImporter {
 	 * @param array $bookmark
 	 * @param null|int $index
 	 * @return Bookmark|Entity
-	 * @throws UrlParseError|AlreadyExistsError|UnsupportedOperation|UserLimitExceededError|MultipleObjectsReturnedException
+	 * @throws UrlParseError|AlreadyExistsError|UnsupportedOperation|UserLimitExceededError|MultipleObjectsReturnedException|Exception
 	 */
 	private function importBookmark(string $userId, int $folderId, array $bookmark, $index = null) {
 		$bm = new Bookmark();
@@ -210,8 +192,8 @@ class HtmlImporter {
 		$bm->setTitle($bookmark['title']);
 		$bm->setDescription($bookmark['description']);
 		if (isset($bookmark['add_date'])) {
-			if ($bookmark['add_date']->getTimestamp() < self::DB_MAX_INT && $bookmark['add_date']->getTimestamp() > -self::DB_MAX_INT) {
-				$bm->setAdded($bookmark['add_date']->getTimestamp());
+			if ($bookmark['add_date'] < self::DB_MAX_INT && $bookmark['add_date'] > -self::DB_MAX_INT) {
+				$bm->setAdded($bookmark['add_date']);
 			} else {
 				$bm->setAdded(time());
 			}
@@ -223,6 +205,13 @@ class HtmlImporter {
 		$this->treeMapper->addToFolders(TreeMapper::TYPE_BOOKMARK, $bm->getId(), [$folderId], $index);
 		// add tags
 		$this->tagMapper->addTo($bookmark['tags'], $bm->getId());
+
+		$this->transactionCounter++;
+		if ($this->transactionCounter >= 10_000) {
+			$this->transactionCounter = 0;
+			$this->connection->commit();
+			$this->connection->beginTransaction();
+		}
 
 		return $bm;
 	}

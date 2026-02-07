@@ -158,7 +158,7 @@ export default {
 			return this.$store.getters.getBookmark(this.$store.state.sidebar.id)
 		},
 		background() {
-			return generateUrl(`/apps/bookmarks/bookmark/${this.bookmark.id}/image`)
+			return this.bookmark.lastPreview ? generateUrl(`/apps/bookmarks/bookmark/${this.bookmark.id}/image`) : undefined
 		},
 		addedDate() {
 			const date = new Date(Number(this.bookmark.added) * 1000)

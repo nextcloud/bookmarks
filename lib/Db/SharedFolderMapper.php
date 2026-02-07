@@ -228,7 +228,7 @@ class SharedFolderMapper extends QBMapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('bookmarks_shared_to_shares')
 			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($entity->getId(), IQueryBuilder::PARAM_INT)))
-			->execute();
+			->executeStatement();
 		return parent::delete($entity);
 	}
 
@@ -237,7 +237,7 @@ class SharedFolderMapper extends QBMapper {
 		$qb->insert('bookmarks_shared_to_shares')->values([
 			'shared_folder_id' => $qb->createPositionalParameter($id),
 			'share_id' => $qb->createPositionalParameter($share_id, IQueryBuilder::PARAM_INT)
-		])->execute();
+		])->executeStatement();
 		$this->eventDispatcher->dispatch(CreateEvent::class, new CreateEvent(
 			TreeMapper::TYPE_SHARE,
 			$id

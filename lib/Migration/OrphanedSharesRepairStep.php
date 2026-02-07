@@ -44,28 +44,28 @@ class OrphanedSharesRepairStep implements IRepairStep {
 			->from('bookmarks_shares', 's')
 			->leftJoin('s', 'bookmarks_folders', 'f', $qb->expr()->eq('f.id', 's.folder_id'))
 			->where($qb->expr()->isNull('f.id'));
-		$shares = $qb->execute();
+		$shares = $qb->executeQuery();
 		$i = 0;
-		while ($share = $shares->fetchColumn()) {
+		while ($share = $shares->fetch(\PDO::FETCH_COLUMN)) {
 			$qb = $this->db->getQueryBuilder();
 			$folders = $qb->select('f.id')
 				->from('bookmarks_shared_folders', 'f')
 				->join('f', 'bookmarks_shared_to_shares', 't', $qb->expr()->eq('f.id', 't.shared_folder_id'))
 				->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($share, IQueryBuilder::PARAM_INT)))
-				->execute()
+				->executeQuery()
 				->fetchAll(PDO::FETCH_COLUMN);
 			foreach ($folders as $folderId) {
 				$qb = $this->db->getQueryBuilder();
 				$qb->delete('bookmarks_tree')
 					->where($qb->expr()->eq('type', $qb->createPositionalParameter('share')))
 					->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
-					->execute();
+					->executeStatement();
 			}
 			$this->db->executeQuery('DELETE sf FROM *PREFIX*bookmarks_shared_folders sf JOIN *PREFIX*bookmarks_shared_to_shares t ON sf.id = t.shared_folder_id WHERE t.share_id = ?', [$share]);
 			$qb = $this->db->getQueryBuilder();
 			$qb->delete('bookmarks_shares')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($share)))
-				->execute();
+				->executeStatement();
 			$i++;
 		}
 		$output->info("Removed $i orphaned shares");
@@ -75,14 +75,14 @@ class OrphanedSharesRepairStep implements IRepairStep {
 			->from('bookmarks_folders_public', 'p')
 			->leftJoin('p', 'bookmarks_folders', 'f', $qb->expr()->eq('f.id', 'p.folder_id'))
 			->where($qb->expr()->isNull('f.id'))
-			->execute()
+			->executeQuery()
 			->fetchAll(PDO::FETCH_COLUMN);
 		$i = 0;
 		foreach ($publics as $publicId) {
 			$qb = $this->db->getQueryBuilder();
 			$qb->delete('bookmarks_folders_public')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($publicId)))
-				->execute();
+				->executeStatement();
 			$i++;
 		}
 		$output->info("Removed $i orphaned public links");

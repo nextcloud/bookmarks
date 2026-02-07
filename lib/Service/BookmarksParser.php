@@ -73,12 +73,7 @@ class BookmarksParser {
 	 * @var bool
 	 */
 	private $ignorePersonalToolbarFolder = true;
-	/**
-	 * If tags should be included
-	 *
-	 * @var bool
-	 */
-	private $includeFolderTags = true;
+
 
 	/**
 	 * Constructor
@@ -105,14 +100,13 @@ class BookmarksParser {
 	 *
 	 * @param string $input A Netscape Bookmark File Format HTML string
 	 * @param bool $ignorePersonalToolbarFolder If we should ignore the personal toolbar bookmark folder
-	 * @param bool $includeFolderTags If we should include folter tags
 	 * @param bool $useDateTimeObjects If we should return \DateTime objects
 	 *
 	 * @return mixed A PHP value
 	 *
 	 * @throws HtmlParseError
 	 */
-	public function parse($input, $ignorePersonalToolbarFolder = true, $includeFolderTags = true, $useDateTimeObjects = true) {
+	public function parse($input, $ignorePersonalToolbarFolder = true, $useDateTimeObjects = true) {
 		$document = new DOMDocument();
 		$document->preserveWhiteSpace = false;
 		if (empty($input)) {
@@ -123,7 +117,6 @@ class BookmarksParser {
 		}
 		$this->xpath = new DOMXPath($document);
 		$this->ignorePersonalToolbarFolder = $ignorePersonalToolbarFolder;
-		$this->includeFolderTags = $includeFolderTags;
 		$this->useDateTimeObjects = $useDateTimeObjects;
 
 		// set root folder
@@ -134,19 +127,18 @@ class BookmarksParser {
 		return empty($this->bookmarks) ? null : $this->bookmarks;
 	}
 
-	/**
-	 * Traverses a DOMNode
-	 *
-	 * @param DOMNode|null $node
-	 */
 	private function traverse(?DOMNode $node = null): void {
-		$query = './*';
-		$entries = $this->xpath->query($query, $node ?: null);
+		if ($node !== null) {
+			$entries = $node->childNodes;
+		} else {
+			$query = './*';
+			$entries = $this->xpath->query($query, null);
+		}
 		if (!$entries) {
 			return;
 		}
-		for ($i = 0; $i < $entries->length; $i++) {
-			$entry = $entries->item($i);
+
+		foreach ($entries as $entry) {
 			if ($entry === null) {
 				continue;
 			}
@@ -217,12 +209,6 @@ class BookmarksParser {
 			'tags' => [],
 		];
 		$bookmark = array_merge($bookmark, $this->getAttributes($node));
-		if ($this->includeFolderTags) {
-			$tags = $this->getCurrentFolderTags();
-			if (!empty($tags)) {
-				$bookmark['tags'] = $tags;
-			}
-		}
 		$this->currentFolder['bookmarks'][] = & $bookmark;
 		$this->bookmarks[] = & $bookmark;
 	}
@@ -253,13 +239,8 @@ class BookmarksParser {
 	private function getAttributes(DOMNode $node): array {
 		$attributes = [];
 		if ($node->attributes) {
-			$length = $node->attributes->length;
-			for ($i = 0; $i < $length; ++$i) {
-				$item = $node->attributes->item($i);
-				if ($item === null) {
-					continue;
-				}
-				$attributes[strtolower($item->nodeName)] = $item->nodeValue;
+			foreach ($node->attributes as $attribute) {
+				$attributes[strtolower($attribute->nodeName)] = $attribute->nodeValue;
 			}
 		}
 		$lastModified = null;
@@ -283,25 +264,30 @@ class BookmarksParser {
 				$modified->setTimestamp($attributes['last_modified'] instanceof DateTime ? $attributes['last_modified']->getTimestamp() : (int)$attributes['last_modified']);
 				$attributes['last_modified'] = $modified;
 			}
+		} else {
+			if (isset($attributes['add_date'])) {
+				if ((int)$attributes['add_date'] > self::THOUSAND_YEARS) {
+					// Google exports dates in miliseconds. This way we only lose the first year of UNIX Epoch.
+					// This is invalid once we hit 2970. So, quite a long time.
+					$attributes['add_date'] = ((int)($attributes['add_date']) / 1000);
+				} else {
+					$attributes['add_date'] = (int)$attributes['add_date'];
+				}
+			}
+			if (isset($attributes['last_modified'])) {
+				$attributes['last_modified'] = $attributes['last_modified'] instanceof DateTime ? $attributes['last_modified']->getTimestamp() : (int)$attributes['last_modified'];
+				if ((int)$attributes['last_modified'] > self::THOUSAND_YEARS) {
+					// Google exports dates in miliseconds. This way we only lose the first year of UNIX Epoch.
+					// This is invalid once we hit 2970. So, quite a long time.
+					$attributes['last_modified'] = ((int)($attributes['last_modified']) / 1000);
+				} else {
+					$attributes['last_modified'] = (int)$attributes['last_modified'];
+				}
+			}
 		}
 		if (isset($attributes['tags'])) {
 			$attributes['tags'] = explode(',', $attributes['tags']);
 		}
 		return $attributes;
-	}
-
-	/**
-	 * Get current folder tags
-	 *
-	 * @return array
-	 */
-	private function getCurrentFolderTags(): array {
-		$tags = [];
-		array_walk_recursive($this->currentFolder, static function ($tag, $key) use (&$tags) {
-			if ($key === 'name') {
-				$tags[] = $tag;
-			}
-		});
-		return $tags;
 	}
 }

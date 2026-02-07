@@ -71,7 +71,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
 		$query = $this->db->getQueryBuilder();
 		$query->select('id')->from('bookmarks_folders');
-		$folders = $query->execute()->fetchAll(PDO::FETCH_COLUMN);
+		$folders = $query->executeQuery()->fetchAll(PDO::FETCH_COLUMN);
 		$folders[] = -1;
 		foreach ($folders as $folder) {
 			$qb = $this->db->getQueryBuilder();
@@ -80,14 +80,14 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 				->from('bookmarks_folders')
 				->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folder, IQueryBuilder::PARAM_INT)))
 				->orderBy('title', 'DESC');
-			$childFolders = $qb->execute()->fetchAll();
+			$childFolders = $qb->executeQuery()->fetchAll();
 
 			$qb = $this->db->getQueryBuilder();
 			$qb
 				->select('bookmark_id')
 				->from('bookmarks_folders_bookmarks')
 				->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder, IQueryBuilder::PARAM_INT)));
-			$childBookmarks = $qb->execute()->fetchAll();
+			$childBookmarks = $qb->executeQuery()->fetchAll();
 
 			$children = array_merge($childFolders, $childBookmarks);
 			$children = array_map(static function ($child) {
@@ -107,7 +107,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 						->set('index', $qb->createPositionalParameter($i, IQueryBuilder::PARAM_INT))
 						->where($qb->expr()->eq('bookmark_id', $qb->createPositionalParameter($child['id'])))
 						->andWhere($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folder)));
-					$qb->execute();
+					$qb->executeStatement();
 				} else {
 					$qb = $this->db->getQueryBuilder();
 					$qb
@@ -115,7 +115,7 @@ class Version000014000Date20181029094721 extends SimpleMigrationStep {
 						->set('index', $qb->createPositionalParameter($i))
 						->where($qb->expr()->eq('id', $qb->createPositionalParameter($child['id'])))
 						->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folder)));
-					$qb->execute();
+					$qb->executeStatement();
 				}
 			}
 		}

@@ -170,7 +170,7 @@ class BookmarkController extends ApiController {
 		if (!isset($array['tags'])) {
 			$array['tags'] = $this->tagMapper->findByBookmark($bookmark->getId());
 		}
-		if ($array['archivedFile'] !== 0 && $array['archivedFile'] !== null) {
+		if ($array['archivedFile'] !== 0 && $array['archivedFile'] !== null && $this->authorizer->getUserId() === $bookmark->getUserId()) {
 			$result = $this->rootFolder->getFirstNodeById($array['archivedFile']);
 			if ($result !== null) {
 				$array['archivedFilePath'] = $result->getPath();
@@ -744,7 +744,7 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => ['Could not import all bookmarks: User limit Exceeded']], Http::STATUS_BAD_REQUEST);
 		} catch (AlreadyExistsError $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Could not import all bookmarks: Already exists']], Http::STATUS_BAD_REQUEST);
-		} catch (UnsupportedOperation $e) {
+		} catch (UnsupportedOperation|\OCP\DB\Exception $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Internal server error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		if (count($result['errors']) !== 0) {
@@ -871,6 +871,25 @@ class BookmarkController extends ApiController {
 		}
 
 		$count = $this->bookmarkMapper->countDuplicated($this->authorizer->getUserId());
+		return new JSONResponse(['status' => 'success', 'item' => $count]);
+	}
+
+	/**
+	 * @return JSONResponse
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @BruteForceProtection
+	 * @PublicPage
+	 * @throws UnauthenticatedError
+	 */
+	public function countDeleted(): JSONResponse {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
+			$res->throttle();
+			return $res;
+		}
+
+		$count = $this->bookmarkMapper->countDeleted($this->authorizer->getUserId());
 		return new JSONResponse(['status' => 'success', 'item' => $count]);
 	}
 

@@ -213,6 +213,7 @@ export default {
 				this.$store.dispatch(actions.COUNT_BOOKMARKS, -1),
 				this.$store.dispatch(actions.COUNT_UNAVAILABLE),
 				this.$store.dispatch(actions.COUNT_ARCHIVED),
+				this.$store.dispatch(actions.COUNT_DELETED),
 				this.$store.dispatch(actions.COUNT_DUPLICATED),
 				this.$store.dispatch(actions.COUNT_ALL_CLICKS),
 				this.$store.dispatch(actions.COUNT_WITH_CLICKS),
@@ -234,6 +235,9 @@ export default {
 					error: reject,
 				}),
 			)
+			if (typeof resDocument.data !== 'undefined') {
+				return resDocument.data
+			}
 			if (resDocument.querySelector('status').textContent !== 'ok') {
 				console.error('Failed request', resDocument)
 				return

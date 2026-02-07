@@ -18,8 +18,8 @@ class BookmarkWithTagsAndParent extends Bookmark {
 	protected $tags;
 	protected $folders;
 
-	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id', 'tags', 'folders', 'text_content', 'html_content'];
-	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId', 'tags', 'folders', 'textContent', 'htmlContent'];
+	public static $columns = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'last_preview', 'available', 'archived_file', 'user_id', 'tags', 'folders', 'text_content', 'html_content', 'url_hash'];
+	public static $fields = ['id', 'url', 'title', 'description', 'lastmodified', 'added', 'clickcount', 'lastPreview', 'available', 'archivedFile', 'userId', 'tags', 'folders', 'textContent', 'htmlContent', 'urlHash'];
 
 	public function toArray(): array {
 		$array = [];
@@ -47,6 +47,9 @@ class BookmarkWithTagsAndParent extends Bookmark {
 					$array['url'] = '';
 				}
 				$array['target'] = $this->url;
+				continue;
+			}
+			if ($field === 'urlHash') {
 				continue;
 			}
 			$array[$field] = $this->{$field};

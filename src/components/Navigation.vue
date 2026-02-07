@@ -108,6 +108,9 @@
 				:to="{ name: routes.TRASHBIN }"
 				:name="t('bookmarks', 'Trash Bin')">
 				<TrashbinIcon slot="icon" :size="20" />
+				<NcCounterBubble slot="counter">
+					{{ deletedBookmarksCount | largeNumbers }}
+				</NcCounterBubble>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem :name="t('bookmarks', 'Bookmarks Settings')" @click="settingsOpen = !settingsOpen">
 				<template #icon>
@@ -178,6 +181,9 @@ export default {
 		},
 		unavailableBookmarksCount() {
 			return this.$store.state.unavailableCount
+		},
+		deletedBookmarksCount() {
+			return this.$store.state.deletedCount
 		},
 		sharedFoldersCount() {
 			return Object.keys(this.$store.state.sharedFoldersById).length

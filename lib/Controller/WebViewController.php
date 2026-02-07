@@ -76,6 +76,7 @@ class WebViewController extends Controller {
 		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFolders()->getData()['data']);
 		$this->initialState->provideInitialState($this->appName, 'deletedFolders', $this->folderController->getDeletedFolders()->getData()['data']);
 		$this->initialState->provideInitialState($this->appName, 'archivedCount', $this->bookmarkController->countArchived()->getData()['item']);
+		$this->initialState->provideInitialState($this->appName, 'deletedCount', $this->bookmarkController->countDeleted()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'duplicatedCount', $this->bookmarkController->countDuplicated()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'unavailableCount', $this->bookmarkController->countUnavailable()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'allCount', $this->bookmarkController->countBookmarks(-1)->getData()['item']);

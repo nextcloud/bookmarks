@@ -421,11 +421,13 @@ class FolderService {
 	 * @param $file
 	 * @param int $folder
 	 * @return array
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
 	 * @throws AlreadyExistsError
+	 * @throws DoesNotExistException
+	 * @throws Exception
 	 * @throws HtmlParseError
+	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
+	 * @throws UnsupportedOperation
 	 * @throws UserLimitExceededError
 	 */
 	public function importFile(string $userId, $file, $folder): array {

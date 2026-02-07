@@ -90,6 +90,7 @@ export const actions = {
 	LOAD_SHARED_FOLDERS: 'LOAD_SHARED_FOLDERS',
 
 	EMPTY_TRASHBIN: 'EMPTY_TRASHBIN',
+	COUNT_DELETED: 'COUNT_DELETED',
 }
 
 export default {
@@ -160,6 +161,38 @@ export default {
 				AppGlobal.methods.t(
 					'bookmarks',
 					'Failed to count archived bookmarks',
+				),
+			)
+			throw err
+		}
+	},
+	async [actions.COUNT_DELETED]({ commit, dispatch, state }) {
+		if (state.archivedCount === null) {
+			try {
+				const count = loadState('bookmarks', 'deletedCount')
+				return commit(mutations.SET_DELETED_COUNT, count)
+			} catch (e) {
+				console.warn(
+					'Could not load initial deleted bookmarks count state, continuing with HTTP request',
+				)
+			}
+		}
+		try {
+			const response = await axios.get(url(state, '/bookmark/deletedCount'))
+			const {
+				data: { item: count, data, status },
+			} = response
+			if (status !== 'success') {
+				throw new Error(data)
+			}
+			commit(mutations.SET_DELETED_COUNT, count)
+		} catch (err) {
+			console.error(err)
+			commit(
+				mutations.SET_ERROR,
+				AppGlobal.methods.t(
+					'bookmarks',
+					'Failed to count deleted bookmarks',
 				),
 			)
 			throw err
@@ -1204,6 +1237,7 @@ export default {
 		dispatch(actions.LOAD_TAGS)
 		dispatch(actions.COUNT_BOOKMARKS, -1)
 		dispatch(actions.COUNT_UNAVAILABLE)
+		dispatch(actions.COUNT_DELETED)
 		dispatch(actions.COUNT_ARCHIVED)
 	},
 
