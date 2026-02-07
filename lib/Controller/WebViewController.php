@@ -15,6 +15,7 @@ use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Service\SettingsService;
 use OCA\Bookmarks\Service\UserSettingsService;
+use OCA\Viewer\Event\LoadViewer;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -24,6 +25,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -53,6 +55,7 @@ class WebViewController extends Controller {
 		private SettingsService $settings,
 		private IAppManager $appManager,
 		private IConfig $config,
+		private IEventDispatcher $eventDispatcher,
 	) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
@@ -64,6 +67,9 @@ class WebViewController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index(): AugmentedTemplateResponse {
+		if (class_exists(LoadViewer::class)) {
+			$this->eventDispatcher->dispatchTyped(new LoadViewer());
+		}
 		$res = new AugmentedTemplateResponse($this->appName, 'main', ['url' => $this->urlGenerator]);
 
 		$policy = new ContentSecurityPolicy();
