@@ -704,7 +704,8 @@ class BookmarkMapper extends QBMapper {
 			->from('bookmarks_tree', 'trdup')
 			->where($subQuery->expr()->eq('b.id', 'trdup.id'))
 			->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tr.parent_folder'))
-			->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
+			->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
+			->andWhere($subQuery->expr()->isNull('trdup.soft_deleted_at'));
 		$qb->andWhere($qb->createFunction('EXISTS(' . $subQuery->getSQL() . ')'));
 		$result = $qb->executeQuery();
 		$userOwnerDuplicatesCount = $result->fetch(PDO::FETCH_COLUMN);
@@ -722,7 +723,8 @@ class BookmarkMapper extends QBMapper {
 			->from('bookmarks_tree', 'trdup')
 			->where($subQuery->expr()->eq('b.id', 'trdup.id'))
 			->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tr.parent_folder'))
-			->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
+			->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
+			->andWhere($subQuery->expr()->isNull('trdup.soft_deleted_at'));
 		$qb->andWhere($qb->createFunction('EXISTS(' . $subQuery->getSQL() . ')'));
 		$result = $qb->executeQuery();
 		$foreignDuplicatesCount = $result->fetch(PDO::FETCH_COLUMN);
