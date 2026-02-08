@@ -132,6 +132,7 @@ OC.L10N.register(
     "Notes" : "Notas",
     "Notes for this bookmark …" : "Notas pro custu signalibru ...",
     "Archived file" : "Documentu archiviadu",
+    "Open file" : "Aberi archìviu",
     "Download file" : "Iscàrriga archìviu",
     "Open file location" : "Aberi positzione de s'archìviu",
     "Link copied" : "Ligòngiu copiadu",

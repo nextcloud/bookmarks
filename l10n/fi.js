@@ -181,6 +181,7 @@ OC.L10N.register(
     "Notes" : "Muistiinpanot",
     "Notes for this bookmark …" : "Muistiinpanot tähän kirjanmerkkiin liittyen…",
     "Archived file" : "Arkistoitu tiedosto",
+    "Open file" : "Avaa tiedosto",
     "Download file" : "Lataa tiedosto",
     "Open file location" : "Avaa tiedoston sijainti",
     "Link copied" : "Linkki kopioitu",

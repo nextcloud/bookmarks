@@ -184,6 +184,7 @@ OC.L10N.register(
     "Notes" : "Notes",
     "Notes for this bookmark …" : "이 북마크에 대한 참고 사항…",
     "Archived file" : "보관된 파일",
+    "Open file" : "파일 열기",
     "Download file" : "파일 다운로드",
     "Open file location" : "파일 위치 열기",
     "Link copied" : "링크 복사됨",

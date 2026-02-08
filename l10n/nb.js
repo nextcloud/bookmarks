@@ -188,6 +188,7 @@ OC.L10N.register(
     "Notes" : "Notater",
     "Notes for this bookmark …" : "Notater for dette bokmerket...",
     "Archived file" : "Arkivert fil",
+    "Open file" : "Åpne fil",
     "Download file" : "Last ned fil",
     "Open file location" : "Åpne filplassering",
     "Link copied" : "Lenke kopiert",

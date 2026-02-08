@@ -20,6 +20,7 @@ OC.L10N.register(
     "Root folder" : "Korena fascikla",
     "Tags" : "Oznake",
     "Notes" : "Notes",
+    "Open file" : "Отвори фајл",
     "Link copied" : "Veza iskopirana",
     "Owner" : "Vlasnik",
     "Sharing" : "Deljenje",

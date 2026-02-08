@@ -27,6 +27,7 @@ OC.L10N.register(
     "Root folder" : "Folder principal",
     "Tags" : "Etichete",
     "Notes" : "Notițe",
+    "Open file" : "Deschide fișier",
     "Download file" : "Descarcă fișier",
     "Link copied" : "Link copiat",
     "Owner" : "Proprietar",

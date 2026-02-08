@@ -25,6 +25,7 @@ OC.L10N.register(
     "Link" : "ลิงก์",
     "Tags" : "แท็ก",
     "Notes" : "โน้ต",
+    "Open file" : "เปิดไฟล์",
     "Download file" : "ดาวน์โหลดไฟล์",
     "Link copied" : "คัดลอกลิงก์แล้ว",
     "Owner" : "เจ้าของ",

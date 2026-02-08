@@ -19,6 +19,7 @@ OC.L10N.register(
     "Title" : "Azwel",
     "Link" : "Aseɣwen",
     "Tags" : "Tibzimin",
+    "Open file" : "Ldi afaylu",
     "Link copied" : "Aseɣwen yettwanɣel",
     "Owner" : "Bab",
     "Sharing" : "Beṭṭu",

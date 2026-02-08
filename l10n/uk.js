@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Примітки",
     "Notes for this bookmark …" : "Додайте примітку до цієї закладки ...",
     "Archived file" : "Архівні файли",
+    "Open file" : "Відкрити файл",
     "Download file" : "Звантажити файл",
     "Open file location" : "Відкрити розташування файлу",
     "Link copied" : "Посилання скопійовано",

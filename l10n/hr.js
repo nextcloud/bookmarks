@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Bilješke",
     "Notes for this bookmark …" : "Bilješke za ovu knjižnu oznaku…",
     "Archived file" : "Arhivirana datoteka",
+    "Open file" : "Otvori datoteku",
     "Download file" : "Preuzmi datoteku",
     "Open file location" : "Otvori lokaciju datoteke",
     "Link copied" : "Poveznica je kopirana",

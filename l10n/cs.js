@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Poznámky",
     "Notes for this bookmark …" : "Poznámky k této záložce …",
     "Archived file" : "Archivovaný soubor",
+    "Open file" : "Otevřít soubor",
     "Download file" : "Stáhnout si soubor",
     "Open file location" : "Otevřít umístění souboru",
     "Link copied" : "Odkaz zkopírován",

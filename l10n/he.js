@@ -94,6 +94,7 @@ OC.L10N.register(
     "Tags" : "תגיות",
     "Select tags and create new ones" : "בחירת תגיות ויצירת חדשות",
     "Notes" : "הערות",
+    "Open file" : "פתיחת קובץ",
     "Download file" : "הורדת קובץ",
     "Link copied" : "הקישור הועתק",
     "Owner" : "בעלות",

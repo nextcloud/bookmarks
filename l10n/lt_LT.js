@@ -66,6 +66,7 @@ OC.L10N.register(
     "Root folder" : "Šakninis aplankas",
     "Tags" : "Žymos",
     "Notes" : "Pastabos",
+    "Open file" : "Atverti failą",
     "Download file" : "Atsisiųsti failą",
     "Link copied" : "Nuoroda nukopijuota",
     "Owner" : "Savininkas",

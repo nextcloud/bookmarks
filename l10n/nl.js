@@ -142,6 +142,7 @@ OC.L10N.register(
     "Notes" : "Notities",
     "Notes for this bookmark …" : "Notities voor deze bladwijzer...",
     "Archived file" : "Gearchiveerd bestand",
+    "Open file" : "Openen bestand",
     "Download file" : "Downloaden bestand",
     "Open file location" : "Open bestandslocatie",
     "Link copied" : "Link gekopieerd",

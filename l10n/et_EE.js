@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Märkmed",
     "Notes for this bookmark …" : "Selle järjehoidja märkmed…",
     "Archived file" : "Arhiveeritud fail",
+    "Open file" : "Ava fail",
     "Download file" : "Laadi fail alla",
     "Open file location" : "Ava faili asukoht",
     "Link copied" : "Link kopeeritud",

@@ -174,6 +174,7 @@ OC.L10N.register(
     "Notes" : "Note",
     "Notes for this bookmark …" : "Note per questo segnalibro...",
     "Archived file" : "File archiviato",
+    "Open file" : "Apri file",
     "Download file" : "Scarica il file",
     "Open file location" : "Apri percorso file",
     "Link copied" : "Collegamento copiato",

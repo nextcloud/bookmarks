@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Nótaí",
     "Notes for this bookmark …" : "Nótaí don leabharmharc seo…",
     "Archived file" : "Comhad cartlainne",
+    "Open file" : "Oscail comhad",
     "Download file" : "Íoslódáil an comhad",
     "Open file location" : "Oscail suíomh comhaid",
     "Link copied" : "Cóipeáladh an nasc",

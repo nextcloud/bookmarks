@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "註釋",
     "Notes for this bookmark …" : "此書籤的註釋...",
     "Archived file" : "已封存檔案",
+    "Open file" : "開啟檔案",
     "Download file" : "下載檔案",
     "Open file location" : "開啟檔案位置",
     "Link copied" : "連結已複製",

@@ -156,6 +156,7 @@ OC.L10N.register(
     "Notes" : "Opombe",
     "Notes for this bookmark …" : "Opombe za zaznamek ...",
     "Archived file" : "Arhivirane datoteke",
+    "Open file" : "Odpri datoteko",
     "Download file" : "Prejmi datoteko",
     "Open file location" : "Odpri mesto datoteke",
     "Link copied" : "Povezava je kopirana",

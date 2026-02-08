@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Catatan",
     "Notes for this bookmark …" : "Catatan untuk penanda ini …",
     "Archived file" : "Berkas terarsip",
+    "Open file" : "Buka file",
     "Download file" : "Unduh berkas",
     "Open file location" : "Buka lokasi berkas",
     "Link copied" : "Link tersalin",

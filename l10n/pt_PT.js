@@ -39,6 +39,7 @@ OC.L10N.register(
     "Tags" : "Etiquetas",
     "Select tags and create new ones" : "Selecionar etiquetas e criar novas",
     "Notes" : "Notas",
+    "Open file" : "Abrir ficheiro",
     "Download file" : "Transferir ficheiro",
     "Link copied" : "Link copiado",
     "Owner" : "Proprietário",

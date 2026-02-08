@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "笔记",
     "Notes for this bookmark …" : "标签的注释",
     "Archived file" : "已归档的文件",
+    "Open file" : "打开文件 ",
     "Download file" : "下载文件",
     "Open file location" : "打开文件位置 ",
     "Link copied" : "已复制链接",

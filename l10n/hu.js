@@ -193,6 +193,7 @@ OC.L10N.register(
     "Notes" : "Jegyzetek",
     "Notes for this bookmark …" : "Megjegyzések a könyvjelzőhöz…",
     "Archived file" : "Archivált fájl",
+    "Open file" : "Fájl megnyitása",
     "Download file" : "Fájl letöltése",
     "Open file location" : "Fájl helyének megnyitása",
     "Link copied" : "Hivatkozás másolva",

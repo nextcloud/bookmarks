@@ -192,6 +192,7 @@ OC.L10N.register(
     "Notes" : "Oharrak",
     "Notes for this bookmark …" : "Laster-marka honentzako oharrak...",
     "Archived file" : "Artxibatutako fitxategia",
+    "Open file" : "Ireki fitxategia",
     "Download file" : "Deskargatu fitxategia",
     "Open file location" : "Ireki fitxategiaren kokalekua",
     "Link copied" : "Esteka kopiatu da",

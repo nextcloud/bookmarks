@@ -19,6 +19,7 @@ OC.L10N.register(
     "Need help?" : "උපකාරයක් අවශ්‍යයද?",
     "Link" : "සබැඳිය",
     "Notes" : "සටහන්",
+    "Open file" : "ගොනුව විවෘත කරන්න",
     "Download file" : "ගොනුව බාගන්න",
     "Link copied" : "සබැඳිය පිටපත් කළා",
     "Owner" : "හිමිකරු",

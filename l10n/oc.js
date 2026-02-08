@@ -41,6 +41,7 @@ OC.L10N.register(
     "Link" : "Ligam",
     "Tags" : "Etiquetas",
     "Notes" : "Nòtas",
+    "Open file" : "Dobrir fichièr",
     "Link copied" : "Ligam copiat",
     "Owner" : "Owner",
     "Sharing" : "Partiment",

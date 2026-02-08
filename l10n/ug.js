@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "ئىزاھاتلار",
     "Notes for this bookmark …" : "بۇ خەتكۈچنىڭ ئىزاھلىرى…",
     "Archived file" : "ئارخىپلانغان ھۆججەت",
+    "Open file" : "ھۆججەتنى ئېچىش",
     "Download file" : "ھۆججەت چۈشۈرۈش",
     "Open file location" : "ھۆججەت ئورنىنى ئېچىڭ",
     "Link copied" : "ئۇلىنىش كۆچۈرۈلدى",

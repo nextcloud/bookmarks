@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Madokezo",
     "Notes for this bookmark …" : "Vidokezo vya alamisho hii…",
     "Archived file" : "Faili iliyohifadhiwa",
+    "Open file" : "Open file",
     "Download file" : "Pakua faili",
     "Open file location" : "Fungua eneo la faili",
     "Link copied" : "Kiungo kimenakiliwa",

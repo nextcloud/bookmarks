@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Σημειώσεις",
     "Notes for this bookmark …" : "Σημειώσεις για αυτό το σελιδοδείκτη …",
     "Archived file" : "Αρχειοθετημένο αρχείο",
+    "Open file" : "Άνοιγμα αρχείου",
     "Download file" : "Λήψη αρχείου",
     "Open file location" : "Άνοιγμα τοποθεσίας αρχείου",
     "Link copied" : "Ο σύνδεσμος αντιγράφηκε",

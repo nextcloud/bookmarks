@@ -32,6 +32,7 @@ OC.L10N.register(
     "Link" : "Линк",
     "Tags" : "Ознаки",
     "Notes" : "Белешки",
+    "Open file" : "Отвори датотека",
     "Download file" : "Преземи датотека",
     "Link copied" : "Линкот е копиран",
     "Owner" : "Сопственик",
