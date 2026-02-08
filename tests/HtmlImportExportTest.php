@@ -131,7 +131,7 @@ class HtmlImportExportTest extends TestCase {
 		// Set up database
 		for ($i = 0; $i < 4; $i++) {
 			$f = new Db\Folder();
-			$f->setTitle($i);
+			$f->setTitle(md5($i));
 			$f->setUserId($this->userId);
 			$f = $this->folderMapper->insert($f);
 			$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $f->getId(), $rootFolder->getId());
@@ -143,11 +143,30 @@ class HtmlImportExportTest extends TestCase {
 
 		$exported = $this->htmlExporter->exportFolder($this->userId, $rootFolder->getId());
 
-		$rootFolders = $this->treeMapper->findChildren(Db\TreeMapper::TYPE_FOLDER, $rootFolder->getId());
-		$this->assertCount(4, $rootFolders);
-		foreach ($rootFolders as $rootFolder) {
+		$exportedRootFolders = $this->treeMapper->findChildren(Db\TreeMapper::TYPE_FOLDER, $rootFolder->getId());
+		$this->assertCount(4, $exportedRootFolders);
+		foreach ($exportedRootFolders as $rootFolder) {
 			foreach ($this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $rootFolder->getId()) as $bookmark) {
+				$this->assertStringContainsString($rootFolder->getTitle(), $exported);
 				$this->assertStringContainsString($bookmark->getUrl(), $exported);
+			}
+		}
+
+		$f = new Db\Folder();
+		$f->setTitle('Testimport');
+		$f->setUserId($this->userId);
+		$f = $this->folderMapper->insert($f);
+		$this->htmlImporter->import($this->userId, $exported, $f->getId());
+		$importedRootFolders = $this->treeMapper->findChildren(Db\TreeMapper::TYPE_FOLDER, $f->getId());
+		foreach ($importedRootFolders as $i => $importedRootFolder) {
+			$exportedRootFolder = $exportedRootFolders[$i];
+			$this->assertEquals($exportedRootFolder->getTitle(), $importedRootFolder->getTitle());
+			$exportedBookmarks = $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $exportedRootFolder->getId());
+			foreach ($this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $importedRootFolder->getId()) as $j => $bookmark) {
+				$this->assertEquals($bookmark->getUrl(), $exportedBookmarks[$j]->getUrl());
+				$this->assertEquals($bookmark->getTitle(), $exportedBookmarks[$j]->getTitle());
+				$this->assertEquals($bookmark->getDescription(), $exportedBookmarks[$j]->getDescription());
+				$this->assertEquals($this->tagMapper->findByBookmark($bookmark->getId()), $this->tagMapper->findByBookmark($exportedBookmarks[$j]->getId()));
 			}
 		}
 	}
@@ -166,10 +185,10 @@ class HtmlImportExportTest extends TestCase {
 				return Db\Bookmark::fromArray($props);
 			}, [
 				['url' => 'https://google.com/', 'title' => 'Google', 'description' => 'Search engine'],
-				['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud', 'description' => ''],
+				['url' => 'https://nextcloud.com/', 'title' => 'Nextcloud', 'description' => 'cloud cloud cloud'],
 				['url' => 'https://php.net/', 'title' => '', 'description' => ''],
-				['url' => 'https://de.wikipedia.org/wiki/%C3%9C', 'title' => '', 'description' => ''],
-				['url' => 'https://github.com/nextcloud/bookmarks/projects/1', 'title' => '', 'description' => ''],
+				['url' => 'https://de.wikipedia.org/wiki/%C3%9C', 'title' => '', 'description' => '<H1>Hello</H1>'],
+				['url' => 'https://github.com/nextcloud/bookmarks/projects/1', 'title' => '', 'description' => '</DL>'],
 			]),
 		];
 	}
