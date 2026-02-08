@@ -70,7 +70,9 @@ class HtmlExporter {
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 <TITLE>Bookmarks</TITLE>';
 
+		$file .= "<DL><p>\n";
 		$file .= $this->serializeFolder($userId, $folderId, true);
+		$file .= "</DL><p>\n";
 
 		return $file;
 	}
@@ -84,14 +86,15 @@ class HtmlExporter {
 	 * @throws MultipleObjectsReturnedException
 	 * @throws UnauthorizedAccessError
 	 */
-	protected function serializeFolder(string $userId, int $id, bool $onlyContent = false): string {
-		if ($onlyContent) {
-			$output = '';
-		} else {
+	protected function serializeFolder(string $userId, int $id, string $indent = ''): string {
+		$nextIndent = $indent . '  ';
+		$childFolders = $this->treeMapper->findChildren(TreeMapper::TYPE_FOLDER, $id);
+		foreach ($childFolders as $childFolder) {
 			$folder = $this->folderMapper->find($id);
-			$output = '<DT><h3>' . htmlspecialchars($folder->getTitle()) . '</h3>' . "\n"
-				. '<DL><p>';
+			$output = $indent . '<DT><H3>' . htmlspecialchars($folder->getTitle()) . '</H3>' . "\n";
+			$output .= $indent . '<DL><p>' . "\n" . $this->serializeFolder($userId, $childFolder->getId(), $nextIndent) . '</DL><p>' . "\n";
 		}
+
 		$childBookmarks = $this->treeMapper->findChildren(TreeMapper::TYPE_BOOKMARK, $id);
 		foreach ($childBookmarks as $bookmark) {
 			// discards records with no URL. This should not happen but
@@ -111,19 +114,12 @@ class HtmlExporter {
 			$title = Util::sanitizeHTML($title);
 			$description = Util::sanitizeHTML($bookmark->getDescription());
 
-			$output .= '<DT><A HREF="' . $url . '" TAGS="' . $tags . '" ADD_DATE="' . $bookmark->getAdded() . '">' . $title . '</A>' . "\n";
+			$output .= $indent . '<DT><A HREF="' . $url . '" TAGS="' . $tags . '" ADD_DATE="' . $bookmark->getAdded() . '">' . $title . '</A>' . "\n";
 			if ($description !== '') {
 				$output .= '<DD>' . $description . '</DD>';
 			}
 			$output .= "\n";
 		}
-
-		$childFolders = $this->treeMapper->findChildren(TreeMapper::TYPE_FOLDER, $id);
-		foreach ($childFolders as $childFolder) {
-			$output .= $this->serializeFolder($userId, $childFolder->getId());
-		}
-
-		$output .= '</p></DL>';
 		return $output;
 	}
 }
