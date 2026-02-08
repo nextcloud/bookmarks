@@ -71,7 +71,7 @@ class HtmlExporter {
 <TITLE>Bookmarks</TITLE>';
 
 		$file .= "<DL><p>\n";
-		$file .= $this->serializeFolder($userId, $folderId, true);
+		$file .= $this->serializeFolder($userId, $folderId);
 		$file .= "</DL><p>\n";
 
 		return $file;
@@ -87,11 +87,11 @@ class HtmlExporter {
 	 * @throws UnauthorizedAccessError
 	 */
 	protected function serializeFolder(string $userId, int $id, string $indent = ''): string {
+		$output = '';
 		$nextIndent = $indent . '  ';
 		$childFolders = $this->treeMapper->findChildren(TreeMapper::TYPE_FOLDER, $id);
 		foreach ($childFolders as $childFolder) {
-			$folder = $this->folderMapper->find($id);
-			$output = $indent . '<DT><H3>' . htmlspecialchars($folder->getTitle()) . '</H3>' . "\n";
+			$output .= $indent . '<DT><H3>' . htmlspecialchars($childFolder->getTitle()) . '</H3>' . "\n";
 			$output .= $indent . '<DL><p>' . "\n" . $this->serializeFolder($userId, $childFolder->getId(), $nextIndent) . '</DL><p>' . "\n";
 		}
 
@@ -108,9 +108,6 @@ class HtmlExporter {
 			$tags = Util::sanitizeHTML(implode(',', $tags));
 			$title = trim($bookmark->getTitle());
 			$url = Util::sanitizeHTML($bookmark->getUrl());
-			if ($title === '') {
-				$title = $url;
-			}
 			$title = Util::sanitizeHTML($title);
 			$description = Util::sanitizeHTML($bookmark->getDescription());
 

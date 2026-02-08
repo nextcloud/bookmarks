@@ -145,9 +145,9 @@ class HtmlImportExportTest extends TestCase {
 
 		$exportedRootFolders = $this->treeMapper->findChildren(Db\TreeMapper::TYPE_FOLDER, $rootFolder->getId());
 		$this->assertCount(4, $exportedRootFolders);
-		foreach ($exportedRootFolders as $rootFolder) {
-			foreach ($this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $rootFolder->getId()) as $bookmark) {
-				$this->assertStringContainsString($rootFolder->getTitle(), $exported);
+		foreach ($exportedRootFolders as $exportedRootFolder) {
+			foreach ($this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $exportedRootFolder->getId()) as $bookmark) {
+				$this->assertStringContainsString($exportedRootFolder->getTitle(), $exported);
 				$this->assertStringContainsString($bookmark->getUrl(), $exported);
 			}
 		}
@@ -160,7 +160,7 @@ class HtmlImportExportTest extends TestCase {
 		$importedRootFolders = $this->treeMapper->findChildren(Db\TreeMapper::TYPE_FOLDER, $f->getId());
 		foreach ($importedRootFolders as $i => $importedRootFolder) {
 			$exportedRootFolder = $exportedRootFolders[$i];
-			$this->assertEquals($exportedRootFolder->getTitle(), $importedRootFolder->getTitle());
+			$this->assertEquals($importedRootFolder->getTitle(), $exportedRootFolder->getTitle());
 			$exportedBookmarks = $this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $exportedRootFolder->getId());
 			foreach ($this->treeMapper->findChildren(Db\TreeMapper::TYPE_BOOKMARK, $importedRootFolder->getId()) as $j => $bookmark) {
 				$this->assertEquals($bookmark->getUrl(), $exportedBookmarks[$j]->getUrl());
