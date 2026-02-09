@@ -247,6 +247,7 @@
     "What" : "甚麼",
     "Failed to count unavailable bookmarks" : "無法點算不可用的書籤",
     "Failed to count archived bookmarks" : "無法點算已封存的書籤",
+    "Failed to count deleted bookmarks" : "無法統計已刪除的書籤數量",
     "Failed to count duplicated bookmarks" : "無法點算書籤複本",
     "Failed to count bookmarks" : "無法計算書籤數量",
     "Failed to load bookmark" : "載入書籤失敗",

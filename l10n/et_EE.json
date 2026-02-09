@@ -247,6 +247,7 @@
     "What" : "Mis",
     "Failed to count unavailable bookmarks" : "Ei õnnestunud lugeda kokku saadaval mitteolevaid järjehoidjaid",
     "Failed to count archived bookmarks" : "Ei õnnestunud lugeda kokku arhiveeritud järjehoidjaid",
+    "Failed to count deleted bookmarks" : "Kustutatud järjehoidjate kokkulugemine ei õnnestunud",
     "Failed to count duplicated bookmarks" : "Ei õnnestunud lugeda kokku topeltjärjehoidjaid",
     "Failed to count bookmarks" : "Järjehoidjate loendamine ei õnnestunud",
     "Failed to load bookmark" : "Järjehoidja laadmine ei õnnestunud",

@@ -249,6 +249,7 @@ OC.L10N.register(
     "What" : "Was",
     "Failed to count unavailable bookmarks" : "Die nicht verfügbare Lesezeichen konnten nicht gezählt werden",
     "Failed to count archived bookmarks" : "Archivierte Lesezeichen konnten nicht gezählt werden",
+    "Failed to count deleted bookmarks" : "Gelöschte Lesezeichen konnten nicht gezählt werden",
     "Failed to count duplicated bookmarks" : "Doppelte Lesezeichen konnten nicht gezählt werden",
     "Failed to count bookmarks" : "Lesezeichen konnten nicht gezählt werden",
     "Failed to load bookmark" : "Lesezeichen konnte nicht geladen werden",

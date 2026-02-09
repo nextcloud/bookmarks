@@ -249,6 +249,7 @@ OC.L10N.register(
     "What" : "Que",
     "Failed to count unavailable bookmarks" : "Produciuse un fallo ao contar os marcadores non dispoñíbeis",
     "Failed to count archived bookmarks" : "Produciuse un fallo ao contar os marcadores arquivados",
+    "Failed to count deleted bookmarks" : "Produciuse un fallo ao contar os marcadores eliminados",
     "Failed to count duplicated bookmarks" : "Produciuse un fallo ao contar os marcadores duplicados",
     "Failed to count bookmarks" : "Produciuse un fallo ao contar os marcadores",
     "Failed to load bookmark" : "Produciuse un fallo ao cargar o marcador",

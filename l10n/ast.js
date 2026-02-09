@@ -27,6 +27,7 @@ OC.L10N.register(
     "Link" : "Enllaz",
     "Tags" : "Etiquetes",
     "Notes" : "Notes",
+    "Open file" : "Abrir ficheru",
     "Link copied" : "Copióse l'enllaz",
     "Owner" : "Propietariu",
     "Sharing" : "Comparticiñon",

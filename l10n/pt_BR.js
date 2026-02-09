@@ -249,6 +249,7 @@ OC.L10N.register(
     "What" : "O que",
     "Failed to count unavailable bookmarks" : "Erro ao contar os favoritos indisponíveis",
     "Failed to count archived bookmarks" : "Erro ao contar os favoritos arquivados",
+    "Failed to count deleted bookmarks" : "Falha ao contar os favoritos excluídos",
     "Failed to count duplicated bookmarks" : "Falha ao contar favoritos duplicados",
     "Failed to count bookmarks" : "Falha ao contar os favoritos",
     "Failed to load bookmark" : "Não foi possível carregar o favorito",

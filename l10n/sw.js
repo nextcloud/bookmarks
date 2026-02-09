@@ -249,6 +249,7 @@ OC.L10N.register(
     "What" : "Nini",
     "Failed to count unavailable bookmarks" : "Imeshindwa kuhesabu alamisho ambazo hazipatikani",
     "Failed to count archived bookmarks" : "Imeshindwa kuhesabu vialamisho vilivyohifadhiwa kwenye kumbukumbu",
+    "Failed to count deleted bookmarks" : "Imeshindwa kuhesabu alamisho zilizofutwa",
     "Failed to count duplicated bookmarks" : "Imeshindwa kuhesabu alamisho zilizorudiwa",
     "Failed to count bookmarks" : "Imeshindwa kuhesabu vialamisho",
     "Failed to load bookmark" : "Imeshindwa kupakia alamisho",

@@ -249,6 +249,7 @@ OC.L10N.register(
     "What" : "What",
     "Failed to count unavailable bookmarks" : "Failed to count unavailable bookmarks",
     "Failed to count archived bookmarks" : "Failed to count archived bookmarks",
+    "Failed to count deleted bookmarks" : "Failed to count deleted bookmarks",
     "Failed to count duplicated bookmarks" : "Failed to count duplicated bookmarks",
     "Failed to count bookmarks" : "Failed to count bookmarks",
     "Failed to load bookmark" : "Failed to load bookmark",
