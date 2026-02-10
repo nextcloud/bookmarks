@@ -249,6 +249,7 @@ OC.L10N.register(
     "What" : "Cad",
     "Failed to count unavailable bookmarks" : "Theip ar leabharmharcanna nach bhfuil ar fáil a chomhaireamh",
     "Failed to count archived bookmarks" : "Níorbh fhéidir leabharmharcanna cartlainne a chomhaireamh",
+    "Failed to count deleted bookmarks" : "Theip ar chomhaireamh leabharmharcanna scriosta",
     "Failed to count duplicated bookmarks" : "Theip ar leabharmharcanna dúblacha a chomhaireamh",
     "Failed to count bookmarks" : "Theip ar chomhaireamh leabharmharcanna",
     "Failed to load bookmark" : "Theip ar lódáil leabharmharc",

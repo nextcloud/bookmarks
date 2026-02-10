@@ -249,6 +249,7 @@ OC.L10N.register(
     "What" : "什麼",
     "Failed to count unavailable bookmarks" : "計算不可用的書籤失敗",
     "Failed to count archived bookmarks" : "計算已封存的書籤失敗",
+    "Failed to count deleted bookmarks" : "計算已刪除的書籤失敗",
     "Failed to count duplicated bookmarks" : "重複書籤計數失敗",
     "Failed to count bookmarks" : "計算書籤數量失敗",
     "Failed to load bookmark" : "載入書籤失敗",
