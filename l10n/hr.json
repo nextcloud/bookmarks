@@ -247,6 +247,7 @@
     "What" : "Što",
     "Failed to count unavailable bookmarks" : "Brojanje nedostupnih knjižnih oznaka nije uspjelo",
     "Failed to count archived bookmarks" : "Brojanje arhiviranih knjižnih oznaka nije uspjelo",
+    "Failed to count deleted bookmarks" : "Brojanje obrisanih knjižnih oznaka nije uspjelo",
     "Failed to count duplicated bookmarks" : "Nije uspjelo prebrojiti duplicirane oznake",
     "Failed to count bookmarks" : "Nije uspjelo prebrojiti oznake",
     "Failed to load bookmark" : "Učitavanje knjižne oznake nije uspjelo",

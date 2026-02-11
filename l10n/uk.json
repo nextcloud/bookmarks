@@ -247,6 +247,7 @@
     "What" : "Що?",
     "Failed to count unavailable bookmarks" : "Не вдалося визначити кількість недоступних закладок",
     "Failed to count archived bookmarks" : "Не вдалося визначити кількість архівних закладок",
+    "Failed to count deleted bookmarks" : "Не вдалося порахувати вилучені закладки",
     "Failed to count duplicated bookmarks" : "Не вдалося визначити кількість повторюваних закладок",
     "Failed to count bookmarks" : "Не вдалося порахувати закладки",
     "Failed to load bookmark" : "Не вдалося завантажити закладку",
