@@ -69,7 +69,7 @@ class Version016002000Date20260201124723 extends SimpleMigrationStep {
 				$this->db->commit();
 				$this->db->beginTransaction();
 			}
-			$setQb->setParameter('url_hash', md5($row['url']));
+			$setQb->setParameter('url_hash', hash('xxh128', $row['url']));
 			$setQb->setParameter('id', $row['id']);
 			$setQb->executeStatement();
 			$output->advance();
