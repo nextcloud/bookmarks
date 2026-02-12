@@ -249,6 +249,7 @@ OC.L10N.register(
     "What" : "Co",
     "Failed to count unavailable bookmarks" : "Nie udało się zliczyć niedostępnych zakładek",
     "Failed to count archived bookmarks" : "Nie udało się zliczyć zarchiwizowanych zakładek",
+    "Failed to count deleted bookmarks" : "Nie udało się policzyć usuniętych zakładek",
     "Failed to count duplicated bookmarks" : "Nie udało się zliczyć zduplikowanych zakładek",
     "Failed to count bookmarks" : "Nie udało się zliczyć zakładek",
     "Failed to load bookmark" : "Nie udało się załadować zakładki",
