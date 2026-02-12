@@ -895,6 +895,10 @@ class BookmarkMapper extends QBMapper {
 			return $entity;
 		} catch (Exception $e) {
 			if ($e->getReason() === Exception::REASON_UNIQUE_CONSTRAINT_VIOLATION) {
+				if ($this->db->inTransaction()) {
+					$this->db->commit();
+					$this->db->beginTransaction();
+				}
 				throw new AlreadyExistsError('A bookmark with this URL already exists');
 			}
 			throw $e;
