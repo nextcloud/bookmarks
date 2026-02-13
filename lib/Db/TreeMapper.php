@@ -802,12 +802,14 @@ class TreeMapper extends QBMapper {
 			if (!in_array($child, $newChildrenOrder, false)) {
 				throw new ChildrenOrderValidationError('A child is missing: ' . $child['type'] . ':' . $child['id']);
 			}
-			if (!isset($child['id'], $child['type'])) {
+		}
+		foreach ($newChildrenOrder as $child) {
+			if (!is_array($child) || !isset($child['id'], $child['type'])) {
 				throw new ChildrenOrderValidationError('A child item is missing properties');
 			}
 		}
 		if (count($newChildrenOrder) !== count($existingChildren)) {
-			throw new ChildrenOrderValidationError('To many children');
+			throw new ChildrenOrderValidationError('Too many children');
 		}
 
 		$qb = $this->db->getQueryBuilder();
