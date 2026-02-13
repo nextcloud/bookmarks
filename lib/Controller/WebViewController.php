@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\Controller;
 
 use OCA\Bookmarks\AugmentedTemplateResponse;
+use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
@@ -30,12 +31,14 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\DB\Exception;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
+use Psr\Log\LoggerInterface;
 
 class WebViewController extends Controller {
 	public function __construct(
@@ -51,11 +54,13 @@ class WebViewController extends Controller {
 		private \OCA\Bookmarks\Controller\InternalFoldersController $folderController,
 		private \OCA\Bookmarks\Controller\InternalBookmarkController $bookmarkController,
 		private \OCA\Bookmarks\Controller\InternalTagsController $tagsController,
+		private BookmarkMapper $bookmarkMapper,
 		private UserSettingsService $userSettingsService,
 		private SettingsService $settings,
 		private IAppManager $appManager,
 		private IConfig $config,
 		private IEventDispatcher $eventDispatcher,
+		private LoggerInterface $logger,
 	) {
 		parent::__construct($appName, $request);
 	}
@@ -89,14 +94,19 @@ class WebViewController extends Controller {
 		$res->setContentSecurityPolicy($policy);
 
 		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFolders()->getData()['data']);
-		$this->initialState->provideInitialState($this->appName, 'deletedFolders', $this->folderController->getDeletedFolders()->getData()['data']);
-		$this->initialState->provideInitialState($this->appName, 'archivedCount', $this->bookmarkController->countArchived()->getData()['item']);
-		$this->initialState->provideInitialState($this->appName, 'deletedCount', $this->bookmarkController->countDeleted()->getData()['item']);
-		$this->initialState->provideInitialState($this->appName, 'duplicatedCount', $this->bookmarkController->countDuplicated()->getData()['item']);
-		$this->initialState->provideInitialState($this->appName, 'unavailableCount', $this->bookmarkController->countUnavailable()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'allCount', $this->bookmarkController->countBookmarks(-1)->getData()['item']);
-		$this->initialState->provideInitialState($this->appName, 'allClicksCount', $this->bookmarkController->countAllClicks()->getData()['item']);
-		$this->initialState->provideInitialState($this->appName, 'withClicksCount', $this->bookmarkController->countWithClicks()->getData()['item']);
+
+		try {
+			$this->initialState->provideInitialState($this->appName, 'archivedCount', $this->bookmarkMapper->countArchived($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'deletedCount', $this->bookmarkMapper->countDeleted($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'duplicatedCount', $this->bookmarkMapper->countDuplicated($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'unavailableCount', $this->bookmarkMapper->countUnavailable($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'allClicksCount', $this->bookmarkMapper->countAllClicks($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'withClicksCount', $this->bookmarkMapper->countWithClicks($this->userId));
+		} catch (Exception $e) {
+			$this->logger->error($e->getMessage(), ['exception' => $e]);
+		}
+
 		$this->initialState->provideInitialState($this->appName, 'tags', $this->tagsController->fullTags(true)->getData());
 		$this->initialState->provideInitialState($this->appName, 'contextChatInstalled', $this->appManager->isEnabledForUser('context_chat'));
 		$this->initialState->provideInitialState($this->appName, 'appStoreEnabled', $this->config->getSystemValueBool('appstoreenabled', true));
