@@ -827,9 +827,22 @@ class TreeMapper extends QBMapper {
 			return $dict;
 		}, []);
 
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->update('bookmarks_tree')
+			->set('index', $qb->createParameter('index'))
+			->where($qb->expr()->eq('id', $qb->createParameter('id')))
+			->andWhere($qb->expr()->eq('parent_folder', $qb->createParameter('parent_folder')))
+			->andWhere($qb->expr()->eq('type', $qb->createParameter('type')));
+		$this->db->beginTransaction();
 		foreach ($newChildrenOrder as $i => $child) {
 			if (!in_array($child['type'], [TreeMapper::TYPE_FOLDER, TreeMapper::TYPE_BOOKMARK], true)) {
 				continue;
+			}
+
+			if ($i % 1000 === 0) {
+				$this->db->commit();
+				$this->db->beginTransaction();
 			}
 
 			if (($child['type'] === TreeMapper::TYPE_FOLDER) && isset($foldersToShares[$child['id']])) {
@@ -837,15 +850,13 @@ class TreeMapper extends QBMapper {
 				$child['id'] = $foldersToShares[$child['id']];
 			}
 
-			$qb = $this->db->getQueryBuilder();
-			$qb
-				->update('bookmarks_tree')
-				->set('index', $qb->createPositionalParameter($i))
-				->where($qb->expr()->eq('id', $qb->createPositionalParameter($child['id'])))
-				->andWhere($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
-				->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($child['type'])));
+			$qb->setParameter('index', $i, IQueryBuilder::PARAM_INT);
+			$qb->setParameter('id', $child['id'], IQueryBuilder::PARAM_INT);
+			$qb->setParameter('parent_folder', $folderId);
+			$qb->setParameter('type', $child['type']);
 			$qb->executeStatement();
 		}
+		$this->db->commit();
 
 		$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(TreeMapper::TYPE_FOLDER, $folderId));
 	}
