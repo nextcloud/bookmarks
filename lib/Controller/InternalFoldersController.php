@@ -53,7 +53,7 @@ class InternalFoldersController extends ApiController {
 	}
 
 	#[NoAdminRequired]
-	#[FrontpageRoute(verb: 'DELETE', url: '/folder/{folderId}')]
+	#[FrontpageRoute(verb: 'DELETE', url: '/folder/{folderId}', requirements: ['folderId' => '[0-9]+'])]
 	public function deleteFolder(int $folderId, bool $hardDelete = false): JSONResponse {
 		return $this->controller->deleteFolder($folderId, $hardDelete);
 	}

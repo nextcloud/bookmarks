@@ -168,7 +168,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
 	#[Http\Attribute\BruteForceProtection(action: 'getFolder')]
-	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}', requirements: ['folderId' => '[0-9]+'])]
 	public function getFolder(int $folderId): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);

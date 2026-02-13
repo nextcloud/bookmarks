@@ -75,13 +75,9 @@ class InternalBookmarkController extends ApiController {
 		return $this->publicController->getBookmarks($page, $tags, $conjunction, $sortby, $search, $limit, $untagged, $folder, $url, $unavailable, $archived, $duplicated, $recursive, $deleted);
 	}
 
-	/**
-	 * @param string $id
-	 * @return JSONResponse
-	 */
 	#[Http\Attribute\NoAdminRequired]
-	#[FrontpageRoute(verb: 'GET', url: '/bookmark/{id}')]
-	public function getSingleBookmark($id): JSONResponse {
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/{id}', requirements: ['id' => '[0-9]+'])]
+	public function getSingleBookmark(int $id): JSONResponse {
 		return $this->publicController->getSingleBookmark($id);
 	}
 
