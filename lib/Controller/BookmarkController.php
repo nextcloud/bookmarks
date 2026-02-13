@@ -115,6 +115,9 @@ class BookmarkController extends ApiController {
 	 * @throws \OCP\DB\Exception
 	 */
 	private function _getRootFolderId(): int {
+		if ($this->rootFolderId !== null) {
+			return $this->rootFolderId;
+		}
 		if ($this->authorizer->getToken() !== null) {
 			try {
 				$publicFolder = $this->publicFolderMapper->find($this->authorizer->getToken());

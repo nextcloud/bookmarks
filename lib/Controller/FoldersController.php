@@ -61,6 +61,9 @@ class FoldersController extends ApiController {
 	 * @throws \OCP\DB\Exception
 	 */
 	private function _getRootFolderId(): int {
+		if ($this->rootFolderId !== null) {
+			return $this->rootFolderId;
+		}
 		if ($this->authorizer->getToken() !== null) {
 			try {
 				$publicFolder = $this->publicFolderMapper->find($this->authorizer->getToken());
@@ -504,10 +507,11 @@ class FoldersController extends ApiController {
 			$internalRoot = $this->toInternalFolderId($root);
 			$folders = $this->treeMapper->getSubFolders($internalRoot, $layers, $root === -1 ? false : null);
 			if ($root === -1) {
-				foreach ($folders as $folder) {
+				foreach ($folders as &$folder) {
 					$folder['parent_folder'] = -1;
 				}
 			}
+			unset($folder);
 			$res = new JSONResponse(['status' => 'success', 'data' => $folders]);
 			$res->addHeader('Cache-Control', 'no-cache, must-revalidate');
 			$res->addHeader('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
