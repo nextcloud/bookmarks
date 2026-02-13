@@ -64,16 +64,6 @@ class Application extends App implements IBootstrap {
 	public function register(IRegistrationContext $context): void {
 		@include_once __DIR__ . '/../../vendor/autoload.php';
 
-		$context->registerService('UserId', static function ($c) {
-			/** @var IUser|null $user */
-			$user = $c->get(IUserSession::class)->getUser();
-			return $user === null ? null : $user->getUID();
-		});
-
-		$context->registerService('request', static function ($c) {
-			return $c->get(IRequest::class);
-		});
-
 		$context->registerCapability(Capabilities::class);
 
 		$context->registerSearchProvider(Provider::class);

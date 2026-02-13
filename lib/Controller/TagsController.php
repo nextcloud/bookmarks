@@ -45,7 +45,11 @@ class TagsController extends ApiController {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
-		$this->tagMapper->deleteTag($this->userId, $old_name); // TODO: Catch exceptions
+		try {
+			$this->tagMapper->deleteTag($this->userId, $old_name);
+		} catch (Exception) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
 		return new JSONResponse(['status' => 'success']);
 	}
 
