@@ -40,9 +40,6 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Group\Events\BeforeGroupDeletedEvent;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
-use OCP\IRequest;
-use OCP\IUser;
-use OCP\IUserSession;
 use OCP\User\Events\BeforeUserDeletedEvent;
 use OCP\Util;
 
