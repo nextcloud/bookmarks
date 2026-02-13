@@ -38,7 +38,7 @@ class Frequent implements IWidget {
 	 * @inheritDoc
 	 */
 	public function getId(): string {
-		return 'bookmarks.frequent';
+		return 'bookmarks-frequent';
 	}
 
 	/**
