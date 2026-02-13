@@ -38,15 +38,10 @@ use OCP\IURLGenerator;
 use OCP\IUserManager;
 
 class WebViewController extends Controller {
-	private ?string $userId;
-
-	/**
-	 * WebViewController constructor.
-	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
-		?string $userId,
+		private ?string $userId,
 		private IL10N $l,
 		private PublicFolderMapper $publicFolderMapper,
 		private IUserManager $userManager,
@@ -63,7 +58,6 @@ class WebViewController extends Controller {
 		private IEventDispatcher $eventDispatcher,
 	) {
 		parent::__construct($appName, $request);
-		$this->userId = $userId;
 	}
 
 
@@ -187,7 +181,7 @@ class WebViewController extends Controller {
 		$responseJS = [
 			'name' => $this->l->t('Bookmarks'),
 			'short_name' => $this->l->t('Bookmarks'),
-			'start_url' => $this->urlGenerator->linkToRouteAbsolute('bookmarks.web_view.index'),
+			'start_url' => $this->urlGenerator->linkToRouteAbsolute('bookmarks.webview.index'),
 			'icons'
 				=> [
 					[

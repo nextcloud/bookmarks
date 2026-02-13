@@ -19,27 +19,18 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\FrontpageRoute;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IRequest;
 
 class InternalBookmarkController extends ApiController {
-	/**
-	 * @var BookmarkController
-	 */
-	private $publicController;
-
-	private $userId;
-
-	/**
-	 * @var BookmarkService
-	 */
-	private $bookmarks;
-
 	public function __construct(
-		$appName, $request, $userId, BookmarkController $publicController, BookmarkService $bookmarks, Authorizer $authorizer,
+		string $appName,
+		IRequest $request,
+		private ?string $userId,
+		private BookmarkController $publicController,
+		private BookmarkService $bookmarks,
+		Authorizer $authorizer,
 	) {
 		parent::__construct($appName, $request);
-		$this->publicController = $publicController;
-		$this->userId = $userId;
-		$this->bookmarks = $bookmarks;
 		if ($this->userId !== null) {
 			$authorizer->setUserId($this->userId);
 		}
