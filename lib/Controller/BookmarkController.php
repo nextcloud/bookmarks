@@ -470,7 +470,7 @@ class BookmarkController extends ApiController {
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
 	#[Http\Attribute\BruteForceProtection(action: 'click')]
-	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/click')]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/bookmark/click')]
 	public function clickBookmark(string $url = ''): JSONResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
@@ -860,7 +860,7 @@ class BookmarkController extends ApiController {
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
 	#[Http\Attribute\BruteForceProtection(action: 'getDeletedBookmarks')]
-	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/bookmark/deleted')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/deleted')]
 	public function getDeletedBookmarks(): DataResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
@@ -884,7 +884,7 @@ class BookmarkController extends ApiController {
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
 	#[Http\Attribute\BruteForceProtection(action: 'countAllClicks')]
-	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/bookmark/totalClicks')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/totalClicks')]
 	public function countAllClicks(): DataResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
@@ -907,7 +907,7 @@ class BookmarkController extends ApiController {
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
 	#[Http\Attribute\BruteForceProtection(action: 'countWithClicks')]
-	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/bookmark/withClicks')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/withClicks')]
 	public function countWithClicks(): DataResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {

@@ -42,7 +42,7 @@ class InternalTagsController extends ApiController {
 	}
 
 	#[Http\Attribute\NoAdminRequired]
-	#[FrontpageRoute(verb: 'GET', url: '/tag}')]
+	#[FrontpageRoute(verb: 'GET', url: '/tag')]
 	public function fullTags(bool $count): JSONResponse {
 		return $this->publicController->fullTags($count);
 	}

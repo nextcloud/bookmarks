@@ -188,8 +188,8 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
-	#[Http\Attribute\BruteForceProtection(action: 'addFolder')]
-	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/folder/{folderId}')]
+	#[Http\Attribute\BruteForceProtection(action: 'getFolder')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}')]
 	public function getFolder(int $folderId): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
@@ -595,7 +595,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
 	#[Http\Attribute\BruteForceProtection(action: 'getFolderPublicToken')]
-	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}/publictoken}')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}/publictoken')]
 	public function getFolderPublicToken(int $folderId): DataResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
@@ -824,7 +824,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
-	#[Http\Attribute\BruteForceProtection(action: 'getShares')]
+	#[Http\Attribute\BruteForceProtection(action: 'editShare')]
 	#[Http\Attribute\FrontpageRoute(verb: 'PUT', url: '/public/rest/v2/share/{shareId}')]
 	public function editShare(int $shareId, bool $canWrite = false, bool $canShare = false): Http\DataResponse {
 		try {
@@ -861,7 +861,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
-	#[Http\Attribute\BruteForceProtection(action: 'getShares')]
+	#[Http\Attribute\BruteForceProtection(action: 'deleteShare')]
 	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/share/{shareId}')]
 	public function deleteShare(int $shareId): DataResponse {
 		try {

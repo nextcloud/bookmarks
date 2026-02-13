@@ -20,7 +20,7 @@ class InternalFoldersController extends ApiController {
 	public function __construct(
 		string $appName,
 		IRequest $request,
-		private $userId,
+		private ?string $userId,
 		private FoldersController $controller,
 		Authorizer $authorizer,
 	) {
@@ -40,7 +40,7 @@ class InternalFoldersController extends ApiController {
 
 
 	#[NoAdminRequired]
-	#[FrontpageRoute(verb: 'DELETE', url: '/folder/{folderId}/childorder')]
+	#[FrontpageRoute(verb: 'GET', url: '/folder/{folderId}/childorder')]
 	public function getFolderChildrenOrder(int $folderId, int $layers = 0): JSONResponse {
 		return $this->controller->getFolderChildrenOrder($folderId, $layers);
 	}
@@ -140,7 +140,7 @@ class InternalFoldersController extends ApiController {
 
 	#[NoAdminRequired]
 	#[FrontpageRoute(verb: 'POST', url: '/folder/{folderId}/shares')]
-	public function createShare(int $folderId, $participant, $type, bool $canWrite = false, bool $canShare = false): DataResponse {
+	public function createShare(int $folderId, string $participant, int $type, bool $canWrite = false, bool $canShare = false): DataResponse {
 		return $this->controller->createShare($folderId, $participant, $type, $canWrite, $canShare);
 	}
 
