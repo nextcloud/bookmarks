@@ -33,6 +33,7 @@ use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\HtmlExporter;
+use OCA\Bookmarks\Service\LockManager;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -46,106 +47,32 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Files\IRootFolder;
 use OCP\IL10N;
+use OCP\IRequest;
 use OCP\IURLGenerator;
 use Psr\Log\LoggerInterface;
 
 class BookmarkController extends ApiController {
 	private const IMAGES_CACHE_TTL = 7 * 24 * 60 * 60;
 
-	/**
-	 * @var IL10N
-	 */
-	private $l10n;
-
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-
-	/**
-	 * @var BookmarkMapper
-	 */
-	private $bookmarkMapper;
-
-	/**
-	 * @var TagMapper
-	 */
-	private $tagMapper;
-
-	/**
-	 * @var FolderMapper
-	 */
-	private $folderMapper;
-
-	/**
-	 * @var ITimeFactory
-	 */
-	private $timeFactory;
-
-	/**
-	 * @var IURLGenerator
-	 */
-	private $url;
-
-	/**
-	 * @var HtmlExporter
-	 */
-	private $htmlExporter;
-
-	/**
-	 * @var Authorizer
-	 */
-	private $authorizer;
-	/**
-	 * @var TreeMapper
-	 */
-	private $treeMapper;
-
-	/**
-	 * @var PublicFolderMapper
-	 */
-	private $publicFolderMapper;
-
-	private $rootFolderId;
-
-	/**
-	 * @var BookmarkService
-	 */
-	private $bookmarks;
-	/**
-	 * @var FolderService
-	 */
-	private $folders;
-	/**
-	 * @var IRootFolder
-	 */
-	private $rootFolder;
-	/**
-	 * @var \OCA\Bookmarks\Service\LockManager
-	 */
-	private $lockManager;
-
 	public function __construct(
-		$appName, $request, IL10N $l10n, BookmarkMapper $bookmarkMapper, TagMapper $tagMapper, FolderMapper $folderMapper, TreeMapper $treeMapper, PublicFolderMapper $publicFolderMapper, ITimeFactory $timeFactory, LoggerInterface $logger, IURLGenerator $url, HtmlExporter $htmlExporter, Authorizer $authorizer, BookmarkService $bookmarks, FolderService $folders, IRootFolder $rootFolder, \OCA\Bookmarks\Service\LockManager $lockManager,
+		string $appName,
+		IRequest $request,
+		private IL10N $l10n,
+		private BookmarkMapper $bookmarkMapper,
+		private TagMapper $tagMapper,
+		private FolderMapper $folderMapper,
+		private TreeMapper $treeMapper,
+		private PublicFolderMapper $publicFolderMapper,
+		private ITimeFactory $timeFactory,
+		private LoggerInterface $logger,
+		private HtmlExporter $htmlExporter,
+		private Authorizer $authorizer,
+		private BookmarkService $bookmarks,
+		private FolderService $folders,
+		private IRootFolder $rootFolder,
+		private LockManager $lockManager,
 	) {
 		parent::__construct($appName, $request);
-		$this->request = $request;
-		$this->l10n = $l10n;
-		$this->bookmarkMapper = $bookmarkMapper;
-		$this->tagMapper = $tagMapper;
-		$this->folderMapper = $folderMapper;
-		$this->treeMapper = $treeMapper;
-		$this->publicFolderMapper = $publicFolderMapper;
-		$this->timeFactory = $timeFactory;
-		$this->logger = $logger;
-		$this->url = $url;
-		$this->htmlExporter = $htmlExporter;
-		$this->authorizer = $authorizer;
-		$this->bookmarks = $bookmarks;
-		$this->folders = $folders;
-		$this->rootFolder = $rootFolder;
-		$this->lockManager = $lockManager;
-
 		$this->authorizer->setCORS(true);
 	}
 
@@ -230,12 +157,12 @@ class BookmarkController extends ApiController {
 	/**
 	 * @param string|int $id
 	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/{id}')]
 	public function getSingleBookmark($id): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark((int)$id, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
@@ -258,35 +185,21 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @param int $page
-	 * @param string[] $tags
-	 * @param string $conjunction
-	 * @param string $sortby
-	 * @param array $search
-	 * @param int $limit
-	 * @param bool $untagged
-	 * @param int|null $folder
-	 * @param string|null $url
-	 * @param bool|null $unavailable
-	 * @param bool|null $archived
-	 * @param bool|null $duplicated
-	 * @param bool $recursive
-	 * @param bool $deleted
 	 * @return DataResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
+	 * @throws UnauthenticatedError
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark')]
 	public function getBookmarks(
-		$page = 0,
-		$tags = null,
-		$conjunction = 'or',
-		$sortby = '',
-		$search = [],
-		$limit = 10,
-		$untagged = false,
+		int $page = 0,
+		?array $tags = null,
+		string $conjunction = 'or',
+		string $sortby = '',
+		array $search = [],
+		int $limit = 10,
+		bool $untagged = false,
 		?int $folder = null,
 		?string $url = null,
 		?bool $unavailable = null,
@@ -380,6 +293,7 @@ class BookmarkController extends ApiController {
 			}
 			try {
 				/** @var Folder $folderEntity */
+				// TODO: Catch DB\Exceptions
 				$folderEntity = $this->folderMapper->find($this->toInternalFolderId($folder));
 				// IMPORTANT:
 				// If we have this user's permission to see the contents of their folder, simply set the userID
@@ -396,12 +310,14 @@ class BookmarkController extends ApiController {
 
 		if ($userId !== null) {
 			try {
+				// TODO: Catch DB\Exceptions
 				$result = $this->bookmarkMapper->findAll($userId, $params);
 			} catch (UrlParseError $e) {
 				return new DataResponse(['status' => 'error', 'data' => ['Failed to parse URL']], Http::STATUS_BAD_REQUEST);
 			}
 		} else {
 			try {
+				// TODO: Catch DB\Exceptions
 				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $params);
 			} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 				return new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
@@ -418,21 +334,11 @@ class BookmarkController extends ApiController {
 		]);
 	}
 
-	/**
-	 * @param string $url
-	 * @param string|null $title
-	 * @param string $description
-	 * @param array $tags
-	 * @param array $folders
-	 * @param string $target
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
-	 */
-	public function newBookmark($url = '', $title = null, $description = null, $tags = null, $folders = [], $target = null): JSONResponse {
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/bookmark')]
+	public function newBookmark(string $url = '', ?string $title = null, ?string $description = null, ?array $tags = null, array $folders = [], ?string $target = null): JSONResponse {
 		$permissions = Authorizer::PERM_ALL;
 		$this->authorizer->setCredentials($this->request);
 		foreach ($folders as $folder) {
@@ -467,22 +373,11 @@ class BookmarkController extends ApiController {
 	}
 
 
-	/**
-	 * @param int|null $id
-	 * @param string|null $url
-	 * @param string|null $title
-	 * @param string|null $description
-	 * @param array|null $tags
-	 * @param array|null $folders
-	 * @param string|null $target
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
-	 */
-	public function editBookmark($id = null, $url = null, $title = null, $description = null, $tags = null, $folders = null, $target = null): JSONResponse {
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\FrontpageRoute(verb: 'PUT', url: '/public/rest/v2/bookmark/{id}')]
+	public function editBookmark(?int $id = null, ?string $url = null, ?string $title = null, ?string $description = null, ?array $tags = null, ?array $folders = null, ?string $target = null): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not edit bookmark']], Http::STATUS_NOT_FOUND);
 			$res->throttle();
@@ -523,16 +418,11 @@ class BookmarkController extends ApiController {
 		}
 	}
 
-	/**
-	 * @param int $id
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
-	 */
-	public function deleteBookmark($id): JSONResponse {
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/bookmark/{id}')]
+	public function deleteBookmark(int $id): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			$res = new JSONResponse(['status' => 'success']);
 			$res->throttle();
@@ -559,18 +449,12 @@ class BookmarkController extends ApiController {
 		return new JSONResponse(['status' => 'success']);
 	}
 
-	/**
-	 *
-	 * @param string $url
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 *
-	 * @PublicPage
-	 */
-	public function clickBookmark($url = ''): JSONResponse {
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'click')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/click')]
+	public function clickBookmark(string $url = ''): JSONResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Unauthenticated']], Http::STATUS_FORBIDDEN);
@@ -605,17 +489,14 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 *
-	 * @param int $id The id of the bookmark whose favicon should be returned
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
-	 * @BruteForceProtection
 	 * @return DataDisplayResponse|NotFoundResponse|RedirectResponse
 	 */
-	public function getBookmarkImage($id) {
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'image')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/{id}/image')]
+	public function getBookmarkImage(int $id) {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			$res = new NotFoundResponse();
 			$res->throttle();
@@ -633,16 +514,14 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 *
-	 * @param int $id The id of the bookmark whose image should be returned
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
 	 * @return DataDisplayResponse|NotFoundResponse|DataResponse
 	 */
-	public function getBookmarkFavicon($id) {
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'favicon')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/{id}/favicon')]
+	public function getBookmarkFavicon(int $id) {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			$res = new NotFoundResponse();
 			$res->throttle();
@@ -660,13 +539,11 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @param $image
-	 *
 	 * @return DataDisplayResponse|NotFoundResponse
 	 *
 	 * @throws Exception
 	 */
-	public function doImageResponse(?IImage $image) {
+	private function doImageResponse(?IImage $image) {
 		if ($image === null || $image->getData() === null) {
 			return new NotFoundResponse();
 		}
@@ -684,17 +561,13 @@ class BookmarkController extends ApiController {
 		return $response;
 	}
 
-	/**
-	 *
-	 * @param int $folder The id of the folder to import into
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
-	 */
-	public function importBookmark($folder = null): JSONResponse {
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'import')]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/bookmark/import')]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/folder/{folder}/import')]
+	public function importBookmark(?int $folder = null): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folder ?? -1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Folder not found']], Http::STATUS_BAD_REQUEST);
 			$res->throttle();
@@ -760,11 +633,12 @@ class BookmarkController extends ApiController {
 
 	/**
 	 * @return ExportResponse|JSONResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'export')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/export')]
 	public function exportBookmark() {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
@@ -788,14 +662,13 @@ class BookmarkController extends ApiController {
 
 
 	/**
-	 * @param int $folder
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'count')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folder}/count')]
 	public function countBookmarks(int $folder): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
@@ -814,13 +687,13 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'countUnavailable')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/unavailable')]
 	public function countUnavailable(): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
@@ -837,13 +710,13 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'countArchived')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/archived')]
 	public function countArchived(): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
@@ -856,13 +729,13 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'countDuplicated')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/duplicated')]
 	public function countDuplicated(): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
@@ -875,13 +748,13 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'countDeleted')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/deletedCount')]
 	public function countDeleted(): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
@@ -894,13 +767,13 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'acquireLock')]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/lock')]
 	public function acquireLock(): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
@@ -922,13 +795,13 @@ class BookmarkController extends ApiController {
 	}
 
 	/**
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
 	 * @throws UnauthenticatedError
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'releaseLock')]
+	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/lock')]
 	public function releaseLock(): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
@@ -949,13 +822,11 @@ class BookmarkController extends ApiController {
 		return new JSONResponse(['status' => 'success']);
 	}
 
-	/**
-	 * @return Http\DataResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @PublicPage
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'getDeletedBookmarks')]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/bookmark/deleted')]
 	public function getDeletedBookmarks(): DataResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
@@ -972,12 +843,11 @@ class BookmarkController extends ApiController {
 		return new Http\DataResponse(['status' => 'success', 'data' => array_map(fn ($bookmark) => $this->_returnBookmarkAsArray($bookmark), $bookmarks)]);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @return DataResponse
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'countAllClicks')]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/bookmark/totalClicks')]
 	public function countAllClicks(): DataResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
@@ -993,12 +863,11 @@ class BookmarkController extends ApiController {
 		}
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @BruteForceProtection
-	 * @return DataResponse
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'countWithClicks')]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/bookmark/withClicks')]
 	public function countWithClicks(): DataResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {

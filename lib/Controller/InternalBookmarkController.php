@@ -16,6 +16,7 @@ use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\Attribute\FrontpageRoute;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 
@@ -61,9 +62,9 @@ class InternalBookmarkController extends ApiController {
 	 * @param bool $recursive
 	 * @param bool $deleted
 	 * @return DataResponse
-	 *
-	 * @NoAdminRequired
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark')]
 	public function getBookmarks(
 		$page = 0,
 		$tags = [],
@@ -86,9 +87,9 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 * @param string $id
 	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/{id}')]
 	public function getSingleBookmark($id): JSONResponse {
 		return $this->publicController->getSingleBookmark($id);
 	}
@@ -101,9 +102,9 @@ class InternalBookmarkController extends ApiController {
 	 * @param array $folders
 	 * @param string $target
 	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/bookmark')]
 	public function newBookmark($url = '', $title = null, $description = null, $tags = null, $folders = [], $target = null): JSONResponse {
 		return $this->publicController->newBookmark($url, $title, $description, $tags, $folders, $target);
 	}
@@ -117,9 +118,9 @@ class InternalBookmarkController extends ApiController {
 	 * @param array|null $folders
 	 * @param string|null $target
 	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'PUT', url: '/bookmark/{id}')]
 	public function editBookmark($id = null, $url = null, $title = null, $description = '', $tags = [], $folders = null, $target = null): JSONResponse {
 		return $this->publicController->editBookmark($id, $url, $title, $description, $tags, $folders, $target);
 	}
@@ -127,18 +128,18 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 * @param int $id
 	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'DELETE', url: '/bookmark/{id}')]
 	public function deleteBookmark($id = -1): JSONResponse {
 		return $this->publicController->deleteBookmark($id);
 	}
 
 	/**
 	 * @return DataResponse
-	 *
-	 * @NoAdminRequired
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'DELETE', url: '/bookmark')]
 	public function deleteAllBookmarks(): DataResponse {
 		try {
 			$this->bookmarks->deleteAll($this->userId);
@@ -152,8 +153,9 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @param string $url
 	 * @return JSONResponse
-	 * @NoAdminRequired
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/bookmark/click')]
 	public function clickBookmark($url = ''): JSONResponse {
 		return $this->publicController->clickBookmark($url);
 	}
@@ -161,8 +163,10 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 * @param int|null $folder
 	 * @return JSONResponse
-	 * @NoAdminRequired
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/bookmark/import')]
+	#[FrontpageRoute(verb: 'POST', url: '/folder/{folder}/import')]
 	public function importBookmark($folder = null): JSONResponse {
 		return $this->publicController->importBookmark($folder);
 	}
@@ -170,9 +174,9 @@ class InternalBookmarkController extends ApiController {
 	/**
 	 *
 	 * @return JSONResponse|\OCA\Bookmarks\ExportResponse
-	 *
-	 * @NoAdminRequired
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/export')]
 	public function exportBookmark() {
 		return $this->publicController->exportBookmark();
 	}
@@ -183,11 +187,11 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse|Http\DataResponse
 	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
 	 * @throws Exception
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/{id}/image')]
 	public function getBookmarkImage($id) {
 		return $this->publicController->getBookmarkImage($id);
 	}
@@ -197,102 +201,75 @@ class InternalBookmarkController extends ApiController {
 	 *
 	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse|Http\DataResponse
 	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
 	 * @throws Exception
 	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/{id}/favicon')]
 	public function getBookmarkFavicon($id) {
 		return $this->publicController->getBookmarkFavicon($id);
 	}
 
-	/**
-	 *
-	 * @param int $folder
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/folder/{folder}/count')]
 	public function countBookmarks(int $folder): JSONResponse {
 		return $this->publicController->countBookmarks($folder);
 	}
 
-	/**
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/unavailable')]
 	public function countUnavailable(): JSONResponse {
 		return $this->publicController->countUnavailable();
 	}
 
-	/**
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/archived')]
 	public function countArchived(): JSONResponse {
 		return $this->publicController->countArchived();
 	}
 
-	/**
-	 *
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/duplicated')]
 	public function countDuplicated(): JSONResponse {
 		return $this->publicController->countDuplicated();
 	}
 
-	/**
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/lock')]
 	public function acquireLock(): JSONResponse {
 		return $this->publicController->acquireLock();
 	}
 
-	/**
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'DELETE', url: '/lock')]
 	public function releaseLock(): JSONResponse {
 		return $this->publicController->releaseLock();
 	}
 
-	/**
-	 * @return Http\DataResponse
-	 * @NoAdminRequired
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/deleted')]
 	public function getDeletedBookmarks(): DataResponse {
 		return $this->publicController->getDeletedBookmarks();
 	}
 
-	/**
-	 * @return Http\DataResponse
-	 * @NoAdminRequired
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/totalClickCount')]
 	public function countAllClicks(): DataResponse {
 		return $this->publicController->countAllClicks();
 	}
 
-	/**
-	 * @return Http\DataResponse
-	 * @NoAdminRequired
-	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/withClicks')]
 	public function countWithClicks(): DataResponse {
 		return $this->publicController->countWithClicks();
 	}
 
 	/**
-	 * @return JSONResponse
 	 * @throws \OCA\Bookmarks\Exception\UnauthenticatedError
-	 * @NoAdminRequired
 	 */
-	public function countDeleted() {
+	#[Http\Attribute\NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmark/deletedCount')]
+	public function countDeleted(): JSONResponse {
 		return $this->publicController->countDeleted();
 	}
 }

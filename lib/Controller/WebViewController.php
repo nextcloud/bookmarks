@@ -20,6 +20,11 @@ use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http\Attribute\BruteForceProtection;
+use OCP\AppFramework\Http\Attribute\FrontpageRoute;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+use OCP\AppFramework\Http\Attribute\PublicPage;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
@@ -61,11 +66,21 @@ class WebViewController extends Controller {
 		$this->userId = $userId;
 	}
 
-	/**
-	 * @NoAdminRequired
-	 *
-	 * @NoCSRFRequired
-	 */
+
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/')]
+	#[FrontpageRoute(verb: 'GET', url: '/recent', postfix: 'recent')]
+	#[FrontpageRoute(verb: 'GET', url: '/folders/{folder}/search/{search}', postfix: 'search')]
+	#[FrontpageRoute(verb: 'GET', url: '/folders/{folder}', postfix: 'folder')]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmarks/{bookmark}', postfix: 'bookmark')]
+	#[FrontpageRoute(verb: 'GET', url: '/tags/{tags}', postfix: 'tags')]
+	#[FrontpageRoute(verb: 'GET', url: '/untagged', postfix: 'untagged')]
+	#[FrontpageRoute(verb: 'GET', url: '/unavailable', postfix: 'unavailable')]
+	#[FrontpageRoute(verb: 'GET', url: '/archived', postfix: 'archived')]
+	#[FrontpageRoute(verb: 'GET', url: '/duplicated', postfix: 'duplicated')]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmarklet', postfix: 'bookmarklet')]
+	#[FrontpageRoute(verb: 'GET', url: '/trashbin', postfix: 'trashbin')]
 	public function index(): AugmentedTemplateResponse {
 		if (class_exists(LoadViewer::class)) {
 			$this->eventDispatcher->dispatchTyped(new LoadViewer());
@@ -109,6 +124,11 @@ class WebViewController extends Controller {
 	 * @BruteForceProtection
 	 * @PublicPage
 	 */
+	#[PublicPage]
+	#[NoCSRFRequired]
+	#[BruteForceProtection('link')]
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/public/{token}')]
 	public function link(string $token) {
 		$title = 'No title found';
 		$userName = 'Unknown';
@@ -140,12 +160,11 @@ class WebViewController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
-	 * @NoCSRFRequired
-	 *
 	 * @return StreamResponse
 	 */
+	#[FrontpageRoute(verb: 'GET', url: '/service-worker.js')]
+	#[NoCSRFRequired]
+	#[NoAdminRequired]
 	public function serviceWorker(): StreamResponse {
 		$response = new StreamResponse(__DIR__ . '/../../js/bookmarks-service-worker.js');
 		$response->setHeaders(['Content-Type' => 'application/javascript']);
@@ -158,14 +177,12 @@ class WebViewController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
-	 *
 	 * @return JSONResponse
 	 */
+	#[FrontpageRoute(verb: 'GET', url: '/manifest.webmanifest')]
+	#[NoCSRFRequired]
+	#[NoAdminRequired]
+	#[PublicPage]
 	public function manifest(): JSONResponse {
 		$responseJS = [
 			'name' => $this->l->t('Bookmarks'),
