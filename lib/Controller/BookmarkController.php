@@ -163,7 +163,7 @@ class BookmarkController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
-	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/{id}')]
+	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/bookmark/{id}', requirements: ['id' => '[0-9]+'])]
 	public function getSingleBookmark(int $id): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForBookmark($id, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
