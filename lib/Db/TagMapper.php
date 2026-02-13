@@ -179,12 +179,12 @@ class TagMapper {
 
 	/**
 	 * @brief Rename a tag
-	 * @param int $userId UserId
+	 * @param string $userId UserId
 	 * @param string $old Old Tag Name
 	 * @param string $new New Tag Name
 	 * @throws Exception
 	 */
-	public function renameTag($userId, string $old, string $new): void {
+	public function renameTag(string $userId, string $old, string $new): void {
 		// Remove about-to-be duplicated tags
 		$qb = $this->db->getQueryBuilder();
 		$qb
