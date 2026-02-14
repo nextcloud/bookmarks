@@ -11,29 +11,22 @@ namespace OCA\Bookmarks\Controller;
 use OCA\Bookmarks\Service\UserSettingsService;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\Attribute\FrontpageRoute;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 
 class SettingsController extends ApiController {
-
-	/**
-	 * @param string $appName
-	 * @param IRequest $request
-	 * @param UserSettingsService $userSettingsService
-	 */
 	public function __construct(
-		$appName,
-		$request,
+		string $appName,
+		IRequest $request,
 		private UserSettingsService $userSettingsService,
 	) {
 		parent::__construct($appName, $request);
 	}
 
-	/**
-	 * @param string $key
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 */
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/settings/{key}')]
 	public function getSetting(string $key): JSONResponse {
 		try {
 			$value = $this->userSettingsService->get($key);
@@ -44,12 +37,8 @@ class SettingsController extends ApiController {
 		return new JSONResponse([$key => $value], Http::STATUS_OK);
 	}
 
-	/**
-	 * @param string $key
-	 * @param string $value
-	 * @return JSONResponse
-	 * @NoAdminRequired
-	 */
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/settings/{key}')]
 	public function setSetting(string $key, string $value): JSONResponse {
 		try {
 			$this->userSettingsService->set($key, $value);
