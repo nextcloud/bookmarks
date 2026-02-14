@@ -21,6 +21,11 @@
 				:name="t('bookmarks', 'Recent')">
 				<HistoryIcon slot="icon" :size="20" />
 			</NcAppNavigationItem>
+			<NcAppNavigationItem key="menu-frequent"
+				:to="{ name: routes.FREQUENT }"
+				:name="t('bookmarks', 'Frequently clicked')">
+				<Hotness slot="icon" :size="20" />
+			</NcAppNavigationItem>
 			<NcAppNavigationItem key="menu-shared-folders"
 				:to="{ name: routes.SHARED_FOLDERS }"
 				:name="t('bookmarks', 'Shared with you')">
@@ -124,7 +129,7 @@
 
 <script>
 import { NcActionButton, NcAppNavigation, NcAppNavigationItem, NcAppNavigationNewItem, NcCounterBubble, NcAppNavigationSpacer } from '@nextcloud/vue'
-import { TrashbinIcon, HomeIcon, HistoryIcon, TagOffIcon, LinkVariantOffIcon, ShareVariantIcon, FileDocumentMultipleIcon, TagPlusIcon, TagMultipleIcon, VectorLinkIcon, TagIcon, DeleteIcon, GaugeIcon, CogIcon } from './Icons.js'
+import { Hotness, TrashbinIcon, HomeIcon, HistoryIcon, TagOffIcon, LinkVariantOffIcon, ShareVariantIcon, FileDocumentMultipleIcon, TagPlusIcon, TagMultipleIcon, VectorLinkIcon, TagIcon, DeleteIcon, GaugeIcon, CogIcon } from './Icons.js'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings.vue'
 import { actions, mutations } from '../store/index.js'
@@ -154,6 +159,7 @@ export default {
 		GaugeIcon,
 		CogIcon,
 		TrashbinIcon,
+		Hotness,
 	},
 
 	filters: {

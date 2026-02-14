@@ -70,6 +70,7 @@ class WebViewController extends Controller {
 	#[NoCSRFRequired]
 	#[FrontpageRoute(verb: 'GET', url: '/')]
 	#[FrontpageRoute(verb: 'GET', url: '/recent', postfix: 'recent')]
+	#[FrontpageRoute(verb: 'GET', url: '/frequent', postfix: 'frequent')]
 	#[FrontpageRoute(verb: 'GET', url: '/folders/{folder}/search/{search}', postfix: 'search')]
 	#[FrontpageRoute(verb: 'GET', url: '/folders/{folder}', postfix: 'folder')]
 	#[FrontpageRoute(verb: 'GET', url: '/bookmarks/{bookmark}', postfix: 'bookmark')]

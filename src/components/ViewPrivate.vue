@@ -77,17 +77,32 @@ export default {
 			return this.$store.state.tags
 		},
 		isFolderView() {
-			return this.$route.name === privateRoutes.FOLDER || this.$route.name === privateRoutes.HOME
+			return (
+				this.$route.name === privateRoutes.FOLDER
+				|| this.$route.name === privateRoutes.HOME
+			)
 		},
 		isSharedWithYou() {
 			return this.$route.name === privateRoutes.SHARED_FOLDERS
 		},
 		isTrashbin() {
-			const folder = this.$store.getters.getFolder(this.$route.params.folder || '-1')[0]
-			return this.$route.name === privateRoutes.TRASHBIN || (this.$route.name === privateRoutes.FOLDER && folder.softDeleted)
+			const folder = this.$store.getters.getFolder(
+				this.$route.params.folder || '-1',
+			)[0]
+			return (
+				this.$route.name === privateRoutes.TRASHBIN
+				|| (this.$route.name === privateRoutes.FOLDER
+					&& folder.softDeleted)
+			)
 		},
 		showFolderOverview() {
-			return this.isFolderView && !this.smallScreen && this.folders.length && !this.isTrashbin && !this.isSharedWithYou
+			return (
+				this.isFolderView
+				&& !this.smallScreen
+				&& this.folders.length
+				&& !this.isTrashbin
+				&& !this.isSharedWithYou
+			)
 		},
 	},
 	watch: {
@@ -114,20 +129,31 @@ export default {
 		this.reloadCount()
 		this.reloadTags()
 
-		await Promise.all([
-			this.reloadFolders(),
-			this.reloadDeletedFolders(),
-		])
+		await Promise.all([this.reloadFolders(), this.reloadDeletedFolders()])
 
 		this.onRoute()
 
 		const currentUser = getCurrentUser()
 		if (currentUser.isAdmin) {
-			const scrapingEnabled = await this.getSettingValue('privacy.enableScraping')
-			const alreadyShown = window.localStorage && window.localStorage.getItem('bookmarks.scrapingNoteShown')
+			const scrapingEnabled = await this.getSettingValue(
+				'privacy.enableScraping',
+			)
+			const alreadyShown
+				= window.localStorage
+				&& window.localStorage.getItem('bookmarks.scrapingNoteShown')
 			if (scrapingEnabled !== 'true' && alreadyShown !== 'true') {
-				window.localStorage && window.localStorage.setItem('bookmarks.scrapingNoteShown', 'true')
-				this.$store.commit(mutations.SET_NOTIFICATION, t('bookmarks', 'Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons.'))
+				window.localStorage
+					&& window.localStorage.setItem(
+						'bookmarks.scrapingNoteShown',
+						'true',
+					)
+				this.$store.commit(
+					mutations.SET_NOTIFICATION,
+					t(
+						'bookmarks',
+						'Network access is disabled by default. Go to administrator settings for the bookmarks app to allow fetching previews and favicons.',
+					),
+				)
 			}
 		}
 		this.initialLoad = false
@@ -142,10 +168,15 @@ export default {
 			}
 			switch (route.name) {
 			case privateRoutes.HOME:
-				this.$store.dispatch(actions.FILTER_BY_FOLDER, { folder: '-1' })
+				this.$store.dispatch(actions.FILTER_BY_FOLDER, {
+					folder: '-1',
+				})
 				break
 			case privateRoutes.RECENT:
 				this.$store.dispatch(actions.FILTER_BY_RECENT)
+				break
+			case privateRoutes.FREQUENT:
+				this.$store.dispatch(actions.FILTER_BY_FREQUENT)
 				break
 			case privateRoutes.UNTAGGED:
 				this.$store.dispatch(actions.FILTER_BY_UNTAGGED)
@@ -170,14 +201,25 @@ export default {
 				await this.$store.commit(mutations.REMOVE_ALL_BOOKMARKS)
 				break
 			case privateRoutes.BOOKMARK:
-				await this.$store.dispatch(actions.LOAD_BOOKMARK, route.params.bookmark)
-				this.$store.dispatch(actions.OPEN_BOOKMARK, route.params.bookmark)
+				await this.$store.dispatch(
+					actions.LOAD_BOOKMARK,
+					route.params.bookmark,
+				)
+				this.$store.dispatch(
+					actions.OPEN_BOOKMARK,
+					route.params.bookmark,
+				)
 				this.$store.commit(mutations.FETCH_END, 'bookmarks')
 				break
 			case privateRoutes.FOLDER:
 				// eslint-disable-next-line no-case-declarations
-				const folder = this.$store.getters.getFolder(route.params.folder)[0]
-				this.$store.dispatch(actions.FILTER_BY_FOLDER, { folder: route.params.folder, softDeleted: folder.softDeleted })
+				const folder = this.$store.getters.getFolder(
+					route.params.folder,
+				)[0]
+				this.$store.dispatch(actions.FILTER_BY_FOLDER, {
+					folder: route.params.folder,
+					softDeleted: folder.softDeleted,
+				})
 				break
 			case privateRoutes.TAGS:
 				this.$store.dispatch(
@@ -186,7 +228,10 @@ export default {
 				)
 				break
 			case privateRoutes.SEARCH:
-				this.$store.dispatch(actions.FILTER_BY_SEARCH, { search: route.params.search, folder: route.params.folder || -1 })
+				this.$store.dispatch(actions.FILTER_BY_SEARCH, {
+					search: route.params.search,
+					folder: route.params.folder || -1,
+				})
 				break
 			default:
 				throw new Error('Nothing here. Move along.')
@@ -221,7 +266,10 @@ export default {
 		},
 
 		onSearch(search) {
-			this.$router.push({ name: privateRoutes.SEARCH, params: { search } })
+			this.$router.push({
+				name: privateRoutes.SEARCH,
+				params: { search },
+			})
 		},
 
 		onResetSearch() {
