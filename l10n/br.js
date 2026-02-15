@@ -25,6 +25,7 @@ OC.L10N.register(
     "Link" : "Liamm",
     "Tags" : "Klavioù",
     "Notes" : "Notennoù",
+    "Open file" : "Digeriñ ur restr",
     "Download file" : "Pelkargañ restr",
     "Link copied" : "Liamm eilet",
     "Owner" : "Perc'henner",
