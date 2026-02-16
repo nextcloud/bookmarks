@@ -249,6 +249,7 @@ OC.L10N.register(
     "What" : "Čo",
     "Failed to count unavailable bookmarks" : "Nepodarilo sa spočítať neprístupné záložky",
     "Failed to count archived bookmarks" : "Nepodarilo sa spočítať archivované záložky",
+    "Failed to count deleted bookmarks" : "Nepodarilo sa spočítať vymazané záložky",
     "Failed to count duplicated bookmarks" : "Chyba pri spočítavaní duplikovaných záložiek",
     "Failed to count bookmarks" : "Nepodarilo sa spočítať záložky",
     "Failed to load bookmark" : "Nepodarilo sa načítať záložku",
