@@ -12,6 +12,7 @@ OC.L10N.register(
     "Title" : "Judul",
     "Link" : "Link",
     "Notes" : "Nota",
+    "Open file" : "Buka fail",
     "Owner" : "Owner",
     "Share link" : "Share link",
     "Folder" : "Folder",

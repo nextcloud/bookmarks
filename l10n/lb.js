@@ -22,6 +22,7 @@ OC.L10N.register(
     "Link" : "Link",
     "Tags" : "Tags",
     "Notes" : "Notizen",
+    "Open file" : "Fichier opmaachen",
     "Link copied" : "Link kopéiert",
     "Owner" : "Owner",
     "Sharing" : "Gedeelt",

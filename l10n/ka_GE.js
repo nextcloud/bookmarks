@@ -28,6 +28,7 @@ OC.L10N.register(
     "Link" : "ბმული",
     "Tags" : "ტეგები",
     "Notes" : "ჩანაწერები",
+    "Open file" : "ფაილის გახსნა",
     "Download file" : "ფაილის ჩამოტვირთვა",
     "Owner" : "მფლობელი",
     "Sharing" : "გაზიარება",

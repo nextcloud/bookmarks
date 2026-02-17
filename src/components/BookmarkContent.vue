@@ -74,8 +74,7 @@ export default {
 .bookmark-content {
 	position: absolute;
 	top: 0;
-	left: 0;
-	right: max( min(27vw, 500px), 300px); /* side bar */
+	inset-inline: 0 max( min(27vw, 500px), 300px); /* side bar */
 	bottom: 0;
 	background: var(--color-main-background);
 	z-index: 1801;

@@ -121,42 +121,42 @@ export default {
 }
 
 .treefolder__children .treefolder__title {
-	padding-left: 25px;
+	padding-inline-start: 25px;
 }
 
 .treefolder__children .treefolder__children .treefolder__title {
-	padding-left: 50px;
+	padding-inline-start: 50px;
 }
 
 .treefolder__children  .treefolder__children .treefolder__children .treefolder__title {
-	padding-left: 75px;
+	padding-inline-start: 75px;
 }
 
 .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__title {
-	padding-left: 100px;
+	padding-inline-start: 100px;
 }
 
 .treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__title {
-	padding-left: 125px;
+	padding-inline-start: 125px;
 }
 
 .treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
-	padding-left: 150px;
+	padding-inline-start: 150px;
 }
 
 .treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
-	padding-left: 175px;
+	padding-inline-start: 175px;
 }
 
 .treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
-	padding-left: 200px;
+	padding-inline-start: 200px;
 }
 
 .treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
-	padding-left: 225px;
+	padding-inline-start: 225px;
 }
 
 .treefolder__children .treefolder__children .treefolder__children  .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__children .treefolder__title {
-	padding-left: 250px;
+	padding-inline-start: 250px;
 }
 </style>

@@ -40,9 +40,6 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Group\Events\BeforeGroupDeletedEvent;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
-use OCP\IRequest;
-use OCP\IUser;
-use OCP\IUserSession;
 use OCP\User\Events\BeforeUserDeletedEvent;
 use OCP\Util;
 
@@ -63,16 +60,6 @@ class Application extends App implements IBootstrap {
 
 	public function register(IRegistrationContext $context): void {
 		@include_once __DIR__ . '/../../vendor/autoload.php';
-
-		$context->registerService('UserId', static function ($c) {
-			/** @var IUser|null $user */
-			$user = $c->get(IUserSession::class)->getUser();
-			return $user === null ? null : $user->getUID();
-		});
-
-		$context->registerService('request', static function ($c) {
-			return $c->get(IRequest::class);
-		});
 
 		$context->registerCapability(Capabilities::class);
 

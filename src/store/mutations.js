@@ -55,6 +55,7 @@ export const mutations = {
 	CLICK_BOOKMARK: 'CLICK_BOOKMARK',
 	SET_WITH_CLICKS_COUNT: 'SET_WITH_CLICKS_COUNT',
 	EMPTY_TRASHBIN: 'EMPTY_TRASHBIN',
+	SET_DELETED_COUNT: 'SET_DELETED_COUNT',
 }
 export default {
 	[mutations.SET_AUTH_TOKEN](state, authToken) {
@@ -90,18 +91,25 @@ export default {
 	},
 	[mutations.MOVE_FOLDER](state, { folder, target }) {
 		const currentFolder = this.getters.getFolder(folder)[0]
-		const oldParent = this.getters.getFolder(currentFolder.parent_folder)[0]
+		const oldParent = this.getters.getFolder(
+			currentFolder.parent_folder,
+		)[0]
 		const index = oldParent.children.indexOf(currentFolder)
 		oldParent.children.splice(index, 1)
 		const newParent = this.getters.getFolder(target)[0]
 		newParent.children.push(currentFolder)
 
 		if (state.childrenByFolder[oldParent.id]) {
-			const index = state.childrenByFolder[oldParent.id].findIndex(item => item.id === currentFolder.id)
+			const index = state.childrenByFolder[oldParent.id].findIndex(
+				(item) => item.id === currentFolder.id,
+			)
 			state.childrenByFolder[oldParent.id].splice(index, 1)
 		}
 		if (state.childrenByFolder[newParent.id]) {
-			state.childrenByFolder[newParent.id].push({ type: 'folder', id: currentFolder.id })
+			state.childrenByFolder[newParent.id].push({
+				type: 'folder',
+				id: currentFolder.id,
+			})
 		}
 	},
 	[mutations.ADD_TAG](state, tag) {
@@ -112,17 +120,25 @@ export default {
 	},
 	[mutations.RENAME_TAG](state, { oldName, newName }) {
 		state.bookmarks.forEach((bookmark) => {
-			Vue.set(bookmark, 'tags', bookmark.tags.map((tag) => {
-				if (tag === oldName) return newName
-				return tag
-			}))
+			Vue.set(
+				bookmark,
+				'tags',
+				bookmark.tags.map((tag) => {
+					if (tag === oldName) return newName
+					return tag
+				}),
+			)
 		})
 	},
 	[mutations.REMOVE_TAG](state, oldTag) {
 		state.bookmarks.forEach((bookmark) => {
-			Vue.set(bookmark, 'tags', bookmark.tags.filter((tag) => {
-				return tag !== oldTag
-			}))
+			Vue.set(
+				bookmark,
+				'tags',
+				bookmark.tags.filter((tag) => {
+					return tag !== oldTag
+				}),
+			)
 		})
 	},
 	[mutations.DISPLAY_NEW_BOOKMARK](state, display) {
@@ -149,7 +165,7 @@ export default {
 		state.selection = { folders: [], bookmarks: [] }
 	},
 	[mutations.ADD_SELECTION_BOOKMARK](state, item) {
-		if (state.selection.bookmarks.find(b => item.id === b.id)) {
+		if (state.selection.bookmarks.find((b) => item.id === b.id)) {
 			return
 		}
 		state.selection.bookmarks.push(item)
@@ -158,7 +174,7 @@ export default {
 		Vue.set(
 			state.selection,
 			'bookmarks',
-			state.selection.bookmarks.filter(s => !(s.id === item.id)),
+			state.selection.bookmarks.filter((s) => !(s.id === item.id)),
 		)
 	},
 	[mutations.ADD_SELECTION_FOLDER](state, item) {
@@ -168,7 +184,7 @@ export default {
 		Vue.set(
 			state.selection,
 			'folders',
-			state.selection.folders.filter(s => !(s.id === item.id)),
+			state.selection.folders.filter((s) => !(s.id === item.id)),
 		)
 	},
 
@@ -186,14 +202,18 @@ export default {
 		}
 	},
 	[mutations.REMOVE_BOOKMARK](state, id) {
-		const index = state.bookmarks.findIndex(bookmark => bookmark.id === id)
+		const index = state.bookmarks.findIndex(
+			(bookmark) => bookmark.id === id,
+		)
 		if (index !== -1) {
 			const bookmark = state.bookmarks[index]
-			bookmark.folders.forEach(folderId => {
+			bookmark.folders.forEach((folderId) => {
 				if (!state.childrenByFolder[folderId]) {
 					return
 				}
-				const index = state.childrenByFolder[folderId].findIndex(bookmark => bookmark.id === id)
+				const index = state.childrenByFolder[folderId].findIndex(
+					(bookmark) => bookmark.id === id,
+				)
 				if (index !== -1) {
 					return
 				}
@@ -218,6 +238,9 @@ export default {
 	},
 	[mutations.SET_ARCHIVED_COUNT](state, count) {
 		state.archivedCount = count
+	},
+	[mutations.SET_DELETED_COUNT](state, count) {
+		state.deletedCount = count
 	},
 	[mutations.SET_DUPLICATED_COUNT](state, count) {
 		state.duplicatedCount = count

@@ -199,10 +199,10 @@ class BookmarkControllerTest extends TestCase {
 		/** @var IRootFolder $rootFolder */
 		$rootFolder = OC::$server->get(IRootFolder::class);
 
-		$this->controller = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders, $rootFolder, $this->lockManager);
-		$this->otherController = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders, $rootFolder, $this->lockManager);
+		$this->controller = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders, $rootFolder, $this->lockManager);
+		$this->otherController = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders, $rootFolder, $this->lockManager);
 
-		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $urlGenerator, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders, $rootFolder, $this->lockManager);
+		$this->publicController = new BookmarkController('bookmarks', $this->publicRequest, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders, $rootFolder, $this->lockManager);
 	}
 
 	/**

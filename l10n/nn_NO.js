@@ -21,6 +21,7 @@ OC.L10N.register(
     "Link" : "Lenkje",
     "Tags" : "Emneord",
     "Notes" : "Notat",
+    "Open file" : "Opne fil",
     "Link copied" : "Lenkje kopiert",
     "Owner" : "Owner",
     "Sharing" : "Deling",

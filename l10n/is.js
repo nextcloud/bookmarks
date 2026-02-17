@@ -187,6 +187,7 @@ OC.L10N.register(
     "Notes" : "Minnispunktar",
     "Notes for this bookmark …" : "Minnispunktur á þetta bókamerki …",
     "Archived file" : "Skrá í safni",
+    "Open file" : "Opna skrá",
     "Download file" : "Sækja skrá",
     "Open file location" : "Opna staðsetningu skráar",
     "Link copied" : "Tengill afritaður",

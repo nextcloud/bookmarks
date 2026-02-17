@@ -32,6 +32,7 @@ OC.L10N.register(
     "Link" : "Холбоос",
     "Tags" : "Tag-үүд",
     "Notes" : "Шинэ ",
+    "Open file" : "Файл онгойлгох",
     "Owner" : "Эзэмшигч",
     "Sharing" : "Түгээх",
     "Share link" : "Холбоос хуваалцах",

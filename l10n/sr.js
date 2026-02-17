@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Белешке",
     "Notes for this bookmark …" : "Белешке за овај маркер ...",
     "Archived file" : "Архивирани фајл",
+    "Open file" : "Отвори фајл",
     "Download file" : "Преузми фајл",
     "Open file location" : "Отвори локацију фајла",
     "Link copied" : "Веза ископирана",

@@ -30,6 +30,7 @@ OC.L10N.register(
     "Root folder" : "Thư mục gốc",
     "Tags" : "Thẻ",
     "Notes" : "Ghi chép",
+    "Open file" : "Mở tệp",
     "Link copied" : "Đã sao chép liên kết",
     "Owner" : "Chủ",
     "Sharing" : "Đang chia sẽ",

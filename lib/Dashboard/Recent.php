@@ -38,7 +38,7 @@ class Recent implements IWidget {
 	 * @inheritDoc
 	 */
 	public function getId(): string {
-		return 'bookmarks.recent';
+		return 'bookmarks-recent';
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Recent implements IWidget {
 	 * @inheritDoc
 	 */
 	public function getUrl(): ?string {
-		return $this->url->linkToRouteAbsolute('bookmarks.web_view.index');
+		return $this->url->linkToRouteAbsolute('bookmarks.webview.index');
 	}
 
 	/**

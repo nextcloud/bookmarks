@@ -1,64 +1,64 @@
 {
-  "name": "bookmarks",
-  "version": "16.0.1",
-  "main": "js/index.js",
-  "scripts": {
-    "build": "webpack --node-env production --progress --config webpack.js",
-    "dev": "webpack --node-env development --progress --config webpack.js",
-    "watch": "webpack --node-env development --progress --watch --config webpack.js",
-    "serve": "webpack --node-env development serve --progress --config webpack.js",
-    "lint": "eslint --ext .js,.vue src",
-    "lint:fix": "eslint --ext .js,.vue src --fix",
-    "stylelint": "stylelint src",
-    "stylelint:fix": "stylelint src --fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nextcloud/bookmarks.git"
-  },
-  "bugs": {
-    "url": "https://github.com/nextcloud/bookmarks/issues"
-  },
-  "homepage": "https://github.com/nextcloud/bookmarks#readme",
-  "dependencies": {
-    "@nextcloud/auth": "^2.1.0",
-    "@nextcloud/axios": "^2.3.0",
-    "@nextcloud/dialogs": "6.x",
-    "@nextcloud/event-bus": "^3.1.0",
-    "@nextcloud/initial-state": "^2.0.0",
-    "@nextcloud/l10n": "^2.1.0",
-    "@nextcloud/router": "^2.1.2",
-    "@nextcloud/vue": "8.x",
-    "async-parallel": "^1.2.3",
-    "clone-deep": "^4.0.1",
-    "humanize-duration": "^3.32.1",
-    "linkify-it": "^3.0.3",
-    "lodash": "^4.17.21",
-    "nextcloud-vue-collections": "^0.11.0",
-    "sanitize-html": "^2.14.0",
-    "vue": "^2.6.14",
-    "vue-click-outside": "^1.1.0",
-    "vue-material-design-icons": "^5.2.0",
-    "vue-router": "^3.6.5",
-    "vue-simple-progress": "^1.1.1",
-    "vue-template-compiler": "^2.6.14",
-    "vuex": "^3.6.2",
-    "vuex-router-sync": "^5.0.0"
-  },
-  "license": "AGPL-3.0-or-later",
-  "devDependencies": {
-    "@nextcloud/babel-config": "1.x",
-    "@nextcloud/browserslist-config": "^3.0.1",
-    "@nextcloud/eslint-config": "8.x",
-    "@nextcloud/stylelint-config": "2.x",
-    "@nextcloud/webpack-vue-config": "6.x",
-    "@vue/test-utils": "^1.3.4"
-  },
-  "engines": {
-    "node": "20.x",
-    "npm": "9.x"
-  },
-  "browserslist": [
-    "extends @nextcloud/browserslist-config"
-  ]
+	"name": "bookmarks",
+	"version": "16.1.0",
+	"main": "js/index.js",
+	"scripts": {
+		"build": "webpack --node-env production --progress --config webpack.js",
+		"dev": "webpack --node-env development --progress --config webpack.js",
+		"watch": "webpack --node-env development --progress --watch --config webpack.js",
+		"serve": "webpack --node-env development serve --progress --config webpack.js",
+		"lint": "eslint --ext .js,.vue src",
+		"lint:fix": "eslint --ext .js,.vue src --fix",
+		"stylelint": "stylelint src",
+		"stylelint:fix": "stylelint src --fix"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nextcloud/bookmarks.git"
+	},
+	"bugs": {
+		"url": "https://github.com/nextcloud/bookmarks/issues"
+	},
+	"homepage": "https://github.com/nextcloud/bookmarks#readme",
+	"dependencies": {
+		"@nextcloud/auth": "^2.1.0",
+		"@nextcloud/axios": "^2.3.0",
+		"@nextcloud/dialogs": "6.x",
+		"@nextcloud/event-bus": "^3.1.0",
+		"@nextcloud/initial-state": "^2.0.0",
+		"@nextcloud/l10n": "3.x",
+		"@nextcloud/router": "3.x",
+		"@nextcloud/vue": "8.x",
+		"async-parallel": "^1.2.3",
+		"clone-deep": "^4.0.1",
+		"humanize-duration": "3.x",
+		"linkify-it": "5.x",
+		"lodash": "4.x",
+		"nextcloud-vue-collections": "^0.11.0",
+		"sanitize-html": "2.x",
+		"vue": "^2.6.14",
+		"vue-click-outside": "^1.1.0",
+		"vue-material-design-icons": "^5.2.0",
+		"vue-router": "3.x",
+		"vue-simple-progress": "^1.1.1",
+		"vue-template-compiler": "^2.6.14",
+		"vuex": "^3.6.2",
+		"vuex-router-sync": "^5.0.0"
+	},
+	"license": "AGPL-3.0-or-later",
+	"devDependencies": {
+		"@nextcloud/babel-config": "1.x",
+		"@nextcloud/browserslist-config": "^3.1.2",
+		"@nextcloud/eslint-config": "8.x",
+		"@nextcloud/stylelint-config": "3.x",
+		"@nextcloud/webpack-vue-config": "6.x",
+		"@vue/test-utils": "^1.3.4"
+	},
+	"engines": {
+		"node": "24.x",
+		"npm": "11.x"
+	},
+	"browserslist": [
+		"extends @nextcloud/browserslist-config"
+	]
 }

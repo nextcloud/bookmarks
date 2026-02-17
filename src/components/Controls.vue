@@ -20,7 +20,7 @@
 				</NcActionButton>
 			</NcActions>
 			<template v-if="$route.name === routes.FOLDER || ($route.name === routes.SEARCH && Number($route.params.folder) !== -1)">
-				<h2><FolderIcon :size="20" /> <span :class="{strikethrough: isTrashbin}" v-if="folder">{{ folder.title }}</span></h2>
+				<h2><FolderIcon :size="20" /> <span v-if="folder" :class="{strikethrough: isTrashbin}">{{ folder.title }}</span></h2>
 				<NcActions v-if="permissions.canShare && !isTrashbin">
 					<NcActionButton :close-after-click="true" @click="onOpenFolderShare">
 						<template #icon>
@@ -356,8 +356,7 @@ export default {
 	position: absolute;
 	z-index: 100;
 	background: var(--color-main-background-translucent);
-	left: 0;
-	right: 0;
+	inset-inline: 0;
 	top: 0;
 	border-bottom: var(--color-border) 1px solid;
 	height: 46px;
@@ -365,15 +364,14 @@ export default {
 
 .controls h2 {
 	margin: 0;
-	margin-left: 10px;
-	margin-right: 10px;
+	margin-inline: 10px;
 	display: flex;
 	flex-shrink: 0;
 	font-size: 1.1rem;
 }
 
 .controls h2 :nth-child(2) {
-	margin-left: 5px;
+	margin-inline-start: 5px;
 }
 
 .controls .strikethrough {

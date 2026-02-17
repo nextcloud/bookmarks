@@ -26,6 +26,7 @@ OC.L10N.register(
     "Link" : "Lidhje",
     "Tags" : "Etiketat",
     "Notes" : "Shënime",
+    "Open file" : "Hap skedarin",
     "Download file" : "Shkarko skedarin",
     "Link copied" : "Linku u kopjua",
     "Owner" : "Zotëruesi",

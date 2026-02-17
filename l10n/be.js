@@ -35,6 +35,7 @@ OC.L10N.register(
     "Tags" : "Тэгі",
     "Notes" : "Нататкі",
     "Archived file" : "Архіваваны файл",
+    "Open file" : "Адкрыць файл",
     "Download file" : "Спампаваць файл",
     "Open file location" : "Адкрыць размяшчэнне файла",
     "Link copied" : "Спасылка скапіявана",

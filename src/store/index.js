@@ -68,6 +68,7 @@ export default {
 		unavailableCount: null,
 		archivedCount: null,
 		duplicatedCount: null,
+		deletedCount: null,
 		allClicksCount: 0,
 		withClicksCount: 0,
 		selection: {

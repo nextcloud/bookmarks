@@ -210,10 +210,10 @@ class Provider implements IProvider {
 		}
 
 		if ($event->getObjectType() === TreeMapper::TYPE_FOLDER && !str_contains($event->getSubject(), 'deleted')) {
-			$event->setLink($this->url->linkToRouteAbsolute('bookmarks.web_view.indexfolder', ['folder' => $event->getObjectId()]));
+			$event->setLink($this->url->linkToRouteAbsolute('bookmarks.webview.indexfolder', ['folder' => $event->getObjectId()]));
 		}
 		if ($event->getObjectType() === TreeMapper::TYPE_BOOKMARK && !str_contains($event->getSubject(), 'deleted')) {
-			$event->setLink($this->url->linkToRouteAbsolute('bookmarks.web_view.indexbookmark', ['bookmark' => $event->getObjectId()]));
+			$event->setLink($this->url->linkToRouteAbsolute('bookmarks.webview.indexbookmark', ['bookmark' => $event->getObjectId()]));
 		}
 
 		return $event;

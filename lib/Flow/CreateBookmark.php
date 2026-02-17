@@ -134,7 +134,7 @@ class CreateBookmark implements IOperation {
 			$entity = $ruleMatcher->getEntity();
 
 			if ($entity instanceof File) {
-				$node = current($this->rootFolder->getById($entity->exportContextIDs()['nodeId']));
+				$node = $this->rootFolder->getFirstNodeById($entity->exportContextIDs()['nodeId']);
 				if ($node !== null) {
 					$this->handleFile($node, $user);
 				}

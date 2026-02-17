@@ -192,6 +192,7 @@ OC.L10N.register(
     "Notes" : "الملاحظات",
     "Notes for this bookmark …" : "ملاحظات على هذه الإشارة المرجعية ...",
     "Archived file" : "ملف مؤرشف",
+    "Open file" : "فتح ملف",
     "Download file" : "تنزيل ملف",
     "Open file location" : "فتح موقع الملف",
     "Link copied" : "تمّ نسخ الرابط",

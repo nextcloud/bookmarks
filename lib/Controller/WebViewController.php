@@ -9,37 +9,42 @@
 namespace OCA\Bookmarks\Controller;
 
 use OCA\Bookmarks\AugmentedTemplateResponse;
+use OCA\Bookmarks\Db\BookmarkMapper;
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Service\SettingsService;
 use OCA\Bookmarks\Service\UserSettingsService;
+use OCA\Viewer\Event\LoadViewer;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\Http\Attribute\BruteForceProtection;
+use OCP\AppFramework\Http\Attribute\FrontpageRoute;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+use OCP\AppFramework\Http\Attribute\PublicPage;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\DB\Exception;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
+use Psr\Log\LoggerInterface;
 
 class WebViewController extends Controller {
-	private ?string $userId;
-
-	/**
-	 * WebViewController constructor.
-	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
-		?string $userId,
+		private ?string $userId,
 		private IL10N $l,
 		private PublicFolderMapper $publicFolderMapper,
 		private IUserManager $userManager,
@@ -49,21 +54,37 @@ class WebViewController extends Controller {
 		private \OCA\Bookmarks\Controller\InternalFoldersController $folderController,
 		private \OCA\Bookmarks\Controller\InternalBookmarkController $bookmarkController,
 		private \OCA\Bookmarks\Controller\InternalTagsController $tagsController,
+		private BookmarkMapper $bookmarkMapper,
 		private UserSettingsService $userSettingsService,
 		private SettingsService $settings,
 		private IAppManager $appManager,
 		private IConfig $config,
+		private IEventDispatcher $eventDispatcher,
+		private LoggerInterface $logger,
 	) {
 		parent::__construct($appName, $request);
-		$this->userId = $userId;
 	}
 
-	/**
-	 * @NoAdminRequired
-	 *
-	 * @NoCSRFRequired
-	 */
+
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/')]
+	#[FrontpageRoute(verb: 'GET', url: '/recent', postfix: 'recent')]
+	#[FrontpageRoute(verb: 'GET', url: '/frequent', postfix: 'frequent')]
+	#[FrontpageRoute(verb: 'GET', url: '/folders/{folder}/search/{search}', postfix: 'search')]
+	#[FrontpageRoute(verb: 'GET', url: '/folders/{folder}', postfix: 'folder')]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmarks/{bookmark}', postfix: 'bookmark')]
+	#[FrontpageRoute(verb: 'GET', url: '/tags/{tags}', postfix: 'tags')]
+	#[FrontpageRoute(verb: 'GET', url: '/untagged', postfix: 'untagged')]
+	#[FrontpageRoute(verb: 'GET', url: '/unavailable', postfix: 'unavailable')]
+	#[FrontpageRoute(verb: 'GET', url: '/archived', postfix: 'archived')]
+	#[FrontpageRoute(verb: 'GET', url: '/duplicated', postfix: 'duplicated')]
+	#[FrontpageRoute(verb: 'GET', url: '/bookmarklet', postfix: 'bookmarklet')]
+	#[FrontpageRoute(verb: 'GET', url: '/trashbin', postfix: 'trashbin')]
 	public function index(): AugmentedTemplateResponse {
+		if (class_exists(LoadViewer::class)) {
+			$this->eventDispatcher->dispatchTyped(new LoadViewer());
+		}
 		$res = new AugmentedTemplateResponse($this->appName, 'main', ['url' => $this->urlGenerator]);
 
 		$policy = new ContentSecurityPolicy();
@@ -74,13 +95,19 @@ class WebViewController extends Controller {
 		$res->setContentSecurityPolicy($policy);
 
 		$this->initialState->provideInitialState($this->appName, 'folders', $this->folderController->getFolders()->getData()['data']);
-		$this->initialState->provideInitialState($this->appName, 'deletedFolders', $this->folderController->getDeletedFolders()->getData()['data']);
-		$this->initialState->provideInitialState($this->appName, 'archivedCount', $this->bookmarkController->countArchived()->getData()['item']);
-		$this->initialState->provideInitialState($this->appName, 'duplicatedCount', $this->bookmarkController->countDuplicated()->getData()['item']);
-		$this->initialState->provideInitialState($this->appName, 'unavailableCount', $this->bookmarkController->countUnavailable()->getData()['item']);
 		$this->initialState->provideInitialState($this->appName, 'allCount', $this->bookmarkController->countBookmarks(-1)->getData()['item']);
-		$this->initialState->provideInitialState($this->appName, 'allClicksCount', $this->bookmarkController->countAllClicks()->getData()['item']);
-		$this->initialState->provideInitialState($this->appName, 'withClicksCount', $this->bookmarkController->countWithClicks()->getData()['item']);
+
+		try {
+			$this->initialState->provideInitialState($this->appName, 'archivedCount', $this->bookmarkMapper->countArchived($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'deletedCount', $this->bookmarkMapper->countDeleted($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'duplicatedCount', $this->bookmarkMapper->countDuplicated($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'unavailableCount', $this->bookmarkMapper->countUnavailable($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'allClicksCount', $this->bookmarkMapper->countAllClicks($this->userId));
+			$this->initialState->provideInitialState($this->appName, 'withClicksCount', $this->bookmarkMapper->countWithClicks($this->userId));
+		} catch (Exception $e) {
+			$this->logger->error($e->getMessage(), ['exception' => $e]);
+		}
+
 		$this->initialState->provideInitialState($this->appName, 'tags', $this->tagsController->fullTags(true)->getData());
 		$this->initialState->provideInitialState($this->appName, 'contextChatInstalled', $this->appManager->isEnabledForUser('context_chat'));
 		$this->initialState->provideInitialState($this->appName, 'appStoreEnabled', $this->config->getSystemValueBool('appstoreenabled', true));
@@ -102,6 +129,11 @@ class WebViewController extends Controller {
 	 * @BruteForceProtection
 	 * @PublicPage
 	 */
+	#[PublicPage]
+	#[NoCSRFRequired]
+	#[BruteForceProtection('link')]
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/public/{token}')]
 	public function link(string $token) {
 		$title = 'No title found';
 		$userName = 'Unknown';
@@ -133,12 +165,11 @@ class WebViewController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
-	 * @NoCSRFRequired
-	 *
 	 * @return StreamResponse
 	 */
+	#[FrontpageRoute(verb: 'GET', url: '/service-worker.js')]
+	#[NoCSRFRequired]
+	#[NoAdminRequired]
 	public function serviceWorker(): StreamResponse {
 		$response = new StreamResponse(__DIR__ . '/../../js/bookmarks-service-worker.js');
 		$response->setHeaders(['Content-Type' => 'application/javascript']);
@@ -151,19 +182,17 @@ class WebViewController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
-	 *
 	 * @return JSONResponse
 	 */
+	#[FrontpageRoute(verb: 'GET', url: '/manifest.webmanifest')]
+	#[NoCSRFRequired]
+	#[NoAdminRequired]
+	#[PublicPage]
 	public function manifest(): JSONResponse {
 		$responseJS = [
 			'name' => $this->l->t('Bookmarks'),
 			'short_name' => $this->l->t('Bookmarks'),
-			'start_url' => $this->urlGenerator->linkToRouteAbsolute('bookmarks.web_view.index'),
+			'start_url' => $this->urlGenerator->linkToRouteAbsolute('bookmarks.webview.index'),
 			'icons'
 				=> [
 					[

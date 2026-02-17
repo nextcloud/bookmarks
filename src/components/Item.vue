@@ -262,7 +262,7 @@ export default {
 .item--gridview .item__rating {
 	position: absolute;
 	top: 10px;
-	right: 10px;
+	inset-inline-end: 10px;
 	background: var(--color-main-background);
 	border-radius: var(--border-radius-large);
 }
@@ -277,7 +277,7 @@ export default {
 
 .item--gridview .item__icon {
 	top: -155px;
-	left: 110px;
+	inset-inline-start: 110px;
 }
 
 .item--gridview  .item__rename {
@@ -288,8 +288,7 @@ export default {
 .item--gridview  .item__rename {
 	position: absolute;
 	bottom: 0;
-	left: 0;
-	right: 0;
+	inset-inline: 0;
 	top: 0;
 	display: flex;
 	align-items: flex-end;
@@ -337,7 +336,7 @@ export default {
 .item--gridview .item__checkbox {
 	position: absolute;
 	top: -1px;
-	left: -1px;
+	inset-inline-start: -1px;
 	background: white;
 	border-radius: var(--border-radius);
 	box-shadow: #aaa 0 0 3px inset;
@@ -351,9 +350,8 @@ export default {
 .item--gridview .tagline {
 	position: absolute;
 	bottom: 47px;
-	left: 10px;
+	inset-inline: 10px;
 	margin: 0;
-	right: 10px;
 }
 
 .item--gridview .item__checkbox input[type='checkbox'].checkbox + label::before {

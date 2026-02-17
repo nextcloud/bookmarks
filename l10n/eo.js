@@ -47,6 +47,7 @@ OC.L10N.register(
     "Root folder" : "Radika dosierujo",
     "Tags" : "Etikedoj",
     "Notes" : "Notoj",
+    "Open file" : "Malfermi dosieron",
     "Link copied" : "Ligilo kopiita",
     "Owner" : "Posedanto",
     "Sharing" : "Kunhavigo",

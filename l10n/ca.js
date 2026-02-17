@@ -191,6 +191,7 @@ OC.L10N.register(
     "Notes" : "Notes",
     "Notes for this bookmark …" : "Notes per a aquesta adreça d'interès …",
     "Archived file" : "Obre el fitxer arxivat",
+    "Open file" : "Obre un fitxer",
     "Download file" : "Baixa el fitxer",
     "Open file location" : "Obre la ubicació del fitxer",
     "Link copied" : "Enllaç copiat",

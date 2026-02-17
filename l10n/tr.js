@@ -196,6 +196,7 @@ OC.L10N.register(
     "Notes" : "Notlar",
     "Notes for this bookmark …" : "Bu yer imi için notlar ...",
     "Archived file" : "Arşivlenmiş dosya",
+    "Open file" : "Dosyayı aç",
     "Download file" : "Dosyayı indir",
     "Open file location" : "Dosya konumunu aç",
     "Link copied" : "Bağlantı kopyalandı",

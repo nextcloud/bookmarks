@@ -21,6 +21,7 @@ OC.L10N.register(
     "Link" : "Ligamine",
     "Tags" : "Etiquettas",
     "Notes" : "Notas",
+    "Open file" : "Aperir file",
     "Owner" : "Owner",
     "Sharing" : "Compartente",
     "Share link" : "Compartir ligamine",

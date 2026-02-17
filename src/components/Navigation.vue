@@ -21,6 +21,11 @@
 				:name="t('bookmarks', 'Recent')">
 				<HistoryIcon slot="icon" :size="20" />
 			</NcAppNavigationItem>
+			<NcAppNavigationItem key="menu-frequent"
+				:to="{ name: routes.FREQUENT }"
+				:name="t('bookmarks', 'Frequently clicked')">
+				<Hotness slot="icon" :size="20" />
+			</NcAppNavigationItem>
 			<NcAppNavigationItem key="menu-shared-folders"
 				:to="{ name: routes.SHARED_FOLDERS }"
 				:name="t('bookmarks', 'Shared with you')">
@@ -108,6 +113,9 @@
 				:to="{ name: routes.TRASHBIN }"
 				:name="t('bookmarks', 'Trash Bin')">
 				<TrashbinIcon slot="icon" :size="20" />
+				<NcCounterBubble slot="counter">
+					{{ deletedBookmarksCount | largeNumbers }}
+				</NcCounterBubble>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem :name="t('bookmarks', 'Bookmarks Settings')" @click="settingsOpen = !settingsOpen">
 				<template #icon>
@@ -121,7 +129,7 @@
 
 <script>
 import { NcActionButton, NcAppNavigation, NcAppNavigationItem, NcAppNavigationNewItem, NcCounterBubble, NcAppNavigationSpacer } from '@nextcloud/vue'
-import { TrashbinIcon, HomeIcon, HistoryIcon, TagOffIcon, LinkVariantOffIcon, ShareVariantIcon, FileDocumentMultipleIcon, TagPlusIcon, TagMultipleIcon, VectorLinkIcon, TagIcon, DeleteIcon, GaugeIcon, CogIcon } from './Icons.js'
+import { Hotness, TrashbinIcon, HomeIcon, HistoryIcon, TagOffIcon, LinkVariantOffIcon, ShareVariantIcon, FileDocumentMultipleIcon, TagPlusIcon, TagMultipleIcon, VectorLinkIcon, TagIcon, DeleteIcon, GaugeIcon, CogIcon } from './Icons.js'
 import ProgressBar from 'vue-simple-progress'
 import Settings from './Settings.vue'
 import { actions, mutations } from '../store/index.js'
@@ -151,6 +159,7 @@ export default {
 		GaugeIcon,
 		CogIcon,
 		TrashbinIcon,
+		Hotness,
 	},
 
 	filters: {
@@ -178,6 +187,9 @@ export default {
 		},
 		unavailableBookmarksCount() {
 			return this.$store.state.unavailableCount
+		},
+		deletedBookmarksCount() {
+			return this.$store.state.deletedCount
 		},
 		sharedFoldersCount() {
 			return Object.keys(this.$store.state.sharedFoldersById).length

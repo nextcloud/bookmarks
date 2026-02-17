@@ -27,6 +27,7 @@ OC.L10N.register(
     "Link" : "Skakel",
     "Tags" : "Merkers",
     "Notes" : "Notas",
+    "Open file" : "Open lêer",
     "Download file" : "Laai lêer af",
     "Link copied" : "Skakel gekopieer",
     "Owner" : "Eienaar",

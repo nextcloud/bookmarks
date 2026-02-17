@@ -4,8 +4,6 @@
   - This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
   -->
 <script>
-import ItemSkeleton from './ItemSkeleton.vue'
-
 const GRID_ITEM_HEIGHT = 198 + 2 + 10
 const GRID_ITEM_WIDTH = 248 + 2 + 10
 const LIST_ITEM_HEIGHT = 45 + 1
@@ -21,6 +19,10 @@ export default {
 	data() {
 		return {
 			viewport: { width: 0, height: 0 },
+			itemHeight: 0,
+			itemWidth: 0,
+			startIndex: 0,
+			visibleItems: 80,
 			scrollTop: 0,
 			scrollHeight: 500,
 			initialLoadingSkeleton: false,
@@ -41,6 +43,9 @@ export default {
 		fetching() {
 			return this.$store.state.loading.bookmarks
 		},
+		sidebar() {
+			return this.$store.state.sidebar
+		},
 	},
 	watch: {
 		newBookmark() {
@@ -49,83 +54,131 @@ export default {
 		newFolder() {
 			this.$el.scrollTop = 0
 		},
+		viewMode() {
+			this.onViewModeChange()
+		},
+		itemHeight() {
+			this.recalculateVisibleItems()
+		},
+		itemWidth() {
+			this.recalculateVisibleItems()
+		},
+		sidebar() {
+			this.$nextTick(() => {
+				this.onScroll()
+			})
+		},
 	},
 	mounted() {
-		this.onScroll()
+		this.$nextTick(() => {
+			this.onViewModeChange()
+			this.onScroll()
+		})
 		window.addEventListener('resize', this.onScroll)
 	},
 	destroyed() {
 		window.removeEventListener('resize', this.onScroll)
 	},
 	methods: {
+		onViewModeChange() {
+			this.viewport.width = this.$el.clientWidth
+			this.viewport.height = this.$el.clientHeight
+			if (this.viewMode === 'grid') {
+				this.itemHeight = GRID_ITEM_HEIGHT
+				this.itemWidth = GRID_ITEM_WIDTH
+			} else {
+				this.itemHeight = LIST_ITEM_HEIGHT
+				this.itemWidth = this.viewport.width
+			}
+		},
+		recalculateVisibleItems() {
+			this.visibleItems
+				= (Math.ceil(this.viewport.height / this.itemHeight) + 2)
+				* Math.floor(this.viewport.width / this.itemWidth)
+		},
 		onScroll() {
-			this.timeout ??= requestAnimationFrame(() => {
-				this.scrollTop = this.$el.scrollTop
-				this.timeout = null
-			})
+			this.viewport.width = this.$el.clientWidth
+			this.viewport.height = this.$el.clientHeight
+			const scrollTop = this.$el.scrollTop
+			this.startIndex
+				= Math.floor(scrollTop / this.itemHeight)
+				* Math.floor(this.viewport.width / this.itemWidth)
+			const childComponents = this.$slots.default.filter(
+				(child) => !!child.componentOptions,
+			)
+			if (
+				scrollTop + this.viewport.height
+				>= Math.ceil(childComponents.length / this.itemWidth)
+					* this.itemHeight
+					- 100
+			) {
+				if (!this.fetching) {
+					this.$emit('load-more')
+				}
+			}
 		},
 	},
 	render(h) {
-		let children = []
-		let itemsPerRow = 1
-		let renderedItems = 0
-		let upperPaddingItems = 0
-		let lowerPaddingItems = 0
-		let itemHeight = 1
-		const padding = GRID_ITEM_HEIGHT * 3
-		if (this.$slots.default && this.$el) {
-			const childComponents = this.$slots.default.filter(child => !!child.componentOptions)
-			const viewport = this.$el.getBoundingClientRect()
-			itemHeight = this.viewMode === 'grid' ? GRID_ITEM_HEIGHT : LIST_ITEM_HEIGHT
-			itemsPerRow = this.viewMode === 'grid' ? Math.floor(viewport.width / GRID_ITEM_WIDTH) : 1
-			renderedItems = itemsPerRow * Math.floor((viewport.height + padding + padding) / itemHeight)
-			upperPaddingItems = itemsPerRow * Math.ceil(Math.max(this.scrollTop - padding, 0) / itemHeight)
-			children = childComponents.slice(upperPaddingItems, upperPaddingItems + renderedItems)
-			renderedItems = children.length
-			lowerPaddingItems = Math.max(childComponents.length - upperPaddingItems - renderedItems, 0)
+		if (!this.$slots.default || !this.$el) {
+			return h('div', {
+				class: 'virtual-scroll',
+			})
 		}
 
-		if (!this.reachedEnd && lowerPaddingItems === 0) {
-			if (!this.fetching) {
-				this.$emit('load-more')
-			}
-			if (upperPaddingItems + renderedItems + lowerPaddingItems === 0) {
-				if (!this.initialLoadingSkeleton) {
-					// The first 350ms don't display skeletons
-					this.initialLoadingTimeout = setTimeout(() => {
-						this.initialLoadingSkeleton = true
-						this.$forceUpdate()
-					}, 350)
-					return h('div', { class: 'virtual-scroll' })
-				}
-			}
+		const childComponents = this.$slots.default.filter(
+			(child) => !!child.componentOptions,
+		)
 
-			children = [...children, ...Array(40).fill(0).map(() =>
-				h(ItemSkeleton),
-			)]
-		}
-
-		if (upperPaddingItems + renderedItems + lowerPaddingItems > 0) {
-			this.initialLoadingSkeleton = false
-			if (this.initialLoadingTimeout) {
-				clearTimeout(this.initialLoadingTimeout)
-			}
-		}
-
-		const scrollTop = this.scrollTop
-		this.$nextTick(() => {
-			this.$el.scrollTop = scrollTop
-		})
-
-		return h('div', {
-			class: 'virtual-scroll',
-			on: { scroll: () => this.onScroll() },
-		},
-		[
-			h('div', { class: 'upper-padding', style: { height: Math.max((upperPaddingItems / itemsPerRow) * itemHeight, 0) + 'px' } }),
-			h('div', { class: 'container-window', style: { height: Math.max((renderedItems / itemsPerRow) * itemHeight, 0) + 'px' } }, children),
-			h('div', { class: 'lower-padding', style: { height: Math.max((lowerPaddingItems / itemsPerRow) * itemHeight, 0) + 'px' } }),
-		])
+		const endIndex = Math.min(
+			this.startIndex + this.visibleItems,
+			childComponents.length,
+		)
+		const visibleData = Array.from(
+			{ length: endIndex - this.startIndex },
+			(_, i) => this.startIndex + i,
+		)
+		const itemsPerRow = Math.floor(this.viewport.width / this.itemWidth)
+		return h(
+			'div',
+			{
+				class: 'virtual-scroll',
+				on: { scroll: () => this.onScroll() },
+			},
+			[
+				h(
+					'div',
+					{
+						class: 'container-window',
+						style: {
+							height: `${
+								Math.ceil(
+									childComponents.length / itemsPerRow,
+								) * this.itemHeight
+							}px`,
+							position: 'relative',
+						},
+					},
+					visibleData.map((index) => {
+						const x = Math.floor(index / itemsPerRow)
+						const y = index - x * itemsPerRow
+						return h(
+							'div',
+							{
+								key: index,
+								style: {
+									position: 'absolute',
+									top: `${x * this.itemHeight}px`,
+									left: `${y * this.itemWidth + (itemsPerRow === 1 ? 0 : 10)}px`,
+									height: `${this.itemHeight}px`,
+									width: `${this.itemWidth}px`,
+								},
+							},
+							[childComponents[index]],
+						)
+					}),
+				),
+			],
+		)
 	},
 }
 </script>

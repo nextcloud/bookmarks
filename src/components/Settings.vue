@@ -298,7 +298,7 @@ export default {
 		opacity: 0;
 		position: absolute;
 		top: 0;
-		left: -1000px;
+		inset-inline-start: -1000px;
 	}
 
 	.settings p a {

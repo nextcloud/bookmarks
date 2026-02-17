@@ -169,6 +169,6 @@ export default {
 	height: 25px;
 	width: 25px;
 	background-size: cover;
-	margin-right: 5px;
+	margin-inline-end: 5px;
 }
 </style>

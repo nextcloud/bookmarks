@@ -19,6 +19,7 @@ use OCA\Bookmarks\Service\Previewers\WebshotBookmarkPreviewer;
 use OCA\Bookmarks\Service\SettingsService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\Attribute\FrontpageRoute;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 
@@ -47,11 +48,7 @@ class AdminController extends Controller {
 		];
 	}
 
-	/**
-	 * @param string $setting
-	 * @param scalar $value
-	 * @return JSONResponse
-	 */
+	#[FrontpageRoute(verb: 'PUT', url: '/admin/settings/{setting}')]
 	public function setSetting(string $setting, float|bool|int|string $value): JSONResponse {
 		try {
 			$this->settingsService->setSetting($setting, (string)$value);
@@ -61,19 +58,13 @@ class AdminController extends Controller {
 		}
 	}
 
-	/**
-	 * @param string $setting
-	 * @return JSONResponse
-	 */
+	#[FrontpageRoute(verb: 'GET', url: '/admin/settings/{setting}')]
 	public function getSetting(string $setting): JSONResponse {
 		return new JSONResponse(['value' => $this->settingsService->getSetting($setting)]);
 	}
 
-	/**
-	 * @param string $previewer
-	 * @return Http\Response
-	 * @NoCSRFRequired
-	 */
+	#[Http\Attribute\NoCSRFRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/admin/previewers/{previewer}')]
 	public function checkPreviewer(string $previewer): Http\Response {
 		if (!isset($this->previewers[$previewer])) {
 			return new JSONResponse([], Http::STATUS_BAD_REQUEST);

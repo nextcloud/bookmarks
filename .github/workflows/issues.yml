@@ -8,16 +8,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  assign_one_project:
-    runs-on: ubuntu-latest
-    name: Assign to One Project
-    steps:
-      - name: Assign new issues and pull requests to project 1 Backlog
-        uses: srggrs/assign-one-project-github-action@1.2.0
-        with:
-          project: 'https://github.com/nextcloud/bookmarks/projects/1'
-          column_name: 'Backlog'
-
   first_comment:
     runs-on: ubuntu-latest
     name: Add first comment

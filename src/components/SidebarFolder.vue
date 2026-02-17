@@ -41,7 +41,7 @@
 					@option:selected="onAddShare"
 					@search="onParticipantSearch" />
 			</div>
-			<div class="share" v-if="publicLinksAllowed">
+			<div v-if="publicLinksAllowed" class="share">
 				<LinkIcon :size="20" :class="{'share__avatar': true, active: publicLink }" />
 				<h3 class="share__title">
 					{{ t('bookmarks', 'Share link') }}
@@ -339,12 +339,12 @@ export default {
 	}
 
 	.share__privs > * {
-		padding-right: 5px;
+		padding-inline-end: 5px;
 	}
 
 	.share__title {
 		flex: 1;
-		padding-left: 10px;
+		padding-inline-start: 10px;
 		margin: 0 !important;
 	}
 

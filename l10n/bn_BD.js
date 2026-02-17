@@ -19,6 +19,7 @@ OC.L10N.register(
     "Link" : "Link",
     "Tags" : "ট্যাগ",
     "Notes" : "নোট",
+    "Open file" : "খোলা ফাইল",
     "Owner" : "Owner",
     "Sharing" : "ভাগাভাগিরত",
     "Share link" : "লিংক ভাগাভাগি করেন",

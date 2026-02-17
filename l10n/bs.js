@@ -16,6 +16,7 @@ OC.L10N.register(
     "Title" : "Naslov",
     "Link" : "Veza",
     "Notes" : "Notes",
+    "Open file" : "Otvori Datoteku",
     "Owner" : "Vlasnik",
     "Sharing" : "Dijeljenje",
     "Share link" : "Podijelite vezu",

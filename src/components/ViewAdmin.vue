@@ -253,7 +253,7 @@ figure[class^='icon-'] {
 #bookmarks .success {
 	position: absolute;
 	top: 20px;
-	right: 20px;
+	inset-inline-end: 20px;
 }
 
 #bookmarks label {

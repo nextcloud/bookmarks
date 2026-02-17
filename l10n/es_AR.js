@@ -27,6 +27,7 @@ OC.L10N.register(
     "Link" : "Link",
     "Tags" : "Etiquetas",
     "Notes" : "Notas",
+    "Open file" : "Abrir archivo",
     "Download file" : "Descargar archivo",
     "Link copied" : "Link copiado",
     "Owner" : "Dueño",

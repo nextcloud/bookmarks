@@ -17,6 +17,7 @@ Vue.use(Router)
 export const privateRoutes = {
 	HOME: 'home',
 	RECENT: 'recent',
+	FREQUENT: 'frequent',
 	SEARCH: 'search',
 	FOLDER: 'folder',
 	BOOKMARK: 'bookmark',
@@ -53,6 +54,11 @@ export default new Router({
 		{
 			path: '/recent',
 			name: privateRoutes.RECENT,
+			component: ViewPrivate,
+		},
+		{
+			path: '/frequent',
+			name: privateRoutes.FREQUENT,
 			component: ViewPrivate,
 		},
 		{

@@ -8,249 +8,156 @@
 
 namespace OCA\Bookmarks\Controller;
 
-use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http\Attribute\FrontpageRoute;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IRequest;
 
 class InternalFoldersController extends ApiController {
-	private $userId;
-
-	/** @var FoldersController */
-	private $controller;
-
-	public function __construct($appName, $request, $userId, FoldersController $controller, Authorizer $authorizer) {
+	public function __construct(
+		string $appName,
+		IRequest $request,
+		private ?string $userId,
+		private FoldersController $controller,
+		Authorizer $authorizer,
+	) {
 		parent::__construct($appName, $request);
-		$this->userId = $userId;
-		$this->controller = $controller;
-		if ($userId !== null) {
+		if ($this->userId !== null) {
 			$authorizer->setUserId($userId);
 		}
 		$authorizer->setCORS(false);
 	}
 
-	/**
-	 * @param string $title
-	 * @param int $parent_folder
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function addFolder($title = '', $parent_folder = -1): JSONResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/folder')]
+	public function addFolder(string $title = '', int $parent_folder = -1): JSONResponse {
 		return $this->controller->addFolder($title, $parent_folder);
 	}
 
 
-	/**
-	 * @param int $folderId
-	 * @param int $layers
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function getFolderChildrenOrder($folderId, $layers = 0): JSONResponse {
+
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/folder/{folderId}/childorder')]
+	public function getFolderChildrenOrder(int $folderId, int $layers = 0): JSONResponse {
 		return $this->controller->getFolderChildrenOrder($folderId, $layers);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @param array $data
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function setFolderChildrenOrder($folderId, $data = []): JSONResponse {
+
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'PATCH', url: '/folder/{folderId}/childorder')]
+	public function setFolderChildrenOrder(int $folderId, array $data = []): JSONResponse {
 		return $this->controller->setFolderChildrenOrder($folderId, $data);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @param bool $hardDelete
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'DELETE', url: '/folder/{folderId}', requirements: ['folderId' => '[0-9]+'])]
 	public function deleteFolder(int $folderId, bool $hardDelete = false): JSONResponse {
 		return $this->controller->deleteFolder($folderId, $hardDelete);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/folder/{folderId}/undelete')]
 	public function undeleteFolder(int $folderId): JSONResponse {
 		return $this->controller->undeleteFolder($folderId);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @param int $bookmarkId
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function addToFolder($folderId, $bookmarkId): JSONResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/folder/{folderId}/bookmarks/{bookmarkId}')]
+	public function addToFolder(int $folderId, int $bookmarkId): JSONResponse {
 		return $this->controller->addToFolder($folderId, $bookmarkId);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @param int $bookmarkId
-	 * @param $hardDelete
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function removeFromFolder($folderId, $bookmarkId, bool $hardDelete = false): JSONResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'DELETE', url: '/folder/{folderId}/bookmarks/{bookmarkId}')]
+	public function removeFromFolder(int $folderId, int $bookmarkId, bool $hardDelete = false): JSONResponse {
 		return $this->controller->removeFromFolder($folderId, $bookmarkId, $hardDelete);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @param int $bookmarkId
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/folder/{folderId}/bookmarks/{bookmarkId}/undelete')]
 	public function undeleteFromFolder(int $folderId, int $bookmarkId): JSONResponse {
 		return $this->controller->undeleteFromFolder($folderId, $bookmarkId);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @param string|null $title
-	 * @param int|null $parent_folder
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function editFolder(int $folderId, $title = null, $parent_folder = null): JSONResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'PUT', url: '/folder/{folderId}')]
+	public function editFolder(int $folderId, ?string $title = null, ?int $parent_folder = null): JSONResponse {
 		return $this->controller->editFolder($folderId, $title, $parent_folder);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @param string[] $fields
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function hashFolder($folderId, $fields = ['title', 'url']): JSONResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/folder/{folderId}/hash')]
+	public function hashFolder(int $folderId, array $fields = ['title', 'url']): JSONResponse {
 		return $this->controller->hashFolder($folderId, $fields);
 	}
 
-	/**
-	 * @param int $root the id of the root folder whose descendants to return
-	 * @param int $layers the number of layers of hierarchy to return
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 */
-	public function getFolders($root = -1, $layers = -1): JSONResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/folder')]
+	public function getFolders(int $root = -1, int $layers = -1): JSONResponse {
 		return $this->controller->getFolders($root, $layers);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 */
-	public function getFolderPublicToken($folderId): DataResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/folder/{folderId}/publictoken')]
+	public function getFolderPublicToken(int $folderId): DataResponse {
 		return $this->controller->getFolderPublicToken($folderId);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 */
-	public function createFolderPublicToken($folderId): DataResponse {
+
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/folder/{folderId}/publictoken')]
+	public function createFolderPublicToken(int $folderId): DataResponse {
 		return $this->controller->createFolderPublicToken($folderId);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 */
-	public function deleteFolderPublicToken($folderId): DataResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'DELETE', url: '/folder/{folderId}/publictoken')]
+	public function deleteFolderPublicToken(int $folderId): DataResponse {
 		return $this->controller->deleteFolderPublicToken($folderId);
 	}
 
-	/**
-	 * @param int $folderId
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 */
-	public function getShares($folderId): DataResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/folder/{folderId}/shares')]
+	public function getShares(int $folderId): DataResponse {
 		return $this->controller->getShares($folderId);
 	}
 
-	/**
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
-	 * @throws UnauthenticatedError
-	 */
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/folder/shared')]
 	public function findSharedFolders(): DataResponse {
 		return $this->controller->findSharedFolders();
 	}
 
-	/**
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @PublicPage
-	 * @throws UnauthenticatedError
-	 */
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/share')]
 	public function findShares(): DataResponse {
 		return $this->controller->findShares();
 	}
 
-	/**
-	 * @param int $folderId
-	 * @param $participant
-	 * @param $type
-	 * @param bool $canWrite
-	 * @param bool $canShare
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 */
-	public function createShare($folderId, $participant, $type, $canWrite = false, $canShare = false): DataResponse {
+
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'POST', url: '/folder/{folderId}/shares')]
+	public function createShare(int $folderId, string $participant, int $type, bool $canWrite = false, bool $canShare = false): DataResponse {
 		return $this->controller->createShare($folderId, $participant, $type, $canWrite, $canShare);
 	}
 
-	/**
-	 * @param $shareId
-	 * @param bool $canWrite
-	 * @param bool $canShare
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 */
-	public function editShare($shareId, $canWrite = false, $canShare = false): DataResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'PUT', url: '/share/{shareId}')]
+	public function editShare(int $shareId, bool $canWrite = false, bool $canShare = false): DataResponse {
 		return $this->controller->editShare($shareId, $canWrite, $canShare);
 	}
 
-	/**
-	 * @param int $shareId
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 */
-	public function deleteShare($shareId): DataResponse {
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'DELETE', url: '/share/{shareId}')]
+	public function deleteShare(int $shareId): DataResponse {
 		return $this->controller->deleteShare($shareId);
 	}
 
-	/**
-	 * @return DataResponse
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 */
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/folder/deleted')]
 	public function getDeletedFolders(): DataResponse {
 		return $this->controller->getDeletedFolders();
 	}

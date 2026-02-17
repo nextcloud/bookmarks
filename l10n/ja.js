@@ -131,6 +131,7 @@ OC.L10N.register(
     "Notes" : "ノート",
     "Notes for this bookmark …" : "このブックマークのメモ…",
     "Archived file" : "アーカイブ済みファイル",
+    "Open file" : "ファイルを開く",
     "Download file" : "ダウンロードファイル",
     "Open file location" : "ファイルの場所を開く",
     "Link copied" : "リンクをコピーしました",

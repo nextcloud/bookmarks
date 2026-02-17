@@ -38,7 +38,7 @@ class Frequent implements IWidget {
 	 * @inheritDoc
 	 */
 	public function getId(): string {
-		return 'bookmarks.frequent';
+		return 'bookmarks-frequent';
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Frequent implements IWidget {
 	 * @inheritDoc
 	 */
 	public function getUrl(): ?string {
-		return $this->url->linkToRouteAbsolute('bookmarks.web_view.index');
+		return $this->url->linkToRouteAbsolute('bookmarks.webview.index');
 	}
 
 	/**

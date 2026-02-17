@@ -39,8 +39,15 @@
 			</template>
 			<div class="sidebar">
 				<div v-if="!editingTarget" class="details__line">
-					<OpenInNewIcon :size="20" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
-					<a class="details__url" :href="bookmark.target === bookmark.url ? bookmark.target : 'javascript:void(0)'">{{ bookmark.target }}</a>
+					<OpenInNewIcon :size="20"
+						:aria-label="t('bookmarks', 'Link')"
+						:title="t('bookmarks', 'Link')" />
+					<a class="details__url"
+						:href="
+							bookmark.target === bookmark.url
+								? bookmark.target
+								: 'javascript:void(0)'
+						">{{ bookmark.target }}</a>
 					<NcActions v-if="isEditable" class="details__action">
 						<NcActionButton @click="onEditTarget">
 							<template #icon>
@@ -50,7 +57,9 @@
 					</NcActions>
 				</div>
 				<div v-else class="details__line">
-					<OpenInNewIcon :size="20" :aria-label="t('bookmarks', 'Link')" :title="t('bookmarks', 'Link')" />
+					<OpenInNewIcon :size="20"
+						:aria-label="t('bookmarks', 'Link')"
+						:title="t('bookmarks', 'Link')" />
 					<input v-model="target" class="details__url">
 					<NcActions class="details__action">
 						<NcActionButton @click="onEditTargetSubmit">
@@ -75,12 +84,20 @@
 							v-tooltip="getFolderPath(folderId)"
 							class="folders__folder"
 							@click="onOpenFolder(folderId)">
-							<FolderIcon :size="20" /> {{ getFolder(folderId).title || (getFolder(folderId).parent_folder ? t('bookmarks', 'Untitled folder') : t('bookmarks', 'Root folder')) }}
+							<FolderIcon :size="20" />
+							{{
+								getFolder(folderId).title ||
+									(getFolder(folderId).parent_folder
+										? t('bookmarks', 'Untitled folder')
+										: t('bookmarks', 'Root folder'))
+							}}
 						</span>
 					</div>
 				</div>
 				<div class="details__line">
-					<TagIcon :size="20" :aria-label="t('bookmarks', 'Tags')" :title="t('bookmarks', 'Tags')" />
+					<TagIcon :size="20"
+						:aria-label="t('bookmarks', 'Tags')"
+						:title="t('bookmarks', 'Tags')" />
 					<NcSelect class="tags"
 						:value="tags"
 						:auto-limit="false"
@@ -89,7 +106,9 @@
 						:multiple="true"
 						:taggable="true"
 						open-direction="below"
-						:placeholder="t('bookmarks', 'Select tags and create new ones')"
+						:placeholder="
+							t('bookmarks', 'Select tags and create new ones')
+						"
 						:disabled="!isEditable"
 						@input="onTagsChange"
 						@tag="onAddTag" />
@@ -97,24 +116,35 @@
 				<div class="details__line">
 					<PencilBoxIcon :size="20"
 						role="figure"
+						:fill-color="colorMainText"
 						:aria-label="t('bookmarks', 'Notes')"
 						:title="t('bookmarks', 'Notes')" />
 					<NcRichContenteditable :value.sync="bookmark.description"
 						:contenteditable="isEditable"
 						:auto-complete="() => {}"
-						:placeholder="t('bookmarks', 'Notes for this bookmark …')"
+						:placeholder="
+							t('bookmarks', 'Notes for this bookmark …')
+						"
 						:multiline="true"
 						class="notes"
 						@update:value="onNotesChange" />
 				</div>
 				<div v-if="archivedFile" class="details__line">
 					<FileDocumentIcon :size="20"
+						:fill-color="colorMainText"
 						role="figure"
 						:aria-label="t('bookmarks', 'Archived file')"
 						:title="t('bookmarks', 'Archived file')" />
-					<NcButton :href="archivedFileUrl" target="_blank" type="primary">
+					<NcButton type="primary" @click="openViewer">
 						<template #icon>
-							<DownloadIcon :size="18" :fill-color="colorMainText" />
+							<FileDocumentIcon :size="20"
+								:fill-color="colorPrimaryText" />
+						</template>{{ t('bookmarks', 'Open file') }}
+					</NcButton>
+					<NcButton :href="archivedFileUrl" target="_blank" type="secondary">
+						<template #icon>
+							<DownloadIcon :size="18"
+								:fill-color="colorMainText" />
 						</template>{{ t('bookmarks', 'Download file') }}
 					</NcButton>
 					<NcButton :href="archivedFile" target="_blank">
@@ -126,8 +156,27 @@
 	</NcAppSidebar>
 </template>
 <script>
-import { NcAppSidebar, NcRichContenteditable, NcActionButton, NcActions, NcSelect, NcAppSidebarTab, NcButton } from '@nextcloud/vue'
-import { FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon, DownloadIcon } from './Icons.js'
+import {
+	NcAppSidebar,
+	NcRichContenteditable,
+	NcActionButton,
+	NcActions,
+	NcSelect,
+	NcAppSidebarTab,
+	NcButton,
+} from '@nextcloud/vue'
+import {
+	FileDocumentIcon,
+	FolderIcon,
+	InformationVariantIcon,
+	PencilIcon,
+	ArrowRightIcon,
+	TagIcon,
+	OpenInNewIcon,
+	CloseIcon,
+	PencilBoxIcon,
+	DownloadIcon,
+} from './Icons.js'
 
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
@@ -138,7 +187,25 @@ const MAX_RELATIVE_DATE = 1000 * 60 * 60 * 24 * 7 // one week
 
 export default {
 	name: 'SidebarBookmark',
-	components: { NcAppSidebar, NcAppSidebarTab, NcSelect, NcActions, NcActionButton, NcRichContenteditable, FileDocumentIcon, FolderIcon, InformationVariantIcon, PencilIcon, ArrowRightIcon, TagIcon, OpenInNewIcon, CloseIcon, PencilBoxIcon, DownloadIcon, NcButton },
+	components: {
+		NcAppSidebar,
+		NcAppSidebarTab,
+		NcSelect,
+		NcActions,
+		NcActionButton,
+		NcRichContenteditable,
+		FileDocumentIcon,
+		FolderIcon,
+		InformationVariantIcon,
+		PencilIcon,
+		ArrowRightIcon,
+		TagIcon,
+		OpenInNewIcon,
+		CloseIcon,
+		PencilBoxIcon,
+		DownloadIcon,
+		NcButton,
+	},
 	data() {
 		return {
 			title: '',
@@ -155,10 +222,16 @@ export default {
 		},
 		bookmark() {
 			if (!this.isActive) return
-			return this.$store.getters.getBookmark(this.$store.state.sidebar.id)
+			return this.$store.getters.getBookmark(
+				this.$store.state.sidebar.id,
+			)
 		},
 		background() {
-			return generateUrl(`/apps/bookmarks/bookmark/${this.bookmark.id}/image`)
+			return this.bookmark.lastPreview
+				? generateUrl(
+					`/apps/bookmarks/bookmark/${this.bookmark.id}/image`,
+				  )
+				: undefined
 		},
 		addedDate() {
 			const date = new Date(Number(this.bookmark.added) * 1000)
@@ -170,41 +243,49 @@ export default {
 					largest: 1,
 					round: true,
 				})
-				return this.t('bookmarks', 'Created {time} ago', { time: duration })
+				return this.t('bookmarks', 'Created {time} ago', {
+					time: duration,
+				})
 			} else {
-				return this.t('bookmarks', 'Created on {date}', { date: date.toLocaleDateString() })
+				return this.t('bookmarks', 'Created on {date}', {
+					date: date.toLocaleDateString(),
+				})
 			}
 		},
 		tags() {
 			return this.bookmark.tags
 		},
 		allTags() {
-			return this.$store.state.tags.map(tag => tag.name)
+			return this.$store.state.tags.map((tag) => tag.name)
 		},
 		isOwner() {
 			const currentUser = getCurrentUser()
 			return currentUser && this.bookmark.userId === currentUser.uid
 		},
 		permissions() {
-			return this.$store.getters.getPermissionsForBookmark(this.bookmark.id)
+			return this.$store.getters.getPermissionsForBookmark(
+				this.bookmark.id,
+			)
 		},
 		isEditable() {
 			return this.isOwner || (!this.isOwner && this.permissions.canWrite)
 		},
 		archivedFile() {
 			if (this.bookmark.archivedFile) {
-				return generateUrl(`/apps/files/?fileid=${this.bookmark.archivedFile}`)
+				return generateUrl(`/f/${this.bookmark.archivedFile}`)
 			}
 			return null
 		},
 		archivedFileUrl() {
 			// remove `/username/files/`
-			const barePath = this.bookmark.archivedFilePath.split('/').slice(3).join('/')
+			const barePath = this.bookmark.archivedFilePath
+				.split('/')
+				.slice(3)
+				.join('/')
 			return generateRemoteUrl(`webdav/${barePath}`)
 		},
 	},
-	created() {
-	},
+	created() {},
 	methods: {
 		onClose() {
 			this.$store.commit(mutations.SET_SIDEBAR, null)
@@ -254,12 +335,18 @@ export default {
 		scheduleSave() {
 			if (this.changeTimeout) clearTimeout(this.changeTimeout)
 			this.changeTimeout = setTimeout(async () => {
-				await this.$store.dispatch(actions.SAVE_BOOKMARK, this.bookmark.id)
+				await this.$store.dispatch(
+					actions.SAVE_BOOKMARK,
+					this.bookmark.id,
+				)
 				await this.$store.dispatch(actions.LOAD_TAGS)
 			}, 1000)
 		},
 		onOpenFolder(id) {
-			this.$router.push({ name: this.routes.FOLDER, params: { folder: id } })
+			this.$router.push({
+				name: this.routes.FOLDER,
+				params: { folder: id },
+			})
 			this.onClose()
 		},
 		getFolder(id) {
@@ -268,13 +355,22 @@ export default {
 			return folder
 		},
 		getFolderPath(id) {
-			const path = this.$store.getters.getFolder(id).reverse().map(folder => folder.title)
+			const path = this.$store.getters
+				.getFolder(id)
+				.reverse()
+				.map((folder) => folder.title)
 			return '/' + path.join('/')
 		},
 		openViewer() {
 			try {
 				OCA.Viewer.open({
-					path: '/' + this.bookmark.archivedFilePath.split('/').slice(2).join('/'),
+					path:
+						'/'
+						+ this.bookmark.archivedFilePath
+							.split('/')
+							.slice(3)
+							.join('/'),
+					list: [],
 				})
 			} catch (e) {
 				this.$store.commit(mutations.SHOW_ERROR, e.message)
@@ -305,7 +401,7 @@ export default {
 
 .sidebar .details__line > * {
 	flex-grow: 0;
-	margin-right: 10px;
+	margin-inline-end: 10px;
 }
 
 .sidebar .details__line > :nth-child(2) {
@@ -338,7 +434,7 @@ export default {
 	border: 1px solid var(--color-border);
 	padding: 2px 10px;
 	border-radius: var(--border-radius-large);
-	margin-right: 5px;
+	margin-inline-end: 5px;
 	cursor: pointer;
 	display: flex;
 }

@@ -268,14 +268,14 @@ export default {
 	top: 1px;
 	height: auto;
 	width: auto;
-	left: -1px;
+	inset-inline-start: -1px;
 }
 
 .item--gridview .folder__icon {
 	background-size: cover;
 	position: absolute;
 	top: 20%;
-	left: calc(45% - 50px);
+	inset-inline-start: calc(45% - 50px);
 	transform: scale(4);
 	transform-origin: top left;
 }
@@ -296,7 +296,7 @@ export default {
 }
 
 .item--gridview .folder__title {
-	margin-left: 15px;
+	margin-inline-start: 15px;
 }
 
 .folder__tags {
@@ -311,7 +311,7 @@ export default {
 .item--gridview .folder__tags {
 	position: absolute;
 	bottom: 47px;
-	left: 10px;
+	inset-inline-start: 10px;
 	margin: 0;
 }
 
@@ -320,7 +320,7 @@ export default {
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius-pill);
 	padding: 5px 10px;
-	margin-right: 3px;
+	margin-inline-end: 3px;
 	background-color: var(--color-primary-element-light);
 }
 </style>
