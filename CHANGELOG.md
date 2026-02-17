@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [16.1.0] - 2026-02-17
+
+### New
+feat: Implement frequently clicked bookmarks
+feat(Trashbin): Show trashbin count in Navigation
+feat(SidebarBookmark): Add back openInViewer for archived files
+
+### Performance improvements
+perf(index): Improve time to first byte
+perf(setChildrenOrder): Use transactions to speed up reorderings
+perf(BookmarksParser): Do not parse folder tags anymore
+perf(HtmlImporter): Speed up imports and floccus sync
+
+### Fixed
+fix(Dashboard): Fix deprecated dashboard widget ID character usage
+fix(HtmlExporter): Make sure to produce correct NETSCAPE-Bookmark-file-1 markup
+fix(SidebarBookmark): Fix archivedFile URL
+fix(VirtualScroll): Watch sidebar opening and closing
+fix(BookmarkMapper#countDuplicated): Don't count deleted bookmarks towards duplicated bookmarks
+fix: Finally fix VirtualScroll component (Used to lag and jitter)
+fix(SidebarBookmark): Do not display background if no preview was done
+fix(UI): Update nc/vue and make it work with nc 33
+fix: Migrate `getById` to `getFirstNodeById` Louis Chmn
+fix: Add url_hash column for unique index
+fix: Refactor SQL queries and improve performance
+fix(BookmarkService): Allow adding bookmarks without protocol
+fix(l10n): Update translations from Transifex
+
+### Other
+chore(Controllers): Catch more exceptions
+chore: Support nc 33
+chore: Modernize QueryBuilder usage
+chore(Controllers): Modernize controller code
+chore: Update deps
+
 ## [16.0.1] - 2025-11-08
 
 ### Fixed
