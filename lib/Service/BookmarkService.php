@@ -113,11 +113,13 @@ class BookmarkService {
 	 * @throws DoesNotExistException
 	 */
 	private function _addBookmark($userId, $url, ?string $title = null, ?string $description = null, ?array $tags = null, array $folders = []): Bookmark {
+		$isInsert = true;
 		$bookmark = null;
 
 		try {
 			$bookmark = $this->bookmarkMapper->findByUrl($userId, $url);
-		} catch (DoesNotExistException $e) {
+			$isInsert = false;
+		} catch (DoesNotExistException) {
 			if (!preg_match(self::PROTOCOLS_REGEX, $url)) {
 				// if no allowed protocol is given, evaluate https and https
 				foreach (['https://', 'http://'] as $protocol) {
@@ -125,7 +127,7 @@ class BookmarkService {
 						$testUrl = $this->urlNormalizer->normalize($protocol . $url);
 						$bookmark = $this->bookmarkMapper->findByUrl($userId, $testUrl);
 						break;
-					} catch (UrlParseError|DoesNotExistException $e) {
+					} catch (UrlParseError|DoesNotExistException) {
 						continue;
 					}
 				}
@@ -160,8 +162,7 @@ class BookmarkService {
 			}
 			$url = $this->urlNormalizer->normalize($url);
 
-			$title = $title ?? $data['basic']['title'] ?? $url;
-			$title = trim($title);
+			$title = $title ?? trim($data['basic']['title']) ?? trim($url);
 			$description = $description ?? $data['basic']['description'] ?? '';
 
 			$bookmark->setUrl($url);
@@ -175,7 +176,11 @@ class BookmarkService {
 			$bookmark->setDescription($description);
 		}
 		$bookmark->setUserId($userId);
-		$this->bookmarkMapper->insertOrUpdate($bookmark);
+		if ($isInsert) {
+			$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
+		} else {
+			$bookmark = $this->bookmarkMapper->update($bookmark);
+		}
 
 		if (isset($tags)) {
 			$this->tagMapper->addTo($tags, $bookmark->getId());
