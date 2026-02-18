@@ -71,9 +71,8 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 	 * @param int $secondaryId - ID of the secondary bookmark to merge.
 	 */
 	public function mergeFolders(int $primaryId, int $secondaryId): void {
-		$qb = $this->db->getQueryBuilder();
-
 		// Fetch all folder assignments for the secondary bookmark
+		$qb = $this->db->getQueryBuilder();
 		$secondaryFolders = $qb->select('parent_folder')
 			->from('bookmarks_tree')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($secondaryId)))
@@ -84,6 +83,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		// Insert each folder assignment into the primary bookmark (skip if already exists)
 		foreach ($secondaryFolders as $parentFolderId) {
 			// Check if the folder assignment already exists for the primary bookmark
+			$qb = $this->db->getQueryBuilder();
 			$exists = $qb->select('id')
 				->from('bookmarks_tree')
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
@@ -94,6 +94,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 
 			if (!$exists) {
 				// Get the last index value for the parent_folder
+				$qb = $this->db->getQueryBuilder();
 				$lastIndex = $qb->select($qb->func()->max('index'))
 					->from('bookmarks_tree')
 					->where($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
