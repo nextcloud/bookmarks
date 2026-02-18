@@ -106,30 +106,12 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 					->values([
 						'id' => $insertQb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT),
 						'parent_folder' => $insertQb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT),
-						'user_id' => $insertQb->createNamedParameter($this->getUserIdForBookmark($primaryId)),
 						'type' => $insertQb->createNamedParameter(TreeMapper::TYPE_BOOKMARK),  // Bookmark (not folder)
 						'index' => $insertQb->createNamedParameter($nextIndex, IQueryBuilder::PARAM_INT),
 					])
 					->executeStatement();
 			}
 		}
-	}
-
-	/**
-	 * Helper method to fetch the user_id for a bookmark.
-	 */
-	private function getUserIdForBookmark(int $bookmarkId): string {
-		$qb = $this->db->getQueryBuilder();
-		$userId = $qb->select('user_id')
-			->from('bookmarks')
-			->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId)))
-			->executeQuery()
-			->fetchOne();
-		if ($userId === false) {
-			throw new \Exception("Bookmark with ID $bookmarkId not found");
-		}
-
-		return (string)$userId;
 	}
 
 	/**
