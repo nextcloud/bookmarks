@@ -168,7 +168,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 			->fetchOne();
 
 		// Update the primary description (append secondary description if different)
-		if ($primaryDesc !== $secondaryDescription) {
+		if (($primaryDesc !== '' || $secondaryDescription !== '') && $primaryDesc !== $secondaryDescription) {
 			$newDesc = $primaryDesc . "\n" . $secondaryDescription;
 			$qb->update('bookmarks')
 				->set('description', $qb->createNamedParameter($newDesc))
