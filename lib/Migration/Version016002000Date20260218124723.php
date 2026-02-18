@@ -85,8 +85,8 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 			// Check if the folder assignment already exists for the primary bookmark
 			$exists = $qb->select('id')
 				->from('bookmarks_tree')
-				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQUeryBuilder::PARAM_INT)))
-				->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQUeryBuilder::PARAM_INT)))
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
+				->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
 				->executeQuery()
 				->fetchOne();
 
@@ -94,7 +94,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 				// Get the last index value for the parent_folder
 				$lastIndex = $qb->select($qb->func()->max('index'))
 					->from('bookmarks_tree')
-					->where($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQUeryBuilder::PARAM_INT)))
+					->where($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
 					->executeQuery()
 					->fetchOne();
 
@@ -104,11 +104,11 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 				$insertQb = $this->db->getQueryBuilder();
 				$insertQb->insert('bookmarks_tree')
 					->values([
-						'id' => $insertQb->createNamedParameter($primaryId, IQUeryBuilder::PARAM_INT),
-						'parent_folder' => $insertQb->createNamedParameter($parentFolderId, IQUeryBuilder::PARAM_INT),
+						'id' => $insertQb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT),
+						'parent_folder' => $insertQb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT),
 						'user_id' => $insertQb->createNamedParameter($this->getUserIdForBookmark($primaryId)),
 						'type' => $insertQb->createNamedParameter(TreeMapper::TYPE_BOOKMARK),  // Bookmark (not folder)
-						'index' => $insertQb->createNamedParameter($nextIndex, IQUeryBuilder::PARAM_INT),
+						'index' => $insertQb->createNamedParameter($nextIndex, IQueryBuilder::PARAM_INT),
 					])
 					->executeStatement();
 			}
@@ -181,7 +181,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		// Fetch the primary bookmark's description
 		$primaryDesc = $qb->select('description')
 			->from('bookmarks')
-			->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQUeryBuilder::PARAM_INT)))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
 			->executeQuery()
 			->fetchOne();
 
@@ -190,7 +190,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 			$newDesc = $primaryDesc . "\n" . $secondaryDescription;
 			$qb->update('bookmarks')
 				->set('description', $qb->createNamedParameter($newDesc))
-				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQUeryBuilder::PARAM_INT)))
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
 				->executeStatement();
 		}
 	}
