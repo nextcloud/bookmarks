@@ -31,10 +31,11 @@ class Version016002000Date20260218134723 extends SimpleMigrationStep {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('id', 'url')->from('bookmarks')->where($qb->expr()->isNull('url_hash'));
 		$result = $qb->executeQuery();
+
 		$setQb = $this->db->getQueryBuilder();
 		$setQb->update('bookmarks')
-			->set('url_hash', $qb->createParameter('url_hash'))
-			->where($qb->expr()->eq('id', $qb->createParameter('id')));
+			->set('url_hash', $setQb->createParameter('url_hash'))
+			->where($setQb->expr()->eq('id', $setQb->createParameter('id')));
 		$i = 1;
 		$this->db->beginTransaction();
 		while ($row = $result->fetch()) {
