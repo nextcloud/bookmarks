@@ -224,11 +224,10 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 
 		// Step 1: Find all duplicate (url, user_id) pairs
 		$duplicateQb = $this->db->getQueryBuilder();
-		$duplicateQb->select('url', 'user_id')
-			->selectAlias($duplicateQb->func()->count('*'), 'count')
+		$duplicateQb->select('url', 'user_id', $duplicateQb->func()->count('*'))
 			->from('bookmarks')
 			->groupBy('url', 'user_id')
-			->having($duplicateQb->expr()->gt('count', $duplicateQb->createNamedParameter(1)));
+			->having($duplicateQb->expr()->gt($duplicateQb->func()->count('*'), $duplicateQb->createNamedParameter(1)));
 
 		$result = $duplicateQb->executeQuery();
 		$duplicatePairs = $result->fetchAll();
