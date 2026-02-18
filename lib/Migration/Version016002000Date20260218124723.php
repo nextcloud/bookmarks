@@ -120,11 +120,16 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 	 */
 	private function getUserIdForBookmark(int $bookmarkId): string {
 		$qb = $this->db->getQueryBuilder();
-		return $qb->select('user_id')
+		$userId = $qb->select('user_id')
 			->from('bookmarks')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId)))
 			->executeQuery()
 			->fetchOne();
+		if ($userId === false) {
+			throw new \Exception("Bookmark with ID $bookmarkId not found");
+		}
+
+		return (string)$userId;
 	}
 
 	/**
