@@ -27,7 +27,7 @@ class Version016002000Date20260218134723 extends SimpleMigrationStep {
 		$result = $countQb->executeQuery();
 		$count = $result->fetchOne();
 		$output->info('Hashing URLs of n=' . $count . ' bookmarks');
-		$output->startProgress($count);
+		$output->startProgress((int)$count);
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('id', 'url')->from('bookmarks')->where($qb->expr()->isNull('url_hash'));
