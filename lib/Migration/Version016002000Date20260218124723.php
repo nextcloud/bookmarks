@@ -60,6 +60,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 				$this->deleteBookmark($secondaryId);
 			}
 		}
+		$output->finishProgress();
 	}
 
 	/**
@@ -75,7 +76,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		// Fetch all folder assignments for the secondary bookmark
 		$secondaryFolders = $qb->select('parent_folder')
 			->from('bookmarks_tree')
-			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($secondaryId)))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($secondaryId)))
 			->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))  // Only bookmarks (not folders)
 			->executeQuery()
 			->fetchAll(\PDO::FETCH_COLUMN);
@@ -87,6 +88,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 				->from('bookmarks_tree')
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
+				->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))  // Only bookmarks (not folders)
 				->executeQuery()
 				->fetchOne();
 
@@ -122,9 +124,8 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 	 * @param int $secondaryId - ID of the secondary bookmark to merge.
 	 */
 	public function mergeTags(int $primaryId, int $secondaryId): void {
-		$qb = $this->db->getQueryBuilder();
-
 		// Fetch all tags from the secondary bookmark
+		$qb = $this->db->getQueryBuilder();
 		$secondaryTags = $qb->select('tag')
 			->from('bookmarks_tags')
 			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($secondaryId)))
@@ -134,6 +135,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		// Insert each tag into the primary bookmark (skip if already exists)
 		foreach ($secondaryTags as $tag) {
 			// Check if the tag already exists for the primary bookmark
+			$qb = $this->db->getQueryBuilder();
 			$exists = $qb->select('bookmark_id')
 				->from('bookmarks_tags')
 				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($primaryId)))
@@ -227,7 +229,9 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 			->groupBy('url', 'user_id')
 			->having($duplicateQb->expr()->gt('count', $duplicateQb->createNamedParameter(1)));
 
-		$duplicatePairs = $duplicateQb->executeQuery()->fetchAll();
+		$result = $duplicateQb->executeQuery();
+		$duplicatePairs = $result->fetchAll();
+		$result->closeCursor();
 
 		// Step 2: For each duplicate pair, fetch all matching bookmarks
 		foreach ($duplicatePairs as $pair) {
@@ -251,6 +255,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 					'description' => $row['description'],
 				];
 			}
+			$result->closeCursor();
 		}
 
 		return $duplicates;
