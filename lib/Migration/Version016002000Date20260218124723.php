@@ -51,13 +51,22 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 				$secondary = $group[$i];
 				$secondaryId = $secondary['id'];
 
-				// Merge folders, tags, and descriptions
-				$this->mergeFolders($primaryId, $secondaryId);
-				$this->mergeTags($primaryId, $secondaryId);
-				$this->mergeDescriptions($primaryId, $secondary['description']);
+				// Ensure that merging a secondary into the primary is atomic
+				$this->db->beginTransaction();
+				try {
+					// Merge folders, tags, and descriptions
+					$this->mergeFolders($primaryId, $secondaryId);
+					$this->mergeTags($primaryId, $secondaryId);
+					$this->mergeDescriptions($primaryId, $secondary['description']);
 
-				// Delete the secondary bookmark
-				$this->deleteBookmark($secondaryId);
+					// Delete the secondary bookmark
+					$this->deleteBookmark($secondaryId);
+
+					$this->db->commit();
+				} catch (\Throwable $e) {
+					$this->db->rollBack();
+					throw $e;
+				}
 			}
 		}
 		$output->finishProgress();
