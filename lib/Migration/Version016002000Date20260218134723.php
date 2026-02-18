@@ -9,7 +9,6 @@
 namespace OCA\Bookmarks\Migration;
 
 use Closure;
-use OCP\DB\Exception;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
