@@ -75,7 +75,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		$qb = $this->db->getQueryBuilder();
 		$secondaryFolders = $qb->select('parent_folder')
 			->from('bookmarks_tree')
-			->where($qb->expr()->eq('id', $qb->createNamedParameter($secondaryId)))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($secondaryId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))  // Only bookmarks (not folders)
 			->executeQuery()
 			->fetchAll(\PDO::FETCH_COLUMN);
@@ -129,7 +129,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		$qb = $this->db->getQueryBuilder();
 		$secondaryTags = $qb->select('tag')
 			->from('bookmarks_tags')
-			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($secondaryId)))
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($secondaryId, IQueryBuilder::PARAM_INT)))
 			->executeQuery()
 			->fetchAll(\PDO::FETCH_COLUMN);
 
@@ -139,7 +139,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 			$qb = $this->db->getQueryBuilder();
 			$exists = $qb->select('bookmark_id')
 				->from('bookmarks_tags')
-				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($primaryId)))
+				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('tag', $qb->createNamedParameter($tag)))
 				->executeQuery()
 				->fetchOne();
@@ -149,7 +149,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 				$insertQb = $this->db->getQueryBuilder();
 				$insertQb->insert('bookmarks_tags')
 					->values([
-						'bookmark_id' => $insertQb->createNamedParameter($primaryId),
+						'bookmark_id' => $insertQb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT),
 						'tag' => $insertQb->createNamedParameter($tag),
 					])
 					->executeStatement();
@@ -171,8 +171,14 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 			->fetchOne();
 
 		// Update the primary description (append secondary description if different)
-		if (($primaryDesc !== '' || $secondaryDescription !== '') && $primaryDesc !== $secondaryDescription) {
-			$newDesc = $primaryDesc . "\n" . $secondaryDescription;
+		if ($primaryDesc !== $secondaryDescription) {
+			if ($primaryDesc !== '' && $secondaryDescription !== '') {
+				$newDesc = $primaryDesc . "\n\n" . $secondaryDescription;
+			} elseif ($primaryDesc === '' && $secondaryDescription !== '') {
+				$newDesc = $secondaryDescription;
+			} elseif ($primaryDesc !== '' && $secondaryDescription === '') {
+				return;
+			}
 			$qb->update('bookmarks')
 				->set('description', $qb->createNamedParameter($newDesc))
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
@@ -194,17 +200,17 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		try {
 			// Delete tag assignments for the bookmark
 			$qb->delete('bookmarks_tags')
-				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId)))
+				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
 				->executeStatement();
 
 			// Delete folder entries for the bookmark from bookmarks_tree
 			$qb->delete('bookmarks_tree')
-				->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId)))
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
 				->executeStatement();
 
 			// Delete the bookmark itself
 			$qb->delete('bookmarks')
-				->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId)))
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
 				->executeStatement();
 
 			// Commit the transaction
@@ -227,7 +233,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		$duplicateQb->select('url', 'user_id', $duplicateQb->func()->count('*'))
 			->from('bookmarks')
 			->groupBy('url', 'user_id')
-			->having($duplicateQb->expr()->gt($duplicateQb->func()->count('*'), $duplicateQb->createNamedParameter(1)));
+			->having($duplicateQb->expr()->gt($duplicateQb->func()->count('*'), $duplicateQb->createNamedParameter(1, IQueryBuilder::PARAM_INT)));
 
 		$result = $duplicateQb->executeQuery();
 
