@@ -235,38 +235,39 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 	 * Returns an array of arrays, where each sub-array contains bookmark IDs sharing a URL.
 	 */
 	public function findDuplicates(): array {
-		$qb = $this->db->getQueryBuilder();
+		$duplicates = [];
 
-		// Subquery to group duplicates by URL and user
-		$subQb = $this->db->getQueryBuilder();
-		$subQb->select('url', 'user_id')
+		// Step 1: Find all duplicate (url, user_id) pairs
+		$duplicateQb = $this->db->getQueryBuilder();
+		$duplicateQb->select('url', 'user_id')
 			->from('bookmarks')
 			->groupBy('url', 'user_id')
-			->having($subQb->expr()->gt('COUNT(*)', $subQb->createNamedParameter(1)));
+			->having($duplicateQb->expr()->gt('COUNT(*)', $duplicateQb->createNamedParameter(1)));
 
-		// Main query to fetch all bookmarks matching the duplicate groups
-		$qb->select('b.id', 'b.url', 'b.user_id', 'b.title', 'b.description')
-			->from('bookmarks', 'b')
-			->join('b', '(' . $subQb->getSQL() . ')', 'dup', $qb->expr()->andX(
-				$qb->expr()->eq('b.url', 'dup.url'),
-				$qb->expr()->eq('b.user_id', 'dup.user_id')
-			))
-			->orderBy('b.user_id')
-			->addOrderBy('b.url')
-			->addOrderBy('b.id');
+		$duplicatePairs = $duplicateQb->executeQuery()->fetchAll();
 
-		$result = $qb->executeQuery();
+		// Step 2: For each duplicate pair, fetch all matching bookmarks
+		foreach ($duplicatePairs as $pair) {
+			$qb = $this->db->getQueryBuilder();
+			$qb->select('id', 'url', 'user_id', 'title', 'description')
+				->from('bookmarks')
+				->where($qb->expr()->eq('url', $qb->createNamedParameter($pair['url'])))
+				->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($pair['user_id'])))
+				->orderBy('id');
 
-		while ($row = $result->fetch()) {
-			$key = $row['user_id'] . '|' . $row['url'];
-			if (!isset($duplicates[$key])) {
-				$duplicates[$key] = [];
+			$result = $qb->executeQuery();
+
+			$key = $pair['user_id'] . '|' . $pair['url'];
+			while ($row = $result->fetch()) {
+				if (!isset($duplicates[$key])) {
+					$duplicates[$key] = [];
+				}
+				$duplicates[$key][] = [
+					'id' => $row['id'],
+					'title' => $row['title'],
+					'description' => $row['description'],
+				];
 			}
-			$duplicates[$key][] = [
-				'id' => $row['id'],
-				'title' => $row['title'],
-				'description' => $row['description'],
-			];
 		}
 
 		return $duplicates;
