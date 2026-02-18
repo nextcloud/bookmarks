@@ -230,11 +230,9 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 			->having($duplicateQb->expr()->gt($duplicateQb->func()->count('*'), $duplicateQb->createNamedParameter(1)));
 
 		$result = $duplicateQb->executeQuery();
-		$duplicatePairs = $result->fetchAll();
-		$result->closeCursor();
 
 		// Step 2: For each duplicate pair, fetch all matching bookmarks
-		foreach ($duplicatePairs as $pair) {
+		while ($pair = $result->fetch()) {
 			$qb = $this->db->getQueryBuilder();
 			$qb->select('id', 'url', 'user_id', 'title', 'description')
 				->from('bookmarks')
@@ -242,10 +240,10 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 				->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($pair['user_id'])))
 				->orderBy('id');
 
-			$result = $qb->executeQuery();
+			$result2 = $qb->executeQuery();
 
 			$key = $pair['user_id'] . '|' . $pair['url'];
-			while ($row = $result->fetch()) {
+			while ($row = $result2->fetch()) {
 				if (!isset($duplicates[$key])) {
 					$duplicates[$key] = [];
 				}
@@ -255,8 +253,9 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 					'description' => $row['description'],
 				];
 			}
-			$result->closeCursor();
+			$result2->closeCursor();
 		}
+		$result->closeCursor();
 
 		return $duplicates;
 	}

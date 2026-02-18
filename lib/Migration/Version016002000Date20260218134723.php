@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\Migration;
 
 use Closure;
+use OCP\DB\Exception;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
@@ -45,7 +46,13 @@ class Version016002000Date20260218134723 extends SimpleMigrationStep {
 			}
 			$setQb->setParameter('url_hash', hash('xxh128', $row['url']));
 			$setQb->setParameter('id', $row['id']);
-			$setQb->executeStatement();
+			try {
+				$setQb->executeStatement();
+			} catch (Exception $e) {
+				if ($e->getReason() === Exception::REASON_UNIQUE_CONSTRAINT_VIOLATION) {
+					throw new Exception('URL hash already exists for bookmark ID ' . $row['id'] . ' with url ' . $row['url'] . ' and hash ' . hash('xxh128', $row['url']), Exception::REASON_UNIQUE_CONSTRAINT_VIOLATION);
+				}
+			}
 			$output->advance();
 		}
 		$this->db->commit();
