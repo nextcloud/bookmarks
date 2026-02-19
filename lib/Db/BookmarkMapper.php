@@ -859,6 +859,7 @@ class BookmarkMapper extends QBMapper {
 		if ($entity->isWebLink()) {
 			$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		}
+		$entity->setUrlHash(hash('xxh128', $entity->getUrl()));
 		$entity->setLastmodified(time());
 		parent::update($entity);
 		$this->eventDispatcher->dispatchTyped(new ManipulateEvent('bookmark', $entity->getId()));
@@ -883,19 +884,25 @@ class BookmarkMapper extends QBMapper {
 		if ($entity->isWebLink()) {
 			$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		}
-		$entity->setUrlHash(hash('xxh128', $entity->getUrl()));
-
-		if ($entity->getAdded() === null) {
-			$entity->setAdded(time());
+		$entityToInsert = new Bookmark();
+		foreach ($entity->getUpdatedFields() as $field => $_value) {
+			$value = $entity->{'get' . ucfirst($field)}();
+			$entityToInsert->{'set' . ucfirst($field)}($value);
 		}
-		$entity->setLastmodified(time());
-		$entity->setLastPreview(0);
-		$entity->setClickcount(0);
+
+		$entityToInsert->setUrlHash(hash('xxh128', $entity->getUrl()));
+
+		if ($entityToInsert->getAdded() === null) {
+			$entityToInsert->setAdded(time());
+		}
+		$entityToInsert->setLastmodified(time());
+		$entityToInsert->setLastPreview(0);
+		$entityToInsert->setClickcount(0);
 
 		try {
-			parent::insert($entity);
-			$this->eventDispatcher->dispatchTyped(new InsertEvent('bookmark', $entity->getId()));
-			return $entity;
+			parent::insert($entityToInsert);
+			$this->eventDispatcher->dispatchTyped(new InsertEvent('bookmark', $entityToInsert->getId()));
+			return $entityToInsert;
 		} catch (Exception $e) {
 			if ($e->getReason() === Exception::REASON_UNIQUE_CONSTRAINT_VIOLATION) {
 				if ($this->db->inTransaction()) {
@@ -919,12 +926,15 @@ class BookmarkMapper extends QBMapper {
 	public function insertOrUpdate(Entity $entity): Bookmark {
 		try {
 			$newEntity = $this->insert($entity);
-		} catch (AlreadyExistsError $e) {
+		} catch (AlreadyExistsError) {
 			try {
 				$bookmark = $this->findByUrl($entity->getUserId(), $entity->getUrl());
-				$entity->setId($bookmark->getId());
-				$newEntity = $this->update($entity);
-			} catch (DoesNotExistException $e) {
+				foreach ($entity->getUpdatedFields() as $field => $_value) {
+					$value = $entity->{'get' . ucfirst($field)}();
+					$bookmark->{'set' . ucfirst($field)}($value);
+				}
+				$newEntity = $this->update($bookmark);
+			} catch (DoesNotExistException) {
 				$newEntity = $this->insert($entity);
 			}
 		}

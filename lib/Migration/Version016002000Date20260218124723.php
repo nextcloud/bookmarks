@@ -1,0 +1,285 @@
+<?php
+
+/*
+ * Copyright (c) 2020-2024. The Nextcloud Bookmarks contributors.
+ *
+ * This file is licensed under the Affero General Public License version 3 or later. See the COPYING file.
+ */
+
+namespace OCA\Bookmarks\Migration;
+
+use Closure;
+use OCA\Bookmarks\Db\TreeMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\IDBConnection;
+use OCP\Migration\IOutput;
+use OCP\Migration\SimpleMigrationStep;
+
+class Version016002000Date20260218124723 extends SimpleMigrationStep {
+	public function __construct(
+		private IDBConnection $db,
+	) {
+
+	}
+
+	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options) {
+		$this->deduplicateAll($output);
+	}
+
+	/**
+	 * Deduplicate bookmarks for all users.
+	 */
+	public function deduplicateAll(IOutput $output): void {
+		$duplicates = $this->findDuplicates();
+
+		$output->info('Merging n=' . count($duplicates) . ' per-user duplicate URLs in the database.');
+		$output->startProgress(count($duplicates));
+
+		foreach ($duplicates as $group) {
+			$output->advance();
+			if (count($group) < 2) {
+				continue;
+			}
+
+			// Assume the first bookmark in the group is the primary
+			$primary = $group[0];
+			$primaryId = $primary['id'];
+
+			// Merge all secondary bookmarks into the primary
+			$count = count($group);
+			for ($i = 1; $i < $count; $i++) {
+				$secondary = $group[$i];
+				$secondaryId = $secondary['id'];
+
+				// Ensure that merging a secondary into the primary is atomic
+				$this->db->beginTransaction();
+				try {
+					// Merge folders, tags, and descriptions
+					$this->mergeFolders($primaryId, $secondaryId);
+					$this->mergeTags($primaryId, $secondaryId);
+					$this->mergeDescriptions($primaryId, $secondary['description']);
+
+					// Delete the secondary bookmark
+					$this->deleteBookmark($secondaryId);
+
+					$this->db->commit();
+				} catch (\Throwable $e) {
+					$this->db->rollBack();
+					throw $e;
+				}
+			}
+		}
+		$output->finishProgress();
+	}
+
+	/**
+	 * Merge folders from a secondary bookmark into the primary bookmark.
+	 * Assigns the last index value for the parent_folder to new entries.
+	 *
+	 * @param int $primaryId - ID of the primary bookmark.
+	 * @param int $secondaryId - ID of the secondary bookmark to merge.
+	 */
+	public function mergeFolders(int $primaryId, int $secondaryId): void {
+		// Fetch all folder assignments for the secondary bookmark
+		$qb = $this->db->getQueryBuilder();
+		$secondaryFolders = $qb->select('parent_folder', 'soft_deleted_at')
+			->from('bookmarks_tree')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($secondaryId, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))  // Only bookmarks (not folders)
+			->executeQuery()
+			->fetchAll();
+
+		// Insert each folder assignment into the primary bookmark (skip if already exists)
+		foreach ($secondaryFolders as $row) {
+			$parentFolderId = $row['parent_folder'];
+			$softDeletedAt = $row['soft_deleted_at'] !== null ? new \DateTime($row['soft_deleted_at']) : null;
+			// Check if the folder assignment already exists for the primary bookmark
+			$qb = $this->db->getQueryBuilder();
+			$exists = $qb->select('id', 'soft_deleted_at')
+				->from('bookmarks_tree')
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
+				->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
+				->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))  // Only bookmarks (not folders)
+				->executeQuery()
+				->fetch();
+
+			if (!$exists) {
+				// If the entry doe not exist yet, insert it
+
+				// Get the last index value for the parent_folder
+				$qb = $this->db->getQueryBuilder();
+				$lastIndex = $qb->select($qb->func()->max('index'))
+					->from('bookmarks_tree')
+					->where($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
+					->executeQuery()
+					->fetchOne();
+
+				$nextIndex = ($lastIndex !== null && $lastIndex !== false) ? $lastIndex + 1 : 0;
+
+				// Insert the folder assignment with the last index and the same soft_deleted_at status as the secondary bookmark
+				$insertQb = $this->db->getQueryBuilder();
+				$insertQb->insert('bookmarks_tree')
+					->values([
+						'id' => $insertQb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT),
+						'parent_folder' => $insertQb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT),
+						'type' => $insertQb->createNamedParameter(TreeMapper::TYPE_BOOKMARK),  // Bookmark (not folder)
+						'index' => $insertQb->createNamedParameter($nextIndex, IQueryBuilder::PARAM_INT),
+						'soft_deleted_at' => $insertQb->createNamedParameter($softDeletedAt, IQueryBuilder::PARAM_DATETIME_MUTABLE),
+					])
+					->executeStatement();
+			} elseif ($exists['soft_deleted_at'] !== null && $softDeletedAt === null) {
+				// if the entry exists and is soft-deleted and the secondary entry is not soft deleted restore it
+
+				// Restore the soft-deleted entry by setting soft_deleted_at to null
+				$updateQb = $this->db->getQueryBuilder();
+				$updateQb->update('bookmarks_tree')
+					->set('soft_deleted_at', $updateQb->createNamedParameter(null, IQueryBuilder::PARAM_NULL))
+					->where($updateQb->expr()->eq('id', $updateQb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
+					->andWhere($updateQb->expr()->eq('parent_folder', $updateQb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
+					->andWhere($updateQb->expr()->eq('type', $updateQb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))
+					->executeStatement();
+			}
+			// if the entry exists and is soft-deleted and the secondary entry is soft deleted do nothing
+			// if the entry exists and is not soft-deleted and the secondary entry is soft deleted do nothing
+		}
+	}
+
+	/**
+	 * Merge tags from a secondary bookmark into the primary bookmark.
+	 * Checks for existing tags first to avoid constraint violations.
+	 *
+	 * @param int $primaryId - ID of the primary bookmark.
+	 * @param int $secondaryId - ID of the secondary bookmark to merge.
+	 */
+	public function mergeTags(int $primaryId, int $secondaryId): void {
+		// Fetch all tags from the secondary bookmark
+		$qb = $this->db->getQueryBuilder();
+		$secondaryTags = $qb->select('tag')
+			->from('bookmarks_tags')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($secondaryId, IQueryBuilder::PARAM_INT)))
+			->executeQuery()
+			->fetchAll(\PDO::FETCH_COLUMN);
+
+		// Insert each tag into the primary bookmark (skip if already exists)
+		foreach ($secondaryTags as $tag) {
+			// Check if the tag already exists for the primary bookmark
+			$qb = $this->db->getQueryBuilder();
+			$exists = $qb->select('bookmark_id')
+				->from('bookmarks_tags')
+				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
+				->andWhere($qb->expr()->eq('tag', $qb->createNamedParameter($tag)))
+				->executeQuery()
+				->fetchOne();
+
+			if (!$exists) {
+				// Insert the tag (no conflict possible)
+				$insertQb = $this->db->getQueryBuilder();
+				$insertQb->insert('bookmarks_tags')
+					->values([
+						'bookmark_id' => $insertQb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT),
+						'tag' => $insertQb->createNamedParameter($tag),
+					])
+					->executeStatement();
+			}
+		}
+	}
+
+	/**
+	 * Concatenate descriptions from secondary bookmarks to the primary bookmark.
+	 */
+	public function mergeDescriptions(int $primaryId, string $secondaryDescription): void {
+		$qb = $this->db->getQueryBuilder();
+
+		// Fetch the primary bookmark's description
+		$primaryDesc = $qb->select('description')
+			->from('bookmarks')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
+			->executeQuery()
+			->fetchOne();
+
+		// Update the primary description (append secondary description if different)
+		if ($primaryDesc !== $secondaryDescription) {
+			if ($primaryDesc !== '' && $secondaryDescription !== '') {
+				$newDesc = $primaryDesc . "\n\n" . $secondaryDescription;
+			} elseif ($primaryDesc === '' && $secondaryDescription !== '') {
+				$newDesc = $secondaryDescription;
+			} elseif ($primaryDesc !== '' && $secondaryDescription === '') {
+				return;
+			}
+			$qb->update('bookmarks')
+				->set('description', $qb->createNamedParameter($newDesc))
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
+				->executeStatement();
+		}
+	}
+
+	/**
+	 * Delete a bookmark and all its associated data (tags, folder entries).
+	 *
+	 * @param int $bookmarkId - ID of the bookmark to delete.
+	 */
+	public function deleteBookmark(int $bookmarkId): void {
+		// Delete tag assignments for the bookmark
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks_tags')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
+			->executeStatement();
+
+		// Delete folder entries for the bookmark from bookmarks_tree
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks_tree')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
+			->executeStatement();
+
+		// Delete the bookmark itself
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
+			->executeStatement();
+	}
+	/**
+	 * Fetch duplicate bookmarks (same URL, same user).
+	 * Returns an array of arrays, where each sub-array contains bookmark IDs sharing a URL.
+	 */
+	public function findDuplicates(): array {
+		$duplicates = [];
+
+		// Step 1: Find all duplicate (url, user_id) pairs
+		$duplicateQb = $this->db->getQueryBuilder();
+		$duplicateQb->select('url', 'user_id', $duplicateQb->func()->count('*'))
+			->from('bookmarks')
+			->groupBy('url', 'user_id')
+			->having($duplicateQb->expr()->gt($duplicateQb->func()->count('*'), $duplicateQb->createNamedParameter(1, IQueryBuilder::PARAM_INT)));
+
+		$result = $duplicateQb->executeQuery();
+
+		// Step 2: For each duplicate pair, fetch all matching bookmarks
+		while ($pair = $result->fetch()) {
+			$qb = $this->db->getQueryBuilder();
+			$qb->select('id', 'url', 'user_id', 'title', 'description')
+				->from('bookmarks')
+				->where($qb->expr()->eq('url', $qb->createNamedParameter($pair['url'])))
+				->andWhere($qb->expr()->eq('user_id', $qb->createNamedParameter($pair['user_id'])))
+				->orderBy('id');
+
+			$result2 = $qb->executeQuery();
+
+			$key = $pair['user_id'] . '|' . $pair['url'];
+			while ($row = $result2->fetch()) {
+				if (!isset($duplicates[$key])) {
+					$duplicates[$key] = [];
+				}
+				$duplicates[$key][] = [
+					'id' => $row['id'],
+					'title' => $row['title'],
+					'description' => $row['description'],
+				];
+			}
+			$result2->closeCursor();
+		}
+		$result->closeCursor();
+
+		return $duplicates;
+	}
+
+}
