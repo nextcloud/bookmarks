@@ -229,6 +229,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('bookmarks_tree')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))
 			->executeStatement();
 
 		// Delete the bookmark itself
