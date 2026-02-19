@@ -859,6 +859,7 @@ class BookmarkMapper extends QBMapper {
 		if ($entity->isWebLink()) {
 			$entity->setUrl($this->urlNormalizer->normalize($entity->getUrl()));
 		}
+		$entity->setUrlHash(hash('xxh128', $entity->getUrl()));
 		$entity->setLastmodified(time());
 		parent::update($entity);
 		$this->eventDispatcher->dispatchTyped(new ManipulateEvent('bookmark', $entity->getId()));

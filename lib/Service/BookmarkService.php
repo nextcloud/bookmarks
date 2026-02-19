@@ -126,6 +126,7 @@ class BookmarkService {
 					try {
 						$testUrl = $this->urlNormalizer->normalize($protocol . $url);
 						$bookmark = $this->bookmarkMapper->findByUrl($userId, $testUrl);
+						$isInsert = false;
 						break;
 					} catch (UrlParseError|DoesNotExistException) {
 						continue;
