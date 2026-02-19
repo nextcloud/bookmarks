@@ -132,6 +132,7 @@ OC.L10N.register(
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Movendo %n marcador","Movendo %n marcadores"],
     "All bookmarks" : "Todos os marcadores",
     "Recent" : "Recente",
+    "Frequently clicked" : "Seleccionado con frecuencia",
     "Shared with you" : "Compartido con Vde.",
     "Files" : "Ficheiros",
     "Duplicates" : "Duplicados",
