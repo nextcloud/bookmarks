@@ -92,19 +92,20 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 		// Insert each folder assignment into the primary bookmark (skip if already exists)
 		foreach ($secondaryFolders as $row) {
 			$parentFolderId = $row['parent_folder'];
-			$softDeletedAt = $row['soft_deleted_at'];
+			$softDeletedAt = $row['soft_deleted_at'] !== null ? new \DateTime($row['soft_deleted_at']) : null;
 			// Check if the folder assignment already exists for the primary bookmark
 			$qb = $this->db->getQueryBuilder();
-			$exists = $qb->select('id')
+			$exists = $qb->select('id', 'soft_deleted_at')
 				->from('bookmarks_tree')
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))  // Only bookmarks (not folders)
-				->andWhere($qb->expr()->eq('soft_deleted_at', $qb->createNamedParameter($softDeletedAt, IQueryBuilder::PARAM_DATETIME_MUTABLE)))
 				->executeQuery()
-				->fetchOne();
+				->fetch();
 
 			if (!$exists) {
+				// If the entry doe not exist yet, insert it
+
 				// Get the last index value for the parent_folder
 				$qb = $this->db->getQueryBuilder();
 				$lastIndex = $qb->select($qb->func()->max('index'))
@@ -115,7 +116,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 
 				$nextIndex = ($lastIndex !== null && $lastIndex !== false) ? $lastIndex + 1 : 0;
 
-				// Insert the folder assignment with the last index
+				// Insert the folder assignment with the last index and the same soft_deleted_at status as the secondary bookmark
 				$insertQb = $this->db->getQueryBuilder();
 				$insertQb->insert('bookmarks_tree')
 					->values([
@@ -126,7 +127,20 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 						'soft_deleted_at' => $insertQb->createNamedParameter($softDeletedAt, IQueryBuilder::PARAM_DATETIME_MUTABLE),
 					])
 					->executeStatement();
+			} elseif ($exists['soft_deleted_at'] !== null && $softDeletedAt === null) {
+				// if the entry exists and is soft-deleted and the secondary entry is not soft deleted restore it
+
+				// Restore the soft-deleted entry by setting soft_deleted_at to null
+				$updateQb = $this->db->getQueryBuilder();
+				$updateQb->update('bookmarks_tree')
+					->set('soft_deleted_at', $updateQb->createNamedParameter(null, IQueryBuilder::PARAM_NULL))
+					->where($updateQb->expr()->eq('id', $updateQb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
+					->andWhere($updateQb->expr()->eq('parent_folder', $updateQb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
+					->andWhere($updateQb->expr()->eq('type', $updateQb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))
+					->executeStatement();
 			}
+			// if the entry exists and is soft-deleted and the secondary entry is soft deleted do nothing
+			// if the entry exists and is not soft-deleted and the secondary entry is soft deleted do nothing
 		}
 	}
 
@@ -205,34 +219,23 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 	 * @param int $bookmarkId - ID of the bookmark to delete.
 	 */
 	public function deleteBookmark(int $bookmarkId): void {
+		// Delete tag assignments for the bookmark
 		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks_tags')
+			->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
+			->executeStatement();
 
-		// Start a transaction to ensure atomicity
-		$this->db->beginTransaction();
+		// Delete folder entries for the bookmark from bookmarks_tree
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks_tree')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
+			->executeStatement();
 
-		try {
-			// Delete tag assignments for the bookmark
-			$qb->delete('bookmarks_tags')
-				->where($qb->expr()->eq('bookmark_id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
-				->executeStatement();
-
-			// Delete folder entries for the bookmark from bookmarks_tree
-			$qb->delete('bookmarks_tree')
-				->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
-				->executeStatement();
-
-			// Delete the bookmark itself
-			$qb->delete('bookmarks')
-				->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
-				->executeStatement();
-
-			// Commit the transaction
-			$this->db->commit();
-		} catch (\Exception $e) {
-			// Roll back on error
-			$this->db->rollBack();
-			throw $e;
-		}
+		// Delete the bookmark itself
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($bookmarkId, IQueryBuilder::PARAM_INT)))
+			->executeStatement();
 	}
 	/**
 	 * Fetch duplicate bookmarks (same URL, same user).
