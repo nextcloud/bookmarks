@@ -82,15 +82,17 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 	public function mergeFolders(int $primaryId, int $secondaryId): void {
 		// Fetch all folder assignments for the secondary bookmark
 		$qb = $this->db->getQueryBuilder();
-		$secondaryFolders = $qb->select('parent_folder')
+		$secondaryFolders = $qb->select('parent_folder', 'soft_deleted_at')
 			->from('bookmarks_tree')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($secondaryId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))  // Only bookmarks (not folders)
 			->executeQuery()
-			->fetchAll(\PDO::FETCH_COLUMN);
+			->fetchAll();
 
 		// Insert each folder assignment into the primary bookmark (skip if already exists)
-		foreach ($secondaryFolders as $parentFolderId) {
+		foreach ($secondaryFolders as $row) {
+			$parentFolderId = $row['parent_folder'];
+			$softDeletedAt = $row['soft_deleted_at'];
 			// Check if the folder assignment already exists for the primary bookmark
 			$qb = $this->db->getQueryBuilder();
 			$exists = $qb->select('id')
@@ -98,6 +100,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($primaryId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('parent_folder', $qb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT)))
 				->andWhere($qb->expr()->eq('type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)))  // Only bookmarks (not folders)
+				->andWhere($qb->expr()->eq('soft_deleted_at', $qb->createNamedParameter($softDeletedAt, IQueryBuilder::PARAM_DATETIME_MUTABLE)))
 				->executeQuery()
 				->fetchOne();
 
@@ -120,6 +123,7 @@ class Version016002000Date20260218124723 extends SimpleMigrationStep {
 						'parent_folder' => $insertQb->createNamedParameter($parentFolderId, IQueryBuilder::PARAM_INT),
 						'type' => $insertQb->createNamedParameter(TreeMapper::TYPE_BOOKMARK),  // Bookmark (not folder)
 						'index' => $insertQb->createNamedParameter($nextIndex, IQueryBuilder::PARAM_INT),
+						'soft_deleted_at' => $insertQb->createNamedParameter($softDeletedAt, IQueryBuilder::PARAM_DATETIME_MUTABLE),
 					])
 					->executeStatement();
 			}
