@@ -76,6 +76,9 @@ class BookmarkMapper extends QBMapper {
 	 */
 	private $shareMapper;
 
+	/** @var array<string,int> */
+	private array $userBookmarkCount = [];
+
 	/**
 	 * BookmarkMapper constructor.
 	 *
@@ -154,6 +157,9 @@ class BookmarkMapper extends QBMapper {
 		while ($bookmark = $result->fetchOne()) {
 			$bm = $this->find($bookmark);
 			$this->delete($bm);
+		}
+		if (isset($this->userBookmarkCount[$userId])) {
+			$this->userBookmarkCount[$userId] = 0;
 		}
 		$result->closeCursor();
 	}
@@ -838,6 +844,9 @@ class BookmarkMapper extends QBMapper {
 		);
 
 		$returnedEntity = parent::delete($entity);
+		if (isset($this->userBookmarkCount[$entity->getUserId()])) {
+			$this->userBookmarkCount[$entity->getUserId()] -= 1;
+		}
 
 		$id = $entity->getId();
 
@@ -901,6 +910,9 @@ class BookmarkMapper extends QBMapper {
 
 		try {
 			parent::insert($entityToInsert);
+			if (isset($this->userBookmarkCount[$entityToInsert->getUserId()])) {
+				$this->userBookmarkCount[$entityToInsert->getUserId()] += 1;
+			}
 			$this->eventDispatcher->dispatchTyped(new InsertEvent('bookmark', $entityToInsert->getId()));
 			return $entityToInsert;
 		} catch (Exception $e) {
@@ -946,6 +958,9 @@ class BookmarkMapper extends QBMapper {
 	 * @throws Exception
 	 */
 	public function countBookmarksOfUser(string $userId) : int {
+		if (isset($this->userBookmarkCount[$userId])) {
+			return $this->userBookmarkCount[$userId];
+		}
 		$qb = $this->db->getQueryBuilder();
 		$qb
 			->select($qb->func()->count('id'))
@@ -957,6 +972,7 @@ class BookmarkMapper extends QBMapper {
 			$count = 0;
 		}
 		$result->closeCursor();
+		$this->userBookmarkCount[$userId] = (int)$count;
 		return (int)$count;
 	}
 
