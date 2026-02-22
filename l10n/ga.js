@@ -132,6 +132,7 @@ OC.L10N.register(
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["%n leabharmharc á bhogadh","%n leabharmharcanna á mbogadh","%n leabharmharcanna á mbogadh","%n leabharmharcanna á mbogadh","%n leabharmharcanna á mbogadh"],
     "All bookmarks" : "Gach leabharmharc",
     "Recent" : "le déanaí",
+    "Frequently clicked" : "Cliceáilte go minic",
     "Shared with you" : "Roinnte leat",
     "Files" : "Comhaid",
     "Duplicates" : "Dúblaigh",
