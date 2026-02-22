@@ -38,7 +38,7 @@ class Recent implements IWidget {
 	 * @inheritDoc
 	 */
 	public function getId(): string {
-		return 'bookmarks-recent';
+		return 'bookmarks.recent';
 	}
 
 	/**

@@ -132,6 +132,7 @@ OC.L10N.register(
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["%n Lesezeichen verschieben","Verschiebe %n Lesezeichen"],
     "All bookmarks" : "Alle Lesezeichen",
     "Recent" : "Neueste",
+    "Frequently clicked" : "Häufig angeklickt",
     "Shared with you" : "Mit Ihnen geteilt",
     "Files" : "Dateien",
     "Duplicates" : "Duplikate",

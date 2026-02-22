@@ -132,6 +132,7 @@ OC.L10N.register(
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["正在移動%n個書籤"],
     "All bookmarks" : "所有書籤",
     "Recent" : "最新",
+    "Frequently clicked" : "經常點擊",
     "Shared with you" : "與您分享",
     "Files" : "檔案",
     "Duplicates" : "複本",

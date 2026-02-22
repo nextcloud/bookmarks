@@ -132,6 +132,7 @@ OC.L10N.register(
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Teisaldan %n järjehoidja","Teisaldan %n järjehoidjat"],
     "All bookmarks" : "Kõik järjehoidjad",
     "Recent" : "Hiljutised",
+    "Frequently clicked" : "Sageli klõpsatud",
     "Shared with you" : "Sinuga jagatud",
     "Files" : "Failid",
     "Duplicates" : "Topeltjärjehoidjad",

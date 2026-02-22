@@ -130,6 +130,7 @@
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Movendo %n favorito","Movendo %n de favoritos","Movendo %n favoritos"],
     "All bookmarks" : "Todos os favoritos",
     "Recent" : "Recente",
+    "Frequently clicked" : "Clicado com frequência",
     "Shared with you" : "Compartilhado com você",
     "Files" : "Arquivos",
     "Duplicates" : "Duplicatas",

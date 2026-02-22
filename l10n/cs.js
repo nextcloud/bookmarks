@@ -132,6 +132,7 @@ OC.L10N.register(
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Přesouvá se %n záložka","Přesouvají se %n záložky","Přesouvá se %n záložek","Přesouvají se %n záložky"],
     "All bookmarks" : "Všechny záložky",
     "Recent" : "Nedávné",
+    "Frequently clicked" : "Často klikané",
     "Shared with you" : "Nasdíleno vám",
     "Files" : "Soubory",
     "Duplicates" : "Duplicity",

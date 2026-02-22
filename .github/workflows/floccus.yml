@@ -130,8 +130,6 @@ jobs:
           MYSQL_PASSWORD: ${{env.MYSQL_PASSWORD}}
           MYSQL_HOST: mysql
           NEXTCLOUD_TRUSTED_DOMAINS: nextcloud
-        volumes:
-          - /home/runner/actions-runner/_work/bookmarks/bookmarks/apps:/var/www/html/apps
         options: --name nextcloud
       mysql:
         image: mariadb:10.5 # see https://github.com/nextcloud/docker/issues/1536
@@ -170,7 +168,7 @@ jobs:
       - name: Enable bookmarks app
         shell: bash
         run: |
-          sudo cp -R ${{env.APP_NAME}} apps/
+          docker cp ${{env.APP_NAME}} nextcloud:/var/www/html/apps/
           NEXT_WAIT_TIME=0
           until [ $NEXT_WAIT_TIME -eq 25 ] || docker exec --user www-data nextcloud php occ app:enable ${{ env.APP_NAME }}; do
               sleep $(( NEXT_WAIT_TIME++ ))

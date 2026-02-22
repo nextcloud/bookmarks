@@ -132,6 +132,7 @@ OC.L10N.register(
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Moving %n bookmark","Moving %n bookmarks"],
     "All bookmarks" : "All bookmarks",
     "Recent" : "Recent",
+    "Frequently clicked" : "Frequently clicked",
     "Shared with you" : "Shared with you",
     "Files" : "Files",
     "Duplicates" : "Duplicates",
