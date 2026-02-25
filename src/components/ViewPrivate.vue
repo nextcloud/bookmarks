@@ -23,6 +23,7 @@
 		<LoadingModal />
 		<BookmarkContent />
 		<WhatsnewModal />
+		<SupportThisProjectModal />
 	</NcContent>
 </template>
 
@@ -41,6 +42,7 @@ import { actions, mutations } from '../store/index.js'
 import LoadingModal from './LoadingModal.vue'
 import BookmarkContent from './BookmarkContent.vue'
 import WhatsnewModal from './WhatsnewModal.vue'
+import SupportThisProjectModal from './SupportThisProjectModal.vue'
 import { getCurrentUser } from '@nextcloud/auth'
 
 export default {
@@ -59,6 +61,7 @@ export default {
 		MoveDialog,
 		CopyDialog,
 		WhatsnewModal,
+		SupportThisProjectModal,
 	},
 	data() {
 		return {
