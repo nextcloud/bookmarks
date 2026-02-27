@@ -191,6 +191,7 @@ OC.L10N.register(
     "Allow editing" : "Consenti la modifica",
     "Allow resharing" : "Consenti la ri-condivisione",
     "Remove share" : "Rimuovi condivisione",
+    "Would you like to support this project?" : "Vuoi supportare questo progetto?",
     "Failed to save settings" : "Salvataggio impostazioni non riuscito",
     "Failed to load settings" : "Caricamento impostazioni non riuscito",
     "Privacy" : "Riservatezza",

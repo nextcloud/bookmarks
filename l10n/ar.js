@@ -209,6 +209,7 @@ OC.L10N.register(
     "Allow editing" : "السّماح بالتعديل",
     "Allow resharing" : "السّماح بإعادة المشاركة ",
     "Remove share" : "حذف المشاركة",
+    "Would you like to support this project?" : "هل ترغب في دعم هذا المشروع؟",
     "Leave a rating on the Nextcloud App Store" : "قم بتقييمنا في متجر تطبيقات نكست كلاود",
     "Failed to save settings" : "فشل حفظ الإعدادات",
     "Failed to load settings" : "فشل في تحميل الإعدادات",

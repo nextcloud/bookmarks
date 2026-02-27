@@ -214,6 +214,7 @@ OC.L10N.register(
     "Allow editing" : "Düzenlenebilsin",
     "Allow resharing" : "Yeniden paylaşılabilsin",
     "Remove share" : "Paylaşımı kaldır",
+    "Would you like to support this project?" : "Bu projeyi desteklemek ister misiniz?",
     "Leave a rating on the Nextcloud App Store" : "Nextcloud uygulama mağazasında değerlendirin",
     "Failed to save settings" : "Ayarlar kaydedilemedi",
     "Failed to load settings" : "Ayarlar yüklenemedi",
