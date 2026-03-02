@@ -214,6 +214,7 @@ OC.L10N.register(
     "Allow editing" : "Ceadaigh eagarthóireacht",
     "Allow resharing" : "Ceadaigh athroinnt",
     "Remove share" : "Bain sciar",
+    "Would you like to support this project?" : "Ar mhaith leat tacú leis an tionscadal seo?",
     "Leave a rating on the Nextcloud App Store" : "Fág rátáil ar an  Siopa Aip Nextcloud",
     "Failed to save settings" : "Theip ar na socruithe a shábháil",
     "Failed to load settings" : "Theip ar lódáil na socruithe",
