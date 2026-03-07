@@ -28,7 +28,7 @@
 		"@nextcloud/initial-state": "^2.0.0",
 		"@nextcloud/l10n": "3.x",
 		"@nextcloud/router": "3.x",
-		"@nextcloud/vue": "8.x",
+		"@nextcloud/vue": "9.x",
 		"async-parallel": "^1.2.3",
 		"clone-deep": "^4.0.1",
 		"humanize-duration": "3.x",
