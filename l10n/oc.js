@@ -48,6 +48,7 @@ OC.L10N.register(
     "Share link" : "Partejar lo ligam",
     "Editing allowed" : "Modificacion autorizada",
     "Allow editing" : "Permetre la modificacion",
+    "Failed to save settings" : "Fracàs de l’enregistrament dels paramètres",
     "Privacy" : "Confidencialitat",
     "Folder" : "Dorsièr",
     "Save" : "Salvar"
