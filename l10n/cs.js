@@ -214,6 +214,7 @@ OC.L10N.register(
     "Allow editing" : "Povolit úpravy",
     "Allow resharing" : "Povolit příjemcům tohoto sdílení, aby sami mohli sdílet dalším",
     "Remove share" : "Odebrat sdílení",
+    "Would you like to support this project?" : "Chcete tento projekt podpořit?",
     "Leave a rating on the Nextcloud App Store" : "Ohodnotit v katalogu aplikací pro Nextcloud",
     "Failed to save settings" : "Nastavení se nepodařilo uložit",
     "Failed to load settings" : "Nepodařilo se načíst nastavení",
