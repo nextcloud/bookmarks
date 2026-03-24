@@ -109,7 +109,7 @@ OC.L10N.register(
     "Add a bookmark" : "Lesezeichen hinzufügen",
     "Import bookmarks" : "Lesezeichen importieren",
     "Sync with your browser" : "Mit deinem Browser synchronisieren",
-    "Do you really want to permanently delete this folder?" : "Möchtest du diesen Ordner wirklich endgültig löschen?",
+    "Do you really want to permanently delete this folder?" : "Möchtest du diesen Ordner endgültig löschen?",
     "Select folder" : "Ordner wählen",
     "Enter folder title" : "Ordnernamen eingeben",
     "Shared by {user}" : "Geteilt von {user}",
