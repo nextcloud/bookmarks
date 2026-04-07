@@ -21,7 +21,6 @@ class TagsController extends ApiController {
 	public function __construct(
 		string $appName,
 		IRequest $request,
-		private string $userId,
 		private DB\TagMapper $tagMapper,
 		private Authorizer $authorizer,
 	) {
@@ -46,7 +45,7 @@ class TagsController extends ApiController {
 		}
 
 		try {
-			$this->tagMapper->deleteTag($this->userId, $old_name);
+			$this->tagMapper->deleteTag($this->authorizer->getUserId(), $old_name);
 		} catch (Exception) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
@@ -74,7 +73,7 @@ class TagsController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => ['Must provide old_name and a new name']], Http::STATUS_BAD_REQUEST);
 		}
 
-		$this->tagMapper->renameTag($this->userId, $old_name, $new_name);
+		$this->tagMapper->renameTag($this->authorizer->getUserId(), $old_name, $new_name);
 		return new JSONResponse(['status' => 'success']);
 	}
 
@@ -92,9 +91,9 @@ class TagsController extends ApiController {
 
 		try {
 			if ($count === true) {
-				$tags = $this->tagMapper->findAllWithCount($this->userId);
+				$tags = $this->tagMapper->findAllWithCount($this->authorizer->getUserId());
 			} else {
-				$tags = $this->tagMapper->findAll($this->userId);
+				$tags = $this->tagMapper->findAll($this->authorizer->getUserId());
 			}
 		} catch (Exception $e) {
 			return new JSONResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
