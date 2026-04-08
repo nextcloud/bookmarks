@@ -7,6 +7,7 @@ OC.L10N.register(
     "Move" : "Move",
     "Select all" : "Select all",
     "Go back" : "Go back",
+    "Share folder" : "საქაღალდის გაზიარება",
     "New" : "New",
     "New folder" : "New folder",
     "Search" : "Search",
