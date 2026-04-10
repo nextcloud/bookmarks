@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [16.1.4] - 2026-04-10
+
+### Fixed
+* fix(TagsController): Make renameTag routes unique (fixes tag renaming)
+* fix(PageresBookmarkPreviewer): Use IBinaryFinder
+* fix(TagsController): Don't depend on userId injection
+* fix(routes): Don't let preflightedCors route eat requests greedily (Fixes floccus sync on some servers)
+* fix(l10n): Update translations from Transifex
+* chore: Update dependencies
+
 
 ## [16.1.3] - 2026-02-21
 
