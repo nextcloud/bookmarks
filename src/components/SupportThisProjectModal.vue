@@ -47,9 +47,11 @@ export default {
 		showModal() {
 			return (
 				ENABLED
-				&& this.$store.state.settings.hasSeenSupportThisProject !== '0'
-				&& parseInt(this.$store.state.settings.hasSeenSupportThisProject)
+				&& (
+					this.$store.state.settings.hasSeenSupportThisProject === '0'
+					|| parseInt(this.$store.state.settings.hasSeenSupportThisProject)
 					< Date.now() - 1000 * 60 * 60 * 24 * 30 * 6
+				)
 			)
 		},
 	},
