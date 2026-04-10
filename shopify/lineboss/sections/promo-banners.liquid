@@ -1,0 +1,68 @@
+<section class="lb-promos page-width">
+  <div class="lb-promo-grid">
+    {% for block in section.blocks %}
+      <article class="lb-promo" {{ block.shopify_attributes }}>
+        {% if block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: 720 | image_tag: loading: 'lazy', alt: block.settings.heading }}
+        {% endif %}
+        <div class="lb-promo__content">
+          <h3>{{ block.settings.heading }}</h3>
+          <p>{{ block.settings.copy }}</p>
+          <a href="{{ block.settings.link }}">{{ block.settings.link_text }}</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LineBoss Promo Banners",
+  "blocks": [
+    {
+      "type": "promo",
+      "name": "Promo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Bundle Savings"
+        },
+        {
+          "type": "textarea",
+          "id": "copy",
+          "label": "Copy",
+          "default": "Buy 4 spools and get a sample mini spool for testing new colorways."
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Shop Bundles"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "LineBoss Promo Banners",
+      "blocks": [
+        { "type": "promo" },
+        { "type": "promo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

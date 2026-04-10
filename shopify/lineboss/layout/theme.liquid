@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#111111">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 96, height: 96 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | default: current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page | default: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {{ content_for_header }}
+    {{ 'lineboss.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body>
+    <a class="skip-link" href="#MainContent">Skip to content</a>
+
+    {% section 'header' %}
+
+    <main id="MainContent" class="lineboss-main" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+  </body>
+</html>

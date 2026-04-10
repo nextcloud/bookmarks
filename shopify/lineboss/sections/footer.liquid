@@ -1,0 +1,46 @@
+<footer class="lb-footer">
+  <div class="page-width lb-footer__grid">
+    <div>
+      <h3>{{ section.settings.brand_name }}</h3>
+      <p>{{ section.settings.description }}</p>
+    </div>
+
+    <div>
+      <h4>Support</h4>
+      <ul>
+        <li><a href="/pages/shipping-policy">Shipping Policy</a></li>
+        <li><a href="/pages/returns">Returns</a></li>
+        <li><a href="/pages/contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="/blogs/news">Print Guides</a></li>
+        <li><a href="/pages/material-guide">Material Guide</a></li>
+        <li><a href="/pages/wholesale">Wholesale</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "LineBoss Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand name",
+      "default": "LineBoss"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Precision filament for FDM makers who need consistent quality from first layer to final part."
+    }
+  ]
+}
+{% endschema %}

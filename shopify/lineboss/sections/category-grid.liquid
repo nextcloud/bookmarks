@@ -1,0 +1,67 @@
+<section class="lb-categories page-width">
+  <div class="lb-section-heading">
+    <h2>{{ section.settings.heading }}</h2>
+  </div>
+
+  <div class="lb-category-grid">
+    {% for block in section.blocks %}
+      {% assign category_collection = block.settings.collection %}
+      <a class="lb-category" href="{{ category_collection.url | default: '#' }}" {{ block.shopify_attributes }}>
+        {% if block.settings.icon != blank %}
+          {{ block.settings.icon | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.label }}
+        {% endif %}
+        <span>{{ block.settings.label }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LineBoss Category Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Material"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "PLA"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "LineBoss Category Grid",
+      "blocks": [
+        { "type": "category", "settings": { "label": "PLA" } },
+        { "type": "category", "settings": { "label": "PETG" } },
+        { "type": "category", "settings": { "label": "ABS" } },
+        { "type": "category", "settings": { "label": "TPU" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

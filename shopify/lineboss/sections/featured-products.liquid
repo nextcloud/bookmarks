@@ -1,0 +1,58 @@
+<section class="lb-featured page-width">
+  <div class="lb-section-heading">
+    <h2>{{ section.settings.heading }}</h2>
+    {% if section.settings.collection != blank %}
+      <a href="{{ section.settings.collection.url }}">View all</a>
+    {% endif %}
+  </div>
+
+  {% assign featured_collection = section.settings.collection %}
+  <div class="lb-product-grid">
+    {% if featured_collection != blank %}
+      {% for product in featured_collection.products limit: section.settings.products_to_show %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    {% else %}
+      {% for i in (1..4) %}
+        <article class="lb-product-card lb-product-card--placeholder">
+          <div class="lb-product-card__media"></div>
+          <h3>Sample Filament {{ i }}</h3>
+          <p>Assign a collection in this section to display products.</p>
+        </article>
+      {% endfor %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LineBoss Featured Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Top Selling Filament"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "LineBoss Featured Products"
+    }
+  ]
+}
+{% endschema %}

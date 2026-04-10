@@ -1,0 +1,31 @@
+<article class="lb-product-card">
+  <a href="{{ product.url }}" class="lb-product-card__media-link">
+    {% if product.featured_image %}
+      {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: product.title, class: 'lb-product-card__image' }}
+    {% else %}
+      <div class="lb-product-card__media"></div>
+    {% endif %}
+  </a>
+
+  <div class="lb-product-card__body">
+    <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
+
+    <p class="lb-product-card__price">
+      {% if product.compare_at_price > product.price %}
+        <span class="lb-price--sale">{{ product.price | money }}</span>
+        <s>{{ product.compare_at_price | money }}</s>
+      {% else %}
+        <span>{{ product.price | money }}</span>
+      {% endif %}
+    </p>
+
+    {% if product.available %}
+      <form method="post" action="/cart/add">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button class="lb-btn" type="submit">Add to cart</button>
+      </form>
+    {% else %}
+      <p class="lb-soldout">Sold out</p>
+    {% endif %}
+  </div>
+</article>

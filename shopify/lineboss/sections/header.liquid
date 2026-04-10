@@ -1,0 +1,60 @@
+<header class="lb-header">
+  <div class="lb-topbar">
+    <p>{{ section.settings.announcement_text }}</p>
+  </div>
+
+  <div class="lb-header__inner page-width">
+    <a href="{{ routes.root_url }}" class="lb-logo" aria-label="{{ shop.name }}">
+      {% if section.settings.logo != blank %}
+        {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name }}
+      {% else %}
+        <span>{{ section.settings.brand_name }}</span>
+      {% endif %}
+    </a>
+
+    <nav class="lb-nav" aria-label="Main navigation">
+      <ul>
+        {% for link in section.settings.menu.links %}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="lb-header__actions">
+      <a href="{{ routes.search_url }}" aria-label="Search">Search</a>
+      <a href="{{ routes.account_url }}" aria-label="Account">Account</a>
+      <a href="{{ routes.cart_url }}" aria-label="Cart">Cart ({{ cart.item_count }})</a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "LineBoss Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement bar text",
+      "default": "Free U.S. shipping on filament orders over $49"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Fallback brand name",
+      "default": "LineBoss"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,60 @@
+<section class="lb-value page-width">
+  <div class="lb-section-heading">
+    <h2>{{ section.settings.heading }}</h2>
+  </div>
+
+  <div class="lb-value-grid">
+    {% for block in section.blocks %}
+      <article class="lb-value-item" {{ block.shopify_attributes }}>
+        <h3>{{ block.settings.title }}</h3>
+        <p>{{ block.settings.description }}</p>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LineBoss Value Props",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Makers Choose LineBoss"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Value item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Tight Diameter Tolerance"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Smooth feeding and reliable extrusion help reduce failed prints and surface artifacts."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "LineBoss Value Props",
+      "blocks": [
+        { "type": "item" },
+        { "type": "item", "settings": { "title": "Vacuum-Sealed Packaging" } },
+        { "type": "item", "settings": { "title": "Consistent Winding" } },
+        { "type": "item", "settings": { "title": "Creator-Tested Colors" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
