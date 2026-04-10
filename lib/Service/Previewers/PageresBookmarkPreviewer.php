@@ -13,9 +13,11 @@ use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Image;
+use OCP\IBinaryFinder;
 use OCP\IConfig;
 use OCP\ITempManager;
 use Psr\Log\LoggerInterface;
+use function exec;
 
 class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_PREFIX = 'bookmarks.PageresPreviewService';
@@ -32,11 +34,18 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @var IConfig
 	 */
 	private $config;
+	private IBinaryFinder $binaryFinder;
 
-	public function __construct(ITempManager $tempManager, LoggerInterface $logger, IConfig $config) {
+	public function __construct(
+		ITempManager $tempManager,
+		LoggerInterface $logger,
+		IConfig $config,
+		IBinaryFinder $binaryFinder,
+	) {
 		$this->tempManager = $tempManager;
 		$this->logger = $logger;
 		$this->config = $config;
+		$this->binaryFinder = $binaryFinder;
 	}
 
 	/**
@@ -49,8 +58,8 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 			return null;
 		}
 
-		$serverPath = self::getPageresPath();
-		if ($serverPath === null || $cacheOnly) {
+		$serverPath = $this->binaryFinder->findBinaryPath('pageres');
+		if ($serverPath === false || $cacheOnly) {
 			return null;
 		}
 
@@ -99,18 +108,5 @@ class PageresBookmarkPreviewer implements IBookmarkPreviewer {
 		}
 
 		throw new Exception("Pageres Error\nCommand: {$cmd}\nOutput: " . implode(' ' . PHP_EOL, $output) . PHP_EOL);
-	}
-
-	/**
-	 * @return null|string
-	 */
-	public static function getPageresPath(): ?string {
-		@exec('which pageres', $serverPath);
-		$path = trim(implode("\n", $serverPath));
-		if (!empty($path) && is_readable($path)) {
-			return $path;
-		}
-
-		return null;
 	}
 }
