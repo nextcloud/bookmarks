@@ -56,9 +56,9 @@ class TagsController extends ApiController {
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
 	#[Http\Attribute\BruteForceProtection(action: 'renameTag')]
-	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/tag')]
-	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/tag/{old_name}')]
-	#[Http\Attribute\FrontpageRoute(verb: 'PUT', url: '/public/rest/v2/tag/{old_name}')]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/tag', postfix: 'postbody')]
+	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/tag/{old_name}', postfix: 'post')]
+	#[Http\Attribute\FrontpageRoute(verb: 'PUT', url: '/public/rest/v2/tag/{old_name}', postfix: 'put')]
 	public function renameTag(string $old_name = '', string $new_name = '', string $name = ''): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find tag']], Http::STATUS_BAD_REQUEST);
