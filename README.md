@@ -56,7 +56,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 
 ## Community
 
-Talk to us on [gitter](https://gitter.im/nextcloud-bookmarks/community), via matrix `#nextcloud-bookmarks_community:gitter.im` or in our [official Talk channel](https://cloud.nextcloud.com/call/u52jcby9)
+Talk to us via matrix `#nextcloud-bookmarks:matrix.org` or in our [official Talk channel](https://cloud.nextcloud.com/call/u52jcby9)
 
 ## Install
 
