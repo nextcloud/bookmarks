@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout floccus
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
           path: floccus
           ref: ${{ matrix.floccus-branch }}
@@ -154,7 +154,7 @@ jobs:
           path: ./
 
       - name: Checkout bookmarks app
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: ${{ env.APP_NAME }}
 
