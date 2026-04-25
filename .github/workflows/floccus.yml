@@ -40,7 +40,7 @@ jobs:
           repository: floccusAddon/floccus
 
       - name: Set up node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -139,7 +139,7 @@ jobs:
     steps:
 
       - name: Set up node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 
