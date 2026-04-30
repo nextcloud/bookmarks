@@ -34,7 +34,7 @@ class CrawlService {
 	public const TIMEOUT = 60;
 	public const CONNECT_TIMEOUT = 30;
 	public const READ_TIMEOUT = 30;
-	public const UA_FIREFOX = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:87.0) Gecko/20100101 Firefox/87.0';
+	public const UA_FIREFOX = 'Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0';
 
 	private MimeTypes $mimey;
 
