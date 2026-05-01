@@ -26,6 +26,7 @@ OC.L10N.register(
     "Recent" : "Нядаўнія",
     "Shared with you" : "Абагулена з вамі",
     "Files" : "Файлы",
+    "New tag" : "Новы тэг",
     "Delete" : "Выдаліць",
     "Add to {instanceName}" : "Дадаць у {instanceName}",
     "Need help?" : "Патрэбна дапамога?",
