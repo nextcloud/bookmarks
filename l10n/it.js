@@ -153,6 +153,7 @@ OC.L10N.register(
     "Auto-Backup" : "Backup automatico",
     "Enable backups" : "Abilita backup",
     "Enter the path of a folder in your Files where backups will be stored." : "Inserisci il percorso di una cartella di File in cui saranno archiviati i backup.",
+    "Context Chat integration" : "Integrazione con Context Chat",
     "Client apps" : "Applicazioni client",
     "Also check out the collection of client apps that integrate with this app: " : "Controlla inoltre l'elenco delle applicazioni client che si integrano con questa applicazione:",
     "Install web app" : "Installazione l'applicazione web",
