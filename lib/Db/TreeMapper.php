@@ -1031,7 +1031,7 @@ class TreeMapper extends QBMapper {
 			->from('bookmarks_tree')
 			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->isNull('soft_deleted_at'));
-		return $qb->executeQuery()->fetch(PDO::FETCH_COLUMN);
+		return (int)$qb->executeQuery()->fetch(PDO::FETCH_COLUMN);
 	}
 
 	/**
