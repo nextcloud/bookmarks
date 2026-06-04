@@ -390,7 +390,6 @@ class BookmarkController extends ApiController {
 		}
 	}
 
-
 	/**
 	 * @throws UnauthenticatedError
 	 */
@@ -691,7 +690,6 @@ class BookmarkController extends ApiController {
 		}
 		return new ExportResponse($data);
 	}
-
 
 	/**
 	 * @throws UnauthenticatedError

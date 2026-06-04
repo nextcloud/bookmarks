@@ -27,7 +27,6 @@ class Filter implements IFilter {
 		$this->urlGenerator = $urlGenerator;
 	}
 
-
 	/**
 	 * @inheritDoc
 	 */

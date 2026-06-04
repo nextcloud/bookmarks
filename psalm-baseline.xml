@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="6.14.2@bbd217fc98c0daa0a13aea2a7f119d03ba3fc9a0">
+<files psalm-version="6.16.1@f1f5de594dc76faf8784e02d3dc4716c91c6f6ac">
   <file src="lib/AppInfo/Application.php">
     <InvalidArgument>
       <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
@@ -106,14 +106,10 @@
   </file>
   <file src="lib/Service/CrawlService.php">
     <UndefinedClass>
-      <code><![CDATA[Client]]></code>
-      <code><![CDATA[Response]]></code>
-      <code><![CDATA[Response]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[$e]]></code>
+      <code><![CDATA[NoUserException]]></code>
     </UndefinedClass>
-    <UndefinedDocblockClass>
-      <code><![CDATA[$resp]]></code>
-      <code><![CDATA[$resp]]></code>
-    </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/FolderService.php">
     <InvalidReturnStatement>

@@ -65,7 +65,6 @@ class WebViewController extends Controller {
 		parent::__construct($appName, $request);
 	}
 
-
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
 	#[FrontpageRoute(verb: 'GET', url: '/')]

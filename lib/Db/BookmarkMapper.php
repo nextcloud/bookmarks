@@ -183,7 +183,6 @@ class BookmarkMapper extends QBMapper {
 		return call_user_func($this->entityClass . '::fromRow', $row);
 	}
 
-
 	/**
 	 * Find a specific bookmark by Id
 	 *
@@ -781,7 +780,6 @@ class BookmarkMapper extends QBMapper {
 		$qb
 			->from('*PREFIX*bookmarks', 'b')
 			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL');
-
 
 		$this->_filterUrl($qb, $queryParams);
 		$this->_filterArchived($qb, $queryParams);

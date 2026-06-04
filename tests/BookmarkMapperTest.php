@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OCA\Bookmarks\Tests;
 
 use OC;
