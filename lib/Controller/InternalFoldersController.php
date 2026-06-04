@@ -37,14 +37,11 @@ class InternalFoldersController extends ApiController {
 		return $this->controller->addFolder($title, $parent_folder);
 	}
 
-
-
 	#[NoAdminRequired]
 	#[FrontpageRoute(verb: 'GET', url: '/folder/{folderId}/childorder')]
 	public function getFolderChildrenOrder(int $folderId, int $layers = 0): JSONResponse {
 		return $this->controller->getFolderChildrenOrder($folderId, $layers);
 	}
-
 
 	#[NoAdminRequired]
 	#[FrontpageRoute(verb: 'PATCH', url: '/folder/{folderId}/childorder')]
@@ -106,7 +103,6 @@ class InternalFoldersController extends ApiController {
 		return $this->controller->getFolderPublicToken($folderId);
 	}
 
-
 	#[NoAdminRequired]
 	#[FrontpageRoute(verb: 'POST', url: '/folder/{folderId}/publictoken')]
 	public function createFolderPublicToken(int $folderId): DataResponse {
@@ -136,7 +132,6 @@ class InternalFoldersController extends ApiController {
 	public function findShares(): DataResponse {
 		return $this->controller->findShares();
 	}
-
 
 	#[NoAdminRequired]
 	#[FrontpageRoute(verb: 'POST', url: '/folder/{folderId}/shares')]

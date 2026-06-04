@@ -37,7 +37,6 @@ class HtmlImporter {
 
 	private int $transactionCounter = 0;
 
-
 	public function __construct(
 		private BookmarkMapper $bookmarkMapper,
 		private FolderMapper $folderMapper,

@@ -46,7 +46,6 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	private $height = 800;
 
-
 	public function __construct(IConfig $config, IClientService $clientService, LoggerInterface $logger) {
 		$this->apiKey = $config->getAppValue('bookmarks', 'previews.screenshotmachine.key', '');
 		$this->client = $clientService->newClient();

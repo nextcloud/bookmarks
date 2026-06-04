@@ -74,7 +74,6 @@ class BookmarksParser {
 	 */
 	private $ignorePersonalToolbarFolder = true;
 
-
 	/**
 	 * Constructor
 	 *

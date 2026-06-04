@@ -82,7 +82,6 @@ class FindTest extends TestCase {
 		$this->assertCount(1, $bookmarks);
 	}
 
-
 	public function testFindAllWithAnd() {
 		$params = new QueryParameters();
 		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['wikipedia', 'nextcloud']));
@@ -92,7 +91,6 @@ class FindTest extends TestCase {
 		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['.com']));
 		$this->assertCount(3, $bookmarks);
 	}
-
 
 	public function testFindAllWithOr() {
 		$params = new QueryParameters();

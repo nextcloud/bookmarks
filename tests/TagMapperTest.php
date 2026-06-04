@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
@@ -32,7 +31,6 @@ class TagMapperTest extends TestCase {
 	 * @var \stdClass
 	 */
 	protected $folderMapper;
-
 
 	/**
 	 * @throws QueryException

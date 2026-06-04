@@ -66,7 +66,6 @@ class Bookmark implements IEntity, IUrl {
 		$this->authorizer = $authorizer;
 	}
 
-
 	/**
 	 * @inheritDoc
 	 */

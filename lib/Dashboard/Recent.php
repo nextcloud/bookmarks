@@ -33,7 +33,6 @@ class Recent implements IWidget {
 		$this->url = $url;
 	}
 
-
 	/**
 	 * @inheritDoc
 	 */

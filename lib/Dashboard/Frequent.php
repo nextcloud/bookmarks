@@ -33,7 +33,6 @@ class Frequent implements IWidget {
 		$this->url = $url;
 	}
 
-
 	/**
 	 * @inheritDoc
 	 */

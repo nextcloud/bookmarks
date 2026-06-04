@@ -33,7 +33,6 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	private $client;
 
-
 	/** @var LoggerInterface */
 	private $logger;
 

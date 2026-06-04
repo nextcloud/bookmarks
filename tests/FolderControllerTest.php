@@ -83,7 +83,6 @@ class FolderControllerTest extends TestCase {
 	private FolderService $folders;
 	private BookmarkService $bookmarks;
 
-
 	/**
 	 * @throws QueryException
 	 */

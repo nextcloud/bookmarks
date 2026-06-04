@@ -79,7 +79,6 @@ class TreeCacheManager implements IEventListener {
 		$this->caches[self::CATEGORY_CHILDORDER] = $cacheFactory->createDistributed('bookmarks:' . self::CATEGORY_CHILDORDER);
 	}
 
-
 	private function getTreeMapper(): TreeMapper {
 		return $this->appContainer->get(TreeMapper::class);
 	}

@@ -111,8 +111,6 @@ class WebshotBookmarkPreviewer implements IBookmarkPreviewer {
 			return null;
 		}
 
-
-
 		return new Image('image/jpeg', $body);
 	}
 }

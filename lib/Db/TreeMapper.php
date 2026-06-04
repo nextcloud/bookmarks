@@ -54,7 +54,6 @@ class TreeMapper extends QBMapper {
 
 	protected $entityColumns = [];
 
-
 	private IQueryBuilder $insertQuery;
 
 	private IQueryBuilder $parentQuery;
@@ -370,7 +369,6 @@ class TreeMapper extends QBMapper {
 		}
 		return true;
 	}
-
 
 	/**
 	 * @param string $type
@@ -689,7 +687,6 @@ class TreeMapper extends QBMapper {
 			$newParentFolderId
 		));
 	}
-
 
 	/**
 	 * @brief Add a bookmark to a set of folders
