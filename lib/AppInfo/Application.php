@@ -29,13 +29,14 @@ use OCA\Bookmarks\Middleware\TicketMiddleware;
 use OCA\Bookmarks\Reference\BookmarkReferenceProvider;
 use OCA\Bookmarks\Search\Provider;
 use OCA\Bookmarks\Service\TreeCacheManager;
-use OCA\ContextChat\Event\ContentProviderRegisterEvent;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
 use OCP\Collaboration\Reference\RenderReferenceEvent;
+use OCP\ContextChat\Events\ContentProviderRegisterEvent;
+use OCP\ContextChat\IContentManager;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Group\Events\BeforeGroupDeletedEvent;
 use OCP\Group\Events\UserAddedEvent;
@@ -104,15 +105,18 @@ class Application extends App implements IBootstrap {
 	 */
 	public function boot(IBootContext $context): void {
 		// Register with ContextChat
-		if (class_exists(ContentProviderRegisterEvent::class)) {
-			$this->getContainer()->get(ContextChatProvider::class)->register();
-			$eventDispatcher = $this->getContainer()->get(IEventDispatcher::class);
-			$eventDispatcher->addServiceListener(InsertEvent::class, ContextChatProvider::class);
-			$eventDispatcher->addServiceListener(ManipulateEvent::class, ContextChatProvider::class);
-			$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, ContextChatProvider::class);
+		$serverContainer = $context->getServerContainer();
+		if ($serverContainer->has(IContentManager::class)) {
+			$contentManager = $serverContainer->get(IContentManager::class);
+			if ($contentManager->isContextChatAvailable()) {
+				$eventDispatcher = $this->getContainer()->get(IEventDispatcher::class);
+				$eventDispatcher->addServiceListener(InsertEvent::class, ContextChatProvider::class);
+				$eventDispatcher->addServiceListener(ManipulateEvent::class, ContextChatProvider::class);
+				$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, ContextChatProvider::class);
+			}
 		}
 		// Register with Nextcloud Flow
-		$container = $context->getServerContainer();
+		$container = $serverContainer;
 		CreateBookmark::register($container->get(IEventDispatcher::class));
 	}
 }
