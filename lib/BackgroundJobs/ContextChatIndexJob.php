@@ -12,10 +12,10 @@ use OCA\Bookmarks\AppInfo\Application;
 use OCA\Bookmarks\ContextChat\ContextChatProvider;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\UserSettingsService;
-use OCA\ContextChat\Public\ContentItem;
-use OCA\ContextChat\Public\ContentManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\QueuedJob;
+use OCP\ContextChat\ContentItem;
+use OCP\ContextChat\IContentManager;
 use OCP\IUserManager;
 
 class ContextChatIndexJob extends QueuedJob {
@@ -23,7 +23,7 @@ class ContextChatIndexJob extends QueuedJob {
 	public function __construct(
 		ITimeFactory $timeFactory,
 		private BookmarkService $bookmarkService,
-		private ?ContentManager $contentManager,
+		private ?IContentManager $contentManager,
 		private IUserManager $userManager,
 		private ContextChatProvider $provider,
 		private UserSettingsService $userSettings,
@@ -32,7 +32,7 @@ class ContextChatIndexJob extends QueuedJob {
 	}
 
 	protected function run($argument) {
-		if ($this->contentManager === null) {
+		if ($this->contentManager === null || !$this->contentManager->isContextChatAvailable()) {
 			return;
 		}
 		if (!isset($argument['user'])) {
