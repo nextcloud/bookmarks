@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2026. The Nextcloud Bookmarks contributors.
  *
@@ -166,4 +167,3 @@ class ContextChatIndexJobTest extends TestCase {
 		]);
 	}
 }
-

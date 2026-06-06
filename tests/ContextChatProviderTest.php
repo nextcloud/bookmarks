@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2026. The Nextcloud Bookmarks contributors.
  *
@@ -155,4 +156,3 @@ class ContextChatProviderTest extends TestCase {
 		$this->provider->triggerInitialImport();
 	}
 }
-
