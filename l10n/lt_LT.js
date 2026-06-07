@@ -2,9 +2,9 @@ OC.L10N.register(
     "bookmarks",
     {
     "Bookmarks" : "Adresynas",
-    "You bookmarked \"%s\"" : "Jūs pridėjote „%s“ į žymes",
-    "%1$s bookmarked \"%2$s\"" : "%1$s pridėta į žymes „%2$s“",
-    "Someone bookmarked \"%s\"" : "Kažkas pridėjo „%s“ į žymes",
+    "You bookmarked \"%s\"" : "Jūs pridėjote „%s“ į adresyną",
+    "%1$s bookmarked \"%2$s\"" : "%1$s pridėta į adresyną „%2$s“",
+    "Someone bookmarked \"%s\"" : "Kažkas pridėjo „%s“ į adresyną",
     "You deleted \"%s\"" : "Jūs ištrynėte \"%s\"",
     "%1$s deleted \"%2$s\"" : "%1$s ištrynė \"%2$s\"",
     "Someone deleted \"%s\"" : "Kažkas ištrynė \"%s\"",
