@@ -8,11 +8,11 @@
 
 namespace OCA\Bookmarks;
 
-use OC;
 use OC\HintException;
 use OCA\Theming\ThemingDefaults;
 use OCP\AppFramework\Http\Response;
 use OCP\IDateTimeFormatter;
+use OCP\IUserSession;
 
 /**
  * @psalm-template S of int
@@ -25,7 +25,7 @@ class ExportResponse extends Response {
 	public function __construct($returnstring) {
 		parent::__construct();
 
-		$user = OC::$server->getUserSession()->getUser();
+		$user = \OCP\Server::get(IUserSession::class)->getUser();
 		if (is_null($user)) {
 			throw new HintException('User not logged in');
 		}

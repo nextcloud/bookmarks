@@ -8,8 +8,8 @@
 
 namespace OCA\Bookmarks;
 
-use OC;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\IURLGenerator;
 
 /**
  * @template S of \OCP\AppFramework\Http::STATUS_*
@@ -19,7 +19,11 @@ use OCP\AppFramework\Http\TemplateResponse;
 class AugmentedTemplateResponse extends TemplateResponse {
 	public function render() {
 		$return = parent::render();
-		preg_replace('/<link rel="manifest" href="(.*?)">/i', '<link rel="manifest" href="' . OC::$server->getURLGenerator()->linkToRouteAbsolute('bookmarks.web_view.manifest') . '">', $return);
+		$params = $this->getParams();
+		if (isset($params['url']) && $params['url'] instanceof IURLGenerator) {
+			$manifestUrl = $params['url']->linkToRouteAbsolute('bookmarks.web_view.manifest');
+			$return = preg_replace('/<link rel="manifest" href="(.*?)">/i', '<link rel="manifest" href="' . $manifestUrl . '">', $return);
+		}
 		return $return;
 	}
 }
