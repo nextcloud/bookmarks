@@ -2,7 +2,6 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use OC;
 use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UrlParseError;
@@ -51,11 +50,11 @@ class BookmarkMapperTest extends TestCase {
 		/**
 		 * @var Db\BookmarkMapper
 		 */
-		$this->bookmarkMapper = OC::$server->get(Db\BookmarkMapper::class);
-		$this->treeMapper = OC::$server->get(Db\TreeMapper::class);
-		$this->folderMapper = OC::$server->get(Db\FolderMapper::class);
+		$this->bookmarkMapper = \OCP\Server::get(Db\BookmarkMapper::class);
+		$this->treeMapper = \OCP\Server::get(Db\TreeMapper::class);
+		$this->folderMapper = \OCP\Server::get(Db\FolderMapper::class);
 
-		$this->userManager = OC::$server->get(IUserManager::class);
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

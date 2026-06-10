@@ -2,7 +2,6 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use OC;
 use OCA\Bookmarks\Controller\FoldersController;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -92,11 +91,11 @@ class FolderControllerTest extends TestCase {
 
 		$this->user = 'test';
 		$this->otherUser = 'otheruser';
-		$this->request = OC::$server->get(IRequest::class);
+		$this->request = \OCP\Server::get(IRequest::class);
 
 		$this->publicRequest = $this->createMock(IRequest::class);
 
-		$this->userManager = OC::$server->get(IUserManager::class);
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
 		}
@@ -106,13 +105,13 @@ class FolderControllerTest extends TestCase {
 		}
 		$this->otherUserId = $this->userManager->get($this->otherUser)->getUID();
 
-		$this->bookmarkMapper = OC::$server->get(BookmarkMapper::class);
-		$this->tagMapper = OC::$server->get(TagMapper::class);
-		$this->folderMapper = OC::$server->get(FolderMapper::class);
-		$this->treeMapper = OC::$server->get(TreeMapper::class);
-		$this->publicFolderMapper = OC::$server->get(PublicFolderMapper::class);
-		$this->shareMapper = OC::$server->get(ShareMapper::class);
-		$this->sharedFolderMapper = OC::$server->get(SharedFolderMapper::class);
+		$this->bookmarkMapper = \OCP\Server::get(BookmarkMapper::class);
+		$this->tagMapper = \OCP\Server::get(TagMapper::class);
+		$this->folderMapper = \OCP\Server::get(FolderMapper::class);
+		$this->treeMapper = \OCP\Server::get(TreeMapper::class);
+		$this->publicFolderMapper = \OCP\Server::get(PublicFolderMapper::class);
+		$this->shareMapper = \OCP\Server::get(ShareMapper::class);
+		$this->sharedFolderMapper = \OCP\Server::get(SharedFolderMapper::class);
 		$this->emptyCache = $emptyCache = $this->createMock(ICache::class);
 		$emptyCache->method('get')->willReturn(null);
 		$emptyCache->method('set')->willReturn(true);
@@ -127,13 +126,13 @@ class FolderControllerTest extends TestCase {
 			$this->shareMapper,
 			$this->sharedFolderMapper,
 			$this->cacheFactory,
-			OC::$server->get(ContainerInterface::class),
+			\OCP\Server::get(ContainerInterface::class),
 			$this->tagMapper,
 		);
-		$this->folders = OC::$server->get(FolderService::class);
-		$this->bookmarks = OC::$server->get(BookmarkService::class);
-		$this->groupManager = OC::$server->get(IGroupManager::class);
-		$loggerInterface = OC::$server->get(LoggerInterface::class);
+		$this->folders = \OCP\Server::get(FolderService::class);
+		$this->bookmarks = \OCP\Server::get(BookmarkService::class);
+		$this->groupManager = \OCP\Server::get(IGroupManager::class);
+		$loggerInterface = \OCP\Server::get(LoggerInterface::class);
 
 		$this->group = $this->groupManager->createGroup('foobar');
 		$this->group->addUser($this->userManager->get($this->otherUser));
@@ -149,7 +148,7 @@ class FolderControllerTest extends TestCase {
 			$this->treeMapper,
 			$userSession,
 			$this->sharedFolderMapper,
-			OC::$server->get(ICrypto::class),
+			\OCP\Server::get(ICrypto::class),
 			$this->userManager,
 		);
 
@@ -271,7 +270,7 @@ class FolderControllerTest extends TestCase {
 			$this->cacheFactory = $this->createMock(ICacheFactory::class);
 			$this->cacheFactory->method('createDistributed')
 				->willReturnCallback(fn ()
-				  => OC::$server->get(ICacheFactory::class)
+				  => \OCP\Server::get(ICacheFactory::class)
 				  	->createDistributed(time() . '' . random_int(0, 1000000))
 				);
 		}

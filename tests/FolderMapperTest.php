@@ -31,9 +31,9 @@ class FolderMapperTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
+		$this->folderMapper = \OCP\Server::get(Db\FolderMapper::class);
 
-		$this->userManager = \OC::$server->get(IUserManager::class);
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
