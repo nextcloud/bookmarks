@@ -24,21 +24,20 @@ class ExportResponse extends Response {
 
 	public function __construct($returnstring) {
 		parent::__construct();
+		$dateTime = \OCP\Server::get(IDateTimeFormatter::class);
+		$themingDefaults = \OCP\Server::get(ThemingDefaults::class);
+		$productName = $themingDefaults->getName();
+		$userName = null;
 
 		$user = \OCP\Server::get(IUserSession::class)->getUser();
-		if (is_null($user)) {
-			throw new HintException('User not logged in');
+		if ($user !== null) {
+			$userName = $user->getDisplayName();
 		}
 
-		$userName = $user->getDisplayName();
-		$themingDefaults = \OCP\Server::get(ThemingDefaults::class);
-		$dateTime = \OCP\Server::get(IDateTimeFormatter::class);
-		$productName = $themingDefaults->getName();
-
-		$export_name = '"' . $productName . ' Bookmarks (' . $userName . ') (' . $dateTime->formatDate(time()) . ').html"';
+		$export_name = '"' . $productName . ' Bookmarks' . ($userName ? ' (' . $userName . ') ' : '') . '(' . $dateTime->formatDate(time()) . ').html"';
 		$this->addHeader('Cache-Control', 'private');
-		$this->addHeader('Content-Type', ' application/stream');
-		$this->addHeader('Content-Length', strlen($returnstring));
+		$this->addHeader('Content-Type', 'application/stream');
+		$this->addHeader('Content-Length', '' . strlen($returnstring));
 		$this->addHeader('Content-Disposition', 'attachment; filename=' . $export_name);
 		$this->returnstring = $returnstring;
 	}
