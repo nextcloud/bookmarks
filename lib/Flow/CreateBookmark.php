@@ -8,7 +8,6 @@
 
 namespace OCA\Bookmarks\Flow;
 
-use OC;
 use OCA\Bookmarks\Exception\AlreadyExistsError;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Exception\UrlParseError;
