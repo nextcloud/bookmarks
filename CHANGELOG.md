@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [16.2.0] - 2026-06-10
+
+### New
+* Compatibility with Nextcloud 34
+
+### Fixed
+* CrawlService: Update UA_FIREFOX const to recent version (Thanks to @iasdeoupxe)
+* fix(CrawlService): Use IClient instead of raw Guzzle
+* fix(l10n): Update translations from Transifex
+* chore: Update dependencies
+
 ## [16.1.4] - 2026-04-10
 
 ### Fixed
