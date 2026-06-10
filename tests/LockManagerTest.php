@@ -8,7 +8,6 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use OC;
 use OCA\Bookmarks\Db\FolderMapper;
 use OCA\Bookmarks\Service\LockManager;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -25,12 +24,12 @@ class LockManagerTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->user = 'test';
-		$this->folderMapper = OC::$server->get(FolderMapper::class);
+		$this->folderMapper = \OCP\Server::get(FolderMapper::class);
 		$this->folderMapper->findRootFolder($this->user);
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
 		$this->timeStub = $this->timeFactory->expects($this->atLeastOnce())->method('getDateTime');
 		$this->timeStub->willReturnCallback(fn ($arg) => new \DateTime($arg));
-		$this->lockManager = new LockManager(OC::$server->get(IDBConnection::class), $this->folderMapper, $this->timeFactory);
+		$this->lockManager = new LockManager(\OCP\Server::get(IDBConnection::class), $this->folderMapper, $this->timeFactory);
 		$this->lockManager->setLock($this->user, false);
 	}
 

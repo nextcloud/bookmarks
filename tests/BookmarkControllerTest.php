@@ -2,7 +2,6 @@
 
 namespace OCA\Bookmarks\Tests;
 
-use OC;
 use OCA\Bookmarks\Controller\BookmarkController;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
@@ -161,12 +160,12 @@ class BookmarkControllerTest extends TestCase {
 
 		$this->user = 'test';
 		$this->otherUser = 'otheruser';
-		$this->request = OC::$server->get(IRequest::class);
-		$this->otherRequest = OC::$server->get(IRequest::class);
+		$this->request = \OCP\Server::get(IRequest::class);
+		$this->otherRequest = \OCP\Server::get(IRequest::class);
 
 		$this->publicRequest = $this->createMock(IRequest::class);
 
-		$this->userManager = OC::$server->get(IUserManager::class);
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
 		}
@@ -177,27 +176,27 @@ class BookmarkControllerTest extends TestCase {
 		$this->otherUserId = $this->userManager->get($this->otherUser)->getUID();
 
 		/** @var IFactory $l10nFactory */
-		$l10nFactory = OC::$server->get(IFactory::class);
+		$l10nFactory = \OCP\Server::get(IFactory::class);
 		$l = $l10nFactory->get('bookmarks');
-		$this->bookmarks = OC::$server->get(BookmarkService::class);
-		$this->bookmarkMapper = OC::$server->get(BookmarkMapper::class);
-		$this->tagMapper = OC::$server->get(TagMapper::class);
-		$this->folderMapper = OC::$server->get(FolderMapper::class);
-		$this->treeMapper = OC::$server->get(TreeMapper::class);
-		$this->publicFolderMapper = OC::$server->get(PublicFolderMapper::class);
-		$this->shareMapper = OC::$server->get(ShareMapper::class);
-		$this->sharedFolderMapper = OC::$server->get(SharedFolderMapper::class);
+		$this->bookmarks = \OCP\Server::get(BookmarkService::class);
+		$this->bookmarkMapper = \OCP\Server::get(BookmarkMapper::class);
+		$this->tagMapper = \OCP\Server::get(TagMapper::class);
+		$this->folderMapper = \OCP\Server::get(FolderMapper::class);
+		$this->treeMapper = \OCP\Server::get(TreeMapper::class);
+		$this->publicFolderMapper = \OCP\Server::get(PublicFolderMapper::class);
+		$this->shareMapper = \OCP\Server::get(ShareMapper::class);
+		$this->sharedFolderMapper = \OCP\Server::get(SharedFolderMapper::class);
 
-		$timeFactory = OC::$server->get(ITimeFactory::class);
-		$logger = OC::$server->get(LoggerInterface::class);
-		$urlGenerator = OC::$server->get(IURLGenerator::class);
-		$htmlExporter = OC::$server->get(HtmlExporter::class);
-		$this->authorizer = OC::$server->get(Authorizer::class);
-		$this->folders = OC::$server->get(FolderService::class);
-		$this->lockManager = OC::$server->get(LockManager::class);
+		$timeFactory = \OCP\Server::get(ITimeFactory::class);
+		$logger = \OCP\Server::get(LoggerInterface::class);
+		$urlGenerator = \OCP\Server::get(IURLGenerator::class);
+		$htmlExporter = \OCP\Server::get(HtmlExporter::class);
+		$this->authorizer = \OCP\Server::get(Authorizer::class);
+		$this->folders = \OCP\Server::get(FolderService::class);
+		$this->lockManager = \OCP\Server::get(LockManager::class);
 
 		/** @var IRootFolder $rootFolder */
-		$rootFolder = OC::$server->get(IRootFolder::class);
+		$rootFolder = \OCP\Server::get(IRootFolder::class);
 
 		$this->controller = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders, $rootFolder, $this->lockManager);
 		$this->otherController = new BookmarkController('bookmarks', $this->request, $l, $this->bookmarkMapper, $this->tagMapper, $this->folderMapper, $this->treeMapper, $this->publicFolderMapper, $timeFactory, $logger, $htmlExporter, $this->authorizer, $this->bookmarks, $this->folders, $rootFolder, $this->lockManager);

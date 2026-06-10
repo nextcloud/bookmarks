@@ -22,6 +22,11 @@
       <code><![CDATA[$this->folderController->getFolders()->getData()]]></code>
     </UndefinedMethod>
   </file>
+  <file src="lib/Db/BookmarkMapper.php">
+    <ReservedWord>
+      <code><![CDATA[Folder]]></code>
+    </ReservedWord>
+  </file>
   <file src="lib/Db/TreeMapper.php">
     <InvalidReturnStatement>
       <code><![CDATA[$this->bookmarkMapper->findAll($userId, $params)]]></code>
@@ -48,6 +53,9 @@
     <InvalidTemplateParam>
       <code><![CDATA[ExportResponse]]></code>
     </InvalidTemplateParam>
+    <UndefinedClass>
+      <code><![CDATA[ThemingDefaults]]></code>
+    </UndefinedClass>
   </file>
   <file src="lib/Flow/CreateBookmark.php">
     <UndefinedClass>
