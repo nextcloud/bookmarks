@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
@@ -71,15 +70,15 @@ class OrphanedTreeItemsRepairStepTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->repairStep = \OC::$server->get(OrphanedTreeItemsRepairStep::class);
-		$this->db = \OC::$server->get(\OCP\IDBConnection::class);
-		$this->treeMapper = \OC::$server->get(Db\TreeMapper::class);
-		$this->treeCache = \OC::$server->get(Service\TreeCacheManager::class);
-		$this->bookmarkMapper = \OC::$server->get(Db\BookmarkMapper::class);
-		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
-		$this->htmlImporter = \OC::$server->get(Service\HtmlImporter::class);
+		$this->repairStep = \OCP\Server::get(OrphanedTreeItemsRepairStep::class);
+		$this->db = \OCP\Server::get(\OCP\IDBConnection::class);
+		$this->treeMapper = \OCP\Server::get(Db\TreeMapper::class);
+		$this->treeCache = \OCP\Server::get(Service\TreeCacheManager::class);
+		$this->bookmarkMapper = \OCP\Server::get(Db\BookmarkMapper::class);
+		$this->folderMapper = \OCP\Server::get(Db\FolderMapper::class);
+		$this->htmlImporter = \OCP\Server::get(Service\HtmlImporter::class);
 
-		$this->userManager = \OC::$server->get(IUserManager::class);
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

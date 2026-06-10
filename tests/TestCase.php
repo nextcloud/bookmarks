@@ -29,23 +29,23 @@ use PHPUnit\Framework;
 
 class TestCase extends Framework\TestCase {
 	protected function cleanUp(): void {
-		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks');
+		$query = \OCP\Server::get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks');
 		$query->execute();
-		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_tags');
+		$query = \OCP\Server::get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_tags');
 		$query->execute();
-		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_folders');
+		$query = \OCP\Server::get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_folders');
 		$query->execute();
-		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_root_folders');
+		$query = \OCP\Server::get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_root_folders');
 		$query->execute();
-		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_folders_public');
+		$query = \OCP\Server::get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_folders_public');
 		$query->execute();
-		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_tree');
+		$query = \OCP\Server::get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_tree');
 		$query->execute();
-		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_shares');
+		$query = \OCP\Server::get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_shares');
 		$query->execute();
-		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_shared_folders');
+		$query = \OCP\Server::get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_shared_folders');
 		$query->execute();
-		$query = \OC::$server->get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_shared_to_shares');
+		$query = \OCP\Server::get(IDBConnection::class)->prepare('DELETE FROM *PREFIX*bookmarks_shared_to_shares');
 		$query->execute();
 	}
 }

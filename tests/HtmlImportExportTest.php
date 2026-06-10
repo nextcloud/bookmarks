@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
@@ -64,14 +63,14 @@ class HtmlImportExportTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->bookmarkMapper = \OC::$server->get(Db\BookmarkMapper::class);
-		$this->tagMapper = \OC::$server->get(Db\TagMapper::class);
-		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
-		$this->treeMapper = \OC::$server->get(Db\TreeMapper::class);
-		$this->htmlImporter = \OC::$server->get(Service\HtmlImporter::class);
-		$this->htmlExporter = \OC::$server->get(Service\HtmlExporter::class);
+		$this->bookmarkMapper = \OCP\Server::get(Db\BookmarkMapper::class);
+		$this->tagMapper = \OCP\Server::get(Db\TagMapper::class);
+		$this->folderMapper = \OCP\Server::get(Db\FolderMapper::class);
+		$this->treeMapper = \OCP\Server::get(Db\TreeMapper::class);
+		$this->htmlImporter = \OCP\Server::get(Service\HtmlImporter::class);
+		$this->htmlExporter = \OCP\Server::get(Service\HtmlExporter::class);
 
-		$this->userManager = \OC::$server->get(IUserManager::class);
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

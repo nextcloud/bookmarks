@@ -328,7 +328,6 @@ class FolderService {
 			$this->addSharedFolderForParticipant($share, $folder, $type, $participant);
 		}
 
-
 		return $share;
 	}
 

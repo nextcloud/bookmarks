@@ -37,8 +37,8 @@ class InternalTagsController extends ApiController {
 	}
 
 	#[NoAdminRequired]
-	#[FrontpageRoute(verb: 'PUT', url: '/tag/{old_name}')]
-	#[FrontpageRoute(verb: 'POST', url: '/tag/{old_name}')]
+	#[FrontpageRoute(verb: 'PUT', url: '/tag/{old_name}', postfix: 'put')]
+	#[FrontpageRoute(verb: 'POST', url: '/tag/{old_name}', postfix: 'post')]
 	public function renameTag(string $old_name = '', string $new_name = '', string $name = ''): JSONResponse {
 		return $this->publicController->renameTag($old_name, $new_name, $name);
 	}

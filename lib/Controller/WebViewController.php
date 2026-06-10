@@ -17,7 +17,6 @@ use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Service\SettingsService;
 use OCA\Bookmarks\Service\UserSettingsService;
 use OCA\Viewer\Event\LoadViewer;
-use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -31,6 +30,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\AppFramework\Http\Template\PublicTemplateResponse;
+use OCP\ContextChat\IContentManager;
 use OCP\DB\Exception;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
@@ -57,14 +57,13 @@ class WebViewController extends Controller {
 		private BookmarkMapper $bookmarkMapper,
 		private UserSettingsService $userSettingsService,
 		private SettingsService $settings,
-		private IAppManager $appManager,
+		private ?IContentManager $contentManager,
 		private IConfig $config,
 		private IEventDispatcher $eventDispatcher,
 		private LoggerInterface $logger,
 	) {
 		parent::__construct($appName, $request);
 	}
-
 
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
@@ -109,7 +108,7 @@ class WebViewController extends Controller {
 		}
 
 		$this->initialState->provideInitialState($this->appName, 'tags', $this->tagsController->fullTags(true)->getData());
-		$this->initialState->provideInitialState($this->appName, 'contextChatInstalled', $this->appManager->isEnabledForUser('context_chat'));
+		$this->initialState->provideInitialState($this->appName, 'contextChatInstalled', $this->contentManager?->isContextChatAvailable() ?? false);
 		$this->initialState->provideInitialState($this->appName, 'appStoreEnabled', $this->config->getSystemValueBool('appstoreenabled', true));
 
 		$settings = $this->userSettingsService->toArray();

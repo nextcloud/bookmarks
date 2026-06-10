@@ -53,6 +53,7 @@ export default {
 			backupPath: '',
 			backupEnabled: '1',
 			hasSeenWhatsnew: '',
+			hasSeenSupportThisProject: 0,
 			shareapi_allow_links: true,
 		},
 		bookmarks: [],

@@ -37,7 +37,6 @@ class Authorizer {
 
 	private $cors = false;
 
-
 	public function __construct(
 		private FolderMapper $folderMapper,
 		private BookmarkMapper $bookmarkMapper,

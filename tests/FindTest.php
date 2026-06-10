@@ -9,6 +9,7 @@ use OCA\Bookmarks\Exception\UserLimitExceededError;
 use OCA\Bookmarks\QueryParameters;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
+use OCP\IUserManager;
 
 class FindTest extends TestCase {
 	/**
@@ -55,12 +56,12 @@ class FindTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->bookmarkMapper = \OC::$server->query(Db\BookmarkMapper::class);
-		$this->tagMapper = \OC::$server->query(Db\TagMapper::class);
-		$this->folderMapper = \OC::$server->query(Db\FolderMapper::class);
-		$this->treeMapper = \OC::$server->query(Db\TreeMapper::class);
+		$this->bookmarkMapper = \OCP\Server::get(Db\BookmarkMapper::class);
+		$this->tagMapper = \OCP\Server::get(Db\TagMapper::class);
+		$this->folderMapper = \OCP\Server::get(Db\FolderMapper::class);
+		$this->treeMapper = \OCP\Server::get(Db\TreeMapper::class);
 
-		$this->userManager = \OC::$server->getUserManager();
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
@@ -82,7 +83,6 @@ class FindTest extends TestCase {
 		$this->assertCount(1, $bookmarks);
 	}
 
-
 	public function testFindAllWithAnd() {
 		$params = new QueryParameters();
 		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['wikipedia', 'nextcloud']));
@@ -92,7 +92,6 @@ class FindTest extends TestCase {
 		$bookmarks = $this->bookmarkMapper->findAll($this->userId, $params->setSearch(['.com']));
 		$this->assertCount(3, $bookmarks);
 	}
-
 
 	public function testFindAllWithOr() {
 		$params = new QueryParameters();

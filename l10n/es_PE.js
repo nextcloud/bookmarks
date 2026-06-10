@@ -26,6 +26,7 @@ OC.L10N.register(
     "Notes" : "Notas",
     "Open file" : "Abrir archivo",
     "Download file" : "Descargar archivo",
+    "Link copied" : "Enlace copiado",
     "Owner" : "Dueño",
     "Sharing" : "Compartiendo",
     "Share link" : "Compartir liga",

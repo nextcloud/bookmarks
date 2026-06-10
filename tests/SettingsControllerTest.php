@@ -46,7 +46,7 @@ class SettingsControllerTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->userManager = \OC::$server->get(IUserManager::class);
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
@@ -54,11 +54,11 @@ class SettingsControllerTest extends TestCase {
 		$this->userId = $this->userManager->get($this->user)->getUID();
 
 		$this->appName = 'bookmarks';
-		$this->request = \OC::$server->get(IRequest::class);
+		$this->request = \OCP\Server::get(IRequest::class);
 		/** @var IFactory $l10nFactory */
-		$l10nFactory = \OC::$server->get(IFactory::class);
+		$l10nFactory = \OCP\Server::get(IFactory::class);
 		$l = $l10nFactory->get('bookmarks');
-		$this->config = \OC::$server->get(IConfig::class);
+		$this->config = \OCP\Server::get(IConfig::class);
 		$userSettings = \OCP\Server::get(UserSettingsService::class);
 		$userSettings->setUserId($this->userId);
 		if (!$this->userManager->userExists($this->userId)) {

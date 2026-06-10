@@ -8,7 +8,6 @@
 
 declare(strict_types=1);
 
-
 namespace OCA\Bookmarks\Service;
 
 use OCP\App\IAppManager;

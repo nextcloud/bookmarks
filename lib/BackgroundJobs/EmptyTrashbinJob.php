@@ -17,7 +17,6 @@ class EmptyTrashbinJob extends TimedJob {
 	public const INTERVAL = 5 * 60; // 5 minutes
 	public const TRASHBIN_TTL = 2 * 4 * 4 * 7 * 24 * 60 * 60; // Two months
 
-
 	public function __construct(
 		ITimeFactory $timeFactory,
 		private TreeMapper $treeMapper,

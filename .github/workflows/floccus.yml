@@ -33,14 +33,14 @@ jobs:
 
     steps:
       - name: Checkout floccus
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
           path: floccus
           ref: ${{ matrix.floccus-branch }}
           repository: floccusAddon/floccus
 
       - name: Set up node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -48,7 +48,7 @@ jobs:
         run: npm i -g npm@"${{ matrix.npm-version }}"
 
       - name: Cache node modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: cache-node-modules
         with:
@@ -139,7 +139,7 @@ jobs:
     steps:
 
       - name: Set up node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -154,7 +154,7 @@ jobs:
           path: ./
 
       - name: Checkout bookmarks app
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: ${{ env.APP_NAME }}
 

@@ -33,7 +33,6 @@ class GenericUrlBookmarkPreviewer implements IBookmarkPreviewer {
 	 */
 	private $client;
 
-
 	/** @var LoggerInterface */
 	private $logger;
 

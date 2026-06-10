@@ -64,7 +64,6 @@ class QueryParameters {
 		return $this;
 	}
 
-
 	/**
 	 * @return int
 	 */

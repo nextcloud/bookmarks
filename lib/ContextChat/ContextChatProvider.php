@@ -17,11 +17,11 @@ use OCA\Bookmarks\Events\InsertEvent;
 use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\UserSettingsService;
-use OCA\ContextChat\Event\ContentProviderRegisterEvent;
-use OCA\ContextChat\Public\ContentItem;
-use OCA\ContextChat\Public\ContentManager;
-use OCA\ContextChat\Public\IContentProvider;
 use OCP\BackgroundJob\IJobList;
+use OCP\ContextChat\ContentItem;
+use OCP\ContextChat\Events\ContentProviderRegisterEvent;
+use OCP\ContextChat\IContentManager;
+use OCP\ContextChat\IContentProvider;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IUser;
@@ -35,18 +35,18 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 	public function __construct(
 		private BookmarkService $bookmarkService,
 		private IUserManager $userManager,
-		private ?ContentManager $contentManager,
+		private ?IContentManager $contentManager,
 		private IJobList $jobList,
 		private UserSettingsService $userSettings,
 	) {
 	}
 
 	public function handle(Event $event): void {
-		if ($this->contentManager === null) {
+		if ($event instanceof ContentProviderRegisterEvent) {
+			$this->register($event);
 			return;
 		}
-		if ($event instanceof ContentProviderRegisterEvent) {
-			$this->register();
+		if (!$this->isContextChatAvailable()) {
 			return;
 		}
 		if (!$event instanceof ChangeEvent) {
@@ -84,8 +84,21 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 		}
 	}
 
-	public function register(): void {
+	public function register(?ContentProviderRegisterEvent $event = null): void {
+		if ($event !== null) {
+			$event->registerContentProvider($this->getAppId(), $this->getId(), self::class);
+			return;
+		}
+
+		if (!$this->isContextChatAvailable()) {
+			return;
+		}
+
 		$this->contentManager->registerContentProvider($this->getAppId(), $this->getId(), self::class);
+	}
+
+	private function isContextChatAvailable(): bool {
+		return $this->contentManager !== null && $this->contentManager->isContextChatAvailable();
 	}
 
 	/**

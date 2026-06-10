@@ -15,7 +15,17 @@ use OCP\IL10N;
 
 class UserSettingsService {
 
-	public const KEYS = ['hasSeenWhatsnew', 'viewMode', 'archive.enabled', 'archive.filePath', 'backup.enabled', 'backup.filePath', 'sorting', 'contextchat.enabled'];
+	public const KEYS = [
+		'hasSeenWhatsnew',
+		'hasSeenSupportThisProject',
+		'viewMode',
+		'archive.enabled',
+		'archive.filePath',
+		'backup.enabled',
+		'backup.filePath',
+		'sorting',
+		'contextchat.enabled'
+	];
 
 	public function __construct(
 		private ?string $userId,
@@ -40,6 +50,9 @@ class UserSettingsService {
 			$default = 'lastmodified';
 		}
 		if ($key === 'hasSeenWhatsnew') {
+			$default = '0';
+		}
+		if ($key === 'hasSeenSupportThisProject') {
 			$default = '0';
 		}
 		if ($key === 'viewMode') {

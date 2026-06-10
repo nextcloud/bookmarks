@@ -183,7 +183,6 @@ class BookmarkMapper extends QBMapper {
 		return call_user_func($this->entityClass . '::fromRow', $row);
 	}
 
-
 	/**
 	 * Find a specific bookmark by Id
 	 *
@@ -497,7 +496,7 @@ class BookmarkMapper extends QBMapper {
 	private function _filterFolder(IQueryBuilder $qb, QueryParameters $params): void {
 		if ($params->getFolder() !== null) {
 			if ($params->getRecursive()) {
-				$childFolders = \OC::$server->get(TreeMapper::class)->findByAncestorFolder(TreeMapper::TYPE_FOLDER, $params->getFolder());
+				$childFolders = \OCP\Server::get(TreeMapper::class)->findByAncestorFolder(TreeMapper::TYPE_FOLDER, $params->getFolder());
 				$ids = [...array_map(fn (Folder $folder) => $folder->getId(), $childFolders), $params->getFolder()];
 				$qb->andWhere($qb->expr()->in('tree.parent_folder', $qb->createPositionalParameter($ids, IQueryBuilder::PARAM_INT_ARRAY)));
 			} else {
@@ -781,7 +780,6 @@ class BookmarkMapper extends QBMapper {
 		$qb
 			->from('*PREFIX*bookmarks', 'b')
 			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL');
-
 
 		$this->_filterUrl($qb, $queryParams);
 		$this->_filterArchived($qb, $queryParams);

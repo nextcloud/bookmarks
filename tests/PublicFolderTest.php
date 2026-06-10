@@ -56,11 +56,11 @@ class PublicFolderTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->folderPublicMapper = \OC::$server->get(Db\PublicFolderMapper::class);
-		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
-		$this->treeMapper = \OC::$server->get(Db\TreeMapper::class);
+		$this->folderPublicMapper = \OCP\Server::get(Db\PublicFolderMapper::class);
+		$this->folderMapper = \OCP\Server::get(Db\FolderMapper::class);
+		$this->treeMapper = \OCP\Server::get(Db\TreeMapper::class);
 
-		$this->userManager = \OC::$server->get(IUserManager::class);
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

@@ -33,6 +33,8 @@ OC.L10N.register(
     "Allow resharing" : "Qayta almashishga ruxsat bering",
     "Failed to save settings" : "Sozlamalarni saqlab bo'lmadi",
     "Failed to load settings" : "Sozlamalarni yuklab bo'lmadi",
+    "Privacy" : "Maxfiylik",
+    "Folder" : "Jild",
     "Save" : "Saqlash"
 },
 "nplurals=1; plural=0;");

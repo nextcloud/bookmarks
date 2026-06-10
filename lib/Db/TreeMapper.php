@@ -54,7 +54,6 @@ class TreeMapper extends QBMapper {
 
 	protected $entityColumns = [];
 
-
 	private IQueryBuilder $insertQuery;
 
 	private IQueryBuilder $parentQuery;
@@ -370,7 +369,6 @@ class TreeMapper extends QBMapper {
 		}
 		return true;
 	}
-
 
 	/**
 	 * @param string $type
@@ -689,7 +687,6 @@ class TreeMapper extends QBMapper {
 			$newParentFolderId
 		));
 	}
-
 
 	/**
 	 * @brief Add a bookmark to a set of folders
@@ -1034,7 +1031,7 @@ class TreeMapper extends QBMapper {
 			->from('bookmarks_tree')
 			->where($qb->expr()->eq('parent_folder', $qb->createPositionalParameter($folderId)))
 			->andWhere($qb->expr()->isNull('soft_deleted_at'));
-		return $qb->executeQuery()->fetch(PDO::FETCH_COLUMN);
+		return (int)$qb->executeQuery()->fetch(PDO::FETCH_COLUMN);
 	}
 
 	/**

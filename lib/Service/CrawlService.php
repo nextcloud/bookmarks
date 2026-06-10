@@ -11,8 +11,6 @@ namespace OCA\Bookmarks\Service;
 use Exception;
 use fivefilters\Readability\Configuration;
 use fivefilters\Readability\Readability;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
 use Mimey\MimeTypes;
 use OC\User\NoUserException;
 use OCA\Bookmarks\Db\Bookmark;
@@ -24,6 +22,9 @@ use OCP\Files\InvalidPathException;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
+use OCP\Http\Client\IClient;
+use OCP\Http\Client\IClientService;
+use OCP\Http\Client\IResponse;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\Lock\LockedException;
@@ -34,20 +35,23 @@ class CrawlService {
 	public const TIMEOUT = 60;
 	public const CONNECT_TIMEOUT = 30;
 	public const READ_TIMEOUT = 30;
-	public const UA_FIREFOX = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:87.0) Gecko/20100101 Firefox/87.0';
+	public const UA_FIREFOX = 'Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0';
 
+	private IClient $client;
 	private MimeTypes $mimey;
 
 	public function __construct(
 		private BookmarkMapper $bookmarkMapper,
 		private BookmarkPreviewer $bookmarkPreviewer,
 		private FaviconPreviewer $faviconPreviewer,
+		IClientService $clientService,
 		private IConfig $config,
 		private IRootFolder $rootFolder,
 		private IL10N $l,
 		private LoggerInterface $logger,
 		private UserSettingsService $userSettingsService,
 	) {
+		$this->client = $clientService->newClient();
 		$this->mimey = new MimeTypes;
 	}
 
@@ -60,9 +64,7 @@ class CrawlService {
 			return;
 		}
 		try {
-			$client = new Client();
-			/** @var Response $resp */
-			$resp = $client->get($bookmark->getUrl(), [
+			$resp = $this->client->get($bookmark->getUrl(), [
 				'headers' => [
 					'User-Agent' => self::UA_FIREFOX,
 				],
@@ -91,14 +93,12 @@ class CrawlService {
 		$this->bookmarkMapper->update($bookmark);
 	}
 
-	private function archiveContent(Bookmark $bookmark, Response $resp): void {
-		$header = $resp->getHeader('Content-Type');
+	private function archiveContent(Bookmark $bookmark, IResponse $resp): void {
+		$contentType = $resp->getHeader('Content-Type');
 
-		if (empty($header)) {
+		if ($contentType === '') {
 			return;
 		}
-
-		$contentType = $header[0] ?? null;
 
 		if ($contentType !== null && str_contains($contentType, 'text/html')) {
 			if ($bookmark->getHtmlContent() === null || $bookmark->getHtmlContent() === '') {
@@ -120,18 +120,16 @@ class CrawlService {
 		}
 	}
 
-	private function archiveFile(Bookmark $bookmark, Response $resp): void {
-		$header = $resp->getHeader('Content-Type');
+	private function archiveFile(Bookmark $bookmark, IResponse $resp): void {
+		$contentType = $resp->getHeader('Content-Type');
 
-		if (empty($header)) {
+		if ($contentType === '') {
 			return;
 		}
 
-		$contentType = $header[0] ?? null;
-
 		if ($contentType !== null && !str_contains($contentType, 'text/html') && $bookmark->getArchivedFile() === null) {
 			$contentLengthHeader = $resp->getHeader('Content-Length');
-			$contentLength = isset($contentLengthHeader[0]) ? (int)$contentLengthHeader[0] : 0;
+			$contentLength = $contentLengthHeader !== '' ? (int)$contentLengthHeader : 0;
 
 			if ($contentLength < self::MAX_BODY_LENGTH) {
 				try {

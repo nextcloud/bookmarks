@@ -5,6 +5,7 @@ OC.L10N.register(
     "You bookmarked \"%s\"" : "Tu pievienoji \"%s\" grāmatzīmēm",
     "You created folder \"%s\"" : "Tu izveidoji mapi \"%s\"",
     "No file provided for import" : "Ievietošanai nav norādīta neviena datne",
+    "Recent bookmarks" : "Nesenas grāmatzīmes",
     "Bookmark" : "Grāmatzīme",
     "Details" : "Informācija",
     "Rename" : "Pārdēvēt",

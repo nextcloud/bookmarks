@@ -34,7 +34,6 @@ class FolderMapper extends QBMapper {
 	 */
 	protected $sharedFolderMapper;
 
-
 	/**
 	 * @var ShareMapper
 	 */
@@ -114,7 +113,6 @@ class FolderMapper extends QBMapper {
 		}
 		return $rootFolder;
 	}
-
 
 	/**
 	 * @param Entity $entity

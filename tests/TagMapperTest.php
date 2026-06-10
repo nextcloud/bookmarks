@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
@@ -33,19 +32,18 @@ class TagMapperTest extends TestCase {
 	 */
 	protected $folderMapper;
 
-
 	/**
 	 * @throws QueryException
 	 */
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->bookmarkMapper = \OC::$server->get(Db\BookmarkMapper::class);
-		$this->tagMapper = \OC::$server->get(Db\TagMapper::class);
-		$this->folderMapper = \OC::$server->get(Db\FolderMapper::class);
-		$this->treeMapper = \OC::$server->get(Db\TreeMapper::class);
+		$this->bookmarkMapper = \OCP\Server::get(Db\BookmarkMapper::class);
+		$this->tagMapper = \OCP\Server::get(Db\TagMapper::class);
+		$this->folderMapper = \OCP\Server::get(Db\FolderMapper::class);
+		$this->treeMapper = \OCP\Server::get(Db\TreeMapper::class);
 
-		$this->userManager = \OC::$server->get(IUserManager::class);
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');

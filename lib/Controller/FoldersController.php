@@ -287,7 +287,6 @@ class FoldersController extends ApiController {
 		}
 	}
 
-
 	/**
 	 * @throws UnauthenticatedError
 	 */

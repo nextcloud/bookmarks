@@ -159,6 +159,14 @@ class BookmarkController extends ApiController {
 		return $internal;
 	}
 
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\FrontpageRoute(verb: 'OPTIONS', url: '/public/rest/v2/{path}', requirements: ['path' => '.+'])]
+	public function preflightedCors() {
+		return parent::preflightedCors();
+	}
+
 	/**
 	 * @return JSONResponse
 	 * @throws UnauthenticatedError
@@ -381,7 +389,6 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => ['Internal server error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}
-
 
 	/**
 	 * @throws UnauthenticatedError
@@ -683,7 +690,6 @@ class BookmarkController extends ApiController {
 		}
 		return new ExportResponse($data);
 	}
-
 
 	/**
 	 * @throws UnauthenticatedError

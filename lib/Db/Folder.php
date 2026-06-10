@@ -31,7 +31,6 @@ class Folder extends Entity {
 
 	public static $columns = ['id', 'title', 'user_id'];
 
-
 	public function __construct() {
 		// add types in constructor
 		$this->addType('title', 'string');

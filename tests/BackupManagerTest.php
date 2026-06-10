@@ -10,6 +10,7 @@ use OCA\Bookmarks\Service\BackupManager;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\IUserManager;
 
 class BackupManagerTest extends TestCase {
 	/**
@@ -47,12 +48,12 @@ class BackupManagerTest extends TestCase {
 		parent::setUp();
 		$this->cleanUp();
 
-		$this->bookmarks = \OC::$server->query(BookmarkService::class);
-		$this->backupManager = \OC::$server->query(BackupManager::class);
+		$this->bookmarks = \OCP\Server::get(BookmarkService::class);
+		$this->backupManager = \OCP\Server::get(BackupManager::class);
 		$this->time = $this->createStub(ITimeFactory::class);
 		$this->backupManager->injectTimeFactory($this->time);
 
-		$this->userManager = \OC::$server->getUserManager();
+		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->user = 'test';
 		if (!$this->userManager->userExists($this->user)) {
 			$this->userManager->createUser($this->user, 'password');
