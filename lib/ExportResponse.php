@@ -8,7 +8,6 @@
 
 namespace OCA\Bookmarks;
 
-use OC\HintException;
 use OCA\Theming\ThemingDefaults;
 use OCP\AppFramework\Http\Response;
 use OCP\IDateTimeFormatter;
