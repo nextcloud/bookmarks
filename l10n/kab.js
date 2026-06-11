@@ -12,6 +12,7 @@ OC.L10N.register(
     "Search" : "Nadi",
     "Empty trash bin" : "Silem taqecwalt",
     "_%n folder_::_%n folders_" : ["%n n ukaram","%n n ikaramen"],
+    "Submit" : "Azen",
     "Cancel" : "Sefsex",
     "Recent" : "Melmi kan",
     "Files" : "Ifuyla",
