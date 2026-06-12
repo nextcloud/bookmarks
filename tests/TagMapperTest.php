@@ -6,10 +6,12 @@ use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\QueryParameters;
+use OCA\Bookmarks\Service\FolderService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
 use OCP\IUserManager;
+use OCP\Share\IShare;
 use PHPUnit\Framework\TestCase;
 
 class TagMapperTest extends TestCase {
@@ -159,6 +161,94 @@ class TagMapperTest extends TestCase {
 		foreach ($newTags as $tag) {
 			$this->assertContains($tag, $actualTags);
 		}
+	}
+
+	/**
+	 * Regression test for https://github.com/nextcloud/bookmarks/issues/1982:
+	 * tags on bookmarks placed inside a subfolder of a shared folder must be
+	 * visible to the sharee, not just tags on bookmarks directly in the shared
+	 * folder.
+	 *
+	 * @throws \OCA\Bookmarks\Exception\AlreadyExistsError
+	 * @throws \OCA\Bookmarks\Exception\UnsupportedOperation
+	 * @throws \OCA\Bookmarks\Exception\UserLimitExceededError
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
+	 * @throws \OCP\DB\Exception
+	 */
+	public function testFindAllSeesTagsInSubfolderOfSharedFolder() {
+		$owner = 'tag_share_owner';
+		$recipient = 'tag_share_recipient';
+		if (!$this->userManager->userExists($owner)) {
+			$this->userManager->createUser($owner, 'password');
+		}
+		if (!$this->userManager->userExists($recipient)) {
+			$this->userManager->createUser($recipient, 'password');
+		}
+		$ownerId = $this->userManager->get($owner)->getUID();
+		$recipientId = $this->userManager->get($recipient)->getUID();
+
+		/** @var FolderService $folderService */
+		$folderService = \OCP\Server::get(FolderService::class);
+
+		$sharedFolder = new Db\Folder();
+		$sharedFolder->setTitle('shared-root');
+		$sharedFolder->setUserId($ownerId);
+		$this->folderMapper->insert($sharedFolder);
+		$this->treeMapper->move(
+			Db\TreeMapper::TYPE_FOLDER,
+			$sharedFolder->getId(),
+			$this->folderMapper->findRootFolder($ownerId)->getId(),
+		);
+
+		$subFolder = new Db\Folder();
+		$subFolder->setTitle('sub');
+		$subFolder->setUserId($ownerId);
+		$this->folderMapper->insert($subFolder);
+		$this->treeMapper->move(
+			Db\TreeMapper::TYPE_FOLDER,
+			$subFolder->getId(),
+			$sharedFolder->getId(),
+		);
+
+		$bookmark = Bookmark::fromArray([
+			'userId' => $ownerId,
+			'url' => 'https://example.org/issue-1982',
+			'title' => 'Nested',
+			'description' => '',
+		]);
+		$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
+		$nestedTag = 'nested-shared-1982';
+		$this->tagMapper->addTo([$nestedTag], $bookmark->getId());
+		$this->treeMapper->addToFolders(
+			Db\TreeMapper::TYPE_BOOKMARK,
+			$bookmark->getId(),
+			[$subFolder->getId()],
+		);
+
+		$folderService->createShare(
+			$sharedFolder->getId(),
+			$recipient,
+			IShare::TYPE_USER,
+			true,
+			false,
+		);
+
+		$recipientTags = $this->tagMapper->findAll($recipientId);
+		$this->assertContains(
+			$nestedTag,
+			$recipientTags,
+			'Tag on a bookmark inside a subfolder of a shared folder must be visible to the sharee',
+		);
+
+		$recipientTagsWithCount = $this->tagMapper->findAllWithCount($recipientId);
+		$matched = array_values(array_filter(
+			$recipientTagsWithCount,
+			static fn ($row) => $row['name'] === $nestedTag,
+		));
+		$this->assertCount(1, $matched);
+		$this->assertEquals(1, (int)$matched[0]['count']);
 	}
 
 	/**
