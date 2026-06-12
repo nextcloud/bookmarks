@@ -131,8 +131,9 @@ export default {
 		this.reloadSharedFolders()
 		this.reloadCount()
 		this.reloadTags()
+		this.reloadDeletedFolders()
 
-		await Promise.all([this.reloadFolders(), this.reloadDeletedFolders()])
+		await this.reloadFolders()
 
 		this.onRoute()
 
