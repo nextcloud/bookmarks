@@ -311,7 +311,10 @@ class BookmarkMapper extends QBMapper {
 			->from('*PREFIX*bookmarks_tree', 'tr')
 			->join('tr', $this->getDbType() === 'mysql'? 'folder_tree' : 'inner_folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = ' . $recursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER) . (!$withSoftDeleted ? ' AND e.soft_deleted_at is NULL' : ''));
 
-		// The second recursive case lists all children of shared folders we've already found
+		// The second recursive case lists all children of shared folders we've already found.
+		// We also require the share's underlying original folder to not be soft-deleted by its
+		// owner: when the sharer trashes the original folder, sharees must not see anything
+		// inside it — not even in their own trash bin.
 		$recursiveCaseShares = $this->db->getQueryBuilder();
 		$recursiveCaseShares->automaticTablePrefix(false);
 		$recursiveCaseShares
@@ -321,7 +324,8 @@ class BookmarkMapper extends QBMapper {
 			->selectAlias('e.idx', 'idx')
 			->selectAlias('e.soft_deleted_at', 'soft_deleted_at')
 			->from(($this->getDbType() === 'mysql'? 'folder_tree' : 'second_folder_tree'), 'e')
-			->join('e', '*PREFIX*bookmarks_shared_folders', 's', 's.id = e.item_id AND e.type = ' . $recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE) . (!$withSoftDeleted ? ' AND e.soft_deleted_at is NULL' : ''));
+			->join('e', '*PREFIX*bookmarks_shared_folders', 's', 's.id = e.item_id AND e.type = ' . $recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_SHARE) . (!$withSoftDeleted ? ' AND e.soft_deleted_at is NULL' : ''))
+			->join('s', '*PREFIX*bookmarks_tree', 'sof', 'sof.id = s.folder_id AND sof.type = ' . $recursiveCaseShares->createPositionalParameter(TreeMapper::TYPE_FOLDER) . ' AND sof.soft_deleted_at is NULL');
 
 		if ($this->getDbType() === 'mysql') {
 			// For mysql we can just throw these three queries together in a CTE

@@ -238,6 +238,9 @@ class TreeMapper extends QBMapper {
 			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter($type)))
 			->andWhere($qb->expr()->isNull('t.soft_deleted_at'))
 			->orderBy('t.index', 'ASC');
+		if ($type === TreeMapper::TYPE_SHARE) {
+			$this->joinOriginalFolderNotSoftDeleted($qb);
+		}
 		return $qb;
 	}
 
@@ -249,7 +252,25 @@ class TreeMapper extends QBMapper {
 			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter($type)))
 			->andWhere($qb->expr()->isNotNull('t.soft_deleted_at'))
 			->orderBy('t.index', 'ASC');
+		if ($type === TreeMapper::TYPE_SHARE) {
+			$this->joinOriginalFolderNotSoftDeleted($qb);
+		}
 		return $qb;
+	}
+
+	/**
+	 * Restricts a TYPE_SHARE query to shared folders whose underlying original
+	 * folder has not been soft-deleted by its owner. When the sharer trashes the
+	 * original folder, the share must disappear for sharees entirely — including
+	 * from their trash bin, since they cannot restore someone else's folder.
+	 */
+	private function joinOriginalFolderNotSoftDeleted(IQueryBuilder $qb): void {
+		$qb
+			->innerJoin('i', 'bookmarks_tree', 'ot', $qb->expr()->andX(
+				$qb->expr()->eq('ot.id', 'i.folder_id'),
+				$qb->expr()->eq('ot.type', $qb->createNamedParameter(TreeMapper::TYPE_FOLDER))
+			))
+			->andWhere($qb->expr()->isNull('ot.soft_deleted_at'));
 	}
 
 	/**
@@ -1006,6 +1027,9 @@ class TreeMapper extends QBMapper {
 					$qb->expr()->isNull('t2.soft_deleted_at'),
 					$qb->expr()->isNotNull('r.folder_id'),
 				));
+			if ($type === TreeMapper::TYPE_SHARE) {
+				$this->joinOriginalFolderNotSoftDeleted($qb);
+			}
 			return $this->findEntitiesWithType($qb, $type);
 		}
 		if ($type === TreeMapper::TYPE_BOOKMARK) {
