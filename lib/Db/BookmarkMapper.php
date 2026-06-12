@@ -213,7 +213,7 @@ class BookmarkMapper extends QBMapper {
 	public function findAll(string $userId, QueryParameters $queryParams, bool $withGroupBy = true): array {
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		// gives us all bookmarks in this folder, recursively
-		[$cte, $params, $paramTypes] = $this->_generateCTE($rootFolder->getId(), $queryParams->getSoftDeletedFolders());
+		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), $queryParams->getSoftDeletedFolders());
 
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
@@ -282,11 +282,14 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
-	 * Common table expression that lists all items in a given folder, recursively
+	 * Common table expression that lists all items in a given folder, recursively.
+	 * Public so other mappers (e.g. TagMapper) can reuse the same tree-traversal
+	 * logic and stay consistent with how visibility is computed for bookmarks.
+	 *
 	 * @param int $folderId
 	 * @return array
 	 */
-	private function _generateCTE(int $folderId, bool $withSoftDeleted) : array {
+	public function generateCTE(int $folderId, bool $withSoftDeleted) : array {
 		// The base case of the recursion is just the folder we're given
 		$baseCase = $this->db->getQueryBuilder();
 		$baseCase
@@ -761,7 +764,7 @@ class BookmarkMapper extends QBMapper {
 		$folder = $this->folderMapper->find($publicFolder->getFolderId());
 
 		// gives us all bookmarks in this folder, recursively
-		[$cte, $params, $paramTypes] = $this->_generateCTE($folder->getId(), false);
+		[$cte, $params, $paramTypes] = $this->generateCTE($folder->getId(), false);
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(false);
@@ -1033,7 +1036,7 @@ class BookmarkMapper extends QBMapper {
 	public function getIterator(string $userId, QueryParameters $queryParams): \Generator {
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		// gives us all bookmarks in this folder, recursively
-		[$cte, $params, $paramTypes] = $this->_generateCTE($rootFolder->getId(), $queryParams->getSoftDeletedFolders());
+		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), $queryParams->getSoftDeletedFolders());
 
 		$qb = $this->db->getQueryBuilder();
 		$bookmark_cols = array_map(static function ($c) {
