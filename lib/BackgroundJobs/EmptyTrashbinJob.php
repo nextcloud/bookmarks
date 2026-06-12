@@ -13,7 +13,7 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
 
 class EmptyTrashbinJob extends TimedJob {
-	public const BATCH_SIZE = 1000; // 40 items
+	public const BATCH_SIZE = 1000;
 	public const INTERVAL = 5 * 60; // 5 minutes
 	public const TRASHBIN_TTL = 2 * 4 * 4 * 7 * 24 * 60 * 60; // Two months
 

@@ -799,6 +799,9 @@ export default {
 	},
 
 	async [actions.LOAD_DELETED_FOLDERS]({ commit, dispatch, state }) {
+		if (state.loading.deleted_folders) {
+			return;
+		}
 		if (state.deletedFolders === null) {
 			try {
 				const count = loadState('bookmarks', 'deletedFolders')
@@ -826,11 +829,11 @@ export default {
 			} = response
 			if (status !== 'success') throw new Error(data)
 			const folders = data
-			commit(mutations.FETCH_END, 'folders')
+			commit(mutations.FETCH_END, 'deleted_folders');
 			return commit(mutations.SET_DELETED_FOLDERS, folders)
 		} catch (err) {
 			console.error(err)
-			commit(mutations.FETCH_END, 'folders')
+			commit(mutations.FETCH_END, 'deleted_folders');
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to load deleted folders'),
@@ -1656,35 +1659,22 @@ export default {
 	},
 	async [actions.EMPTY_TRASHBIN]({ commit, dispatch, state }) {
 		if (state.loading.emptyTrashbin) return
+		let canceled = false
 		await commit(mutations.FETCH_START, {
 			type: 'emptyTrashbin',
+			cancel() {
+				canceled = true
+			}
 		})
 		try {
-			await Parallel.each(
-				state.deletedFolders,
-				folder =>
-					dispatch(actions.DELETE_FOLDER, {
-						id: folder.id,
-						avoidReload: true,
-						hard: true,
-					}),
-				10,
-			)
-			await Parallel.each(
-				state.bookmarks,
-				(bookmark) => {
-					// soft delete all occurences instead of hard deleting the bookmark itself
-					return Promise.all(bookmark.folders.map((folder) => {
-						return dispatch(actions.DELETE_BOOKMARK, {
-							id: bookmark.id,
-							folder,
-							avoidReload: true,
-							hard: true,
-						})
-					}))
-				},
-				10,
-			)
+			const response = await axios.delete(url(state, '/folder/deleted'), {
+				params: {},
+			})
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
 			dispatch(actions.RELOAD_VIEW)
 			dispatch(actions.LOAD_DELETED_FOLDERS)
 			commit(mutations.FETCH_END, 'emptyTrashbin')

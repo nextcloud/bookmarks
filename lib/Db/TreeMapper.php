@@ -1288,7 +1288,7 @@ class TreeMapper extends QBMapper {
 		$qb->where($qb->expr()->neq('type', $qb->createNamedParameter(TreeMapper::TYPE_SHARE, IQueryBuilder::PARAM_STR)));
 		$cutoffDate = $this->timeFactory->getDateTime();
 		$cutoffDate->modify('- ' . ((string)$maxAge) . ' seconds');
-		$qb->andWhere($qb->expr()->lt('soft_deleted_at', $qb->createNamedParameter($cutoffDate, IQueryBuilder::PARAM_DATE)));
+		$qb->andWhere($qb->expr()->lt('soft_deleted_at', $qb->createNamedParameter($cutoffDate, IQueryBuilder::PARAM_DATETIME_MUTABLE)));
 		$qb->setMaxResults($limit);
 		try {
 			$result = $qb->executeQuery();
@@ -1301,8 +1301,46 @@ class TreeMapper extends QBMapper {
 				$this->deleteEntry($row['type'], $row['id'], $row['parent_folder']);
 			} catch (DoesNotExistException $e) {
 				// noop
-			} catch (UnsupportedOperation|MultipleObjectsReturnedException $e) {
+			} catch (UnsupportedOperation|MultipleObjectsReturnedException|Exception $e) {
 				$this->logger->error('Could not delete old trash bin item: ' . var_export($row, true), ['exception' => $e]);
+			}
+		}
+	}
+
+	/**
+	 * @param string $userId
+	 * @return void
+	 */
+	public function deleteTrashbinItemsForUser(string $userId): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('t.type', 't.id', 't.parent_folder')->from('bookmarks_tree', 't');
+		$qb->where($qb->expr()->neq('type', $qb->createNamedParameter(TreeMapper::TYPE_SHARE, IQueryBuilder::PARAM_STR)));
+		$qb->andWhere($qb->expr()->isNotNull('soft_deleted_at'));
+		$qb->leftJoin('t', 'bookmarks', 'b', 't.id = b.id and t.type = ' . $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK));
+		$qb->leftJoin('t', 'bookmarks_folders', 'f', 't.id = f.id and t.type = ' . $qb->createNamedParameter(TreeMapper::TYPE_FOLDER));
+		$qb->andWhere($qb->expr()->orX(
+			$qb->expr()->andX(
+				$qb->expr()->eq('t.type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)),
+				$qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)),
+			),
+			$qb->expr()->andX(
+				$qb->expr()->eq('t.type', $qb->createNamedParameter(TreeMapper::TYPE_FOLDER)),
+				$qb->expr()->eq('f.user_id', $qb->createNamedParameter($userId)),
+			)
+		));
+		try {
+			$result = $qb->executeQuery();
+		} catch (Exception $e) {
+			$this->logger->error('Could not query for trash bin items of user ' . $userId, ['exception' => $e]);
+			return;
+		}
+		while ($row = $result->fetch()) {
+			try {
+				$this->deleteEntry($row['type'], $row['id'], $row['parent_folder']);
+			} catch (DoesNotExistException $e) {
+				// noop
+			} catch (UnsupportedOperation|MultipleObjectsReturnedException|Exception $e) {
+				$this->logger->error('Could not delete trash bin item: ' . var_export($row, true), ['exception' => $e]);
 			}
 		}
 	}
