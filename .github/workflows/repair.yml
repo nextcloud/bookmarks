@@ -16,6 +16,10 @@ env:
 permissions:
   contents: read
 
+concurrency:
+  group: repair-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   matrix:
     runs-on: ubuntu-latest-low
