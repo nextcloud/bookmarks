@@ -97,6 +97,9 @@ export default {
 				* Math.floor(this.viewport.width / this.itemWidth)
 		},
 		onScroll() {
+			if (!this.$slots.default || !this.$el) {
+				return
+			}
 			this.viewport.width = this.$el.clientWidth
 			this.viewport.height = this.$el.clientHeight
 			const scrollTop = this.$el.scrollTop
