@@ -209,7 +209,7 @@ export default {
 			return this.$store.state.settings.sorting
 		},
 		loading() {
-			return this.$store.state.loading.bookmarks || this.$store.state.loading.folders
+			return this.$store.state.loading.bookmarks || this.$store.state.loading.folders || (this.$route.name === privateRoutes.TRASHBIN && this.$store.state.loading.deleted_folders)
 		},
 	},
 	methods: {
