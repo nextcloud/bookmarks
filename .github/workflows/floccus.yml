@@ -19,6 +19,9 @@ concurrency:
   group: floccus-tests-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   init:
     runs-on: ubuntu-latest
@@ -205,7 +208,7 @@ jobs:
           npm run test
 
   summary:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-low
     needs: [ init, selenium ]
 
     if: always()
