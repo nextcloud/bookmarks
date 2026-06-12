@@ -16,6 +16,10 @@ env:
 permissions:
   contents: read
 
+concurrency:
+  group: repair-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   matrix:
     runs-on: ubuntu-latest-low
@@ -25,6 +29,8 @@ jobs:
     steps:
       - name: Checkout app
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Get version matrix
         id: versions
@@ -69,8 +75,9 @@ jobs:
 
     steps:
       - name: Checkout server
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          persist-credentials: false
           repository: nextcloud/server
           ref: ${{ matrix.server-versions }}
 
@@ -81,15 +88,16 @@ jobs:
           git submodule update --init --force --recursive --depth=1
 
       - name: Set up php ${{ matrix.php-versions }}
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # 2.37.1
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit
           extensions: mbstring, iconv, fileinfo, intl, sqlite, pdo_mysql, pdo_sqlite, pgsql, pdo_pgsql, gd, zip
 
       - name: Checkout app
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          persist-credentials: false
           path: apps/${{ env.APP_NAME }}
 
       - name: Install app

@@ -7,16 +7,22 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+permissions:
+  contents: read
+
 jobs:
   first_comment:
+    permissions:
+      issues: write
+
     runs-on: ubuntu-latest
     name: Add first comment
     steps:
-      - uses: ben-z/actions-comment-on-issue@1.0.3
+      - uses: ben-z/actions-comment-on-issue@402eb412a8f396be0d4ac52a823ec7121206cc26 # 1.0.3
         with:
           message: |
             Hello :wave:
-            
+
             Thank you for taking the time to open this issue with the bookmarks app. I know it's frustrating when software
             causes problems. You have made the right choice to come here and open an issue to make sure your problem gets looked at
             and if possible solved.
@@ -24,7 +30,7 @@ jobs:
             in my free time, because it is not an official Nextcloud product. My day job at Nextcloud is pretty awesome but sadly leaves me with
             less time for side projects like this one than I used to have.
             I still try to answer all issues and if possible fix all bugs here, but it sometimes takes a while until I get to it.
-            Until then, please be patient. 
+            Until then, please be patient.
             Note also that GitHub is a place where people meet to make software better *together*. Nobody here is under any obligation
             to help you, solve your problems or deliver on any expectations or demands you may have, but if enough people come together we can
             collaborate to make this software better. For everyone.
@@ -34,7 +40,7 @@ jobs:
             One last word: If you feel, at any point, like you need to vent, this is not the place for it; you can go to the forum,
             to twitter or somewhere else. But this is a technical issue tracker, so please make sure to
             focus on the tech and keep your opinions to yourself. (Also see our [Code of Conduct](https://nextcloud.com/contribute/code-of-conduct/). Really.)
-            
+
             I look forward to working with you on this issue
             Cheers :blue_heart:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
