@@ -7,7 +7,7 @@
 </template>
 <script>
 import { NcModal } from '@nextcloud/vue'
-import { privateRoutes } from '../router'
+import { privateRoutes } from '../router.js'
 
 export default {
 	name: 'LoadingModal',
