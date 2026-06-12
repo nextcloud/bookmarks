@@ -1,6 +1,8 @@
 OC.L10N.register(
     "bookmarks",
     {
+    "Bookmarks" : "Ticraḍ",
+    "Bookmark" : "Signet",
     "Details" : "Talqayt",
     "Rename" : "Beddel isem",
     "Copy link" : "Nɣel aseɣwen",
@@ -12,6 +14,8 @@ OC.L10N.register(
     "Search" : "Nadi",
     "Empty trash bin" : "Silem taqecwalt",
     "_%n folder_::_%n folders_" : ["%n n ukaram","%n n ikaramen"],
+    "Select folder" : "Fren akaram",
+    "Submit" : "Azen",
     "Cancel" : "Sefsex",
     "Recent" : "Melmi kan",
     "Files" : "Ifuyla",
@@ -20,13 +24,18 @@ OC.L10N.register(
     "Title" : "Azwel",
     "Link" : "Aseɣwen",
     "Tags" : "Tibzimin",
+    "Notes" : "Tizmilin",
     "Open file" : "Ldi afaylu",
+    "Download file" : "Sader-d afaylu",
     "Link copied" : "Aseɣwen yettwanɣel",
     "Owner" : "Bab",
     "Sharing" : "Beṭṭu",
     "Share link" : "Fren aseɣwen",
     "Privacy" : "Vie privée",
+    "Performance" : "Tamellit",
     "Folder" : "Akaram",
-    "Save" : "Sekles"
+    "Save" : "Sekles",
+    "What" : "Acu",
+    "Import successful" : "Taktert tella-d akken ilaq"
 },
 "nplurals=2; plural=(n != 1);");

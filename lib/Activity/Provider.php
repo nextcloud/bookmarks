@@ -8,8 +8,8 @@
 
 namespace OCA\Bookmarks\Activity;
 
-use InvalidArgumentException;
 use OCA\Bookmarks\Db\TreeMapper;
+use OCP\Activity\Exceptions\UnknownActivityException;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager;
 use OCP\Activity\IProvider;
@@ -57,7 +57,7 @@ class Provider implements IProvider {
 	 */
 	public function parse($language, IEvent $event, ?IEvent $previousEvent = null) {
 		if ($event->getApp() !== 'bookmarks') {
-			throw new InvalidArgumentException();
+			throw new UnknownActivityException();
 		}
 
 		$this->l = $this->languageFactory->get('bookmarks', $language);
@@ -206,7 +206,7 @@ class Provider implements IProvider {
 				}
 				break;
 			default:
-				throw new InvalidArgumentException();
+				throw new UnknownActivityException();
 		}
 
 		if ($event->getObjectType() === TreeMapper::TYPE_FOLDER && !str_contains($event->getSubject(), 'deleted')) {
