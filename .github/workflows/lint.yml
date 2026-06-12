@@ -21,7 +21,10 @@ jobs:
 
     name: php${{ matrix.php-versions }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout app
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Set up php ${{ matrix.php-versions }}
         uses: shivammathur/setup-php@v2
@@ -41,8 +44,10 @@ jobs:
 
     name: cs php${{ matrix.php-versions }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
+    - name: Checkout app
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
 
     - name: Set up php
       uses: shivammathur/setup-php@v2
@@ -65,7 +70,10 @@ jobs:
 
     name: eslint node${{ matrix.node-version }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout app
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Read package.json node and npm engines version
         uses: skjnldsv/read-package-engines-version-actions@v3
@@ -98,7 +106,10 @@ jobs:
 
     name: stylelint node${{ matrix.node-version }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout app
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Read package.json node and npm engines version
         uses: skjnldsv/read-package-engines-version-actions@v3

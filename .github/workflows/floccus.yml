@@ -33,8 +33,9 @@ jobs:
 
     steps:
       - name: Checkout floccus
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          persist-credentials: false
           path: floccus
           ref: ${{ matrix.floccus-branch }}
           repository: floccusAddon/floccus
@@ -154,8 +155,9 @@ jobs:
           path: ./
 
       - name: Checkout bookmarks app
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          persist-credentials: false
           path: ${{ env.APP_NAME }}
 
       - name: Install bookmarks app
@@ -191,7 +193,7 @@ jobs:
             echo 'Waiting for the Grid'
             sleep 1
           done
-          
+
           echo "Selenium Grid is up - executing tests"
 
       - name: Run tests

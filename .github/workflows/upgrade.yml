@@ -64,8 +64,9 @@ jobs:
 
     steps:
       - name: Checkout server
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          persist-credentials: false
           repository: nextcloud/server
           ref: ${{ matrix.server-versions }}
 
@@ -83,8 +84,9 @@ jobs:
           extensions: mbstring, iconv, fileinfo, intl, sqlite, pdo_mysql, pdo_sqlite, pgsql, pdo_pgsql, gd, zip
 
       - name: Checkout app
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          persist-credentials: false
           repository: nextcloud/bookmarks
           ref: ${{ matrix.prev-version }}
           path: apps/${{ env.APP_NAME }}
@@ -125,8 +127,9 @@ jobs:
           ./occ app:disable ${{ env.APP_NAME }}
 
       - name: Checkout app
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          persist-credentials: false
           path: apps/${{ env.APP_NAME }}
 
       - name: Install app
