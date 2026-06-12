@@ -800,7 +800,7 @@ export default {
 
 	async [actions.LOAD_DELETED_FOLDERS]({ commit, dispatch, state }) {
 		if (state.loading.deleted_folders) {
-			return;
+			return
 		}
 		if (state.deletedFolders === null) {
 			try {
@@ -829,11 +829,11 @@ export default {
 			} = response
 			if (status !== 'success') throw new Error(data)
 			const folders = data
-			commit(mutations.FETCH_END, 'deleted_folders');
+			commit(mutations.FETCH_END, 'deleted_folders')
 			return commit(mutations.SET_DELETED_FOLDERS, folders)
 		} catch (err) {
 			console.error(err)
-			commit(mutations.FETCH_END, 'deleted_folders');
+			commit(mutations.FETCH_END, 'deleted_folders')
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to load deleted folders'),
@@ -1664,7 +1664,7 @@ export default {
 			type: 'emptyTrashbin',
 			cancel() {
 				canceled = true
-			}
+			},
 		})
 		try {
 			const response = await axios.delete(url(state, '/folder/deleted'), {
