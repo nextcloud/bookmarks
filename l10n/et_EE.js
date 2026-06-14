@@ -127,6 +127,7 @@ OC.L10N.register(
     "Moving selection" : "Teisaldan valikut",
     "Adding selection to folders" : "Lisan valikut kaustadesse",
     "Emptying trashbin" : "Tühjendan prügikasti",
+    "Loading trashbin" : "Laadin prügikasti",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Teisaldan %n kausta ja mõned järjehoidjad","Teisaldan %n kausta ja mõned järjehoidjad"],
     "_Moving %n folder_::_Moving %n folders_" : ["Teisaldan %n kausta","Teisaldan %n kausta"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Teisaldan %n järjehoidja","Teisaldan %n järjehoidjat"],
