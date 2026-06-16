@@ -127,6 +127,7 @@ OC.L10N.register(
     "Moving selection" : "Movendo seleção",
     "Adding selection to folders" : "Adicionando seleção a pastas",
     "Emptying trashbin" : "Esvaziando lixeira",
+    "Loading trashbin" : "Carregando lixeira",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Movendo %n pasta e alguns favoritos","Movendo %n de pastas e alguns favoritos","Movendo %n pastas e alguns favoritos"],
     "_Moving %n folder_::_Moving %n folders_" : ["Movendo %n pasta","Movendo %n de pastas","Movendo %n pastas"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Movendo %n favorito","Movendo %n de favoritos","Movendo %n favoritos"],
