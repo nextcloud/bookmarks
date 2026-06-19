@@ -331,6 +331,25 @@ class TreeMapper extends QBMapper {
 
 	/**
 	 * @param string $type
+	 * @psalm-param TreeMapper::TYPE_* $type
+	 * @param int $itemId
+	 *
+	 * @return Entity[]
+	 * @psalm-return list<Folder>
+	 */
+	public function findParentsOfDeletedBookmarks(int $itemId): array {
+		$qb = $this->getParentQuery();
+		$qb->setParameters([
+			'id' => $itemId,
+			'type' => TreeMapper::TYPE_BOOKMARK,
+		]);
+		$qb->andWhere($qb->expr()->isNotNull('t.soft_deleted_at'));
+
+		return $this->findEntitiesWithType($qb, TreeMapper::TYPE_FOLDER);
+	}
+
+	/**
+	 * @param string $type
 	 * @psalm-param T $type
 	 * @param int $folderId
 	 * @return list<Entity>

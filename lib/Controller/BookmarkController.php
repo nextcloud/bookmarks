@@ -82,12 +82,18 @@ class BookmarkController extends ApiController {
 	 *
 	 * @psalm-return array{folders: array<array-key, int>, tags: array<array-key, mixed>|mixed, archivedFilePath?: mixed|string, archivedFileType?: mixed|string, ...<array-key, mixed>}
 	 */
-	private function _returnBookmarkAsArray(Bookmark $bookmark): array {
+	private function _returnBookmarkAsArray(Bookmark $bookmark, bool $deleted = false): array {
 		$array = $bookmark->toArray();
 		if (!isset($array['folders'])) {
-			$array['folders'] = array_map(function (Folder $folder) {
-				return $this->toExternalFolderId($folder->getId());
-			}, $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId()));
+			if (!$deleted) {
+				$array['folders'] = array_map(function (Folder $folder) {
+					return $this->toExternalFolderId($folder->getId());
+				}, $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId()));
+			}else {
+				$array['folders'] = array_map(function (Folder $folder) {
+					return $this->toExternalFolderId($folder->getId());
+				}, $this->treeMapper->findParentsOfDeletedBookmarks($bookmark->getId()));
+			}
 		} else {
 			$array['folders'] = array_map(function ($id) {
 				return $this->toExternalFolderId($id);
