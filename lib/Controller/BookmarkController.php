@@ -89,7 +89,7 @@ class BookmarkController extends ApiController {
 				$array['folders'] = array_map(function (Folder $folder) {
 					return $this->toExternalFolderId($folder->getId());
 				}, $this->treeMapper->findParentsOf(TreeMapper::TYPE_BOOKMARK, $bookmark->getId()));
-			}else {
+			} else {
 				$array['folders'] = array_map(function (Folder $folder) {
 					return $this->toExternalFolderId($folder->getId());
 				}, $this->treeMapper->findParentsOfDeletedBookmarks($bookmark->getId()));
