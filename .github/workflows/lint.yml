@@ -43,7 +43,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.3']
+        php-versions: ['8.5']
 
     name: cs php${{ matrix.php-versions }}
     steps:
@@ -59,7 +59,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer i
+        run: composer i --ignore-platform-req=php
 
       - name: Run coding standards check
         run: composer run cs:check || ( echo 'Please run `composer run cs:fix` to format your code' && exit 1 )

@@ -24,6 +24,7 @@ export default {
 				copySelection: this.t('bookmkarks', 'Adding selection to folders'),
 				emptyTrashbin: this.t('bookmkarks', 'Emptying trashbin'),
 				deleted_folders: this.t('bookmkarks', 'Loading trashbin'),
+				undeleteFolder: this.t('bookmarks', 'Restoring folder'),
 			},
 			showNcModal: false,
 			showTimeout: null,

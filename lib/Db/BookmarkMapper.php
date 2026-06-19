@@ -913,23 +913,29 @@ class BookmarkMapper extends QBMapper {
 		$entityToInsert->setLastPreview(0);
 		$entityToInsert->setClickcount(0);
 
+		// Wrap the insert in a (possibly nested) transaction so that a failed
+		// statement – e.g. a unique constraint violation when the URL already
+		// exists – can be rolled back cleanly. When this runs inside a larger
+		// transaction (e.g. the HTML importer) Nextcloud uses a SAVEPOINT, so
+		// rolling back discards only the failed INSERT instead of poisoning or
+		// committing the outer transaction. This keeps the connection usable for
+		// the insertOrUpdate() fallback below on SQLite, MySQL and Postgres alike.
+		$this->db->beginTransaction();
 		try {
 			parent::insert($entityToInsert);
-			if (isset($this->userBookmarkCount[$entityToInsert->getUserId()])) {
-				$this->userBookmarkCount[$entityToInsert->getUserId()] += 1;
-			}
-			$this->eventDispatcher->dispatchTyped(new InsertEvent('bookmark', $entityToInsert->getId()));
-			return $entityToInsert;
+			$this->db->commit();
 		} catch (Exception $e) {
+			$this->db->rollBack();
 			if ($e->getReason() === Exception::REASON_UNIQUE_CONSTRAINT_VIOLATION) {
-				if ($this->db->inTransaction()) {
-					$this->db->commit();
-					$this->db->beginTransaction();
-				}
 				throw new AlreadyExistsError('A bookmark with this URL already exists');
 			}
 			throw $e;
 		}
+		if (isset($this->userBookmarkCount[$entityToInsert->getUserId()])) {
+			$this->userBookmarkCount[$entityToInsert->getUserId()] += 1;
+		}
+		$this->eventDispatcher->dispatchTyped(new InsertEvent('bookmark', $entityToInsert->getId()));
+		return $entityToInsert;
 	}
 
 	/**
