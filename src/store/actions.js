@@ -460,8 +460,8 @@ export default {
 			}
 			if (oldFolder) {
 				const response2 = await axios.delete(
-					url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`),
-				)
+					url(state, `/folder/${oldFolder}/bookmarks/${bookmark}?hardDelete=true`),
+				);
 				if (response2.data.status !== 'success') {
 					throw new Error(response2.data)
 				}
