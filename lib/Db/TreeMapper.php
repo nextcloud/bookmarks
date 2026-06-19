@@ -1037,7 +1037,10 @@ class TreeMapper extends QBMapper {
 			$qb = $this->selectFromType($type);
 			$qb
 				->innerJoin('i', 'bookmarks_tree', 't', $qb->expr()->eq('i.id', 't.id'))
-				->leftJoin('t', 'bookmarks_tree', 't2', $qb->expr()->eq('t.parent_folder', 't2.id'))
+				->leftJoin('t', 'bookmarks_tree', 't2', $qb->expr()->andX(
+					$qb->expr()->eq('t.parent_folder', 't2.id'),
+					$qb->expr()->eq('t2.type', $qb->createPositionalParameter(TreeMapper::TYPE_FOLDER, IQueryBuilder::PARAM_STR)),
+				))
 				->leftJoin('t', 'bookmarks_root_folders', 'r', $qb->expr()->eq('t.parent_folder', 'r.folder_id'))
 				->where($qb->expr()->isNotNull('t.soft_deleted_at'))
 				->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_STR)))
