@@ -461,7 +461,7 @@ export default {
 			if (oldFolder) {
 				const response2 = await axios.delete(
 					url(state, `/folder/${oldFolder}/bookmarks/${bookmark}?hardDelete=true`),
-				);
+				)
 				if (response2.data.status !== 'success') {
 					throw new Error(response2.data)
 				}
@@ -943,6 +943,7 @@ export default {
 		try {
 			const parentFolderId = this.getters.getFolder(id)[0].parent_folder
 			const parentFolderItem = this.getters.getFolder(parentFolderId)[0]
+			commit(mutations.FETCH_START, { type: 'undeleteFolder' })
 			const response = await axios.post(url(state, `/folder/${id}/undelete`))
 			const {
 				data: { status },
@@ -958,10 +959,12 @@ export default {
 					actions.LOAD_FOLDER_CHILDREN_ORDER,
 					parentFolderItem ? parentFolderId : '-1',
 				)
-				await dispatch(actions.LOAD_FOLDERS)
+				await dispatch(actions.LOAD_FOLDERS, /* force: */ true)
 				await dispatch(actions.LOAD_DELETED_FOLDERS)
 			}
+			commit(mutations.FETCH_END, 'undeleteFolder')
 		} catch (err) {
+			commit(mutations.FETCH_END, 'undeleteFolder')
 			console.error(err)
 			commit(
 				mutations.SET_ERROR,
