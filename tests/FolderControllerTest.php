@@ -25,8 +25,10 @@ use OCA\Bookmarks\Service\FolderService;
 use OCA\Bookmarks\Service\TreeCacheManager;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\QueryException;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\ICache;
 use OCP\ICacheFactory;
+use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserManager;
@@ -255,6 +257,51 @@ class FolderControllerTest extends TestCase {
 		$data = $output->getData();
 		$this->assertEquals('success', $data['status'], var_export($data, true));
 		$this->assertEquals($this->folder1->getTitle(), $data['item']['title']);
+	}
+
+	/**
+	 * Regression test: trashed folders must not be listed more than once.
+	 *
+	 * The id columns of bookmarks, bookmarks_folders and bookmarks_shared_folders
+	 * are independent autoincrement sequences, so the same numeric id routinely
+	 * exists across all three types. getSoftDeletedRootItems() self-joins
+	 * bookmarks_tree to inspect each item's parent folder; when that join lacked
+	 * a type constraint, a bookmark or share sharing the parent folder's id
+	 * matched too, multiplying the result rows and showing every folder twice in
+	 * the trash bin.
+	 *
+	 * @throws AlreadyExistsError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
+	 * @throws MultipleObjectsReturnedException
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 */
+	public function testGetSoftDeletedRootItemsDoesNotDuplicateOnIdCollision(): void {
+		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
+
+		// folder2 lives inside folder1; trashing it individually makes it a root
+		// item of the trash bin, since its parent (folder1) is not trashed.
+		$this->treeMapper->softDeleteEntry(TreeMapper::TYPE_FOLDER, $this->folder2->getId());
+
+		// Reproduce a cross-type id collision: a non-folder tree entry whose id
+		// equals the trashed folder's parent (folder1). This is the data shape
+		// that used to duplicate rows via the type-less parent self-join.
+		$db = \OCP\Server::get(IDBConnection::class);
+		$qb = $db->getQueryBuilder();
+		$qb->insert('bookmarks_tree')
+			->values([
+				'id' => $qb->createNamedParameter($this->folder1->getId(), IQueryBuilder::PARAM_INT),
+				'type' => $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK),
+				'parent_folder' => $qb->createNamedParameter($this->folderMapper->findRootFolder($this->userId)->getId(), IQueryBuilder::PARAM_INT),
+				'index' => $qb->createNamedParameter(0, IQueryBuilder::PARAM_INT),
+			]);
+		$qb->executeStatement();
+
+		$rootItems = $this->treeMapper->getSoftDeletedRootItems($this->userId, TreeMapper::TYPE_FOLDER);
+
+		$ids = array_map(static fn ($folder) => $folder->getId(), $rootItems);
+		$this->assertEquals([$this->folder2->getId()], $ids, 'Trashed folder must appear exactly once');
 	}
 
 	/**
