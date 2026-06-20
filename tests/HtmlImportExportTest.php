@@ -113,6 +113,33 @@ class HtmlImportExportTest extends TestCase {
 	}
 
 	/**
+	 * Re-importing the same file must not fail: every bookmark already exists,
+	 * so the importer takes the unique-constraint -> update path for each one.
+	 * This used to break the import transaction and raise a 500
+	 * ("cannot commit transaction - SQL statements in progress").
+	 *
+	 * @dataProvider importProvider
+	 * @param string $file
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnauthorizedAccessError
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
+	 * @throws HtmlParseError
+	 */
+	public function testReimportFile(string $file): void {
+		$this->htmlImporter->importFile($this->userId, $file);
+		// Second import hits the duplicate-URL update path for every bookmark
+		$result = $this->htmlImporter->importFile($this->userId, $file);
+
+		$this->assertEmpty($result['errors']);
+
+		$firstBookmark = $this->bookmarkMapper->find($result['imported'][0]['children'][0]['id']);
+		$this->assertSame('Title 0', $firstBookmark->getTitle());
+		$this->assertSame('http://url0.net/', $firstBookmark->getUrl());
+	}
+
+	/**
 	 * @dataProvider exportProvider
 	 * @param array $bookmarks
 	 * @throws DoesNotExistException

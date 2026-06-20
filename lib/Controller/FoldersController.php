@@ -850,4 +850,24 @@ class FoldersController extends ApiController {
 
 		return new Http\DataResponse(['status' => 'success', 'data' => $folderItems]);
 	}
+
+	/**
+	 * @throws UnauthenticatedError
+	 */
+	#[Http\Attribute\NoAdminRequired]
+	#[Http\Attribute\NoCSRFRequired]
+	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'removeDeletedFolders')]
+	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/folder/deleted')]
+	public function removeDeletedFolders(): DataResponse {
+		$this->authorizer->setCredentials($this->request);
+		if ($this->authorizer->getUserId() === null) {
+			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
+			$res->throttle();
+			return $res;
+		}
+		$this->treeMapper->deleteTrashbinItemsForUser($this->authorizer->getUserId());
+
+		return new Http\DataResponse(['status' => 'success', 'data' => []]);
+	}
 }

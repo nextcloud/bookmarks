@@ -7,6 +7,7 @@
 </template>
 <script>
 import { NcModal } from '@nextcloud/vue'
+import { privateRoutes } from '../router.js'
 
 export default {
 	name: 'LoadingModal',
@@ -22,6 +23,8 @@ export default {
 				moveSelection: this.t('bookmkarks', 'Moving selection'),
 				copySelection: this.t('bookmkarks', 'Adding selection to folders'),
 				emptyTrashbin: this.t('bookmkarks', 'Emptying trashbin'),
+				deleted_folders: this.t('bookmkarks', 'Loading trashbin'),
+				undeleteFolder: this.t('bookmarks', 'Restoring folder'),
 			},
 			showNcModal: false,
 			showTimeout: null,
@@ -42,6 +45,9 @@ export default {
 	},
 	watch: {
 		state(newState, previous) {
+			if (this.state === 'deleted_folders' && this.$route.name !== privateRoutes.TRASHBIN) {
+				return
+			}
 			if (this.state && !previous) {
 				this.showTimeout = setTimeout(() => {
 					this.showNcModal = true

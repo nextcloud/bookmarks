@@ -238,6 +238,9 @@ class TreeMapper extends QBMapper {
 			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter($type)))
 			->andWhere($qb->expr()->isNull('t.soft_deleted_at'))
 			->orderBy('t.index', 'ASC');
+		if ($type === TreeMapper::TYPE_SHARE) {
+			$this->joinOriginalFolderNotSoftDeleted($qb);
+		}
 		return $qb;
 	}
 
@@ -249,7 +252,25 @@ class TreeMapper extends QBMapper {
 			->andWhere($qb->expr()->eq('t.type', $qb->createNamedParameter($type)))
 			->andWhere($qb->expr()->isNotNull('t.soft_deleted_at'))
 			->orderBy('t.index', 'ASC');
+		if ($type === TreeMapper::TYPE_SHARE) {
+			$this->joinOriginalFolderNotSoftDeleted($qb);
+		}
 		return $qb;
+	}
+
+	/**
+	 * Restricts a TYPE_SHARE query to shared folders whose underlying original
+	 * folder has not been soft-deleted by its owner. When the sharer trashes the
+	 * original folder, the share must disappear for sharees entirely — including
+	 * from their trash bin, since they cannot restore someone else's folder.
+	 */
+	private function joinOriginalFolderNotSoftDeleted(IQueryBuilder $qb): void {
+		$qb
+			->innerJoin('i', 'bookmarks_tree', 'ot', $qb->expr()->andX(
+				$qb->expr()->eq('ot.id', 'i.folder_id'),
+				$qb->expr()->eq('ot.type', $qb->createNamedParameter(TreeMapper::TYPE_FOLDER))
+			))
+			->andWhere($qb->expr()->isNull('ot.soft_deleted_at'));
 	}
 
 	/**
@@ -305,6 +326,25 @@ class TreeMapper extends QBMapper {
 			'id' => $itemId,
 			'type' => $type,
 		]);
+		return $this->findEntitiesWithType($qb, TreeMapper::TYPE_FOLDER);
+	}
+
+	/**
+	 * @param string $type
+	 * @psalm-param TreeMapper::TYPE_* $type
+	 * @param int $itemId
+	 *
+	 * @return Entity[]
+	 * @psalm-return list<Folder>
+	 */
+	public function findParentsOfDeletedBookmarks(int $itemId): array {
+		$qb = $this->getParentQuery();
+		$qb->setParameters([
+			'id' => $itemId,
+			'type' => TreeMapper::TYPE_BOOKMARK,
+		]);
+		$qb->andWhere($qb->expr()->isNotNull('t.soft_deleted_at'));
+
 		return $this->findEntitiesWithType($qb, TreeMapper::TYPE_FOLDER);
 	}
 
@@ -997,7 +1037,10 @@ class TreeMapper extends QBMapper {
 			$qb = $this->selectFromType($type);
 			$qb
 				->innerJoin('i', 'bookmarks_tree', 't', $qb->expr()->eq('i.id', 't.id'))
-				->leftJoin('t', 'bookmarks_tree', 't2', $qb->expr()->eq('t.parent_folder', 't2.id'))
+				->leftJoin('t', 'bookmarks_tree', 't2', $qb->expr()->andX(
+					$qb->expr()->eq('t.parent_folder', 't2.id'),
+					$qb->expr()->eq('t2.type', $qb->createPositionalParameter(TreeMapper::TYPE_FOLDER, IQueryBuilder::PARAM_STR)),
+				))
 				->leftJoin('t', 'bookmarks_root_folders', 'r', $qb->expr()->eq('t.parent_folder', 'r.folder_id'))
 				->where($qb->expr()->isNotNull('t.soft_deleted_at'))
 				->andWhere($qb->expr()->eq('t.type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_STR)))
@@ -1006,6 +1049,9 @@ class TreeMapper extends QBMapper {
 					$qb->expr()->isNull('t2.soft_deleted_at'),
 					$qb->expr()->isNotNull('r.folder_id'),
 				));
+			if ($type === TreeMapper::TYPE_SHARE) {
+				$this->joinOriginalFolderNotSoftDeleted($qb);
+			}
 			return $this->findEntitiesWithType($qb, $type);
 		}
 		if ($type === TreeMapper::TYPE_BOOKMARK) {
@@ -1264,7 +1310,7 @@ class TreeMapper extends QBMapper {
 		$qb->where($qb->expr()->neq('type', $qb->createNamedParameter(TreeMapper::TYPE_SHARE, IQueryBuilder::PARAM_STR)));
 		$cutoffDate = $this->timeFactory->getDateTime();
 		$cutoffDate->modify('- ' . ((string)$maxAge) . ' seconds');
-		$qb->andWhere($qb->expr()->lt('soft_deleted_at', $qb->createNamedParameter($cutoffDate, IQueryBuilder::PARAM_DATE)));
+		$qb->andWhere($qb->expr()->lt('soft_deleted_at', $qb->createNamedParameter($cutoffDate, IQueryBuilder::PARAM_DATETIME_MUTABLE)));
 		$qb->setMaxResults($limit);
 		try {
 			$result = $qb->executeQuery();
@@ -1277,8 +1323,46 @@ class TreeMapper extends QBMapper {
 				$this->deleteEntry($row['type'], $row['id'], $row['parent_folder']);
 			} catch (DoesNotExistException $e) {
 				// noop
-			} catch (UnsupportedOperation|MultipleObjectsReturnedException $e) {
+			} catch (UnsupportedOperation|MultipleObjectsReturnedException|Exception $e) {
 				$this->logger->error('Could not delete old trash bin item: ' . var_export($row, true), ['exception' => $e]);
+			}
+		}
+	}
+
+	/**
+	 * @param string $userId
+	 * @return void
+	 */
+	public function deleteTrashbinItemsForUser(string $userId): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('t.type', 't.id', 't.parent_folder')->from('bookmarks_tree', 't');
+		$qb->where($qb->expr()->neq('type', $qb->createNamedParameter(TreeMapper::TYPE_SHARE, IQueryBuilder::PARAM_STR)));
+		$qb->andWhere($qb->expr()->isNotNull('soft_deleted_at'));
+		$qb->leftJoin('t', 'bookmarks', 'b', 't.id = b.id and t.type = ' . $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK));
+		$qb->leftJoin('t', 'bookmarks_folders', 'f', 't.id = f.id and t.type = ' . $qb->createNamedParameter(TreeMapper::TYPE_FOLDER));
+		$qb->andWhere($qb->expr()->orX(
+			$qb->expr()->andX(
+				$qb->expr()->eq('t.type', $qb->createNamedParameter(TreeMapper::TYPE_BOOKMARK)),
+				$qb->expr()->eq('b.user_id', $qb->createNamedParameter($userId)),
+			),
+			$qb->expr()->andX(
+				$qb->expr()->eq('t.type', $qb->createNamedParameter(TreeMapper::TYPE_FOLDER)),
+				$qb->expr()->eq('f.user_id', $qb->createNamedParameter($userId)),
+			)
+		));
+		try {
+			$result = $qb->executeQuery();
+		} catch (Exception $e) {
+			$this->logger->error('Could not query for trash bin items of user ' . $userId, ['exception' => $e]);
+			return;
+		}
+		while ($row = $result->fetch()) {
+			try {
+				$this->deleteEntry($row['type'], $row['id'], $row['parent_folder']);
+			} catch (DoesNotExistException $e) {
+				// noop
+			} catch (UnsupportedOperation|MultipleObjectsReturnedException|Exception $e) {
+				$this->logger->error('Could not delete trash bin item: ' . var_export($row, true), ['exception' => $e]);
 			}
 		}
 	}

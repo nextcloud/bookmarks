@@ -7,7 +7,7 @@ source_dir=$(build_dir)/source
 sign_dir=$(build_dir)/sign
 package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
-version+=16.2.1
+version+=16.2.2
 
 all: dev-setup build-js-production composer-no-dev
 
@@ -27,10 +27,10 @@ npm-update:
 	npm update
 
 composer-install:
-	composer install
+	composer install --ignore-platform-req=php
 
 composer-no-dev:
-	composer install --no-dev
+	composer install --no-dev --ignore-platform-req=php
 
 # Building
 build-js:

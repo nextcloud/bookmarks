@@ -125,8 +125,16 @@ class HtmlImporter {
 				}
 				$imported[] = ['type' => 'bookmark', 'id' => $bm->getId(), 'title' => $bookmark['title'], 'url' => $bookmark['href']];
 			}
-		} finally {
 			$this->connection->commit();
+		} catch (\Throwable $e) {
+			// Roll back instead of committing a transaction that may contain a
+			// failed statement – committing such a transaction throws and masks
+			// the original error.
+			if ($this->connection->inTransaction()) {
+				$this->connection->rollBack();
+			}
+			$this->hashManager->setInvalidationEnabled(true);
+			throw $e;
 		}
 
 		$this->hashManager->setInvalidationEnabled(true);

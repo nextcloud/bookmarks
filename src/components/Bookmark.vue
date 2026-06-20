@@ -301,7 +301,7 @@ export default {
 			if ((this.$route.name === this.routes.FOLDER || this.$route.name === this.routes.HOME) && this.$store.state.fetchState.query.folder) {
 				this.$store.dispatch(actions.DELETE_BOOKMARK, {
 					id: this.bookmark.id,
-					folder: this.$store.state.fetchState.query.folder,
+					folder: this.$store.state.fetchState.query.folder || '-1',
 					hard,
 				})
 			} else {

@@ -24,13 +24,21 @@ class TagMapper {
 	 */
 	protected $db;
 
+	private FolderMapper $folderMapper;
+
+	private BookmarkMapper $bookmarkMapper;
+
 	/**
 	 * TagMapper constructor.
 	 *
 	 * @param IDBConnection $db
+	 * @param FolderMapper $folderMapper
+	 * @param BookmarkMapper $bookmarkMapper
 	 */
-	public function __construct(IDBConnection $db) {
+	public function __construct(IDBConnection $db, FolderMapper $folderMapper, BookmarkMapper $bookmarkMapper) {
 		$this->db = $db;
+		$this->folderMapper = $folderMapper;
+		$this->bookmarkMapper = $bookmarkMapper;
 	}
 
 	/**
@@ -39,23 +47,30 @@ class TagMapper {
 	 * @throws Exception
 	 */
 	public function findAllWithCount($userId): array {
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		[$cte, $cteParams, $cteParamTypes] = $this->bookmarkMapper->generateCTE($rootFolder->getId(), false);
+
 		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(false);
 		$qb
-			->select('t.tag AS name')
+			->selectAlias('t.tag', 'name')
 			->selectAlias($qb->createFunction('COUNT(DISTINCT ' . $qb->getColumnName('t.bookmark_id') . ')'), 'count')
-			->from('bookmarks_tags', 't')
-			->innerJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.bookmark_id'))
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at IS NULL')
-			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->orWhere($qb->expr()->andX(
-				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
-				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
-			)
+			->from('*PREFIX*bookmarks_tags', 't')
+			->innerJoin('t', 'folder_tree', 'tree', 'tree.item_id = t.bookmark_id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at IS NULL')
 			->groupBy('t.tag')
 			->orderBy('count', 'DESC');
 
-		return $qb->executeQuery()->fetchAll();
+		$finalQuery = $cte . ' ' . $qb->getSQL();
+		$params = array_merge($cteParams, $qb->getParameters());
+		$paramTypes = array_merge($cteParamTypes, $qb->getParameterTypes());
+
+		$cursor = $this->db->executeQuery($finalQuery, $params, $paramTypes);
+		$rows = [];
+		while ($row = $cursor->fetch()) {
+			$rows[] = $row;
+		}
+		$cursor->closeCursor();
+		return $rows;
 	}
 
 	/**
@@ -64,20 +79,28 @@ class TagMapper {
 	 * @throws Exception
 	 */
 	public function findAll($userId): array {
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		[$cte, $cteParams, $cteParamTypes] = $this->bookmarkMapper->generateCTE($rootFolder->getId(), false);
+
 		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(false);
 		$qb
 			->select('t.tag')
-			->from('bookmarks_tags', 't')
-			->innerJoin('t', 'bookmarks', 'b', $qb->expr()->eq('b.id', 't.bookmark_id'))
-			->leftJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK))
-			->leftJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->orWhere($qb->expr()->andX(
-				$qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)),
-				$qb->expr()->eq('tr.type', $qb->createPositionalParameter(TreeMapper::TYPE_SHARE)))
-			)
+			->from('*PREFIX*bookmarks_tags', 't')
+			->innerJoin('t', 'folder_tree', 'tree', 'tree.item_id = t.bookmark_id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at IS NULL')
 			->groupBy('t.tag');
-		return $qb->executeQuery()->fetchAll(PDO::FETCH_COLUMN);
+
+		$finalQuery = $cte . ' ' . $qb->getSQL();
+		$params = array_merge($cteParams, $qb->getParameters());
+		$paramTypes = array_merge($cteParamTypes, $qb->getParameterTypes());
+
+		$cursor = $this->db->executeQuery($finalQuery, $params, $paramTypes);
+		$tags = [];
+		while ($row = $cursor->fetch()) {
+			$tags[] = $row['tag'];
+		}
+		$cursor->closeCursor();
+		return $tags;
 	}
 
 	/**

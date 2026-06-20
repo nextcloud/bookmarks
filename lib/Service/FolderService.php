@@ -241,8 +241,19 @@ class FolderService {
 			}
 		}
 		if (isset($title)) {
+			$oldTitle = $folder->getTitle();
 			$folder->setTitle($title);
 			$this->folderMapper->update($folder);
+			if ($oldTitle !== $title) {
+				// Propagate the rename to sharees who haven't renamed their copy themselves.
+				// A SharedFolder still carrying the old folder title hasn't been customized.
+				foreach ($this->sharedFolderMapper->findByFolder($folder->getId()) as $sharedFolder) {
+					if ($sharedFolder->getTitle() === $oldTitle) {
+						$sharedFolder->setTitle($title);
+						$this->sharedFolderMapper->update($sharedFolder);
+					}
+				}
+			}
 			$this->eventDispatcher->dispatchTyped(new UpdateEvent(TreeMapper::TYPE_FOLDER, $folder->getId()));
 		}
 		if (isset($parent_folder)) {

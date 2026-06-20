@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [16.2.2] - 2026-06-20
+
+### Fixed
+* fix(BookmarkMapper): Fix click count methods to use recursive CTE
+* fix(BookmarkMapper): Fix countUnavailable to use recursive CTE
+* fix(BookmarkMapper): Fix countDuplicated to use the recursive CTE
+* fix(Import): Handle transactions correctly
+* fix(Trashbin): Improve folder undelete UX
+* tests: Do not return folders twice in trashbin endpoint Marcel Klehr Yesterday 11:09 AM
+* fix(TreeMapper#getSoftDeletedRootItems): Do not return folders twice
+* fix(Trashbin): Only populate the parent folders of bookmark entries that are actually soft deleted when showing trashbin items
+* fix(MOVE_BOOKMARK): Hard delete moved items from the origin of the move
+* fix(l10n): Update translations from Transifex
+* fix: Update dependencies
+* fix(TrashBin): Trashed shared folders should not show up for sharees
+* fix(PrivateView): Do not wait for deleted folders to load
+* fix(VirtualScroll): Exit early while loading
+* fix(TagMapper): Surface tags from bookmarks in deep folders within shared folders
+* fix(FolderService): Propagate title updates to shared folders
+
 ## [16.2.1] - 2026-06-12
 
 ### Fixed

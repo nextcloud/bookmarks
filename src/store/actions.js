@@ -460,7 +460,7 @@ export default {
 			}
 			if (oldFolder) {
 				const response2 = await axios.delete(
-					url(state, `/folder/${oldFolder}/bookmarks/${bookmark}`),
+					url(state, `/folder/${oldFolder}/bookmarks/${bookmark}?hardDelete=true`),
 				)
 				if (response2.data.status !== 'success') {
 					throw new Error(response2.data)
@@ -799,6 +799,9 @@ export default {
 	},
 
 	async [actions.LOAD_DELETED_FOLDERS]({ commit, dispatch, state }) {
+		if (state.loading.deleted_folders) {
+			return
+		}
 		if (state.deletedFolders === null) {
 			try {
 				const count = loadState('bookmarks', 'deletedFolders')
@@ -826,11 +829,11 @@ export default {
 			} = response
 			if (status !== 'success') throw new Error(data)
 			const folders = data
-			commit(mutations.FETCH_END, 'folders')
+			commit(mutations.FETCH_END, 'deleted_folders')
 			return commit(mutations.SET_DELETED_FOLDERS, folders)
 		} catch (err) {
 			console.error(err)
-			commit(mutations.FETCH_END, 'folders')
+			commit(mutations.FETCH_END, 'deleted_folders')
 			commit(
 				mutations.SET_ERROR,
 				AppGlobal.methods.t('bookmarks', 'Failed to load deleted folders'),
@@ -940,6 +943,7 @@ export default {
 		try {
 			const parentFolderId = this.getters.getFolder(id)[0].parent_folder
 			const parentFolderItem = this.getters.getFolder(parentFolderId)[0]
+			commit(mutations.FETCH_START, { type: 'undeleteFolder' })
 			const response = await axios.post(url(state, `/folder/${id}/undelete`))
 			const {
 				data: { status },
@@ -955,10 +959,12 @@ export default {
 					actions.LOAD_FOLDER_CHILDREN_ORDER,
 					parentFolderItem ? parentFolderId : '-1',
 				)
-				await dispatch(actions.LOAD_FOLDERS)
+				await dispatch(actions.LOAD_FOLDERS, /* force: */ true)
 				await dispatch(actions.LOAD_DELETED_FOLDERS)
 			}
+			commit(mutations.FETCH_END, 'undeleteFolder')
 		} catch (err) {
+			commit(mutations.FETCH_END, 'undeleteFolder')
 			console.error(err)
 			commit(
 				mutations.SET_ERROR,
@@ -1656,35 +1662,22 @@ export default {
 	},
 	async [actions.EMPTY_TRASHBIN]({ commit, dispatch, state }) {
 		if (state.loading.emptyTrashbin) return
+		let canceled = false
 		await commit(mutations.FETCH_START, {
 			type: 'emptyTrashbin',
+			cancel() {
+				canceled = true
+			},
 		})
 		try {
-			await Parallel.each(
-				state.deletedFolders,
-				folder =>
-					dispatch(actions.DELETE_FOLDER, {
-						id: folder.id,
-						avoidReload: true,
-						hard: true,
-					}),
-				10,
-			)
-			await Parallel.each(
-				state.bookmarks,
-				(bookmark) => {
-					// soft delete all occurences instead of hard deleting the bookmark itself
-					return Promise.all(bookmark.folders.map((folder) => {
-						return dispatch(actions.DELETE_BOOKMARK, {
-							id: bookmark.id,
-							folder,
-							avoidReload: true,
-							hard: true,
-						})
-					}))
-				},
-				10,
-			)
+			const response = await axios.delete(url(state, '/folder/deleted'), {
+				params: {},
+			})
+			if (canceled) return
+			const {
+				data: { data, status },
+			} = response
+			if (status !== 'success') throw new Error(data)
 			dispatch(actions.RELOAD_VIEW)
 			dispatch(actions.LOAD_DELETED_FOLDERS)
 			commit(mutations.FETCH_END, 'emptyTrashbin')

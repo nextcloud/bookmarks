@@ -156,4 +156,10 @@ class InternalFoldersController extends ApiController {
 	public function getDeletedFolders(): DataResponse {
 		return $this->controller->getDeletedFolders();
 	}
+
+	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'DELETE', url: '/folder/deleted')]
+	public function removeDeletedFolders(): DataResponse {
+		return $this->controller->removeDeletedFolders();
+	}
 }
