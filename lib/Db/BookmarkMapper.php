@@ -612,30 +612,30 @@ class BookmarkMapper extends QBMapper {
 	 * @throws Exception
 	 */
 	public function countAllClicks(string $userId): int {
-		$qb = $this->db->getQueryBuilder();
-		$qb->selectAlias($qb->func()->sum('b.clickcount'), 'count');
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->neq('b.clickcount', $qb->createPositionalParameter(0, IQueryBuilder::PARAM_INT)));
-		$result = $qb->executeQuery();
-		$userOwnerClickCount = $result->fetch(PDO::FETCH_COLUMN);
-		$result->closeCursor();
+		// Sum clicks across the recursive folder_tree CTE so that bookmarks nested in subfolders of
+		// shared folders are included. Because the CTE yields one row per (bookmark, reachable
+		// parent_folder), we first deduplicate to one row per bookmark and then sum, so a bookmark
+		// reachable through several folders doesn't have its clicks counted more than once.
+		// Hand-rolled queries against the raw bookmarks_tree table missed the nested case entirely.
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), false);
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->selectAlias($qb->func()->sum('b.clickcount'), 'count');
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->innerJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->neq('b.clickcount', $qb->createPositionalParameter(0, IQueryBuilder::PARAM_INT)));
-		$result = $qb->executeQuery();
-		$foreignClickCount = $result->fetch(PDO::FETCH_COLUMN);
+		$qb->automaticTablePrefix(false);
+		$qb->selectDistinct(['b.id', 'b.clickcount'])
+			->from('*PREFIX*bookmarks', 'b')
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL')
+			->where($qb->expr()->neq('b.clickcount', $qb->createPositionalParameter(0, IQueryBuilder::PARAM_INT)));
+
+		$finalQuery = $cte . ' SELECT COALESCE(SUM(sub.clickcount), 0) FROM (' . $qb->getSQL() . ') sub';
+		$params = array_merge($params, $qb->getParameters());
+		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
+
+		$result = $this->db->executeQuery($finalQuery, $params, $paramTypes);
+		$count = (int)$result->fetchOne();
 		$result->closeCursor();
 
-		return $userOwnerClickCount + $foreignClickCount;
+		return $count;
 	}
 
 	/**
@@ -644,30 +644,29 @@ class BookmarkMapper extends QBMapper {
 	 * @throws Exception
 	 */
 	public function countWithClicks(string $userId): int {
-		$qb = $this->db->getQueryBuilder();
-		$qb->selectAlias($qb->func()->count('b.id'), 'count');
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->neq('b.clickcount', $qb->createPositionalParameter(0, IQueryBuilder::PARAM_INT)));
-		$result = $qb->executeQuery();
-		$userOwnerWithClicksCount = $result->fetch(PDO::FETCH_COLUMN);
-		$result->closeCursor();
+		// Count clicked bookmarks against the recursive folder_tree CTE so that bookmarks nested in
+		// subfolders of shared folders are included, and count each bookmark once (COUNT DISTINCT).
+		// Hand-rolled queries against the raw bookmarks_tree table miss everything that only becomes
+		// visible through the recursive expansion, which made this method under-count.
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), false);
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->selectAlias($qb->func()->count('b.id'), 'count');
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->innerJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->neq('b.clickcount', $qb->createPositionalParameter(0, IQueryBuilder::PARAM_INT)));
-		$result = $qb->executeQuery();
-		$foreignWithClicksCount = $result->fetch(PDO::FETCH_COLUMN);
+		$qb->automaticTablePrefix(false);
+		$qb->select($qb->createFunction('COUNT(DISTINCT b.id)'))
+			->from('*PREFIX*bookmarks', 'b')
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL')
+			->where($qb->expr()->neq('b.clickcount', $qb->createPositionalParameter(0, IQueryBuilder::PARAM_INT)));
+
+		$finalQuery = $cte . ' ' . $qb->getSQL();
+		$params = array_merge($params, $qb->getParameters());
+		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
+
+		$result = $this->db->executeQuery($finalQuery, $params, $paramTypes);
+		$count = (int)$result->fetchOne();
 		$result->closeCursor();
 
-		return $userOwnerWithClicksCount + $foreignWithClicksCount;
+		return $count;
 	}
 
 	/**
@@ -676,30 +675,33 @@ class BookmarkMapper extends QBMapper {
 	 * @throws Exception
 	 */
 	public function countUnavailable(string $userId): int {
-		$qb = $this->db->getQueryBuilder();
-		$qb->selectAlias($qb->func()->count('b.id'), 'count');
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
-		$result = $qb->executeQuery();
-		$userOwnerUnavailableCount = $result->fetch(PDO::FETCH_COLUMN);
-		$result->closeCursor();
+		// Count unavailable bookmarks the exact same way the "Unavailable" list is computed in
+		// findAll(): against the recursive folder_tree CTE (which covers nested folders and
+		// bookmarks inside shared folders/subfolders) and using the same _filterUnavailable()
+		// predicate. Hand-rolled queries against the raw bookmarks_tree table miss everything that
+		// only becomes visible through the recursive expansion, which made this method under-count.
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), false);
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->selectAlias($qb->func()->count('b.id'), 'count');
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->innerJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
-		$result = $qb->executeQuery();
-		$foreignUnavailableCount = $result->fetch(PDO::FETCH_COLUMN);
+		$qb->automaticTablePrefix(false);
+		$qb->select($qb->createFunction('COUNT(DISTINCT b.id)'))
+			->from('*PREFIX*bookmarks', 'b')
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL');
+
+		$queryParams = new QueryParameters();
+		$queryParams->setUnavailable(true);
+		$this->_filterUnavailable($qb, $queryParams);
+
+		$finalQuery = $cte . ' ' . $qb->getSQL();
+		$params = array_merge($params, $qb->getParameters());
+		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
+
+		$result = $this->db->executeQuery($finalQuery, $params, $paramTypes);
+		$count = (int)$result->fetchOne();
 		$result->closeCursor();
 
-		return $userOwnerUnavailableCount + $foreignUnavailableCount;
+		return $count;
 	}
 
 	/**
@@ -708,44 +710,33 @@ class BookmarkMapper extends QBMapper {
 	 * @throws Exception
 	 */
 	public function countDuplicated(string $userId): int {
-		$qb = $this->db->getQueryBuilder();
-		$qb->selectDistinct($qb->func()->count('b.id'));
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)));
-		$subQuery = $this->db->getQueryBuilder();
-		$subQuery->select('trdup.parent_folder')
-			->from('bookmarks_tree', 'trdup')
-			->where($subQuery->expr()->eq('b.id', 'trdup.id'))
-			->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tr.parent_folder'))
-			->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
-			->andWhere($subQuery->expr()->isNull('trdup.soft_deleted_at'));
-		$qb->andWhere($qb->createFunction('EXISTS(' . $subQuery->getSQL() . ')'));
-		$result = $qb->executeQuery();
-		$userOwnerDuplicatesCount = $result->fetch(PDO::FETCH_COLUMN);
-		$result->closeCursor();
+		// Count duplicates the exact same way the "Duplicated" list is computed in findAll():
+		// against the recursive folder_tree CTE (which covers nested folders and bookmarks inside
+		// shared folders/subfolders) and using the same _filterDuplicated() predicate. Hand-rolled
+		// queries against the raw bookmarks_tree table miss everything that only becomes visible
+		// through the recursive expansion, which made this method under-count.
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), false);
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->selectDistinct($qb->func()->count('b.id'));
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->innerJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)));
-		$subQuery = $this->db->getQueryBuilder();
-		$subQuery->select('trdup.parent_folder')
-			->from('bookmarks_tree', 'trdup')
-			->where($subQuery->expr()->eq('b.id', 'trdup.id'))
-			->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tr.parent_folder'))
-			->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
-			->andWhere($subQuery->expr()->isNull('trdup.soft_deleted_at'));
-		$qb->andWhere($qb->createFunction('EXISTS(' . $subQuery->getSQL() . ')'));
-		$result = $qb->executeQuery();
-		$foreignDuplicatesCount = $result->fetch(PDO::FETCH_COLUMN);
+		$qb->automaticTablePrefix(false);
+		$qb->select($qb->createFunction('COUNT(DISTINCT b.id)'))
+			->from('*PREFIX*bookmarks', 'b')
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL');
+
+		$queryParams = new QueryParameters();
+		$queryParams->setDuplicated(true);
+		$this->_filterDuplicated($qb, $queryParams);
+
+		$finalQuery = $cte . ' ' . $qb->getSQL();
+		$params = array_merge($params, $qb->getParameters());
+		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
+
+		$result = $this->db->executeQuery($finalQuery, $params, $paramTypes);
+		$count = (int)$result->fetchOne();
 		$result->closeCursor();
 
-		return $userOwnerDuplicatesCount + $foreignDuplicatesCount;
+		return $count;
 	}
 
 	/**
