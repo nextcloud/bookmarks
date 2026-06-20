@@ -676,30 +676,33 @@ class BookmarkMapper extends QBMapper {
 	 * @throws Exception
 	 */
 	public function countUnavailable(string $userId): int {
-		$qb = $this->db->getQueryBuilder();
-		$qb->selectAlias($qb->func()->count('b.id'), 'count');
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
-		$result = $qb->executeQuery();
-		$userOwnerUnavailableCount = $result->fetch(PDO::FETCH_COLUMN);
-		$result->closeCursor();
+		// Count unavailable bookmarks the exact same way the "Unavailable" list is computed in
+		// findAll(): against the recursive folder_tree CTE (which covers nested folders and
+		// bookmarks inside shared folders/subfolders) and using the same _filterUnavailable()
+		// predicate. Hand-rolled queries against the raw bookmarks_tree table miss everything that
+		// only becomes visible through the recursive expansion, which made this method under-count.
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), false);
 
 		$qb = $this->db->getQueryBuilder();
-		$qb->selectAlias($qb->func()->count('b.id'), 'count');
-		$qb
-			->from('bookmarks', 'b')
-			->innerJoin('b', 'bookmarks_tree', 'tr', 'b.id = tr.id AND tr.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tr.soft_deleted_at is NULL')
-			->innerJoin('tr', 'bookmarks_shared_folders', 'sf', $qb->expr()->eq('tr.parent_folder', 'sf.folder_id'))
-			->where($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)))
-			->andWhere($qb->expr()->eq('b.available', $qb->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL)));
-		$result = $qb->executeQuery();
-		$foreignUnavailableCount = $result->fetch(PDO::FETCH_COLUMN);
+		$qb->automaticTablePrefix(false);
+		$qb->select($qb->createFunction('COUNT(DISTINCT b.id)'))
+			->from('*PREFIX*bookmarks', 'b')
+			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL');
+
+		$queryParams = new QueryParameters();
+		$queryParams->setUnavailable(true);
+		$this->_filterUnavailable($qb, $queryParams);
+
+		$finalQuery = $cte . ' ' . $qb->getSQL();
+		$params = array_merge($params, $qb->getParameters());
+		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
+
+		$result = $this->db->executeQuery($finalQuery, $params, $paramTypes);
+		$count = (int)$result->fetchOne();
 		$result->closeCursor();
 
-		return $userOwnerUnavailableCount + $foreignUnavailableCount;
+		return $count;
 	}
 
 	/**
