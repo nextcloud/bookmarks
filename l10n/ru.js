@@ -128,6 +128,7 @@ OC.L10N.register(
     "Adding selection to folders" : "Добавление выбора к папкам",
     "Emptying trashbin" : "Опустошение мусорного бака",
     "Loading trashbin" : "Загрузка корзины",
+    "Restoring folder" : "Восстановление папки",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Перемещаем %n папку и некоторые закладки","Перемещаем %n папок и некоторые закладки","Перемещаем %n папок и некоторые закладки","Перемещаем %n папок и некоторые закладки"],
     "_Moving %n folder_::_Moving %n folders_" : ["Перемещаем %n папку","Перемещаем %n папок","Перемещаем %n папок","Перемещаем %n папок"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Перемещаем %n закладку","Перемещаем %n закладок","Перемещаем %n закладок","Перемещаем %n закладок"],
