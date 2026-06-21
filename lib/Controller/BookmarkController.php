@@ -316,12 +316,14 @@ class BookmarkController extends ApiController {
 				$res = new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 				$res->throttle();
 				return $res;
-			} catch (\OCP\DB\Exception) {
+			} catch (\OCP\DB\Exception $e) {
+				$this->logger->error($e->getMessage(), ['exception' => $e]);
 				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			}
 			try {
 				$params->setFolder($this->toInternalFolderId($folder));
-			} catch (\OCP\DB\Exception) {
+			} catch (\OCP\DB\Exception $e) {
+				$this->logger->error($e->getMessage(), ['exception' => $e]);
 				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			}
 			$params->setRecursive($recursive);
@@ -332,7 +334,8 @@ class BookmarkController extends ApiController {
 				$result = $this->bookmarkMapper->findAll($userId, $params);
 			} catch (UrlParseError) {
 				return new DataResponse(['status' => 'error', 'data' => ['Failed to parse URL']], Http::STATUS_BAD_REQUEST);
-			} catch (\OCP\DB\Exception) {
+			} catch (\OCP\DB\Exception $e) {
+				$this->logger->error($e->getMessage(), ['exception' => $e]);
 				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			}
 		} else {
@@ -340,7 +343,8 @@ class BookmarkController extends ApiController {
 				$result = $this->bookmarkMapper->findAllInPublicFolder($this->authorizer->getToken(), $params);
 			} catch (DoesNotExistException|MultipleObjectsReturnedException) {
 				return new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
-			} catch (\OCP\DB\Exception) {
+			} catch (\OCP\DB\Exception $e) {
+				$this->logger->error($e->getMessage(), ['exception' => $e]);
 				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			}
 		}
