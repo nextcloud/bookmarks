@@ -124,6 +124,8 @@
     "Moving selection" : "Flyttar urval",
     "Adding selection to folders" : "Lägger till urval i mappar",
     "Emptying trashbin" : "Tömmer papperskorgen",
+    "Loading trashbin" : "Laddar papperskorg",
+    "Restoring folder" : "Återställer mapp",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Flyttar %n mapp och några bokmärken","Flyttar %n mappar och några bokmärken"],
     "_Moving %n folder_::_Moving %n folders_" : ["Flyttar %n mapp","Flyttar %n mappar"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Flyttar %n bokmärke","Flyttar %n bokmärken"],
