@@ -17,10 +17,26 @@ const FILES_TO_CACHE = [
 	'./',
 ]
 
+// cache.addAll()/cache.put() reject for responses that were redirected or
+// aren't 2xx, which would abort the whole installation. Fetch each shell URL
+// ourselves, rebuild a clean (non-redirected) Response, and tolerate failures.
+async function precache(cache, url) {
+	const response = await fetch(url, { redirect: 'follow' })
+	if (!response.ok) {
+		throw new Error(`Failed to precache ${url}: ${response.status}`)
+	}
+	const body = await response.blob()
+	await cache.put(url, new Response(body, {
+		status: response.status,
+		statusText: response.statusText,
+		headers: response.headers,
+	}))
+}
+
 self.addEventListener('install', (evt) => {
 	evt.waitUntil(
 		caches.open(STATIC_CACHE).then((cache) => {
-			return cache.addAll(FILES_TO_CACHE)
+			return Promise.allSettled(FILES_TO_CACHE.map((url) => precache(cache, url)))
 		}),
 	)
 	self.skipWaiting()
