@@ -710,25 +710,19 @@ class BookmarkMapper extends QBMapper {
 	 * @throws Exception
 	 */
 	public function countDuplicated(string $userId): int {
-		// Count duplicates the exact same way the "Duplicated" list is computed in findAll():
-		// against the recursive folder_tree CTE (which covers nested folders and bookmarks inside
-		// shared folders/subfolders) and using the same _filterDuplicated() predicate. Hand-rolled
-		// queries against the raw bookmarks_tree table miss everything that only becomes visible
-		// through the recursive expansion, which made this method under-count.
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), false);
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(false);
-		$qb->select($qb->createFunction('COUNT(DISTINCT b.id)'))
-			->from('*PREFIX*bookmarks', 'b')
-			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL');
+		$qb->select('tree.item_id')
+			->from('folder_tree', 'tree')
+			->where($qb->expr()->eq('tree.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
+			->groupBy('tree.item_id')
+			->having('COUNT(DISTINCT tree.parent_folder) > 1')
+			->andHaving('SUM(CASE WHEN tree.soft_deleted_at IS NULL THEN 1 ELSE 0 END) > 0');
 
-		$queryParams = new QueryParameters();
-		$queryParams->setDuplicated(true);
-		$this->_filterDuplicated($qb, $queryParams);
-
-		$finalQuery = $cte . ' ' . $qb->getSQL();
+		$finalQuery = $cte . ' SELECT COUNT(*) FROM (' . $qb->getSQL() . ') dup';
 		$params = array_merge($params, $qb->getParameters());
 		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
 
