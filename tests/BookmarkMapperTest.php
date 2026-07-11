@@ -228,6 +228,58 @@ class BookmarkMapperTest extends TestCase {
 	}
 
 	/**
+	 * A bookmark that lives in two folders but whose second copy has been trashed is
+	 * NOT a duplicate: only live copies count. countDuplicated() and the "Duplicated"
+	 * list (findAll + setDuplicated) must both ignore the trashed copy and agree.
+	 *
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
+	 * @throws UrlParseError
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function testCountDuplicatedIgnoresTrashedCopies() {
+		$rootFolderId = $this->folderMapper->findRootFolder($this->userId)->getId();
+
+		$folderA = new Db\Folder();
+		$folderA->setTitle('dup-a');
+		$folderA->setUserId($this->userId);
+		$this->folderMapper->insert($folderA);
+		$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $folderA->getId(), $rootFolderId);
+
+		$folderB = new Db\Folder();
+		$folderB->setTitle('dup-b');
+		$folderB->setUserId($this->userId);
+		$this->folderMapper->insert($folderB);
+		$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $folderB->getId(), $rootFolderId);
+
+		// One bookmark placed in both folders -> duplicated while both copies are live.
+		$bookmark = Db\Bookmark::fromArray([
+			'userId' => $this->userId,
+			'url' => 'https://example.org/duplicated-then-trashed',
+			'title' => 'Trashed duplicate',
+			'description' => '',
+		]);
+		$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
+		$this->treeMapper->addToFolders(
+			Db\TreeMapper::TYPE_BOOKMARK,
+			$bookmark->getId(),
+			[$folderA->getId(), $folderB->getId()],
+		);
+
+		$this->assertSame(1, $this->bookmarkMapper->countDuplicated($this->userId));
+
+		// Trash the copy in folder B -> only one live copy remains -> not a duplicate.
+		$this->treeMapper->softDeleteEntry(Db\TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folderB->getId());
+
+		$this->assertSame(0, $this->bookmarkMapper->countDuplicated($this->userId));
+
+		$params = new \OCA\Bookmarks\QueryParameters();
+		$duplicatedList = $this->bookmarkMapper->findAll($this->userId, $params->setDuplicated(true));
+		$this->assertCount(0, $duplicatedList);
+	}
+
+	/**
 	 * Regression test: countUnavailable() must count an unavailable bookmark living
 	 * in a subfolder of a shared folder, for the sharee. The old implementation only
 	 * looked at bookmarks owned by the user or *directly* in a shared folder, so it

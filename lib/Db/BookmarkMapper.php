@@ -491,7 +491,9 @@ class BookmarkMapper extends QBMapper {
 				->from('folder_tree', 'trdup')
 				->where($subQuery->expr()->eq('b.id', 'trdup.item_id'))
 				->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tree.parent_folder'))
-				->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
+				->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
+				// Only live copies make a bookmark a duplicate; a trashed copy in another folder doesn't count.
+				->andWhere($subQuery->expr()->isNull('trdup.soft_deleted_at'));
 			$qb->andWhere($qb->createFunction('EXISTS(' . $subQuery->getSQL() . ')'));
 		}
 	}
@@ -718,9 +720,9 @@ class BookmarkMapper extends QBMapper {
 		$qb->select('tree.item_id')
 			->from('folder_tree', 'tree')
 			->where($qb->expr()->eq('tree.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
+			->andWhere($qb->expr()->isNull('tree.soft_deleted_at'))
 			->groupBy('tree.item_id')
-			->having('COUNT(DISTINCT tree.parent_folder) > 1')
-			->andHaving('SUM(CASE WHEN tree.soft_deleted_at IS NULL THEN 1 ELSE 0 END) > 0');
+			->having('COUNT(DISTINCT tree.parent_folder) > 1');
 
 		$finalQuery = $cte . ' SELECT COUNT(*) FROM (' . $qb->getSQL() . ') dup';
 		$params = array_merge($params, $qb->getParameters());
