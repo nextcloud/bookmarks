@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [16.2.3] - 2026-07-12
+
+### Fixed
+- fix(BookmarkMapper): Do not count trashed bookmarks as duplicated
+- perf(BookmarkMapper): Improve countDuplicated performance
+- fix(l10n): Update translations from Transifex
+
 ## [16.2.2] - 2026-06-20
 
 ### Fixed
@@ -12,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * fix(BookmarkMapper): Fix countDuplicated to use the recursive CTE
 * fix(Import): Handle transactions correctly
 * fix(Trashbin): Improve folder undelete UX
-* tests: Do not return folders twice in trashbin endpoint Marcel Klehr Yesterday 11:09 AM
+* tests: Do not return folders twice in trashbin endpoint
 * fix(TreeMapper#getSoftDeletedRootItems): Do not return folders twice
 * fix(Trashbin): Only populate the parent folders of bookmark entries that are actually soft deleted when showing trashbin items
 * fix(MOVE_BOOKMARK): Hard delete moved items from the origin of the move
