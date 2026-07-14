@@ -125,6 +125,8 @@
     "Moving selection" : "正在移动所选项",
     "Adding selection to folders" : "正在将所选项添加到文件夹",
     "Emptying trashbin" : "正在清空回收站",
+    "Loading trashbin" : "正在加载回收站",
+    "Restoring folder" : "正在恢复文件夹",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["正在移动 %n 个文件夹和一些书签"],
     "_Moving %n folder_::_Moving %n folders_" : ["正在移动 %n 个文件夹"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["正在移动 %n 个书签"],

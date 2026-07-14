@@ -128,6 +128,7 @@ OC.L10N.register(
     "Adding selection to folders" : "Roghnú á chur le fillteáin",
     "Emptying trashbin" : "Bruscar á fholmhú",
     "Loading trashbin" : "Ag luchtú an bhruscair",
+    "Restoring folder" : "Ag athchóiriú fillteáin",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Fillteán %n agus roinnt leabharmharc á mbogadh","Ag bogadh %n fillteán agus roinnt leabharmharcanna","Ag bogadh %n fillteán agus roinnt leabharmharcanna","Ag bogadh %n fillteán agus roinnt leabharmharcanna","Ag bogadh %n fillteán agus roinnt leabharmharcanna"],
     "_Moving %n folder_::_Moving %n folders_" : ["fillteán %n á bhogadh","%n fillteán á mbogadh","%n fillteán á mbogadh","%n fillteán á mbogadh","%n fillteán á mbogadh"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["%n leabharmharc á bhogadh","%n leabharmharcanna á mbogadh","%n leabharmharcanna á mbogadh","%n leabharmharcanna á mbogadh","%n leabharmharcanna á mbogadh"],

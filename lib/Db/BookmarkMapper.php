@@ -491,7 +491,9 @@ class BookmarkMapper extends QBMapper {
 				->from('folder_tree', 'trdup')
 				->where($subQuery->expr()->eq('b.id', 'trdup.item_id'))
 				->andWhere($subQuery->expr()->neq('trdup.parent_folder', 'tree.parent_folder'))
-				->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)));
+				->andWhere($subQuery->expr()->eq('trdup.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
+				// Only live copies make a bookmark a duplicate; a trashed copy in another folder doesn't count.
+				->andWhere($subQuery->expr()->isNull('trdup.soft_deleted_at'));
 			$qb->andWhere($qb->createFunction('EXISTS(' . $subQuery->getSQL() . ')'));
 		}
 	}
@@ -710,25 +712,19 @@ class BookmarkMapper extends QBMapper {
 	 * @throws Exception
 	 */
 	public function countDuplicated(string $userId): int {
-		// Count duplicates the exact same way the "Duplicated" list is computed in findAll():
-		// against the recursive folder_tree CTE (which covers nested folders and bookmarks inside
-		// shared folders/subfolders) and using the same _filterDuplicated() predicate. Hand-rolled
-		// queries against the raw bookmarks_tree table miss everything that only becomes visible
-		// through the recursive expansion, which made this method under-count.
 		$rootFolder = $this->folderMapper->findRootFolder($userId);
 		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), false);
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->automaticTablePrefix(false);
-		$qb->select($qb->createFunction('COUNT(DISTINCT b.id)'))
-			->from('*PREFIX*bookmarks', 'b')
-			->innerJoin('b', 'folder_tree', 'tree', 'tree.item_id = b.id AND tree.type = ' . $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK) . ' AND tree.soft_deleted_at is NULL');
+		$qb->select('tree.item_id')
+			->from('folder_tree', 'tree')
+			->where($qb->expr()->eq('tree.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
+			->andWhere($qb->expr()->isNull('tree.soft_deleted_at'))
+			->groupBy('tree.item_id')
+			->having('COUNT(DISTINCT tree.parent_folder) > 1');
 
-		$queryParams = new QueryParameters();
-		$queryParams->setDuplicated(true);
-		$this->_filterDuplicated($qb, $queryParams);
-
-		$finalQuery = $cte . ' ' . $qb->getSQL();
+		$finalQuery = $cte . ' SELECT COUNT(*) FROM (' . $qb->getSQL() . ') dup';
 		$params = array_merge($params, $qb->getParameters());
 		$paramTypes = array_merge($paramTypes, $qb->getParameterTypes());
 

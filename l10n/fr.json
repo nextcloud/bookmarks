@@ -125,6 +125,8 @@
     "Moving selection" : "Déplacement de la sélection",
     "Adding selection to folders" : "Ajout de la sélection aux dossiers",
     "Emptying trashbin" : "Vider la corbeille",
+    "Loading trashbin" : "Chargement de la corbeille",
+    "Restoring folder" : "Restauration du dossier",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Déplacement de %n dossier et de certains signets","Déplacement de %n dossiers et de certains signets","Déplacement de %n dossiers et de certains signets"],
     "_Moving %n folder_::_Moving %n folders_" : ["Déplacement de %n dossier","Déplacement de %n dossiers","Déplacement de %n dossiers"],
     "_Moving %n bookmark_::_Moving %n bookmarks_" : ["Déplacement de %n favori","Déplacement de %n favoris","Déplacement de %n favoris"],
