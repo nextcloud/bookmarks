@@ -38,17 +38,22 @@ class Version016002000Date20260218134723 extends SimpleMigrationStep {
 			->where($setQb->expr()->eq('id', $setQb->createParameter('id')));
 		$i = 1;
 		$this->db->beginTransaction();
-		while ($row = $result->fetch()) {
-			if ($i++ % 1000 === 0) {
-				$this->db->commit();
-				$this->db->beginTransaction();
+		try {
+			while ($row = $result->fetch()) {
+				if ($i++ % 1000 === 0) {
+					$this->db->commit();
+					$this->db->beginTransaction();
+				}
+				$setQb->setParameter('url_hash', hash('xxh128', $row['url']));
+				$setQb->setParameter('id', $row['id']);
+				$setQb->executeStatement();
+				$output->advance();
 			}
-			$setQb->setParameter('url_hash', hash('xxh128', $row['url']));
-			$setQb->setParameter('id', $row['id']);
-			$setQb->executeStatement();
-			$output->advance();
+			$this->db->commit();
+		} catch (\Throwable $e) {
+			$this->db->rollBack();
+			throw $e;
 		}
-		$this->db->commit();
 		$output->finishProgress();
 		$result->closeCursor();
 	}
