@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [16.2.4] - 2026-07-17
+
+### Fixed
+ - fix(Migrations): Introduce url_hash DB column again in case the first migration failed but was marked as done
+
 ## [16.2.3] - 2026-07-12
 
 ### Fixed
