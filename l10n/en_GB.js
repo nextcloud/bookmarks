@@ -127,6 +127,7 @@ OC.L10N.register(
     "Moving selection" : "Moving selection",
     "Adding selection to folders" : "Adding selection to folders",
     "Emptying trashbin" : "Emptying trashbin",
+    "Loading trashbin" : "Loading trashbin",
     "Restoring folder" : "Restoring folder",
     "_Moving %n folder and some bookmarks_::_Moving %n folders and some bookmarks_" : ["Moving %n folder and some bookmarks","Moving %n folders and some bookmarks"],
     "_Moving %n folder_::_Moving %n folders_" : ["Moving %n folder","Moving %n folders"],
