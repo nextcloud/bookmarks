@@ -19,7 +19,7 @@ use OCP\IURLGenerator;
 class AugmentedTemplateResponse extends TemplateResponse {
 	public function render() {
 		$return = parent::render();
-		preg_replace('/<link rel="manifest" href="(.*?)">/i', '<link rel="manifest" href="' . \OCP\Server::get(IUrlGenerator::class)->linkToRouteAbsolute('bookmarks.web_view.manifest') . '">', $return);
-		return $return;
+		$return2 = preg_replace('/<link rel="manifest" href="(.*?)">/i', '<link rel="manifest" href="' . \OCP\Server::get(IUrlGenerator::class)->linkToRouteAbsolute('bookmarks.webview.manifest') . '">', $return);
+		return $return2 ?? $return;
 	}
 }
