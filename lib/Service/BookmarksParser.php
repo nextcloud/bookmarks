@@ -250,7 +250,7 @@ class BookmarksParser {
 			if (isset($attributes['add_date'])) {
 				$added = new DateTime();
 				if ((int)$attributes['add_date'] > self::THOUSAND_YEARS) {
-					// Google exports dates in miliseconds. This way we only lose the first year of UNIX Epoch.
+					// Google exports dates in milliseconds. This way we only lose the first year of UNIX Epoch.
 					// This is invalid once we hit 2970. So, quite a long time.
 					$added->setTimestamp(((int)($attributes['add_date']) / 1000));
 				} else {
@@ -266,7 +266,7 @@ class BookmarksParser {
 		} else {
 			if (isset($attributes['add_date'])) {
 				if ((int)$attributes['add_date'] > self::THOUSAND_YEARS) {
-					// Google exports dates in miliseconds. This way we only lose the first year of UNIX Epoch.
+					// Google exports dates in milliseconds. This way we only lose the first year of UNIX Epoch.
 					// This is invalid once we hit 2970. So, quite a long time.
 					$attributes['add_date'] = ((int)($attributes['add_date']) / 1000);
 				} else {
@@ -276,7 +276,7 @@ class BookmarksParser {
 			if (isset($attributes['last_modified'])) {
 				$attributes['last_modified'] = $attributes['last_modified'] instanceof DateTime ? $attributes['last_modified']->getTimestamp() : (int)$attributes['last_modified'];
 				if ((int)$attributes['last_modified'] > self::THOUSAND_YEARS) {
-					// Google exports dates in miliseconds. This way we only lose the first year of UNIX Epoch.
+					// Google exports dates in milliseconds. This way we only lose the first year of UNIX Epoch.
 					// This is invalid once we hit 2970. So, quite a long time.
 					$attributes['last_modified'] = ((int)($attributes['last_modified']) / 1000);
 				} else {

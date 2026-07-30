@@ -138,7 +138,7 @@ class FaviconPreviewer implements IBookmarkPreviewer {
 		$body = $response->getBody();
 		$contentType = $response->getHeader('Content-Type');
 
-		// Some HTPP Error occured :/
+		// Some HTTP Error occurred :/
 		if ($response->getStatusCode() !== 200) {
 			return null;
 		}

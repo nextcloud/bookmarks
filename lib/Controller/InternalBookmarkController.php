@@ -170,7 +170,7 @@ class InternalBookmarkController extends ApiController {
 
 	/**
 	 *
-	 * @param int $id The id of the bookmark whose favicon shoudl be returned
+	 * @param int $id The id of the bookmark whose favicon should be returned
 	 *
 	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse|Http\DataResponse
 	 *
@@ -184,7 +184,7 @@ class InternalBookmarkController extends ApiController {
 	}
 
 	/**
-	 * @param int $id The id of the bookmark whose image shoudl be returned
+	 * @param int $id The id of the bookmark whose image should be returned
 	 *
 	 * @return Http\DataDisplayResponse|Http\NotFoundResponse|Http\RedirectResponse|Http\DataResponse
 	 *
