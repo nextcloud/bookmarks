@@ -83,7 +83,7 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 					'timeout' => self::HTTP_TIMEOUT,
 				]
 			);
-			// Some HTPP Error occured :/
+			// Some HTTP Error occurred :/
 			if ($response->getStatusCode() !== 200) {
 				return null;
 			}
