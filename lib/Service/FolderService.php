@@ -317,6 +317,13 @@ class FolderService {
 	public function createShare($folderId, $participant, int $type, bool $canWrite = false, bool $canShare = false): Share {
 		$folder = $this->folderMapper->find($folderId);
 
+		try {
+			$this->shareMapper->findByFolderAndParticipant($folderId, $type, $participant);
+			throw new UnsupportedOperation('Cannot create the same share twice');
+		} catch (DoesNotExistException) {
+			// pass
+		}
+
 		$share = new Share();
 		$share->setFolderId($folderId);
 		$share->setOwner($folder->getUserId());

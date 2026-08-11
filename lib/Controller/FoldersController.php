@@ -751,7 +751,8 @@ class FoldersController extends ApiController {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
 			$res->throttle();
 			return $res;
-		} catch (MultipleObjectsReturnedException|Exception) {
+		} catch (MultipleObjectsReturnedException|Exception $e) {
+			$this->logger->warning('Unexpected error occurred', ['exception' => $e]);
 			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (UnsupportedOperation $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
