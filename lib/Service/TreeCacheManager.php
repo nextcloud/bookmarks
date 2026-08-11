@@ -272,6 +272,14 @@ class TreeCacheManager implements IEventListener {
 			case TreeMapper::TYPE_BOOKMARK:
 				$this->invalidateBookmark($event->getId());
 				break;
+			case TreeMapper::TYPE_SHARE:
+				try {
+					$parentFolder = $this->getTreeMapper()->findParentOf(TreeMapper::TYPE_SHARE, $event->getId());
+					$this->invalidateFolder($parentFolder->getId());
+				} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
+					// no parent folder, nothing to invalidate
+				}
+				break;
 		}
 		if ($event instanceof MoveEvent) {
 			if ($event->getNewParent() !== null) {
