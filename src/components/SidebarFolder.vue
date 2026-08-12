@@ -90,7 +90,7 @@
 						:user="share.participant"
 						class="share__avatar"
 						:size="44" />
-					<CircleIcon v-if="share.type === 7" :size="20" class="share_avatar" />
+					<CircleIcon v-if="share.type === 7" :size="44" class="share_avatar" />
 					<h3 class="share__title">
 						{{ share.participantDisplayName }}
 					</h3>
