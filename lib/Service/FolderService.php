@@ -355,17 +355,19 @@ class FolderService {
 	 * @throws DoesNotExistException
 	 * @throws Exception
 	 */
-	public function addSharedFolderForParticipant(Share $share, Folder $folder, int $type, string $participant): void {
+	public function addSharedFolderForParticipant(Share $share, Folder $folder, int $type, string $participant, bool $insertShare = true): void {
 		if ($type === IShare::TYPE_CIRCLE) {
 			$circle = $this->circlesService->getCircle($participant);
 			if ($circle === null) {
 				throw new DoesNotExistException('Circle does not exist');
 			}
-			$this->shareMapper->insert($share);
+			if ($insertShare) {
+				$this->shareMapper->insert($share);
+			}
 
 			$members = $circle->getMembers();
 			foreach ($members as $member) {
-				$this->addSharedFolderForParticipant($share, $folder, $member->getUserType(), $member->getUserId());
+				$this->addSharedFolderForParticipant($share, $folder, $member->getUserType(), $member->getUserId(), false);
 			}
 		}
 		if ($type === IShare::TYPE_GROUP) {
@@ -373,7 +375,9 @@ class FolderService {
 			if ($group === null) {
 				return;
 			}
-			$this->shareMapper->insert($share);
+			if ($insertShare) {
+				$this->shareMapper->insert($share);
+			}
 
 			$users = $group->getUsers();
 			foreach ($users as $user) {
@@ -409,7 +413,9 @@ class FolderService {
 				return;
 			}
 
-			$this->shareMapper->insert($share);
+			if ($insertShare) {
+				$this->shareMapper->insert($share);
+			}
 
 			$this->addSharedFolder($share, $folder, $participant);
 		}
