@@ -12,6 +12,9 @@
 				<div v-if="exists" class="bookmarklet__exists">
 					{{ t('bookmarks', 'This URL is already bookmarked! Overwrite?') }}
 				</div>
+				<div v-if="saved" class="bookmarklet__saved">
+					{{ t('bookmarks', 'Bookmark saved!') }}
+				</div>
 				<label>{{ t('bookmarks', 'Title') }}
 					<input v-model="bookmark.title" type="text" :placeholder="t('bookmarks', 'Enter bookmark title')">
 				</label>
@@ -88,6 +91,7 @@ export default {
 			},
 			description: '',
 			exists: false,
+			saved: false,
 			loading: true,
 			showPicker: false,
 			folder: parseInt(this.folderId || -1),
@@ -152,6 +156,7 @@ export default {
 
 		async submit() {
 			this.loading = true
+			this.saved = false
 			if (this.folder !== -1) {
 				this.bookmark.folders = [this.folder]
 			}
@@ -160,6 +165,8 @@ export default {
 			} else {
 				await this.$store.dispatch(actions.CREATE_BOOKMARK, this.bookmark)
 			}
+			this.saved = true
+			this.loading = false
 			window.close()
 		},
 	},
@@ -174,6 +181,14 @@ export default {
 .bookmarklet__exists {
 	background: var(--color-background-dark);
 	border-radius: var(--border-radius-pill);
+	font-weight: bold;
+	padding: 10px 20px;
+}
+
+.bookmarklet__saved {
+	background: var(--color-success);
+	border-radius: var(--border-radius-pill);
+	color: var(--color-main-background);
 	font-weight: bold;
 	padding: 10px 20px;
 }
