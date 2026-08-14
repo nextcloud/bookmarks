@@ -243,6 +243,7 @@ OC.L10N.register(
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Sindre Sorhus tarafından geliştirilen Pageres CLI paketini sunucunuza kurmanız yeterlidir; Yer imleri uygulaması onu bulur. Yine de, yer belirticide belirtildiği gibi pageres üzerine aktarılacak ek ENV değişkenleri ekleyebilirsiniz:",
     "Pageres ENV variables" : "Pageres ENV değişkenleri",
     "This URL is already bookmarked! Overwrite?" : "Bu adres zaten yer imlerine eklenmiş! Üzerine yazılsın mı?",
+    "Bookmark saved!" : "Yer imi kaydedildi!",
     "Enter bookmark title" : "Yer iminin başlığını yazın",
     "Enter bookmark URL" : "Yer imi adresini yazın",
     "Folder" : "Klasör",

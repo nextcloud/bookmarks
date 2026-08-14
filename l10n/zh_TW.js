@@ -243,6 +243,7 @@ OC.L10N.register(
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "只要在您的伺服器上安裝 Sindre Sorhus 開發的 Pageres CLI，書籤應用程式就會找到它。您仍然可以新增額外的 ENV 變數以提供給 pageres，例如在佔位字串中所示：",
     "Pageres ENV variables" : "Pageres ENV 變數",
     "This URL is already bookmarked! Overwrite?" : "此網址已被加入書籤！要覆寫嗎？",
+    "Bookmark saved!" : "書籤已儲存！",
     "Enter bookmark title" : "輸入書籤標題",
     "Enter bookmark URL" : "輸入書籤 URL",
     "Folder" : "資料夾",
