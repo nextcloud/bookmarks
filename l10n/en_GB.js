@@ -243,6 +243,7 @@ OC.L10N.register(
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:",
     "Pageres ENV variables" : "Pageres ENV variables",
     "This URL is already bookmarked! Overwrite?" : "This URL is already bookmarked! Overwrite?",
+    "Bookmark saved!" : "Bookmark saved!",
     "Enter bookmark title" : "Enter bookmark title",
     "Enter bookmark URL" : "Enter bookmark URL",
     "Folder" : "Folder",
