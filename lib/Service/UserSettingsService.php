@@ -27,6 +27,15 @@ class UserSettingsService {
 		'contextchat.enabled'
 	];
 
+	/**
+	 * Keys that may be read but not written: they are derived from app config
+	 * rather than stored per user. Everything in KEYS is readable too.
+	 */
+	public const READONLY_KEYS = [
+		'limit',
+		'privacy.enableScraping',
+	];
+
 	public function __construct(
 		private ?string $userId,
 		private string $appName,
@@ -44,8 +53,13 @@ class UserSettingsService {
 	/**
 	 * @param string $key
 	 * @return string
+	 * @throws \UnexpectedValueException
 	 */
 	public function get(string $key): string {
+		if (!in_array($key, self::KEYS, true) && !in_array($key, self::READONLY_KEYS, true)) {
+			throw new \UnexpectedValueException('Unknown settings key ' . $key);
+		}
+		$default = '';
 		if ($key === 'sorting') {
 			$default = 'lastmodified';
 		}

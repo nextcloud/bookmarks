@@ -75,10 +75,19 @@ class ScreenshotMachineBookmarkPreviewer implements IBookmarkPreviewer {
 	 * @return Image|null
 	 */
 	public function fetchImage($url): ?Image {
+		$query = http_build_query([
+			'key' => $this->apiKey,
+			'dimension' => $this->width . 'x' . $this->height,
+			'device' => 'desktop',
+			'delay' => '2000',
+			'format' => 'jpg',
+			'url' => $url,
+		]);
+
 		try {
 			// get it
 			$response = $this->client->get(
-				'https://api.screenshotmachine.com/?key=' . $this->apiKey . '&dimension=' . $this->width . 'x' . $this->height . '&device=desktop&delay=2000&format=jpg&url=' . $url,
+				'https://api.screenshotmachine.com/?' . $query,
 				[
 					'timeout' => self::HTTP_TIMEOUT,
 				]

@@ -25,6 +25,7 @@ class InternalTagsController extends ApiController {
 	) {
 		parent::__construct($appName, $request);
 		$this->authorizer->setCORS(false);
+		$this->authorizer->setPublic(false);
 		if ($this->userId !== null) {
 			$this->authorizer->setUserId($this->userId);
 		}

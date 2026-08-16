@@ -35,6 +35,7 @@ class InternalBookmarkController extends ApiController {
 			$authorizer->setUserId($this->userId);
 		}
 		$authorizer->setCORS(false);
+		$authorizer->setPublic(false);
 	}
 
 	/**

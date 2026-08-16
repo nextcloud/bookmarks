@@ -29,6 +29,7 @@ class InternalFoldersController extends ApiController {
 			$authorizer->setUserId($userId);
 		}
 		$authorizer->setCORS(false);
+		$authorizer->setPublic(false);
 	}
 
 	#[NoAdminRequired]
