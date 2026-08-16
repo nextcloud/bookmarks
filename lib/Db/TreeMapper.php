@@ -696,6 +696,9 @@ class TreeMapper extends QBMapper {
 		if ($this->hasDescendant($folderId, TreeMapper::TYPE_FOLDER, $newParentFolderId)) {
 			throw new UnsupportedOperation('Cannot nest a folder inside one of its descendants');
 		}
+		if ($folderId === $newParentFolderId) {
+			throw new UnsupportedOperation('Cannot nest a folder into itself');
+		}
 
 		if ($currentParent !== null) {
 			// Item currently has a parent => move.
