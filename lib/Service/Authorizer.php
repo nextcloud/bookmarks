@@ -37,6 +37,8 @@ class Authorizer {
 
 	private $cors = false;
 
+	private $public = false;
+
 	public function __construct(
 		private FolderMapper $folderMapper,
 		private BookmarkMapper $bookmarkMapper,
@@ -58,11 +60,18 @@ class Authorizer {
 	}
 
 	/**
+	 * @param bool $public
+	 */
+	public function setPublic(bool $public) {
+		$this->public = $public;
+	}
+
+	/**
 	 * @param IRequest $request
 	 */
 	public function setCredentials(IRequest $request): void {
 		$queryParam = $request->getParam('token');
-		if ($queryParam !== null) {
+		if ($this->public && $queryParam !== null) {
 			$this->setToken($queryParam);
 		}
 
@@ -70,7 +79,7 @@ class Authorizer {
 
 		if ($auth !== null && $auth !== '') {
 			[$type, $credentials] = explode(' ', $auth);
-			if (strtolower($type) === 'bearer') {
+			if ($this->public && strtolower($type) === 'bearer') {
 				$userFromTicket = $this->checkTicket($credentials);
 				if ($userFromTicket !== null) {
 					$this->setUserId($userFromTicket);

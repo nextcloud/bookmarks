@@ -73,6 +73,7 @@ class BookmarkController extends ApiController {
 	) {
 		parent::__construct($appName, $request);
 		$this->authorizer->setCORS(true);
+		$this->authorizer->setPublic(true);
 	}
 
 	/**
@@ -140,6 +141,9 @@ class BookmarkController extends ApiController {
 			} catch (\OCP\DB\Exception $e) {
 				$this->logger->error($e->getMessage(), ['exception' => $e]);
 			}
+		}
+		if ($this->authorizer->getUserId() === null) {
+			throw new UnauthenticatedError();
 		}
 
 		throw new \OCP\DB\Exception('Could not load root folder');
@@ -301,13 +305,19 @@ class BookmarkController extends ApiController {
 		}
 
 		if ($folder !== null) {
+			$this->authorizer->setCredentials($this->request);
+			try {
+				$folder = $this->toInternalFolderId($folder);
+			} catch (\OCP\DB\Exception) {
+				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
+			}
 			if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
 				$res = new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 				$res->throttle();
 				return $res;
 			}
 			try {
-				$folderEntity = $this->folderMapper->find($this->toInternalFolderId($folder));
+				$folderEntity = $this->folderMapper->find($folder);
 				// IMPORTANT:
 				// If we have this user's permission to see the contents of their folder, simply set the userID
 				// to theirs
@@ -319,11 +329,7 @@ class BookmarkController extends ApiController {
 			} catch (\OCP\DB\Exception) {
 				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			}
-			try {
-				$params->setFolder($this->toInternalFolderId($folder));
-			} catch (\OCP\DB\Exception) {
-				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
-			}
+			$params->setFolder($folder);
 			$params->setRecursive($recursive);
 		}
 
@@ -365,6 +371,13 @@ class BookmarkController extends ApiController {
 	public function newBookmark(string $url = '', ?string $title = null, ?string $description = null, ?array $tags = null, array $folders = [], ?string $target = null): JSONResponse {
 		$permissions = Authorizer::PERM_ALL;
 		$this->authorizer->setCredentials($this->request);
+		try {
+			$folders = array_map(function ($folderId) {
+				return $this->toInternalFolderId($folderId);
+			}, $folders);
+		} catch (\OCP\DB\Exception) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Could not add bookmark']], Http::STATUS_BAD_REQUEST);
+		}
 		foreach ($folders as $folder) {
 			$permissions &= $this->authorizer->getPermissionsForFolder($folder, $this->request);
 		}
@@ -373,11 +386,7 @@ class BookmarkController extends ApiController {
 			$res->throttle();
 			return $res;
 		}
-
 		try {
-			$folders = array_map(function ($folderId) {
-				return $this->toInternalFolderId($folderId);
-			}, $folders);
 			$bookmark = $this->bookmarks->create($this->authorizer->getUserId(), $target ?: $url, $title, $description, $tags, $folders);
 			return new JSONResponse(['item' => $this->_returnBookmarkAsArray($bookmark), 'status' => 'success']);
 		} catch (AlreadyExistsError $e) {
@@ -706,12 +715,7 @@ class BookmarkController extends ApiController {
 	#[Http\Attribute\BruteForceProtection(action: 'count')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folder}/count')]
 	public function countBookmarks(int $folder): JSONResponse {
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
-			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
-			return $res;
-		}
-
+		$this->authorizer->setCredentials($this->request);
 		try {
 			$folder = $this->toInternalFolderId($folder);
 		} catch (\OCP\DB\Exception $e) {
@@ -719,7 +723,16 @@ class BookmarkController extends ApiController {
 			$res->throttle();
 			return $res;
 		}
-		$count = $this->treeMapper->countBookmarksInFolder($folder);
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folder, $this->request))) {
+			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+			$res->throttle();
+			return $res;
+		}
+		try {
+			$count = $this->treeMapper->countBookmarksInFolder($folder);
+		} catch (\OCP\DB\Exception $e) {
+			return new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
+		}
 		return new JSONResponse(['status' => 'success', 'item' => $count]);
 	}
 

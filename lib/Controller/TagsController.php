@@ -26,6 +26,7 @@ class TagsController extends ApiController {
 	) {
 		parent::__construct($appName, $request);
 		$this->authorizer->setCORS(true);
+		$this->authorizer->setPublic(true);
 	}
 
 	#[Http\Attribute\NoAdminRequired]
