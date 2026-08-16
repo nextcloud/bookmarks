@@ -410,7 +410,7 @@ class FoldersController extends ApiController {
 		try {
 			if ($parent_folder !== null) {
 				$parent_folder = $this->toInternalFolderId($parent_folder);
-				if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($parent_folder, $this->request))) {
+				if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($parent_folder, $this->request))) {
 					$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
 					$res->throttle(['action' => 'editFolder']);
 					return $res;
