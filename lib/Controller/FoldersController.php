@@ -753,7 +753,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/share')]
 	public function findShares(): DataResponse {
 		$permissions = $this->authorizer->getPermissionsForFolder(-1, $this->request);
-		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
 			$res->throttle(['action' => 'findShares']);
 			return $res;
