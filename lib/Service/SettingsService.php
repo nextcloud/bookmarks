@@ -34,8 +34,12 @@ class SettingsService {
 	/**
 	 * @param string $key
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function getSetting(string $key): string {
+		if (!array_key_exists($key, self::DEFAULTS)) {
+			throw new \Exception('Unknown settings key ' . $key);
+		}
 		return $this->config->getAppValue($key, self::DEFAULTS[$key]);
 	}
 

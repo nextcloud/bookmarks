@@ -60,7 +60,11 @@ class AdminController extends Controller {
 
 	#[FrontpageRoute(verb: 'GET', url: '/admin/settings/{setting}')]
 	public function getSetting(string $setting): JSONResponse {
-		return new JSONResponse(['value' => $this->settingsService->getSetting($setting)]);
+		try {
+			return new JSONResponse(['value' => $this->settingsService->getSetting($setting)]);
+		} catch (\Exception $e) {
+			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+		}
 	}
 
 	#[Http\Attribute\NoCSRFRequired]
