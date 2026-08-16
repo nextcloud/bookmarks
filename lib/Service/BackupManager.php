@@ -162,7 +162,11 @@ class BackupManager {
 			if (!str_ends_with($node->getName(), '.html')) {
 				continue;
 			}
-			$date = new DateTime(basename($node->getName(), '.html'));
+			try {
+				$date = new DateTime(basename($node->getName(), '.html'));
+			} catch (\Exception $e) {
+				continue;
+			}
 			$matchingDays = count(array_filter($daysToKeep, function ($dayToKeep) use ($date) {
 				return $date->diff($dayToKeep)->days === 0;
 			}));
