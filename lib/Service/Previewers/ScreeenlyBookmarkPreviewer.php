@@ -96,7 +96,7 @@ class ScreeenlyBookmarkPreviewer implements IBookmarkPreviewer {
 			return null;
 		}
 
-		// Some HTPP Error occured :/
+		// Some HTTP Error occurred :/
 		if ($response->getStatusCode() !== 200) {
 			return null;
 		}

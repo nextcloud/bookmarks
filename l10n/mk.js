@@ -25,6 +25,7 @@ OC.L10N.register(
     "Recent" : "Неодамнешни",
     "Shared with you" : "Споделено со вас",
     "Files" : "Датотеки",
+    "New tag" : "Нова ознака",
     "Delete" : "Избриши",
     "Need help?" : "Ви треба помош?",
     "Created on {date}" : "Креиран на {date}",

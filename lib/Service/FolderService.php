@@ -317,6 +317,13 @@ class FolderService {
 	public function createShare($folderId, $participant, int $type, bool $canWrite = false, bool $canShare = false): Share {
 		$folder = $this->folderMapper->find($folderId);
 
+		try {
+			$this->shareMapper->findByFolderAndParticipant($folderId, $type, $participant);
+			throw new UnsupportedOperation('Cannot create the same share twice');
+		} catch (DoesNotExistException) {
+			// pass
+		}
+
 		$share = new Share();
 		$share->setFolderId($folderId);
 		$share->setOwner($folder->getUserId());
@@ -348,17 +355,19 @@ class FolderService {
 	 * @throws DoesNotExistException
 	 * @throws Exception
 	 */
-	public function addSharedFolderForParticipant(Share $share, Folder $folder, int $type, string $participant): void {
+	public function addSharedFolderForParticipant(Share $share, Folder $folder, int $type, string $participant, bool $insertShare = true): void {
 		if ($type === IShare::TYPE_CIRCLE) {
 			$circle = $this->circlesService->getCircle($participant);
 			if ($circle === null) {
 				throw new DoesNotExistException('Circle does not exist');
 			}
-			$this->shareMapper->insert($share);
+			if ($insertShare) {
+				$this->shareMapper->insert($share);
+			}
 
 			$members = $circle->getMembers();
 			foreach ($members as $member) {
-				$this->addSharedFolderForParticipant($share, $folder, $member->getUserType(), $member->getUserId());
+				$this->addSharedFolderForParticipant($share, $folder, $member->getUserType(), $member->getUserId(), false);
 			}
 		}
 		if ($type === IShare::TYPE_GROUP) {
@@ -366,7 +375,9 @@ class FolderService {
 			if ($group === null) {
 				return;
 			}
-			$this->shareMapper->insert($share);
+			if ($insertShare) {
+				$this->shareMapper->insert($share);
+			}
 
 			$users = $group->getUsers();
 			foreach ($users as $user) {
@@ -402,7 +413,9 @@ class FolderService {
 				return;
 			}
 
-			$this->shareMapper->insert($share);
+			if ($insertShare) {
+				$this->shareMapper->insert($share);
+			}
 
 			$this->addSharedFolder($share, $folder, $participant);
 		}

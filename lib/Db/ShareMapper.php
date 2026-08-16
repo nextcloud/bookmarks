@@ -110,7 +110,7 @@ class ShareMapper extends QBMapper {
 		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;
 		}, Share::$columns))
-			->from('bookmarks_shares')
+			->from('bookmarks_shares', 's')
 			->where($qb->expr()->eq('folder_id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('participant', $qb->createPositionalParameter($participant)))
 			->andWhere($qb->expr()->eq('type', $qb->createPositionalParameter($type, IQueryBuilder::PARAM_INT)));

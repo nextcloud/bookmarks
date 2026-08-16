@@ -241,6 +241,7 @@
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Níl ort ach an Pageres CLI le Sindre Sorhus a shuiteáil ar do fhreastalaí agus gheobhaidh Leabharmharcanna é. Is féidir leat vars ENV breise a chur leis fós le beathú le leathanaigh, e.g. mar a léirítear sa sealbhóir:",
     "Pageres ENV variables" : "Athróga Pageres ENV",
     "This URL is already bookmarked! Overwrite?" : "Tá an URL seo leabharmharcáilte cheana féin! Forscríobh?",
+    "Bookmark saved!" : "Leabharmharc sábháilte!",
     "Enter bookmark title" : "Cuir isteach teideal leabharmharc",
     "Enter bookmark URL" : "Cuir isteach URL leabharmharc",
     "Folder" : "Fillteán",

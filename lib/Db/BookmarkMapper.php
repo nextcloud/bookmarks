@@ -359,7 +359,7 @@ class BookmarkMapper extends QBMapper {
 				->from('*PREFIX*bookmarks_tree', 'tr')
 				->join('tr', 'folder_tree', 'e', 'e.item_id = tr.parent_folder AND e.type = ' . $secondRecursiveCase->createPositionalParameter(TreeMapper::TYPE_FOLDER) . (!$withSoftDeleted ? ' AND e.soft_deleted_at is NULL' : ''));
 
-			// First the base case together with the normal recurisve case
+			// First the base case together with the normal recursive case
 			// Then the second helper base case together with the recursive shares case
 			// then we need another instance of the first recursive case, duplicated here as secondRecursive case
 			// to recurse into child folders of shared folders

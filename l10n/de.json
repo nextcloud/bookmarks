@@ -241,6 +241,7 @@
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Installiere einfach die Pageres CLI von Sindre Sorhus auf deinem Server und Bookmarks wird sie erkennen. Du kannst noch weitere ENV-Variablen hinzufügen, die an Pageres weitergeleitet werden sollen, z. B. wie im Platzhalter angegeben:",
     "Pageres ENV variables" : "Pageres ENV-Variablen",
     "This URL is already bookmarked! Overwrite?" : "Diese URL ist bereits als Lesezeichen gespeichert! Überschreiben?",
+    "Bookmark saved!" : "Lesezeichen gespeichert!",
     "Enter bookmark title" : "Lesezeichentitel eingeben",
     "Enter bookmark URL" : "Lesezeichen-URL eingeben",
     "Folder" : "Ordner",

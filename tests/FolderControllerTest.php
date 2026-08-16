@@ -152,6 +152,7 @@ class FolderControllerTest extends TestCase {
 			$this->sharedFolderMapper,
 			\OCP\Server::get(ICrypto::class),
 			$this->userManager,
+			\OCP\Server::get(\OCP\Security\Bruteforce\IThrottler::class),
 		);
 
 		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface, $this->userManager);
@@ -462,6 +463,38 @@ class FolderControllerTest extends TestCase {
 		$output = $this->otherController->getFolders();
 		$topLevelFolders = array_map(fn ($item) => $item['id'], $output->getData()['data']);
 		$this->assertEquals([$this->folder4->getId()], $topLevelFolders);
+	}
+
+	/**
+	 * Regression test: moving a folder into a parent folder the user
+	 * is not allowed to edit must be rejected.
+	 *
+	 * @throws AlreadyExistsError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function testEditMoveToUnauthorizedParentFail(): void {
+		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
+
+		// The user owns (and may edit) folder1 but has no access to folder4,
+		// which belongs to otherUser and is not shared.
+		$output = $this->controller->editFolder($this->folder1->getId(), 'blabla', $this->folder4->getId());
+		$data = $output->getData();
+		$this->assertEquals('error', $data['status'], var_export($data, true));
+
+		// folder1 must stay where it was (a top-level folder), untouched.
+		$output = $this->controller->getFolder($this->folder1->getId());
+		$data = $output->getData();
+		$this->assertEquals('success', $data['status'], var_export($data, true));
+		$this->assertEquals('foo', $data['item']['title']); // title unchanged
+		$this->assertEquals(-1, $data['item']['parent_folder']);
+
+		$output = $this->controller->getFolders();
+		$topLevelFolders = array_map(fn ($item) => $item['id'], $output->getData()['data']);
+		$this->assertEquals([$this->folder1->getId(), $this->folder3->getId()], $topLevelFolders);
 	}
 
 	/**
