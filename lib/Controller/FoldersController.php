@@ -144,6 +144,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'addFolder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/folder')]
 	public function addFolder(string $title = '', int $parent_folder = -1): JSONResponse {
@@ -155,7 +156,7 @@ class FoldersController extends ApiController {
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($parent, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find parent folder']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'addFolder']);
 			return $res;
 		}
 		try {
@@ -179,6 +180,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'getFolder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}', requirements: ['folderId' => '[0-9]+'])]
 	public function getFolder(int $folderId): JSONResponse {
@@ -190,7 +192,7 @@ class FoldersController extends ApiController {
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'getFolder']);
 			return $res;
 		}
 		try {
@@ -211,6 +213,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'addToFolder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/folder/{folderId}/bookmarks/{bookmarkId}')]
 	public function addToFolder(int $folderId, int $bookmarkId): JSONResponse {
@@ -223,7 +226,7 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))
 			|| !Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'addToFolder']);
 			return $res;
 		}
 		try {
@@ -251,6 +254,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'removeFromFolder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/folder/{folderId}/bookmarks/{bookmarkId}')]
 	public function removeFromFolder(int $folderId, int $bookmarkId, bool $hardDelete = false): JSONResponse {
@@ -263,7 +267,7 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))
 			|| !Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'removeFromFolder']);
 			return $res;
 		}
 		try {
@@ -288,6 +292,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'undeleteFromFolder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/folder/{folderId}/bookmarks/{bookmarkId}/undelete')]
 	public function undeleteFromFolder(int $folderId, int $bookmarkId): JSONResponse {
@@ -300,7 +305,7 @@ class FoldersController extends ApiController {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))
 			|| !Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForBookmark($bookmarkId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
-			$res->throttle();
+			$res->throttle(['action' => 'undeleteFromFolder']);
 			return $res;
 		}
 		try {
@@ -323,6 +328,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'deleteFolder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/folder/{folderId}')]
 	public function deleteFolder(int $folderId, bool $hardDelete = false): JSONResponse {
@@ -334,7 +340,7 @@ class FoldersController extends ApiController {
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'success']);
-			$res->throttle();
+			$res->throttle(['action' => 'deleteFolder']);
 			return $res;
 		}
 
@@ -356,6 +362,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'undeleteFolder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/folder/{folderId}/undelete')]
 	public function undeleteFolder(int $folderId): JSONResponse {
@@ -367,7 +374,7 @@ class FoldersController extends ApiController {
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'success']);
-			$res->throttle();
+			$res->throttle(['action' => 'undeleteFolder']);
 			return $res;
 		}
 
@@ -391,12 +398,13 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'editFolder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'PUT', url: '/public/rest/v2/folder/{folderId}')]
 	public function editFolder(int $folderId, ?string $title = null, ?int $parent_folder = null): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'editFolder']);
 			return $res;
 		}
 		try {
@@ -404,7 +412,7 @@ class FoldersController extends ApiController {
 				$parent_folder = $this->toInternalFolderId($parent_folder);
 				if (!Authorizer::hasPermission(Authorizer::PERM_EDIT, $this->authorizer->getPermissionsForFolder($parent_folder, $this->request))) {
 					$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-					$res->throttle();
+					$res->throttle(['action' => 'editFolder']);
 					return $res;
 				}
 			}
@@ -427,6 +435,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'hashFolder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}/hash')]
 	public function hashFolder(int $folderId, array $fields = ['title', 'url'], string $hashFn = 'sha256'): JSONResponse {
@@ -438,7 +447,7 @@ class FoldersController extends ApiController {
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'hashFolder']);
 			return $res;
 		}
 		if (!in_array($hashFn, ['sha256', 'murmur3a', 'xxh32'], true)) {
@@ -467,6 +476,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'getFolderChildren')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}/children')]
 	public function getFolderChildren(int $folderId, int $layers = 0): JSONResponse {
@@ -478,7 +488,7 @@ class FoldersController extends ApiController {
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'getFolderChildren']);
 			return $res;
 		}
 		try {
@@ -498,6 +508,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'getFolderChildrenOrder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}/childorder')]
 	public function getFolderChildrenOrder(int $folderId, int $layers = 0): JSONResponse {
@@ -509,7 +520,7 @@ class FoldersController extends ApiController {
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'getFolderChildrenOrder']);
 			return $res;
 		}
 		try {
@@ -529,6 +540,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'setFolderChildrenOrder')]
 	#[Http\Attribute\FrontpageRoute(verb: 'PATCH', url: '/public/rest/v2/folder/{folderId}/childorder')]
 	public function setFolderChildrenOrder(int $folderId, array $data = []): JSONResponse {
@@ -540,7 +552,7 @@ class FoldersController extends ApiController {
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'setFolderChildrenOrder']);
 			return $res;
 		}
 		try {
@@ -559,6 +571,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'getFolders')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder')]
 	public function getFolders(int $root = -1, int $layers = -1): JSONResponse {
@@ -570,7 +583,7 @@ class FoldersController extends ApiController {
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($internalRoot, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'getFolders']);
 			return $res;
 		}
 		try {
@@ -596,19 +609,20 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'getFolderPublicToken')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}/publictoken')]
 	public function getFolderPublicToken(int $folderId): DataResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'getFolderPublicToken']);
 			return $res;
 		}
 		try {
 			$publicFolder = $this->publicFolderMapper->findByFolder($folderId);
 		} catch (DoesNotExistException $e) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'getFolderPublicToken']);
 			return $res;
 		} catch (MultipleObjectsReturnedException $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -622,12 +636,13 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'createFolderPublicToken')]
 	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/folder/{folderId}/publictoken')]
 	public function createFolderPublicToken(int $folderId): DataResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'createFolderPublicToken']);
 			return $res;
 		}
 		try {
@@ -637,7 +652,7 @@ class FoldersController extends ApiController {
 			return new DataResponse(['status' => 'error', 'data' => ['Multiple objects returned']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (DoesNotExistException $e) {
 			$res = new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'createFolderPublicToken']);
 			return $res;
 		} catch (UnsupportedOperation $e) {
 			return new DataResponse(['status' => 'error', 'data' => ['Unsupported operation']], Http::STATUS_BAD_REQUEST);
@@ -650,12 +665,13 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'deleteFolderPublicToken')]
 	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/folder/{folderId}/publictoken')]
 	public function deleteFolderPublicToken(int $folderId): DataResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($folderId, $this->request))) {
 			$res = new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'deleteFolderPublicToken']);
 			return $res;
 		}
 		try {
@@ -663,7 +679,7 @@ class FoldersController extends ApiController {
 			return new Http\DataResponse(['status' => 'success']);
 		} catch (DoesNotExistException $e) {
 			$res = new DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'deleteFolderPublicToken']);
 			return $res;
 		} catch (MultipleObjectsReturnedException|Exception $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_BAD_REQUEST);
@@ -676,6 +692,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'getShare')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/share/{shareId}')]
 	public function getShare(int $shareId): DataResponse {
@@ -683,14 +700,14 @@ class FoldersController extends ApiController {
 			$share = $this->shareMapper->find($shareId);
 		} catch (DoesNotExistException $e) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'getShare']);
 			return $res;
 		} catch (MultipleObjectsReturnedException $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request))) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_NOT_FOUND);
-			$res->throttle();
+			$res->throttle(['action' => 'getShare']);
 			return $res;
 		}
 		return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
@@ -702,13 +719,14 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'findSharedFolders')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/shared')]
 	public function findSharedFolders(): DataResponse {
 		$permissions = $this->authorizer->getPermissionsForFolder(-1, $this->request);
 		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
-			$res->throttle();
+			$res->throttle(['action' => 'findSharedFolders']);
 			return $res;
 		}
 
@@ -730,13 +748,14 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'findShares')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/share')]
 	public function findShares(): DataResponse {
 		$permissions = $this->authorizer->getPermissionsForFolder(-1, $this->request);
 		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
-			$res->throttle();
+			$res->throttle(['action' => 'findShares']);
 			return $res;
 		}
 
@@ -756,6 +775,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'getShares')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/{folderId}/shares')]
 	public function getShares(int $folderId): DataResponse {
@@ -767,7 +787,7 @@ class FoldersController extends ApiController {
 				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			} catch (DoesNotExistException $e) {
 				$res = new DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
-				$res->throttle();
+				$res->throttle(['action' => 'getShares']);
 				return $res;
 			}
 			$shares = $this->shareMapper->findByFolder($folderId);
@@ -783,13 +803,13 @@ class FoldersController extends ApiController {
 				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			} catch (DoesNotExistException $e) {
 				$res = new DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
-				$res->throttle();
+				$res->throttle(['action' => 'getShares']);
 				return $res;
 			}
 			return new Http\DataResponse(['status' => 'success', 'data' => [$share->toArray()]]);
 		}
 		$res = new DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
-		$res->throttle();
+		$res->throttle(['action' => 'getShares']);
 		return $res;
 	}
 
@@ -799,13 +819,14 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'createShare')]
 	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/folder/{folderId}/shares')]
 	public function createShare(int $folderId, string $participant, int $type, bool $canWrite = false, bool $canShare = false): DataResponse {
 		$permissions = $this->authorizer->getPermissionsForFolder($folderId, $this->request);
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $permissions)) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'createShare']);
 			return $res;
 		}
 		try {
@@ -814,7 +835,7 @@ class FoldersController extends ApiController {
 			return new Http\DataResponse(['status' => 'success', 'item' => $share->toArray()]);
 		} catch (DoesNotExistException $e) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'createShare']);
 			return $res;
 		} catch (MultipleObjectsReturnedException|Exception $e) {
 			$this->logger->warning('Unexpected error occurred', ['exception' => $e]);
@@ -830,6 +851,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'editShare')]
 	#[Http\Attribute\FrontpageRoute(verb: 'PUT', url: '/public/rest/v2/share/{shareId}')]
 	public function editShare(int $shareId, bool $canWrite = false, bool $canShare = false): Http\DataResponse {
@@ -837,7 +859,7 @@ class FoldersController extends ApiController {
 			$share = $this->shareMapper->find($shareId);
 		} catch (DoesNotExistException $e) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'editShare']);
 			return $res;
 		} catch (MultipleObjectsReturnedException $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -845,7 +867,7 @@ class FoldersController extends ApiController {
 		$permissions = $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request);
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $permissions)) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'editShare']);
 			return $res;
 		}
 
@@ -867,6 +889,7 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'deleteShare')]
 	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/share/{shareId}')]
 	public function deleteShare(int $shareId): DataResponse {
@@ -874,14 +897,14 @@ class FoldersController extends ApiController {
 			$share = $this->shareMapper->find($shareId);
 		} catch (DoesNotExistException $e) {
 			$res = new Http\DataResponse(['status' => 'success']);
-			$res->throttle();
+			$res->throttle(['action' => 'deleteShare']);
 			return $res;
 		} catch (MultipleObjectsReturnedException $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		if (!Authorizer::hasPermission(Authorizer::PERM_RESHARE, $this->authorizer->getPermissionsForFolder($share->getFolderId(), $this->request))) {
 			$res = new Http\DataResponse(['status' => 'success']);
-			$res->throttle();
+			$res->throttle(['action' => 'deleteShare']);
 			return $res;
 		}
 
@@ -899,13 +922,14 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'getDeletedFolders')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/folder/deleted')]
 	public function getDeletedFolders(): DataResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
-			$res->throttle();
+			$res->throttle(['action' => 'getDeletedFolders']);
 			return $res;
 		}
 		try {
@@ -928,13 +952,14 @@ class FoldersController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'removeDeletedFolders')]
 	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/folder/deleted')]
 	public function removeDeletedFolders(): DataResponse {
 		$this->authorizer->setCredentials($this->request);
 		if ($this->authorizer->getUserId() === null) {
 			$res = new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
-			$res->throttle();
+			$res->throttle(['action' => 'removeDeletedFolders']);
 			return $res;
 		}
 		$this->treeMapper->deleteTrashbinItemsForUser($this->authorizer->getUserId());

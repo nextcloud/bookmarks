@@ -32,13 +32,14 @@ class TagsController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'deleteTag')]
 	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/tag')]
 	#[Http\Attribute\FrontpageRoute(verb: 'DELETE', url: '/public/rest/v2/tag/{old_name}')]
 	public function deleteTag(string $old_name = ''): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find tag']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'deleteTag']);
 			return $res;
 		}
 		if ($old_name === '') {
@@ -56,6 +57,7 @@ class TagsController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'renameTag')]
 	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/tag', postfix: 'postbody')]
 	#[Http\Attribute\FrontpageRoute(verb: 'POST', url: '/public/rest/v2/tag/{old_name}', postfix: 'post')]
@@ -63,7 +65,7 @@ class TagsController extends ApiController {
 	public function renameTag(string $old_name = '', string $new_name = '', string $name = ''): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Could not find tag']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'renameTag']);
 			return $res;
 		}
 		if ($new_name === '') {
@@ -81,12 +83,13 @@ class TagsController extends ApiController {
 	#[Http\Attribute\NoAdminRequired]
 	#[Http\Attribute\NoCSRFRequired]
 	#[Http\Attribute\PublicPage]
+	#[Http\Attribute\BruteForceProtection(action: 'bookmarksLogin')]
 	#[Http\Attribute\BruteForceProtection(action: 'fullTags')]
 	#[Http\Attribute\FrontpageRoute(verb: 'GET', url: '/public/rest/v2/tag')]
 	public function fullTags(bool $count = false): JSONResponse {
 		if (!Authorizer::hasPermission(Authorizer::PERM_WRITE, $this->authorizer->getPermissionsForFolder(-1, $this->request))) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not authorized']], Http::STATUS_BAD_REQUEST);
-			$res->throttle();
+			$res->throttle(['action' => 'fullTags']);
 			return $res;
 		}
 

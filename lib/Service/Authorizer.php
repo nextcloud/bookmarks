@@ -22,6 +22,7 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\Security\Bruteforce\IThrottler;
 use OCP\Security\ICrypto;
 
 class Authorizer {
@@ -31,6 +32,8 @@ class Authorizer {
 	public const PERM_RESHARE = 4;
 	public const PERM_WRITE = 8; // Allows adding and editing the item's descendants
 	public const PERM_ALL = 15;
+
+	public const BRUTEFORCE_ACTION = 'bookmarksLogin';
 
 	private $userId;
 	private $token = null;
@@ -49,7 +52,20 @@ class Authorizer {
 		private SharedFolderMapper $sharedFolderMapper,
 		private ICrypto $crypto,
 		private IUserManager $userManager,
+		private IThrottler $throttler,
 	) {
+	}
+
+	/**
+	 * Record a failed login against the shared action and back off before rejecting.
+	 *
+	 * @throws UnauthenticatedError
+	 */
+	private function failLogin(IRequest $request): void {
+		$ip = $request->getRemoteAddress();
+		$this->throttler->registerAttempt(self::BRUTEFORCE_ACTION, $ip);
+		$this->throttler->sleepDelay($ip, self::BRUTEFORCE_ACTION);
+		throw new UnauthenticatedError();
 	}
 
 	/**
@@ -98,18 +114,19 @@ class Authorizer {
 			$this->setUserId($this->userSession->getUser()->getUID());
 		} elseif (isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
 			if ($this->userSession->login($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW']) === false) {
-				return;
+				$this->failLogin($request);
 			}
 			$this->setUserId($this->userSession->getUser()->getUID());
 		} elseif ($auth !== null && $auth !== '') {
 			[$type, $credentials] = explode(' ', $auth);
 			if (strtolower($type) === 'basic') {
-				[$username, $password] = explode(':', base64_decode($credentials));
-				if (isset($username, $password) && $password !== '') {
+				$parts = explode(':', (string)base64_decode($credentials, true), 2);
+				if (count($parts) !== 2 || $parts[1] === '') {
 					return;
 				}
+				[$username, $password] = $parts;
 				if ($this->userSession->login($username, $password) === false) {
-					return;
+					$this->failLogin($request);
 				}
 				$this->setUserId($this->userSession->getUser()->getUID());
 			}
