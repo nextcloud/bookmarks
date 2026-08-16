@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [16.2.6] - 2026-08-16
+
+### Fixed
+* fix(ux): Show bookmarklet success message (Thanks to @xhon-pelushi)
+* fix(TreeCacheManager): Invalidate cache upon Share change event
+* fx(Settings): Add key validation
+* fix(BackupManager): Don't break on malformed html files
+* refactor(ScnreeshotMachineBookmarkPreviewer): Use http_build_query
+* fix(FoldersController:findShares): Would always return 403
+* fix(PageresBookmarkPreviewer): Sanitize env var prefix setting
+* fix(TreeMapper): Don't allow nesting folder into
+* fix(FoldersController): Fix mind-o
+* refactor(Authorizer): Introduce a shared throttler
+* refactor(Controllers): Map to internal folder ID first
+* fix(BackupJob): Normalize backup.enabled setting in a migration step
+* fix(l10n): Update translations from Transifex
+* fix(SidebarFolder): Fix team avatar sizing
+* fix(FolderService): Fix sharing with teams/circles
+* fix(ShareMapper): Do not allow creating the same share multiple times
+
 ## [16.2.5] - 2026-08-11
 
 ### Fixed
