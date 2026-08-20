@@ -388,6 +388,54 @@ class BookmarkMapperTest extends TestCase {
 	}
 
 	/**
+	 * insertOrUpdate() falls back to updating an existing bookmark when the insert
+	 * hits the unique index. Fields the caller marks as preserved must survive that
+	 * fallback, so derived data (e.g. a scraped page title) can never overwrite what
+	 * the user put on the existing bookmark.
+	 *
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
+	 * @throws UrlParseError
+	 * @throws MultipleObjectsReturnedException
+	 * @throws DoesNotExistException
+	 */
+	public function testInsertOrUpdatePreservesFields() {
+		$existing = $this->bookmarkMapper->insertOrUpdate(Db\Bookmark::fromArray([
+			'userId' => $this->userId,
+			'url' => 'https://example.org/preserve-fields',
+			'title' => 'The title the user chose',
+			'description' => 'The description the user wrote',
+		]));
+
+		$incoming = Db\Bookmark::fromArray([
+			'userId' => $this->userId,
+			'url' => 'https://example.org/preserve-fields',
+			'title' => 'Scraped page title',
+			'description' => 'Scraped page description',
+		]);
+		$updated = $this->bookmarkMapper->insertOrUpdate($incoming, ['title', 'description']);
+
+		$this->assertSame($existing->getId(), $updated->getId());
+		$this->assertSame('The title the user chose', $updated->getTitle());
+		$this->assertSame('The description the user wrote', $updated->getDescription());
+
+		// And it is still the same, single row.
+		$stored = $this->bookmarkMapper->find($existing->getId());
+		$this->assertSame('The title the user chose', $stored->getTitle());
+		$this->assertSame('The description the user wrote', $stored->getDescription());
+
+		// Without preserveFields the fallback keeps overwriting, as before.
+		$overwritten = $this->bookmarkMapper->insertOrUpdate(Db\Bookmark::fromArray([
+			'userId' => $this->userId,
+			'url' => 'https://example.org/preserve-fields',
+			'title' => 'Scraped page title',
+			'description' => 'Scraped page description',
+		]));
+		$this->assertSame($existing->getId(), $overwritten->getId());
+		$this->assertSame('Scraped page title', $overwritten->getTitle());
+	}
+
+	/**
 	 * @return array
 	 */
 	public function singleBookmarksProvider(): array {
