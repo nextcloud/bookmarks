@@ -243,6 +243,7 @@ OC.L10N.register(
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Tiesiog įdiekite „Sindre Sorhus“ sukurtą „Pageres CLI“ savo serveryje ir Adresynai ją ras. Vis tiek galite pridėti papildomų ENV kintamųjų, kurie bus tiekiami į „Pageres“, pvz., kaip nurodyta vietos žymeklyje:",
     "Pageres ENV variables" : "\"Pageres ENV\" kintamieji",
     "This URL is already bookmarked! Overwrite?" : "Šis URL jau įtrauktas į adresyną! Perrašyti?",
+    "Bookmark saved!" : "Adresynas išsaugotas!",
     "Enter bookmark title" : "Įveskite adresyno įrašo pavadinimą",
     "Enter bookmark URL" : "Įveskite adresyno įrašo URL",
     "Folder" : "Aplankas",
