@@ -241,6 +241,7 @@
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Installera Pageres CLI av Sindre Sorhus på din server så hittar Bokmärken det. Du kan fortfarande lägga till ytterligare ENV-variabler som ska matas till Pageres, t.ex. som anges i platshållaren:",
     "Pageres ENV variables" : "Pageres ENV-variabler",
     "This URL is already bookmarked! Overwrite?" : "Webbadressen är redan bokmärkt. Vill du skriva över bokmärket?",
+    "Bookmark saved!" : "Bokmärket har sparats!",
     "Enter bookmark title" : "Ange titel",
     "Enter bookmark URL" : "Ange bokmärkets webbadress",
     "Folder" : "Mapp",
