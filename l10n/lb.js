@@ -1,6 +1,7 @@
 OC.L10N.register(
     "bookmarks",
     {
+    "Bookmark" : "Lieszeechen",
     "Details" : "Detailer",
     "Rename" : "Ëmbenennen",
     "Copy link" : "Link kopéieren",
@@ -13,6 +14,7 @@ OC.L10N.register(
     "Empty trash bin" : "Eidel Dreckskëscht",
     "_%n folder_::_%n folders_" : ["¦%n Dossier","¦%n Dossieren"],
     "Rename folder" : "Dossier ëmbenennen",
+    "Submit" : "Iwwermëttelen",
     "Cancel" : "Ofbriechen",
     "Recent" : "Rezent",
     "Shared with you" : "Mat dir gedeelt",
@@ -29,6 +31,9 @@ OC.L10N.register(
     "Share link" : "Link deelen",
     "Allow editing" : "Beaarbechten erlaben",
     "Allow resharing" : "Resharing erlaben",
+    "Privacy" : "Dateschutz",
+    "ScreenshotMachine" : "ScreenshotMachine",
+    "Webshot" : "Webshot",
     "Folder" : "Dossier",
     "Save" : "Späicheren"
 },
