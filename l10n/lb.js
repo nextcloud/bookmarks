@@ -31,6 +31,7 @@ OC.L10N.register(
     "Share link" : "Link deelen",
     "Allow editing" : "Beaarbechten erlaben",
     "Allow resharing" : "Resharing erlaben",
+    "Failed to save settings" : "Späichere vun den Astellunge feelgeschloen",
     "Privacy" : "Dateschutz",
     "ScreenshotMachine" : "ScreenshotMachine",
     "Webshot" : "Webshot",
