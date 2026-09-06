@@ -240,6 +240,7 @@ class TreeCacheManager implements IEventListener {
 		foreach ($fields as $field) {
 			if ($field === 'tags') {
 				$bookmark[$field] = $this->tagMapper->findByBookmark($bookmarkId);
+				sort($bookmark[$field], SORT_STRING);
 				continue;
 			}
 			try {
