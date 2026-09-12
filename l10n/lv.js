@@ -3,7 +3,9 @@ OC.L10N.register(
     {
     "Bookmarks" : "Grāmatzīmes",
     "You bookmarked \"%s\"" : "Tu pievienoji \"%s\" grāmatzīmēm",
+    "You deleted \"%s\"" : "Tu izdzēsi “%s”",
     "You created folder \"%s\"" : "Tu izveidoji mapi \"%s\"",
+    "You deleted folder \"%s\"" : "Tu izdzēsi mapi “%s”",
     "No file provided for import" : "Ievietošanai nav norādīta neviena datne",
     "Recent bookmarks" : "Nesenas grāmatzīmes",
     "Bookmark" : "Grāmatzīme",
