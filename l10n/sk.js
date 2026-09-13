@@ -11,7 +11,7 @@ OC.L10N.register(
     "You created folder \"%s\"" : "Vytvorili ste priečinok „%s“",
     "%1$s created folder \"%2$s\"" : "%1$s vytvoril priečinok „%2$s“",
     "Someone created folder \"%s\"" : "Niekto vytvoril priečinok „%s“",
-    "You moved folder \"%s\"" : "Premiestnili preičinok „%s“",
+    "You moved folder \"%s\"" : "Premiestnili ste priečinok „%s“",
     "%1$s moved folder \"%2$s\"" : "%1$s premiestnil priečinok „%2$s“",
     "Someone moved folder \"%s\"" : "Niekto premiestnil priečinok „%s“",
     "You deleted folder \"%s\"" : "Odstránili ste priečinok „%s“",
