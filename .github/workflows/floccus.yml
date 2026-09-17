@@ -174,7 +174,9 @@ jobs:
 
       - name: Install bookmarks app
         working-directory: server/apps/${{ env.APP_NAME }}
-        run: composer install --no-dev
+        run: |
+          composer remove nextcloud/ocp --dev --no-update
+          composer install --no-dev
 
       - name: Install Nextcloud and enable bookmarks
         working-directory: server
