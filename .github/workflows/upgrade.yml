@@ -37,6 +37,30 @@ jobs:
             server-versions: 'stable32'
             php-versions: '8.1'
             prev-version: 'stable'
+          - databases: 'sqlite'
+            server-versions: 'stable35'
+            php-versions: '8.3'
+            prev-version: 'v16.2.6'
+          - databases: 'mysql'
+            server-versions: 'stable35'
+            php-versions: '8.3'
+            prev-version: 'v16.2.6'
+          - databases: 'pgsql'
+            server-versions: 'stable35'
+            php-versions: '8.3'
+            prev-version: 'v16.2.6'
+          - databases: 'sqlite'
+            server-versions: 'master'
+            php-versions: '8.3'
+            prev-version: 'v16.2.6'
+          - databases: 'mysql'
+            server-versions: 'master'
+            php-versions: '8.3'
+            prev-version: 'v16.2.6'
+          - databases: 'pgsql'
+            server-versions: 'master'
+            php-versions: '8.3'
+            prev-version: 'v16.2.6'
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
@@ -46,7 +70,7 @@ jobs:
 
     services:
       mysql:
-        image: mariadb:10.5
+        image: mariadb:10.11
         ports:
           - 4444:3306/tcp
         env:
