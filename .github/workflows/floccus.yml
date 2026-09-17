@@ -127,7 +127,7 @@ jobs:
       mysql:
         image: mariadb:10.11
         ports:
-          - 4444:3306/tcp
+          - 4445:3306/tcp
         env:
           MYSQL_ROOT_PASSWORD: ${{env.MYSQL_PASSWORD}}
         options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 10
@@ -180,7 +180,7 @@ jobs:
         working-directory: server
         shell: bash
         run: |
-          php occ maintenance:install --database=mysql --database-name=nextcloud --database-host=127.0.0.1 --database-port=4444 --database-user=root --database-pass="$MYSQL_PASSWORD" --admin-user=admin --admin-pass=admin
+          php occ maintenance:install --database=mysql --database-name=nextcloud --database-host=127.0.0.1 --database-port=4445 --database-user=root --database-pass="$MYSQL_PASSWORD" --admin-user=admin --admin-pass=admin
           php occ config:system:set trusted_domains 1 --value=nextcloud
           php occ app:enable ${{ env.APP_NAME }}
           php occ config:system:set --value '\OC\Memcache\APCu' memcache.local
