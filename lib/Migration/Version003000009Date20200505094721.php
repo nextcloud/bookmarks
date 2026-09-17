@@ -49,7 +49,7 @@ class Version003000009Date20200505094721 extends SimpleMigrationStep {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 		$table = $schema->getTable('bookmarks_tree');
-		$table->changeColumn('index', [
+		$table->modifyColumn('index', [
 			'type' => Type::getType('bigint'),
 			'unsigned' => true,
 		]);

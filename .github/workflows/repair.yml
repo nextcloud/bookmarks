@@ -57,7 +57,7 @@ jobs:
 
     services:
       mysql:
-        image: mariadb:10.5
+        image: mariadb:10.11
         ports:
           - 4444:3306/tcp
         env:
