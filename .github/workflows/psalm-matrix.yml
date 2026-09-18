@@ -31,7 +31,7 @@ jobs:
 
       - name: Get version matrix
         id: versions
-        uses: icewind1991/nextcloud-version-matrix@cd0211ffcef1065e2020cd579e4843b8746e7a58 # v1.3.3
+        uses: nextcloud-libraries/nextcloud-version-matrix@cd0211ffcef1065e2020cd579e4843b8746e7a58 # v1.3.3
 
       - name: Check enforcement of minimum PHP version ${{ steps.versions.outputs.php-min }} in psalm.xml
         run: grep 'phpVersion="${{ steps.versions.outputs.php-min }}' psalm.xml
@@ -63,13 +63,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install dependencies
+      - name: Remove nextcloud/ocp
         run: |
           composer remove nextcloud/ocp --dev --no-scripts
-          composer i
 
-      - name: Install dependencies # zizmor: ignore[template-injection]
-        run: composer require --dev 'nextcloud/ocp:${{ matrix.ocp-version }}' --ignore-platform-reqs --with-dependencies
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+
+      - name: Install nextcloud/ocp:${{ matrix.ocp-version }}
+        env:
+          OCP_VERSION: ${{ matrix.ocp-version }}
+        run: composer require --dev "nextcloud/ocp:$OCP_VERSION" --ignore-platform-reqs --with-dependencies
 
       - name: Run coding standards check
         run: composer run psalm -- --threads=1 --monochrome --no-progress --output-format=github

@@ -9,9 +9,9 @@
 namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\Db\FolderMapper;
-use OCA\Bookmarks\Db\Types;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\DB\Exception;
+use OCP\DB\Types;
 use OCP\IDBConnection;
 
 class LockManager {

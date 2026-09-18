@@ -91,7 +91,7 @@ jobs:
       matrix:
         node-version: [20.x]
         npm-version: [10.x]
-        server-version: ['32']
+        server-version: ['35']
         floccus-branch: ['master', 'develop']
         floccus-adapter:
           - nextcloud-bookmarks

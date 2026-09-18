@@ -28,9 +28,9 @@ jobs:
       # do not stop on another job's failure
       fail-fast: false
       matrix:
-        php-versions: ['8.2', '8.3', '8.4']
+        php-versions: ['8.2', '8.3', '8.4', '8.5']
         databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable32', 'stable33']
+        server-versions: ['stable32', 'stable33', 'stable34']
         prev-version: ['stable']
         include:
           - databases: 'sqlite'
@@ -46,7 +46,7 @@ jobs:
 
     services:
       mysql:
-        image: mariadb:10.5
+        image: mariadb:10.11
         ports:
           - 4444:3306/tcp
         env:
