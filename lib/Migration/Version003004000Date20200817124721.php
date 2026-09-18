@@ -9,9 +9,9 @@
 namespace OCA\Bookmarks\Migration;
 
 use Closure;
-use Doctrine\DBAL\Schema\SchemaException;
-use OCA\Bookmarks\Db\Types;
 use OCP\DB\ISchemaWrapper;
+use OCP\DB\Schema\SchemaException;
+use OCP\DB\Types;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
