@@ -173,7 +173,7 @@ export default {
 	},
 	computed: {
 		oc_defaults() {
-			return window.oc_defaults
+			return window.OC.theme
 		},
 		bookmarklet() {
 			const bookmarkletUrl

@@ -22,7 +22,7 @@ Requirements:
    - intl: *
    - mbstring: *
 ]]></description>
-	<version>17.0.0-dev</version>
+	<version>17.0.0</version>
 	<licence>agpl</licence>
 	<author mail="mklehr@gmx.net" homepage="https://marcelklehr.de">Marcel Klehr</author>
 	<author mail="blizzz@arthur-schiwon.de" homepage="https://www.arthur-schiwon.de">Arthur Schiwon</author>
