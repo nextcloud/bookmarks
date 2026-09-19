@@ -23,7 +23,7 @@
 	"dependencies": {
 		"@nextcloud/auth": "2.x",
 		"@nextcloud/axios": "2.x",
-		"@nextcloud/dialogs": "6.x",
+		"@nextcloud/dialogs": "7.x",
 		"@nextcloud/event-bus": "3.x",
 		"@nextcloud/initial-state": "2.x",
 		"@nextcloud/l10n": "3.x",
