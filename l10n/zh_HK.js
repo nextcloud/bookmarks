@@ -40,7 +40,6 @@ OC.L10N.register(
     "Takes a link and adds it to your collection of bookmarks." : "將連結添加到您的書籤收藏。",
     "Bookmarks Backups" : "書籤備份",
     "Collect and manage bookmarks, synced with all your devices" : "收集和管理書籤．並與所有裝置同步",
-    "- 📂 Sort bookmarks into folders\n- 🏷 Add tags and personal notes\n- ☠ Find broken links and duplicates\n- 📲 Synchronize with all your browsers and devices\n- 📔 Store archived versions of your links in case they are depublished\n- 🔍 Full-text search on site contents\n- 👪 Share bookmarks with other users, groups and teams or via public links\n- ⚛ Generate RSS feeds of your collections\n- 📈 Stats on how often you access which links\n- 🔒 Automatic backups of your bookmarks collection\n- 💼 Built-in Dashboard widgets for frequent and recent links\n\nRequirements:\n - PHP extensions:\n   - intl: *\n   - mbstring: *\n - when using MySQL, use at least v8.0" : "- 📂 將書籤分類整理到資料夾中\n- 🏷 添加標籤和個人註解\n- ☠ 找出失效連結及重複項目\n- 📲 與所有瀏覽器及裝置同步\n- 📔 存儲連結已封的存版本，以防它們被刪除\n- 🔍 對網站內容進行全文搜索\n- 👪 與其他用戶、群組和團隊分享書籤，並提供公開連結\n- ⚛ 為您的書籤集合產生 RSS 訂閱源\n- 📈 統計您存取各個連結的頻率\n- 🔒 自動備份您的書籤集合\n- 💼 內建儀表板小組件以顯示常用及最近的連結\n\n技術要求:\n - PHP 擴充套件:\n   - intl: *\n   - mbstring: *\n - 使用 MySQL 時，需使用至少 v8.0 版本",
     "Do you really want to delete this bookmark?" : "您確定要刪除此書籤嗎？",
     "Link copied to clipboard" : "已複製連結至剪貼板",
     "Enter new title" : "輸入新的標題",
