@@ -394,6 +394,44 @@ class BookmarkControllerTest extends TestCase {
 	}
 
 	/**
+	 * Creating a bookmark for a URL the user already has must not touch the title
+	 * and description they gave it. The URL is normalized before it is stored
+	 * ('https://www.heise.de' becomes 'https://www.heise.de/'), so the duplicate
+	 * check has to normalize too - otherwise the create is taken for an insert,
+	 * the page gets scraped and the existing bookmark ends up with the page title.
+	 *
+	 * @throws AlreadyExistsError
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
+	 */
+	public function testCreateExistingUnnormalizedUrlKeepsTitle(): void {
+		$this->cleanUp();
+		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
+
+		$res = $this->controller->newBookmark('https://www.heise.de', 'My own title', 'My own description');
+		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
+		$id = $res->getData()['item']['id'];
+		$this->assertEquals('https://www.heise.de/', $this->bookmarkMapper->find($id)->getUrl());
+
+		// Add the same URL again in the shape the user pasted it, without a title -
+		// the shape a browser extension or the bookmarklet sends.
+		$res = $this->controller->newBookmark('https://www.heise.de');
+		$this->assertEquals('success', $res->getData()['status'], var_export($res->getData(), true));
+		$this->assertEquals($id, $res->getData()['item']['id']);
+
+		$bookmark = $this->bookmarkMapper->find($id);
+		$this->assertEquals('My own title', $bookmark->getTitle());
+		$this->assertEquals('My own description', $bookmark->getDescription());
+
+		// No duplicate row was created either.
+		$params = new QueryParameters();
+		$this->assertCount(1, $this->bookmarkMapper->findAll($this->userId, $params->setUrl('https://www.heise.de/')));
+	}
+
+	/**
 	 * @throws AlreadyExistsError
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException

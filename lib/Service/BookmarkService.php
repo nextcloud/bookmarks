@@ -115,22 +115,31 @@ class BookmarkService {
 	private function _addBookmark($userId, $url, ?string $title = null, ?string $description = null, ?array $tags = null, array $folders = []): Bookmark {
 		$isInsert = true;
 		$bookmark = null;
+		$derivedFields = [];
 
 		try {
 			$bookmark = $this->bookmarkMapper->findByUrl($userId, $url);
 			$isInsert = false;
 		} catch (DoesNotExistException) {
-			if (!preg_match(self::PROTOCOLS_REGEX, $url)) {
-				// if no allowed protocol is given, evaluate https and https
-				foreach (['https://', 'http://'] as $protocol) {
-					try {
-						$testUrl = $this->urlNormalizer->normalize($protocol . $url);
-						$bookmark = $this->bookmarkMapper->findByUrl($userId, $testUrl);
-						$isInsert = false;
-						break;
-					} catch (UrlParseError|DoesNotExistException) {
-						continue;
-					}
+			// The mapper hashes the URL verbatim, but insert() normalizes web links
+			// before hashing them, so the stored hash is the one of the normalized
+			// URL. Retry with the normalized form before treating this as a new
+			// bookmark - otherwise we'd scrape a title below and insertOrUpdate()
+			// would write it over the title the user gave the existing bookmark.
+			$candidates = preg_match(self::PROTOCOLS_REGEX, $url)
+				// if no allowed protocol is given, evaluate https and http
+				? [$url]
+				: ['https://' . $url, 'http://' . $url];
+			foreach ($candidates as $candidate) {
+				try {
+					$testUrl = preg_match('/^https?:\/\//i', $candidate)
+						? $this->urlNormalizer->normalize($candidate)
+						: $candidate;
+					$bookmark = $this->bookmarkMapper->findByUrl($userId, $testUrl);
+					$isInsert = false;
+					break;
+				} catch (UrlParseError|DoesNotExistException) {
+					continue;
 				}
 			}
 		}
@@ -163,6 +172,14 @@ class BookmarkService {
 			}
 			$url = $this->urlNormalizer->normalize($url);
 
+			// Remember which values we made up ourselves instead of getting them from
+			// the caller, so that the fallback update in insertOrUpdate() can't write
+			// scraped page data over what an existing bookmark already says.
+			$derivedFields = array_merge(
+				isset($title) ? [] : ['title'],
+				isset($description) ? [] : ['description'],
+			);
+
 			$title = $title ?? trim($data['basic']['title']) ?? trim($url);
 			$description = $description ?? $data['basic']['description'] ?? '';
 
@@ -178,7 +195,7 @@ class BookmarkService {
 		}
 		$bookmark->setUserId($userId);
 		if ($isInsert) {
-			$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmark);
+			$bookmark = $this->bookmarkMapper->insertOrUpdate($bookmark, $derivedFields);
 		} else {
 			$bookmark = $this->bookmarkMapper->update($bookmark);
 		}

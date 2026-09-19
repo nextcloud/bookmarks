@@ -928,18 +928,27 @@ class BookmarkMapper extends QBMapper {
 	/**
 	 * @psalm-param Bookmark $entity
 	 * @param Entity $entity
+	 * @param string[] $preserveFields Fields of an already existing bookmark that
+	 *                                 must not be overwritten with the values of
+	 *                                 $entity, e.g. because the caller derived
+	 *                                 those from scraping rather than from user
+	 *                                 input. Only takes effect when the insert
+	 *                                 turns out to be an update.
 	 * @return Bookmark
 	 * @throws AlreadyExistsError
 	 * @throws UrlParseError
 	 * @throws UserLimitExceededError|MultipleObjectsReturnedException
 	 */
-	public function insertOrUpdate(Entity $entity): Bookmark {
+	public function insertOrUpdate(Entity $entity, array $preserveFields = []): Bookmark {
 		try {
 			$newEntity = $this->insert($entity);
 		} catch (AlreadyExistsError) {
 			try {
 				$bookmark = $this->findByUrl($entity->getUserId(), $entity->getUrl());
 				foreach ($entity->getUpdatedFields() as $field => $_value) {
+					if (in_array($field, $preserveFields, true)) {
+						continue;
+					}
 					$value = $entity->{'get' . ucfirst($field)}();
 					$bookmark->{'set' . ucfirst($field)}($value);
 				}

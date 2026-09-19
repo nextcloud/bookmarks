@@ -18,32 +18,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  matrix:
-    runs-on: ubuntu-latest-low
-    outputs:
-      php-version: ${{ steps.versions.outputs.php-available-list }}
-      server-max: ${{ steps.versions.outputs.branches-max-list }}
-    steps:
-      - name: Checkout app
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-        with:
-          persist-credentials: false
-
-      - name: Get version matrix
-        id: versions
-        uses: icewind1991/nextcloud-version-matrix@8a7bac6300b2f0f3100088b297995a229558ddba # v1.3.2
-
-  changes:
+  changes-and-matrix:
     runs-on: ubuntu-latest-low
     permissions:
       contents: read
       pull-requests: read
 
     outputs:
-      src: ${{ steps.changes.outputs.src}}
+      src: ${{ steps.changes.outputs.src }}
+      php-version: ${{ steps.versions.outputs.php-available-list }}
+      server-max: ${{ steps.versions.outputs.branches-max-list }}
 
     steps:
-      - uses: dorny/paths-filter@7b450fff21473bca461d4b92ce414b9d0420d706 # v4.0.2
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
         id: changes
         continue-on-error: true
         with:
@@ -60,23 +47,35 @@ jobs:
               - 'composer.json'
               - 'composer.lock'
 
+      - name: Checkout app
+        if: steps.changes.outputs.src != 'false'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Get version matrix
+        if: steps.changes.outputs.src != 'false'
+        id: versions
+        uses: nextcloud-libraries/nextcloud-version-matrix@cd0211ffcef1065e2020cd579e4843b8746e7a58 # v1.3.3
+
   phpunit-mariadb:
     runs-on: ubuntu-latest
 
-    needs: [changes, matrix]
-    if: needs.changes.outputs.src != 'false'
+    needs: changes-and-matrix
+    if: needs.changes-and-matrix.outputs.src != 'false'
 
     strategy:
+      fail-fast: false
       matrix:
-        php-versions: ${{ fromJson(needs.matrix.outputs.php-version) }}
-        server-versions: ${{ fromJson(needs.matrix.outputs.server-max) }}
+        php-versions: ${{ fromJson(needs.changes-and-matrix.outputs.php-version) }}
+        server-versions: ${{ fromJson(needs.changes-and-matrix.outputs.server-max) }}
         mariadb-versions: ['10.6', '11.4']
 
     name: MariaDB ${{ matrix.mariadb-versions }} PHP ${{ matrix.php-versions }} Nextcloud ${{ matrix.server-versions }}
 
     services:
       mariadb:
-        image: ghcr.io/nextcloud/continuous-integration-mariadb-${{ matrix.mariadb-versions }}:latest # zizmor: ignore[unpinned-images]
+        image: mariadb:${{ matrix.mariadb-versions }}
         ports:
           - 4444:3306/tcp
         env:
@@ -91,7 +90,7 @@ jobs:
           echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
 
       - name: Checkout server
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: true
@@ -99,7 +98,7 @@ jobs:
           ref: ${{ matrix.server-versions }}
 
       - name: Checkout app
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           path: apps/${{ env.APP_NAME }}
@@ -128,13 +127,17 @@ jobs:
         with:
           files: apps/${{ env.APP_NAME }}/composer.json
 
-      - name: Set up dependencies
+      - name: Remove nextcloud/ocp
         # Only run if phpunit config file exists
         if: steps.check_composer.outputs.files_exists == 'true'
         working-directory: apps/${{ env.APP_NAME }}
         run: |
           composer remove nextcloud/ocp --dev --no-scripts
-          composer i
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          working-directory: apps/${{ env.APP_NAME }}
 
       - name: Set up Nextcloud
         env:
@@ -191,7 +194,7 @@ jobs:
     permissions:
       contents: none
     runs-on: ubuntu-latest-low
-    needs: [changes, phpunit-mariadb]
+    needs: [changes-and-matrix, phpunit-mariadb]
 
     if: always()
 
@@ -199,4 +202,4 @@ jobs:
 
     steps:
       - name: Summary status
-        run: if ${{ needs.changes.outputs.src != 'false' && needs.phpunit-mariadb.result != 'success' }}; then exit 1; fi
+        run: if ${{ needs.changes-and-matrix.outputs.src != 'false' && needs.phpunit-mariadb.result != 'success' }}; then exit 1; fi
