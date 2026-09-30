@@ -158,7 +158,7 @@ OC.L10N.register(
     "Add bookmarks manually or import bookmarks from a HTML file." : "Pridajte záložky ručne alebo ich importujte z HTML súboru.",
     "Archive path" : "Archivovať cestu",
     "Backup path" : "Cesta k zálohám",
-    "Please select \"Add to home screen\" in your browser menu" : "Prosím vyberte \"Pridať na domovskú obrazovku\" v menu vašeho prehliadača",
+    "Please select \"Add to home screen\" in your browser menu" : "Vyberte, prosím, „Pridať na domovskú obrazovku“ v menu vášho prehliadača.",
     "Bookmarks settings" : "Nastavenia záložiek",
     "Import/Export" : "Import/Export",
     "Export bookmarks" : "Exportovať záložky",
