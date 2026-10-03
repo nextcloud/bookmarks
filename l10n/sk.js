@@ -68,7 +68,7 @@ OC.L10N.register(
     "One bookmark can be in multiple folders at once. Updating it will update all copies. All duplicated bookmarks are listed here for convenience." : "Jedna záložka môže byť vo viacerých priečinkoch naraz. Jej aktualizáciou sa aktualizujú všetky kópie. Všetky duplicitné záložky sú tu uvedené pre pohodlie.",
     "Selected {folders} folders and {bookmarks} bookmarks" : "Vybraté {folders} priečinky a {bookmarks} záložky",
     "_Selected %n bookmark_::_Selected %n bookmarks_" : ["Vybraná %n záložka","Vybrané %n záložky","Vybrané %n záložky","Vybraných %n záložiek"],
-    "_Selected %n folder_::_Selected %n folders_" : ["Vybratý %n priečinok","Vybraté %n priečinky","Vybraté %n priečinky","Vybratých %n priečinkov"],
+    "_Selected %n folder_::_Selected %n folders_" : ["Vybratý %n priečinok","Vybraté %n priečinky","Vybratých %n priečinkov","Vybratých %n priečinkov"],
     "Do you really want to delete these items?" : "Naozaj chcete odstrániť tieto položky?",
     "Open all selected" : "Otvoriť všetky vybraté",
     "Move selection" : "Presunúť vybraté",
