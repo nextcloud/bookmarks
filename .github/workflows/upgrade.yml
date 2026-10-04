@@ -28,15 +28,10 @@ jobs:
       # do not stop on another job's failure
       fail-fast: false
       matrix:
-        php-versions: ['8.2', '8.3', '8.4', '8.5']
+        php-versions: ['8.3', '8.4', '8.5']
         databases: ['sqlite', 'mysql', 'pgsql']
-        server-versions: ['stable32', 'stable33', 'stable34']
+        server-versions: ['stable35', 'master']
         prev-version: ['stable']
-        include:
-          - databases: 'sqlite'
-            server-versions: 'stable32'
-            php-versions: '8.1'
-            prev-version: 'stable'
 
     name: Update from ${{ matrix.prev-version }} on ${{ matrix.databases }}-${{ matrix.server-versions }}
 
