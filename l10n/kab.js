@@ -36,6 +36,7 @@ OC.L10N.register(
     "Folder" : "Akaram",
     "Save" : "Sekles",
     "What" : "Acu",
-    "Import successful" : "Taktert tella-d akken ilaq"
+    "Import successful" : "Taktert tella-d akken ilaq",
+    "Failed to load tags" : "Yecceḍ usali n tebzimin"
 },
 "nplurals=2; plural=(n != 1);");
