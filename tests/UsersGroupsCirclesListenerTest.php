@@ -257,4 +257,44 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 			$group->delete();
 		}
 	}
+
+	/**
+	 * Deleting a share must keep the shared folder of participants who still have
+	 * access to the folder through another share, and remove everyone else's.
+	 */
+	public function testDeletedShareKeepsFolderForUsersCoveredByOtherShare(): void {
+		$ownerId = $this->createUser('deleted_share_owner');
+		$coveredId = $this->createUser('deleted_share_covered_member');
+		$otherId = $this->createUser('deleted_share_other_member');
+		$group = $this->groupManager->createGroup('deleted_share');
+		$group->addUser($this->userManager->get($coveredId));
+		$group->addUser($this->userManager->get($otherId));
+		try {
+			$folder = $this->createFolder($ownerId);
+			$groupShare = $this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
+			$userShare = $this->folders->createShare($folder->getId(), $coveredId, IShare::TYPE_USER);
+			$coveredSharedFolderId = $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $coveredId)[0]->getId();
+			$otherSharedFolderId = $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $otherId)[0]->getId();
+
+			$this->folders->deleteShare($groupShare->getId());
+
+			try {
+				$this->shareMapper->find($groupShare->getId());
+				$this->fail('Share should have been deleted');
+			} catch (DoesNotExistException $e) {
+				// expected
+			}
+			$this->assertCount(0, $this->sharedFolderMapper->findByShare($groupShare->getId()));
+			// The covered member keeps the same shared folder, now through the direct share
+			$sharedFolders = $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $coveredId);
+			$this->assertCount(1, $sharedFolders);
+			$this->assertEquals($coveredSharedFolderId, $sharedFolders[0]->getId());
+			$this->assertTrue($this->shareTreeRowExists($coveredSharedFolderId));
+			// The other member loses it
+			$this->assertCount(0, $this->sharedFolderMapper->findByUser($otherId));
+			$this->assertFalse($this->shareTreeRowExists($otherSharedFolderId));
+		} finally {
+			$group->delete();
+		}
+	}
 }

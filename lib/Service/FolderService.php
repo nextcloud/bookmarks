@@ -56,6 +56,7 @@ class FolderService {
 		private IEventDispatcher $eventDispatcher,
 		private CirclesService $circlesService,
 		private SettingsService $settings,
+		private Authorizer $authorizer,
 	) {
 	}
 
@@ -181,7 +182,64 @@ class FolderService {
 	 * @throws Exception
 	 */
 	public function deleteShare($shareId): void {
+		// Participants that still have access to the folder through another share keep their shared folder
+		$share = $this->shareMapper->find($shareId);
+		$userIds = array_unique(array_map(static fn (SharedFolder $sharedFolder) => $sharedFolder->getUserId(), $this->sharedFolderMapper->findByShare($share->getId())));
+		foreach ($userIds as $userId) {
+			$this->removeSharedFolderOfUser($share, $userId);
+		}
 		$this->treeMapper->deleteShare($shareId);
+	}
+
+	/**
+	 * Removes the shared folder that the user received through the given share. If the user still
+	 * has access to the folder through another share, their shared folder is moved over to that share
+	 * instead of being deleted, so that it stays where the user put it.
+	 */
+	public function removeSharedFolderOfUser(Share $share, string $userId): void {
+		try {
+			$sharedFolders = $this->sharedFolderMapper->findByShareAndUser($share->getId(), $userId);
+		} catch (Exception $e) {
+			return;
+		}
+		if (count($sharedFolders) === 0) {
+			return;
+		}
+		try {
+			$otherShare = $this->findOtherShareOfUser($share, $userId);
+			if ($otherShare !== null && count($this->sharedFolderMapper->findByShareAndUser($otherShare->getId(), $userId)) > 0) {
+				// the user already has the folder through the other share
+				$otherShare = null;
+			}
+		} catch (Exception $e) {
+			$otherShare = null;
+		}
+		foreach ($sharedFolders as $sharedFolder) {
+			try {
+				if ($otherShare !== null) {
+					$this->sharedFolderMapper->remount($sharedFolder->getId(), $otherShare->getId());
+					$otherShare = null;
+					continue;
+				}
+				$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+				$this->sharedFolderMapper->delete($sharedFolder);
+			} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+			}
+		}
+	}
+
+	/**
+	 * Finds another share of the same folder that the user is a participant of
+	 *
+	 * @throws Exception
+	 */
+	private function findOtherShareOfUser(Share $share, string $userId): ?Share {
+		foreach ($this->shareMapper->findByFolder($share->getFolderId()) as $otherShare) {
+			if ($otherShare->getId() !== $share->getId() && $this->authorizer->isUserParticipantOfShare($otherShare, $userId)) {
+				return $otherShare;
+			}
+		}
+		return null;
 	}
 
 	/**

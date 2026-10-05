@@ -15,7 +15,6 @@ use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
-use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\CirclesService;
 use OCA\Bookmarks\Service\FolderService;
@@ -41,7 +40,6 @@ class UsersGroupsCirclesListener implements IEventListener {
 		private SharedFolderMapper $sharedFolderMapper,
 		private TreeMapper $treeMapper,
 		private CirclesService $circlesService,
-		private Authorizer $authorizer,
 		private BookmarkService $bookmarksService,
 	) {
 	}
@@ -72,7 +70,7 @@ class UsersGroupsCirclesListener implements IEventListener {
 					if ($event instanceof MembershipsCreatedEvent) {
 						$this->addParticipantToShare($share, $userId);
 					} else {
-						$this->removeParticipantFromShare($share, $userId);
+						$this->folderService->removeSharedFolderOfUser($share, $userId);
 					}
 				}
 			}
@@ -116,7 +114,7 @@ class UsersGroupsCirclesListener implements IEventListener {
 		if ($event instanceof UserRemovedEvent) {
 			$shares = $this->shareMapper->findByParticipant(IShare::TYPE_GROUP, $event->getGroup()->getGID());
 			foreach ($shares as $share) {
-				$this->removeParticipantFromShare($share, $event->getUser()->getUID());
+				$this->folderService->removeSharedFolderOfUser($share, $event->getUser()->getUID());
 			}
 		}
 		if ($event instanceof BeforeGroupDeletedEvent) {
@@ -129,54 +127,6 @@ class UsersGroupsCirclesListener implements IEventListener {
 				}
 			}
 		}
-	}
-
-	private function removeParticipantFromShare(Share $share, string $userId): void {
-		try {
-			$sharedFoldersToDelete = $this->sharedFolderMapper->findByShareAndUser($share->getId(), $userId);
-		} catch (Exception $e) {
-			return;
-		}
-		if (count($sharedFoldersToDelete) === 0) {
-			return;
-		}
-		// If the user still has access to the folder through another share, move their shared folder over
-		// to that share instead of deleting it, so that it stays where the user put it
-		try {
-			$otherShare = $this->findOtherShareOfUser($share, $userId);
-			if ($otherShare !== null && count($this->sharedFolderMapper->findByShareAndUser($otherShare->getId(), $userId)) > 0) {
-				// the user already has the folder through the other share
-				$otherShare = null;
-			}
-		} catch (Exception $e) {
-			$otherShare = null;
-		}
-		foreach ($sharedFoldersToDelete as $sharedFolder) {
-			try {
-				if ($otherShare !== null) {
-					$this->sharedFolderMapper->remount($sharedFolder->getId(), $otherShare->getId());
-					$otherShare = null;
-					continue;
-				}
-				$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
-				$this->sharedFolderMapper->delete($sharedFolder);
-			} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
-			}
-		}
-	}
-
-	/**
-	 * Finds another share of the same folder that the user is a participant of
-	 *
-	 * @throws Exception
-	 */
-	private function findOtherShareOfUser(Share $share, string $userId): ?Share {
-		foreach ($this->shareMapper->findByFolder($share->getFolderId()) as $otherShare) {
-			if ($otherShare->getId() !== $share->getId() && $this->authorizer->isUserParticipantOfShare($otherShare, $userId)) {
-				return $otherShare;
-			}
-		}
-		return null;
 	}
 
 	private function addParticipantToShare(Share $share, string $userId): void {
