@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\Db;
 
 use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\UpdateEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -239,6 +240,23 @@ class SharedFolderMapper extends QBMapper {
 			'share_id' => $qb->createPositionalParameter($share_id, IQueryBuilder::PARAM_INT)
 		])->executeStatement();
 		$this->eventDispatcher->dispatch(CreateEvent::class, new CreateEvent(
+			TreeMapper::TYPE_SHARE,
+			$id
+		));
+	}
+
+	/**
+	 * Moves an existing shared folder over to another share of the same folder
+	 *
+	 * @throws Exception
+	 */
+	public function remount(int $id, int $shareId): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb->update('bookmarks_shared_to_shares')
+			->set('share_id', $qb->createPositionalParameter($shareId, IQueryBuilder::PARAM_INT))
+			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($id, IQueryBuilder::PARAM_INT)))
+			->executeStatement();
+		$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(
 			TreeMapper::TYPE_SHARE,
 			$id
 		));

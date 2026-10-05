@@ -29,6 +29,7 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\Group\Events\BeforeGroupDeletedEvent;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
+use OCP\IGroupManager;
 use OCP\Share\IShare;
 use OCP\User\Events\BeforeUserDeletedEvent;
 
@@ -40,6 +41,7 @@ class UsersGroupsCirclesListener implements IEventListener {
 		private SharedFolderMapper $sharedFolderMapper,
 		private TreeMapper $treeMapper,
 		private CirclesService $circlesService,
+		private IGroupManager $groupManager,
 		private BookmarkService $bookmarksService,
 	) {
 	}
@@ -121,13 +123,56 @@ class UsersGroupsCirclesListener implements IEventListener {
 		} catch (Exception $e) {
 			return;
 		}
+		if (count($sharedFoldersToDelete) === 0) {
+			return;
+		}
+		// If the user still has access to the folder through another share, move their shared folder over
+		// to that share instead of deleting it, so that it stays where the user put it
+		try {
+			$otherShare = $this->findOtherShareOfUser($share, $userId);
+			if ($otherShare !== null && count($this->sharedFolderMapper->findByShareAndUser($otherShare->getId(), $userId)) > 0) {
+				// the user already has the folder through the other share
+				$otherShare = null;
+			}
+		} catch (Exception $e) {
+			$otherShare = null;
+		}
 		foreach ($sharedFoldersToDelete as $sharedFolder) {
 			try {
+				if ($otherShare !== null) {
+					$this->sharedFolderMapper->remount($sharedFolder->getId(), $otherShare->getId());
+					$otherShare = null;
+					continue;
+				}
 				$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
 				$this->sharedFolderMapper->delete($sharedFolder);
 			} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 			}
 		}
+	}
+
+	/**
+	 * Finds another share of the same folder that the user is a participant of
+	 *
+	 * @throws Exception
+	 */
+	private function findOtherShareOfUser(Share $share, string $userId): ?Share {
+		foreach ($this->shareMapper->findByFolder($share->getFolderId()) as $otherShare) {
+			if ($otherShare->getId() === $share->getId()) {
+				continue;
+			}
+			$participant = $otherShare->getParticipant();
+			$isParticipant = match ($otherShare->getType()) {
+				IShare::TYPE_USER => $participant === $userId,
+				IShare::TYPE_GROUP => $this->groupManager->isInGroup($userId, $participant),
+				IShare::TYPE_CIRCLE => in_array($userId, $this->circlesService->getUserIdsOfCircle($participant), true),
+				default => false,
+			};
+			if ($isParticipant) {
+				return $otherShare;
+			}
+		}
+		return null;
 	}
 
 	private function addParticipantToShare(Share $share, string $userId): void {
