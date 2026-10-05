@@ -179,4 +179,79 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 		$this->assertCount(1, $remainingSharedFolders);
 		$this->assertTrue($this->shareTreeRowExists($remainingSharedFolders[0]->getId()));
 	}
+
+	private function createFolder(string $ownerId): Db\Folder {
+		$folder = new Db\Folder();
+		$folder->setTitle('shared twice');
+		$folder->setUserId($ownerId);
+		$this->folderMapper->insert($folder);
+		$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $folder->getId(), $this->folderMapper->findRootFolder($ownerId)->getId());
+		return $folder;
+	}
+
+	/**
+	 * A user who leaves a group but still has access to the folder through a share
+	 * with another group must keep their shared folder, moved over to the other share.
+	 */
+	public function testUserRemovedFromGroupKeepsFolderSharedWithOtherGroup(): void {
+		$ownerId = $this->createUser('two_groups_owner');
+		$memberId = $this->createUser('two_groups_member');
+		$firstGroup = $this->groupManager->createGroup('two_groups_first');
+		$secondGroup = $this->groupManager->createGroup('two_groups_second');
+		$firstGroup->addUser($this->userManager->get($memberId));
+		$secondGroup->addUser($this->userManager->get($memberId));
+		try {
+			$folder = $this->createFolder($ownerId);
+			$firstShare = $this->folders->createShare($folder->getId(), $firstGroup->getGID(), IShare::TYPE_GROUP);
+			$secondShare = $this->folders->createShare($folder->getId(), $secondGroup->getGID(), IShare::TYPE_GROUP);
+			// The member only gets one shared folder, through the share that was created first
+			$sharedFolders = $this->sharedFolderMapper->findByShareAndUser($firstShare->getId(), $memberId);
+			$this->assertCount(1, $sharedFolders);
+			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($secondShare->getId(), $memberId));
+			$sharedFolderId = $sharedFolders[0]->getId();
+
+			$firstGroup->removeUser($this->userManager->get($memberId));
+
+			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($firstShare->getId(), $memberId));
+			$sharedFolders = $this->sharedFolderMapper->findByShareAndUser($secondShare->getId(), $memberId);
+			$this->assertCount(1, $sharedFolders);
+			// It's the same shared folder, still in place
+			$this->assertEquals($sharedFolderId, $sharedFolders[0]->getId());
+			$this->assertTrue($this->shareTreeRowExists($sharedFolderId));
+
+			$secondGroup->removeUser($this->userManager->get($memberId));
+
+			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($secondShare->getId(), $memberId));
+			$this->assertFalse($this->shareTreeRowExists($sharedFolderId));
+		} finally {
+			$firstGroup->delete();
+			$secondGroup->delete();
+		}
+	}
+
+	/**
+	 * A user who leaves a group but also has the folder shared with them directly
+	 * must keep exactly one shared folder.
+	 */
+	public function testUserRemovedFromGroupKeepsFolderSharedDirectly(): void {
+		$ownerId = $this->createUser('group_and_user_owner');
+		$memberId = $this->createUser('group_and_user_member');
+		$group = $this->groupManager->createGroup('group_and_user');
+		$group->addUser($this->userManager->get($memberId));
+		try {
+			$folder = $this->createFolder($ownerId);
+			$groupShare = $this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
+			$userShare = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
+			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
+
+			$group->removeUser($this->userManager->get($memberId));
+
+			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
+			$sharedFolders = $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId);
+			$this->assertCount(1, $sharedFolders);
+			$this->assertTrue($this->shareTreeRowExists($sharedFolders[0]->getId()));
+		} finally {
+			$group->delete();
+		}
+	}
 }

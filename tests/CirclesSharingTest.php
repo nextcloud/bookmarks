@@ -286,4 +286,56 @@ class CirclesSharingTest extends TestCase {
 			$group->delete();
 		}
 	}
+
+	/**
+	 * A user who leaves a group but is still covered by a circle share of the same
+	 * folder must keep their shared folder, moved over to the circle share, and
+	 * vice versa.
+	 */
+	public function testUserKeepsFolderSharedWithGroupAndCircleUntilRemovedFromBoth(): void {
+		$memberId = $this->createUser('circle_share_group_or_circle_member');
+		$group = $this->groupManager->createGroup('circle_share_group_or_circle');
+		$group->addUser($this->userManager->get($memberId));
+		try {
+			$circle = $this->createCircle('group_or_circle');
+			$member = $this->addUserToCircle($circle, $memberId);
+			$folder = $this->createFolder();
+			$groupShare = $this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
+			$circleShare = $this->folders->createShare($folder->getId(), $circle->getSingleId(), IShare::TYPE_CIRCLE);
+			$this->assertHasSharedFolder($groupShare, $memberId);
+			$this->assertHasNoSharedFolder($circleShare, $memberId);
+			$sharedFolderId = $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId)[0]->getId();
+
+			$group->removeUser($this->userManager->get($memberId));
+
+			$this->assertHasNoSharedFolder($groupShare, $memberId);
+			$this->assertHasSharedFolder($circleShare, $memberId);
+			$this->assertEquals($sharedFolderId, $this->sharedFolderMapper->findByShareAndUser($circleShare->getId(), $memberId)[0]->getId());
+
+			$this->startCirclesSession();
+			$this->circlesManager->removeMember($member->getId());
+
+			$this->assertHasNoSharedFolder($circleShare, $memberId);
+		} finally {
+			$group->delete();
+		}
+	}
+
+	public function testDeletedUserLosesFolderSharedWithCircle(): void {
+		$memberId = $this->createUser('circle_share_deleted_member');
+		$remainingId = $this->createUser('circle_share_remaining_member');
+		$circle = $this->createCircle('deleted_member');
+		$this->addUserToCircle($circle, $memberId);
+		$this->addUserToCircle($circle, $remainingId);
+		$share = $this->shareWithCircle($circle);
+		$this->assertHasSharedFolder($share, $memberId);
+
+		$this->userManager->get($memberId)->delete();
+
+		$this->assertHasNoSharedFolder($share, $memberId);
+		$this->assertCount(0, $this->sharedFolderMapper->findByUser($memberId));
+		// The share and the other members' shared folders are untouched
+		$this->shareMapper->find($share->getId());
+		$this->assertHasSharedFolder($share, $remainingId);
+	}
 }

@@ -92,6 +92,20 @@ class UsersGroupsCirclesListener implements IEventListener {
 					// noop
 				}
 			}
+			// delete the shared folders the user received through groups and circles
+			try {
+				$sharedFoldersToDelete = $this->sharedFolderMapper->findByUser($event->getUser()->getUID());
+			} catch (Exception $e) {
+				$sharedFoldersToDelete = [];
+			}
+			foreach ($sharedFoldersToDelete as $sharedFolder) {
+				try {
+					$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+					$this->sharedFolderMapper->delete($sharedFolder);
+				} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+					// noop
+				}
+			}
 		}
 		if ($event instanceof UserAddedEvent) {
 			$shares = $this->shareMapper->findByParticipant(IShare::TYPE_GROUP, $event->getGroup()->getGID());
