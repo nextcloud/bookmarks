@@ -98,6 +98,25 @@ class SharesRepairStepsTest extends TestCase {
 		}
 	}
 
+	public function testOrphanedSharesRepairStepRemovesSharesOfMissingFolders(): void {
+		$ownerId = $this->createUser('repair_missing_folder_owner');
+		$memberId = $this->createUser('repair_missing_folder_member');
+		$folder = $this->createFolder($ownerId);
+		$share = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
+		$sharedFolderId = $this->sharedFolderMapper->findByShareAndUser($share->getId(), $memberId)[0]->getId();
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks_folders')
+			->where($qb->expr()->eq('id', $qb->createPositionalParameter($folder->getId())))
+			->executeStatement();
+
+		\OCP\Server::get(OrphanedSharesRepairStep::class)->run($this->createMock(IOutput::class));
+
+		$this->assertEquals(0, $this->countRows('bookmarks_shares', 'id', $share->getId()));
+		$this->assertCount(0, $this->sharedFolderMapper->findByUser($memberId));
+		$this->assertEquals(0, $this->countRows('bookmarks_tree', 'id', $sharedFolderId, Db\TreeMapper::TYPE_SHARE));
+		$this->assertEquals(0, $this->countRows('bookmarks_shared_to_shares', 'shared_folder_id', $sharedFolderId));
+	}
+
 	public function testOrphanedSharesRepairStepRemovesEntriesOfMissingSharedFolders(): void {
 		$ownerId = $this->createUser('repair_missing_sf_owner');
 		$memberId = $this->createUser('repair_missing_sf_member');

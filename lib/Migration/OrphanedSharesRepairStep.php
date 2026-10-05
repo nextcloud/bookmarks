@@ -60,8 +60,15 @@ class OrphanedSharesRepairStep implements IRepairStep {
 					->where($qb->expr()->eq('type', $qb->createPositionalParameter('share')))
 					->andWhere($qb->expr()->eq('id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
 					->executeStatement();
+				$qb = $this->db->getQueryBuilder();
+				$qb->delete('bookmarks_shared_folders')
+					->where($qb->expr()->eq('id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
+					->executeStatement();
 			}
-			$this->db->executeQuery('DELETE sf FROM *PREFIX*bookmarks_shared_folders sf JOIN *PREFIX*bookmarks_shared_to_shares t ON sf.id = t.shared_folder_id WHERE t.share_id = ?', [$share]);
+			$qb = $this->db->getQueryBuilder();
+			$qb->delete('bookmarks_shared_to_shares')
+				->where($qb->expr()->eq('share_id', $qb->createPositionalParameter($share, IQueryBuilder::PARAM_INT)))
+				->executeStatement();
 			$qb = $this->db->getQueryBuilder();
 			$qb->delete('bookmarks_shares')
 				->where($qb->expr()->eq('id', $qb->createPositionalParameter($share)))
