@@ -98,8 +98,8 @@ class UsersGroupsCirclesListener implements IEventListener {
 			$sharesToDelete = $this->shareMapper->findByParticipant(IShare::TYPE_USER, $event->getUser()->getUID());
 			foreach ($sharesToDelete as $share) {
 				try {
-					$this->shareMapper->delete($share);
-				} catch (Exception $e) {
+					$this->folderService->deleteShare($share->getId());
+				} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 					// noop
 				}
 			}
@@ -119,7 +119,11 @@ class UsersGroupsCirclesListener implements IEventListener {
 		if ($event instanceof BeforeGroupDeletedEvent) {
 			$sharesToDelete = $this->shareMapper->findByParticipant(IShare::TYPE_GROUP, $event->getGroup()->getGID());
 			foreach ($sharesToDelete as $share) {
-				$this->shareMapper->delete($share);
+				try {
+					$this->folderService->deleteShare($share->getId());
+				} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+					// noop
+				}
 			}
 		}
 	}
@@ -144,13 +148,14 @@ class UsersGroupsCirclesListener implements IEventListener {
 		} elseif ($type === IShare::TYPE_USER) {
 			try {
 				$sharedFoldersToDelete = $this->sharedFolderMapper->findByShareAndUser($share->getId(), $participant);
-			} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+			} catch (Exception $e) {
 				return;
 			}
 			foreach ($sharedFoldersToDelete as $sharedFolder) {
 				try {
 					$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
-				} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException $e) {
+					$this->sharedFolderMapper->delete($sharedFolder);
+				} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 				}
 			}
 		}
@@ -178,11 +183,12 @@ class UsersGroupsCirclesListener implements IEventListener {
 				return;
 			}
 			try {
-				$this->sharedFolderMapper->findByShareAndUser($share->getId(), $participant);
-				// if this does not throw, the user already has this folder
+				if (count($this->sharedFolderMapper->findByShareAndUser($share->getId(), $participant)) > 0) {
+					// the user already has this folder
+					return;
+				}
+			} catch (Exception $e) {
 				return;
-			} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
-				// noop
 			}
 			try {
 				$folder = $this->folderService->findById($share->getFolderId());
