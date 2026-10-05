@@ -240,7 +240,7 @@ OC.L10N.register(
     "Sign up with any of the screenshot API providers and put the API URL below. Use the variable {url} as a placeholder for the URL to screenshot. The API must return only the image directly." : "Melden Sie sich bei einem der Screenshot-API-Anbieter an und geben Sie unten die API-URL ein. Verwenden Sie die Variable {url} als Platzhalter für die URL zum Screenshot. Die API darf nur das Bild direkt zurückgeben.",
     "Generic API URL" : "Generische API-URL",
     "Pageres CLI" : "Pageres-Komandozeile",
-    "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Installieren Sie einfach die Pageres CLI von Sindre Sorhus auf Ihrem Server und Bookmarks wird sie erkennen. Sie können noch weitere ENV-Variablen hinzufügen, die an Pageres weitergeleitet werden sollen, z. B. wie im Platzhalter angegeben:",
+    "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Installieren Sie einfach die Pageres CLI von Sindre Sorhus auf Ihrem Server und Bookmarks wird sie erkennen. Sie können noch weitere ENV-Variablen hinzufügen, die an Pageres weitergeleitet werden sollen, z. B. wie im Platzhalter angegeben:",
     "Pageres ENV variables" : "Pageres ENV-Variablen",
     "This URL is already bookmarked! Overwrite?" : "Diese URL ist bereits als Lesezeichen gespeichert! Überschreiben?",
     "Bookmark saved!" : "Lesezeichen gespeichert!",
