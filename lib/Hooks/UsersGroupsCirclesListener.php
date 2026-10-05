@@ -15,6 +15,7 @@ use OCA\Bookmarks\Db\SharedFolderMapper;
 use OCA\Bookmarks\Db\ShareMapper;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\UnsupportedOperation;
+use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\CirclesService;
 use OCA\Bookmarks\Service\FolderService;
@@ -29,7 +30,6 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\Group\Events\BeforeGroupDeletedEvent;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
-use OCP\IGroupManager;
 use OCP\Share\IShare;
 use OCP\User\Events\BeforeUserDeletedEvent;
 
@@ -41,7 +41,7 @@ class UsersGroupsCirclesListener implements IEventListener {
 		private SharedFolderMapper $sharedFolderMapper,
 		private TreeMapper $treeMapper,
 		private CirclesService $circlesService,
-		private IGroupManager $groupManager,
+		private Authorizer $authorizer,
 		private BookmarkService $bookmarksService,
 	) {
 	}
@@ -172,17 +172,7 @@ class UsersGroupsCirclesListener implements IEventListener {
 	 */
 	private function findOtherShareOfUser(Share $share, string $userId): ?Share {
 		foreach ($this->shareMapper->findByFolder($share->getFolderId()) as $otherShare) {
-			if ($otherShare->getId() === $share->getId()) {
-				continue;
-			}
-			$participant = $otherShare->getParticipant();
-			$isParticipant = match ($otherShare->getType()) {
-				IShare::TYPE_USER => $participant === $userId,
-				IShare::TYPE_GROUP => $this->groupManager->isInGroup($userId, $participant),
-				IShare::TYPE_CIRCLE => in_array($userId, $this->circlesService->getUserIdsOfCircle($participant), true),
-				default => false,
-			};
-			if ($isParticipant) {
+			if ($otherShare->getId() !== $share->getId() && $this->authorizer->isUserParticipantOfShare($otherShare, $userId)) {
 				return $otherShare;
 			}
 		}

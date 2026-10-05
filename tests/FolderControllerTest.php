@@ -153,6 +153,8 @@ class FolderControllerTest extends TestCase {
 			\OCP\Server::get(ICrypto::class),
 			$this->userManager,
 			\OCP\Server::get(\OCP\Security\Bruteforce\IThrottler::class),
+			$this->groupManager,
+			\OCP\Server::get(\OCA\Bookmarks\Service\CirclesService::class),
 		);
 
 		$this->controller = new FoldersController('bookmarks', $this->request, $this->folderMapper, $this->publicFolderMapper, $this->shareMapper, $this->treeMapper, $this->authorizer, $this->hashManager, $this->folders, $this->bookmarks, $loggerInterface, $this->userManager);

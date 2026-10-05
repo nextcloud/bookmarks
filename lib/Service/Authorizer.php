@@ -19,11 +19,13 @@ use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Exception\UnauthenticatedError;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Security\Bruteforce\IThrottler;
 use OCP\Security\ICrypto;
+use OCP\Share\IShare;
 
 class Authorizer {
 	public const PERM_NONE = 0;
@@ -53,6 +55,8 @@ class Authorizer {
 		private ICrypto $crypto,
 		private IUserManager $userManager,
 		private IThrottler $throttler,
+		private IGroupManager $groupManager,
+		private CirclesService $circlesService,
 	) {
 	}
 
@@ -301,6 +305,9 @@ class Authorizer {
 			return self::PERM_ALL;
 		}
 
+		// A user may be covered by several shares of the same folder (e.g. directly and through a group),
+		// but only gets one shared folder. They get the combined permissions of all shares they are a participant of.
+		$coveringShares = [];
 		$shares = $this->shareMapper->findByOwner($item->getUserId());
 		foreach ($shares as $share) {
 			if ($share->getFolderId() === $itemId && $type === TreeMapper::TYPE_FOLDER) {
@@ -312,20 +319,68 @@ class Authorizer {
 			} else {
 				continue;
 			}
+			$coveringShares[] = [$share, $perms];
+		}
 
-			$sharedFolders = $this->sharedFolderMapper->findByShare($share->getId());
-			foreach ($sharedFolders as $sharedFolder) {
+		// Being a participant only adds permissions, the user needs to actually have a shared folder to get access
+		$hasAccess = false;
+		$accessPerms = self::PERM_NONE;
+		$sharedFoldersByShare = [];
+		foreach ($coveringShares as [$share, $perms]) {
+			$sharedFoldersByShare[$share->getId()] = $this->sharedFolderMapper->findByShare($share->getId());
+			foreach ($sharedFoldersByShare[$share->getId()] as $sharedFolder) {
 				if ($sharedFolder->getUserId() === $userId) {
-					return $perms;
-				}
-				$secondLevelPerms = $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_SHARE, $sharedFolder->getId());
-				if ($secondLevelPerms !== self::PERM_NONE) {
-					return $perms & $secondLevelPerms;
+					$hasAccess = true;
+					$accessPerms |= $perms;
 				}
 			}
 		}
+		if ($hasAccess) {
+			return $this->addParticipantPermissions($accessPerms, $coveringShares, $userId);
+		}
+
+		// The user may have access through someone who re-shared a folder they received
+		foreach ($coveringShares as [$share, $perms]) {
+			foreach ($sharedFoldersByShare[$share->getId()] as $sharedFolder) {
+				$secondLevelPerms = $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+				if ($secondLevelPerms !== self::PERM_NONE) {
+					$hasAccess = true;
+					$accessPerms |= $perms & $secondLevelPerms;
+				}
+			}
+		}
+		if ($hasAccess) {
+			return $this->addParticipantPermissions($accessPerms, $coveringShares, $userId);
+		}
 
 		return self::PERM_NONE;
+	}
+
+	/**
+	 * @param list<array{0: Share, 1: int}> $coveringShares
+	 * @return 0|positive-int
+	 */
+	private function addParticipantPermissions(int $perms, array $coveringShares, string $userId): int {
+		foreach ($coveringShares as [$share, $sharePerms]) {
+			if (($perms | $sharePerms) !== $perms && $this->isUserParticipantOfShare($share, $userId)) {
+				$perms |= $sharePerms;
+			}
+		}
+		return $perms;
+	}
+
+	/**
+	 * Whether the user is one of the participants of the share, directly or through a group or circle,
+	 * regardless of whether they have a shared folder for it
+	 */
+	public function isUserParticipantOfShare(Share $share, string $userId): bool {
+		$participant = $share->getParticipant();
+		return match ($share->getType()) {
+			IShare::TYPE_USER => $participant === $userId,
+			IShare::TYPE_GROUP => $this->groupManager->isInGroup($userId, $participant),
+			IShare::TYPE_CIRCLE => in_array($userId, $this->circlesService->getUserIdsOfCircle($participant), true),
+			default => false,
+		};
 	}
 
 	/**
