@@ -20,6 +20,7 @@ use Throwable;
  */
 class CirclesService {
 	public const TYPE = 1;
+	public const TYPE_CIRCLE = 16;
 	public const LEVEL_MEMBER = 1;
 	private bool $circlesEnabled;
 
@@ -39,11 +40,7 @@ class CirclesService {
 		}
 
 		try {
-
-			// Enforce current user condition since we always want the full list of members
-			$circlesManager = Server::get('OCA\Circles\CirclesManager');
-			$circlesManager->startSuperSession();
-			return $circlesManager->getCircle($circleId);
+			return $this->fetchCircle($circleId);
 		} catch (Throwable $e) {
 		}
 		return null;
@@ -58,16 +55,27 @@ class CirclesService {
 		}
 
 		try {
-			$circlesManager = Server::get('OCA\Circles\CirclesManager');
-			$circlesManager->startSuperSession();
-			$circlesManager->getCircle($circleId);
+			$this->fetchCircle($circleId);
 			return true;
 		} catch (Throwable $e) {
-			if (is_a($e, 'OCA\Circles\Exceptions\CircleNotFoundException')) {
+			if (is_a($e, 'OCA\Circles\Exceptions\FederatedUserNotFoundException')) {
 				return false;
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Looks up a circle without the visibility checks of the current circles session.
+	 * CirclesManager::getCircle() filters by the session's initiator, and a super session
+	 * doesn't help once circles has set a current app, which it does whenever it syncs a
+	 * group (e.g. on group creation or membership changes) and never resets.
+	 *
+	 * @throws Throwable
+	 */
+	private function fetchCircle(string $circleId) {
+		$circlesManager = Server::get('OCA\Circles\CirclesManager');
+		return $circlesManager->getFederatedUser($circleId, self::TYPE_CIRCLE)->getBasedOn();
 	}
 
 	/**

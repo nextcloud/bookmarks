@@ -84,7 +84,7 @@ class CirclesSharingTest extends TestCase {
 
 	private function createCircle(string $name): Circle {
 		$this->startCirclesSession();
-		$circle = $this->circlesManager->createCircle($name . '_' . uniqid(), null, false, true, false);
+		$circle = $this->circlesManager->createCircle($name . '_' . uniqid(), null, false, false, false);
 		$this->circles[] = $circle->getSingleId();
 		return $circle;
 	}
