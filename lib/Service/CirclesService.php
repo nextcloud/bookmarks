@@ -20,6 +20,8 @@ use Throwable;
  */
 class CirclesService {
 	public const TYPE = 1;
+	public const TYPE_GROUP = 2;
+	public const TYPE_CIRCLE = 16;
 	public const LEVEL_MEMBER = 1;
 	private bool $circlesEnabled;
 
@@ -47,6 +49,55 @@ class CirclesService {
 		} catch (Throwable $e) {
 		}
 		return null;
+	}
+
+	/**
+	 * Resolves a circle to the local users it contains, including users that are
+	 * members through groups or nested circles
+	 *
+	 * @param string $circleId circle single id
+	 * @return string[] user ids
+	 */
+	public function getUserIdsOfCircle(string $circleId): array {
+		$circle = $this->getCircle($circleId);
+		if ($circle === null) {
+			return [];
+		}
+
+		try {
+			$userIds = [];
+			foreach ($circle->getInheritedMembers() as $member) {
+				if ($member->getUserType() === self::TYPE) {
+					$userIds[] = $member->getUserId();
+				}
+			}
+			return array_values(array_unique($userIds));
+		} catch (Throwable $e) {
+		}
+		return [];
+	}
+
+	/**
+	 * @param string $circleId circle single id
+	 * @return string[] single ids of the circles that this circle is a member of, directly or indirectly
+	 */
+	public function getParentCircleIds(string $circleId): array {
+		$circle = $this->getCircle($circleId);
+		if ($circle === null) {
+			return [];
+		}
+
+		try {
+			$circleIds = [];
+			foreach ($circle->getMemberships() as $membership) {
+				if ($membership->getCircleId() !== $circleId) {
+					$circleIds[] = $membership->getCircleId();
+				}
+			}
+			return array_values(array_unique($circleIds));
+		} catch (Throwable $e) {
+		}
+		return [];
 	}
 
 	public function isUserInCircle(string $circleId, string $userId): bool {

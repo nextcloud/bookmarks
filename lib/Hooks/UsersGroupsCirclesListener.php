@@ -20,9 +20,7 @@ use OCA\Bookmarks\Service\CirclesService;
 use OCA\Bookmarks\Service\FolderService;
 use OCA\Circles\Events\CircleDestroyedEvent;
 use OCA\Circles\Events\CircleMemberAddedEvent;
-use OCA\Circles\Events\CircleMemberGenericEvent;
 use OCA\Circles\Events\CircleMemberRemovedEvent;
-use OCA\Circles\Model\Federated\FederatedEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\DB\Exception;
@@ -35,7 +33,7 @@ use OCP\IGroupManager;
 use OCP\Share\IShare;
 use OCP\User\Events\BeforeUserDeletedEvent;
 
-/** @template-implements IEventListener<Event|CircleDestroyedEvent|CircleMemberGenericEvent|BeforeUserDeletedEvent|UserAddedEvent|UserRemovedEvent|BeforeGroupDeletedEvent> */
+/** @template-implements IEventListener<Event|CircleDestroyedEvent|CircleMemberAddedEvent|CircleMemberRemovedEvent|BeforeUserDeletedEvent|UserAddedEvent|UserRemovedEvent|BeforeGroupDeletedEvent> */
 class UsersGroupsCirclesListener implements IEventListener {
 	public function __construct(
 		private ShareMapper $shareMapper,
@@ -54,37 +52,37 @@ class UsersGroupsCirclesListener implements IEventListener {
 			foreach ($shares as $share) {
 				try {
 					$this->folderService->deleteShare($share->getId());
-				} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException $e) {
+				} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 				}
 			}
 		}
-		if ($event instanceof CircleMemberGenericEvent) {
-			if ($event instanceof CircleMemberAddedEvent) {
-				$shares = $this->shareMapper->findByParticipant(IShare::TYPE_CIRCLE, $event->getCircle()->getSingleId());
-				foreach ($shares as $share) {
-					$this->addParticipantToShare($share, $event->getMember()->getUserType(), $event->getMember()->getUserId());
-				}
-				// propagate upward
-				foreach ($event->getCircle()->getMemberships() as $membership) {
-					$circle = $this->circlesService->getCircle($membership->getSingleId());
-					$federatedEvent = new FederatedEvent();
-					$federatedEvent->setCircle($circle);
-					$federatedEvent->setMember($event->getMember());
-					$this->handle(new CircleMemberAddedEvent($federatedEvent));
-				}
+		if ($event instanceof CircleMemberAddedEvent || $event instanceof CircleMemberRemovedEvent) {
+			if (!$event->hasMember()) {
+				return;
 			}
-			if ($event instanceof CircleMemberRemovedEvent) {
-				$shares = $this->shareMapper->findByParticipant(IShare::TYPE_CIRCLE, $event->getCircle()->getSingleId());
-				foreach ($shares as $share) {
-					$this->removeParticipantFromShare($share, $event->getMember()->getUserType(), $event->getMember()->getUserId());
+			$circleId = $event->getCircle()->getSingleId();
+			$userIds = $this->getUserIdsOfCircleMember($event->getMember());
+			// Shares with circles that contain this circle are affected, too
+			$circleIds = array_merge([$circleId], $this->circlesService->getParentCircleIds($circleId));
+			foreach ($circleIds as $affectedCircleId) {
+				$shares = $this->shareMapper->findByParticipant(IShare::TYPE_CIRCLE, $affectedCircleId);
+				if (count($shares) === 0) {
+					continue;
 				}
-				// propagate upward
-				foreach ($event->getCircle()->getMemberships() as $membership) {
-					$circle = $this->circlesService->getCircle($membership->getSingleId());
-					$federatedEvent = new FederatedEvent();
-					$federatedEvent->setCircle($circle);
-					$federatedEvent->setMember($event->getMember());
-					$this->handle(new CircleMemberRemovedEvent($federatedEvent));
+				if ($event instanceof CircleMemberAddedEvent) {
+					$affectedUserIds = $userIds;
+				} else {
+					// Users may still be members of the circle by some other way
+					$affectedUserIds = array_diff($userIds, $this->circlesService->getUserIdsOfCircle($affectedCircleId));
+				}
+				foreach ($shares as $share) {
+					foreach ($affectedUserIds as $userId) {
+						if ($event instanceof CircleMemberAddedEvent) {
+							$this->addParticipantToShare($share, $userId);
+						} else {
+							$this->removeParticipantFromShare($share, $userId);
+						}
+					}
 				}
 			}
 		}
@@ -107,13 +105,13 @@ class UsersGroupsCirclesListener implements IEventListener {
 		if ($event instanceof UserAddedEvent) {
 			$shares = $this->shareMapper->findByParticipant(IShare::TYPE_GROUP, $event->getGroup()->getGID());
 			foreach ($shares as $share) {
-				$this->addParticipantToShare($share, IShare::TYPE_USER, $event->getUser()->getUID());
+				$this->addParticipantToShare($share, $event->getUser()->getUID());
 			}
 		}
 		if ($event instanceof UserRemovedEvent) {
 			$shares = $this->shareMapper->findByParticipant(IShare::TYPE_GROUP, $event->getGroup()->getGID());
 			foreach ($shares as $share) {
-				$this->removeParticipantFromShare($share, IShare::TYPE_USER, $event->getUser()->getUID());
+				$this->removeParticipantFromShare($share, $event->getUser()->getUID());
 			}
 		}
 		if ($event instanceof BeforeGroupDeletedEvent) {
@@ -128,73 +126,58 @@ class UsersGroupsCirclesListener implements IEventListener {
 		}
 	}
 
-	private function removeParticipantFromShare(Share $share, int $type, string $participant): void {
-		if ($type === IShare::TYPE_CIRCLE) {
-			$circle = $this->circlesService->getCircle($participant);
-			if ($circle === null) {
-				return;
-			}
-			foreach ($circle->getMembers() as $member) {
-				$this->removeParticipantFromShare($share, $member->getUserType(), $member->getUserId());
-			}
-		} elseif ($type === IShare::TYPE_GROUP) {
-			$group = $this->groupManager->get($participant);
-			if ($group === null) {
-				return;
-			}
-			foreach ($group->getUsers() as $user) {
-				$this->removeParticipantFromShare($share, IShare::TYPE_USER, $user->getUID());
-			}
-		} elseif ($type === IShare::TYPE_USER) {
-			try {
-				$sharedFoldersToDelete = $this->sharedFolderMapper->findByShareAndUser($share->getId(), $participant);
-			} catch (Exception $e) {
-				return;
-			}
-			foreach ($sharedFoldersToDelete as $sharedFolder) {
-				try {
-					$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
-					$this->sharedFolderMapper->delete($sharedFolder);
-				} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
+	/**
+	 * @param \OCA\Circles\Model\Member $member
+	 * @return string[] user ids
+	 */
+	private function getUserIdsOfCircleMember($member): array {
+		switch ($member->getUserType()) {
+			case CirclesService::TYPE:
+				return [$member->getUserId()];
+			case CirclesService::TYPE_GROUP:
+				$group = $this->groupManager->get($member->getUserId());
+				if ($group === null) {
+					return [];
 				}
+				return array_map(static fn ($user) => $user->getUID(), $group->getUsers());
+			case CirclesService::TYPE_CIRCLE:
+				return $this->circlesService->getUserIdsOfCircle($member->getSingleId());
+			default:
+				return [];
+		}
+	}
+
+	private function removeParticipantFromShare(Share $share, string $userId): void {
+		try {
+			$sharedFoldersToDelete = $this->sharedFolderMapper->findByShareAndUser($share->getId(), $userId);
+		} catch (Exception $e) {
+			return;
+		}
+		foreach ($sharedFoldersToDelete as $sharedFolder) {
+			try {
+				$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+				$this->sharedFolderMapper->delete($sharedFolder);
+			} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 			}
 		}
 	}
 
-	private function addParticipantToShare(Share $share, int $type, string $participant): void {
-		if ($type === IShare::TYPE_CIRCLE) {
-			$circle = $this->circlesService->getCircle($participant);
-			if ($circle === null) {
+	private function addParticipantToShare(Share $share, string $userId): void {
+		if ($share->getOwner() === $userId) {
+			return;
+		}
+		try {
+			if (count($this->sharedFolderMapper->findByShareAndUser($share->getId(), $userId)) > 0) {
+				// the user already has this folder
 				return;
 			}
-			foreach ($circle->getMembers() as $member) {
-				$this->addParticipantToShare($share, $member->getUserType(), $member->getUserId());
-			}
-		} elseif ($type === IShare::TYPE_GROUP) {
-			$group = $this->groupManager->get($participant);
-			if ($group === null) {
-				return;
-			}
-			foreach ($group->getUsers() as $user) {
-				$this->addParticipantToShare($share, IShare::TYPE_USER, $user->getUID());
-			}
-		} elseif ($type === IShare::TYPE_USER) {
-			if ($share->getOwner() === $participant) {
-				return;
-			}
-			try {
-				if (count($this->sharedFolderMapper->findByShareAndUser($share->getId(), $participant)) > 0) {
-					// the user already has this folder
-					return;
-				}
-			} catch (Exception $e) {
-				return;
-			}
-			try {
-				$folder = $this->folderService->findById($share->getFolderId());
-				$this->folderService->addSharedFolder($share, $folder, $participant);
-			} catch (DoesNotExistException|MultipleObjectsReturnedException|UnsupportedOperation $e) {
-			}
+		} catch (Exception $e) {
+			return;
+		}
+		try {
+			$folder = $this->folderService->findById($share->getFolderId());
+			$this->folderService->addSharedFolder($share, $folder, $userId);
+		} catch (DoesNotExistException|MultipleObjectsReturnedException|UnsupportedOperation $e) {
 		}
 	}
 }

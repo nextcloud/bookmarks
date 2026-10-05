@@ -365,9 +365,8 @@ class FolderService {
 				$this->shareMapper->insert($share);
 			}
 
-			$members = $circle->getMembers();
-			foreach ($members as $member) {
-				$this->addSharedFolderForParticipant($share, $folder, $member->getUserType(), $member->getUserId(), false);
+			foreach ($this->circlesService->getUserIdsOfCircle($participant) as $userId) {
+				$this->addSharedFolderForParticipant($share, $folder, IShare::TYPE_USER, $userId, false);
 			}
 		}
 		if ($type === IShare::TYPE_GROUP) {
