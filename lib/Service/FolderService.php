@@ -229,6 +229,82 @@ class FolderService {
 	}
 
 	/**
+	 * Makes sure that the current members of a group or circle share have the shared folder and that
+	 * former members don't. Deletes the share if its group or circle doesn't exist anymore.
+	 *
+	 * @return array{added: int, removed: int, deleted: bool}
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws Exception
+	 */
+	public function syncShareParticipants(Share $share): array {
+		$result = ['added' => 0, 'removed' => 0, 'deleted' => false];
+		$userIds = null;
+		if ($share->getType() === IShare::TYPE_GROUP) {
+			$group = $this->groupManager->get($share->getParticipant());
+			if ($group !== null) {
+				$userIds = array_map(static fn ($user) => $user->getUID(), $group->getUsers());
+			}
+		} elseif ($share->getType() === IShare::TYPE_CIRCLE) {
+			$circleExists = $this->circlesService->circleExists($share->getParticipant());
+			if ($circleExists === null) {
+				// We can't tell right now, so better not touch anything
+				return $result;
+			}
+			if ($circleExists) {
+				$userIds = $this->circlesService->getUserIdsOfCircle($share->getParticipant());
+				if (count($userIds) === 0) {
+					// A circle always has an owner, so looking up its members probably failed
+					return $result;
+				}
+			}
+		} else {
+			throw new UnsupportedOperation('Only group and circle shares can be synced');
+		}
+
+		if ($userIds === null) {
+			$this->deleteShare($share->getId());
+			$result['deleted'] = true;
+			return $result;
+		}
+
+		$formerUserIds = [];
+		foreach ($this->sharedFolderMapper->findByShare($share->getId()) as $sharedFolder) {
+			if (!in_array($sharedFolder->getUserId(), $userIds, true)) {
+				$formerUserIds[] = $sharedFolder->getUserId();
+			}
+		}
+		foreach (array_unique($formerUserIds) as $userId) {
+			$this->removeSharedFolderOfUser($share, $userId);
+			$result['removed']++;
+		}
+
+		$folder = $this->folderMapper->find($share->getFolderId());
+		foreach ($userIds as $userId) {
+			if ($userId === $folder->getUserId()) {
+				continue;
+			}
+			try {
+				// This also covers users who have the folder through another share
+				if ($this->treeMapper->isFolderSharedWithUser($folder->getId(), $userId)) {
+					continue;
+				}
+			} catch (MultipleObjectsReturnedException $e) {
+				continue;
+			}
+			// If this folder already contains a share from this user, don't share it back. Would cause a loop.
+			if ($this->treeMapper->containsSharedFolderFromUser($folder, $userId)) {
+				continue;
+			}
+			$this->addSharedFolder($share, $folder, $userId);
+			$result['added']++;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Finds another share of the same folder that the user is a participant of
 	 *
 	 * @throws Exception

@@ -50,6 +50,27 @@ class CirclesService {
 	}
 
 	/**
+	 * @return bool|null whether the circle exists, or null if that can't be determined right now
+	 */
+	public function circleExists(string $circleId): ?bool {
+		if (!$this->circlesEnabled) {
+			return null;
+		}
+
+		try {
+			$circlesManager = Server::get('OCA\Circles\CirclesManager');
+			$circlesManager->startSuperSession();
+			$circlesManager->getCircle($circleId);
+			return true;
+		} catch (Throwable $e) {
+			if (is_a($e, 'OCA\Circles\Exceptions\CircleNotFoundException')) {
+				return false;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Resolves a circle to the local users it contains, including users that are
 	 * members through groups or nested circles
 	 *

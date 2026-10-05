@@ -3,6 +3,7 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
+use OCA\Bookmarks\Migration\CircleSharesUpdateRepairStep;
 use OCA\Bookmarks\Service\FolderService;
 use OCA\Circles\CirclesManager;
 use OCA\Circles\Model\Circle;
@@ -11,6 +12,7 @@ use OCP\App\IAppManager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IGroupManager;
 use OCP\IUserManager;
+use OCP\Migration\IOutput;
 use OCP\Share\IShare;
 
 /**
@@ -337,5 +339,57 @@ class CirclesSharingTest extends TestCase {
 		// The share and the other members' shared folders are untouched
 		$this->shareMapper->find($share->getId());
 		$this->assertHasSharedFolder($share, $remainingId);
+	}
+
+	/**
+	 * Circle shares created by earlier versions gave none of the circle's members
+	 * the shared folder. The repair step brings them in line with the circle.
+	 */
+	public function testCircleSharesUpdateRepairStepSyncsMembers(): void {
+		$missingId = $this->createUser('circle_share_repair_missing_member');
+		$formerId = $this->createUser('circle_share_repair_former_member');
+		$circle = $this->createCircle('repair');
+		$this->addUserToCircle($circle, $missingId);
+		$share = $this->shareWithCircle($circle);
+		$folder = $this->folders->findById($share->getFolderId());
+		// what earlier versions left behind: a member without the folder, and a non-member with it
+		$sharedFolder = $this->sharedFolderMapper->findByShareAndUser($share->getId(), $missingId)[0];
+		$this->treeMapper->deleteEntry(Db\TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+		$this->sharedFolderMapper->delete($sharedFolder);
+		$this->folders->addSharedFolder($share, $folder, $formerId);
+		$this->assertHasNoSharedFolder($share, $missingId);
+		$this->assertHasSharedFolder($share, $formerId);
+
+		\OCP\Server::get(CircleSharesUpdateRepairStep::class)->run($this->createMock(IOutput::class));
+
+		$this->assertHasSharedFolder($share, $missingId);
+		$this->assertHasNoSharedFolder($share, $formerId);
+		$this->assertHasNoSharedFolder($share, $this->ownerId);
+	}
+
+	public function testCircleSharesUpdateRepairStepDeletesSharesOfMissingCircles(): void {
+		$memberId = $this->createUser('circle_share_repair_missing_circle_member');
+		$folder = $this->createFolder();
+		// A share of a circle that was destroyed while earlier versions didn't notice
+		$share = new Db\Share();
+		$share->setFolderId($folder->getId());
+		$share->setOwner($this->ownerId);
+		$share->setParticipant('nonexistentcircle' . uniqid());
+		$share->setType(IShare::TYPE_CIRCLE);
+		$share->setCanWrite(false);
+		$share->setCanShare(false);
+		$this->shareMapper->insert($share);
+		$this->folders->addSharedFolder($share, $folder, $memberId);
+		$this->assertHasSharedFolder($share, $memberId);
+
+		\OCP\Server::get(CircleSharesUpdateRepairStep::class)->run($this->createMock(IOutput::class));
+
+		try {
+			$this->shareMapper->find($share->getId());
+			$this->fail('Share of a missing circle should have been deleted');
+		} catch (DoesNotExistException $e) {
+			// expected
+		}
+		$this->assertCount(0, $this->sharedFolderMapper->findByUser($memberId));
 	}
 }
