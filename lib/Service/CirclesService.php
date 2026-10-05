@@ -20,8 +20,6 @@ use Throwable;
  */
 class CirclesService {
 	public const TYPE = 1;
-	public const TYPE_GROUP = 2;
-	public const TYPE_CIRCLE = 16;
 	public const LEVEL_MEMBER = 1;
 	private bool $circlesEnabled;
 
@@ -78,26 +76,24 @@ class CirclesService {
 	}
 
 	/**
-	 * @param string $circleId circle single id
-	 * @return string[] single ids of the circles that this circle is a member of, directly or indirectly
+	 * @param string $singleId single id of a federated user as found in a circles Membership
+	 * @return string|null the user id if the single id belongs to a local user
 	 */
-	public function getParentCircleIds(string $circleId): array {
-		$circle = $this->getCircle($circleId);
-		if ($circle === null) {
-			return [];
+	public function getLocalUserIdOfSingleId(string $singleId): ?string {
+		if (!$this->circlesEnabled) {
+			return null;
 		}
 
 		try {
-			$circleIds = [];
-			foreach ($circle->getMemberships() as $membership) {
-				if ($membership->getCircleId() !== $circleId) {
-					$circleIds[] = $membership->getCircleId();
-				}
+			$circlesManager = Server::get('OCA\Circles\CirclesManager');
+			$federatedUser = $circlesManager->getFederatedUser($singleId);
+			if ($federatedUser->getUserType() !== self::TYPE || !$federatedUser->isLocal()) {
+				return null;
 			}
-			return array_values(array_unique($circleIds));
+			return $federatedUser->getUserId();
 		} catch (Throwable $e) {
 		}
-		return [];
+		return null;
 	}
 
 	public function isUserInCircle(string $circleId, string $userId): bool {

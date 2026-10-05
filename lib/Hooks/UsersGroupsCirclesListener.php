@@ -18,9 +18,9 @@ use OCA\Bookmarks\Exception\UnsupportedOperation;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\CirclesService;
 use OCA\Bookmarks\Service\FolderService;
-use OCA\Circles\Events\CircleDestroyedEvent;
-use OCA\Circles\Events\CircleMemberAddedEvent;
-use OCA\Circles\Events\CircleMemberRemovedEvent;
+use OCA\Circles\Events\DestroyingCircleEvent;
+use OCA\Circles\Events\MembershipsCreatedEvent;
+use OCA\Circles\Events\MembershipsRemovedEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\DB\Exception;
@@ -29,11 +29,10 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\Group\Events\BeforeGroupDeletedEvent;
 use OCP\Group\Events\UserAddedEvent;
 use OCP\Group\Events\UserRemovedEvent;
-use OCP\IGroupManager;
 use OCP\Share\IShare;
 use OCP\User\Events\BeforeUserDeletedEvent;
 
-/** @template-implements IEventListener<Event|CircleDestroyedEvent|CircleMemberAddedEvent|CircleMemberRemovedEvent|BeforeUserDeletedEvent|UserAddedEvent|UserRemovedEvent|BeforeGroupDeletedEvent> */
+/** @template-implements IEventListener<Event|DestroyingCircleEvent|MembershipsCreatedEvent|MembershipsRemovedEvent|BeforeUserDeletedEvent|UserAddedEvent|UserRemovedEvent|BeforeGroupDeletedEvent> */
 class UsersGroupsCirclesListener implements IEventListener {
 	public function __construct(
 		private ShareMapper $shareMapper,
@@ -41,13 +40,12 @@ class UsersGroupsCirclesListener implements IEventListener {
 		private SharedFolderMapper $sharedFolderMapper,
 		private TreeMapper $treeMapper,
 		private CirclesService $circlesService,
-		private IGroupManager $groupManager,
 		private BookmarkService $bookmarksService,
 	) {
 	}
 
 	public function handle(Event $event): void {
-		if ($event instanceof CircleDestroyedEvent) {
+		if ($event instanceof DestroyingCircleEvent) {
 			$shares = $this->shareMapper->findByParticipant(IShare::TYPE_CIRCLE, $event->getCircle()->getSingleId());
 			foreach ($shares as $share) {
 				try {
@@ -56,32 +54,23 @@ class UsersGroupsCirclesListener implements IEventListener {
 				}
 			}
 		}
-		if ($event instanceof CircleMemberAddedEvent || $event instanceof CircleMemberRemovedEvent) {
-			if (!$event->hasMember()) {
-				return;
-			}
-			$circleId = $event->getCircle()->getSingleId();
-			$userIds = $this->getUserIdsOfCircleMember($event->getMember());
-			// Shares with circles that contain this circle are affected, too
-			$circleIds = array_merge([$circleId], $this->circlesService->getParentCircleIds($circleId));
-			foreach ($circleIds as $affectedCircleId) {
-				$shares = $this->shareMapper->findByParticipant(IShare::TYPE_CIRCLE, $affectedCircleId);
+		if ($event instanceof MembershipsCreatedEvent || $event instanceof MembershipsRemovedEvent) {
+			// Memberships are flattened: they include memberships through groups and nested circles,
+			// and a membership is only removed once the user isn't part of the circle in any way anymore
+			foreach ($event->getMemberships() as $membership) {
+				$shares = $this->shareMapper->findByParticipant(IShare::TYPE_CIRCLE, $membership->getCircleId());
 				if (count($shares) === 0) {
 					continue;
 				}
-				if ($event instanceof CircleMemberAddedEvent) {
-					$affectedUserIds = $userIds;
-				} else {
-					// Users may still be members of the circle by some other way
-					$affectedUserIds = array_diff($userIds, $this->circlesService->getUserIdsOfCircle($affectedCircleId));
+				$userId = $this->circlesService->getLocalUserIdOfSingleId($membership->getSingleId());
+				if ($userId === null) {
+					continue;
 				}
 				foreach ($shares as $share) {
-					foreach ($affectedUserIds as $userId) {
-						if ($event instanceof CircleMemberAddedEvent) {
-							$this->addParticipantToShare($share, $userId);
-						} else {
-							$this->removeParticipantFromShare($share, $userId);
-						}
+					if ($event instanceof MembershipsCreatedEvent) {
+						$this->addParticipantToShare($share, $userId);
+					} else {
+						$this->removeParticipantFromShare($share, $userId);
 					}
 				}
 			}
@@ -123,27 +112,6 @@ class UsersGroupsCirclesListener implements IEventListener {
 					// noop
 				}
 			}
-		}
-	}
-
-	/**
-	 * @param \OCA\Circles\Model\Member $member
-	 * @return string[] user ids
-	 */
-	private function getUserIdsOfCircleMember($member): array {
-		switch ($member->getUserType()) {
-			case CirclesService::TYPE:
-				return [$member->getUserId()];
-			case CirclesService::TYPE_GROUP:
-				$group = $this->groupManager->get($member->getUserId());
-				if ($group === null) {
-					return [];
-				}
-				return array_map(static fn ($user) => $user->getUID(), $group->getUsers());
-			case CirclesService::TYPE_CIRCLE:
-				return $this->circlesService->getUserIdsOfCircle($member->getSingleId());
-			default:
-				return [];
 		}
 	}
 

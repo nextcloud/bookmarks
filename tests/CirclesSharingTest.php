@@ -5,15 +5,10 @@ namespace OCA\Bookmarks\Tests;
 use OCA\Bookmarks\Db;
 use OCA\Bookmarks\Service\FolderService;
 use OCA\Circles\CirclesManager;
-use OCA\Circles\Events\CircleDestroyedEvent;
-use OCA\Circles\Events\CircleMemberAddedEvent;
-use OCA\Circles\Events\CircleMemberRemovedEvent;
 use OCA\Circles\Model\Circle;
-use OCA\Circles\Model\Federated\FederatedEvent;
 use OCA\Circles\Model\Member;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\Share\IShare;
@@ -21,16 +16,13 @@ use OCP\Share\IShare;
 /**
  * Sharing folders with circles (teams).
  *
- * In a single-instance setup the circles app only fires its member and destroy
- * events from an async loopback request, never from the CLI. These tests
- * therefore manage circles through the real CirclesManager and then dispatch
- * the event circles would have sent through the real event dispatcher, so that
- * the listener registration is covered as well.
+ * Circles are managed through the real CirclesManager with a forced synchronous
+ * session, so the memberships events that the listener relies on are fired
+ * from within the test process.
  */
 class CirclesSharingTest extends TestCase {
 	private IUserManager $userManager;
 	private IGroupManager $groupManager;
-	private IEventDispatcher $eventDispatcher;
 	private Db\FolderMapper $folderMapper;
 	private Db\TreeMapper $treeMapper;
 	private Db\SharedFolderMapper $sharedFolderMapper;
@@ -51,7 +43,6 @@ class CirclesSharingTest extends TestCase {
 
 		$this->userManager = \OCP\Server::get(IUserManager::class);
 		$this->groupManager = \OCP\Server::get(IGroupManager::class);
-		$this->eventDispatcher = \OCP\Server::get(IEventDispatcher::class);
 		$this->folderMapper = \OCP\Server::get(Db\FolderMapper::class);
 		$this->treeMapper = \OCP\Server::get(Db\TreeMapper::class);
 		$this->sharedFolderMapper = \OCP\Server::get(Db\SharedFolderMapper::class);
@@ -109,18 +100,6 @@ class CirclesSharingTest extends TestCase {
 	private function addCircleToCircle(Circle $parent, Circle $child): Member {
 		$this->startCirclesSession();
 		return $this->circlesManager->addMember($parent->getSingleId(), $this->circlesManager->getFederatedUser($child->getSingleId(), Member::TYPE_CIRCLE));
-	}
-
-	private function reloadCircle(Circle $circle): Circle {
-		$this->startCirclesSession();
-		return $this->circlesManager->getCircle($circle->getSingleId());
-	}
-
-	private function federatedEvent(Circle $circle, ?Member $member = null): FederatedEvent {
-		$event = new FederatedEvent();
-		$event->setCircle($this->reloadCircle($circle));
-		$event->setMember($member);
-		return $event;
 	}
 
 	private function createFolder(): Db\Folder {
@@ -189,8 +168,7 @@ class CirclesSharingTest extends TestCase {
 		$share = $this->shareWithCircle($circle);
 		$this->assertHasNoSharedFolder($share, $memberId);
 
-		$member = $this->addUserToCircle($circle, $memberId);
-		$this->eventDispatcher->dispatchTyped(new CircleMemberAddedEvent($this->federatedEvent($circle, $member), []));
+		$this->addUserToCircle($circle, $memberId);
 
 		$this->assertHasSharedFolder($share, $memberId);
 	}
@@ -204,7 +182,6 @@ class CirclesSharingTest extends TestCase {
 
 		$this->startCirclesSession();
 		$this->circlesManager->removeMember($member->getId());
-		$this->eventDispatcher->dispatchTyped(new CircleMemberRemovedEvent($this->federatedEvent($circle, $member), []));
 
 		$this->assertHasNoSharedFolder($share, $memberId);
 	}
@@ -217,9 +194,7 @@ class CirclesSharingTest extends TestCase {
 		$share = $this->shareWithCircle($outer);
 		$this->assertHasNoSharedFolder($share, $memberId);
 
-		// circles fires the event for the circle the user was added to, not for its parents
-		$member = $this->addUserToCircle($inner, $memberId);
-		$this->eventDispatcher->dispatchTyped(new CircleMemberAddedEvent($this->federatedEvent($inner, $member), []));
+		$this->addUserToCircle($inner, $memberId);
 
 		$this->assertHasSharedFolder($share, $memberId);
 	}
@@ -235,7 +210,6 @@ class CirclesSharingTest extends TestCase {
 
 		$this->startCirclesSession();
 		$this->circlesManager->removeMember($member->getId());
-		$this->eventDispatcher->dispatchTyped(new CircleMemberRemovedEvent($this->federatedEvent($inner, $member), []));
 
 		$this->assertHasNoSharedFolder($share, $memberId);
 	}
@@ -247,10 +221,8 @@ class CirclesSharingTest extends TestCase {
 		$share = $this->shareWithCircle($circle);
 		$this->assertHasSharedFolder($share, $memberId);
 
-		$event = $this->federatedEvent($circle);
 		$this->startCirclesSession();
 		$this->circlesManager->destroyCircle($circle->getSingleId());
-		$this->eventDispatcher->dispatchTyped(new CircleDestroyedEvent($event, []));
 
 		try {
 			$this->shareMapper->find($share->getId());
@@ -259,5 +231,59 @@ class CirclesSharingTest extends TestCase {
 			// expected
 		}
 		$this->assertCount(0, $this->sharedFolderMapper->findByShare($share->getId()));
+	}
+
+	public function testUserAddedToGroupInCircleGetsSharedFolder(): void {
+		$memberId = $this->createUser('circle_share_group_added_member');
+		$group = $this->groupManager->createGroup('circle_share_group_added');
+		try {
+			$circle = $this->createCircle('group_added');
+			$this->addGroupToCircle($circle, $group->getGID());
+			$share = $this->shareWithCircle($circle);
+			$this->assertHasNoSharedFolder($share, $memberId);
+
+			$group->addUser($this->userManager->get($memberId));
+
+			$this->assertHasSharedFolder($share, $memberId);
+		} finally {
+			$group->delete();
+		}
+	}
+
+	public function testUserRemovedFromGroupInCircleLosesSharedFolder(): void {
+		$memberId = $this->createUser('circle_share_group_removed_member');
+		$group = $this->groupManager->createGroup('circle_share_group_removed');
+		$group->addUser($this->userManager->get($memberId));
+		try {
+			$circle = $this->createCircle('group_removed');
+			$this->addGroupToCircle($circle, $group->getGID());
+			$share = $this->shareWithCircle($circle);
+			$this->assertHasSharedFolder($share, $memberId);
+
+			$group->removeUser($this->userManager->get($memberId));
+
+			$this->assertHasNoSharedFolder($share, $memberId);
+		} finally {
+			$group->delete();
+		}
+	}
+
+	public function testUserRemovedFromGroupInCircleKeepsSharedFolderAsDirectMember(): void {
+		$memberId = $this->createUser('circle_share_group_and_direct_member');
+		$group = $this->groupManager->createGroup('circle_share_group_and_direct');
+		$group->addUser($this->userManager->get($memberId));
+		try {
+			$circle = $this->createCircle('group_and_direct');
+			$this->addGroupToCircle($circle, $group->getGID());
+			$this->addUserToCircle($circle, $memberId);
+			$share = $this->shareWithCircle($circle);
+			$this->assertHasSharedFolder($share, $memberId);
+
+			$group->removeUser($this->userManager->get($memberId));
+
+			$this->assertHasSharedFolder($share, $memberId);
+		} finally {
+			$group->delete();
+		}
 	}
 }
