@@ -341,7 +341,10 @@ class FolderService {
 				throw new UnsupportedOperation('Cannot share this with user that shared some of its contents');
 			}
 			$this->shareMapper->insert($share);
-			$this->addSharedFolder($share, $folder, $participant);
+			// If this folder is already shared with the user, e.g. through a group, don't add it twice.
+			if (!$this->treeMapper->isFolderSharedWithUser($folder->getId(), $participant)) {
+				$this->addSharedFolder($share, $folder, $participant);
+			}
 		} else {
 			$this->addSharedFolderForParticipant($share, $folder, $type, $participant);
 		}

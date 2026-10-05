@@ -242,7 +242,10 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 			$folder = $this->createFolder($ownerId);
 			$groupShare = $this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
 			$userShare = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
+			// The member already has the folder through the group, so the direct share doesn't add it again
 			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
+			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId));
+			$this->assertCount(1, $this->sharedFolderMapper->findByUser($memberId));
 
 			$group->removeUser($this->userManager->get($memberId));
 
