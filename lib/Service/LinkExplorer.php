@@ -20,19 +20,14 @@ use Rowbot\URL\URL;
 class LinkExplorer {
 	private $linkPreview;
 
-	private $logger;
-
-	/**
-	 * @var string
-	 */
-	private $enabled;
-
-	public function __construct(IClientService $clientService, LoggerInterface $logger, IConfig $config) {
+	public function __construct(
+		IClientService $clientService,
+		private LoggerInterface $logger,
+		private IConfig $config,
+	) {
 		$client = $clientService->newClient();
 		$this->linkPreview = new LinkPreview(new Client($client), new RequestFactory());
 		$this->linkPreview->getParser('general')->setMinimumImageDimensions(150, 550);
-		$this->logger = $logger;
-		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', 'false');
 	}
 
 	/**
@@ -43,7 +38,7 @@ class LinkExplorer {
 	public function get($url): array {
 		$data = ['url' => $url];
 
-		if ($this->enabled === 'false') {
+		if ($this->config->getAppValue('bookmarks', 'privacy.enableScraping', 'false') === 'false') {
 			return $data;
 		}
 
