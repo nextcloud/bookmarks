@@ -180,8 +180,21 @@ class BookmarkService {
 				isset($description) ? [] : ['description'],
 			);
 
-			$title = $title ?? trim($data['basic']['title']) ?? trim($url);
-			$description = $description ?? $data['basic']['description'] ?? '';
+			if ($title === null) {
+				if (isset($data['basic']['title']) && $data['basic']['title'] !== '') {
+					$title = trim($data['basic']['title']);
+				} else {
+					$title = trim($url);
+				}
+			}
+
+			if ($description === null) {
+				if (isset($data['basic']['description'])) {
+					$description = trim($data['basic']['description']);
+				} else {
+					$description = '';
+				}
+			}
 
 			$bookmark->setUrl($url);
 		}
