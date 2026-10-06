@@ -130,21 +130,9 @@ class UsersGroupsCirclesListener implements IEventListener {
 	}
 
 	private function addParticipantToShare(Share $share, string $userId): void {
-		if ($share->getOwner() === $userId) {
-			return;
-		}
 		try {
-			if (count($this->sharedFolderMapper->findByShareAndUser($share->getId(), $userId)) > 0) {
-				// the user already has this folder
-				return;
-			}
-		} catch (Exception $e) {
-			return;
-		}
-		try {
-			$folder = $this->folderService->findById($share->getFolderId());
-			$this->folderService->addSharedFolder($share, $folder, $userId);
-		} catch (DoesNotExistException|MultipleObjectsReturnedException|UnsupportedOperation $e) {
+			$this->folderService->addParticipantToShare($share, $userId);
+		} catch (DoesNotExistException|MultipleObjectsReturnedException|UnsupportedOperation|Exception $e) {
 		}
 	}
 }

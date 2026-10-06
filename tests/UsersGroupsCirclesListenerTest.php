@@ -297,4 +297,112 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 			$group->delete();
 		}
 	}
+
+	/**
+	 * A user who already has a folder through a direct share and then joins a group
+	 * the folder is also shared with must not get a second shared folder.
+	 */
+	public function testUserAddedToGroupKeepsSingleSharedFolderOfDirectShare(): void {
+		$ownerId = $this->createUser('direct_then_group_owner');
+		$memberId = $this->createUser('direct_then_group_member');
+		$group = $this->groupManager->createGroup('direct_then_group');
+		try {
+			$folder = $this->createFolder($ownerId);
+			$userShare = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
+			$groupShare = $this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
+			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId));
+
+			$group->addUser($this->userManager->get($memberId));
+
+			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
+			$this->assertCount(1, $this->sharedFolderMapper->findByUser($memberId));
+			// Looking up the user's shared folder of this folder still works
+			$this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $memberId);
+		} finally {
+			$group->delete();
+		}
+	}
+
+	/**
+	 * A user who joins a group must not get a folder shared with that group if it contains
+	 * a folder they shared themselves. Would cause a loop.
+	 */
+	public function testUserAddedToGroupDoesNotGetFolderContainingTheirOwnShare(): void {
+		$ownerId = $this->createUser('loop_group_owner');
+		$memberId = $this->createUser('loop_group_member');
+		$group = $this->groupManager->createGroup('loop_group');
+		try {
+			// The member shares one of their folders with the owner, who puts it into a folder of their own
+			$memberFolder = $this->createFolder($memberId);
+			$memberShare = $this->folders->createShare($memberFolder->getId(), $ownerId, IShare::TYPE_USER);
+			$ownerSharedFolder = $this->sharedFolderMapper->findByShareAndUser($memberShare->getId(), $ownerId)[0];
+			$folder = $this->createFolder($ownerId);
+			$this->treeMapper->move(Db\TreeMapper::TYPE_SHARE, $ownerSharedFolder->getId(), $folder->getId());
+			$groupShare = $this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
+
+			$group->addUser($this->userManager->get($memberId));
+
+			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
+			$this->assertCount(0, $this->sharedFolderMapper->findByUser($memberId));
+		} finally {
+			$group->delete();
+		}
+	}
+
+	/**
+	 * Sharing a subfolder directly with a user who already has its parent folder must give
+	 * them a shared folder of the subfolder, so they keep it when the parent is unshared.
+	 */
+	public function testDirectShareOfSubfolderSurvivesUnsharingParentFolder(): void {
+		$ownerId = $this->createUser('nested_shares_owner');
+		$memberId = $this->createUser('nested_shares_member');
+
+		$parentFolder = $this->createFolder($ownerId);
+		$subFolder = new Db\Folder();
+		$subFolder->setTitle('subfolder');
+		$subFolder->setUserId($ownerId);
+		$this->folderMapper->insert($subFolder);
+		$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $subFolder->getId(), $parentFolder->getId());
+
+		$parentShare = $this->folders->createShare($parentFolder->getId(), $memberId, IShare::TYPE_USER);
+		$subShare = $this->folders->createShare($subFolder->getId(), $memberId, IShare::TYPE_USER, true);
+		$subSharedFolders = $this->sharedFolderMapper->findByShareAndUser($subShare->getId(), $memberId);
+		$this->assertCount(1, $subSharedFolders);
+
+		$this->folders->deleteShare($parentShare->getId());
+
+		$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($parentShare->getId(), $memberId));
+		$sharedFolders = $this->sharedFolderMapper->findByShareAndUser($subShare->getId(), $memberId);
+		$this->assertCount(1, $sharedFolders);
+		$this->assertEquals($subSharedFolders[0]->getId(), $sharedFolders[0]->getId());
+		$this->assertTrue($this->shareTreeRowExists($sharedFolders[0]->getId()));
+	}
+
+	/**
+	 * Sharing a folder directly with a user who has several shared folders of it, as older
+	 * versions could create, must work and not add yet another one.
+	 */
+	public function testDirectShareWithUserWhoHasDuplicateSharedFolders(): void {
+		$ownerId = $this->createUser('duplicates_owner');
+		$memberId = $this->createUser('duplicates_member');
+		$firstGroup = $this->groupManager->createGroup('duplicates_first');
+		$secondGroup = $this->groupManager->createGroup('duplicates_second');
+		try {
+			$folder = $this->createFolder($ownerId);
+			$firstShare = $this->folders->createShare($folder->getId(), $firstGroup->getGID(), IShare::TYPE_GROUP);
+			$secondShare = $this->folders->createShare($folder->getId(), $secondGroup->getGID(), IShare::TYPE_GROUP);
+			$this->folders->addSharedFolder($firstShare, $folder, $memberId);
+			$this->folders->addSharedFolder($secondShare, $folder, $memberId);
+			$this->assertCount(2, $this->sharedFolderMapper->findByUser($memberId));
+
+			$userShare = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
+
+			$this->shareMapper->find($userShare->getId());
+			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId));
+			$this->assertCount(2, $this->sharedFolderMapper->findByUser($memberId));
+		} finally {
+			$firstGroup->delete();
+			$secondGroup->delete();
+		}
+	}
 }

@@ -323,6 +323,24 @@ class CirclesSharingTest extends TestCase {
 		}
 	}
 
+	/**
+	 * A user who already has a folder through a direct share and then joins a circle
+	 * the folder is also shared with must not get a second shared folder.
+	 */
+	public function testAddedCircleMemberKeepsSingleSharedFolderOfDirectShare(): void {
+		$memberId = $this->createUser('circle_share_direct_then_circle_member');
+		$circle = $this->createCircle('direct_then_circle');
+		$folder = $this->createFolder();
+		$userShare = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
+		$circleShare = $this->folders->createShare($folder->getId(), $circle->getSingleId(), IShare::TYPE_CIRCLE);
+		$this->assertHasSharedFolder($userShare, $memberId);
+
+		$this->addUserToCircle($circle, $memberId);
+
+		$this->assertHasNoSharedFolder($circleShare, $memberId);
+		$this->assertCount(1, $this->sharedFolderMapper->findByUser($memberId));
+	}
+
 	public function testDeletedUserLosesFolderSharedWithCircle(): void {
 		$memberId = $this->createUser('circle_share_deleted_member');
 		$remainingId = $this->createUser('circle_share_remaining_member');

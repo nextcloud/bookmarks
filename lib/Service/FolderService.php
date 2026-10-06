@@ -305,6 +305,48 @@ class FolderService {
 	}
 
 	/**
+	 * Gives a user who just became a participant of a group or circle share the shared folder,
+	 * unless they already have the folder through another share
+	 *
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation
+	 * @throws Exception
+	 */
+	public function addParticipantToShare(Share $share, string $userId): void {
+		if ($share->getOwner() === $userId) {
+			return;
+		}
+		if ($this->hasSharedFolderOfFolder($share->getFolderId(), $userId)) {
+			return;
+		}
+		$folder = $this->folderMapper->find($share->getFolderId());
+		// If this folder already contains a share from this user, don't share it back. Would cause a loop.
+		if ($this->treeMapper->containsSharedFolderFromUser($folder, $userId)) {
+			return;
+		}
+		$this->addSharedFolder($share, $folder, $userId);
+	}
+
+	/**
+	 * Whether the user has a shared folder of exactly this folder, through any share.
+	 * Shared ancestor folders don't count, because they can be unshared independently.
+	 *
+	 * @throws Exception
+	 */
+	private function hasSharedFolderOfFolder(int $folderId, string $userId): bool {
+		try {
+			$this->sharedFolderMapper->findByFolderAndUser($folderId, $userId);
+			return true;
+		} catch (DoesNotExistException) {
+			return false;
+		} catch (MultipleObjectsReturnedException) {
+			// Older versions could create several
+			return true;
+		}
+	}
+
+	/**
 	 * Finds another share of the same folder that the user is a participant of
 	 *
 	 * @throws Exception
@@ -474,9 +516,10 @@ class FolderService {
 			if ($this->treeMapper->containsSharedFolderFromUser($folder, $participant)) {
 				throw new UnsupportedOperation('Cannot share this with user that shared some of its contents');
 			}
+			// If the user already has this folder, e.g. through a group, don't add it twice.
+			$hasSharedFolder = $this->hasSharedFolderOfFolder($folder->getId(), $participant);
 			$this->shareMapper->insert($share);
-			// If this folder is already shared with the user, e.g. through a group, don't add it twice.
-			if (!$this->treeMapper->isFolderSharedWithUser($folder->getId(), $participant)) {
+			if (!$hasSharedFolder) {
 				$this->addSharedFolder($share, $folder, $participant);
 			}
 		} else {
