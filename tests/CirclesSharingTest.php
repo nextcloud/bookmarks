@@ -342,6 +342,29 @@ class CirclesSharingTest extends TestCase {
 	}
 
 	/**
+	 * A user who removed a folder shared with them directly must get it back
+	 * when the folder is then shared with a circle they are a member of.
+	 */
+	public function testCircleShareRestoresFolderRemovedFromDirectShare(): void {
+		$memberId = $this->createUser('circle_share_removed_then_circle_member');
+		$circle = $this->createCircle('removed_then_circle');
+		$this->addUserToCircle($circle, $memberId);
+		$folder = $this->createFolder();
+		$userShare = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
+		$sharedFolderId = $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId)[0]->getId();
+
+		$this->folders->deleteSharedFolderOrFolder($memberId, $folder->getId(), true);
+
+		$this->folders->createShare($folder->getId(), $circle->getSingleId(), IShare::TYPE_CIRCLE);
+
+		$sharedFolders = $this->sharedFolderMapper->findByUser($memberId);
+		$this->assertCount(1, $sharedFolders);
+		$this->assertEquals($sharedFolderId, $sharedFolders[0]->getId());
+		$rootFolder = $this->folderMapper->findRootFolder($memberId);
+		$this->assertEquals($rootFolder->getId(), $this->treeMapper->findParentOf(Db\TreeMapper::TYPE_SHARE, $sharedFolderId)->getId());
+	}
+
+	/**
 	 * Sharing a subfolder with a circle must give a member who already has its parent folder
 	 * a shared folder of the subfolder, so they keep it when the parent is unshared.
 	 */

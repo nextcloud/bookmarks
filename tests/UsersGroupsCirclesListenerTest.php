@@ -259,6 +259,65 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 	}
 
 	/**
+	 * A user who removed a folder shared through a group must get it back
+	 * when the folder is then shared with them directly.
+	 */
+	public function testDirectShareRestoresFolderRemovedFromGroupShare(): void {
+		$ownerId = $this->createUser('removed_then_direct_owner');
+		$memberId = $this->createUser('removed_then_direct_member');
+		$group = $this->groupManager->createGroup('removed_then_direct');
+		$group->addUser($this->userManager->get($memberId));
+		try {
+			$folder = $this->createFolder($ownerId);
+			$groupShare = $this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
+			$sharedFolderId = $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId)[0]->getId();
+
+			$this->folders->deleteSharedFolderOrFolder($memberId, $folder->getId(), true);
+			$this->assertFalse($this->shareTreeRowExists($sharedFolderId));
+
+			$this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
+
+			$sharedFolders = $this->sharedFolderMapper->findByUser($memberId);
+			$this->assertCount(1, $sharedFolders);
+			$this->assertEquals($sharedFolderId, $sharedFolders[0]->getId());
+			$this->assertTrue($this->shareTreeRowExists($sharedFolderId));
+			$rootFolder = $this->folderMapper->findRootFolder($memberId);
+			$this->assertEquals($rootFolder->getId(), $this->treeMapper->findParentOf(Db\TreeMapper::TYPE_SHARE, $sharedFolderId)->getId());
+		} finally {
+			$group->delete();
+		}
+	}
+
+	/**
+	 * A user who removed a folder shared with them directly must get it back
+	 * when the folder is then shared with a group they are a member of.
+	 */
+	public function testGroupShareRestoresFolderRemovedFromDirectShare(): void {
+		$ownerId = $this->createUser('removed_then_group_owner');
+		$memberId = $this->createUser('removed_then_group_member');
+		$group = $this->groupManager->createGroup('removed_then_group');
+		$group->addUser($this->userManager->get($memberId));
+		try {
+			$folder = $this->createFolder($ownerId);
+			$userShare = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
+			$sharedFolderId = $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId)[0]->getId();
+
+			$this->folders->deleteSharedFolderOrFolder($memberId, $folder->getId(), true);
+			$this->assertFalse($this->shareTreeRowExists($sharedFolderId));
+
+			$this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
+
+			$sharedFolders = $this->sharedFolderMapper->findByUser($memberId);
+			$this->assertCount(1, $sharedFolders);
+			$this->assertEquals($sharedFolderId, $sharedFolders[0]->getId());
+			$rootFolder = $this->folderMapper->findRootFolder($memberId);
+			$this->assertEquals($rootFolder->getId(), $this->treeMapper->findParentOf(Db\TreeMapper::TYPE_SHARE, $sharedFolderId)->getId());
+		} finally {
+			$group->delete();
+		}
+	}
+
+	/**
 	 * Deleting a share must keep the shared folder of participants who still have
 	 * access to the folder through another share, and remove everyone else's.
 	 */

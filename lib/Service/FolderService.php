@@ -343,6 +343,35 @@ class FolderService {
 	}
 
 	/**
+	 * Like hasSharedFolderOfFolder, but if the user removed the shared folder from their tree earlier,
+	 * which keeps the SharedFolder around, it is put back into their root folder.
+	 * Only use this when a share is created: that's an explicit action, unlike membership changes.
+	 *
+	 * @return bool Whether the user has a shared folder of exactly this folder
+	 * @throws Exception
+	 * @throws UnsupportedOperation
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	private function restoreSharedFolderOfFolder(int $folderId, string $userId): bool {
+		try {
+			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId);
+		} catch (DoesNotExistException) {
+			return false;
+		} catch (MultipleObjectsReturnedException) {
+			// Older versions could create several
+			return true;
+		}
+		try {
+			$this->treeMapper->findParentOf(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+		} catch (DoesNotExistException) {
+			$rootFolder = $this->folderMapper->findRootFolder($userId);
+			$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $rootFolder->getId());
+		}
+		return true;
+	}
+
+	/**
 	 * Finds another share of the same folder that the user is a participant of
 	 *
 	 * @throws Exception
@@ -512,10 +541,9 @@ class FolderService {
 			if ($this->treeMapper->containsSharedFolderFromUser($folder, $participant)) {
 				throw new UnsupportedOperation('Cannot share this with user that shared some of its contents');
 			}
-			// If the user already has this folder, e.g. through a group, don't add it twice.
-			$hasSharedFolder = $this->hasSharedFolderOfFolder($folder->getId(), $participant);
 			$this->shareMapper->insert($share);
-			if (!$hasSharedFolder) {
+			// If the user already has this folder, e.g. through a group, don't add it twice.
+			if (!$this->restoreSharedFolderOfFolder($folder->getId(), $participant)) {
 				$this->addSharedFolder($share, $folder, $participant);
 			}
 		} else {
@@ -561,7 +589,7 @@ class FolderService {
 					continue;
 				}
 				// If this folder is already shared with the user, don't add it twice.
-				if ($this->hasSharedFolderOfFolder($folder->getId(), $user->getUID())) {
+				if ($this->restoreSharedFolderOfFolder($folder->getId(), $user->getUID())) {
 					continue;
 				}
 
@@ -579,7 +607,7 @@ class FolderService {
 				return;
 			}
 			// If this folder is already shared with the user, don't add it twice.
-			if ($this->hasSharedFolderOfFolder($folder->getId(), $participant)) {
+			if ($this->restoreSharedFolderOfFolder($folder->getId(), $participant)) {
 				return;
 			}
 
