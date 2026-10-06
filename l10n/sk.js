@@ -85,7 +85,7 @@ OC.L10N.register(
     "RSS feed copied" : "RSS kanál je skopírovaný",
     "Trash Bin" : "Kôš",
     "Go back" : "Ísť späť",
-    "Share folder" : "Sprístupniť priečinok",
+    "Share folder" : "Zdieľať priečinok",
     "Open folder details" : "Otvoriť podrobnosti o adresáre",
     "Select one or more tags" : "Zvoliť jeden alebo viac štítkov",
     "New" : "Nový",
