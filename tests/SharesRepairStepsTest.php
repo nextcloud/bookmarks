@@ -163,4 +163,29 @@ class SharesRepairStepsTest extends TestCase {
 			$secondGroup->delete();
 		}
 	}
+
+	/**
+	 * A member who has the parent folder of a group share's folder through another share
+	 * must still be given a shared folder of the subfolder, as it can be unshared independently.
+	 */
+	public function testGroupSharesUpdateRepairStepAddsSubfolderForMemberWithParentFolder(): void {
+		$ownerId = $this->createUser('repair_subfolder_owner');
+		$memberId = $this->createUser('repair_subfolder_member');
+		$group = $this->groupManager->createGroup('repair_subfolder');
+		$group->addUser($this->userManager->get($memberId));
+		try {
+			$parentFolder = $this->createFolder($ownerId);
+			$subFolder = $this->createFolder($ownerId);
+			$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $subFolder->getId(), $parentFolder->getId());
+			$this->folders->createShare($parentFolder->getId(), $memberId, IShare::TYPE_USER);
+			$groupShare = $this->folders->createShare($subFolder->getId(), $group->getGID(), IShare::TYPE_GROUP);
+			$this->removeSharedFolder($this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId)[0]);
+
+			\OCP\Server::get(GroupSharesUpdateRepairStep::class)->run($this->createMock(IOutput::class));
+
+			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
+		} finally {
+			$group->delete();
+		}
+	}
 }

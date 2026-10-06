@@ -405,4 +405,40 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 			$secondGroup->delete();
 		}
 	}
+
+	/**
+	 * Sharing a subfolder with a group must give a member who already has its parent folder
+	 * a shared folder of the subfolder, so they keep it when the parent is unshared.
+	 * The same goes for a user who joins the group afterwards.
+	 */
+	public function testGroupShareOfSubfolderSurvivesUnsharingParentFolder(): void {
+		$ownerId = $this->createUser('nested_group_share_owner');
+		$memberId = $this->createUser('nested_group_share_member');
+		$joinerId = $this->createUser('nested_group_share_joiner');
+		$group = $this->groupManager->createGroup('nested_group_share');
+		$group->addUser($this->userManager->get($memberId));
+		try {
+			$parentFolder = $this->createFolder($ownerId);
+			$subFolder = $this->createFolder($ownerId);
+			$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $subFolder->getId(), $parentFolder->getId());
+
+			$memberParentShare = $this->folders->createShare($parentFolder->getId(), $memberId, IShare::TYPE_USER);
+			$joinerParentShare = $this->folders->createShare($parentFolder->getId(), $joinerId, IShare::TYPE_USER);
+			$groupShare = $this->folders->createShare($subFolder->getId(), $group->getGID(), IShare::TYPE_GROUP);
+			$group->addUser($this->userManager->get($joinerId));
+			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
+			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $joinerId));
+
+			$this->folders->deleteShare($memberParentShare->getId());
+			$this->folders->deleteShare($joinerParentShare->getId());
+
+			foreach ([$memberId, $joinerId] as $userId) {
+				$sharedFolders = $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $userId);
+				$this->assertCount(1, $sharedFolders);
+				$this->assertTrue($this->shareTreeRowExists($sharedFolders[0]->getId()));
+			}
+		} finally {
+			$group->delete();
+		}
+	}
 }

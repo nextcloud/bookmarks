@@ -285,12 +285,8 @@ class FolderService {
 			if ($userId === $folder->getUserId()) {
 				continue;
 			}
-			try {
-				// This also covers users who have the folder through another share
-				if ($this->treeMapper->isFolderSharedWithUser($folder->getId(), $userId)) {
-					continue;
-				}
-			} catch (MultipleObjectsReturnedException $e) {
+			// This also covers users who have the folder through another share
+			if ($this->hasSharedFolderOfFolder($folder->getId(), $userId)) {
 				continue;
 			}
 			// If this folder already contains a share from this user, don't share it back. Would cause a loop.
@@ -565,7 +561,7 @@ class FolderService {
 					continue;
 				}
 				// If this folder is already shared with the user, don't add it twice.
-				if ($this->treeMapper->isFolderSharedWithUser($folder->getId(), $user->getUID())) {
+				if ($this->hasSharedFolderOfFolder($folder->getId(), $user->getUID())) {
 					continue;
 				}
 
@@ -583,7 +579,7 @@ class FolderService {
 				return;
 			}
 			// If this folder is already shared with the user, don't add it twice.
-			if ($this->treeMapper->isFolderSharedWithUser($folder->getId(), $participant)) {
+			if ($this->hasSharedFolderOfFolder($folder->getId(), $participant)) {
 				return;
 			}
 

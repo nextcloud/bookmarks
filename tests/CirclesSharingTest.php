@@ -341,6 +341,26 @@ class CirclesSharingTest extends TestCase {
 		$this->assertCount(1, $this->sharedFolderMapper->findByUser($memberId));
 	}
 
+	/**
+	 * Sharing a subfolder with a circle must give a member who already has its parent folder
+	 * a shared folder of the subfolder, so they keep it when the parent is unshared.
+	 */
+	public function testCircleShareOfSubfolderSurvivesUnsharingParentFolder(): void {
+		$memberId = $this->createUser('circle_share_nested_folders_member');
+		$circle = $this->createCircle('nested_folders');
+		$this->addUserToCircle($circle, $memberId);
+		$parentFolder = $this->createFolder();
+		$subFolder = $this->createFolder();
+		$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $subFolder->getId(), $parentFolder->getId());
+		$parentShare = $this->folders->createShare($parentFolder->getId(), $memberId, IShare::TYPE_USER);
+		$circleShare = $this->folders->createShare($subFolder->getId(), $circle->getSingleId(), IShare::TYPE_CIRCLE);
+		$this->assertHasSharedFolder($circleShare, $memberId);
+
+		$this->folders->deleteShare($parentShare->getId());
+
+		$this->assertHasSharedFolder($circleShare, $memberId);
+	}
+
 	public function testDeletedUserLosesFolderSharedWithCircle(): void {
 		$memberId = $this->createUser('circle_share_deleted_member');
 		$remainingId = $this->createUser('circle_share_remaining_member');
