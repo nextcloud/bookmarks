@@ -110,7 +110,7 @@ class AuthorizerTest extends TestCase {
 		$this->folders->createShare($resharerFolder->getId(), $memberId, IShare::TYPE_USER, true, false);
 
 		$this->assertEquals(
-			Authorizer::PERM_READ | Authorizer::PERM_WRITE,
+			Authorizer::PERM_READ | Authorizer::PERM_EDIT | Authorizer::PERM_WRITE,
 			$this->authorizer->getUserPermissionsForFolder($memberId, $subFolder->getId())
 		);
 	}
