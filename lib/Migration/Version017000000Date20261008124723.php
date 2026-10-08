@@ -40,7 +40,9 @@ class Version017000000Date20261008124723 extends SimpleMigrationStep {
 				if ($primaryKey !== null) {
 					$table->dropPrimaryKey();
 				}
-				$table->setPrimaryKey(['shared_folder_id', 'share_id'], 'bookmarks_shared_to_shares');
+				// Keep the default name: Doctrine drops a changed primary key by the new key's name,
+				// which only resolves to the existing key on MySQL and Postgres if it is "primary"
+				$table->setPrimaryKey(['shared_folder_id', 'share_id']);
 			}
 		}
 		return $schema;
