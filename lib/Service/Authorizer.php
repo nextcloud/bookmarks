@@ -301,11 +301,9 @@ class Authorizer {
 			return self::PERM_ALL;
 		}
 
-		// A user may be covered by several shares of the same folder (e.g. directly and through a group).
-		// Their shared folder is part of all of them, so they get the combined permissions.
-		$hasAccess = false;
+		// A user may be covered by several shares of the same folder (e.g. directly, through a group,
+		// or through someone who re-shared a folder they received), so they get the combined permissions.
 		$accessPerms = self::PERM_NONE;
-		$sharedFoldersByShare = [];
 		$shares = $this->shareMapper->findByOwner($item->getUserId());
 		foreach ($shares as $share) {
 			if ($share->getFolderId() === $itemId && $type === TreeMapper::TYPE_FOLDER) {
@@ -321,20 +319,13 @@ class Authorizer {
 			$sharedFolders = $this->sharedFolderMapper->findByShare($share->getId());
 			foreach ($sharedFolders as $sharedFolder) {
 				if ($sharedFolder->getUserId() === $userId) {
-					$hasAccess = true;
 					$accessPerms |= $perms;
+				} else {
+					$accessPerms |= $perms & $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_SHARE, $sharedFolder->getId());
 				}
-			}
-			$sharedFoldersByShare[] = [$sharedFolders, $perms];
-		}
-		if ($hasAccess) {
-			return $accessPerms;
-		}
-
-		// The user may have access through someone who re-shared a folder they received
-		foreach ($sharedFoldersByShare as [$sharedFolders, $perms]) {
-			foreach ($sharedFolders as $sharedFolder) {
-				$accessPerms |= $perms & $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+				if ($accessPerms === self::PERM_ALL) {
+					return $accessPerms;
+				}
 			}
 		}
 

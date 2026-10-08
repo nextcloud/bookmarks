@@ -89,6 +89,33 @@ class AuthorizerTest extends TestCase {
 	}
 
 	/**
+	 * A user who has a folder directly with read-only access, and with write access
+	 * through someone who re-shared a folder containing it, gets the permissions of both.
+	 */
+	public function testPermissionsThroughReshareAreCombinedWithDirectAccess(): void {
+		$ownerId = $this->createUser('perms_reshare_owner');
+		$resharerId = $this->createUser('perms_reshare_resharer');
+		$memberId = $this->createUser('perms_reshare_member');
+
+		$folder = $this->createFolder($ownerId, $this->folderMapper->findRootFolder($ownerId)->getId());
+		$subFolder = $this->createFolder($ownerId, $folder->getId());
+		$this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER, false, false);
+		$this->assertEquals(Authorizer::PERM_READ, $this->authorizer->getUserPermissionsForFolder($memberId, $subFolder->getId()));
+
+		// The resharer puts the folder they received into one of their own folders and shares that with the member
+		$resharerShare = $this->folders->createShare($folder->getId(), $resharerId, IShare::TYPE_USER, true, true);
+		$resharerFolder = $this->createFolder($resharerId, $this->folderMapper->findRootFolder($resharerId)->getId());
+		$sharedFolder = $this->sharedFolderMapper->findByShareAndUser($resharerShare->getId(), $resharerId)[0];
+		$this->treeMapper->move(Db\TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $resharerFolder->getId());
+		$this->folders->createShare($resharerFolder->getId(), $memberId, IShare::TYPE_USER, true, false);
+
+		$this->assertEquals(
+			Authorizer::PERM_READ | Authorizer::PERM_WRITE,
+			$this->authorizer->getUserPermissionsForFolder($memberId, $subFolder->getId())
+		);
+	}
+
+	/**
 	 * Being a participant of a share without having a shared folder for it must
 	 * not grant access. This happens when sharing would create a loop: a folder
 	 * that contains a folder shared by a group member is shared with that group.
