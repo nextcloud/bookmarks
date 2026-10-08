@@ -291,7 +291,7 @@ class CirclesSharingTest extends TestCase {
 
 	/**
 	 * A user who leaves a group but is still covered by a circle share of the same
-	 * folder must keep their shared folder, moved over to the circle share, and
+	 * folder must keep their shared folder, which is part of both shares, and
 	 * vice versa.
 	 */
 	public function testUserKeepsFolderSharedWithGroupAndCircleUntilRemovedFromBoth(): void {
@@ -305,7 +305,8 @@ class CirclesSharingTest extends TestCase {
 			$groupShare = $this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
 			$circleShare = $this->folders->createShare($folder->getId(), $circle->getSingleId(), IShare::TYPE_CIRCLE);
 			$this->assertHasSharedFolder($groupShare, $memberId);
-			$this->assertHasNoSharedFolder($circleShare, $memberId);
+			$this->assertHasSharedFolder($circleShare, $memberId);
+			$this->assertCount(1, $this->sharedFolderMapper->findByUser($memberId));
 			$sharedFolderId = $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId)[0]->getId();
 
 			$group->removeUser($this->userManager->get($memberId));
@@ -337,7 +338,8 @@ class CirclesSharingTest extends TestCase {
 
 		$this->addUserToCircle($circle, $memberId);
 
-		$this->assertHasNoSharedFolder($circleShare, $memberId);
+		// The existing shared folder becomes part of the circle share
+		$this->assertHasSharedFolder($circleShare, $memberId);
 		$this->assertCount(1, $this->sharedFolderMapper->findByUser($memberId));
 	}
 

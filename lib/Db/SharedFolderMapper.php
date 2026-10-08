@@ -97,7 +97,8 @@ class SharedFolderMapper extends QBMapper {
 	 */
 	public function findByOwner(string $userId): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(static function ($c) {
+		// A shared folder can be part of several shares of the same owner
+		$qb->selectDistinct(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared_folders', 'p')
@@ -175,7 +176,8 @@ class SharedFolderMapper extends QBMapper {
 	 */
 	public function findByOwnerAndUser(string $owner, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(static function ($c) {
+		// A shared folder can be part of several shares of the same owner
+		$qb->selectDistinct(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared_folders', 'p')
@@ -246,15 +248,15 @@ class SharedFolderMapper extends QBMapper {
 	}
 
 	/**
-	 * Moves an existing shared folder over to another share of the same folder
+	 * Removes the shared folder from a share. It may still be part of other shares of the same folder.
 	 *
 	 * @throws Exception
 	 */
-	public function remount(int $id, int $shareId): void {
+	public function unmount(int $id, int $shareId): void {
 		$qb = $this->db->getQueryBuilder();
-		$qb->update('bookmarks_shared_to_shares')
-			->set('share_id', $qb->createPositionalParameter($shareId, IQueryBuilder::PARAM_INT))
+		$qb->delete('bookmarks_shared_to_shares')
 			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($id, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('share_id', $qb->createPositionalParameter($shareId, IQueryBuilder::PARAM_INT)))
 			->executeStatement();
 		$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(
 			TreeMapper::TYPE_SHARE,

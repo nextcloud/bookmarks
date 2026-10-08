@@ -49,8 +49,8 @@ class AuthorizerTest extends TestCase {
 
 	/**
 	 * A user who has a folder through a read-only group share and is also given
-	 * write access directly only has one shared folder, but gets the permissions
-	 * of both shares.
+	 * write access directly only has one shared folder, which is part of both shares,
+	 * and gets the permissions of both shares.
 	 */
 	public function testPermissionsOfAllSharesAreCombined(): void {
 		$ownerId = $this->createUser('perms_combined_owner');
@@ -70,9 +70,12 @@ class AuthorizerTest extends TestCase {
 			$this->assertEquals(Authorizer::PERM_READ, $this->authorizer->getUserPermissionsForFolder($memberId, $subFolder->getId()));
 
 			$userShare = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER, true, true);
-			// The member still only has the shared folder from the group share
-			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
-			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId));
+			// The member still only has one shared folder, which is now part of both shares
+			$groupSharedFolders = $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId);
+			$userSharedFolders = $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId);
+			$this->assertCount(1, $groupSharedFolders);
+			$this->assertCount(1, $userSharedFolders);
+			$this->assertEquals($groupSharedFolders[0]->getId(), $userSharedFolders[0]->getId());
 
 			$this->assertEquals(Authorizer::PERM_ALL, $this->authorizer->getUserPermissionsForFolder($memberId, $folder->getId()));
 			$this->assertEquals(

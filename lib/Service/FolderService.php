@@ -56,7 +56,6 @@ class FolderService {
 		private IEventDispatcher $eventDispatcher,
 		private CirclesService $circlesService,
 		private SettingsService $settings,
-		private Authorizer $authorizer,
 	) {
 	}
 
@@ -182,19 +181,12 @@ class FolderService {
 	 * @throws Exception
 	 */
 	public function deleteShare($shareId): void {
-		// Participants that still have access to the folder through another share keep their shared folder
-		$share = $this->shareMapper->find($shareId);
-		$userIds = array_unique(array_map(static fn (SharedFolder $sharedFolder) => $sharedFolder->getUserId(), $this->sharedFolderMapper->findByShare($share->getId())));
-		foreach ($userIds as $userId) {
-			$this->removeSharedFolderOfUser($share, $userId);
-		}
 		$this->treeMapper->deleteShare($shareId);
 	}
 
 	/**
-	 * Removes the shared folder that the user received through the given share. If the user still
-	 * has access to the folder through another share, their shared folder is moved over to that share
-	 * instead of being deleted, so that it stays where the user put it.
+	 * Removes the user's shared folder from the given share. If the user still has
+	 * the folder through another share, they keep it.
 	 */
 	public function removeSharedFolderOfUser(Share $share, string $userId): void {
 		try {
@@ -202,27 +194,9 @@ class FolderService {
 		} catch (Exception $e) {
 			return;
 		}
-		if (count($sharedFolders) === 0) {
-			return;
-		}
-		try {
-			$otherShare = $this->findOtherShareOfUser($share, $userId);
-			if ($otherShare !== null && count($this->sharedFolderMapper->findByShareAndUser($otherShare->getId(), $userId)) > 0) {
-				// the user already has the folder through the other share
-				$otherShare = null;
-			}
-		} catch (Exception $e) {
-			$otherShare = null;
-		}
 		foreach ($sharedFolders as $sharedFolder) {
 			try {
-				if ($otherShare !== null) {
-					$this->sharedFolderMapper->remount($sharedFolder->getId(), $otherShare->getId());
-					$otherShare = null;
-					continue;
-				}
-				$this->treeMapper->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
-				$this->sharedFolderMapper->delete($sharedFolder);
+				$this->treeMapper->removeSharedFolderFromShare($sharedFolder, $share->getId());
 			} catch (UnsupportedOperation|DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 			}
 		}
@@ -285,8 +259,8 @@ class FolderService {
 			if ($userId === $folder->getUserId()) {
 				continue;
 			}
-			// This also covers users who have the folder through another share
-			if ($this->hasSharedFolderOfFolder($folder->getId(), $userId)) {
+			// Users who have the folder through another share get their shared folder added to this share
+			if ($this->mountSharedFolderOfFolder($share, $userId, false)) {
 				continue;
 			}
 			// If this folder already contains a share from this user, don't share it back. Would cause a loop.
@@ -301,8 +275,8 @@ class FolderService {
 	}
 
 	/**
-	 * Gives a user who just became a participant of a group or circle share the shared folder,
-	 * unless they already have the folder through another share
+	 * Gives a user who just became a participant of a group or circle share the shared folder.
+	 * If they already have the folder through another share, that shared folder is added to this share.
 	 *
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
@@ -313,7 +287,7 @@ class FolderService {
 		if ($share->getOwner() === $userId) {
 			return;
 		}
-		if ($this->hasSharedFolderOfFolder($share->getFolderId(), $userId)) {
+		if ($this->mountSharedFolderOfFolder($share, $userId, false)) {
 			return;
 		}
 		$folder = $this->folderMapper->find($share->getFolderId());
@@ -325,64 +299,40 @@ class FolderService {
 	}
 
 	/**
-	 * Whether the user has a shared folder of exactly this folder, through any share.
+	 * If the user already has a shared folder of exactly this folder, through any share, it is added to the given share.
 	 * Shared ancestor folders don't count, because they can be unshared independently.
 	 *
-	 * @throws Exception
-	 */
-	private function hasSharedFolderOfFolder(int $folderId, string $userId): bool {
-		try {
-			$this->sharedFolderMapper->findByFolderAndUser($folderId, $userId);
-			return true;
-		} catch (DoesNotExistException) {
-			return false;
-		} catch (MultipleObjectsReturnedException) {
-			// Older versions could create several
-			return true;
-		}
-	}
-
-	/**
-	 * Like hasSharedFolderOfFolder, but if the user removed the shared folder from their tree earlier,
-	 * which keeps the SharedFolder around, it is put back into their root folder.
-	 * Only use this when a share is created: that's an explicit action, unlike membership changes.
-	 *
+	 * @param bool $restore If the user removed the shared folder from their tree earlier, which keeps the SharedFolder around,
+	 *                      put it back into their root folder. Only use this when a share is created: that's an explicit action,
+	 *                      unlike membership changes.
 	 * @return bool Whether the user has a shared folder of exactly this folder
 	 * @throws Exception
 	 * @throws UnsupportedOperation
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	private function restoreSharedFolderOfFolder(int $folderId, string $userId): bool {
+	private function mountSharedFolderOfFolder(Share $share, string $userId, bool $restore): bool {
 		try {
-			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($folderId, $userId);
+			$sharedFolder = $this->sharedFolderMapper->findByFolderAndUser($share->getFolderId(), $userId);
 		} catch (DoesNotExistException) {
 			return false;
 		} catch (MultipleObjectsReturnedException) {
 			// Older versions could create several
 			return true;
 		}
-		try {
-			$this->treeMapper->findParentOf(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
-		} catch (DoesNotExistException) {
-			$rootFolder = $this->folderMapper->findRootFolder($userId);
-			$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $rootFolder->getId());
+		$shareIds = array_map(static fn (Share $s) => $s->getId(), $this->shareMapper->findBySharedFolder($sharedFolder->getId()));
+		if (!in_array($share->getId(), $shareIds, true)) {
+			$this->sharedFolderMapper->mount($sharedFolder->getId(), $share->getId());
 		}
-		return true;
-	}
-
-	/**
-	 * Finds another share of the same folder that the user is a participant of
-	 *
-	 * @throws Exception
-	 */
-	private function findOtherShareOfUser(Share $share, string $userId): ?Share {
-		foreach ($this->shareMapper->findByFolder($share->getFolderId()) as $otherShare) {
-			if ($otherShare->getId() !== $share->getId() && $this->authorizer->isUserParticipantOfShare($otherShare, $userId)) {
-				return $otherShare;
+		if ($restore) {
+			try {
+				$this->treeMapper->findParentOf(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			} catch (DoesNotExistException) {
+				$rootFolder = $this->folderMapper->findRootFolder($userId);
+				$this->treeMapper->move(TreeMapper::TYPE_SHARE, $sharedFolder->getId(), $rootFolder->getId());
 			}
 		}
-		return null;
+		return true;
 	}
 
 	/**
@@ -543,7 +493,7 @@ class FolderService {
 			}
 			$this->shareMapper->insert($share);
 			// If the user already has this folder, e.g. through a group, don't add it twice.
-			if (!$this->restoreSharedFolderOfFolder($folder->getId(), $participant)) {
+			if (!$this->mountSharedFolderOfFolder($share, $participant, true)) {
 				$this->addSharedFolder($share, $folder, $participant);
 			}
 		} else {
@@ -589,7 +539,7 @@ class FolderService {
 					continue;
 				}
 				// If this folder is already shared with the user, don't add it twice.
-				if ($this->restoreSharedFolderOfFolder($folder->getId(), $user->getUID())) {
+				if ($this->mountSharedFolderOfFolder($share, $user->getUID(), true)) {
 					continue;
 				}
 
@@ -606,10 +556,6 @@ class FolderService {
 			if ($participant === $folder->getUserId()) {
 				return;
 			}
-			// If this folder is already shared with the user, don't add it twice.
-			if ($this->restoreSharedFolderOfFolder($folder->getId(), $participant)) {
-				return;
-			}
 
 			// If this folder already contains a share from this user, don't share it back. Would cause a loop.
 			if ($this->treeMapper->containsSharedFolderFromUser($folder, $participant)) {
@@ -618,6 +564,11 @@ class FolderService {
 
 			if ($insertShare) {
 				$this->shareMapper->insert($share);
+			}
+
+			// If this folder is already shared with the user, don't add it twice.
+			if ($this->mountSharedFolderOfFolder($share, $participant, true)) {
+				return;
 			}
 
 			$this->addSharedFolder($share, $folder, $participant);

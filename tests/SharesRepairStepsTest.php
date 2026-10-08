@@ -3,6 +3,7 @@
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\Db;
+use OCA\Bookmarks\Migration\DeduplicateSharedFoldersRepairStep;
 use OCA\Bookmarks\Migration\GroupSharesUpdateRepairStep;
 use OCA\Bookmarks\Migration\OrphanedSharesRepairStep;
 use OCA\Bookmarks\Service\FolderService;
@@ -148,9 +149,12 @@ class SharesRepairStepsTest extends TestCase {
 		try {
 			$folder = $this->createFolder($ownerId);
 			$firstShare = $this->folders->createShare($folder->getId(), $firstGroup->getGID(), IShare::TYPE_GROUP);
-			$this->folders->createShare($folder->getId(), $secondGroup->getGID(), IShare::TYPE_GROUP);
-			// The covered member only has the folder through the first share
+			$secondShare = $this->folders->createShare($folder->getId(), $secondGroup->getGID(), IShare::TYPE_GROUP);
+			// The covered member has a single shared folder, which is part of both shares
 			$this->assertCount(1, $this->sharedFolderMapper->findByUser($coveredId));
+			// What earlier versions did: the shared folder is only part of the first share
+			$coveredSharedFolder = $this->sharedFolderMapper->findByShareAndUser($secondShare->getId(), $coveredId)[0];
+			$this->sharedFolderMapper->unmount($coveredSharedFolder->getId(), $secondShare->getId());
 			$this->removeSharedFolder($this->sharedFolderMapper->findByShareAndUser($firstShare->getId(), $missingId)[0]);
 			$this->assertCount(0, $this->sharedFolderMapper->findByUser($missingId));
 
@@ -158,6 +162,7 @@ class SharesRepairStepsTest extends TestCase {
 
 			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($firstShare->getId(), $missingId));
 			$this->assertCount(1, $this->sharedFolderMapper->findByUser($coveredId));
+			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($secondShare->getId(), $coveredId));
 		} finally {
 			$firstGroup->delete();
 			$secondGroup->delete();
@@ -186,6 +191,35 @@ class SharesRepairStepsTest extends TestCase {
 			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
 		} finally {
 			$group->delete();
+		}
+	}
+
+	/**
+	 * Older versions could give a user several shared folders of the same folder, one per share.
+	 * The kept shared folder must become part of all of these shares.
+	 */
+	public function testDeduplicateSharedFoldersRepairStepKeepsAllShares(): void {
+		$ownerId = $this->createUser('repair_dedup_owner');
+		$memberId = $this->createUser('repair_dedup_member');
+		$firstGroup = $this->groupManager->createGroup('repair_dedup_first');
+		$secondGroup = $this->groupManager->createGroup('repair_dedup_second');
+		try {
+			$folder = $this->createFolder($ownerId);
+			$firstShare = $this->folders->createShare($folder->getId(), $firstGroup->getGID(), IShare::TYPE_GROUP);
+			$secondShare = $this->folders->createShare($folder->getId(), $secondGroup->getGID(), IShare::TYPE_GROUP);
+			$this->folders->addSharedFolder($firstShare, $folder, $memberId);
+			$this->folders->addSharedFolder($secondShare, $folder, $memberId);
+			$this->assertCount(2, $this->sharedFolderMapper->findByUser($memberId));
+
+			\OCP\Server::get(DeduplicateSharedFoldersRepairStep::class)->run($this->createMock(IOutput::class));
+
+			$sharedFolders = $this->sharedFolderMapper->findByUser($memberId);
+			$this->assertCount(1, $sharedFolders);
+			$this->assertEquals($sharedFolders[0]->getId(), $this->sharedFolderMapper->findByShareAndUser($firstShare->getId(), $memberId)[0]->getId());
+			$this->assertEquals($sharedFolders[0]->getId(), $this->sharedFolderMapper->findByShareAndUser($secondShare->getId(), $memberId)[0]->getId());
+		} finally {
+			$firstGroup->delete();
+			$secondGroup->delete();
 		}
 	}
 }

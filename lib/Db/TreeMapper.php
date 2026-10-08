@@ -650,10 +650,26 @@ class TreeMapper extends QBMapper {
 		$share = $this->shareMapper->find($shareId);
 		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);
 		foreach ($sharedFolders as $sharedFolder) {
-			$this->sharedFolderMapper->delete($sharedFolder);
-			$this->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			$this->removeSharedFolderFromShare($sharedFolder, $shareId);
 		}
 		$this->shareMapper->delete($share);
+	}
+
+	/**
+	 * Removes the shared folder from the share. The shared folder is only deleted
+	 * if it isn't part of another share of the same folder.
+	 *
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation|Exception
+	 */
+	public function removeSharedFolderFromShare(SharedFolder $sharedFolder, int $shareId): void {
+		$this->sharedFolderMapper->unmount($sharedFolder->getId(), $shareId);
+		if (count($this->shareMapper->findBySharedFolder($sharedFolder->getId())) > 0) {
+			return;
+		}
+		$this->sharedFolderMapper->delete($sharedFolder);
+		$this->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
 	}
 
 	/**
@@ -683,12 +699,12 @@ class TreeMapper extends QBMapper {
 		} else {
 			$sharedFolder = $this->sharedFolderMapper->find($itemId);
 			$folderId = $sharedFolder->getFolderId();
-			$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
+			$owner = $this->folderMapper->find($folderId)->getUserId();
 
 			// Make sure that the sharer of this share doesn't have a share of the target folder or one of its parents
 			// would make a share loop very probable, which would be very bad. Breaks the whole app.
 
-			if ($this->isFolderSharedWithUser($newParentFolderId, $share->getOwner())) {
+			if ($this->isFolderSharedWithUser($newParentFolderId, $owner)) {
 				throw new UnsupportedOperation('Cannot nest a folder shared from user A inside a folder shared with user A');
 			}
 		}
@@ -996,18 +1012,18 @@ class TreeMapper extends QBMapper {
 		}, $this->findChildren(TreeMapper::TYPE_FOLDER, $folderId, $isSoftDeleted));
 		$shares = array_map(function (SharedFolder $sharedFolder) use ($layers, $folderId, $isSoftDeleted) {
 			try {
-				$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
+				$folder = $this->folderMapper->find($sharedFolder->getFolderId());
 			} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 				$this->logger->error('Failed to load a shared folder', ['exception' => $e]);
 				return null;
 			}
 			$array = $sharedFolder->toArray();
-			$array['id'] = $share->getFolderId();
-			$array['userId'] = $share->getOwner();
+			$array['id'] = $folder->getId();
+			$array['userId'] = $folder->getUserId();
 			$array['userDisplayName'] = $this->userManager->get($array['userId'])->getDisplayName();
 			$array['parent_folder'] = $folderId;
 			if ($layers !== 0) {
-				$array['children'] = $this->getSubFolders($share->getFolderId(), $layers - 1, $isSoftDeleted);
+				$array['children'] = $this->getSubFolders($folder->getId(), $layers - 1, $isSoftDeleted);
 			}
 			return $array;
 		}, $this->findChildren(TreeMapper::TYPE_SHARE, $folderId, $isSoftDeleted));

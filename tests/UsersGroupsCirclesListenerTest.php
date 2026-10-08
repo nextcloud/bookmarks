@@ -191,7 +191,7 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 
 	/**
 	 * A user who leaves a group but still has access to the folder through a share
-	 * with another group must keep their shared folder, moved over to the other share.
+	 * with another group must keep their shared folder, which is part of both shares.
 	 */
 	public function testUserRemovedFromGroupKeepsFolderSharedWithOtherGroup(): void {
 		$ownerId = $this->createUser('two_groups_owner');
@@ -204,11 +204,12 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 			$folder = $this->createFolder($ownerId);
 			$firstShare = $this->folders->createShare($folder->getId(), $firstGroup->getGID(), IShare::TYPE_GROUP);
 			$secondShare = $this->folders->createShare($folder->getId(), $secondGroup->getGID(), IShare::TYPE_GROUP);
-			// The member only gets one shared folder, through the share that was created first
+			// The member only gets one shared folder, which is part of both shares
 			$sharedFolders = $this->sharedFolderMapper->findByShareAndUser($firstShare->getId(), $memberId);
 			$this->assertCount(1, $sharedFolders);
-			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($secondShare->getId(), $memberId));
 			$sharedFolderId = $sharedFolders[0]->getId();
+			$this->assertEquals($sharedFolderId, $this->sharedFolderMapper->findByShareAndUser($secondShare->getId(), $memberId)[0]->getId());
+			$this->assertCount(1, $this->sharedFolderMapper->findByUser($memberId));
 
 			$firstGroup->removeUser($this->userManager->get($memberId));
 
@@ -242,9 +243,10 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 			$folder = $this->createFolder($ownerId);
 			$groupShare = $this->folders->createShare($folder->getId(), $group->getGID(), IShare::TYPE_GROUP);
 			$userShare = $this->folders->createShare($folder->getId(), $memberId, IShare::TYPE_USER);
-			// The member already has the folder through the group, so the direct share doesn't add it again
+			// The member already has the folder through the group, so the direct share doesn't add it again,
+			// but the existing shared folder becomes part of the direct share
 			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
-			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId));
+			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $memberId));
 			$this->assertCount(1, $this->sharedFolderMapper->findByUser($memberId));
 
 			$group->removeUser($this->userManager->get($memberId));
@@ -344,7 +346,7 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 				// expected
 			}
 			$this->assertCount(0, $this->sharedFolderMapper->findByShare($groupShare->getId()));
-			// The covered member keeps the same shared folder, now through the direct share
+			// The covered member keeps the same shared folder, which is still part of the direct share
 			$sharedFolders = $this->sharedFolderMapper->findByShareAndUser($userShare->getId(), $coveredId);
 			$this->assertCount(1, $sharedFolders);
 			$this->assertEquals($coveredSharedFolderId, $sharedFolders[0]->getId());
@@ -373,7 +375,8 @@ class UsersGroupsCirclesListenerTest extends TestCase {
 
 			$group->addUser($this->userManager->get($memberId));
 
-			$this->assertCount(0, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
+			// The existing shared folder becomes part of the group share
+			$this->assertCount(1, $this->sharedFolderMapper->findByShareAndUser($groupShare->getId(), $memberId));
 			$this->assertCount(1, $this->sharedFolderMapper->findByUser($memberId));
 			// Looking up the user's shared folder of this folder still works
 			$this->sharedFolderMapper->findByFolderAndUser($folder->getId(), $memberId);
