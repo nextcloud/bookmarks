@@ -61,6 +61,7 @@ Requirements:
 			<step>OCA\Bookmarks\Migration\OrphanedSharesRepairStep</step>
 			<step>OCA\Bookmarks\Migration\OrphanedTreeItemsRepairStep</step>
 			<step>OCA\Bookmarks\Migration\GroupSharesUpdateRepairStep</step>
+			<step>OCA\Bookmarks\Migration\CircleSharesUpdateRepairStep</step>
 		</post-migration>
 	</repair-steps>
 

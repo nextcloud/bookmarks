@@ -86,9 +86,9 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(UserAddedEvent::class, UsersGroupsCirclesListener::class);
 		$context->registerEventListener(UserRemovedEvent::class, UsersGroupsCirclesListener::class);
 		$context->registerEventListener(BeforeGroupDeletedEvent::class, UsersGroupsCirclesListener::class);
-		$context->registerEventListener('\OCA\Circles\Events\CircleMemberAddedEvent', UsersGroupsCirclesListener::class);
-		$context->registerEventListener('\OCA\Circles\Events\CircleMemberRemovedEvent', UsersGroupsCirclesListener::class);
-		$context->registerEventListener('\OCA\Circles\Events\CircleDestroyedEvent', UsersGroupsCirclesListener::class);
+		$context->registerEventListener('OCA\Circles\Events\MembershipsCreatedEvent', UsersGroupsCirclesListener::class);
+		$context->registerEventListener('OCA\Circles\Events\MembershipsRemovedEvent', UsersGroupsCirclesListener::class);
+		$context->registerEventListener('OCA\Circles\Events\DestroyingCircleEvent', UsersGroupsCirclesListener::class);
 
 		$context->registerEventListener(BeforeTemplateRenderedEvent::class, BeforeTemplateRenderedListener::class);
 

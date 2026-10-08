@@ -301,6 +301,9 @@ class Authorizer {
 			return self::PERM_ALL;
 		}
 
+		// A user may be covered by several shares of the same folder (e.g. directly, through a group,
+		// or through someone who re-shared a folder they received), so they get the combined permissions.
+		$accessPerms = self::PERM_NONE;
 		$shares = $this->shareMapper->findByOwner($item->getUserId());
 		foreach ($shares as $share) {
 			if ($share->getFolderId() === $itemId && $type === TreeMapper::TYPE_FOLDER) {
@@ -316,16 +319,17 @@ class Authorizer {
 			$sharedFolders = $this->sharedFolderMapper->findByShare($share->getId());
 			foreach ($sharedFolders as $sharedFolder) {
 				if ($sharedFolder->getUserId() === $userId) {
-					return $perms;
+					$accessPerms |= $perms;
+				} else {
+					$accessPerms |= $perms & $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_SHARE, $sharedFolder->getId());
 				}
-				$secondLevelPerms = $this->findPermissionsByUserAndItem($userId, TreeMapper::TYPE_SHARE, $sharedFolder->getId());
-				if ($secondLevelPerms !== self::PERM_NONE) {
-					return $perms & $secondLevelPerms;
+				if ($accessPerms === self::PERM_ALL) {
+					return $accessPerms;
 				}
 			}
 		}
 
-		return self::PERM_NONE;
+		return $accessPerms;
 	}
 
 	/**

@@ -20,6 +20,7 @@ use Throwable;
  */
 class CirclesService {
 	public const TYPE = 1;
+	public const TYPE_CIRCLE = 16;
 	public const LEVEL_MEMBER = 1;
 	private bool $circlesEnabled;
 
@@ -39,11 +40,86 @@ class CirclesService {
 		}
 
 		try {
+			return $this->fetchCircle($circleId);
+		} catch (Throwable $e) {
+		}
+		return null;
+	}
 
-			// Enforce current user condition since we always want the full list of members
+	/**
+	 * @return bool|null whether the circle exists, or null if that can't be determined right now
+	 */
+	public function circleExists(string $circleId): ?bool {
+		if (!$this->circlesEnabled) {
+			return null;
+		}
+
+		try {
+			$this->fetchCircle($circleId);
+			return true;
+		} catch (Throwable $e) {
+			if (is_a($e, 'OCA\Circles\Exceptions\FederatedUserNotFoundException')) {
+				return false;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Looks up a circle without the visibility checks of the current circles session.
+	 * CirclesManager::getCircle() filters by the session's initiator, and a super session
+	 * doesn't help once circles has set a current app, which it does whenever it syncs a
+	 * group (e.g. on group creation or membership changes) and never resets.
+	 *
+	 * @throws Throwable
+	 */
+	private function fetchCircle(string $circleId) {
+		$circlesManager = Server::get('OCA\Circles\CirclesManager');
+		return $circlesManager->getFederatedUser($circleId, self::TYPE_CIRCLE)->getBasedOn();
+	}
+
+	/**
+	 * Resolves a circle to the local users it contains, including users that are
+	 * members through groups or nested circles
+	 *
+	 * @param string $circleId circle single id
+	 * @return string[] user ids
+	 */
+	public function getUserIdsOfCircle(string $circleId): array {
+		$circle = $this->getCircle($circleId);
+		if ($circle === null) {
+			return [];
+		}
+
+		try {
+			$userIds = [];
+			foreach ($circle->getInheritedMembers() as $member) {
+				if ($member->getUserType() === self::TYPE) {
+					$userIds[] = $member->getUserId();
+				}
+			}
+			return array_values(array_unique($userIds));
+		} catch (Throwable $e) {
+		}
+		return [];
+	}
+
+	/**
+	 * @param string $singleId single id of a federated user as found in a circles Membership
+	 * @return string|null the user id if the single id belongs to a local user
+	 */
+	public function getLocalUserIdOfSingleId(string $singleId): ?string {
+		if (!$this->circlesEnabled) {
+			return null;
+		}
+
+		try {
 			$circlesManager = Server::get('OCA\Circles\CirclesManager');
-			$circlesManager->startSuperSession();
-			return $circlesManager->getCircle($circleId);
+			$federatedUser = $circlesManager->getFederatedUser($singleId);
+			if ($federatedUser->getUserType() !== self::TYPE || !$federatedUser->isLocal()) {
+				return null;
+			}
+			return $federatedUser->getUserId();
 		} catch (Throwable $e) {
 		}
 		return null;

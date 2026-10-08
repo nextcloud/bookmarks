@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="6.16.1@f1f5de594dc76faf8784e02d3dc4716c91c6f6ac">
-  <file src="lib/AppInfo/Application.php">
-    <InvalidArgument>
-      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
-      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
-      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
-      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
-      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
-      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
-      <code><![CDATA[UsersGroupsCirclesListener::class]]></code>
-    </InvalidArgument>
-  </file>
+<files psalm-version="6.18.1@79465b8dc674127f442ae31ea114c11bc4dd7ed6">
   <file src="lib/AugmentedTemplateResponse.php">
     <InvalidTemplateParam>
       <code><![CDATA[AugmentedTemplateResponse]]></code>
@@ -66,21 +55,6 @@
       <code><![CDATA[exportContextIDs]]></code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="lib/Hooks/UsersGroupsCirclesListener.php">
-    <InvalidTemplateParam>
-      <code><![CDATA[IEventListener]]></code>
-    </InvalidTemplateParam>
-    <MoreSpecificImplementedParamType>
-      <code><![CDATA[$event]]></code>
-    </MoreSpecificImplementedParamType>
-    <UndefinedClass>
-      <code><![CDATA[CircleDestroyedEvent]]></code>
-    </UndefinedClass>
-    <UndefinedDocblockClass>
-      <code><![CDATA[UsersGroupsCirclesListener]]></code>
-      <code><![CDATA[UsersGroupsCirclesListener]]></code>
-    </UndefinedDocblockClass>
-  </file>
   <file src="lib/Http/Client.php">
     <UndefinedClass>
       <code><![CDATA[Psr7\Utils]]></code>
@@ -106,11 +80,6 @@
       <code><![CDATA[$bookmark]]></code>
       <code><![CDATA[$folder]]></code>
     </NoValue>
-  </file>
-  <file src="lib/Service/CirclesService.php">
-    <UndefinedClass>
-      <code><![CDATA[$circleProbe]]></code>
-    </UndefinedClass>
   </file>
   <file src="lib/Service/CrawlService.php">
     <UndefinedClass>
