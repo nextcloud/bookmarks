@@ -129,28 +129,33 @@ class CrawlService {
 
 		if ($contentType !== null && !str_contains($contentType, 'text/html') && $bookmark->getArchivedFile() === null) {
 			$contentLengthHeader = $resp->getHeader('Content-Length');
-			$contentLength = $contentLengthHeader !== '' ? (int)$contentLengthHeader : 0;
+			if ($contentLengthHeader !== '' && (int)$contentLengthHeader >= self::MAX_BODY_LENGTH) {
+				return;
+			}
 
-			if ($contentLength < self::MAX_BODY_LENGTH) {
-				try {
-					$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
-					$folderPath = $this->getArchivePath($bookmark, $userFolder);
-					$name = $bookmark->slugify('title');
-					$extension = $this->mimey->getExtension($contentType) ?? 'txt';
+			$body = $resp->getBody();
+			if (strlen($body) >= self::MAX_BODY_LENGTH) {
+				return;
+			}
 
-					$i = 0;
-					do {
-						$path = $folderPath . '/' . $name . ($i > 0 ? '_' . $i : '') . '.' . $extension;
-						$i++;
-					} while ($userFolder->nodeExists($path));
+			try {
+				$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
+				$folderPath = $this->getArchivePath($bookmark, $userFolder);
+				$name = $bookmark->slugify('title');
+				$extension = $this->mimey->getExtension($contentType) ?? 'txt';
 
-					$file = $userFolder->newFile($path);
-					$file->putContent($resp->getBody());
-					$bookmark->setArchivedFile($file->getId());
-					$this->bookmarkMapper->update($bookmark);
-				} catch (NotPermittedException|NoUserException|GenericFileException|LockedException|UrlParseError|InvalidPathException|NotFoundException $e) {
-					$this->logger->debug(get_class($e) . ' ' . $e->getMessage() . "\r\n" . $e->getTraceAsString());
-				}
+				$i = 0;
+				do {
+					$path = $folderPath . '/' . $name . ($i > 0 ? '_' . $i : '') . '.' . $extension;
+					$i++;
+				} while ($userFolder->nodeExists($path));
+
+				$file = $userFolder->newFile($path);
+				$file->putContent($body);
+				$bookmark->setArchivedFile($file->getId());
+				$this->bookmarkMapper->update($bookmark);
+			} catch (NotPermittedException|NoUserException|GenericFileException|LockedException|UrlParseError|InvalidPathException|NotFoundException $e) {
+				$this->logger->debug(get_class($e) . ' ' . $e->getMessage() . "\r\n" . $e->getTraceAsString());
 			}
 		}
 	}
