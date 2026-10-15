@@ -139,7 +139,7 @@ OC.L10N.register(
     "Files" : "Файлы",
     "Duplicates" : "Дубликаты",
     "Broken links" : "Нерабочие ссылки",
-    "New tag" : "Новая метка",
+    "New tag" : "Создать метку",
     "Search tags" : "Поиск по меткам",
     "Delete" : "Удалить",
     "Untagged" : "Без меток",
