@@ -86,6 +86,7 @@
       <code><![CDATA[$e]]></code>
       <code><![CDATA[$e]]></code>
       <code><![CDATA[NoUserException]]></code>
+      <code><![CDATA[Psr7\Utils]]></code>
     </UndefinedClass>
   </file>
   <file src="lib/Service/FolderService.php">

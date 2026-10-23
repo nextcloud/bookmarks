@@ -11,6 +11,7 @@ namespace OCA\Bookmarks\Service;
 use Exception;
 use fivefilters\Readability\Configuration;
 use fivefilters\Readability\Readability;
+use GuzzleHttp\Psr7;
 use Mimey\MimeTypes;
 use OC\User\NoUserException;
 use OCA\Bookmarks\Db\Bookmark;
@@ -28,6 +29,7 @@ use OCP\Http\Client\IResponse;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\Lock\LockedException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 class CrawlService {
@@ -63,6 +65,22 @@ class CrawlService {
 		if (!$bookmark->isWebLink()) {
 			return;
 		}
+		// The body may come without (truthful) Content-Length, so we abort the download
+		// as soon as more than MAX_BODY_LENGTH bytes arrive (curl aborts when the sink accepts fewer bytes than offered)
+		$tooLarge = false;
+		$status = null;
+		$buffer = Psr7\Utils::streamFor(Psr7\Utils::tryFopen('php://temp', 'w+'));
+		$sink = Psr7\FnStream::decorate($buffer, [
+			'write' => static function (string $data) use ($buffer, &$tooLarge): int {
+				if ($buffer->getSize() + strlen($data) > self::MAX_BODY_LENGTH) {
+					$tooLarge = true;
+					return 0;
+				}
+				return $buffer->write($data);
+			},
+		]);
+
+		$resp = null;
 		try {
 			$resp = $this->client->get($bookmark->getUrl(), [
 				'headers' => [
@@ -71,17 +89,28 @@ class CrawlService {
 				'connect_timeout' => self::CONNECT_TIMEOUT,
 				'timeout' => self::TIMEOUT,
 				'read_timeout' => self::READ_TIMEOUT,
-				'http_errors' => false
+				'http_errors' => false,
+				'sink' => $sink,
+				'on_headers' => static function (ResponseInterface $response) use (&$tooLarge, &$status): void {
+					$status = $response->getStatusCode();
+					if ((int)$response->getHeaderLine('Content-Length') > self::MAX_BODY_LENGTH) {
+						$tooLarge = true;
+						throw new Exception('Response body exceeds ' . self::MAX_BODY_LENGTH . ' bytes');
+					}
+				},
 			]);
-			$available = $resp ? $resp->getStatusCode() !== 404 : false;
+			$available = $resp->getStatusCode() !== 404;
 		} catch (Exception $e) {
-			$this->logger->warning($e->getMessage());
-			$available = false;
+			// An aborted oversized download still means the resource is there, we just won't archive it
+			$available = $tooLarge && $status !== 404;
+			if (!$tooLarge) {
+				$this->logger->warning($e->getMessage());
+			}
 		}
 
 		if ($available) {
 			$this->userSettingsService->setUserId($bookmark->getUserId());
-			if ($this->userSettingsService->get('archive.enabled') === 'true') {
+			if ($resp !== null && $this->userSettingsService->get('archive.enabled') === 'true') {
 				$this->archiveFile($bookmark, $resp);
 				$this->archiveContent($bookmark, $resp);
 			}
@@ -128,29 +157,24 @@ class CrawlService {
 		}
 
 		if ($contentType !== null && !str_contains($contentType, 'text/html') && $bookmark->getArchivedFile() === null) {
-			$contentLengthHeader = $resp->getHeader('Content-Length');
-			$contentLength = $contentLengthHeader !== '' ? (int)$contentLengthHeader : 0;
+			try {
+				$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
+				$folderPath = $this->getArchivePath($bookmark, $userFolder);
+				$name = $bookmark->slugify('title');
+				$extension = $this->mimey->getExtension($contentType) ?? 'txt';
 
-			if ($contentLength < self::MAX_BODY_LENGTH) {
-				try {
-					$userFolder = $this->rootFolder->getUserFolder($bookmark->getUserId());
-					$folderPath = $this->getArchivePath($bookmark, $userFolder);
-					$name = $bookmark->slugify('title');
-					$extension = $this->mimey->getExtension($contentType) ?? 'txt';
+				$i = 0;
+				do {
+					$path = $folderPath . '/' . $name . ($i > 0 ? '_' . $i : '') . '.' . $extension;
+					$i++;
+				} while ($userFolder->nodeExists($path));
 
-					$i = 0;
-					do {
-						$path = $folderPath . '/' . $name . ($i > 0 ? '_' . $i : '') . '.' . $extension;
-						$i++;
-					} while ($userFolder->nodeExists($path));
-
-					$file = $userFolder->newFile($path);
-					$file->putContent($resp->getBody());
-					$bookmark->setArchivedFile($file->getId());
-					$this->bookmarkMapper->update($bookmark);
-				} catch (NotPermittedException|NoUserException|GenericFileException|LockedException|UrlParseError|InvalidPathException|NotFoundException $e) {
-					$this->logger->debug(get_class($e) . ' ' . $e->getMessage() . "\r\n" . $e->getTraceAsString());
-				}
+				$file = $userFolder->newFile($path);
+				$file->putContent($resp->getBody());
+				$bookmark->setArchivedFile($file->getId());
+				$this->bookmarkMapper->update($bookmark);
+			} catch (NotPermittedException|NoUserException|GenericFileException|LockedException|UrlParseError|InvalidPathException|NotFoundException $e) {
+				$this->logger->debug(get_class($e) . ' ' . $e->getMessage() . "\r\n" . $e->getTraceAsString());
 			}
 		}
 	}
