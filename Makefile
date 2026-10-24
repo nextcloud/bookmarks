@@ -7,6 +7,9 @@ source_dir=$(build_dir)/source
 sign_dir=$(build_dir)/sign
 package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
+cert_url=https://github.com/nextcloud/app-certificate-requests/raw/master/$(app_name)/$(app_name).crt
+# Path to the occ of a Nextcloud server install, used for code signing. Override with `make appstore occ=/path/to/nextcloud/occ`
+occ=$(CURDIR)/../../occ
 version+=17.0.0
 
 all: dev-setup build-js-production composer-no-dev
@@ -86,6 +89,21 @@ appstore:
 	--exclude=**/*.map \
 	--exclude=/* \
 	$(project_dir)/ $(sign_dir)/$(app_name)
+	@if [ -f $(cert_dir)/$(app_name).key ]; then \
+		if [ ! -f $(cert_dir)/$(app_name).crt ]; then \
+			echo "Downloading app certificate…"; \
+			curl -sSfL -o $(cert_dir)/$(app_name).crt $(cert_url) || exit 1; \
+		fi; \
+		if [ ! -f $(occ) ]; then \
+			echo "Cannot sign app: occ not found at $(occ). Run with occ=/path/to/nextcloud/occ"; \
+			exit 1; \
+		fi; \
+		echo "Signing app code…"; \
+		php $(occ) integrity:sign-app \
+			--privateKey=$(cert_dir)/$(app_name).key \
+			--certificate=$(cert_dir)/$(app_name).crt \
+			--path=$(sign_dir)/$(app_name) || exit 1; \
+	fi
 	tar -czf $(build_dir)/$(app_name)-$(version).tar.gz \
 		-C $(sign_dir) $(app_name)
 	@if [ -f $(cert_dir)/$(app_name).key ]; then \
