@@ -19,6 +19,7 @@ export const mutations = {
 	REMOVE_SELECTION_FOLDER: 'REMOVE_SELECTION_FOLDER',
 	ADD_SELECTION_FOLDER: 'ADD_SELECTION_FOLDER',
 	ADD_BOOKMARK: 'ADD_BOOKMARK',
+	SET_BOOKMARK_URL: 'SET_BOOKMARK_URL',
 	REMOVE_BOOKMARK: 'REMOVE_BOOKMARK',
 	REMOVE_ALL_BOOKMARKS: 'REMOVE_ALL_BOOKMARKS',
 	SORT_BOOKMARKS: 'SORT_BOOKMARKS',
@@ -193,6 +194,14 @@ export default {
 		if (!existingBookmark) {
 			state.bookmarks.push(bookmark)
 			Vue.set(state.bookmarksById, bookmark.id, bookmark)
+		}
+	},
+	[mutations.SET_BOOKMARK_URL](state, { id, url, target, available }) {
+		const existingBookmark = state.bookmarksById[id]
+		if (existingBookmark) {
+			existingBookmark.url = url
+			existingBookmark.target = target
+			existingBookmark.available = available
 		}
 	},
 	[mutations.CLICK_BOOKMARK](state, bookmark) {
