@@ -10,7 +10,7 @@ cert_dir=$(HOME)/.nextcloud/certificates
 cert_url=https://github.com/nextcloud/app-certificate-requests/raw/master/$(app_name)/$(app_name).crt
 # Path to the occ of a Nextcloud server install, used for code signing. Override with `make appstore occ=/path/to/nextcloud/occ`
 occ=$(CURDIR)/../../occ
-version+=17.0.0
+version+=17.0.1
 
 all: dev-setup build-js-production composer-no-dev
 

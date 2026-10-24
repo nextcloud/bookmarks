@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [17.0.1] - 2026-10-24
+
+### Fixed
+* fix(ui): Show proper group icons instead of avatar
+* fix(build): Add app signing mechanism
+* fix(CrawlService): Do not accept files larger than 90MB
+* fix(Authorizer): also add permissions for reshared folders to existing shares
+* fix(SharedFolders): Link a user's shared folder to every share that covers them
+* fix(FolderService): Restore removed shared folder when folder is shared again
+* fix: Use hasSharedFolderOfFolder instead of treeMapper#isFolderSharedWithUser
+* fix: More fixes to avoid duplicate shared folders
+* fix(Previewers): Check setting on each call
+* fix(LinkExplorer): Check setting on each call
+* fix(BookmarkService: Fix null pointer
+* fix: Add and extend repair steps for orphaned shares and group shares
+* fix(SharedFolders): Deleting a share no longer takes the folder away from members who are still covered by another share of it
+* fix(Share): Listing a share whose participant no longer exists no longer crashes
+* fix(circles): A user covered by several shares of the same folder now gets the combined permissions of all of them
+* fix(circles): Sharing a folder directly with someone who already has it through a group or circle no longer gives them a second SharedFolder
+* fix(circles): When a user is deleted, every SharedFolder they still have is now removed, including ones from circle shares
+* fix(circles): when a user left a group, the plain group handler would still remove their folder even if a circle share also covers them
+* fix(circles): Use the Memberships events
+* fix: Make circles changes work
+* fix(serviceWorker): Fix worker scope
+* fix(references): Drop prefetch magic comment
+* fix: Update dependencies
+* fix(l10n): Update translations from Transifex
+
 ## [17.0.0] - 2026-09-18
 
 ### Breaking changes
