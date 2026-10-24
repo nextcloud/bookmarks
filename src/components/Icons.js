@@ -56,6 +56,7 @@ import RssIcon from 'vue-material-design-icons/Rss.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import LinkIcon from 'vue-material-design-icons/Link.vue'
 import AccountIcon from 'vue-material-design-icons/AccountOutline.vue'
+import AccountGroupIcon from 'vue-material-design-icons/AccountGroupOutline.vue'
 import FolderIcon from 'vue-material-design-icons/FolderOutline.vue'
 import FolderOpenIcon from 'vue-material-design-icons/FolderOpenOutline.vue'
 import ImportIcon from 'vue-material-design-icons/Import.vue'
@@ -129,6 +130,7 @@ export {
 	ShareAllIcon,
 	ClipboardIcon,
 	AccountIcon,
+	AccountGroupIcon,
 	FolderOpenIcon,
 	CircleIcon,
 	TrashbinIcon,
