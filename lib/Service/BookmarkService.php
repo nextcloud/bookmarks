@@ -520,6 +520,6 @@ class BookmarkService {
 	 * @return \Generator<void, Bookmark>
 	 */
 	public function getIterator(string $userId): \Generator {
-		return $this->bookmarkMapper->getIterator($userId, new QueryParameters());
+		return $this->bookmarkMapper->getIterator($userId, (new QueryParameters())->setLimit(-1));
 	}
 }
