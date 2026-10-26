@@ -14,8 +14,8 @@ use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\ChangeEvent;
-use OCA\Bookmarks\Events\InsertEvent;
 use OCA\Bookmarks\Events\ManipulateEvent;
+use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCP\BackgroundJob\IJobList;
 use OCP\ContextChat\ContentItem;
@@ -54,7 +54,9 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 		if (!$event instanceof ChangeEvent) {
 			return;
 		}
-		if ($event instanceof InsertEvent || $event instanceof ManipulateEvent) {
+		// Not InsertEvent: it fires before the bookmark is placed in a folder, so nobody has access yet.
+		// TreeMapper::addToFolders dispatches a MoveEvent after each placement.
+		if ($event instanceof MoveEvent || $event instanceof ManipulateEvent) {
 			if ($event->getType() !== TreeMapper::TYPE_BOOKMARK) {
 				return;
 			}

@@ -15,7 +15,7 @@ use OCA\Bookmarks\ContextChat\ContextChatProvider;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
-use OCA\Bookmarks\Events\InsertEvent;
+use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCP\BackgroundJob\IJobList;
 use OCP\ContextChat\ContentItem;
@@ -73,10 +73,10 @@ class ContextChatProviderTest extends TestCase {
 		$this->treeMapper->expects(self::never())
 			->method('findUsersWithAccess');
 
-		$this->provider->handle(new InsertEvent(TreeMapper::TYPE_BOOKMARK, 42));
+		$this->provider->handle(new MoveEvent(TreeMapper::TYPE_BOOKMARK, 42, null, 1));
 	}
 
-	public function testSubmitsBookmarkContentOnInsert(): void {
+	public function testSubmitsBookmarkContentOnMove(): void {
 		$bookmark = $this->createBookmark();
 
 		$this->contentManager->expects(self::once())
@@ -107,7 +107,7 @@ class ContextChatProviderTest extends TestCase {
 				})
 			);
 
-		$this->provider->handle(new InsertEvent(TreeMapper::TYPE_BOOKMARK, 42));
+		$this->provider->handle(new MoveEvent(TreeMapper::TYPE_BOOKMARK, 42, null, 1));
 	}
 
 	public function testDoesNotSubmitWhenNoUserWithAccessHasContextChatEnabled(): void {
@@ -126,7 +126,7 @@ class ContextChatProviderTest extends TestCase {
 		$this->contentManager->expects(self::never())
 			->method('submitContent');
 
-		$this->provider->handle(new InsertEvent(TreeMapper::TYPE_BOOKMARK, 42));
+		$this->provider->handle(new MoveEvent(TreeMapper::TYPE_BOOKMARK, 42, null, 1));
 	}
 
 	public function testDeletesBookmarkContentOnDelete(): void {
