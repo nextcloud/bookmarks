@@ -14,7 +14,6 @@ use OCA\Bookmarks\Service\BookmarkService;
 use OCA\Bookmarks\Service\UserSettingsService;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\QueuedJob;
-use OCP\ContextChat\ContentItem;
 use OCP\ContextChat\IContentManager;
 use OCP\IUserManager;
 
@@ -48,15 +47,11 @@ class ContextChatIndexJob extends QueuedJob {
 		}
 		$items = [];
 		foreach ($this->bookmarkService->getIterator($user->getUID()) as $bookmark) {
-			$items[] = new ContentItem(
-				(string)$bookmark->getId(),
-				$this->provider->getId(),
-				$bookmark->getTitle(),
-				$bookmark->getTextContent(),
-				'Website',
-				new \DateTime('@' . $bookmark->getLastmodified()),
-				[$user->getUID()]
-			);
+			$item = $this->provider->getContentItem($bookmark);
+			if ($item === null) {
+				continue;
+			}
+			$items[] = $item;
 			if (count($items) < 25) {
 				continue;
 			}
