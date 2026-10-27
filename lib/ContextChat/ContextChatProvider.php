@@ -10,13 +10,13 @@ namespace OCA\Bookmarks\ContextChat;
 
 use OCA\Bookmarks\AppInfo\Application;
 use OCA\Bookmarks\BackgroundJobs\ContextChatIndexJob;
+use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\ChangeEvent;
-use OCA\Bookmarks\Events\InsertEvent;
 use OCA\Bookmarks\Events\ManipulateEvent;
+use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Service\BookmarkService;
-use OCA\Bookmarks\Service\UserSettingsService;
 use OCP\BackgroundJob\IJobList;
 use OCP\ContextChat\ContentItem;
 use OCP\ContextChat\Events\ContentProviderRegisterEvent;
@@ -24,6 +24,7 @@ use OCP\ContextChat\IContentManager;
 use OCP\ContextChat\IContentProvider;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
+use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserManager;
 
@@ -37,7 +38,8 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 		private IUserManager $userManager,
 		private ?IContentManager $contentManager,
 		private IJobList $jobList,
-		private UserSettingsService $userSettings,
+		private TreeMapper $treeMapper,
+		private IConfig $config,
 	) {
 	}
 
@@ -52,10 +54,9 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 		if (!$event instanceof ChangeEvent) {
 			return;
 		}
-		if ($this->userSettings->get('contextchat.enabled') !== 'true') {
-			return;
-		}
-		if ($event instanceof InsertEvent || $event instanceof ManipulateEvent) {
+		// Not InsertEvent: it fires before the bookmark is placed in a folder, so nobody has access yet.
+		// TreeMapper::addToFolders dispatches a MoveEvent after each placement.
+		if ($event instanceof MoveEvent || $event instanceof ManipulateEvent) {
 			if ($event->getType() !== TreeMapper::TYPE_BOOKMARK) {
 				return;
 			}
@@ -63,15 +64,10 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 			if ($bookmark === null) {
 				return;
 			}
-			$item = new ContentItem(
-				(string)$event->getId(),
-				$this->getId(),
-				$bookmark->getTitle(),
-				$bookmark->getTextContent(),
-				'Website',
-				new \DateTime('@' . $bookmark->getLastmodified()),
-				[$bookmark->getUserId()]
-			);
+			$item = $this->getContentItem($bookmark);
+			if ($item === null) {
+				return;
+			}
 			$this->contentManager->submitContent($this->getAppId(), [$item]);
 			return;
 		}
@@ -95,6 +91,41 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 		}
 
 		$this->contentManager->registerContentProvider($this->getAppId(), $this->getId(), self::class);
+	}
+
+	/**
+	 * Builds the content item for a bookmark, granting access to everyone who can see it
+	 * (including via shared folders) and who has ContextChat enabled for bookmarks.
+	 * Context chat replaces the access list on every submission, so it must always be complete.
+	 *
+	 * @param Bookmark $bookmark
+	 * @return ContentItem|null null if nobody with ContextChat enabled can access the bookmark
+	 */
+	public function getContentItem(Bookmark $bookmark): ?ContentItem {
+		$users = array_values(array_filter(
+			$this->treeMapper->findUsersWithAccess(TreeMapper::TYPE_BOOKMARK, $bookmark->getId()),
+			fn (string $userId) => $this->isEnabledForUser($userId),
+		));
+		if (count($users) === 0) {
+			return null;
+		}
+		return new ContentItem(
+			(string)$bookmark->getId(),
+			$this->getId(),
+			$bookmark->getTitle(),
+			$bookmark->getTextContent(),
+			'Website',
+			new \DateTime('@' . $bookmark->getLastmodified()),
+			$users
+		);
+	}
+
+	/**
+	 * Mirrors UserSettingsService::get('contextchat.enabled') for an arbitrary user
+	 */
+	private function isEnabledForUser(string $userId): bool {
+		return $this->config->getUserValue($userId, Application::APP_ID, 'archive.enabled', 'true') === 'true'
+			&& $this->config->getUserValue($userId, Application::APP_ID, 'contextchat.enabled', 'false') === 'true';
 	}
 
 	private function isContextChatAvailable(): bool {

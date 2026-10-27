@@ -1319,6 +1319,38 @@ class TreeMapper extends QBMapper {
 	}
 
 	/**
+	 * Lists all users who can see the given item in their (non-trashed) tree,
+	 * i.e. the owners of all ancestor folders plus everyone those folders are shared with,
+	 * following shares that are themselves placed inside shared folders.
+	 *
+	 * @param string $type
+	 * @psalm-param TreeMapper::TYPE_* $type
+	 * @param int $itemId
+	 * @return list<string>
+	 */
+	public function findUsersWithAccess(string $type, int $itemId): array {
+		$users = [];
+		$visitedFolders = [];
+		$queue = $this->findParentsOf($type, $itemId);
+		while (($folder = array_shift($queue)) !== null) {
+			if (isset($visitedFolders[$folder->getId()])) {
+				continue;
+			}
+			$visitedFolders[$folder->getId()] = true;
+			$users[$folder->getUserId()] = true;
+			foreach ($this->sharedFolderMapper->findByFolder($folder->getId()) as $sharedFolder) {
+				$sharees = $this->findParentsOf(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+				if (count($sharees) > 0) {
+					$users[$sharedFolder->getUserId()] = true;
+				}
+				array_push($queue, ...$sharees);
+			}
+			array_push($queue, ...$this->findParentsOf(TreeMapper::TYPE_FOLDER, $folder->getId()));
+		}
+		return array_map('strval', array_keys($users));
+	}
+
+	/**
 	 * @param int $limit
 	 * @param float|int $maxAge
 	 * @return void
