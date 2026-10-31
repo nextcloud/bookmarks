@@ -35,6 +35,10 @@ use OCP\IUserManager;
  * @implements IEventListener<Event>
  */
 class ContextChatProvider implements IContentProvider, IEventListener {
+	/**
+	 * Bookmark fields that make up a content item
+	 */
+	private const INDEXED_FIELDS = ['title', 'textContent'];
 
 	public function __construct(
 		private BookmarkService $bookmarkService,
@@ -71,6 +75,11 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 		}
 		if ($event instanceof ManipulateEvent) {
 			if ($event->getType() !== TreeMapper::TYPE_BOOKMARK) {
+				return;
+			}
+			// Skip clicks, preview updates etc., which don't change the indexed content
+			$updatedFields = $event->getUpdatedFields();
+			if ($updatedFields !== null && count(array_intersect($updatedFields, self::INDEXED_FIELDS)) === 0) {
 				return;
 			}
 			$this->updateBookmarks([$event->getId()], false);
@@ -165,9 +174,14 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 	 * Context chat replaces the access list on every submission, so it must always be complete.
 	 *
 	 * @param Bookmark $bookmark
-	 * @return ContentItem|null null if nobody with ContextChat enabled can access the bookmark
+	 * @return ContentItem|null null if the bookmark has no text content (yet)
+	 *                          or nobody with ContextChat enabled can access it
 	 */
 	public function getContentItem(Bookmark $bookmark): ?ContentItem {
+		// The crawler fills in the text content later, which triggers a ManipulateEvent
+		if (trim($bookmark->getTextContent()) === '') {
+			return null;
+		}
 		$users = array_values(array_filter(
 			$this->treeMapper->findUsersWithAccess(TreeMapper::TYPE_BOOKMARK, $bookmark->getId()),
 			fn (string $userId) => $this->isEnabledForUser($userId),

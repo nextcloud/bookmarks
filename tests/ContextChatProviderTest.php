@@ -18,6 +18,7 @@ use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\BeforeSoftDeleteEvent;
 use OCA\Bookmarks\Events\BeforeSoftUndeleteEvent;
+use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCP\BackgroundJob\IJobList;
@@ -216,6 +217,43 @@ class ContextChatProviderTest extends TestCase {
 			->method('deleteContent');
 
 		$this->provider->handle(new BeforeDeleteEvent(TreeMapper::TYPE_FOLDER, 5));
+	}
+
+	public function testIgnoresManipulationsThatDoNotChangeIndexedContent(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->bookmarkService->expects(self::never())
+			->method('findById');
+		$this->contentManager->expects(self::never())
+			->method('submitContent');
+
+		$this->provider->handle(new ManipulateEvent(TreeMapper::TYPE_BOOKMARK, 42, ['clickcount', 'lastmodified']));
+	}
+
+	public function testSubmitsWhenIndexedContentIsManipulated(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->bookmarkService->expects(self::once())
+			->method('findById')
+			->with(42)
+			->willReturn($this->createBookmark());
+		$this->treeMapper->method('findUsersWithAccess')->willReturn(['alice']);
+		$this->mockEnabledUsers(['alice']);
+		$this->contentManager->expects(self::once())
+			->method('submitContent');
+
+		$this->provider->handle(new ManipulateEvent(TreeMapper::TYPE_BOOKMARK, 42, ['textContent', 'lastmodified']));
+	}
+
+	public function testDoesNotCreateContentItemWithoutTextContent(): void {
+		$bookmark = $this->createBookmark();
+		$bookmark->setTextContent(null);
+		$this->treeMapper->expects(self::never())
+			->method('findUsersWithAccess');
+
+		self::assertNull($this->provider->getContentItem($bookmark));
 	}
 
 	public function testQueuesUpdateWhenBookmarkIsTrashed(): void {

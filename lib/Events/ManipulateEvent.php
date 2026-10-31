@@ -13,4 +13,23 @@ namespace OCA\Bookmarks\Events;
  * Not exposed via the activity app
  */
 class ManipulateEvent extends ChangeEvent {
+	/**
+	 * @param string $type
+	 * @param int $id
+	 * @param list<string>|null $updatedFields the entity fields that changed, null if unknown
+	 */
+	public function __construct(
+		string $type,
+		int $id,
+		private ?array $updatedFields = null,
+	) {
+		parent::__construct($type, $id);
+	}
+
+	/**
+	 * @return list<string>|null the entity fields that changed, null if unknown
+	 */
+	public function getUpdatedFields(): ?array {
+		return $this->updatedFields;
+	}
 }
