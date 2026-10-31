@@ -16,6 +16,8 @@ use OCA\Bookmarks\ContextChat\ContextChatProvider;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\BeforeSoftDeleteEvent;
+use OCA\Bookmarks\Events\BeforeSoftUndeleteEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCP\BackgroundJob\IJobList;
@@ -214,6 +216,49 @@ class ContextChatProviderTest extends TestCase {
 			->method('deleteContent');
 
 		$this->provider->handle(new BeforeDeleteEvent(TreeMapper::TYPE_FOLDER, 5));
+	}
+
+	public function testQueuesUpdateWhenBookmarkIsTrashed(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->jobList->expects(self::once())
+			->method('add')
+			->with(ContextChatUpdateJob::class, ['bookmarks' => [42], 'accessMayShrink' => true]);
+		$this->contentManager->expects(self::never())
+			->method('deleteContent');
+
+		$this->provider->handle(new BeforeSoftDeleteEvent(TreeMapper::TYPE_BOOKMARK, 42));
+	}
+
+	public function testQueuesSubtreeUpdateWhenFolderIsTrashed(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->treeMapper->expects(self::once())
+			->method('findBookmarkIdsInSubtree')
+			->with(TreeMapper::TYPE_FOLDER, 5)
+			->willReturn([42]);
+		$this->jobList->expects(self::once())
+			->method('add')
+			->with(ContextChatUpdateJob::class, ['bookmarks' => [42], 'accessMayShrink' => true]);
+
+		$this->provider->handle(new BeforeSoftDeleteEvent(TreeMapper::TYPE_FOLDER, 5));
+	}
+
+	public function testQueuesSubtreeUpdateWhenFolderIsRestored(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->treeMapper->expects(self::once())
+			->method('findBookmarkIdsInSubtree')
+			->with(TreeMapper::TYPE_FOLDER, 5)
+			->willReturn([42]);
+		$this->jobList->expects(self::once())
+			->method('add')
+			->with(ContextChatUpdateJob::class, ['bookmarks' => [42], 'accessMayShrink' => false]);
+
+		$this->provider->handle(new BeforeSoftUndeleteEvent(TreeMapper::TYPE_FOLDER, 5));
 	}
 
 	public function testUpdateBookmarksDeletesBookmarksThatNoLongerExist(): void {

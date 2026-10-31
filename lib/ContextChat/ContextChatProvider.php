@@ -14,6 +14,8 @@ use OCA\Bookmarks\BackgroundJobs\ContextChatUpdateJob;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\BeforeSoftDeleteEvent;
+use OCA\Bookmarks\Events\BeforeSoftUndeleteEvent;
 use OCA\Bookmarks\Events\ChangeEvent;
 use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
@@ -82,6 +84,17 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 			// The subtree has to be collected now, while it still exists.
 			// Bookmarks that end up orphaned by a folder deletion are removed by the job.
 			$this->scheduleSubtreeUpdate($event->getType(), $event->getId(), true);
+			return;
+		}
+		if ($event instanceof BeforeSoftDeleteEvent || $event instanceof BeforeSoftUndeleteEvent) {
+			// Trashed items are hidden from everyone, restored ones become visible again.
+			// Both events fire before the tree is changed, so the update has to happen later, in the job.
+			$accessMayShrink = $event instanceof BeforeSoftDeleteEvent;
+			if ($event->getType() === TreeMapper::TYPE_BOOKMARK) {
+				$this->jobList->add(ContextChatUpdateJob::class, ['bookmarks' => [$event->getId()], 'accessMayShrink' => $accessMayShrink]);
+				return;
+			}
+			$this->scheduleSubtreeUpdate($event->getType(), $event->getId(), $accessMayShrink);
 			return;
 		}
 	}

@@ -15,7 +15,7 @@ use OCP\ContextChat\IContentManager;
 
 /**
  * Re-submits a set of bookmarks to context chat after the access to them changed,
- * e.g. because a folder containing them was moved, shared, unshared or deleted.
+ * e.g. because a folder containing them was moved, shared, unshared, trashed, restored or deleted.
  */
 class ContextChatUpdateJob extends QueuedJob {
 
