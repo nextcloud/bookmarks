@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\BackgroundJobs;
 
 use OCA\Bookmarks\ContextChat\ContextChatProvider;
+use OCA\Bookmarks\Service\BookmarkService;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\QueuedJob;
 use OCP\ContextChat\IContentManager;
@@ -16,6 +17,8 @@ use OCP\ContextChat\IContentManager;
 /**
  * Re-submits a set of bookmarks to context chat after the access to them changed,
  * e.g. because a folder containing them was moved, shared, unshared, trashed, restored or deleted.
+ * With a `user` argument, all bookmarks visible to that user are re-submitted,
+ * e.g. to revoke their access after they disabled context chat.
  */
 class ContextChatUpdateJob extends QueuedJob {
 
@@ -23,12 +26,23 @@ class ContextChatUpdateJob extends QueuedJob {
 		ITimeFactory $timeFactory,
 		private ?IContentManager $contentManager,
 		private ContextChatProvider $provider,
+		private BookmarkService $bookmarkService,
 	) {
 		parent::__construct($timeFactory);
 	}
 
 	protected function run($argument) {
 		if ($this->contentManager === null || !$this->contentManager->isContextChatAvailable()) {
+			return;
+		}
+		if (isset($argument['user'])) {
+			$bookmarkIds = [];
+			foreach ($this->bookmarkService->getIterator((string)$argument['user']) as $bookmark) {
+				$bookmarkIds[] = $bookmark->getId();
+			}
+			foreach (array_chunk($bookmarkIds, 25) as $chunk) {
+				$this->provider->updateBookmarks($chunk, true);
+			}
 			return;
 		}
 		if (!isset($argument['bookmarks']) || !is_array($argument['bookmarks'])) {
