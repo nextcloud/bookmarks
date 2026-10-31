@@ -10,6 +10,7 @@ namespace OCA\Bookmarks\ContextChat;
 
 use OCA\Bookmarks\AppInfo\Application;
 use OCA\Bookmarks\BackgroundJobs\ContextChatIndexJob;
+use OCA\Bookmarks\BackgroundJobs\ContextChatUpdateJob;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
@@ -56,27 +57,79 @@ class ContextChatProvider implements IContentProvider, IEventListener {
 		}
 		// Not InsertEvent: it fires before the bookmark is placed in a folder, so nobody has access yet.
 		// TreeMapper::addToFolders dispatches a MoveEvent after each placement.
-		if ($event instanceof MoveEvent || $event instanceof ManipulateEvent) {
+		if ($event instanceof MoveEvent) {
+			// Without an old parent the item was only added somewhere, so access can only have grown
+			$accessMayShrink = $event->getOldParent() !== null;
+			if ($event->getType() === TreeMapper::TYPE_BOOKMARK) {
+				$this->updateBookmarks([$event->getId()], $accessMayShrink);
+				return;
+			}
+			$this->scheduleSubtreeUpdate($event->getType(), $event->getId(), $accessMayShrink);
+			return;
+		}
+		if ($event instanceof ManipulateEvent) {
 			if ($event->getType() !== TreeMapper::TYPE_BOOKMARK) {
 				return;
 			}
-			$bookmark = $this->bookmarkService->findById($event->getId());
-			if ($bookmark === null) {
-				return;
-			}
-			$item = $this->getContentItem($bookmark);
-			if ($item === null) {
-				return;
-			}
-			$this->contentManager->submitContent($this->getAppId(), [$item]);
+			$this->updateBookmarks([$event->getId()], false);
 			return;
 		}
 		if ($event instanceof BeforeDeleteEvent) {
-			if ($event->getType() !== TreeMapper::TYPE_BOOKMARK) {
+			if ($event->getType() === TreeMapper::TYPE_BOOKMARK) {
+				$this->contentManager->deleteContent($this->getAppId(), $this->getId(), [(string)$event->getId()]);
 				return;
 			}
-			$this->contentManager->deleteContent($this->getAppId(), $this->getId(), [(string)$event->getId()]);
+			// The subtree has to be collected now, while it still exists.
+			// Bookmarks that end up orphaned by a folder deletion are removed by the job.
+			$this->scheduleSubtreeUpdate($event->getType(), $event->getId(), true);
 			return;
+		}
+	}
+
+	/**
+	 * Re-submits the given bookmarks with their current access list.
+	 * Bookmarks that no longer exist or that nobody with ContextChat enabled can access anymore
+	 * are removed from context chat if $accessMayShrink is set.
+	 *
+	 * @param list<int> $bookmarkIds
+	 * @param bool $accessMayShrink
+	 */
+	public function updateBookmarks(array $bookmarkIds, bool $accessMayShrink): void {
+		$items = [];
+		$deleted = [];
+		foreach ($bookmarkIds as $bookmarkId) {
+			$bookmark = $this->bookmarkService->findById($bookmarkId);
+			$item = $bookmark === null ? null : $this->getContentItem($bookmark);
+			if ($item !== null) {
+				$items[] = $item;
+			} elseif ($accessMayShrink) {
+				$deleted[] = (string)$bookmarkId;
+			}
+		}
+		if (count($items) > 0) {
+			$this->contentManager->submitContent($this->getAppId(), $items);
+		}
+		if (count($deleted) > 0) {
+			$this->contentManager->deleteContent($this->getAppId(), $this->getId(), $deleted);
+		}
+	}
+
+	/**
+	 * Queues a re-submission of all bookmarks below the given folder or share,
+	 * after the access to that subtree changed.
+	 *
+	 * @param string $type
+	 * @param int $id
+	 * @param bool $accessMayShrink
+	 */
+	private function scheduleSubtreeUpdate(string $type, int $id, bool $accessMayShrink): void {
+		if ($type !== TreeMapper::TYPE_FOLDER && $type !== TreeMapper::TYPE_SHARE) {
+			return;
+		}
+		$bookmarkIds = $this->treeMapper->findBookmarkIdsInSubtree($type, $id);
+		// Job arguments are limited in size
+		foreach (array_chunk($bookmarkIds, 200) as $chunk) {
+			$this->jobList->add(ContextChatUpdateJob::class, ['bookmarks' => $chunk, 'accessMayShrink' => $accessMayShrink]);
 		}
 	}
 
