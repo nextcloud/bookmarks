@@ -11,10 +11,14 @@ declare(strict_types=1);
 namespace OCA\Bookmarks\Tests;
 
 use OCA\Bookmarks\BackgroundJobs\ContextChatIndexJob;
+use OCA\Bookmarks\BackgroundJobs\ContextChatUpdateJob;
 use OCA\Bookmarks\ContextChat\ContextChatProvider;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\TreeMapper;
 use OCA\Bookmarks\Events\BeforeDeleteEvent;
+use OCA\Bookmarks\Events\BeforeSoftDeleteEvent;
+use OCA\Bookmarks\Events\BeforeSoftUndeleteEvent;
+use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Service\BookmarkService;
 use OCP\BackgroundJob\IJobList;
@@ -138,6 +142,177 @@ class ContextChatProviderTest extends TestCase {
 			->with('bookmarks', 'bookmarks', ['7']);
 
 		$this->provider->handle(new BeforeDeleteEvent(TreeMapper::TYPE_BOOKMARK, 7));
+	}
+
+	public function testDeletesContentWhenNoUserWithAccessIsLeftAfterRemoval(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->treeMapper->expects(self::once())
+			->method('findUsersWithAccess')
+			->with(TreeMapper::TYPE_BOOKMARK, 42)
+			->willReturn(['alice']);
+		$this->mockEnabledUsers([]);
+		$this->bookmarkService->expects(self::once())
+			->method('findById')
+			->with(42)
+			->willReturn($this->createBookmark());
+		$this->contentManager->expects(self::never())
+			->method('submitContent');
+		$this->contentManager->expects(self::once())
+			->method('deleteContent')
+			->with('bookmarks', 'bookmarks', ['42']);
+
+		// removed from folder 1
+		$this->provider->handle(new MoveEvent(TreeMapper::TYPE_BOOKMARK, 42, 1));
+	}
+
+	public function testQueuesSubtreeUpdateWhenFolderIsMoved(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->treeMapper->expects(self::once())
+			->method('findBookmarkIdsInSubtree')
+			->with(TreeMapper::TYPE_FOLDER, 5)
+			->willReturn(range(1, 250));
+		$this->jobList->expects(self::exactly(2))
+			->method('add')
+			->withConsecutive(
+				[ContextChatUpdateJob::class, ['bookmarks' => range(1, 200), 'accessMayShrink' => true]],
+				[ContextChatUpdateJob::class, ['bookmarks' => range(201, 250), 'accessMayShrink' => true]],
+			);
+		$this->contentManager->expects(self::never())
+			->method('submitContent');
+
+		$this->provider->handle(new MoveEvent(TreeMapper::TYPE_FOLDER, 5, 1, 2));
+	}
+
+	public function testQueuesSubtreeUpdateWhenShareIsCreated(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->treeMapper->expects(self::once())
+			->method('findBookmarkIdsInSubtree')
+			->with(TreeMapper::TYPE_SHARE, 3)
+			->willReturn([42]);
+		$this->jobList->expects(self::once())
+			->method('add')
+			->with(ContextChatUpdateJob::class, ['bookmarks' => [42], 'accessMayShrink' => false]);
+
+		$this->provider->handle(new MoveEvent(TreeMapper::TYPE_SHARE, 3, null, 1));
+	}
+
+	public function testQueuesSubtreeUpdateWhenFolderIsDeleted(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->treeMapper->expects(self::once())
+			->method('findBookmarkIdsInSubtree')
+			->with(TreeMapper::TYPE_FOLDER, 5)
+			->willReturn([42]);
+		$this->jobList->expects(self::once())
+			->method('add')
+			->with(ContextChatUpdateJob::class, ['bookmarks' => [42], 'accessMayShrink' => true]);
+		$this->contentManager->expects(self::never())
+			->method('deleteContent');
+
+		$this->provider->handle(new BeforeDeleteEvent(TreeMapper::TYPE_FOLDER, 5));
+	}
+
+	public function testIgnoresManipulationsThatDoNotChangeIndexedContent(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->bookmarkService->expects(self::never())
+			->method('findById');
+		$this->contentManager->expects(self::never())
+			->method('submitContent');
+
+		$this->provider->handle(new ManipulateEvent(TreeMapper::TYPE_BOOKMARK, 42, ['clickcount', 'lastmodified']));
+	}
+
+	public function testSubmitsWhenIndexedContentIsManipulated(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->bookmarkService->expects(self::once())
+			->method('findById')
+			->with(42)
+			->willReturn($this->createBookmark());
+		$this->treeMapper->method('findUsersWithAccess')->willReturn(['alice']);
+		$this->mockEnabledUsers(['alice']);
+		$this->contentManager->expects(self::once())
+			->method('submitContent');
+
+		$this->provider->handle(new ManipulateEvent(TreeMapper::TYPE_BOOKMARK, 42, ['textContent', 'lastmodified']));
+	}
+
+	public function testDoesNotCreateContentItemWithoutTextContent(): void {
+		$bookmark = $this->createBookmark();
+		$bookmark->setTextContent(null);
+		$this->treeMapper->expects(self::never())
+			->method('findUsersWithAccess');
+
+		self::assertNull($this->provider->getContentItem($bookmark));
+	}
+
+	public function testQueuesUpdateWhenBookmarkIsTrashed(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->jobList->expects(self::once())
+			->method('add')
+			->with(ContextChatUpdateJob::class, ['bookmarks' => [42], 'accessMayShrink' => true]);
+		$this->contentManager->expects(self::never())
+			->method('deleteContent');
+
+		$this->provider->handle(new BeforeSoftDeleteEvent(TreeMapper::TYPE_BOOKMARK, 42));
+	}
+
+	public function testQueuesSubtreeUpdateWhenFolderIsTrashed(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->treeMapper->expects(self::once())
+			->method('findBookmarkIdsInSubtree')
+			->with(TreeMapper::TYPE_FOLDER, 5)
+			->willReturn([42]);
+		$this->jobList->expects(self::once())
+			->method('add')
+			->with(ContextChatUpdateJob::class, ['bookmarks' => [42], 'accessMayShrink' => true]);
+
+		$this->provider->handle(new BeforeSoftDeleteEvent(TreeMapper::TYPE_FOLDER, 5));
+	}
+
+	public function testQueuesSubtreeUpdateWhenFolderIsRestored(): void {
+		$this->contentManager->expects(self::once())
+			->method('isContextChatAvailable')
+			->willReturn(true);
+		$this->treeMapper->expects(self::once())
+			->method('findBookmarkIdsInSubtree')
+			->with(TreeMapper::TYPE_FOLDER, 5)
+			->willReturn([42]);
+		$this->jobList->expects(self::once())
+			->method('add')
+			->with(ContextChatUpdateJob::class, ['bookmarks' => [42], 'accessMayShrink' => false]);
+
+		$this->provider->handle(new BeforeSoftUndeleteEvent(TreeMapper::TYPE_FOLDER, 5));
+	}
+
+	public function testUpdateBookmarksDeletesBookmarksThatNoLongerExist(): void {
+		$this->bookmarkService->expects(self::exactly(2))
+			->method('findById')
+			->willReturnMap([[42, $this->createBookmark()], [7, null]]);
+		$this->treeMapper->method('findUsersWithAccess')->willReturn(['alice']);
+		$this->mockEnabledUsers(['alice']);
+		$this->contentManager->expects(self::once())
+			->method('submitContent')
+			->with('bookmarks', self::callback(fn (array $items) => count($items) === 1 && $items[0]->itemId === '42'));
+		$this->contentManager->expects(self::once())
+			->method('deleteContent')
+			->with('bookmarks', 'bookmarks', ['7']);
+
+		$this->provider->updateBookmarks([42, 7], true);
 	}
 
 	public function testTriggerInitialImportQueuesAJobForEachUser(): void {

@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\Service;
 
 use OCA\Bookmarks\BackgroundJobs\ContextChatIndexJob;
+use OCA\Bookmarks\BackgroundJobs\ContextChatUpdateJob;
 use OCP\BackgroundJob\IJobList;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -120,15 +121,24 @@ class UserSettingsService {
 		if ($key === 'sorting' && !in_array($value, ['title', 'added', 'clickcount', 'lastmodified', 'index', 'url'], true)) {
 			throw new \ValueError();
 		}
-		if ($key === 'contextchat.enabled' && $value === 'true' && $this->get('contextchat.enabled') !== 'true' && $this->get('archive.enabled') === 'true') {
-			$this->jobList->add(ContextChatIndexJob::class, ['user' => $this->userId]);
-		}
+		$affectsContextChat = $key === 'contextchat.enabled' || $key === 'archive.enabled';
+		$wasContextChatEnabled = $affectsContextChat && $this->get('contextchat.enabled') === 'true';
 		$this->config->setUserValue(
 			$this->userId,
 			$this->appName,
 			$key,
 			$value
 		);
+		if (!$affectsContextChat) {
+			return;
+		}
+		$isContextChatEnabled = $this->get('contextchat.enabled') === 'true';
+		if (!$wasContextChatEnabled && $isContextChatEnabled) {
+			$this->jobList->add(ContextChatIndexJob::class, ['user' => $this->userId]);
+		} elseif ($wasContextChatEnabled && !$isContextChatEnabled) {
+			// Revoke the user's access to everything that was indexed for them
+			$this->jobList->add(ContextChatUpdateJob::class, ['user' => $this->userId]);
+		}
 	}
 
 	/**

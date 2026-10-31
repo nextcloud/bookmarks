@@ -668,8 +668,9 @@ class TreeMapper extends QBMapper {
 		if (count($this->shareMapper->findBySharedFolder($sharedFolder->getId())) > 0) {
 			return;
 		}
-		$this->sharedFolderMapper->delete($sharedFolder);
+		// Remove the tree entry first, so BeforeDeleteEvent listeners can still look up the shared folder
 		$this->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+		$this->sharedFolderMapper->delete($sharedFolder);
 	}
 
 	/**
@@ -1348,6 +1349,44 @@ class TreeMapper extends QBMapper {
 			array_push($queue, ...$this->findParentsOf(TreeMapper::TYPE_FOLDER, $folder->getId()));
 		}
 		return array_map('strval', array_keys($users));
+	}
+
+	/**
+	 * Lists the ids of all bookmarks below the given folder or share,
+	 * following shares that are placed inside the subtree.
+	 *
+	 * @param string $type
+	 * @psalm-param TreeMapper::TYPE_FOLDER|TreeMapper::TYPE_SHARE $type
+	 * @param int $itemId
+	 * @return list<int>
+	 */
+	public function findBookmarkIdsInSubtree(string $type, int $itemId): array {
+		if ($type === TreeMapper::TYPE_SHARE) {
+			try {
+				$itemId = $this->sharedFolderMapper->find($itemId)->getFolderId();
+			} catch (DoesNotExistException|MultipleObjectsReturnedException) {
+				return [];
+			}
+		}
+		$bookmarkIds = [];
+		$visitedFolders = [];
+		$queue = [$itemId];
+		while (($folderId = array_shift($queue)) !== null) {
+			if (isset($visitedFolders[$folderId])) {
+				continue;
+			}
+			$visitedFolders[$folderId] = true;
+			foreach ($this->findChildren(TreeMapper::TYPE_BOOKMARK, $folderId) as $bookmark) {
+				$bookmarkIds[$bookmark->getId()] = true;
+			}
+			foreach ($this->findChildren(TreeMapper::TYPE_FOLDER, $folderId) as $folder) {
+				$queue[] = $folder->getId();
+			}
+			foreach ($this->findChildren(TreeMapper::TYPE_SHARE, $folderId) as $sharedFolder) {
+				$queue[] = $sharedFolder->getFolderId();
+			}
+		}
+		return array_keys($bookmarkIds);
 	}
 
 	/**

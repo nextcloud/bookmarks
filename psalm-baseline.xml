@@ -25,6 +25,9 @@
       <code><![CDATA[Folder]]></code>
     </InvalidReturnType>
     <NoValue>
+      <code><![CDATA[$bookmark]]></code>
+      <code><![CDATA[$folder]]></code>
+      <code><![CDATA[$sharedFolder]]></code>
       <code><![CDATA[$share]]></code>
       <code><![CDATA[$share]]></code>
       <code><![CDATA[$share]]></code>

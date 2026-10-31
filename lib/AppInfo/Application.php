@@ -112,6 +112,8 @@ class Application extends App implements IBootstrap {
 				$eventDispatcher->addServiceListener(MoveEvent::class, ContextChatProvider::class);
 				$eventDispatcher->addServiceListener(ManipulateEvent::class, ContextChatProvider::class);
 				$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, ContextChatProvider::class);
+				$eventDispatcher->addServiceListener(BeforeSoftDeleteEvent::class, ContextChatProvider::class);
+				$eventDispatcher->addServiceListener(BeforeSoftUndeleteEvent::class, ContextChatProvider::class);
 			}
 		}
 		// Register with Nextcloud Flow
