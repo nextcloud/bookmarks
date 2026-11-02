@@ -240,6 +240,7 @@
     "Simply install the Pageres CLI by Sindre Sorhus on your server and Bookmarks will find it. You can still add additional ENV vars to be fed to pageres, e.g. as indicated in the placeholder:" : "Stačí si na server nainstalovat Pageres CLI od Sindreho Sorhuse a Záložky ho použijí. I tak je možné přidávat další proměnné prostředí, které předat pageres, např. jako naznačeno v zástupném vyjádření:",
     "Pageres ENV variables" : "Proměnné prostředí pro pageres",
     "This URL is already bookmarked! Overwrite?" : "Adresa URL stánky už je v záložkách! Přepsat ?",
+    "Bookmark saved!" : "Záložka uložena",
     "Enter bookmark title" : "Zadejte název záložky",
     "Enter bookmark URL" : "Zadejte URL pro záložku",
     "Folder" : "Složka",
