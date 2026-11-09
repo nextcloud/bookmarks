@@ -79,18 +79,18 @@ class Share extends Entity {
 	}
 
 	private static function getParticipantDisplayName($type, $participant) {
+		// The participant may not exist anymore, e.g. if the user, group or circle was deleted,
+		// or the circles app was disabled
 		try {
-			if ($type === IShare::TYPE_USER) {
-				return \OCP\Server::get(IUserManager::class)->get($participant)->getDisplayName();
-			}
-			if ($type === IShare::TYPE_GROUP) {
-				return \OCP\Server::get(IGroupManager::class)->get($participant)->getDisplayName();
-			}
-			if ($type === IShare::TYPE_CIRCLE) {
-				return \OCP\Server::get(CirclesService::class)->getCircle($participant)->getName();
-			}
+			$displayName = match ($type) {
+				IShare::TYPE_USER => \OCP\Server::get(IUserManager::class)->get($participant)?->getDisplayName(),
+				IShare::TYPE_GROUP => \OCP\Server::get(IGroupManager::class)->get($participant)?->getDisplayName(),
+				IShare::TYPE_CIRCLE => \OCP\Server::get(CirclesService::class)->getCircle($participant)?->getName(),
+				default => null,
+			};
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-			return $participant;
+			$displayName = null;
 		}
+		return $displayName ?? $participant;
 	}
 }

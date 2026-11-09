@@ -862,8 +862,9 @@ class BookmarkMapper extends QBMapper {
 		}
 		$entity->setUrlHash(hash('xxh128', $entity->getUrl()));
 		$entity->setLastmodified(time());
+		$updatedFields = array_keys($entity->getUpdatedFields());
 		parent::update($entity);
-		$this->eventDispatcher->dispatchTyped(new ManipulateEvent('bookmark', $entity->getId()));
+		$this->eventDispatcher->dispatchTyped(new ManipulateEvent('bookmark', $entity->getId(), $updatedFields));
 		return $entity;
 	}
 

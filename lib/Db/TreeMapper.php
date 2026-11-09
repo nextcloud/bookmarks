@@ -650,10 +650,27 @@ class TreeMapper extends QBMapper {
 		$share = $this->shareMapper->find($shareId);
 		$sharedFolders = $this->sharedFolderMapper->findByShare($shareId);
 		foreach ($sharedFolders as $sharedFolder) {
-			$this->sharedFolderMapper->delete($sharedFolder);
-			$this->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+			$this->removeSharedFolderFromShare($sharedFolder, $shareId);
 		}
 		$this->shareMapper->delete($share);
+	}
+
+	/**
+	 * Removes the shared folder from the share. The shared folder is only deleted
+	 * if it isn't part of another share of the same folder.
+	 *
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws UnsupportedOperation|Exception
+	 */
+	public function removeSharedFolderFromShare(SharedFolder $sharedFolder, int $shareId): void {
+		$this->sharedFolderMapper->unmount($sharedFolder->getId(), $shareId);
+		if (count($this->shareMapper->findBySharedFolder($sharedFolder->getId())) > 0) {
+			return;
+		}
+		// Remove the tree entry first, so BeforeDeleteEvent listeners can still look up the shared folder
+		$this->deleteEntry(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+		$this->sharedFolderMapper->delete($sharedFolder);
 	}
 
 	/**
@@ -683,12 +700,12 @@ class TreeMapper extends QBMapper {
 		} else {
 			$sharedFolder = $this->sharedFolderMapper->find($itemId);
 			$folderId = $sharedFolder->getFolderId();
-			$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
+			$owner = $this->folderMapper->find($folderId)->getUserId();
 
 			// Make sure that the sharer of this share doesn't have a share of the target folder or one of its parents
 			// would make a share loop very probable, which would be very bad. Breaks the whole app.
 
-			if ($this->isFolderSharedWithUser($newParentFolderId, $share->getOwner())) {
+			if ($this->isFolderSharedWithUser($newParentFolderId, $owner)) {
 				throw new UnsupportedOperation('Cannot nest a folder shared from user A inside a folder shared with user A');
 			}
 		}
@@ -996,18 +1013,18 @@ class TreeMapper extends QBMapper {
 		}, $this->findChildren(TreeMapper::TYPE_FOLDER, $folderId, $isSoftDeleted));
 		$shares = array_map(function (SharedFolder $sharedFolder) use ($layers, $folderId, $isSoftDeleted) {
 			try {
-				$share = $this->shareMapper->findBySharedFolder($sharedFolder->getId());
+				$folder = $this->folderMapper->find($sharedFolder->getFolderId());
 			} catch (DoesNotExistException|MultipleObjectsReturnedException|Exception $e) {
 				$this->logger->error('Failed to load a shared folder', ['exception' => $e]);
 				return null;
 			}
 			$array = $sharedFolder->toArray();
-			$array['id'] = $share->getFolderId();
-			$array['userId'] = $share->getOwner();
+			$array['id'] = $folder->getId();
+			$array['userId'] = $folder->getUserId();
 			$array['userDisplayName'] = $this->userManager->get($array['userId'])->getDisplayName();
 			$array['parent_folder'] = $folderId;
 			if ($layers !== 0) {
-				$array['children'] = $this->getSubFolders($share->getFolderId(), $layers - 1, $isSoftDeleted);
+				$array['children'] = $this->getSubFolders($folder->getId(), $layers - 1, $isSoftDeleted);
 			}
 			return $array;
 		}, $this->findChildren(TreeMapper::TYPE_SHARE, $folderId, $isSoftDeleted));
@@ -1300,6 +1317,76 @@ class TreeMapper extends QBMapper {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Lists all users who can see the given item in their (non-trashed) tree,
+	 * i.e. the owners of all ancestor folders plus everyone those folders are shared with,
+	 * following shares that are themselves placed inside shared folders.
+	 *
+	 * @param string $type
+	 * @psalm-param TreeMapper::TYPE_* $type
+	 * @param int $itemId
+	 * @return list<string>
+	 */
+	public function findUsersWithAccess(string $type, int $itemId): array {
+		$users = [];
+		$visitedFolders = [];
+		$queue = $this->findParentsOf($type, $itemId);
+		while (($folder = array_shift($queue)) !== null) {
+			if (isset($visitedFolders[$folder->getId()])) {
+				continue;
+			}
+			$visitedFolders[$folder->getId()] = true;
+			$users[$folder->getUserId()] = true;
+			foreach ($this->sharedFolderMapper->findByFolder($folder->getId()) as $sharedFolder) {
+				$sharees = $this->findParentsOf(TreeMapper::TYPE_SHARE, $sharedFolder->getId());
+				if (count($sharees) > 0) {
+					$users[$sharedFolder->getUserId()] = true;
+				}
+				array_push($queue, ...$sharees);
+			}
+			array_push($queue, ...$this->findParentsOf(TreeMapper::TYPE_FOLDER, $folder->getId()));
+		}
+		return array_map('strval', array_keys($users));
+	}
+
+	/**
+	 * Lists the ids of all bookmarks below the given folder or share,
+	 * following shares that are placed inside the subtree.
+	 *
+	 * @param string $type
+	 * @psalm-param TreeMapper::TYPE_FOLDER|TreeMapper::TYPE_SHARE $type
+	 * @param int $itemId
+	 * @return list<int>
+	 */
+	public function findBookmarkIdsInSubtree(string $type, int $itemId): array {
+		if ($type === TreeMapper::TYPE_SHARE) {
+			try {
+				$itemId = $this->sharedFolderMapper->find($itemId)->getFolderId();
+			} catch (DoesNotExistException|MultipleObjectsReturnedException) {
+				return [];
+			}
+		}
+		$bookmarkIds = [];
+		$visitedFolders = [];
+		$queue = [$itemId];
+		while (($folderId = array_shift($queue)) !== null) {
+			if (isset($visitedFolders[$folderId])) {
+				continue;
+			}
+			$visitedFolders[$folderId] = true;
+			foreach ($this->findChildren(TreeMapper::TYPE_BOOKMARK, $folderId) as $bookmark) {
+				$bookmarkIds[$bookmark->getId()] = true;
+			}
+			foreach ($this->findChildren(TreeMapper::TYPE_FOLDER, $folderId) as $folder) {
+				$queue[] = $folder->getId();
+			}
+			foreach ($this->findChildren(TreeMapper::TYPE_SHARE, $folderId) as $sharedFolder) {
+				$queue[] = $sharedFolder->getFolderId();
+			}
+		}
+		return array_keys($bookmarkIds);
 	}
 
 	/**

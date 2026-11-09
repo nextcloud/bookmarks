@@ -432,6 +432,11 @@ export default {
 			if (status !== 'success') {
 				throw new Error(response.data)
 			}
+			// The server derives `url` from `target`, so sync it back to update the UI
+			const { item } = response.data
+			if (item) {
+				commit(mutations.SET_BOOKMARK_URL, item)
+			}
 			commit(mutations.FETCH_END, 'saveBookmark')
 		} catch (err) {
 			console.error(err)

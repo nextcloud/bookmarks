@@ -17,7 +17,6 @@ use OCA\Bookmarks\Events\BeforeDeleteEvent;
 use OCA\Bookmarks\Events\BeforeSoftDeleteEvent;
 use OCA\Bookmarks\Events\BeforeSoftUndeleteEvent;
 use OCA\Bookmarks\Events\CreateEvent;
-use OCA\Bookmarks\Events\InsertEvent;
 use OCA\Bookmarks\Events\ManipulateEvent;
 use OCA\Bookmarks\Events\MoveEvent;
 use OCA\Bookmarks\Events\UpdateEvent;
@@ -86,9 +85,9 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(UserAddedEvent::class, UsersGroupsCirclesListener::class);
 		$context->registerEventListener(UserRemovedEvent::class, UsersGroupsCirclesListener::class);
 		$context->registerEventListener(BeforeGroupDeletedEvent::class, UsersGroupsCirclesListener::class);
-		$context->registerEventListener('\OCA\Circles\Events\CircleMemberAddedEvent', UsersGroupsCirclesListener::class);
-		$context->registerEventListener('\OCA\Circles\Events\CircleMemberRemovedEvent', UsersGroupsCirclesListener::class);
-		$context->registerEventListener('\OCA\Circles\Events\CircleDestroyedEvent', UsersGroupsCirclesListener::class);
+		$context->registerEventListener('OCA\Circles\Events\MembershipsCreatedEvent', UsersGroupsCirclesListener::class);
+		$context->registerEventListener('OCA\Circles\Events\MembershipsRemovedEvent', UsersGroupsCirclesListener::class);
+		$context->registerEventListener('OCA\Circles\Events\DestroyingCircleEvent', UsersGroupsCirclesListener::class);
 
 		$context->registerEventListener(BeforeTemplateRenderedEvent::class, BeforeTemplateRenderedListener::class);
 
@@ -110,9 +109,11 @@ class Application extends App implements IBootstrap {
 			$contentManager = $serverContainer->get(IContentManager::class);
 			if ($contentManager->isContextChatAvailable()) {
 				$eventDispatcher = $this->getContainer()->get(IEventDispatcher::class);
-				$eventDispatcher->addServiceListener(InsertEvent::class, ContextChatProvider::class);
+				$eventDispatcher->addServiceListener(MoveEvent::class, ContextChatProvider::class);
 				$eventDispatcher->addServiceListener(ManipulateEvent::class, ContextChatProvider::class);
 				$eventDispatcher->addServiceListener(BeforeDeleteEvent::class, ContextChatProvider::class);
+				$eventDispatcher->addServiceListener(BeforeSoftDeleteEvent::class, ContextChatProvider::class);
+				$eventDispatcher->addServiceListener(BeforeSoftUndeleteEvent::class, ContextChatProvider::class);
 			}
 		}
 		// Register with Nextcloud Flow

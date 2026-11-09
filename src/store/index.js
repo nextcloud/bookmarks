@@ -131,18 +131,18 @@ export default {
 			if (user && path[0].userId === user.uid) {
 				return { canRead: true, canWrite: true, canShare: true }
 			}
-			for (let i = 0; i < path.length; i++) {
-				const shares = getters.getSharesOfFolder(path[i].id)
-				if (shares.length) {
-					const userShares = shares.filter(share => share.type === 0 && share.participant === user.uid)
-					if (userShares.length) {
-						return userShares[0]
-					}
-					const groupShares = shares.filter(share => share.type === 1)
-					return groupShares[0]
-				}
+			// Like the backend, combine the permissions of all shares along the path that apply to the user.
+			// Shares to other users must be skipped, e.g. when the user re-shared a subfolder of a folder shared with them.
+			const shares = path.flatMap(folder => getters.getSharesOfFolder(folder.id))
+				.filter(share => (share.type === 0 && share.participant === user.uid) || share.type === 1)
+			if (!shares.length) {
+				return {}
 			}
-			return {}
+			return shares.reduce((perms, share) => ({
+				canRead: true,
+				canWrite: perms.canWrite || share.canWrite,
+				canShare: perms.canShare || share.canShare,
+			}), { canWrite: false, canShare: false })
 		},
 		getPermissionsForBookmark: (state, getters) => bookmarkId => {
 			const bookmark = getters.getBookmark(bookmarkId)

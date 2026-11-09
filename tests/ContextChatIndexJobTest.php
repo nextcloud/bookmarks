@@ -100,8 +100,16 @@ class ContextChatIndexJobTest extends TestCase {
 				}
 			})());
 		$this->provider->expects(self::exactly(2))
-			->method('getId')
-			->willReturn('bookmarks');
+			->method('getContentItem')
+			->willReturnCallback(fn (Bookmark $bookmark) => new ContentItem(
+				(string)$bookmark->getId(),
+				'bookmarks',
+				$bookmark->getTitle(),
+				$bookmark->getTextContent(),
+				'Website',
+				new \DateTime('@' . $bookmark->getLastmodified()),
+				['alice'],
+			));
 		$this->contentManager->expects(self::once())
 			->method('submitContent')
 			->with(

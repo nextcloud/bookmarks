@@ -2,6 +2,7 @@ OC.L10N.register(
     "bookmarks",
     {
     "Rename" : "Preimenuj",
+    "Copy link" : "Kopiraj vezu",
     "Move" : "Move",
     "Select all" : "Označi sve",
     "New" : "Novo",
@@ -17,6 +18,7 @@ OC.L10N.register(
     "Link" : "Veza",
     "Notes" : "Notes",
     "Open file" : "Otvori Datoteku",
+    "Link copied" : "Veza kopirana",
     "Owner" : "Vlasnik",
     "Sharing" : "Dijeljenje",
     "Share link" : "Podijelite vezu",

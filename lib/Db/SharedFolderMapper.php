@@ -9,6 +9,7 @@
 namespace OCA\Bookmarks\Db;
 
 use OCA\Bookmarks\Events\CreateEvent;
+use OCA\Bookmarks\Events\UpdateEvent;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -96,7 +97,8 @@ class SharedFolderMapper extends QBMapper {
 	 */
 	public function findByOwner(string $userId): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(static function ($c) {
+		// A shared folder can be part of several shares of the same owner
+		$qb->selectDistinct(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared_folders', 'p')
@@ -174,7 +176,8 @@ class SharedFolderMapper extends QBMapper {
 	 */
 	public function findByOwnerAndUser(string $owner, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(array_map(static function ($c) {
+		// A shared folder can be part of several shares of the same owner
+		$qb->selectDistinct(array_map(static function ($c) {
 			return 'p.' . $c;
 		}, SharedFolder::$columns))
 			->from('bookmarks_shared_folders', 'p')
@@ -188,12 +191,12 @@ class SharedFolderMapper extends QBMapper {
 	/**
 	 * @param int $shareId
 	 * @param string $userId
-	 * @return SharedFolder
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
+	 * @return SharedFolder[]
 	 * @throws Exception
+	 *
+	 * @psalm-return array<array-key, SharedFolder>
 	 */
-	public function findByShareAndUser(int $shareId, string $userId): SharedFolder {
+	public function findByShareAndUser(int $shareId, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 'p.' . $c;
@@ -202,7 +205,7 @@ class SharedFolderMapper extends QBMapper {
 			->leftJoin('p', 'bookmarks_shared_to_shares', 't', 't.shared_folder_id = p.id')
 			->where($qb->expr()->eq('t.share_id', $qb->createPositionalParameter($shareId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('p.user_id', $qb->createPositionalParameter($userId)));
-		return $this->findEntity($qb);
+		return $this->findEntities($qb);
 	}
 
 	/**
@@ -239,6 +242,23 @@ class SharedFolderMapper extends QBMapper {
 			'share_id' => $qb->createPositionalParameter($share_id, IQueryBuilder::PARAM_INT)
 		])->executeStatement();
 		$this->eventDispatcher->dispatch(CreateEvent::class, new CreateEvent(
+			TreeMapper::TYPE_SHARE,
+			$id
+		));
+	}
+
+	/**
+	 * Removes the shared folder from a share. It may still be part of other shares of the same folder.
+	 *
+	 * @throws Exception
+	 */
+	public function unmount(int $id, int $shareId): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('bookmarks_shared_to_shares')
+			->where($qb->expr()->eq('shared_folder_id', $qb->createPositionalParameter($id, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('share_id', $qb->createPositionalParameter($shareId, IQueryBuilder::PARAM_INT)))
+			->executeStatement();
+		$this->eventDispatcher->dispatch(UpdateEvent::class, new UpdateEvent(
 			TreeMapper::TYPE_SHARE,
 			$id
 		));

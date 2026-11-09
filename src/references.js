@@ -36,7 +36,7 @@ registerWidget('bookmarks-bookmark', (el, { richObjectType, richObject, accessib
 })
 
 registerCustomPickerElement('bookmarks-ref-bookmarks', async (el, { providerId, accessible }) => {
-	const { default: CustomPickerElement } = await import(/* webpackPrefetch: true */ './components/CustomPickerElement.vue')
+	const { default: CustomPickerElement } = await import('./components/CustomPickerElement.vue')
 	Vue.mixin({ methods: { t, n } })
 
 	const Element = Vue.extend(CustomPickerElement)

@@ -13,6 +13,7 @@ OC.L10N.register(
     "Search" : "Search",
     "Empty trash bin" : "Eidel Dreckskëscht",
     "_%n folder_::_%n folders_" : ["¦%n Dossier","¦%n Dossieren"],
+    "Shared by {user}" : "Gedeelt vu(n) {user}",
     "Rename folder" : "Dossier ëmbenennen",
     "Submit" : "Iwwermëttelen",
     "Cancel" : "Ofbriechen",

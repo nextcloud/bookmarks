@@ -118,13 +118,14 @@ class ShareMapper extends QBMapper {
 	}
 
 	/**
+	 * Finds all shares of the folder that the user's shared folder is part of
+	 *
 	 * @param int $folderId
 	 * @param string $userId
-	 * @return Share
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
+	 * @return Share[]
+	 * @throws Exception
 	 */
-	public function findByFolderAndUser(int $folderId, string $userId): Share {
+	public function findByFolderAndUser(int $folderId, string $userId): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;
@@ -134,7 +135,7 @@ class ShareMapper extends QBMapper {
 			->leftJoin('t', 'bookmarks_shared_folders', 'sf', 'sf.id = t.shared_folder_id')
 			->where($qb->expr()->eq('s.folder_id', $qb->createPositionalParameter($folderId, IQueryBuilder::PARAM_INT)))
 			->andWhere($qb->expr()->eq('sf.user_id', $qb->createPositionalParameter($userId)));
-		return $this->findEntity($qb);
+		return $this->findEntities($qb);
 	}
 
 	/**
@@ -178,11 +179,12 @@ class ShareMapper extends QBMapper {
 	}
 
 	/**
-	 * @throws DoesNotExistException
-	 * @throws MultipleObjectsReturnedException
+	 * Finds all shares that the shared folder is part of
+	 *
+	 * @return Share[]
 	 * @throws Exception
 	 */
-	public function findBySharedFolder(int $id): Share {
+	public function findBySharedFolder(int $id): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(array_map(static function ($c) {
 			return 's.' . $c;
@@ -190,7 +192,7 @@ class ShareMapper extends QBMapper {
 			->from('bookmarks_shares', 's')
 			->innerJoin('s', 'bookmarks_shared_to_shares', 't', 's.id = t.share_id')
 			->where($qb->expr()->eq('t.shared_folder_id', $qb->createPositionalParameter($id, IQueryBuilder::PARAM_INT)));
-		return $this->findEntity($qb);
+		return $this->findEntities($qb);
 	}
 
 	/**

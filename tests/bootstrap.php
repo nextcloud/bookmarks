@@ -17,4 +17,8 @@ if (!defined('PHPUNIT_RUN')) {
 require_once __DIR__ . '/../../../lib/base.php';
 require_once __DIR__ . '/../../../tests/autoload.php';
 
-Server::get(IAppManager::class)->loadApp('bookmarks');
+$appManager = Server::get(IAppManager::class);
+if ($appManager->isEnabledForAnyone('circles')) {
+	$appManager->loadApp('circles');
+}
+$appManager->loadApp('bookmarks');

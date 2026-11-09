@@ -86,11 +86,12 @@
 			</div>
 			<div v-for="share of shares" :key="share.id">
 				<div class="share">
-					<NcAvatar v-if="share.type < 2"
+					<NcAvatar v-if="share.type === 0"
 						:user="share.participant"
 						class="share__avatar"
 						:size="44" />
-					<CircleIcon v-if="share.type === 7" :size="44" class="share_avatar" />
+					<AccountGroupIcon v-if="share.type === 1" :size="20" class="share__avatar" />
+					<CircleIcon v-if="share.type === 7" :size="20" class="share__avatar" />
 					<h3 class="share__title">
 						{{ share.participantDisplayName }}
 					</h3>
@@ -135,11 +136,11 @@ import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { actions, mutations } from '../store/index.js'
-import { EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, DeleteIcon, RssIcon, PlusIcon, LinkIcon, AccountIcon, CircleIcon } from './Icons.js'
+import { EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, DeleteIcon, RssIcon, PlusIcon, LinkIcon, AccountIcon, AccountGroupIcon, CircleIcon } from './Icons.js'
 
 export default {
 	name: 'SidebarFolder',
-	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcSelect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon, CircleIcon },
+	components: { NcAppSidebar, NcAppSidebarTab, NcAvatar, NcSelect, NcActionButton, NcActionCheckbox, NcActions, NcUserBubble, NcActionSeparator, EyeIcon, PencilIcon, ShareAllIcon, ShareVariantIcon, InformationVariantIcon, ClipboardIcon, RssIcon, PlusIcon, DeleteIcon, LinkIcon, AccountIcon, AccountGroupIcon, CircleIcon },
 	data() {
 		return {
 			participantSearchTimeout: null,

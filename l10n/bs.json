@@ -1,5 +1,6 @@
 { "translations": {
     "Rename" : "Preimenuj",
+    "Copy link" : "Kopiraj vezu",
     "Move" : "Move",
     "Select all" : "Označi sve",
     "New" : "Novo",
@@ -15,6 +16,7 @@
     "Link" : "Veza",
     "Notes" : "Notes",
     "Open file" : "Otvori Datoteku",
+    "Link copied" : "Veza kopirana",
     "Owner" : "Vlasnik",
     "Sharing" : "Dijeljenje",
     "Share link" : "Podijelite vezu",

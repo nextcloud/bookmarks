@@ -24,7 +24,6 @@ use OCP\IConfig;
 class BookmarkPreviewer implements IBookmarkPreviewer {
 	// Cache for one month
 	public const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
-	private string $enabled;
 	private FileCache $cache;
 	private DefaultBookmarkPreviewer $defaultPreviewer;
 	private ScreeenlyBookmarkPreviewer $screeenlyPreviewer;
@@ -33,7 +32,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 	private Previewers\GenericUrlBookmarkPreviewer $genericUrlPreviewer;
 
 	public function __construct(
-		IConfig $config,
+		private IConfig $config,
 		ScreeenlyBookmarkPreviewer $screeenlyPreviewer,
 		DefaultBookmarkPreviewer $defaultPreviewer,
 		FileCache $cache,
@@ -47,7 +46,6 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 		$this->pageresPreviewer = $pageresPreviewer;
 		$this->genericUrlPreviewer = $genericUrlPreviewer;
 
-		$this->enabled = $config->getAppValue('bookmarks', 'privacy.enableScraping', 'false');
 		$this->cache = $cache;
 	}
 
@@ -56,7 +54,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 	 * @return IImage
 	 */
 	public function getImage($bookmark, $cacheOnly = false): ?IImage {
-		if ($this->enabled === 'false') {
+		if ($this->config->getAppValue('bookmarks', 'privacy.enableScraping', 'false') === 'false') {
 			return null;
 		}
 

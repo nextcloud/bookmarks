@@ -125,10 +125,9 @@ class FoldersController extends ApiController {
 			return $returnFolder;
 		}
 		if ($folder instanceof SharedFolder) {
-			$share = $this->shareMapper->findByFolderAndUser($folder->getFolderId(), $folder->getUserId());
 			$returnFolder = $folder->toArray();
 			$returnFolder['id'] = $folder->getFolderId();
-			$returnFolder['userId'] = $share->getOwner();
+			$returnFolder['userId'] = $this->folderMapper->find($folder->getFolderId())->getUserId();
 			$parent = $this->treeMapper->findParentOf(TreeMapper::TYPE_SHARE, $folder->getId());
 			$returnFolder['parent_folder'] = $this->toExternalFolderId($parent->getId());
 			$returnFolder['userDisplayName'] = $this->userManager->get($returnFolder['userId'])->getDisplayName();
@@ -735,11 +734,13 @@ class FoldersController extends ApiController {
 		} catch (Exception $e) {
 			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
-		return new Http\DataResponse(['status' => 'success', 'data' => array_map(function (Share $share) {
+		// The user may have the same folder through several shares
+		$folderIds = array_values(array_unique(array_map(static fn (Share $share) => $share->getFolderId(), $shares)));
+		return new Http\DataResponse(['status' => 'success', 'data' => array_map(static function (int $folderId) {
 			return [
-				'id' => $share->getFolderId(),
+				'id' => $folderId,
 			];
-		}, $shares)]);
+		}, $folderIds)]);
 	}
 
 	/**
@@ -798,7 +799,7 @@ class FoldersController extends ApiController {
 		if (Authorizer::hasPermission(Authorizer::PERM_READ, $permissions) && $this->authorizer->getUserId() !== null) {
 			try {
 				$this->folderMapper->find($folderId);
-				$share = $this->shareMapper->findByFolderAndUser($folderId, $this->authorizer->getUserId());
+				$shares = $this->shareMapper->findByFolderAndUser($folderId, $this->authorizer->getUserId());
 			} catch (MultipleObjectsReturnedException|Exception) {
 				return new DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 			} catch (DoesNotExistException $e) {
@@ -806,7 +807,12 @@ class FoldersController extends ApiController {
 				$res->throttle(['action' => 'getShares']);
 				return $res;
 			}
-			return new Http\DataResponse(['status' => 'success', 'data' => [$share->toArray()]]);
+			if (count($shares) === 0) {
+				$res = new DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
+				$res->throttle(['action' => 'getShares']);
+				return $res;
+			}
+			return new Http\DataResponse(['status' => 'success', 'data' => array_map(static fn (Share $share) => $share->toArray(), $shares)]);
 		}
 		$res = new DataResponse(['status' => 'error', 'data' => ['Could not find folder']], Http::STATUS_NOT_FOUND);
 		$res->throttle(['action' => 'getShares']);

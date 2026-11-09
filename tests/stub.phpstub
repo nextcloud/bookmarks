@@ -36,3 +36,44 @@ namespace OC\Files\Cache {
 		public function whereParentInParameter(string $parameter):CacheQueryBuilder;
 	}
 }
+
+namespace OCA\Circles\Model {
+	class Circle {
+		public function getSingleId(): string;
+	}
+
+	class Membership {
+		public function getSingleId(): string;
+		public function getCircleId(): string;
+	}
+}
+
+namespace OCA\Circles\Model\Probes {
+	class CircleProbe {
+		public function mustBeMember(bool $must = true): self;
+	}
+}
+
+namespace OCA\Circles\Events {
+	class CircleGenericEvent extends \OCP\EventDispatcher\Event {
+		public function getCircle(): \OCA\Circles\Model\Circle;
+	}
+
+	class DestroyingCircleEvent extends CircleGenericEvent {
+	}
+
+	class MembershipsCreatedEvent extends \OCP\EventDispatcher\Event {
+		/** @return list<\OCA\Circles\Model\Membership> */
+		public function getMemberships(): array;
+	}
+
+	class MembershipsRemovedEvent extends \OCP\EventDispatcher\Event {
+		/** @return list<\OCA\Circles\Model\Membership> */
+		public function getMemberships(): array;
+	}
+}
+
+namespace OCA\Circles\Exceptions {
+	class FederatedUserNotFoundException extends \Exception {
+	}
+}
