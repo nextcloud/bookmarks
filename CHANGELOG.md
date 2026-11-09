@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [17.0.2] - 2026-11-09
+
+### Fixed
+* fix(l10n): Update translations from Transifex 
+* fix(context_chat): Do not index uncrawled bookmarks and only index on title or content changes
+* fix(context_chat): Remove content upon switching context chat off
+* fix(context_chat): Make context chat index follow trash bin
+* fix(context_chat): Do not leak access or orphan content
+* fix(context_chat): Listen to MoveEvent instead of Insert
+* fix(context_chat): Make sure shared bookmarks are indexed with their complete access list
+* fix(context_chat): Do not limit bookmarks iterator to 10 items
+* fix(SAVE_BOOKMARK): Make sure bookmark url is set correctly after editing
+
 ## [17.0.1] - 2026-10-24
 
 ### Fixed
