@@ -11,10 +11,12 @@ namespace OCA\Bookmarks\Service;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Exception\PreviewTemporarilyUnavailableError;
 use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\GenericUrlBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\PageresBookmarkPreviewer;
+use OCA\Bookmarks\Service\Previewers\Screeenly3BookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreeenlyBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreenshotMachineBookmarkPreviewer;
 use OCP\Files\NotFoundException;
@@ -26,6 +28,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
 	private FileCache $cache;
 	private DefaultBookmarkPreviewer $defaultPreviewer;
+	private Screeenly3BookmarkPreviewer $screeenly3Previewer;
 	private ScreeenlyBookmarkPreviewer $screeenlyPreviewer;
 	private ScreenshotMachineBookmarkPreviewer $screenshotMachinePreviewer;
 	private PageresBookmarkPreviewer $pageresPreviewer;
@@ -33,6 +36,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 
 	public function __construct(
 		private IConfig $config,
+		Screeenly3BookmarkPreviewer $screeenly3Previewer,
 		ScreeenlyBookmarkPreviewer $screeenlyPreviewer,
 		DefaultBookmarkPreviewer $defaultPreviewer,
 		FileCache $cache,
@@ -40,6 +44,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 		PageresBookmarkPreviewer $pageresPreviewer,
 		GenericUrlBookmarkPreviewer $genericUrlPreviewer,
 	) {
+		$this->screeenly3Previewer = $screeenly3Previewer;
 		$this->screeenlyPreviewer = $screeenlyPreviewer;
 		$this->defaultPreviewer = $defaultPreviewer;
 		$this->screenshotMachinePreviewer = $screenshotMachinePreviewer;
@@ -50,8 +55,13 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 	}
 
 	/**
+	 * When a previewer is temporarily unavailable, the next previewers are tried as usual.
+	 * Its result isn't cached, and the exception is rethrown after the other previewers ran,
+	 * so the caller can try again later. An image from a later previewer is cached before that.
+	 *
 	 * @param Bookmark $bookmark
 	 * @return IImage
+	 * @throws PreviewTemporarilyUnavailableError
 	 */
 	public function getImage($bookmark, $cacheOnly = false): ?IImage {
 		if ($this->config->getAppValue('bookmarks', 'privacy.enableScraping', 'false') === 'false') {
@@ -67,12 +77,15 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 		}
 
 		$previewers = [
+			$this->screeenly3Previewer,
 			$this->screeenlyPreviewer,
 			$this->screenshotMachinePreviewer,
 			$this->pageresPreviewer,
 			$this->genericUrlPreviewer,
 			$this->defaultPreviewer,
 		];
+		$result = null;
+		$temporaryError = null;
 		foreach ($previewers as $previewer) {
 			$key = $previewer::CACHE_PREFIX . '-' . md5($bookmark->getUrl());
 			// Try cache first
@@ -81,7 +94,8 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 					if ($image === 'null') {
 						continue;
 					}
-					return Image::deserialize($image);
+					$result = Image::deserialize($image);
+					break;
 				}
 			} catch (NotFoundException $e) {
 			} catch (NotPermittedException $e) {
@@ -89,14 +103,24 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 			if ($cacheOnly) {
 				continue;
 			}
-			$image = $previewer->getImage($bookmark, $cacheOnly);
+			try {
+				$image = $previewer->getImage($bookmark, $cacheOnly);
+			} catch (PreviewTemporarilyUnavailableError $e) {
+				$temporaryError ??= $e;
+				continue;
+			}
 			if (isset($image)) {
 				$this->cache->set($key, $image->serialize(), self::CACHE_TTL);
-				return $image;
+				$result = $image;
+				break;
 			}
 			$this->cache->set($key, 'null', self::CACHE_TTL);
 		}
 
-		return null;
+		if ($temporaryError !== null) {
+			throw $temporaryError;
+		}
+
+		return $result;
 	}
 }
