@@ -15,6 +15,7 @@ use OCP\IConfig;
 class SettingsService {
 	/** @var array<string,string> */
 	public const DEFAULTS = [
+		'previews.screeenly3.token' => '',
 		'previews.screenly.url' => '',
 		'previews.screenly.token' => '',
 		'previews.webshot.url' => '',

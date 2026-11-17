@@ -11,8 +11,10 @@ namespace OCA\Bookmarks\Controller;
 
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Exception\PreviewTemporarilyUnavailableError;
 use OCA\Bookmarks\Service\Previewers\GenericUrlBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\PageresBookmarkPreviewer;
+use OCA\Bookmarks\Service\Previewers\Screeenly3BookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreeenlyBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreenshotMachineBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\WebshotBookmarkPreviewer;
@@ -33,6 +35,7 @@ class AdminController extends Controller {
 		IRequest $request,
 		private SettingsService $settingsService,
 		GenericUrlBookmarkPreviewer $urlPreviewer,
+		Screeenly3BookmarkPreviewer $screeenly3Previewer,
 		ScreeenlyBookmarkPreviewer $screeenlyPreviewer,
 		ScreenshotMachineBookmarkPreviewer $screenshotMachinePreviewer,
 		WebshotBookmarkPreviewer $webshotPreviewer,
@@ -41,6 +44,7 @@ class AdminController extends Controller {
 		parent::__construct($appName, $request);
 		$this->previewers = [
 			'url' => $urlPreviewer,
+			'screeenly3' => $screeenly3Previewer,
 			'screeenly' => $screeenlyPreviewer,
 			'screenshotmachine' => $screenshotMachinePreviewer,
 			'webshot' => $webshotPreviewer,
@@ -76,6 +80,11 @@ class AdminController extends Controller {
 		$previewerImp = $this->previewers[$previewer];
 		$test = new Bookmark();
 		$test->setUrl('https://nextcloud.com/');
-		return new Http\DataDisplayResponse($previewerImp->getImage($test)?->getData() ?? '');
+		try {
+			$image = $previewerImp->getImage($test);
+		} catch (PreviewTemporarilyUnavailableError $e) {
+			$image = null;
+		}
+		return new Http\DataDisplayResponse($image?->getData() ?? '');
 	}
 }

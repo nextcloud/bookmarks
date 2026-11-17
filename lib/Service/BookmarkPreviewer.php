@@ -16,6 +16,7 @@ use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\GenericUrlBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\PageresBookmarkPreviewer;
+use OCA\Bookmarks\Service\Previewers\Screeenly3BookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreeenlyBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\ScreenshotMachineBookmarkPreviewer;
 use OCP\Files\NotFoundException;
@@ -27,6 +28,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 	public const CACHE_TTL = 4 * 4 * 7 * 24 * 60 * 60;
 	private FileCache $cache;
 	private DefaultBookmarkPreviewer $defaultPreviewer;
+	private Screeenly3BookmarkPreviewer $screeenly3Previewer;
 	private ScreeenlyBookmarkPreviewer $screeenlyPreviewer;
 	private ScreenshotMachineBookmarkPreviewer $screenshotMachinePreviewer;
 	private PageresBookmarkPreviewer $pageresPreviewer;
@@ -34,6 +36,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 
 	public function __construct(
 		private IConfig $config,
+		Screeenly3BookmarkPreviewer $screeenly3Previewer,
 		ScreeenlyBookmarkPreviewer $screeenlyPreviewer,
 		DefaultBookmarkPreviewer $defaultPreviewer,
 		FileCache $cache,
@@ -41,6 +44,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 		PageresBookmarkPreviewer $pageresPreviewer,
 		GenericUrlBookmarkPreviewer $genericUrlPreviewer,
 	) {
+		$this->screeenly3Previewer = $screeenly3Previewer;
 		$this->screeenlyPreviewer = $screeenlyPreviewer;
 		$this->defaultPreviewer = $defaultPreviewer;
 		$this->screenshotMachinePreviewer = $screenshotMachinePreviewer;
@@ -73,6 +77,7 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 		}
 
 		$previewers = [
+			$this->screeenly3Previewer,
 			$this->screeenlyPreviewer,
 			$this->screenshotMachinePreviewer,
 			$this->pageresPreviewer,
