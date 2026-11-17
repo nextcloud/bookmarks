@@ -16,6 +16,7 @@ use Mimey\MimeTypes;
 use OC\User\NoUserException;
 use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Db\BookmarkMapper;
+use OCA\Bookmarks\Exception\PreviewTemporarilyUnavailableError;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCP\Files\Folder;
 use OCP\Files\GenericFileException;
@@ -108,16 +109,25 @@ class CrawlService {
 			}
 		}
 
+		$retryAfter = null;
 		if ($available) {
 			$this->userSettingsService->setUserId($bookmark->getUserId());
 			if ($resp !== null && $this->userSettingsService->get('archive.enabled') === 'true') {
 				$this->archiveFile($bookmark, $resp);
 				$this->archiveContent($bookmark, $resp);
 			}
-			$this->bookmarkPreviewer->getImage($bookmark);
+			try {
+				$this->bookmarkPreviewer->getImage($bookmark);
+			} catch (PreviewTemporarilyUnavailableError $e) {
+				$retryAfter = $e->getRetryAfter();
+			}
 			$this->faviconPreviewer->getImage($bookmark);
 		}
 		$bookmark->markPreviewCreated();
+		if ($retryAfter !== null) {
+			// CrawlJob picks the bookmark up again once last_preview is older than the cache TTL
+			$bookmark->setLastPreview(time() - BookmarkPreviewer::CACHE_TTL + $retryAfter);
+		}
 		$bookmark->setAvailable($available);
 		$this->bookmarkMapper->update($bookmark);
 	}

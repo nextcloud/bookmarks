@@ -9,11 +9,13 @@
 namespace OCA\Bookmarks\Contract;
 
 use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Exception\PreviewTemporarilyUnavailableError;
 
 interface IBookmarkPreviewer {
 	/**
 	 * @param Bookmark $bookmark
 	 * @return IImage|null
+	 * @throws PreviewTemporarilyUnavailableError when the service can't create a preview now but may later
 	 */
 	public function getImage($bookmark, $cacheOnly = false): ?IImage;
 }

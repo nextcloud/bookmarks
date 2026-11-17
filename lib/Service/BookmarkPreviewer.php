@@ -11,6 +11,7 @@ namespace OCA\Bookmarks\Service;
 use OCA\Bookmarks\Contract\IBookmarkPreviewer;
 use OCA\Bookmarks\Contract\IImage;
 use OCA\Bookmarks\Db\Bookmark;
+use OCA\Bookmarks\Exception\PreviewTemporarilyUnavailableError;
 use OCA\Bookmarks\Image;
 use OCA\Bookmarks\Service\Previewers\DefaultBookmarkPreviewer;
 use OCA\Bookmarks\Service\Previewers\GenericUrlBookmarkPreviewer;
@@ -50,8 +51,13 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 	}
 
 	/**
+	 * When a previewer is temporarily unavailable, the next previewers are tried as usual.
+	 * Its result isn't cached, and the exception is rethrown after the other previewers ran,
+	 * so the caller can try again later. An image from a later previewer is cached before that.
+	 *
 	 * @param Bookmark $bookmark
 	 * @return IImage
+	 * @throws PreviewTemporarilyUnavailableError
 	 */
 	public function getImage($bookmark, $cacheOnly = false): ?IImage {
 		if ($this->config->getAppValue('bookmarks', 'privacy.enableScraping', 'false') === 'false') {
@@ -73,6 +79,8 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 			$this->genericUrlPreviewer,
 			$this->defaultPreviewer,
 		];
+		$result = null;
+		$temporaryError = null;
 		foreach ($previewers as $previewer) {
 			$key = $previewer::CACHE_PREFIX . '-' . md5($bookmark->getUrl());
 			// Try cache first
@@ -81,7 +89,8 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 					if ($image === 'null') {
 						continue;
 					}
-					return Image::deserialize($image);
+					$result = Image::deserialize($image);
+					break;
 				}
 			} catch (NotFoundException $e) {
 			} catch (NotPermittedException $e) {
@@ -89,14 +98,24 @@ class BookmarkPreviewer implements IBookmarkPreviewer {
 			if ($cacheOnly) {
 				continue;
 			}
-			$image = $previewer->getImage($bookmark, $cacheOnly);
+			try {
+				$image = $previewer->getImage($bookmark, $cacheOnly);
+			} catch (PreviewTemporarilyUnavailableError $e) {
+				$temporaryError ??= $e;
+				continue;
+			}
 			if (isset($image)) {
 				$this->cache->set($key, $image->serialize(), self::CACHE_TTL);
-				return $image;
+				$result = $image;
+				break;
 			}
 			$this->cache->set($key, 'null', self::CACHE_TTL);
 		}
 
-		return null;
+		if ($temporaryError !== null) {
+			throw $temporaryError;
+		}
+
+		return $result;
 	}
 }
