@@ -178,6 +178,73 @@ class BookmarkMapperTest extends TestCase {
 	}
 
 	/**
+	 * countPageStats() must give the same numbers as the four single count methods it replaces on the
+	 * app page.
+	 */
+	private function assertPageStatsMatchSingleCounts(string $userId): void {
+		$this->assertSame([
+			'duplicated' => $this->bookmarkMapper->countDuplicated($userId),
+			'unavailable' => $this->bookmarkMapper->countUnavailable($userId),
+			'allClicks' => $this->bookmarkMapper->countAllClicks($userId),
+			'withClicks' => $this->bookmarkMapper->countWithClicks($userId),
+		], $this->bookmarkMapper->countPageStats($userId));
+	}
+
+	/**
+	 * countPageStats() with all four counts non-zero at once, from bookmarks that each match some of
+	 * them: a clicked duplicate, an unavailable one, a trashed one (counts nowhere), nested folders.
+	 * Also an account with no bookmarks at all (the sums are over zero rows).
+	 *
+	 * @throws AlreadyExistsError
+	 * @throws UserLimitExceededError
+	 * @throws UrlParseError
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function testCountPageStatsMixed() {
+		$empty = 'count_page_stats_empty';
+		if (!$this->userManager->userExists($empty)) {
+			$this->userManager->createUser($empty, 'password');
+		}
+		$this->assertSame(['duplicated' => 0, 'unavailable' => 0, 'allClicks' => 0, 'withClicks' => 0], $this->bookmarkMapper->countPageStats($empty));
+
+		$rootFolderId = $this->folderMapper->findRootFolder($this->userId)->getId();
+		$folderA = new Db\Folder();
+		$folderA->setTitle('stats-a');
+		$folderA->setUserId($this->userId);
+		$this->folderMapper->insert($folderA);
+		$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $folderA->getId(), $rootFolderId);
+		$nested = new Db\Folder();
+		$nested->setTitle('stats-a-nested');
+		$nested->setUserId($this->userId);
+		$this->folderMapper->insert($nested);
+		$this->treeMapper->move(Db\TreeMapper::TYPE_FOLDER, $nested->getId(), $folderA->getId());
+
+		$add = function (string $path, array $folders, int $clicks = 0, bool $available = true): Db\Bookmark {
+			$bookmark = $this->bookmarkMapper->insertOrUpdate(Db\Bookmark::fromArray([
+				'userId' => $this->userId,
+				'url' => 'https://example.org/page-stats/' . $path,
+				'title' => $path,
+				'description' => '',
+			]));
+			$bookmark->setClickcount($clicks);
+			$bookmark->setAvailable($available);
+			$this->bookmarkMapper->update($bookmark);
+			$this->treeMapper->addToFolders(Db\TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folders);
+			return $bookmark;
+		};
+		$add('clicked-duplicate', [$rootFolderId, $nested->getId()], 5);
+		$add('unavailable-nested', [$nested->getId()], 0, false);
+		$add('clicked-unavailable', [$folderA->getId()], 2, false);
+		$add('plain', [$rootFolderId]);
+		$trashed = $add('trashed', [$folderA->getId()], 11, false);
+		$this->treeMapper->softDeleteEntry(Db\TreeMapper::TYPE_BOOKMARK, $trashed->getId(), $folderA->getId());
+
+		$this->assertSame(['duplicated' => 1, 'unavailable' => 2, 'allClicks' => 7, 'withClicks' => 2], $this->bookmarkMapper->countPageStats($this->userId));
+		$this->assertPageStatsMatchSingleCounts($this->userId);
+	}
+
+	/**
 	 * Regression test: countDuplicated() must count a bookmark that is duplicated
 	 * across two subfolders of a *shared* folder, for the sharee. The previous
 	 * implementation queried the raw bookmarks_tree table (owner's bookmarks +
@@ -225,6 +292,8 @@ class BookmarkMapperTest extends TestCase {
 		$params = new \OCA\Bookmarks\QueryParameters();
 		$duplicatedList = $this->bookmarkMapper->findAll($recipientId, $params->setDuplicated(true));
 		$this->assertCount(1, $duplicatedList);
+		$this->assertPageStatsMatchSingleCounts($ownerId);
+		$this->assertPageStatsMatchSingleCounts($recipientId);
 	}
 
 	/**
@@ -268,6 +337,7 @@ class BookmarkMapperTest extends TestCase {
 		);
 
 		$this->assertSame(1, $this->bookmarkMapper->countDuplicated($this->userId));
+		$this->assertPageStatsMatchSingleCounts($this->userId);
 
 		// Trash the copy in folder B -> only one live copy remains -> not a duplicate.
 		$this->treeMapper->softDeleteEntry(Db\TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $folderB->getId());
@@ -277,6 +347,7 @@ class BookmarkMapperTest extends TestCase {
 		$params = new \OCA\Bookmarks\QueryParameters();
 		$duplicatedList = $this->bookmarkMapper->findAll($this->userId, $params->setDuplicated(true));
 		$this->assertCount(0, $duplicatedList);
+		$this->assertPageStatsMatchSingleCounts($this->userId);
 	}
 
 	/**
@@ -313,6 +384,8 @@ class BookmarkMapperTest extends TestCase {
 		$params = new \OCA\Bookmarks\QueryParameters();
 		$unavailableList = $this->bookmarkMapper->findAll($recipientId, $params->setUnavailable(true));
 		$this->assertCount(1, $unavailableList);
+		$this->assertPageStatsMatchSingleCounts($ownerId);
+		$this->assertPageStatsMatchSingleCounts($recipientId);
 	}
 
 	/**
@@ -342,6 +415,8 @@ class BookmarkMapperTest extends TestCase {
 		// Owner reaches the subfolder directly; sharee reaches it through the share.
 		$this->assertSame(1, $this->bookmarkMapper->countWithClicks($ownerId));
 		$this->assertSame(1, $this->bookmarkMapper->countWithClicks($recipientId));
+		$this->assertPageStatsMatchSingleCounts($ownerId);
+		$this->assertPageStatsMatchSingleCounts($recipientId);
 	}
 
 	/**
@@ -385,6 +460,8 @@ class BookmarkMapperTest extends TestCase {
 		// (Owner: old code summed 14; sharee: old code returned 0.)
 		$this->assertSame(7, $this->bookmarkMapper->countAllClicks($ownerId));
 		$this->assertSame(7, $this->bookmarkMapper->countAllClicks($recipientId));
+		$this->assertPageStatsMatchSingleCounts($ownerId);
+		$this->assertPageStatsMatchSingleCounts($recipientId);
 	}
 
 	/**

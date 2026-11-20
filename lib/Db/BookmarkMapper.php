@@ -736,6 +736,58 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * The four tree-based counts of the app page, from a single pass over the folder_tree CTE.
+	 * countDuplicated(), countUnavailable(), countAllClicks() and countWithClicks() each expand the
+	 * whole tree on their own, which takes about half a second each for a user with 100k bookmarks.
+	 * Returns the same numbers as those four methods (tests/BookmarkMapperTest.php checks that).
+	 *
+	 * @param string $userId
+	 * @return array{duplicated: int, unavailable: int, allClicks: int, withClicks: int}
+	 * @throws Exception
+	 */
+	public function countPageStats(string $userId): array {
+		$rootFolder = $this->folderMapper->findRootFolder($userId);
+		[$cte, $params, $paramTypes] = $this->generateCTE($rootFolder->getId(), false);
+
+		// One row per live bookmark: the number of distinct folders it is in, plus its own columns.
+		// LEFT JOIN because countDuplicated() counts tree entries without the bookmarks table; the
+		// other three need a bookmark row, which they get: NULL never matches the CASEs or adds to SUM.
+		$qb = $this->db->getQueryBuilder();
+		$qb->automaticTablePrefix(false);
+		$qb->select('tree.item_id', 'b.available', 'b.clickcount')
+			->selectAlias($qb->createFunction('COUNT(DISTINCT tree.parent_folder)'), 'folders')
+			->from('folder_tree', 'tree')
+			->leftJoin('tree', '*PREFIX*bookmarks', 'b', 'b.id = tree.item_id')
+			->where($qb->expr()->eq('tree.type', $qb->createPositionalParameter(TreeMapper::TYPE_BOOKMARK)))
+			->andWhere($qb->expr()->isNull('tree.soft_deleted_at'))
+			->groupBy('tree.item_id', 'b.available', 'b.clickcount');
+
+		$outer = $this->db->getQueryBuilder();
+		$notAvailable = $outer->createPositionalParameter(false, IQueryBuilder::PARAM_BOOL);
+		$noClicks = $outer->createPositionalParameter(0, IQueryBuilder::PARAM_INT);
+		$finalQuery = $cte . ' SELECT'
+			. ' SUM(CASE WHEN x.folders > 1 THEN 1 ELSE 0 END) AS duplicated,'
+			. ' SUM(CASE WHEN x.available = ' . $notAvailable . ' THEN 1 ELSE 0 END) AS unavailable,'
+			. ' SUM(x.clickcount) AS all_clicks,'
+			. ' SUM(CASE WHEN x.clickcount <> ' . $noClicks . ' THEN 1 ELSE 0 END) AS with_clicks'
+			. ' FROM (' . $qb->getSQL() . ') x';
+		// placeholders in SQL order: the CTE's, then the outer SELECT's, then the subquery's
+		$params = array_merge($params, $outer->getParameters(), $qb->getParameters());
+		$paramTypes = array_merge($paramTypes, $outer->getParameterTypes(), $qb->getParameterTypes());
+
+		$result = $this->db->executeQuery($finalQuery, $params, $paramTypes);
+		$row = $result->fetch(PDO::FETCH_ASSOC);
+		$result->closeCursor();
+
+		return [
+			'duplicated' => (int)($row['duplicated'] ?? 0),
+			'unavailable' => (int)($row['unavailable'] ?? 0),
+			'allClicks' => (int)($row['all_clicks'] ?? 0),
+			'withClicks' => (int)($row['with_clicks'] ?? 0),
+		];
+	}
+
+	/**
 	 * @param string $token
 	 * @param QueryParameters $queryParams
 	 *
