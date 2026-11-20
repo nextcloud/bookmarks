@@ -411,6 +411,42 @@ class TreeMapper extends QBMapper {
 	}
 
 	/**
+	 * Whether an item is visible below the given folder, i.e. found by the recursive
+	 * folder_tree CTE (BookmarkMapper::generateCTE) started from that folder, outside
+	 * the trash: walks up from the item through untrashed placements, and through
+	 * shares whose original folder isn't trashed by its owner. Only reads the item's
+	 * ancestors instead of the whole tree below the folder.
+	 *
+	 * @param string $type
+	 * @psalm-param TreeMapper::TYPE_* $type
+	 * @param int $itemId
+	 * @param int $ancestorFolderId
+	 * @return bool
+	 */
+	public function isVisibleBelow(string $type, int $itemId, int $ancestorFolderId): bool {
+		$visitedFolders = [];
+		$queue = $this->findParentsOf($type, $itemId);
+		while (($folder = array_shift($queue)) !== null) {
+			$folderId = $folder->getId();
+			if ($folderId === $ancestorFolderId) {
+				return true;
+			}
+			if (isset($visitedFolders[$folderId])) {
+				continue;
+			}
+			$visitedFolders[$folderId] = true;
+			array_push($queue, ...$this->findParentsOf(TreeMapper::TYPE_FOLDER, $folderId));
+			$sharedFolders = $this->sharedFolderMapper->findByFolder($folderId);
+			if (count($sharedFolders) > 0 && !$this->isEntrySoftDeleted(TreeMapper::TYPE_FOLDER, $folderId)) {
+				foreach ($sharedFolders as $sharedFolder) {
+					array_push($queue, ...$this->findParentsOf(TreeMapper::TYPE_SHARE, $sharedFolder->getId()));
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * @param string $type
 	 * @psalm-param TreeMapper::TYPE_* $type
 	 * @param int $id

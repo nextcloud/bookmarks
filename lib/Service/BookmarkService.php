@@ -443,13 +443,32 @@ class BookmarkService {
 	 * @param string $userId
 	 *
 	 * @param string $url
+	 * @param bool $includeShared also find bookmarks of other users in folders shared with this user
 	 * @return Bookmark
 	 *
 	 * @throws DoesNotExistException
 	 * @throws Exception
 	 * @throws UrlParseError
 	 */
-	public function findByUrl(string $userId, string $url = ''): Bookmark {
+	public function findByUrl(string $userId, string $url = '', bool $includeShared = true): Bookmark {
+		// Fast path: the user's own bookmark for this URL is a single indexed row
+		// (user_id + url_hash); then check it's outside the trash by walking up from it,
+		// instead of walking down the user's whole tree as findAll() does.
+		$normalized = $this->urlNormalizer->normalize($url);
+		try {
+			$bookmark = $this->bookmarkMapper->findByUrl($userId, $normalized);
+			$rootFolder = $this->folderMapper->findRootFolder($userId);
+			if ($this->treeMapper->isVisibleBelow(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $rootFolder->getId())) {
+				return $bookmark;
+			}
+		} catch (DoesNotExistException|MultipleObjectsReturnedException) {
+			// not the user's own, or not visible: fall through
+		}
+
+		if (!$includeShared) {
+			throw new DoesNotExistException('URL does not exist');
+		}
+
 		$params = new QueryParameters();
 		$bookmarks = $this->bookmarkMapper->findAll($userId, $params->setUrl($url));
 		if (isset($bookmarks[0])) {
