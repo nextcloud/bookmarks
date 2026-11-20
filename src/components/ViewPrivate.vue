@@ -129,6 +129,7 @@ export default {
 		await this.reloadSettings()
 
 		this.reloadSharedFolders()
+		this.reloadPublicLinks()
 		this.reloadCount()
 		this.reloadTags()
 		this.reloadDeletedFolders()
@@ -253,6 +254,9 @@ export default {
 		},
 		async reloadSharedFolders() {
 			return this.$store.dispatch(actions.LOAD_SHARED_FOLDERS)
+		},
+		async reloadPublicLinks() {
+			return this.$store.dispatch(actions.LOAD_PUBLIC_LINKS)
 		},
 		async reloadSettings() {
 			return this.$store.dispatch(actions.LOAD_SETTINGS)

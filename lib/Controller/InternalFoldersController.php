@@ -99,6 +99,12 @@ class InternalFoldersController extends ApiController {
 	}
 
 	#[NoAdminRequired]
+	#[FrontpageRoute(verb: 'GET', url: '/folder/publictoken')]
+	public function findFolderPublicTokens(): DataResponse {
+		return $this->controller->findFolderPublicTokens();
+	}
+
+	#[NoAdminRequired]
 	#[FrontpageRoute(verb: 'GET', url: '/folder/{folderId}/publictoken')]
 	public function getFolderPublicToken(int $folderId): DataResponse {
 		return $this->controller->getFolderPublicToken($folderId);

@@ -85,6 +85,7 @@ export const actions = {
 	DELETE_SHARE: 'DELETE_SHARE',
 
 	LOAD_PUBLIC_LINK: 'LOAD_PUBLIC_LINK',
+	LOAD_PUBLIC_LINKS: 'LOAD_PUBLIC_LINKS',
 	CREATE_PUBLIC_LINK: 'CREATE_PUBLIC_LINK',
 	DELETE_PUBLIC_LINK: 'DELETE_PUBLIC_LINK',
 	LOAD_SHARED_FOLDERS: 'LOAD_SHARED_FOLDERS',
@@ -1616,6 +1617,23 @@ export default {
 			.catch(err => {
 				console.error(err)
 				// Not sending a notification because we might just not have enough permissions to see this
+			})
+	},
+	[actions.LOAD_PUBLIC_LINKS]({ commit, dispatch, state }) {
+		// The public links of all folders the user owns, in one request
+		return axios
+			.get(url(state, '/folder/publictoken'))
+			.then(async response => {
+				const {
+					data: { data, status },
+				} = response
+				if (status !== 'success') throw new Error(data)
+				for (const { folderId, token } of data) {
+					await commit(mutations.ADD_PUBLIC_TOKEN, { folderId, token })
+				}
+			})
+			.catch(err => {
+				console.error(err)
 			})
 	},
 	[actions.CREATE_PUBLIC_LINK]({ commit, dispatch, state }, folderId) {

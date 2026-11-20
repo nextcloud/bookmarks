@@ -10,6 +10,7 @@ namespace OCA\Bookmarks\Controller;
 
 use OCA\Bookmarks\Db\Folder;
 use OCA\Bookmarks\Db\FolderMapper;
+use OCA\Bookmarks\Db\PublicFolder;
 use OCA\Bookmarks\Db\PublicFolderMapper;
 use OCA\Bookmarks\Db\Share;
 use OCA\Bookmarks\Db\SharedFolder;
@@ -627,6 +628,32 @@ class FoldersController extends ApiController {
 			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 		return new Http\DataResponse(['status' => 'success', 'item' => $publicFolder->getId()]);
+	}
+
+	/**
+	 * Public links of all folders the current user owns, so that the app can load them in one request
+	 * instead of asking for each folder (which answers with a 404 for every folder without a link).
+	 *
+	 * Only routed internally, through InternalFoldersController.
+	 *
+	 * @throws UnauthenticatedError
+	 */
+	public function findFolderPublicTokens(): DataResponse {
+		// This also loads the credentials of the request, so it must come before getUserId()
+		$permissions = $this->authorizer->getPermissionsForFolder(-1, $this->request);
+		$userId = $this->authorizer->getUserId();
+		if ($userId === null || !Authorizer::hasPermission(Authorizer::PERM_READ, $permissions)) {
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Unauthorized']], Http::STATUS_FORBIDDEN);
+		}
+		try {
+			$publicFolders = $this->publicFolderMapper->findAllByUser($userId);
+		} catch (Exception $e) {
+			return new Http\DataResponse(['status' => 'error', 'data' => ['Internal error']], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+		return new Http\DataResponse(['status' => 'success', 'data' => array_map(static fn (PublicFolder $publicFolder) => [
+			'folderId' => $publicFolder->getFolderId(),
+			'token' => $publicFolder->getId(),
+		], $publicFolders)]);
 	}
 
 	/**
