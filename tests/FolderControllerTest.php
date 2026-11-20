@@ -1062,6 +1062,42 @@ class FolderControllerTest extends TestCase {
 	}
 
 	/**
+	 * @throws AlreadyExistsError
+	 * @throws UrlParseError
+	 * @throws UserLimitExceededError
+	 * @throws MultipleObjectsReturnedException
+	 */
+	public function testFindFolderPublicTokens(): void {
+		$this->setupBookmarks();
+		$this->authorizer->setUserId($this->userId);
+		$this->assertEquals(['status' => 'success', 'data' => []], $this->controller->findFolderPublicTokens()->getData());
+
+		$this->setupPublicFolder();
+		// A public link of another user's folder must not show up
+		$otherPublicFolder = new PublicFolder();
+		$otherPublicFolder->setDescription('');
+		$otherPublicFolder->setFolderId($this->folder4->getId());
+		$this->publicFolderMapper->insert($otherPublicFolder);
+
+		$this->authorizer->setUserId($this->userId);
+		$data = $this->controller->findFolderPublicTokens()->getData();
+		$this->assertEquals('success', $data['status'], var_export($data, true));
+		$this->assertEquals([['folderId' => $this->folder1->getId(), 'token' => $this->publicFolder->getId()]], $data['data']);
+
+		$this->authorizer->setUserId($this->otherUserId);
+		$data = $this->otherController->findFolderPublicTokens()->getData();
+		$this->assertEquals([['folderId' => $this->folder4->getId(), 'token' => $otherPublicFolder->getId()]], $data['data']);
+	}
+
+	public function testFindFolderPublicTokensNoauthFail(): void {
+		$this->setupBookmarks();
+		$this->authorizer->setUserId(null);
+		$this->authorizer->setToken(null);
+		$this->expectException(UnauthenticatedError::class);
+		$this->noauth->findFolderPublicTokens();
+	}
+
+	/**
 	 * @param $participant
 	 * @param $type
 	 * @param $canWrite

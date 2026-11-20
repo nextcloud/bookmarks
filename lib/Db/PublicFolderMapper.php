@@ -72,6 +72,25 @@ class PublicFolderMapper extends QBMapper {
 	}
 
 	/**
+	 * Public links of all folders that the given user owns
+	 *
+	 * @param string $userId
+	 * @return PublicFolder[]
+	 *
+	 * @psalm-return list<PublicFolder>
+	 */
+	public function findAllByUser(string $userId): array {
+		$qb = $this->db->getQueryBuilder();
+		$qb
+			->select('p.*')
+			->from('bookmarks_folders_public', 'p')
+			->innerJoin('p', 'bookmarks_folders', 'f', $qb->expr()->eq('f.id', 'p.folder_id'))
+			->where($qb->expr()->eq('f.user_id', $qb->createNamedParameter($userId)));
+
+		return $this->findEntities($qb);
+	}
+
+	/**
 	 * @param int $createdAt
 	 *
 	 * @return PublicFolder[]
