@@ -452,13 +452,16 @@ class BookmarkService {
 	 */
 	public function findByUrl(string $userId, string $url = '', bool $includeShared = true): Bookmark {
 		// Fast path: the user's own bookmark for this URL is a single indexed row
-		// (user_id + url_hash); then check it's outside the trash by walking up from it,
-		// instead of walking down the user's whole tree as findAll() does.
+		// (user_id + url_hash); then check it's outside the trash by walking up from it
+		// through the user's own folders, instead of walking down the user's whole tree
+		// as findAll() does. A bookmark belongs to the owner of its folders, so its own
+		// folders lead to the user's root; that part of the folder_tree CTE is the same
+		// on every database.
 		$normalized = $this->urlNormalizer->normalize($url);
 		try {
-			$bookmark = $this->bookmarkMapper->findByUrl($userId, $normalized);
+			$bookmark = $this->bookmarkMapper->findByUrlWithTagsAndFolders($userId, $normalized);
 			$rootFolder = $this->folderMapper->findRootFolder($userId);
-			if ($this->treeMapper->isVisibleBelow(TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), $rootFolder->getId())) {
+			if ($this->treeMapper->hasDescendant($rootFolder->getId(), TreeMapper::TYPE_BOOKMARK, $bookmark->getId(), false)) {
 				return $bookmark;
 			}
 		} catch (DoesNotExistException|MultipleObjectsReturnedException) {

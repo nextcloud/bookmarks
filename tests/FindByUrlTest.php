@@ -17,9 +17,10 @@ use OCP\Share\IShare;
 
 /**
  * BookmarkService::findByUrl() looks up the user's own bookmark by url_hash and walks up
- * from it (TreeMapper::isVisibleBelow) instead of running the recursive folder_tree CTE
- * over the whole tree. Every case here checks it against that full query
- * (BookmarkMapper::findAll with a URL filter), which stays the reference.
+ * from it through the user's own folders (TreeMapper::hasDescendant, outside the trash)
+ * instead of running the recursive folder_tree CTE over the whole tree. Every case here
+ * checks it against that full query (BookmarkMapper::findAll with a URL filter), which
+ * stays the reference.
  */
 class FindByUrlTest extends TestCase {
 	private Db\BookmarkMapper $bookmarkMapper;
@@ -115,6 +116,38 @@ class FindByUrlTest extends TestCase {
 		$this->assertSameAsFullQuery($user, 'https://example.org/unknown', null);
 	}
 
+	/**
+	 * Link previews (BookmarkReferenceProvider) show the tags and folders, so the fast path
+	 * must return them exactly as the full query does.
+	 */
+	public function testTagsAndFolders(): void {
+		$user = $this->user('findbyurl_tags');
+		$a = $this->folder($user, 'a', $this->root($user));
+		$b = $this->folder($user, 'b', $this->root($user));
+		$c = $this->folder($user, 'c', $this->root($user));
+		$tagMapper = \OCP\Server::get(Db\TagMapper::class);
+
+		$tagged = $this->bookmark($user, 'https://example.org/tagged', [$a, $b, $c]);
+		$tagMapper->addTo(['one', 'two'], $tagged);
+		$this->treeMapper->softDeleteEntry(Db\TreeMapper::TYPE_BOOKMARK, $tagged, $c);
+		$this->bookmark($user, 'https://example.org/untagged', [$this->root($user)]);
+
+		foreach (['https://example.org/tagged', 'https://example.org/untagged'] as $url) {
+			$expected = $this->bookmarkMapper->findAll($user, (new QueryParameters())->setUrl($url))[0]->toArray();
+			$actual = $this->bookmarkService->findByUrl($user, $url, false);
+			$this->assertInstanceOf(Db\BookmarkWithTagsAndParent::class, $actual);
+			$actual = $actual->toArray();
+			foreach (['tags', 'folders'] as $field) {
+				sort($expected[$field]);
+				sort($actual[$field]);
+			}
+			$this->assertSame($expected, $actual, $url);
+		}
+		$tagged = $this->bookmarkService->findByUrl($user, 'https://example.org/tagged', false)->toArray();
+		$this->assertEqualsCanonicalizing(['one', 'two'], $tagged['tags']);
+		$this->assertEqualsCanonicalizing([$a, $b], $tagged['folders']);
+	}
+
 	public function testTrash(): void {
 		$user = $this->user('findbyurl_trash');
 		$a = $this->folder($user, 'a', $this->root($user));
@@ -153,7 +186,12 @@ class FindByUrlTest extends TestCase {
 		$this->assertSameAsFullQuery($recipient, 'https://example.org/owners', null);
 		$this->assertSame($ownersBookmark, $this->find($recipient, 'https://example.org/owners', true));
 
-		$this->assertSameAsFullQuery($recipient, 'https://example.org/recipients', $recipientsBookmark);
+		// The service never creates this (a bookmark added to someone else's folder is
+		// copied to the folder owner), but older data might have it: the own lookup only
+		// walks the user's own folders, so it doesn't find it; the lookup incl. shared
+		// still does, through the full query.
+		$this->assertSame($recipientsBookmark, $this->find($recipient, 'https://example.org/recipients', true));
+		$this->assertNull($this->find($recipient, 'https://example.org/recipients', false));
 		$this->assertSameAsFullQuery($owner, 'https://example.org/recipients', null);
 
 		$this->assertSameAsFullQuery($recipient, 'https://example.org/both', $recipientsCopy);
@@ -162,7 +200,7 @@ class FindByUrlTest extends TestCase {
 		$this->treeMapper->softDeleteEntry(Db\TreeMapper::TYPE_FOLDER, $shared);
 		$this->assertSameAsFullQuery($recipient, 'https://example.org/owners', null);
 		$this->assertNull($this->find($recipient, 'https://example.org/owners', true));
-		$this->assertSameAsFullQuery($recipient, 'https://example.org/recipients', null);
+		$this->assertNull($this->find($recipient, 'https://example.org/recipients', true));
 		$this->assertSameAsFullQuery($recipient, 'https://example.org/both', $recipientsCopy);
 		$this->assertSameAsFullQuery($owner, 'https://example.org/owners', null);
 	}
