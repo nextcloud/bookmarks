@@ -393,15 +393,16 @@ class TreeMapper extends QBMapper {
 	 * @param int $folderId
 	 * @param TreeMapper::TYPE_* $type
 	 * @param int $descendantId
+	 * @param bool $withSoftDeletions false: only through placements that aren't in the trash
 	 * @return bool
 	 */
-	public function hasDescendant(int $folderId, string $type, int $descendantId): bool {
-		$ancestors = $this->findParentsOf($type, $descendantId, true);
+	public function hasDescendant(int $folderId, string $type, int $descendantId, bool $withSoftDeletions = true): bool {
+		$ancestors = $this->findParentsOf($type, $descendantId, $withSoftDeletions);
 		while (!in_array($folderId, array_map(static function (Entity $ancestor) {
 			return $ancestor->getId();
 		}, $ancestors), true)) {
-			$ancestors = array_merge(...array_map(function (Entity $ancestor) {
-				return $this->findParentsOf(TreeMapper::TYPE_FOLDER, $ancestor->getId(), true);
+			$ancestors = array_merge(...array_map(function (Entity $ancestor) use ($withSoftDeletions) {
+				return $this->findParentsOf(TreeMapper::TYPE_FOLDER, $ancestor->getId(), $withSoftDeletions);
 			}, $ancestors));
 			if (count($ancestors) === 0) {
 				return false;
