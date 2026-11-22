@@ -46,7 +46,7 @@ OC.L10N.register(
     "Enter new title" : "Neuen Titel eingeben",
     "Select bookmark" : "Lesezeichen wählen",
     "You have never clicked this link" : "Sie haben diesen Link noch nie angeklickt",
-    "You have clicked this link {count} times" : "Sie haben diesen Link {count} Mal angeklickt",
+    "You have clicked this link {count} times" : "Sie haben diesen Link {count}-mal angeklickt",
     "Details" : "Details",
     "Rename" : "Umbenennen",
     "Copy link" : "Link kopieren",
