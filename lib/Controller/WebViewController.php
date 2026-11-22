@@ -99,10 +99,12 @@ class WebViewController extends Controller {
 		try {
 			$this->initialState->provideInitialState($this->appName, 'archivedCount', $this->bookmarkMapper->countArchived($this->userId));
 			$this->initialState->provideInitialState($this->appName, 'deletedCount', $this->bookmarkMapper->countDeleted($this->userId));
-			$this->initialState->provideInitialState($this->appName, 'duplicatedCount', $this->bookmarkMapper->countDuplicated($this->userId));
-			$this->initialState->provideInitialState($this->appName, 'unavailableCount', $this->bookmarkMapper->countUnavailable($this->userId));
-			$this->initialState->provideInitialState($this->appName, 'allClicksCount', $this->bookmarkMapper->countAllClicks($this->userId));
-			$this->initialState->provideInitialState($this->appName, 'withClicksCount', $this->bookmarkMapper->countWithClicks($this->userId));
+			// one pass over the folder tree instead of one per count
+			$stats = $this->bookmarkMapper->countPageStats($this->userId);
+			$this->initialState->provideInitialState($this->appName, 'duplicatedCount', $stats['duplicated']);
+			$this->initialState->provideInitialState($this->appName, 'unavailableCount', $stats['unavailable']);
+			$this->initialState->provideInitialState($this->appName, 'allClicksCount', $stats['allClicks']);
+			$this->initialState->provideInitialState($this->appName, 'withClicksCount', $stats['withClicks']);
 		} catch (Exception $e) {
 			$this->logger->error($e->getMessage(), ['exception' => $e]);
 		}
