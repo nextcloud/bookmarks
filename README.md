@@ -29,6 +29,7 @@ This app provides you with a web interface for collecting and organizing bookmar
 - [Nextcloud Bookmarks](https://gitlab.com/bisada/OCBookmarks) - client app for Android ([Amazon Appstore](https://www.amazon.com/dp/B08L5RKHMM/ref=apps_sf_sta)/[F-Droid](https://f-droid.org/packages/org.schabi.nxbookmarks))
 - [NCBookmark](https://gitlab.com/lenchan139/NCBookmark) - Android App
 - Bookmarks for Nextcloud - client app for Android (phone and tablet) with folders, tags, search, sync ([Google Play Store - Bookmarks for Nextcloud](https://play.google.com/store/apps/details?id=de.emasty.bookmarks))
+- Apps for Nextcloud - client app for Android (phone and tablet) with folders, tags, search and offline editing; it also includes Deck, Notes and News ([Google Play Store - Apps for Nextcloud](https://play.google.com/store/apps/details?id=com.desarrollodroide.nextcloudapps))
 - [Floccus](https://floccus.org) - Bookmark sync as Browser extension for Firefox/Chromium-based browsers, Android & iOS Apps
 
 ### Browser
