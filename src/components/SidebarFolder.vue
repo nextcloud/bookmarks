@@ -159,7 +159,7 @@ export default {
 			if (!this.isActive) return
 			const folders = this.$store.getters.getFolder(this.$store.state.sidebar.id)
 			const folder = folders[0]
-			if (folder.userId === getCurrentUser()) {
+			if (folder.userId === getCurrentUser()?.uid) {
 				this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, folder.id)
 				this.$store.dispatch(actions.LOAD_PUBLIC_LINK, folder.id)
 			}
