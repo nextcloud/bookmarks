@@ -184,7 +184,11 @@ export default {
 		// This slows down initial load otherwise and it's not directly necessary
 		setTimeout(() => {
 			this.$store.dispatch(actions.LOAD_SHARES_OF_FOLDER, this.folder.id)
-			this.$store.dispatch(actions.LOAD_PUBLIC_LINK, this.folder.id)
+			// The public links of our own folders are all loaded at once by ViewPrivate,
+			// and a public link page can't see any, so only ask for folders shared with us
+			if (!this.isOwner && !this.$store.state.public) {
+				this.$store.dispatch(actions.LOAD_PUBLIC_LINK, this.folder.id)
+			}
 			this.$store.dispatch(actions.COUNT_BOOKMARKS, this.folder.id)
 		}, 2000)
 	},
