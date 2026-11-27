@@ -512,7 +512,8 @@ class BookmarkController extends ApiController {
 			return new JSONResponse(['status' => 'error', 'data' => ['Unauthenticated']], Http::STATUS_FORBIDDEN);
 		}
 		try {
-			$bookmark = $this->bookmarks->findByUrl($this->authorizer->getUserId(), $url);
+			// only the user's own bookmarks can be clicked (checked below), so skip the shared-folder lookup
+			$bookmark = $this->bookmarks->findByUrl($this->authorizer->getUserId(), $url, false);
 		} catch (DoesNotExistException) {
 			$res = new JSONResponse(['status' => 'error', 'data' => ['Not found']], Http::STATUS_BAD_REQUEST);
 			$res->throttle(['action' => 'click']);

@@ -143,6 +143,39 @@ class BookmarkMapper extends QBMapper {
 	}
 
 	/**
+	 * Like findByUrl(), but with the bookmark's tags and its folders outside the trash,
+	 * as findAll() returns them. Still one lookup through the user_id + url_hash index.
+	 *
+	 * @param string $userId
+	 * @param string $url normalized URL
+	 * @return BookmarkWithTagsAndParent
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
+	 * @throws Exception
+	 */
+	public function findByUrlWithTagsAndFolders(string $userId, string $url): BookmarkWithTagsAndParent {
+		$qb = $this->db->getQueryBuilder();
+		$bookmarkCols = array_map(static function ($c) {
+			return 'b.' . $c;
+		}, Bookmark::$columns);
+		$qb->select($bookmarkCols);
+		$qb->groupBy($bookmarkCols);
+		$this->_selectFolders($qb, false);
+		$this->_selectTags($qb);
+		$qb->automaticTablePrefix(false);
+		$qb
+			->from('*PREFIX*bookmarks', 'b')
+			->where($qb->expr()->eq('b.user_id', $qb->createPositionalParameter($userId)))
+			->andWhere($qb->expr()->eq('b.url_hash', $qb->createPositionalParameter(hash('xxh128', $url))))
+			->andWhere($qb->expr()->eq('b.url', $qb->createPositionalParameter($url)));
+		$bookmark = $this->findEntity($qb);
+		if (!($bookmark instanceof BookmarkWithTagsAndParent)) {
+			throw new \LogicException('Expected the bookmark with its tags and folders');
+		}
+		return $bookmark;
+	}
+
+	/**
 	 * @param string $userId
 	 * @throws DoesNotExistException
 	 * @throws MultipleObjectsReturnedException
