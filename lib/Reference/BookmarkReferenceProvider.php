@@ -12,6 +12,7 @@
 namespace OCA\Bookmarks\Reference;
 
 use OCA\Bookmarks\AppInfo\Application;
+use OCA\Bookmarks\Db\Bookmark;
 use OCA\Bookmarks\Exception\UrlParseError;
 use OCA\Bookmarks\Service\Authorizer;
 use OCA\Bookmarks\Service\BookmarkService;
@@ -28,6 +29,12 @@ class BookmarkReferenceProvider extends ADiscoverableReferenceProvider {
 	private IURLGenerator $urlGenerator;
 	private BookmarkService $bookmarkService;
 	private Authorizer $authorizer;
+	/**
+	 * Bookmarks looked up by URL in matchReference() (null: not bookmarked), kept until
+	 * resolveReference() is called with the same text, so the URL is only looked up once.
+	 * @var array<string, ?Bookmark>
+	 */
+	private array $bookmarksByUrl = [];
 
 	public function __construct(IL10N $l10n, ?string $userId, IURLGenerator $urlGenerator, BookmarkService $bookmarkService, Authorizer $authorizer) {
 		$this->userId = $userId;
@@ -81,42 +88,43 @@ class BookmarkReferenceProvider extends ADiscoverableReferenceProvider {
 			return true;
 		}
 
-		try {
-			$this->bookmarkService->findByUrl($this->userId, $referenceText);
-			return true;
-		} catch (UrlParseError|DoesNotExistException $e) {
-			return false;
+		return $this->findBookmarkByUrl($referenceText) !== null;
+	}
+
+	private function findBookmarkByUrl(string $url): ?Bookmark {
+		if (!array_key_exists($url, $this->bookmarksByUrl)) {
+			try {
+				$this->bookmarksByUrl[$url] = $this->bookmarkService->findByUrl($this->userId, $url);
+			} catch (UrlParseError|DoesNotExistException $e) {
+				$this->bookmarksByUrl[$url] = null;
+			}
 		}
+		return $this->bookmarksByUrl[$url];
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function resolveReference(string $referenceText): ?IReference {
-		if (!$this->matchReference($referenceText)) {
-			return null;
-		}
 		$id = $this->getBookmarkId($referenceText);
 		if ($id === null) {
-			try {
-				$bookmark = $this->bookmarkService->findByUrl($this->userId, $referenceText);
-			} catch (UrlParseError|DoesNotExistException $e) {
-				return null;
-			}
+			$bookmark = $this->findBookmarkByUrl($referenceText);
+			// only kept from matchReference() to here
+			unset($this->bookmarksByUrl[$referenceText]);
 		} else {
 			$bookmark = $this->bookmarkService->findById((int)$id);
 		}
 		if ($bookmark === null) {
 			return null;
 		}
-		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getUserPermissionsForBookmark($this->userId, (int)$id))) {
+		if (!Authorizer::hasPermission(Authorizer::PERM_READ, $this->authorizer->getUserPermissionsForBookmark($this->userId, $bookmark->getId()))) {
 			return null;
 		}
 
 		/** @var IReference $reference */
 		$reference = new Reference($referenceText);
 		$reference->setRichObject(Application::APP_ID . '-bookmark', [
-			'id' => $id,
+			'id' => $bookmark->getId(),
 			'bookmark' => $bookmark->toArray(),
 		]);
 
